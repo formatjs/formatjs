@@ -1,13 +1,13 @@
 // @react-intl project:foo
-import React, {Component} from 'react';
-import {defineMessages, FormattedMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {defineMessages, FormattedMessage} from 'react-intl'
 
 const msgs = defineMessages({
   test: {
     id: 'ignore',
     defaultMessage: 'ignore',
   },
-});
+})
 
 export default class Foo extends Component {
   render() {
@@ -17,6 +17,6 @@ export default class Foo extends Component {
           <FormattedMessage {...msgs.test} />
         </h1>
       </div>
-    );
+    )
   }
 }

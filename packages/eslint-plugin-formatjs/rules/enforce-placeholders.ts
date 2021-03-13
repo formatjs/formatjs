@@ -1,6 +1,6 @@
-import {Rule, Scope} from 'eslint';
-import {TSESTree} from '@typescript-eslint/typescript-estree';
-import {extractMessages} from '../util';
+import {Rule, Scope} from 'eslint'
+import {TSESTree} from '@typescript-eslint/typescript-estree'
+import {extractMessages} from '../util'
 import {
   parse,
   isPluralElement,
@@ -8,14 +8,14 @@ import {
   isLiteralElement,
   isSelectElement,
   isPoundElement,
-} from 'intl-messageformat-parser';
-import {ImportDeclaration, Node} from 'estree';
+} from 'intl-messageformat-parser'
+import {ImportDeclaration, Node} from 'estree'
 
 class PlaceholderEnforcement extends Error {
-  public message: string;
+  public message: string
   constructor(message: string) {
-    super();
-    this.message = message;
+    super()
+    this.message = message
   }
 }
 
@@ -24,26 +24,26 @@ function keyExistsInExpression(
   values: TSESTree.Expression | undefined
 ) {
   if (!values) {
-    return false;
+    return false
   }
   if (values.type !== 'ObjectExpression') {
-    return true; // True bc we cannot evaluate this
+    return true // True bc we cannot evaluate this
   }
   if (values.properties.find(prop => prop.type === 'SpreadElement')) {
-    return true; // True bc there's a spread element
+    return true // True bc there's a spread element
   }
   return !!values.properties.find(prop => {
     if (prop.type !== 'Property') {
-      return false;
+      return false
     }
     switch (prop.key.type) {
       case 'Identifier':
-        return prop.key.name === key;
+        return prop.key.name === key
       case 'Literal':
-        return prop.key.value === key;
+        return prop.key.value === key
     }
-    return false;
-  });
+    return false
+  })
 }
 
 function verifyAst(
@@ -53,18 +53,18 @@ function verifyAst(
 ) {
   for (const el of ast) {
     if (isLiteralElement(el) || isPoundElement(el)) {
-      continue;
+      continue
     }
-    const key = el.value;
+    const key = el.value
     if (!ignoreList.has(key) && !keyExistsInExpression(key, values)) {
       throw new PlaceholderEnforcement(
         `Missing value for placeholder "${el.value}"`
-      );
+      )
     }
 
     if (isPluralElement(el) || isSelectElement(el)) {
       for (const selector of Object.keys(el.options)) {
-        verifyAst(el.options[selector].value, values, ignoreList);
+        verifyAst(el.options[selector].value, values, ignoreList)
       }
     }
   }
@@ -75,11 +75,11 @@ function checkNode(
   node: TSESTree.Node,
   importedMacroVars: Scope.Variable[]
 ) {
-  const msgs = extractMessages(node, importedMacroVars, true);
+  const msgs = extractMessages(node, importedMacroVars, true)
   const {
     options: [opt],
-  } = context;
-  const ignoreList = new Set<string>(opt?.ignoreList || []);
+  } = context
+  const ignoreList = new Set<string>(opt?.ignoreList || [])
   for (const [
     {
       message: {defaultMessage},
@@ -88,15 +88,15 @@ function checkNode(
     values,
   ] of msgs) {
     if (!defaultMessage || !messageNode) {
-      continue;
+      continue
     }
     try {
-      verifyAst(parse(defaultMessage), values, ignoreList);
+      verifyAst(parse(defaultMessage), values, ignoreList)
     } catch (e) {
       context.report({
         node: messageNode as Node,
         message: e.message,
-      });
+      })
     }
   }
 }
@@ -128,9 +128,9 @@ const rule: Rule.RuleModule = {
     ],
   },
   create(context) {
-    let importedMacroVars: Scope.Variable[] = [];
+    let importedMacroVars: Scope.Variable[] = []
     const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node, importedMacroVars);
+      checkNode(context, node, importedMacroVars)
 
     if (context.parserServices.defineTemplateBodyVisitor) {
       return context.parserServices.defineTemplateBodyVisitor(
@@ -140,20 +140,20 @@ const rule: Rule.RuleModule = {
         {
           CallExpression: callExpressionVisitor,
         }
-      );
+      )
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value;
+        const moduleName = (node as ImportDeclaration).source.value
         if (moduleName === 'react-intl') {
-          importedMacroVars = context.getDeclaredVariables(node);
+          importedMacroVars = context.getDeclaredVariables(node)
         }
       },
       JSXOpeningElement: (node: Node) =>
         checkNode(context, node as TSESTree.Node, importedMacroVars),
       CallExpression: callExpressionVisitor,
-    };
+    }
   },
-};
+}
 
-export default rule;
+export default rule

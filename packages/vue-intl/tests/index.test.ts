@@ -1,7 +1,7 @@
-import {defineComponent, h} from 'vue';
-import VueIntl, {provideIntl, useIntl} from '../index';
-import {mount} from '@vue/test-utils';
-import {createIntl} from '@formatjs/intl';
+import {defineComponent, h} from 'vue'
+import VueIntl, {provideIntl, useIntl} from '../index'
+import {mount} from '@vue/test-utils'
+import {createIntl} from '@formatjs/intl'
 
 const Translations = defineComponent({
   template: `
@@ -24,11 +24,11 @@ const Translations = defineComponent({
     </p>
   </div>
   `,
-});
+})
 
 const Descendant = {
   setup() {
-    const intl = useIntl();
+    const intl = useIntl()
     return () =>
       h(
         'p',
@@ -37,9 +37,9 @@ const Descendant = {
           id: 'foo',
           defaultMessage: 'Hello',
         })
-      );
+      )
   },
-};
+}
 
 const Ancestor = {
   setup() {
@@ -51,12 +51,12 @@ const Ancestor = {
           foo: 'Composed',
         },
       })
-    );
+    )
   },
   render() {
-    return h(Descendant);
+    return h(Descendant)
   },
-};
+}
 
 const Injected = defineComponent({
   inject: ['intl'],
@@ -69,9 +69,9 @@ const Injected = defineComponent({
         id: 'foo',
         defaultMessage: 'Hello',
       })
-    );
+    )
   },
-});
+})
 
 test('basic', function () {
   const wrapper = mount(Translations, {
@@ -89,10 +89,10 @@ test('basic', function () {
         ],
       ],
     },
-  });
+  })
 
-  expect(wrapper.text()).toBe('Foo€123.00');
-});
+  expect(wrapper.text()).toBe('Foo€123.00')
+})
 
 test('injected', function () {
   const wrapper = mount(Injected, {
@@ -110,13 +110,13 @@ test('injected', function () {
         ],
       ],
     },
-  });
+  })
 
-  expect(wrapper.text()).toBe('Injected');
-});
+  expect(wrapper.text()).toBe('Injected')
+})
 
 test('composition', function () {
-  const wrapper = mount(Ancestor);
+  const wrapper = mount(Ancestor)
 
-  expect(wrapper.text()).toBe('Composed');
-});
+  expect(wrapper.text()).toBe('Composed')
+})

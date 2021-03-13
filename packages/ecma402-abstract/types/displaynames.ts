@@ -1,9 +1,9 @@
-import {LocaleData} from './core';
+import {LocaleData} from './core'
 
-type LanguageTag = string;
-type RegionCode = string;
-type ScriptCode = string;
-type CurrencyCode = string;
+type LanguageTag = string
+type RegionCode = string
+type ScriptCode = string
+type CurrencyCode = string
 
 export interface DisplayNamesData {
   /**
@@ -15,34 +15,34 @@ export interface DisplayNamesData {
      * Maps language subtag like `zh-CN` to their display names.
      */
     language: {
-      narrow: Record<LanguageTag, string>;
-      short: Record<LanguageTag, string>;
-      long: Record<LanguageTag, string>;
-    };
+      narrow: Record<LanguageTag, string>
+      short: Record<LanguageTag, string>
+      long: Record<LanguageTag, string>
+    }
     region: {
-      narrow: Record<RegionCode, string>;
-      short: Record<RegionCode, string>;
-      long: Record<RegionCode, string>;
-    };
+      narrow: Record<RegionCode, string>
+      short: Record<RegionCode, string>
+      long: Record<RegionCode, string>
+    }
     script: {
-      narrow: Record<ScriptCode, string>;
-      short: Record<ScriptCode, string>;
-      long: Record<ScriptCode, string>;
-    };
+      narrow: Record<ScriptCode, string>
+      short: Record<ScriptCode, string>
+      long: Record<ScriptCode, string>
+    }
     currency: {
-      narrow: Record<CurrencyCode, string>;
-      short: Record<CurrencyCode, string>;
-      long: Record<CurrencyCode, string>;
-    };
-  };
+      narrow: Record<CurrencyCode, string>
+      short: Record<CurrencyCode, string>
+      long: Record<CurrencyCode, string>
+    }
+  }
   /**
    * Not in spec, but we need this to display both language and region in display name.
    * e.g. zh-Hans-SG + "{0}（{1}）" -> 简体中文（新加坡）
    * Here {0} is replaced by language display name and {1} is replaced by region display name.
    */
   patterns: {
-    locale: string;
-  };
+    locale: string
+  }
 }
 
-export type DisplayNamesLocaleData = LocaleData<DisplayNamesData>;
+export type DisplayNamesLocaleData = LocaleData<DisplayNamesData>

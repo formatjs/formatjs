@@ -1,4 +1,4 @@
-import {ResolveLocale} from '../ResolveLocale';
+import {ResolveLocale} from '../ResolveLocale'
 
 test('ResolveLocale', function () {
   expect(
@@ -13,7 +13,7 @@ test('ResolveLocale', function () {
   ).toEqual({
     dataLocale: 'fr',
     locale: 'fr',
-  });
+  })
 
   expect(
     ResolveLocale(
@@ -27,8 +27,8 @@ test('ResolveLocale', function () {
   ).toEqual({
     dataLocale: 'zh-Hant-TW',
     locale: 'zh-Hant-TW',
-  });
-});
+  })
+})
 
 test('empty requested', function () {
   expect(
@@ -43,5 +43,5 @@ test('empty requested', function () {
   ).toEqual({
     dataLocale: 'en',
     locale: 'en',
-  });
-});
+  })
+})

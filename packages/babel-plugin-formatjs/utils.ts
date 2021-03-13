@@ -1,34 +1,34 @@
-import * as t from '@babel/types';
-import {parse} from 'intl-messageformat-parser';
-import {interpolateName} from '@formatjs/ts-transformer';
+import * as t from '@babel/types'
+import {parse} from 'intl-messageformat-parser'
+import {interpolateName} from '@formatjs/ts-transformer'
 
 import {
   Options,
   ExtractedMessageDescriptor,
   MessageDescriptor,
   MessageDescriptorPath,
-} from './types';
-import {NodePath} from '@babel/core';
+} from './types'
+import {NodePath} from '@babel/core'
 
-const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);
+const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage'])
 
 function evaluatePath(path: NodePath<any>): string {
-  const evaluated = path.evaluate();
+  const evaluated = path.evaluate()
   if (evaluated.confident) {
-    return evaluated.value;
+    return evaluated.value
   }
 
   throw path.buildCodeFrameError(
     '[React Intl] Messages must be statically evaluate-able for extraction.'
-  );
+  )
 }
 
 export function getMessageDescriptorKey(path: NodePath<any>) {
   if (path.isIdentifier() || path.isJSXIdentifier()) {
-    return path.node.name;
+    return path.node.name
   }
 
-  return evaluatePath(path);
+  return evaluatePath(path)
 }
 
 function getMessageDescriptorValue(
@@ -38,16 +38,16 @@ function getMessageDescriptorValue(
     | NodePath<t.TemplateLiteral>
 ) {
   if (!path) {
-    return '';
+    return ''
   }
   if (path.isJSXExpressionContainer()) {
-    path = path.get('expression') as NodePath<t.StringLiteral>;
+    path = path.get('expression') as NodePath<t.StringLiteral>
   }
 
   // Always trim the Message Descriptor values.
-  const descriptorValue = evaluatePath(path);
+  const descriptorValue = evaluatePath(path)
 
-  return descriptorValue;
+  return descriptorValue
 }
 
 export function createMessageDescriptor(
@@ -58,20 +58,20 @@ export function createMessageDescriptor(
 ): MessageDescriptorPath {
   return propPaths.reduce(
     (hash: MessageDescriptorPath, [keyPath, valuePath]) => {
-      const key = getMessageDescriptorKey(keyPath);
+      const key = getMessageDescriptorKey(keyPath)
 
       if (DESCRIPTOR_PROPS.has(key)) {
-        hash[key as 'id'] = valuePath as NodePath<t.StringLiteral>;
+        hash[key as 'id'] = valuePath as NodePath<t.StringLiteral>
       }
 
-      return hash;
+      return hash
     },
     {
       id: undefined,
       defaultMessage: undefined,
       description: undefined,
     }
-  );
+  )
 }
 
 export function evaluateMessageDescriptor(
@@ -82,18 +82,18 @@ export function evaluateMessageDescriptor(
   overrideIdFn?: Options['overrideIdFn'],
   preserveWhitespace?: Options['preserveWhitespace']
 ) {
-  let id = getMessageDescriptorValue(descriptorPath.id);
+  let id = getMessageDescriptorValue(descriptorPath.id)
   const defaultMessage = getICUMessageValue(
     descriptorPath.defaultMessage,
     {
       isJSXSource,
     },
     preserveWhitespace
-  );
-  const description = getMessageDescriptorValue(descriptorPath.description);
+  )
+  const description = getMessageDescriptorValue(descriptorPath.description)
 
   if (overrideIdFn) {
-    id = overrideIdFn(id, defaultMessage, description, filename);
+    id = overrideIdFn(id, defaultMessage, description, filename)
   } else if (!id && idInterpolationPattern && defaultMessage) {
     id = interpolateName(
       {resourcePath: filename} as any,
@@ -103,20 +103,20 @@ export function evaluateMessageDescriptor(
           ? `${defaultMessage}#${description}`
           : defaultMessage,
       }
-    );
+    )
   }
   const descriptor: MessageDescriptor = {
     id,
-  };
+  }
 
   if (description) {
-    descriptor.description = description;
+    descriptor.description = description
   }
   if (defaultMessage) {
-    descriptor.defaultMessage = defaultMessage;
+    descriptor.defaultMessage = defaultMessage
   }
 
-  return descriptor;
+  return descriptor
 }
 
 function getICUMessageValue(
@@ -125,16 +125,16 @@ function getICUMessageValue(
   preserveWhitespace?: Options['preserveWhitespace']
 ) {
   if (!messagePath) {
-    return '';
+    return ''
   }
-  let message = getMessageDescriptorValue(messagePath);
+  let message = getMessageDescriptorValue(messagePath)
 
   if (!preserveWhitespace) {
-    message = message.trim().replace(/\s+/gm, ' ');
+    message = message.trim().replace(/\s+/gm, ' ')
   }
 
   try {
-    parse(message);
+    parse(message)
   } catch (parseError) {
     if (
       isJSXSource &&
@@ -147,18 +147,18 @@ function getICUMessageValue(
           "this won't work with JSX string literals. " +
           'Wrap with `{}`. ' +
           'See: http://facebook.github.io/react/docs/jsx-gotchas.html'
-      );
+      )
     }
 
     throw messagePath.buildCodeFrameError(
       '[React Intl] Message failed to parse. ' +
         'See: https://formatjs.io/docs/core-concepts/icu-syntax' +
         `\n${parseError}`
-    );
+    )
   }
-  return message;
+  return message
 }
-const EXTRACTED = Symbol('FormatJSExtracted');
+const EXTRACTED = Symbol('FormatJSExtracted')
 /**
  * Tag a node as extracted
  * Store this in the node itself so that multiple passes work. Specifically
@@ -169,14 +169,14 @@ const EXTRACTED = Symbol('FormatJSExtracted');
  * @param path
  */
 export function tagAsExtracted(path: NodePath<any>) {
-  path.node[EXTRACTED] = true;
+  path.node[EXTRACTED] = true
 }
 /**
  * Check if a node was extracted
  * @param path
  */
 export function wasExtracted(path: NodePath<any>) {
-  return !!path.node[EXTRACTED];
+  return !!path.node[EXTRACTED]
 }
 
 /**
@@ -198,15 +198,15 @@ export function storeMessage(
   if (!id && !defaultMessage) {
     throw path.buildCodeFrameError(
       '[React Intl] Message Descriptors require an `id` or `defaultMessage`.'
-    );
+    )
   }
 
-  let loc = {};
+  let loc = {}
   if (extractSourceLocation) {
     loc = {
       file: filename,
       ...path.node.loc,
-    };
+    }
   }
-  messages.push({id, description, defaultMessage, ...loc});
+  messages.push({id, description, defaultMessage, ...loc})
 }

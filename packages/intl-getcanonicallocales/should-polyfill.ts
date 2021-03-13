@@ -6,5 +6,5 @@ export function shouldPolyfill() {
     // https://bugs.chromium.org/p/v8/issues/detail?id=10682
     ((Intl as any).getCanonicalLocales as any)('und-x-private')[0] ===
       'x-private'
-  );
+  )
 }

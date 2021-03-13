@@ -1,8 +1,8 @@
-import {pegParse, ParseOptions} from '../';
-import {printAST} from '../src/printer';
+import {pegParse, ParseOptions} from '../'
+import {printAST} from '../src/printer'
 
 function allTests(opts?: ParseOptions) {
-  [
+  ;[
     'Hello, World!',
     'Hello, {name}!',
     'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.',
@@ -58,20 +58,20 @@ function allTests(opts?: ParseOptions) {
           }}\
       } shared this file.',
   ].forEach(mess => {
-    const ast = pegParse(mess, opts);
+    const ast = pegParse(mess, opts)
     it(`can pegParse '${mess}'`, function () {
-      expect(ast).toMatchSnapshot();
-    });
+      expect(ast).toMatchSnapshot()
+    })
     it(`can print AST from '${mess}'`, function () {
-      expect(printAST(ast)).toMatchSnapshot();
-    });
-  });
+      expect(printAST(ast)).toMatchSnapshot()
+    })
+  })
 }
 
 describe('pegParse()', function () {
-  allTests();
-});
+  allTests()
+})
 
 describe('pegParse({ captureLocation: true })', function () {
-  allTests();
-});
+  allTests()
+})

@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {defineMessages, FormattedMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {defineMessages, FormattedMessage} from 'react-intl'
 
 const msgs = defineMessages({
   header: {
@@ -35,11 +35,11 @@ const msgs = defineMessages({
     description: 'no ID',
     defaultMessage: 'No ID',
   },
-});
+})
 
 export default class Foo extends Component {
   render() {
-    const msg = msgs?.header;
+    const msg = msgs?.header
     return (
       <div>
         <h1>
@@ -57,6 +57,6 @@ export default class Foo extends Component {
           />
         </p>
       </div>
-    );
+    )
   }
 }

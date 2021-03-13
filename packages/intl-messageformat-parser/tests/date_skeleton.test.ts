@@ -1,6 +1,6 @@
-import {pegParse} from '../src/parser';
-import {printAST} from '../src/printer';
-import {parseDateTimeSkeleton} from '../src/skeleton';
+import {pegParse} from '../src/parser'
+import {printAST} from '../src/printer'
+import {parseDateTimeSkeleton} from '../src/skeleton'
 
 test.each([
   `yyyy.MM.dd G 'at' HH:mm:ss vvvv`,
@@ -8,10 +8,10 @@ test.each([
   `h:mm a`,
   ``,
 ])('case: %p', skeleton => {
-  const ast = pegParse(`{0, date, ::${skeleton}}`);
-  expect(ast).toMatchSnapshot();
-  expect(printAST(ast)).toMatchSnapshot();
-});
+  const ast = pegParse(`{0, date, ::${skeleton}}`)
+  expect(ast).toMatchSnapshot()
+  expect(printAST(ast)).toMatchSnapshot()
+})
 
 test.each([
   `yyyy.MM.dd G 'at' HH:mm:ss zzzz`,
@@ -19,5 +19,5 @@ test.each([
   `h:mm a`,
   ``,
 ])('case: %p', skeleton => {
-  expect(parseDateTimeSkeleton(skeleton)).toMatchSnapshot();
-});
+  expect(parseDateTimeSkeleton(skeleton)).toMatchSnapshot()
+})

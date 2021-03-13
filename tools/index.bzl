@@ -1,8 +1,8 @@
 "Custom macro"
 
+load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier_test")
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test")
 load("@build_bazel_rules_nodejs//internal/js_library:js_library.bzl", "js_library")
-load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier_test")
 load("@npm//@bazel/esbuild:index.bzl", _esbuild = "esbuild")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//prettier:index.bzl", "prettier", "prettier_test")

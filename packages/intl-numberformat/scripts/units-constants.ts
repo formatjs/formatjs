@@ -1,9 +1,9 @@
-import minimist from 'minimist';
-import {SIMPLE_UNITS} from '@formatjs/ecma402-abstract';
-import {outputFileSync} from 'fs-extra';
+import minimist from 'minimist'
+import {SIMPLE_UNITS} from '@formatjs/ecma402-abstract'
+import {outputFileSync} from 'fs-extra'
 
 function main(args: minimist.ParsedArgs) {
-  const {out} = args;
+  const {out} = args
 
   outputFileSync(
     out,
@@ -12,9 +12,9 @@ function main(args: minimist.ParsedArgs) {
   export type Unit =
     ${SIMPLE_UNITS.map(u => `'${u}'`).join(' | ')}
   `
-  );
+  )
 }
 
 if (require.main === module) {
-  main(minimist(process.argv));
+  main(minimist(process.argv))
 }

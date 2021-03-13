@@ -8,7 +8,7 @@ export enum ErrorCode {
 }
 
 export class FormatError extends Error {
-  public readonly code: ErrorCode;
+  public readonly code: ErrorCode
   /**
    * Original message we're trying to format
    * `undefined` if we're only dealing w/ AST
@@ -16,14 +16,14 @@ export class FormatError extends Error {
    * @type {(string | undefined)}
    * @memberof FormatError
    */
-  public readonly originalMessage: string | undefined;
+  public readonly originalMessage: string | undefined
   constructor(msg: string, code: ErrorCode, originalMessage?: string) {
-    super(msg);
-    this.code = code;
-    this.originalMessage = originalMessage;
+    super(msg)
+    this.code = code
+    this.originalMessage = originalMessage
   }
   public toString() {
-    return `[formatjs Error: ${this.code}] ${this.message}`;
+    return `[formatjs Error: ${this.code}] ${this.message}`
   }
 }
 
@@ -40,7 +40,7 @@ export class InvalidValueError extends FormatError {
       ).join('", "')}"`,
       ErrorCode.INVALID_VALUE,
       originalMessage
-    );
+    )
   }
 }
 
@@ -50,7 +50,7 @@ export class InvalidValueTypeError extends FormatError {
       `Value for "${value}" must be of type ${type}`,
       ErrorCode.INVALID_VALUE,
       originalMessage
-    );
+    )
   }
 }
 
@@ -60,6 +60,6 @@ export class MissingValueError extends FormatError {
       `The intl string context variable "${variableId}" was not provided to the string "${originalMessage}"`,
       ErrorCode.MISSING_VALUE,
       originalMessage
-    );
+    )
   }
 }

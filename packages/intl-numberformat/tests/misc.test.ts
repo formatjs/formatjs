@@ -1,5 +1,5 @@
-import '@formatjs/intl-pluralrules/polyfill-locales';
-import {NumberFormat} from '../src/core';
+import '@formatjs/intl-pluralrules/polyfill-locales'
+import {NumberFormat} from '../src/core'
 
 const LOCALES = [
   'en',
@@ -26,11 +26,11 @@ const LOCALES = [
   'zh-Hans',
   'zh-Hant',
   'en-BS',
-];
+]
 
 LOCALES.forEach(locale => {
-  NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`));
-});
+  NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`))
+})
 
 // Replicate Google Chrome's behavior: when there is a compact pattern, drop the percentage sign.
 // For example, 10000 is formatted to "1M" (10000 * 100 = 1M).
@@ -40,8 +40,8 @@ it('formats percentage with comapct notation', () => {
       style: 'percent',
       notation: 'compact',
     }).format(10_000)
-  ).toBe('1M');
-});
+  ).toBe('1M')
+})
 
 it('should lookup locale correctly', function () {
   expect(
@@ -49,31 +49,31 @@ it('should lookup locale correctly', function () {
       style: 'unit',
       unit: 'bit',
     }).format(1000)
-  ).toBe('1,000 bit');
+  ).toBe('1,000 bit')
   expect(
     new NumberFormat('en-BS', {
       style: 'unit',
       unit: 'celsius',
     }).format(1000)
-  ).toBe('1,000°C');
+  ).toBe('1,000°C')
   expect(
     new NumberFormat('en-BS', {
       style: 'unit',
       unit: 'gallon',
     }).format(1000)
-  ).toBe('1,000 US gal');
-});
+  ).toBe('1,000 US gal')
+})
 
 it('supportedLocalesOf should return correct result based on data loaded', function () {
   expect(NumberFormat.supportedLocalesOf(['zh', 'en-US', 'af'])).toEqual([
     'zh',
     'en',
-  ]);
-  expect(NumberFormat.supportedLocalesOf(['af'])).toEqual([]);
-});
+  ])
+  expect(NumberFormat.supportedLocalesOf(['af'])).toEqual([])
+})
 it('should not crash if unit is not specified', function () {
-  expect(new NumberFormat().resolvedOptions().unit).toBeUndefined();
-});
+  expect(new NumberFormat().resolvedOptions().unit).toBeUndefined()
+})
 
 // Some test262
 describe('test262 examples', function () {
@@ -86,7 +86,7 @@ describe('test262 examples', function () {
     ['5430', '5,43E3', '5,43E3'],
     ['543000', '543E3', '5,43E5'],
     ['543211.1', '543,211E3', '5,432E5'],
-  ];
+  ]
 
   it('10000', function () {
     expect(
@@ -95,8 +95,8 @@ describe('test262 examples', function () {
         signDisplay: 'exceptZero',
         compactDisplay: 'short',
       }).format(10000)
-    ).toBe('+10K');
-  });
+    ).toBe('+10K')
+  })
 
   it('10000 currency', function () {
     expect(
@@ -109,7 +109,7 @@ describe('test262 examples', function () {
         notation: 'standard',
         compactDisplay: 'short',
       }).format(10000)
-    ).toBe('+$10,000.00');
+    ).toBe('+$10,000.00')
     expect(
       new NumberFormat('en-US', {
         style: 'currency',
@@ -120,7 +120,7 @@ describe('test262 examples', function () {
         notation: 'compact',
         compactDisplay: 'short',
       }).format(10000)
-    ).toBe('+ZWD 10K');
+    ).toBe('+ZWD 10K')
     expect(
       new NumberFormat('en-US', {
         style: 'currency',
@@ -131,7 +131,7 @@ describe('test262 examples', function () {
         notation: 'compact',
         compactDisplay: 'long',
       }).format(10000)
-    ).toBe('+ZWD 10K');
+    ).toBe('+ZWD 10K')
     expect(
       new NumberFormat('en-US', {
         style: 'currency',
@@ -142,7 +142,7 @@ describe('test262 examples', function () {
         notation: 'compact',
         compactDisplay: 'long',
       }).format(10000)
-    ).toBe('+10 thousand Zimbabwean dollars (1980–2008)');
+    ).toBe('+10 thousand Zimbabwean dollars (1980–2008)')
     expect(
       new NumberFormat('uk', {
         style: 'currency',
@@ -153,7 +153,7 @@ describe('test262 examples', function () {
         notation: 'compact',
         compactDisplay: 'short',
       }).format(10000)
-    ).toBe('+10 тис. англійських фунтів');
+    ).toBe('+10 тис. англійських фунтів')
     expect(
       new NumberFormat('uk', {
         style: 'currency',
@@ -164,8 +164,8 @@ describe('test262 examples', function () {
         notation: 'scientific',
         compactDisplay: 'short',
       }).format(10000)
-    ).toBe('+1,00Е4 англійського фунта');
-  });
+    ).toBe('+1,00Е4 англійського фунта')
+  })
 
   it('10000 currency de compactLong', function () {
     expect(
@@ -178,22 +178,22 @@ describe('test262 examples', function () {
         notation: 'compact',
         compactDisplay: 'long',
       }).format(10000)
-    ).toBe('10 Tausend US-Dollar');
-  });
+    ).toBe('10 Tausend US-Dollar')
+  })
 
   for (const [number, engineering, scientific] of tests) {
     it(`number ${number}`, function () {
       const nfEngineering = new NumberFormat('de-DE', {
         notation: 'engineering',
-      });
-      expect(nfEngineering.format(+number)).toBe(engineering);
+      })
+      expect(nfEngineering.format(+number)).toBe(engineering)
       const nfScientific = new NumberFormat('de-DE', {
         notation: 'scientific',
-      });
-      expect(nfScientific.format(+number)).toBe(scientific);
-    });
+      })
+      expect(nfScientific.format(+number)).toBe(scientific)
+    })
   }
-});
+})
 
 // https://github.com/formatjs/formatjs/issues/1670
 it('chose compact pattern with rounded number', () => {
@@ -204,64 +204,64 @@ it('chose compact pattern with rounded number', () => {
     useGrouping: false,
     style: 'decimal',
     notation: 'compact',
-  });
+  })
 
-  expect(nf.format(999.995)).toEqual('1.00K');
-  expect(nf.format(999995000)).toEqual('1.00B');
-});
+  expect(nf.format(999.995)).toEqual('1.00K')
+  expect(nf.format(999995000)).toEqual('1.00B')
+})
 
 // https://github.com/formatjs/formatjs/issues/1692
 it('correctly rounds UP the number in the compact notation', () => {
   const nf = new NumberFormat('en', {
     notation: 'compact',
     compactDisplay: 'short',
-  });
-  expect(nf.format(9990)).toEqual('10K');
-});
+  })
+  expect(nf.format(9990)).toEqual('10K')
+})
 
 it('avoids floating point precision loss at best effort when formatting huge numbers (significantDigits)', () => {
-  const nf = new NumberFormat([], {minimumSignificantDigits: 1});
+  const nf = new NumberFormat([], {minimumSignificantDigits: 1})
   expect(nf.format(1e41)).toEqual(
     '100,000,000,000,000,000,000,000,000,000,000,000,000,000'
-  );
-});
+  )
+})
 
 it('avoids floating point precision loss at best effort when formatting huge numbers (fractionDigits)', () => {
-  const nf = new NumberFormat([], {minimumFractionDigits: 0});
+  const nf = new NumberFormat([], {minimumFractionDigits: 0})
   expect(nf.format(1e41)).toEqual(
     '100,000,000,000,000,000,000,000,000,000,000,000,000,000'
-  );
-});
+  )
+})
 
 test('NaN zh-TW', function () {
-  expect(new NumberFormat('zh-TW').format(NaN)).toBe('非數值');
-});
+  expect(new NumberFormat('zh-TW').format(NaN)).toBe('非數值')
+})
 
 it('ignore-invalid-unicode-ext-values.js', function () {
-  var locales = ['ja-JP', 'zh-Hans-CN', 'zh-Hant-TW'];
-  var input = 1234567.89;
+  var locales = ['ja-JP', 'zh-Hans-CN', 'zh-Hant-TW']
+  var input = 1234567.89
 
   locales.forEach(function (locale) {
-    var defaultNumberFormat = new NumberFormat([locale]);
-    var defaultOptions = defaultNumberFormat.resolvedOptions();
-    var defaultLocale = defaultOptions.locale;
-    var defaultFormatted = defaultNumberFormat.format(input);
+    var defaultNumberFormat = new NumberFormat([locale])
+    var defaultOptions = defaultNumberFormat.resolvedOptions()
+    var defaultLocale = defaultOptions.locale
+    var defaultFormatted = defaultNumberFormat.format(input)
 
     const keyValues = {
       cu: ['USD', 'EUR', 'JPY', 'CNY', 'TWD', 'invalid'],
       nu: ['native', 'traditio', 'finance', 'invalid'],
-    };
+    }
 
     Object.getOwnPropertyNames(keyValues).forEach(function (key) {
       keyValues[key as 'cu'].forEach(function (value) {
         var numberFormat = new NumberFormat([
           locale + '-u-' + key + '-' + value,
-        ]);
-        var options = numberFormat.resolvedOptions();
-        expect(options.locale).toBe(defaultLocale);
-        expect(options).toEqual(defaultOptions);
-        expect(numberFormat.format(input)).toBe(defaultFormatted);
-      });
-    });
-  });
-});
+        ])
+        var options = numberFormat.resolvedOptions()
+        expect(options.locale).toBe(defaultLocale)
+        expect(options).toEqual(defaultOptions)
+        expect(numberFormat.format(input)).toBe(defaultFormatted)
+      })
+    })
+  })
+})

@@ -5,19 +5,19 @@ export function foo() {
       description: 'bar',
     },
     {bar: 'bar'}
-  );
+  )
   this.props.intl.formatMessage(
     {
       defaultMessage: 'this props {intl}',
       description: 'bar',
     },
     {bar: 'bar'}
-  );
+  )
   return intl.formatMessage(
     {
       defaultMessage: 'foo {bar}',
       description: 'bar',
     },
     {bar: 'bar'}
-  );
+  )
 }

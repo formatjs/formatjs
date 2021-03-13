@@ -1,38 +1,38 @@
-import * as React from 'react';
+import * as React from 'react'
 import IntlProvider, {
   OptionalIntlConfig,
-} from '../../../src/components/provider';
-import withIntl from '../../../src/components/injectIntl';
-import {render} from '@testing-library/react';
-import {FormattedDate} from '../../../';
+} from '../../../src/components/provider'
+import withIntl from '../../../src/components/injectIntl'
+import {render} from '@testing-library/react'
+import {FormattedDate} from '../../../'
 
 describe('<IntlProvider>', () => {
-  const now = Date.now();
+  const now = Date.now()
 
   class Child extends React.Component<any> {
     render() {
-      return <span data-testid="foo">{'foo'}</span>;
+      return <span data-testid="foo">{'foo'}</span>
     }
   }
 
-  const IntlChild = withIntl(Child);
+  const IntlChild = withIntl(Child)
 
-  let dateNow: jest.SpyInstance;
+  let dateNow: jest.SpyInstance
 
   beforeEach(() => {
-    dateNow = jest.spyOn(Date, 'now').mockImplementation(() => now);
-  });
+    dateNow = jest.spyOn(Date, 'now').mockImplementation(() => now)
+  })
 
   afterEach(() => {
-    dateNow.mockRestore();
-  });
+    dateNow.mockRestore()
+  })
 
   it('has a `displayName`', () => {
-    expect(typeof IntlProvider.displayName).toBe('string');
-  });
+    expect(typeof IntlProvider.displayName).toBe('string')
+  })
 
   it('warns when no `locale` prop is provided', () => {
-    const onError = jest.fn();
+    const onError = jest.fn()
     render(
       <IntlProvider
         // @ts-ignore
@@ -41,54 +41,54 @@ describe('<IntlProvider>', () => {
       >
         <IntlChild />
       </IntlProvider>
-    );
+    )
 
-    expect(onError.mock.calls[0][0].code).toBe('INVALID_CONFIG');
-    expect(onError).toHaveBeenCalledTimes(1);
-  });
+    expect(onError.mock.calls[0][0].code).toBe('INVALID_CONFIG')
+    expect(onError).toHaveBeenCalledTimes(1)
+  })
 
   it('warns when `locale` prop provided has no locale data in Intl.NumberFormat', () => {
-    const locale = 'missing';
-    const onError = jest.fn();
+    const locale = 'missing'
+    const onError = jest.fn()
     render(
       <IntlProvider locale={locale} onError={onError}>
         <IntlChild />
       </IntlProvider>
-    );
+    )
 
-    expect(onError.mock.calls[0][0].code).toBe('MISSING_DATA');
-    expect(onError).toHaveBeenCalledTimes(1);
-  });
+    expect(onError.mock.calls[0][0].code).toBe('MISSING_DATA')
+    expect(onError).toHaveBeenCalledTimes(1)
+  })
 
   it('warns when `locale` prop provided has no locale data in Intl.DateTimeFormat', () => {
-    const locale = 'xx-HA';
-    const onError = jest.fn();
-    const supportedLocalesOf = Intl.NumberFormat.supportedLocalesOf;
-    Intl.NumberFormat.supportedLocalesOf = (): string[] => ['xx-HA'];
+    const locale = 'xx-HA'
+    const onError = jest.fn()
+    const supportedLocalesOf = Intl.NumberFormat.supportedLocalesOf
+    Intl.NumberFormat.supportedLocalesOf = (): string[] => ['xx-HA']
     render(
       <IntlProvider locale={locale} onError={onError}>
         <IntlChild />
       </IntlProvider>
-    );
+    )
 
-    expect(onError.mock.calls[0][0].code).toBe('MISSING_DATA');
-    expect(onError).toHaveBeenCalledTimes(1);
-    Intl.NumberFormat.supportedLocalesOf = supportedLocalesOf;
-  });
+    expect(onError.mock.calls[0][0].code).toBe('MISSING_DATA')
+    expect(onError).toHaveBeenCalledTimes(1)
+    Intl.NumberFormat.supportedLocalesOf = supportedLocalesOf
+  })
 
   it('renders its `children`', () => {
     const el = (
       <IntlProvider locale="en">
         <IntlChild />
       </IntlProvider>
-    );
+    )
 
-    const {container} = render(el);
-    expect(container).toHaveTextContent('foo');
-  });
+    const {container} = render(el)
+    expect(container).toHaveTextContent('foo')
+  })
 
   it('shadows inherited intl config props from an <IntlProvider> ancestor', () => {
-    const onError = jest.fn();
+    const onError = jest.fn()
     const props: OptionalIntlConfig = {
       locale: 'en',
       timeZone: 'Australia/Adelaide',
@@ -112,7 +112,7 @@ describe('<IntlProvider>', () => {
         },
       },
       onError,
-    };
+    }
 
     const {getByTestId} = render(
       <IntlProvider {...props}>
@@ -130,15 +130,15 @@ describe('<IntlProvider>', () => {
           </span>
         </IntlProvider>
       </IntlProvider>
-    );
+    )
 
-    expect(onError).not.toHaveBeenCalled();
-    expect(getByTestId('comp')).toHaveTextContent('31/01/2020');
-  });
+    expect(onError).not.toHaveBeenCalled()
+    expect(getByTestId('comp')).toHaveTextContent('31/01/2020')
+  })
   it('show warning for non-AST messages with defaultRichTextElements', () => {
     const consoleWarn = jest
       .spyOn(console, 'warn')
-      .mockImplementation(() => null);
+      .mockImplementation(() => null)
 
     render(
       <IntlProvider
@@ -159,11 +159,11 @@ describe('<IntlProvider>', () => {
           <FormattedDate value={new Date(2020, 1, 1)} timeZoneName="short" />
         </span>
       </IntlProvider>
-    );
+    )
 
     expect(consoleWarn)
       .toHaveBeenCalledWith(`[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
 Please consider using "@formatjs/cli" to pre-compile your messages for performance.
-For more details see https://formatjs.io/docs/getting-started/message-distribution`);
-  });
-});
+For more details see https://formatjs.io/docs/getting-started/message-distribution`)
+  })
+})

@@ -1,7 +1,7 @@
-import IntlListFormat from '@formatjs/intl-listformat';
+import IntlListFormat from '@formatjs/intl-listformat'
 
 declare global {
   namespace Intl {
-    const ListFormat: typeof IntlListFormat;
+    const ListFormat: typeof IntlListFormat
   }
 }

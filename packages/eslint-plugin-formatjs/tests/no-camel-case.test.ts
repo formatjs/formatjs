@@ -1,6 +1,6 @@
-import {ruleTester} from './util';
-import noCamelCase from '../rules/no-camel-case';
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
+import {ruleTester} from './util'
+import noCamelCase from '../rules/no-camel-case'
+import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 
 ruleTester.run('no-camel-case', noCamelCase, {
   valid: [
@@ -28,4 +28,4 @@ ruleTester.run('no-camel-case', noCamelCase, {
       ],
     },
   ],
-});
+})

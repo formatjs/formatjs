@@ -12,37 +12,37 @@ import {
   MessageFormatElement,
   isTagElement,
   ExtendedNumberFormatOptions,
-} from 'intl-messageformat-parser';
+} from 'intl-messageformat-parser'
 import {
   MissingValueError,
   InvalidValueError,
   ErrorCode,
   FormatError,
   InvalidValueTypeError,
-} from './error';
+} from './error'
 
 export interface Formats {
-  number: Record<string, Intl.NumberFormatOptions>;
-  date: Record<string, Intl.DateTimeFormatOptions>;
-  time: Record<string, Intl.DateTimeFormatOptions>;
+  number: Record<string, Intl.NumberFormatOptions>
+  date: Record<string, Intl.DateTimeFormatOptions>
+  time: Record<string, Intl.DateTimeFormatOptions>
 }
 
 export interface FormatterCache {
-  number: Record<string, Intl.NumberFormat>;
-  dateTime: Record<string, Intl.DateTimeFormat>;
-  pluralRules: Record<string, Intl.PluralRules>;
+  number: Record<string, Intl.NumberFormat>
+  dateTime: Record<string, Intl.DateTimeFormat>
+  pluralRules: Record<string, Intl.PluralRules>
 }
 
 export interface Formatters {
   getNumberFormat(
     ...args: ConstructorParameters<typeof Intl.NumberFormat>
-  ): Intl.NumberFormat;
+  ): Intl.NumberFormat
   getDateTimeFormat(
     ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
-  ): Intl.DateTimeFormat;
+  ): Intl.DateTimeFormat
   getPluralRules(
     ...args: ConstructorParameters<typeof Intl.PluralRules>
-  ): Intl.PluralRules;
+  ): Intl.PluralRules
 }
 
 export enum PART_TYPE {
@@ -51,44 +51,44 @@ export enum PART_TYPE {
 }
 
 export interface LiteralPart {
-  type: PART_TYPE.literal;
-  value: string;
+  type: PART_TYPE.literal
+  value: string
 }
 
 export interface ObjectPart<T = any> {
-  type: PART_TYPE.object;
-  value: T;
+  type: PART_TYPE.object
+  value: T
 }
 
-export type MessageFormatPart<T> = LiteralPart | ObjectPart<T>;
+export type MessageFormatPart<T> = LiteralPart | ObjectPart<T>
 
-export type PrimitiveType = string | number | boolean | null | undefined | Date;
+export type PrimitiveType = string | number | boolean | null | undefined | Date
 
 function mergeLiteral<T>(
   parts: MessageFormatPart<T>[]
 ): MessageFormatPart<T>[] {
   if (parts.length < 2) {
-    return parts;
+    return parts
   }
   return parts.reduce((all, part) => {
-    const lastPart = all[all.length - 1];
+    const lastPart = all[all.length - 1]
     if (
       !lastPart ||
       lastPart.type !== PART_TYPE.literal ||
       part.type !== PART_TYPE.literal
     ) {
-      all.push(part);
+      all.push(part)
     } else {
-      lastPart.value += part.value;
+      lastPart.value += part.value
     }
-    return all;
-  }, [] as MessageFormatPart<T>[]);
+    return all
+  }, [] as MessageFormatPart<T>[])
 }
 
 export function isFormatXMLElementFn<T>(
   el: PrimitiveType | T | FormatXMLElementFn<T>
 ): el is FormatXMLElementFn<T> {
-  return typeof el === 'function';
+  return typeof el === 'function'
 }
 
 // TODO(skeleton): add skeleton support
@@ -109,17 +109,17 @@ export function formatToParts<T>(
         type: PART_TYPE.literal,
         value: els[0].value,
       },
-    ];
+    ]
   }
-  const result: MessageFormatPart<T>[] = [];
+  const result: MessageFormatPart<T>[] = []
   for (const el of els) {
     // Exit early for string parts.
     if (isLiteralElement(el)) {
       result.push({
         type: PART_TYPE.literal,
         value: el.value,
-      });
-      continue;
+      })
+      continue
     }
     // TODO: should this part be literal type?
     // Replace `#` in plural rules with the actual numeric value.
@@ -128,31 +128,31 @@ export function formatToParts<T>(
         result.push({
           type: PART_TYPE.literal,
           value: formatters.getNumberFormat(locales).format(currentPluralValue),
-        });
+        })
       }
-      continue;
+      continue
     }
 
-    const {value: varName} = el;
+    const {value: varName} = el
 
     // Enforce that all required values are provided by the caller.
     if (!(values && varName in values)) {
-      throw new MissingValueError(varName, originalMessage);
+      throw new MissingValueError(varName, originalMessage)
     }
 
-    let value = values[varName];
+    let value = values[varName]
     if (isArgumentElement(el)) {
       if (!value || typeof value === 'string' || typeof value === 'number') {
         value =
           typeof value === 'string' || typeof value === 'number'
             ? String(value)
-            : '';
+            : ''
       }
       result.push({
         type: typeof value === 'string' ? PART_TYPE.literal : PART_TYPE.object,
         value,
-      } as ObjectPart<T>);
-      continue;
+      } as ObjectPart<T>)
+      continue
     }
 
     // Recursively format plural and select parts' option — which can be a
@@ -164,14 +164,14 @@ export function formatToParts<T>(
           ? formats.date[el.style]
           : isDateTimeSkeleton(el.style)
           ? el.style.parsedOptions
-          : undefined;
+          : undefined
       result.push({
         type: PART_TYPE.literal,
         value: formatters
           .getDateTimeFormat(locales, style)
           .format(value as number),
-      });
-      continue;
+      })
+      continue
     }
     if (isTimeElement(el)) {
       const style =
@@ -179,14 +179,14 @@ export function formatToParts<T>(
           ? formats.time[el.style]
           : isDateTimeSkeleton(el.style)
           ? el.style.parsedOptions
-          : undefined;
+          : undefined
       result.push({
         type: PART_TYPE.literal,
         value: formatters
           .getDateTimeFormat(locales, style)
           .format(value as number),
-      });
-      continue;
+      })
+      continue
     }
     if (isNumberElement(el)) {
       const style =
@@ -194,26 +194,26 @@ export function formatToParts<T>(
           ? formats.number[el.style]
           : isNumberSkeleton(el.style)
           ? el.style.parsedOptions
-          : undefined;
+          : undefined
 
       if (style && (style as ExtendedNumberFormatOptions).scale) {
         value =
           (value as number) *
-          ((style as ExtendedNumberFormatOptions).scale || 1);
+          ((style as ExtendedNumberFormatOptions).scale || 1)
       }
       result.push({
         type: PART_TYPE.literal,
         value: formatters
           .getNumberFormat(locales, style as Intl.NumberFormatOptions)
           .format(value as number),
-      });
-      continue;
+      })
+      continue
     }
     if (isTagElement(el)) {
-      const {children, value} = el;
-      const formatFn = values[value];
+      const {children, value} = el
+      const formatFn = values[value]
       if (!isFormatXMLElementFn<T>(formatFn)) {
-        throw new InvalidValueTypeError(value, 'function', originalMessage);
+        throw new InvalidValueTypeError(value, 'function', originalMessage)
       }
       const parts = formatToParts<T>(
         children,
@@ -222,10 +222,10 @@ export function formatToParts<T>(
         formats,
         values,
         currentPluralValue
-      );
-      let chunks = formatFn(parts.map(p => p.value));
+      )
+      let chunks = formatFn(parts.map(p => p.value))
       if (!Array.isArray(chunks)) {
-        chunks = [chunks];
+        chunks = [chunks]
       }
       result.push(
         ...chunks.map(
@@ -234,28 +234,28 @@ export function formatToParts<T>(
               type:
                 typeof c === 'string' ? PART_TYPE.literal : PART_TYPE.object,
               value: c,
-            } as MessageFormatPart<T>;
+            } as MessageFormatPart<T>
           }
         )
-      );
+      )
     }
     if (isSelectElement(el)) {
-      const opt = el.options[value as string] || el.options.other;
+      const opt = el.options[value as string] || el.options.other
       if (!opt) {
         throw new InvalidValueError(
           el.value,
           value,
           Object.keys(el.options),
           originalMessage
-        );
+        )
       }
       result.push(
         ...formatToParts(opt.value, locales, formatters, formats, values)
-      );
-      continue;
+      )
+      continue
     }
     if (isPluralElement(el)) {
-      let opt = el.options[`=${value}`];
+      let opt = el.options[`=${value}`]
       if (!opt) {
         if (!Intl.PluralRules) {
           throw new FormatError(
@@ -264,12 +264,12 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
 `,
             ErrorCode.MISSING_INTL_API,
             originalMessage
-          );
+          )
         }
         const rule = formatters
           .getPluralRules(locales, {type: el.pluralType})
-          .select((value as number) - (el.offset || 0));
-        opt = el.options[rule] || el.options.other;
+          .select((value as number) - (el.offset || 0))
+        opt = el.options[rule] || el.options.other
       }
       if (!opt) {
         throw new InvalidValueError(
@@ -277,7 +277,7 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
           value,
           Object.keys(el.options),
           originalMessage
-        );
+        )
       }
       result.push(
         ...formatToParts(
@@ -288,13 +288,13 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
           values,
           (value as number) - (el.offset || 0)
         )
-      );
-      continue;
+      )
+      continue
     }
   }
-  return mergeLiteral(result);
+  return mergeLiteral(result)
 }
 
 export type FormatXMLElementFn<T, R = string | T | Array<string | T>> = (
   parts: Array<string | T>
-) => R;
+) => R

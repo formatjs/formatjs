@@ -7,4 +7,4 @@ intl.formatMessage(
       defaultMessage: 'layer2',
     }),
   }
-);
+)

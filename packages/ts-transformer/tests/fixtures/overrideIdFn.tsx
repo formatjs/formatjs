@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {defineMessages, FormattedMessage, defineMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {defineMessages, FormattedMessage, defineMessage} from 'react-intl'
 
 const msgs = defineMessages({
   header: {
@@ -15,29 +15,29 @@ const msgs = defineMessages({
       metadata: 'Additional metadata content.',
     },
   },
-});
+})
 
 defineMessage({
   defaultMessage: 'defineMessage',
   description: 'foo',
-});
+})
 
 export default class Foo extends Component {
   render() {
-    const {intl} = this.props;
-    const {formatMessage} = intl;
+    const {intl} = this.props
+    const {formatMessage} = intl
     this.props.intl.formatMessage({
       defaultMessage: 'no-id',
       description: 'no-id',
-    });
+    })
     intl.formatMessage({
       defaultMessage: 'intl.formatMessage',
       description: 'no-id',
-    });
+    })
     formatMessage({
       defaultMessage: 'formatMessage',
       description: 'no-id',
-    });
+    })
 
     return (
       <div>
@@ -65,6 +65,6 @@ export default class Foo extends Component {
           values={{abc: 2}}
         />
       </div>
-    );
+    )
   }
 }

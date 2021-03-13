@@ -3,14 +3,14 @@ import {
   IntlDateTimeFormatPartType,
   RangePatternType,
   TABLE_2,
-} from '../types/date-time';
-import {SameValue, TimeClip} from '../262';
-import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime';
+} from '../types/date-time'
+import {SameValue, TimeClip} from '../262'
+import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime'
 import {
   FormatDateTimePattern,
   FormatDateTimePatternImplDetails,
-} from './FormatDateTimePattern';
-import {PartitionPattern} from '../PartitionPattern';
+} from './FormatDateTimePattern'
+import {PartitionPattern} from '../PartitionPattern'
 
 const TABLE_2_FIELDS: Array<TABLE_2> = [
   'era',
@@ -21,7 +21,7 @@ const TABLE_2_FIELDS: Array<TABLE_2> = [
   'hour',
   'minute',
   'second',
-];
+]
 
 export function PartitionDateTimeRangePattern(
   dtf: Intl.DateTimeFormat,
@@ -29,17 +29,17 @@ export function PartitionDateTimeRangePattern(
   y: number,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ) {
-  x = TimeClip(x);
+  x = TimeClip(x)
   if (isNaN(x)) {
-    throw new RangeError('Invalid start time');
+    throw new RangeError('Invalid start time')
   }
-  y = TimeClip(y);
+  y = TimeClip(y)
   if (isNaN(y)) {
-    throw new RangeError('Invalid end time');
+    throw new RangeError('Invalid end time')
   }
   /** IMPL START */
-  const {getInternalSlots, tzData} = implDetails;
-  const internalSlots = getInternalSlots(dtf);
+  const {getInternalSlots, tzData} = implDetails
+  const internalSlots = getInternalSlots(dtf)
   /** IMPL END */
   const tm1 = ToLocalTime(
     x,
@@ -47,44 +47,44 @@ export function PartitionDateTimeRangePattern(
     internalSlots.calendar,
     internalSlots.timeZone,
     {tzData}
-  );
+  )
   const tm2 = ToLocalTime(
     y,
     // @ts-ignore
     internalSlots.calendar,
     internalSlots.timeZone,
     {tzData}
-  );
-  const {pattern, rangePatterns} = internalSlots;
-  let rangePattern;
-  let dateFieldsPracticallyEqual = true;
-  let patternContainsLargerDateField = false;
+  )
+  const {pattern, rangePatterns} = internalSlots
+  let rangePattern
+  let dateFieldsPracticallyEqual = true
+  let patternContainsLargerDateField = false
 
   for (const fieldName of TABLE_2_FIELDS) {
     if (dateFieldsPracticallyEqual && !patternContainsLargerDateField) {
       if (fieldName === 'ampm') {
-        let rp = rangePatterns.ampm;
+        let rp = rangePatterns.ampm
         if (rangePattern !== undefined && rp === undefined) {
-          patternContainsLargerDateField = true;
+          patternContainsLargerDateField = true
         } else {
-          let v1 = tm1.hour;
-          let v2 = tm2.hour;
+          let v1 = tm1.hour
+          let v2 = tm2.hour
           if ((v1 > 11 && v2 < 11) || (v1 < 11 && v2 > 11)) {
-            dateFieldsPracticallyEqual = false;
+            dateFieldsPracticallyEqual = false
           }
-          rangePattern = rp;
+          rangePattern = rp
         }
       } else {
-        let rp = rangePatterns[fieldName];
+        let rp = rangePatterns[fieldName]
         if (rangePattern !== undefined && rp === undefined) {
-          patternContainsLargerDateField = true;
+          patternContainsLargerDateField = true
         } else {
-          let v1 = tm1[fieldName];
-          let v2 = tm2[fieldName];
+          let v1 = tm1[fieldName]
+          let v2 = tm2[fieldName]
           if (!SameValue(v1, v2)) {
-            dateFieldsPracticallyEqual = false;
+            dateFieldsPracticallyEqual = false
           }
-          rangePattern = rp;
+          rangePattern = rp
         }
       }
     }
@@ -95,40 +95,40 @@ export function PartitionDateTimeRangePattern(
       PartitionPattern<IntlDateTimeFormatPartType>(pattern),
       x,
       implDetails
-    );
+    )
     for (const r of result) {
-      r.source = RangePatternType.shared;
+      r.source = RangePatternType.shared
     }
-    return result;
+    return result
   }
-  let result: IntlDateTimeFormatPart[] = [];
+  let result: IntlDateTimeFormatPart[] = []
   if (rangePattern === undefined) {
-    rangePattern = rangePatterns.default;
+    rangePattern = rangePatterns.default
     /** IMPL DETAILS */
     // Now we have to replace {0} & {1} with actual pattern
     for (const patternPart of rangePattern.patternParts) {
       if (patternPart.pattern === '{0}' || patternPart.pattern === '{1}') {
-        patternPart.pattern = pattern;
+        patternPart.pattern = pattern
       }
     }
   }
   for (const rangePatternPart of rangePattern.patternParts) {
-    const {source, pattern} = rangePatternPart;
-    let z;
+    const {source, pattern} = rangePatternPart
+    let z
     if (
       source === RangePatternType.startRange ||
       source === RangePatternType.shared
     ) {
-      z = x;
+      z = x
     } else {
-      z = y;
+      z = y
     }
-    const patternParts = PartitionPattern<IntlDateTimeFormatPartType>(pattern);
-    let partResult = FormatDateTimePattern(dtf, patternParts, z, implDetails);
+    const patternParts = PartitionPattern<IntlDateTimeFormatPartType>(pattern)
+    let partResult = FormatDateTimePattern(dtf, patternParts, z, implDetails)
     for (const r of partResult) {
-      r.source = source;
+      r.source = source
     }
-    result = result.concat(partResult);
+    result = result.concat(partResult)
   }
-  return result;
+  return result
 }

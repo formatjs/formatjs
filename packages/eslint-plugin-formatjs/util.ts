@@ -1,29 +1,29 @@
-import {TSESTree} from '@typescript-eslint/typescript-estree';
-import {Scope} from 'eslint';
+import {TSESTree} from '@typescript-eslint/typescript-estree'
+import {Scope} from 'eslint'
 
 export interface MessageDescriptor {
-  id?: string;
-  defaultMessage?: string;
-  description?: string;
+  id?: string
+  defaultMessage?: string
+  description?: string
 }
 
 export interface MessageDescriptorNodeInfo {
-  message: MessageDescriptor;
-  messageNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value'];
-  messagePropNode?: TSESTree.Property | TSESTree.JSXAttribute;
-  descriptionNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value'];
-  idValueNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value'];
-  idPropNode?: TSESTree.Property | TSESTree.JSXAttribute;
+  message: MessageDescriptor
+  messageNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
+  messagePropNode?: TSESTree.Property | TSESTree.JSXAttribute
+  descriptionNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
+  idValueNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
+  idPropNode?: TSESTree.Property | TSESTree.JSXAttribute
 }
 
 function isStringLiteral(node: TSESTree.Node): node is TSESTree.StringLiteral {
-  return node.type === 'Literal' && typeof node.value === 'string';
+  return node.type === 'Literal' && typeof node.value === 'string'
 }
 
 function isTemplateLiteralWithoutVar(
   node: TSESTree.Node
 ): node is TSESTree.TemplateLiteral {
-  return node.type === 'TemplateLiteral' && node.quasis.length === 1;
+  return node.type === 'TemplateLiteral' && node.quasis.length === 1
 }
 
 function findReferenceImport(
@@ -32,25 +32,25 @@ function findReferenceImport(
 ) {
   return importedVars.find(
     v => !!v.references.find(ref => ref.identifier === id)
-  );
+  )
 }
 
 function staticallyEvaluateStringConcat(
   node: TSESTree.BinaryExpression
 ): [result: string, isStaticallyEvaluatable: boolean] {
   if (!isStringLiteral(node.right)) {
-    return ['', false];
+    return ['', false]
   }
   if (isStringLiteral(node.left)) {
-    return [String(node.left.value) + node.right.value, true];
+    return [String(node.left.value) + node.right.value, true]
   }
   if (node.left.type === 'BinaryExpression') {
     const [result, isStaticallyEvaluatable] = staticallyEvaluateStringConcat(
       node.left
-    );
-    return [result + node.right.value, isStaticallyEvaluatable];
+    )
+    return [result + node.right.value, isStaticallyEvaluatable]
   }
-  return ['', false];
+  return ['', false]
 }
 
 function isIntlFormatMessageCall(node: TSESTree.Node) {
@@ -63,7 +63,7 @@ function isIntlFormatMessageCall(node: TSESTree.Node) {
     node.callee.property.name === 'formatMessage' &&
     node.arguments.length >= 1 &&
     node.arguments[0].type === 'ObjectExpression'
-  );
+  )
 }
 
 function is$formatMessageCall(node: TSESTree.Node) {
@@ -71,7 +71,7 @@ function is$formatMessageCall(node: TSESTree.Node) {
     node.type === 'CallExpression' &&
     node.callee.type === 'Identifier' &&
     node.callee.name === '$formatMessage'
-  );
+  )
 }
 
 function isSingleMessageDescriptorDeclaration(
@@ -79,33 +79,33 @@ function isSingleMessageDescriptorDeclaration(
   importedVars: Scope.Variable[]
 ) {
   if (id.type !== 'Identifier') {
-    return false;
+    return false
   }
-  const importedVar = findReferenceImport(id, importedVars);
+  const importedVar = findReferenceImport(id, importedVars)
   if (!importedVar) {
-    return false;
+    return false
   }
-  return importedVar.name === '_' || importedVar.name === 'defineMessage';
+  return importedVar.name === '_' || importedVar.name === 'defineMessage'
 }
 function isMultipleMessageDescriptorDeclaration(
   id: TSESTree.LeftHandSideExpression,
   importedVars: Scope.Variable[]
 ) {
   if (id.type !== 'Identifier') {
-    return false;
+    return false
   }
-  const importedVar = findReferenceImport(id, importedVars);
+  const importedVar = findReferenceImport(id, importedVars)
   if (!importedVar) {
-    return false;
+    return false
   }
-  return importedVar.name === 'defineMessages';
+  return importedVar.name === 'defineMessages'
 }
 
 function extractMessageDescriptor(
   node?: TSESTree.Expression
 ): MessageDescriptorNodeInfo | undefined {
   if (!node || node.type !== 'ObjectExpression') {
-    return;
+    return
   }
   const result: MessageDescriptorNodeInfo = {
     message: {},
@@ -113,42 +113,42 @@ function extractMessageDescriptor(
     messagePropNode: undefined,
     descriptionNode: undefined,
     idValueNode: undefined,
-  };
+  }
   for (const prop of node.properties) {
     if (prop.type !== 'Property' || prop.key.type !== 'Identifier') {
-      continue;
+      continue
     }
-    const valueNode = prop.value;
-    let value: string | undefined = undefined;
+    const valueNode = prop.value
+    let value: string | undefined = undefined
     if (isStringLiteral(valueNode)) {
-      value = valueNode.value;
+      value = valueNode.value
     } else if (isTemplateLiteralWithoutVar(valueNode)) {
-      value = valueNode.quasis[0].value.cooked;
+      value = valueNode.quasis[0].value.cooked
     } else if (valueNode.type === 'BinaryExpression') {
-      const [result, isStatic] = staticallyEvaluateStringConcat(valueNode);
+      const [result, isStatic] = staticallyEvaluateStringConcat(valueNode)
       if (isStatic) {
-        value = result;
+        value = result
       }
     }
 
     switch (prop.key.name) {
       case 'defaultMessage':
-        result.messagePropNode = prop;
-        result.messageNode = valueNode;
-        result.message.defaultMessage = value;
-        break;
+        result.messagePropNode = prop
+        result.messageNode = valueNode
+        result.message.defaultMessage = value
+        break
       case 'description':
-        result.descriptionNode = valueNode;
-        result.message.description = value;
-        break;
+        result.descriptionNode = valueNode
+        result.message.description = value
+        break
       case 'id':
-        result.message.id = value;
-        result.idValueNode = valueNode;
-        result.idPropNode = prop;
-        break;
+        result.message.id = value
+        result.idValueNode = valueNode
+        result.idPropNode = prop
+        break
     }
   }
-  return result;
+  return result
 }
 
 function extractMessageDescriptorFromJSXElement(
@@ -157,9 +157,9 @@ function extractMessageDescriptorFromJSXElement(
   | [MessageDescriptorNodeInfo, TSESTree.ObjectExpression | undefined]
   | undefined {
   if (!node || !node.attributes) {
-    return;
+    return
   }
-  let values: TSESTree.ObjectExpression | undefined;
+  let values: TSESTree.ObjectExpression | undefined
   const result: MessageDescriptorNodeInfo = {
     message: {},
     messageNode: undefined,
@@ -167,59 +167,59 @@ function extractMessageDescriptorFromJSXElement(
     descriptionNode: undefined,
     idValueNode: undefined,
     idPropNode: undefined,
-  };
+  }
   for (const prop of node.attributes) {
     if (prop.type !== 'JSXAttribute' || prop.name.type !== 'JSXIdentifier') {
-      continue;
+      continue
     }
-    const key = prop.name;
-    let valueNode = prop.value;
-    let value: string | undefined = undefined;
+    const key = prop.name
+    let valueNode = prop.value
+    let value: string | undefined = undefined
     if (valueNode) {
       if (isStringLiteral(valueNode)) {
-        value = valueNode.value;
+        value = valueNode.value
       } else if (valueNode?.type === 'JSXExpressionContainer') {
-        const {expression} = valueNode;
+        const {expression} = valueNode
         if (expression.type === 'BinaryExpression') {
-          const [result, isStatic] = staticallyEvaluateStringConcat(expression);
+          const [result, isStatic] = staticallyEvaluateStringConcat(expression)
           if (isStatic) {
-            value = result;
+            value = result
           }
         } else if (isTemplateLiteralWithoutVar(expression)) {
-          value = expression.quasis[0].value.cooked;
+          value = expression.quasis[0].value.cooked
         }
       }
     }
 
     switch (key.name) {
       case 'defaultMessage':
-        result.messagePropNode = prop;
-        result.messageNode = valueNode;
+        result.messagePropNode = prop
+        result.messageNode = valueNode
         if (value) {
-          result.message.defaultMessage = value;
+          result.message.defaultMessage = value
         }
-        break;
+        break
       case 'description':
-        result.descriptionNode = valueNode;
+        result.descriptionNode = valueNode
         if (value) {
-          result.message.description = value;
+          result.message.description = value
         }
-        break;
+        break
       case 'id':
-        result.idValueNode = valueNode;
-        result.idPropNode = prop;
+        result.idValueNode = valueNode
+        result.idPropNode = prop
         if (value) {
-          result.message.id = value;
+          result.message.id = value
         }
-        break;
+        break
       case 'values':
         if (
           valueNode?.type === 'JSXExpressionContainer' &&
           valueNode.expression.type === 'ObjectExpression'
         ) {
-          values = valueNode.expression;
+          values = valueNode.expression
         }
-        break;
+        break
     }
   }
   if (
@@ -227,30 +227,30 @@ function extractMessageDescriptorFromJSXElement(
     !result.descriptionNode &&
     !result.idPropNode
   ) {
-    return;
+    return
   }
-  return [result, values];
+  return [result, values]
 }
 
 function extractMessageDescriptors(node?: TSESTree.Expression) {
   if (!node || node.type !== 'ObjectExpression' || !node.properties.length) {
-    return [];
+    return []
   }
-  const msgs = [];
+  const msgs = []
   for (const prop of node.properties) {
     if (prop.type !== 'Property') {
-      continue;
+      continue
     }
-    const msg = prop.value;
+    const msg = prop.value
     if (msg.type !== 'ObjectExpression') {
-      continue;
+      continue
     }
-    const nodeInfo = extractMessageDescriptor(msg);
+    const nodeInfo = extractMessageDescriptor(msg)
     if (nodeInfo) {
-      msgs.push(nodeInfo);
+      msgs.push(nodeInfo)
     }
   }
-  return msgs;
+  return msgs
 }
 
 export function extractMessages(
@@ -259,17 +259,17 @@ export function extractMessages(
   excludeMessageDeclCalls = false
 ): Array<[MessageDescriptorNodeInfo, TSESTree.Expression | undefined]> {
   if (node.type === 'CallExpression') {
-    const expr = node;
-    const fnId = expr.callee;
+    const expr = node
+    const fnId = expr.callee
     if (
       (!excludeMessageDeclCalls &&
         isSingleMessageDescriptorDeclaration(fnId, importedMacroVars)) ||
       isIntlFormatMessageCall(node) ||
       is$formatMessageCall(node)
     ) {
-      const msgDescriptorNodeInfo = extractMessageDescriptor(expr.arguments[0]);
+      const msgDescriptorNodeInfo = extractMessageDescriptor(expr.arguments[0])
       if (msgDescriptorNodeInfo) {
-        return [[msgDescriptorNodeInfo, expr.arguments[1]]];
+        return [[msgDescriptorNodeInfo, expr.arguments[1]]]
       }
     } else if (
       !excludeMessageDeclCalls &&
@@ -278,7 +278,7 @@ export function extractMessages(
       return extractMessageDescriptors(expr.arguments[0]).map(msg => [
         msg,
         undefined,
-      ]);
+      ])
     }
   } else if (
     node.type === 'JSXOpeningElement' &&
@@ -286,10 +286,10 @@ export function extractMessages(
     node.name.type === 'JSXIdentifier' &&
     node.name.name === 'FormattedMessage'
   ) {
-    const msgDescriptorNodeInfo = extractMessageDescriptorFromJSXElement(node);
+    const msgDescriptorNodeInfo = extractMessageDescriptorFromJSXElement(node)
     if (msgDescriptorNodeInfo) {
-      return [msgDescriptorNodeInfo];
+      return [msgDescriptorNodeInfo]
     }
   }
-  return [];
+  return []
 }

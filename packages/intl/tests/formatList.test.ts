@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import {formatList as formatListFn} from '../src/list';
+import {formatList as formatListFn} from '../src/list'
 
-import {OptionalIntlConfig, IntlFormatters} from '../src/types';
+import {OptionalIntlConfig, IntlFormatters} from '../src/types'
 
 describe('format API', () => {
-  const {NODE_ENV} = process.env;
+  const {NODE_ENV} = process.env
 
-  let config: OptionalIntlConfig<any>;
-  let getListFormat: any;
+  let config: OptionalIntlConfig<any>
+  let getListFormat: any
   beforeEach(() => {
     config = {
       locale: 'en',
@@ -18,34 +18,34 @@ describe('format API', () => {
       defaultFormats: {},
 
       onError: jest.fn(),
-    };
+    }
 
     getListFormat = jest
       .fn()
-      .mockImplementation((...args) => new Intl.ListFormat(...args));
-  });
+      .mockImplementation((...args) => new Intl.ListFormat(...args))
+  })
 
   afterEach(() => {
-    process.env.NODE_ENV = NODE_ENV;
-  });
+    process.env.NODE_ENV = NODE_ENV
+  })
 
   describe('formatList()', function () {
-    let formatList: IntlFormatters['formatList'];
+    let formatList: IntlFormatters['formatList']
 
     beforeEach(() => {
       // @ts-ignore
-      formatList = formatListFn.bind(null, config, getListFormat);
-    });
+      formatList = formatListFn.bind(null, config, getListFormat)
+    })
 
     it('should handle regular element', function () {
-      expect(formatList(['me', 'myself', 'I'])).toBe('me, myself, and I');
-    });
+      expect(formatList(['me', 'myself', 'I'])).toBe('me, myself, and I')
+    })
     it('should handle regular element', function () {
       expect(formatList(['me', {foo: 'myself'}, 'I'])).toEqual([
         'me, ',
         {foo: 'myself'},
         ', and I',
-      ]);
-    });
-  });
-});
+      ])
+    })
+  })
+})

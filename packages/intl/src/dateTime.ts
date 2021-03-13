@@ -1,11 +1,8 @@
-import {Formatters, IntlFormatters, CustomFormats, OnErrorFn} from './types';
+import {Formatters, IntlFormatters, CustomFormats, OnErrorFn} from './types'
 
-import {filterProps, getNamedFormat} from './utils';
-import {IntlError, IntlErrorCode} from './error';
-import {
-  DateTimeFormatOptions,
-  DateTimeFormat,
-} from '@formatjs/ecma402-abstract';
+import {filterProps, getNamedFormat} from './utils'
+import {IntlError, IntlErrorCode} from './error'
+import {DateTimeFormatOptions, DateTimeFormat} from '@formatjs/ecma402-abstract'
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof DateTimeFormatOptions> = [
   'localeMatcher',
@@ -29,7 +26,7 @@ const DATE_TIME_FORMAT_OPTIONS: Array<keyof DateTimeFormatOptions> = [
   'calendar',
   // 'dayPeriod',
   'numberingSystem',
-];
+]
 
 export function getFormatter(
   {
@@ -38,27 +35,27 @@ export function getFormatter(
     onError,
     timeZone,
   }: {
-    locale: string;
-    timeZone?: string;
-    formats: CustomFormats;
-    onError: OnErrorFn;
+    locale: string
+    timeZone?: string
+    formats: CustomFormats
+    onError: OnErrorFn
   },
   type: 'date' | 'time',
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   options: Parameters<IntlFormatters['formatDate']>[1] = {}
 ): DateTimeFormat {
-  const {format} = options;
+  const {format} = options
   const defaults = {
     ...(timeZone && {timeZone}),
     ...(format && getNamedFormat(formats!, type, format, onError)),
-  };
+  }
 
   let filteredOptions = filterProps(
     options,
     DATE_TIME_FORMAT_OPTIONS,
     // @ts-expect-error es2020 has a lot stuff from es2021 bleed in
     defaults
-  );
+  )
 
   if (
     type === 'time' &&
@@ -69,80 +66,76 @@ export function getFormatter(
     !filteredOptions.dateStyle
   ) {
     // Add default formatting options if hour, minute, or second isn't defined.
-    filteredOptions = {...filteredOptions, hour: 'numeric', minute: 'numeric'};
+    filteredOptions = {...filteredOptions, hour: 'numeric', minute: 'numeric'}
   }
 
-  return getDateTimeFormat(locale, filteredOptions);
+  return getDateTimeFormat(locale, filteredOptions)
 }
 
 export function formatDate(
   config: {
-    locale: string;
-    timeZone?: string;
-    formats: CustomFormats;
-    onError: OnErrorFn;
+    locale: string
+    timeZone?: string
+    formats: CustomFormats
+    onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   ...[value, options = {}]: Parameters<IntlFormatters['formatDate']>
 ): string {
-  const date = typeof value === 'string' ? new Date(value || 0) : value;
+  const date = typeof value === 'string' ? new Date(value || 0) : value
   try {
-    return getFormatter(config, 'date', getDateTimeFormat, options).format(
-      date
-    );
+    return getFormatter(config, 'date', getDateTimeFormat, options).format(date)
   } catch (e) {
     config.onError(
       new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting date.', e)
-    );
+    )
   }
 
-  return String(date);
+  return String(date)
 }
 
 export function formatTime(
   config: {
-    locale: string;
-    timeZone?: string;
-    formats: CustomFormats;
-    onError: OnErrorFn;
+    locale: string
+    timeZone?: string
+    formats: CustomFormats
+    onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   ...[value, options = {}]: Parameters<IntlFormatters['formatTime']>
 ): string {
-  const date = typeof value === 'string' ? new Date(value || 0) : value;
+  const date = typeof value === 'string' ? new Date(value || 0) : value
 
   try {
-    return getFormatter(config, 'time', getDateTimeFormat, options).format(
-      date
-    );
+    return getFormatter(config, 'time', getDateTimeFormat, options).format(date)
   } catch (e) {
     config.onError(
       new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting time.', e)
-    );
+    )
   }
 
-  return String(date);
+  return String(date)
 }
 
 export function formatDateTimeRange(
   config: {
-    locale: string;
-    timeZone?: string;
-    onError: OnErrorFn;
+    locale: string
+    timeZone?: string
+    onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   ...[from, to, options = {}]: Parameters<IntlFormatters['formatDateTimeRange']>
 ): string {
-  const {timeZone, locale, onError} = config;
+  const {timeZone, locale, onError} = config
 
   const filteredOptions = filterProps(
     options,
     DATE_TIME_FORMAT_OPTIONS,
     timeZone ? {timeZone} : {}
-  );
+  )
 
   try {
-    return getDateTimeFormat(locale, filteredOptions).formatRange(from, to);
+    return getDateTimeFormat(locale, filteredOptions).formatRange(from, to)
   } catch (e) {
     onError(
       new IntlError(
@@ -150,50 +143,50 @@ export function formatDateTimeRange(
         'Error formatting date time range.',
         e
       )
-    );
+    )
   }
 
-  return String(from);
+  return String(from)
 }
 
 export function formatDateToParts(
   config: {
-    locale: string;
-    timeZone?: string;
-    formats: CustomFormats;
-    onError: OnErrorFn;
+    locale: string
+    timeZone?: string
+    formats: CustomFormats
+    onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   ...[value, options = {}]: Parameters<IntlFormatters['formatDate']>
 ): Intl.DateTimeFormatPart[] {
-  const date = typeof value === 'string' ? new Date(value || 0) : value;
+  const date = typeof value === 'string' ? new Date(value || 0) : value
   try {
     return getFormatter(
       config,
       'date',
       getDateTimeFormat,
       options
-    ).formatToParts(date);
+    ).formatToParts(date)
   } catch (e) {
     config.onError(
       new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting date.', e)
-    );
+    )
   }
 
-  return [];
+  return []
 }
 
 export function formatTimeToParts(
   config: {
-    locale: string;
-    timeZone?: string;
-    formats: CustomFormats;
-    onError: OnErrorFn;
+    locale: string
+    timeZone?: string
+    formats: CustomFormats
+    onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   ...[value, options = {}]: Parameters<IntlFormatters['formatTimeToParts']>
 ): Intl.DateTimeFormatPart[] {
-  const date = typeof value === 'string' ? new Date(value || 0) : value;
+  const date = typeof value === 'string' ? new Date(value || 0) : value
 
   try {
     return getFormatter(
@@ -201,12 +194,12 @@ export function formatTimeToParts(
       'time',
       getDateTimeFormat,
       options
-    ).formatToParts(date);
+    ).formatToParts(date)
   } catch (e) {
     config.onError(
       new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting time.', e)
-    );
+    )
   }
 
-  return [];
+  return []
 }

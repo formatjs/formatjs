@@ -1,90 +1,90 @@
-import * as path from 'path';
+import * as path from 'path'
 
-import {transformFileSync} from '@babel/core';
-import plugin from '../';
-import {Options, ExtractedMessageDescriptor} from '../types';
+import {transformFileSync} from '@babel/core'
+import plugin from '../'
+import {Options, ExtractedMessageDescriptor} from '../types'
 
 function transformAndCheck(fn: string, opts: Options = {}) {
-  const filePath = path.join(__dirname, 'fixtures', `${fn}.js`);
-  const messages: ExtractedMessageDescriptor[] = [];
-  const meta = {};
+  const filePath = path.join(__dirname, 'fixtures', `${fn}.js`)
+  const messages: ExtractedMessageDescriptor[] = []
+  const meta = {}
   const {code} = transform(filePath, {
     pragma: '@react-intl',
     ...opts,
     onMsgExtracted(_, msgs) {
-      messages.push(...msgs);
+      messages.push(...msgs)
     },
     onMetaExtracted(_, m) {
-      Object.assign(meta, m);
+      Object.assign(meta, m)
     },
-  });
+  })
   expect({
     data: {messages, meta},
     code: code?.trim(),
-  }).toMatchSnapshot();
+  }).toMatchSnapshot()
 }
 
 test('additionalComponentNames', function () {
   transformAndCheck('additionalComponentNames', {
     additionalComponentNames: ['CustomMessage'],
-  });
-});
+  })
+})
 
 test('additionalFunctionNames', function () {
   transformAndCheck('additionalFunctionNames', {
     additionalFunctionNames: ['t'],
-  });
-});
+  })
+})
 
 test('ast', function () {
   transformAndCheck('ast', {
     ast: true,
-  });
-});
+  })
+})
 
 test('defineMessage', function () {
-  transformAndCheck('defineMessage');
-});
+  transformAndCheck('defineMessage')
+})
 
 test('descriptionsAsObjects', function () {
-  transformAndCheck('descriptionsAsObjects');
-});
+  transformAndCheck('descriptionsAsObjects')
+})
 
 test('defineMessages', function () {
-  transformAndCheck('defineMessages');
-});
+  transformAndCheck('defineMessages')
+})
 test('empty', function () {
-  transformAndCheck('empty');
-});
+  transformAndCheck('empty')
+})
 test('extractFromFormatMessageCall', function () {
-  transformAndCheck('extractFromFormatMessageCall');
-});
+  transformAndCheck('extractFromFormatMessageCall')
+})
 test('extractFromFormatMessageCallStateless', function () {
-  transformAndCheck('extractFromFormatMessageCallStateless');
-});
+  transformAndCheck('extractFromFormatMessageCallStateless')
+})
 test('formatMessageCall', function () {
-  transformAndCheck('formatMessageCall');
-});
+  transformAndCheck('formatMessageCall')
+})
 test('FormattedMessage', function () {
-  transformAndCheck('FormattedMessage');
-});
+  transformAndCheck('FormattedMessage')
+})
 test('inline', function () {
-  transformAndCheck('inline');
-});
+  transformAndCheck('inline')
+})
 test('templateLiteral', function () {
-  transformAndCheck('templateLiteral');
-});
+  transformAndCheck('templateLiteral')
+})
 
 test('idInterpolationPattern', function () {
   transformAndCheck('idInterpolationPattern', {
     idInterpolationPattern: '[folder].[name].[sha512:contenthash:hex:6]',
-  });
-});
+  })
+})
 
 test('GH #2663', function () {
-  const filePath = path.join(__dirname, 'fixtures', `2663.js`);
-  const messages: ExtractedMessageDescriptor[] = [];
-  const meta = {};
+  const filePath = path.join(__dirname, 'fixtures', `2663.js`)
+  const messages: ExtractedMessageDescriptor[] = []
+  const meta = {}
 
   const {code} = transformFileSync(filePath, {
     presets: ['@babel/preset-env', '@babel/preset-react'],
@@ -94,22 +94,22 @@ test('GH #2663', function () {
         {
           pragma: '@react-intl',
           onMsgExtracted(_, msgs) {
-            messages.push(...msgs);
+            messages.push(...msgs)
           },
           onMetaExtracted(_, m) {
-            Object.assign(meta, m);
+            Object.assign(meta, m)
           },
         } as Options,
         Date.now() + '' + ++cacheBust,
       ],
     ],
-  })!;
+  })!
 
   expect({
     data: {messages, meta},
     code: code?.trim(),
-  }).toMatchSnapshot();
-});
+  }).toMatchSnapshot()
+})
 
 test('overrideIdFn', function () {
   transformAndCheck('overrideIdFn', {
@@ -119,18 +119,16 @@ test('overrideIdFn', function () {
       description?: string,
       filePath?: string
     ) => {
-      const filename = path.basename(filePath!);
-      return `${filename}.${id}.${
-        defaultMessage!.length
-      }.${typeof description}`;
+      const filename = path.basename(filePath!)
+      return `${filename}.${id}.${defaultMessage!.length}.${typeof description}`
     },
-  });
-});
+  })
+})
 test('removeDefaultMessage', function () {
   transformAndCheck('removeDefaultMessage', {
     removeDefaultMessage: true,
-  });
-});
+  })
+})
 test('removeDefaultMessage + overrideIdFn', function () {
   transformAndCheck('removeDefaultMessage', {
     removeDefaultMessage: true,
@@ -140,50 +138,48 @@ test('removeDefaultMessage + overrideIdFn', function () {
       description?: string,
       filePath?: string
     ) => {
-      const filename = path.basename(filePath!);
-      return `${filename}.${id}.${
-        defaultMessage!.length
-      }.${typeof description}`;
+      const filename = path.basename(filePath!)
+      return `${filename}.${id}.${defaultMessage!.length}.${typeof description}`
     },
-  });
-});
+  })
+})
 test('preserveWhitespace', function () {
   transformAndCheck('preserveWhitespace', {
     preserveWhitespace: true,
-  });
-});
+  })
+})
 
 test('extractSourceLocation', function () {
-  const filePath = path.join(__dirname, 'fixtures', 'extractSourceLocation.js');
-  const messages: ExtractedMessageDescriptor[] = [];
-  const meta = {};
+  const filePath = path.join(__dirname, 'fixtures', 'extractSourceLocation.js')
+  const messages: ExtractedMessageDescriptor[] = []
+  const meta = {}
 
   const {code} = transform(filePath, {
     pragma: '@react-intl',
     extractSourceLocation: true,
     onMsgExtracted(_, msgs) {
-      messages.push(...msgs);
+      messages.push(...msgs)
     },
     onMetaExtracted(_, m) {
-      Object.assign(meta, m);
+      Object.assign(meta, m)
     },
-  });
-  expect(code?.trim()).toMatchSnapshot();
+  })
+  expect(code?.trim()).toMatchSnapshot()
   expect(messages).toMatchSnapshot([
     {
       file: expect.any(String),
     },
-  ]);
-  expect(meta).toMatchSnapshot();
-});
+  ])
+  expect(meta).toMatchSnapshot()
+})
 
 test('Properly throws parse errors', () => {
   expect(() =>
     transform(path.join(__dirname, 'fixtures', 'icuSyntax.js'))
-  ).toThrow(/Expected .* but "\." found/);
-});
+  ).toThrow(/Expected .* but "\." found/)
+})
 
-let cacheBust = 1;
+let cacheBust = 1
 
 function transform(
   filePath: string,
@@ -191,7 +187,7 @@ function transform(
   {multiplePasses = false} = {}
 ) {
   function getPluginConfig() {
-    return [plugin, options, Date.now() + '' + ++cacheBust];
+    return [plugin, options, Date.now() + '' + ++cacheBust]
   }
 
   return transformFileSync(filePath, {
@@ -213,5 +209,5 @@ function transform(
     plugins: multiplePasses
       ? [getPluginConfig(), getPluginConfig()]
       : [getPluginConfig()],
-  })!;
+  })!
 }

@@ -1,6 +1,6 @@
-import enforcePluralRules from '../rules/enforce-plural-rules';
-import {ruleTester} from './util';
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
+import enforcePluralRules from '../rules/enforce-plural-rules'
+import {ruleTester} from './util'
+import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 ruleTester.run('enforce-plural-rules', enforcePluralRules, {
   valid: [
     {
@@ -83,4 +83,4 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
       ],
     },
   ],
-});
+})

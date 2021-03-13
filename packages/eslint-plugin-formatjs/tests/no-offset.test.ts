@@ -1,6 +1,6 @@
-import noOffset from '../rules/no-offset';
-import {ruleTester} from './util';
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
+import noOffset from '../rules/no-offset'
+import {ruleTester} from './util'
+import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 ruleTester.run('no-offset', noOffset, {
   valid: [
     `import {defineMessage} from 'react-intl'
@@ -38,4 +38,4 @@ ruleTester.run('no-offset', noOffset, {
       ],
     },
   ],
-});
+})

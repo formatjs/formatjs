@@ -1,4 +1,4 @@
-import {pegParse} from '../src/parser';
+import {pegParse} from '../src/parser'
 
 test('plural arg nested inside select arg', () => {
   expect(
@@ -22,5 +22,5 @@ test('plural arg nested inside select arg', () => {
             =1 {{host} invites {guest} to their party.}
             =2 {{host} invites {guest} and one other person to their party.}
             other {{host} invites {guest} and # other people to their party.}}}}`)
-  ).toMatchSnapshot();
-});
+  ).toMatchSnapshot()
+})

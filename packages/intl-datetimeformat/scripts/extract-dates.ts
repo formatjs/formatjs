@@ -3,34 +3,34 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-'use strict';
+'use strict'
 
-import * as DateFields from 'cldr-dates-full/main/en/ca-gregorian.json';
-import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
-import {sync as globSync} from 'fast-glob';
-import {resolve, dirname} from 'path';
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
-import {RawDateTimeLocaleInternalData, TimeZoneNameData} from '../src/types';
-import * as rawTimeData from 'cldr-core/supplemental/timeData.json';
-import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json';
-import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json';
-import * as metaZones from 'cldr-core/supplemental/metaZones.json';
-import IntlLocale from '@formatjs/intl-locale';
+import * as DateFields from 'cldr-dates-full/main/en/ca-gregorian.json'
+import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json'
+import {sync as globSync} from 'fast-glob'
+import {resolve, dirname} from 'path'
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
+import {RawDateTimeLocaleInternalData, TimeZoneNameData} from '../src/types'
+import * as rawTimeData from 'cldr-core/supplemental/timeData.json'
+import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json'
+import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json'
+import * as metaZones from 'cldr-core/supplemental/metaZones.json'
+import IntlLocale from '@formatjs/intl-locale'
 import {
   DateTimeFormatOptions,
   Formats,
   parseDateTimeSkeleton,
-} from '@formatjs/ecma402-abstract';
-const {timeData} = rawTimeData.supplemental;
+} from '@formatjs/ecma402-abstract'
+const {timeData} = rawTimeData.supplemental
 const processedTimeData = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
     all[k.replace('_', '-')] = timeData[
       k as keyof typeof timeData
-    ]._allowed.split(' ');
-    return all;
+    ]._allowed.split(' ')
+    return all
   },
   {}
-);
+)
 
 function isDateFormatOnly(opts: DateTimeFormatOptions) {
   return !Object.keys(opts).find(
@@ -40,7 +40,7 @@ function isDateFormatOnly(opts: DateTimeFormatOptions) {
       k === 'second' ||
       k === 'timeZoneName' ||
       k === 'hour12'
-  );
+  )
 }
 
 function isTimeFormatOnly(opts: DateTimeFormatOptions) {
@@ -52,7 +52,7 @@ function isTimeFormatOnly(opts: DateTimeFormatOptions) {
       k === 'day' ||
       k === 'weekday' ||
       k === 'quarter'
-  );
+  )
 }
 
 export function getAllLocales(): string[] {
@@ -65,26 +65,26 @@ export function getAllLocales(): string[] {
     .map(dirname)
     .filter(l => {
       try {
-        return (Intl as any).getCanonicalLocales(l).length;
+        return (Intl as any).getCanonicalLocales(l).length
       } catch (e) {
-        console.warn(`Invalid locale ${l}`);
-        return false;
+        console.warn(`Invalid locale ${l}`)
+        return false
       }
-    });
+    })
 }
 
 function resolveDateTimeSymbolTable(token: string): string {
   switch (token) {
     case 'h':
-      return 'h12';
+      return 'h12'
     case 'H':
-      return 'h23';
+      return 'h23'
     case 'K':
-      return 'h11';
+      return 'h11'
     case 'k':
-      return 'h24';
+      return 'h24'
   }
-  return '';
+  return ''
 }
 
 function filterKeys<T>(
@@ -94,16 +94,16 @@ function filterKeys<T>(
   return (Object.keys(data) as Array<keyof typeof data>)
     .filter(filterFn)
     .reduce((all: Record<string, T>, k) => {
-      all[k] = data[k];
-      return all;
-    }, {});
+      all[k] = data[k]
+      return all
+    }, {})
 }
 
 function hasAltVariant(k: string): boolean {
-  return !k.endsWith('alt-variant');
+  return !k.endsWith('alt-variant')
 }
 
-const {calendarPreferenceData} = rawCalendarPreferenceData.supplemental;
+const {calendarPreferenceData} = rawCalendarPreferenceData.supplemental
 
 /**
  * TODO: There's a bug here bc a timezone can link to multiple metazone
@@ -111,11 +111,11 @@ const {calendarPreferenceData} = rawCalendarPreferenceData.supplemental;
  */
 const tzToMetaZoneMap = metaZones.supplemental.metaZones.metazones.reduce(
   (all: Record<string, string>, z) => {
-    all[z.mapZone._type] = z.mapZone._other;
-    return all;
+    all[z.mapZone._type] = z.mapZone._other
+    return all
   },
   {}
-);
+)
 
 async function loadDatesFields(
   locale: string
@@ -126,19 +126,19 @@ async function loadDatesFields(
     import(`cldr-numbers-full/main/${locale}/numbers.json`).catch(
       _ => undefined
     ),
-  ]);
+  ])
   const gregorian = (caGregorian as typeof DateFields).main[locale as 'en']
-    .dates.calendars.gregorian;
+    .dates.calendars.gregorian
   const timeZoneNames = (tzn as typeof TimeZoneNames).main[locale as 'en'].dates
-    .timeZoneNames;
+    .timeZoneNames
   const nu = (numbers as typeof NumberFields | undefined)?.main[locale as 'en']
-    .numbers.defaultNumberingSystem;
+    .numbers.defaultNumberingSystem
 
-  let hc: string[] = [];
-  let region: string | undefined;
+  let hc: string[] = []
+  let region: string | undefined
   try {
     if (locale !== 'root') {
-      region = new IntlLocale(locale).maximize().region;
+      region = new IntlLocale(locale).maximize().region
     }
     // Reduce the date fields data down to whitelist of fields needed in the
     // FormatJS libs.
@@ -147,30 +147,30 @@ async function loadDatesFields(
       processedTimeData[region || ''] ||
       processedTimeData[`${locale}-001`] ||
       processedTimeData['001']
-    ).map(resolveDateTimeSymbolTable);
+    ).map(resolveDateTimeSymbolTable)
   } catch (e) {
-    console.error(`Issue extracting hourCycle for ${locale}`);
-    throw e;
+    console.error(`Issue extracting hourCycle for ${locale}`)
+    throw e
   }
-  let timeZoneName: RawDateTimeLocaleInternalData['timeZoneName'] = {};
+  let timeZoneName: RawDateTimeLocaleInternalData['timeZoneName'] = {}
   try {
     timeZoneName = !timeZoneNames.metazone
       ? {}
       : Object.keys(tzToMetaZoneMap).reduce((all: TimeZoneNameData, tz) => {
-          const metazone = tzToMetaZoneMap[tz];
+          const metazone = tzToMetaZoneMap[tz]
           const metazoneInfo =
             timeZoneNames.metazone[
               metazone as keyof typeof timeZoneNames['metazone']
-            ];
+            ]
           if (metazoneInfo) {
-            all[tz] = {};
+            all[tz] = {}
             if (metazoneInfo.long) {
               all[tz].long = [
                 metazoneInfo.long.standard,
                 'daylight' in metazoneInfo.long
                   ? metazoneInfo.long.daylight
                   : metazoneInfo.long.standard,
-              ];
+              ]
             }
             if ('short' in metazoneInfo) {
               all[tz].short = [
@@ -178,110 +178,110 @@ async function loadDatesFields(
                 'daylight' in metazoneInfo.short
                   ? metazoneInfo.short.daylight
                   : metazoneInfo.short.standard,
-              ];
+              ]
             }
           }
 
-          return all;
-        }, {});
-    const {long: utcLong, short: utcShort} = timeZoneNames.zone.Etc.UTC;
-    timeZoneName.UTC = {};
+          return all
+        }, {})
+    const {long: utcLong, short: utcShort} = timeZoneNames.zone.Etc.UTC
+    timeZoneName.UTC = {}
     if (utcLong) {
-      timeZoneName.UTC.long = [utcLong.standard, utcLong.standard];
+      timeZoneName.UTC.long = [utcLong.standard, utcLong.standard]
     }
     if (utcShort) {
-      timeZoneName.UTC.short = [utcShort.standard, utcShort.standard];
+      timeZoneName.UTC.short = [utcShort.standard, utcShort.standard]
     }
   } catch (e) {
-    console.error(`Issue extracting timeZoneName for ${locale}`);
-    throw e;
+    console.error(`Issue extracting timeZoneName for ${locale}`)
+    throw e
   }
 
-  const {short, full, medium, long} = gregorian.dateTimeFormats;
+  const {short, full, medium, long} = gregorian.dateTimeFormats
 
-  const {availableFormats} = gregorian.dateTimeFormats;
-  let rawIntervalFormats = gregorian.dateTimeFormats.intervalFormats;
+  const {availableFormats} = gregorian.dateTimeFormats
+  let rawIntervalFormats = gregorian.dateTimeFormats.intervalFormats
   const intervalFormats = Object.keys(rawIntervalFormats)
     .filter(hasAltVariant)
     .reduce((all: Record<string, string | Record<string, string>>, k) => {
-      const v = rawIntervalFormats[k as 'Bhm'];
-      all[k] = typeof v === 'string' ? v : filterKeys(v, hasAltVariant);
-      return all;
-    }, {});
+      const v = rawIntervalFormats[k as 'Bhm']
+      all[k] = typeof v === 'string' ? v : filterKeys(v, hasAltVariant)
+      return all
+    }, {})
   const parsedAvailableFormats: Array<[string, string, Formats]> = Object.keys(
     availableFormats
   )
     .filter(hasAltVariant)
     .map(skeleton => {
-      const pattern = availableFormats[skeleton as 'Bh'];
+      const pattern = availableFormats[skeleton as 'Bh']
       try {
         return [
           skeleton,
           pattern,
           parseDateTimeSkeleton(skeleton, pattern),
-        ] as [string, string, Formats];
+        ] as [string, string, Formats]
       } catch (e) {
         // ignore
       }
     })
-    .filter((f): f is [string, string, Formats] => !!f);
+    .filter((f): f is [string, string, Formats] => !!f)
   const dateFormats = Object.values(gregorian.dateFormats).reduce(
     (all: Record<string, string>, v) => {
       // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
-      all[v] = typeof v === 'object' ? (v as {_value: string})._value : v;
-      return all;
+      all[v] = typeof v === 'object' ? (v as {_value: string})._value : v
+      return all
     },
     {}
-  );
+  )
   const timeFormats = Object.values(gregorian.timeFormats).reduce(
     (all: Record<string, string>, v) => {
       // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
-      all[v] = v;
-      return all;
+      all[v] = v
+      return all
     },
     {}
-  );
+  )
   const allFormats: Record<string, string> = {
     ...parsedAvailableFormats.reduce(
       (all: Record<string, string>, [skeleton, pattern]) => {
-        all[skeleton] = pattern;
-        return all;
+        all[skeleton] = pattern
+        return all
       },
       {}
     ),
     ...dateFormats,
     ...timeFormats,
-  };
+  }
   for (const [
     skeleton,
     pattern,
     availableFormatEntry,
   ] of parsedAvailableFormats) {
     if (isDateFormatOnly(availableFormatEntry)) {
-      dateFormats[skeleton] = pattern;
+      dateFormats[skeleton] = pattern
     } else if (isTimeFormatOnly(availableFormatEntry)) {
-      timeFormats[skeleton] = pattern;
+      timeFormats[skeleton] = pattern
     }
   }
   // Based on https://unicode.org/reports/tr35/tr35-dates.html#Missing_Skeleton_Fields
   for (const [timeSkeleton, timePattern] of Object.entries(timeFormats)) {
     for (const [dateSkeleton, datePattern] of Object.entries(dateFormats)) {
-      let rawPattern;
-      const entry = parseDateTimeSkeleton(dateSkeleton, datePattern);
+      let rawPattern
+      const entry = parseDateTimeSkeleton(dateSkeleton, datePattern)
       if (entry.month === 'long') {
-        rawPattern = entry.weekday ? full : long;
+        rawPattern = entry.weekday ? full : long
       } else if (entry.month === 'short') {
-        rawPattern = medium;
+        rawPattern = medium
       } else {
-        rawPattern = short;
+        rawPattern = short
       }
       const pattern = rawPattern
         .replace('{0}', timePattern)
-        .replace('{1}', datePattern);
+        .replace('{1}', datePattern)
       const skeleton = rawPattern
         .replace('{0}', timeSkeleton)
-        .replace('{1}', dateSkeleton);
-      allFormats[skeleton] = pattern;
+        .replace('{1}', dateSkeleton)
+      allFormats[skeleton] = pattern
     }
   }
   return {
@@ -330,31 +330,31 @@ async function loadDatesFields(
     ).map(c => {
       //Resolve aliases per https://github.com/unicode-org/cldr/blob/master/common/bcp47/calendar.xml
       if (c === 'gregorian') {
-        return 'gregory';
+        return 'gregory'
       }
       if (c === 'islamic-civil') {
-        return 'islamicc';
+        return 'islamicc'
       }
       if (c === 'ethiopic-amete-alem') {
-        return 'ethioaa';
+        return 'ethioaa'
       }
-      return c;
+      return c
     }),
     hc,
-  };
+  }
 }
 
 export async function extractDatesFields(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
 ): Promise<Record<string, RawDateTimeLocaleInternalData>> {
-  const data = await Promise.all(locales.map(loadDatesFields));
+  const data = await Promise.all(locales.map(loadDatesFields))
   return locales.reduce(
     (all: Record<string, RawDateTimeLocaleInternalData>, locale, i) => {
-      all[locale] = data[i];
-      return all;
+      all[locale] = data[i]
+      return all
     },
     {}
-  );
+  )
 }
 
 /**
@@ -372,5 +372,5 @@ function extractStyleFormatFields<
     long: formatObject.long,
     medium: formatObject.medium,
     short: formatObject.short,
-  };
+  }
 }

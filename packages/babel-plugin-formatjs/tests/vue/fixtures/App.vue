@@ -12,8 +12,8 @@
 </template>
 
 <script>
-intl.formatMessage({defaultMessage: 'blah'});
+intl.formatMessage({defaultMessage: 'blah'})
 export default {
   name: 'App',
-};
+}
 </script>

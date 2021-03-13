@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Provider, {OptionalIntlConfig} from '../../src/components/provider';
-import {render} from '@testing-library/react';
+import * as React from 'react'
+import Provider, {OptionalIntlConfig} from '../../src/components/provider'
+import {render} from '@testing-library/react'
 
 export function mountFormattedComponentWithProvider<P>(
   Comp: React.ComponentType<P>
@@ -17,12 +17,12 @@ export function mountFormattedComponentWithProvider<P>(
           </span>
         </Provider>
       </React.StrictMode>
-    );
+    )
 
-    const {rerender} = result;
+    const {rerender} = result
     const rerenderProps = (
       newProps: P & {
-        children?(...nodes: React.ReactNodeArray): React.ReactNode;
+        children?(...nodes: React.ReactNodeArray): React.ReactNode
       } = props,
       newProviderProps: OptionalIntlConfig = providerProps
     ) =>
@@ -34,8 +34,8 @@ export function mountFormattedComponentWithProvider<P>(
             </span>
           </Provider>
         </React.StrictMode>
-      );
+      )
 
-    return {...result, rerenderProps};
-  };
+    return {...result, rerenderProps}
+  }
 }

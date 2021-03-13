@@ -1,12 +1,12 @@
-import {CompileFn, FormatFn} from './default';
+import {CompileFn, FormatFn} from './default'
 
-export type PhraseJson = Record<string, string>;
+export type PhraseJson = Record<string, string>
 
 export const format: FormatFn<PhraseJson> = msgs => {
   return Object.keys(msgs).reduce((all: PhraseJson, k) => {
-    all[k] = msgs[k].defaultMessage!;
-    return all;
-  }, {});
-};
+    all[k] = msgs[k].defaultMessage!
+    return all
+  }, {})
+}
 
-export const compile: CompileFn<PhraseJson> = msgs => msgs;
+export const compile: CompileFn<PhraseJson> = msgs => msgs

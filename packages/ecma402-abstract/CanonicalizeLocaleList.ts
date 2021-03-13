@@ -4,5 +4,5 @@
  */
 export function CanonicalizeLocaleList(locales?: string | string[]): string[] {
   // TODO
-  return ((Intl as any).getCanonicalLocales as any)(locales);
+  return ((Intl as any).getCanonicalLocales as any)(locales)
 }

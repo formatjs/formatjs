@@ -3,14 +3,14 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-'use strict';
+'use strict'
 
-import * as DateFields from 'cldr-dates-full/main/en/dateFields.json';
-import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
-import glob from 'fast-glob';
-import {resolve, dirname} from 'path';
-import {FieldData, LocaleFieldsData} from '@formatjs/ecma402-abstract';
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
+import * as DateFields from 'cldr-dates-full/main/en/dateFields.json'
+import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json'
+import glob from 'fast-glob'
+import {resolve, dirname} from 'path'
+import {FieldData, LocaleFieldsData} from '@formatjs/ecma402-abstract'
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
 
 // The set of CLDR date field names that are used in FormatJS.
 const FIELD_NAMES = [
@@ -38,9 +38,9 @@ const FIELD_NAMES = [
   'second',
   'second-short',
   'second-narrow',
-];
+]
 
-type Fields = typeof DateFields['main']['en']['dates']['fields'];
+type Fields = typeof DateFields['main']['en']['dates']['fields']
 
 export async function getAllLocales(): Promise<string[]> {
   const fns = await glob('*/dateFields.json', {
@@ -48,15 +48,15 @@ export async function getAllLocales(): Promise<string[]> {
       dirname(require.resolve('cldr-dates-full/package.json')),
       './main'
     ),
-  });
+  })
   return fns.map(dirname).filter(l => {
     try {
-      return (Intl as any).getCanonicalLocales(l).length;
+      return (Intl as any).getCanonicalLocales(l).length
     } catch (e) {
-      console.warn(`Invalid locale ${l}`);
-      return false;
+      console.warn(`Invalid locale ${l}`)
+      return false
     }
-  });
+  })
 }
 
 async function loadRelativeFields(locale: string): Promise<LocaleFieldsData> {
@@ -67,9 +67,9 @@ async function loadRelativeFields(locale: string): Promise<LocaleFieldsData> {
     import(`cldr-numbers-full/main/${locale}/numbers.json`).catch(
       _ => undefined
     ) as Promise<typeof NumberFields | undefined>,
-  ]);
-  const fields = dateFileds.main[locale as 'en'].dates.fields;
-  const nu = numbers?.main[locale as 'en'].numbers.defaultNumberingSystem;
+  ])
+  const fields = dateFileds.main[locale as 'en'].dates.fields
+  const nu = numbers?.main[locale as 'en'].numbers.defaultNumberingSystem
 
   // Reduce the date fields data down to whitelist of fields needed in the
   // FormatJS libs.
@@ -78,13 +78,13 @@ async function loadRelativeFields(locale: string): Promise<LocaleFieldsData> {
       // Transform the fields data from the CLDR structure to one that's
       // easier to override and customize (if needed). This is also required
       // back-compat in v1.x of the FormatJS libs.
-      relative[field as 'year'] = transformFieldData(fields[field as 'week']);
-      return relative;
+      relative[field as 'year'] = transformFieldData(fields[field as 'week'])
+      return relative
     },
     {
       nu: [nu],
     } as LocaleFieldsData
-  );
+  )
 }
 
 // Transforms the CLDR's data structure for the relative fields into a structure
@@ -93,40 +93,40 @@ function transformFieldData(data: Fields['week']): FieldData {
   const processed: FieldData = {
     future: {},
     past: {},
-  };
+  }
   Object.keys(data).forEach(function (key) {
-    const type = key.match(/^(relative|relativeTime)-type-(.+)$/) || [];
+    const type = key.match(/^(relative|relativeTime)-type-(.+)$/) || []
 
     switch (type[1]) {
       case 'relative':
-        processed[type[2] as '0'] = data[key as 'relative-type-0'];
-        break;
+        processed[type[2] as '0'] = data[key as 'relative-type-0']
+        break
 
       case 'relativeTime':
         processed[type[2] as 'past'] = Object.keys(
           data[key as 'relativeTime-type-past']
         ).reduce((counts: FieldData['past'], count) => {
-          const k = count.replace('relativeTimePattern-count-', '');
+          const k = count.replace('relativeTimePattern-count-', '')
           counts[k as 'other'] =
             data[key as 'relativeTime-type-past'][
               count as 'relativeTimePattern-count-other'
-            ];
-          return counts;
-        }, {});
+            ]
+          return counts
+        }, {})
 
-        break;
+        break
     }
-  });
+  })
 
-  return processed;
+  return processed
 }
 
 export async function extractRelativeFields(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
 ): Promise<Record<string, LocaleFieldsData>> {
-  const data = await Promise.all(locales.map(loadRelativeFields));
+  const data = await Promise.all(locales.map(loadRelativeFields))
   return locales.reduce((all: Record<string, LocaleFieldsData>, locale, i) => {
-    all[locale] = data[i];
-    return all;
-  }, {});
+    all[locale] = data[i]
+    return all
+  }, {})
 }

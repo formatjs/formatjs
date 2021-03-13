@@ -1,27 +1,27 @@
-import * as typescript from 'typescript';
-import {MessageDescriptor} from './types';
-import {interpolateName} from './interpolate-name';
-import {parse, MessageFormatElement} from 'intl-messageformat-parser';
-export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void;
+import * as typescript from 'typescript'
+import {MessageDescriptor} from './types'
+import {interpolateName} from './interpolate-name'
+import {parse, MessageFormatElement} from 'intl-messageformat-parser'
+export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void
 export type MetaExtractor = (
   filePath: string,
   meta: Record<string, string>
-) => void;
+) => void
 
 export type InterpolateNameFn = (
   id?: string,
   defaultMessage?: string,
   description?: string,
   filePath?: string
-) => string;
+) => string
 
 const MESSAGE_DESC_KEYS: Array<keyof MessageDescriptor> = [
   'id',
   'defaultMessage',
   'description',
-];
+]
 
-type TypeScript = typeof typescript;
+type TypeScript = typeof typescript
 
 function primitiveToTSNode(
   factory: typescript.NodeFactory,
@@ -35,7 +35,7 @@ function primitiveToTSNode(
     ? v
       ? factory.createTrue()
       : factory.createFalse()
-    : undefined;
+    : undefined
 }
 
 function objToTSNode(factory: typescript.NodeFactory, obj: object) {
@@ -53,8 +53,8 @@ function objToTSNode(factory: typescript.NodeFactory, obj: object) {
           ? objToTSNode(factory, v)
           : factory.createNull())
     )
-  );
-  return factory.createObjectLiteralExpression(props);
+  )
+  return factory.createObjectLiteralExpression(props)
 }
 
 function messageASTToTSNode(
@@ -63,7 +63,7 @@ function messageASTToTSNode(
 ) {
   return factory.createArrayLiteralExpression(
     ast.map(el => objToTSNode(factory, el))
-  );
+  )
 }
 
 export interface Opts {
@@ -80,29 +80,29 @@ export interface Opts {
    * we'll parse out `// @intl-meta project:my-custom-project`
    * into `{project: 'my-custom-project'}` in the result file.
    */
-  pragma?: string;
+  pragma?: string
   /**
    * Whether the metadata about the location of the message in the source file
    * should be extracted. If `true`, then `file`, `start`, and `end`
    * fields will exist for each extracted message descriptors.
    * Defaults to `false`.
    */
-  extractSourceLocation?: boolean;
+  extractSourceLocation?: boolean
   /**
    * Remove `defaultMessage` field in generated js after extraction.
    */
-  removeDefaultMessage?: boolean;
+  removeDefaultMessage?: boolean
   /**
    * Additional component names to extract messages from,
    * e.g: `['FormattedFooBarMessage']`.
    */
-  additionalComponentNames?: string[];
+  additionalComponentNames?: string[]
   /**
    * Additional function names to extract messages from,
    * e.g: `['formatMessage', '$t']`
    * Default to `['formatMessage']`
    */
-  additionalFunctionNames?: string[];
+  additionalFunctionNames?: string[]
   /**
    * Callback function that gets called everytime we encountered something
    * that looks like a MessageDescriptor
@@ -110,12 +110,12 @@ export interface Opts {
    * @type {Extractor}
    * @memberof Opts
    */
-  onMsgExtracted?: Extractor;
+  onMsgExtracted?: Extractor
   /**
    * Callback function that gets called when we successfully parsed meta
    * declared in pragma
    */
-  onMetaExtracted?: MetaExtractor;
+  onMetaExtracted?: MetaExtractor
   /**
    * webpack-style name interpolation.
    * Can also be a string like '[sha512:contenthash:hex:6]'
@@ -123,22 +123,22 @@ export interface Opts {
    * @type {(InterpolateNameFn | string)}
    * @memberof Opts
    */
-  overrideIdFn?: InterpolateNameFn | string;
+  overrideIdFn?: InterpolateNameFn | string
   /**
    * Whether to compile `defaultMessage` to AST.
    * This is no-op if `removeDefaultMessage` is `true`
    */
-  ast?: boolean;
+  ast?: boolean
   /**
    * Whether to preserve whitespace and newlines.
    */
-  preserveWhitespace?: boolean;
+  preserveWhitespace?: boolean
 }
 
 const DEFAULT_OPTS: Omit<Opts, 'program'> = {
   onMsgExtracted: () => undefined,
   onMetaExtracted: () => undefined,
-};
+}
 
 function isMultipleMessageDecl(
   ts: TypeScript,
@@ -147,7 +147,7 @@ function isMultipleMessageDecl(
   return (
     ts.isIdentifier(node.expression) &&
     node.expression.text === 'defineMessages'
-  );
+  )
 }
 
 function isSingularMessageDecl(
@@ -162,37 +162,37 @@ function isSingularMessageDecl(
     'FormattedMessage',
     'defineMessage',
     ...additionalComponentNames,
-  ]);
-  let fnName = '';
+  ])
+  let fnName = ''
   if (ts.isCallExpression(node) && ts.isIdentifier(node.expression)) {
-    fnName = node.expression.text;
+    fnName = node.expression.text
   } else if (ts.isJsxOpeningElement(node) && ts.isIdentifier(node.tagName)) {
-    fnName = node.tagName.text;
+    fnName = node.tagName.text
   } else if (
     ts.isJsxSelfClosingElement(node) &&
     ts.isIdentifier(node.tagName)
   ) {
-    fnName = node.tagName.text;
+    fnName = node.tagName.text
   }
-  return compNames.has(fnName);
+  return compNames.has(fnName)
 }
 
 function evaluateStringConcat(
   ts: TypeScript,
   node: typescript.BinaryExpression
 ): [result: string, isStaticallyEvaluatable: boolean] {
-  const {right, left} = node;
+  const {right, left} = node
   if (!ts.isStringLiteral(right)) {
-    return ['', false];
+    return ['', false]
   }
   if (ts.isStringLiteral(left)) {
-    return [left.text + right.text, true];
+    return [left.text + right.text, true]
   }
   if (ts.isBinaryExpression(left)) {
-    const [result, isStatic] = evaluateStringConcat(ts, left);
-    return [result + right.text, isStatic];
+    const [result, isStatic] = evaluateStringConcat(ts, left)
+    return [result + right.text, isStatic]
   }
-  return ['', false];
+  return ['', false]
 }
 
 function extractMessageDescriptor(
@@ -206,26 +206,26 @@ function extractMessageDescriptor(
 ): MessageDescriptor | undefined {
   let properties:
     | typescript.NodeArray<typescript.ObjectLiteralElement>
-    | undefined = undefined;
+    | undefined = undefined
   if (ts.isObjectLiteralExpression(node)) {
-    properties = node.properties;
+    properties = node.properties
   } else if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
-    properties = node.attributes.properties;
+    properties = node.attributes.properties
   }
-  const msg: MessageDescriptor = {id: ''};
+  const msg: MessageDescriptor = {id: ''}
   if (!properties) {
-    return;
+    return
   }
 
   properties.forEach(prop => {
-    const {name} = prop;
+    const {name} = prop
     const initializer:
       | typescript.Expression
       | typescript.JsxExpression
       | undefined =
       ts.isPropertyAssignment(prop) || ts.isJsxAttribute(prop)
         ? prop.initializer
-        : undefined;
+        : undefined
 
     if (name && ts.isIdentifier(name) && initializer) {
       // <FormattedMessage foo={'barbaz'} />
@@ -236,104 +236,104 @@ function extractMessageDescriptor(
       ) {
         switch (name.text) {
           case 'id':
-            msg.id = initializer.expression.text;
-            break;
+            msg.id = initializer.expression.text
+            break
           case 'defaultMessage':
-            msg.defaultMessage = initializer.expression.text;
-            break;
+            msg.defaultMessage = initializer.expression.text
+            break
           case 'description':
-            msg.description = initializer.expression.text;
-            break;
+            msg.description = initializer.expression.text
+            break
         }
       }
       // {id: 'id'}
       else if (ts.isStringLiteral(initializer)) {
         switch (name.text) {
           case 'id':
-            msg.id = initializer.text;
-            break;
+            msg.id = initializer.text
+            break
           case 'defaultMessage':
-            msg.defaultMessage = initializer.text;
-            break;
+            msg.defaultMessage = initializer.text
+            break
           case 'description':
-            msg.description = initializer.text;
-            break;
+            msg.description = initializer.text
+            break
         }
       }
       // {id: `id`}
       else if (ts.isNoSubstitutionTemplateLiteral(initializer)) {
         switch (name.text) {
           case 'id':
-            msg.id = initializer.text;
-            break;
+            msg.id = initializer.text
+            break
           case 'defaultMessage':
-            msg.defaultMessage = initializer.text;
-            break;
+            msg.defaultMessage = initializer.text
+            break
           case 'description':
-            msg.description = initializer.text;
-            break;
+            msg.description = initializer.text
+            break
         }
       } else if (ts.isJsxExpression(initializer) && initializer.expression) {
         // <FormattedMessage foo={`bar`} />
         if (ts.isNoSubstitutionTemplateLiteral(initializer.expression)) {
-          const {expression} = initializer;
+          const {expression} = initializer
           switch (name.text) {
             case 'id':
-              msg.id = expression.text;
-              break;
+              msg.id = expression.text
+              break
             case 'defaultMessage':
-              msg.defaultMessage = expression.text;
-              break;
+              msg.defaultMessage = expression.text
+              break
             case 'description':
-              msg.description = expression.text;
-              break;
+              msg.description = expression.text
+              break
           }
         }
         // <FormattedMessage foo={'bar' + 'baz'} />
         else if (ts.isBinaryExpression(initializer.expression)) {
-          const {expression} = initializer;
-          const [result, isStatic] = evaluateStringConcat(ts, expression);
+          const {expression} = initializer
+          const [result, isStatic] = evaluateStringConcat(ts, expression)
           if (isStatic) {
             switch (name.text) {
               case 'id':
-                msg.id = result;
-                break;
+                msg.id = result
+                break
               case 'defaultMessage':
-                msg.defaultMessage = result;
-                break;
+                msg.defaultMessage = result
+                break
               case 'description':
-                msg.description = result;
-                break;
+                msg.description = result
+                break
             }
           }
         }
       }
       // {defaultMessage: 'asd' + bar'}
       else if (ts.isBinaryExpression(initializer)) {
-        const [result, isStatic] = evaluateStringConcat(ts, initializer);
+        const [result, isStatic] = evaluateStringConcat(ts, initializer)
         if (isStatic) {
           switch (name.text) {
             case 'id':
-              msg.id = result;
-              break;
+              msg.id = result
+              break
             case 'defaultMessage':
-              msg.defaultMessage = result;
-              break;
+              msg.defaultMessage = result
+              break
             case 'description':
-              msg.description = result;
-              break;
+              msg.description = result
+              break
           }
         }
       }
     }
-  });
+  })
   // We extracted nothing
   if (!msg.defaultMessage && !msg.id) {
-    return;
+    return
   }
 
   if (msg.defaultMessage && !preserveWhitespace) {
-    msg.defaultMessage = msg.defaultMessage.trim().replace(/\s+/gm, ' ');
+    msg.defaultMessage = msg.defaultMessage.trim().replace(/\s+/gm, ' ')
   }
   if (msg.defaultMessage && overrideIdFn) {
     switch (typeof overrideIdFn) {
@@ -347,17 +347,17 @@ function extractMessageDescriptor(
                 ? `${msg.defaultMessage}#${msg.description}`
                 : msg.defaultMessage,
             }
-          );
+          )
         }
-        break;
+        break
       case 'function':
         msg.id = overrideIdFn(
           msg.id,
           msg.defaultMessage,
           msg.description,
           sf.fileName
-        );
-        break;
+        )
+        break
     }
   }
   if (extractSourceLocation) {
@@ -366,9 +366,9 @@ function extractMessageDescriptor(
       file: sf.fileName,
       start: node.pos,
       end: node.end,
-    };
+    }
   }
-  return msg;
+  return msg
 }
 
 /**
@@ -381,8 +381,8 @@ function isIntlFormatMessageCall(
   node: typescript.CallExpression,
   additionalFunctionNames: string[]
 ) {
-  const fnNames = new Set(['formatMessage', ...additionalFunctionNames]);
-  const method = node.expression;
+  const fnNames = new Set(['formatMessage', ...additionalFunctionNames])
+  const method = node.expression
 
   // Handle intl.formatMessage()
   if (ts.isPropertyAccessExpression(method)) {
@@ -392,11 +392,11 @@ function isIntlFormatMessageCall(
         method.expression.text === 'intl') ||
       (ts.isPropertyAccessExpression(method.expression) &&
         method.expression.name.text === 'intl')
-    );
+    )
   }
 
   // Handle formatMessage()
-  return ts.isIdentifier(method) && fnNames.has(method.text);
+  return ts.isIdentifier(method) && fnNames.has(method.text)
 }
 
 function extractMessageFromJsxComponent(
@@ -406,16 +406,16 @@ function extractMessageFromJsxComponent(
   opts: Opts,
   sf: typescript.SourceFile
 ): typeof node {
-  const {onMsgExtracted} = opts;
+  const {onMsgExtracted} = opts
   if (!isSingularMessageDecl(ts, node, opts.additionalComponentNames || [])) {
-    return node;
+    return node
   }
-  const msg = extractMessageDescriptor(ts, node, opts, sf);
+  const msg = extractMessageDescriptor(ts, node, opts, sf)
   if (!msg) {
-    return node;
+    return node
   }
   if (typeof onMsgExtracted === 'function') {
-    onMsgExtracted(sf.fileName, [msg]);
+    onMsgExtracted(sf.fileName, [msg])
   }
 
   const newProps = generateNewProperties(
@@ -429,7 +429,7 @@ function extractMessageFromJsxComponent(
       id: msg.id,
     },
     opts.ast
-  );
+  )
 
   if (ts.isJsxOpeningElement(node)) {
     return factory.updateJsxOpeningElement(
@@ -437,7 +437,7 @@ function extractMessageFromJsxComponent(
       node.tagName,
       node.typeArguments,
       factory.createJsxAttributes(newProps)
-    );
+    )
   }
 
   return factory.updateJsxSelfClosingElement(
@@ -445,7 +445,7 @@ function extractMessageFromJsxComponent(
     node.tagName,
     node.typeArguments,
     factory.createJsxAttributes(newProps)
-  );
+  )
 }
 
 function setAttributesInObject(
@@ -467,7 +467,7 @@ function setAttributesInObject(
           ),
         ]
       : []),
-  ];
+  ]
 
   for (const prop of node.properties) {
     if (
@@ -475,15 +475,15 @@ function setAttributesInObject(
       ts.isIdentifier(prop.name) &&
       MESSAGE_DESC_KEYS.includes(prop.name.text as keyof MessageDescriptor)
     ) {
-      continue;
+      continue
     }
     if (ts.isPropertyAssignment(prop)) {
-      newProps.push(prop);
+      newProps.push(prop)
     }
   }
   return factory.createObjectLiteralExpression(
     factory.createNodeArray(newProps)
-  );
+  )
 }
 
 function generateNewProperties(
@@ -511,20 +511,20 @@ function generateNewProperties(
           ),
         ]
       : []),
-  ];
+  ]
   for (const prop of node.properties) {
     if (
       ts.isJsxAttribute(prop) &&
       ts.isIdentifier(prop.name) &&
       MESSAGE_DESC_KEYS.includes(prop.name.text as keyof MessageDescriptor)
     ) {
-      continue;
+      continue
     }
     if (ts.isJsxAttribute(prop)) {
-      newProps.push(prop);
+      newProps.push(prop)
     }
   }
-  return newProps;
+  return newProps
 }
 
 function extractMessagesFromCallExpression(
@@ -534,20 +534,20 @@ function extractMessagesFromCallExpression(
   opts: Opts,
   sf: typescript.SourceFile
 ): typeof node {
-  const {onMsgExtracted, additionalFunctionNames} = opts;
+  const {onMsgExtracted, additionalFunctionNames} = opts
   if (isMultipleMessageDecl(ts, node)) {
-    const [arg, ...restArgs] = node.arguments;
-    let descriptorsObj: typescript.ObjectLiteralExpression | undefined;
+    const [arg, ...restArgs] = node.arguments
+    let descriptorsObj: typescript.ObjectLiteralExpression | undefined
     if (ts.isObjectLiteralExpression(arg)) {
-      descriptorsObj = arg;
+      descriptorsObj = arg
     } else if (
       ts.isAsExpression(arg) &&
       ts.isObjectLiteralExpression(arg.expression)
     ) {
-      descriptorsObj = arg.expression;
+      descriptorsObj = arg.expression
     }
     if (descriptorsObj) {
-      const properties = descriptorsObj.properties;
+      const properties = descriptorsObj.properties
       const msgs = properties
         .filter<typescript.PropertyAssignment>(
           (prop): prop is typescript.PropertyAssignment =>
@@ -558,12 +558,12 @@ function extractMessagesFromCallExpression(
             ts.isObjectLiteralExpression(prop.initializer) &&
             extractMessageDescriptor(ts, prop.initializer, opts, sf)
         )
-        .filter((msg): msg is MessageDescriptor => !!msg);
+        .filter((msg): msg is MessageDescriptor => !!msg)
       if (!msgs.length) {
-        return node;
+        return node
       }
       if (typeof onMsgExtracted === 'function') {
-        onMsgExtracted(sf.fileName, msgs);
+        onMsgExtracted(sf.fileName, msgs)
       }
 
       const clonedProperties = factory.createNodeArray(
@@ -572,7 +572,7 @@ function extractMessagesFromCallExpression(
             !ts.isPropertyAssignment(prop) ||
             !ts.isObjectLiteralExpression(prop.initializer)
           ) {
-            return prop;
+            return prop
           }
 
           return factory.createPropertyAssignment(
@@ -589,31 +589,31 @@ function extractMessagesFromCallExpression(
               },
               opts.ast
             )
-          );
+          )
         })
-      );
+      )
       const clonedDescriptorsObj = factory.createObjectLiteralExpression(
         clonedProperties
-      );
+      )
       return factory.updateCallExpression(
         node,
         node.expression,
         node.typeArguments,
         [clonedDescriptorsObj, ...restArgs]
-      );
+      )
     }
   } else if (
     isSingularMessageDecl(ts, node, opts.additionalComponentNames || []) ||
     isIntlFormatMessageCall(ts, node, additionalFunctionNames || [])
   ) {
-    const [descriptorsObj, ...restArgs] = node.arguments;
+    const [descriptorsObj, ...restArgs] = node.arguments
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
-      const msg = extractMessageDescriptor(ts, descriptorsObj, opts, sf);
+      const msg = extractMessageDescriptor(ts, descriptorsObj, opts, sf)
       if (!msg) {
-        return node;
+        return node
       }
       if (typeof onMsgExtracted === 'function') {
-        onMsgExtracted(sf.fileName, [msg]);
+        onMsgExtracted(sf.fileName, [msg])
       }
 
       return factory.updateCallExpression(
@@ -635,13 +635,13 @@ function extractMessagesFromCallExpression(
           ),
           ...restArgs,
         ]
-      );
+      )
     }
   }
-  return node;
+  return node
 }
 
-const PRAGMA_REGEX = /^\/\/ @([^\s]*) (.*)$/m;
+const PRAGMA_REGEX = /^\/\/ @([^\s]*) (.*)$/m
 
 function getVisitor(
   ts: TypeScript,
@@ -656,38 +656,38 @@ function getVisitor(
       ? extractMessagesFromCallExpression(ts, ctx.factory, node, opts, sf)
       : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
       ? extractMessageFromJsxComponent(ts, ctx.factory, node, opts, sf)
-      : node;
-    return ts.visitEachChild(newNode, visitor, ctx);
-  };
-  return visitor;
+      : node
+    return ts.visitEachChild(newNode, visitor, ctx)
+  }
+  return visitor
 }
 
 export function transformWithTs(ts: TypeScript, opts: Opts) {
-  opts = {...DEFAULT_OPTS, ...opts};
+  opts = {...DEFAULT_OPTS, ...opts}
   const transformFn: typescript.TransformerFactory<typescript.SourceFile> = ctx => {
     return (sf: typescript.SourceFile) => {
-      const pragmaResult = PRAGMA_REGEX.exec(sf.text);
+      const pragmaResult = PRAGMA_REGEX.exec(sf.text)
       if (pragmaResult) {
-        const [, pragma, kvString] = pragmaResult;
+        const [, pragma, kvString] = pragmaResult
         if (pragma === opts.pragma) {
-          const kvs = kvString.split(' ');
-          const result: Record<string, string> = {};
+          const kvs = kvString.split(' ')
+          const result: Record<string, string> = {}
           for (const kv of kvs) {
-            const [k, v] = kv.split(':');
-            result[k] = v;
+            const [k, v] = kv.split(':')
+            result[k] = v
           }
           if (typeof opts.onMetaExtracted === 'function') {
-            opts.onMetaExtracted(sf.fileName, result);
+            opts.onMetaExtracted(sf.fileName, result)
           }
         }
       }
-      return ts.visitNode(sf, getVisitor(ts, ctx, sf, opts));
-    };
-  };
+      return ts.visitNode(sf, getVisitor(ts, ctx, sf, opts))
+    }
+  }
 
-  return transformFn;
+  return transformFn
 }
 
 export function transform(opts: Opts) {
-  return transformWithTs(typescript, opts);
+  return transformWithTs(typescript, opts)
 }

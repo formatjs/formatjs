@@ -1,9 +1,9 @@
-import {PluralRulesInternal, PluralRulesData} from '../types/plural-rules';
-import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList';
-import {ToObject} from '../262';
-import {GetOption} from '../GetOption';
-import {SetNumberFormatDigitOptions} from '../NumberFormat/SetNumberFormatDigitOptions';
-import {ResolveLocale} from '../ResolveLocale';
+import {PluralRulesInternal, PluralRulesData} from '../types/plural-rules'
+import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
+import {GetOption} from '../GetOption'
+import {SetNumberFormatDigitOptions} from '../NumberFormat/SetNumberFormatDigitOptions'
+import {ResolveLocale} from '../ResolveLocale'
+import {CoerceOptionsToObject} from '../CoerceOptionsToObject'
 
 export function InitializePluralRules(
   pl: Intl.PluralRules,
@@ -16,35 +16,35 @@ export function InitializePluralRules(
     getDefaultLocale,
     getInternalSlots,
   }: {
-    availableLocales: Set<string>;
-    relevantExtensionKeys: string[];
-    localeData: Record<string, PluralRulesData | undefined>;
-    getDefaultLocale(): string;
-    getInternalSlots(pl: Intl.PluralRules): PluralRulesInternal;
+    availableLocales: Set<string>
+    relevantExtensionKeys: string[]
+    localeData: Record<string, PluralRulesData | undefined>
+    getDefaultLocale(): string
+    getInternalSlots(pl: Intl.PluralRules): PluralRulesInternal
   }
 ) {
-  const requestedLocales = CanonicalizeLocaleList(locales);
-  const opt: any = Object.create(null);
-  const opts = options === undefined ? Object.create(null) : ToObject(options);
-  const internalSlots = getInternalSlots(pl);
-  internalSlots.initializedPluralRules = true;
+  const requestedLocales = CanonicalizeLocaleList(locales)
+  const opt: any = Object.create(null)
+  const opts = CoerceOptionsToObject<Intl.PluralRulesOptions>(options)
+  const internalSlots = getInternalSlots(pl)
+  internalSlots.initializedPluralRules = true
   const matcher = GetOption(
     opts,
     'localeMatcher',
     'string',
     ['best fit', 'lookup'],
     'best fit'
-  );
-  opt.localeMatcher = matcher;
+  )
+  opt.localeMatcher = matcher
   internalSlots.type = GetOption(
     opts,
     'type',
     'string',
     ['cardinal', 'ordinal'],
     'cardinal'
-  );
+  )
 
-  SetNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard');
+  SetNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard')
   const r = ResolveLocale(
     availableLocales,
     requestedLocales,
@@ -52,7 +52,7 @@ export function InitializePluralRules(
     relevantExtensionKeys,
     localeData,
     getDefaultLocale
-  );
-  internalSlots.locale = r.locale;
-  return pl;
+  )
+  internalSlots.locale = r.locale
+  return pl
 }

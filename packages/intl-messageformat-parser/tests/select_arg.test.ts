@@ -1,4 +1,4 @@
-import {pegParse} from '../src/parser';
+import {pegParse} from '../src/parser'
 
 test('trivial', () => {
   expect(
@@ -9,8 +9,8 @@ test('trivial', () => {
           other {They}
       } will respond shortly.
     `)
-  ).toMatchSnapshot();
-});
+  ).toMatchSnapshot()
+})
 
 test('nested arguments', () => {
   expect(
@@ -20,5 +20,5 @@ test('nested arguments', () => {
           other {No taxes apply.}
       }
     `)
-  ).toMatchSnapshot();
-});
+  ).toMatchSnapshot()
+})

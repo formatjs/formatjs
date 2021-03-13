@@ -1,5 +1,5 @@
-import '@formatjs/intl-getcanonicallocales/polyfill';
-import {Locale} from '../';
+import '@formatjs/intl-getcanonicallocales/polyfill'
+import {Locale} from '../'
 const testDataMaximal: Record<string, string> = {
   // Language subtag is present.
   en: 'en-Latn-US',
@@ -27,7 +27,7 @@ const testDataMaximal: Record<string, string> = {
 
   // Undefined primary language not required to change in all cases.
   'und-AQ': 'und-Latn-AQ',
-};
+}
 
 const testDataMinimal: Record<string, string> = {
   // Language subtag is present.
@@ -54,7 +54,7 @@ const testDataMinimal: Record<string, string> = {
   'de-Latn-AT': 'de-AT',
   'bg-Cyrl-RO': 'bg-RO',
   'und-Latn-AQ': 'und-AQ',
-};
+}
 
 // Add variants, extensions, and privateuse subtags and ensure they don't
 // modify the result of the likely subtags algorithms.
@@ -66,36 +66,36 @@ const extras = [
   '-u-co',
   '-u-co-phonebk',
   '-x-private',
-];
+]
 
 describe('likely-subtags', function () {
   for (const tag in testDataMaximal) {
-    const maximal = testDataMaximal[tag];
+    const maximal = testDataMaximal[tag]
     it(`"${maximal}" should be maximal`, function () {
-      expect(new Locale(maximal).maximize().toString()).toBe(maximal);
-    });
+      expect(new Locale(maximal).maximize().toString()).toBe(maximal)
+    })
 
     for (const extra of extras) {
-      const input = tag + extra;
-      const output = maximal + extra;
+      const input = tag + extra
+      const output = maximal + extra
       it(`"${input}".maximize() should be "${output}"`, function () {
-        expect(new Locale(input).maximize().toString()).toBe(output);
-      });
+        expect(new Locale(input).maximize().toString()).toBe(output)
+      })
     }
   }
 
   for (const tag in testDataMinimal) {
-    const minimal = testDataMinimal[tag];
+    const minimal = testDataMinimal[tag]
     it(`"${minimal}" should be minimal`, function () {
-      expect(new Locale(minimal).minimize().toString()).toBe(minimal);
-    });
+      expect(new Locale(minimal).minimize().toString()).toBe(minimal)
+    })
 
     for (const extra of extras) {
-      const input = tag + extra;
-      const output = minimal + extra;
+      const input = tag + extra
+      const output = minimal + extra
       it(`"${input}".minimize() should be "${output}"`, function () {
-        expect(new Locale(input).minimize().toString()).toBe(output);
-      });
+        expect(new Locale(input).minimize().toString()).toBe(output)
+      })
     }
   }
 
@@ -103,6 +103,6 @@ describe('likely-subtags', function () {
   // "x" in "x-private" does not match unicode_language_subtag
   // unicode_language_subtag = alpha{2,3} | alpha{5,8};
   it('x-private', function () {
-    expect(() => new Locale('x-private')).toThrowError(RangeError);
-  });
-});
+    expect(() => new Locale('x-private')).toThrowError(RangeError)
+  })
+})

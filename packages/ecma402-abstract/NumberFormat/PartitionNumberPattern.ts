@@ -1,8 +1,8 @@
-import {NumberFormatInternal} from '../types/number';
-import {FormatNumericToString} from './FormatNumericToString';
-import {SameValue} from '../262';
-import {ComputeExponent} from './ComputeExponent';
-import formatToParts from './format_to_parts';
+import {NumberFormatInternal} from '../types/number'
+import {FormatNumericToString} from './FormatNumericToString'
+import {SameValue} from '../262'
+import {ComputeExponent} from './ComputeExponent'
+import formatToParts from './format_to_parts'
 
 /**
  * https://tc39.es/ecma402/#sec-formatnumberstring
@@ -13,67 +13,67 @@ export function PartitionNumberPattern(
   {
     getInternalSlots,
   }: {
-    getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal;
+    getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
 ) {
-  const internalSlots = getInternalSlots(numberFormat);
-  const {pl, dataLocaleData, numberingSystem} = internalSlots;
+  const internalSlots = getInternalSlots(numberFormat)
+  const {pl, dataLocaleData, numberingSystem} = internalSlots
   const symbols =
     dataLocaleData.numbers.symbols[numberingSystem] ||
-    dataLocaleData.numbers.symbols[dataLocaleData.numbers.nu[0]];
+    dataLocaleData.numbers.symbols[dataLocaleData.numbers.nu[0]]
 
-  let magnitude = 0;
-  let exponent = 0;
-  let n: string;
+  let magnitude = 0
+  let exponent = 0
+  let n: string
 
   if (isNaN(x)) {
-    n = symbols.nan;
+    n = symbols.nan
   } else if (!isFinite(x)) {
-    n = symbols.infinity;
+    n = symbols.infinity
   } else {
     if (internalSlots.style === 'percent') {
-      x *= 100;
+      x *= 100
     }
-    [exponent, magnitude] = ComputeExponent(numberFormat, x, {
+    ;[exponent, magnitude] = ComputeExponent(numberFormat, x, {
       getInternalSlots,
-    });
+    })
     // Preserve more precision by doing multiplication when exponent is negative.
-    x = exponent < 0 ? x * 10 ** -exponent : x / 10 ** exponent;
-    const formatNumberResult = FormatNumericToString(internalSlots, x);
-    n = formatNumberResult.formattedString;
-    x = formatNumberResult.roundedNumber;
+    x = exponent < 0 ? x * 10 ** -exponent : x / 10 ** exponent
+    const formatNumberResult = FormatNumericToString(internalSlots, x)
+    n = formatNumberResult.formattedString
+    x = formatNumberResult.roundedNumber
   }
 
   // Based on https://tc39.es/ecma402/#sec-getnumberformatpattern
   // We need to do this before `x` is rounded.
-  let sign: -1 | 0 | 1;
-  const signDisplay = internalSlots.signDisplay;
+  let sign: -1 | 0 | 1
+  const signDisplay = internalSlots.signDisplay
   switch (signDisplay) {
     case 'never':
-      sign = 0;
-      break;
+      sign = 0
+      break
     case 'auto':
       if (SameValue(x, 0) || x > 0 || isNaN(x)) {
-        sign = 0;
+        sign = 0
       } else {
-        sign = -1;
+        sign = -1
       }
-      break;
+      break
     case 'always':
       if (SameValue(x, 0) || x > 0 || isNaN(x)) {
-        sign = 1;
+        sign = 1
       } else {
-        sign = -1;
+        sign = -1
       }
-      break;
+      break
     default:
       // x === 0 -> x is 0 or x is -0
       if (x === 0 || isNaN(x)) {
-        sign = 0;
+        sign = 0
       } else if (x > 0) {
-        sign = 1;
+        sign = 1
       } else {
-        sign = -1;
+        sign = -1
       }
   }
 
@@ -82,5 +82,5 @@ export function PartitionNumberPattern(
     internalSlots.dataLocaleData,
     pl,
     internalSlots
-  );
+  )
 }

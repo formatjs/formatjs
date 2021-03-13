@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {defineMessages, FormattedMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {defineMessages, FormattedMessage} from 'react-intl'
 
 export enum TestEnum {
   FOO = 'foo',
@@ -64,15 +64,15 @@ const msgs = defineMessages({
   noDesc: {
     defaultMessage: 'No Desc',
   },
-} as const);
+} as const)
 
 async function foo() {
-  await import('../../package.json');
+  await import('../../package.json')
 }
 
 export default class Foo extends Component<{}, {}> {
   async componentDidMount() {
-    await foo();
+    await foo()
   }
   render() {
     return (
@@ -99,6 +99,6 @@ export default class Foo extends Component<{}, {}> {
           />
         </p>
       </div>
-    );
+    )
   }
 }

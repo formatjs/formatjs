@@ -1,9 +1,9 @@
 import {
   bestFitFormatMatcherScore,
   BestFitFormatMatcher,
-} from '../DateTimeFormat/BestFitFormatMatcher';
-import {parseDateTimeSkeleton} from '../DateTimeFormat/skeleton';
-import {DateTimeFormatOptions} from '../types/date-time';
+} from '../DateTimeFormat/BestFitFormatMatcher'
+import {parseDateTimeSkeleton} from '../DateTimeFormat/skeleton'
+import {DateTimeFormatOptions} from '../types/date-time'
 
 test('bestFitFormatMatcherScore', function () {
   const opts: DateTimeFormatOptions = {
@@ -18,13 +18,13 @@ test('bestFitFormatMatcherScore', function () {
     timeZone: 'America/Los_Angeles',
     timeZoneName: 'short',
     hour12: true,
-  };
+  }
   expect(
     bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('h:mm:ss a v'))
   ).toBeGreaterThan(
     bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('HH:mm:ss v'))
-  );
-});
+  )
+})
 test('BestFitFormatMatcher second tz', function () {
   const availableFormats = {
     'h:mm:ss a zzzz': 'h:mm:ss a zzzz',
@@ -39,7 +39,7 @@ test('BestFitFormatMatcher second tz', function () {
     Hmsv: 'HH:mm:ss v',
     hmv: 'h:mm a v',
     Hmv: 'HH:mm v',
-  };
+  }
   expect(
     BestFitFormatMatcher(
       {
@@ -67,8 +67,8 @@ test('BestFitFormatMatcher second tz', function () {
     timeZoneName: 'short',
     rangePatterns: {},
     rangePatterns12: {},
-  });
-});
+  })
+})
 test('bestFitFormatMatcherScore second tz', function () {
   const opts: DateTimeFormatOptions = {
     year: undefined,
@@ -79,7 +79,7 @@ test('bestFitFormatMatcherScore second tz', function () {
     second: undefined,
     timeZoneName: 'short',
     hour12: true,
-  };
+  }
   expect(
     bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('hmv', 'h:mm a v'))
   ).toBeGreaterThan(
@@ -87,8 +87,8 @@ test('bestFitFormatMatcherScore second tz', function () {
       opts,
       parseDateTimeSkeleton('h:mm:ss a z', 'h:mm:ss a z')
     )
-  );
-});
+  )
+})
 test('bestFitFormatMatcherScore long weekday (ko)', function () {
   const opts: DateTimeFormatOptions = {
     weekday: 'long',
@@ -101,7 +101,7 @@ test('bestFitFormatMatcherScore long weekday (ko)', function () {
     second: 'numeric',
     timeZoneName: 'short',
     hour12: true,
-  };
+  }
   expect(
     bestFitFormatMatcherScore(
       opts,
@@ -112,8 +112,8 @@ test('bestFitFormatMatcherScore long weekday (ko)', function () {
       opts,
       parseDateTimeSkeleton('G y년 MMM d일 (E) a h시 m분 s초 z')
     )
-  );
-});
+  )
+})
 test('bestFitFormatMatcherScore narrow weekday (ko)', function () {
   const opts: DateTimeFormatOptions = {
     weekday: 'short',
@@ -126,7 +126,7 @@ test('bestFitFormatMatcherScore narrow weekday (ko)', function () {
     second: 'numeric',
     timeZoneName: 'short',
     hour12: true,
-  };
+  }
   expect(
     bestFitFormatMatcherScore(
       opts,
@@ -137,8 +137,8 @@ test('bestFitFormatMatcherScore narrow weekday (ko)', function () {
       opts,
       parseDateTimeSkeleton('G y년 MMM d일 EEEE a h시 m분 s초 z')
     )
-  );
-});
+  )
+})
 const FORMATS = {
   Bh: 'Bh时',
   Bhm: 'Bh:mm',
@@ -677,11 +677,11 @@ const FORMATS = {
   'yMMMd ms': 'y年M月d日 mm:ss',
   'yMMMEd ms': 'y年M月d日E mm:ss',
   'yMMMM ms': 'y年M月 mm:ss',
-};
+}
 
 const PROCESSED_FORMATS = Object.keys(FORMATS).map(skeleton =>
   parseDateTimeSkeleton(skeleton, FORMATS[skeleton as 'Bh'])
-);
+)
 
 test('test #2291', function () {
   const opts: DateTimeFormatOptions = {
@@ -693,7 +693,7 @@ test('test #2291', function () {
     second: '2-digit',
     hour12: true,
     hourCycle: 'h12' as 'h12',
-  };
+  }
   expect(BestFitFormatMatcher(opts, PROCESSED_FORMATS)).toEqual({
     day: '2-digit',
     hour: '2-digit',
@@ -708,5 +708,5 @@ test('test #2291', function () {
     second: '2-digit',
     skeleton: 'yMMMd ah:mm:ss',
     year: 'numeric',
-  });
-});
+  })
+})

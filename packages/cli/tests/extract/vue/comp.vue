@@ -13,5 +13,5 @@
 intl.formatMessage({
   defaultMessage: 'in script',
   description: 'in script desc',
-});
+})
 </script>

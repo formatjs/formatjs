@@ -4,12 +4,12 @@ import {
   CustomFormats,
   Formatters,
   OnErrorFn,
-} from './types';
-import {IntlMessageFormat} from 'intl-messageformat';
-import * as memoize from 'fast-memoize';
-import {Cache} from 'fast-memoize';
-import {UnsupportedFormatterError} from './error';
-import {DateTimeFormat} from '@formatjs/ecma402-abstract';
+} from './types'
+import {IntlMessageFormat} from 'intl-messageformat'
+import * as memoize from 'fast-memoize'
+import {Cache} from 'fast-memoize'
+import {UnsupportedFormatterError} from './error'
+import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
@@ -18,20 +18,20 @@ export function filterProps<T extends Record<string, any>, K extends string>(
 ): Pick<T, K> {
   return whitelist.reduce((filtered, name) => {
     if (name in props) {
-      filtered[name] = props[name];
+      filtered[name] = props[name]
     } else if (name in defaults) {
-      filtered[name] = defaults[name]!;
+      filtered[name] = defaults[name]!
     }
 
-    return filtered;
-  }, {} as Pick<T, K>);
+    return filtered
+  }, {} as Pick<T, K>)
 }
 
 const defaultErrorHandler: OnErrorFn = error => {
   if (process.env.NODE_ENV !== 'production') {
-    console.error(error);
+    console.error(error)
   }
-};
+}
 
 export const DEFAULT_INTL_CONFIG: Pick<
   IntlConfig<any>,
@@ -50,7 +50,7 @@ export const DEFAULT_INTL_CONFIG: Pick<
   defaultFormats: {},
 
   onError: defaultErrorHandler,
-};
+}
 
 export function createIntlCache(): IntlCache {
   return {
@@ -61,7 +61,7 @@ export function createIntlCache(): IntlCache {
     pluralRules: {},
     list: {},
     displayNames: {},
-  };
+  }
 }
 
 function createFastMemoizeCache<V>(store: Record<string, V>): Cache<string, V> {
@@ -69,22 +69,22 @@ function createFastMemoizeCache<V>(store: Record<string, V>): Cache<string, V> {
     create() {
       return {
         has(key) {
-          return key in store;
+          return key in store
         },
         get(key) {
-          return store[key];
+          return store[key]
         },
         set(key, value) {
-          store[key] = value;
+          store[key] = value
         },
-      };
+      }
     },
-  };
+  }
 }
 
 // @ts-ignore this is to deal with rollup's default import shenanigans
-const _memoizeIntl = memoize.default || memoize;
-const memoizeIntl = _memoizeIntl as typeof memoize.default;
+const _memoizeIntl = memoize.default || memoize
+const memoizeIntl = _memoizeIntl as typeof memoize.default
 
 /**
  * Create intl formatters and populate cache
@@ -93,30 +93,30 @@ const memoizeIntl = _memoizeIntl as typeof memoize.default;
 export function createFormatters(
   cache: IntlCache = createIntlCache()
 ): Formatters {
-  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
-  const ListFormat = (Intl as any).ListFormat;
-  const DisplayNames = (Intl as any).DisplayNames;
+  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat
+  const ListFormat = (Intl as any).ListFormat
+  const DisplayNames = (Intl as any).DisplayNames
   const getDateTimeFormat = memoizeIntl(
     (...args) => new Intl.DateTimeFormat(...args) as DateTimeFormat,
     {
       cache: createFastMemoizeCache(cache.dateTime),
       strategy: memoizeIntl.strategies.variadic,
     }
-  );
+  )
   const getNumberFormat = memoizeIntl(
     (...args) => new Intl.NumberFormat(...args),
     {
       cache: createFastMemoizeCache(cache.number),
       strategy: memoizeIntl.strategies.variadic,
     }
-  );
+  )
   const getPluralRules = memoizeIntl(
     (...args) => new Intl.PluralRules(...args),
     {
       cache: createFastMemoizeCache(cache.pluralRules),
       strategy: memoizeIntl.strategies.variadic,
     }
-  );
+  )
   return {
     getDateTimeFormat,
     getNumberFormat,
@@ -151,7 +151,7 @@ export function createFormatters(
       cache: createFastMemoizeCache(cache.displayNames),
       strategy: memoizeIntl.strategies.variadic,
     }),
-  };
+  }
 }
 
 export function getNamedFormat<T extends keyof CustomFormats>(
@@ -164,14 +164,14 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   | Intl.DateTimeFormatOptions
   | Intl.RelativeTimeFormatOptions
   | undefined {
-  const formatType = formats && formats[type];
-  let format;
+  const formatType = formats && formats[type]
+  let format
   if (formatType) {
-    format = formatType[name];
+    format = formatType[name]
   }
   if (format) {
-    return format;
+    return format
   }
 
-  onError(new UnsupportedFormatterError(`No ${type} format named: ${name}`));
+  onError(new UnsupportedFormatterError(`No ${type} format named: ${name}`))
 }

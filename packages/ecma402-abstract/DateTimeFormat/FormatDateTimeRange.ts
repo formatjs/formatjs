@@ -1,6 +1,6 @@
-import {FormatDateTimePatternImplDetails} from './FormatDateTimePattern';
-import {PartitionDateTimeRangePattern} from './PartitionDateTimeRangePattern';
-import {ToLocalTimeImplDetails} from './ToLocalTime';
+import {FormatDateTimePatternImplDetails} from './FormatDateTimePattern'
+import {PartitionDateTimeRangePattern} from './PartitionDateTimeRangePattern'
+import {ToLocalTimeImplDetails} from './ToLocalTime'
 
 export function FormatDateTimeRange(
   dtf: Intl.DateTimeFormat,
@@ -8,10 +8,10 @@ export function FormatDateTimeRange(
   y: number,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ) {
-  const parts = PartitionDateTimeRangePattern(dtf, x, y, implDetails);
-  let result = '';
+  const parts = PartitionDateTimeRangePattern(dtf, x, y, implDetails)
+  let result = ''
   for (const part of parts) {
-    result += part.value;
+    result += part.value
   }
-  return result;
+  return result
 }

@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {defineMessages, FormattedMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {defineMessages, FormattedMessage} from 'react-intl'
 
 const msgs = defineMessages({
   header: {
@@ -15,7 +15,7 @@ const msgs = defineMessages({
       metadata: 'Additional metadata content.',
     },
   },
-});
+})
 
 export default class Foo extends Component {
   render() {
@@ -43,6 +43,6 @@ export default class Foo extends Component {
           }}
         />
       </div>
-    );
+    )
   }
 }

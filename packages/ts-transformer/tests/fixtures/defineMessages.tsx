@@ -1,6 +1,6 @@
 // @react-intl project:foo file:bar
-import React, {Component} from 'react';
-import {defineMessages, FormattedMessage, defineMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {defineMessages, FormattedMessage, defineMessage} from 'react-intl'
 
 const msgs = defineMessages({
   header: {
@@ -41,7 +41,7 @@ const msgs = defineMessages({
     defaultMessage: 'this is \
     a message',
   },
-} as const);
+} as const)
 
 export default class Foo extends Component {
   render() {
@@ -62,6 +62,6 @@ export default class Foo extends Component {
           />
         </p>
       </div>
-    );
+    )
   }
 }

@@ -1,5 +1,5 @@
-import '@formatjs/intl-getcanonicallocales/polyfill';
-import {Locale} from '../';
+import '@formatjs/intl-getcanonicallocales/polyfill'
+import {Locale} from '../'
 const testDataMinimal: Record<string, string> = {
   // Undefined primary language.
   // und: 'en',
@@ -18,18 +18,18 @@ const testDataMinimal: Record<string, string> = {
   // 'und-US': 'en',
   // 'zh-Hant': 'zh-TW',
   'zh-Hani': 'zh-Hani',
-};
+}
 
 describe('minimize', function () {
   for (const tag in testDataMinimal) {
-    const minimal = testDataMinimal[tag];
+    const minimal = testDataMinimal[tag]
     it(`${minimal} is indeed minimal`, function () {
       // Assert the |minimal| tag is indeed minimal.
-      expect(new Locale(minimal).minimize().toString()).toBe(minimal);
-    });
+      expect(new Locale(minimal).minimize().toString()).toBe(minimal)
+    })
     it(`${tag} -> ${minimal}`, function () {
       // Assert RemoveLikelySubtags(tag) returns |minimal|.
-      expect(new Locale(tag).minimize().toString()).toBe(minimal);
-    });
+      expect(new Locale(tag).minimize().toString()).toBe(minimal)
+    })
   }
-});
+})

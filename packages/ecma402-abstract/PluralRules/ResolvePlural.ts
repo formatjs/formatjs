@@ -1,8 +1,8 @@
-import {invariant} from '../utils';
-import {Type} from '../262';
-import {LDMLPluralRule, PluralRulesInternal} from '../types/plural-rules';
-import {FormatNumericToString} from '../NumberFormat/FormatNumericToString';
-import {GetOperands, OperandsRecord} from './GetOperands';
+import {invariant} from '../utils'
+import {Type} from '../262'
+import {LDMLPluralRule, PluralRulesInternal} from '../types/plural-rules'
+import {FormatNumericToString} from '../NumberFormat/FormatNumericToString'
+import {GetOperands, OperandsRecord} from './GetOperands'
 
 /**
  * http://ecma-international.org/ecma-402/7.0/index.html#sec-resolveplural
@@ -17,28 +17,28 @@ export function ResolvePlural(
     getInternalSlots,
     PluralRuleSelect,
   }: {
-    getInternalSlots(pl: Intl.PluralRules): PluralRulesInternal;
+    getInternalSlots(pl: Intl.PluralRules): PluralRulesInternal
     PluralRuleSelect: (
       locale: string,
       type: 'cardinal' | 'ordinal',
       n: number,
       operands: OperandsRecord
-    ) => LDMLPluralRule;
+    ) => LDMLPluralRule
   }
 ): LDMLPluralRule {
-  const internalSlots = getInternalSlots(pl);
-  invariant(Type(internalSlots) === 'Object', 'pl has to be an object');
+  const internalSlots = getInternalSlots(pl)
+  invariant(Type(internalSlots) === 'Object', 'pl has to be an object')
   invariant(
     'initializedPluralRules' in internalSlots,
     'pluralrules must be initialized'
-  );
-  invariant(Type(n) === 'Number', 'n must be a number');
+  )
+  invariant(Type(n) === 'Number', 'n must be a number')
   if (!isFinite(n)) {
-    return 'other';
+    return 'other'
   }
-  const {locale, type} = internalSlots;
-  const res = FormatNumericToString(internalSlots, n);
-  const s = res.formattedString;
-  const operands = GetOperands(s);
-  return PluralRuleSelect(locale, type, n, operands);
+  const {locale, type} = internalSlots
+  const res = FormatNumericToString(internalSlots, n)
+  const s = res.formattedString
+  const operands = GetOperands(s)
+  return PluralRuleSelect(locale, type, n, operands)
 }

@@ -1,39 +1,39 @@
-import {UnicodeLanguageId, UnicodeLocaleId} from './types';
+import {UnicodeLanguageId, UnicodeLocaleId} from './types'
 
 export function emitUnicodeLanguageId(lang?: UnicodeLanguageId): string {
   if (!lang) {
-    return '';
+    return ''
   }
   return [lang.lang, lang.script, lang.region, ...(lang.variants || [])]
     .filter(Boolean)
-    .join('-');
+    .join('-')
 }
 
 export function emitUnicodeLocaleId({
   lang,
   extensions,
 }: UnicodeLocaleId): string {
-  const chunks = [emitUnicodeLanguageId(lang)];
+  const chunks = [emitUnicodeLanguageId(lang)]
   for (const ext of extensions) {
-    chunks.push(ext.type);
+    chunks.push(ext.type)
     switch (ext.type) {
       case 'u':
         chunks.push(
           ...ext.attributes,
           ...ext.keywords.reduce((all: string[], kv) => all.concat(kv), [])
-        );
-        break;
+        )
+        break
       case 't':
         chunks.push(
           emitUnicodeLanguageId(ext.lang),
           ...ext.fields.reduce((all: string[], kv) => all.concat(kv), [])
-        );
-        break;
+        )
+        break
       default:
-        chunks.push(ext.value);
-        break;
+        chunks.push(ext.value)
+        break
     }
   }
 
-  return chunks.filter(Boolean).join('-');
+  return chunks.filter(Boolean).join('-')
 }

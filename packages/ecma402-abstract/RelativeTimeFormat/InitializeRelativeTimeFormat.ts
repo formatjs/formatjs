@@ -1,14 +1,14 @@
 import {
   RelativeTimeFormatInternal,
   LocaleFieldsData,
-} from '../types/relative-time';
-import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList';
-import {ToObject} from '../262';
-import {GetOption} from '../GetOption';
-import {ResolveLocale} from '../ResolveLocale';
-import {invariant} from '../utils';
+} from '../types/relative-time'
+import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
+import {GetOption} from '../GetOption'
+import {ResolveLocale} from '../ResolveLocale'
+import {invariant} from '../utils'
+import {CoerceOptionsToObject} from '../CoerceOptionsToObject'
 
-const NUMBERING_SYSTEM_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i;
+const NUMBERING_SYSTEM_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 
 export function InitializeRelativeTimeFormat(
   rtf: Intl.RelativeTimeFormat,
@@ -21,39 +21,40 @@ export function InitializeRelativeTimeFormat(
     localeData,
     getDefaultLocale,
   }: {
-    getInternalSlots(rtf: Intl.RelativeTimeFormat): RelativeTimeFormatInternal;
-    availableLocales: Set<string>;
-    relevantExtensionKeys: string[];
-    localeData: Record<string, LocaleFieldsData | undefined>;
-    getDefaultLocale(): string;
+    getInternalSlots(rtf: Intl.RelativeTimeFormat): RelativeTimeFormatInternal
+    availableLocales: Set<string>
+    relevantExtensionKeys: string[]
+    localeData: Record<string, LocaleFieldsData | undefined>
+    getDefaultLocale(): string
   }
 ) {
-  const internalSlots = getInternalSlots(rtf);
-  internalSlots.initializedRelativeTimeFormat = true;
-  const requestedLocales = CanonicalizeLocaleList(locales);
-  const opt: any = Object.create(null);
-  const opts = options === undefined ? Object.create(null) : ToObject(options);
+  const internalSlots = getInternalSlots(rtf)
+  internalSlots.initializedRelativeTimeFormat = true
+  const requestedLocales = CanonicalizeLocaleList(locales)
+  const opt: any = Object.create(null)
+  const opts = CoerceOptionsToObject<Intl.RelativeTimeFormatOptions>(options)
   const matcher = GetOption(
     opts,
     'localeMatcher',
     'string',
     ['best fit', 'lookup'],
     'best fit'
-  );
-  opt.localeMatcher = matcher;
-  const numberingSystem: string = GetOption(
+  )
+  opt.localeMatcher = matcher
+  const numberingSystem = GetOption(
     opts,
+    // @ts-expect-error TS option is wack
     'numberingSystem',
     'string',
     undefined,
     undefined
-  );
+  )
   if (numberingSystem !== undefined) {
     if (!NUMBERING_SYSTEM_REGEX.test(numberingSystem)) {
-      throw new RangeError(`Invalid numbering system ${numberingSystem}`);
+      throw new RangeError(`Invalid numbering system ${numberingSystem}`)
     }
   }
-  opt.nu = numberingSystem;
+  opt.nu = numberingSystem
   const r = ResolveLocale(
     availableLocales,
     requestedLocales,
@@ -61,28 +62,28 @@ export function InitializeRelativeTimeFormat(
     relevantExtensionKeys,
     localeData,
     getDefaultLocale
-  );
-  const {locale, nu} = r;
-  internalSlots.locale = locale;
+  )
+  const {locale, nu} = r
+  internalSlots.locale = locale
   internalSlots.style = GetOption(
     opts,
     'style',
     'string',
     ['long', 'narrow', 'short'],
     'long'
-  );
+  )
   internalSlots.numeric = GetOption(
     opts,
     'numeric',
     'string',
     ['always', 'auto'],
     'always'
-  );
-  const fields = localeData[r.dataLocale];
-  invariant(!!fields, `Missing locale data for ${r.dataLocale}`);
-  internalSlots.fields = fields;
-  internalSlots.numberFormat = new Intl.NumberFormat(locales);
-  internalSlots.pluralRules = new Intl.PluralRules(locales);
-  internalSlots.numberingSystem = nu;
-  return rtf;
+  )
+  const fields = localeData[r.dataLocale]
+  invariant(!!fields, `Missing locale data for ${r.dataLocale}`)
+  internalSlots.fields = fields
+  internalSlots.numberFormat = new Intl.NumberFormat(locales)
+  internalSlots.pluralRules = new Intl.PluralRules(locales)
+  internalSlots.numberingSystem = nu
+  return rtf
 }

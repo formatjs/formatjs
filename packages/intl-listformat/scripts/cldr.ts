@@ -1,7 +1,7 @@
-import {join, basename} from 'path';
-import {outputFileSync, copyFileSync, readFileSync} from 'fs-extra';
-import {sync as globSync} from 'fast-glob';
-import minimist from 'minimist';
+import {join, basename} from 'path'
+import {outputFileSync, copyFileSync, readFileSync} from 'fs-extra'
+import {sync as globSync} from 'fast-glob'
+import minimist from 'minimist'
 
 function main(args: minimist.ParsedArgs) {
   const {
@@ -11,18 +11,18 @@ function main(args: minimist.ParsedArgs) {
     polyfillLocalesOutFile,
     test262MainFile,
     testOutFile,
-  } = args;
-  const allFiles = globSync(join(cldrFolder, '*.json'));
-  allFiles.sort();
+  } = args
+  const allFiles = globSync(join(cldrFolder, '*.json'))
+  allFiles.sort()
   const locales = localesToGen
     ? localesToGen.split(',')
-    : allFiles.map(f => basename(f, '.json'));
+    : allFiles.map(f => basename(f, '.json'))
   // Dist all locale files to locale-data
   if (outDir) {
     // Dist all locale files to locale-data (JS)
     for (const locale of locales) {
-      const data = readFileSync(join(cldrFolder, `${locale}.json`));
-      const destFile = join(outDir, locale + '.js');
+      const data = readFileSync(join(cldrFolder, `${locale}.json`))
+      const destFile = join(outDir, locale + '.js')
       outputFileSync(
         destFile,
         `/* @generated */	
@@ -30,19 +30,19 @@ function main(args: minimist.ParsedArgs) {
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(${data})
 }`
-      );
+      )
     }
   }
 
   if (testOutFile) {
-    copyFileSync(join(cldrFolder, `${locales[0]}.json`), testOutFile);
+    copyFileSync(join(cldrFolder, `${locales[0]}.json`), testOutFile)
   }
 
   if (polyfillLocalesOutFile) {
     // Aggregate all into ../polyfill-locales.js
-    const allData = [];
+    const allData = []
     for (const locale of locales) {
-      allData.push(readFileSync(join(cldrFolder, `${locale}.json`)));
+      allData.push(readFileSync(join(cldrFolder, `${locale}.json`)))
     }
     outputFileSync(
       polyfillLocalesOutFile,
@@ -55,13 +55,13 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   )
 }
 `
-    );
+    )
   }
 
   if (test262MainFile) {
-    const allData = [];
+    const allData = []
     for (const locale of locales) {
-      allData.push(readFileSync(join(cldrFolder, `${locale}.json`)));
+      allData.push(readFileSync(join(cldrFolder, `${locale}.json`)))
     }
     outputFileSync(
       test262MainFile,
@@ -74,10 +74,10 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   )
 }
 `
-    );
+    )
   }
 }
 
 if (require.main === module) {
-  main(minimist(process.argv));
+  main(minimist(process.argv))
 }

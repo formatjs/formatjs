@@ -1,25 +1,25 @@
-import * as path from 'path';
-import {BinaryToTextEncoding, createHash} from 'crypto';
+import * as path from 'path'
+import {BinaryToTextEncoding, createHash} from 'crypto'
 export interface LoaderContext {
-  resourceQuery?: string;
-  resourcePath?: string;
+  resourceQuery?: string
+  resourcePath?: string
   options?: {
     customInterpolateName(
       this: LoaderContext,
       url: string,
       name: string | NameFn,
       options: Options
-    ): string;
-  };
+    ): string
+  }
 }
 
 export interface Options {
-  context?: string;
-  content?: string;
-  regExp?: RegExp;
+  context?: string
+  content?: string
+  regExp?: RegExp
 }
 
-export type NameFn = (resourcePath?: string, resourceQuery?: string) => string;
+export type NameFn = (resourcePath?: string, resourceQuery?: string) => string
 
 function getHashDigest(
   content: string,
@@ -27,9 +27,9 @@ function getHashDigest(
   digestType: BinaryToTextEncoding = 'hex',
   length = 9999
 ) {
-  const hasher = createHash(hashType);
-  hasher.update(content);
-  return hasher.digest(digestType).slice(0, length);
+  const hasher = createHash(hashType)
+  hasher.update(content)
+  return hasher.digest(digestType).slice(0, length)
 }
 
 export function interpolateName(
@@ -37,71 +37,71 @@ export function interpolateName(
   name: string | NameFn,
   options: Options
 ) {
-  let filename;
+  let filename
 
   const hasQuery =
-    loaderContext.resourceQuery && loaderContext.resourceQuery.length > 1;
+    loaderContext.resourceQuery && loaderContext.resourceQuery.length > 1
 
   if (typeof name === 'function') {
     filename = name(
       loaderContext.resourcePath,
       hasQuery ? loaderContext.resourceQuery : undefined
-    );
+    )
   } else {
-    filename = name || '[hash].[ext]';
+    filename = name || '[hash].[ext]'
   }
 
-  const context = options.context;
-  const content = options.content;
-  const regExp = options.regExp;
+  const context = options.context
+  const content = options.content
+  const regExp = options.regExp
 
-  let ext = 'bin';
-  let basename = 'file';
-  let directory = '';
-  let folder = '';
-  let query = '';
+  let ext = 'bin'
+  let basename = 'file'
+  let directory = ''
+  let folder = ''
+  let query = ''
 
   if (loaderContext.resourcePath) {
-    const parsed = path.parse(loaderContext.resourcePath);
-    let resourcePath = loaderContext.resourcePath;
+    const parsed = path.parse(loaderContext.resourcePath)
+    let resourcePath = loaderContext.resourcePath
 
     if (parsed.ext) {
-      ext = parsed.ext.substr(1);
+      ext = parsed.ext.substr(1)
     }
 
     if (parsed.dir) {
-      basename = parsed.name;
-      resourcePath = parsed.dir + path.sep;
+      basename = parsed.name
+      resourcePath = parsed.dir + path.sep
     }
 
     if (typeof context !== 'undefined') {
       directory = path
         .relative(context, resourcePath + '_')
         .replace(/\\/g, '/')
-        .replace(/\.\.(\/)?/g, '_$1');
-      directory = directory.substr(0, directory.length - 1);
+        .replace(/\.\.(\/)?/g, '_$1')
+      directory = directory.substr(0, directory.length - 1)
     } else {
-      directory = resourcePath.replace(/\\/g, '/').replace(/\.\.(\/)?/g, '_$1');
+      directory = resourcePath.replace(/\\/g, '/').replace(/\.\.(\/)?/g, '_$1')
     }
 
     if (directory.length === 1) {
-      directory = '';
+      directory = ''
     } else if (directory.length > 1) {
-      folder = path.basename(directory);
+      folder = path.basename(directory)
     }
   }
 
   if (loaderContext.resourceQuery && loaderContext.resourceQuery.length > 1) {
-    query = loaderContext.resourceQuery;
+    query = loaderContext.resourceQuery
 
-    const hashIdx = query.indexOf('#');
+    const hashIdx = query.indexOf('#')
 
     if (hashIdx >= 0) {
-      query = query.substr(0, hashIdx);
+      query = query.substr(0, hashIdx)
     }
   }
 
-  let url = filename;
+  let url = filename
 
   if (content) {
     // Match hash template
@@ -112,7 +112,7 @@ export function interpolateName(
         /\[(?:([^:\]]+):)?(?:hash|contenthash)(?::([a-z]+\d*))?(?::(\d+))?\]/gi,
         (_, hashType, digestType, maxLength) =>
           getHashDigest(content, hashType, digestType, parseInt(maxLength, 10))
-      );
+      )
   }
 
   url = url
@@ -120,15 +120,15 @@ export function interpolateName(
     .replace(/\[name\]/gi, () => basename)
     .replace(/\[path\]/gi, () => directory)
     .replace(/\[folder\]/gi, () => folder)
-    .replace(/\[query\]/gi, () => query);
+    .replace(/\[query\]/gi, () => query)
 
   if (regExp && loaderContext.resourcePath) {
-    const match = loaderContext.resourcePath.match(new RegExp(regExp));
+    const match = loaderContext.resourcePath.match(new RegExp(regExp))
 
     match &&
       match.forEach((matched, i) => {
-        url = url.replace(new RegExp('\\[' + i + '\\]', 'ig'), matched);
-      });
+        url = url.replace(new RegExp('\\[' + i + '\\]', 'ig'), matched)
+      })
   }
 
   if (
@@ -140,8 +140,8 @@ export function interpolateName(
       url,
       name,
       options
-    );
+    )
   }
 
-  return url;
+  return url
 }

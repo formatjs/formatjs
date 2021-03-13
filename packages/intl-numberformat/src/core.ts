@@ -9,19 +9,19 @@ import {
   ToNumber,
   CanonicalizeLocaleList,
   OrdinaryHasInstance,
-} from '@formatjs/ecma402-abstract';
-import * as currencyDigitsData from './data/currency-digits.json';
-import * as numberingSystemsData from './data/numbering-systems.json';
-const {names: numberingSystemNames} = numberingSystemsData;
+} from '@formatjs/ecma402-abstract'
+import * as currencyDigitsData from './data/currency-digits.json'
+import * as numberingSystemsData from './data/numbering-systems.json'
+const {names: numberingSystemNames} = numberingSystemsData
 // eslint-disable-next-line import/no-cycle
-import getInternalSlots from './get_internal_slots';
+import getInternalSlots from './get_internal_slots'
 import {
   NumberFormatConstructor,
   NumberFormat as NumberFormatType,
-} from './types';
+} from './types'
 
 // Merge declaration with the constructor defined below.
-export type NumberFormat = NumberFormatType;
+export type NumberFormat = NumberFormatType
 
 const RESOLVED_OPTIONS_KEYS = [
   'locale',
@@ -41,7 +41,7 @@ const RESOLVED_OPTIONS_KEYS = [
   'notation',
   'compactDisplay',
   'signDisplay',
-] as const;
+] as const
 
 /**
  * https://tc39.es/ecma402/#sec-intl-numberformat-constructor
@@ -53,7 +53,7 @@ export const NumberFormat = function (
 ) {
   // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
   if (!this || !OrdinaryHasInstance(NumberFormat, this)) {
-    return new NumberFormat(locales, options);
+    return new NumberFormat(locales, options)
   }
 
   InitializeNumberFormat(this as any, locales, options, {
@@ -63,16 +63,16 @@ export const NumberFormat = function (
     getDefaultLocale: NumberFormat.getDefaultLocale,
     currencyDigitsData,
     numberingSystemNames,
-  });
+  })
 
-  const internalSlots = getInternalSlots(this as any);
+  const internalSlots = getInternalSlots(this as any)
 
-  const dataLocale = internalSlots.dataLocale;
-  const dataLocaleData = NumberFormat.localeData[dataLocale];
+  const dataLocale = internalSlots.dataLocale
+  const dataLocaleData = NumberFormat.localeData[dataLocale]
   invariant(
     dataLocaleData !== undefined,
     `Cannot load locale-dependent data for ${dataLocale}.`
-  );
+  )
 
   internalSlots.pl = new Intl.PluralRules(dataLocale, {
     minimumFractionDigits: internalSlots.minimumFractionDigits,
@@ -80,14 +80,14 @@ export const NumberFormat = function (
     minimumIntegerDigits: internalSlots.minimumIntegerDigits,
     minimumSignificantDigits: internalSlots.minimumSignificantDigits,
     maximumSignificantDigits: internalSlots.maximumSignificantDigits,
-  } as any);
-  return this;
-} as NumberFormatConstructor;
+  } as any)
+  return this
+} as NumberFormatConstructor
 
 function formatToParts(this: Intl.NumberFormat, x: number) {
   return FormatNumericToParts(this, toNumeric(x) as number, {
     getInternalSlots,
-  });
+  })
 }
 
 Object.defineProperty(formatToParts, 'name', {
@@ -95,30 +95,30 @@ Object.defineProperty(formatToParts, 'name', {
   enumerable: false,
   writable: false,
   configurable: true,
-});
+})
 
 defineProperty(NumberFormat.prototype, 'formatToParts', {
   value: formatToParts,
-});
+})
 
 defineProperty(NumberFormat.prototype, 'resolvedOptions', {
   value: function resolvedOptions() {
     if (typeof this !== 'object' || !OrdinaryHasInstance(NumberFormat, this)) {
       throw TypeError(
         'Method Intl.NumberFormat.prototype.resolvedOptions called on incompatible receiver'
-      );
+      )
     }
-    const internalSlots = getInternalSlots(this as any);
-    const ro: Record<string, unknown> = {};
+    const internalSlots = getInternalSlots(this as any)
+    const ro: Record<string, unknown> = {}
     for (const key of RESOLVED_OPTIONS_KEYS) {
-      const value = internalSlots[key];
+      const value = internalSlots[key]
       if (value !== undefined) {
-        ro[key] = value;
+        ro[key] = value
       }
     }
-    return ro as any;
+    return ro as any
   },
-});
+})
 
 const formatDescriptor = {
   enumerable: false,
@@ -127,22 +127,22 @@ const formatDescriptor = {
     if (typeof this !== 'object' || !OrdinaryHasInstance(NumberFormat, this)) {
       throw TypeError(
         'Intl.NumberFormat format property accessor called on incompatible receiver'
-      );
+      )
     }
-    const internalSlots = getInternalSlots(this as any);
+    const internalSlots = getInternalSlots(this as any)
     // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const numberFormat = this;
-    let boundFormat = internalSlots.boundFormat;
+    const numberFormat = this
+    let boundFormat = internalSlots.boundFormat
     if (boundFormat === undefined) {
       // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
       boundFormat = (value?: number | bigint) => {
         // TODO: check bigint
-        const x = toNumeric(value) as number;
+        const x = toNumeric(value) as number
         return numberFormat
           .formatToParts(x)
           .map(x => x.value)
-          .join('');
-      };
+          .join('')
+      }
       try {
         // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js
         Object.defineProperty(boundFormat, 'name', {
@@ -150,16 +150,16 @@ const formatDescriptor = {
           enumerable: false,
           writable: false,
           value: '',
-        });
+        })
       } catch (e) {
         // In older browser (e.g Chrome 36 like polyfill.io)
         // TypeError: Cannot redefine property: name
       }
-      internalSlots.boundFormat = boundFormat;
+      internalSlots.boundFormat = boundFormat
     }
-    return boundFormat;
+    return boundFormat
   },
-} as const;
+} as const
 try {
   // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/name.js
   Object.defineProperty(formatDescriptor.get, 'name', {
@@ -167,13 +167,13 @@ try {
     enumerable: false,
     writable: false,
     value: 'get format',
-  });
+  })
 } catch (e) {
   // In older browser (e.g Chrome 36 like polyfill.io)
   // TypeError: Cannot redefine property: name
 }
 
-Object.defineProperty(NumberFormat.prototype, 'format', formatDescriptor);
+Object.defineProperty(NumberFormat.prototype, 'format', formatDescriptor)
 
 // Static properties
 defineProperty(NumberFormat, 'supportedLocalesOf', {
@@ -185,9 +185,9 @@ defineProperty(NumberFormat, 'supportedLocalesOf', {
       NumberFormat.availableLocales,
       CanonicalizeLocaleList(locales),
       options
-    );
+    )
   },
-});
+})
 
 NumberFormat.__addLocaleData = function __addLocaleData(
   ...data: RawNumberLocaleData[]
@@ -195,49 +195,49 @@ NumberFormat.__addLocaleData = function __addLocaleData(
   for (const {data: d, locale} of data) {
     const minimizedLocale = new (Intl as any).Locale(locale)
       .minimize()
-      .toString();
+      .toString()
     NumberFormat.localeData[locale] = NumberFormat.localeData[
       minimizedLocale
-    ] = d;
-    NumberFormat.availableLocales.add(minimizedLocale);
-    NumberFormat.availableLocales.add(locale);
+    ] = d
+    NumberFormat.availableLocales.add(minimizedLocale)
+    NumberFormat.availableLocales.add(locale)
     if (!NumberFormat.__defaultLocale) {
-      NumberFormat.__defaultLocale = minimizedLocale;
+      NumberFormat.__defaultLocale = minimizedLocale
     }
   }
-};
+}
 
 NumberFormat.__addUnitData = function __addUnitData(
   locale: string,
   unitsData: RawNumberLocaleData['data']['units']
 ) {
-  const {[locale]: existingData} = NumberFormat.localeData;
+  const {[locale]: existingData} = NumberFormat.localeData
   if (!existingData) {
     throw new Error(`Locale data for "${locale}" has not been loaded in NumberFormat. 
-Please __addLocaleData before adding additional unit data`);
+Please __addLocaleData before adding additional unit data`)
   }
 
   for (const unit in unitsData.simple) {
-    existingData.units.simple[unit] = unitsData.simple[unit];
+    existingData.units.simple[unit] = unitsData.simple[unit]
   }
   for (const unit in unitsData.compound) {
-    existingData.units.compound[unit] = unitsData.compound[unit];
+    existingData.units.compound[unit] = unitsData.compound[unit]
   }
-};
+}
 
-NumberFormat.__defaultLocale = '';
-NumberFormat.localeData = {};
-NumberFormat.availableLocales = new Set<string>();
+NumberFormat.__defaultLocale = ''
+NumberFormat.localeData = {}
+NumberFormat.availableLocales = new Set<string>()
 NumberFormat.getDefaultLocale = () => {
-  return NumberFormat.__defaultLocale;
-};
-NumberFormat.polyfilled = true;
+  return NumberFormat.__defaultLocale
+}
+NumberFormat.polyfilled = true
 
 function toNumeric(val: any) {
   if (typeof val === 'bigint') {
-    return val;
+    return val
   }
-  return ToNumber(val);
+  return ToNumber(val)
 }
 
 try {
@@ -248,7 +248,7 @@ try {
       enumerable: false,
       writable: false,
       value: 'Intl.NumberFormat',
-    });
+    })
   }
 
   // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/length.js
@@ -257,21 +257,21 @@ try {
     enumerable: false,
     writable: false,
     value: 0,
-  });
+  })
   // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/supportedLocalesOf/length.js
   Object.defineProperty(NumberFormat.supportedLocalesOf, 'length', {
     configurable: true,
     enumerable: false,
     writable: false,
     value: 1,
-  });
+  })
 
   Object.defineProperty(NumberFormat, 'prototype', {
     configurable: false,
     enumerable: false,
     writable: false,
     value: NumberFormat.prototype,
-  });
+  })
 } catch (e) {
   // Meta fix so we're test262-compliant, not important
 }

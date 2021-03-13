@@ -1,5 +1,5 @@
 // @react-intl project:foo
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 
 function CustomMessage() {}
 
@@ -7,7 +7,7 @@ export default class Foo extends Component {
   render() {
     t({
       defaultMessage: 't',
-    });
+    })
     return (
       <CustomMessage
         id={formatMessage({
@@ -18,6 +18,6 @@ export default class Foo extends Component {
         })}
         defaultMessage="Hello World!"
       />
-    );
+    )
   }
 }

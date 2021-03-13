@@ -1,4 +1,4 @@
-import {PartitionPattern} from '../PartitionPattern';
+import {PartitionPattern} from '../PartitionPattern'
 
 test('PartitionPattern should partition pattern correctly', function () {
   expect(PartitionPattern('AA{0}BB')).toEqual([
@@ -14,7 +14,7 @@ test('PartitionPattern should partition pattern correctly', function () {
       type: 'literal',
       value: 'BB',
     },
-  ]);
+  ])
   expect(PartitionPattern('{0} BB')).toEqual([
     {
       type: '0',
@@ -24,7 +24,7 @@ test('PartitionPattern should partition pattern correctly', function () {
       type: 'literal',
       value: ' BB',
     },
-  ]);
+  ])
   expect(PartitionPattern('AA {0}')).toEqual([
     {
       type: 'literal',
@@ -34,5 +34,5 @@ test('PartitionPattern should partition pattern correctly', function () {
       type: '0',
       value: undefined,
     },
-  ]);
-});
+  ])
+})

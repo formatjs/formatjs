@@ -1,5 +1,5 @@
-import {PluralRules} from './';
-import {shouldPolyfill} from './should-polyfill';
+import {PluralRules} from './'
+import {shouldPolyfill} from './should-polyfill'
 
 if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'PluralRules', {
@@ -7,5 +7,5 @@ if (shouldPolyfill()) {
     writable: true,
     enumerable: false,
     configurable: true,
-  });
+  })
 }

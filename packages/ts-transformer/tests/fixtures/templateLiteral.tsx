@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import {FormattedMessage, defineMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {FormattedMessage, defineMessage} from 'react-intl'
 
 defineMessage({
   id: `template`,
   defaultMessage: `should remove
     newline and
     extra spaces`,
-});
+})
 
 export default class Foo extends Component {
   render() {
@@ -16,6 +16,6 @@ export default class Foo extends Component {
         defaultMessage={`Hello World!`}
         description="The default message."
       />
-    );
+    )
   }
 }

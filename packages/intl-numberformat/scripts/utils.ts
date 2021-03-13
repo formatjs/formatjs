@@ -1,18 +1,18 @@
-import {LDMLPluralRuleMap, LDMLPluralRule} from '@formatjs/ecma402-abstract';
-import {isEqual} from 'lodash';
+import {LDMLPluralRuleMap, LDMLPluralRule} from '@formatjs/ecma402-abstract'
+import {isEqual} from 'lodash'
 export function collapseSingleValuePluralRule<T>(
   rules: LDMLPluralRuleMap<T>
 ): LDMLPluralRuleMap<T> {
-  const keys = Object.keys(rules) as Array<LDMLPluralRule>;
+  const keys = Object.keys(rules) as Array<LDMLPluralRule>
   return keys.reduce(
     (all: LDMLPluralRuleMap<T>, k) => {
       if (k !== 'other' && rules[k] && !isEqual(rules[k], rules.other)) {
-        all[k] = rules[k];
+        all[k] = rules[k]
       }
-      return all;
+      return all
     },
     {other: rules.other}
-  );
+  )
 }
 
 export const PLURAL_RULES: Array<LDMLPluralRule> = [
@@ -22,4 +22,4 @@ export const PLURAL_RULES: Array<LDMLPluralRule> = [
   'two',
   'few',
   'many',
-];
+]

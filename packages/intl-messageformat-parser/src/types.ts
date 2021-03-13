@@ -1,7 +1,7 @@
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract';
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 export interface ExtendedNumberFormatOptions extends NumberFormatOptions {
-  scale?: number;
+  scale?: number
 }
 
 export enum TYPE {
@@ -50,43 +50,43 @@ export enum SKELETON_TYPE {
 }
 
 export interface LocationDetails {
-  offset: number;
-  line: number;
-  column: number;
+  offset: number
+  line: number
+  column: number
 }
 export interface Location {
-  start: LocationDetails;
-  end: LocationDetails;
+  start: LocationDetails
+  end: LocationDetails
 }
 
 export interface BaseElement<T extends TYPE> {
-  type: T;
-  value: string;
-  location?: Location;
+  type: T
+  value: string
+  location?: Location
 }
 
-export type LiteralElement = BaseElement<TYPE.literal>;
-export type ArgumentElement = BaseElement<TYPE.argument>;
+export type LiteralElement = BaseElement<TYPE.literal>
+export type ArgumentElement = BaseElement<TYPE.argument>
 export interface TagElement {
-  type: TYPE.tag;
-  value: string;
-  children: MessageFormatElement[];
-  location?: Location;
+  type: TYPE.tag
+  value: string
+  children: MessageFormatElement[]
+  location?: Location
 }
 
 export interface SimpleFormatElement<T extends TYPE, S extends Skeleton>
   extends BaseElement<T> {
-  style?: string | S | null;
+  style?: string | S | null
 }
 
-export type NumberElement = SimpleFormatElement<TYPE.number, NumberSkeleton>;
-export type DateElement = SimpleFormatElement<TYPE.date, DateTimeSkeleton>;
-export type TimeElement = SimpleFormatElement<TYPE.time, DateTimeSkeleton>;
+export type NumberElement = SimpleFormatElement<TYPE.number, NumberSkeleton>
+export type DateElement = SimpleFormatElement<TYPE.date, DateTimeSkeleton>
+export type TimeElement = SimpleFormatElement<TYPE.time, DateTimeSkeleton>
 
 export interface SelectOption {
-  id: string;
-  value: MessageFormatElement[];
-  location?: Location;
+  id: string
+  value: MessageFormatElement[]
+  location?: Location
 }
 
 export type ValidPluralRule =
@@ -96,26 +96,26 @@ export type ValidPluralRule =
   | 'few'
   | 'many'
   | 'other'
-  | string;
+  | string
 
 export interface PluralOrSelectOption {
-  value: MessageFormatElement[];
-  location?: Location;
+  value: MessageFormatElement[]
+  location?: Location
 }
 
 export interface SelectElement extends BaseElement<TYPE.select> {
-  options: Record<string, PluralOrSelectOption>;
+  options: Record<string, PluralOrSelectOption>
 }
 
 export interface PluralElement extends BaseElement<TYPE.plural> {
-  options: Record<ValidPluralRule, PluralOrSelectOption>;
-  offset: number;
-  pluralType: Intl.PluralRulesOptions['type'];
+  options: Record<ValidPluralRule, PluralOrSelectOption>
+  offset: number
+  pluralType: Intl.PluralRulesOptions['type']
 }
 
 export interface PoundElement {
-  type: TYPE.pound;
-  location?: Location;
+  type: TYPE.pound
+  location?: Location
 }
 
 export type MessageFormatElement =
@@ -127,28 +127,28 @@ export type MessageFormatElement =
   | SelectElement
   | PluralElement
   | TagElement
-  | PoundElement;
+  | PoundElement
 
 export interface NumberSkeletonToken {
-  stem: string;
-  options: string[];
+  stem: string
+  options: string[]
 }
 
 export interface NumberSkeleton {
-  type: SKELETON_TYPE.number;
-  tokens: NumberSkeletonToken[];
-  location?: Location;
-  parsedOptions: ExtendedNumberFormatOptions;
+  type: SKELETON_TYPE.number
+  tokens: NumberSkeletonToken[]
+  location?: Location
+  parsedOptions: ExtendedNumberFormatOptions
 }
 
 export interface DateTimeSkeleton {
-  type: SKELETON_TYPE.dateTime;
-  pattern: string;
-  location?: Location;
-  parsedOptions: Intl.DateTimeFormatOptions;
+  type: SKELETON_TYPE.dateTime
+  pattern: string
+  location?: Location
+  parsedOptions: Intl.DateTimeFormatOptions
 }
 
-export type Skeleton = NumberSkeleton | DateTimeSkeleton;
+export type Skeleton = NumberSkeleton | DateTimeSkeleton
 
 /**
  * Type Guards
@@ -156,50 +156,50 @@ export type Skeleton = NumberSkeleton | DateTimeSkeleton;
 export function isLiteralElement(
   el: MessageFormatElement
 ): el is LiteralElement {
-  return el.type === TYPE.literal;
+  return el.type === TYPE.literal
 }
 export function isArgumentElement(
   el: MessageFormatElement
 ): el is ArgumentElement {
-  return el.type === TYPE.argument;
+  return el.type === TYPE.argument
 }
 export function isNumberElement(el: MessageFormatElement): el is NumberElement {
-  return el.type === TYPE.number;
+  return el.type === TYPE.number
 }
 export function isDateElement(el: MessageFormatElement): el is DateElement {
-  return el.type === TYPE.date;
+  return el.type === TYPE.date
 }
 export function isTimeElement(el: MessageFormatElement): el is TimeElement {
-  return el.type === TYPE.time;
+  return el.type === TYPE.time
 }
 export function isSelectElement(el: MessageFormatElement): el is SelectElement {
-  return el.type === TYPE.select;
+  return el.type === TYPE.select
 }
 export function isPluralElement(el: MessageFormatElement): el is PluralElement {
-  return el.type === TYPE.plural;
+  return el.type === TYPE.plural
 }
 export function isPoundElement(el: MessageFormatElement): el is PoundElement {
-  return el.type === TYPE.pound;
+  return el.type === TYPE.pound
 }
 export function isTagElement(el: MessageFormatElement): el is TagElement {
-  return el.type === TYPE.tag;
+  return el.type === TYPE.tag
 }
 export function isNumberSkeleton(
   el: NumberElement['style'] | Skeleton
 ): el is NumberSkeleton {
-  return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.number);
+  return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.number)
 }
 export function isDateTimeSkeleton(
   el?: DateElement['style'] | TimeElement['style'] | Skeleton
 ): el is DateTimeSkeleton {
-  return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.dateTime);
+  return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.dateTime)
 }
 
 export function createLiteralElement(value: string): LiteralElement {
   return {
     type: TYPE.literal,
     value,
-  };
+  }
 }
 
 export function createNumberElement(
@@ -210,7 +210,7 @@ export function createNumberElement(
     type: TYPE.number,
     value,
     style,
-  };
+  }
 }
 
 export interface Options {
@@ -219,22 +219,22 @@ export interface Options {
    * to `{var, number}`
    * Default is true
    */
-  normalizeHashtagInPlural?: boolean;
+  normalizeHashtagInPlural?: boolean
   /**
    * Whether to parse number/datetime skeleton
    * into Intl.NumberFormatOptions & Intl.DateTimeFormatOptions
    */
-  shouldParseSkeletons?: boolean;
+  shouldParseSkeletons?: boolean
   /**
    * Capture location info in AST
    * Default is false
    */
-  captureLocation?: boolean;
+  captureLocation?: boolean
   /**
    * Whether to treat HTML/XML tags as string literal
    * instead of parsing them as tag token.
    * When this is false we only allow simple tags without
    * any attributes
    */
-  ignoreTag?: boolean;
+  ignoreTag?: boolean
 }

@@ -1,7 +1,7 @@
-import enforceId from '../rules/enforce-id';
-import {ruleTester} from './util';
-import {noMatch, spreadJsx, emptyFnCall} from './fixtures';
-const options = [{idInterpolationPattern: '[sha512:contenthash:base64:6]'}];
+import enforceId from '../rules/enforce-id'
+import {ruleTester} from './util'
+import {noMatch, spreadJsx, emptyFnCall} from './fixtures'
+const options = [{idInterpolationPattern: '[sha512:contenthash:base64:6]'}]
 ruleTester.run('enforce-id', enforceId, {
   valid: [
     {
@@ -172,4 +172,4 @@ import { defineMessages } from 'react-intl'
 defineMessages({ example: { defaultMessage: 'example', id: 'O7Eu2j' } })`,
     },
   ],
-});
+})

@@ -1,5 +1,5 @@
-import {DateTimeFormatOptions} from '../types/date-time';
-import {ToObject} from '../262';
+import {DateTimeFormatOptions} from '../types/date-time'
+import {ToObject} from '../262'
 
 /**
  * https://tc39.es/ecma402/#sec-todatetimeoptions
@@ -13,19 +13,19 @@ export function ToDateTimeOptions(
   defaults?: string
 ): DateTimeFormatOptions {
   if (options === undefined) {
-    options = null;
+    options = null
   } else {
-    options = ToObject(options);
+    options = ToObject(options)
   }
-  options = Object.create(options) as DateTimeFormatOptions;
-  let needDefaults = true;
+  options = Object.create(options) as DateTimeFormatOptions
+  let needDefaults = true
   if (required === 'date' || required === 'any') {
     for (const prop of ['weekday', 'year', 'month', 'day'] as Array<
       keyof Pick<DateTimeFormatOptions, 'weekday' | 'year' | 'month' | 'day'>
     >) {
-      const value = options[prop];
+      const value = options[prop]
       if (value !== undefined) {
-        needDefaults = false;
+        needDefaults = false
       }
     }
   }
@@ -33,39 +33,39 @@ export function ToDateTimeOptions(
     for (const prop of ['hour', 'minute', 'second'] as Array<
       keyof Pick<DateTimeFormatOptions, 'hour' | 'minute' | 'second'>
     >) {
-      const value = options[prop];
+      const value = options[prop]
       if (value !== undefined) {
-        needDefaults = false;
+        needDefaults = false
       }
     }
   }
   if (options.dateStyle !== undefined || options.timeStyle !== undefined) {
-    needDefaults = false;
+    needDefaults = false
   }
   if (required === 'date' && options.timeStyle) {
     throw new TypeError(
       'Intl.DateTimeFormat date was required but timeStyle was included'
-    );
+    )
   }
   if (required === 'time' && options.dateStyle) {
     throw new TypeError(
       'Intl.DateTimeFormat time was required but dateStyle was included'
-    );
+    )
   }
 
   if (needDefaults && (defaults === 'date' || defaults === 'all')) {
     for (const prop of ['year', 'month', 'day'] as Array<
       keyof Pick<DateTimeFormatOptions, 'year' | 'month' | 'day'>
     >) {
-      options[prop] = 'numeric';
+      options[prop] = 'numeric'
     }
   }
   if (needDefaults && (defaults === 'time' || defaults === 'all')) {
     for (const prop of ['hour', 'minute', 'second'] as Array<
       keyof Pick<DateTimeFormatOptions, 'hour' | 'minute' | 'second'>
     >) {
-      options[prop] = 'numeric';
+      options[prop] = 'numeric'
     }
   }
-  return options;
+  return options
 }

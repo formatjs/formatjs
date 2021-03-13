@@ -1,5 +1,5 @@
-import {pegParse} from '../src/parser';
-import {printAST} from '../src/printer';
+import {pegParse} from '../src/parser'
+import {printAST} from '../src/printer'
 
 test.each([
   `{0,date,y-M-d HH:mm:ss}`,
@@ -11,7 +11,7 @@ test.each([
   `{0,number,'{}'}`,
   `{0,number,''}`,
 ])('argStyleText test case: %p', testCase => {
-  const ast = pegParse(testCase);
-  expect(ast).toMatchSnapshot();
-  expect(printAST(ast)).toMatchSnapshot();
-});
+  const ast = pegParse(testCase)
+  expect(ast).toMatchSnapshot()
+  expect(printAST(ast)).toMatchSnapshot()
+})

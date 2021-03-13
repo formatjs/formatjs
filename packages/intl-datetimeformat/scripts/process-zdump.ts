@@ -1,14 +1,14 @@
-import minimist from 'minimist';
-import {execFile as _execFile} from 'child_process';
-import {readFile as _readFile} from 'fs';
-import {promisify} from 'util';
-import {outputFileSync} from 'fs-extra';
-import {UnpackedData, ZoneData} from '../src/types';
-import {pack} from '../src/packer';
-import stringify from 'json-stable-stringify';
+import minimist from 'minimist'
+import {execFile as _execFile} from 'child_process'
+import {readFile as _readFile} from 'fs'
+import {promisify} from 'util'
+import {outputFileSync} from 'fs-extra'
+import {UnpackedData, ZoneData} from '../src/types'
+import {pack} from '../src/packer'
+import stringify from 'json-stable-stringify'
 
-const readFile = promisify(_readFile);
-const SPACE_REGEX = /[\s\t]+/;
+const readFile = promisify(_readFile)
+const SPACE_REGEX = /[\s\t]+/
 
 const MONTHS = [
   'Jan',
@@ -23,13 +23,13 @@ const MONTHS = [
   'Oct',
   'Nov',
   'Dec',
-];
+]
 
 function pad(n: number) {
   if (n < 10) {
-    return `0${n}`;
+    return `0${n}`
   }
-  return n;
+  return n
 }
 
 const GOLDEN_TIMEZONES = new Set([
@@ -284,62 +284,57 @@ const GOLDEN_TIMEZONES = new Set([
   'Pacific/Tarawa',
   'Pacific/Tongatapu',
   'Pacific/Wake',
-]);
+])
 
 function utTimeToSeconds(utTime: string) {
-  const [, month, date, hourMinSec, year] = utTime.split(SPACE_REGEX);
-  const [hour, min, sec] = hourMinSec.split(':');
+  const [, month, date, hourMinSec, year] = utTime.split(SPACE_REGEX)
+  const [hour, min, sec] = hourMinSec.split(':')
   return (
     new Date(
       `${year}-${pad(MONTHS.indexOf(month) + 1)}-${pad(
         +date
       )}T${hour}:${min}:${sec}Z`
     ).getTime() / 1e3
-  );
+  )
 }
 
-const LINE_REGEX = /^(.*?)\s+(.*?) UTC? = (.*?) isdst=(0|1) gmtoff=(.*?)$/i;
+const LINE_REGEX = /^(.*?)\s+(.*?) UTC? = (.*?) isdst=(0|1) gmtoff=(.*?)$/i
 
 function processZone(
   content: string,
   {zones, abbrvs, offsets}: UnpackedData,
   golden?: string
 ) {
-  const lines = content.split('\n');
+  const lines = content.split('\n')
   for (const line of lines) {
     if (line.endsWith('NULL')) {
-      continue;
+      continue
     }
-    const chunks = LINE_REGEX.exec(line);
+    const chunks = LINE_REGEX.exec(line)
     if (!chunks) {
-      continue;
+      continue
     }
 
-    const [, zonePath, utTime, localTime, dst, offsetStr] = chunks;
-    const zone = zonePath.split('zic/')[1];
+    const [, zonePath, utTime, localTime, dst, offsetStr] = chunks
+    const zone = zonePath.split('zic/')[1]
     if (golden && !GOLDEN_TIMEZONES.has(zone)) {
-      continue;
+      continue
     }
-    const abbrv = localTime.split(SPACE_REGEX).pop()!;
-    let abbrvIndex = abbrvs.indexOf(abbrv);
+    const abbrv = localTime.split(SPACE_REGEX).pop()!
+    let abbrvIndex = abbrvs.indexOf(abbrv)
     if (abbrvIndex < 0) {
-      abbrvIndex = abbrvs.length;
-      abbrvs.push(abbrv);
+      abbrvIndex = abbrvs.length
+      abbrvs.push(abbrv)
     }
-    const offset = +offsetStr;
-    let offsetIndex = offsets.indexOf(offset);
+    const offset = +offsetStr
+    let offsetIndex = offsets.indexOf(offset)
     if (offsetIndex < 0) {
-      (offsetIndex = offsets.length), offsets.push(offset);
+      ;(offsetIndex = offsets.length), offsets.push(offset)
     }
     if (!zones[zone]) {
-      zones[zone] = [['', abbrvIndex, offsetIndex, +dst]];
+      zones[zone] = [['', abbrvIndex, offsetIndex, +dst]]
     } else {
-      zones[zone].push([
-        utTimeToSeconds(utTime),
-        abbrvIndex,
-        offsetIndex,
-        +dst,
-      ]);
+      zones[zone].push([utTimeToSeconds(utTime), abbrvIndex, offsetIndex, +dst])
     }
   }
 }
@@ -372,37 +367,37 @@ const SPECIAL_CASES = [
   'Etc/GMT+11',
   'Etc/GMT+12',
 ].map(tz => {
-  const offsetInHours = tz.split(/([-+]\d{1,2})/)[1];
-  const offsetInHoursNum = +offsetInHours;
+  const offsetInHours = tz.split(/([-+]\d{1,2})/)[1]
+  const offsetInHoursNum = +offsetInHours
   const abbrv =
     offsetInHoursNum > 0
       ? `GMT-${offsetInHoursNum}`
-      : `GMT+${-offsetInHoursNum}`;
+      : `GMT+${-offsetInHoursNum}`
 
   return `zic/${tz}  Mon Jan 1 00:00:00 0000 UTC = doesnotmatter ${abbrv} isdst=0 gmtoff=${
     -offsetInHoursNum * 3600
-  }`;
-});
+  }`
+})
 
 async function main(args: minimist.ParsedArgs) {
-  const {_: files, polyfill, output, golden} = args;
-  const inputs = files.slice(2);
-  inputs.sort(); // sort so result is stable
+  const {_: files, polyfill, output, golden} = args
+  const inputs = files.slice(2)
+  inputs.sort() // sort so result is stable
 
-  const zones: Record<string, ZoneData[]> = {};
-  const abbrvs: string[] = [];
-  const offsets: number[] = [];
+  const zones: Record<string, ZoneData[]> = {}
+  const abbrvs: string[] = []
+  const offsets: number[] = []
   const data: UnpackedData = {
     zones,
     abbrvs,
     offsets,
-  };
+  }
 
   const contents = await Promise.all(
     inputs.map((input: string) => readFile(input, 'utf8'))
-  );
+  )
 
-  processZone([contents, ...SPECIAL_CASES].join('\n'), data, golden);
+  processZone([contents, ...SPECIAL_CASES].join('\n'), data, golden)
 
   if (polyfill) {
     outputFileSync(
@@ -412,7 +407,7 @@ async function main(args: minimist.ParsedArgs) {
 if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
   Intl.DateTimeFormat.__addTZData(${JSON.stringify(pack(data))}) 
 }`
-    );
+    )
   } else {
     outputFileSync(
       output,
@@ -421,10 +416,10 @@ if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
 export default ${stringify(pack(data), {
         space: 2,
       })}`
-    );
+    )
   }
 }
 
 if (require.main === module) {
-  main(minimist(process.argv));
+  main(minimist(process.argv))
 }

@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import {fromPairs} from 'lodash';
+import {fromPairs} from 'lodash'
 import {
   invariant,
   LDMLPluralRuleMap,
@@ -11,28 +11,28 @@ import {
   removeUnitNamespace,
   IsWellFormedUnitIdentifier,
   UnitData,
-} from '@formatjs/ecma402-abstract';
-import * as UnitsData from 'cldr-units-full/main/en/units.json';
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils';
+} from '@formatjs/ecma402-abstract'
+import * as UnitsData from 'cldr-units-full/main/en/units.json'
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
+import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils'
 
-export type Units = typeof UnitsData['main']['en']['units'];
+export type Units = typeof UnitsData['main']['en']['units']
 
 function extractUnitPattern(d: Units['long']['volume-gallon']) {
   return collapseSingleValuePluralRule(
     PLURAL_RULES.reduce((all: LDMLPluralRuleMap<string>, ldml) => {
       if (d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']) {
-        all[ldml] = d[`unitPattern-count-${ldml}` as 'unitPattern-count-one'];
+        all[ldml] = d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']
       }
-      return all;
+      return all
     }, {} as any)
-  );
+  )
 }
 
 async function loadUnits(locale: string): Promise<UnitDataTable> {
   const units = ((await import(
     `cldr-units-full/main/${locale}/units.json`
-  )) as typeof UnitsData).main[locale as 'en'].units;
+  )) as typeof UnitsData).main[locale as 'en'].units
 
   invariant(
     !!(
@@ -41,15 +41,15 @@ async function loadUnits(locale: string): Promise<UnitDataTable> {
       units.narrow.per.compoundUnitPattern
     ),
     `Missing "per" compound pattern in locale ${locale}`
-  );
+  )
 
   const validUnits = Object.keys(units.long).filter(unit => {
-    return IsWellFormedUnitIdentifier(removeUnitNamespace(unit));
-  });
+    return IsWellFormedUnitIdentifier(removeUnitNamespace(unit))
+  })
 
   const simpleUnitEntries: [string, UnitData][] = validUnits.map(unit => {
     if (!units.long[unit as 'digital-bit']) {
-      throw new Error(`${unit} does not have any data`);
+      throw new Error(`${unit} does not have any data`)
     }
     return [
       removeUnitNamespace(unit),
@@ -64,8 +64,8 @@ async function loadUnits(locale: string): Promise<UnitDataTable> {
           narrow: units.narrow[unit as 'volume-gallon'].perUnitPattern,
         },
       },
-    ];
-  });
+    ]
+  })
 
   const compoundUnits = {
     per: {
@@ -73,17 +73,17 @@ async function loadUnits(locale: string): Promise<UnitDataTable> {
       short: units.short.per.compoundUnitPattern,
       narrow: units.narrow.per.compoundUnitPattern,
     },
-  };
+  }
 
-  return {simple: fromPairs(simpleUnitEntries), compound: compoundUnits};
+  return {simple: fromPairs(simpleUnitEntries), compound: compoundUnits}
 }
 
 export async function generateDataForLocales(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
 ): Promise<Record<string, UnitDataTable>> {
-  const data = await Promise.all(locales.map(loadUnits));
+  const data = await Promise.all(locales.map(loadUnits))
   return data.reduce((all: Record<string, UnitDataTable>, d, i) => {
-    all[locales[i]] = d;
-    return all;
-  }, {});
+    all[locales[i]] = d
+    return all
+  }, {})
 }

@@ -1,5 +1,5 @@
-load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
+load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//karma:index.bzl", "karma_test")
 load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
 
@@ -208,6 +208,7 @@ multirun(
         "//packages/eslint-plugin-formatjs:prettier",
         "//packages/intl-datetimeformat:prettier",
         "//packages/intl-displaynames:prettier",
+        "//packages/intl-durationformat:prettier",
         "//packages/intl-getcanonicallocales:prettier",
         "//packages/intl-listformat:prettier",
         "//packages/intl-locale:prettier",

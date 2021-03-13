@@ -9,8 +9,8 @@ import {
   InitializePluralRules,
   ToNumber,
   CanonicalizeLocaleList,
-} from '@formatjs/ecma402-abstract';
-import getInternalSlots from './get_internal_slots';
+} from '@formatjs/ecma402-abstract'
+import getInternalSlots from './get_internal_slots'
 
 function validateInstance(instance: any, method: string) {
   if (!(instance instanceof PluralRules)) {
@@ -18,14 +18,14 @@ function validateInstance(instance: any, method: string) {
       `Method Intl.PluralRules.prototype.${method} called on incompatible receiver ${String(
         instance
       )}`
-    );
+    )
   }
 }
 
 export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
-  initializedPluralRules: boolean;
-  locale: string;
-  type: 'cardinal' | 'ordinal';
+  initializedPluralRules: boolean
+  locale: string
+  type: 'cardinal' | 'ordinal'
 }
 
 /**
@@ -46,7 +46,7 @@ function PluralRuleSelect(
       ? `${IntegerDigits}.${FractionDigits}`
       : IntegerDigits,
     type === 'ordinal'
-  );
+  )
 }
 
 export class PluralRules implements Intl.PluralRules {
@@ -54,9 +54,9 @@ export class PluralRules implements Intl.PluralRules {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
     const newTarget =
-      this && this instanceof PluralRules ? this.constructor : void 0;
+      this && this instanceof PluralRules ? this.constructor : void 0
     if (!newTarget) {
-      throw new TypeError("Intl.PluralRules must be called with 'new'");
+      throw new TypeError("Intl.PluralRules must be called with 'new'")
     }
     return InitializePluralRules(this, locales, options, {
       availableLocales: PluralRules.availableLocales,
@@ -64,42 +64,42 @@ export class PluralRules implements Intl.PluralRules {
       localeData: PluralRules.localeData,
       getDefaultLocale: PluralRules.getDefaultLocale,
       getInternalSlots,
-    });
+    })
   }
   public resolvedOptions() {
-    validateInstance(this, 'resolvedOptions');
-    const opts = Object.create(null);
-    const internalSlots = getInternalSlots(this);
-    opts.locale = internalSlots.locale;
-    opts.type = internalSlots.type;
-    ([
+    validateInstance(this, 'resolvedOptions')
+    const opts = Object.create(null)
+    const internalSlots = getInternalSlots(this)
+    opts.locale = internalSlots.locale
+    opts.type = internalSlots.type
+    ;([
       'minimumIntegerDigits',
       'minimumFractionDigits',
       'maximumFractionDigits',
       'minimumSignificantDigits',
       'maximumSignificantDigits',
     ] as Array<keyof PluralRulesInternal>).forEach(field => {
-      const val = internalSlots[field];
+      const val = internalSlots[field]
       if (val !== undefined) {
-        opts[field] = val;
+        opts[field] = val
       }
-    });
+    })
 
     opts.pluralCategories = [
       ...PluralRules.localeData[opts.locale].categories[
         opts.type as 'cardinal'
       ],
-    ];
-    return opts;
+    ]
+    return opts
   }
   public select(val: number): LDMLPluralRule {
-    const pr = this;
-    validateInstance(pr, 'select');
-    const n = ToNumber(val);
-    return ResolvePlural(pr, n, {getInternalSlots, PluralRuleSelect});
+    const pr = this
+    validateInstance(pr, 'select')
+    const n = ToNumber(val)
+    return ResolvePlural(pr, n, {getInternalSlots, PluralRuleSelect})
   }
   toString() {
-    return '[object Intl.PluralRules]';
+    return '[object Intl.PluralRules]'
   }
   public static supportedLocalesOf(
     locales?: string | string[],
@@ -109,25 +109,25 @@ export class PluralRules implements Intl.PluralRules {
       PluralRules.availableLocales,
       CanonicalizeLocaleList(locales),
       options
-    );
+    )
   }
   public static __addLocaleData(...data: PluralRulesLocaleData[]) {
     for (const {data: d, locale} of data) {
-      PluralRules.localeData[locale] = d;
-      PluralRules.availableLocales.add(locale);
+      PluralRules.localeData[locale] = d
+      PluralRules.availableLocales.add(locale)
       if (!PluralRules.__defaultLocale) {
-        PluralRules.__defaultLocale = locale;
+        PluralRules.__defaultLocale = locale
       }
     }
   }
-  static localeData: Record<string, PluralRulesData> = {};
-  static availableLocales = new Set<string>();
-  static __defaultLocale = '';
+  static localeData: Record<string, PluralRulesData> = {}
+  static availableLocales = new Set<string>()
+  static __defaultLocale = ''
   static getDefaultLocale() {
-    return PluralRules.__defaultLocale;
+    return PluralRules.__defaultLocale
   }
-  static relevantExtensionKeys = [];
-  public static polyfilled = true;
+  static relevantExtensionKeys = []
+  public static polyfilled = true
 }
 
 try {
@@ -138,7 +138,7 @@ try {
       writable: false,
       enumerable: false,
       configurable: true,
-    });
+    })
   }
 
   try {
@@ -148,7 +148,7 @@ try {
       writable: false,
       enumerable: false,
       configurable: true,
-    });
+    })
   } catch (error) {
     // IE 11 sets Function.prototype.length to be non-configurable which will cause the
     // above Object.defineProperty to throw an error.
@@ -159,14 +159,14 @@ try {
     writable: false,
     enumerable: false,
     configurable: true,
-  });
+  })
   // https://github.com/tc39/test262/blob/master/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/length.js
   Object.defineProperty(PluralRules.supportedLocalesOf, 'length', {
     value: 1,
     writable: false,
     enumerable: false,
     configurable: true,
-  });
+  })
 } catch (ex) {
   // Meta fixes for test262
 }

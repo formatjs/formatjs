@@ -1,61 +1,61 @@
-import {UnicodeLocaleId, KV, Extension, UnicodeLanguageId} from './types';
+import {UnicodeLocaleId, KV, Extension, UnicodeLanguageId} from './types'
 import {
   languageAlias,
   variantAlias,
   scriptAlias,
   territoryAlias,
-} from './data/aliases';
+} from './data/aliases'
 import {
   parseUnicodeLanguageId,
   isUnicodeVariantSubtag,
   isUnicodeLanguageSubtag,
   SEPARATOR,
-} from './parser';
-import * as likelySubtags from 'cldr-core/supplemental/likelySubtags.json';
-import {emitUnicodeLanguageId} from './emitter';
+} from './parser'
+import * as likelySubtags from 'cldr-core/supplemental/likelySubtags.json'
+import {emitUnicodeLanguageId} from './emitter'
 
 function canonicalizeAttrs(strs: string[]): string[] {
   return Object.keys(
     strs.reduce((all: Record<string, number>, str) => {
-      all[str.toLowerCase()] = 1;
-      return all;
+      all[str.toLowerCase()] = 1
+      return all
     }, {})
-  ).sort();
+  ).sort()
 }
 
 function canonicalizeKVs(arr: KV[]): KV[] {
-  const all: Record<string, any> = {};
-  const result: KV[] = [];
+  const all: Record<string, any> = {}
+  const result: KV[] = []
   for (const kv of arr) {
     if (kv[0] in all) {
-      continue;
+      continue
     }
-    all[kv[0]] = 1;
+    all[kv[0]] = 1
     if (!kv[1] || kv[1] === 'true') {
-      result.push([kv[0].toLowerCase()]);
+      result.push([kv[0].toLowerCase()])
     } else {
-      result.push([kv[0].toLowerCase(), kv[1].toLowerCase()]);
+      result.push([kv[0].toLowerCase(), kv[1].toLowerCase()])
     }
   }
-  return result.sort(compareKV);
+  return result.sort(compareKV)
 }
 
 function compareKV(t1: Array<any>, t2: Array<any>): number {
-  return t1[0] < t2[0] ? -1 : t1[0] > t2[0] ? 1 : 0;
+  return t1[0] < t2[0] ? -1 : t1[0] > t2[0] ? 1 : 0
 }
 
 function compareExtension(e1: Extension, e2: Extension): number {
-  return e1.type < e2.type ? -1 : e1.type > e2.type ? 1 : 0;
+  return e1.type < e2.type ? -1 : e1.type > e2.type ? 1 : 0
 }
 
 function mergeVariants(v1: string[], v2: string[]): string[] {
-  const result = [...v1];
+  const result = [...v1]
   for (const v of v2) {
     if (v1.indexOf(v) < 0) {
-      result.push(v);
+      result.push(v)
     }
   }
-  return result;
+  return result
 }
 
 /**
@@ -79,9 +79,9 @@ export function canonicalizeUnicodeLanguageId(
   // From https://github.com/unicode-org/icu/blob/master/icu4j/main/classes/core/src/com/ibm/icu/util/ULocale.java#L1246
 
   // Try language _ variant
-  let finalLangAst = unicodeLanguageId;
+  let finalLangAst = unicodeLanguageId
   if (unicodeLanguageId.variants.length) {
-    let replacedLang: string = '';
+    let replacedLang: string = ''
     for (const variant of unicodeLanguageId.variants) {
       if (
         (replacedLang =
@@ -94,7 +94,7 @@ export function canonicalizeUnicodeLanguageId(
       ) {
         const replacedLangAst = parseUnicodeLanguageId(
           replacedLang.split(SEPARATOR)
-        );
+        )
         finalLangAst = {
           lang: replacedLangAst.lang,
           script: finalLangAst.script || replacedLangAst.script,
@@ -103,8 +103,8 @@ export function canonicalizeUnicodeLanguageId(
             finalLangAst.variants,
             replacedLangAst.variants
           ),
-        };
-        break;
+        }
+        break
       }
     }
   }
@@ -120,17 +120,17 @@ export function canonicalizeUnicodeLanguageId(
           region: finalLangAst.region,
           variants: [],
         })
-      ];
+      ]
     if (replacedLang) {
       const replacedLangAst = parseUnicodeLanguageId(
         replacedLang.split(SEPARATOR)
-      );
+      )
       finalLangAst = {
         lang: replacedLangAst.lang,
         script: replacedLangAst.script,
         region: replacedLangAst.region,
         variants: finalLangAst.variants,
-      };
+      }
     }
   }
 
@@ -144,17 +144,17 @@ export function canonicalizeUnicodeLanguageId(
           region: finalLangAst.region,
           variants: [],
         })
-      ];
+      ]
     if (replacedLang) {
       const replacedLangAst = parseUnicodeLanguageId(
         replacedLang.split(SEPARATOR)
-      );
+      )
       finalLangAst = {
         lang: replacedLangAst.lang,
         script: finalLangAst.script || replacedLangAst.script,
         region: replacedLangAst.region,
         variants: finalLangAst.variants,
-      };
+      }
     }
   }
   // only language
@@ -165,26 +165,26 @@ export function canonicalizeUnicodeLanguageId(
         lang: finalLangAst.lang,
         variants: [],
       })
-    ];
+    ]
   if (replacedLang) {
     const replacedLangAst = parseUnicodeLanguageId(
       replacedLang.split(SEPARATOR)
-    );
+    )
     finalLangAst = {
       lang: replacedLangAst.lang,
       script: finalLangAst.script || replacedLangAst.script,
       region: finalLangAst.region || replacedLangAst.region,
       variants: finalLangAst.variants,
-    };
+    }
   }
 
   if (finalLangAst.region) {
-    const region = finalLangAst.region.toUpperCase();
-    const regionAlias = territoryAlias[region];
-    let replacedRegion: string | undefined;
+    const region = finalLangAst.region.toUpperCase()
+    const regionAlias = territoryAlias[region]
+    let replacedRegion: string | undefined
     if (regionAlias) {
-      const regions = regionAlias.split(' ');
-      replacedRegion = regions[0];
+      const regions = regionAlias.split(' ')
+      replacedRegion = regions[0]
       const likelySubtag =
         likelySubtags.supplemental.likelySubtags[
           emitUnicodeLanguageId({
@@ -192,46 +192,46 @@ export function canonicalizeUnicodeLanguageId(
             script: finalLangAst.script,
             variants: [],
           }) as 'aa'
-        ];
+        ]
       if (likelySubtag) {
         const {region: likelyRegion} = parseUnicodeLanguageId(
           likelySubtag.split(SEPARATOR)
-        );
+        )
         if (likelyRegion && regions.indexOf(likelyRegion) > -1) {
-          replacedRegion = likelyRegion;
+          replacedRegion = likelyRegion
         }
       }
     }
     if (replacedRegion) {
-      finalLangAst.region = replacedRegion;
+      finalLangAst.region = replacedRegion
     }
-    finalLangAst.region = finalLangAst.region.toUpperCase();
+    finalLangAst.region = finalLangAst.region.toUpperCase()
   }
   if (finalLangAst.script) {
     finalLangAst.script =
       finalLangAst.script[0].toUpperCase() +
-      finalLangAst.script.slice(1).toLowerCase();
+      finalLangAst.script.slice(1).toLowerCase()
     if (scriptAlias[finalLangAst.script]) {
-      finalLangAst.script = scriptAlias[finalLangAst.script];
+      finalLangAst.script = scriptAlias[finalLangAst.script]
     }
   }
 
   if (finalLangAst.variants.length) {
     for (let i = 0; i < finalLangAst.variants.length; i++) {
-      let variant = finalLangAst.variants[i].toLowerCase();
+      let variant = finalLangAst.variants[i].toLowerCase()
       if (variantAlias[variant]) {
-        const alias = variantAlias[variant];
+        const alias = variantAlias[variant]
         if (isUnicodeVariantSubtag(alias)) {
-          finalLangAst.variants[i] = alias;
+          finalLangAst.variants[i] = alias
         } else if (isUnicodeLanguageSubtag(alias)) {
           // Yes this can happen per the spec
-          finalLangAst.lang = alias;
+          finalLangAst.lang = alias
         }
       }
     }
-    finalLangAst.variants.sort();
+    finalLangAst.variants.sort()
   }
-  return finalLangAst;
+  return finalLangAst
 }
 
 /**
@@ -244,29 +244,29 @@ export function canonicalizeUnicodeLanguageId(
 export function canonicalizeUnicodeLocaleId(
   locale: UnicodeLocaleId
 ): UnicodeLocaleId {
-  locale.lang = canonicalizeUnicodeLanguageId(locale.lang);
+  locale.lang = canonicalizeUnicodeLanguageId(locale.lang)
   if (locale.extensions) {
     for (const extension of locale.extensions) {
       switch (extension.type) {
         case 'u':
-          extension.keywords = canonicalizeKVs(extension.keywords);
+          extension.keywords = canonicalizeKVs(extension.keywords)
           if (extension.attributes) {
-            extension.attributes = canonicalizeAttrs(extension.attributes);
+            extension.attributes = canonicalizeAttrs(extension.attributes)
           }
-          break;
+          break
         case 't':
           if (extension.lang) {
-            extension.lang = canonicalizeUnicodeLanguageId(extension.lang);
+            extension.lang = canonicalizeUnicodeLanguageId(extension.lang)
           }
-          extension.fields = canonicalizeKVs(extension.fields);
-          break;
+          extension.fields = canonicalizeKVs(extension.fields)
+          break
         default:
-          extension.value = extension.value.toLowerCase();
-          break;
+          extension.value = extension.value.toLowerCase()
+          break
       }
     }
-    locale.extensions.sort(compareExtension);
+    locale.extensions.sort(compareExtension)
   }
 
-  return locale;
+  return locale
 }

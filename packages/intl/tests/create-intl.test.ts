@@ -1,4 +1,4 @@
-import {createIntl} from '../src/create-intl';
+import {createIntl} from '../src/create-intl'
 
 test('createIntl', function () {
   const intl = createIntl({
@@ -6,21 +6,21 @@ test('createIntl', function () {
     messages: {
       foo: 'bar',
     },
-  });
+  })
   expect(
     intl.formatMessage({
       id: 'foo',
     })
-  ).toBe('bar');
-});
+  ).toBe('bar')
+})
 
 test('verify config', function () {
-  const warnFn = jest.spyOn(console, 'warn');
-  expect(warnFn).not.toHaveBeenCalled();
+  const warnFn = jest.spyOn(console, 'warn')
+  expect(warnFn).not.toHaveBeenCalled()
   createIntl({
     locale: 'en',
     messages: {},
     defaultRichTextElements: {},
-  });
-  expect(warnFn).not.toHaveBeenCalled();
-});
+  })
+  expect(warnFn).not.toHaveBeenCalled()
+})

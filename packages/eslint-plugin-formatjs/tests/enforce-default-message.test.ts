@@ -1,6 +1,6 @@
-import enforceDefaultMessage from '../rules/enforce-default-message';
-import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures';
-import {ruleTester, vueRuleTester} from './util';
+import enforceDefaultMessage from '../rules/enforce-default-message'
+import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures'
+import {ruleTester, vueRuleTester} from './util'
 
 ruleTester.run('enforce-default-message', enforceDefaultMessage, {
   valid: [
@@ -199,7 +199,7 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
       options: ['literal'],
     },
   ],
-});
+})
 
 vueRuleTester.run('vue/enforce-default-message', enforceDefaultMessage, {
   valid: [
@@ -247,4 +247,4 @@ vueRuleTester.run('vue/enforce-default-message', enforceDefaultMessage, {
       options: ['literal'],
     },
   ],
-});
+})

@@ -1,19 +1,19 @@
-import {Rule, Scope} from 'eslint';
-import {ImportDeclaration, Node} from 'estree';
-import {TSESTree} from '@typescript-eslint/typescript-estree';
-import {extractMessages} from '../util';
+import {Rule, Scope} from 'eslint'
+import {ImportDeclaration, Node} from 'estree'
+import {TSESTree} from '@typescript-eslint/typescript-estree'
+import {extractMessages} from '../util'
 import {
   parse,
   isPluralElement,
   MessageFormatElement,
-} from 'intl-messageformat-parser';
-import {JSONSchema4} from 'json-schema';
+} from 'intl-messageformat-parser'
+import {JSONSchema4} from 'json-schema'
 
 class PluralRulesEnforcement extends Error {
-  public message: string;
+  public message: string
   constructor(message: string) {
-    super();
-    this.message = message;
+    super()
+    this.message = message
   }
 }
 
@@ -32,20 +32,18 @@ function verifyAst(
 ) {
   for (const el of ast) {
     if (isPluralElement(el)) {
-      const rules = Object.keys(plConfig) as Array<keyof LDML>;
+      const rules = Object.keys(plConfig) as Array<keyof LDML>
       for (const rule of rules) {
         if (plConfig[rule] && !el.options[rule]) {
-          throw new PluralRulesEnforcement(`Missing plural rule "${rule}"`);
+          throw new PluralRulesEnforcement(`Missing plural rule "${rule}"`)
         }
         if (!plConfig[rule] && el.options[rule]) {
-          throw new PluralRulesEnforcement(
-            `Plural rule "${rule}" is forbidden`
-          );
+          throw new PluralRulesEnforcement(`Plural rule "${rule}" is forbidden`)
         }
       }
-      const {options} = el;
+      const {options} = el
       for (const selector of Object.keys(options)) {
-        verifyAst(plConfig, options[selector].value);
+        verifyAst(plConfig, options[selector].value)
       }
     }
   }
@@ -56,14 +54,14 @@ function checkNode(
   node: TSESTree.Node,
   importedMacroVars: Scope.Variable[]
 ) {
-  const msgs = extractMessages(node, importedMacroVars);
+  const msgs = extractMessages(node, importedMacroVars)
   if (!msgs.length) {
-    return;
+    return
   }
 
-  const plConfig: Record<keyof LDML, boolean> = context.options[0];
+  const plConfig: Record<keyof LDML, boolean> = context.options[0]
   if (!plConfig) {
-    return;
+    return
   }
   for (const [
     {
@@ -72,15 +70,15 @@ function checkNode(
     },
   ] of msgs) {
     if (!defaultMessage || !messageNode) {
-      continue;
+      continue
     }
     try {
-      verifyAst(context.options[0], parse(defaultMessage));
+      verifyAst(context.options[0], parse(defaultMessage))
     } catch (e) {
       context.report({
         node: messageNode as Node,
         message: e.message,
-      });
+      })
     }
   }
 }
@@ -102,17 +100,17 @@ const rule: Rule.RuleModule = {
         properties: Object.keys(LDML).reduce((schema: JSONSchema4, k) => {
           schema[k] = {
             type: 'boolean',
-          };
-          return schema;
+          }
+          return schema
         }, {}),
         additionalProperties: false,
       },
     ],
   },
   create(context) {
-    let importedMacroVars: Scope.Variable[] = [];
+    let importedMacroVars: Scope.Variable[] = []
     const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node, importedMacroVars);
+      checkNode(context, node, importedMacroVars)
 
     if (context.parserServices.defineTemplateBodyVisitor) {
       return context.parserServices.defineTemplateBodyVisitor(
@@ -122,20 +120,20 @@ const rule: Rule.RuleModule = {
         {
           CallExpression: callExpressionVisitor,
         }
-      );
+      )
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value;
+        const moduleName = (node as ImportDeclaration).source.value
         if (moduleName === 'react-intl') {
-          importedMacroVars = context.getDeclaredVariables(node);
+          importedMacroVars = context.getDeclaredVariables(node)
         }
       },
       JSXOpeningElement: (node: Node) =>
         checkNode(context, node as TSESTree.Node, importedMacroVars),
       CallExpression: callExpressionVisitor,
-    };
+    }
   },
-};
+}
 
-export default rule;
+export default rule

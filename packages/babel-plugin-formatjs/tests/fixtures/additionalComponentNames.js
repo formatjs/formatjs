@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 
 function CustomMessage() {}
 
@@ -10,6 +10,6 @@ export default class Foo extends Component {
         description="Greeting to the world"
         defaultMessage="Hello World!"
       />
-    );
+    )
   }
 }

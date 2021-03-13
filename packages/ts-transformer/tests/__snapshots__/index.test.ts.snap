@@ -14,10 +14,10 @@ export default class Foo extends Component {
 exports[`emit asserts for [special] extractSourceLocation 2`] = `
 Object {
   "defaultMessage": "Hello World!",
-  "end": 222,
+  "end": 220,
   "file": StringContaining "extractSourceLocation.tsx",
   "id": "foo.bar.baz",
-  "start": 154,
+  "start": 152,
 }
 `;
 

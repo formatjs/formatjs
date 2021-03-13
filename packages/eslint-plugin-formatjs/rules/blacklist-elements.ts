@@ -1,6 +1,6 @@
-import {Rule, Scope} from 'eslint';
-import {ImportDeclaration, Node} from 'estree';
-import {extractMessages} from '../util';
+import {Rule, Scope} from 'eslint'
+import {ImportDeclaration, Node} from 'estree'
+import {extractMessages} from '../util'
 import {
   parse,
   isPluralElement,
@@ -12,14 +12,14 @@ import {
   isTimeElement,
   isSelectElement,
   isTagElement,
-} from 'intl-messageformat-parser';
-import {TSESTree} from '@typescript-eslint/typescript-estree';
+} from 'intl-messageformat-parser'
+import {TSESTree} from '@typescript-eslint/typescript-estree'
 
 class BlacklistElement extends Error {
-  public message: string;
+  public message: string
   constructor(type: Element) {
-    super();
-    this.message = `${type} element is blacklisted`;
+    super()
+    this.message = `${type} element is blacklisted`
   }
 }
 
@@ -38,41 +38,41 @@ enum Element {
 function verifyAst(blacklist: Element[], ast: MessageFormatElement[]) {
   for (const el of ast) {
     if (isLiteralElement(el) && blacklist.includes(Element.literal)) {
-      throw new BlacklistElement(Element.literal);
+      throw new BlacklistElement(Element.literal)
     }
     if (isArgumentElement(el) && blacklist.includes(Element.argument)) {
-      throw new BlacklistElement(Element.argument);
+      throw new BlacklistElement(Element.argument)
     }
     if (isNumberElement(el) && blacklist.includes(Element.number)) {
-      throw new BlacklistElement(Element.number);
+      throw new BlacklistElement(Element.number)
     }
     if (isDateElement(el) && blacklist.includes(Element.date)) {
-      throw new BlacklistElement(Element.date);
+      throw new BlacklistElement(Element.date)
     }
     if (isTimeElement(el) && blacklist.includes(Element.time)) {
-      throw new BlacklistElement(Element.time);
+      throw new BlacklistElement(Element.time)
     }
     if (isSelectElement(el) && blacklist.includes(Element.select)) {
-      throw new BlacklistElement(Element.select);
+      throw new BlacklistElement(Element.select)
     }
     if (isTagElement(el) && blacklist.includes(Element.tag)) {
-      throw new BlacklistElement(Element.tag);
+      throw new BlacklistElement(Element.tag)
     }
     if (isPluralElement(el)) {
       if (blacklist.includes(Element.plural)) {
-        throw new BlacklistElement(Element.argument);
+        throw new BlacklistElement(Element.argument)
       }
       if (
         el.pluralType === 'ordinal' &&
         blacklist.includes(Element.selectordinal)
       ) {
-        throw new BlacklistElement(Element.selectordinal);
+        throw new BlacklistElement(Element.selectordinal)
       }
     }
     if (isSelectElement(el) || isPluralElement(el)) {
-      const {options} = el;
+      const {options} = el
       for (const selector of Object.keys(options)) {
-        verifyAst(blacklist, options[selector].value);
+        verifyAst(blacklist, options[selector].value)
       }
     }
   }
@@ -83,14 +83,14 @@ function checkNode(
   node: Node,
   importedMacroVars: Scope.Variable[]
 ) {
-  const msgs = extractMessages(node as TSESTree.Node, importedMacroVars);
+  const msgs = extractMessages(node as TSESTree.Node, importedMacroVars)
   if (!msgs.length) {
-    return;
+    return
   }
 
-  const blacklist = context.options[0];
+  const blacklist = context.options[0]
   if (!Array.isArray(blacklist) || !blacklist.length) {
-    return;
+    return
   }
   for (const [
     {
@@ -99,15 +99,15 @@ function checkNode(
     },
   ] of msgs) {
     if (!defaultMessage || !messageNode) {
-      continue;
+      continue
     }
     try {
-      verifyAst(context.options[0], parse(defaultMessage));
+      verifyAst(context.options[0], parse(defaultMessage))
     } catch (e) {
       context.report({
         node: messageNode as Node,
         message: e.message,
-      });
+      })
     }
   }
 }
@@ -135,9 +135,9 @@ const rule: Rule.RuleModule = {
     ],
   },
   create(context) {
-    let importedMacroVars: Scope.Variable[] = [];
+    let importedMacroVars: Scope.Variable[] = []
     const callExpressionVisitor = (node: Node) =>
-      checkNode(context, node, importedMacroVars);
+      checkNode(context, node, importedMacroVars)
 
     if (context.parserServices.defineTemplateBodyVisitor) {
       return context.parserServices.defineTemplateBodyVisitor(
@@ -147,20 +147,20 @@ const rule: Rule.RuleModule = {
         {
           CallExpression: callExpressionVisitor,
         }
-      );
+      )
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value;
+        const moduleName = (node as ImportDeclaration).source.value
         if (moduleName === 'react-intl') {
-          importedMacroVars = context.getDeclaredVariables(node);
+          importedMacroVars = context.getDeclaredVariables(node)
         }
       },
       JSXOpeningElement: (node: Node) =>
         checkNode(context, node, importedMacroVars),
       CallExpression: callExpressionVisitor,
-    };
+    }
   },
-};
+}
 
-export default rule;
+export default rule

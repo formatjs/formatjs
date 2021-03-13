@@ -1,38 +1,38 @@
-import {parse, MessageFormatElement} from 'intl-messageformat-parser';
-import {outputFile, readJSON} from 'fs-extra';
-import stringify from 'json-stable-stringify';
-import {resolveBuiltinFormatter, Formatter} from './formatters';
+import {parse, MessageFormatElement} from 'intl-messageformat-parser'
+import {outputFile, readJSON} from 'fs-extra'
+import stringify from 'json-stable-stringify'
+import {resolveBuiltinFormatter, Formatter} from './formatters'
 import {
   generateXXAC,
   generateXXLS,
   generateXXHA,
   generateENXA,
-} from './pseudo_locale';
+} from './pseudo_locale'
 
-export type CompileFn = (msgs: any) => Record<string, string>;
+export type CompileFn = (msgs: any) => Record<string, string>
 
-export type PseudoLocale = 'xx-LS' | 'xx-AC' | 'xx-HA' | 'en-XA';
+export type PseudoLocale = 'xx-LS' | 'xx-AC' | 'xx-HA' | 'en-XA'
 
 export interface CompileCLIOpts extends Opts {
   /**
    * The target file that contains compiled messages.
    */
-  outFile?: string;
+  outFile?: string
 }
 export interface Opts {
   /**
    * Whether to compile message into AST instead of just string
    */
-  ast?: boolean;
+  ast?: boolean
   /**
    * Path to a formatter file that converts <translation_files> to
    * `Record<string, string>` so we can compile.
    */
-  format?: string | Formatter;
+  format?: string | Formatter
   /**
    * Whether to compile to pseudo locale
    */
-  pseudoLocale?: PseudoLocale;
+  pseudoLocale?: PseudoLocale
 }
 
 /**
@@ -45,60 +45,60 @@ export interface Opts {
  * @returns serialized result in string format
  */
 export async function compile(inputFiles: string[], opts: Opts = {}) {
-  const {ast, format, pseudoLocale} = opts;
-  const formatter = await resolveBuiltinFormatter(format);
+  const {ast, format, pseudoLocale} = opts
+  const formatter = await resolveBuiltinFormatter(format)
 
-  const messages: Record<string, string> = {};
-  const messageAsts: Record<string, MessageFormatElement[]> = {};
-  const idsWithFileName: Record<string, string> = {};
+  const messages: Record<string, string> = {}
+  const messageAsts: Record<string, MessageFormatElement[]> = {}
+  const idsWithFileName: Record<string, string> = {}
   const compiledFiles = await Promise.all(
     inputFiles.map(f => readJSON(f).then(formatter.compile))
-  );
+  )
   for (let i = 0; i < inputFiles.length; i++) {
-    const inputFile = inputFiles[i];
-    const compiled = compiledFiles[i];
+    const inputFile = inputFiles[i]
+    const compiled = compiledFiles[i]
     for (const id in compiled) {
       if (messages[id] && messages[id] !== compiled[id]) {
         throw new Error(`Conflicting ID "${id}" with different translation found in these 2 files:
 ID: ${id}
 Message from ${idsWithFileName[id]}: ${messages[id]}
 Message from ${compiled[id]}: ${inputFile}
-`);
+`)
       }
-      messages[id] = compiled[id];
+      messages[id] = compiled[id]
       try {
-        const msgAst = parse(compiled[id]);
+        const msgAst = parse(compiled[id])
         switch (pseudoLocale) {
           case 'xx-LS':
-            messageAsts[id] = generateXXLS(msgAst);
-            break;
+            messageAsts[id] = generateXXLS(msgAst)
+            break
           case 'xx-AC':
-            messageAsts[id] = generateXXAC(msgAst);
-            break;
+            messageAsts[id] = generateXXAC(msgAst)
+            break
           case 'xx-HA':
-            messageAsts[id] = generateXXHA(msgAst);
-            break;
+            messageAsts[id] = generateXXHA(msgAst)
+            break
           case 'en-XA':
-            messageAsts[id] = generateENXA(msgAst);
-            break;
+            messageAsts[id] = generateENXA(msgAst)
+            break
           default:
-            messageAsts[id] = msgAst;
-            break;
+            messageAsts[id] = msgAst
+            break
         }
       } catch (e) {
         console.error(
           `Error validating message "${compiled[id]}" with ID "${id}" in file "${inputFile}"`
-        );
-        throw e;
+        )
+        throw e
       }
-      idsWithFileName[id] = inputFile;
+      idsWithFileName[id] = inputFile
     }
   }
 
   return stringify(ast ? messageAsts : messages, {
     space: 2,
     cmp: formatter.compareMessages || undefined,
-  });
+  })
 }
 
 /**
@@ -112,11 +112,11 @@ export default async function compileAndWrite(
   inputFiles: string[],
   compileOpts: CompileCLIOpts = {}
 ) {
-  const {outFile, ...opts} = compileOpts;
-  const serializedResult = await compile(inputFiles, opts);
+  const {outFile, ...opts} = compileOpts
+  const serializedResult = await compile(inputFiles, opts)
   if (outFile) {
-    return outputFile(outFile, serializedResult);
+    return outputFile(outFile, serializedResult)
   }
-  process.stdout.write(serializedResult);
-  process.stdout.write('\n');
+  process.stdout.write(serializedResult)
+  process.stdout.write('\n')
 }

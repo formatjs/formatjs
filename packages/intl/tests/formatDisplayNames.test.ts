@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import '@formatjs/intl-displaynames/polyfill-locales';
-import {formatDisplayName as formatDisplayNameFn} from '../src/displayName';
-import {OptionalIntlConfig, IntlFormatters} from '../src/types';
+import '@formatjs/intl-displaynames/polyfill-locales'
+import {formatDisplayName as formatDisplayNameFn} from '../src/displayName'
+import {OptionalIntlConfig, IntlFormatters} from '../src/types'
 
 describe('format API', () => {
-  const {NODE_ENV} = process.env;
+  const {NODE_ENV} = process.env
 
-  let config: OptionalIntlConfig<any>;
-  let getDisplayNames: any;
+  let config: OptionalIntlConfig<any>
+  let getDisplayNames: any
   beforeEach(() => {
     config = {
       locale: 'en',
@@ -18,19 +18,19 @@ describe('format API', () => {
       defaultFormats: {},
 
       onError: jest.fn(),
-    };
+    }
 
     getDisplayNames = jest
       .fn()
-      .mockImplementation((...args) => new (Intl as any).DisplayNames(...args));
-  });
+      .mockImplementation((...args) => new (Intl as any).DisplayNames(...args))
+  })
 
   afterEach(() => {
-    process.env.NODE_ENV = NODE_ENV;
-  });
+    process.env.NODE_ENV = NODE_ENV
+  })
 
   describe('formatDisplayNames()', function () {
-    let formatDisplayName!: IntlFormatters['formatDisplayName'];
+    let formatDisplayName!: IntlFormatters['formatDisplayName']
 
     beforeEach(() => {
       // @ts-ignore
@@ -38,24 +38,24 @@ describe('format API', () => {
         null,
         config,
         getDisplayNames
-      );
-    });
+      )
+    })
 
     it('should return locale display name as string', function () {
       expect(formatDisplayName('zh-Hans-SG', {type: 'language'})).toBe(
         'Simplified Chinese (Singapore)'
-      );
-    });
+      )
+    })
 
     it('will return undefined if Intl.DisplayName would return undefined', function () {
       const displayName = new (Intl as any).DisplayNames('en', {
         type: 'language',
         fallback: 'none',
-      });
-      expect(displayName.of('xx-XX')).toBeUndefined();
+      })
+      expect(displayName.of('xx-XX')).toBeUndefined()
       expect(
         formatDisplayName('xx-XX', {type: 'language', fallback: 'none'})
-      ).toBeUndefined();
-    });
-  });
-});
+      ).toBeUndefined()
+    })
+  })
+})
