@@ -1,5 +1,5 @@
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
-load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
+load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//karma:index.bzl", "karma_test")
 load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
 

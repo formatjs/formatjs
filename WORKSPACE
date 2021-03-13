@@ -121,13 +121,13 @@ go_rules_dependencies()
 go_register_toolchains()
 
 git_repository(
-    name = "com_github_atlassian_bazel_tools",
-    commit = "03adfba9705ea0f2de06215949374989ad7d018c",
+    name = "com_github_ash2k_bazel_tools",
+    commit = "cbe7710fca61d5cc585af4ea29b0e1423e1ac17d",
     remote = "https://github.com/ash2k/bazel-tools.git",
-    shallow_since = "1614333511 +1100",
+    shallow_since = "1615605582 +1100",
 )
 
-load("@com_github_atlassian_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
+load("@com_github_ash2k_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
 
 multirun_dependencies()
 
