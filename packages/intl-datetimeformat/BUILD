@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
+load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//ts-node:index.bzl", "ts_node")
 load("//tools:index.bzl", "check_format", "esbuild", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
