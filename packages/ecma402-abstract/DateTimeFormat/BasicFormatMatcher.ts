@@ -1,5 +1,5 @@
-import {DateTimeFormatOptions, Formats} from '../types/date-time';
-import {invariant} from '../utils';
+import {DateTimeFormatOptions, Formats} from '../types/date-time'
+import {invariant} from '../utils'
 import {
   DATE_TIME_PROPS,
   additionPenalty,
@@ -8,7 +8,7 @@ import {
   shortMorePenalty,
   shortLessPenalty,
   longLessPenalty,
-} from './utils';
+} from './utils'
 
 /**
  * https://tc39.es/ecma402/#sec-basicformatmatcher
@@ -19,41 +19,41 @@ export function BasicFormatMatcher(
   options: DateTimeFormatOptions,
   formats: Formats[]
 ): Formats {
-  let bestScore = -Infinity;
-  let bestFormat = formats[0];
-  invariant(Array.isArray(formats), 'formats should be a list of things');
+  let bestScore = -Infinity
+  let bestFormat = formats[0]
+  invariant(Array.isArray(formats), 'formats should be a list of things')
   for (const format of formats) {
-    let score = 0;
+    let score = 0
     for (const prop of DATE_TIME_PROPS) {
-      const optionsProp = options[prop];
-      const formatProp = format[prop];
+      const optionsProp = options[prop]
+      const formatProp = format[prop]
       if (optionsProp === undefined && formatProp !== undefined) {
-        score -= additionPenalty;
+        score -= additionPenalty
       } else if (optionsProp !== undefined && formatProp === undefined) {
-        score -= removalPenalty;
+        score -= removalPenalty
       } else if (optionsProp !== formatProp) {
-        const values = ['2-digit', 'numeric', 'narrow', 'short', 'long'];
-        const optionsPropIndex = values.indexOf(optionsProp as string);
-        const formatPropIndex = values.indexOf(formatProp as string);
+        const values = ['2-digit', 'numeric', 'narrow', 'short', 'long']
+        const optionsPropIndex = values.indexOf(optionsProp as string)
+        const formatPropIndex = values.indexOf(formatProp as string)
         const delta = Math.max(
           -2,
           Math.min(formatPropIndex - optionsPropIndex, 2)
-        );
+        )
         if (delta === 2) {
-          score -= longMorePenalty;
+          score -= longMorePenalty
         } else if (delta === 1) {
-          score -= shortMorePenalty;
+          score -= shortMorePenalty
         } else if (delta === -1) {
-          score -= shortLessPenalty;
+          score -= shortLessPenalty
         } else if (delta === -2) {
-          score -= longLessPenalty;
+          score -= longLessPenalty
         }
       }
     }
     if (score > bestScore) {
-      bestScore = score;
-      bestFormat = format;
+      bestScore = score
+      bestFormat = format
     }
   }
-  return {...bestFormat};
+  return {...bestFormat}
 }

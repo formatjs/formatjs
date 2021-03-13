@@ -2,12 +2,12 @@ import {
   FieldData,
   RelativeTimeField,
   RelativeTimeFormatInternal,
-} from '../types/relative-time';
-import {invariant} from '../utils';
-import {SingularRelativeTimeUnit} from './SingularRelativeTimeUnit';
-import {MakePartsList} from './MakePartsList';
-import {LDMLPluralRule} from '../types/plural-rules';
-import {ToString, Type, SameValue} from '../262';
+} from '../types/relative-time'
+import {invariant} from '../utils'
+import {SingularRelativeTimeUnit} from './SingularRelativeTimeUnit'
+import {MakePartsList} from './MakePartsList'
+import {LDMLPluralRule} from '../types/plural-rules'
+import {ToString, Type, SameValue} from '../262'
 
 export function PartitionRelativeTimePattern(
   rtf: Intl.RelativeTimeFormat,
@@ -16,36 +16,36 @@ export function PartitionRelativeTimePattern(
   {
     getInternalSlots,
   }: {
-    getInternalSlots(rtf: Intl.RelativeTimeFormat): RelativeTimeFormatInternal;
+    getInternalSlots(rtf: Intl.RelativeTimeFormat): RelativeTimeFormatInternal
   }
 ): Intl.RelativeTimeFormatPart[] {
   invariant(
     Type(value) === 'Number',
     `value must be number, instead got ${typeof value}`,
     TypeError
-  );
+  )
   invariant(
     Type(unit) === 'String',
     `unit must be number, instead got ${typeof value}`,
     TypeError
-  );
+  )
   if (isNaN(value) || !isFinite(value)) {
-    throw new RangeError(`Invalid value ${value}`);
+    throw new RangeError(`Invalid value ${value}`)
   }
-  const resolvedUnit = SingularRelativeTimeUnit(unit);
+  const resolvedUnit = SingularRelativeTimeUnit(unit)
   const {fields, style, numeric, pluralRules, numberFormat} = getInternalSlots(
     rtf
-  );
-  let entry: RelativeTimeField = resolvedUnit;
+  )
+  let entry: RelativeTimeField = resolvedUnit
   if (style === 'short') {
-    entry = `${resolvedUnit}-short` as RelativeTimeField;
+    entry = `${resolvedUnit}-short` as RelativeTimeField
   } else if (style === 'narrow') {
-    entry = `${resolvedUnit}-narrow` as RelativeTimeField;
+    entry = `${resolvedUnit}-narrow` as RelativeTimeField
   }
   if (!(entry in fields)) {
-    entry = resolvedUnit as RelativeTimeField;
+    entry = resolvedUnit as RelativeTimeField
   }
-  const patterns = fields[entry]!;
+  const patterns = fields[entry]!
 
   if (numeric === 'auto') {
     if (ToString(value) in patterns) {
@@ -54,14 +54,14 @@ export function PartitionRelativeTimePattern(
           type: 'literal',
           value: patterns[ToString(value) as '-1']!,
         },
-      ];
+      ]
     }
   }
-  let tl: keyof FieldData = 'future';
+  let tl: keyof FieldData = 'future'
   if (SameValue(value, -0) || value < 0) {
-    tl = 'past';
+    tl = 'past'
   }
-  const po = patterns[tl];
+  const po = patterns[tl]
   const fv =
     typeof numberFormat.formatToParts === 'function'
       ? numberFormat.formatToParts(Math.abs(value))
@@ -73,8 +73,8 @@ export function PartitionRelativeTimePattern(
             value: numberFormat.format(Math.abs(value)),
             unit,
           } as Intl.RelativeTimeFormatPart,
-        ];
-  const pr = pluralRules.select(value) as LDMLPluralRule;
-  const pattern = po[pr];
-  return MakePartsList(pattern!, resolvedUnit, fv);
+        ]
+  const pr = pluralRules.select(value) as LDMLPluralRule
+  const pattern = po[pr]
+  return MakePartsList(pattern!, resolvedUnit, fv)
 }

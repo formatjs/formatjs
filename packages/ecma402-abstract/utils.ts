@@ -5,18 +5,18 @@
 export function getMagnitude(x: number): number {
   // Cannot count string length via Number.toString because it may use scientific notation
   // for very small or very large numbers.
-  return Math.floor(Math.log(x) * Math.LOG10E);
+  return Math.floor(Math.log(x) * Math.LOG10E)
 }
 
 export function repeat(s: string, times: number): string {
   if (typeof s.repeat === 'function') {
-    return s.repeat(times);
+    return s.repeat(times)
   }
-  const arr = new Array(times);
+  const arr = new Array(times)
   for (let i = 0; i < arr.length; i++) {
-    arr[i] = s;
+    arr[i] = s
   }
-  return arr.join('');
+  return arr.join('')
 }
 
 export function setInternalSlot<
@@ -30,10 +30,10 @@ export function setInternalSlot<
   value: NonNullable<Internal>[Field]
 ) {
   if (!map.get(pl)) {
-    map.set(pl, Object.create(null));
+    map.set(pl, Object.create(null))
   }
-  const slots = map.get(pl)!;
-  slots[field] = value;
+  const slots = map.get(pl)!
+  slots[field] = value
 }
 
 export function setMultiInternalSlots<
@@ -46,7 +46,7 @@ export function setMultiInternalSlots<
   props: Pick<NonNullable<Internal>, K>
 ) {
   for (const k of Object.keys(props) as K[]) {
-    setInternalSlot(map, pl, k, props[k]);
+    setInternalSlot(map, pl, k, props[k])
   }
 }
 
@@ -59,7 +59,7 @@ export function getInternalSlot<
   pl: Instance,
   field: Field
 ): Internal[Field] {
-  return getMultiInternalSlots(map, pl, field)[field];
+  return getMultiInternalSlots(map, pl, field)[field]
 }
 
 export function getMultiInternalSlots<
@@ -71,25 +71,25 @@ export function getMultiInternalSlots<
   pl: Instance,
   ...fields: Field[]
 ): Pick<Internal, Field> {
-  const slots = map.get(pl);
+  const slots = map.get(pl)
   if (!slots) {
-    throw new TypeError(`${pl} InternalSlot has not been initialized`);
+    throw new TypeError(`${pl} InternalSlot has not been initialized`)
   }
   return fields.reduce((all, f) => {
-    all[f] = slots[f];
-    return all;
-  }, Object.create(null) as Pick<Internal, Field>);
+    all[f] = slots[f]
+    return all
+  }, Object.create(null) as Pick<Internal, Field>)
 }
 
 export interface LiteralPart {
-  type: 'literal';
-  value: string;
+  type: 'literal'
+  value: string
 }
 
 export function isLiteralPart(
   patternPart: LiteralPart | {type: string; value?: string}
 ): patternPart is LiteralPart {
-  return patternPart.type === 'literal';
+  return patternPart.type === 'literal'
 }
 
 /*
@@ -112,10 +112,10 @@ export function defineProperty<T extends object>(
     enumerable: false,
     writable: true,
     value,
-  });
+  })
 }
 
-export const UNICODE_EXTENSION_SEQUENCE_REGEX = /-u(?:-[0-9a-z]{2,8})+/gi;
+export const UNICODE_EXTENSION_SEQUENCE_REGEX = /-u(?:-[0-9a-z]{2,8})+/gi
 
 export function invariant(
   condition: boolean,
@@ -123,6 +123,6 @@ export function invariant(
   Err: any = Error
 ): asserts condition {
   if (!condition) {
-    throw new Err(message);
+    throw new Err(message)
   }
 }

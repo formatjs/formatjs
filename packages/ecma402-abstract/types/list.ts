@@ -1,22 +1,22 @@
-import {LocaleData} from './core';
+import {LocaleData} from './core'
 
-export type ListPatternLocaleData = LocaleData<ListPatternFieldsData>;
+export type ListPatternLocaleData = LocaleData<ListPatternFieldsData>
 
 export interface ListPatternFieldsData {
-  conjunction?: ListPatternData;
-  disjunction?: ListPatternData;
-  unit?: ListPatternData;
+  conjunction?: ListPatternData
+  disjunction?: ListPatternData
+  unit?: ListPatternData
 }
 
 export interface ListPattern {
-  start: string;
-  middle: string;
-  end: string;
-  pair: string;
+  start: string
+  middle: string
+  end: string
+  pair: string
 }
 
 export interface ListPatternData {
-  long: ListPattern;
-  short?: ListPattern;
-  narrow?: ListPattern;
+  long: ListPattern
+  short?: ListPattern
+  narrow?: ListPattern
 }

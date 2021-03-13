@@ -1,14 +1,14 @@
-import {TimeClip} from '../262';
-import {ToLocalTimeImplDetails} from './ToLocalTime';
+import {TimeClip} from '../262'
+import {ToLocalTimeImplDetails} from './ToLocalTime'
 import {
   FormatDateTimePattern,
   FormatDateTimePatternImplDetails,
-} from './FormatDateTimePattern';
-import {PartitionPattern} from '../PartitionPattern';
+} from './FormatDateTimePattern'
+import {PartitionPattern} from '../PartitionPattern'
 import {
   IntlDateTimeFormatPart,
   IntlDateTimeFormatPartType,
-} from '../types/date-time';
+} from '../types/date-time'
 
 /**
  * https://tc39.es/ecma402/#sec-partitiondatetimepattern
@@ -20,21 +20,21 @@ export function PartitionDateTimePattern(
   x: number,
   implDetails: ToLocalTimeImplDetails & FormatDateTimePatternImplDetails
 ): IntlDateTimeFormatPart[] {
-  x = TimeClip(x);
+  x = TimeClip(x)
   if (isNaN(x)) {
-    throw new RangeError('invalid time');
+    throw new RangeError('invalid time')
   }
 
   /** IMPL START */
-  const {getInternalSlots} = implDetails;
-  const internalSlots = getInternalSlots(dtf);
+  const {getInternalSlots} = implDetails
+  const internalSlots = getInternalSlots(dtf)
   /** IMPL END */
 
-  const {pattern} = internalSlots;
+  const {pattern} = internalSlots
   return FormatDateTimePattern(
     dtf,
     PartitionPattern<IntlDateTimeFormatPartType>(pattern),
     x,
     implDetails
-  );
+  )
 }

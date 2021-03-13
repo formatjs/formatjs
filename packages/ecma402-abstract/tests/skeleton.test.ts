@@ -2,7 +2,7 @@ import {
   parseDateTimeSkeleton,
   processDateTimePattern,
   splitRangePattern,
-} from '../DateTimeFormat/skeleton';
+} from '../DateTimeFormat/skeleton'
 
 test('splitRangePattern basic case', function () {
   expect(splitRangePattern('{month} {day} - {day}')).toEqual([
@@ -14,8 +14,8 @@ test('splitRangePattern basic case', function () {
       pattern: '{day}',
       source: 'endRange',
     },
-  ]);
-});
+  ])
+})
 
 test('splitRangePattern zh', function () {
   expect(splitRangePattern('{month}月{day}日至{day}日')).toEqual([
@@ -27,8 +27,8 @@ test('splitRangePattern zh', function () {
       pattern: '{day}日',
       source: 'endRange',
     },
-  ]);
-});
+  ])
+})
 
 test('parseDateTimeSkeleton', function () {
   expect(
@@ -108,16 +108,16 @@ test('parseDateTimeSkeleton', function () {
     },
     rawPattern: 'MMM d',
     skeleton: 'MMMd',
-  });
-});
+  })
+})
 
 test('processDateTimePattern', function () {
   expect(processDateTimePattern('Bh:mm:ss')).toEqual([
     '{hour}:{minute}:{second}',
     '{ampm}{hour}:{minute}:{second}',
-  ]);
+  ])
   expect(processDateTimePattern('y年M月d日 Bh:mm:ss')).toEqual([
     '{year}年{month}月{day}日 {hour}:{minute}:{second}',
     '{year}年{month}月{day}日 {ampm}{hour}:{minute}:{second}',
-  ]);
-});
+  ])
+})

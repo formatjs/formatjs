@@ -12,11 +12,11 @@ export function DefaultNumberOption(
   fallback: number
 ) {
   if (val !== undefined) {
-    val = Number(val);
+    val = Number(val)
     if (isNaN(val) || val < min || val > max) {
-      throw new RangeError(`${val} is outside of range [${min}, ${max}]`);
+      throw new RangeError(`${val} is outside of range [${min}, ${max}]`)
     }
-    return Math.floor(val);
+    return Math.floor(val)
   }
-  return fallback;
+  return fallback
 }

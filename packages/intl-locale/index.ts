@@ -2,7 +2,7 @@ import {
   GetOption,
   invariant,
   SameValue,
-  ToObject,
+  CoerceOptionsToObject,
 } from '@formatjs/ecma402-abstract';
 import {
   isStructurallyValidLanguageTag,
@@ -352,12 +352,7 @@ export class Locale {
 
     internalSlots = getInternalSlots(this);
 
-    let options: IntlLocaleOptions;
-    if (opts === undefined) {
-      options = Object.create(null);
-    } else {
-      options = ToObject(opts);
-    }
+    let options = CoerceOptionsToObject<IntlLocaleOptions>(opts);
 
     tag = applyOptionsToTag(tag, options);
     const opt = Object.create(null);

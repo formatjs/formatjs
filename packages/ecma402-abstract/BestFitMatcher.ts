@@ -1,6 +1,6 @@
-import {BestAvailableLocale} from './BestAvailableLocale';
-import {LookupMatcherResult} from './types/core';
-import {UNICODE_EXTENSION_SEQUENCE_REGEX} from './utils';
+import {BestAvailableLocale} from './BestAvailableLocale'
+import {LookupMatcherResult} from './types/core'
+import {UNICODE_EXTENSION_SEQUENCE_REGEX} from './utils'
 
 /**
  * https://tc39.es/ecma402/#sec-bestfitmatcher
@@ -13,52 +13,52 @@ export function BestFitMatcher(
   requestedLocales: string[],
   getDefaultLocale: () => string
 ): LookupMatcherResult {
-  const minimizedAvailableLocaleMap: Record<string, string> = {};
-  const minimizedAvailableLocales: Set<string> = new Set();
+  const minimizedAvailableLocaleMap: Record<string, string> = {}
+  const minimizedAvailableLocales: Set<string> = new Set()
   availableLocales.forEach(locale => {
     const minimizedLocale = new (Intl as any).Locale(locale)
       .minimize()
-      .toString();
+      .toString()
 
-    minimizedAvailableLocaleMap[minimizedLocale] = locale;
-    minimizedAvailableLocales.add(minimizedLocale);
-  });
+    minimizedAvailableLocaleMap[minimizedLocale] = locale
+    minimizedAvailableLocales.add(minimizedLocale)
+  })
 
-  let foundLocale: string | undefined;
+  let foundLocale: string | undefined
   for (const l of requestedLocales) {
     if (foundLocale) {
-      break;
+      break
     }
-    const noExtensionLocale = l.replace(UNICODE_EXTENSION_SEQUENCE_REGEX, '');
+    const noExtensionLocale = l.replace(UNICODE_EXTENSION_SEQUENCE_REGEX, '')
 
     if (availableLocales.has(noExtensionLocale)) {
-      foundLocale = noExtensionLocale;
-      break;
+      foundLocale = noExtensionLocale
+      break
     }
 
     if (minimizedAvailableLocales.has(noExtensionLocale)) {
-      foundLocale = minimizedAvailableLocaleMap[noExtensionLocale];
-      break;
+      foundLocale = minimizedAvailableLocaleMap[noExtensionLocale]
+      break
     }
 
-    const locale = new (Intl as any).Locale(noExtensionLocale);
+    const locale = new (Intl as any).Locale(noExtensionLocale)
 
-    const maximizedRequestedLocale = locale.maximize().toString();
-    const minimizedRequestedLocale = locale.minimize().toString();
+    const maximizedRequestedLocale = locale.maximize().toString()
+    const minimizedRequestedLocale = locale.minimize().toString()
 
     // Check minimized locale
     if (minimizedAvailableLocales.has(minimizedRequestedLocale)) {
-      foundLocale = minimizedAvailableLocaleMap[minimizedRequestedLocale];
-      break;
+      foundLocale = minimizedAvailableLocaleMap[minimizedRequestedLocale]
+      break
     }
 
     // Lookup algo on maximized locale
     foundLocale = BestAvailableLocale(
       minimizedAvailableLocales,
       maximizedRequestedLocale
-    );
+    )
   }
   return {
     locale: foundLocale || getDefaultLocale(),
-  };
+  }
 }

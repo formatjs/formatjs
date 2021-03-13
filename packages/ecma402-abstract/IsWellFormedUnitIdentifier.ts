@@ -1,11 +1,11 @@
-import {IsSanctionedSimpleUnitIdentifier} from './IsSanctionedSimpleUnitIdentifier';
+import {IsSanctionedSimpleUnitIdentifier} from './IsSanctionedSimpleUnitIdentifier'
 
 /**
  * This follows https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
  * @param str string to convert
  */
 function toLowerCase(str: string): string {
-  return str.replace(/([A-Z])/g, (_, c) => c.toLowerCase());
+  return str.replace(/([A-Z])/g, (_, c) => c.toLowerCase())
 }
 
 /**
@@ -13,20 +13,20 @@ function toLowerCase(str: string): string {
  * @param unit
  */
 export function IsWellFormedUnitIdentifier(unit: string) {
-  unit = toLowerCase(unit);
+  unit = toLowerCase(unit)
   if (IsSanctionedSimpleUnitIdentifier(unit)) {
-    return true;
+    return true
   }
-  const units = unit.split('-per-');
+  const units = unit.split('-per-')
   if (units.length !== 2) {
-    return false;
+    return false
   }
-  const [numerator, denominator] = units;
+  const [numerator, denominator] = units
   if (
     !IsSanctionedSimpleUnitIdentifier(numerator) ||
     !IsSanctionedSimpleUnitIdentifier(denominator)
   ) {
-    return false;
+    return false
   }
-  return true;
+  return true
 }

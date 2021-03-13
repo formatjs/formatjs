@@ -1,13 +1,13 @@
-import minimist from 'minimist';
-import {outputJSONSync} from 'fs-extra';
+import minimist from 'minimist'
+import {outputJSONSync} from 'fs-extra'
 
 // Generate an array of 10 characters with consecutive codepoint, starting from `starCharCode`.
 function generateDigitChars(startCharCode: number): string[] {
-  const arr = new Array<string>(10);
+  const arr = new Array<string>(10)
   for (let i = 0; i < 10; i++) {
-    arr[i] = String.fromCodePoint(startCharCode + i);
+    arr[i] = String.fromCodePoint(startCharCode + i)
   }
-  return arr;
+  return arr
 }
 
 // https://tc39.es/ecma402/#table-numbering-system-digits
@@ -88,13 +88,13 @@ const digitMapping: Record<string, string[]> = {
   vaii: generateDigitChars(0x1620),
   wara: generateDigitChars(0x118e0),
   wcho: generateDigitChars(0x1e2f0),
-};
+}
 
 function main(args: minimist.ParsedArgs) {
-  const {out} = args;
-  outputJSONSync(out, digitMapping);
+  const {out} = args
+  outputJSONSync(out, digitMapping)
 }
 
 if (require.main === module) {
-  main(minimist(process.argv));
+  main(minimist(process.argv))
 }

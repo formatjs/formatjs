@@ -7,7 +7,7 @@
  * @param fallback
  */
 
-import {DefaultNumberOption} from './DefaultNumberOption';
+import {DefaultNumberOption} from './DefaultNumberOption'
 
 export function GetNumberOption<T extends object, K extends keyof T>(
   options: T,
@@ -16,6 +16,6 @@ export function GetNumberOption<T extends object, K extends keyof T>(
   maximum: number,
   fallback: number
 ): number {
-  const val = options[property];
-  return DefaultNumberOption(val, minimum, maximum, fallback);
+  const val = options[property]
+  return DefaultNumberOption(val, minimum, maximum, fallback)
 }

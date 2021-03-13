@@ -7,18 +7,18 @@ export function BestAvailableLocale(
   availableLocales: Set<String>,
   locale: string
 ) {
-  let candidate = locale;
+  let candidate = locale
   while (true) {
     if (availableLocales.has(candidate)) {
-      return candidate;
+      return candidate
     }
-    let pos = candidate.lastIndexOf('-');
+    let pos = candidate.lastIndexOf('-')
     if (!~pos) {
-      return undefined;
+      return undefined
     }
     if (pos >= 2 && candidate[pos - 2] === '-') {
-      pos -= 2;
+      pos -= 2
     }
-    candidate = candidate.slice(0, pos);
+    candidate = candidate.slice(0, pos)
   }
 }

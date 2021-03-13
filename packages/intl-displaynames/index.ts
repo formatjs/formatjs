@@ -11,7 +11,7 @@ import {
   DisplayNamesData,
   ToString,
   CanonicalizeLocaleList,
-  ToObject,
+  GetOptionsObject,
   CanonicalCodeForDisplayNames,
 } from '@formatjs/ecma402-abstract';
 
@@ -38,7 +38,8 @@ export class DisplayNames {
       throw TypeError(`Constructor Intl.DisplayNames requires 'new'`);
     }
     const requestedLocales = CanonicalizeLocaleList(locales);
-    options = ToObject(options);
+    options = GetOptionsObject(options);
+
     const opt = Object.create(null);
     const {localeData} = DisplayNames;
     const matcher = GetOption(

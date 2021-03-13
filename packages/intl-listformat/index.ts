@@ -11,7 +11,7 @@ import {
   invariant,
   isLiteralPart,
   LiteralPart,
-  ToObject,
+  GetOptionsObject,
   CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract';
 
@@ -199,8 +199,7 @@ export default class ListFormat {
     );
     const requestedLocales = CanonicalizeLocaleList(locales);
     const opt: any = Object.create(null);
-    const opts =
-      options === undefined ? Object.create(null) : ToObject(options);
+    const opts = GetOptionsObject(options);
     const matcher = GetOption(
       opts,
       'localeMatcher',

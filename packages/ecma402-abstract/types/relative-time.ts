@@ -1,27 +1,27 @@
-import {LocaleData} from './core';
-import {LDMLPluralRule} from './plural-rules';
+import {LocaleData} from './core'
+import {LDMLPluralRule} from './plural-rules'
 
 export interface FieldData {
-  '0'?: string;
-  '1'?: string;
-  '-1'?: string;
-  '2'?: string;
-  '-2'?: string;
-  '3'?: string;
-  '-3'?: string;
-  future: RelativeTimeData;
-  past: RelativeTimeData;
+  '0'?: string
+  '1'?: string
+  '-1'?: string
+  '2'?: string
+  '-2'?: string
+  '3'?: string
+  '-3'?: string
+  future: RelativeTimeData
+  past: RelativeTimeData
 }
 
-type RelativeTimeData = {[u in LDMLPluralRule]?: string};
+type RelativeTimeData = {[u in LDMLPluralRule]?: string}
 
 export type UnpackedLocaleFieldsData = {
-  [f in RelativeTimeField]?: FieldData;
-} & {nu: Array<string | null>};
+  [f in RelativeTimeField]?: FieldData
+} & {nu: Array<string | null>}
 
 export type LocaleFieldsData = {
-  [f in RelativeTimeField]?: FieldData;
-} & {nu?: Array<string | null>};
+  [f in RelativeTimeField]?: FieldData
+} & {nu?: Array<string | null>}
 
 export type RelativeTimeField =
   | 'second'
@@ -47,7 +47,7 @@ export type RelativeTimeField =
   | 'quarter-narrow'
   | 'year'
   | 'year-short'
-  | 'year-narrow';
+  | 'year-narrow'
 
 export type RelativeTimeFormatSingularUnit = Exclude<
   Intl.RelativeTimeFormatUnit,
@@ -59,16 +59,16 @@ export type RelativeTimeFormatSingularUnit = Exclude<
   | 'months'
   | 'quarters'
   | 'years'
->;
+>
 
-export type RelativeTimeLocaleData = LocaleData<LocaleFieldsData>;
+export type RelativeTimeLocaleData = LocaleData<LocaleFieldsData>
 export interface RelativeTimeFormatInternal {
-  numberFormat: Intl.NumberFormat;
-  pluralRules: Intl.PluralRules;
-  locale: string;
-  fields: LocaleFieldsData;
-  style: Intl.ResolvedRelativeTimeFormatOptions['style'];
-  numeric: Intl.ResolvedRelativeTimeFormatOptions['numeric'];
-  numberingSystem: string;
-  initializedRelativeTimeFormat: boolean;
+  numberFormat: Intl.NumberFormat
+  pluralRules: Intl.PluralRules
+  locale: string
+  fields: LocaleFieldsData
+  style: Intl.ResolvedRelativeTimeFormatOptions['style']
+  numeric: Intl.ResolvedRelativeTimeFormatOptions['numeric']
+  numberingSystem: string
+  initializedRelativeTimeFormat: boolean
 }
