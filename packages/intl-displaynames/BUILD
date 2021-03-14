@@ -222,8 +222,8 @@ test262_harness_test(
     size = "large",
     data = [
         "test262-polyfill.js",
-        "//:test262-all",
-        "//:test262-displaynames",
+        "@com_github_tc39_test262//:test262-displaynames",
+        "@com_github_tc39_test262//:test262-harness",
     ],
     tags = ["exclusive"],
     templated_args = [
@@ -233,7 +233,9 @@ test262_harness_test(
         "30000",
         "--prelude",
         "$(rootpath test262-polyfill.js)",
-        "$(rootpaths //:test262-displaynames)",
+        "--test262Dir",
+        "../com_github_tc39_test262",
+        "../com_github_tc39_test262/test/intl402/DisplayNames/**/*.js",
     ],
 )
 

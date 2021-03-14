@@ -167,3 +167,10 @@ http_archive(
     strip_prefix = "buildtools-%s" % _BUILDIFIER_VERSION,
     url = "https://github.com/bazelbuild/buildtools/archive/%s.zip" % _BUILDIFIER_VERSION,
 )
+
+# Test262
+new_local_repository(
+    name = "com_github_tc39_test262",
+    build_file = "@//:test262.BUILD",
+    path = "test262",
+)

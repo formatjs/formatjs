@@ -213,8 +213,8 @@ test262_harness_test(
     size = "large",
     data = [
         "test262-polyfill.js",
-        "//:test262-all",
-        "//:test262-pluralrules",
+        "@com_github_tc39_test262//:test262-harness",
+        "@com_github_tc39_test262//:test262-pluralrules",
     ],
     tags = ["exclusive"],
     templated_args = [
@@ -224,7 +224,9 @@ test262_harness_test(
         "30000",
         "--prelude",
         "$(rootpath test262-polyfill.js)",
-        "$(rootpaths //:test262-pluralrules)",
+        "--test262Dir",
+        "../com_github_tc39_test262",
+        "../com_github_tc39_test262/test/intl402/PluralRules/**/*.js",
     ],
 )
 
