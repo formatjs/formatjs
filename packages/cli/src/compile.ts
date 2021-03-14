@@ -25,6 +25,11 @@ export interface Opts {
    */
   ast?: boolean
   /**
+   * Whether to continue compiling messages after encountering an error.
+   * Any keys with errors will not be included in the output file.
+   */
+  skipErrors?: boolean
+  /**
    * Path to a formatter file that converts <translation_files> to
    * `Record<string, string>` so we can compile.
    */
@@ -45,7 +50,7 @@ export interface Opts {
  * @returns serialized result in string format
  */
 export async function compile(inputFiles: string[], opts: Opts = {}) {
-  const {ast, format, pseudoLocale} = opts
+  const {ast, format, pseudoLocale, skipErrors} = opts
   const formatter = await resolveBuiltinFormatter(format)
 
   const messages: Record<string, string> = {}
@@ -65,9 +70,9 @@ Message from ${idsWithFileName[id]}: ${messages[id]}
 Message from ${compiled[id]}: ${inputFile}
 `)
       }
-      messages[id] = compiled[id]
       try {
         const msgAst = parse(compiled[id])
+        messages[id] = compiled[id]
         switch (pseudoLocale) {
           case 'xx-LS':
             messageAsts[id] = generateXXLS(msgAst)
@@ -85,13 +90,15 @@ Message from ${compiled[id]}: ${inputFile}
             messageAsts[id] = msgAst
             break
         }
+        idsWithFileName[id] = inputFile
       } catch (e) {
         console.error(
           `Error validating message "${compiled[id]}" with ID "${id}" in file "${inputFile}"`
         )
-        throw e
+        if (!skipErrors) {
+          throw e
+        }
       }
-      idsWithFileName[id] = inputFile
     }
   }
 
