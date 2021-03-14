@@ -225,7 +225,6 @@ test262_harness_test(
         "@com_github_tc39_test262//:test262-displaynames",
         "@com_github_tc39_test262//:test262-harness",
     ],
-    tags = ["exclusive"],
     templated_args = [
         "--reporter-keys",
         "file,attrs,result",
