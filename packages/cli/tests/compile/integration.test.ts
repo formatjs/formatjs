@@ -148,7 +148,11 @@ test('skipped malformed ICU message json', async () => {
         'lang/malformed-messages.json'
       )}`
     )
-  ).resolves.toMatchSnapshot()
+  ).resolves.toMatchSnapshot({
+    stderr: expect.stringMatching(
+      /^Error validating message "my name is {name" with ID "a1dd2" in file .*\/packages\/cli\/tests\/compile\/lang\/malformed-messages.json/
+    ),
+  } as Partial<any>)
 }, 20000)
 
 test('AST', async () => {
