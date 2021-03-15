@@ -1,7 +1,6 @@
 # FormatJS
 
-![Unit Tests](https://github.com/formatjs/formatjs/workflows/Unit%20Tests/badge.svg)
-![Sauce Labs Tests](https://github.com/formatjs/formatjs/workflows/Sauce%20Labs%20Tests/badge.svg)
+[![Unit + Karma Tests](https://github.com/formatjs/formatjs/actions/workflows/tests.yml/badge.svg)](https://github.com/formatjs/formatjs/actions/workflows/tests.yml)
 [![Slack FormatJS](https://img.shields.io/badge/slack-@formatjs-green.svg?logo=slack)](https://join.slack.com/t/formatjs/shared_invite/enQtNjM2MjM4NjE4ODIxLTMyMWE0YTNhMTlmMzZlNzJlNjEzMWY0YjM2ODUxYjlmNDE2YzQyMDIxZDg3Y2Q5YWNlMzhhYzRiNDk0OGQwNGI)
 
 [![Sauce Browser Matrix Status](https://app.saucelabs.com/browser-matrix/formatjsproject.svg)](https://app.saucelabs.com/u/formatjsproject)
