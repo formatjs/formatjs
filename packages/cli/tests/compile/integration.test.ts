@@ -66,6 +66,17 @@ test('en-XA json', async () => {
   ).resolves.toMatchSnapshot()
 }, 20000)
 
+test('en-XB json', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} compile --ast --pseudo-locale en-XB ${join(
+        __dirname,
+        'lang/en.json'
+      )}`
+    )
+  ).resolves.toMatchSnapshot()
+}, 20000)
+
 test('normal json with formatter', async () => {
   await expect(
     exec(
