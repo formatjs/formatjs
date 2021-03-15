@@ -7,11 +7,12 @@ import {
   generateXXLS,
   generateXXHA,
   generateENXA,
+  generateENXB,
 } from './pseudo_locale'
 
 export type CompileFn = (msgs: any) => Record<string, string>
 
-export type PseudoLocale = 'xx-LS' | 'xx-AC' | 'xx-HA' | 'en-XA'
+export type PseudoLocale = 'xx-LS' | 'xx-AC' | 'xx-HA' | 'en-XA' | 'en-XB'
 
 export interface CompileCLIOpts extends Opts {
   /**
@@ -85,6 +86,9 @@ Message from ${compiled[id]}: ${inputFile}
             break
           case 'en-XA':
             messageAsts[id] = generateENXA(msgAst)
+            break
+          case 'en-XB':
+            messageAsts[id] = generateENXB(msgAst)
             break
           default:
             messageAsts[id] = msgAst

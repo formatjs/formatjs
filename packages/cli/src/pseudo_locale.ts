@@ -74,3 +74,33 @@ export function generateENXA(
   })
   return ast
 }
+
+export function generateENXB(
+  msg: string | MessageFormatElement[]
+): MessageFormatElement[] {
+  const ast = typeof msg === 'string' ? parse(msg) : msg
+  ast.forEach(el => {
+    if (isLiteralElement(el)) {
+      const pseudoString = el.value
+        .split('')
+        .map((c, index) => {
+          const i = ASCII.indexOf(c)
+          const canPad = (index + 1) % 3 === 0
+
+          if (i < 0) {
+            return c
+          }
+
+          return canPad ? ACCENTED_ASCII[i].repeat(3) : ACCENTED_ASCII[i]
+        })
+        .join('')
+
+      el.value = `[!! ${pseudoString} !!]`
+    } else if (isPluralElement(el) || isSelectElement(el)) {
+      for (const opt of Object.values(el.options)) {
+        generateENXB(opt.value)
+      }
+    }
+  })
+  return ast
+}
