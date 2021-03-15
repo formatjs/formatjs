@@ -18,41 +18,39 @@ We currently use [`bazel`](https://bazel.build/) to develop, along with [lerna](
 To setup locally, first initialize the git submodule:
 
 ```sh
-> git submodule init
-> git submodule update
+git submodule init
+git submodule update
 ```
 
 Now you can build & test with yarn:
 
 ```sh
-> yarn
-> yarn build
-> yarn test
+yarn && yarn build && yarn test
 ```
 
 To run examples:
 
 ```sh
-> yarn examples
+yarn examples
 ```
 
-To build/test on individual package:
+To build/test individual package:
 
 ```sh
 yarn bazel build //packages/react-intl
 yarn bazel test //packages/react-intl
 ```
 
-Releases can be done with the following steps:
+Releases can be done with the following steps (**must use `npm`**):
 
 ```sh
-> npm run release
+npm run release
 ```
 
-To publish next tag
+To publish next tag (**must use `npm`**):
 
 ```sh
-> npm run release:next
+npm run release:next
 ```
 
 ## Published Packages
