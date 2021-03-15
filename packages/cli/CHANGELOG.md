@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.1.6...@formatjs/cli@3.2.0) (2021-03-15)
+
+
+### Features
+
+* **@formatjs/cli:** add `--skip-errors` to skip messages with errors when compiling ([#2704](https://github.com/formatjs/formatjs/issues/2704)) ([8962e78](https://github.com/formatjs/formatjs/commit/8962e78fbf6fd5e8628b60eeecb813f61ad524ed))
+* **cli:** add new pseudo locale en-XB ([#2708](https://github.com/formatjs/formatjs/issues/2708)) ([18bd4d7](https://github.com/formatjs/formatjs/commit/18bd4d76cf2c41854eaac3a4ef3e9e11e63182d0))
+
+
+
+
+
 ## [3.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.1.5...@formatjs/cli@3.1.6) (2021-03-01)
 
 **Note:** Version bump only for package @formatjs/cli
