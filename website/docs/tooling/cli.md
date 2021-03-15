@@ -226,6 +226,10 @@ This is especially useful to convert from a TMS-specific format back to react-in
 
 Whether to compile message into AST instead of just string. See [Advanced Usage](../guides/advanced-usage.md)
 
+### `--skip-errors`
+
+Whether to continue compiling messages after encountering an error parsing one of them. Any keys with errors will not be included in the output file.
+
 ## Builtin Formatters
 
 We provide the following built-in formatters to integrate with 3rd party TMSes:

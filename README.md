@@ -1,7 +1,6 @@
 # FormatJS
 
-![Unit Tests](https://github.com/formatjs/formatjs/workflows/Unit%20Tests/badge.svg)
-![Sauce Labs Tests](https://github.com/formatjs/formatjs/workflows/Sauce%20Labs%20Tests/badge.svg)
+[![Unit + Karma Tests](https://github.com/formatjs/formatjs/actions/workflows/tests.yml/badge.svg)](https://github.com/formatjs/formatjs/actions/workflows/tests.yml)
 [![Slack FormatJS](https://img.shields.io/badge/slack-@formatjs-green.svg?logo=slack)](https://join.slack.com/t/formatjs/shared_invite/enQtNjM2MjM4NjE4ODIxLTMyMWE0YTNhMTlmMzZlNzJlNjEzMWY0YjM2ODUxYjlmNDE2YzQyMDIxZDg3Y2Q5YWNlMzhhYzRiNDk0OGQwNGI)
 
 [![Sauce Browser Matrix Status](https://app.saucelabs.com/browser-matrix/formatjsproject.svg)](https://app.saucelabs.com/u/formatjsproject)
@@ -18,34 +17,39 @@ We currently use [`bazel`](https://bazel.build/) to develop, along with [lerna](
 To setup locally, first initialize the git submodule:
 
 ```sh
-> git submodule init
-> git submodule update
+git submodule init
+git submodule update
 ```
 
 Now you can build & test with yarn:
 
 ```sh
-> yarn
-> yarn build
-> yarn test
+yarn && yarn build && yarn test
 ```
 
 To run examples:
 
 ```sh
-> yarn examples
+yarn examples
 ```
 
-Releases can be done with the following steps:
+To build/test individual package:
 
 ```sh
-> npm run release
+yarn bazel build //packages/react-intl
+yarn bazel test //packages/react-intl
 ```
 
-To publish next tag
+Releases can be done with the following steps (**must use `npm`**):
 
 ```sh
-> npm run release:next
+npm run release
+```
+
+To publish next tag (**must use `npm`**):
+
+```sh
+npm run release:next
 ```
 
 ## Published Packages

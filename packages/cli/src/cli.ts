@@ -168,6 +168,10 @@ If this is not provided, result will be printed to stdout`
 for more information`
     )
     .option(
+      '--skip-errors',
+      `Whether to continue compiling messages after encountering an error. Any keys with errors will not be included in the output file.`
+    )
+    .option(
       '--pseudo-locale <pseudoLocale>',
       `Whether to generate pseudo-locale files. See https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. 
 "--ast" is required for this to work.`
