@@ -36,6 +36,13 @@ To run examples:
 > yarn examples
 ```
 
+To build/test on individual package:
+
+```sh
+yarn bazel build //packages/react-intl
+yarn bazel test //packages/react-intl
+```
+
 Releases can be done with the following steps:
 
 ```sh
