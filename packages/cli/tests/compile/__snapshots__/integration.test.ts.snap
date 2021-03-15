@@ -89,6 +89,9 @@ Options:
   --ast                           Whether to compile to AST. See
                                   https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
                                   for more information
+  --skip-errors                   Whether to continue compiling messages after
+                                  encountering an error. Any keys with errors
+                                  will not be included in the output file.
   --pseudo-locale <pseudoLocale>  Whether to generate pseudo-locale files. See
                                   https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale
                                   for possible values.
@@ -322,6 +325,17 @@ Object {
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
   "a1dd2": "my name is {name}",
   "ashd2": "a message",
+}
+`;
+
+exports[`skipped malformed ICU message json 1`] = `
+Object {
+  "stderr": StringMatching /\\^Error validating message "my name is \\{name" with ID "a1dd2" in file \\.\\*\\\\/packages\\\\/cli\\\\/tests\\\\/compile\\\\/lang\\\\/malformed-messages\\.json/,
+  "stdout": "{
+  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"ashd2\\": \\"a message\\"
+}
+",
 }
 `;
 

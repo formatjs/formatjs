@@ -140,6 +140,21 @@ test('malformed ICU message json', async () => {
   ).rejects.toThrowError('SyntaxError: Expected "," but end of input found.')
 }, 20000)
 
+test('skipped malformed ICU message json', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} compile  --skip-errors ${join(
+        __dirname,
+        'lang/malformed-messages.json'
+      )}`
+    )
+  ).resolves.toMatchSnapshot({
+    stderr: expect.stringMatching(
+      /^Error validating message "my name is {name" with ID "a1dd2" in file .*\/packages\/cli\/tests\/compile\/lang\/malformed-messages.json/
+    ),
+  } as Partial<any>)
+}, 20000)
+
 test('AST', async () => {
   await expect(
     exec(`${BIN_PATH} compile --ast ${join(__dirname, 'lang/en.json')}`)
