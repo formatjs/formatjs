@@ -1071,7 +1071,7 @@ nodejs_binary(
     srcs = ["zic/%s" % zone],
     outs = ["zdump/%s" % zone],
     # on Linux max abs time is 2038
-    # https://en.wikipedia.org/wiki/Year_2038_problem 
+    # https://en.wikipedia.org/wiki/Year_2038_problem
     cmd = "$(location :realpath) $< | xargs $(location @tzcode//:zdump) -c 2038 -v > $@",
     message = "zdump-ing %s" % zone,
     tools = [
