@@ -43,6 +43,7 @@ export default {
   "Atlantic/Jan_Mayen": "Europe/Oslo",
   "Australia/ACT": "Australia/Sydney",
   "Australia/Canberra": "Australia/Sydney",
+  "Australia/Currie": "Australia/Hobart",
   "Australia/LHI": "Australia/Lord_Howe",
   "Australia/NSW": "Australia/Sydney",
   "Australia/North": "Australia/Darwin",

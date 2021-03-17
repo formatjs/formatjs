@@ -27,18 +27,20 @@ http_archive(
     urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/3.2.2/rules_nodejs-3.2.2.tar.gz"],
 )
 
+IANA_TZ_VERSION = "2021a"
+
 http_archive(
     name = "tzdata",
     build_file = "@//:packages/intl-datetimeformat/tzdata.BUILD",
-    sha256 = "8d813957de363387696f05af8a8889afa282ab5016a764c701a20758d39cbaf3",
-    urls = ["https://data.iana.org/time-zones/releases/tzdata2020d.tar.gz"],
+    sha256 = "39e7d2ba08c68cbaefc8de3227aab0dec2521be8042cf56855f7dc3a9fb14e08",
+    urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
 http_archive(
     name = "tzcode",
     build_file = "@//:packages/intl-datetimeformat/tzcode.BUILD",
-    sha256 = "6cf050ba28e8053029d3f32d71341d11a794c6b5dd51a77fc769d6dae364fad5",
-    urls = ["https://data.iana.org/time-zones/releases/tzcode2020d.tar.gz"],
+    sha256 = "eb46bfa124b5b6bd13d61a609bfde8351bd192894708d33aa06e5c1e255802d0",
+    urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
