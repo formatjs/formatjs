@@ -95,7 +95,7 @@
     "loud-rejection": "^2.2.0",
     "make-plural-compiler": "^5.1.0",
     "minimist": "^1.2.5",
-    "parcel": "^1.12.4",
+    "parcel": "^2.0.0-beta.2",
     "patch-package": "^6.2.2",
     "pegjs": "^0.10.0",
     "prettier": "^2.0.5",
