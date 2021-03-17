@@ -1,6 +1,6 @@
 {
   "name": "vue-intl",
-  "version": "4.1.16",
+  "version": "4.1.17",
   "description": "formatjs intl binding for vue",
   "main": "index.js",
   "repository": {
@@ -17,7 +17,7 @@
   ],
   "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {
-    "@formatjs/intl": "1.8.3"
+    "@formatjs/intl": "1.8.4"
   },
   "peerDependencies": {
     "vue": "3"

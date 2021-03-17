@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.8.3...@formatjs/intl@1.8.4) (2021-03-17)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** trim down dependencies thanks to TS4.2 ([31b7809](https://github.com/formatjs/formatjs/commit/31b7809e5359a3fc7fb76e9655dadbc5c9c23384))
+
+
+
+
+
 ## [1.8.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.8.2...@formatjs/intl@1.8.3) (2021-03-15)
 
 **Note:** Version bump only for package @formatjs/intl
