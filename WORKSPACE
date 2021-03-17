@@ -43,7 +43,7 @@ http_archive(
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
-load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
+load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "npm_install")
 
 node_repositories(
     node_version = "14.9.0",
@@ -81,14 +81,14 @@ http_archive(
     ],
 )
 
-# The yarn_install rule runs yarn anytime the package.json or yarn.lock file changes.
+# The npm_install rule runs yarn anytime the package.json or yarn.lock file changes.
 # It also extracts and installs any Bazel rules distributed in an npm package.
 
-yarn_install(
+npm_install(
     # Name this npm so that Bazel Label references look like @npm//package
     name = "npm",
     package_json = "//:package.json",
-    yarn_lock = "//:yarn.lock",
+    package_lock_json = "//:package-lock.json",
 )
 
 # Setup skylib

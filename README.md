@@ -21,23 +21,23 @@ git submodule init
 git submodule update
 ```
 
-Now you can build & test with yarn:
+Now you can build & test with `npm`:
 
 ```sh
-yarn && yarn build && yarn test
+npm i && npm run build && npm run test
 ```
 
 To run examples:
 
 ```sh
-yarn examples
+npm run examples
 ```
 
 To build/test individual package:
 
 ```sh
-yarn bazel build //packages/react-intl
-yarn bazel test //packages/react-intl
+bazel build //packages/react-intl
+bazel test //packages/react-intl
 ```
 
 Releases can be done with the following steps (**must use `npm`**):
