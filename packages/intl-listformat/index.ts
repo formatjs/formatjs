@@ -43,27 +43,26 @@ export interface IntlListFormatOptions {
 
 export interface ResolvedIntlListFormatOptions {
   /**
-   * The BCP 47 language tag for the locale actually used.
-   * If any Unicode extension values were requested in the
-   * input BCP 47 language tag that led to this locale,
-   * the key-value pairs that were requested and are
-   * supported for this locale are included in locale.
+   * A string with a BCP 47 language tag, or an array of such strings.
+   * For the general form and interpretation of the locales argument,
+   * see the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locale_identification_and_negotiation) page.
    */
   locale: string
   /**
-   * The format of output message. Possible values are:
-   * - "always" (default, e.g., 1 day ago),
-   * - or "auto" (e.g., yesterday).
-   * The "auto" value allows to not always have to
-   * use numeric values in the output.
+   * The format of output message.
+   * Possible values are :
+   * - "conjunction" that stands for "and"-based lists (default, e.g., "A, B, and C")
+   * - "disjunction" that stands for "or"-based lists (e.g., "A, B, or C").
+   * - "unit" stands for lists of values with units (e.g., "5 pounds, 12 ounces").
    */
   type: 'conjunction' | 'disjunction' | 'unit'
   /**
-   * The length of the internationalized message. Possible values are:
-   * - "long" (default, e.g., in 1 month)
-   * - "short" (e.g., in 1 mo.),
-   * - or "narrow" (e.g., in 1 mo.).
-   * The narrow style could be similar to the short style for some locales.
+   * The length of the formatted message.
+   * Possible values are:
+   * - "long" (default, e.g., "A, B, and C");
+   * - "short" (e.g., "A, B, C"), or
+   * - "narrow" (e.g., "A B C").
+   * When style is "short" or "narrow", "unit" is the only allowed value for the type option.
    */
   style: 'long' | 'short' | 'narrow'
 }
