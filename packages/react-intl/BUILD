@@ -34,11 +34,9 @@ SRC_DEPS = [
     "//packages/intl:dist",
     "//packages/intl-listformat:dist",
     "//packages/intl-displaynames:dist",
-    "//packages/intl-relativetimeformat:dist",
     "//packages/intl-messageformat:dist",
     "@npm//hoist-non-react-statics",
     "@npm//@types/hoist-non-react-statics",
-    "@npm//fast-memoize",
 ]
 
 TESTS = glob([
@@ -47,16 +45,17 @@ TESTS = glob([
 ])
 
 TEST_DEPS = SRC_DEPS + [
-    "//packages/intl-numberformat:dist",
-    "//packages/intl-listformat:types",
-    "//packages/intl-displaynames:types",
-    "//packages/ecma402-abstract:types",
-    "//packages/intl:types",
-    "//packages/intl-messageformat:types",
-    "//packages/intl-messageformat-parser:types",
-    "@npm//@testing-library/react",
     "@npm//@testing-library/jest-dom",
+    "@npm//@testing-library/react",
     "@npm//react-dom",
+    "//packages/ecma402-abstract:types",
+    "//packages/intl-displaynames:types",
+    "//packages/intl-listformat:types",
+    "//packages/intl-messageformat-parser:types",
+    "//packages/intl-messageformat:types",
+    "//packages/intl-numberformat:dist",
+    "//packages/intl-relativetimeformat:dist",
+    "//packages/intl:types",
 ]
 
 ts_compile(
