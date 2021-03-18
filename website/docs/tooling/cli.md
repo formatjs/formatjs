@@ -210,6 +210,8 @@ Batch compile a folder with extracted files from `formatjs extract` to a folder 
 formatjs compile-folder [options] <folder> <outFolder>
 ```
 
+Folder structure should be in the form of `<folder>/<locale>.json` and the output would be `<outFolder>/<locale>.json`.
+
 ### `--format [path]`
 
 Path to a formatter file that converts `<translation_file>` to `Record<string, string>` so we can compile. The file must export a function named `compile` with the signature:
