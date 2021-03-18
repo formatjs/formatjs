@@ -14,7 +14,6 @@ check_format(
         ],
     ) + [
         "BUILD",
-        "README.md",
     ],
     config = ".prettierrc.json",
 )

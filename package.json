@@ -12,7 +12,7 @@
     "build": "bazel build //...",
     "deploy": "bazel run //website:deploy",
     "examples": "bazel run //packages/react-intl/examples",
-    "format": "yarn bazel:lint && bazel run :prettier_all",
+    "format": "npm run bazel:lint && bazel run :prettier_all",
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
     "postinstall": "husky install && patch-package",

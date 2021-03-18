@@ -13,6 +13,5 @@
     "run": {
       "stream": true
     }
-  },
-  "npmClient": "yarn"
+  }
 }

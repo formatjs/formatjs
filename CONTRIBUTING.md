@@ -43,28 +43,26 @@ To setup locally, first initialize the git submodule:
 > git submodule update
 ```
 
-Now you can build & test with yarn:
+Now you can build & test with npm:
 
 ```sh
-> yarn
-> yarn build
-> yarn test
+npm i && npm run build && npm t
 ```
 
 To run examples:
 
 ```sh
-> yarn examples
+npm run examples
 ```
 
 Releases can be done with the following steps:
 
 ```sh
-> yarn release
+npm run release
 ```
 
 To publish next tag
 
 ```sh
-> yarn release:next
+npm run release:next
 ```
