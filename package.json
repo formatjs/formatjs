@@ -53,7 +53,7 @@
     "@types/lodash": "^4.14.150",
     "@types/minimist": "^1.2.1",
     "@types/node": "14",
-    "@types/react-dom": "16",
+    "@types/react-dom": "17",
     "@types/rimraf": "^3.0.0",
     "@types/serialize-javascript": "^5.0.0",
     "@types/webpack": "^4.41.25",
