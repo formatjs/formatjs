@@ -89,13 +89,17 @@ function formatToParts(this: Intl.NumberFormat, x: number) {
     getInternalSlots,
   })
 }
-
-Object.defineProperty(formatToParts, 'name', {
-  value: 'formatToParts',
-  enumerable: false,
-  writable: false,
-  configurable: true,
-})
+try {
+  Object.defineProperty(formatToParts, 'name', {
+    value: 'formatToParts',
+    enumerable: false,
+    writable: false,
+    configurable: true,
+  })
+} catch (e) {
+  // In older browser (e.g Chrome 36 like polyfill.io)
+  // TypeError: Cannot redefine property: name
+}
 
 defineProperty(NumberFormat.prototype, 'formatToParts', {
   value: formatToParts,
