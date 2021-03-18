@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.3...@formatjs/intl-numberformat@6.2.4) (2021-03-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** try cache name define, fix [#2724](https://github.com/formatjs/formatjs/issues/2724) ([910689c](https://github.com/formatjs/formatjs/commit/910689c7edd175b5ae46588070d72733dc12711f))
+
+
+
+
+
 ## [6.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.2...@formatjs/intl-numberformat@6.2.3) (2021-03-15)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat
