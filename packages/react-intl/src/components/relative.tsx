@@ -98,51 +98,6 @@ const SimpleFormattedRelativeTime: React.FC<
   return <>{formattedRelativeTime}</>
 }
 
-function scheduleNextUpdate(
-  updateTimer: number | undefined,
-  updateIntervalInSeconds: number | undefined,
-  unit: RelativeTimeFormatSingularUnit | undefined,
-  currentValueInSeconds: number,
-  setUpdateTimer: (updateTimer: number) => void,
-  setCurrentValueInSeconds: (value: number) => void
-) {
-  function clearUpdateTimer() {
-    clearTimeout(updateTimer)
-  }
-  clearTimeout(updateTimer)
-
-  // If there's no interval and we cannot increment this unit, do nothing
-  if (!updateIntervalInSeconds || !canIncrement(unit)) {
-    return clearUpdateTimer
-  }
-  // Figure out the next interesting time
-  const nextValueInSeconds = currentValueInSeconds - updateIntervalInSeconds
-  const nextUnit = selectUnit(nextValueInSeconds)
-  // We've reached the max auto incrementable unit, don't schedule another update
-  if (nextUnit === 'day') {
-    return clearUpdateTimer
-  }
-
-  const unitDuration = getDurationInSeconds(nextUnit)
-  const remainder = nextValueInSeconds % unitDuration
-  const prevInterestingValueInSeconds = nextValueInSeconds - remainder
-  const nextInterestingValueInSeconds =
-    prevInterestingValueInSeconds >= currentValueInSeconds
-      ? prevInterestingValueInSeconds - unitDuration
-      : prevInterestingValueInSeconds
-  const delayInSeconds = Math.abs(
-    nextInterestingValueInSeconds - currentValueInSeconds
-  )
-
-  setUpdateTimer(
-    (setTimeout(
-      () => setCurrentValueInSeconds(nextInterestingValueInSeconds),
-      delayInSeconds * 1e3
-    ) as unknown) as number
-  )
-  return clearUpdateTimer
-}
-
 const FormattedRelativeTime: React.FC<Props> = ({
   value,
   unit,
@@ -162,7 +117,7 @@ const FormattedRelativeTime: React.FC<Props> = ({
     currentValueInSeconds,
     setCurrentValueInSeconds,
   ] = React.useState<number>(0)
-  const [updateTimer, setUpdateTimer] = React.useState<number | undefined>()
+  let updateTimer: number
 
   if (unit !== prevUnit || value !== prevValue) {
     setPrevValue(value || 0)
@@ -172,18 +127,42 @@ const FormattedRelativeTime: React.FC<Props> = ({
     )
   }
 
-  React.useEffect(
-    () =>
-      scheduleNextUpdate(
-        updateTimer,
-        updateIntervalInSeconds,
-        unit,
-        currentValueInSeconds,
-        setUpdateTimer,
-        setCurrentValueInSeconds
-      ),
-    [currentValueInSeconds, updateIntervalInSeconds, unit]
-  )
+  React.useEffect(() => {
+    function clearUpdateTimer() {
+      clearTimeout(updateTimer)
+    }
+    clearUpdateTimer()
+    // If there's no interval and we cannot increment this unit, do nothing
+    if (!updateIntervalInSeconds || !canIncrement(unit)) {
+      return clearUpdateTimer
+    }
+    // Figure out the next interesting time
+    const nextValueInSeconds = currentValueInSeconds - updateIntervalInSeconds
+    const nextUnit = selectUnit(nextValueInSeconds)
+    // We've reached the max auto incrementable unit, don't schedule another update
+    if (nextUnit === 'day') {
+      return clearUpdateTimer
+    }
+
+    const unitDuration = getDurationInSeconds(nextUnit)
+    const remainder = nextValueInSeconds % unitDuration
+    const prevInterestingValueInSeconds = nextValueInSeconds - remainder
+    const nextInterestingValueInSeconds =
+      prevInterestingValueInSeconds >= currentValueInSeconds
+        ? prevInterestingValueInSeconds - unitDuration
+        : prevInterestingValueInSeconds
+    const delayInSeconds = Math.abs(
+      nextInterestingValueInSeconds - currentValueInSeconds
+    )
+
+    if (currentValueInSeconds !== nextInterestingValueInSeconds) {
+      updateTimer = (setTimeout(
+        () => setCurrentValueInSeconds(nextInterestingValueInSeconds),
+        delayInSeconds * 1e3
+      ) as unknown) as number
+    }
+    return clearUpdateTimer
+  }, [currentValueInSeconds, updateIntervalInSeconds, unit])
 
   let currentValue = value || 0
   let currentUnit = unit
