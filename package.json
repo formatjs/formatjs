@@ -37,7 +37,7 @@
     "@docusaurus/core": "2.0.0-alpha.71",
     "@docusaurus/plugin-google-analytics": "2.0.0-alpha.71",
     "@docusaurus/preset-classic": "2.0.0-alpha.71",
-    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.71",
+    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.72",
     "@jest/transform": "^26.6.2",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.1",
