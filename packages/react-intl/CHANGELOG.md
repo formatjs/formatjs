@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.13.5](https://github.com/formatjs/formatjs/compare/react-intl@5.13.4...react-intl@5.13.5) (2021-03-19)
+
+
+### Bug Fixes
+
+* **react-intl:** fix FormattedRelativeTime update after unmount, fix [#2727](https://github.com/formatjs/formatjs/issues/2727) ([bdc0586](https://github.com/formatjs/formatjs/commit/bdc0586e677fc0cfc962c9994bfb4de2821a1705))
+
+
+
+
+
 ## [5.13.4](https://github.com/formatjs/formatjs/compare/react-intl@5.13.3...react-intl@5.13.4) (2021-03-17)
 
 
