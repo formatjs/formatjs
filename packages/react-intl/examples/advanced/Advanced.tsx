@@ -1,20 +1,20 @@
-import * as React from 'react';
-import {IntlProvider, FormattedMessage} from '../../';
+import * as React from 'react'
+import {IntlProvider, FormattedMessage} from 'react-intl'
 
-type IntlProviderProps = React.ComponentProps<typeof IntlProvider>;
+type IntlProviderProps = React.ComponentProps<typeof IntlProvider>
 
 function loadLocaleData(locale: string) {
   switch (locale) {
     case 'fr':
-      return import('./compiled-lang/fr.json');
+      return import('./compiled-lang/fr.json')
     default:
-      return import('./compiled-lang/en.json');
+      return import('./compiled-lang/en.json')
   }
 }
 
 interface Props {
-  locale: IntlProviderProps['locale'];
-  messages: IntlProviderProps['messages'];
+  locale: IntlProviderProps['locale']
+  messages: IntlProviderProps['messages']
 }
 
 const App: React.FC<Props> = props => {
@@ -55,14 +55,14 @@ const App: React.FC<Props> = props => {
         <br />
         <FormattedMessage
           id="richtext"
-          values={{num: 99, bold: chunks => <strong>{chunks}</strong>}}
+          values={{num: 99, bold: (chunks: any) => <strong>{chunks}</strong>}}
         />
       </p>
     </IntlProvider>
-  );
-};
+  )
+}
 
 export async function bootstrapApplication(locale: string) {
-  const messages = await loadLocaleData(locale);
-  return <App locale={locale} messages={messages.default} />;
+  const messages = await loadLocaleData(locale)
+  return <App locale={locale} messages={messages.default} />
 }

@@ -97,6 +97,7 @@ multirun(
         "//packages/intl-relativetimeformat:prettier",
         "//packages/intl:prettier",
         "//packages/react-intl:prettier",
+        "//packages/react-intl/examples:prettier",
         "//packages/ts-transformer:prettier",
         "//packages/vue-intl:prettier",
         "//tools:prettier",

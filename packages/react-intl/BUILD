@@ -107,32 +107,3 @@ check_format(
         ],
     ),
 )
-
-# esbuild(
-#     name = "react-intl.iife.min",
-#     define = [
-#         "process.env.NODE_ENV=\"production\"",
-#     ],
-#     entry_point = "lib/index.js",
-#     external = ["react"],
-#     minify = True,
-#     target = "es5",
-#     deps = [
-#         ":dist-esm",
-#         "@npm//tslib",
-#     ] + SRC_DEPS,
-# )
-
-# esbuild(
-#     name = "react-intl.iife",
-#     define = [
-#         "process.env.NODE_ENV=\"production\"",
-#     ],
-#     entry_point = "lib/index.js",
-#     external = ["react"],
-#     target = "es5",
-#     deps = [
-#         ":dist-esm",
-#         "@npm//tslib",
-#     ] + SRC_DEPS,
-# )

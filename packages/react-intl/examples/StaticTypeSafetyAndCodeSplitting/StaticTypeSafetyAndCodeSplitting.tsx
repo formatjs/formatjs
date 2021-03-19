@@ -1,13 +1,13 @@
-import * as React from 'react';
+import * as React from 'react'
 import {
   useFormatMessage,
   IntlProvider,
   LocaleMessages,
   importMessages,
-} from './intlHelpers';
+} from './intlHelpers'
 
 const Component: React.FC = () => {
-  const formatMessage = useFormatMessage();
+  const formatMessage = useFormatMessage()
   return (
     <>
       <h1>Static type safety + code splitting example</h1>
@@ -24,21 +24,21 @@ const Component: React.FC = () => {
         {formatMessage('foo') /* only valid keys can be passed here */}
       </p>
     </>
-  );
-};
+  )
+}
 
 const App: React.FC = props => {
-  const locale = 'it';
-  const [messages, setMessages] = React.useState<LocaleMessages | null>(null);
+  const locale = 'it'
+  const [messages, setMessages] = React.useState<LocaleMessages | null>(null)
   React.useEffect(() => {
-    importMessages(locale).then(setMessages);
-  }, []);
+    importMessages(locale).then(setMessages)
+  }, [])
 
   return messages ? (
     <IntlProvider locale={locale} messages={messages}>
       <Component {...props} />
     </IntlProvider>
-  ) : null;
-};
+  ) : null
+}
 
-export default App;
+export default App
