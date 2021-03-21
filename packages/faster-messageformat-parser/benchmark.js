@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict'
 const benchmark = require('benchmark')
-const {parse} = require('./dist/index')
+const {parse} = require('.')
 const baselineParse = require('intl-messageformat-parser').parse
 
 const complexMsg =

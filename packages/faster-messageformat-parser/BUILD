@@ -1,5 +1,4 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//ts-node:index.bzl", "ts_node")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "nodejs_binary", "pkg_npm")
 load("//tools:index.bzl", "check_format", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
@@ -55,15 +54,15 @@ jest_test(
     ] + SRC_DEPS,
 )
 
-ts_node(
+nodejs_binary(
     name = "benchmark",
-    args = [
-        "$(execpath benchmark.js)",
-    ],
     data = [
+        ":dist",
         "@npm//benchmark",
+        "//packages/intl-messageformat-parser:dist",
         "benchmark.js",
-    ] + SRCS + SRC_DEPS,
+    ] + SRC_DEPS,
+    entry_point = "benchmark.js",
 )
 
 generated_file_test(
