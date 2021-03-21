@@ -83,6 +83,7 @@ multirun(
         "//packages/cli:prettier",
         "//packages/ecma402-abstract:prettier",
         "//packages/eslint-plugin-formatjs:prettier",
+        "//packages/faster-messageformat-parser:prettier",
         "//packages/intl-datetimeformat:prettier",
         "//packages/intl-displaynames:prettier",
         "//packages/intl-durationformat:prettier",

@@ -1,17 +1,5 @@
+// @generated
 {
-    "compilerOptions": {
-        "target": "es5",
-        "lib": ["DOM", "ES2019", "ESNext.Intl"],
-        "module": "commonjs",
-        "declaration": true,
-        "declarationMap": true,
-        "sourceMap": true,
-        "strict": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "rootDir": "src",
-        "outDir": "dist",
-        "types": []
-    },
-    "include": ["src"]
+  // This is purely for IDE, not for compilation
+  "extends": "../../tsconfig.json"
 }

@@ -1,33 +1,10 @@
 {
-    "name": "fast-messageformat-parser",
-    "version": "0.1.6",
-    "main": "dist/index.js",
-    "types": "dist.index.d.ts",
-    "license": "MIT",
-    "dependencies": {
-        "@formatjs/ecma402-abstract": "^1.6.2"
-    },
-    "devDependencies": {
-        "@ava/typescript": "^1.1.1",
-        "ava": "^3.15.0",
-        "benchmark": "^2.1.4",
-        "dedent-js": "^1.0.1",
-        "intl-messageformat-parser": "^6.4.2",
-        "prettier": "^2.2.1",
-        "typescript": "^4.2.3"
-    },
-    "scripts": {
-        "test": "ava",
-        "build": "tsc -p .",
-        "clean": "rm -rf dist",
-        "bench": "node benchmark",
-        "prepublish": "yarn clean && yarn build && yarn test"
-    },
-    "ava": {
-        "typescript": {
-            "rewritePaths": {
-                "src/": "dist/"
-            }
-        }
-    }
+  "name": "faster-messageformat-parser",
+  "version": "0.1.6",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@formatjs/ecma402-abstract": "1.6.3"
+  }
 }

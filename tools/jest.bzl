@@ -13,6 +13,7 @@ def jest_test(name, srcs, deps, size = "medium", jest_config = "//:jest.config.j
         snapshots: snapshot files
         jest_config: jest.config.js file, default to the root one
         flaky: Whether this test is flaky
+        additional_args: Any addl args
         **kwargs: the rest
     """
     templated_args = [
