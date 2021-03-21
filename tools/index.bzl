@@ -4,7 +4,7 @@ load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier_test")
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test")
 load("@build_bazel_rules_nodejs//internal/js_library:js_library.bzl", "js_library")
 load("@npm//@bazel/esbuild:index.bzl", _esbuild = "esbuild")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("@npm//@bazel/typescript:index.bzl", "ts_config", "ts_project")
 load("@npm//prettier:index.bzl", "prettier", "prettier_test")
 load("@npm//ts-node:index.bzl", "ts_node")
 
@@ -53,14 +53,17 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
         skip_esm: skip building ESM bundle
     """
     deps = deps + ["@npm//tslib"]
-
+    ts_config(
+        name = "%s-tsconfig" % name,
+        src = "tsconfig.json",
+        deps = ["//:tsconfig.json"],
+    )
     ts_project(
         name = "%s-base" % name,
         srcs = srcs,
         declaration = True,
         declaration_map = True,
-        tsconfig = "tsconfig.json",
-        extends = "//:tsconfig.json",
+        tsconfig = ":%s-tsconfig" % name,
         deps = deps,
     )
     if not skip_esm:
