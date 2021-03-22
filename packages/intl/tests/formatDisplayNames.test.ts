@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import '@formatjs/intl-displaynames/polyfill-locales'
+import '@formatjs/intl-displaynames/polyfill'
+import '@formatjs/intl-displaynames/locale-data/en'
+import '@formatjs/intl-displaynames/locale-data/zh-Hans-SG'
 import {formatDisplayName as formatDisplayNameFn} from '../src/displayName'
 import {OptionalIntlConfig, IntlFormatters} from '../src/types'
 

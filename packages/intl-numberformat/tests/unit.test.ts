@@ -1,4 +1,4 @@
-import '@formatjs/intl-pluralrules/polyfill-locales'
+import '@formatjs/intl-pluralrules/polyfill'
 import {NumberFormat} from '../src/core'
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
@@ -28,6 +28,7 @@ const LOCALES = [
 ]
 
 LOCALES.forEach(locale => {
+  require(`@formatjs/intl-pluralrules/locale-data/${locale.split('-')[0]}`)
   NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`))
 })
 

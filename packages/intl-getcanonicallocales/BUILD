@@ -62,22 +62,10 @@ jest_test(
 generate_src_file(
     name = "aliases",
     src = "src/data/aliases.ts",
-    args = [
-        "$(execpath scripts/aliases.ts)",
-        "--out",
-        "$@",
-    ],
     data = [
-        "scripts/aliases.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
         "@npm//cldr-core",
-        "@npm//fs-extra",
-        "@npm//minimist",
-        "@npm//tslib",
     ],
+    entry_point = "scripts/aliases.ts",
 )
 
 # karma tests

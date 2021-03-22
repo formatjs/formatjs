@@ -3,8 +3,7 @@
 // @ts-nocheck
 import './polyfill-force'
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
-  Intl.PluralRules.__addLocaleData(
-    {"data":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
+  Intl.PluralRules.__addLocaleData({"data":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
   if (ord) return 'other';
   return n == 1 ? 'one' : 'other';
 }},"locale":"af"},
@@ -1063,6 +1062,5 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
 {"data":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
   if (ord) return 'other';
   return n >= 0 && n <= 1 ? 'one' : 'other';
-}},"locale":"zu"}
-  )
+}},"locale":"zu"})
 }

@@ -71,7 +71,7 @@ jest_test(
     srcs = SRCS + TESTS + [
         "tests/setup.js",
         "//packages/intl-numberformat:locale-data",
-        "//packages/intl-displaynames:polyfill-locales.js",
+        "//packages/intl-displaynames:locale-data",
     ],
     jest_config = "jest.config.js",
     deps = TEST_DEPS,
@@ -83,7 +83,7 @@ jest_test(
         "tests/setup.js",
         "package.json",
         "//packages/intl-numberformat:locale-data",
-        "//packages/intl-displaynames:polyfill-locales.js",
+        "//packages/intl-displaynames:locale-data",
     ],
     jest_config = "jest.config.js",
     deps = TEST_DEPS + [":dist"],

@@ -75,18 +75,10 @@ check_format(
 generate_src_file(
     name = "regex",
     src = "regex.generated.ts",
-    args = [
-        "$(execpath scripts/regex-gen.ts)",
-        "--outFile",
-        "$@",
-    ],
     data = [
-        "scripts/regex-gen.ts",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
+        "scripts/global.ts",
         "@npm//@unicode/unicode-13.0.0",
-        "@npm//fs-extra",
-        "@npm//minimist",
         "@npm//regenerate",
     ],
+    entry_point = "scripts/regex-gen.ts",
 )

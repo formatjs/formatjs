@@ -4,26 +4,26 @@ import {sync as globSync} from 'fast-glob'
 import minimist from 'minimist'
 
 function main(args: minimist.ParsedArgs) {
-  const {cldrFolder, locales: localesToGen = '', outDir} = args
+  const {cldrFolder, locales: localesToGen = '', out} = args
   const allFiles = globSync(join(cldrFolder, '*.json'))
   allFiles.sort()
   const locales = localesToGen
     ? localesToGen.split(',')
     : allFiles.map(f => basename(f, '.json'))
-  // Dist all locale files to locale-data
-  // Dist all locale files to locale-data (JS)
+
+  const allData = []
   for (const locale of locales) {
-    const data = readFileSync(join(cldrFolder, `${locale}.json`))
-    const destFile = join(outDir, locale + '.js')
-    outputFileSync(
-      destFile,
-      `/* @generated */	
-// prettier-ignore
-if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
-  Intl.ListFormat.__addLocaleData(${data})
-}`
-    )
+    allData.push(readFileSync(join(cldrFolder, `${locale}.json`)))
   }
+  outputFileSync(
+    out,
+    `/* @generated */
+// @ts-nocheck
+import './polyfill-force'
+if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
+  Intl.ListFormat.__addLocaleData(${allData.join(',\n')})
+}`
+  )
 }
 
 if (require.main === module) {

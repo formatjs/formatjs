@@ -67,21 +67,7 @@ generated_file_test(
 generate_src_file(
     name = "digit-mapping",
     src = "NumberFormat/digit-mapping.json",
-    args = [
-        "$(execpath tools/digit-mapping.ts)",
-        "--out",
-        "$@",
-    ],
-    data = [
-        "tools/digit-mapping.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-        "@npm//tslib",
-    ],
+    entry_point = "tools/digit-mapping.ts",
 )
 
 check_format(

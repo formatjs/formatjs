@@ -380,7 +380,7 @@ const SPECIAL_CASES = [
 })
 
 async function main(args: minimist.ParsedArgs) {
-  const {_: files, polyfill, output, golden} = args
+  const {_: files, polyfill, out, golden} = args
   const inputs = files.slice(2)
   inputs.sort() // sort so result is stable
 
@@ -401,7 +401,7 @@ async function main(args: minimist.ParsedArgs) {
 
   if (polyfill) {
     outputFileSync(
-      output,
+      out,
       `// @generated
 // prettier-ignore
 if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
@@ -410,7 +410,7 @@ if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
     )
   } else {
     outputFileSync(
-      output,
+      out,
       `// @generated
 // prettier-ignore
 export default ${stringify(pack(data), {

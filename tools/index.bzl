@@ -93,7 +93,47 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
         visibility = ["//visibility:public"],
     )
 
-def generate_src_file(name, args, data, src, visibility = None):
+def ts_script(name, entry_point, args = [], data = [], outs = None, output_dir = False, visibility = None):
+    """Execute a TS script
+
+    Args:
+        name: name
+        entry_point: script entry file
+        args: arguments
+        data: runtime data
+        outs: output
+        output_dir: whether output is a dir
+        visibility: visibility
+    """
+    all_args = [
+        "$(execpath %s)" % entry_point,
+        "--project",
+        "$(location //:tsconfig.node.json)",
+    ]
+    if output_dir:
+        all_args += ["--outDir", "$(@D)"]
+    else:
+        all_args += ["--out", "$@"]
+    all_args += args
+    ts_node(
+        name = name,
+        outs = outs,
+        args = all_args,
+        data = data + [
+            entry_point,
+            "//:tsconfig.json",
+            "@npm//@types/fs-extra",
+            "@npm//@types/minimist",
+            "@npm//fs-extra",
+            "@npm//minimist",
+            "@npm//tslib",
+            "//:tsconfig.node.json",
+        ],
+        output_dir = output_dir,
+        visibility = visibility,
+    )
+
+def generate_src_file(name, entry_point, src, args = [], data = [], visibility = None):
     """Generate a source file.
 
     Args:
@@ -101,12 +141,14 @@ def generate_src_file(name, args, data, src, visibility = None):
         args: args to generate src file binary
         data: dependent data labels
         src: src file to generate
+        entry_point: generation script entry point
         visibility: target visibility
     """
     tmp_filename = "%s-gen.tmp" % name
-    ts_node(
+    ts_script(
         name = tmp_filename[:tmp_filename.rindex(".")],
         outs = [tmp_filename],
+        entry_point = entry_point,
         args = args,
         data = data,
     )

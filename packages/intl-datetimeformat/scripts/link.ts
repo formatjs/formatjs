@@ -2,7 +2,7 @@ import minimist from 'minimist'
 import {readFileSync} from 'fs'
 import {outputFileSync} from 'fs-extra'
 function main(args: minimist.ParsedArgs) {
-  const {input, output} = args
+  const {input, out} = args
   const linkMap = readFileSync(input, 'utf8')
     .split('\n')
     // Ignore comments
@@ -13,7 +13,7 @@ function main(args: minimist.ParsedArgs) {
       return all
     }, {})
   outputFileSync(
-    output,
+    out,
     `// @generated
 // prettier-ignore
 export default ${JSON.stringify(linkMap, undefined, 2)}`

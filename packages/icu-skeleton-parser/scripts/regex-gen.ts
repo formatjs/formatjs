@@ -1,4 +1,4 @@
-// @ts-expect-error regenerate has no type def
+import './global'
 import regenerate from 'regenerate'
 import {outputFileSync} from 'fs-extra'
 import minimist from 'minimist'
@@ -8,7 +8,7 @@ function main(args: minimist.ParsedArgs) {
     require('@unicode/unicode-13.0.0/Binary_Property/Pattern_White_Space/code-points.js')
   )
   outputFileSync(
-    args.outFile,
+    args.out,
     `// @generated from regex-gen.ts
 export const WHITE_SPACE_REGEX = /${set.toString()}/i`
   )

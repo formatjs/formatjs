@@ -1,4 +1,5 @@
-import '@formatjs/intl-pluralrules/polyfill-locales'
+import '@formatjs/intl-pluralrules/polyfill'
+import '@formatjs/intl-pluralrules/locale-data/ko'
 import * as ko from './locale-data/ko.json'
 import {NumberFormat} from '../src/core'
 NumberFormat.__addLocaleData(ko as any)

@@ -1,7 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
-load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "check_format", "esbuild", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "check_format", "esbuild", "generate_src_file", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-datetimeformat"
@@ -89,58 +88,36 @@ ts_compile(
 
 # CLDR
 CLDR_DEPS = [
-    "scripts/cldr.ts",
     ":cldr-raw",
-    "//:tsconfig.json",
-    "@npm//@types/fs-extra",
-    "@npm//@types/minimist",
-    "@npm//@types/node",
-    "@npm//fs-extra",
     "@npm//fast-glob",
-    "@npm//minimist",
-    "@npm//tslib",
 ]
 
-ts_node(
+ts_script(
     name = "cldr-raw",
-    args = [
-        "$(execpath scripts/cldr-raw.ts)",
-        "--outDir",
-        "$(@D)",
-    ],
     data = [
-        "scripts/cldr-raw.ts",
         "scripts/extract-dates.ts",
         "src/types.ts",
-        "//:tsconfig.json",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "//packages/intl-locale:dist",
         "//packages/intl-locale:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
         "@npm//cldr-core",
         "@npm//cldr-dates-full",
         "@npm//cldr-numbers-full",
         "@npm//fast-glob",
-        "@npm//fs-extra",
-        "@npm//minimist",
-        "@npm//tslib",
     ],
+    entry_point = "scripts/cldr-raw.ts",
     output_dir = True,
 )
 
-ts_node(
+ts_script(
     name = "locale-data",
     args = [
-        "$(execpath scripts/cldr.ts)",
         "--cldrFolder",
         "$(location :cldr-raw)",
-        "--outDir",
-        "$(@D)",
     ],
     data = CLDR_DEPS,
+    entry_point = "scripts/cldr.ts",
     output_dir = True,
     visibility = [
         "//packages/intl:__subpackages__",
@@ -152,15 +129,13 @@ ts_node(
     name = "tests-locale-data-%s" % locale,
     src = "tests/locale-data/%s.json" % locale,
     args = [
-        "$(execpath scripts/cldr.ts)",
         "--cldrFolder",
         "$(location :cldr-raw)",
         "--locales",
         locale,
-        "--testOutFile",
-        "$@",
     ],
     data = CLDR_DEPS,
+    entry_point = "scripts/test-locale-data-gen.ts",
 ) for locale in TEST_LOCALES]
 
 multirun(
@@ -176,15 +151,13 @@ generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",
     args = [
-        "$(execpath scripts/cldr.ts)",
         "--cldrFolder",
         "$(location :cldr-raw)",
         "--locales",
         "ar,de,en,ja,ko,th,zh,zh-Hant,zh-Hans",
-        "--test262MainFile",
-        "$@",
     ],
     data = CLDR_DEPS,
+    entry_point = "scripts/test262-main-gen.ts",
     visibility = [
         "//:__pkg__",
     ],
@@ -196,23 +169,13 @@ generate_src_file(
     name = "links",
     src = "src/data/links.ts",
     args = [
-        "$(execpath scripts/link.ts)",
         "--input",
         "$(location @tzdata//:backward)",
-        "--output",
-        "$@",
     ],
     data = [
-        "scripts/link.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-        "@npm//tslib",
         "@tzdata//:backward",
     ],
+    entry_point = "scripts/link.ts",
 )
 
 # data.ts
@@ -220,59 +183,39 @@ generate_src_file(
     name = "all-tz",
     src = "src/data/all-tz.ts",
     args = [
-        "$(execpath scripts/process-zdump.ts)",
-        "--output",
-        "$@",
         "$(locations @tzdata//:zdumps)",
     ],
     data = [
-        "scripts/process-zdump.ts",
         "src/packer.ts",
         "src/types.ts",
-        "//:tsconfig.json",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
-        "@npm//@types/fs-extra",
         "@npm//@types/json-stable-stringify",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
         "@npm//json-stable-stringify",
-        "@npm//minimist",
-        "@npm//tslib",
         "@tzdata//:zdumps",
     ],
+    entry_point = "scripts/process-zdump.ts",
 )
 
 # "ts-node scripts/process-zdump --polyfill --output dist/add-all-tz.js --input data.zdump"
 # add-all-tz
-ts_node(
+ts_script(
     name = "add-all-tz",
     outs = ["add-all-tz.js"],
     args = [
-        "$(execpath scripts/process-zdump.ts)",
         "--polyfill",
-        "--output",
-        "$@",
         "$(locations @tzdata//:zdumps)",
     ],
     data = [
-        "scripts/process-zdump.ts",
         "src/packer.ts",
         "src/types.ts",
-        "//:tsconfig.json",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
-        "@npm//@types/fs-extra",
         "@npm//@types/json-stable-stringify",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
         "@npm//json-stable-stringify",
-        "@npm//minimist",
-        "@npm//tslib",
         "@tzdata//:zdumps",
     ],
+    entry_point = "scripts/process-zdump.ts",
     visibility = [
         "//packages/intl:__subpackages__",
         "//packages/react-intl:__subpackages__",
@@ -280,34 +223,24 @@ ts_node(
 )
 
 # add-golden-tz
-ts_node(
+ts_script(
     name = "add-golden-tz",
     outs = ["add-golden-tz.js"],
     args = [
-        "$(execpath scripts/process-zdump.ts)",
         "--golden",
         "--polyfill",
-        "--output",
-        "$@",
         "$(locations @tzdata//:zdumps)",
     ],
     data = [
-        "scripts/process-zdump.ts",
         "src/packer.ts",
         "src/types.ts",
-        "//:tsconfig.json",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
-        "@npm//@types/fs-extra",
         "@npm//@types/json-stable-stringify",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
         "@npm//json-stable-stringify",
-        "@npm//minimist",
-        "@npm//tslib",
         "@tzdata//:zdumps",
     ],
+    entry_point = "scripts/process-zdump.ts",
 )
 
 generated_file_test(

@@ -54,10 +54,10 @@ ts_compile(
 jest_test(
     name = "unit",
     srcs = SRCS + TESTS + [
-        "//packages/intl-datetimeformat:locale-data",
         "//packages/intl-datetimeformat:add-all-tz",
+        "//packages/intl-datetimeformat:locale-data",
+        "//packages/intl-displaynames:locale-data",
         "//packages/intl-numberformat:locale-data",
-        "//packages/intl-displaynames:polyfill-locales.js",
     ],
     deps = SRC_DEPS + [
         "//packages/ecma402-abstract:types",

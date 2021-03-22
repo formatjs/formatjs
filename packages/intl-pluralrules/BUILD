@@ -2,10 +2,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-
-# load("@npm//karma:index.bzl", "karma_test")
-load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "bundle_karma_tests", "check_format", "esbuild", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "check_format", "esbuild", "generate_src_file", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-pluralrules"
@@ -27,7 +24,6 @@ pkg_npm(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "polyfill-locales.js",
         ":dist",
         ":locale-data",
         # polyfill-library uses this
@@ -82,53 +78,31 @@ jest_test(
 # CLDR
 CLDR_DEPS = [
     ":cldr-raw",
-    "scripts/cldr.ts",
-    "//:tsconfig.json",
-    "@npm//@types/fs-extra",
-    "@npm//@types/minimist",
-    "@npm//@types/node",
-    "@npm//fs-extra",
     "@npm//fast-glob",
-    "@npm//minimist",
-    "@npm//tslib",
 ]
 
-ts_node(
+ts_script(
     name = "cldr-raw",
-    args = [
-        "$(execpath scripts/cldr-raw.ts)",
-        "--outDir",
-        "$(@D)",
-    ],
     data = [
-        "scripts/cldr-raw.ts",
-        "//:tsconfig.json",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
         "@npm//@types/serialize-javascript",
         "@npm//cldr-core",
-        "@npm//fs-extra",
         "@npm//make-plural-compiler",
-        "@npm//minimist",
         "@npm//serialize-javascript",
-        "@npm//tslib",
     ],
+    entry_point = "scripts/cldr-raw.ts",
     output_dir = True,
 )
 
-ts_node(
+ts_script(
     name = "locale-data",
     args = [
-        "$(execpath scripts/cldr.ts)",
         "--cldrFolder",
         "$(location :cldr-raw)",
-        "--outDir",
-        "$(@D)",
     ],
     data = CLDR_DEPS,
+    entry_point = "scripts/cldr.ts",
     output_dir = True,
 )
 
@@ -136,15 +110,13 @@ ts_node(
     name = "tests-locale-data-%s" % locale,
     src = "tests/locale-data/%s.ts" % locale,
     args = [
-        "$(execpath scripts/cldr.ts)",
         "--cldrFolder",
         "$(location :cldr-raw)",
         "--locales",
         locale,
-        "--testOutFile",
-        "$@",
     ],
     data = CLDR_DEPS,
+    entry_point = "scripts/test-locale-data-gen.ts",
 ) for locale in TEST_LOCALES]
 
 multirun(
@@ -156,30 +128,15 @@ multirun(
     ],
 )
 
-ts_node(
-    name = "polyfill-locales",
-    outs = ["polyfill-locales.js"],
-    args = [
-        "$(execpath scripts/cldr.ts)",
-        "--cldrFolder",
-        "$(location :cldr-raw)",
-        "--polyfillLocalesOutFile",
-        "$@",
-    ],
-    data = CLDR_DEPS,
-)
-
 generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",
     args = [
-        "$(execpath scripts/cldr.ts)",
         "--cldrFolder",
         "$(location :cldr-raw)",
-        "--test262MainFile",
-        "$@",
     ],
     data = CLDR_DEPS,
+    entry_point = "scripts/test262-main-gen.ts",
     visibility = [
         "//:__pkg__",
     ],

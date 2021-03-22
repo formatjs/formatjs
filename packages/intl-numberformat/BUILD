@@ -2,8 +2,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "check_format", "esbuild", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "check_format", "esbuild", "generate_src_file", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-numberformat"
@@ -111,48 +110,26 @@ ts_compile(
 # CLDR
 CLDR_DEPS = [
     ":cldr-raw",
-    "@npm//@types/fs-extra",
-    "@npm//@types/minimist",
-    "@npm//@types/node",
     "@npm//fast-glob",
-    "@npm//fs-extra",
-    "@npm//minimist",
-    "@npm//tslib",
-    "//:tsconfig.json",
-    "scripts/cldr.ts",
 ]
 
-ts_node(
+ts_script(
     name = "cldr-raw",
-    args = [
-        "--compiler-options",
-        "{\"target\":\"es2017\"}",
-        "$(execpath scripts/cldr-raw.ts)",
-        "--outDir",
-        "$(@D)",
-    ],
     data = [
-        "scripts/cldr-raw.ts",
         "scripts/extract-currencies.ts",
         "scripts/extract-numbers.ts",
         "scripts/extract-units.ts",
         "scripts/utils.ts",
-        "//:tsconfig.json",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
-        "@npm//@types/fs-extra",
         "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
         "@npm//cldr-core",
         "@npm//cldr-numbers-full",
         "@npm//cldr-units-full",
         "@npm//fast-glob",
-        "@npm//fs-extra",
         "@npm//lodash",
-        "@npm//minimist",
-        "@npm//tslib",
     ],
+    entry_point = "scripts/cldr-raw.ts",
     output_dir = True,
     visibility = [
         "//packages/intl:__subpackages__",
@@ -160,16 +137,14 @@ ts_node(
     ],
 )
 
-ts_node(
+ts_script(
     name = "locale-data",
     args = [
-        "$(execpath scripts/cldr.ts)",
         "--cldrFolder",
         "$(location :cldr-raw)",
-        "--outDir",
-        "$(@D)",
     ],
     data = CLDR_DEPS,
+    entry_point = "scripts/cldr.ts",
     output_dir = True,
     visibility = [
         "//packages/intl:__subpackages__",
@@ -181,15 +156,13 @@ ts_node(
     name = "tests-locale-data-%s" % locale,
     src = "tests/locale-data/%s.json" % locale,
     args = [
-        "$(execpath scripts/cldr.ts)",
         "--cldrFolder",
         "$(location :cldr-raw)",
         "--locales",
         locale,
-        "--testOutFile",
-        "$@",
     ],
     data = CLDR_DEPS,
+    entry_point = "scripts/test-locale-data-gen.ts",
 ) for locale in TEST_LOCALES]
 
 multirun(
@@ -205,15 +178,13 @@ generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",
     args = [
-        "$(execpath scripts/cldr.ts)",
         "--cldrFolder",
         "$(location :cldr-raw)",
         "--locales",
         "ar,de,en,ja,ko,th,zh,zh-Hant",
-        "--test262MainFile",
-        "$@",
     ],
     data = CLDR_DEPS,
+    entry_point = "scripts/test262-main-gen.ts",
     visibility = [
         "//:__pkg__",
     ],
@@ -223,82 +194,46 @@ generate_src_file(
 generate_src_file(
     name = "currency-digits",
     src = "src/data/currency-digits.json",
-    args = [
-        "$(execpath scripts/currency-digits.ts)",
-        "--out",
-        "$@",
-    ],
     data = [
-        "scripts/currency-digits.ts",
         "scripts/extract-currencies.ts",
         "scripts/utils.ts",
-        "//:tsconfig.json",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
-        "@npm//@types/fs-extra",
         "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
         "@npm//cldr-core",
         "@npm//cldr-numbers-full",
         "@npm//fast-glob",
-        "@npm//fs-extra",
         "@npm//lodash",
-        "@npm//minimist",
-        "@npm//tslib",
     ],
+    entry_point = "scripts/currency-digits.ts",
 )
 
 # numbering-systems
 generate_src_file(
     name = "numbering-systems",
     src = "src/data/numbering-systems.json",
-    args = [
-        "$(execpath scripts/numbering-systems.ts)",
-        "--out",
-        "$@",
-    ],
     data = [
         "scripts/extract-numbers.ts",
-        "scripts/numbering-systems.ts",
         "scripts/utils.ts",
-        "//:tsconfig.json",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
-        "@npm//@types/fs-extra",
         "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
         "@npm//cldr-core",
         "@npm//cldr-numbers-full",
-        "@npm//fs-extra",
         "@npm//lodash",
-        "@npm//minimist",
-        "@npm//tslib",
     ],
+    entry_point = "scripts/numbering-systems.ts",
 )
 
 # units-constants
 generate_src_file(
     name = "units-constants",
     src = "src/data/units-constants.ts",
-    args = [
-        "$(execpath scripts/units-constants.ts)",
-        "--out",
-        "$@",
-    ],
     data = [
-        "scripts/units-constants.ts",
-        "//:tsconfig.json",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-        "@npm//tslib",
     ],
+    entry_point = "scripts/units-constants.ts",
 )
 
 # Test262
