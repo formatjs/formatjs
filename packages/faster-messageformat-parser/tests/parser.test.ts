@@ -1,5 +1,5 @@
-import {Parser, ParserOptions} from '../src/parser'
-import {NumberSkeletonToken} from '../src/types'
+import {Parser, ParserOptions} from '../parser'
+import {NumberSkeletonToken} from '../types'
 
 function testParser(message: string, options: ParserOptions = {}) {
   expect(new Parser(message, options).parse()).toMatchSnapshot()
@@ -188,11 +188,11 @@ test('treat_unicode_nbsp_as_whitespace', () =>
   testParser(
     `
     {gender, select,
-    \u00a0male {
+    \u200Emale {
         {He}}
-    \u00a0female {
+    \u200Efemale {
         {She}}
-    \u00a0other{
+    \u200Eother{
         {They}}}
     `
   ))

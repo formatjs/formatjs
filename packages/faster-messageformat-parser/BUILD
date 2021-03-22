@@ -26,9 +26,7 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["src/*.ts"]) + [
-    "index.ts",
-]
+SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     "//packages/ecma402-abstract:dist",

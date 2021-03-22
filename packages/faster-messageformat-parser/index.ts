@@ -1,5 +1,5 @@
-import {ErrorKind} from './src/error'
-import {Parser} from './src/parser'
+import {ErrorKind} from './error'
+import {Parser} from './parser'
 
 export function parse(message: string) {
   const result = new Parser(message, {}).parse()
