@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "nodejs_binary", "pkg_npm")
-load("//tools:index.bzl", "check_format", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "check_format", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "faster-messageformat-parser"
@@ -80,4 +80,24 @@ check_format(
             "tests/__snapshots__/*",
         ],
     ),
+)
+
+bundle_karma_tests(
+    name = "bundled-karma-tests",
+    srcs = SRCS,
+    tests = [
+        "tests/browser-smoke.test.ts",
+    ],
+    deps = SRC_DEPS,
+)
+
+generate_src_file(
+    name = "regex",
+    src = "regex.generated.ts",
+    data = [
+        "scripts/global.ts",
+        "@npm//@unicode/unicode-13.0.0",
+        "@npm//regenerate",
+    ],
+    entry_point = "scripts/regex-gen.ts",
 )

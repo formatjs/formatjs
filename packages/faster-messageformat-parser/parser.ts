@@ -11,6 +11,11 @@ import {
   TagElement,
   TYPE,
 } from './types'
+import {
+  SPACE_SEPARATOR_END_REGEX,
+  SPACE_SEPARATOR_START_REGEX,
+  WHITE_SPACE_REGEX,
+} from './regex.generated'
 
 export interface Position {
   /** Offset in terms of UTF-16 *code unit*. */
@@ -135,10 +140,7 @@ const trimStart: (s: string) => string = (String.prototype as any).trimStart
     }
   : // Ponyfill
     function trimStart(s) {
-      return s.replace(
-        /^[\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF]*/,
-        ''
-      )
+      return s.replace(SPACE_SEPARATOR_START_REGEX, '')
     }
 
 const trimEnd: (s: string) => string = (String.prototype as any).trimEnd
@@ -148,10 +150,7 @@ const trimEnd: (s: string) => string = (String.prototype as any).trimEnd
     }
   : // Ponyfill
     function trimEnd(s) {
-      return s.replace(
-        /[\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF]*$/,
-        ''
-      )
+      return s.replace(SPACE_SEPARATOR_END_REGEX, '')
     }
 
 // Prevent minifier to translate new RegExp to literal form that might cause syntax error on IE11.
@@ -203,7 +202,7 @@ export class Parser {
   private requiresOtherClause: boolean
   private shouldParseSkeletons?: boolean
 
-  constructor(message: string, options: ParserOptions) {
+  constructor(message: string, options: ParserOptions = {}) {
     this.message = message
     this.position = {offset: 0, line: 1, column: 1}
     this.ignoreTag = !!options.ignoreTag
@@ -929,7 +928,7 @@ export class Parser {
     }
     // Parse the skeleton
     const stringTokens = skeleton
-      .split(/\p{White_Space}/u)
+      .split(WHITE_SPACE_REGEX)
       .filter(x => x.length > 0)
 
     const tokens: NumberSkeletonToken[] = []
