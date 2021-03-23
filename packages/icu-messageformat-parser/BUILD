@@ -30,6 +30,7 @@ SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     "//packages/ecma402-abstract:dist",
+    "//packages/icu-skeleton-parser:dist"
 ]
 
 ts_compile(
@@ -49,6 +50,7 @@ jest_test(
     ]),
     deps = [
         "//packages/ecma402-abstract:types",
+        "//packages/icu-skeleton-parser:types",
     ] + SRC_DEPS,
 )
 

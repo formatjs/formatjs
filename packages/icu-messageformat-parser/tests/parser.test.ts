@@ -1,14 +1,15 @@
 import {Parser, ParserOptions} from '../parser'
-import {NumberSkeletonToken} from '../types'
 
 function testParser(message: string, options: ParserOptions = {}) {
   expect(new Parser(message, options).parse()).toMatchSnapshot()
 }
 
-function testNumberSkeleton(skeleton: string, expected: NumberSkeletonToken[]) {
+function testNumberSkeleton(skeleton: string) {
   return test(skeleton, () => {
-    const parsed = new Parser(`{0, number, ::${skeleton}}`, {}).parse()
-    expect((parsed as any)?.val?.[0]?.style?.tokens).toEqual(expected)
+    const parsed = new Parser(`{0, number, ::${skeleton}}`, {
+      shouldParseSkeletons: true,
+    }).parse()
+    expect(parsed).toMatchSnapshot()
   })
 }
 
@@ -115,56 +116,22 @@ test('expect_number_arg_skeleton_token_option_1', () =>
   testParser('{0, number, ::currency/}'))
 
 // Skeleton tests
-testNumberSkeleton('compact-short currency/GBP', [
-  {stem: 'compact-short', options: []},
-  {stem: 'currency', options: ['GBP']},
-])
-testNumberSkeleton('@@#', [{stem: '@@#', options: []}])
-testNumberSkeleton('currency/CAD unit-width-narrow', [
-  {stem: 'currency', options: ['CAD']},
-  {stem: 'unit-width-narrow', options: []},
-])
-testNumberSkeleton('percent .##', [
-  {stem: 'percent', options: []},
-  {stem: '.##', options: []},
-])
+testNumberSkeleton('compact-short currency/GBP')
+testNumberSkeleton('@@#')
+testNumberSkeleton('currency/CAD unit-width-narrow')
+testNumberSkeleton('percent .##')
 // Some percent skeletons
-testNumberSkeleton('percent .000*', [
-  {stem: 'percent', options: []},
-  {stem: '.000*', options: []},
-])
-testNumberSkeleton('percent .0###', [
-  {stem: 'percent', options: []},
-  {stem: '.0###', options: []},
-])
-testNumberSkeleton('percent .00/@##', [
-  {stem: 'percent', options: []},
-  {stem: '.00', options: ['@##']},
-])
-testNumberSkeleton('percent .00/@@@', [
-  {stem: 'percent', options: []},
-  {stem: '.00', options: ['@@@']},
-])
-testNumberSkeleton('percent .00/@@@@*', [
-  {stem: 'percent', options: []},
-  {stem: '.00', options: ['@@@@*']},
-])
+testNumberSkeleton('percent .000*')
+testNumberSkeleton('percent .0###')
+testNumberSkeleton('percent .00/@##')
+testNumberSkeleton('percent .00/@@@')
+testNumberSkeleton('percent .00/@@@@*')
 // Complex currency skeleton
-testNumberSkeleton('currency/GBP .00##/@@@ unit-width-full-name', [
-  {stem: 'currency', options: ['GBP']},
-  {stem: '.00##', options: ['@@@']},
-  {stem: 'unit-width-full-name', options: []},
-])
+testNumberSkeleton('currency/GBP .00##/@@@ unit-width-full-name')
 // Complex unit
-testNumberSkeleton('measure-unit/length-meter .00##/@@@ unit-width-full-name', [
-  {stem: 'measure-unit', options: ['length-meter']},
-  {stem: '.00##', options: ['@@@']},
-  {stem: 'unit-width-full-name', options: []},
-])
+testNumberSkeleton('measure-unit/length-meter .00##/@@@ unit-width-full-name')
 // Multiple options
-testNumberSkeleton('scientific/+ee/sign-always', [
-  {stem: 'scientific', options: ['+ee', 'sign-always']},
-])
+testNumberSkeleton('scientific/+ee/sign-always')
 
 test('date_arg_skeleton_1', () =>
   testParser("{0, date, ::yyyy.MM.dd G 'at' HH:mm:ss vvvv}"))

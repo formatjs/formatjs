@@ -1,5 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`@@# 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 19,
+          "line": 1,
+          "offset": 18,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+            "offset": 17,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "maximumSignificantDigits": 3,
+          "minimumSignificantDigits": 2,
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [],
+            "stem": "@@#",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
+    },
+  ],
+}
+`;
+
 exports[`basic_argument_1 1`] = `
 Object {
   "err": null,
@@ -76,6 +125,187 @@ Object {
       "type": 0,
       "value": " 
 c",
+    },
+  ],
+}
+`;
+
+exports[`compact-short currency/GBP 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 42,
+          "line": 1,
+          "offset": 41,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 41,
+            "line": 1,
+            "offset": 40,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "compactDisplay": "short",
+          "currency": "GBP",
+          "notation": "compact",
+          "style": "currency",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [],
+            "stem": "compact-short",
+          },
+          Object {
+            "options": Array [
+              "GBP",
+            ],
+            "stem": "currency",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`currency/CAD unit-width-narrow 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 46,
+          "line": 1,
+          "offset": 45,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 45,
+            "line": 1,
+            "offset": 44,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "currency": "CAD",
+          "currencyDisplay": "narrowSymbol",
+          "style": "currency",
+          "unitDisplay": "narrow",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [
+              "CAD",
+            ],
+            "stem": "currency",
+          },
+          Object {
+            "options": Array [],
+            "stem": "unit-width-narrow",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`currency/GBP .00##/@@@ unit-width-full-name 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 59,
+          "line": 1,
+          "offset": 58,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 58,
+            "line": 1,
+            "offset": 57,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "currency": "GBP",
+          "currencyDisplay": "name",
+          "maximumFractionDigits": 4,
+          "maximumSignificantDigits": 3,
+          "minimumFractionDigits": 2,
+          "minimumSignificantDigits": 3,
+          "style": "currency",
+          "unitDisplay": "long",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [
+              "GBP",
+            ],
+            "stem": "currency",
+          },
+          Object {
+            "options": Array [
+              "@@@",
+            ],
+            "stem": ".00##",
+          },
+          Object {
+            "options": Array [],
+            "stem": "unit-width-full-name",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
     },
   ],
 }
@@ -490,7 +720,7 @@ Object {
 exports[`expect_number_arg_skeleton_token_1 1`] = `
 Object {
   "err": Object {
-    "kind": 9,
+    "kind": 7,
     "location": Object {
       "end": Object {
         "column": 15,
@@ -1071,6 +1301,73 @@ Object {
     "message": "My name is {0!}",
   },
   "val": null,
+}
+`;
+
+exports[`measure-unit/length-meter .00##/@@@ unit-width-full-name 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 72,
+          "line": 1,
+          "offset": 71,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 71,
+            "line": 1,
+            "offset": 70,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "currencyDisplay": "name",
+          "maximumFractionDigits": 4,
+          "maximumSignificantDigits": 3,
+          "minimumFractionDigits": 2,
+          "minimumSignificantDigits": 3,
+          "style": "unit",
+          "unit": "meter",
+          "unitDisplay": "long",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [
+              "length-meter",
+            ],
+            "stem": "measure-unit",
+          },
+          Object {
+            "options": Array [
+              "@@@",
+            ],
+            "stem": ".00##",
+          },
+          Object {
+            "options": Array [],
+            "stem": "unit-width-full-name",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
+    },
+  ],
 }
 `;
 
@@ -3225,6 +3522,338 @@ Object {
 }
 `;
 
+exports[`percent .## 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 27,
+          "line": 1,
+          "offset": 26,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 26,
+            "line": 1,
+            "offset": 25,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "maximumFractionDigits": 2,
+          "style": "percent",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [],
+            "stem": "percent",
+          },
+          Object {
+            "options": Array [],
+            "stem": ".##",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`percent .0### 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 29,
+          "line": 1,
+          "offset": 28,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 28,
+            "line": 1,
+            "offset": 27,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "maximumFractionDigits": 4,
+          "minimumFractionDigits": 1,
+          "style": "percent",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [],
+            "stem": "percent",
+          },
+          Object {
+            "options": Array [],
+            "stem": ".0###",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`percent .00/@## 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 31,
+          "line": 1,
+          "offset": 30,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 30,
+            "line": 1,
+            "offset": 29,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "maximumFractionDigits": 2,
+          "maximumSignificantDigits": 3,
+          "minimumFractionDigits": 2,
+          "minimumSignificantDigits": 1,
+          "style": "percent",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [],
+            "stem": "percent",
+          },
+          Object {
+            "options": Array [
+              "@##",
+            ],
+            "stem": ".00",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`percent .00/@@@ 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 31,
+          "line": 1,
+          "offset": 30,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 30,
+            "line": 1,
+            "offset": 29,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "maximumFractionDigits": 2,
+          "maximumSignificantDigits": 3,
+          "minimumFractionDigits": 2,
+          "minimumSignificantDigits": 3,
+          "style": "percent",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [],
+            "stem": "percent",
+          },
+          Object {
+            "options": Array [
+              "@@@",
+            ],
+            "stem": ".00",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`percent .00/@@@@* 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 33,
+          "line": 1,
+          "offset": 32,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 32,
+            "line": 1,
+            "offset": 31,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "maximumFractionDigits": 2,
+          "minimumFractionDigits": 2,
+          "style": "percent",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [],
+            "stem": "percent",
+          },
+          Object {
+            "options": Array [
+              "@@@@*",
+            ],
+            "stem": ".00",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`percent .000* 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 29,
+          "line": 1,
+          "offset": 28,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 28,
+            "line": 1,
+            "offset": 27,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "minimumFractionDigits": 3,
+          "style": "percent",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [],
+            "stem": "percent",
+          },
+          Object {
+            "options": Array [],
+            "stem": ".000*",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
+    },
+  ],
+}
+`;
+
 exports[`plural_arg_1 1`] = `
 Object {
   "err": null,
@@ -4206,6 +4835,58 @@ Object {
       },
       "type": 0,
       "value": "<a>",
+    },
+  ],
+}
+`;
+
+exports[`scientific/+ee/sign-always 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 42,
+          "line": 1,
+          "offset": 41,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 41,
+            "line": 1,
+            "offset": 40,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+            "offset": 12,
+          },
+        },
+        "parsedOptions": Object {
+          "notation": "scientific",
+          "signDisplay": "always",
+        },
+        "tokens": Array [
+          Object {
+            "options": Array [
+              "+ee",
+              "sign-always",
+            ],
+            "stem": "scientific",
+          },
+        ],
+        "type": 0,
+      },
+      "type": 2,
+      "value": "0",
     },
   ],
 }

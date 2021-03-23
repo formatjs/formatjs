@@ -1,4 +1,5 @@
 import type {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {NumberSkeletonToken} from '@formatjs/icu-skeleton-parser'
 
 export interface ExtendedNumberFormatOptions extends NumberFormatOptions {
   scale?: number
@@ -129,11 +130,6 @@ export type MessageFormatElement =
   | TagElement
   | PoundElement
 
-export interface NumberSkeletonToken {
-  stem: string
-  options: string[]
-}
-
 export interface NumberSkeleton {
   type: SKELETON_TYPE.number
   tokens: NumberSkeletonToken[]
@@ -149,3 +145,66 @@ export interface DateTimeSkeleton {
 }
 
 export type Skeleton = NumberSkeleton | DateTimeSkeleton
+
+/**
+ * Type Guards
+ */
+export function isLiteralElement(
+  el: MessageFormatElement
+): el is LiteralElement {
+  return el.type === TYPE.literal
+}
+export function isArgumentElement(
+  el: MessageFormatElement
+): el is ArgumentElement {
+  return el.type === TYPE.argument
+}
+export function isNumberElement(el: MessageFormatElement): el is NumberElement {
+  return el.type === TYPE.number
+}
+export function isDateElement(el: MessageFormatElement): el is DateElement {
+  return el.type === TYPE.date
+}
+export function isTimeElement(el: MessageFormatElement): el is TimeElement {
+  return el.type === TYPE.time
+}
+export function isSelectElement(el: MessageFormatElement): el is SelectElement {
+  return el.type === TYPE.select
+}
+export function isPluralElement(el: MessageFormatElement): el is PluralElement {
+  return el.type === TYPE.plural
+}
+export function isPoundElement(el: MessageFormatElement): el is PoundElement {
+  return el.type === TYPE.pound
+}
+export function isTagElement(el: MessageFormatElement): el is TagElement {
+  return el.type === TYPE.tag
+}
+export function isNumberSkeleton(
+  el: NumberElement['style'] | Skeleton
+): el is NumberSkeleton {
+  return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.number)
+}
+export function isDateTimeSkeleton(
+  el?: DateElement['style'] | TimeElement['style'] | Skeleton
+): el is DateTimeSkeleton {
+  return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.dateTime)
+}
+
+export function createLiteralElement(value: string): LiteralElement {
+  return {
+    type: TYPE.literal,
+    value,
+  }
+}
+
+export function createNumberElement(
+  value: string,
+  style?: string | null
+): NumberElement {
+  return {
+    type: TYPE.number,
+    value,
+    style,
+  }
+}

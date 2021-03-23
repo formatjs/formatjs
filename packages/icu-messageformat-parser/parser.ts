@@ -5,7 +5,6 @@ import {
   Location,
   MessageFormatElement,
   NumberSkeleton,
-  NumberSkeletonToken,
   PluralOrSelectOption,
   SKELETON_TYPE,
   TagElement,
@@ -14,8 +13,13 @@ import {
 import {
   SPACE_SEPARATOR_END_REGEX,
   SPACE_SEPARATOR_START_REGEX,
-  WHITE_SPACE_REGEX,
 } from './regex.generated'
+import {
+  NumberSkeletonToken,
+  parseNumberSkeleton,
+  parseNumberSkeletonFromString,
+  parseDateTimeSkeleton,
+} from '@formatjs/icu-skeleton-parser'
 
 export interface Position {
   /** Offset in terms of UTF-16 *code unit*. */
@@ -746,8 +750,9 @@ export class Parser {
               type: SKELETON_TYPE.dateTime,
               pattern: skeleton,
               location: styleAndLocation.styleLocation,
-              // TODO
-              parsedOptions: this.shouldParseSkeletons ? {} : {},
+              parsedOptions: this.shouldParseSkeletons
+                ? parseDateTimeSkeleton(skeleton)
+                : {},
             }
 
             const type = argType === 'date' ? TYPE.date : TYPE.time
@@ -948,29 +953,11 @@ export class Parser {
     skeleton: string,
     location: Location
   ): Result<NumberSkeleton, ParserError> {
-    if (skeleton.length === 0) {
-      return this.error(ErrorKind.EXPECT_NUMBER_SKELETON, location)
-    }
-    // Parse the skeleton
-    const stringTokens = skeleton
-      .split(WHITE_SPACE_REGEX)
-      .filter(x => x.length > 0)
-
-    const tokens: NumberSkeletonToken[] = []
-    for (const stringToken of stringTokens) {
-      let stemAndOptions = stringToken.split('/')
-      if (stemAndOptions.length === 0) {
-        return this.error(ErrorKind.INVALID_NUMBER_SKELETON, location)
-      }
-
-      const [stem, ...options] = stemAndOptions
-      for (const option of options) {
-        if (option.length === 0) {
-          return this.error(ErrorKind.INVALID_NUMBER_SKELETON, location)
-        }
-      }
-
-      tokens.push({stem, options})
+    let tokens: NumberSkeletonToken[] = []
+    try {
+      tokens = parseNumberSkeletonFromString(skeleton)
+    } catch (e) {
+      return this.error(ErrorKind.INVALID_NUMBER_SKELETON, location)
     }
 
     return {
@@ -978,8 +965,9 @@ export class Parser {
         type: SKELETON_TYPE.number,
         tokens,
         location,
-        // TODO
-        parsedOptions: this.shouldParseSkeletons ? {} : {},
+        parsedOptions: this.shouldParseSkeletons
+          ? parseNumberSkeleton(tokens)
+          : {},
       },
       err: null,
     }

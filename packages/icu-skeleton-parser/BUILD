@@ -34,7 +34,7 @@ SRC_DEPS = [
 
 ts_compile(
     name = "dist",
-    package_name = PACKAGE_NAME,
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     skip_esm = False,
     deps = SRC_DEPS,
