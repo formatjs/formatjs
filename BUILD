@@ -25,7 +25,7 @@ exports_files(
 # multiple browser sessions which overwhelms SauceLabs
 KARMA_TESTS = [
     # TODO: fix this
-    "//packages/faster-messageformat-parser:bundled-karma-tests",
+    "//packages/icu-messageformat-parser:bundled-karma-tests",
     "//packages/intl-displaynames:bundled-karma-tests",
     "//packages/intl-getcanonicallocales:bundled-karma-tests",
     "//packages/intl-listformat:bundled-karma-tests",
@@ -85,7 +85,7 @@ multirun(
         "//packages/cli:prettier",
         "//packages/ecma402-abstract:prettier",
         "//packages/eslint-plugin-formatjs:prettier",
-        "//packages/faster-messageformat-parser:prettier",
+        "//packages/icu-messageformat-parser:prettier",
         "//packages/intl-datetimeformat:prettier",
         "//packages/intl-displaynames:prettier",
         "//packages/intl-durationformat:prettier",

@@ -1,10 +1,11 @@
 {
-  "name": "faster-messageformat-parser",
+  "name": "@formatjs/icu-messageformat-parser",
   "version": "0.1.6",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.6.3"
+    "@formatjs/ecma402-abstract": "1.6.3",
+    "tslib": "^2.1.0"
   }
 }

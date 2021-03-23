@@ -2,11 +2,11 @@ load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "nodejs_bin
 load("//tools:index.bzl", "bundle_karma_tests", "check_format", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-PACKAGE_NAME = "faster-messageformat-parser"
+PACKAGE_NAME = "icu-messageformat-parser"
 
 pkg_npm(
     name = PACKAGE_NAME,
-    package_name = PACKAGE_NAME,
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -34,7 +34,7 @@ SRC_DEPS = [
 
 ts_compile(
     name = "dist",
-    package_name = PACKAGE_NAME,
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     skip_esm = False,
     deps = SRC_DEPS,

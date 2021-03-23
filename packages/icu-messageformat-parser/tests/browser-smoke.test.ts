@@ -1,6 +1,6 @@
 import {Parser} from '../parser'
 
-describe('faster-messageformat-parser', function () {
+describe('icu-messageformat-parser', function () {
   it('plural_arg_2', () => {
     expect(
       new Parser(`
