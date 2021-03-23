@@ -67,6 +67,19 @@ const hasNativeFromEntries = !!(Object as any).fromEntries
 const hasNativeCodePointAt = !!String.prototype.codePointAt
 const hasTrimStart = !!(String.prototype as any).trimStart
 const hasTrimEnd = !!(String.prototype as any).trimEnd
+const hasNativeIsSafeInteger = !!Number.isSafeInteger
+
+const isSafeInteger = hasNativeIsSafeInteger
+  ? Number.isSafeInteger
+  : (n: unknown): boolean => {
+      return (
+        typeof n === 'number' &&
+        isFinite(n) &&
+        Math.floor(n) === n &&
+        Math.abs(n) <= 0x1fffffffffffff
+      )
+    }
+
 // IE11 does not support y and u.
 let REGEX_SUPPORTS_U_AND_Y = true
 try {
@@ -1125,7 +1138,7 @@ export class Parser {
     }
 
     decimal *= sign
-    if (!Number.isSafeInteger(decimal)) {
+    if (!isSafeInteger(decimal)) {
       return this.error(invalidNumberError, location)
     }
 

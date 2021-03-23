@@ -25,7 +25,7 @@ exports_files(
 # multiple browser sessions which overwhelms SauceLabs
 KARMA_TESTS = [
     # TODO: fix this
-    # "//packages/faster-messageformat-parser:bundled-karma-tests",
+    "//packages/faster-messageformat-parser:bundled-karma-tests",
     "//packages/intl-displaynames:bundled-karma-tests",
     "//packages/intl-getcanonicallocales:bundled-karma-tests",
     "//packages/intl-listformat:bundled-karma-tests",
