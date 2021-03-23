@@ -194,11 +194,12 @@ if (REGEX_SUPPORTS_U_AND_Y) {
   // IE11
   matchIdentifierAtIndex = function matchIdentifierAtIndex(s, index) {
     let match: number[] = []
-    const c = codePointAt(s, index)
-    while (c !== undefined) {
-      if (!_isWhiteSpace(c) && !_isPatternSyntax(c)) {
-        match.push(c)
+    while (true) {
+      const c = codePointAt(s, index)
+      if (c === undefined || _isWhiteSpace(c) || _isPatternSyntax(c)) {
+        break
       }
+      match.push(c)
       index += c >= 0x10000 ? 2 : 1
     }
     return fromCodePoint(...match)
