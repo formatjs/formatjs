@@ -60,11 +60,26 @@ function createLocation(start: Position, end: Position): Location {
 }
 
 // #region Ponyfills
+// Consolidate these variables up top for easier toggling during debugging
+const hasNativeStartsWith = !!String.prototype.startsWith
+const hasNativeFromCodePoint = !!String.fromCodePoint
+const hasNativeFromEntries = !!(Object as any).fromEntries
+const hasNativeCodePointAt = !!String.prototype.codePointAt
+const hasTrimStart = !!(String.prototype as any).trimStart
+const hasTrimEnd = !!(String.prototype as any).trimEnd
+// IE11 does not support y and u.
+let REGEX_SUPPORTS_U_AND_Y = true
+try {
+  RE('', 'yu')
+} catch (_) {
+  REGEX_SUPPORTS_U_AND_Y = false
+}
+
 const startsWith: (
   s: string,
   search: string,
   position: number
-) => boolean = (String.prototype.startsWith as unknown)
+) => boolean = hasNativeStartsWith
   ? // Native
     function startsWith(s, search, position) {
       return s.startsWith(search, position)
@@ -74,44 +89,48 @@ const startsWith: (
       return s.slice(position, position + search.length) === search
     }
 
-const fromCodePoint: typeof String.fromCodePoint =
-  String.fromCodePoint ||
-  // IE11
-  function fromCodePoint(...codePoints: number[]) {
-    let elements = ''
-    let length = codePoints.length
-    let i = 0
-    let code: number
-    while (length > i) {
-      code = codePoints[i++]
-      if (code > 0x10ffff) throw RangeError(code + ' is not a valid code point')
-      elements +=
-        code < 0x10000
-          ? String.fromCharCode(code)
-          : String.fromCharCode(
-              ((code -= 0x10000) >> 10) + 0xd800,
-              (code % 0x400) + 0xdc00
-            )
+const fromCodePoint: typeof String.fromCodePoint = hasNativeFromCodePoint
+  ? String.fromCodePoint
+  : // IE11
+    function fromCodePoint(...codePoints: number[]) {
+      let elements = ''
+      let length = codePoints.length
+      let i = 0
+      let code: number
+      while (length > i) {
+        code = codePoints[i++]
+        if (code > 0x10ffff)
+          throw RangeError(code + ' is not a valid code point')
+        elements +=
+          code < 0x10000
+            ? String.fromCharCode(code)
+            : String.fromCharCode(
+                ((code -= 0x10000) >> 10) + 0xd800,
+                (code % 0x400) + 0xdc00
+              )
+      }
+      return elements
     }
-    return elements
-  }
 
 const fromEntries: <T = any>(
   entries: readonly (readonly [string, T])[]
 ) => {[k: string]: T} =
   // native
-  (Object as any).fromEntries ||
-  // Ponyfill
-  function fromEntries(entries) {
-    const obj: Record<string, any> = {}
-    for (const [k, v] of entries) {
-      obj[k] = v
-    }
-    return obj
-  }
+  hasNativeFromEntries
+    ? (Object as any).fromEntries
+    : // Ponyfill
+      function fromEntries(entries) {
+        const obj: Record<string, any> = {}
+        for (const [k, v] of entries) {
+          obj[k] = v
+        }
+        return obj
+      }
 
-const codePointAt: (s: string, index: number) => number | undefined = (String
-  .prototype.codePointAt as unknown)
+const codePointAt: (
+  s: string,
+  index: number
+) => number | undefined = hasNativeCodePointAt
   ? // Native
     function codePointAt(s, index) {
       return s.codePointAt(index)
@@ -133,7 +152,7 @@ const codePointAt: (s: string, index: number) => number | undefined = (String
         : ((first - 0xd800) << 10) + (second - 0xdc00) + 0x10000
     }
 
-const trimStart: (s: string) => string = (String.prototype as any).trimStart
+const trimStart: (s: string) => string = hasTrimStart
   ? // Native
     function trimStart(s) {
       return (s as any).trimStart()
@@ -143,7 +162,7 @@ const trimStart: (s: string) => string = (String.prototype as any).trimStart
       return s.replace(SPACE_SEPARATOR_START_REGEX, '')
     }
 
-const trimEnd: (s: string) => string = (String.prototype as any).trimEnd
+const trimEnd: (s: string) => string = hasTrimEnd
   ? // Native
     function trimEnd(s) {
       return (s as any).trimEnd()
@@ -156,14 +175,6 @@ const trimEnd: (s: string) => string = (String.prototype as any).trimEnd
 // Prevent minifier to translate new RegExp to literal form that might cause syntax error on IE11.
 function RE(s: string, flag: string) {
   return new RegExp(s, flag)
-}
-
-// IE11 does not support y and u.
-let REGEX_SUPPORTS_U_AND_Y = true
-try {
-  RE('', 'yu')
-} catch (_) {
-  REGEX_SUPPORTS_U_AND_Y = false
 }
 // #endregion
 

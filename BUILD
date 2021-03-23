@@ -50,8 +50,7 @@ karma_test(
     templated_args = [
         "start",
         "$(rootpath //:karma.conf.js)",
-        "--browsers",
-        "ChromeHeadless",
+        "--no-single-run",
     ],
 )
 
