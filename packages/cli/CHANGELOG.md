@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.2.0...@formatjs/cli@4.0.0) (2021-03-25)
+
+Change default value for `--id-interpolation-pattern` to `[sha512:contenthash:base64:6]` in order to avoid hash collisions happening with `[contenthash:5]`
+
 # [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.1.6...@formatjs/cli@3.2.0) (2021-03-15)
 
 
