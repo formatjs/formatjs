@@ -54,10 +54,10 @@ This is especially useful to convert from our extracted format to a TMS-specific
     .option(
       '--id-interpolation-pattern <pattern>',
       `If certain message descriptors don't have id, this \`pattern\` will be used to automatically
-generate IDs for them. Default to \`[contenthash:5]\` where \`contenthash\` is the hash of
+generate IDs for them. Default to \`[sha512:contenthash:base64:6]\` where \`contenthash\` is the hash of
 \`defaultMessage\` and \`description\`.
 See https://github.com/webpack/loader-utils#interpolatename for sample patterns`,
-      '[contenthash:5]'
+      '[sha512:contenthash:base64:6]'
     )
     .option(
       '--extract-source-location',
