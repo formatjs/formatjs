@@ -215,7 +215,7 @@ Options:
   --id-interpolation-pattern <pattern>                  If certain message descriptors don't have id, this \`pattern\` will be used to automatically
   generate IDs for them. Default to \`[contenthash:5]\` where \`contenthash\` is the hash of
   \`defaultMessage\` and \`description\`.
-  See https://github.com/webpack/loader-utils#interpolatename for sample patterns (default: \\"[contenthash:5]\\")
+  See https://github.com/webpack/loader-utils#interpolatename for sample patterns (default: \\"[sha512:contenthash:base64:6]\\")
   --extract-source-location                             Whether the metadata about the location of the message in the source file should be 
   extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each 
   extracted message descriptors. (default: false)
