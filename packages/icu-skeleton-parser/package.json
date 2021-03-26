@@ -1,10 +1,10 @@
 {
   "name": "@formatjs/icu-skeleton-parser",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.6.3"
+    "@formatjs/ecma402-abstract": "1.6.4"
   }
 }

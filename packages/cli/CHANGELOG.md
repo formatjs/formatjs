@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.2.0...@formatjs/cli@4.0.0) (2021-03-26)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix pseudo locale compilation for tag element, fix [#2744](https://github.com/formatjs/formatjs/issues/2744) ([0f42927](https://github.com/formatjs/formatjs/commit/0f42927e6cbd32fa46a54462113cf916cb7d9636))
+
+
+### Features
+
+* **@formatjs/cli:** change default value for idInterpolationPattern to [sha512:contenthash:base64:6] in order to avoid hash collisions happening with [contenthash:5] ([d8d361c](https://github.com/formatjs/formatjs/commit/d8d361ca5844d99020d11ef83c6d93aa6423f69f))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/cli:** If you do not set the id pattern explicitly this will generate new IDs in your language files
+
+
+
+
+
 # [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.1.6...@formatjs/cli@3.2.0) (2021-03-15)
 
 

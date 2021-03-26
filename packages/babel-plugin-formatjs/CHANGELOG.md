@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.0.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.2.5...babel-plugin-formatjs@10.0.0) (2021-03-26)
+
+
+### Features
+
+* **babel-plugin-formatjs:** change default value for idInterpolationPattern to [sha512:contenthash:base64:6] in order to avoid hash collisions happening with [contenthash:5] ([635633d](https://github.com/formatjs/formatjs/commit/635633d9aa6db0c02e340c96cb56fffe2cde54ee))
+
+
+### BREAKING CHANGES
+
+* **babel-plugin-formatjs:** If you don't explicitly set the ID pattern this will result in a new IDs for your lang files
+
+
+
+
+
 ## [9.2.5](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.2.4...babel-plugin-formatjs@9.2.5) (2021-03-15)
 
 **Note:** Version bump only for package babel-plugin-formatjs

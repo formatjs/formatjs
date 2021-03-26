@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.14.0](https://github.com/formatjs/formatjs/compare/react-intl@5.13.5...react-intl@5.14.0) (2021-03-26)
+
+
+### Bug Fixes
+
+* **react-intl:** fix displayName in FormattedMessage, fix [#2751](https://github.com/formatjs/formatjs/issues/2751) ([d185ef3](https://github.com/formatjs/formatjs/commit/d185ef37fd5e428de03c0fda726ced2ae9595574))
+
+
+### Features
+
+* **faster-messageformat-parser:** add the new ICU message format parser ([#2732](https://github.com/formatjs/formatjs/issues/2732)) ([8fa6a6e](https://github.com/formatjs/formatjs/commit/8fa6a6e73732001638ef3512ec73461d5543ba8c)), closes [#xB7](https://github.com/formatjs/formatjs/issues/xB7) [#xC0](https://github.com/formatjs/formatjs/issues/xC0) [-#xD6](https://github.com/-/issues/xD6) [#xD8](https://github.com/formatjs/formatjs/issues/xD8) [-#xF6](https://github.com/-/issues/xF6) [#xF8](https://github.com/formatjs/formatjs/issues/xF8) [-#x37](https://github.com/-/issues/x37) [#x37](https://github.com/formatjs/formatjs/issues/x37) [F-#x1](https://github.com/F-/issues/x1) [#x200](https://github.com/formatjs/formatjs/issues/x200) [C-#x200](https://github.com/C-/issues/x200) [#x203](https://github.com/formatjs/formatjs/issues/x203) [F-#x2040](https://github.com/F-/issues/x2040) [#x2070](https://github.com/formatjs/formatjs/issues/x2070) [-#x218](https://github.com/-/issues/x218) [#x2C00](https://github.com/formatjs/formatjs/issues/x2C00) [-#x2](https://github.com/-/issues/x2) [#x3001](https://github.com/formatjs/formatjs/issues/x3001) [-#xD7](https://github.com/-/issues/xD7) [#xF900](https://github.com/formatjs/formatjs/issues/xF900) [#xFDF0](https://github.com/formatjs/formatjs/issues/xFDF0) [#x10000](https://github.com/formatjs/formatjs/issues/x10000)
+
+
+
+
+
 ## [5.13.5](https://github.com/formatjs/formatjs/compare/react-intl@5.13.4...react-intl@5.13.5) (2021-03-19)
 
 
