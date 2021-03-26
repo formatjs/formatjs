@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.14.1](https://github.com/formatjs/formatjs/compare/react-intl@5.14.0...react-intl@5.14.1) (2021-03-26)
+
+
+### Bug Fixes
+
+* **react-intl:** add back top level displayName, fix [#2751](https://github.com/formatjs/formatjs/issues/2751) ([613b746](https://github.com/formatjs/formatjs/commit/613b746e5194ae92d28310283c01815521fe4839))
+
+
+
+
+
 # [5.14.0](https://github.com/formatjs/formatjs/compare/react-intl@5.13.5...react-intl@5.14.0) (2021-03-26)
 
 

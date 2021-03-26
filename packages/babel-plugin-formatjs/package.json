@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-formatjs",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "description": "Extracts string messages for translation from modules that use formatjs.",
   "repository": {
     "type": "git",
