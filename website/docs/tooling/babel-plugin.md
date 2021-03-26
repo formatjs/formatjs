@@ -51,13 +51,7 @@ The default message descriptors for the app's default language will be processed
 ```json
 {
   "plugins": [
-    [
-      "formatjs",
-      {
-        "idInterpolationPattern": "[sha512:contenthash:base64:6]",
-        "ast": true
-      }
-    ]
+    ["formatjs", { "ast": true }]
   ]
 }
 ```
