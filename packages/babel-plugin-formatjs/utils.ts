@@ -94,7 +94,7 @@ export function evaluateMessageDescriptor(
 
   if (overrideIdFn) {
     id = overrideIdFn(id, defaultMessage, description, filename)
-  } else if (!id && idInterpolationPattern && defaultMessage) {
+  } else if (!id && defaultMessage) {
     id = interpolateName(
       {resourcePath: filename} as any,
       idInterpolationPattern,
