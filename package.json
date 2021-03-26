@@ -17,7 +17,8 @@
     "karma:local": "bazel test :karma",
     "postinstall": "husky install && patch-package",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
-    "release": "lerna version --yes && lerna exec --no-bail -- bazel run :publish",
+    "prerelease": "lerna version --yes",
+    "release": "lerna exec --no-bail -- bazel run :publish",
     "test": "bazel test //..."
   },
   "devDependencies": {
@@ -29,9 +30,9 @@
     "@babel/traverse": "7",
     "@babel/types": "^7.12.11",
     "@bazel/bazelisk": "^1.5.0",
-    "@bazel/esbuild": "^3.2.2",
+    "@bazel/esbuild": "^3.2.3",
     "@bazel/ibazel": "^0.14.0",
-    "@bazel/typescript": "3.2.2",
+    "@bazel/typescript": "3.2.3",
     "@commitlint/cli": "12",
     "@commitlint/config-angular": "12",
     "@docusaurus/core": "2.0.0-alpha.72",
