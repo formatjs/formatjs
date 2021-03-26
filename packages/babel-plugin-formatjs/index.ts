@@ -16,9 +16,14 @@ export type ExtractionResult<M = Record<string, string>> = {
   meta: M
 }
 
+export const DEFAULT_ID_INTERPOLATION_PATTERN = '[sha512:contenthash:base64:6]'
+
 export default declare<Options, PluginObj<PluginPass<Options> & State>>(
   (api, options) => {
     api.assertVersion(7)
+    if (!options.idInterpolationPattern) {
+      options.idInterpolationPattern = DEFAULT_ID_INTERPOLATION_PATTERN
+    }
 
     const {pragma} = options
     const componentNames = new Set<string>(options.additionalComponentNames)

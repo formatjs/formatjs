@@ -78,7 +78,7 @@ export function evaluateMessageDescriptor(
   descriptorPath: MessageDescriptorPath,
   isJSXSource = false,
   filename: string | undefined,
-  idInterpolationPattern = '[sha512:contenthash:base64:6]',
+  idInterpolationPattern?: string,
   overrideIdFn?: Options['overrideIdFn'],
   preserveWhitespace?: Options['preserveWhitespace']
 ) {

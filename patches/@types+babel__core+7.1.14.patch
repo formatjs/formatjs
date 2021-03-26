@@ -1,8 +1,8 @@
 diff --git a/node_modules/@types/babel__core/index.d.ts b/node_modules/@types/babel__core/index.d.ts
-index 4b50b4a..1d29ef2 100644
+index 326e950..248d885 100644
 --- a/node_modules/@types/babel__core/index.d.ts
 +++ b/node_modules/@types/babel__core/index.d.ts
-@@ -442,10 +442,10 @@ export interface BabelFile {
+@@ -457,10 +457,10 @@ export interface BabelFile {
      code: string;
  }
  

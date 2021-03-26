@@ -81,6 +81,10 @@ test('idInterpolationPattern', function () {
   })
 })
 
+test('idInterpolationPattern default', function () {
+  transformAndCheck('idInterpolationPattern')
+})
+
 test('GH #2663', function () {
   const filePath = path.join(__dirname, 'fixtures', `2663.js`)
   const messages: ExtractedMessageDescriptor[] = []
