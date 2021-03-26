@@ -102,7 +102,7 @@ export const visitor: VisitNodeFunction<
   }
 
   // Insert ID before removing node to prevent null node insertBefore
-  if (overrideIdFn || (descriptor.id && idInterpolationPattern)) {
+  if (overrideIdFn || descriptor.id) {
     if (idAttr) {
       idAttr.get('value').replaceWith(t.stringLiteral(descriptor.id))
     } else if (firstAttr) {
