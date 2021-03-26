@@ -5,7 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [10.0.1](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.0.0...babel-plugin-formatjs@10.0.1) (2021-03-26)
 
-Make `idInterpolationPattern` optional (fixes bug)
+### Bug Fixes
+
+Make `idInterpolationPattern` optional
 
 # [10.0.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.2.5...babel-plugin-formatjs@10.0.0) (2021-03-26)
 
