@@ -31,7 +31,7 @@
     "@babel/types": "^7.12.11",
     "@bazel/bazelisk": "^1.5.0",
     "@bazel/esbuild": "^3.2.3",
-    "@bazel/ibazel": "^0.14.0",
+    "@bazel/ibazel": "^0.15.0",
     "@bazel/typescript": "3.2.3",
     "@commitlint/cli": "12",
     "@commitlint/config-angular": "12",
