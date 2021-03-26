@@ -64,4 +64,7 @@ function FormattedMessage(props: Props) {
 }
 FormattedMessage.displayName = 'FormattedMessage'
 
-export default React.memo<Props>(FormattedMessage, areEqual)
+const MemoizedFormattedMessage = React.memo<Props>(FormattedMessage, areEqual)
+MemoizedFormattedMessage.displayName = 'MemoizedFormattedMessage'
+
+export default MemoizedFormattedMessage
