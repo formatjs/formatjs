@@ -29,7 +29,7 @@ function areEqual(prevProps: Props, nextProps: Props): boolean {
   )
 }
 
-const FormattedMessage = React.memo<Props>(props => {
+function FormattedMessage(props: Props) {
   const intl = useIntl()
   const {formatMessage, textComponent: Text = React.Fragment} = intl
   const {
@@ -61,7 +61,7 @@ const FormattedMessage = React.memo<Props>(props => {
     return React.createElement(Component, null, ...(nodes as any))
   }
   return <>{nodes}</>
-}, areEqual)
+}
 FormattedMessage.displayName = 'FormattedMessage'
 
-export default FormattedMessage
+export default React.memo<Props>(FormattedMessage, areEqual)

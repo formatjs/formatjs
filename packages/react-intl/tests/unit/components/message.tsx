@@ -26,10 +26,6 @@ describe('<FormattedMessage>', () => {
     intl = createIntl(providerProps)
   })
 
-  it('has a `displayName`', () => {
-    expect(typeof FormattedMessage.displayName).toBe('string')
-  })
-
   it('throws when <IntlProvider> is missing from ancestry and there is no defaultMessage', () => {
     // So it doesn't spam the console
     jest.spyOn(console, 'error').mockImplementation(() => {})
