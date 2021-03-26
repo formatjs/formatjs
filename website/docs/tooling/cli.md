@@ -120,7 +120,7 @@ The target file path where the plugin will output an aggregated `.json` file of 
 
 ### `--id-interpolation-pattern [pattern]`
 
-If certain message descriptors don't have id, this `pattern` will be used to automaticallygenerate IDs for them. Default to `[contenthash:5]`. See https://github.com/webpack/loader-utils#interpolatename for sample patterns
+If certain message descriptors don't have id, this `pattern` will be used to automaticallygenerate IDs for them. Default to `[sha512:contenthash:base64:6]`. See https://github.com/webpack/loader-utils#interpolatename for sample patterns
 
 ### `--extract-source-location`
 
