@@ -5,6 +5,7 @@ import {
   isLiteralElement,
   isPluralElement,
   isSelectElement,
+  isTagElement,
 } from 'intl-messageformat-parser'
 
 export function generateXXLS(
@@ -30,6 +31,8 @@ export function generateXXAC(
       for (const opt of Object.values(el.options)) {
         generateXXAC(opt.value)
       }
+    } else if (isTagElement(el)) {
+      generateXXAC(el.children)
     }
   })
   return ast
@@ -70,6 +73,8 @@ export function generateENXA(
       for (const opt of Object.values(el.options)) {
         generateENXA(opt.value)
       }
+    } else if (isTagElement(el)) {
+      generateENXA(el.children)
     }
   })
   return ast
@@ -100,6 +105,8 @@ export function generateENXB(
       for (const opt of Object.values(el.options)) {
         generateENXB(opt.value)
       }
+    } else if (isTagElement(el)) {
+      generateENXB(el.children)
     }
   })
   return ast

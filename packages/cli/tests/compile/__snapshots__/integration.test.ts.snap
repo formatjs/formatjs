@@ -34,6 +34,88 @@ Object {
       \\"value\\": \\"count\\"
     }
   ],
+  \\"a1d13\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"I have \\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"a dog\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"many dogs\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
+  ],
+  \\"a1d14\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"I have \\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"a \\"
+                },
+                {
+                  \\"children\\": [
+                    {
+                      \\"type\\": 0,
+                      \\"value\\": \\"dog\\"
+                    }
+                  ],
+                  \\"type\\": 8,
+                  \\"value\\": \\"i\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"many dogs\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
+  ],
   \\"a1dd2\\": [
     {
       \\"type\\": 0,
@@ -150,6 +232,88 @@ Object {
       \\"value\\": \\"count\\"
     }
   ],
+  \\"a1d13\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"Ḭ ḫâṿè \\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"â ḋŏĝ\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"ṁâńẏ ḋŏĝś\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
+  ],
+  \\"a1d14\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"Ḭ ḫâṿè \\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"â \\"
+                },
+                {
+                  \\"children\\": [
+                    {
+                      \\"type\\": 0,
+                      \\"value\\": \\"ḋŏĝ\\"
+                    }
+                  ],
+                  \\"type\\": 8,
+                  \\"value\\": \\"i\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"ṁâńẏ ḋŏĝś\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
+  ],
   \\"a1dd2\\": [
     {
       \\"type\\": 0,
@@ -205,6 +369,88 @@ Object {
       \\"value\\": \\"count\\"
     }
   ],
+  \\"a1d13\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"[!! Ḭ ḫḫḫâṿèèè  !!]\\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"[!! â ḋḋḋŏĝ !!]\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"[!! ṁâńńńẏ ḋḋḋŏĝśśś !!]\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
+  ],
+  \\"a1d14\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"[!! Ḭ ḫḫḫâṿèèè  !!]\\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"[!! â  !!]\\"
+                },
+                {
+                  \\"children\\": [
+                    {
+                      \\"type\\": 0,
+                      \\"value\\": \\"[!! ḋŏĝĝĝ !!]\\"
+                    }
+                  ],
+                  \\"type\\": 8,
+                  \\"value\\": \\"i\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"[!! ṁâńńńẏ ḋḋḋŏĝśśś !!]\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
+  ],
   \\"a1dd2\\": [
     {
       \\"type\\": 0,
@@ -231,6 +477,8 @@ Object {
   "stderr": "",
   "stdout": "{
   \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"a1d13\\": \\"I have {count, plural, one{<b>a dog</b>} other{many dogs}}\\",
+  \\"a1d14\\": \\"I have {count, plural, one{<b>a <i>dog</i></b>} other{many dogs}}\\",
   \\"a1dd2\\": \\"my name is {name}\\",
   \\"ashd2\\": \\"a message\\"
 }
@@ -349,6 +597,88 @@ Object {
       "value": "count",
     },
   ],
+  "a1d13": Array [
+    Object {
+      "type": 0,
+      "value": "I have ",
+    },
+    Object {
+      "offset": 0,
+      "options": Object {
+        "one": Object {
+          "value": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "type": 0,
+                  "value": "a dog",
+                },
+              ],
+              "type": 8,
+              "value": "b",
+            },
+          ],
+        },
+        "other": Object {
+          "value": Array [
+            Object {
+              "type": 0,
+              "value": "many dogs",
+            },
+          ],
+        },
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count",
+    },
+  ],
+  "a1d14": Array [
+    Object {
+      "type": 0,
+      "value": "I have ",
+    },
+    Object {
+      "offset": 0,
+      "options": Object {
+        "one": Object {
+          "value": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "type": 0,
+                  "value": "a ",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "type": 0,
+                      "value": "dog",
+                    },
+                  ],
+                  "type": 8,
+                  "value": "i",
+                },
+              ],
+              "type": 8,
+              "value": "b",
+            },
+          ],
+        },
+        "other": Object {
+          "value": Array [
+            Object {
+              "type": 0,
+              "value": "many dogs",
+            },
+          ],
+        },
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count",
+    },
+  ],
   "a1dd2": Array [
     Object {
       "type": 0,
@@ -378,6 +708,8 @@ Object {
 exports[`out-file 2`] = `
 Object {
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1d13": "I have {count, plural, one{<b>a dog</b>} other{many dogs}}",
+  "a1d14": "I have {count, plural, one{<b>a <i>dog</i></b>} other{many dogs}}",
   "a1dd2": "my name is {name}",
   "ashd2": "a message",
 }
@@ -411,6 +743,88 @@ Object {
             {
               \\"type\\": 0,
               \\"value\\": \\"A DOG\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"MANY DOGS\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
+  ],
+  \\"a1d13\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"I HAVE \\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"A DOG\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"MANY DOGS\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
+  ],
+  \\"a1d14\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"I HAVE \\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"A \\"
+                },
+                {
+                  \\"children\\": [
+                    {
+                      \\"type\\": 0,
+                      \\"value\\": \\"DOG\\"
+                    }
+                  ],
+                  \\"type\\": 8,
+                  \\"value\\": \\"i\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
             }
           ]
         },
@@ -483,6 +897,88 @@ Object {
       \\"value\\": \\"count\\"
     }
   ],
+  \\"a1d13\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"[javascript]I have \\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"a dog\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"many dogs\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
+  ],
+  \\"a1d14\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"[javascript]I have \\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"a \\"
+                },
+                {
+                  \\"children\\": [
+                    {
+                      \\"type\\": 0,
+                      \\"value\\": \\"dog\\"
+                    }
+                  ],
+                  \\"type\\": 8,
+                  \\"value\\": \\"i\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"many dogs\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
+  ],
   \\"a1dd2\\": [
     {
       \\"type\\": 0,
@@ -509,6 +1005,26 @@ Object {
   "stderr": "",
   "stdout": "{
   \\"a1d12\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"I have \\"
+    },
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"SSSSSSSSSSSSSSSSSSSSSSSSS\\"
+    }
+  ],
+  \\"a1d13\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"I have \\"
+    },
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"SSSSSSSSSSSSSSSSSSSSSSSSS\\"
+    }
+  ],
+  \\"a1d14\\": [
     {
       \\"type\\": 0,
       \\"value\\": \\"I have \\"
