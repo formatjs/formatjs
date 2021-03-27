@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.6.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.6.0...intl-messageformat@9.6.1) (2021-03-27)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** fix missing dep ([d2e6721](https://github.com/formatjs/formatjs/commit/d2e672145e50705e43ad526ee2e9f2307e8697a1))
+
+
+
+
+
 # [9.6.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.5.4...intl-messageformat@9.6.0) (2021-03-27)
 
 

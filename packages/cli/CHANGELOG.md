@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.1.0...@formatjs/cli@4.1.1) (2021-03-27)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix missing dep ([498fa5e](https://github.com/formatjs/formatjs/commit/498fa5e9b6f161b46019543eb0c07866f3c46cf0))
+
+
+
+
+
 # [4.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.0.0...@formatjs/cli@4.1.0) (2021-03-27)
 
 

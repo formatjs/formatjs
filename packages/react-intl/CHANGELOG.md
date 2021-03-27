@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.15.1](https://github.com/formatjs/formatjs/compare/react-intl@5.15.0...react-intl@5.15.1) (2021-03-27)
+
+
+### Bug Fixes
+
+* **react-intl:** fix missing dep ([cb97f8a](https://github.com/formatjs/formatjs/commit/cb97f8a83c46f5cd2682dad2aa96024c2b125f8d))
+
+
+
+
+
 # [5.15.0](https://github.com/formatjs/formatjs/compare/react-intl@5.14.1...react-intl@5.15.0) (2021-03-27)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.2.1](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.2.0...babel-plugin-formatjs@10.2.1) (2021-03-27)
+
+
+### Bug Fixes
+
+* **babel-plugin-formatjs:** fix missing dep ([9908e58](https://github.com/formatjs/formatjs/commit/9908e58e2089783a570921b9c684aa6f455f54e0))
+
+
+
+
+
 # [10.2.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.1.0...babel-plugin-formatjs@10.2.0) (2021-03-27)
 
 

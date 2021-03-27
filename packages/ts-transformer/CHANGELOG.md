@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.3.0...@formatjs/ts-transformer@3.3.1) (2021-03-27)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix missing dep ([b4a94c3](https://github.com/formatjs/formatjs/commit/b4a94c3870c758f1c57101836593c9929bb500e3))
+
+
+
+
+
 # [3.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.2.2...@formatjs/ts-transformer@3.3.0) (2021-03-27)
 
 

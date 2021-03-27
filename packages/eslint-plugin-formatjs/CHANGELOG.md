@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.13.0...eslint-plugin-formatjs@2.13.1) (2021-03-27)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** fix missing dep ([d3b1532](https://github.com/formatjs/formatjs/commit/d3b15329fed2f2ab63e81f13172c7dee33b5baa1))
+
+
+
+
+
 # [2.13.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.12.9...eslint-plugin-formatjs@2.13.0) (2021-03-27)
 
 
