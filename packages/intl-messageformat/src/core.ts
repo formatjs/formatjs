@@ -4,7 +4,7 @@ Copyrights licensed under the New BSD License.
 See the accompanying LICENSE file for terms.
 */
 
-import {parse, MessageFormatElement} from 'intl-messageformat-parser'
+import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import * as memoize from 'fast-memoize'
 import {Cache} from 'fast-memoize'
 import {
@@ -139,7 +139,6 @@ export class IntlMessageFormat {
       }
       // Parse string messages into an AST.
       this.ast = IntlMessageFormat.__parse(message, {
-        normalizeHashtagInPlural: false,
         ignoreTag: opts?.ignoreTag,
       })
     } else {

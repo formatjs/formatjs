@@ -12,7 +12,7 @@ import {
   MessageFormatElement,
   isTagElement,
   ExtendedNumberFormatOptions,
-} from 'intl-messageformat-parser'
+} from '@formatjs/icu-messageformat-parser'
 import {
   MissingValueError,
   InvalidValueError,

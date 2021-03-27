@@ -30,7 +30,7 @@ alias(
 SRCS = glob(["src/*.ts"]) + ["index.ts"]
 
 SRC_DEPS = [
-    "//packages/intl-messageformat-parser:dist",
+    "//packages/icu-messageformat-parser:dist",
     "@npm//fast-memoize",
 ]
 
@@ -54,7 +54,7 @@ jest_test(
     name = "unit",
     srcs = SRCS + TESTS,
     deps = TEST_DEPS + [
-        "//packages/intl-messageformat-parser:types",
+        "//packages/icu-messageformat-parser:types",
     ],
 )
 

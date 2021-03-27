@@ -5,7 +5,7 @@
  */
 import {IntlMessageFormat} from '../src/core'
 import {PART_TYPE} from '../src/formatters'
-import {parse} from 'intl-messageformat-parser'
+import {parse} from '@formatjs/icu-messageformat-parser'
 import 'jasmine-expect'
 
 describe('IntlMessageFormat', function () {
