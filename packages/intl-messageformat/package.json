@@ -31,8 +31,8 @@
   "module": "lib/index.js",
   "types": "index.d.ts",
   "dependencies": {
+    "@formatjs/icu-messageformat-parser": "0.2.1",
     "fast-memoize": "^2.5.2",
-    "intl-messageformat-parser": "6.4.4",
     "tslib": "^2.1.0"
   },
   "sideEffects": false,
