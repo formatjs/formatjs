@@ -129,13 +129,13 @@
   "sideEffects": false,
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.6.4",
-    "@formatjs/intl": "1.9.0",
+    "@formatjs/icu-messageformat-parser": "0.2.1",
     "@formatjs/intl-displaynames": "4.0.12",
     "@formatjs/intl-listformat": "5.0.13",
+    "@formatjs/intl": "1.9.0",
     "@types/hoist-non-react-statics": "^3.3.1",
     "hoist-non-react-statics": "^3.3.2",
     "intl-messageformat": "9.6.0",
-    "intl-messageformat-parser": "6.4.4",
     "tslib": "^2.1.0"
   },
   "peerDependencies": {
