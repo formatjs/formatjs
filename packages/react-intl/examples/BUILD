@@ -9,7 +9,7 @@ SRC_DEPS = [
     "//packages/intl-getcanonicallocales:dist",
     "//packages/intl-locale:dist",
     "//packages/intl-messageformat:dist",
-    "//packages/intl-messageformat-parser:dist",
+    "//packages/icu-messageformat-parser:dist",
     "//packages/intl-numberformat:dist",
     "//packages/intl-pluralrules:dist",
     "//packages/react-intl:dist",

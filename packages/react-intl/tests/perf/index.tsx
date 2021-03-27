@@ -8,7 +8,7 @@ const {
   FormattedMessage,
   // FormattedRelativeTime,
 } = require('../../dist/react-intl')
-import {parse, MessageFormatElement} from 'intl-messageformat-parser'
+import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
 const suite = new Suite('renderToString', {
   onCycle: function (e: any) {

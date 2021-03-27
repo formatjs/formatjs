@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import * as IReactIntl from '../../../'
-import {parse} from 'intl-messageformat-parser'
+import {parse} from '@formatjs/icu-messageformat-parser'
 import {render, screen} from '@testing-library/react'
 
 export default function (ReactIntl: typeof IReactIntl, noParser?: boolean) {

@@ -51,7 +51,7 @@ TEST_DEPS = SRC_DEPS + [
     "//packages/ecma402-abstract:types",
     "//packages/intl-displaynames:types",
     "//packages/intl-listformat:types",
-    "//packages/intl-messageformat-parser:types",
+    "//packages/icu-messageformat-parser:types",
     "//packages/intl-messageformat:types",
     "//packages/intl-numberformat:dist",
     "//packages/intl-relativetimeformat:dist",
