@@ -1,9 +1,3 @@
-/*
- * Copyright 2015, Yahoo Inc.
- * Copyrights licensed under the New BSD License.
- * See the accompanying LICENSE file for terms.
- */
-
 import {declare} from '@babel/helper-plugin-utils'
 import {PluginObj, PluginPass} from '@babel/core'
 import babelPluginSyntaxJsx from '@babel/plugin-syntax-jsx'

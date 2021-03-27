@@ -6,10 +6,10 @@
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "main": "index.js",
   "types": "index.d.ts",
-  "author": "Eric Ferraiuolo <edf@ericf.me>",
+  "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {
     "@babel/core": "^7.9.0",
     "@babel/helper-plugin-utils": "^7.8.3",
