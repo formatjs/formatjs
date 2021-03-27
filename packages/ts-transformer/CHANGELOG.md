@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.2.2...@formatjs/ts-transformer@3.3.0) (2021-03-27)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** switch parser to @formatjs/icu-messageformat-parser (6x faster) ([82a4070](https://github.com/formatjs/formatjs/commit/82a40709838a4d3e26e5e36c3fef3163cb13f365))
+
+
+
+
+
 ## [3.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.2.1...@formatjs/ts-transformer@3.2.2) (2021-03-26)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

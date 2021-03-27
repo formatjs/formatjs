@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.2.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.1.0...babel-plugin-formatjs@10.2.0) (2021-03-27)
+
+
+### Features
+
+* **babel-plugin-formatjs:** switch parser to @formatjs/icu-messageformat-parser (6x faster) ([89fdade](https://github.com/formatjs/formatjs/commit/89fdade3b96f56fadf62e2126b9e7f5483b67cfe))
+
+
+
+
+
 # [10.1.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.0.0...babel-plugin-formatjs@10.1.0) (2021-03-26)
 
 

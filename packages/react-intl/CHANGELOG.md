@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.15.0](https://github.com/formatjs/formatjs/compare/react-intl@5.14.1...react-intl@5.15.0) (2021-03-27)
+
+
+### Features
+
+* **react-intl:** switch parser to @formatjs/icu-messageformat-parser (6x faster) ([c3c211f](https://github.com/formatjs/formatjs/commit/c3c211fde60513d84e915fd36dd715999575cd00))
+
+
+
+
+
 ## [5.14.1](https://github.com/formatjs/formatjs/compare/react-intl@5.14.0...react-intl@5.14.1) (2021-03-26)
 
 

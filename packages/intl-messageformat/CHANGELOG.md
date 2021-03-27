@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.6.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.5.4...intl-messageformat@9.6.0) (2021-03-27)
+
+
+### Features
+
+* **intl-messageformat:** switch parser to @formatjs/icu-messageformat-parser (6x faster) ([c53882f](https://github.com/formatjs/formatjs/commit/c53882fc5eab514607d6c00ee4e377999925a909))
+
+
+
+
+
 ## [9.5.4](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.5.3...intl-messageformat@9.5.4) (2021-03-26)
 
 **Note:** Version bump only for package intl-messageformat

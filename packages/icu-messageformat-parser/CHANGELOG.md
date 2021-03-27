@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@0.2.0...@formatjs/icu-messageformat-parser@0.2.1) (2021-03-27)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** parse self-closing tag as literal ([557b3a1](https://github.com/formatjs/formatjs/commit/557b3a19fa0584c0dd036ffb932c67f1b42e4a55))
+
+
+
+
+
 # 0.2.0 (2021-03-26)
 
 

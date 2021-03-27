@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.0.0...@formatjs/cli@4.1.0) (2021-03-27)
+
+
+### Features
+
+* **@formatjs/cli:** switch parser to @formatjs/icu-messageformat-parser (6x faster) ([5e1da21](https://github.com/formatjs/formatjs/commit/5e1da211d005a3ef667eb5ee5348b9f84ab57cad))
+
+
+
+
+
 # [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.2.0...@formatjs/cli@4.0.0) (2021-03-26)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.12.9...eslint-plugin-formatjs@2.13.0) (2021-03-27)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** switch parser to @formatjs/icu-messageformat-parser (6x faster) ([09ff05e](https://github.com/formatjs/formatjs/commit/09ff05e843767f75690c11149a55cb8672271126))
+
+
+
+
+
 ## [2.12.9](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.12.8...eslint-plugin-formatjs@2.12.9) (2021-03-26)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
