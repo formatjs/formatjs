@@ -6,7 +6,7 @@ import {
   parse,
   isPluralElement,
   MessageFormatElement,
-} from 'intl-messageformat-parser'
+} from '@formatjs/icu-messageformat-parser'
 
 class MultiplePlurals extends Error {
   public message = 'Cannot specify more than 1 plural rules'

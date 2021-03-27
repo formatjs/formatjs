@@ -12,7 +12,7 @@ import {
   isTimeElement,
   isSelectElement,
   isTagElement,
-} from 'intl-messageformat-parser'
+} from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 
 class BlacklistElement extends Error {

@@ -5,7 +5,7 @@ import {
   parse,
   isPluralElement,
   MessageFormatElement,
-} from 'intl-messageformat-parser'
+} from '@formatjs/icu-messageformat-parser'
 import {ImportDeclaration, Node} from 'estree'
 
 class NoOffsetError extends Error {

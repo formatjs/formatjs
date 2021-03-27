@@ -6,7 +6,7 @@ import {
   isPluralElement,
   MessageFormatElement,
   isArgumentElement,
-} from 'intl-messageformat-parser'
+} from '@formatjs/icu-messageformat-parser'
 import {extractMessages} from '../util'
 
 const CAMEL_CASE_REGEX = /[A-Z]/

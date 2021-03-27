@@ -8,7 +8,7 @@ import {
   isLiteralElement,
   isSelectElement,
   isPoundElement,
-} from 'intl-messageformat-parser'
+} from '@formatjs/icu-messageformat-parser'
 import {ImportDeclaration, Node} from 'estree'
 
 class PlaceholderEnforcement extends Error {

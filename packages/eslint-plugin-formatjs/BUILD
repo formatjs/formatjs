@@ -36,7 +36,7 @@ SRC_DEPS = [
     "@npm//@types/emoji-regex",
     "@npm//@types/eslint",
     "@npm//@typescript-eslint/typescript-estree",
-    "//packages/intl-messageformat-parser:dist",
+    "//packages/icu-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
 ]
 
@@ -65,7 +65,7 @@ TEST_FILES = glob([
         "@npm//eslint",
         "@npm//@typescript-eslint/parser",
         "@npm//vue-eslint-parser",
-        "//packages/intl-messageformat-parser:types",
+        "//packages/icu-messageformat-parser:types",
         "//packages/ts-transformer:types",
     ] + SRC_DEPS,
 ) for f in TEST_FILES]

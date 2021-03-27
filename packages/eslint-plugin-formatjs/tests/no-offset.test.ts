@@ -33,7 +33,7 @@ ruleTester.run('no-offset', noOffset, {
               })`,
       errors: [
         {
-          message: 'Expected "=", "}", or argName but end of input found.',
+          message: 'EXPECT_ARGUMENT_CLOSING_BRACE',
         },
       ],
     },
