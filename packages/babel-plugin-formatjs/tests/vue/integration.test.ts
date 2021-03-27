@@ -40,7 +40,7 @@ test('dummy', function (done) {
     },
     _ => {
       expect(readFileSync(resolve(__dirname, 'out.js'), 'utf-8')).toContain(
-        '[{type:0,value:"Today is "},{type:3,style:{type:1,pattern:"yyyyMMdd",parsedOptions:{year:"numeric",month:"2-digit",day:"2-digit"}},value:"ts"}]'
+        '[{type:0,value:"Today is "},{type:3,value:"ts",style:{type:1,pattern:"yyyyMMdd",parsedOptions:{year:"numeric",month:"2-digit",day:"2-digit"}}}]'
       )
       done()
     }

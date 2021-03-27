@@ -168,8 +168,8 @@ defineMessage({
     \\"value\\": \\"this is a \\"
   }, {
     \\"type\\": 3,
-    \\"style\\": \\"full\\",
-    \\"value\\": \\"dt\\"
+    \\"value\\": \\"dt\\",
+    \\"style\\": \\"full\\"
   }]
 });
 defineMessages({
@@ -180,8 +180,8 @@ defineMessages({
       \\"value\\": \\"this is a \\"
     }, {
       \\"type\\": 4,
-      \\"style\\": \\"full\\",
-      \\"value\\": \\"dt\\"
+      \\"value\\": \\"dt\\",
+      \\"style\\": \\"full\\"
     }]
   },
   bar: {
@@ -191,8 +191,8 @@ defineMessages({
       \\"value\\": \\"this is a \\"
     }, {
       \\"type\\": 2,
-      \\"style\\": null,
-      \\"value\\": \\"dt\\"
+      \\"value\\": \\"dt\\",
+      \\"style\\": null
     }]
   }
 });
@@ -205,9 +205,7 @@ export default class Foo extends Component {
         \\"value\\": \\"foo \\"
       }, {
         \\"type\\": 6,
-        \\"pluralType\\": \\"cardinal\\",
         \\"value\\": \\"s\\",
-        \\"offset\\": 0,
         \\"options\\": {
           \\"one\\": {
             \\"value\\": [{
@@ -221,7 +219,9 @@ export default class Foo extends Component {
               \\"value\\": \\"2\\"
             }]
           }
-        }
+        },
+        \\"offset\\": 0,
+        \\"pluralType\\": \\"cardinal\\"
       }]
     });
     return /*#__PURE__*/React.createElement(FormattedMessage, {

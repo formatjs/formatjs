@@ -9,7 +9,7 @@ import {
   storeMessage,
   tagAsExtracted,
 } from '../utils'
-import {parse} from 'intl-messageformat-parser'
+import {parse} from '@formatjs/icu-messageformat-parser'
 
 function assertObjectExpression(
   path: NodePath<any>,

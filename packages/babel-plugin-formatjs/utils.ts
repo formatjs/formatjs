@@ -1,5 +1,5 @@
 import * as t from '@babel/types'
-import {parse} from 'intl-messageformat-parser'
+import {parse} from '@formatjs/icu-messageformat-parser'
 import {interpolateName} from '@formatjs/ts-transformer'
 
 import {

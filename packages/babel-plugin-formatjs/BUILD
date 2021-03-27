@@ -32,7 +32,7 @@ SRCS = glob(
 )
 
 SRC_DEPS = [
-    "//packages/intl-messageformat-parser:dist",
+    "//packages/icu-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
     "@npm//@babel/helper-plugin-utils",
     "@npm//@babel/core",
@@ -65,7 +65,7 @@ jest_test(
         "tests/**/*.snap",
     ]),
     deps = [
-        "//packages/intl-messageformat-parser:types",
+        "//packages/icu-messageformat-parser:types",
         "//packages/ts-transformer:types",
         "@npm//@babel/preset-env",
         "@npm//@babel/preset-react",
@@ -80,7 +80,7 @@ jest_test(
     deps = [
         ":dist",
         ":types",
-        "//packages/intl-messageformat-parser:types",
+        "//packages/icu-messageformat-parser:types",
         "@npm//@types/node",
         "@npm//@types/webpack",
         "@npm//@vue/compiler-sfc",

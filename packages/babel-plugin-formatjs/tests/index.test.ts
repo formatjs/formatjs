@@ -180,7 +180,7 @@ test('extractSourceLocation', function () {
 test('Properly throws parse errors', () => {
   expect(() =>
     transform(path.join(__dirname, 'fixtures', 'icuSyntax.js'))
-  ).toThrow(/Expected .* but "\." found/)
+  ).toThrow('SyntaxError: MALFORMED_ARGUMENT')
 })
 
 let cacheBust = 1
