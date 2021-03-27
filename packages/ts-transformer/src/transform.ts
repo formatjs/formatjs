@@ -1,7 +1,7 @@
 import * as typescript from 'typescript'
 import {MessageDescriptor} from './types'
 import {interpolateName} from './interpolate-name'
-import {parse, MessageFormatElement} from 'intl-messageformat-parser'
+import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void
 export type MetaExtractor = (
   filePath: string,

@@ -32,7 +32,7 @@ SRCS = glob([
 SRC_DEPS = [
     "@npm//typescript",
     "@npm//@types/node",
-    "//packages/intl-messageformat-parser:dist",
+    "//packages/icu-messageformat-parser:dist",
 ]
 
 ts_compile(
@@ -50,7 +50,7 @@ jest_test(
         "tests/__snapshots__/*.snap",
     ]),
     deps = SRC_DEPS + [
-        "//packages/intl-messageformat-parser:types",
+        "//packages/icu-messageformat-parser:types",
     ],
 )
 
@@ -62,7 +62,7 @@ jest_test(
     jest_config = "tests/integration/jest.config.js",
     deps = [
         ":dist",
-        "//packages/intl-messageformat-parser:types",
+        "//packages/icu-messageformat-parser:types",
         "@npm//@types/react",
         "@npm//@types/react-dom",
         "@npm//react",
