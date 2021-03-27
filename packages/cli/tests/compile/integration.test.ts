@@ -148,7 +148,7 @@ test('malformed ICU message json', async () => {
     exec(
       `${BIN_PATH} compile ${join(__dirname, 'lang/malformed-messages.json')}`
     )
-  ).rejects.toThrowError('SyntaxError: Expected "," but end of input found.')
+  ).rejects.toThrowError('SyntaxError: EXPECT_ARGUMENT_CLOSING_BRACE')
 }, 20000)
 
 test('skipped malformed ICU message json', async () => {

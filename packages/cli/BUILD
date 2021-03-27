@@ -32,7 +32,7 @@ SRCS = glob(["src/**/*.ts"]) + [
 ]
 
 SRC_DEPS = [
-    "//packages/intl-messageformat-parser:dist",
+    "//packages/icu-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
     "@npm//@types/node",
     "@npm//fs-extra",
@@ -62,7 +62,7 @@ jest_test(
         "tests/extract/__snapshots__/unit.test.ts.snap",
     ] + SRCS,
     deps = [
-        "//packages/intl-messageformat-parser:types",
+        "//packages/icu-messageformat-parser:types",
         "//packages/ts-transformer:types",
         "@npm//rimraf",
         "@npm//@types/rimraf",
@@ -83,7 +83,7 @@ jest_test(
     ),
     flaky = True,
     deps = [
-        "//packages/intl-messageformat-parser:types",
+        "//packages/icu-messageformat-parser:types",
         "//packages/ts-transformer:types",
         "@npm//rimraf",
         "@npm//@types/rimraf",

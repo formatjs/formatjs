@@ -6,7 +6,7 @@ import {
   isPluralElement,
   isSelectElement,
   isTagElement,
-} from 'intl-messageformat-parser'
+} from '@formatjs/icu-messageformat-parser'
 
 export function generateXXLS(
   msg: string | MessageFormatElement[]
