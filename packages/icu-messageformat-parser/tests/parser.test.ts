@@ -1,14 +1,14 @@
-import {parse, ParserOptions} from '../parser'
+import {Parser, ParserOptions} from '../parser'
 
 function testParser(message: string, options: ParserOptions = {}) {
-  expect(parse(message, options)).toMatchSnapshot()
+  expect(new Parser(message, options).parse()).toMatchSnapshot()
 }
 
 function testNumberSkeleton(skeleton: string) {
   return test(skeleton, () => {
-    const parsed = parse(`{0, number, ::${skeleton}}`, {
+    const parsed = new Parser(`{0, number, ::${skeleton}}`, {
       shouldParseSkeletons: true,
-    })
+    }).parse()
     expect(parsed).toMatchSnapshot()
   })
 }

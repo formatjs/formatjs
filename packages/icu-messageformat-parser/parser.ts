@@ -1,14 +1,6 @@
 import {ErrorKind, ParserError} from './error'
 import {
   DateTimeSkeleton,
-  isDateElement,
-  isDateTimeSkeleton,
-  isNumberElement,
-  isNumberSkeleton,
-  isPluralElement,
-  isSelectElement,
-  isTagElement,
-  isTimeElement,
   LiteralElement,
   Location,
   MessageFormatElement,
@@ -235,41 +227,6 @@ if (REGEX_SUPPORTS_U_AND_Y) {
     return fromCodePoint(...match)
   }
 }
-
-function pruneLocation(els: MessageFormatElement[]) {
-  els.forEach(el => {
-    delete el.location
-    if (isSelectElement(el) || isPluralElement(el)) {
-      for (const k in el.options) {
-        delete el.options[k].location
-        pruneLocation(el.options[k].value)
-      }
-    } else if (isNumberElement(el) && isNumberSkeleton(el.style)) {
-      delete el.style.location
-    } else if (
-      (isDateElement(el) || isTimeElement(el)) &&
-      isDateTimeSkeleton(el.style)
-    ) {
-      delete el.style.location
-    } else if (isTagElement(el)) {
-      pruneLocation(el.children)
-    }
-  })
-}
-
-export function parse(...args: ConstructorParameters<typeof Parser>) {
-  const [_, opts] = args
-  let result = new Parser(...args).parse()
-  if (result.err) {
-    return result
-  }
-
-  if (!opts?.captureLocation) {
-    pruneLocation(result.val)
-  }
-  return result
-}
-
 export class Parser {
   private message: string
   private position: Position
@@ -373,7 +330,7 @@ export class Parser {
   private parseTag(
     nestingLevel: number,
     parentArgType: ArgType
-  ): Result<TagElement, ParserError> {
+  ): Result<TagElement | LiteralElement, ParserError> {
     const startPosition = this.clonePosition()
     this.bump() // `<`
 
@@ -384,11 +341,10 @@ export class Parser {
       // Self closing tag
       return {
         val: {
-          type: TYPE.tag,
-          value: tagName,
-          children: [],
+          type: TYPE.literal,
+          value: `<${tagName}/>`,
           location: createLocation(startPosition, this.clonePosition()),
-        },
+        } as LiteralElement,
         err: null,
       }
     } else if (this.bumpIf('>')) {

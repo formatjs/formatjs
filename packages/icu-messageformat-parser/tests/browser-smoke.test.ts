@@ -1,6 +1,6 @@
 import {Parser} from '../parser'
 
-describe('icu-messageformat-parser', function () {
+describe('@formatjs/icu-messageformat-parser', function () {
   it('plural_arg_2', () => {
     expect(
       new Parser(`

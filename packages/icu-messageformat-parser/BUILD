@@ -30,7 +30,7 @@ SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     "//packages/ecma402-abstract:dist",
-    "//packages/icu-skeleton-parser:dist"
+    "//packages/icu-skeleton-parser:dist",
 ]
 
 ts_compile(
