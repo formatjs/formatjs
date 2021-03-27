@@ -16,10 +16,10 @@
     "@babel/plugin-syntax-jsx": "7",
     "@babel/traverse": "7",
     "@babel/types": "^7.9.5",
+    "@formatjs/icu-messageformat-parser": "0.2.1",
     "@formatjs/ts-transformer": "3.3.0",
     "@types/babel__core": "^7.1.7",
     "@types/babel__helper-plugin-utils": "7",
-    "intl-messageformat-parser": "6.4.4",
     "tslib": "^2.1.0"
   },
   "keywords": [
