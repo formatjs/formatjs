@@ -24,7 +24,7 @@ DEPS = [
     "//packages/intl-displaynames:dist",
     "//packages/intl-displaynames:locale-data",
     "//packages/intl-messageformat:dist",
-    "//packages/intl-messageformat-parser:dist",
+    "//packages/icu-messageformat-parser:dist",
     "//packages/react-intl:dist",
     "@npm//@docusaurus/plugin-google-analytics",
     "@npm//@docusaurus/preset-classic",

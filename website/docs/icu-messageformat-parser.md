@@ -1,23 +1,21 @@
 ---
-id: intl-messageformat-parser
-title: Intl MessageFormat Parser
+id: icu-messageformat-parser
+title: ICU MessageFormat Parser
 ---
 
 Parses [ICU Message strings](https://unicode-org.github.io/icu/userguide/format_parse/messages) into an AST via JavaScript.
 
-[![npm Version](https://badgen.net/npm/v/intl-messageformat-parser)](https://www.npmjs.com/package/intl-messageformat-parser)
-[![size](https://badgen.net/bundlephobia/minzip/intl-messageformat-parser)](https://bundlephobia.com/result?p=intl-messageformat-parser)
+[![npm Version](https://badgen.net/npm/v/@formatjs/icu-messageformat-parser)](https://www.npmjs.com/package/@formatjs/icu-messageformat-parser)
+[![size](https://badgen.net/bundlephobia/minzip/@formatjs/icu-messageformat-parser)](https://bundlephobia.com/result?p=@formatjs/icu-messageformat-parser)
 
 ## Overview
 
 This package implements a parser in JavaScript that parses the industry standard [ICU Message strings](https://unicode-org.github.io/icu/userguide/format_parse/messages) — used for internationalization — into an AST. The produced AST can then be used by a compiler, like [`intl-messageformat`](./intl-messageformat.md), to produce localized formatted strings for display to users.
 
-This parser is written in [PEG.js](https://pegjs.org/), a parser generator for JavaScript.
-
 ## Usage
 
 ```ts
-import {parse} from 'intl-messageformat-parser'
+import {parse} from '@formatjs/icu-messageformat-parser'
 const ast = parse(`this is {count, plural, 
   one{# dog} 
   other{# dogs}
@@ -29,7 +27,7 @@ const ast = parse(`this is {count, plural,
 ```tsx live
 <pre>
   {JSON.stringify(
-    IntlMessageFormatParser.parse(
+    IcuMessageFormatParser.parse(
       `On {takenDate, date, short} <bold>{name}</bold> took {numPhotos, plural,
           =0 {no photos.}
           =1 {one photo.}
@@ -68,12 +66,13 @@ ICU provides a [wide array of pattern](https://www.unicode.org/reports/tr35/tr35
 ## Benchmarks
 
 ```
-complex_msg AST length 2053
-normal_msg AST length 410
-simple_msg AST length 79
-string_msg AST length 36
-complex_msg x 3,926 ops/sec ±2.37% (90 runs sampled)
-normal_msg x 27,641 ops/sec ±3.93% (86 runs sampled)
-simple_msg x 100,764 ops/sec ±5.35% (79 runs sampled)
-string_msg x 120,362 ops/sec ±7.11% (74 runs sampled)
+complex_msg AST length 10861
+normal_msg AST length 1665
+simple_msg AST length 364
+string_msg AST length 131
+
+complex_msg x 29,940 ops/sec ±1.23% (89 runs sampled)
+normal_msg x 253,612 ops/sec ±1.01% (92 runs sampled)
+simple_msg x 1,805,642 ops/sec ±0.70% (94 runs sampled)
+string_msg x 2,694,133 ops/sec ±1.05% (95 runs sampled)
 ```

@@ -22,7 +22,7 @@ This `IntlMessageFormat` API may change to stay in sync with ECMA-402, but this 
 
 ### How It Works
 
-Messages are provided into the constructor as a `String` message, or a [pre-parsed AST](./intl-messageformat-parser.md) object.
+Messages are provided into the constructor as a `String` message, or a [pre-parsed AST](./icu-messageformat-parser.md) object.
 
 ```tsx
 const msg = new IntlMessageFormat(message, locales, [formats], [opts])
@@ -261,13 +261,13 @@ new IntlMessageFormat('hello').format() // prints out hello
 // is equivalent to
 
 import IntlMessageFormat from 'intl-messageformat'
-import parser from 'intl-messageformat-parser'
-new IntlMessageFormat(parser.parse('hello')).format() // prints out hello
+import {parse} from '@formatjs/icu-messageformat-parser'
+new IntlMessageFormat(parse('hello')).format() // prints out hello
 ```
 
 This helps performance for cases like SSR or preload/precompilation-supported platforms since `AST` can be cached.
 
-If your messages are all in ASTs, you can alias `intl-messageformat-parser` to `{default: undefined}` to save some bytes during bundling.
+If your messages are all in ASTs, you can alias `@formatjs/icu-messageformat-parser` to `{default: undefined}` to save some bytes during bundling.
 
 ### Formatters
 

@@ -33,7 +33,7 @@ module.exports = {
     '@formatjs/intl': ['intl'],
     'vue-intl': ['vue-intl'],
     'intl-messageformat': ['intl-messageformat'],
-    'intl-messageformat-parser': ['intl-messageformat-parser'],
+    'icu-messageformat-parser': ['icu-messageformat-parser'],
   },
   polyfills: {
     Polyfills: [

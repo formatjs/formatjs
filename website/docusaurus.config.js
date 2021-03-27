@@ -38,7 +38,7 @@ module.exports = {
           to: 'docs/react-intl',
           label: 'API References',
           position: 'left',
-          activeBaseRegex: `docs/(vue-intl|intl|react-intl|intl-messageformat|intl-messageformat-parser)`,
+          activeBaseRegex: `docs/(vue-intl|intl|react-intl|intl-messageformat|icu-messageformat-parser)`,
         },
         {
           to: 'docs/polyfills',

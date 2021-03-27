@@ -216,7 +216,7 @@ Assuming `navigator.language` is `"en-us"`:
 
 # ESM Build
 
-`react-intl` and its underlying libraries (`intl-messageformat-parser`, `intl-messageformat`, `@formatjs/intl-relativetimeformat`) export ESM artifacts. This means you should configure your build toolchain to transpile those libraries.
+`react-intl` and its underlying libraries (`@formatjs/icu-messageformat-parser`, `intl-messageformat`, `@formatjs/intl-relativetimeformat`) export ESM artifacts. This means you should configure your build toolchain to transpile those libraries.
 
 ### Jest
 
@@ -225,7 +225,7 @@ Add `transformIgnorePatterns` to always include those libraries, e.g:
 ```tsx
 {
   transformIgnorePatterns: [
-    '/node_modules/(?!intl-messageformat|intl-messageformat-parser).+\\.js$',
+    '/node_modules/(?!intl-messageformat|@formatjs/icu-messageformat-parser).+\\.js$',
   ],
 }
 ```
@@ -241,7 +241,7 @@ If you're using `babel-loader`, or `ts-loader`, you can do 1 of the following:
   include: [
     path.join(__dirname, 'node_modules/react-intl'),
     path.join(__dirname, 'node_modules/intl-messageformat'),
-    path.join(__dirname, 'node_modules/intl-messageformat-parser'),
+    path.join(__dirname, 'node_modules/@formatjs/icu-messageformat-parser'),
   ]
 }
 ```
@@ -251,7 +251,7 @@ OR
 2. Add those libraries in `exclude`:
 
 ```tsx
-exclude: /node_modules\/(?!react-intl|intl-messageformat|intl-messageformat-parser)/,
+exclude: /node_modules\/(?!react-intl|intl-messageformat|@formatjs\/icu-messageformat-parser)/,
 ```
 
 # Core Concepts

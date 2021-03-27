@@ -8,7 +8,7 @@
 import React from 'react'
 import * as ReactIntl from 'react-intl'
 import IntlMessageFormat from 'intl-messageformat'
-import * as IntlMessageFormatParser from 'intl-messageformat-parser'
+import * as IcuMessageFormatParser from '@formatjs/icu-messageformat-parser'
 import '@formatjs/intl-locale/polyfill'
 // Our live code demo depends on `Intl.DisplayNames`, which isn't available as of Firefox 81.
 import '@formatjs/intl-displaynames/polyfill'
@@ -20,7 +20,7 @@ const ReactLiveScope = {
   ...React,
   ...ReactIntl,
   IntlMessageFormat,
-  IntlMessageFormatParser,
+  IcuMessageFormatParser,
   intl: ReactIntl.createIntl({
     locale: typeof navigator !== 'undefined' ? navigator.language : 'en',
   }),

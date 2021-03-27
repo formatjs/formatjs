@@ -13,7 +13,7 @@ You can also pre-compile all messages into `AST` using [`@formatjs/cli`](../tool
 2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.
 
 :::caution Caching
-Since this approach uses `AST` as the data source, changes to `intl-messageformat-parser`'s `AST` will require cache invalidation.
+Since this approach uses `AST` as the data source, changes to `@formatjs/icu-messageformat-parser`'s `AST` will require cache invalidation.
 :::
 :::caution Asset Size
 `AST` is also slightly larger in size than regular `string` messages but can be efficiently compressed.
@@ -21,7 +21,7 @@ Since this approach uses `AST` as the data source, changes to `intl-messageforma
 
 ## `react-intl` without parser (40% smaller)
 
-If you've made sure all your messages & `defaultMessage`s are precompiled as above, you can resolve `intl-messageformat-parser` to `intl-messageformat-parser/no-parser` during bundling to get a much smaller bundler (~40% less). For example:
+If you've made sure all your messages & `defaultMessage`s are precompiled as above, you can resolve `@formatjs/icu-messageformat-parser` to `@formatjs/icu-messageformat-parser/no-parser` during bundling to get a much smaller bundler (~40% less). For example:
 
 ### webpack.config.js
 
@@ -30,7 +30,8 @@ module.exports = {
   //...
   resolve: {
     alias: {
-      'intl-messageformat-parser': 'intl-messageformat-parser/no-parser',
+      '@formatjs/icu-messageformat-parser':
+        '@formatjs/icu-messageformat-parser/no-parser',
     },
   },
 }
@@ -46,7 +47,8 @@ module.exports = {
   plugins: [
     alias({
       entries: {
-        'intl-messageformat-parser': 'intl-messageformat-parser/no-parser',
+        '@formatjs/icu-messageformat-parser':
+          '@formatjs/icu-messageformat-parser/no-parser',
       },
     }),
   ],
