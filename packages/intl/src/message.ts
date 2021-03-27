@@ -10,7 +10,7 @@ import {
   Options,
 } from 'intl-messageformat'
 import {MissingTranslationError, MessageFormatError} from './error'
-import {TYPE, MessageFormatElement} from 'intl-messageformat-parser'
+import {TYPE, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,

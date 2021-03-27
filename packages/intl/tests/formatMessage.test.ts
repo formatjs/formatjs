@@ -3,7 +3,7 @@ import '@formatjs/intl-numberformat/polyfill'
 import '@formatjs/intl-numberformat/locale-data/en'
 import '@formatjs/intl-numberformat/locale-data/es'
 import IntlMessageFormat from 'intl-messageformat'
-import {parse} from 'intl-messageformat-parser'
+import {parse} from '@formatjs/icu-messageformat-parser'
 import {formatMessage as baseFormatMessage} from '../src/message'
 import {Formatters, OptionalIntlConfig, IntlFormatters} from '../src/types'
 

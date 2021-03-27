@@ -7,7 +7,7 @@ import {
   Options as IntlMessageFormatOptions,
 } from 'intl-messageformat'
 import {DateTimeFormat} from '@formatjs/ecma402-abstract'
-import {MessageFormatElement} from 'intl-messageformat-parser'
+import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat'
 import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames'
 import {

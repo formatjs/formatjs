@@ -65,7 +65,7 @@ jest_test(
         "//packages/intl-datetimeformat:types",
         "//packages/intl-displaynames:types",
         "//packages/intl-listformat:types",
-        "//packages/intl-messageformat-parser:types",
+        "//packages/icu-messageformat-parser:types",
         "//packages/intl-messageformat:types",
         "//packages/intl-numberformat:dist",
         "//packages/intl-numberformat:types",

@@ -14,7 +14,7 @@ import {formatPlural} from './plural'
 import {formatMessage} from './message'
 import {formatList} from './list'
 import {formatDisplayName} from './displayName'
-import {MessageFormatElement} from 'intl-messageformat-parser'
+import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
 export interface CreateIntlFn<
   T = string,
