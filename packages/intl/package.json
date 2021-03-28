@@ -30,7 +30,7 @@
   "sideEffects": false,
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.6.4",
-    "@formatjs/icu-messageformat-parser": "0.2.1",
+    "@formatjs/icu-messageformat-parser": "1.1.0",
     "@formatjs/intl-displaynames": "4.0.12",
     "@formatjs/intl-listformat": "5.0.13",
     "fast-memoize": "^2.5.2",
