@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.14.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.13.2...eslint-plugin-formatjs@2.14.0) (2021-03-28)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add no-complex-selectors rule ([f3b1c15](https://github.com/formatjs/formatjs/commit/f3b1c15a510818ade85ff5d5efefda815eeea5a2))
+
+
+
+
+
 ## [2.13.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.13.1...eslint-plugin-formatjs@2.13.2) (2021-03-28)
 
 

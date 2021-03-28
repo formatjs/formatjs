@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "description": "A CLI for formatjs.",
   "keywords": [
     "intl",

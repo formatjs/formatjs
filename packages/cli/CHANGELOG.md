@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.1.1...@formatjs/cli@4.2.0) (2021-03-28)
+
+
+### Features
+
+* **@formatjs/cli:** add --flatten option ([9b4efd8](https://github.com/formatjs/formatjs/commit/9b4efd864ad65824dca4b0633d3ba9f495442e71))
+
+
+
+
+
 ## [4.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.1.0...@formatjs/cli@4.1.1) (2021-03-27)
 
 

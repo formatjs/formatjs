@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@0.2.1...@formatjs/icu-messageformat-parser@1.1.0) (2021-03-28)
+
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** add manipulator and ability to hoist selectors ([82f04d9](https://github.com/formatjs/formatjs/commit/82f04d9f01fdf320a4cea16a52db8e6bd6c15a08))
+* **@formatjs/icu-messageformat-parser:** bump to v1 ([5bb985c](https://github.com/formatjs/formatjs/commit/5bb985cf74cb7f1fffcd04c7f0f210e8889c2705))
+
+
+
+
+
 ## [0.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@0.2.0...@formatjs/icu-messageformat-parser@0.2.1) (2021-03-27)
 
 
