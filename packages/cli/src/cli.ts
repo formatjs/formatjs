@@ -109,6 +109,14 @@ works. This option does not do that so it's less safe.`,
       '--preserve-whitespace',
       'Whether to preserve whitespace and newlines.'
     )
+    .option(
+      '--flatten',
+      `Whether to hoist selectors & flatten sentences as much as possible. E.g:
+"I have {count, plural, one{a dog} other{many dogs}}"
+becomes "{count, plural, one{I have a dog} other{I have many dogs}}".
+The goal is to provide as many full sentences as possible since fragmented
+sentences are not translator-friendly.`
+    )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
       const processedFiles = []
       for (const f of files) {
@@ -134,6 +142,7 @@ works. This option does not do that so it's less safe.`,
         // But so long as the glob pattern is provided, don't read from stdin.
         readFromStdin: files.length === 0,
         preserveWhitespace: cmdObj.preserveWhitespace,
+        flatten: cmdObj.flatten,
       })
       process.exit(0)
     })

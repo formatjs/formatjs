@@ -10,6 +10,9 @@ import {resolveBuiltinFormatter, Formatter} from './formatters'
 import stringify from 'json-stable-stringify'
 import {parseFile} from './vue_extractor'
 import {parseScript} from './parse_script'
+import {printAST} from '@formatjs/icu-messageformat-parser/printer'
+import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator'
+import {parse} from '@formatjs/icu-messageformat-parser'
 export interface ExtractionResult<M = Record<string, string>> {
   /**
    * List of extracted messages
@@ -68,6 +71,10 @@ export type ExtractOpts = Opts & {
    * Path to a formatter file that controls the shape of JSON file from `outFile`.
    */
   format?: string | Formatter
+  /**
+   * Whether to hoist selectors & flatten sentences
+   */
+  flatten?: boolean
 } & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>
 
 function calculateLineColFromOffset(
@@ -154,7 +161,7 @@ export async function extract(
   files: readonly string[],
   extractOpts: ExtractOpts
 ) {
-  const {throws, readFromStdin, ...opts} = extractOpts
+  const {throws, readFromStdin, flatten, ...opts} = extractOpts
   let rawResults: Array<ExtractionResult | undefined>
   if (readFromStdin) {
     // Read from stdin
@@ -224,6 +231,9 @@ ${JSON.stringify(message, undefined, 2)}`
   const results: Record<string, Omit<MessageDescriptor, 'id'>> = {}
   const messages = Array.from(extractedMessages.values())
   for (const {id, ...msg} of messages) {
+    if (flatten && msg.defaultMessage) {
+      msg.defaultMessage = printAST(hoistSelectors(parse(msg.defaultMessage)))
+    }
     results[id] = msg
   }
   return stringify(formatter.format(results), {

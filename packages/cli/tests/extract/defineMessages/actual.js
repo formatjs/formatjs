@@ -35,6 +35,9 @@ const msgs = defineMessages({
     description: 'no ID',
     defaultMessage: 'No ID',
   },
+  complex: {
+    defaultMessage: 'I have {count, plural, one{a dog} other{many dogs}}',
+  },
 })
 
 export default class Foo extends Component {

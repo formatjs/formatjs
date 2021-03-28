@@ -29,6 +29,17 @@ test('basic case: defineMessages -> stdout', async () => {
   ).resolves.toMatchSnapshot()
 }, 20000)
 
+test('flatten defineMessages -> stdout', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} extract --flatten --throws ${join(
+        __dirname,
+        'defineMessages/actual.js'
+      )}`
+    )
+  ).resolves.toMatchSnapshot()
+}, 20000)
+
 test('bad json', async () => {
   await expect(
     exec(
