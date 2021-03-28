@@ -5,6 +5,7 @@
   "types": "index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.6.4"
+    "@formatjs/ecma402-abstract": "1.6.4",
+    "tslib": "^2.1.0"
   }
 }
