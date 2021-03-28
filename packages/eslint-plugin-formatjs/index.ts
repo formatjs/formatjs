@@ -1,29 +1,31 @@
-import enforceDescription from './rules/enforce-description'
-import enforceDefaultMessage from './rules/enforce-default-message'
-import noCamelCase from './rules/no-camel-case'
-import noEmoji from './rules/no-emoji'
-import noMultiplePlurals from './rules/no-multiple-plurals'
-import noOffset from './rules/no-offset'
 import blacklistElements from './rules/blacklist-elements'
-import enforcePluralRules from './rules/enforce-plural-rules'
-import enforcePlaceholders from './rules/enforce-placeholders'
-import noMultipleWhitespaces from './rules/no-multiple-whitespaces'
-import noId from './rules/no-id'
+import enforceDefaultMessage from './rules/enforce-default-message'
+import enforceDescription from './rules/enforce-description'
 import enforceId from './rules/enforce-id'
+import enforcePlaceholders from './rules/enforce-placeholders'
+import enforcePluralRules from './rules/enforce-plural-rules'
+import noCamelCase from './rules/no-camel-case'
+import noComplexSelectors from './rules/no-complex-selectors'
+import noEmoji from './rules/no-emoji'
+import noId from './rules/no-id'
+import noMultiplePlurals from './rules/no-multiple-plurals'
+import noMultipleWhitespaces from './rules/no-multiple-whitespaces'
+import noOffset from './rules/no-offset'
 const plugin = {
   rules: {
-    'enforce-description': enforceDescription,
-    'enforce-default-message': enforceDefaultMessage,
-    'no-camel-case': noCamelCase,
-    'no-emoji': noEmoji,
-    'no-multiple-plurals': noMultiplePlurals,
-    'no-offset': noOffset,
     'blacklist-elements': blacklistElements,
-    'enforce-plural-rules': enforcePluralRules,
-    'enforce-placeholders': enforcePlaceholders,
-    'no-multiple-whitespaces': noMultipleWhitespaces,
-    'no-id': noId,
+    'enforce-default-message': enforceDefaultMessage,
+    'enforce-description': enforceDescription,
     'enforce-id': enforceId,
+    'enforce-placeholders': enforcePlaceholders,
+    'enforce-plural-rules': enforcePluralRules,
+    'no-camel-case': noCamelCase,
+    'no-complext-selectors': noComplexSelectors,
+    'no-emoji': noEmoji,
+    'no-id': noId,
+    'no-multiple-plurals': noMultiplePlurals,
+    'no-multiple-whitespaces': noMultipleWhitespaces,
+    'no-offset': noOffset,
   },
 }
 

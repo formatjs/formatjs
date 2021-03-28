@@ -497,3 +497,31 @@ This bans explicit ID in `MessageDescriptor`.
 #### Why
 
 We generally encourage automatic ID generation due to [these reasons](https://formatjs.io/docs/getting-started/message-declaration). This makes sure no explicit IDs are set.
+
+### `no-complex-selectors`
+
+Make sure a sentence is not too complex.
+Complexity is determined by how many strings are produced when we try to flatten the sentence given its selectors. For example:
+
+```
+I have {count, plural, one{a dog} other{many dogs}}
+```
+
+has the complexity of 2 because flattening the plural selector results in 2 sentences: `I have a dog` & `I have many dogs`.
+Default complexity limit is 20 (using [Smartling as a reference](https://help.smartling.com/hc/en-us/articles/360008030994-ICU-MessageFormat))
+
+#### Options
+
+```json
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/no-complex-selectors": [
+      "error",
+      {
+        "limit": 3
+      }
+    ]
+  }
+}
+```
