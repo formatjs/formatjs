@@ -120,15 +120,15 @@ export interface PoundElement {
 }
 
 export type MessageFormatElement =
-  | LiteralElement
   | ArgumentElement
-  | NumberElement
   | DateElement
-  | TimeElement
-  | SelectElement
+  | LiteralElement
+  | NumberElement
   | PluralElement
-  | TagElement
   | PoundElement
+  | SelectElement
+  | TagElement
+  | TimeElement
 
 export interface NumberSkeleton {
   type: SKELETON_TYPE.number
