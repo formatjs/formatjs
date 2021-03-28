@@ -158,6 +158,23 @@ import {FormattedMessage} from 'react-intl'
 
 and with option `{pragma: "intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
 
+### `--flatten`
+
+Whether to hoist selectors & flatten sentences as much as possible. E.g:
+
+```
+I have {count, plural, one{a dog} other{many dogs}}
+```
+
+becomes
+
+```
+{count, plural, one{I have a dog} other{I have many dogs}}
+```
+
+The goal is to provide as many full sentences as possible since fragmented
+sentences are not translator-friendly.
+
 ## Compilation
 
 Compile extracted file from `formatjs extract` to a react-intl consumable
