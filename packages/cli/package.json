@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "A CLI for formatjs.",
   "keywords": [
     "intl",
@@ -31,8 +31,8 @@
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/icu-messageformat-parser": "1.1.0",
-    "@formatjs/ts-transformer": "3.3.2",
+    "@formatjs/icu-messageformat-parser": "1.1.1",
+    "@formatjs/ts-transformer": "3.3.3",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/lodash": "^4.14.150",
     "@types/loud-rejection": "^2.0.0",
