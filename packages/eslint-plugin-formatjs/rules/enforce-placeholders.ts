@@ -9,7 +9,6 @@ import {
   isSelectElement,
   isPoundElement,
 } from '@formatjs/icu-messageformat-parser'
-import {ImportDeclaration, Node} from 'estree'
 
 class PlaceholderEnforcement extends Error {
   public message: string
@@ -94,7 +93,7 @@ function checkNode(
       verifyAst(parse(defaultMessage), values, ignoreList)
     } catch (e) {
       context.report({
-        node: messageNode as Node,
+        node: messageNode as any,
         message: e.message,
       })
     }
@@ -144,13 +143,13 @@ const rule: Rule.RuleModule = {
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value
+        const moduleName = node.source.value
         if (moduleName === 'react-intl') {
           importedMacroVars = context.getDeclaredVariables(node)
         }
       },
-      JSXOpeningElement: (node: Node) =>
-        checkNode(context, node as TSESTree.Node, importedMacroVars),
+      JSXOpeningElement: (node: TSESTree.Node) =>
+        checkNode(context, node, importedMacroVars),
       CallExpression: callExpressionVisitor,
     }
   },

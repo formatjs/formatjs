@@ -1,5 +1,4 @@
 import {Rule, Scope} from 'eslint'
-import {ImportDeclaration, Node} from 'estree'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {extractMessages} from '../util'
 import emojiRegex from 'emoji-regex'
@@ -23,7 +22,7 @@ function checkNode(
     }
     if (EMOJI_REGEX.test(defaultMessage)) {
       context.report({
-        node: messageNode as Node,
+        node: messageNode as any,
         message: 'Emojis are not allowed',
       })
     }
@@ -58,13 +57,13 @@ const rule: Rule.RuleModule = {
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value
+        const moduleName = node.source.value
         if (moduleName === 'react-intl') {
           importedMacroVars = context.getDeclaredVariables(node)
         }
       },
-      JSXOpeningElement: (node: Node) =>
-        checkNode(context, node as TSESTree.Node, importedMacroVars),
+      JSXOpeningElement: (node: TSESTree.Node) =>
+        checkNode(context, node, importedMacroVars),
       CallExpression: callExpressionVisitor,
     }
   },

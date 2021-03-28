@@ -1,15 +1,14 @@
 import {Rule, Scope} from 'eslint'
-import {ImportDeclaration, Node} from 'estree'
 import {extractMessages} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {interpolateName} from '@formatjs/ts-transformer'
 
 function checkNode(
   context: Rule.RuleContext,
-  node: Node,
+  node: TSESTree.Node,
   importedMacroVars: Scope.Variable[]
 ) {
-  const msgs = extractMessages(node as TSESTree.Node, importedMacroVars)
+  const msgs = extractMessages(node, importedMacroVars)
   const {options} = context
   const [opt = {}] = options
   const {idInterpolationPattern} = opt
@@ -23,18 +22,18 @@ function checkNode(
   ] of msgs) {
     if (!idInterpolationPattern && !idPropNode) {
       context.report({
-        node: node as Node,
+        node: node as any,
         message: `id must be specified`,
       })
     } else if (idInterpolationPattern) {
       if (!defaultMessage) {
         context.report({
-          node: node as Node,
+          node: node as any,
           message: `defaultMessage must be a string literal to calculate generated IDs`,
         })
       } else if (!description && descriptionNode) {
         context.report({
-          node: node as Node,
+          node: node as any,
           message: `description must be a string literal to calculate generated IDs`,
         })
       } else {
@@ -51,7 +50,7 @@ function checkNode(
         )
         if (id !== correctId) {
           context.report({
-            node: node as Node,
+            node: node as any,
             message: `"id" does not match with hash pattern ${idInterpolationPattern}.
 Expected: ${correctId}
 Actual: ${id}`,
@@ -112,7 +111,7 @@ export default {
   },
   create(context) {
     let importedMacroVars: Scope.Variable[] = []
-    const callExpressionVisitor = (node: Node) =>
+    const callExpressionVisitor = (node: TSESTree.Node) =>
       checkNode(context, node, importedMacroVars)
 
     if (context.parserServices.defineTemplateBodyVisitor) {
@@ -127,12 +126,12 @@ export default {
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value
+        const moduleName = node.source.value
         if (moduleName === 'react-intl') {
           importedMacroVars = context.getDeclaredVariables(node)
         }
       },
-      JSXOpeningElement: (node: Node) =>
+      JSXOpeningElement: (node: TSESTree.Node) =>
         checkNode(context, node, importedMacroVars),
       CallExpression: callExpressionVisitor,
     }

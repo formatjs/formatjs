@@ -1,14 +1,13 @@
 import {Rule, Scope} from 'eslint'
-import {ImportDeclaration, Node} from 'estree'
 import {extractMessages} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 
 function checkNode(
   context: Rule.RuleContext,
-  node: Node,
+  node: TSESTree.Node,
   importedMacroVars: Scope.Variable[]
 ) {
-  const msgs = extractMessages(node as TSESTree.Node, importedMacroVars)
+  const msgs = extractMessages(node, importedMacroVars)
   const {
     options: [type],
   } = context
@@ -21,13 +20,13 @@ function checkNode(
     if (!description) {
       if (type === 'literal' && descriptionNode) {
         context.report({
-          node: descriptionNode as Node,
+          node: descriptionNode as any,
           message:
             '`description` has to be a string literal (not function call or variable)',
         })
       } else if (!descriptionNode) {
         context.report({
-          node,
+          node: node as any,
           message: '`description` has to be specified in message descriptor',
         })
       }
@@ -53,7 +52,7 @@ export default {
   },
   create(context) {
     let importedMacroVars: Scope.Variable[] = []
-    const callExpressionVisitor = (node: Node) =>
+    const callExpressionVisitor = (node: TSESTree.Node) =>
       checkNode(context, node, importedMacroVars)
 
     if (context.parserServices.defineTemplateBodyVisitor) {
@@ -68,12 +67,12 @@ export default {
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value
+        const moduleName = node.source.value
         if (moduleName === 'react-intl') {
           importedMacroVars = context.getDeclaredVariables(node)
         }
       },
-      JSXOpeningElement: (node: Node) =>
+      JSXOpeningElement: (node: TSESTree.Node) =>
         checkNode(context, node, importedMacroVars),
       CallExpression: callExpressionVisitor,
     }

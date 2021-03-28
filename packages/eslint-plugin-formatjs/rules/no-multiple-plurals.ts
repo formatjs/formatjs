@@ -1,5 +1,4 @@
 import {Rule, Scope} from 'eslint'
-import {ImportDeclaration, Node} from 'estree'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {extractMessages} from '../util'
 import {
@@ -47,7 +46,7 @@ function checkNode(
       verifyAst(parse(defaultMessage))
     } catch (e) {
       context.report({
-        node: messageNode as Node,
+        node: messageNode as any,
         message: e.message,
       })
     }
@@ -82,13 +81,13 @@ const rule: Rule.RuleModule = {
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value
+        const moduleName = node.source.value
         if (moduleName === 'react-intl') {
           importedMacroVars = context.getDeclaredVariables(node)
         }
       },
-      JSXOpeningElement: (node: Node) =>
-        checkNode(context, node as TSESTree.Node, importedMacroVars),
+      JSXOpeningElement: (node: TSESTree.Node) =>
+        checkNode(context, node, importedMacroVars),
       CallExpression: callExpressionVisitor,
     }
   },

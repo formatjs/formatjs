@@ -1,5 +1,4 @@
 import {Rule, Scope} from 'eslint'
-import {ImportDeclaration, Node} from 'estree'
 import {extractMessages} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 const MULTIPLE_SPACES = /\s{2,}/g
@@ -22,13 +21,13 @@ function checkNode(
     }
     if (MULTIPLE_SPACES.test(defaultMessage)) {
       const reportObject: Parameters<typeof context['report']>[0] = {
-        node: messageNode as Node,
+        node: messageNode as any,
         message: 'Multiple consecutive whitespaces are not allowed',
       }
       if (messageNode.type === 'Literal' && messageNode.raw) {
         reportObject.fix = function (fixer) {
           return fixer.replaceText(
-            messageNode as Node,
+            messageNode as any,
             messageNode.raw!.replace(MULTIPLE_SPACES, ' ')
           )
         }
@@ -66,13 +65,13 @@ const rule: Rule.RuleModule = {
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value
+        const moduleName = node.source.value
         if (moduleName === 'react-intl') {
           importedMacroVars = context.getDeclaredVariables(node)
         }
       },
-      JSXOpeningElement: (node: Node) =>
-        checkNode(context, node as TSESTree.Node, importedMacroVars),
+      JSXOpeningElement: (node: TSESTree.Node) =>
+        checkNode(context, node, importedMacroVars),
       CallExpression: callExpressionVisitor,
     }
   },

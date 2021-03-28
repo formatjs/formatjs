@@ -1,5 +1,4 @@
 import {Rule, Scope} from 'eslint'
-import {ImportDeclaration, Node} from 'estree'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {extractMessages} from '../util'
 import {
@@ -7,7 +6,6 @@ import {
   isPluralElement,
   MessageFormatElement,
 } from '@formatjs/icu-messageformat-parser'
-import {JSONSchema4} from 'json-schema'
 
 class PluralRulesEnforcement extends Error {
   public message: string
@@ -76,7 +74,7 @@ function checkNode(
       verifyAst(context.options[0], parse(defaultMessage))
     } catch (e) {
       context.report({
-        node: messageNode as Node,
+        node: messageNode as any,
         message: e.message,
       })
     }
@@ -97,12 +95,15 @@ const rule: Rule.RuleModule = {
     schema: [
       {
         type: 'object',
-        properties: Object.keys(LDML).reduce((schema: JSONSchema4, k) => {
-          schema[k] = {
-            type: 'boolean',
-          }
-          return schema
-        }, {}),
+        properties: Object.keys(LDML).reduce(
+          (schema: Record<string, {type: 'boolean'}>, k) => {
+            schema[k] = {
+              type: 'boolean',
+            }
+            return schema
+          },
+          {}
+        ),
         additionalProperties: false,
       },
     ],
@@ -124,13 +125,13 @@ const rule: Rule.RuleModule = {
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value
+        const moduleName = node.source.value
         if (moduleName === 'react-intl') {
           importedMacroVars = context.getDeclaredVariables(node)
         }
       },
-      JSXOpeningElement: (node: Node) =>
-        checkNode(context, node as TSESTree.Node, importedMacroVars),
+      JSXOpeningElement: (node: TSESTree.Node) =>
+        checkNode(context, node, importedMacroVars),
       CallExpression: callExpressionVisitor,
     }
   },
