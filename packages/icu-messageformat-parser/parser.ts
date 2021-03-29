@@ -92,7 +92,7 @@ const isSafeInteger = hasNativeIsSafeInteger
 // IE11 does not support y and u.
 let REGEX_SUPPORTS_U_AND_Y = true
 try {
-  RE('', 'yu')
+  RE('([^\\p{White_Space}\\p{Pattern_Syntax}]*)', 'yu')
 } catch (_) {
   REGEX_SUPPORTS_U_AND_Y = false
 }
