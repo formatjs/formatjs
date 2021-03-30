@@ -292,6 +292,12 @@ var msgs = {
   escaped: defineMessage({
     id: \\"escaped.apostrophe\\",
     defaultMessage: \\"A quoted value ''{value}'\\"
+  }),
+  stringKeys: defineMessage({
+    // prettier-ignore
+    'id': \\"string.key.id\\",
+    // prettier-ignore
+    'defaultMessage': \\"This is message\\"
   })
 };
 export default class Foo extends Component {
@@ -326,6 +332,11 @@ export default class Foo extends Component {
         "defaultMessage": "A quoted value ''{value}'",
         "description": "Escaped apostrophe",
         "id": "escaped.apostrophe",
+      },
+      Object {
+        "defaultMessage": "This is message",
+        "description": "Keys as a string literal",
+        "id": "string.key.id",
       },
     ],
     "meta": Object {
