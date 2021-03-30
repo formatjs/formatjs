@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.9.4...@formatjs/intl@1.9.5) (2021-03-30)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** add more details to missing ID message ([506779b](https://github.com/formatjs/formatjs/commit/506779b951264d330aca7d20a470c14662b0887f)), closes [#1059](https://github.com/formatjs/formatjs/issues/1059)
+
+
+
+
+
 ## [1.9.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.9.3...@formatjs/intl@1.9.4) (2021-03-30)
 
 **Note:** Version bump only for package @formatjs/intl
