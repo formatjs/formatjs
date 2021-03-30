@@ -109,7 +109,11 @@ export function formatMessage<T>(
   // `id` is a required field of a Message Descriptor.
   invariant(
     !!msgId,
-    '[@formatjs/intl] An `id` must be provided to format a message.'
+    `[@formatjs/intl] An \`id\` must be provided to format a message. You can either:
+1. Configure your build toolchain with [babel-plugin-formatjs](https://formatjs.io/docs/tooling/babel-plugin)
+or [@formatjs/ts-transformer](https://formatjs.io/docs/tooling/ts-transformer) OR
+2. Configure your \`eslint\` config to include [eslint-plugin-formatjs](https://formatjs.io/docs/tooling/linter#enforce-id)
+to autofix this issue`
   )
   const id = String(msgId)
   const message =
