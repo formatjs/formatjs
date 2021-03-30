@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.1.1...@formatjs/icu-messageformat-parser@1.1.2) (2021-03-30)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** check "yu" regex option support with full regex ([#2767](https://github.com/formatjs/formatjs/issues/2767)) ([8c0a8d7](https://github.com/formatjs/formatjs/commit/8c0a8d7ef360bab96d165d80b02437d9796e64b7))
+
+
+
+
+
 ## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.1.0...@formatjs/icu-messageformat-parser@1.1.1) (2021-03-28)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser
