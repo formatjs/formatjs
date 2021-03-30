@@ -28,6 +28,14 @@ const msgs = {
     description: 'Escaped apostrophe',
     defaultMessage: "A quoted value ''{value}'",
   }),
+  stringKeys: defineMessage({
+    // prettier-ignore
+    'id': 'string.key.id',
+    // prettier-ignore
+    'description': 'Keys as a string literal',
+    // prettier-ignore
+    'defaultMessage': 'This is message',
+  }),
 }
 
 export default class Foo extends Component {

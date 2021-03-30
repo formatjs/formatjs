@@ -120,12 +120,20 @@ export const visitor: VisitNodeFunction<
     )
 
     const firstProp = properties[0]
-    const defaultMessageProp = properties.find(prop =>
-      prop.get('key').isIdentifier({name: 'defaultMessage'})
-    )
-    const idProp = properties.find(prop =>
-      prop.get('key').isIdentifier({name: 'id'})
-    )
+    const defaultMessageProp = properties.find(prop => {
+      const keyProp = prop.get('key')
+      return (
+        keyProp.isIdentifier({name: 'defaultMessage'}) ||
+        keyProp.isStringLiteral({value: 'defaultMessage'})
+      )
+    })
+    const idProp = properties.find(prop => {
+      const keyProp = prop.get('key')
+      return (
+        keyProp.isIdentifier({name: 'id'}) ||
+        keyProp.isStringLiteral({value: 'id'})
+      )
+    })
 
     // Insert ID potentially 1st before removing nodes
     if (idProp) {
@@ -138,7 +146,13 @@ export const visitor: VisitNodeFunction<
 
     // Remove description
     properties
-      .find(prop => prop.get('key').isIdentifier({name: 'description'}))
+      .find(prop => {
+        const keyProp = prop.get('key')
+        return (
+          keyProp.isIdentifier({name: 'description'}) ||
+          keyProp.isStringLiteral({value: 'description'})
+        )
+      })
       ?.remove()
 
     // Pre-parse or remove defaultMessage
