@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.3...@formatjs/cli@4.2.4) (2021-03-30)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** remove unnecessary type definition ([#2776](https://github.com/formatjs/formatjs/issues/2776)) ([32b8ebc](https://github.com/formatjs/formatjs/commit/32b8ebca5d989b7683b3b6b2e06aefff31959e29))
+
+
+
+
+
 ## [4.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.2...@formatjs/cli@4.2.3) (2021-03-30)
 
 **Note:** Version bump only for package @formatjs/cli
