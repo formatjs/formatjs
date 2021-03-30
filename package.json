@@ -84,7 +84,7 @@
     "fs-extra": "^9.0.0",
     "hoist-non-react-statics": "^3.3.2",
     "http-server": "^0.12.3",
-    "husky": "5",
+    "husky": "^6.0.0",
     "jasmine-expect": "^5.0.0",
     "jest": "26",
     "json-stable-stringify": "^1.0.1",
