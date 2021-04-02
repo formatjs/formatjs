@@ -55,17 +55,17 @@ This package requires the following capabilities:
 
 - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales) or [polyfill](intl-getcanonicallocales.md)
 - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) or [polyfill](intl-locale.md).
-- [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat)
+- [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) or [polyfill](intl-numberformat.md).
 
 ## Usage
 
 ### Via polyfill.io
 
-You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.DateTimeFormat`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.DateTimeFormat.~locale.<locale>` to your list of features. For example:
+You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.DateTimeFormat`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.DateTimeFormat.~locale.<locale>`, as well as locale data for any required polyfills, to your list of features. For example:
 
 ```html
 <!-- Polyfill Intl.DateTimeFormat, its dependencies & `en` locale data -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.DateTimeFormat,Intl.DateTimeFormat.~locale.en"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.DateTimeFormat,Intl.DateTimeFormat.~locale.en,Intl.NumberFormat.~locale.en"></script>
 ```
 
 ### Simple

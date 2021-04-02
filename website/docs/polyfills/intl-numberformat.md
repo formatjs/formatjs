@@ -45,7 +45,7 @@ This package requires the following capabilities:
 
 - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales) or [polyfill](intl-getcanonicallocales.md)
 - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) or [polyfill](intl-locale.md).
-- [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
+- [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) or [polyfill](intl-pluralrules.md).
 
 ## Features
 
@@ -55,11 +55,18 @@ Everything in the ES2020 Internationalization API spec (https://tc39.es/ecma402)
 
 ### Via polyfill.io
 
-You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.NumberFormat`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.NumberFormat.~locale.<locale>` to your list of features. For example:
+You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.NumberFormat`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.NumberFormat.~locale.<locale>`, as well as locale data for any required polyfills, to your list of features. For example:
 
 ```html
 <!-- Polyfill Intl.NumberFormat, its dependencies & `en` locale data -->
 <script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.NumberFormat,Intl.NumberFormat.~locale.en"></script>
+```
+
+Or if `Intl.PluralRules` needs to be polyfilled as well:
+
+```html
+<!-- Polyfill Intl.NumberFormat, its dependencies & `en` locale data -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.NumberFormat,Intl.NumberFormat.~locale.en,Intl.PluralRules.~locale.en"></script>
 ```
 
 ### Simple
