@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2021-04-03)
+
+
+### Bug Fixes
+
+* **@formatjs/editor:** tweak message rendering ([53adbd8](https://github.com/formatjs/formatjs/commit/53adbd8bdf0c1045e537a6d5024289817a261184))
+
+
+### Features
+
+* **@formatjs/editor:** initial commit ([848e485](https://github.com/formatjs/formatjs/commit/848e4858ea5862641984242f06a7758e8d2379b0))
+
+
+
+
+
 ## [4.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.3...@formatjs/cli@4.2.4) (2021-03-30)
 
 

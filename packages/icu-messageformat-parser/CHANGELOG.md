@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.1.2...@formatjs/icu-messageformat-parser@1.1.3) (2021-04-03)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** allow uppercase letter in tag name ([6257176](https://github.com/formatjs/formatjs/commit/62571769a19c134d713d1e57573de1c27f830365))
+
+
+
+
+
 ## [1.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.1.1...@formatjs/icu-messageformat-parser@1.1.2) (2021-03-30)
 
 
