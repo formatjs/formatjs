@@ -285,6 +285,9 @@ test('escaped_multiple_tags_1', () =>
 test('nested_tags_1', () =>
   testParser('this is <a>nested <b>{placeholder}</b></a>'))
 
+test('uppercase_tag_1', () =>
+  testParser('this is <a>nested <Button>{placeholder}</Button></a>'))
+
 // See: https://github.com/formatjs/formatjs/issues/1845
 test('less_than_sign_1', () =>
   testParser('< {level, select, A {1} 4 {2} 3 {3} 2{6} 1{12}} hours'))

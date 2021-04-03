@@ -6300,3 +6300,95 @@ Object {
   "val": null,
 }
 `;
+
+exports[`uppercase_tag_1 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+          "offset": 8,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "type": 0,
+      "value": "this is ",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "location": Object {
+            "end": Object {
+              "column": 19,
+              "line": 1,
+              "offset": 18,
+            },
+            "start": Object {
+              "column": 12,
+              "line": 1,
+              "offset": 11,
+            },
+          },
+          "type": 0,
+          "value": "nested ",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "location": Object {
+                "end": Object {
+                  "column": 40,
+                  "line": 1,
+                  "offset": 39,
+                },
+                "start": Object {
+                  "column": 27,
+                  "line": 1,
+                  "offset": 26,
+                },
+              },
+              "type": 1,
+              "value": "placeholder",
+            },
+          ],
+          "location": Object {
+            "end": Object {
+              "column": 49,
+              "line": 1,
+              "offset": 48,
+            },
+            "start": Object {
+              "column": 19,
+              "line": 1,
+              "offset": 18,
+            },
+          },
+          "type": 8,
+          "value": "Button",
+        },
+      ],
+      "location": Object {
+        "end": Object {
+          "column": 53,
+          "line": 1,
+          "offset": 52,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 1,
+          "offset": 8,
+        },
+      },
+      "type": 8,
+      "value": "a",
+    },
+  ],
+}
+`;

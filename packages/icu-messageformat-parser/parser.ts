@@ -312,7 +312,7 @@ export class Parser {
     return {val: elements, err: null}
   }
   /**
-   * A tag name must start with an ASCII lower case letter. The grammar is based on the
+   * A tag name must start with an ASCII lower/upper case letter. The grammar is based on the
    * [custom element name][] except that a dash is NOT always mandatory and uppercase letters
    * are accepted:
    *
@@ -326,6 +326,8 @@ export class Parser {
    * ```
    *
    * [custom element name]: https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
+   * NOTE: We're a bit more lax here since HTML technically does not allow uppercase HTML element but we do
+   * since other tag-based engines like React allow it
    */
   private parseTag(
     nestingLevel: number,
@@ -1284,8 +1286,16 @@ export class Parser {
   }
 }
 
+/**
+ * This check if codepoint is alphabet (lower & uppercase)
+ * @param codepoint
+ * @returns
+ */
 function _isAlpha(codepoint: number): boolean {
-  return codepoint >= 97 && codepoint <= 122
+  return (
+    (codepoint >= 97 && codepoint <= 122) ||
+    (codepoint >= 65 && codepoint <= 90)
+  )
 }
 
 function _isAlphaOrSlash(codepoint: number): boolean {

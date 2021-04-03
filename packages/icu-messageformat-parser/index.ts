@@ -43,6 +43,8 @@ export function parse(message: string, opts: ParserOptions = {}) {
     const error = SyntaxError(ErrorKind[result.err.kind])
     // @ts-expect-error Assign to error object
     error.location = result.err.location
+    // @ts-expect-error Assign to error object
+    error.originalMessage = result.err.message
     throw error
   }
 
