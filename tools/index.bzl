@@ -72,9 +72,8 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
             srcs = srcs,
             declaration = True,
             declaration_map = True,
-            extends = "//:tsconfig.json",
             out_dir = "lib",
-            tsconfig = "//:tsconfig.esm.json",
+            tsconfig = "//:tsconfig.esm",
             deps = deps,
         )
 

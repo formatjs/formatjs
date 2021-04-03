@@ -1,5 +1,6 @@
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
+load("@npm//@bazel/typescript:index.bzl", "ts_config")
 load("@npm//karma:index.bzl", "karma_test")
 load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
 
@@ -19,6 +20,13 @@ exports_files(
         ".prettierrc.json",
     ],
     visibility = ["//:__subpackages__"],
+)
+
+ts_config(
+    name = "tsconfig.esm",
+    src = "tsconfig.esm.json",
+    visibility = ["//:__subpackages__"],
+    deps = ["//:tsconfig.json"],
 )
 
 # We run this centrally so it doesn't spawn
@@ -84,6 +92,7 @@ multirun(
         "//packages/babel-plugin-formatjs:prettier",
         "//packages/cli:prettier",
         "//packages/ecma402-abstract:prettier",
+        "//packages/editor:prettier",
         "//packages/eslint-plugin-formatjs:prettier",
         "//packages/icu-messageformat-parser:prettier",
         "//packages/intl-datetimeformat:prettier",

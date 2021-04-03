@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   useMediaQuery,
   createMuiTheme,
@@ -25,62 +25,30 @@ import Header from './header'
 import {IntlProvider, useIntl} from 'react-intl'
 import {TranslatedMessage} from './types'
 import Messages from './messages'
-const messages: TranslatedMessage[] = [
-  {id: '1', defaultMessage: 'test', translatedMessage: 'test2'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {
-    id: '2',
-    defaultMessage: 'testasd',
-    translatedMessage:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in leo vulputate, mollis felis consectetur, gravida metus. Donec finibus orci a sem mollis ultrices. Maecenas posuere convallis semper. Donec faucibus non eros a tincidunt. Praesent dictum nisi eu nisi elementum, eu varius diam rutrum.',
-  },
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-  {id: '2', defaultMessage: 'testasd', translatedMessage: 'test2dfasd'},
-]
+
+const MESSAGES_COUNT = 100
+async function fetchData(): Promise<TranslatedMessage[]> {
+  const en = await (await fetch('/fixtures/en.json')).json()
+  const ru = await (await fetch('/fixtures/ru.json')).json()
+  return Object.keys(en)
+    .slice(MESSAGES_COUNT)
+    .map(id => ({
+      id,
+      defaultMessage: (en as any)[id],
+      translatedMessage: (ru as any)[id],
+    }))
+}
 
 export function CoreApp() {
   const intl = useIntl()
-
+  const [messages, setMessages] = useState<TranslatedMessage[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  useEffect(function () {
+    ;(async function () {
+      setMessages(await fetchData())
+      setIsLoading(false)
+    })()
+  }, [])
   return (
     <>
       <CssBaseline />
@@ -122,7 +90,11 @@ export function CoreApp() {
               />
             </form>
             <Box borderRight={1} overflow="auto" height="calc(100vh - 108px)">
-              <Messages messages={messages} />
+              <Messages
+                messages={messages}
+                isLoading={isLoading}
+                count={MESSAGES_COUNT}
+              />
             </Box>
           </Grid>
           <Grid xs={6}>
