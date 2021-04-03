@@ -1,4 +1,5 @@
-import {List, ListItem, Typography} from '@material-ui/core'
+import {List, ListItem, Box} from '@material-ui/core'
+import {CheckCircle} from '@material-ui/icons'
 import {Skeleton} from '@material-ui/lab'
 import React from 'react'
 import {TranslatedMessage} from './types'
@@ -24,13 +25,11 @@ const Messages: React.FC<Props> = ({messages, isLoading, count}) => {
   return (
     <List dense>
       {messages.map(m => (
-        <ListItem key={m.id} dense divider>
-          <Typography variant="body2" component="div">
+        <ListItem key={m.id} dense divider alignItems="flex-start">
+          <CheckCircle />
+          <Box component="span" paddingLeft={1}>
             <Message message={m.defaultMessage} />
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="div">
-            <Message message={m.translatedMessage} />
-          </Typography>
+          </Box>
         </ListItem>
       ))}
     </List>

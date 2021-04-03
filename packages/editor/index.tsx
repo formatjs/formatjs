@@ -26,7 +26,7 @@ import {IntlProvider, useIntl} from 'react-intl'
 import {TranslatedMessage} from './types'
 import Messages from './messages'
 
-const MESSAGES_COUNT = 100
+const MESSAGES_COUNT = 50
 async function fetchData(): Promise<TranslatedMessage[]> {
   const en = await (await fetch('/fixtures/en.json')).json()
   const ru = await (await fetch('/fixtures/ru.json')).json()
