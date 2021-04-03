@@ -32,18 +32,19 @@ SRCS = glob(["src/**/*.ts"]) + [
 ]
 
 SRC_DEPS = [
+    "@npm//@types/estree",
+    "@npm//@types/fs-extra",
+    "@npm//@types/json-stable-stringify",
+    "@npm//@types/node",
+    "@npm//@vue/compiler-sfc",
+    "@npm//chalk",
+    "@npm//commander",
+    "@npm//fast-glob",
+    "@npm//fs-extra",
+    "@npm//json-stable-stringify",
+    "@npm//loud-rejection",
     "//packages/icu-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
-    "@npm//@types/node",
-    "@npm//fs-extra",
-    "@npm//@types/fs-extra",
-    "@npm//fast-glob",
-    "@npm//commander",
-    "@npm//loud-rejection",
-    "@npm//chalk",
-    "@npm//json-stable-stringify",
-    "@npm//@types/json-stable-stringify",
-    "@npm//@vue/compiler-sfc",
 ]
 
 ts_compile(
