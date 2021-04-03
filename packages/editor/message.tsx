@@ -9,7 +9,7 @@ import {
   isTagElement,
   MessageFormatElement,
   isArgumentElement,
-} from 'intl-messageformat-parser'
+} from '@formatjs/icu-messageformat-parser'
 
 interface Props {
   message: string

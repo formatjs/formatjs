@@ -102,7 +102,6 @@ multirun(
         "//packages/intl-listformat:prettier",
         "//packages/intl-locale:prettier",
         "//packages/intl-localematcher:prettier",
-        "//packages/intl-messageformat-parser:prettier",
         "//packages/intl-messageformat:prettier",
         "//packages/intl-numberformat:prettier",
         "//packages/intl-pluralrules:prettier",

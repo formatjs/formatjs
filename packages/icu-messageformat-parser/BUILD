@@ -59,7 +59,7 @@ nodejs_binary(
     data = [
         ":dist",
         "@npm//benchmark",
-        "//packages/intl-messageformat-parser:dist",
+        "@npm//intl-messageformat-parser",
         "benchmark.js",
     ] + SRC_DEPS,
     entry_point = "benchmark.js",

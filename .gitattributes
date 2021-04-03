@@ -1,6 +1,5 @@
 packages/*/src/data/* linguist-generated
 packages/*/test262-main.ts linguist-generated
 packages/*/tests/locale-data/* linguist-generated
-packages/intl-messageformat-parser/src/parser.ts linguist-generated
 website/* linguist-documentation
 **/CHANGELOG.md linguist-documentation

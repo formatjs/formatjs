@@ -40,7 +40,7 @@ SRC_DEPS = [
     "@npm//react-dom",
     "@npm//@types/react-dom",
     "//packages/react-intl:dist",
-    "//packages/intl-messageformat-parser:dist",
+    "//packages/icu-messageformat-parser:dist",
 ]
 
 ts_compile(

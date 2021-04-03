@@ -5,5 +5,4 @@
 **/artifacts
 **/build
 **/node_modules
-packages/intl-messageformat-parser/src/parser.ts
 packages/babel-plugin-formatjs/options.ts
