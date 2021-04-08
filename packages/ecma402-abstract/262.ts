@@ -62,7 +62,7 @@ export function TimeClip(time: number) {
   if (!isFinite(time)) {
     return NaN
   }
-  if (Math.abs(time) > 8.64 * 1e16) {
+  if (Math.abs(time) > 8.64 * 1e15) {
     return NaN
   }
   return ToInteger(time)
