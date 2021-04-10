@@ -56,9 +56,7 @@ function FormattedMessage(props: Props) {
   }
 
   if (Component) {
-    // Needs to use `createElement()` instead of JSX, otherwise React will
-    // warn about a missing `key` prop with rich-text message formatting.
-    return React.createElement(Component, null, ...(nodes as any))
+    return <Component>{React.Children.toArray(nodes)}</Component>
   }
   return <>{nodes}</>
 }
