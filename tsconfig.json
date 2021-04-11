@@ -24,6 +24,13 @@
     "declarationMap": true,
     "importHelpers": true,
     "jsx": "react",
+    "typeRoots": [
+      // Stop TS from climbing up the tree to arbitrary node_modules, thus
+      // making build non-hermetic
+      "./node_modules/@types",
+      // This is for tests where working dir is formatjs/
+      "../npm/node_modules/@types"
+    ],
     "paths": {
       "@formatjs/*": [
         // k8 is 64-bit GNU/Linux output location, darwin is macOS.
