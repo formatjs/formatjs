@@ -32,6 +32,7 @@ SRC_DEPS = [
     "@npm//typescript",
     "@npm//vue",
     "//packages/intl:dist",
+    "//packages/icu-messageformat-parser:dist",
 ]
 
 ts_compile(
@@ -53,6 +54,7 @@ jest_test(
     deps = SRC_DEPS + [
         "@npm//@vue/test-utils",
         "//packages/intl:types",
+        "//packages/icu-messageformat-parser:types",
     ],
 )
 
