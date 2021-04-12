@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.1.4...@formatjs/icu-messageformat-parser@1.1.5) (2021-04-12)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** swap out some impls with native Date, 2x speed, [#2813](https://github.com/formatjs/formatjs/issues/2813) ([463420c](https://github.com/formatjs/formatjs/commit/463420c21ca9c64f629f31fee2dc63031be9122c))
+
+
+
+
+
 ## [1.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.1.3...@formatjs/icu-messageformat-parser@1.1.4) (2021-04-04)
 
 

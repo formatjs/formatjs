@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.3.6...@formatjs/ts-transformer@3.3.7) (2021-04-12)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** relax member method AST check, [#2808](https://github.com/formatjs/formatjs/issues/2808) ([4260ab4](https://github.com/formatjs/formatjs/commit/4260ab471d02bed8f6667d0606e6a373ebbbb517))
+
+
+
+
+
 ## [3.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.3.5...@formatjs/ts-transformer@3.3.6) (2021-04-04)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

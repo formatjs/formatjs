@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.5.8...@formatjs/intl-getcanonicallocales@1.5.9) (2021-04-12)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** check for chunks length before regex, [#2813](https://github.com/formatjs/formatjs/issues/2813) ([89b40b9](https://github.com/formatjs/formatjs/commit/89b40b9aa0c9c2a64ab14a596404d91bf93d6cac))
+
+
+
+
+
 ## [1.5.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.5.7...@formatjs/intl-getcanonicallocales@1.5.8) (2021-03-26)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

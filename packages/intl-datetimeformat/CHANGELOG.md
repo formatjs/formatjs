@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.3.1...@formatjs/intl-datetimeformat@3.3.2) (2021-04-12)
+
+
+### Bug Fixes
+
+* **vue-intl:** export the same stuff as react-intl ([9123574](https://github.com/formatjs/formatjs/commit/9123574129641eef69795147a265c9c291d87da5))
+
+
+
+
+
 ## [3.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.3.0...@formatjs/intl-datetimeformat@3.3.1) (2021-03-26)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

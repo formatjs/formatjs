@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.5](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.6.4...@formatjs/ecma402-abstract@1.6.5) (2021-04-12)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** modify the constant in function TimeClip ([#2805](https://github.com/formatjs/formatjs/issues/2805)) ([4324002](https://github.com/formatjs/formatjs/commit/4324002ef24207b354115dbc9ba05758505276a1))
+* **@formatjs/ecma402-abstract:** swap out some impls with native Date, 2x speed, [#2813](https://github.com/formatjs/formatjs/issues/2813) ([463420c](https://github.com/formatjs/formatjs/commit/463420c21ca9c64f629f31fee2dc63031be9122c))
+
+
+
+
+
 ## [1.6.4](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.6.3...@formatjs/ecma402-abstract@1.6.4) (2021-03-26)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract
