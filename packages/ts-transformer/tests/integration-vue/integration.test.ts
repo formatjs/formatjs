@@ -18,7 +18,7 @@ test('dummy', function (done) {
             loader: 'vue-loader',
           },
           {
-            test: /\.ts$/u,
+            test: /\.[t|j]s$/u,
             use: [
               {
                 loader: 'ts-loader',
@@ -48,9 +48,9 @@ test('dummy', function (done) {
       expect(outFileContent).toContain(
         '.formatMessage({id:"XOeJ9m",defaultMessage:"message in created (id injected)"}))}'
       )
-      // expect(outFileContent).toContain(
-      //   '.$formatMessage({id:"",defaultMessage:"test message (id not injected)"}))'
-      // )
+      expect(outFileContent).toContain(
+        '$formatMessage({id:"GuoEHM",defaultMessage:"test message (id not injected)"}))'
+      )
       done()
     }
   )
