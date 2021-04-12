@@ -181,12 +181,7 @@ export function WeekDay(t: number) {
  * @param y
  */
 export function DayFromYear(y: number) {
-  return (
-    365 * (y - 1970) +
-    Math.floor((y - 1969) / 4) -
-    Math.floor((y - 1901) / 100) +
-    Math.floor((y - 1601) / 400)
-  )
+  return Date.UTC(y, 0) / MS_PER_DAY
 }
 
 /**
@@ -194,7 +189,7 @@ export function DayFromYear(y: number) {
  * @param y
  */
 export function TimeFromYear(y: number) {
-  return MS_PER_DAY * DayFromYear(y)
+  return Date.UTC(y, 0)
 }
 
 /**
@@ -202,12 +197,7 @@ export function TimeFromYear(y: number) {
  * @param t
  */
 export function YearFromTime(t: number) {
-  const min = Math.ceil(t / MS_PER_DAY / 366)
-  let y = min
-  while (TimeFromYear(y) <= t) {
-    y++
-  }
-  return y - 1
+  return new Date(t).getUTCFullYear()
 }
 
 export function DaysInYear(y: number) {
