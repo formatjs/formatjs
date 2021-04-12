@@ -473,8 +473,9 @@ const objectPointer = {
 class Foo extends Component {
     render() {
         const msgs = {
-            baz: this.props.intl.formatMessage({ id: \\"foo.bar.baz\\", defaultMessage: \\"Hello World!\\" }),
-            biff: this.props.intl.formatMessage({ id: \\"foo.bar.biff\\", defaultMessage: \\"Hello Nurse!\\" }),
+            baz: formatMessage({ id: \\"foo.bar.baz\\", defaultMessage: \\"Hello World!\\" }),
+            baz2: this.props.intl.$formatMessage({ id: \\"foo.bar.baz2\\", defaultMessage: \\"Hello World!\\" }),
+            biff: $formatMessage({ id: \\"foo.bar.biff\\", defaultMessage: \\"Hello Nurse!\\" }),
             invalid: this.props.intl.formatMessage(objectPointer),
         };
         return (<div>
@@ -495,6 +496,11 @@ export default injectIntl(Foo);
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "foo.bar.baz",
+    },
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message $$$",
+      "id": "foo.bar.baz2",
     },
     Object {
       "defaultMessage": "Hello Nurse!",

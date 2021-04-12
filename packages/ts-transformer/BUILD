@@ -88,3 +88,23 @@ check_format(
         ],
     ),
 )
+
+jest_test(
+    name = "integration-vue",
+    srcs = ["tests/integration-vue/integration.test.ts"] + glob([
+        "tests/integration-vue/fixtures/*",
+    ]),
+    deps = [
+        ":dist",
+        ":types",
+        "//packages/icu-messageformat-parser:types",
+        "@npm//@types/node",
+        "@npm//@types/webpack",
+        "@npm//@vue/compiler-sfc",
+        "@npm//ts-loader",
+        "@npm//vue",
+        "@npm//vue-class-component",
+        "@npm//vue-loader",
+        "@npm//webpack",
+    ],
+)

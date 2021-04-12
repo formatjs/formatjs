@@ -161,6 +161,8 @@ function isSingularMessageDecl(
   const compNames = new Set([
     'FormattedMessage',
     'defineMessage',
+    'formatMessage',
+    '$formatMessage',
     ...additionalComponentNames,
   ])
   let fnName = ''
@@ -372,27 +374,25 @@ function extractMessageDescriptor(
 }
 
 /**
- * Check if node is `intl.formatMessage` node
+ * Check if node is `foo.bar.formatMessage` node
  * @param node
  * @param sf
  */
-function isIntlFormatMessageCall(
+function isMemberMethodFormatMessageCall(
   ts: TypeScript,
   node: typescript.CallExpression,
   additionalFunctionNames: string[]
 ) {
-  const fnNames = new Set(['formatMessage', ...additionalFunctionNames])
+  const fnNames = new Set([
+    'formatMessage',
+    '$formatMessage',
+    ...additionalFunctionNames,
+  ])
   const method = node.expression
 
-  // Handle intl.formatMessage()
+  // Handle foo.formatMessage()
   if (ts.isPropertyAccessExpression(method)) {
-    return (
-      (method.name.text === 'formatMessage' &&
-        ts.isIdentifier(method.expression) &&
-        method.expression.text === 'intl') ||
-      (ts.isPropertyAccessExpression(method.expression) &&
-        method.expression.name.text === 'intl')
-    )
+    return fnNames.has(method.name.text)
   }
 
   // Handle formatMessage()
@@ -604,7 +604,7 @@ function extractMessagesFromCallExpression(
     }
   } else if (
     isSingularMessageDecl(ts, node, opts.additionalComponentNames || []) ||
-    isIntlFormatMessageCall(ts, node, additionalFunctionNames || [])
+    isMemberMethodFormatMessageCall(ts, node, additionalFunctionNames || [])
   ) {
     const [descriptorsObj, ...restArgs] = node.arguments
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
