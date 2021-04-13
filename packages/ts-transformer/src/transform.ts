@@ -38,12 +38,21 @@ function primitiveToTSNode(
     : undefined
 }
 
+function isValidIdentifier(k: string): boolean {
+  try {
+    new Function(`return {${k}:1}`)
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
 function objToTSNode(factory: typescript.NodeFactory, obj: object) {
   const props: typescript.PropertyAssignment[] = Object.entries(
     obj
   ).map(([k, v]) =>
     factory.createPropertyAssignment(
-      k,
+      isValidIdentifier(k) ? k : factory.createStringLiteral(k),
       primitiveToTSNode(factory, v) ||
         (Array.isArray(v)
           ? factory.createArrayLiteralExpression(

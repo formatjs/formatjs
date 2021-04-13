@@ -38,6 +38,10 @@ export default class Foo extends Component {
       defaultMessage: 'formatMessage',
       description: 'no-id',
     })
+    formatMessage({
+      defaultMessage: '{count, plural, =0 {zero}}',
+      description: 'no-id',
+    })
 
     return (
       <div>
