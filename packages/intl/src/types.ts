@@ -41,12 +41,12 @@ export type OnErrorFn = (
 export interface IntlConfig<T = string> {
   locale: string
   timeZone?: string
-  formats?: CustomFormats
+  formats: CustomFormats
   messages: Record<string, string> | Record<string, MessageFormatElement[]>
-  defaultLocale?: string
-  defaultFormats?: CustomFormats
+  defaultLocale: string
+  defaultFormats: CustomFormats
   defaultRichTextElements?: Record<string, FormatXMLElementFn<T>>
-  onError?: OnErrorFn
+  onError: OnErrorFn
 }
 
 export interface CustomFormats extends Partial<Formats> {
@@ -169,7 +169,7 @@ export interface Formatters {
   ): DisplayNames
 }
 
-export interface IntlShape<T = string> extends IntlConfig<T>, IntlFormatters {
+export interface IntlShape<T> extends IntlConfig<T>, IntlFormatters {
   formatters: Formatters
 }
 
