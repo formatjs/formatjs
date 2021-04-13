@@ -50,6 +50,27 @@ export interface FormatDateTimePatternImplDetails {
   getDefaultTimeZone(): string
 }
 
+const numberFormatsCache = new Map<
+  string,
+  [Intl.NumberFormat, Intl.NumberFormat]
+>()
+
+function getNumberFormatsForLocale(locale: string) {
+  const cache = numberFormatsCache.get(locale)
+  if (cache) return cache
+
+  const nfOptions = Object.create(null)
+  nfOptions.useGrouping = false
+
+  const nf = new Intl.NumberFormat(locale, nfOptions)
+  const nf2Options = Object.create(null)
+  nf2Options.minimumIntegerDigits = 2
+  nf2Options.useGrouping = false
+  const nf2 = new Intl.NumberFormat(locale, nf2Options)
+  numberFormatsCache.set(locale, [nf, nf2])
+  return [nf, nf2]
+}
+
 /**
  * https://tc39.es/ecma402/#sec-partitiondatetimepattern
  * @param dtf
@@ -72,16 +93,7 @@ export function FormatDateTimePattern(
   const dataLocale = internalSlots.dataLocale
   const dataLocaleData = localeData[dataLocale]
   /** IMPL END */
-
-  const locale = internalSlots.locale
-  const nfOptions = Object.create(null)
-  nfOptions.useGrouping = false
-
-  const nf = new Intl.NumberFormat(locale, nfOptions)
-  const nf2Options = Object.create(null)
-  nf2Options.minimumIntegerDigits = 2
-  nf2Options.useGrouping = false
-  const nf2 = new Intl.NumberFormat(locale, nf2Options)
+  const [nf, nf2] = getNumberFormatsForLocale(internalSlots.locale)
   const tm = ToLocalTime(
     x,
     // @ts-ignore
