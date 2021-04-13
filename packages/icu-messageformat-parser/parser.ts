@@ -92,7 +92,14 @@ const isSafeInteger = hasNativeIsSafeInteger
 // IE11 does not support y and u.
 let REGEX_SUPPORTS_U_AND_Y = true
 try {
-  RE('([^\\p{White_Space}\\p{Pattern_Syntax}]*)', 'yu')
+  const re = RE('([^\\p{White_Space}\\p{Pattern_Syntax}]*)', 'yu')
+  /**
+   * legacy Edge or Xbox One browser
+   * Unicode flag support: supported
+   * Pattern_Syntax support: not supported
+   * See https://github.com/formatjs/formatjs/issues/2822
+   */
+  REGEX_SUPPORTS_U_AND_Y = re.exec('a')?.[0] === 'a'
 } catch (_) {
   REGEX_SUPPORTS_U_AND_Y = false
 }
