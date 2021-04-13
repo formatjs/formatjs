@@ -169,7 +169,7 @@ export interface Formatters {
   ): DisplayNames
 }
 
-export interface IntlShape<T> extends IntlConfig<T>, IntlFormatters {
+export interface IntlShape<T = string> extends IntlConfig<T>, IntlFormatters {
   formatters: Formatters
 }
 
