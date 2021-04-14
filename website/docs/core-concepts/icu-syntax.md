@@ -223,8 +223,8 @@ wrapped between them:
 ```js
 "This is not an interpolation: '{word}"
 //→ "This is not an interpolation: {word}"
-"These are not interpolatons: '{word1} {word2}'"
-//→ "These are not interpolatons: {word1} {word2}"
+"These are not interpolations: '{word1} {word2}'"
+//→ "These are not interpolations: {word1} {word2}"
 "'<notATag>"
 //→ "<notATag>"
 "'<notATag>hello</notATag>'"
