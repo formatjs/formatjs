@@ -5,6 +5,7 @@ export * from './provider'
 export {
   IntlShape,
   IntlConfig,
+  ResolvedIntlConfig,
   createIntlCache,
   MessageDescriptor,
   IntlCache,
