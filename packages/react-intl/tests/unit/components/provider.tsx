@@ -1,7 +1,5 @@
 import * as React from 'react'
-import IntlProvider, {
-  OptionalIntlConfig,
-} from '../../../src/components/provider'
+import IntlProvider, {IntlConfig} from '../../../src/components/provider'
 import withIntl from '../../../src/components/injectIntl'
 import {render} from '@testing-library/react'
 import {FormattedDate} from '../../../'
@@ -89,7 +87,7 @@ describe('<IntlProvider>', () => {
 
   it('shadows inherited intl config props from an <IntlProvider> ancestor', () => {
     const onError = jest.fn()
-    const props: OptionalIntlConfig = {
+    const props: IntlConfig = {
       locale: 'en',
       timeZone: 'Australia/Adelaide',
       formats: {

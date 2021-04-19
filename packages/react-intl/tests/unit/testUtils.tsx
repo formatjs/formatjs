@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Provider, {OptionalIntlConfig} from '../../src/components/provider'
+import Provider, {IntlConfig} from '../../src/components/provider'
 import {render} from '@testing-library/react'
 
 export function mountFormattedComponentWithProvider<P>(
@@ -7,7 +7,7 @@ export function mountFormattedComponentWithProvider<P>(
 ) {
   return (
     props: P & {children?(...nodes: React.ReactNodeArray): React.ReactNode},
-    providerProps: OptionalIntlConfig = {locale: 'en'}
+    providerProps: IntlConfig = {locale: 'en'}
   ) => {
     const result = render(
       <React.StrictMode>
@@ -24,7 +24,7 @@ export function mountFormattedComponentWithProvider<P>(
       newProps: P & {
         children?(...nodes: React.ReactNodeArray): React.ReactNode
       } = props,
-      newProviderProps: OptionalIntlConfig = providerProps
+      newProviderProps: IntlConfig = providerProps
     ) =>
       rerender(
         <React.StrictMode>

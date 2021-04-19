@@ -5,15 +5,25 @@
  */
 import * as React from 'react'
 import {
-  IntlConfig as CoreIntlConfig,
+  ResolvedIntlConfig as CoreResolvedIntlConfig,
   IntlFormatters,
   Formatters,
 } from '@formatjs/intl'
-export interface IntlConfig extends CoreIntlConfig<React.ReactNode> {
+import {DEFAULT_INTL_CONFIG} from './utils'
+export type IntlConfig = Omit<
+  ResolvedIntlConfig,
+  keyof typeof DEFAULT_INTL_CONFIG
+> &
+  Partial<typeof DEFAULT_INTL_CONFIG>
+
+export interface ResolvedIntlConfig
+  extends CoreResolvedIntlConfig<React.ReactNode> {
   textComponent?: React.ComponentType | keyof React.ReactHTML
   wrapRichTextChunksInFragment?: boolean
 }
 
-export interface IntlShape extends IntlConfig, IntlFormatters<React.ReactNode> {
+export interface IntlShape
+  extends ResolvedIntlConfig,
+    IntlFormatters<React.ReactNode> {
   formatters: Formatters
 }

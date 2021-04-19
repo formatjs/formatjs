@@ -41,18 +41,12 @@ interface State {
    * This is important since creating intl is
    * very expensive
    */
-  prevConfig: OptionalIntlConfig
+  prevConfig: IntlConfig
 }
 
-export type OptionalIntlConfig = Omit<
-  IntlConfig,
-  keyof typeof DEFAULT_INTL_CONFIG
-> &
-  Partial<typeof DEFAULT_INTL_CONFIG>
-
-function processIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
+function processIntlConfig<P extends IntlConfig = IntlConfig>(
   config: P
-): OptionalIntlConfig {
+): IntlConfig {
   return {
     locale: config.locale,
     timeZone: config.timeZone,
@@ -120,7 +114,7 @@ const formatMessage: typeof coreFormatMessage = (
  */
 export const createIntl: CreateIntlFn<
   React.ReactNode,
-  OptionalIntlConfig,
+  IntlConfig,
   IntlShape
 > = (
   {defaultRichTextElements: rawDefaultRichTextElements, ...config},
@@ -160,7 +154,7 @@ export const createIntl: CreateIntlFn<
 export default class IntlProvider extends React.PureComponent<
   // Exporting children props so it is composable with other HOCs.
   // See: https://github.com/formatjs/formatjs/issues/1697
-  React.PropsWithChildren<OptionalIntlConfig>,
+  React.PropsWithChildren<IntlConfig>,
   State
 > {
   static displayName = 'IntlProvider'
@@ -173,7 +167,7 @@ export default class IntlProvider extends React.PureComponent<
   }
 
   static getDerivedStateFromProps(
-    props: OptionalIntlConfig,
+    props: IntlConfig,
     {prevConfig, cache}: State
   ): Partial<State> | null {
     const config = processIntlConfig(props)

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import FormattedMessage from '../../../src/components/message'
 import IntlProvider, {
-  OptionalIntlConfig,
+  IntlConfig,
   createIntl,
 } from '../../../src/components/provider'
 import {mountFormattedComponentWithProvider} from '../testUtils'
@@ -14,7 +14,7 @@ const dummyContext = React.createContext('')
 const {Provider: DummyProvider, Consumer: DummyConsumer} = dummyContext
 
 describe('<FormattedMessage>', () => {
-  let providerProps: OptionalIntlConfig
+  let providerProps: IntlConfig
   let intl: IntlShape
 
   beforeEach(() => {

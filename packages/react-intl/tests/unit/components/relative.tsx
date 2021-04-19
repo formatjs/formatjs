@@ -4,7 +4,7 @@ import FormattedRelativeTime from '../../../src/components/relative'
 import {createIntl} from '../../../src/components/provider'
 import {IntlShape} from '../../../src/types'
 import {mountFormattedComponentWithProvider} from '../testUtils'
-import {OptionalIntlConfig} from '../../../src/components/provider'
+import {IntlConfig} from '../../../src/components/provider'
 import {render, act} from '@testing-library/react'
 
 jest.useFakeTimers()
@@ -15,7 +15,7 @@ const mountWithProvider = mountFormattedComponentWithProvider(
 
 describe('<FormattedRelativeTime>', () => {
   let intl: IntlShape
-  const intlConfig: OptionalIntlConfig = {
+  const intlConfig: IntlConfig = {
     locale: 'en',
     onError: () => {},
   }
@@ -92,7 +92,7 @@ describe('<FormattedRelativeTime>', () => {
 
   it('accepts `format` prop', () => {
     const format = 'seconds'
-    const config: OptionalIntlConfig = {
+    const config: IntlConfig = {
       onError: () => {},
       locale: 'en',
       formats: {

@@ -1,4 +1,4 @@
-import {IntlConfig} from './types'
+import {ResolvedIntlConfig} from './types'
 import * as React from 'react'
 import {FormatXMLElementFn} from 'intl-messageformat'
 import {invariant} from '@formatjs/ecma402-abstract'
@@ -14,7 +14,7 @@ export function invariantIntlContext(intl?: any): asserts intl {
 }
 
 export const DEFAULT_INTL_CONFIG: Pick<
-  IntlConfig,
+  ResolvedIntlConfig,
   | 'formats'
   | 'messages'
   | 'timeZone'

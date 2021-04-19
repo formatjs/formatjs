@@ -19,7 +19,7 @@ import {
   DateTimeFormatOptions,
   NumberFormatOptions,
 } from '@formatjs/ecma402-abstract'
-export {IntlConfig, IntlShape} from './src/types'
+export {IntlConfig, ResolvedIntlConfig, IntlShape} from './src/types'
 export {
   createIntlCache,
   MessageDescriptor,
