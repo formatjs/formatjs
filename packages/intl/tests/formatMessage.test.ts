@@ -5,12 +5,12 @@ import '@formatjs/intl-numberformat/locale-data/es'
 import IntlMessageFormat from 'intl-messageformat'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {formatMessage as baseFormatMessage} from '../src/message'
-import {Formatters, OptionalIntlConfig, IntlFormatters} from '../src/types'
+import {Formatters, IntlConfig, IntlFormatters} from '../src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env
 
-  let config: OptionalIntlConfig<any>
+  let config: IntlConfig<any>
   let state: Formatters
 
   beforeEach(() => {

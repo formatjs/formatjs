@@ -3,12 +3,12 @@ import '@formatjs/intl-numberformat/polyfill'
 import '@formatjs/intl-numberformat/locale-data/en'
 import '@formatjs/intl-numberformat/locale-data/es'
 import {formatNumber as formatNumberFn} from '../src/number'
-import {OptionalIntlConfig} from '../src/types'
+import {IntlConfig} from '../src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env
 
-  let config: OptionalIntlConfig<any>
+  let config: IntlConfig<any>
 
   let getNumberFormat: any
   beforeEach(() => {

@@ -38,7 +38,7 @@ export type OnErrorFn = (
  * Generic type T is the type of potential rich text element. For example:
  * With React, T would be React.ReactNode
  */
-export interface IntlConfig<T = string> {
+export interface ResolvedIntlConfig<T = string> {
   locale: string
   timeZone?: string
   formats: CustomFormats
@@ -169,7 +169,9 @@ export interface Formatters {
   ): DisplayNames
 }
 
-export interface IntlShape<T = string> extends IntlConfig<T>, IntlFormatters {
+export interface IntlShape<T = string>
+  extends ResolvedIntlConfig<T>,
+    IntlFormatters {
   formatters: Formatters
 }
 
@@ -189,8 +191,8 @@ export interface MessageDescriptor {
   defaultMessage?: string | MessageFormatElement[]
 }
 
-export type OptionalIntlConfig<T = string> = Omit<
-  IntlConfig<T>,
+export type IntlConfig<T = string> = Omit<
+  ResolvedIntlConfig<T>,
   keyof typeof DEFAULT_INTL_CONFIG
 > &
   Partial<typeof DEFAULT_INTL_CONFIG>

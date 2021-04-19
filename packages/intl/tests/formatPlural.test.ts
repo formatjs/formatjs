@@ -2,12 +2,12 @@
 
 import {formatPlural as formatPluralFn} from '../src/plural'
 
-import {IntlFormatters, OptionalIntlConfig} from '../src/types'
+import {IntlFormatters, IntlConfig} from '../src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env
 
-  let config: OptionalIntlConfig<any>
+  let config: IntlConfig<any>
 
   let getPluralRules: any
   beforeEach(() => {

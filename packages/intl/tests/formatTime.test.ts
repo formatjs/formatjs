@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 import {formatTime as formatTimeFn} from '../src/dateTime'
-import {OptionalIntlConfig, IntlFormatters, Formatters} from '../src/types'
+import {IntlConfig, IntlFormatters, Formatters} from '../src/types'
 import '@formatjs/intl-datetimeformat/polyfill'
 import '@formatjs/intl-datetimeformat/locale-data/en'
 import '@formatjs/intl-datetimeformat/add-all-tz'
@@ -9,7 +9,7 @@ import '@formatjs/intl-datetimeformat/add-all-tz'
 describe('format API', () => {
   const {NODE_ENV} = process.env
 
-  let config: OptionalIntlConfig<any>
+  let config: IntlConfig<any>
 
   let getDateTimeFormat: Formatters['getDateTimeFormat'] = (
     ...args: ConstructorParameters<typeof Intl.DateTimeFormat>

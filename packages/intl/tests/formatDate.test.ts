@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {formatDate as formatDateFn} from '../src/dateTime'
-import {OptionalIntlConfig, IntlFormatters} from '../src/types'
+import {IntlConfig, IntlFormatters} from '../src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env
 
-  let config: OptionalIntlConfig<any>
+  let config: IntlConfig<any>
 
   let getDateTimeFormat: any
   beforeEach(() => {

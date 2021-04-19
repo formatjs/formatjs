@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {formatList as formatListFn} from '../src/list'
 
-import {OptionalIntlConfig, IntlFormatters} from '../src/types'
+import {IntlConfig, IntlFormatters} from '../src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env
 
-  let config: OptionalIntlConfig<any>
+  let config: IntlConfig<any>
   let getListFormat: any
   beforeEach(() => {
     config = {

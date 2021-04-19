@@ -3,12 +3,12 @@ import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 import '@formatjs/intl-displaynames/locale-data/zh-Hans-SG'
 import {formatDisplayName as formatDisplayNameFn} from '../src/displayName'
-import {OptionalIntlConfig, IntlFormatters} from '../src/types'
+import {IntlConfig, IntlFormatters} from '../src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env
 
-  let config: OptionalIntlConfig<any>
+  let config: IntlConfig<any>
   let getDisplayNames: any
   beforeEach(() => {
     config = {

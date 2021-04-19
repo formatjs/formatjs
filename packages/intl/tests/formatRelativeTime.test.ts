@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {formatRelativeTime as formatRelativeTimeFn} from '../src/relativeTime'
-import {OptionalIntlConfig, IntlFormatters} from '../src/types'
+import {IntlConfig, IntlFormatters} from '../src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env
 
-  let config: OptionalIntlConfig<any>
+  let config: IntlConfig<any>
 
   let getRelativeTimeFormat: any
   beforeEach(() => {

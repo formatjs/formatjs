@@ -1,9 +1,9 @@
 import {
-  IntlConfig,
   IntlCache,
   CustomFormats,
   Formatters,
   OnErrorFn,
+  ResolvedIntlConfig,
 } from './types'
 import {IntlMessageFormat} from 'intl-messageformat'
 import * as memoize from 'fast-memoize'
@@ -34,7 +34,7 @@ const defaultErrorHandler: OnErrorFn = error => {
 }
 
 export const DEFAULT_INTL_CONFIG: Pick<
-  IntlConfig<any>,
+  ResolvedIntlConfig<any>,
   | 'formats'
   | 'messages'
   | 'timeZone'
