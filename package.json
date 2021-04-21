@@ -33,7 +33,7 @@
     "@bazel/bazelisk": "^1.5.0",
     "@bazel/esbuild": "3.3.0",
     "@bazel/ibazel": "^0.15.0",
-    "@bazel/typescript": "3.3.0",
+    "@bazel/typescript": "3.4.0",
     "@commitlint/cli": "12",
     "@commitlint/config-angular": "12",
     "@docusaurus/core": "2.0.0-alpha.72",
