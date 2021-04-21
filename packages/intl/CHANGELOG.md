@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.9.8...@formatjs/intl@1.10.0) (2021-04-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** make IntlShape generic default to string, fix [#2821](https://github.com/formatjs/formatjs/issues/2821) ([08d48f2](https://github.com/formatjs/formatjs/commit/08d48f297529ef276f8991bc40c8e864dbd18c5b))
+
+
+### Features
+
+* **@formatjs/intl:** rename OptionalIntlConfig to IntlConfig and IntlConfig to ResolvedIntlConfig ([4a3dd6e](https://github.com/formatjs/formatjs/commit/4a3dd6ef7457b8de1ffea0b61624b91250c717d5))
+
+
+
+
+
 ## [1.9.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.9.7...@formatjs/intl@1.9.8) (2021-04-12)
 
 **Note:** Version bump only for package @formatjs/intl

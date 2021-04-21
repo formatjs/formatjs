@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.16.0](https://github.com/formatjs/formatjs/compare/react-intl@5.15.8...react-intl@5.16.0) (2021-04-21)
+
+
+### Features
+
+* **react-intl:** rename OptionalIntlConfig to IntlConfig and IntlConfig to ResolvedIntlConfig ([779a957](https://github.com/formatjs/formatjs/commit/779a957b190dc8ab6cc0549e11acd43bdeba4b82))
+
+
+
+
+
 ## [5.15.8](https://github.com/formatjs/formatjs/compare/react-intl@5.15.7...react-intl@5.15.8) (2021-04-12)
 
 **Note:** Version bump only for package react-intl

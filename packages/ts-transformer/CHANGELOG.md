@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.8](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.3.7...@formatjs/ts-transformer@3.3.8) (2021-04-21)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix AST node construction when key is invalid identifier, fix [#2823](https://github.com/formatjs/formatjs/issues/2823) ([ddb4375](https://github.com/formatjs/formatjs/commit/ddb4375986776d9ce1041b6e955e1bc6de7c242d))
+
+
+
+
+
 ## [3.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.3.6...@formatjs/ts-transformer@3.3.7) (2021-04-12)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/formatjs/formatjs/compare/vue-intl@4.1.27...vue-intl@4.2.0) (2021-04-21)
+
+
+### Features
+
+* **vue-intl:** rename OptionalIntlConfig to IntlConfig and IntlConfig to ResolvedIntlConfig ([f2fe20e](https://github.com/formatjs/formatjs/commit/f2fe20e150a4f01d0447babe21319862be9a63f4))
+
+
+
+
+
 ## [4.1.27](https://github.com/formatjs/formatjs/compare/vue-intl@4.1.26...vue-intl@4.1.27) (2021-04-12)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.1.5...@formatjs/icu-messageformat-parser@1.1.6) (2021-04-21)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** fix legacy Edge/Xbox browser issue, fix [#2822](https://github.com/formatjs/formatjs/issues/2822) ([7e17c4d](https://github.com/formatjs/formatjs/commit/7e17c4d49e68c367779ba533c40ad7e21413ab26))
+
+
+
+
+
 ## [1.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.1.4...@formatjs/icu-messageformat-parser@1.1.5) (2021-04-12)
 
 
