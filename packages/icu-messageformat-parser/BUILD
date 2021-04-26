@@ -1,4 +1,4 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm", "nodejs_binary")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "nodejs_binary", "pkg_npm")
 load("//tools:index.bzl", "bundle_karma_tests", "check_format", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 

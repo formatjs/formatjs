@@ -84,7 +84,6 @@
     "emoji-regex": "^9.2.0",
     "eslint": "^7.4.0",
     "fast-glob": "^3.2.4",
-    "fast-memoize": "^2.5.2",
     "fs-extra": "^9.0.0",
     "hoist-non-react-statics": "^3.3.2",
     "http-server": "^0.12.3",
