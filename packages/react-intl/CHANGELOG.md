@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.17.0](https://github.com/formatjs/formatjs/compare/react-intl@5.16.2...react-intl@5.17.0) (2021-04-26)
+
+
+### Features
+
+* **react-intl:** expose ESM & IIFE versions ([06409a7](https://github.com/formatjs/formatjs/commit/06409a77e41e1b75eea39d18e4d4f3b099f14bc1))
+
+
+
+
+
 ## [5.16.2](https://github.com/formatjs/formatjs/compare/react-intl@5.16.1...react-intl@5.16.2) (2021-04-26)
 
 **Note:** Version bump only for package react-intl
