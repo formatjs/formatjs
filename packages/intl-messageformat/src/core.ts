@@ -5,8 +5,7 @@ See the accompanying LICENSE file for terms.
 */
 
 import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
-import * as memoize from 'fast-memoize'
-import {Cache} from 'fast-memoize'
+import memoize, {Cache} from 'fast-memoize'
 import {
   FormatterCache,
   Formatters,
@@ -83,10 +82,6 @@ function createFastMemoizeCache<V>(store: Record<string, V>): Cache<string, V> {
   }
 }
 
-// @ts-ignore this is to deal with rollup's default import shenanigans
-const _memoizeIntl = memoize.default || memoize
-const memoizeIntl = _memoizeIntl as typeof memoize.default
-
 function createDefaultFormatters(
   cache: FormatterCache = {
     number: {},
@@ -95,20 +90,17 @@ function createDefaultFormatters(
   }
 ): Formatters {
   return {
-    getNumberFormat: memoizeIntl((...args) => new Intl.NumberFormat(...args), {
+    getNumberFormat: memoize((...args) => new Intl.NumberFormat(...args), {
       cache: createFastMemoizeCache(cache.number),
-      strategy: memoizeIntl.strategies.variadic,
+      strategy: memoize.strategies.variadic,
     }),
-    getDateTimeFormat: memoizeIntl(
-      (...args) => new Intl.DateTimeFormat(...args),
-      {
-        cache: createFastMemoizeCache(cache.dateTime),
-        strategy: memoizeIntl.strategies.variadic,
-      }
-    ),
-    getPluralRules: memoizeIntl((...args) => new Intl.PluralRules(...args), {
+    getDateTimeFormat: memoize((...args) => new Intl.DateTimeFormat(...args), {
+      cache: createFastMemoizeCache(cache.dateTime),
+      strategy: memoize.strategies.variadic,
+    }),
+    getPluralRules: memoize((...args) => new Intl.PluralRules(...args), {
       cache: createFastMemoizeCache(cache.pluralRules),
-      strategy: memoizeIntl.strategies.variadic,
+      strategy: memoize.strategies.variadic,
     }),
   }
 }
