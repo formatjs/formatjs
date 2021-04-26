@@ -1,0 +1,26 @@
+{
+  "name": "@formatjs/fast-memoize",
+  "version": "1.0.0",
+  "description": "fork of fast-memoize and support esm",
+  "main": "index.js",
+  "module": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/formatjs/formatjs.git"
+  },
+  "keywords": [
+    "intl",
+    "fast-memoize",
+    "memoize",
+    "i18n"
+  ],
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "homepage": "https://github.com/formatjs/formatjs#readme"
+}

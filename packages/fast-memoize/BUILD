@@ -1,0 +1,58 @@
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("//tools:index.bzl", "check_format", "ts_compile")
+
+PACKAGE_NAME = "fast-memoize"
+
+pkg_npm(
+    name = PACKAGE_NAME,
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = [
+        "LICENSE.md",
+        "README.md",
+    ],
+    deps = [":dist"],
+)
+
+alias(
+    name = "publish",
+    actual = "%s.publish" % PACKAGE_NAME,
+)
+
+alias(
+    name = "pack",
+    actual = "%s.pack" % PACKAGE_NAME,
+)
+
+SRCS = glob([
+    "src/*.ts",
+    "*.ts",
+])
+
+SRC_DEPS = [
+]
+
+ts_compile(
+    name = "dist",
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = SRCS,
+    deps = SRC_DEPS,
+)
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
+)
+
+check_format(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "CHANGELOG.md",
+            "tests/__snapshots__/*",
+        ],
+    ),
+)
