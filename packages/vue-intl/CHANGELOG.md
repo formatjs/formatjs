@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/formatjs/formatjs/compare/vue-intl@4.2.0...vue-intl@4.2.1) (2021-04-26)
+
+**Note:** Version bump only for package vue-intl
+
+
+
+
+
 # [4.2.0](https://github.com/formatjs/formatjs/compare/vue-intl@4.1.27...vue-intl@4.2.0) (2021-04-21)
 
 

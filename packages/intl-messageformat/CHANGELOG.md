@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.6.9](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.6.8...intl-messageformat@9.6.9) (2021-04-26)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** fix fast-memoize import ([0065f99](https://github.com/formatjs/formatjs/commit/0065f990b084dee0abea1c5ad21517091c50c2e4))
+* **intl-messageformat:** use fast-memoize ESM fork ([87596b1](https://github.com/formatjs/formatjs/commit/87596b1535eea645b3d140d8b79b9b465e61cb5e))
+
+
+
+
+
 ## [9.6.8](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.6.7...intl-messageformat@9.6.8) (2021-04-21)
 
 **Note:** Version bump only for package intl-messageformat

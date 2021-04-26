@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.1.6...@formatjs/icu-messageformat-parser@1.2.0) (2021-04-26)
+
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** expose ESM entry point ([2a3dcab](https://github.com/formatjs/formatjs/commit/2a3dcab257a63f83f0cc562911665f51c1754b22))
+
+
+
+
+
 ## [1.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.1.5...@formatjs/icu-messageformat-parser@1.1.6) (2021-04-21)
 
 

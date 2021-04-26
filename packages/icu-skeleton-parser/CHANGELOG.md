@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.1.2...@formatjs/icu-skeleton-parser@1.2.0) (2021-04-26)
+
+
+### Features
+
+* **@formatjs/icu-skeleton-parser:** expose ESM entry point ([97f4d38](https://github.com/formatjs/formatjs/commit/97f4d389c521df7cec055d7bac46c8ecb5f32aff))
+
+
+
+
+
 ## [1.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.1.1...@formatjs/icu-skeleton-parser@1.1.2) (2021-04-12)
 
 **Note:** Version bump only for package @formatjs/icu-skeleton-parser

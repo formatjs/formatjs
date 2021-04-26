@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.10.0...@formatjs/intl@1.10.1) (2021-04-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** fix fast-memoize import ([2738741](https://github.com/formatjs/formatjs/commit/2738741fb9b0d442fe2f1ad0b335c2436d8bc579))
+* **@formatjs/intl:** use fast-memoize esm fork ([d1a4509](https://github.com/formatjs/formatjs/commit/d1a45094a130107e019ce12e5038baf2febf397f))
+
+
+
+
+
 # [1.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.9.8...@formatjs/intl@1.10.0) (2021-04-21)
 
 
