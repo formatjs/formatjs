@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.7...@formatjs/intl-numberformat@6.2.8) (2021-04-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix polyfilled detection ([#2851](https://github.com/formatjs/formatjs/issues/2851)) ([628f04a](https://github.com/formatjs/formatjs/commit/628f04a994928be74a4e559c4124d0969f2fb8d0))
+
+
+
+
+
 ## [6.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.6...@formatjs/intl-numberformat@6.2.7) (2021-04-26)
 
 
