@@ -1,4 +1,15 @@
 /**
+ * Check if this is old Node that only supports en
+ * @returns
+ */
+function onlySupportsEn() {
+  return (
+    (!Intl.NumberFormat as any).polyfilled &&
+    !Intl.NumberFormat.supportedLocalesOf(['es']).length
+  )
+}
+
+/**
  * Check if Intl.NumberFormat is ES2020 compatible.
  * Caveat: we are not checking `toLocaleString`.
  *
@@ -29,6 +40,7 @@ export function shouldPolyfill() {
   return (
     typeof Intl === 'undefined' ||
     !('NumberFormat' in Intl) ||
-    !supportsES2020()
+    !supportsES2020() ||
+    onlySupportsEn()
   )
 }
