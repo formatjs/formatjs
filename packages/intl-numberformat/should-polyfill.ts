@@ -4,7 +4,7 @@
  */
 function onlySupportsEn() {
   return (
-    (!Intl.NumberFormat as any).polyfilled &&
+    !(Intl.NumberFormat as any).polyfilled &&
     !Intl.NumberFormat.supportedLocalesOf(['es']).length
   )
 }
