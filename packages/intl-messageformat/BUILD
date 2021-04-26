@@ -1,7 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@npm//ts-node:index.bzl", "ts_node")
 load("//tools:index.bzl", "check_format", "esbuild", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
-load("@npm//ts-node:index.bzl", "ts_node")
 
 PACKAGE_NAME = "intl-messageformat"
 
@@ -32,7 +32,7 @@ SRCS = glob(["src/*.ts"]) + ["index.ts"]
 
 SRC_DEPS = [
     "//packages/icu-messageformat-parser:dist",
-    "@npm//fast-memoize",
+    "//packages/fast-memoize:dist",
 ]
 
 TESTS = glob([

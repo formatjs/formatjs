@@ -5,7 +5,7 @@ See the accompanying LICENSE file for terms.
 */
 
 import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
-import memoize, {Cache} from 'fast-memoize'
+import memoize, {Cache, strategies} from '@formatjs/fast-memoize'
 import {
   FormatterCache,
   Formatters,
@@ -92,15 +92,15 @@ function createDefaultFormatters(
   return {
     getNumberFormat: memoize((...args) => new Intl.NumberFormat(...args), {
       cache: createFastMemoizeCache(cache.number),
-      strategy: memoize.strategies.variadic,
+      strategy: strategies.variadic,
     }),
     getDateTimeFormat: memoize((...args) => new Intl.DateTimeFormat(...args), {
       cache: createFastMemoizeCache(cache.dateTime),
-      strategy: memoize.strategies.variadic,
+      strategy: strategies.variadic,
     }),
     getPluralRules: memoize((...args) => new Intl.PluralRules(...args), {
       cache: createFastMemoizeCache(cache.pluralRules),
-      strategy: memoize.strategies.variadic,
+      strategy: strategies.variadic,
     }),
   }
 }
