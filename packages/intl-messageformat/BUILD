@@ -1,6 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("//tools:index.bzl", "check_format", "esbuild", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
+load("@npm//ts-node:index.bzl", "ts_node")
 
 PACKAGE_NAME = "intl-messageformat"
 
@@ -86,4 +87,20 @@ check_format(
             "CHANGELOG.md",
         ],
     ),
+)
+
+ts_node(
+    name = "benchmark",
+    args = [
+        "--transpile-only",
+        "$(execpath tests/benchmark.ts)",
+    ],
+    data = SRCS + SRC_DEPS + [
+        "tests/benchmark.ts",
+        "//:tsconfig.json",
+        "@npm//tslib",
+        "//packages/intl-pluralrules",
+        "//packages/intl-pluralrules:locale-data",
+        "//:tsconfig.node.json",
+    ],
 )

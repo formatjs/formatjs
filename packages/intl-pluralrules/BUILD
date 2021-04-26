@@ -104,6 +104,7 @@ ts_script(
     data = CLDR_DEPS,
     entry_point = "scripts/cldr.ts",
     output_dir = True,
+    visibility=["//visibility:public"]
 )
 
 [generate_src_file(

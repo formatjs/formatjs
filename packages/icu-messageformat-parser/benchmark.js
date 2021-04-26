@@ -1,8 +1,5 @@
-#!/usr/bin/env node
-'use strict'
 const benchmark = require('benchmark')
 const {parse} = require('.')
-const baselineParse = require('intl-messageformat-parser').parse
 
 const complexMsg =
   '' +
@@ -55,9 +52,4 @@ function run(parse) {
     .run()
 }
 
-console.log()
-console.log('== Baseline ==')
-run(baselineParse)
-console.log()
-console.log('== This package ==')
 run(parse)

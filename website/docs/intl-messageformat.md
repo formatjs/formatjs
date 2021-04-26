@@ -295,12 +295,13 @@ new IntlMessageFormat('hello {number, number}', 'en', undefined, {
 ## Benchmark
 
 ```
-format_cached_complex_msg x 539,674 ops/sec ±1.87% (87 runs sampled)
-format_cached_string_msg x 99,311,640 ops/sec ±2.15% (87 runs sampled)
-new_complex_msg_preparsed x 1,490 ops/sec ±8.37% (54 runs sampled)
-new_complex_msg x 836 ops/sec ±31.96% (67 runs sampled)
-new_string_msg x 27,752 ops/sec ±8.25% (65 runs sampled)
-complex msg format x 799 ops/sec ±9.38% (55 runs sampled)
-complex msg w/ formatters format x 1,878 ops/sec ±16.63% (64 runs sampled)
-complex preparsed msg w/ formatters format x 26,482 ops/sec ±2.55% (84 runs sampled)
+format_cached_complex_msg x 153,868 ops/sec ±1.13% (85 runs sampled)
+format_cached_string_msg x 21,661,621 ops/sec ±4.06% (84 runs sampled)
+new_complex_msg_preparsed x 719,056 ops/sec ±2.83% (78 runs sampled)
+new_complex_msg x 12,844 ops/sec ±1.97% (85 runs sampled)
+new_string_msg x 409,770 ops/sec ±2.57% (79 runs sampled)
+complex msg format x 12,065 ops/sec ±1.66% (81 runs sampled)
+complex msg w/ formatters format x 11,649 ops/sec ±2.05% (78 runs sampled)
+complex preparsed msg w/ formatters format x 597,153 ops/sec ±1.46% (90 runs sampled)
+complex preparsed msg w/ new formatters format x 684,263 ops/sec ±1.37% (89 runs sampled)
 ```
