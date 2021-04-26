@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "check_format", "ts_compile")
+load("//tools:index.bzl", "check_format", "ts_compile", "esbuild")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "react-intl"
@@ -12,7 +12,9 @@ pkg_npm(
         "README.md",
     ],
     deps = [
+        "%s.iife.js" % PACKAGE_NAME,
         ":dist",
+        ":dist-esm"
     ],
 )
 
@@ -64,6 +66,18 @@ ts_compile(
     srcs = SRCS,
     skip_esm = False,
     deps = SRC_DEPS,
+)
+
+esbuild(
+    name = "%s.iife" % PACKAGE_NAME,
+    args = [
+        "--global-name=ReactIntl",
+    ],
+    entry_point = "lib/index.js",
+    target = "es5",
+    deps = [
+        ":dist-esm",
+    ] + SRC_DEPS,
 )
 
 jest_test(
