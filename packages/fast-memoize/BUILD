@@ -10,7 +10,10 @@ pkg_npm(
         "LICENSE.md",
         "README.md",
     ],
-    deps = [":dist"],
+    deps = [
+        ":dist",
+        ":dist-esm",
+    ],
 )
 
 alias(
@@ -35,6 +38,7 @@ ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    skip_esm = False,
     deps = SRC_DEPS,
 )
 

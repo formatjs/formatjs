@@ -104,6 +104,7 @@ multirun(
         "//packages/intl-localematcher:prettier",
         "//packages/intl-messageformat:prettier",
         "//packages/intl-numberformat:prettier",
+        "//packages/fast-memoize:prettier",
         "//packages/intl-pluralrules:prettier",
         "//packages/intl-relativetimeformat:prettier",
         "//packages/intl:prettier",
