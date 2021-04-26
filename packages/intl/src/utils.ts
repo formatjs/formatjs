@@ -6,8 +6,7 @@ import {
   ResolvedIntlConfig,
 } from './types'
 import {IntlMessageFormat} from 'intl-messageformat'
-import * as memoize from 'fast-memoize'
-import {Cache} from 'fast-memoize'
+import memoize, {Cache} from 'fast-memoize'
 import {UnsupportedFormatterError} from './error'
 import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 
@@ -82,10 +81,6 @@ function createFastMemoizeCache<V>(store: Record<string, V>): Cache<string, V> {
   }
 }
 
-// @ts-ignore this is to deal with rollup's default import shenanigans
-const _memoizeIntl = memoize.default || memoize
-const memoizeIntl = _memoizeIntl as typeof memoize.default
-
 /**
  * Create intl formatters and populate cache
  * @param cache explicit cache to prevent leaking memory
@@ -96,31 +91,25 @@ export function createFormatters(
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat
   const ListFormat = (Intl as any).ListFormat
   const DisplayNames = (Intl as any).DisplayNames
-  const getDateTimeFormat = memoizeIntl(
+  const getDateTimeFormat = memoize(
     (...args) => new Intl.DateTimeFormat(...args) as DateTimeFormat,
     {
       cache: createFastMemoizeCache(cache.dateTime),
-      strategy: memoizeIntl.strategies.variadic,
+      strategy: memoize.strategies.variadic,
     }
   )
-  const getNumberFormat = memoizeIntl(
-    (...args) => new Intl.NumberFormat(...args),
-    {
-      cache: createFastMemoizeCache(cache.number),
-      strategy: memoizeIntl.strategies.variadic,
-    }
-  )
-  const getPluralRules = memoizeIntl(
-    (...args) => new Intl.PluralRules(...args),
-    {
-      cache: createFastMemoizeCache(cache.pluralRules),
-      strategy: memoizeIntl.strategies.variadic,
-    }
-  )
+  const getNumberFormat = memoize((...args) => new Intl.NumberFormat(...args), {
+    cache: createFastMemoizeCache(cache.number),
+    strategy: memoize.strategies.variadic,
+  })
+  const getPluralRules = memoize((...args) => new Intl.PluralRules(...args), {
+    cache: createFastMemoizeCache(cache.pluralRules),
+    strategy: memoize.strategies.variadic,
+  })
   return {
     getDateTimeFormat,
     getNumberFormat,
-    getMessageFormat: memoizeIntl(
+    getMessageFormat: memoize(
       (message, locales, overrideFormats, opts) =>
         new IntlMessageFormat(message, locales, overrideFormats, {
           formatters: {
@@ -132,24 +121,24 @@ export function createFormatters(
         }),
       {
         cache: createFastMemoizeCache(cache.message),
-        strategy: memoizeIntl.strategies.variadic,
+        strategy: memoize.strategies.variadic,
       }
     ),
-    getRelativeTimeFormat: memoizeIntl(
+    getRelativeTimeFormat: memoize(
       (...args) => new RelativeTimeFormat(...args),
       {
         cache: createFastMemoizeCache(cache.relativeTime),
-        strategy: memoizeIntl.strategies.variadic,
+        strategy: memoize.strategies.variadic,
       }
     ),
     getPluralRules,
-    getListFormat: memoizeIntl((...args) => new ListFormat(...args), {
+    getListFormat: memoize((...args) => new ListFormat(...args), {
       cache: createFastMemoizeCache(cache.list),
-      strategy: memoizeIntl.strategies.variadic,
+      strategy: memoize.strategies.variadic,
     }),
-    getDisplayNames: memoizeIntl((...args) => new DisplayNames(...args), {
+    getDisplayNames: memoize((...args) => new DisplayNames(...args), {
       cache: createFastMemoizeCache(cache.displayNames),
-      strategy: memoizeIntl.strategies.variadic,
+      strategy: memoize.strategies.variadic,
     }),
   }
 }
