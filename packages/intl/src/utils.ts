@@ -6,7 +6,7 @@ import {
   ResolvedIntlConfig,
 } from './types'
 import {IntlMessageFormat} from 'intl-messageformat'
-import memoize, {Cache} from 'fast-memoize'
+import memoize, {Cache, strategies} from '@formatjs/fast-memoize'
 import {UnsupportedFormatterError} from './error'
 import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 
@@ -95,16 +95,16 @@ export function createFormatters(
     (...args) => new Intl.DateTimeFormat(...args) as DateTimeFormat,
     {
       cache: createFastMemoizeCache(cache.dateTime),
-      strategy: memoize.strategies.variadic,
+      strategy: strategies.variadic,
     }
   )
   const getNumberFormat = memoize((...args) => new Intl.NumberFormat(...args), {
     cache: createFastMemoizeCache(cache.number),
-    strategy: memoize.strategies.variadic,
+    strategy: strategies.variadic,
   })
   const getPluralRules = memoize((...args) => new Intl.PluralRules(...args), {
     cache: createFastMemoizeCache(cache.pluralRules),
-    strategy: memoize.strategies.variadic,
+    strategy: strategies.variadic,
   })
   return {
     getDateTimeFormat,
@@ -121,24 +121,24 @@ export function createFormatters(
         }),
       {
         cache: createFastMemoizeCache(cache.message),
-        strategy: memoize.strategies.variadic,
+        strategy: strategies.variadic,
       }
     ),
     getRelativeTimeFormat: memoize(
       (...args) => new RelativeTimeFormat(...args),
       {
         cache: createFastMemoizeCache(cache.relativeTime),
-        strategy: memoize.strategies.variadic,
+        strategy: strategies.variadic,
       }
     ),
     getPluralRules,
     getListFormat: memoize((...args) => new ListFormat(...args), {
       cache: createFastMemoizeCache(cache.list),
-      strategy: memoize.strategies.variadic,
+      strategy: strategies.variadic,
     }),
     getDisplayNames: memoize((...args) => new DisplayNames(...args), {
       cache: createFastMemoizeCache(cache.displayNames),
-      strategy: memoize.strategies.variadic,
+      strategy: strategies.variadic,
     }),
   }
 }

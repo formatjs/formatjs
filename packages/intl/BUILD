@@ -34,7 +34,7 @@ SRC_DEPS = [
     "//packages/intl-listformat:dist",
     "//packages/intl-displaynames:dist",
     "//packages/intl-messageformat:dist",
-    "@npm//fast-memoize",
+    "//packages/fast-memoize:dist",
     "@npm//@types/node",
 ]
 
@@ -64,6 +64,7 @@ jest_test(
         "//packages/intl-datetimeformat:dist",
         "//packages/intl-datetimeformat:types",
         "//packages/intl-displaynames:types",
+        "//packages/fast-memoize:types",
         "//packages/intl-listformat:types",
         "//packages/icu-messageformat-parser:types",
         "//packages/intl-messageformat:types",

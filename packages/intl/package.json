@@ -33,7 +33,7 @@
     "@formatjs/icu-messageformat-parser": "1.1.6",
     "@formatjs/intl-displaynames": "4.0.13",
     "@formatjs/intl-listformat": "5.0.14",
-    "fast-memoize": "^2.5.2",
+    "@formatjs/fast-memoize": "1.0.0",
     "intl-messageformat": "9.6.8",
     "tslib": "^2.1.0"
   },
