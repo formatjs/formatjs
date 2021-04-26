@@ -15,6 +15,7 @@ import {BestFitFormatMatcher} from './BestFitFormatMatcher'
 import {invariant} from '../utils'
 import {DATE_TIME_PROPS} from './utils'
 import {DateTimeStyleFormat} from './DateTimeStyleFormat'
+import {GetNumberOption} from '../GetNumberOption'
 
 function isTimeRelated(opt: Opt) {
   for (const prop of ['hour', 'minute', 'second'] as Array<
@@ -221,6 +222,14 @@ export function InitializeDateTimeFormat(
     ['short', 'long'],
     undefined
   )
+  opt.fractionalSecondDigits = GetNumberOption(
+    options,
+    'fractionalSecondDigits',
+    1,
+    3,
+    // @ts-expect-error
+    undefined
+  ) as 1
 
   const dataLocaleData = localeData[dataLocale]
   invariant(!!dataLocaleData, `Missing locale data for ${dataLocale}`)

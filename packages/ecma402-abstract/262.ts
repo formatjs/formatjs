@@ -365,3 +365,7 @@ export function OrdinaryHasInstance(
   }
   return Object.prototype.isPrototypeOf.call(P, O)
 }
+
+export function msFromTime(t: number): number {
+  return mod(t, MS_PER_SECOND)
+}

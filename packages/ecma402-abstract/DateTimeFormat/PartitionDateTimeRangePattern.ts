@@ -21,6 +21,7 @@ const TABLE_2_FIELDS: Array<TABLE_2> = [
   'hour',
   'minute',
   'second',
+  'fractionalSecondDigits',
 ]
 
 export function PartitionDateTimeRangePattern(
@@ -73,6 +74,20 @@ export function PartitionDateTimeRangePattern(
             dateFieldsPracticallyEqual = false
           }
           rangePattern = rp
+        }
+      } else if (fieldName === 'fractionalSecondDigits') {
+        let fractionalSecondDigits = internalSlots.fractionalSecondDigits
+        if (fractionalSecondDigits === undefined) {
+          fractionalSecondDigits = 3
+        }
+        let v1 = Math.floor(
+          tm1.millisecond * 10 ** (fractionalSecondDigits - 3)
+        )
+        let v2 = Math.floor(
+          tm2.millisecond * 10 ** (fractionalSecondDigits - 3)
+        )
+        if (v1 !== v2) {
+          dateFieldsPracticallyEqual = false
         }
       } else {
         let rp = rangePatterns[fieldName]

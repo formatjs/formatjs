@@ -10,6 +10,7 @@ import {
   HourFromTime,
   MinFromTime,
   SecFromTime,
+  msFromTime,
 } from '../262'
 
 function getApplicableZoneData(
@@ -60,6 +61,7 @@ export function ToLocalTime(
   hour: number
   minute: number
   second: number
+  millisecond: number
   inDST: boolean
   timeZoneOffset: number
 } {
@@ -83,6 +85,7 @@ export function ToLocalTime(
     hour: HourFromTime(tz),
     minute: MinFromTime(tz),
     second: SecFromTime(tz),
+    millisecond: msFromTime(tz),
     inDST,
     // IMPORTANT: Not in spec
     timeZoneOffset,

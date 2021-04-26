@@ -30,8 +30,17 @@ export function ToDateTimeOptions(
     }
   }
   if (required === 'time' || required === 'any') {
-    for (const prop of ['hour', 'minute', 'second'] as Array<
-      keyof Pick<DateTimeFormatOptions, 'hour' | 'minute' | 'second'>
+    for (const prop of [
+      'dayPeriod',
+      'hour',
+      'minute',
+      'second',
+      'fractionalSecondDigits',
+    ] as Array<
+      keyof Pick<
+        DateTimeFormatOptions,
+        'dayPeriod' | 'hour' | 'minute' | 'second' | 'fractionalSecondDigits'
+      >
     >) {
       const value = options[prop]
       if (value !== undefined) {

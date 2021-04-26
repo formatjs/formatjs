@@ -82,6 +82,14 @@ export function FormatDateTimePattern(
   nf2Options.minimumIntegerDigits = 2
   nf2Options.useGrouping = false
   const nf2 = new Intl.NumberFormat(locale, nf2Options)
+  const fractionalSecondDigits = internalSlots.fractionalSecondDigits
+  let nf3: Intl.NumberFormat
+  if (fractionalSecondDigits !== undefined) {
+    const nf3Options = Object.create(null)
+    nf3Options.minimumIntegerDigits = fractionalSecondDigits
+    nf3Options.useGrouping = false
+    nf3 = new Intl.NumberFormat(locale, nf3Options)
+  }
   const tm = ToLocalTime(
     x,
     // @ts-ignore
@@ -97,6 +105,15 @@ export function FormatDateTimePattern(
       result.push({
         type: 'literal',
         value: patternPart.value!,
+      })
+    } else if (p === 'fractionalSecondDigits') {
+      const v = Math.floor(
+        tm.millisecond * 10 ** ((fractionalSecondDigits || 0) - 3)
+      )
+      result.push({
+        // @ts-expect-error Spec is not there yet
+        type: 'fractionalSecond',
+        value: nf3!.format(v),
       })
     } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
       let fv = ''

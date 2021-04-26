@@ -18,6 +18,7 @@ export type Formats = Pick<
   | 'minute'
   | 'second'
   | 'timeZoneName'
+  | 'fractionalSecondDigits'
 > & {
   hour12?: boolean
   pattern: string
@@ -43,6 +44,7 @@ export interface IntlDateTimeFormatInternal {
   minute: '2-digit' | 'numeric'
   second: '2-digit' | 'numeric'
   timeZoneName: 'short' | 'long'
+  fractionalSecondDigits?: 1 | 2 | 3
   hourCycle: string
   numberingSystem: string
   timeZone: string
@@ -90,6 +92,7 @@ export type TABLE_6 =
   | 'hour'
   | 'minute'
   | 'second'
+  | 'fractionalSecondDigits'
   | 'timeZoneName'
 
 export type TABLE_2 =
@@ -101,6 +104,7 @@ export type TABLE_2 =
   | 'hour'
   | 'minute'
   | 'second'
+  | 'fractionalSecondDigits'
 
 export type TimeZoneNameData = Record<
   string,
@@ -190,6 +194,7 @@ export type IntlDateTimeFormatPartType =
   | 'relatedYear'
   | 'yearName'
   | 'unknown'
+  | 'fractionalSecondDigits'
 
 export interface IntlDateTimeFormatPart {
   type: IntlDateTimeFormatPartType

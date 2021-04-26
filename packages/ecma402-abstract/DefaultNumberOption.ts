@@ -10,7 +10,13 @@ export function DefaultNumberOption(
   min: number,
   max: number,
   fallback: number
-) {
+): number
+export function DefaultNumberOption(
+  val: any,
+  min: number,
+  max: number,
+  fallback: number | undefined
+): number | undefined {
   if (val !== undefined) {
     val = Number(val)
     if (isNaN(val) || val < min || val > max) {
