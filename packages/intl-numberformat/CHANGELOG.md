@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.6...@formatjs/intl-numberformat@6.2.7) (2021-04-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** add node without ICU detection ([70ce128](https://github.com/formatjs/formatjs/commit/70ce12819771cf50f67b07ab96afd3d99acb1cb1))
+
+
+
+
+
 ## [6.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.5...@formatjs/intl-numberformat@6.2.6) (2021-04-12)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

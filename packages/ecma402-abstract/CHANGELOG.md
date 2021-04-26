@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.6.5...@formatjs/ecma402-abstract@1.7.0) (2021-04-26)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** add abstract ops for fractionalSecondDigits ([5b1b1d1](https://github.com/formatjs/formatjs/commit/5b1b1d1261b8c4bac2c01ad1c1623abaf7c1f2c1))
+
+
+
+
+
 ## [1.6.5](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.6.4...@formatjs/ecma402-abstract@1.6.5) (2021-04-12)
 
 
