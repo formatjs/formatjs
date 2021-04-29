@@ -167,7 +167,7 @@ export default class IntlProvider extends React.PureComponent<
   }
 
   static getDerivedStateFromProps(
-    props: IntlConfig,
+    props: Readonly<IntlConfig>,
     {prevConfig, cache}: State
   ): Partial<State> | null {
     const config = processIntlConfig(props)
