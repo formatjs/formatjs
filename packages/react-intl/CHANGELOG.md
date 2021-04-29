@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.17.2](https://github.com/formatjs/formatjs/compare/react-intl@5.17.1...react-intl@5.17.2) (2021-04-29)
+
+
+### Bug Fixes
+
+* **react-intl:** update react provider to match GetDerivedStateFromProps declaration. ([#2852](https://github.com/formatjs/formatjs/issues/2852)) ([7248d37](https://github.com/formatjs/formatjs/commit/7248d37af8b26ace9d94c15dd305bd5aab4d13dd)), closes [/github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react/v16/index.d.ts#L646](https://github.com//github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react/v16/index.d.ts/issues/L646)
+
+
+
+
+
 ## [5.17.1](https://github.com/formatjs/formatjs/compare/react-intl@5.17.0...react-intl@5.17.1) (2021-04-26)
 
 **Note:** Version bump only for package react-intl
