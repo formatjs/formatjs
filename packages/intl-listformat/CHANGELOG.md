@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.16](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@5.0.15...@formatjs/intl-listformat@5.0.16) (2021-05-02)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** add d.ts for locale files, fix [#2850](https://github.com/formatjs/formatjs/issues/2850) ([8093fa0](https://github.com/formatjs/formatjs/commit/8093fa0cb7cdb2f083cdae9b731c417230703919))
+
+
+
+
+
 ## [5.0.15](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@5.0.14...@formatjs/intl-listformat@5.0.15) (2021-04-26)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

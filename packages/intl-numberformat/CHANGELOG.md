@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.8...@formatjs/intl-numberformat@6.2.9) (2021-05-02)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** add d.ts for locale files, fix [#2850](https://github.com/formatjs/formatjs/issues/2850) ([121e4c6](https://github.com/formatjs/formatjs/commit/121e4c676bf67be2540c41971c732bba86fd806b))
+
+
+
+
+
 ## [6.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.7...@formatjs/intl-numberformat@6.2.8) (2021-04-26)
 
 

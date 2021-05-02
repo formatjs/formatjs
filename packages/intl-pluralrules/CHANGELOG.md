@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.17](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.0.16...@formatjs/intl-pluralrules@4.0.17) (2021-05-02)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** add d.ts for locale files, fix [#2850](https://github.com/formatjs/formatjs/issues/2850) ([fdc2185](https://github.com/formatjs/formatjs/commit/fdc21851823d741730ff38358b93e6303c57ac0f))
+
+
+
+
+
 ## [4.0.16](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.0.15...@formatjs/intl-pluralrules@4.0.16) (2021-04-26)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

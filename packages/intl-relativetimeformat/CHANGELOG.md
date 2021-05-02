@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@8.1.6...@formatjs/intl-relativetimeformat@8.1.7) (2021-05-02)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** add d.ts for locale files, fix [#2850](https://github.com/formatjs/formatjs/issues/2850) ([c7b7eba](https://github.com/formatjs/formatjs/commit/c7b7ebaa87674806b568ca4d8555cb91d14a143a))
+
+
+
+
+
 ## [8.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@8.1.5...@formatjs/intl-relativetimeformat@8.1.6) (2021-04-26)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
