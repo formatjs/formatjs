@@ -29,7 +29,9 @@ pkg_npm(
     ],
     deps = [
         "add-all-tz.js",
+        "add-all-tz.d.ts",
         "add-golden-tz.js",
+        "add-golden-tz.d.ts",
         ":dist",
         ":locale-data",
         # polyfill-library uses this
@@ -242,6 +244,17 @@ ts_script(
         "@tzdata//:zdumps",
     ],
     entry_point = "scripts/process-zdump.ts",
+)
+
+genrule(
+    name="add-all-tz-typedef",
+    outs=["add-all-tz.d.ts"],
+    cmd="echo 'export {}' > $@"
+)
+genrule(
+    name="add-golden-tz-typedef",
+    outs=["add-golden-tz.d.ts"],
+    cmd="echo 'export {}' > $@"
 )
 
 generated_file_test(
