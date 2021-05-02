@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.2.1...@formatjs/icu-messageformat-parser@2.0.0) (2021-05-02)
+
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** set requiresOtherClause to true ([976c79a](https://github.com/formatjs/formatjs/commit/976c79a5df41130d5d032ada846fd7496776ce8a))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/icu-messageformat-parser:** This is so that we're consistent with icu4j, fix #2855
+
+
+
+
+
 ## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@1.2.0...@formatjs/icu-messageformat-parser@1.2.1) (2021-04-26)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser
