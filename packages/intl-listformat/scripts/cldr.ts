@@ -14,15 +14,15 @@ function main(args: minimist.ParsedArgs) {
   // Dist all locale files to locale-data (JS)
   for (const locale of locales) {
     const data = readFileSync(join(cldrFolder, `${locale}.json`))
-    const destFile = join(outDir, locale + '.js')
     outputFileSync(
-      destFile,
+      join(outDir, locale + '.js'),
       `/* @generated */	
 // prettier-ignore
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(${data})
 }`
     )
+    outputFileSync(join(outDir, locale + '.d.ts'), 'export {}')
   }
 }
 
