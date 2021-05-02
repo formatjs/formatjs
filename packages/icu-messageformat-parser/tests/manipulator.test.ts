@@ -17,7 +17,7 @@ test('hoist some random case 1', function () {
     printAST(
       hoistSelectors(
         parse(
-          '{p1, plural, one{one {foo, select, bar{two} baz{three}} other{other} }}'
+          '{p1, plural, one{one {foo, select, bar{two} baz{three} other{other}}} other{other}}'
         )
       )
     )
@@ -33,6 +33,7 @@ test('should hoist plural & select and tag', function () {
                 gender, select, 
                     male{male} 
                     female{female} 
+                    other{male}
                 } <b>dog</b>
             } 
             other{many dogs}} and {count, plural, 
@@ -40,6 +41,7 @@ test('should hoist plural & select and tag', function () {
                     gender, select, 
                         male{male} 
                         female{female} 
+                        other{male}
                     } <strong>cat</strong>
                 } 
                 other{many cats}}`)

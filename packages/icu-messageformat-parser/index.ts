@@ -36,6 +36,7 @@ function pruneLocation(els: MessageFormatElement[]): void {
 export function parse(message: string, opts: ParserOptions = {}) {
   opts = {
     shouldParseSkeletons: true,
+    requiresOtherClause: true,
     ...opts,
   }
   const result = new Parser(message, opts).parse()
