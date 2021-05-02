@@ -14,9 +14,8 @@ function main(args: minimist.ParsedArgs) {
   // Dist all locale files to locale-data (JS)
   for (const locale of locales) {
     const data = readFileSync(join(cldrFolder, `${locale}.js`))
-    const destFile = join(outDir, locale + '.js')
     outputFileSync(
-      destFile,
+      join(outDir, locale + '.js'),
       `/* @generated */
 // prettier-ignore
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
@@ -24,6 +23,7 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
 }
 `
     )
+    outputFileSync(join(outDir, locale + '.d.ts'), 'export {}')
   }
 }
 if (require.main === module) {
