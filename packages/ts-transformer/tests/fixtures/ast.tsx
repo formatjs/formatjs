@@ -39,7 +39,7 @@ export default class Foo extends Component {
       description: 'no-id',
     })
     formatMessage({
-      defaultMessage: '{count, plural, =0 {zero}}',
+      defaultMessage: '{count, plural, =0 {zero} other{other}}',
       description: 'no-id',
     })
 

@@ -68,17 +68,17 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
       code: `
               import {defineMessage} from 'react-intl'
               defineMessage({
-                  defaultMessage: '{count, plural, one {#}}'
+                  defaultMessage: '{count, plural, one {#} other{other}}'
               })`,
       options: [
         {
           one: true,
-          other: true,
+          two: true,
         },
       ],
       errors: [
         {
-          message: 'Missing plural rule "other"',
+          message: 'Missing plural rule "two"',
         },
       ],
     },

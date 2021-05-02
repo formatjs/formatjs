@@ -18,7 +18,7 @@ ruleTester.run('no-multiple-plurals', noMultiplePlurals, {
       code: `
               import {defineMessage} from 'react-intl'
               defineMessage({
-                  defaultMessage: '{p1, plural, one{one}} {p2, plural, one{two}}'
+                  defaultMessage: '{p1, plural, one{one} other{other}} {p2, plural, one{two} other{other}}'
               })`,
       errors: [
         {
@@ -30,7 +30,7 @@ ruleTester.run('no-multiple-plurals', noMultiplePlurals, {
       code: `
               import {defineMessage} from 'react-intl'
               defineMessage({
-                  defaultMessage: '{p1, plural, one{{p2, plural, one{two}}}}'
+                  defaultMessage: '{p1, plural, one{{p2, plural, one{two} other{other}}} other{other}}'
               })`,
       errors: [
         {

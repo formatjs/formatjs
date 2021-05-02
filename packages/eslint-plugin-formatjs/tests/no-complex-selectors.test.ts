@@ -1,7 +1,7 @@
 import noComplexSelectors from '../rules/no-complex-selectors'
 import {ruleTester} from './util'
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
-ruleTester.run('no-complext-selectors', noComplexSelectors, {
+ruleTester.run('no-complex-selectors', noComplexSelectors, {
   valid: [
     `import {defineMessage} from 'react-intl'
   defineMessage({
@@ -16,11 +16,11 @@ ruleTester.run('no-complext-selectors', noComplexSelectors, {
       code: `
               import {defineMessage} from 'react-intl'
               defineMessage({
-                  defaultMessage: '{p1, plural, one{one}} {p2, plural, one{two}}'
+                  defaultMessage: '{p1, plural, one{one} other{other}}'
               })`,
       options: [
         {
-          limit: 1,
+          limit: 2,
         },
       ],
     },
@@ -30,7 +30,7 @@ ruleTester.run('no-complext-selectors', noComplexSelectors, {
       code: `
               import {defineMessage} from 'react-intl'
               defineMessage({
-                  defaultMessage: '{p1, plural, one{one} other{other}} {p2, plural, one{two}}'
+                  defaultMessage: '{p1, plural, one{one} other{other}} {p2, plural, one{two} other{other}}'
               })`,
       options: [
         {
@@ -39,7 +39,7 @@ ruleTester.run('no-complext-selectors', noComplexSelectors, {
       ],
       errors: [
         {
-          message: 'Message complexity is too high (2 vs limit at 1)',
+          message: 'Message complexity is too high (4 vs limit at 1)',
         },
       ],
     },
@@ -51,14 +51,16 @@ ruleTester.run('no-complext-selectors', noComplexSelectors, {
                     one{a {
                         gender, select, 
                             male{male} 
-                            female{female} 
+                            female{female}
+                            other{other}
                         } <b>dog</b>
                     } 
                     other{many dogs}} and {count, plural, 
                         one{a {
                             gender, select, 
                                 male{male} 
-                                female{female} 
+                                female{female}
+                                other{other}
                             } <strong>cat</strong>
                         } 
                         other{many cats}}\`
@@ -70,7 +72,7 @@ ruleTester.run('no-complext-selectors', noComplexSelectors, {
       ],
       errors: [
         {
-          message: 'Message complexity is too high (9 vs limit at 3)',
+          message: 'Message complexity is too high (16 vs limit at 3)',
         },
       ],
     },
@@ -78,24 +80,7 @@ ruleTester.run('no-complext-selectors', noComplexSelectors, {
       code: `
               import {defineMessage} from 'react-intl'
               defineMessage({
-                  defaultMessage: '{p1, plural, one{{p2, plural, one{two} other{other}}}}'
-              })`,
-      options: [
-        {
-          limit: 1,
-        },
-      ],
-      errors: [
-        {
-          message: 'Message complexity is too high (2 vs limit at 1)',
-        },
-      ],
-    },
-    {
-      code: `
-              import {defineMessage} from 'react-intl'
-              defineMessage({
-                  defaultMessage: '{p1, plural, one{one {foo, select, bar{two} baz{three}}} other{other} }}'
+                  defaultMessage: '{p1, plural, one{{p2, plural, one{two} other{other}}} other{other}}'
               })`,
       options: [
         {
@@ -105,6 +90,23 @@ ruleTester.run('no-complext-selectors', noComplexSelectors, {
       errors: [
         {
           message: 'Message complexity is too high (3 vs limit at 1)',
+        },
+      ],
+    },
+    {
+      code: `
+              import {defineMessage} from 'react-intl'
+              defineMessage({
+                  defaultMessage: '{p1, plural, one{one {foo, select, bar{two} baz{three} other{other}}} other{other}}'
+              })`,
+      options: [
+        {
+          limit: 1,
+        },
+      ],
+      errors: [
+        {
+          message: 'Message complexity is too high (4 vs limit at 1)',
         },
       ],
     },

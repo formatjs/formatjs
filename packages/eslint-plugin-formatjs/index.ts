@@ -20,7 +20,7 @@ const plugin = {
     'enforce-placeholders': enforcePlaceholders,
     'enforce-plural-rules': enforcePluralRules,
     'no-camel-case': noCamelCase,
-    'no-complext-selectors': noComplexSelectors,
+    'no-complex-selectors': noComplexSelectors,
     'no-emoji': noEmoji,
     'no-id': noId,
     'no-multiple-plurals': noMultiplePlurals,

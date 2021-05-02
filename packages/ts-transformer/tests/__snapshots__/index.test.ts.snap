@@ -126,7 +126,7 @@ export default class Foo extends Component {
         this.props.intl.formatMessage({ id: \\"HELLO..5.string\\", defaultMessage: [{ type: 0, value: \\"no-id\\" }] });
         intl.formatMessage({ id: \\"HELLO..18.string\\", defaultMessage: [{ type: 0, value: \\"intl.formatMessage\\" }] });
         formatMessage({ id: \\"HELLO..13.string\\", defaultMessage: [{ type: 0, value: \\"formatMessage\\" }] });
-        formatMessage({ id: \\"HELLO..26.string\\", defaultMessage: [{ type: 6, value: \\"count\\", options: { \\"=0\\": { value: [{ type: 0, value: \\"zero\\" }] } }, offset: 0, pluralType: \\"cardinal\\" }] });
+        formatMessage({ id: \\"HELLO..39.string\\", defaultMessage: [{ type: 6, value: \\"count\\", options: { \\"=0\\": { value: [{ type: 0, value: \\"zero\\" }] }, other: { value: [{ type: 0, value: \\"other\\" }] } }, offset: 0, pluralType: \\"cardinal\\" }] });
         return (<div>
         <h1>
           <FormattedMessage {...msgs.header}/>
@@ -172,9 +172,9 @@ export default class Foo extends Component {
       "id": "HELLO..13.string",
     },
     Object {
-      "defaultMessage": "{count, plural, =0 {zero}}",
+      "defaultMessage": "{count, plural, =0 {zero} other{other}}",
       "description": "no-id",
-      "id": "HELLO..26.string",
+      "id": "HELLO..39.string",
     },
     Object {
       "defaultMessage": "Hello World! {abc}",

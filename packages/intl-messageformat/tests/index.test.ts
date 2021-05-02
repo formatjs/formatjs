@@ -646,7 +646,7 @@ describe('IntlMessageFormat', function () {
     })
     it('select message w/ placeholder & >', function () {
       const mf = new IntlMessageFormat(
-        '{gender, select, male {&lt; hello <b>world</b> {token} &lt;&gt; <a>{placeholder}</a>} female {<b>foo &lt;&gt; bar</b>}}',
+        '{gender, select, male {&lt; hello <b>world</b> {token} &lt;&gt; <a>{placeholder}</a>} female {<b>foo &lt;&gt; bar</b>} other {<b>foo &lt;&gt; bar</b>}}',
         'en'
       )
       expect(
