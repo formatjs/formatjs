@@ -85,6 +85,7 @@ generated_file_test(
 esbuild(
     name = "polyfill.iife",
     entry_point = "lib/polyfill.js",
+    target = "es5",
     deps = [
         ":dist-esm",
         "@npm//tslib",
