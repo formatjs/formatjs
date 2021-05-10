@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-localematcher",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Intl.LocaleMatcher ponyfill",
   "keywords": [
     "intl",
@@ -24,7 +24,7 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.7.0",
+    "@formatjs/ecma402-abstract": "1.7.1",
     "tslib": "^2.1.0"
   }
 }

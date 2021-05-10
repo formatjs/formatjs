@@ -1,13 +1,13 @@
 {
   "name": "@formatjs/icu-messageformat-parser",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "index.js",
   "module": "lib/index.js",
   "types": "index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.7.0",
-    "@formatjs/icu-skeleton-parser": "1.2.1",
+    "@formatjs/ecma402-abstract": "1.7.1",
+    "@formatjs/icu-skeleton-parser": "1.2.2",
     "tslib": "^2.1.0"
   }
 }
