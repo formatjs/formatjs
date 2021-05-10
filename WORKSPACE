@@ -13,7 +13,7 @@ workspace(
     },
 )
 
-_ESBUILD_VERSION = "0.11.5"
+_ESBUILD_VERSION = "0.11.20"
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
