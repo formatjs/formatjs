@@ -120,7 +120,7 @@ The target file path where the plugin will output an aggregated `.json` file of 
 
 ### `--id-interpolation-pattern [pattern]`
 
-If certain message descriptors don't have id, this `pattern` will be used to automaticallygenerate IDs for them. Default to `[sha512:contenthash:base64:6]`. See https://github.com/webpack/loader-utils#interpolatename for sample patterns
+If certain message descriptors don't have id, this `pattern` will be used to automatically generate IDs for them. Default to `[sha512:contenthash:base64:6]`. See [nodejs crypto createHash](https://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm_options) for hash algorithms & [nodejs buffer docs](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings) for digest encodings.
 
 ### `--extract-source-location`
 
