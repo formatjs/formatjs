@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "check_format", "ts_compile", "esbuild")
+load("//tools:index.bzl", "check_format", "esbuild", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "react-intl"
@@ -14,7 +14,7 @@ pkg_npm(
     deps = [
         "%s.iife.js" % PACKAGE_NAME,
         ":dist",
-        ":dist-esm"
+        ":dist-esm",
     ],
 )
 

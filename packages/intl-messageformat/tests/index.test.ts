@@ -566,9 +566,10 @@ describe('IntlMessageFormat', function () {
 
     it('simple message', function () {
       const mf = new IntlMessageFormat('hello <b>world</b>', 'en')
-      expect(
-        mf.format<object>({b: parts => ({parts})})
-      ).toEqual(['hello ', {parts: ['world']}])
+      expect(mf.format<object>({b: parts => ({parts})})).toEqual([
+        'hello ',
+        {parts: ['world']},
+      ])
     })
     it('nested tag message', function () {
       const mf = new IntlMessageFormat(

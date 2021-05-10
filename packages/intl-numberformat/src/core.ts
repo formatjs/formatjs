@@ -200,9 +200,8 @@ NumberFormat.__addLocaleData = function __addLocaleData(
     const minimizedLocale = new (Intl as any).Locale(locale)
       .minimize()
       .toString()
-    NumberFormat.localeData[locale] = NumberFormat.localeData[
-      minimizedLocale
-    ] = d
+    NumberFormat.localeData[locale] = NumberFormat.localeData[minimizedLocale] =
+      d
     NumberFormat.availableLocales.add(minimizedLocale)
     NumberFormat.availableLocales.add(locale)
     if (!NumberFormat.__defaultLocale) {

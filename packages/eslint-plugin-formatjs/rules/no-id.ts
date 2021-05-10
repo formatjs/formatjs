@@ -1,6 +1,13 @@
-import {Rule, Scope} from 'eslint'
+import {Rule, Scope, SourceCode} from 'eslint'
 import {extractMessages} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
+import * as ESTree from 'estree'
+
+function isComment(
+  token: ReturnType<SourceCode['getTokenAfter']>
+): token is ESTree.Comment {
+  return !!token && (token.type === 'Block' || token.type === 'Line')
+}
 
 function checkNode(
   context: Rule.RuleContext,
@@ -17,7 +24,7 @@ function checkNode(
           const src = context.getSourceCode()
           const token = src.getTokenAfter(idPropNode as any)
           const fixes = [fixer.remove(idPropNode as any)]
-          if (token?.value === ',') {
+          if (token && !isComment(token) && token?.value === ',') {
             fixes.push(fixer.remove(token))
           }
           return fixes

@@ -42,9 +42,11 @@ function serializeToPatternData(
 async function loadListPatterns(
   locale: string
 ): Promise<ListPatternFieldsData> {
-  const patterns = ((await import(
-    `cldr-misc-full/main/${locale}/listPatterns.json`
-  )) as typeof ListPatterns).main[locale as 'en'].listPatterns
+  const patterns = (
+    (await import(
+      `cldr-misc-full/main/${locale}/listPatterns.json`
+    )) as typeof ListPatterns
+  ).main[locale as 'en'].listPatterns
   return {
     conjunction: {
       long: serializeToPatternData(patterns['listPattern-type-standard']),

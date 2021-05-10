@@ -6,9 +6,8 @@ import {IntlShape} from '../../../'
 import {render} from '@testing-library/react'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedDate)
-const mountPartsWithProvider = mountFormattedComponentWithProvider(
-  FormattedDateParts
-)
+const mountPartsWithProvider =
+  mountFormattedComponentWithProvider(FormattedDateParts)
 
 describe('<FormattedDate>', () => {
   let intl: IntlShape

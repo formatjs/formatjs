@@ -563,7 +563,7 @@ function SFC() {
   });
 }
 
-var Foo = (_ref2) => {
+var Foo = _ref2 => {
   var {
     intl: {
       formatMessage

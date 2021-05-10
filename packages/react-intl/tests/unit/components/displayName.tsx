@@ -3,9 +3,8 @@ import * as React from 'react'
 import {FormattedDisplayName} from '../../../'
 import {mountFormattedComponentWithProvider} from '../testUtils'
 import {render} from '@testing-library/react'
-const mountWithProvider = mountFormattedComponentWithProvider(
-  FormattedDisplayName
-)
+const mountWithProvider =
+  mountFormattedComponentWithProvider(FormattedDisplayName)
 
 const intlConfig = {locale: 'en'}
 

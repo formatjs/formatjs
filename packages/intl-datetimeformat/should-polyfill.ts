@@ -1,8 +1,10 @@
 function supportsDateStyle() {
   try {
-    return !!(new Intl.DateTimeFormat(undefined, {
-      dateStyle: 'short',
-    } as any).resolvedOptions() as any).dateStyle
+    return !!(
+      new Intl.DateTimeFormat(undefined, {
+        dateStyle: 'short',
+      } as any).resolvedOptions() as any
+    ).dateStyle
   } catch (e) {
     return false
   }

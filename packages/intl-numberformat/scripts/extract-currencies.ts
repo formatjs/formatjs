@@ -12,7 +12,8 @@ import {CurrencyData, LDMLPluralRuleMap} from '@formatjs/ecma402-abstract'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils'
 
-export type Currencies = typeof CurrenciesData['main']['en']['numbers']['currencies']
+export type Currencies =
+  typeof CurrenciesData['main']['en']['numbers']['currencies']
 
 function extractCurrencyPattern(d: Currencies['USD']) {
   if (!d['displayName-count-other']) {
@@ -43,9 +44,11 @@ export function getAllLocales(): string[] {
 async function loadCurrencies(
   locale: string
 ): Promise<Record<string, CurrencyData>> {
-  const currencies = ((await import(
-    `cldr-numbers-full/main/${locale}/currencies.json`
-  )) as typeof CurrenciesData).main[locale as 'en'].numbers.currencies
+  const currencies = (
+    (await import(
+      `cldr-numbers-full/main/${locale}/currencies.json`
+    )) as typeof CurrenciesData
+  ).main[locale as 'en'].numbers.currencies
   return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
     (all: Record<string, CurrencyData>, isoCode) => {
       const d = currencies[isoCode] as Currencies['USD']

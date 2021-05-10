@@ -338,9 +338,8 @@ export function parseNumberSkeleton(
     if (signOpts) {
       result = {...result, ...signOpts}
     }
-    const conciseScientificAndEngineeringOpts = parseConciseScientificAndEngineeringStem(
-      token.stem
-    )
+    const conciseScientificAndEngineeringOpts =
+      parseConciseScientificAndEngineeringStem(token.stem)
     if (conciseScientificAndEngineeringOpts) {
       result = {...result, ...conciseScientificAndEngineeringOpts}
     }

@@ -153,10 +153,9 @@ function applyUnicodeExtensionToTag(
   } else {
     unicodeExtension.keywords = keywords
   }
-  result.locale = ((Intl as any)
-    .getCanonicalLocales as typeof getCanonicalLocales)(
-    emitUnicodeLocaleId(ast)
-  )[0]
+  result.locale = (
+    (Intl as any).getCanonicalLocales as typeof getCanonicalLocales
+  )(emitUnicodeLocaleId(ast))[0]
   return result
 }
 

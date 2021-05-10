@@ -77,6 +77,7 @@ check_format(
             "**/*",
         ],
         exclude = [
+            "**/*.generated.ts",
             "CHANGELOG.md",
             "tests/__snapshots__/*",
         ],

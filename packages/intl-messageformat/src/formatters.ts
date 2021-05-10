@@ -228,15 +228,12 @@ export function formatToParts<T>(
         chunks = [chunks]
       }
       result.push(
-        ...chunks.map(
-          (c): MessageFormatPart<T> => {
-            return {
-              type:
-                typeof c === 'string' ? PART_TYPE.literal : PART_TYPE.object,
-              value: c,
-            } as MessageFormatPart<T>
-          }
-        )
+        ...chunks.map((c): MessageFormatPart<T> => {
+          return {
+            type: typeof c === 'string' ? PART_TYPE.literal : PART_TYPE.object,
+            value: c,
+          } as MessageFormatPart<T>
+        })
       )
     }
     if (isSelectElement(el)) {

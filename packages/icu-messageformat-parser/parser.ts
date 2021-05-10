@@ -104,19 +104,16 @@ try {
   REGEX_SUPPORTS_U_AND_Y = false
 }
 
-const startsWith: (
-  s: string,
-  search: string,
-  position: number
-) => boolean = hasNativeStartsWith
-  ? // Native
-    function startsWith(s, search, position) {
-      return s.startsWith(search, position)
-    }
-  : // For IE11
-    function startsWith(s, search, position) {
-      return s.slice(position, position + search.length) === search
-    }
+const startsWith: (s: string, search: string, position: number) => boolean =
+  hasNativeStartsWith
+    ? // Native
+      function startsWith(s, search, position) {
+        return s.startsWith(search, position)
+      }
+    : // For IE11
+      function startsWith(s, search, position) {
+        return s.slice(position, position + search.length) === search
+      }
 
 const fromCodePoint: typeof String.fromCodePoint = hasNativeFromCodePoint
   ? String.fromCodePoint
@@ -156,30 +153,28 @@ const fromEntries: <T = any>(
         return obj
       }
 
-const codePointAt: (
-  s: string,
-  index: number
-) => number | undefined = hasNativeCodePointAt
-  ? // Native
-    function codePointAt(s, index) {
-      return s.codePointAt(index)
-    }
-  : // IE 11
-    function codePointAt(s, index) {
-      let size = s.length
-      if (index < 0 || index >= size) {
-        return undefined
+const codePointAt: (s: string, index: number) => number | undefined =
+  hasNativeCodePointAt
+    ? // Native
+      function codePointAt(s, index) {
+        return s.codePointAt(index)
       }
-      let first = s.charCodeAt(index)
-      let second
-      return first < 0xd800 ||
-        first > 0xdbff ||
-        index + 1 === size ||
-        (second = s.charCodeAt(index + 1)) < 0xdc00 ||
-        second > 0xdfff
-        ? first
-        : ((first - 0xd800) << 10) + (second - 0xdc00) + 0x10000
-    }
+    : // IE 11
+      function codePointAt(s, index) {
+        let size = s.length
+        if (index < 0 || index >= size) {
+          return undefined
+        }
+        let first = s.charCodeAt(index)
+        let second
+        return first < 0xd800 ||
+          first > 0xdbff ||
+          index + 1 === size ||
+          (second = s.charCodeAt(index + 1)) < 0xdc00 ||
+          second > 0xdfff
+          ? first
+          : ((first - 0xd800) << 10) + (second - 0xdc00) + 0x10000
+      }
 
 const trimStart: (s: string) => string = hasTrimStart
   ? // Native
@@ -1081,10 +1076,8 @@ export class Parser {
 
       // Prep next selector clause.
       this.bumpSpace()
-      ;({
-        value: selector,
-        location: selectorLocation,
-      } = this.parseIdentifierIfPossible())
+      ;({value: selector, location: selectorLocation} =
+        this.parseIdentifierIfPossible())
     }
 
     if (options.length === 0) {

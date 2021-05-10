@@ -121,9 +121,11 @@ function extractNumbers(d: Numbers): RawNumberData {
 async function loadNumbers(locale: string): Promise<RawNumberData> {
   try {
     return extractNumbers(
-      ((await import(
-        `cldr-numbers-full/main/${locale}/numbers.json`
-      )) as typeof NumbersData).main[locale as 'ar'].numbers
+      (
+        (await import(
+          `cldr-numbers-full/main/${locale}/numbers.json`
+        )) as typeof NumbersData
+      ).main[locale as 'ar'].numbers
     )
   } catch (e) {
     console.error('Issue processing numbers data for ' + locale)

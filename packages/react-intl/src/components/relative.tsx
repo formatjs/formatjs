@@ -109,14 +109,11 @@ const FormattedRelativeTime: React.FC<Props> = ({
       !!(updateIntervalInSeconds && canIncrement(unit)),
     'Cannot schedule update with unit longer than hour'
   )
-  const [prevUnit, setPrevUnit] = React.useState<
-    RelativeTimeFormatSingularUnit | undefined
-  >()
+  const [prevUnit, setPrevUnit] =
+    React.useState<RelativeTimeFormatSingularUnit | undefined>()
   const [prevValue, setPrevValue] = React.useState<number>(0)
-  const [
-    currentValueInSeconds,
-    setCurrentValueInSeconds,
-  ] = React.useState<number>(0)
+  const [currentValueInSeconds, setCurrentValueInSeconds] =
+    React.useState<number>(0)
   let updateTimer: number
 
   if (unit !== prevUnit || value !== prevValue) {
@@ -156,10 +153,10 @@ const FormattedRelativeTime: React.FC<Props> = ({
     )
 
     if (currentValueInSeconds !== nextInterestingValueInSeconds) {
-      updateTimer = (setTimeout(
+      updateTimer = setTimeout(
         () => setCurrentValueInSeconds(nextInterestingValueInSeconds),
         delayInSeconds * 1e3
-      ) as unknown) as number
+      ) as unknown as number
     }
     return clearUpdateTimer
   }, [currentValueInSeconds, updateIntervalInSeconds, unit])

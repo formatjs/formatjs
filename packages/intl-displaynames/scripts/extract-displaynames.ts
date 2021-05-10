@@ -4,11 +4,16 @@ import {DisplayNamesData, invariant} from '@formatjs/ecma402-abstract'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
 
 // CLDR JSON types
-type LanguageRawData = typeof import('cldr-localenames-full/main/en/languages.json')['main']['en']['localeDisplayNames']['languages']
-type RegionRawData = typeof import('cldr-localenames-full/main/en/territories.json')['main']['en']['localeDisplayNames']['territories']
-type ScriptRawData = typeof import('cldr-localenames-full/main/en/scripts.json')['main']['en']['localeDisplayNames']['scripts']
-type LocalePatternRawData = typeof import('cldr-localenames-full/main/en/localeDisplayNames.json')['main']['en']['localeDisplayNames']['localeDisplayPattern']['localePattern']
-type CurrencyRawData = typeof import('cldr-numbers-full/main/en/currencies.json')['main']['en']['numbers']['currencies']
+type LanguageRawData =
+  typeof import('cldr-localenames-full/main/en/languages.json')['main']['en']['localeDisplayNames']['languages']
+type RegionRawData =
+  typeof import('cldr-localenames-full/main/en/territories.json')['main']['en']['localeDisplayNames']['territories']
+type ScriptRawData =
+  typeof import('cldr-localenames-full/main/en/scripts.json')['main']['en']['localeDisplayNames']['scripts']
+type LocalePatternRawData =
+  typeof import('cldr-localenames-full/main/en/localeDisplayNames.json')['main']['en']['localeDisplayNames']['localeDisplayPattern']['localePattern']
+type CurrencyRawData =
+  typeof import('cldr-numbers-full/main/en/currencies.json')['main']['en']['numbers']['currencies']
 // -------------------------------------------------------------------------------------------------
 
 export async function getAllLocales(): Promise<string[]> {
@@ -69,19 +74,14 @@ function extractCurrencyStyleData(
 }
 
 async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
-  const [
-    languages,
-    territories,
-    scripts,
-    localeDisplayNames,
-    currencies,
-  ] = await Promise.all([
-    import(`cldr-localenames-full/main/${locale}/languages.json`),
-    import(`cldr-localenames-full/main/${locale}/territories.json`),
-    import(`cldr-localenames-full/main/${locale}/scripts.json`),
-    import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`),
-    import(`cldr-numbers-full/main/${locale}/currencies.json`),
-  ])
+  const [languages, territories, scripts, localeDisplayNames, currencies] =
+    await Promise.all([
+      import(`cldr-localenames-full/main/${locale}/languages.json`),
+      import(`cldr-localenames-full/main/${locale}/territories.json`),
+      import(`cldr-localenames-full/main/${locale}/scripts.json`),
+      import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`),
+      import(`cldr-numbers-full/main/${locale}/currencies.json`),
+    ])
   const langData: LanguageRawData =
     languages.main[locale].localeDisplayNames.languages
   const regionData: RegionRawData =

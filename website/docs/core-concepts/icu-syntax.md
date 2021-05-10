@@ -229,7 +229,6 @@ wrapped between them:
 //→ "<notATag>"
 "'<notATag>hello</notATag>'"
 //→ "<notATag>hello</notATag>"
-
 ```
 
 Two consecutive ASCII apostrophes represents one ASCII apostrophe, similar to `%%` in `printf` represents one `%`.
@@ -239,5 +238,4 @@ However, we recommend using curly apostrophe `’` (U+2019) for human-readable s
 ```js
 "This '{isn''t}' obvious."
 //→ "This {isn't} obvious."
-
 ```

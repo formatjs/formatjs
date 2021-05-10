@@ -69,8 +69,11 @@ export default function injectIntl<
 > & {
   WrappedComponent: React.ComponentType<P>
 } {
-  const {intlPropName = 'intl', forwardRef = false, enforceContext = true} =
-    options || {}
+  const {
+    intlPropName = 'intl',
+    forwardRef = false,
+    enforceContext = true,
+  } = options || {}
 
   const WithIntl: React.FC<P & {forwardedRef?: React.Ref<any>}> & {
     WrappedComponent: React.ComponentType<P>

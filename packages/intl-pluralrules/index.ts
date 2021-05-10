@@ -72,13 +72,15 @@ export class PluralRules implements Intl.PluralRules {
     const internalSlots = getInternalSlots(this)
     opts.locale = internalSlots.locale
     opts.type = internalSlots.type
-    ;([
-      'minimumIntegerDigits',
-      'minimumFractionDigits',
-      'maximumFractionDigits',
-      'minimumSignificantDigits',
-      'maximumSignificantDigits',
-    ] as Array<keyof PluralRulesInternal>).forEach(field => {
+    ;(
+      [
+        'minimumIntegerDigits',
+        'minimumFractionDigits',
+        'maximumFractionDigits',
+        'minimumSignificantDigits',
+        'maximumSignificantDigits',
+      ] as Array<keyof PluralRulesInternal>
+    ).forEach(field => {
       const val = internalSlots[field]
       if (val !== undefined) {
         opts[field] = val

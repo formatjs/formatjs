@@ -387,7 +387,8 @@ const messages = defineMessages({
   },
   // FAILS
   baz: {
-    defaultMessage: 'this message is too long \
+    defaultMessage:
+      'this message is too long \
     so I wanna line break it.',
   },
 })

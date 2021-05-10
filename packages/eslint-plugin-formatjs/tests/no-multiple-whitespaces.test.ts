@@ -15,8 +15,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
   ],
   invalid: [
     {
-      code:
-        "import {defineMessage} from 'react-intl';defineMessage({defaultMessage: 'a \
+      code: "import {defineMessage} from 'react-intl';defineMessage({defaultMessage: 'a \
                   {placeHolder}'})",
       errors: [
         {

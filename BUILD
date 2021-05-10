@@ -95,6 +95,7 @@ multirun(
         "//packages/editor:prettier",
         "//packages/eslint-plugin-formatjs:prettier",
         "//packages/icu-messageformat-parser:prettier",
+        "//packages/icu-skeleton-parser:prettier",
         "//packages/intl-datetimeformat:prettier",
         "//packages/intl-displaynames:prettier",
         "//packages/intl-durationformat:prettier",

@@ -247,14 +247,15 @@ ts_script(
 )
 
 genrule(
-    name="add-all-tz-typedef",
-    outs=["add-all-tz.d.ts"],
-    cmd="echo 'export {}' > $@"
+    name = "add-all-tz-typedef",
+    outs = ["add-all-tz.d.ts"],
+    cmd = "echo 'export {}' > $@",
 )
+
 genrule(
-    name="add-golden-tz-typedef",
-    outs=["add-golden-tz.d.ts"],
-    cmd="echo 'export {}' > $@"
+    name = "add-golden-tz-typedef",
+    outs = ["add-golden-tz.d.ts"],
+    cmd = "echo 'export {}' > $@",
 )
 
 generated_file_test(

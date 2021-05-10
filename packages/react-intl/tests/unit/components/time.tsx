@@ -6,9 +6,8 @@ import {IntlShape} from '@formatjs/intl'
 import {render} from '@testing-library/react'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedTime)
-const mountPartsWithProvider = mountFormattedComponentWithProvider(
-  FormattedTimeParts
-)
+const mountPartsWithProvider =
+  mountFormattedComponentWithProvider(FormattedTimeParts)
 
 describe('<FormattedTime>', () => {
   let intl: IntlShape<React.ReactNode>

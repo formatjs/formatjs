@@ -198,7 +198,8 @@ export class IntlMessageFormat {
 
   static get defaultLocale() {
     if (!IntlMessageFormat.memoizedDefaultLocale) {
-      IntlMessageFormat.memoizedDefaultLocale = new Intl.NumberFormat().resolvedOptions().locale
+      IntlMessageFormat.memoizedDefaultLocale =
+        new Intl.NumberFormat().resolvedOptions().locale
     }
 
     return IntlMessageFormat.memoizedDefaultLocale

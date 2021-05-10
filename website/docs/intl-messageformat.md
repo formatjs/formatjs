@@ -190,9 +190,9 @@ new IntlMessageFormat("raw '<b>HTML</b>'").format()
 ```
 
 ```tsx live
-new IntlMessageFormat(
-  "raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'"
-).format({placeholder: 'some word'})
+new IntlMessageFormat("raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'").format(
+  {placeholder: 'some word'}
+)
 ```
 
 5. Embedded valid HTML tag is a bit of a grey area right now since we're not supporting the full HTML/XHTML/XML spec.

@@ -359,15 +359,14 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
     }
 
     for (const calendar in formats) {
-      processedData.formats[calendar] = Object.keys(
-        formats[calendar]
-      ).map(skeleton =>
-        parseDateTimeSkeleton(
-          skeleton,
-          formats[calendar][skeleton],
-          intervalFormats[skeleton],
-          intervalFormats.intervalFormatFallback
-        )
+      processedData.formats[calendar] = Object.keys(formats[calendar]).map(
+        skeleton =>
+          parseDateTimeSkeleton(
+            skeleton,
+            formats[calendar][skeleton],
+            intervalFormats[skeleton],
+            intervalFormats.intervalFormatFallback
+          )
       )
     }
 

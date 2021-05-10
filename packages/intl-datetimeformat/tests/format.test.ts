@@ -29,8 +29,7 @@ const tests: Array<{options: DateTimeFormatOptions; ko: string; en: string}> = [
       timeZoneName: 'long',
     },
     ko: '서기 2020년 6 16일 화요일 AM 4시 48분 20초 협정 세계시',
-    en:
-      'Tuesday, 6 16, 2020 Anno Domini, 4:48:20 AM Coordinated Universal Time',
+    en: 'Tuesday, 6 16, 2020 Anno Domini, 4:48:20 AM Coordinated Universal Time',
   },
   {
     options: {

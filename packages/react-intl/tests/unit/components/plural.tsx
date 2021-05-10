@@ -39,8 +39,10 @@ describe('<FormattedPlural>', () => {
 
     expect(getByTestId('comp')).toHaveTextContent('')
     unmount()
-    getByTestId = mountWithProvider({value: 1, other: undefined}, intl)
-      .getByTestId
+    getByTestId = mountWithProvider(
+      {value: 1, other: undefined},
+      intl
+    ).getByTestId
     expect(getByTestId('comp')).toHaveTextContent('')
   })
 

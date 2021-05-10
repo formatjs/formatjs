@@ -33,9 +33,8 @@ export function PartitionRelativeTimePattern(
     throw new RangeError(`Invalid value ${value}`)
   }
   const resolvedUnit = SingularRelativeTimeUnit(unit)
-  const {fields, style, numeric, pluralRules, numberFormat} = getInternalSlots(
-    rtf
-  )
+  const {fields, style, numeric, pluralRules, numberFormat} =
+    getInternalSlots(rtf)
   let entry: RelativeTimeField = resolvedUnit
   if (style === 'short') {
     entry = `${resolvedUnit}-short` as RelativeTimeField

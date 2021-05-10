@@ -24,9 +24,8 @@ import {
 const {timeData} = rawTimeData.supplemental
 const processedTimeData = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
-    all[k.replace('_', '-')] = timeData[
-      k as keyof typeof timeData
-    ]._allowed.split(' ')
+    all[k.replace('_', '-')] =
+      timeData[k as keyof typeof timeData]._allowed.split(' ')
     return all
   },
   {}

@@ -30,9 +30,11 @@ function extractUnitPattern(d: Units['long']['volume-gallon']) {
 }
 
 async function loadUnits(locale: string): Promise<UnitDataTable> {
-  const units = ((await import(
-    `cldr-units-full/main/${locale}/units.json`
-  )) as typeof UnitsData).main[locale as 'en'].units
+  const units = (
+    (await import(
+      `cldr-units-full/main/${locale}/units.json`
+    )) as typeof UnitsData
+  ).main[locale as 'en'].units
 
   invariant(
     !!(

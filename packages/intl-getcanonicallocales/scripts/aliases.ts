@@ -2,12 +2,8 @@ import {outputFileSync} from 'fs-extra'
 import * as aliases from 'cldr-core/supplemental/aliases.json'
 import minimist from 'minimist'
 
-const {
-  languageAlias,
-  territoryAlias,
-  scriptAlias,
-  variantAlias,
-} = aliases.supplemental.metadata.alias
+const {languageAlias, territoryAlias, scriptAlias, variantAlias} =
+  aliases.supplemental.metadata.alias
 
 function main({out}: minimist.ParsedArgs) {
   const data = {
