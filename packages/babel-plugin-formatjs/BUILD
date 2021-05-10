@@ -77,6 +77,7 @@ jest_test(
     srcs = ["tests/vue/integration.test.ts"] + glob([
         "tests/vue/fixtures/*",
     ]),
+    flaky = True,
     deps = [
         ":dist",
         ":types",
