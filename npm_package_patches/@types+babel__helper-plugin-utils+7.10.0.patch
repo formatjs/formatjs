@@ -1,7 +1,5 @@
-diff --git a/node_modules/@types/babel__helper-plugin-utils/index.d.ts b/node_modules/@types/babel__helper-plugin-utils/index.d.ts
-index 00509af..9a88252 100644
---- a/node_modules/@types/babel__helper-plugin-utils/index.d.ts
-+++ b/node_modules/@types/babel__helper-plugin-utils/index.d.ts
+--- node_modules/@types/babel__helper-plugin-utils/index.d.ts
++++ node_modules/@types/babel__helper-plugin-utils/index.d.ts
 @@ -9,7 +9,7 @@ import type * as babel from '@babel/core';
  export type BabelAPI = typeof babel & babel.ConfigAPI;
  export function declare<
