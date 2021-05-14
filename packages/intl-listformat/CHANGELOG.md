@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@5.0.17...@formatjs/intl-listformat@6.0.0) (2021-05-14)
+
+
+### Features
+
+* **@formatjs/intl-listformat:** stop aliasing en-US-POSIX to en-US ([0d8a9a6](https://github.com/formatjs/formatjs/commit/0d8a9a6db05c2b0eaf1f548c22d61f2a1a625f0a))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-listformat:** Before we call `en-US-POSIX` as `en-US` but it has subtle pattern differences so it's misleading. If you were importing `en-US` earlier, use `en` instead since they're the same.
+
+
+
+
+
 ## [5.0.17](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@5.0.16...@formatjs/intl-listformat@5.0.17) (2021-05-10)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

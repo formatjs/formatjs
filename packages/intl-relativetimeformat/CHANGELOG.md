@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@8.1.8...@formatjs/intl-relativetimeformat@9.0.0) (2021-05-14)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** stop aliasing en-US-POSIX to en-US ([30a38ad](https://github.com/formatjs/formatjs/commit/30a38ad2efd32a37d82e20ff0f1cea24b8c8a22c))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-relativetimeformat:** Before we call `en-US-POSIX` as `en-US` but it has subtle pattern differences so it's misleading. If you were importing `en-US` earlier, use `en` instead since they're the same.
+
+
+
+
+
 ## [8.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@8.1.7...@formatjs/intl-relativetimeformat@8.1.8) (2021-05-10)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

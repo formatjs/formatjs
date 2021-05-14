@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@4.0.16...@formatjs/intl-displaynames@5.0.0) (2021-05-14)
+
+
+### Features
+
+* **@formatjs/intl-displaynames:** stop aliasing en-US-POSIX to en-US ([4a5a47c](https://github.com/formatjs/formatjs/commit/4a5a47ca815fe44e1e1e71d0ddc6983679efc22a))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-displaynames:** Before we call `en-US-POSIX` as `en-US` but it has subtle pattern differences so it's misleading. If you were importing `en-US` earlier, use `en` instead since they're the same.
+
+
+
+
+
 ## [4.0.16](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@4.0.15...@formatjs/intl-displaynames@4.0.16) (2021-05-10)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

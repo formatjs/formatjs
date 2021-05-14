@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.10...@formatjs/intl-numberformat@7.0.0) (2021-05-14)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** stop aliasing en-US-POSIX to en-US ([a0a0ceb](https://github.com/formatjs/formatjs/commit/a0a0ceb0ba74bce4f052056158723d0b095e76c7)), closes [#2887](https://github.com/formatjs/formatjs/issues/2887)
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-numberformat:** Before we call `en-US-POSIX` as `en-US` but it has subtle pattern differences so it's misleading. If you were importing `en-US` earlier, use `en` instead since they're the same.
+
+
+
+
+
 ## [6.2.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.9...@formatjs/intl-numberformat@6.2.10) (2021-05-10)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

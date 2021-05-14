@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.3.5...@formatjs/intl-datetimeformat@4.0.0) (2021-05-14)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** stop aliasing en-US-POSIX to en-US ([c26406f](https://github.com/formatjs/formatjs/commit/c26406fc94378e47106f79eff177ed57d0fbabc7))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-datetimeformat:** Before we call `en-US-POSIX` as `en-US` but it has subtle pattern differences so it's misleading. If you were importing `en-US` earlier, use `en` instead since they're the same.
+
+
+
+
+
 ## [3.3.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.3.4...@formatjs/intl-datetimeformat@3.3.5) (2021-05-10)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat
