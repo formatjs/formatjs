@@ -8,16 +8,12 @@ async function main(args: minimist.ParsedArgs) {
   const {outDir} = args
   const locales = await getAllLocales()
   const data = await extractRelativeFields(locales)
-  for (let locale of locales) {
-    const d = data[locale]
-    if (locale === 'en-US-POSIX') {
-      locale = 'en-US'
-    }
+  locales.forEach(locale =>
     outputJSONSync(join(outDir, `${locale}.json`), {
-      data: d,
+      data: data[locale],
       locale,
     })
-  }
+  )
 }
 
 if (require.main === module) {
