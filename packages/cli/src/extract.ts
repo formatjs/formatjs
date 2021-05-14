@@ -253,10 +253,9 @@ export default async function extractAndWrite(
   extractOpts: ExtractCLIOptions
 ) {
   const {outFile, ...opts} = extractOpts
-  const serializedResult = await extract(files, opts)
+  const serializedResult = (await extract(files, opts)) + '\n'
   if (outFile) {
     return outputFile(outFile, serializedResult)
   }
   process.stdout.write(serializedResult)
-  process.stdout.write('\n')
 }
