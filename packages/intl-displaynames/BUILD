@@ -144,7 +144,7 @@ generate_src_file(
         "--cldrFolder",
         "$(location :cldr-raw)",
         "--locales",
-        "ar,de,en,en-US,ja,ko,th,zh,zh-Hant,zh-Hans",
+        "ar,de,en,en-US-POSIX,ja,ko,th,zh,zh-Hant,zh-Hans",
     ],
     data = CLDR_DEPS,
     entry_point = "scripts/test262-main-gen.ts",
