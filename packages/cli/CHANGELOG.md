@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.13](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.12...@formatjs/cli@4.2.13) (2021-05-14)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** add newline to extracted file, fix [#2803](https://github.com/formatjs/formatjs/issues/2803) ([9fbf2af](https://github.com/formatjs/formatjs/commit/9fbf2af73d1c6a8765f66403758e583365720e2a))
+
+
+
+
+
 ## [4.2.12](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.11...@formatjs/cli@4.2.12) (2021-05-10)
 
 **Note:** Version bump only for package @formatjs/cli
