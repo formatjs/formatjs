@@ -121,6 +121,10 @@ intl.formatNumber(20)
 <RawIntlProvider value={intl}>{foo}</RawIntlProvider>
 ```
 
+## createIntlCache
+
+Creates a cache instance to be used globally across locales. This memoizes previously created `Intl.*` constructors for performance and is only an in-memory cache.
+
 ## IntlShape
 
 ```ts

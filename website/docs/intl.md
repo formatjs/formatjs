@@ -64,6 +64,10 @@ const intl = createIntl(
 intl.formatNumber(20)
 ```
 
+## createIntlCache
+
+Creates a cache instance to be used globally across locales. This memoizes previously created `Intl.*` constructors for performance and is only an in-memory cache.
+
 ## IntlShape
 
 ```ts
