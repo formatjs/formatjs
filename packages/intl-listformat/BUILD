@@ -10,7 +10,6 @@ PACKAGE_NAME = "intl-listformat"
 TEST_LOCALES = [
     "en",
     "en-AI",
-    "en-US",
     "zh",
     "zh-Hant",
     "zh-Hans",

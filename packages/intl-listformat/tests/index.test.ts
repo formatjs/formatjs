@@ -2,12 +2,11 @@ import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill'
 import ListFormat from '..'
 import * as en from './locale-data/en.json'
-import * as enUS from './locale-data/en-US.json'
 import * as enAI from './locale-data/en-AI.json'
 import * as zh from './locale-data/zh.json'
 import * as zhHant from './locale-data/zh-Hant.json'
 import * as zhHans from './locale-data/zh-Hans.json'
-ListFormat.__addLocaleData(en, enUS, enAI, zh, zhHans, zhHant)
+ListFormat.__addLocaleData(en, enAI, zh, zhHans, zhHant)
 
 describe('Intl.ListFormat', function () {
   it('should support aliases', function () {
@@ -32,9 +31,9 @@ describe('Intl.ListFormat', function () {
     }
   })
   it('should normalize case correctly', function () {
-    const lf = new ListFormat('en-us', {style: 'short', type: 'unit'})
+    const lf = new ListFormat('en-ai', {style: 'short', type: 'unit'})
     expect(lf.resolvedOptions()).toEqual({
-      locale: 'en-US',
+      locale: 'en-AI',
       type: 'unit',
       style: 'short',
     })
