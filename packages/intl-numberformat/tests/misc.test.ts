@@ -266,3 +266,13 @@ it('ignore-invalid-unicode-ext-values.js', function () {
     })
   })
 })
+
+it('GH#2887', function () {
+  expect(
+    new NumberFormat('en', {
+      style: 'currency',
+      currency: 'EUR',
+      notation: 'compact',
+    }).format(30.0)
+  ).toBe('€30')
+})
