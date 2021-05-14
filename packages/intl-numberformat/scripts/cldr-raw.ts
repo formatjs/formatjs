@@ -30,9 +30,6 @@ async function main(args: minimist.ParsedArgs) {
       numbers: numbersData[locale],
       nu: numbersData[locale].nu,
     }
-    if (locale === 'en-US-POSIX') {
-      locale = 'en-US'
-    }
     outputJSONSync(join(outDir, `${locale}.json`), {
       data: d,
       locale,
