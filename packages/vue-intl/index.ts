@@ -1,6 +1,5 @@
 import {MessageDescriptor} from '@formatjs/intl'
-import {plugin} from './plugin'
-export default plugin
+export * from './plugin'
 export * from './provider'
 export {
   IntlShape,
