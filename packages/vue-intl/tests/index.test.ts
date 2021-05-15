@@ -1,7 +1,7 @@
 import {defineComponent, h} from 'vue'
-import VueIntl, {provideIntl, useIntl} from '../index'
+import {createIntl, provideIntl, useIntl} from '../index'
 import {mount} from '@vue/test-utils'
-import {createIntl} from '@formatjs/intl'
+import {createIntl as rawCreateIntl} from '@formatjs/intl'
 
 const Translations = defineComponent({
   template: `
@@ -44,7 +44,7 @@ const Descendant = {
 const Ancestor = {
   setup() {
     provideIntl(
-      createIntl({
+      rawCreateIntl({
         locale: 'en',
         defaultLocale: 'en',
         messages: {
@@ -77,16 +77,13 @@ test('basic', function () {
   const wrapper = mount(Translations, {
     global: {
       plugins: [
-        [
-          VueIntl,
-          {
-            locale: 'en',
-            defaultLocale: 'en',
-            messages: {
-              foo: 'Foo',
-            },
+        createIntl({
+          locale: 'en',
+          defaultLocale: 'en',
+          messages: {
+            foo: 'Foo',
           },
-        ],
+        }),
       ],
     },
   })
@@ -98,16 +95,13 @@ test('injected', function () {
   const wrapper = mount(Injected, {
     global: {
       plugins: [
-        [
-          VueIntl,
-          {
-            locale: 'en',
-            defaultLocale: 'en',
-            messages: {
-              foo: 'Injected',
-            },
+        createIntl({
+          locale: 'en',
+          defaultLocale: 'en',
+          messages: {
+            foo: 'Injected',
           },
-        ],
+        }),
       ],
     },
   })
