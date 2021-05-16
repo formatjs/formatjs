@@ -261,24 +261,27 @@ export function extractMessages(
   if (node.type === 'CallExpression') {
     const expr = node
     const fnId = expr.callee
+    const args0 = expr.arguments[0]
+    const args1 = expr.arguments[1]
+    // We can't really analyze spread element
+    if (!args0 || args0.type === 'SpreadElement') {
+      return []
+    }
     if (
       (!excludeMessageDeclCalls &&
         isSingleMessageDescriptorDeclaration(fnId, importedMacroVars)) ||
       isIntlFormatMessageCall(node) ||
       is$formatMessageCall(node)
     ) {
-      const msgDescriptorNodeInfo = extractMessageDescriptor(expr.arguments[0])
-      if (msgDescriptorNodeInfo) {
-        return [[msgDescriptorNodeInfo, expr.arguments[1]]]
+      const msgDescriptorNodeInfo = extractMessageDescriptor(args0)
+      if (msgDescriptorNodeInfo && (!args1 || args1.type !== 'SpreadElement')) {
+        return [[msgDescriptorNodeInfo, args1]]
       }
     } else if (
       !excludeMessageDeclCalls &&
       isMultipleMessageDescriptorDeclaration(fnId, importedMacroVars)
     ) {
-      return extractMessageDescriptors(expr.arguments[0]).map(msg => [
-        msg,
-        undefined,
-      ])
+      return extractMessageDescriptors(args0).map(msg => [msg, undefined])
     }
   } else if (
     node.type === 'JSXOpeningElement' &&
