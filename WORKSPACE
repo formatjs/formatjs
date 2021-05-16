@@ -46,7 +46,7 @@ http_archive(
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "npm_install")
 
 node_repositories(
-    node_version = "14.9.0",
+    node_version = "16.1.0",
     package_json = ["//:package.json"],
 )
 
