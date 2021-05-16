@@ -36,8 +36,8 @@ npm run examples
 To build/test individual package:
 
 ```sh
-bazel build //packages/react-intl
-bazel test //packages/react-intl
+npx bazel build //packages/react-intl
+npx bazel test //packages/react-intl
 ```
 
 Releases can be done with the following steps (**must use `npm`**):
