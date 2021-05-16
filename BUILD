@@ -18,6 +18,7 @@ exports_files(
         "karma.conf-ci.js",
         "jest.config.js",
         ".prettierrc.json",
+        "tslib+2.2.0.patch"
     ] + glob(["npm_package_patches/*"]),
     visibility = ["//:__subpackages__"],
 )

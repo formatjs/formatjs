@@ -87,13 +87,7 @@ npm_install(
     # Name this npm so that Bazel Label references look like @npm//package
     name = "npm",
     package_json = "//:package.json",
-    package_lock_json = "//:package-lock.json",
-    post_install_patches = [
-        "//:npm_package_patches/@types+babel__core+7.1.14.patch",
-        "//:npm_package_patches/@types+babel__helper-plugin-utils+7.10.0.patch",
-        "//:npm_package_patches/make-plural-compiler+5.1.0.patch",
-        "//:npm_package_patches/tslib+2.2.0.patch",
-    ]
+    package_lock_json = "//:package-lock.json"
 )
 
 # Setup skylib
