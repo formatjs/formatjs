@@ -32,7 +32,7 @@ SRCS = glob(
         "NumberFormat/*.json",
     ],
     exclude = [
-        "tools/*.ts",
+        "scripts/*.ts",
         "tests/*.ts",
     ],
 )
@@ -67,7 +67,7 @@ generated_file_test(
 generate_src_file(
     name = "digit-mapping",
     src = "NumberFormat/digit-mapping.json",
-    entry_point = "tools/digit-mapping.ts",
+    entry_point = "scripts/digit-mapping.ts",
 )
 
 check_format(
@@ -77,8 +77,20 @@ check_format(
             "**/*",
         ],
         exclude = [
+            "**/*.generated.*",
             "CHANGELOG.md",
             "NumberFormat/digit-mapping.json",
         ],
     ),
+)
+
+generate_src_file(
+    name = "regex",
+    src = "regex.generated.ts",
+    data = [
+        "scripts/global.ts",
+        "@npm//@unicode/unicode-13.0.0",
+        "@npm//regenerate",
+    ],
+    entry_point = "scripts/regex-gen.ts",
 )
