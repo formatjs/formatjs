@@ -111,7 +111,7 @@
     "serialize-javascript": "^5.0.0",
     "test262-harness": "^7.3.1",
     "ts-jest": "^26.4.0",
-    "ts-loader": "^8.1.0",
+    "ts-loader": "^9.1.2",
     "ts-node": "^9.0.0",
     "ts-pegjs": "0.3",
     "tslib": "^2.1.0",
