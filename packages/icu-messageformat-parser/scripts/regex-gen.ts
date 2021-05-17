@@ -13,9 +13,8 @@ function main(args: minimist.ParsedArgs) {
   outputFileSync(
     args.out,
     `// @generated from regex-gen.ts
-export const SPACE_SEPARATOR_START_REGEX = /^${spaceSeparator.toString()}*/i
-export const SPACE_SEPARATOR_END_REGEX = /${spaceSeparator.toString()}*$/i
-export const WHITE_SPACE_REGEX = /${ws.toString()}/i
+export const SPACE_SEPARATOR_REGEX = /${spaceSeparator.toString()}/
+export const WHITE_SPACE_REGEX = /${ws.toString()}/
 `
   )
 }

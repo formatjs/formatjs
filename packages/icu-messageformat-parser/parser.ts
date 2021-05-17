@@ -10,16 +10,20 @@ import {
   TagElement,
   TYPE,
 } from './types'
-import {
-  SPACE_SEPARATOR_END_REGEX,
-  SPACE_SEPARATOR_START_REGEX,
-} from './regex.generated'
+import {SPACE_SEPARATOR_REGEX} from './regex.generated'
 import {
   NumberSkeletonToken,
   parseNumberSkeleton,
   parseNumberSkeletonFromString,
   parseDateTimeSkeleton,
 } from '@formatjs/icu-skeleton-parser'
+
+const SPACE_SEPARATOR_START_REGEX = new RegExp(
+  `^${SPACE_SEPARATOR_REGEX.source}*`
+)
+const SPACE_SEPARATOR_END_REGEX = new RegExp(
+  `${SPACE_SEPARATOR_REGEX.source}*$`
+)
 
 export interface Position {
   /** Offset in terms of UTF-16 *code unit*. */
