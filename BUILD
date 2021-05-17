@@ -135,6 +135,7 @@ multirun(
         "//packages/intl-pluralrules:tests-locale-data-all.update",
         "//packages/intl-relativetimeformat:test262-main.update",
         "//packages/intl-relativetimeformat:tests-locale-data-all.update",
+        "//packages/intl-getcanonicallocales:aliases.update"
     ],
 )
 
