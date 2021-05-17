@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.7.1...@formatjs/ecma402-abstract@1.8.0) (2021-05-17)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** upgrade symbol regex to unicode 13 ([c991b8c](https://github.com/formatjs/formatjs/commit/c991b8c4bb1b8244eb7fd5490b75727576e1bbd9))
+
+
+
+
+
 ## [1.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.7.0...@formatjs/ecma402-abstract@1.7.1) (2021-05-10)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract

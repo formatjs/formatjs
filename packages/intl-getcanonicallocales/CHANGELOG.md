@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.5.11...@formatjs/intl-getcanonicallocales@1.6.0) (2021-05-17)
+
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** upgrade unicode to v39 ([ee3a069](https://github.com/formatjs/formatjs/commit/ee3a0694bb9e5418cbd04664016b47fc5b0e079c))
+
+
+
+
+
 ## [1.5.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.5.10...@formatjs/intl-getcanonicallocales@1.5.11) (2021-05-14)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

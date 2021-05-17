@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.0.0...@formatjs/intl-datetimeformat@4.1.0) (2021-05-17)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** upgrade unicode to v39 ([d0625c3](https://github.com/formatjs/formatjs/commit/d0625c340a6aecd6961be85c7dff056bac3f7674))
+
+
+
+
+
 # [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.3.5...@formatjs/intl-datetimeformat@4.0.0) (2021-05-14)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@7.0.0...@formatjs/intl-numberformat@7.1.0) (2021-05-17)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** upgrade unicode to v39 ([55aa4e3](https://github.com/formatjs/formatjs/commit/55aa4e387fa9a703be86a6866725ddeea93486a9))
+
+
+
+
+
 # [7.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.2.10...@formatjs/intl-numberformat@7.0.0) (2021-05-14)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/formatjs/formatjs/compare/vue-intl@4.2.7...vue-intl@5.0.0) (2021-05-17)
+
+
+### Features
+
+* **vue-intl:** follow Vue.js 3 plugin conventions ([#2891](https://github.com/formatjs/formatjs/issues/2891)) ([f6be174](https://github.com/formatjs/formatjs/commit/f6be1744713dd83db1042bcb8a7db2b69d1ccf74)), closes [#2889](https://github.com/formatjs/formatjs/issues/2889)
+
+
+### BREAKING CHANGES
+
+* **vue-intl:** This removes default export from the plugin and expose `createIntl` instead to follow vue3 plugin conventions
+
+
+
+
+
 ## [4.2.7](https://github.com/formatjs/formatjs/compare/vue-intl@4.2.6...vue-intl@4.2.7) (2021-05-14)
 
 **Note:** Version bump only for package vue-intl

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.0.1...@formatjs/icu-messageformat-parser@2.0.2) (2021-05-17)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** remove duplicate generated regex and use .source ([8f29e55](https://github.com/formatjs/formatjs/commit/8f29e55558f12982d11cc8692bf59733f7f92ee7))
+
+
+
+
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.0.0...@formatjs/icu-messageformat-parser@2.0.1) (2021-05-10)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

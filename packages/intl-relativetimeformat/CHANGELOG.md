@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@9.0.0...@formatjs/intl-relativetimeformat@9.1.0) (2021-05-17)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** upgrade unicode to v39 ([5b743cb](https://github.com/formatjs/formatjs/commit/5b743cb2b3ed2f62cc973a3ba39e20e136756425))
+
+
+
+
+
 # [9.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@8.1.8...@formatjs/intl-relativetimeformat@9.0.0) (2021-05-14)
 
 

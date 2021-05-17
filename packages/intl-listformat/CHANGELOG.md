@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@6.0.0...@formatjs/intl-listformat@6.1.0) (2021-05-17)
+
+
+### Features
+
+* **@formatjs/intl-listformat:** upgrade unicode to v39 ([2233299](https://github.com/formatjs/formatjs/commit/2233299aefe62d7656a42c93ed7da004180ffc47))
+
+
+
+
+
 # [6.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@5.0.17...@formatjs/intl-listformat@6.0.0) (2021-05-14)
 
 

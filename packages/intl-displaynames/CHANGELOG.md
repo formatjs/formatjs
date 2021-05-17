@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@5.0.0...@formatjs/intl-displaynames@5.1.0) (2021-05-17)
+
+
+### Features
+
+* **@formatjs/intl-displaynames:** upgrade unicode to v39 ([3acde5e](https://github.com/formatjs/formatjs/commit/3acde5ed40f1b2a34106279ef681a18be9e7624e))
+
+
+
+
+
 # [5.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@4.0.16...@formatjs/intl-displaynames@5.0.0) (2021-05-14)
 
 
