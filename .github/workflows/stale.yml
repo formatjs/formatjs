@@ -7,7 +7,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v3.0.18
+      - uses: actions/stale@v3.0.19
         with:
           days-before-stale: 15
           exempt-issue-labels: 'pinned,security'
