@@ -92,7 +92,7 @@ multirun(
     commands = [
         "//packages/babel-plugin-formatjs:prettier",
         "//packages/cli:prettier",
-        "//packages/ecma-376:prettier",
+        "//packages/ecma376:prettier",
         "//packages/ecma402-abstract:prettier",
         "//packages/editor:prettier",
         "//packages/eslint-plugin-formatjs:prettier",
