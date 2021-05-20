@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.8.0...@formatjs/ecma402-abstract@1.9.0) (2021-05-20)
+
+
+### Features
+
+* **@formatjs/ecma-376:** new package that generate ecma-376 numFmt pattern ([2a57d16](https://github.com/formatjs/formatjs/commit/2a57d1676f8fc840915b2750a5469934dfd765e8)), closes [#2885](https://github.com/formatjs/formatjs/issues/2885)
+
+
+
+
+
 # [1.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.7.1...@formatjs/ecma402-abstract@1.8.0) (2021-05-17)
 
 

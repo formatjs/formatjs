@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.10.8...@formatjs/intl@1.11.0) (2021-05-20)
+
+
+### Features
+
+* **@formatjs/intl:** add intl.formatListToParts, fix [#2901](https://github.com/formatjs/formatjs/issues/2901) ([eb40bd3](https://github.com/formatjs/formatjs/commit/eb40bd3e9c2e788c4e13e3ea94bcdd786b99c095))
+
+
+
+
+
 ## [1.10.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.10.7...@formatjs/intl@1.10.8) (2021-05-17)
 
 **Note:** Version bump only for package @formatjs/intl

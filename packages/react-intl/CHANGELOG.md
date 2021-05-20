@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.18.0](https://github.com/formatjs/formatjs/compare/react-intl@5.17.7...react-intl@5.18.0) (2021-05-20)
+
+
+### Features
+
+* **react-intl:** add FormattedListParts, fix [#2901](https://github.com/formatjs/formatjs/issues/2901) ([eb9f193](https://github.com/formatjs/formatjs/commit/eb9f193e084328f5471b183ec36eadba0edf3cf6))
+
+
+
+
+
 ## [5.17.7](https://github.com/formatjs/formatjs/compare/react-intl@5.17.6...react-intl@5.17.7) (2021-05-17)
 
 **Note:** Version bump only for package react-intl

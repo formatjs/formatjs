@@ -1,0 +1,16 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# 0.2.0 (2021-05-20)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma-376:** rm dead files ([94fdbb5](https://github.com/formatjs/formatjs/commit/94fdbb5a00b97ec63cc3634fea8c4a7c1a82279e))
+
+
+### Features
+
+* **@formatjs/ecma-376:** new package that generate ecma-376 numFmt pattern ([2a57d16](https://github.com/formatjs/formatjs/commit/2a57d1676f8fc840915b2750a5469934dfd765e8)), closes [#2885](https://github.com/formatjs/formatjs/issues/2885)
