@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.3.0 (2021-05-20)
+
+
+### Features
+
+* **@formatjs/ecma376:** rename package ([6940184](https://github.com/formatjs/formatjs/commit/6940184b1a40e5abd70430593b1d5ea902138aef))
+
+
+
+
+
 # 0.2.0 (2021-05-20)
 
 
