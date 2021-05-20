@@ -7,6 +7,7 @@ import {
 } from '@formatjs/intl'
 import {IntlShape} from '../types'
 import useIntl from './useIntl'
+import {Part} from '@formatjs/intl-listformat'
 
 enum DisplayName {
   formatDate = 'FormattedDate',
@@ -43,6 +44,19 @@ export const FormattedNumberParts: React.FC<
   const intl = useIntl()
   const {value, children, ...formatProps} = props
   return children(intl.formatNumberToParts(value, formatProps))
+}
+FormattedNumberParts.displayName = 'FormattedNumberParts'
+
+export const FormattedListParts: React.FC<
+  Formatter['formatList'] & {
+    value: Parameters<IntlShape['formatList']>[0]
+
+    children(val: Part[]): React.ReactElement | null
+  }
+> = props => {
+  const intl = useIntl()
+  const {value, children, ...formatProps} = props
+  return children(intl.formatListToParts(value, formatProps))
 }
 FormattedNumberParts.displayName = 'FormattedNumberParts'
 

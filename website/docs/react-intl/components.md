@@ -495,6 +495,41 @@ When the locale is `en`:
 <FormattedList type="conjunction" value={['Me', <b>myself</b>, 'I']} />
 ```
 
+## FormattedListParts
+
+:::caution browser support
+This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat.md) if you plan to support them.
+:::
+
+This component uses [`formatListToParts`](api.md#formatlisttoparts) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
+
+**Props:**
+
+```tsx
+props: ListFormatOptions &
+  {
+    children: (chunks: Array<React.ReactElement | string>) => ReactElement,
+  }
+```
+
+**Example:**
+
+When the locale is `en`:
+
+```tsx live
+<FormattedListParts type="conjunction" value={['Me', 'myself', 'I']}>
+  {parts => (
+    <>
+      <b>{parts[0].value}</b>
+      {parts[1].value}
+      <small>{parts[2].value}</small>
+      {parts[3].value}
+      <small>{parts[4].value}</small>
+    </>
+  )}
+</FormattedListParts>
+```
+
 ## FormattedDisplayName
 
 :::caution browser support

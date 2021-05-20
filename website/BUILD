@@ -23,6 +23,8 @@ DEPS = [
     "//packages/intl-locale:dist",
     "//packages/intl-displaynames:dist",
     "//packages/intl-displaynames:locale-data",
+    "//packages/intl-listformat:dist",
+    "//packages/intl-listformat:locale-data",
     "//packages/intl-messageformat:dist",
     "//packages/icu-messageformat-parser:dist",
     "//packages/react-intl:dist",

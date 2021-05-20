@@ -105,7 +105,10 @@ export const FormattedTimeParts: React.FC<
   }
 > = createFormattedDateTimePartsComponent('formatTime')
 
-export {FormattedNumberParts} from './src/components/createFormattedComponent'
+export {
+  FormattedNumberParts,
+  FormattedListParts,
+} from './src/components/createFormattedComponent'
 export {default as FormattedRelativeTime} from './src/components/relative'
 export {default as FormattedPlural} from './src/components/plural'
 export {default as FormattedMessage} from './src/components/message'

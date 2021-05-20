@@ -14,6 +14,9 @@ import '@formatjs/intl-locale/polyfill'
 import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 
+import '@formatjs/intl-listformat/polyfill'
+import '@formatjs/intl-listformat/locale-data/en'
+
 // Add react-live imports you need here
 const ReactLiveScope = {
   React,

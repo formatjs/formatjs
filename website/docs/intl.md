@@ -120,6 +120,7 @@ interface IntlFormatters {
     values: Array<string | T>,
     opts?: FormatListOptions
   ): T | string | Array<string | T>
+  formatListToParts(values: Array<string | T>, opts?: FormatListOptions): Part[]
   formatDisplayName(
     value: string,
     opts?: FormatDisplayNameOptions

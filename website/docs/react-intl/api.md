@@ -140,21 +140,48 @@ interface IntlConfig {
 }
 
 interface IntlFormatters {
-  formatDate(value: number | Date, opts: FormatDateOptions): string
-  formatTime(value: number | Date, opts: FormatDateOptions): string
-  formatDateTimeRange(
-    from: number | Date,
-    to: number | Date,
-    opts: FormatDateOptions
-  ): string
+  formatDate(value: number | Date | string, opts?: FormatDateOptions): string
+  formatTime(value: number | Date | string, opts?: FormatDateOptions): string
+  formatDateToParts(
+    value: number | Date | string,
+    opts?: FormatDateOptions
+  ): Intl.DateTimeFormatPart[]
+  formatTimeToParts(
+    value: number | Date | string,
+    opts?: FormatDateOptions
+  ): Intl.DateTimeFormatPart[]
   formatRelativeTime(
     value: number,
-    unit: Unit,
-    opts: FormatRelativeOptions
+    unit?: FormattableUnit,
+    opts?: FormatRelativeTimeOptions
   ): string
-  formatNumber(value: number, opts: FormatNumberOptions): string
-  formatPlural(value: number, opts: FormatPluralOptions): string
-  formatMessage(descriptor: MessageDescriptor, values: any): string
+  formatNumber(value: number, opts?: FormatNumberOptions): string
+  formatNumberToParts(
+    value: number,
+    opts?: FormatNumberOptions
+  ): Intl.NumberFormatPart[]
+  formatPlural(
+    value: number | string,
+    opts?: FormatPluralOptions
+  ): ReturnType<Intl.PluralRules['select']>
+  formatMessage(
+    descriptor: MessageDescriptor,
+    values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>
+  ): string
+  formatMessage(
+    descriptor: MessageDescriptor,
+    values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T, R>>
+  ): R
+  formatList(values: Array<string>, opts?: FormatListOptions): string
+  formatList(
+    values: Array<string | T>,
+    opts?: FormatListOptions
+  ): T | string | Array<string | T>
+  formatListToParts(values: Array<string | T>, opts?: FormatListOptions): Part[]
+  formatDisplayName(
+    value: string,
+    opts?: FormatDisplayNameOptions
+  ): string | undefined
 }
 
 type IntlShape = IntlConfig & IntlFormatters
