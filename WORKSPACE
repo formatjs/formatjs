@@ -87,7 +87,7 @@ npm_install(
     # Name this npm so that Bazel Label references look like @npm//package
     name = "npm",
     package_json = "//:package.json",
-    package_lock_json = "//:package-lock.json"
+    package_lock_json = "//:package-lock.json",
 )
 
 # Setup skylib

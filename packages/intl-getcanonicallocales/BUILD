@@ -66,7 +66,7 @@ generate_src_file(
         "@npm//cldr-core",
     ],
     entry_point = "scripts/aliases.ts",
-    visibility = ["//:__pkg__"]
+    visibility = ["//:__pkg__"],
 )
 
 # karma tests

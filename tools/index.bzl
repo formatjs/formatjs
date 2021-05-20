@@ -150,7 +150,7 @@ def generate_src_file(name, entry_point, src, args = [], data = [], visibility =
         entry_point = entry_point,
         args = args,
         data = data,
-        visibility = visibility
+        visibility = visibility,
     )
 
     generated_file_test(

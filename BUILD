@@ -18,7 +18,7 @@ exports_files(
         "karma.conf-ci.js",
         "jest.config.js",
         ".prettierrc.json",
-        "tslib+2.2.0.patch"
+        "tslib+2.2.0.patch",
     ] + glob(["npm_package_patches/*"]),
     visibility = ["//:__subpackages__"],
 )
@@ -92,9 +92,11 @@ multirun(
     commands = [
         "//packages/babel-plugin-formatjs:prettier",
         "//packages/cli:prettier",
+        "//packages/ecma-376:prettier",
         "//packages/ecma402-abstract:prettier",
         "//packages/editor:prettier",
         "//packages/eslint-plugin-formatjs:prettier",
+        "//packages/fast-memoize:prettier",
         "//packages/icu-messageformat-parser:prettier",
         "//packages/icu-skeleton-parser:prettier",
         "//packages/intl-datetimeformat:prettier",
@@ -106,7 +108,6 @@ multirun(
         "//packages/intl-localematcher:prettier",
         "//packages/intl-messageformat:prettier",
         "//packages/intl-numberformat:prettier",
-        "//packages/fast-memoize:prettier",
         "//packages/intl-pluralrules:prettier",
         "//packages/intl-relativetimeformat:prettier",
         "//packages/intl:prettier",
@@ -135,7 +136,7 @@ multirun(
         "//packages/intl-pluralrules:tests-locale-data-all.update",
         "//packages/intl-relativetimeformat:test262-main.update",
         "//packages/intl-relativetimeformat:tests-locale-data-all.update",
-        "//packages/intl-getcanonicallocales:aliases.update"
+        "//packages/intl-getcanonicallocales:aliases.update",
     ],
 )
 
