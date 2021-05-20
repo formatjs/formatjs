@@ -12,7 +12,7 @@ import {
 } from './dateTime'
 import {formatPlural} from './plural'
 import {formatMessage} from './message'
-import {formatList} from './list'
+import {formatList, formatListToParts} from './list'
 import {formatDisplayName} from './displayName'
 import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
@@ -141,6 +141,11 @@ export function createIntl<T = string>(
     ),
     formatMessage: formatMessage.bind(null, resolvedConfig, formatters),
     formatList: formatList.bind(null, resolvedConfig, formatters.getListFormat),
+    formatListToParts: formatListToParts.bind(
+      null,
+      resolvedConfig,
+      formatters.getListFormat
+    ),
     formatDisplayName: formatDisplayName.bind(
       null,
       resolvedConfig,

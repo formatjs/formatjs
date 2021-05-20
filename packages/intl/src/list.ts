@@ -1,6 +1,7 @@
 import {Formatters, IntlFormatters, OnErrorFn} from './types'
 import {filterProps} from './utils'
 import type IntlListFormat from '@formatjs/intl-listformat'
+import type {Part} from '@formatjs/intl-listformat'
 import type {IntlListFormatOptions} from '@formatjs/intl-listformat'
 import {FormatError, ErrorCode} from 'intl-messageformat'
 import {IntlError, IntlErrorCode} from './error'
@@ -18,10 +19,7 @@ function generateToken(i: number): string {
 }
 
 export function formatList(
-  {
-    locale,
-    onError,
-  }: {
+  opts: {
     locale: string
     onError: OnErrorFn
   },
@@ -30,6 +28,43 @@ export function formatList(
   options: Parameters<IntlFormatters['formatList']>[1]
 ): string
 export function formatList<T>(
+  opts: {
+    locale: string
+    onError: OnErrorFn
+  },
+  getListFormat: Formatters['getListFormat'],
+  values: Parameters<IntlFormatters['formatList']>[0],
+  options: Parameters<IntlFormatters['formatList']>[1] = {}
+): Array<T | string> | T | string {
+  const results = formatListToParts(
+    opts,
+    getListFormat,
+    values,
+    options
+  ).reduce((all: Array<string | T>, el) => {
+    const val = el.value
+    if (typeof val !== 'string') {
+      all.push(val)
+    } else if (typeof all[all.length - 1] === 'string') {
+      all[all.length - 1] += val
+    } else {
+      all.push(val)
+    }
+    return all
+  }, [])
+  return results.length === 1 ? results[0] : results
+}
+
+export function formatListToParts<T>(
+  opts: {
+    locale: string
+    onError: OnErrorFn
+  },
+  getListFormat: Formatters['getListFormat'],
+  values: Array<string>,
+  options: Parameters<IntlFormatters['formatList']>[1]
+): Part[]
+export function formatListToParts<T>(
   {
     locale,
     onError,
@@ -40,7 +75,7 @@ export function formatList<T>(
   getListFormat: Formatters['getListFormat'],
   values: Parameters<IntlFormatters['formatList']>[0],
   options: Parameters<IntlFormatters['formatList']>[1] = {}
-): Array<T | string> | string {
+): Part<T | string>[] {
   const ListFormat: typeof IntlListFormat = (Intl as any).ListFormat
   if (!ListFormat) {
     onError(
@@ -64,23 +99,13 @@ Try polyfilling it using "@formatjs/intl-listformat"
       }
       return String(v)
     })
-    if (!Object.keys(richValues).length) {
-      return getListFormat(locale, filteredOptions).format(serializedValues)
-    }
-    const parts = getListFormat(locale, filteredOptions).formatToParts(
-      serializedValues
-    )
-    return parts.reduce((all: Array<string | T>, el) => {
-      const val = el.value
-      if (richValues[val]) {
-        all.push(richValues[val])
-      } else if (typeof all[all.length - 1] === 'string') {
-        all[all.length - 1] += val
-      } else {
-        all.push(val)
-      }
-      return all
-    }, [])
+    return getListFormat(locale, filteredOptions)
+      .formatToParts(serializedValues)
+      .map(part =>
+        part.type === 'literal'
+          ? part
+          : {...part, value: richValues[part.value] || part.value}
+      )
   } catch (e) {
     onError(
       new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting list.', e)

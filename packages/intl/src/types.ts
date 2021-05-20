@@ -8,7 +8,10 @@ import {
 } from 'intl-messageformat'
 import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
-import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat'
+import IntlListFormat, {
+  IntlListFormatOptions,
+  Part,
+} from '@formatjs/intl-listformat'
 import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames'
 import {
   MissingTranslationError,
@@ -139,6 +142,7 @@ export interface IntlFormatters<T = any, R = T> {
     values: Array<string | T>,
     opts?: FormatListOptions
   ): T | string | Array<string | T>
+  formatListToParts(values: Array<string | T>, opts?: FormatListOptions): Part[]
   formatDisplayName(
     value: Parameters<DisplayNames['of']>[0],
     opts: FormatDisplayNameOptions

@@ -68,11 +68,11 @@ export interface ResolvedIntlListFormatOptions {
   style: 'long' | 'short' | 'narrow'
 }
 
-export type Part = LiteralPart | ElementPart
+export type Part<T = string> = LiteralPart | ElementPart | ElementPart<T>
 
-export interface ElementPart {
+export interface ElementPart<T = string> {
   type: 'element'
-  value: string
+  value: T
 }
 
 interface Placeable {

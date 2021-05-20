@@ -113,6 +113,9 @@ ts_script(
     data = CLDR_DEPS,
     entry_point = "scripts/cldr.ts",
     output_dir = True,
+    visibility = [
+        "//website:__pkg__",
+    ],
 )
 
 [generate_src_file(
