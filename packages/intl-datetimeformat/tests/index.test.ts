@@ -267,7 +267,32 @@ describe('Intl.DateTimeFormat', function () {
     })
     expect(dtf.format(date)).toBe('2020年2月02日 GMT+14:00 上午12:10:10')
   })
-  it.skip('GH issue #2909', function () {
+  it('range with ymdhM', function () {
+    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
+    const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
+    const dtf = new DateTimeFormat('en', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZone: 'America/New_York',
+    })
+    expect(dtf.formatRange(date1, date2)).toBe(
+      '5/19/2021, 5:00 AM – 6/19/2021, 1:00 PM'
+    )
+  })
+  it('GH issue #2909', function () {
+    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
+    const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
+    const dtf = new DateTimeFormat('en', {
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZone: 'America/New_York',
+    })
+    expect(() => dtf.formatRange(date1, date2)).not.toThrow()
+  })
+  it.skip('GH issue #2915', function () {
     const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
     const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
     const dtf = new DateTimeFormat('en', {
