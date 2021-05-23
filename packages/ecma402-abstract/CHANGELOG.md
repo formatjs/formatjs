@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.0...@formatjs/ecma402-abstract@1.9.1) (2021-05-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix crash in [#2909](https://github.com/formatjs/formatjs/issues/2909) ([495d1b8](https://github.com/formatjs/formatjs/commit/495d1b82eb971f0d2421114c34038357085e1693))
+
+
+
+
+
 # [1.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.8.0...@formatjs/ecma402-abstract@1.9.0) (2021-05-20)
 
 
