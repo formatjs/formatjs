@@ -305,7 +305,8 @@ export function parseDateTimeSkeleton(
         patternParts: splitRangePattern(pattern12),
       }
     }
-  } else if (intervalFormatFallback) {
+  }
+  if (intervalFormatFallback) {
     const patternParts = splitFallbackRangePattern(intervalFormatFallback)
     result.rangePatterns.default = {
       patternParts,

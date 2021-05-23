@@ -100,6 +100,7 @@ export type TABLE_2 =
   | 'year'
   | 'month'
   | 'day'
+  | 'dayPeriod'
   | 'ampm'
   | 'hour'
   | 'minute'

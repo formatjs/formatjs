@@ -75,6 +75,22 @@ test('parseDateTimeSkeleton', function () {
           },
         ],
       },
+      default: {
+        patternParts: [
+          {
+            pattern: '{0}',
+            source: 'startRange',
+          },
+          {
+            pattern: ' - ',
+            source: 'shared',
+          },
+          {
+            pattern: '{1}',
+            source: 'endRange',
+          },
+        ],
+      },
     },
     rangePatterns12: {
       day: {
@@ -101,6 +117,22 @@ test('parseDateTimeSkeleton', function () {
           },
           {
             pattern: '{month} {day}',
+            source: 'endRange',
+          },
+        ],
+      },
+      default: {
+        patternParts: [
+          {
+            pattern: '{0}',
+            source: 'startRange',
+          },
+          {
+            pattern: ' - ',
+            source: 'shared',
+          },
+          {
+            pattern: '{1}',
             source: 'endRange',
           },
         ],

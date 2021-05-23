@@ -17,6 +17,7 @@ const TABLE_2_FIELDS: Array<TABLE_2> = [
   'year',
   'month',
   'day',
+  'dayPeriod',
   'ampm',
   'hour',
   'minute',
@@ -63,43 +64,39 @@ export function PartitionDateTimeRangePattern(
 
   for (const fieldName of TABLE_2_FIELDS) {
     if (dateFieldsPracticallyEqual && !patternContainsLargerDateField) {
-      if (fieldName === 'ampm') {
-        let rp = rangePatterns.ampm
-        if (rangePattern !== undefined && rp === undefined) {
-          patternContainsLargerDateField = true
-        } else {
+      let rp = fieldName in rangePatterns ? rangePatterns[fieldName] : undefined
+      if (rangePattern !== undefined && rp === undefined) {
+        patternContainsLargerDateField = true
+      } else {
+        rangePattern = rp
+        if (fieldName === 'ampm') {
           let v1 = tm1.hour
           let v2 = tm2.hour
           if ((v1 > 11 && v2 < 11) || (v1 < 11 && v2 > 11)) {
             dateFieldsPracticallyEqual = false
           }
-          rangePattern = rp
-        }
-      } else if (fieldName === 'fractionalSecondDigits') {
-        let fractionalSecondDigits = internalSlots.fractionalSecondDigits
-        if (fractionalSecondDigits === undefined) {
-          fractionalSecondDigits = 3
-        }
-        let v1 = Math.floor(
-          tm1.millisecond * 10 ** (fractionalSecondDigits - 3)
-        )
-        let v2 = Math.floor(
-          tm2.millisecond * 10 ** (fractionalSecondDigits - 3)
-        )
-        if (v1 !== v2) {
-          dateFieldsPracticallyEqual = false
-        }
-      } else {
-        let rp = rangePatterns[fieldName]
-        if (rangePattern !== undefined && rp === undefined) {
-          patternContainsLargerDateField = true
+        } else if (fieldName === 'dayPeriod') {
+          // TODO
+        } else if (fieldName === 'fractionalSecondDigits') {
+          let fractionalSecondDigits = internalSlots.fractionalSecondDigits
+          if (fractionalSecondDigits === undefined) {
+            fractionalSecondDigits = 3
+          }
+          let v1 = Math.floor(
+            tm1.millisecond * 10 ** (fractionalSecondDigits - 3)
+          )
+          let v2 = Math.floor(
+            tm2.millisecond * 10 ** (fractionalSecondDigits - 3)
+          )
+          if (!SameValue(v1, v2)) {
+            dateFieldsPracticallyEqual = false
+          }
         } else {
           let v1 = tm1[fieldName]
           let v2 = tm2[fieldName]
           if (!SameValue(v1, v2)) {
             dateFieldsPracticallyEqual = false
           }
-          rangePattern = rp
         }
       }
     }
