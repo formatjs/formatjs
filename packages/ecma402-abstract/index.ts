@@ -1,7 +1,6 @@
 export * from './CanonicalizeLocaleList'
 export * from './CanonicalizeTimeZoneName'
 export * from './CoerceOptionsToObject'
-export * from './DisplayNames/CanonicalCodeForDisplayNames'
 export * from './GetNumberOption'
 export * from './GetOption'
 export * from './GetOptionsObject'

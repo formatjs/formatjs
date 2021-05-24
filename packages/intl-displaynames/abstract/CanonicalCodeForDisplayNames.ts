@@ -1,6 +1,8 @@
-import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
-import {invariant} from '../utils'
-import {IsWellFormedCurrencyCode} from '../IsWellFormedCurrencyCode'
+import {
+  CanonicalizeLocaleList,
+  invariant,
+  IsWellFormedCurrencyCode,
+} from '@formatjs/ecma402-abstract'
 
 const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})$/i
 const ALPHA_4 = /^[a-z]{4}$/i

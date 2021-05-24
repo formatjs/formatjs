@@ -12,8 +12,8 @@ import {
   ToString,
   CanonicalizeLocaleList,
   GetOptionsObject,
-  CanonicalCodeForDisplayNames,
 } from '@formatjs/ecma402-abstract'
+import {CanonicalCodeForDisplayNames} from './abstract/CanonicalCodeForDisplayNames'
 
 export interface DisplayNamesOptions {
   localeMatcher?: 'lookup' | 'best fit'
