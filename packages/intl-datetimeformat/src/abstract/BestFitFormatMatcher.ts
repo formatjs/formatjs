@@ -1,5 +1,9 @@
-import {DateTimeFormatOptions, Formats, TABLE_6} from '../types/date-time'
-import {invariant} from '../utils'
+import {
+  DateTimeFormatOptions,
+  Formats,
+  TABLE_6,
+  invariant,
+} from '@formatjs/ecma402-abstract'
 import {
   DATE_TIME_PROPS,
   removalPenalty,

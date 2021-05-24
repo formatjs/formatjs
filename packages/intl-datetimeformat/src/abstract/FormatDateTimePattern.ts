@@ -2,11 +2,11 @@ import {
   IntlDateTimeFormatInternal,
   DateTimeFormatLocaleInternalData,
   IntlDateTimeFormatPart,
-} from '../types/date-time'
+  TimeClip,
+} from '@formatjs/ecma402-abstract'
 
 import {DATE_TIME_PROPS} from './utils'
 import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime'
-import {TimeClip} from '../262'
 
 function pad(n: number): string {
   if (n < 10) {
@@ -115,6 +115,8 @@ export function FormatDateTimePattern(
         type: 'fractionalSecond',
         value: nf3!.format(v),
       })
+    } else if (p === 'dayPeriod') {
+      // TODO
     } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
       let fv = ''
       const f = internalSlots[p as 'year'] as

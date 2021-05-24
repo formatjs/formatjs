@@ -3,14 +3,15 @@ import {
   IntlDateTimeFormatPartType,
   RangePatternType,
   TABLE_2,
-} from '../types/date-time'
-import {SameValue, TimeClip} from '../262'
+  PartitionPattern,
+  SameValue,
+  TimeClip,
+} from '@formatjs/ecma402-abstract'
 import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime'
 import {
   FormatDateTimePattern,
   FormatDateTimePatternImplDetails,
 } from './FormatDateTimePattern'
-import {PartitionPattern} from '../PartitionPattern'
 
 const TABLE_2_FIELDS: Array<TABLE_2> = [
   'era',

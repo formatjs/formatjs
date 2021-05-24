@@ -1,9 +1,9 @@
 import {
   bestFitFormatMatcherScore,
   BestFitFormatMatcher,
-} from '../DateTimeFormat/BestFitFormatMatcher'
-import {parseDateTimeSkeleton} from '../DateTimeFormat/skeleton'
-import {DateTimeFormatOptions} from '../types/date-time'
+} from '../../src/abstract/BestFitFormatMatcher'
+import {parseDateTimeSkeleton} from '../../src/abstract/skeleton'
+import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract'
 
 test('bestFitFormatMatcherScore', function () {
   const opts: DateTimeFormatOptions = {

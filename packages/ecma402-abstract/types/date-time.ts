@@ -3,7 +3,6 @@ export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
   dateStyle?: 'full' | 'long' | 'medium' | 'short'
   timeStyle?: 'full' | 'long' | 'medium' | 'short'
   calendar?: string
-  // dayPeriod?: 'narrow' | 'short' | 'long';
   numberingSystem?: string
 }
 
@@ -40,6 +39,7 @@ export interface IntlDateTimeFormatInternal {
   year: '2-digit' | 'numeric'
   month: '2-digit' | 'numeric' | 'narrow' | 'short' | 'long'
   day: '2-digit' | 'numeric'
+  dayPeriod: 'narrow' | 'short' | 'long'
   hour: '2-digit' | 'numeric'
   minute: '2-digit' | 'numeric'
   second: '2-digit' | 'numeric'

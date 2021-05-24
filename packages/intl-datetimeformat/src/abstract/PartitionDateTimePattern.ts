@@ -1,14 +1,14 @@
-import {TimeClip} from '../262'
+import {
+  IntlDateTimeFormatPart,
+  IntlDateTimeFormatPartType,
+  PartitionPattern,
+  TimeClip,
+} from '@formatjs/ecma402-abstract'
 import {ToLocalTimeImplDetails} from './ToLocalTime'
 import {
   FormatDateTimePattern,
   FormatDateTimePatternImplDetails,
 } from './FormatDateTimePattern'
-import {PartitionPattern} from '../PartitionPattern'
-import {
-  IntlDateTimeFormatPart,
-  IntlDateTimeFormatPartType,
-} from '../types/date-time'
 
 /**
  * https://tc39.es/ecma402/#sec-partitiondatetimepattern

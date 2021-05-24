@@ -1,6 +1,5 @@
 import {PartitionDateTimePattern} from './PartitionDateTimePattern'
-import {ArrayCreate} from '../262'
-import {IntlDateTimeFormatPart} from '../types/date-time'
+import {ArrayCreate, IntlDateTimeFormatPart} from '@formatjs/ecma402-abstract'
 
 /**
  * https://tc39.es/ecma402/#sec-formatdatetimetoparts

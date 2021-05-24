@@ -3,19 +3,19 @@ import {
   Formats,
   IntlDateTimeFormatInternal,
   DateTimeFormatLocaleInternalData,
-} from '../types/date-time'
-import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
-import {ToDateTimeOptions} from './ToDateTimeOptions'
-import {GetOption} from '../GetOption'
-import {ResolveLocale} from '../ResolveLocale'
-import {IsValidTimeZoneName} from '../IsValidTimeZoneName'
-import {CanonicalizeTimeZoneName} from '../CanonicalizeTimeZoneName'
+  CanonicalizeLocaleList,
+  invariant,
+  GetOption,
+  ResolveLocale,
+  IsValidTimeZoneName,
+  CanonicalizeTimeZoneName,
+  GetNumberOption,
+} from '@formatjs/ecma402-abstract'
 import {BasicFormatMatcher} from './BasicFormatMatcher'
 import {BestFitFormatMatcher} from './BestFitFormatMatcher'
-import {invariant} from '../utils'
 import {DATE_TIME_PROPS} from './utils'
 import {DateTimeStyleFormat} from './DateTimeStyleFormat'
-import {GetNumberOption} from '../GetNumberOption'
+import {ToDateTimeOptions} from './ToDateTimeOptions'
 
 function isTimeRelated(opt: Opt) {
   for (const prop of ['hour', 'minute', 'second'] as Array<

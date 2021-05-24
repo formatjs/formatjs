@@ -1,5 +1,4 @@
-import {DateTimeFormatOptions} from '../types/date-time'
-import {ToObject} from '../262'
+import {DateTimeFormatOptions, ToObject} from '@formatjs/ecma402-abstract'
 
 /**
  * https://tc39.es/ecma402/#sec-todatetimeoptions

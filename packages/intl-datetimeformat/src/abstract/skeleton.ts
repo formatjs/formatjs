@@ -5,7 +5,7 @@ import {
   RangePatterns,
   RangePatternType,
   TABLE_2,
-} from '../types/date-time'
+} from '@formatjs/ecma402-abstract'
 
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table

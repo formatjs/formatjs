@@ -1,9 +1,7 @@
 // eslint-disable-next-line import/no-cycle
 import {DateTimeFormat} from './core'
-import {
-  ToDateTimeOptions,
-  DateTimeFormatOptions,
-} from '@formatjs/ecma402-abstract'
+import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract'
+import {ToDateTimeOptions} from './abstract/ToDateTimeOptions'
 
 /**
  * Number.prototype.toLocaleString ponyfill

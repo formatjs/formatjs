@@ -2,8 +2,8 @@ import {
   DateTimeFormatOptions,
   DateTimeFormatLocaleInternalData,
   Formats,
-} from '../types/date-time'
-import {invariant} from '../utils'
+  invariant,
+} from '@formatjs/ecma402-abstract'
 
 export function DateTimeStyleFormat(
   dateStyle: DateTimeFormatOptions['dateStyle'],

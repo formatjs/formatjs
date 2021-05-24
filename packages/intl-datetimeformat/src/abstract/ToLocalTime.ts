@@ -1,7 +1,5 @@
-import {invariant} from '../utils'
-
-import {UnpackedZoneData} from '../types/date-time'
 import {
+  UnpackedZoneData,
   Type,
   YearFromTime,
   WeekDay,
@@ -11,7 +9,8 @@ import {
   MinFromTime,
   SecFromTime,
   msFromTime,
-} from '../262'
+  invariant,
+} from '@formatjs/ecma402-abstract'
 
 function getApplicableZoneData(
   t: number,

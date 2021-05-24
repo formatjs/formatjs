@@ -52,14 +52,12 @@ alias(
 SRCS = glob(
     [
         "*.ts",
-        "src/*.ts",
-        "src/data/*",
+        "src/**/*",
     ],
-    exclude = ["test*.*"],
 )
 
 TESTS = glob([
-    "tests/*.test.ts",
+    "tests/**/*.test.ts",
 ])
 
 SRC_DEPS = [
@@ -100,6 +98,7 @@ ts_script(
     data = [
         "scripts/extract-dates.ts",
         "src/types.ts",
+        "src/abstract/skeleton.ts",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "//packages/intl-locale:dist",
