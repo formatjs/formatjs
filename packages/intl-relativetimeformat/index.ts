@@ -1,13 +1,12 @@
 import {
-  SupportedLocales,
-  RelativeTimeLocaleData,
-  LocaleFieldsData,
-  PartitionRelativeTimePattern,
-  InitializeRelativeTimeFormat,
   CanonicalizeLocaleList,
+  LocaleFieldsData,
+  RelativeTimeLocaleData,
+  SupportedLocales,
   ToString,
 } from '@formatjs/ecma402-abstract'
-
+import {InitializeRelativeTimeFormat} from './abstract/InitializeRelativeTimeFormat'
+import {PartitionRelativeTimePattern} from './abstract/PartitionRelativeTimePattern'
 import getInternalSlots from './get_internal_slots'
 
 export default class RelativeTimeFormat {

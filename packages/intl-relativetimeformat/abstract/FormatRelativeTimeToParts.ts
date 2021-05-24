@@ -1,6 +1,8 @@
-import {RelativeTimeFormatInternal} from '../types/relative-time'
+import {
+  ArrayCreate,
+  RelativeTimeFormatInternal,
+} from '@formatjs/ecma402-abstract'
 import {PartitionRelativeTimePattern} from './PartitionRelativeTimePattern'
-import {ArrayCreate} from '../262'
 
 export function FormatRelativeTimeToParts(
   rtf: Intl.RelativeTimeFormat,

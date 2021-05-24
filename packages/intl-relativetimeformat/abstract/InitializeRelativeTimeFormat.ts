@@ -1,12 +1,12 @@
 import {
   RelativeTimeFormatInternal,
   LocaleFieldsData,
-} from '../types/relative-time'
-import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
-import {GetOption} from '../GetOption'
-import {ResolveLocale} from '../ResolveLocale'
-import {invariant} from '../utils'
-import {CoerceOptionsToObject} from '../CoerceOptionsToObject'
+  CanonicalizeLocaleList,
+  CoerceOptionsToObject,
+  GetOption,
+  ResolveLocale,
+  invariant,
+} from '@formatjs/ecma402-abstract'
 
 const NUMBERING_SYSTEM_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 

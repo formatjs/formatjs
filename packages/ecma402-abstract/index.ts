@@ -19,16 +19,10 @@ export * from './NumberFormat/SetNumberFormatDigitOptions'
 export * from './NumberFormat/SetNumberFormatUnitOptions'
 export * from './NumberFormat/ToRawFixed'
 export * from './NumberFormat/ToRawPrecision'
+export {default as _formatToParts} from './NumberFormat/format_to_parts'
 export * from './PartitionPattern'
-export * from './RelativeTimeFormat/FormatRelativeTime'
-export * from './RelativeTimeFormat/FormatRelativeTimeToParts'
-export * from './RelativeTimeFormat/InitializeRelativeTimeFormat'
-export * from './RelativeTimeFormat/MakePartsList'
-export * from './RelativeTimeFormat/PartitionRelativeTimePattern'
-export * from './RelativeTimeFormat/SingularRelativeTimeUnit'
 export * from './ResolveLocale'
 export * from './SupportedLocales'
-export {default as _formatToParts} from './NumberFormat/format_to_parts'
 export {
   getInternalSlot,
   getMultiInternalSlots,

@@ -1,5 +1,4 @@
-import {PartitionPattern} from '../PartitionPattern'
-import {invariant} from '../utils'
+import {invariant, PartitionPattern} from '@formatjs/ecma402-abstract'
 
 export function MakePartsList(
   pattern: string,

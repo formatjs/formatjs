@@ -1,6 +1,8 @@
-import {invariant} from '../utils'
-import {Type} from '../262'
-import {RelativeTimeFormatSingularUnit} from '../types/relative-time'
+import {
+  invariant,
+  RelativeTimeFormatSingularUnit,
+  Type,
+} from '@formatjs/ecma402-abstract'
 
 /**
  * https://tc39.es/proposal-intl-relative-time/#sec-singularrelativetimeunit

@@ -1,13 +1,15 @@
 import {
   FieldData,
+  invariant,
+  LDMLPluralRule,
   RelativeTimeField,
   RelativeTimeFormatInternal,
-} from '../types/relative-time'
-import {invariant} from '../utils'
+  SameValue,
+  ToString,
+  Type,
+} from '@formatjs/ecma402-abstract'
 import {SingularRelativeTimeUnit} from './SingularRelativeTimeUnit'
 import {MakePartsList} from './MakePartsList'
-import {LDMLPluralRule} from '../types/plural-rules'
-import {ToString, Type, SameValue} from '../262'
 
 export function PartitionRelativeTimePattern(
   rtf: Intl.RelativeTimeFormat,
