@@ -1,9 +1,12 @@
-import {PluralRulesInternal, PluralRulesData} from '../types/plural-rules'
-import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
-import {GetOption} from '../GetOption'
-import {SetNumberFormatDigitOptions} from '../NumberFormat/SetNumberFormatDigitOptions'
-import {ResolveLocale} from '../ResolveLocale'
-import {CoerceOptionsToObject} from '../CoerceOptionsToObject'
+import {
+  PluralRulesInternal,
+  PluralRulesData,
+  CanonicalizeLocaleList,
+  CoerceOptionsToObject,
+  GetOption,
+  SetNumberFormatDigitOptions,
+  ResolveLocale,
+} from '@formatjs/ecma402-abstract'
 
 export function InitializePluralRules(
   pl: Intl.PluralRules,

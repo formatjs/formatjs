@@ -1,7 +1,10 @@
-import {invariant} from '../utils'
-import {Type} from '../262'
-import {LDMLPluralRule, PluralRulesInternal} from '../types/plural-rules'
-import {FormatNumericToString} from '../NumberFormat/FormatNumericToString'
+import {
+  Type,
+  invariant,
+  PluralRulesInternal,
+  LDMLPluralRule,
+  FormatNumericToString,
+} from '@formatjs/ecma402-abstract'
 import {GetOperands, OperandsRecord} from './GetOperands'
 
 /**

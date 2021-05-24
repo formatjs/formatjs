@@ -4,12 +4,12 @@ import {
   PluralRulesData,
   SupportedLocales,
   NumberFormatDigitInternalSlots,
-  ResolvePlural,
-  OperandsRecord,
-  InitializePluralRules,
   ToNumber,
   CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract'
+import {OperandsRecord} from './abstract/GetOperands'
+import {InitializePluralRules} from './abstract/InitializePluralRules'
+import {ResolvePlural} from './abstract/ResolvePlural'
 import getInternalSlots from './get_internal_slots'
 
 function validateInstance(instance: any, method: string) {

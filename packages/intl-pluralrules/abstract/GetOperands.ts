@@ -1,5 +1,4 @@
-import {invariant} from '../utils'
-import {ToNumber} from '../262'
+import {invariant, ToNumber} from '@formatjs/ecma402-abstract'
 
 export interface OperandsRecord {
   /**
