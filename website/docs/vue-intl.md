@@ -56,7 +56,9 @@ From there you can use our APIs in 2 ways:
 
 ### inject
 
-By specifying `inject: ['intl']`, you can use the full `IntlFormatters` API documented in [@formatjs/intl](./intl.md#IntlShape).
+By specifying `inject: {intl: intlKey}`, you can use the full `IntlFormatters` API documented in [@formatjs/intl](./intl.md#IntlShape).
+
+Note: `intlKey` needs to be imported from `vue-intl`.
 
 ### Composition API
 

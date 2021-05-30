@@ -1,16 +1,17 @@
 import {IntlShape} from '@formatjs/intl'
 import {inject, provide} from 'vue'
-
-const IntlProvider = Symbol()
+import {intlKey} from './injection-key'
 
 export function provideIntl(intl: IntlShape<string>) {
-  provide(IntlProvider, intl)
+  provide(intlKey, intl)
 }
 
 export function useIntl() {
-  const intl = inject<IntlShape<string>>(IntlProvider)
+  const intl = inject<IntlShape<string>>(intlKey)
   if (!intl) {
-    throw new Error(`provideIntl was not setup in this component's ancestor`)
+    throw new Error(
+      `An intl object was not injected. Install the plugin or use provideIntl.`
+    )
   }
   return intl
 }
