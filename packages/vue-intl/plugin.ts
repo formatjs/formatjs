@@ -1,5 +1,6 @@
 import {createIntl as _createIntl, IntlConfig} from '@formatjs/intl'
 import Vue from 'vue'
+import {intlKey} from './injection-key'
 
 export const createIntl = (options: IntlConfig): Vue.Plugin => ({
   install(app) {
@@ -17,6 +18,6 @@ export const createIntl = (options: IntlConfig): Vue.Plugin => ({
     app.config.globalProperties.$formatDisplayName = intl.formatDisplayName
     app.config.globalProperties.$formatNumber = intl.formatNumber
 
-    app.provide('intl', intl)
+    app.provide(intlKey, intl)
   },
 })

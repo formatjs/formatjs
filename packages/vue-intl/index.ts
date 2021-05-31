@@ -1,6 +1,7 @@
 import {MessageDescriptor} from '@formatjs/intl'
 export * from './plugin'
 export * from './provider'
+export {intlKey} from './injection-key'
 export {
   IntlShape,
   IntlConfig,
