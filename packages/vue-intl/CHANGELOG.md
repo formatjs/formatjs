@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/formatjs/formatjs/compare/vue-intl@5.0.2...vue-intl@6.0.0) (2021-06-01)
+
+
+### Features
+
+* **vue-intl:** use the same injection key for composition function and plugin ([#2931](https://github.com/formatjs/formatjs/issues/2931)) ([0eb9dc6](https://github.com/formatjs/formatjs/commit/0eb9dc6c60e9256db9b1bd1f00dafb000c087ac0))
+
+
+### BREAKING CHANGES
+
+* **vue-intl:** The injection key is now a symbol and must be imported from `vue-intl` under `intlKey`
+
+
+
+
+
 ## [5.0.2](https://github.com/formatjs/formatjs/compare/vue-intl@5.0.1...vue-intl@5.0.2) (2021-05-23)
 
 **Note:** Version bump only for package vue-intl
