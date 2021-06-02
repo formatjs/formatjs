@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.24](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.0.23...@formatjs/intl-pluralrules@4.0.24) (2021-06-02)
+
+
+### Bug Fixes
+
+* **react-intl:** make React external to react-intl, fix [#2939](https://github.com/formatjs/formatjs/issues/2939) ([f744ccc](https://github.com/formatjs/formatjs/commit/f744ccc39bc7925a8d9764ef3e644333b28ee4e7))
+
+
+
+
+
 ## [4.0.23](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.0.22...@formatjs/intl-pluralrules@4.0.23) (2021-06-01)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules
