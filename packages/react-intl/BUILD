@@ -69,15 +69,23 @@ ts_compile(
 )
 
 esbuild(
-    name = "%s.iife" % PACKAGE_NAME,
+    name = "%s.esbuild.iife" % PACKAGE_NAME,
     args = [
         "--global-name=ReactIntl",
     ],
     entry_point = "lib/index.js",
+    external = ["react"],
     target = "es5",
     deps = [
         ":dist-esm",
     ] + SRC_DEPS,
+)
+
+genrule(
+    name = "external-rename",
+    srcs = [":%s.esbuild.iife.js" % PACKAGE_NAME],
+    outs = ["%s.iife.js" % PACKAGE_NAME],
+    cmd = "cat $< | sed -E 's/require\\(\"react\"\\)/window.React/g' > $@",
 )
 
 jest_test(

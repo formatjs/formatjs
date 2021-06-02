@@ -42,7 +42,10 @@ alias(
 )
 
 SRCS = glob(
-    ["*.ts", "abstract/*.ts"],
+    [
+        "*.ts",
+        "abstract/*.ts",
+    ],
     exclude = ["test*.*"],
 )
 

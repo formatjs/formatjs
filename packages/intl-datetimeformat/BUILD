@@ -97,8 +97,8 @@ ts_script(
     name = "cldr-raw",
     data = [
         "scripts/extract-dates.ts",
-        "src/types.ts",
         "src/abstract/skeleton.ts",
+        "src/types.ts",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "//packages/intl-locale:dist",
