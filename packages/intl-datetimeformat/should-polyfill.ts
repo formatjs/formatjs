@@ -44,6 +44,7 @@ function hasUnthrownDateTimeStyleBug(): boolean {
 
 export function shouldPolyfill() {
   return (
+    typeof Intl === 'undefined' ||
     !('DateTimeFormat' in Intl) ||
     !('formatToParts' in Intl.DateTimeFormat.prototype) ||
     !('formatRange' in Intl.DateTimeFormat.prototype) ||
