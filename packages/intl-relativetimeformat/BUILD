@@ -181,6 +181,7 @@ test262_harness_test(
     templated_args = [
         "--reporter-keys",
         "file,attrs,result",
+        "--errorForFailures",
         "--timeout",
         "30000",
         "--prelude",
