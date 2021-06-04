@@ -30,8 +30,8 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//typescript",
     "@npm//@types/node",
+    "@npm//typescript",
     "//packages/icu-messageformat-parser:dist",
 ]
 
@@ -39,7 +39,8 @@ ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + 
+    ["@npm//ts-jest", "@npm//@jest/types"],
 )
 
 jest_test(
