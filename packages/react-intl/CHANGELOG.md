@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.19.0](https://github.com/formatjs/formatjs/compare/react-intl@5.18.3...react-intl@5.19.0) (2021-06-04)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** support ts-jest 27, fix [#2942](https://github.com/formatjs/formatjs/issues/2942) ([7d994e4](https://github.com/formatjs/formatjs/commit/7d994e485f0e615f8e08fe3befb78d4416edbaaa))
+
+
+
+
+
 ## [5.18.3](https://github.com/formatjs/formatjs/compare/react-intl@5.18.2...react-intl@5.18.3) (2021-06-02)
 
 
