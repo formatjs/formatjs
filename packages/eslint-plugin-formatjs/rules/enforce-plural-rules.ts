@@ -25,12 +25,12 @@ enum LDML {
 }
 
 function verifyAst(
-  plConfig: Record<keyof LDML, boolean>,
+  plConfig: Record<LDML, boolean>,
   ast: MessageFormatElement[]
 ) {
   for (const el of ast) {
     if (isPluralElement(el)) {
-      const rules = Object.keys(plConfig) as Array<keyof LDML>
+      const rules = Object.keys(plConfig) as Array<LDML>
       for (const rule of rules) {
         if (plConfig[rule] && !el.options[rule]) {
           throw new PluralRulesEnforcement(`Missing plural rule "${rule}"`)
