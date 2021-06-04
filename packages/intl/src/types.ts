@@ -142,7 +142,10 @@ export interface IntlFormatters<T = any, R = T> {
     values: ReadonlyArray<string | T>,
     opts?: FormatListOptions
   ): T | string | Array<string | T>
-  formatListToParts(values: ReadonlyArray<string | T>, opts?: FormatListOptions): Part[]
+  formatListToParts(
+    values: ReadonlyArray<string | T>,
+    opts?: FormatListOptions
+  ): Part[]
   formatDisplayName(
     value: Parameters<DisplayNames['of']>[0],
     opts: FormatDisplayNameOptions
