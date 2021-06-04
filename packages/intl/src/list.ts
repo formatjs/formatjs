@@ -24,7 +24,7 @@ export function formatList(
     onError: OnErrorFn
   },
   getListFormat: Formatters['getListFormat'],
-  values: Array<string>,
+  values: ReadonlyArray<string>,
   options: Parameters<IntlFormatters['formatList']>[1]
 ): string
 export function formatList<T>(
@@ -61,7 +61,7 @@ export function formatListToParts<T>(
     onError: OnErrorFn
   },
   getListFormat: Formatters['getListFormat'],
-  values: Array<string>,
+  values: ReadonlyArray<string>,
   options: Parameters<IntlFormatters['formatList']>[1]
 ): Part[]
 export function formatListToParts<T>(

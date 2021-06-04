@@ -84,7 +84,7 @@ export const FormattedNumber: React.FC<
 > = createFormattedComponent('formatNumber')
 export const FormattedList: React.FC<
   IntlListFormatOptions & {
-    value: React.ReactNode[]
+    value: readonly React.ReactNode[]
   }
 > = createFormattedComponent('formatList')
 export const FormattedDisplayName: React.FC<
