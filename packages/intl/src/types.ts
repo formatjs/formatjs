@@ -137,12 +137,15 @@ export interface IntlFormatters<T = any, R = T> {
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T, R>>,
     opts?: IntlMessageFormatOptions
   ): R
-  formatList(values: Array<string>, opts?: FormatListOptions): string
+  formatList(values: ReadonlyArray<string>, opts?: FormatListOptions): string
   formatList(
-    values: Array<string | T>,
+    values: ReadonlyArray<string | T>,
     opts?: FormatListOptions
   ): T | string | Array<string | T>
-  formatListToParts(values: Array<string | T>, opts?: FormatListOptions): Part[]
+  formatListToParts(
+    values: ReadonlyArray<string | T>,
+    opts?: FormatListOptions
+  ): Part[]
   formatDisplayName(
     value: Parameters<DisplayNames['of']>[0],
     opts: FormatDisplayNameOptions
