@@ -6,6 +6,7 @@ module.exports = {
       diagnostics: false,
     },
   },
+  testEnvironment: 'jsdom',
   testRegex: ['/tests/(functional|unit)/.*\\.(ts|tsx)'],
   testPathIgnorePatterns: [
     'tests/functional/support',
