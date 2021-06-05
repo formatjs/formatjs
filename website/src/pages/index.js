@@ -6,6 +6,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from './styles.module.css'
 import {IntlProvider, FormattedMessage, useIntl} from 'react-intl'
+import useThemeContext from '@theme/hooks/useThemeContext'
 
 import en from '../../lang/strings_en-US.json'
 import fr from '../../lang/strings_fr-FR.json'
@@ -165,7 +166,7 @@ function EnvSection({className}) {
 }
 
 function ShowcaseSection({className}) {
-  const intl = useIntl()
+  const {isDarkTheme} = useThemeContext()
   return (
     <div className={cx(className, styles.showcase)}>
       <h3>
@@ -189,6 +190,13 @@ function ShowcaseSection({className}) {
         </div>
         <div className="col col--2">
           <img src={useBaseUrl('img/mozilla.svg')} />
+        </div>
+        <div className="col col--2">
+          <img
+            src={useBaseUrl(
+              isDarkTheme ? 'img/coinbase_white.svg' : 'img/coinbase.svg'
+            )}
+          />
         </div>
       </div>
     </div>
