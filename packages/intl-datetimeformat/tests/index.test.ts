@@ -292,6 +292,15 @@ describe('Intl.DateTimeFormat', function () {
     })
     expect(() => dtf.formatRange(date1, date2)).not.toThrow()
   })
+  it('GH issue #2951', function () {
+    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
+    const dtf = new DateTimeFormat('en', {
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZone: 'Etc/UTC',
+    })
+    expect(() => dtf.format(date1)).not.toThrow()
+  })
   it.skip('GH issue #2915', function () {
     const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
     const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
