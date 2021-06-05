@@ -10,9 +10,5 @@ function hasIntlGetCanonicalLocalesBug(): boolean {
 }
 
 export function shouldPolyfill() {
-  return (
-    typeof Intl === 'undefined' ||
-    !('Locale' in Intl) ||
-    hasIntlGetCanonicalLocalesBug()
-  )
+  return !('Locale' in Intl) || hasIntlGetCanonicalLocalesBug()
 }
