@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@9.1.5...@formatjs/intl-relativetimeformat@9.1.6) (2021-06-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** remove Intl check ([cf95623](https://github.com/formatjs/formatjs/commit/cf95623339317b570c4ef9cb00862598acf8314d))
+
+
+
+
+
 ## [9.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@9.1.4...@formatjs/intl-relativetimeformat@9.1.5) (2021-06-05)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

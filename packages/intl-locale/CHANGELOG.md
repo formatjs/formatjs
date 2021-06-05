@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.32](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.31...@formatjs/intl-locale@2.4.32) (2021-06-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** remove Intl check ([8632739](https://github.com/formatjs/formatjs/commit/8632739fb562bed7b570f3ca6c8f82de30898028))
+
+
+
+
+
 ## [2.4.31](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.30...@formatjs/intl-locale@2.4.31) (2021-06-05)
 
 **Note:** Version bump only for package @formatjs/intl-locale

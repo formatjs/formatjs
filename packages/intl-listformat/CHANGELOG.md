@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@6.2.4...@formatjs/intl-listformat@6.2.5) (2021-06-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** remove Intl check ([8a60986](https://github.com/formatjs/formatjs/commit/8a609866640f9838c1f99c1a1c4efae07ec8ae02))
+
+
+
+
+
 ## [6.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@6.2.3...@formatjs/intl-listformat@6.2.4) (2021-06-05)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
