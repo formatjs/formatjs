@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.2...@formatjs/ecma402-abstract@1.9.3) (2021-06-05)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** fix IsValidTimeZoneName to include target zone from backward, fix [#2951](https://github.com/formatjs/formatjs/issues/2951) ([c18ee8b](https://github.com/formatjs/formatjs/commit/c18ee8b8d8aac6aa8718432a39e187321110239f))
+
+
+
+
+
 ## [1.9.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.1...@formatjs/ecma402-abstract@1.9.2) (2021-06-01)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract

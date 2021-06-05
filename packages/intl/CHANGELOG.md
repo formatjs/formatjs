@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.11.3...@formatjs/intl@1.12.0) (2021-06-05)
+
+
+### Features
+
+* **@formatjs/intl:** allow formatList & FormattedList to take in readonly array ([#2950](https://github.com/formatjs/formatjs/issues/2950)) ([1d7896c](https://github.com/formatjs/formatjs/commit/1d7896c6d2aff31e215fae07f16e7509484a8ba6))
+
+
+
+
+
 ## [1.11.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.11.2...@formatjs/intl@1.11.3) (2021-06-04)
 
 **Note:** Version bump only for package @formatjs/intl

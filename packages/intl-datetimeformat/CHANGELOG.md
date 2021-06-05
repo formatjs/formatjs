@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.1.4...@formatjs/intl-datetimeformat@4.1.5) (2021-06-05)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** fix IsValidTimeZoneName to include target zone from backward, fix [#2951](https://github.com/formatjs/formatjs/issues/2951) ([c18ee8b](https://github.com/formatjs/formatjs/commit/c18ee8b8d8aac6aa8718432a39e187321110239f))
+
+
+
+
+
 ## [4.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.1.3...@formatjs/intl-datetimeformat@4.1.4) (2021-06-02)
 
 

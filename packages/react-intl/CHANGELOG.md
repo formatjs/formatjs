@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.20.0](https://github.com/formatjs/formatjs/compare/react-intl@5.19.0...react-intl@5.20.0) (2021-06-05)
+
+
+### Features
+
+* **@formatjs/intl:** allow formatList & FormattedList to take in readonly array ([#2950](https://github.com/formatjs/formatjs/issues/2950)) ([1d7896c](https://github.com/formatjs/formatjs/commit/1d7896c6d2aff31e215fae07f16e7509484a8ba6))
+
+
+
+
+
 # [5.19.0](https://github.com/formatjs/formatjs/compare/react-intl@5.18.3...react-intl@5.19.0) (2021-06-04)
 
 
