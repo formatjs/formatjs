@@ -154,6 +154,16 @@ describe('format API', () => {
           (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
         ).toMatchSnapshot()
       })
+
+      it('uses provided numberingSystem', () => {
+        const num = 0.1
+        const numberingSystem = 'arab'
+        const style = 'percent'
+        // @ts-ignore
+        nf = new Intl.NumberFormat(config.locale, {numberingSystem, style})
+
+        expect(formatNumber(num, {numberingSystem, style})).toBe(nf.format(num))
+      })
     })
   })
 })

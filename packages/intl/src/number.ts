@@ -27,6 +27,7 @@ const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
   'signDisplay',
   'unit',
   'unitDisplay',
+  'numberingSystem',
 ]
 
 export function getFormatter(
