@@ -146,6 +146,7 @@ test('v8 test/intl/date-format/format-range TimeClip', function () {
   expect(() =>
     dtf.formatRange(
       new Date(864000000 * 10000000 + 1), // a date will cause TimeClip return NaN
+      // @ts-ignore
       {
         // @ts-ignore
         get [Symbol.toPrimitive]() {

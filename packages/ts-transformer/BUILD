@@ -39,8 +39,10 @@ ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
-    deps = SRC_DEPS + 
-    ["@npm//ts-jest", "@npm//@jest/types"],
+    deps = SRC_DEPS + [
+        "@npm//ts-jest",
+        "@npm//@jest/types",
+    ],
 )
 
 jest_test(
