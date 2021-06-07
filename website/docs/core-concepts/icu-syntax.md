@@ -228,7 +228,7 @@ with <link>{pct, number, ::percent} discount</link>
 
 ## Quoting / Escaping
 
-The ASCII apostrophe ('`') can be used to escape syntax characters in the text portion of the message. A single
+The ASCII apostrophe `'` (U+0027) can be used to escape syntax characters in the text portion of the message. A single
 apostrophe escapes one syntax character immediately following it; a pair of apostrophes escape every syntax characters
 wrapped between them:
 
