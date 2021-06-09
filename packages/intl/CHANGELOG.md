@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.12.1...@formatjs/intl@1.13.0) (2021-06-09)
+
+
+### Features
+
+* **@formatjs/intl:** add numberingSystem to NUMBER_FORMAT_OPTIONS ([#2953](https://github.com/formatjs/formatjs/issues/2953)) ([508c45d](https://github.com/formatjs/formatjs/commit/508c45d7631d701509c76ffb3da1cb901f77d808)), closes [#2952](https://github.com/formatjs/formatjs/issues/2952)
+
+
+
+
+
 ## [1.12.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.12.0...@formatjs/intl@1.12.1) (2021-06-05)
 
 **Note:** Version bump only for package @formatjs/intl
