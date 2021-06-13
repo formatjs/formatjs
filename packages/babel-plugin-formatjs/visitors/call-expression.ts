@@ -53,153 +53,151 @@ function getMessagesObjectFromExpression(
   return currentPath
 }
 
-export const visitor: VisitNodeFunction<
-  PluginPass<Options> & State,
-  t.CallExpression
-> = function (
-  path,
-  {
-    opts,
-    file: {
-      opts: {filename},
-    },
-  }
-) {
-  const {
-    overrideIdFn,
-    idInterpolationPattern,
-    removeDefaultMessage,
-    ast,
-    preserveWhitespace,
-  } = opts
-  if (wasExtracted(path)) {
-    return
-  }
-  const {messages, functionNames} = this
-  const callee = path.get('callee')
-  const args = path.get('arguments')
-
-  /**
-   * Process MessageDescriptor
-   * @param messageDescriptor Message Descriptor
-   */
-  function processMessageObject(
-    messageDescriptor: NodePath<t.ObjectExpression>
-  ) {
-    assertObjectExpression(messageDescriptor, callee)
-
-    const properties = messageDescriptor.get(
-      'properties'
-    ) as NodePath<t.ObjectProperty>[]
-
-    const descriptorPath = createMessageDescriptor(
-      properties.map(
-        prop =>
-          [prop.get('key'), prop.get('value')] as [
-            NodePath<t.Identifier>,
-            NodePath<t.StringLiteral>
-          ]
-      )
-    )
-
-    // Evaluate the Message Descriptor values, then store it.
-    const descriptor = evaluateMessageDescriptor(
-      descriptorPath,
-      false,
-      filename || undefined,
-      idInterpolationPattern,
-      overrideIdFn,
-      preserveWhitespace
-    )
-    storeMessage(
-      descriptor,
-      messageDescriptor,
+export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
+  function (
+    path,
+    {
       opts,
-      filename || undefined,
-      messages
-    )
-
-    const firstProp = properties[0]
-    const defaultMessageProp = properties.find(prop => {
-      const keyProp = prop.get('key')
-      return (
-        keyProp.isIdentifier({name: 'defaultMessage'}) ||
-        keyProp.isStringLiteral({value: 'defaultMessage'})
-      )
-    })
-    const idProp = properties.find(prop => {
-      const keyProp = prop.get('key')
-      return (
-        keyProp.isIdentifier({name: 'id'}) ||
-        keyProp.isStringLiteral({value: 'id'})
-      )
-    })
-
-    // Insert ID potentially 1st before removing nodes
-    if (idProp) {
-      idProp.get('value').replaceWith(t.stringLiteral(descriptor.id))
-    } else {
-      firstProp.insertBefore(
-        t.objectProperty(t.identifier('id'), t.stringLiteral(descriptor.id))
-      )
+      file: {
+        opts: {filename},
+      },
     }
+  ) {
+    const {
+      overrideIdFn,
+      idInterpolationPattern,
+      removeDefaultMessage,
+      ast,
+      preserveWhitespace,
+    } = opts as Options
+    if (wasExtracted(path)) {
+      return
+    }
+    const {messages, functionNames} = this
+    const callee = path.get('callee')
+    const args = path.get('arguments')
 
-    // Remove description
-    properties
-      .find(prop => {
+    /**
+     * Process MessageDescriptor
+     * @param messageDescriptor Message Descriptor
+     */
+    function processMessageObject(
+      messageDescriptor: NodePath<t.ObjectExpression>
+    ) {
+      assertObjectExpression(messageDescriptor, callee)
+
+      const properties = messageDescriptor.get(
+        'properties'
+      ) as NodePath<t.ObjectProperty>[]
+
+      const descriptorPath = createMessageDescriptor(
+        properties.map(
+          prop =>
+            [prop.get('key'), prop.get('value')] as [
+              NodePath<t.Identifier>,
+              NodePath<t.StringLiteral>
+            ]
+        )
+      )
+
+      // Evaluate the Message Descriptor values, then store it.
+      const descriptor = evaluateMessageDescriptor(
+        descriptorPath,
+        false,
+        filename || undefined,
+        idInterpolationPattern,
+        overrideIdFn,
+        preserveWhitespace
+      )
+      storeMessage(
+        descriptor,
+        messageDescriptor,
+        opts as Options,
+        filename || undefined,
+        messages
+      )
+
+      const firstProp = properties[0]
+      const defaultMessageProp = properties.find(prop => {
         const keyProp = prop.get('key')
         return (
-          keyProp.isIdentifier({name: 'description'}) ||
-          keyProp.isStringLiteral({value: 'description'})
+          keyProp.isIdentifier({name: 'defaultMessage'}) ||
+          keyProp.isStringLiteral({value: 'defaultMessage'})
         )
       })
-      ?.remove()
+      const idProp = properties.find(prop => {
+        const keyProp = prop.get('key')
+        return (
+          keyProp.isIdentifier({name: 'id'}) ||
+          keyProp.isStringLiteral({value: 'id'})
+        )
+      })
 
-    // Pre-parse or remove defaultMessage
-    if (defaultMessageProp) {
-      if (removeDefaultMessage) {
-        defaultMessageProp?.remove()
-      } else if (descriptor.defaultMessage) {
-        const valueProp = defaultMessageProp.get('value')
-        if (ast) {
-          valueProp.replaceWithSourceString(
-            JSON.stringify(parse(descriptor.defaultMessage))
+      // Insert ID potentially 1st before removing nodes
+      if (idProp) {
+        idProp.get('value').replaceWith(t.stringLiteral(descriptor.id))
+      } else {
+        firstProp.insertBefore(
+          t.objectProperty(t.identifier('id'), t.stringLiteral(descriptor.id))
+        )
+      }
+
+      // Remove description
+      properties
+        .find(prop => {
+          const keyProp = prop.get('key')
+          return (
+            keyProp.isIdentifier({name: 'description'}) ||
+            keyProp.isStringLiteral({value: 'description'})
           )
-        } else {
-          valueProp.replaceWith(t.stringLiteral(descriptor.defaultMessage))
+        })
+        ?.remove()
+
+      // Pre-parse or remove defaultMessage
+      if (defaultMessageProp) {
+        if (removeDefaultMessage) {
+          defaultMessageProp?.remove()
+        } else if (descriptor.defaultMessage) {
+          const valueProp = defaultMessageProp.get('value')
+          if (ast) {
+            valueProp.replaceWithSourceString(
+              JSON.stringify(parse(descriptor.defaultMessage))
+            )
+          } else {
+            valueProp.replaceWith(t.stringLiteral(descriptor.defaultMessage))
+          }
+        }
+      }
+
+      tagAsExtracted(path)
+    }
+
+    // Check that this is `defineMessages` call
+    if (
+      callee.isIdentifier({name: 'defineMessages'}) ||
+      callee.isIdentifier({name: 'defineMessage'})
+    ) {
+      const firstArgument = args[0]
+      const messagesObj = getMessagesObjectFromExpression(firstArgument)
+
+      assertObjectExpression(messagesObj, callee)
+      if (callee.isIdentifier({name: 'defineMessage'})) {
+        processMessageObject(messagesObj as NodePath<t.ObjectExpression>)
+      } else {
+        const properties = messagesObj.get('properties')
+        if (Array.isArray(properties)) {
+          properties
+            .map(prop => prop.get('value') as NodePath<t.ObjectExpression>)
+            .forEach(processMessageObject)
         }
       }
     }
 
-    tagAsExtracted(path)
-  }
-
-  // Check that this is `defineMessages` call
-  if (
-    callee.isIdentifier({name: 'defineMessages'}) ||
-    callee.isIdentifier({name: 'defineMessage'})
-  ) {
-    const firstArgument = args[0]
-    const messagesObj = getMessagesObjectFromExpression(firstArgument)
-
-    assertObjectExpression(messagesObj, callee)
-    if (callee.isIdentifier({name: 'defineMessage'})) {
-      processMessageObject(messagesObj as NodePath<t.ObjectExpression>)
-    } else {
-      const properties = messagesObj.get('properties')
-      if (Array.isArray(properties)) {
-        properties
-          .map(prop => prop.get('value') as NodePath<t.ObjectExpression>)
-          .forEach(processMessageObject)
+    // Check that this is `intl.formatMessage` call
+    if (isFormatMessageCall(callee, functionNames)) {
+      const messageDescriptor = args[0]
+      if (messageDescriptor.isObjectExpression()) {
+        processMessageObject(messageDescriptor)
       }
     }
   }
-
-  // Check that this is `intl.formatMessage` call
-  if (isFormatMessageCall(callee, functionNames)) {
-    const messageDescriptor = args[0]
-    if (messageDescriptor.isObjectExpression()) {
-      processMessageObject(messageDescriptor)
-    }
-  }
-}

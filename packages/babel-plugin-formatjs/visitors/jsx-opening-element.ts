@@ -14,7 +14,7 @@ import {
 } from '../utils'
 
 export const visitor: VisitNodeFunction<
-  PluginPass<Options> & State,
+  PluginPass & State,
   t.JSXOpeningElement
 > = function (
   path,
@@ -31,7 +31,7 @@ export const visitor: VisitNodeFunction<
     overrideIdFn,
     ast,
     preserveWhitespace,
-  } = opts
+  } = opts as Options
 
   const {componentNames, messages} = this
   if (wasExtracted(path)) {
@@ -76,7 +76,13 @@ export const visitor: VisitNodeFunction<
     preserveWhitespace
   )
 
-  storeMessage(descriptor, path, opts, filename || undefined, messages)
+  storeMessage(
+    descriptor,
+    path,
+    opts as Options,
+    filename || undefined,
+    messages
+  )
 
   let idAttr: NodePath<t.JSXAttribute> | undefined
   let descriptionAttr: NodePath<t.JSXAttribute> | undefined
