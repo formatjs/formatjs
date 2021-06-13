@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.16.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.15.7...eslint-plugin-formatjs@2.16.0) (2021-06-13)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** allow additionalFunctionNames & additionalComponentNames in shared settings, fix [#2967](https://github.com/formatjs/formatjs/issues/2967) ([c19b0ea](https://github.com/formatjs/formatjs/commit/c19b0eae3b28d99276a6c2da288b51d0c32ff3be))
+* **eslint-plugin-formatjs:** rm react-intl package import check for function names and components ([5c7aeba](https://github.com/formatjs/formatjs/commit/5c7aeba2d6e281de390b50811691a40e08f8b34d))
+
+
+
+
+
 ## [2.15.7](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.15.6...eslint-plugin-formatjs@2.15.7) (2021-06-09)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
