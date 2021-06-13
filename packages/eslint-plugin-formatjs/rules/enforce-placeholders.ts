@@ -70,7 +70,10 @@ function verifyAst(
 }
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node, true)
+  const msgs = extractMessages(node, {
+    excludeMessageDeclCalls: true,
+    ...context.settings,
+  })
   const {
     options: [opt],
   } = context

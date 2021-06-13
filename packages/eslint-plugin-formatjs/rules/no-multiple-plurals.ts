@@ -27,7 +27,7 @@ function verifyAst(ast: MessageFormatElement[], pluralCount = {count: 0}) {
 }
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node)
+  const msgs = extractMessages(node, context.settings)
 
   for (const [
     {

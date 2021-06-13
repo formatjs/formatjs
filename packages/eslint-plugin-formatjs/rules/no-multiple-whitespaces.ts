@@ -4,7 +4,7 @@ import {TSESTree} from '@typescript-eslint/typescript-estree'
 const MULTIPLE_SPACES = /\s{2,}/g
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node)
+  const msgs = extractMessages(node, context.settings)
 
   for (const [
     {

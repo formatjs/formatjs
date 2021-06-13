@@ -3,7 +3,7 @@ import {extractMessages} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node)
+  const msgs = extractMessages(node, context.settings)
   const {
     options: [type],
   } = context

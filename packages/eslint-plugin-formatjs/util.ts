@@ -7,9 +7,14 @@ export interface MessageDescriptor {
 }
 
 const FORMAT_FUNCTION_NAMES = new Set(['$formatMessage', 'formatMessage'])
-
+const COMPONENT_NAMES = new Set(['FormattedMessage'])
 const DECLARATION_FUNCTION_NAMES = new Set(['defineMessage'])
 
+export interface Settings {
+  excludeMessageDeclCalls?: boolean
+  additionalFunctionNames?: string[]
+  additionalComponentNames?: string[]
+}
 export interface MessageDescriptorNodeInfo {
   message: MessageDescriptor
   messageNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
@@ -233,14 +238,21 @@ function extractMessageDescriptors(node?: TSESTree.Expression) {
 
 export function extractMessages(
   node: TSESTree.Node,
-  excludeMessageDeclCalls = false,
-  formatFunctionNames = []
+  {
+    additionalComponentNames,
+    additionalFunctionNames,
+    excludeMessageDeclCalls,
+  }: Settings = {}
 ): Array<[MessageDescriptorNodeInfo, TSESTree.Expression | undefined]> {
-  const allFormatFunctionNames = new Set([
-    ...Array.from(FORMAT_FUNCTION_NAMES),
-    ...formatFunctionNames,
-  ])
-
+  const allFormatFunctionNames = Array.isArray(additionalFunctionNames)
+    ? new Set([
+        ...Array.from(FORMAT_FUNCTION_NAMES),
+        ...additionalFunctionNames,
+      ])
+    : FORMAT_FUNCTION_NAMES
+  const allComponentNames = Array.isArray(additionalComponentNames)
+    ? new Set([...Array.from(COMPONENT_NAMES), ...additionalComponentNames])
+    : COMPONENT_NAMES
   if (node.type === 'CallExpression') {
     const expr = node
     const args0 = expr.arguments[0]
@@ -272,7 +284,7 @@ export function extractMessages(
     node.type === 'JSXOpeningElement' &&
     node.name &&
     node.name.type === 'JSXIdentifier' &&
-    node.name.name === 'FormattedMessage'
+    allComponentNames.has(node.name.name)
   ) {
     const msgDescriptorNodeInfo = extractMessageDescriptorFromJSXElement(node)
     if (msgDescriptorNodeInfo) {

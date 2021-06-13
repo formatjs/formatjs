@@ -78,7 +78,7 @@ function verifyAst(blacklist: Element[], ast: MessageFormatElement[]) {
 }
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node)
+  const msgs = extractMessages(node, context.settings)
   if (!msgs.length) {
     return
   }

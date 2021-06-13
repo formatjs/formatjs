@@ -4,7 +4,7 @@ import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {interpolateName} from '@formatjs/ts-transformer'
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node)
+  const msgs = extractMessages(node, context.settings)
   const {options} = context
   const [opt = {}] = options
   const {idInterpolationPattern} = opt
