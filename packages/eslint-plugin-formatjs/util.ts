@@ -1,11 +1,14 @@
 import {TSESTree} from '@typescript-eslint/typescript-estree'
-import {Scope} from 'eslint'
 
 export interface MessageDescriptor {
   id?: string
   defaultMessage?: string
   description?: string
 }
+
+const FORMAT_FUNCTION_NAMES = new Set(['$formatMessage', 'formatMessage'])
+
+const DECLARATION_FUNCTION_NAMES = new Set(['defineMessage'])
 
 export interface MessageDescriptorNodeInfo {
   message: MessageDescriptor
@@ -24,15 +27,6 @@ function isTemplateLiteralWithoutVar(
   node: TSESTree.Node
 ): node is TSESTree.TemplateLiteral {
   return node.type === 'TemplateLiteral' && node.quasis.length === 1
-}
-
-function findReferenceImport(
-  id: TSESTree.Identifier,
-  importedVars: Scope.Variable[]
-) {
-  return importedVars.find(
-    v => !!v.references.find(ref => ref.identifier === id)
-  )
 }
 
 function staticallyEvaluateStringConcat(
@@ -66,39 +60,23 @@ function isIntlFormatMessageCall(node: TSESTree.Node) {
   )
 }
 
-function is$formatMessageCall(node: TSESTree.Node) {
+function isSingleMessageDescriptorDeclaration(
+  node: TSESTree.Node,
+  functionNames: Set<string>
+) {
   return (
     node.type === 'CallExpression' &&
     node.callee.type === 'Identifier' &&
-    node.callee.name === '$formatMessage'
+    functionNames.has(node.callee.name)
   )
 }
 
-function isSingleMessageDescriptorDeclaration(
-  id: TSESTree.LeftHandSideExpression,
-  importedVars: Scope.Variable[]
-) {
-  if (id.type !== 'Identifier') {
-    return false
-  }
-  const importedVar = findReferenceImport(id, importedVars)
-  if (!importedVar) {
-    return false
-  }
-  return importedVar.name === '_' || importedVar.name === 'defineMessage'
-}
-function isMultipleMessageDescriptorDeclaration(
-  id: TSESTree.LeftHandSideExpression,
-  importedVars: Scope.Variable[]
-) {
-  if (id.type !== 'Identifier') {
-    return false
-  }
-  const importedVar = findReferenceImport(id, importedVars)
-  if (!importedVar) {
-    return false
-  }
-  return importedVar.name === 'defineMessages'
+function isMultipleMessageDescriptorDeclaration(node: TSESTree.Node) {
+  return (
+    node.type === 'CallExpression' &&
+    node.callee.type === 'Identifier' &&
+    node.callee.name === 'defineMessages'
+  )
 }
 
 function extractMessageDescriptor(
@@ -255,12 +233,16 @@ function extractMessageDescriptors(node?: TSESTree.Expression) {
 
 export function extractMessages(
   node: TSESTree.Node,
-  importedMacroVars: Scope.Variable[],
-  excludeMessageDeclCalls = false
+  excludeMessageDeclCalls = false,
+  formatFunctionNames = []
 ): Array<[MessageDescriptorNodeInfo, TSESTree.Expression | undefined]> {
+  const allFormatFunctionNames = new Set([
+    ...Array.from(FORMAT_FUNCTION_NAMES),
+    ...formatFunctionNames,
+  ])
+
   if (node.type === 'CallExpression') {
     const expr = node
-    const fnId = expr.callee
     const args0 = expr.arguments[0]
     const args1 = expr.arguments[1]
     // We can't really analyze spread element
@@ -269,9 +251,12 @@ export function extractMessages(
     }
     if (
       (!excludeMessageDeclCalls &&
-        isSingleMessageDescriptorDeclaration(fnId, importedMacroVars)) ||
+        isSingleMessageDescriptorDeclaration(
+          node,
+          DECLARATION_FUNCTION_NAMES
+        )) ||
       isIntlFormatMessageCall(node) ||
-      is$formatMessageCall(node)
+      isSingleMessageDescriptorDeclaration(node, allFormatFunctionNames)
     ) {
       const msgDescriptorNodeInfo = extractMessageDescriptor(args0)
       if (msgDescriptorNodeInfo && (!args1 || args1.type !== 'SpreadElement')) {
@@ -279,7 +264,7 @@ export function extractMessages(
       }
     } else if (
       !excludeMessageDeclCalls &&
-      isMultipleMessageDescriptorDeclaration(fnId, importedMacroVars)
+      isMultipleMessageDescriptorDeclaration(node)
     ) {
       return extractMessageDescriptors(args0).map(msg => [msg, undefined])
     }

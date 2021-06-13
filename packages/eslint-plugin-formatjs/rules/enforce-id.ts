@@ -1,14 +1,10 @@
-import {Rule, Scope} from 'eslint'
+import {Rule} from 'eslint'
 import {extractMessages} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {interpolateName} from '@formatjs/ts-transformer'
 
-function checkNode(
-  context: Rule.RuleContext,
-  node: TSESTree.Node,
-  importedMacroVars: Scope.Variable[]
-) {
-  const msgs = extractMessages(node, importedMacroVars)
+function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
+  const msgs = extractMessages(node)
   const {options} = context
   const [opt = {}] = options
   const {idInterpolationPattern} = opt
@@ -110,9 +106,8 @@ export default {
     ],
   },
   create(context) {
-    let importedMacroVars: Scope.Variable[] = []
     const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node, importedMacroVars)
+      checkNode(context, node)
 
     if (context.parserServices.defineTemplateBodyVisitor) {
       return context.parserServices.defineTemplateBodyVisitor(
@@ -125,14 +120,7 @@ export default {
       )
     }
     return {
-      ImportDeclaration: node => {
-        const moduleName = node.source.value
-        if (moduleName === 'react-intl') {
-          importedMacroVars = context.getDeclaredVariables(node)
-        }
-      },
-      JSXOpeningElement: (node: TSESTree.Node) =>
-        checkNode(context, node, importedMacroVars),
+      JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
       CallExpression: callExpressionVisitor,
     }
   },
