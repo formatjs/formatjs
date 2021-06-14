@@ -61,7 +61,7 @@ export const visitor: VisitNodeFunction<
   // write `<FormattedMessage {...descriptor} />`, because it will be
   // skipped here and extracted elsewhere. The descriptor will
   // be extracted only (storeMessage) if a `defaultMessage` prop.
-  if (!descriptorPath.id && !descriptorPath.defaultMessage) {
+  if (!descriptorPath.defaultMessage) {
     return
   }
 
