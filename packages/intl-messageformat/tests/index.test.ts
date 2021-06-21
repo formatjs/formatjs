@@ -833,6 +833,14 @@ describe('IntlMessageFormat', function () {
     })
   })
 
+  it('default format like in ICU should work', function () {
+    expect(
+      new IntlMessageFormat('{amount, number, integer}', 'en-US').format({
+        amount: 123456.78,
+      })
+    ).toBe('123,457')
+  })
+
   it('number skeleton', function () {
     expect(
       new IntlMessageFormat(

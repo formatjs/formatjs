@@ -210,6 +210,9 @@ export class IntlMessageFormat {
   // and Intl.DateTimeFormat instances.
   static formats: Formats = {
     number: {
+      integer: {
+        maximumFractionDigits: 0,
+      },
       currency: {
         style: 'currency',
       },
