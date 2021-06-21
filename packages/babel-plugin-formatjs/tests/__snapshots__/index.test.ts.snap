@@ -1162,6 +1162,30 @@ export default class Foo extends Component {
 }
 `;
 
+exports[`skipExtractionFormattedMessage 1`] = `
+Object {
+  "code": "import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+
+function nonStaticId() {
+  return 'baz';
+}
+
+export default class Foo extends Component {
+  render() {
+    return /*#__PURE__*/React.createElement(FormattedMessage, {
+      id: \\"foo.bar.\\".concat(nonStaticId())
+    });
+  }
+
+}",
+  "data": Object {
+    "messages": Array [],
+    "meta": Object {},
+  },
+}
+`;
+
 exports[`templateLiteral 1`] = `
 Object {
   "code": "import React, { Component } from 'react';

@@ -183,6 +183,10 @@ test('Properly throws parse errors', () => {
   ).toThrow('SyntaxError: MALFORMED_ARGUMENT')
 })
 
+test('skipExtractionFormattedMessage', function () {
+  transformAndCheck('skipExtractionFormattedMessage')
+})
+
 let cacheBust = 1
 
 function transform(
