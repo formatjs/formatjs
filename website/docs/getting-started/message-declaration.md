@@ -70,7 +70,7 @@ intl.formatMessage(message, {name: 'John'}) // My name is John
 ```
 
 :::caution
-We rely on AST to extract messages from the codebase, so make sure you call `intl.formatMessage()`, use our builtin React components, use our Vue methods or configure [`additionalFunctionNames`](../tooling/cli.md#--additional-function-names-comma-separated-names)/[`additionalComponentNames`](../tooling/cli.md#--additional-component-names-comma-separated-names) properly.
+We rely on AST to extract messages from the codebase, so make sure you call `intl.formatMessage()`, use our builtin React components, use our Vue methods or configure [additionalFunctionNames](../tooling/cli.md#--additional-function-names-comma-separated-names)/[additionalComponentNames](../tooling/cli.md#--additional-component-names-comma-separated-names) properly.
 :::
 
 :::caution
