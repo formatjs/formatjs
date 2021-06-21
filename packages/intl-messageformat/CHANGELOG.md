@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.7.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.6.18...intl-messageformat@9.7.0) (2021-06-21)
+
+
+### Features
+
+* **intl-messageformat:** support argstyle integer natively, fix [#2989](https://github.com/formatjs/formatjs/issues/2989) ([ac94068](https://github.com/formatjs/formatjs/commit/ac94068752b38cb53f8c49a08adce16336e7b721))
+
+
+
+
+
 ## [9.6.18](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.6.17...intl-messageformat@9.6.18) (2021-06-05)
 
 **Note:** Version bump only for package intl-messageformat

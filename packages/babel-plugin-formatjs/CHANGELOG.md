@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.3.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.2.20...babel-plugin-formatjs@10.3.0) (2021-06-21)
+
+
+### Features
+
+* **babel-plugin-formatjs:** skip message extraction if defaultMessage isn't provided ([#2975](https://github.com/formatjs/formatjs/issues/2975)) ([cb4e5bd](https://github.com/formatjs/formatjs/commit/cb4e5bd960105641116c3ed1dc5bf413d4184a6f))
+
+
+
+
+
 ## [10.2.20](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.2.19...babel-plugin-formatjs@10.2.20) (2021-06-14)
 
 **Note:** Version bump only for package babel-plugin-formatjs
