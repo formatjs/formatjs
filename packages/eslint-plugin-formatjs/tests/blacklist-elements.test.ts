@@ -12,6 +12,16 @@ ruleTester.run('blacklist-elements', blacklistElements, {
       options: [['selectordinal']],
     },
     {
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: '{count, plural, one {#} other {# more}} <a href="asd"></a>'
+  })`,
+      options: [['selectordinal']],
+      settings: {
+        ignoreTag: true,
+      },
+    },
+    {
       code: `
   $t({
       defaultMessage: '{count, plural, one {#} other {# more}}'

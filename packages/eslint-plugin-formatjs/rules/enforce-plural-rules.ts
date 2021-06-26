@@ -67,7 +67,12 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
       continue
     }
     try {
-      verifyAst(context.options[0], parse(defaultMessage))
+      verifyAst(
+        context.options[0],
+        parse(defaultMessage, {
+          ignoreTag: context.settings.ignoreTag,
+        })
+      )
     } catch (e) {
       context.report({
         node: messageNode as any,

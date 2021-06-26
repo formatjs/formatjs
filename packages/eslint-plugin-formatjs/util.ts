@@ -14,6 +14,7 @@ export interface Settings {
   excludeMessageDeclCalls?: boolean
   additionalFunctionNames?: string[]
   additionalComponentNames?: string[]
+  ignoreTag?: boolean
 }
 export interface MessageDescriptorNodeInfo {
   message: MessageDescriptor
