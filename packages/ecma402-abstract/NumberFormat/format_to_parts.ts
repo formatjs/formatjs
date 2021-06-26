@@ -15,7 +15,7 @@ import {
 } from '../types/number'
 import {ToRawFixed} from './ToRawFixed'
 import {LDMLPluralRule} from '../types/plural-rules'
-import * as digitMapping from './digit-mapping.json'
+import {digitMapping} from './digit-mapping.generated'
 import {S_UNICODE_REGEX} from '../regex.generated'
 
 // This is from: unicode-12.1.0/General_Category/Symbol/regex.js

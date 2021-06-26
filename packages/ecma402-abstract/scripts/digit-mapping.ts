@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import {outputJSONSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra'
 
 // Generate an array of 10 characters with consecutive codepoint, starting from `starCharCode`.
 function generateDigitChars(startCharCode: number): string[] {
@@ -92,7 +92,12 @@ const digitMapping: Record<string, string[]> = {
 
 function main(args: minimist.ParsedArgs) {
   const {out} = args
-  outputJSONSync(out, digitMapping)
+  outputFileSync(
+    out,
+    `export const digitMapping: Record<string, ReadonlyArray<string>> = ${JSON.stringify(
+      digitMapping
+    )};`
+  )
 }
 
 if (require.main === module) {

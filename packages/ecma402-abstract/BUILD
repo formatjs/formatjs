@@ -66,7 +66,7 @@ generated_file_test(
 # digit-mapping
 generate_src_file(
     name = "digit-mapping",
-    src = "NumberFormat/digit-mapping.json",
+    src = "NumberFormat/digit-mapping.generated.ts",
     entry_point = "scripts/digit-mapping.ts",
 )
 
