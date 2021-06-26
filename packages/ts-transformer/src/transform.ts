@@ -48,20 +48,24 @@ function isValidIdentifier(k: string): boolean {
 }
 
 function objToTSNode(factory: typescript.NodeFactory, obj: object) {
-  const props: typescript.PropertyAssignment[] = Object.entries(obj).map(
-    ([k, v]) =>
+  if (typeof obj === 'object' && !obj) {
+    return factory.createNull()
+  }
+  const props: typescript.PropertyAssignment[] = Object.entries(obj)
+    .filter(([_, v]) => typeof v !== 'undefined')
+    .map(([k, v]) =>
       factory.createPropertyAssignment(
         isValidIdentifier(k) ? k : factory.createStringLiteral(k),
         primitiveToTSNode(factory, v) ||
           (Array.isArray(v)
             ? factory.createArrayLiteralExpression(
-                v.map(n => objToTSNode(factory, n))
+                v
+                  .filter(n => typeof n !== 'undefined')
+                  .map(n => objToTSNode(factory, n))
               )
-            : typeof v === 'object'
-            ? objToTSNode(factory, v)
-            : factory.createNull())
+            : objToTSNode(factory, v))
       )
-  )
+    )
   return factory.createObjectLiteralExpression(props)
 }
 

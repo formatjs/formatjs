@@ -136,6 +136,8 @@ export default class Foo extends Component {
         </p>
         <FormattedMessage id=\\"HELLO.foo.bar.zoo.18.undefined\\" defaultMessage={[{ type: 0, value: \\"Hello World! \\" }, { type: 1, value: \\"abc\\" }]} values={{ abc: 2 }}/>
         <FormattedMessage id=\\"HELLO..18.undefined\\" defaultMessage={[{ type: 0, value: \\"Hello World! \\" }, { type: 1, value: \\"abc\\" }]} values={{ abc: 2 }}/>
+
+        <FormattedMessage id=\\"HELLO..15.undefined\\" defaultMessage={[{ type: 2, value: \\"value\\", style: null }]} values={{ abc: 2 }}/>
       </div>);
     }
 }
@@ -183,6 +185,10 @@ export default class Foo extends Component {
     Object {
       "defaultMessage": "Hello World! {abc}",
       "id": "HELLO..18.undefined",
+    },
+    Object {
+      "defaultMessage": "{value, number}",
+      "id": "HELLO..15.undefined",
     },
   ],
 }

@@ -68,6 +68,15 @@ export default class Foo extends Component {
           }}
           values={{abc: 2}}
         />
+
+        <FormattedMessage
+          defaultMessage="{value, number}"
+          description={{
+            text: 'number',
+            metadata: 'number',
+          }}
+          values={{abc: 2}}
+        />
       </div>
     )
   }
