@@ -39,3 +39,5 @@ export {
 } from './src/parser'
 export * from './src/types'
 export * from './src/emitter'
+
+export * from './src/likelySubtags.generated'

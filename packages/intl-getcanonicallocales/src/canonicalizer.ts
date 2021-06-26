@@ -4,14 +4,14 @@ import {
   variantAlias,
   scriptAlias,
   territoryAlias,
-} from './data/aliases'
+} from './aliases.generated'
 import {
   parseUnicodeLanguageId,
   isUnicodeVariantSubtag,
   isUnicodeLanguageSubtag,
   SEPARATOR,
 } from './parser'
-import * as likelySubtags from 'cldr-core/supplemental/likelySubtags.json'
+import {likelySubtags} from './likelySubtags.generated'
 import {emitUnicodeLanguageId} from './emitter'
 
 function canonicalizeAttrs(strs: string[]): string[] {
@@ -186,7 +186,7 @@ export function canonicalizeUnicodeLanguageId(
       const regions = regionAlias.split(' ')
       replacedRegion = regions[0]
       const likelySubtag =
-        likelySubtags.supplemental.likelySubtags[
+        likelySubtags[
           emitUnicodeLanguageId({
             lang: finalLangAst.lang,
             script: finalLangAst.script,

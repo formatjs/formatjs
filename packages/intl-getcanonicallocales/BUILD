@@ -61,11 +61,20 @@ jest_test(
 # aliases
 generate_src_file(
     name = "aliases",
-    src = "src/data/aliases.ts",
+    src = "src/aliases.generated.ts",
     data = [
         "@npm//cldr-core",
     ],
     entry_point = "scripts/aliases.ts",
+    visibility = ["//:__pkg__"],
+)
+generate_src_file(
+    name = "likelySubtags",
+    src = "src/likelySubtags.generated.ts",
+    data = [
+        "@npm//cldr-core",
+    ],
+    entry_point = "scripts/likely-subtags.ts",
     visibility = ["//:__pkg__"],
 )
 
@@ -101,7 +110,7 @@ check_format(
         ],
         exclude = [
             "CHANGELOG.md",
-            "src/data/aliases.ts",
+            "**/*.generated.*",
         ],
     ),
 )
