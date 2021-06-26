@@ -26,7 +26,6 @@
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.9.3",
     "@formatjs/intl-getcanonicallocales": "1.7.0",
-    "cldr-core": "38",
     "tslib": "^2.1.0"
   }
 }
