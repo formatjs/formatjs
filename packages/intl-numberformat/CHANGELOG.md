@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@7.1.4...@formatjs/intl-numberformat@7.1.5) (2021-06-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** rm json import to be more ESM-friendly, fix [#2961](https://github.com/formatjs/formatjs/issues/2961) ([62ec0b3](https://github.com/formatjs/formatjs/commit/62ec0b3338dacc54340c559a11128a50e02d95a2))
+
+
+
+
+
 ## [7.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@7.1.3...@formatjs/intl-numberformat@7.1.4) (2021-06-05)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

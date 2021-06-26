@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.4.3...@formatjs/ts-transformer@3.4.4) (2021-06-26)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix issue with null number style, fix [#2993](https://github.com/formatjs/formatjs/issues/2993) ([8d1be8c](https://github.com/formatjs/formatjs/commit/8d1be8ce7dc72d8b1be178063090de5d6d389a0b))
+
+
+
+
+
 ## [3.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.4.2...@formatjs/ts-transformer@3.4.3) (2021-06-21)
 
 

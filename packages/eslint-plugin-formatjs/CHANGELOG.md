@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.16.1...eslint-plugin-formatjs@2.17.0) (2021-06-26)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** allow setting ignoreTag as global linter settings, fix [#2998](https://github.com/formatjs/formatjs/issues/2998) ([8aaa11c](https://github.com/formatjs/formatjs/commit/8aaa11c4322d95e409f40c86d6ee9ccd6b556474))
+
+
+
+
+
 ## [2.16.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.16.0...eslint-plugin-formatjs@2.16.1) (2021-06-21)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

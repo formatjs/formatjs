@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.33](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.32...@formatjs/intl-locale@2.4.33) (2021-06-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** rm json import to be more ESM-friendly, fix [#2961](https://github.com/formatjs/formatjs/issues/2961) ([0aed8fa](https://github.com/formatjs/formatjs/commit/0aed8fae0ac2419163a094873a4d55313c676d59))
+
+
+
+
+
 ## [2.4.32](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.31...@formatjs/intl-locale@2.4.32) (2021-06-05)
 
 

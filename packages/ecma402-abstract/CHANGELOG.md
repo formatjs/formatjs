@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.4](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.3...@formatjs/ecma402-abstract@1.9.4) (2021-06-26)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** rm json import to be more ESM-friendly, fix [#2961](https://github.com/formatjs/formatjs/issues/2961) ([2bfedbb](https://github.com/formatjs/formatjs/commit/2bfedbbb54e1a6018e701757e19ba901529a1713))
+
+
+
+
+
 ## [1.9.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.2...@formatjs/ecma402-abstract@1.9.3) (2021-06-05)
 
 

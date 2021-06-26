@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.7.0...@formatjs/intl-getcanonicallocales@1.7.1) (2021-06-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** rm json import to be more ESM-friendly, fix [#2961](https://github.com/formatjs/formatjs/issues/2961) ([9d491e2](https://github.com/formatjs/formatjs/commit/9d491e2b0ac4ae50cda39a0c59b991c9c663d565))
+
+
+
+
+
 # [1.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.6.0...@formatjs/intl-getcanonicallocales@1.7.0) (2021-05-20)
 
 
