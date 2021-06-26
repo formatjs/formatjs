@@ -10,9 +10,8 @@ import {
   CanonicalizeLocaleList,
   OrdinaryHasInstance,
 } from '@formatjs/ecma402-abstract'
-import * as currencyDigitsData from './data/currency-digits.json'
-import * as numberingSystemsData from './data/numbering-systems.json'
-const {names: numberingSystemNames} = numberingSystemsData
+import {currencyDigitsData} from './currency-digits.generated'
+import {numberingSystemNames} from './numbering-systems.generated'
 // eslint-disable-next-line import/no-cycle
 import getInternalSlots from './get_internal_slots'
 import {

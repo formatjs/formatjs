@@ -193,7 +193,7 @@ generate_src_file(
 # currency-digits
 generate_src_file(
     name = "currency-digits",
-    src = "src/data/currency-digits.json",
+    src = "src/currency-digits.generated.ts",
     data = [
         "scripts/extract-currencies.ts",
         "scripts/utils.ts",
@@ -211,7 +211,7 @@ generate_src_file(
 # numbering-systems
 generate_src_file(
     name = "numbering-systems",
-    src = "src/data/numbering-systems.json",
+    src = "src/numbering-systems.generated.ts",
     data = [
         "scripts/extract-numbers.ts",
         "scripts/utils.ts",
@@ -226,15 +226,15 @@ generate_src_file(
 )
 
 # units-constants
-generate_src_file(
-    name = "units-constants",
-    src = "src/data/units-constants.ts",
-    data = [
-        "//packages/ecma402-abstract:dist",
-        "//packages/ecma402-abstract:types",
-    ],
-    entry_point = "scripts/units-constants.ts",
-)
+# generate_src_file(
+#     name = "units-constants",
+#     src = "src/units-constants.generated.ts",
+#     data = [
+#         "//packages/ecma402-abstract:dist",
+#         "//packages/ecma402-abstract:types",
+#     ],
+#     entry_point = "scripts/units-constants.ts",
+# )
 
 # Test262
 ts_project(
@@ -304,7 +304,7 @@ check_format(
             "**/*",
         ],
         exclude = [
-            "src/data/*",
+            "**/*.generated.*",
             "test262-main.ts",
             "tests/__snapshots__/*",
             "tests/locale-data/*",

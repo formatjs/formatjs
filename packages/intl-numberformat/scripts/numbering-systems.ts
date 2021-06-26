@@ -1,11 +1,16 @@
 import minimist from 'minimist'
-import {outputJSONSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra'
 import {extractNumberingSystemNames} from './extract-numbers'
 function main(args: minimist.ParsedArgs) {
   const {out} = args
 
   // Output numbering systems file
-  outputJSONSync(out, extractNumberingSystemNames())
+  outputFileSync(
+    out,
+    `export const numberingSystemNames: ReadonlyArray<string> = ${JSON.stringify(
+      extractNumberingSystemNames().names
+    )};`
+  )
 }
 
 if (require.main === module) {
