@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.23](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.22...@formatjs/cli@4.2.23) (2021-06-27)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** extract from vue directive as well, fix [#3003](https://github.com/formatjs/formatjs/issues/3003) ([f5577cd](https://github.com/formatjs/formatjs/commit/f5577cdb01d67196d275797a2208fd3212fd91a5))
+
+
+
+
+
 ## [4.2.22](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.21...@formatjs/cli@4.2.22) (2021-06-26)
 
 **Note:** Version bump only for package @formatjs/cli
