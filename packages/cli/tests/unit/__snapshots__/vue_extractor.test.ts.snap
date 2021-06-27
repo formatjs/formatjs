@@ -22,5 +22,15 @@ Array [
     "description": "delete button text",
     "id": "0705a",
   },
+  Object {
+    "defaultMessage": "Send the item to the trash.",
+    "description": "delete button title",
+    "id": "5b09c",
+  },
+  Object {
+    "defaultMessage": "The item has been deleted.",
+    "description": "delete result message",
+    "id": "8fba7",
+  },
 ]
 `;

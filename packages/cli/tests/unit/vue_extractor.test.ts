@@ -20,7 +20,7 @@ test('vue_extractor', async function () {
   expect(messages).toMatchSnapshot()
 })
 
-test('vue_extractor for bind attr', async function () {
+test.only('vue_extractor for bind attr', async function () {
   let messages: MessageDescriptor[] = []
   const fixturePath = join(__dirname, './fixtures/bind.vue')
   parseFile(
