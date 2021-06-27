@@ -80,7 +80,7 @@
     "cldr-misc-full": "39",
     "cldr-numbers-full": "39",
     "cldr-units-full": "39",
-    "commander": "^7.0.0",
+    "commander": "^8.0.0",
     "core-js": "^3.6.5",
     "emoji-regex": "^9.2.0",
     "eslint": "^7.4.0",
