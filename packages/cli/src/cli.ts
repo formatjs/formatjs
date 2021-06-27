@@ -1,4 +1,4 @@
-import commander from 'commander'
+import {program} from 'commander'
 import loudRejection from 'loud-rejection'
 import extract, {ExtractCLIOptions} from './extract'
 import compile, {CompileCLIOpts, Opts} from './compile'
@@ -12,23 +12,23 @@ async function main(argv: string[]) {
 
   const version = require('../package.json').version
 
-  commander
+  program
     .version(version, '-v, --version')
     .usage('<command> [flags]')
     .action(command => {
       if (!KNOWN_COMMANDS.includes(command)) {
-        commander.help()
+        program.help()
       }
     })
 
-  commander
+  program
     .command('help', {isDefault: true})
     .description('Show this help message.')
-    .action(() => commander.help())
+    .action(() => program.help())
 
   // Long text wrapping to available terminal columns: https://github.com/tj/commander.js/pull/956
   // NOTE: please keep the help text in sync with babel-plugin-formatjs documentation.
-  commander
+  program
     .command('extract [files...]')
     .description(
       `Extract string messages from React components that use react-intl.
@@ -147,7 +147,7 @@ sentences are not translator-friendly.`
       process.exit(0)
     })
 
-  commander
+  program
     .command('compile <translation_files>')
     .description(
       `Compile extracted translation file into react-intl consumable JSON
@@ -193,7 +193,7 @@ for more information`
       await compile(files, opts)
     })
 
-  commander
+  program
     .command('compile-folder <folder> <outFolder>')
     .description(
       `Batch compile all extracted translation JSON files in <folder> to <outFolder> containing
@@ -227,9 +227,9 @@ for more information`
     })
 
   if (argv.length < 3) {
-    commander.help()
+    program.help()
   } else {
-    commander.parse(argv)
+    program.parse(argv)
   }
 }
 export default main
