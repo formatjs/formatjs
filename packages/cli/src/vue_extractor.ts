@@ -62,7 +62,10 @@ function templateSimpleExpressionNodeVisitor(parseScriptFn: ScriptParseFn) {
     }
 
     const {content} = n as SimpleExpressionNode
-    parseScriptFn(content)
+    // Wrap this in () since a vue comp node attribute can just be
+    // an object literal which, by itself is invalid TS
+    // but with () it becomes an ExpressionStatement
+    parseScriptFn(`(${content})`)
   }
 }
 

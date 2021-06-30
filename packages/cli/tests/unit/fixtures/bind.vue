@@ -10,6 +10,9 @@
           defaultMessage: 'Send the item to the trash.',
         })
       "
+      :class="{
+        toggled: toggle,
+      }"
       @click="
         alert(
           $formatMessage({
@@ -33,8 +36,11 @@
 import {defineComponent} from 'vue'
 export default defineComponent({
   name: 'App',
+
   setup() {
-    return {alert: (text: any) => alert(text)}
+    const toggle = true
+
+    return {toggle, alert: (text: any) => alert(text)}
   },
 })
 </script>

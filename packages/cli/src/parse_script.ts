@@ -1,6 +1,5 @@
 import {Opts, transform} from '@formatjs/ts-transformer'
 import ts from 'typescript'
-
 /**
  * Invoid TypeScript module transpilation with our TS transformer
  * @param opts Formatjs TS Transformer opt
