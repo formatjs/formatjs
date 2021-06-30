@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.24](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.23...@formatjs/cli@4.2.24) (2021-06-30)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix vue attr parsing, fix [#3018](https://github.com/formatjs/formatjs/issues/3018) ([413c855](https://github.com/formatjs/formatjs/commit/413c8557adce878eeda926d5346000ab32b36e3a))
+
+
+
+
+
 ## [4.2.23](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.22...@formatjs/cli@4.2.23) (2021-06-27)
 
 
