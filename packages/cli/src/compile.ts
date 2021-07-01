@@ -1,6 +1,7 @@
 import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import {outputFile, readJSON} from 'fs-extra'
 import stringify from 'json-stable-stringify'
+import {debug, warn} from './console_utils'
 import {resolveBuiltinFormatter, Formatter} from './formatters'
 import {
   generateXXAC,
@@ -51,6 +52,7 @@ export interface Opts {
  * @returns serialized result in string format
  */
 export async function compile(inputFiles: string[], opts: Opts = {}) {
+  debug(`Compiling files: ${inputFiles}`)
   const {ast, format, pseudoLocale, skipErrors} = opts
   const formatter = await resolveBuiltinFormatter(format)
 
@@ -60,8 +62,10 @@ export async function compile(inputFiles: string[], opts: Opts = {}) {
   const compiledFiles = await Promise.all(
     inputFiles.map(f => readJSON(f).then(formatter.compile))
   )
+  debug(`Compiled files: ${compiledFiles}`)
   for (let i = 0; i < inputFiles.length; i++) {
     const inputFile = inputFiles[i]
+    debug(`Processing file: ${inputFile}`)
     const compiled = compiledFiles[i]
     for (const id in compiled) {
       if (messages[id] && messages[id] !== compiled[id]) {
@@ -96,7 +100,7 @@ Message from ${compiled[id]}: ${inputFile}
         }
         idsWithFileName[id] = inputFile
       } catch (e) {
-        console.error(
+        warn(
           `Error validating message "${compiled[id]}" with ID "${id}" in file "${inputFile}"`
         )
         if (!skipErrors) {
@@ -126,6 +130,7 @@ export default async function compileAndWrite(
   const {outFile, ...opts} = compileOpts
   const serializedResult = await compile(inputFiles, opts)
   if (outFile) {
+    debug(`Writing output file: ${outFile}`)
     return outputFile(outFile, serializedResult)
   }
   process.stdout.write(serializedResult)

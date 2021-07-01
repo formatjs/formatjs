@@ -22,6 +22,14 @@ export function clearLine(terminal: NodeJS.WriteStream) {
   }
 }
 
+export function debug(message: string): void {
+  if (process.env.LOG_LEVEL !== 'debug') {
+    return
+  }
+  clearLine(process.stderr)
+  process.stderr.write(`${chalk.green('debug')} ${message}\n`)
+}
+
 export function warn(message: string): void {
   clearLine(process.stderr)
   process.stderr.write(`${chalk.yellow('warning')} ${message}\n`)

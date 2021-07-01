@@ -4,6 +4,7 @@ import extract, {ExtractCLIOptions} from './extract'
 import compile, {CompileCLIOpts, Opts} from './compile'
 import compileFolder from './compile_folder'
 import {sync as globSync} from 'fast-glob'
+import {debug} from './console_utils'
 
 const KNOWN_COMMANDS = ['extract']
 
@@ -118,6 +119,8 @@ The goal is to provide as many full sentences as possible since fragmented
 sentences are not translator-friendly.`
     )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
+      debug(`File pattern: ${files}`)
+      debug(`Options: ${cmdObj}`)
       const processedFiles = []
       for (const f of files) {
         processedFiles.push(
@@ -126,6 +129,7 @@ sentences are not translator-friendly.`
           })
         )
       }
+      debug(`Files to extract: ${files}`)
 
       await extract(processedFiles, {
         outFile: cmdObj.outFile,
@@ -186,10 +190,13 @@ for more information`
 "--ast" is required for this to work.`
     )
     .action(async (filePattern: string, opts: CompileCLIOpts) => {
+      debug(`File pattern: ${filePattern}`)
+      debug(`Options: ${opts}`)
       const files = globSync(filePattern)
       if (!files.length) {
         throw new Error(`No input file found with pattern ${filePattern}`)
       }
+      debug(`Files to compile: ${files}`)
       await compile(files, opts)
     })
 
@@ -218,11 +225,14 @@ This is especially useful to convert from a TMS-specific format back to react-in
 for more information`
     )
     .action(async (folder: string, outFolder: string, opts?: Opts) => {
+      debug(`Folder: ${folder}`)
+      debug(`Options: ${opts}`)
       // fast-glob expect `/` in Windows as well
       const files = globSync(`${folder}/*.json`)
       if (!files.length) {
         throw new Error(`No JSON file found in ${folder}`)
       }
+      debug(`Files to compile: ${files}`)
       await compileFolder(files, outFolder, opts)
     })
 

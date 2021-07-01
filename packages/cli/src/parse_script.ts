@@ -1,5 +1,6 @@
 import {Opts, transform} from '@formatjs/ts-transformer'
 import ts from 'typescript'
+import {debug} from './console_utils'
 /**
  * Invoid TypeScript module transpilation with our TS transformer
  * @param opts Formatjs TS Transformer opt
@@ -9,6 +10,7 @@ export function parseScript(opts: Opts, fn?: string) {
   return (source: string) => {
     let output
     try {
+      debug(`Using TS compiler to process file ${fn}`)
       output = ts.transpileModule(source, {
         compilerOptions: {
           allowJs: true,
