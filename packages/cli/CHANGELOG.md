@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.25](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.24...@formatjs/cli@4.2.25) (2021-07-04)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** add more debugging stmts throughout ([f95e54e](https://github.com/formatjs/formatjs/commit/f95e54e1be77b02be929040a76bb327565d928dd))
+
+
+
+
+
 ## [4.2.24](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.23...@formatjs/cli@4.2.24) (2021-06-30)
 
 
