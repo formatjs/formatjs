@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.4.4...@formatjs/ts-transformer@3.4.5) (2021-07-06)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** stringify opts when log debug msg ([243cac8](https://github.com/formatjs/formatjs/commit/243cac8839afab27007d00c97c690f2a5cb98dd3))
+
+
+
+
+
 ## [3.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.4.3...@formatjs/ts-transformer@3.4.4) (2021-06-26)
 
 

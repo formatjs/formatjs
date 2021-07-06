@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.26](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.25...@formatjs/cli@4.2.26) (2021-07-06)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** stringify opts when log debug msg ([243cac8](https://github.com/formatjs/formatjs/commit/243cac8839afab27007d00c97c690f2a5cb98dd3))
+
+
+
+
+
 ## [4.2.25](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.24...@formatjs/cli@4.2.25) (2021-07-04)
 
 
