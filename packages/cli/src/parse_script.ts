@@ -1,4 +1,4 @@
-import {Opts, transform} from '@formatjs/ts-transformer'
+import {Opts, transformWithTs} from '@formatjs/ts-transformer'
 import ts from 'typescript'
 import {debug} from './console_utils'
 /**
@@ -21,7 +21,7 @@ export function parseScript(opts: Opts, fn?: string) {
         reportDiagnostics: true,
         fileName: fn,
         transformers: {
-          before: [transform(opts)],
+          before: [transformWithTs(ts, opts)],
         },
       })
     } catch (e) {
