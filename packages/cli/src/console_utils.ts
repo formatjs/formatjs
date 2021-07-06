@@ -1,13 +1,14 @@
-import chalk from 'chalk'
+import {supportsColor, green, red, yellow} from 'chalk'
 import readline from 'readline'
 import tty from 'tty'
+import {format} from 'util'
 
 const CLEAR_WHOLE_LINE = 0
 
 // From:
 // https://github.com/yarnpkg/yarn/blob/53d8004229f543f342833310d5af63a4b6e59c8a/src/reporters/console/util.js
 export function clearLine(terminal: NodeJS.WriteStream) {
-  if (!chalk.supportsColor) {
+  if (!supportsColor) {
     if (terminal instanceof tty.WriteStream) {
       // terminal
       if (terminal.columns > 0) {
@@ -22,22 +23,37 @@ export function clearLine(terminal: NodeJS.WriteStream) {
   }
 }
 
-export function debug(message: string): void {
+const LEVEL_COLORS = {
+  debug: green,
+  warn: yellow,
+  error: red,
+}
+
+function label(level: keyof typeof LEVEL_COLORS, message: string) {
+  return `[@formatjs/cli] [${LEVEL_COLORS[level](
+    level.toUpperCase()
+  )}] ${message}`
+}
+
+export function debug(message: string, ...args: any[]): void {
   if (process.env.LOG_LEVEL !== 'debug') {
     return
   }
   clearLine(process.stderr)
-  process.stderr.write(`${chalk.green('debug')} ${message}\n`)
+  process.stderr.write(format(label('debug', message), ...args))
+  process.stderr.write('\n')
 }
 
-export function warn(message: string): void {
+export function warn(message: string, ...args: any[]): void {
   clearLine(process.stderr)
-  process.stderr.write(`${chalk.yellow('warning')} ${message}\n`)
+  process.stderr.write(format(label('warn', message), ...args))
+  process.stderr.write('\n')
 }
 
-export function error(message: string): void {
+export function error(message: string, ...args: any[]): void {
   clearLine(process.stderr)
-  process.stderr.write(`${chalk.red('error')} ${message}\n`)
+  process.stderr.write(format(label('error', message), ...args))
+  process.stderr.write('\n')
 }
 
 export async function getStdinAsString(): Promise<string> {

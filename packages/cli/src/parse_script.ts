@@ -10,7 +10,7 @@ export function parseScript(opts: Opts, fn?: string) {
   return (source: string) => {
     let output
     try {
-      debug(`Using TS compiler to process file ${fn}`)
+      debug('Using TS compiler to process file', fn)
       output = ts.transpileModule(source, {
         compilerOptions: {
           allowJs: true,

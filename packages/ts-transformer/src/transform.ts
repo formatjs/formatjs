@@ -2,6 +2,7 @@ import * as typescript from 'typescript'
 import {MessageDescriptor} from './types'
 import {interpolateName} from './interpolate-name'
 import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+import {debug} from './console_utils'
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void
 export type MetaExtractor = (
   filePath: string,
@@ -574,6 +575,7 @@ function extractMessagesFromCallExpression(
       if (!msgs.length) {
         return node
       }
+      debug('Multiple messages extracted from "%s": %s', sf.fileName, msgs)
       if (typeof onMsgExtracted === 'function') {
         onMsgExtracted(sf.fileName, msgs)
       }
@@ -623,6 +625,7 @@ function extractMessagesFromCallExpression(
       if (!msg) {
         return node
       }
+      debug('Message extracted from "%s": %s', sf.fileName, msg)
       if (typeof onMsgExtracted === 'function') {
         onMsgExtracted(sf.fileName, [msg])
       }
@@ -675,11 +678,13 @@ function getVisitor(
 
 export function transformWithTs(ts: TypeScript, opts: Opts) {
   opts = {...DEFAULT_OPTS, ...opts}
+  debug('Transforming options', opts)
   const transformFn: typescript.TransformerFactory<typescript.SourceFile> =
     ctx => {
       return (sf: typescript.SourceFile) => {
         const pragmaResult = PRAGMA_REGEX.exec(sf.text)
         if (pragmaResult) {
+          debug('Pragma found', pragmaResult)
           const [, pragma, kvString] = pragmaResult
           if (pragma === opts.pragma) {
             const kvs = kvString.split(' ')
@@ -688,6 +693,7 @@ export function transformWithTs(ts: TypeScript, opts: Opts) {
               const [k, v] = kv.split(':')
               result[k] = v
             }
+            debug('Pragma extracted', result)
             if (typeof opts.onMetaExtracted === 'function') {
               opts.onMetaExtracted(sf.fileName, result)
             }

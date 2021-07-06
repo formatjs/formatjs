@@ -137,19 +137,19 @@ function processFile(
     }
   }
 
-  debug(`Processing opts for ${fn}: ${opts}`)
+  debug('Processing opts for %s: %s', fn, opts)
 
   const scriptParseFn = parseScript(opts, fn)
   if (fn.endsWith('.vue')) {
-    debug(`Processing ${fn} using vue extractor`)
+    debug('Processing %s using vue extractor', fn)
     parseFile(source, fn, scriptParseFn)
   } else {
-    debug(`Processing ${fn} using typescript extractor`)
+    debug('Processing %s using typescript extractor', fn)
     scriptParseFn(source)
   }
-  debug(`Done extracting ${fn}, messages: ${messages}`)
+  debug('Done extracting %s messages: %s', fn, messages)
   if (meta) {
-    debug(`Extracted meta: ${meta}`)
+    debug('Extracted meta:', meta)
     messages.forEach(m => (m.meta = meta))
   }
   return {messages, meta}
@@ -179,7 +179,7 @@ export async function extract(
   } else {
     rawResults = await Promise.all(
       files.map(async fn => {
-        debug(`Extracting file: ${fn}`)
+        debug('Extracting file:', fn)
         try {
           const source = await readFile(fn, 'utf8')
           return processFile(source, fn, opts)
@@ -262,7 +262,7 @@ export default async function extractAndWrite(
   const {outFile, ...opts} = extractOpts
   const serializedResult = (await extract(files, opts)) + '\n'
   if (outFile) {
-    debug(`Writing output file: ${outFile}`)
+    debug('Writing output file:', outFile)
     return outputFile(outFile, serializedResult)
   }
   process.stdout.write(serializedResult)
