@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.27](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.26...@formatjs/cli@4.2.27) (2021-07-06)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** force @formatjs/ts-transformer to use CLI TS version, fix [#3022](https://github.com/formatjs/formatjs/issues/3022) ([5294e5b](https://github.com/formatjs/formatjs/commit/5294e5ba1142c48a7961dd2ce25d059469c36205))
+
+
+
+
+
 ## [4.2.26](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.25...@formatjs/cli@4.2.26) (2021-07-06)
 
 
