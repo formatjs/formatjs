@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.17](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.16...@formatjs/intl-localematcher@0.2.17) (2021-07-20)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** Correct path to main file for @formatjs/intl-localematcher ([#3057](https://github.com/formatjs/formatjs/issues/3057)) ([e2267bb](https://github.com/formatjs/formatjs/commit/e2267bbc2645d007ccbae8dfa77bc7ad422cfde2))
+
+
+
+
+
 ## [0.2.16](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.15...@formatjs/intl-localematcher@0.2.16) (2021-06-26)
 
 **Note:** Version bump only for package @formatjs/intl-localematcher
