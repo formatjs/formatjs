@@ -13,6 +13,7 @@ pkg_npm(
         "README.md",
     ],
     deps = [
+        "%s.esm.js" % PACKAGE_NAME,
         "%s.iife.js" % PACKAGE_NAME,
         ":dist",
     ],
@@ -48,6 +49,7 @@ ts_compile(
     package_name = PACKAGE_NAME,
     srcs = SRCS,
     skip_esm = False,
+    skip_esm_esnext = False,
     deps = SRC_DEPS,
 )
 
@@ -68,6 +70,19 @@ esbuild(
     target = "es5",
     deps = [
         ":dist-esm",
+    ] + SRC_DEPS,
+)
+
+esbuild(
+    name = "%s.esm" % PACKAGE_NAME,
+    args = [
+        "--global-name=IntlMessageFormat",
+    ],
+    entry_point = "lib_esnext/index.js",
+    format = "esm",
+    target = "esnext",
+    deps = [
+        ":dist-esm-esnext",
     ] + SRC_DEPS,
 )
 

@@ -42,7 +42,7 @@ BUILDIFIER_WARNINGS = [
     "unused-variable",
 ]
 
-def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
+def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_esnext = True):
     """Compile TS with prefilled args.
 
     Args:
@@ -51,6 +51,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
         deps: deps
         package_name: name from package.json
         skip_esm: skip building ESM bundle
+        skip_esm_esnext: skip building the ESM ESNext bundle
     """
     deps = deps + ["@npm//tslib"]
     ts_config(
@@ -74,6 +75,16 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
             declaration_map = True,
             out_dir = "lib",
             tsconfig = "//:tsconfig.esm",
+            deps = deps,
+        )
+    if not skip_esm_esnext:
+        ts_project(
+            name = "%s-esm-esnext" % name,
+            srcs = srcs,
+            declaration = True,
+            declaration_map = True,
+            out_dir = "lib_esnext",
+            tsconfig = "//:tsconfig.esm.esnext",
             deps = deps,
         )
 

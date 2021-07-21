@@ -29,6 +29,13 @@ ts_config(
     deps = ["//:tsconfig.json"],
 )
 
+ts_config(
+    name = "tsconfig.esm.esnext",
+    src = "tsconfig.esm.esnext.json",
+    visibility = ["//:__subpackages__"],
+    deps = ["//:tsconfig.json"],
+)
+
 # We run this centrally so it doesn't spawn
 # multiple browser sessions which overwhelms SauceLabs
 KARMA_TESTS = [
