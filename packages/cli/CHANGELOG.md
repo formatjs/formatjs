@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.28](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.27...@formatjs/cli@4.2.28) (2021-07-23)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** bump fast-glob to 3.2.7 ([#3060](https://github.com/formatjs/formatjs/issues/3060)) ([9cba510](https://github.com/formatjs/formatjs/commit/9cba5106abe747c6c60ab19c4ba23858d8992b60))
+
+
+
+
+
 ## [4.2.27](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.26...@formatjs/cli@4.2.27) (2021-07-06)
 
 
