@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.8.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.7.1...intl-messageformat@9.8.0) (2021-07-23)
+
+
+### Features
+
+* **intl-messageformat:** generate modern web bundle as intl-messageformat.esm.js ([#3063](https://github.com/formatjs/formatjs/issues/3063)) ([829870d](https://github.com/formatjs/formatjs/commit/829870d8256957a7f46ec2a516e4a8b19cfb3e02))
+
+
+
+
+
 ## [9.7.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.7.0...intl-messageformat@9.7.1) (2021-06-26)
 
 **Note:** Version bump only for package intl-messageformat
