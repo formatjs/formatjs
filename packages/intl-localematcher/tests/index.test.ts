@@ -226,7 +226,7 @@ test('Intl.LocaleMatcher', function () {
       ],
       'en'
     )
-  ).toEqual('sr')
+  ).toEqual('sh')
 })
 
 test('empty requested', function () {
