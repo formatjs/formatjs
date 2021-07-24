@@ -81,7 +81,7 @@ import '@formatjs/intl-datetimeformat/add-all-tz' // Add ALL tz data
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-datetimeformat/should-polyfill'
 async function polyfill(locale: string) {
-  if (!shouldPolyfill()) {
+  if (!shouldPolyfill(locale)) {
     return
   }
   // Load the polyfill 1st BEFORE loading data

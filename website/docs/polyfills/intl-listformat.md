@@ -65,7 +65,7 @@ import '@formatjs/intl-listformat/locale-data/en' // locale-data for en
 import {shouldPolyfill} from '@formatjs/intl-listformat/should-polyfill'
 async function polyfill(locale: string) {
   // This platform already supports Intl.ListFormat
-  if (!shouldPolyfill()) {
+  if (!shouldPolyfill(locale)) {
     return
   }
   // Load the polyfill 1st BEFORE loading data

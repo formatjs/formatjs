@@ -68,7 +68,7 @@ import '@formatjs/intl-displaynames/locale-data/en' // locale-data for en
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-displaynames/should-polyfill'
 async function polyfill(locale: string) {
-  if (!shouldPolyfill()) {
+  if (!shouldPolyfill(locale)) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
