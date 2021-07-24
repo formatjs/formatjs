@@ -5,8 +5,8 @@ import {
   CoerceOptionsToObject,
   GetOption,
   SetNumberFormatDigitOptions,
-  ResolveLocale,
 } from '@formatjs/ecma402-abstract'
+import {ResolveLocale} from '@formatjs/intl-localematcher'
 
 export function InitializePluralRules(
   pl: Intl.PluralRules,
