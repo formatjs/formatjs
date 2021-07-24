@@ -2,7 +2,6 @@ import {
   getInternalSlot,
   setInternalSlot,
   GetOption,
-  ResolveLocale,
   invariant,
   SupportedLocales,
   IsWellFormedCurrencyCode,
@@ -14,6 +13,7 @@ import {
   GetOptionsObject,
 } from '@formatjs/ecma402-abstract'
 import {CanonicalCodeForDisplayNames} from './abstract/CanonicalCodeForDisplayNames'
+import {ResolveLocale} from '@formatjs/intl-localematcher'
 
 export interface DisplayNamesOptions {
   localeMatcher?: 'lookup' | 'best fit'
