@@ -28,6 +28,22 @@ function hasScriptBug() {
   return false
 }
 
-export function shouldPolyfill() {
-  return !(Intl as any).DisplayNames || hasMissingICUBug() || hasScriptBug()
+function supportedLocalesOf(locale?: string | string[]) {
+  if (!locale) {
+    return true
+  }
+  const locales = Array.isArray(locale) ? locale : [locale]
+  return (
+    (Intl as any).DisplayNames.supportedLocalesOf(locales).length ===
+    locales.length
+  )
+}
+
+export function shouldPolyfill(locale?: string | string[]) {
+  return (
+    !(Intl as any).DisplayNames ||
+    hasMissingICUBug() ||
+    hasScriptBug() ||
+    !supportedLocalesOf(locale)
+  )
 }
