@@ -3,7 +3,6 @@ import {
   ListPatternLocaleData,
   setInternalSlot,
   SupportedLocales,
-  ResolveLocale,
   getInternalSlot,
   ListPatternFieldsData,
   ListPatternData,
@@ -14,6 +13,7 @@ import {
   GetOptionsObject,
   CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract'
+import {ResolveLocale} from '@formatjs/intl-localematcher'
 
 export interface IntlListFormatOptions {
   /**
