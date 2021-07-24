@@ -42,13 +42,24 @@ function hasUnthrownDateTimeStyleBug(): boolean {
   }
 }
 
-export function shouldPolyfill() {
+function supportedLocalesOf(locale?: string | string[]) {
+  if (!locale) {
+    return true
+  }
+  const locales = Array.isArray(locale) ? locale : [locale]
+  return (
+    Intl.DateTimeFormat.supportedLocalesOf(locales).length === locales.length
+  )
+}
+
+export function shouldPolyfill(locale?: string | string[]) {
   return (
     !('DateTimeFormat' in Intl) ||
     !('formatToParts' in Intl.DateTimeFormat.prototype) ||
     !('formatRange' in Intl.DateTimeFormat.prototype) ||
     hasChromeLt71Bug() ||
     hasUnthrownDateTimeStyleBug() ||
-    !supportsDateStyle()
+    !supportsDateStyle() ||
+    !supportedLocalesOf(locale)
   )
 }
