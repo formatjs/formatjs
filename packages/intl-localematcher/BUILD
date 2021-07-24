@@ -27,10 +27,9 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["*.ts"])
+SRCS = glob(["**/*.ts"], exclude=["tests/*"])
 
 SRC_DEPS = [
-    "//packages/ecma402-abstract:dist",
 ]
 
 ts_compile(
@@ -48,9 +47,8 @@ jest_test(
         "tests/**/*.tsx",
         "tests/**/*.snap",
     ]),
-    deps = [
-        "//packages/ecma402-abstract:types",
-    ] + SRC_DEPS,
+    deps = 
+SRC_DEPS,
 )
 
 # Test262

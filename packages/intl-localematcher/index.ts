@@ -1,4 +1,4 @@
-import {ResolveLocale} from '@formatjs/ecma402-abstract'
+import {ResolveLocale} from './abstract/ResolveLocale'
 
 export interface Opts {
   algorithm: 'lookup' | 'best fit'
@@ -26,3 +26,6 @@ export function match(
     () => defaultLocale
   ).locale
 }
+
+export {LookupSupportedLocales} from './abstract/LookupSupportedLocales'
+export {ResolveLocale} from './abstract/ResolveLocale'
