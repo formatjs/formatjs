@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@9.1.7...@formatjs/intl-relativetimeformat@9.2.0) (2021-07-24)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** refactor ([7bfcc3e](https://github.com/formatjs/formatjs/commit/7bfcc3ea726f4ed493d073e6c34f53ad77f63484))
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** add supported locales check to should-polyfill, fix [#3066](https://github.com/formatjs/formatjs/issues/3066) ([ab90bf5](https://github.com/formatjs/formatjs/commit/ab90bf53b9fee8645e93656517876d93d93b12c3))
+
+
+
+
+
 ## [9.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@9.1.6...@formatjs/intl-relativetimeformat@9.1.7) (2021-06-26)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

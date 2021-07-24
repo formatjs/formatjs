@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@6.2.6...@formatjs/intl-listformat@6.3.0) (2021-07-24)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** refactor ([65c5a20](https://github.com/formatjs/formatjs/commit/65c5a20db4287106aef42a5c745bdd55603e146b))
+
+
+### Features
+
+* **@formatjs/intl-listformat:** add supported locales check to should-polyfill, fix [#3066](https://github.com/formatjs/formatjs/issues/3066) ([4640c81](https://github.com/formatjs/formatjs/commit/4640c81df591a126ecc33d919884c219e0c3f58d))
+
+
+
+
+
 ## [6.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@6.2.5...@formatjs/intl-listformat@6.2.6) (2021-06-26)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

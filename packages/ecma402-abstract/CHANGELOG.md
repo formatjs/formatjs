@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.5](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.4...@formatjs/ecma402-abstract@1.9.5) (2021-07-24)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** refactoring ([bb01687](https://github.com/formatjs/formatjs/commit/bb01687d5202641a7cb7949796bee8c64232cc9f))
+
+
+
+
+
 ## [1.9.4](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.3...@formatjs/ecma402-abstract@1.9.4) (2021-06-26)
 
 

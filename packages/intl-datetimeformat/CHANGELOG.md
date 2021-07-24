@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.1.6...@formatjs/intl-datetimeformat@4.2.0) (2021-07-24)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** refactor ([029f7fd](https://github.com/formatjs/formatjs/commit/029f7fdc0bb12a98382b424658e3cc049c271eeb))
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** add supported locales check to should-polyfill, fix [#3066](https://github.com/formatjs/formatjs/issues/3066) ([59d297e](https://github.com/formatjs/formatjs/commit/59d297e806a453edcb607cd681b623d833136bab))
+
+
+
+
+
 ## [4.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.1.5...@formatjs/intl-datetimeformat@4.1.6) (2021-06-26)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

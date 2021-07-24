@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@7.1.5...@formatjs/intl-numberformat@7.2.0) (2021-07-24)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** add supported locales check to should-polyfill, fix [#3066](https://github.com/formatjs/formatjs/issues/3066) ([cf7c48f](https://github.com/formatjs/formatjs/commit/cf7c48f993e11b08f51abdfb119bdbe627063a66))
+
+
+
+
+
 ## [7.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@7.1.4...@formatjs/intl-numberformat@7.1.5) (2021-06-26)
 
 

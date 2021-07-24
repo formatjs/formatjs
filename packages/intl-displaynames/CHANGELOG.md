@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@5.1.6...@formatjs/intl-displaynames@5.2.0) (2021-07-24)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** refactor ([e392c77](https://github.com/formatjs/formatjs/commit/e392c773a210269547ffd41a7cfc743c03552d7d))
+
+
+### Features
+
+* **@formatjs/intl-displaynames:** add supported locales check to should-polyfill, fix [#3066](https://github.com/formatjs/formatjs/issues/3066) ([4d39f5c](https://github.com/formatjs/formatjs/commit/4d39f5cf612b865ee073407a38d4f3da899adbe5))
+
+
+
+
+
 ## [5.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@5.1.5...@formatjs/intl-displaynames@5.1.6) (2021-06-26)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

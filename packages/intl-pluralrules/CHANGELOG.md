@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.0.28...@formatjs/intl-pluralrules@4.1.0) (2021-07-24)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** refactor ([5c039ff](https://github.com/formatjs/formatjs/commit/5c039ff61271f902bcf1287d4a1bbc90f949182c))
+
+
+### Features
+
+* **@formatjs/intl-pluralrules:** add supported locales check to should-polyfill, fix [#3066](https://github.com/formatjs/formatjs/issues/3066) ([395efcb](https://github.com/formatjs/formatjs/commit/395efcb843c1d20ca11b55375d4b2536a415a750))
+
+
+
+
+
 ## [4.0.28](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.0.27...@formatjs/intl-pluralrules@4.0.28) (2021-06-26)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules
