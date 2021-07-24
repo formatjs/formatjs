@@ -23,6 +23,7 @@
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.9.4",
+    "@formatjs/intl-localematcher": "0.2.17",
     "tslib": "^2.1.0"
   }
 }

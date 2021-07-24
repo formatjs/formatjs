@@ -6,7 +6,6 @@ import {
   CanonicalizeLocaleList,
   invariant,
   GetOption,
-  ResolveLocale,
   IsValidTimeZoneName,
   CanonicalizeTimeZoneName,
   GetNumberOption,
@@ -16,6 +15,7 @@ import {BestFitFormatMatcher} from './BestFitFormatMatcher'
 import {DATE_TIME_PROPS} from './utils'
 import {DateTimeStyleFormat} from './DateTimeStyleFormat'
 import {ToDateTimeOptions} from './ToDateTimeOptions'
+import {ResolveLocale} from '@formatjs/intl-localematcher'
 
 function isTimeRelated(opt: Opt) {
   for (const prop of ['hour', 'minute', 'second'] as Array<
