@@ -1,9 +1,9 @@
 import {
   CanonicalizeLocaleList,
   GetOption,
-  ResolveLocale,
   ToObject,
 } from '@formatjs/ecma402-abstract'
+import {ResolveLocale} from '@formatjs/intl-localematcher'
 export interface DurationFormatOptions {
   style: 'long' | 'short' | 'narrow' | 'digital'
   smallestUnit: 'second' | 'minute' | 'hour' | 'day' | 'month' | 'year'

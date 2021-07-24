@@ -31,6 +31,7 @@ SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     "//packages/ecma402-abstract:dist",
+    "//packages/intl-localematcher:dist",
 ]
 
 ts_compile(
@@ -50,6 +51,7 @@ jest_test(
     ]),
     deps = [
         "//packages/ecma402-abstract:types",
+        "//packages/intl-localematcher:types",
     ] + SRC_DEPS,
 )
 
