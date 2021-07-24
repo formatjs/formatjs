@@ -36,11 +36,20 @@ function supportsES2020() {
   return true
 }
 
-export function shouldPolyfill() {
+function supportedLocalesOf(locale?: string | string[]) {
+  if (!locale) {
+    return true
+  }
+  const locales = Array.isArray(locale) ? locale : [locale]
+  return Intl.NumberFormat.supportedLocalesOf(locales).length === locales.length
+}
+
+export function shouldPolyfill(locale?: string | string[]) {
   return (
     typeof Intl === 'undefined' ||
     !('NumberFormat' in Intl) ||
     !supportsES2020() ||
-    onlySupportsEn()
+    onlySupportsEn() ||
+    !supportedLocalesOf(locale)
   )
 }
