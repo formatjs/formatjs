@@ -37,7 +37,9 @@ SRCS = glob(
     ],
 )
 
-SRC_DEPS = []
+SRC_DEPS = [
+    "//packages/intl-localematcher:dist"
+]
 
 ts_compile(
     name = "dist",
@@ -54,7 +56,9 @@ jest_test(
         "tests/**/*.tsx",
         "tests/**/*.snap",
     ]),
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + [
+        "//packages/intl-localematcher:types"
+    ],
 )
 
 generated_file_test(

@@ -21,7 +21,6 @@ export * from './NumberFormat/ToRawFixed'
 export * from './NumberFormat/ToRawPrecision'
 export {default as _formatToParts} from './NumberFormat/format_to_parts'
 export * from './PartitionPattern'
-export * from './ResolveLocale'
 export * from './SupportedLocales'
 export {
   getInternalSlot,

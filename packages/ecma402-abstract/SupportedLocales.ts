@@ -1,6 +1,6 @@
 import {ToObject} from './262'
 import {GetOption} from './GetOption'
-import {LookupSupportedLocales} from './LookupSupportedLocales'
+import {LookupSupportedLocales} from '@formatjs/intl-localematcher'
 
 /**
  * https://tc39.es/ecma402/#sec-supportedlocales

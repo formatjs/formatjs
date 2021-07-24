@@ -5,7 +5,7 @@ import {
 } from '../types/number'
 import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
 import {GetOption} from '../GetOption'
-import {ResolveLocale} from '../ResolveLocale'
+import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {SetNumberFormatUnitOptions} from './SetNumberFormatUnitOptions'
 import {CurrencyDigits} from './CurrencyDigits'
 import {SetNumberFormatDigitOptions} from './SetNumberFormatDigitOptions'
