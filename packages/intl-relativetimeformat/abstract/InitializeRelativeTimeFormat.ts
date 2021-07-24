@@ -4,9 +4,9 @@ import {
   CanonicalizeLocaleList,
   CoerceOptionsToObject,
   GetOption,
-  ResolveLocale,
   invariant,
 } from '@formatjs/ecma402-abstract'
+import {ResolveLocale} from '@formatjs/intl-localematcher'
 
 const NUMBERING_SYSTEM_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 
