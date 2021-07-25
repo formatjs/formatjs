@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "check_format", "ts_compile")
+load("//tools:index.bzl", "check_format", "ts_compile", "package_json_test")
 load("//tools:jest.bzl", "jest_test")
 exports_files(["package.json"])
 PACKAGE_NAME = "babel-plugin-formatjs"
@@ -90,6 +90,11 @@ jest_test(
         "@npm//vue-loader",
         "@npm//webpack",
     ],
+)
+
+package_json_test(
+    name="package_json_test",
+    deps=SRC_DEPS
 )
 
 generated_file_test(

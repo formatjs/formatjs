@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
-load("//tools:index.bzl", "check_format", "ts_compile")
+load("//tools:index.bzl", "check_format", "ts_compile", "package_json_test")
 load("//tools:jest.bzl", "jest_test")
 exports_files(["package.json"])
 PACKAGE_NAME = "vue-intl"
@@ -69,4 +69,8 @@ check_format(
             "tests/__snapshots__/*",
         ],
     ),
+)
+package_json_test(
+    name="package_json_test",
+    deps=SRC_DEPS
 )

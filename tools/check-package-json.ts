@@ -17,10 +17,16 @@ const cmp: stringify.Comparator = (a, b) => (a.key < b.key ? 1 : -1)
 function main(args: Args) {
   const {externalDep, internalDepPackageJson, packageJson, rootPackageJson} =
     args
-  const externalDeps = Array.isArray(externalDep) ? externalDep : [externalDep]
+  const externalDeps = Array.isArray(externalDep)
+    ? externalDep
+    : externalDep
+    ? [externalDep]
+    : []
   const internalDepPackageJsons = Array.isArray(internalDepPackageJson)
     ? internalDepPackageJson
-    : [internalDepPackageJson]
+    : internalDepPackageJson
+    ? [internalDepPackageJson]
+    : []
   const packageJsonContent = readJSONSync(packageJson)
   const rootPackageJsonContent = readJSONSync(rootPackageJson)
   const internalPackageJsonContents = internalDepPackageJsons.map(p =>
@@ -37,6 +43,11 @@ function main(args: Args) {
       all[c.name] = c.version
       return all
     }, {}),
+  }
+  if (packageJsonContent.peerDependenciesMeta) {
+    for (const dep in packageJsonContent.peerDependenciesMeta) {
+      delete expectedDependencies[dep]
+    }
   }
   const packageJsonAllDeps = {
     ...packageJsonContent.dependencies,

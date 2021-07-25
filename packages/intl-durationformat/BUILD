@@ -85,3 +85,7 @@ check_format(
         ],
     ),
 )
+# package_json_test(
+#     name="package_json_test",
+#     deps=SRC_DEPS
+# )

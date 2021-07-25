@@ -11,15 +11,15 @@
   "types": "index.d.ts",
   "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/helper-plugin-utils": "^7.8.3",
+    "@babel/core": "^7.10.4",
+    "@babel/helper-plugin-utils": "^7.10.4",
     "@babel/plugin-syntax-jsx": "7",
     "@babel/traverse": "7",
-    "@babel/types": "^7.9.5",
+    "@babel/types": "^7.12.11",
     "@formatjs/icu-messageformat-parser": "2.0.8",
     "@formatjs/ts-transformer": "3.4.6",
     "@types/babel__core": "^7.1.7",
-    "@types/babel__helper-plugin-utils": "7",
+    "@types/babel__helper-plugin-utils": "^7.10.0",
     "tslib": "^2.1.0"
   },
   "keywords": [

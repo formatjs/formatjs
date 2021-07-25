@@ -51,11 +51,6 @@ SRC_DEPS = [
     "//packages/ts-transformer:dist",
 ]
 
-package_json_test(
-    name="package_json_test",
-    deps=SRC_DEPS
-)
-
 ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,

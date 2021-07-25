@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "check_format", "esbuild", "ts_compile")
+load("//tools:index.bzl", "check_format", "esbuild", "ts_compile", "package_json_test")
 load("//tools:jest.bzl", "jest_test")
 
 exports_files(["package.json"])
@@ -120,4 +120,8 @@ ts_node(
         "//packages/intl-pluralrules:locale-data",
         "//:tsconfig.node.json",
     ],
+)
+package_json_test(
+    name="package_json_test",
+    deps=SRC_DEPS
 )
