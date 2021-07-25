@@ -1,8 +1,10 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "check_format", "ts_compile")
+load("//tools:index.bzl", "check_format", "ts_compile", "package_json_test")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "cli"
+
+exports_files(["package.json"])
 
 pkg_npm(
     name = PACKAGE_NAME,
@@ -36,6 +38,7 @@ SRC_DEPS = [
     "@npm//@types/fs-extra",
     "@npm//@types/json-stable-stringify",
     "@npm//@types/node",
+    "@npm//@vue/compiler-core",
     "@npm//@vue/compiler-sfc",
     "@npm//chalk",
     "@npm//commander",
@@ -43,9 +46,15 @@ SRC_DEPS = [
     "@npm//fs-extra",
     "@npm//json-stable-stringify",
     "@npm//loud-rejection",
+    "@npm//typescript",
     "//packages/icu-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
 ]
+
+package_json_test(
+    name="package_json_test",
+    deps=SRC_DEPS
+)
 
 ts_compile(
     name = "dist",
@@ -59,7 +68,7 @@ jest_test(
     srcs = [
         "package.json",
     ] + SRCS + glob([
-"tests/unit/**/*",
+        "tests/unit/**/*",
     ]),
     deps = [
         "//packages/icu-messageformat-parser:types",
@@ -75,7 +84,7 @@ jest_test(
     srcs = [
         "package.json",
         "bin/formatjs",
-        "tests/integration/formatter.js"
+        "tests/integration/formatter.js",
     ] + SRCS + glob(
         [
             "tests/integration/compile/**/*",
@@ -118,7 +127,7 @@ jest_test(
     srcs = [
         "package.json",
         "bin/formatjs",
-        "tests/integration/formatter.js"
+        "tests/integration/formatter.js",
     ] + SRCS + glob(
         [
             "tests/integration/extract/**/*",

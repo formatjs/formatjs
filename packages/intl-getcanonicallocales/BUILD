@@ -1,7 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("//tools:index.bzl", "bundle_karma_tests", "check_format", "esbuild", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
-
+exports_files(["package.json"])
 PACKAGE_NAME = "intl-getcanonicallocales"
 
 pkg_npm(
@@ -68,6 +68,7 @@ generate_src_file(
     entry_point = "scripts/aliases.ts",
     visibility = ["//:__pkg__"],
 )
+
 generate_src_file(
     name = "likelySubtags",
     src = "src/likelySubtags.generated.ts",

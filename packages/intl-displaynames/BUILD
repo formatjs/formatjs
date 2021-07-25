@@ -4,7 +4,7 @@ load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("//tools:index.bzl", "bundle_karma_tests", "check_format", "esbuild", "generate_src_file", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
-
+exports_files(["package.json"])
 PACKAGE_NAME = "intl-displaynames"
 
 TEST_LOCALES = [

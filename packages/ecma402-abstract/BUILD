@@ -1,7 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("//tools:index.bzl", "check_format", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
-
+exports_files(["package.json"])
 PACKAGE_NAME = "ecma402-abstract"
 
 pkg_npm(
@@ -38,7 +38,7 @@ SRCS = glob(
 )
 
 SRC_DEPS = [
-    "//packages/intl-localematcher:dist"
+    "//packages/intl-localematcher:dist",
 ]
 
 ts_compile(
@@ -57,7 +57,7 @@ jest_test(
         "tests/**/*.snap",
     ]),
     deps = SRC_DEPS + [
-        "//packages/intl-localematcher:types"
+        "//packages/intl-localematcher:types",
     ],
 )
 

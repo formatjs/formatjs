@@ -3,7 +3,7 @@ load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("//tools:index.bzl", "check_format", "esbuild", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
-
+exports_files(["package.json"])
 PACKAGE_NAME = "intl-locale"
 
 pkg_npm(

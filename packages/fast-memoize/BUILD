@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("//tools:index.bzl", "check_format", "ts_compile")
-
+exports_files(["package.json"])
 PACKAGE_NAME = "fast-memoize"
 
 pkg_npm(

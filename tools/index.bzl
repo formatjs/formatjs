@@ -6,7 +6,7 @@ load("@build_bazel_rules_nodejs//internal/js_library:js_library.bzl", "js_librar
 load("@npm//@bazel/esbuild:index.bzl", _esbuild = "esbuild")
 load("@npm//@bazel/typescript:index.bzl", "ts_config", "ts_project")
 load("@npm//prettier:index.bzl", "prettier", "prettier_test")
-load("@npm//ts-node:index.bzl", "ts_node")
+load("@npm//ts-node:index.bzl", "ts_node", "ts_node_test")
 
 BUILDIFIER_WARNINGS = [
     "attr-cfg",
@@ -288,4 +288,38 @@ def esbuild(name, **kwargs):
             "@bazel_tools//src/conditions:windows": "@esbuild_windows//:esbuild.exe",
         }),
         **kwargs
+    )
+
+def package_json_test(name, packageJson = "package.json", deps = []):
+    external_deps = [s.replace("@npm//", "") for s in deps if s.startswith("@npm//")]
+    internal_dep_package_jsons = ["%s:package.json" % s.split(":")[0] for s in deps if not s.startswith("@npm//")]
+    ts_node_test(
+        name = name,
+        args = [
+                   "--transpile-only",
+                   "$(execpath //tools:check-package-json.ts)",
+                   "--rootPackageJson",
+                   "$(location //:package.json)",
+                   "--packageJson",
+                   "$(location %s)" % packageJson,
+               ] +
+               ["--externalDep %s" % n for n in external_deps] +
+               ["--internalDepPackageJson $(location %s)" % d for d in internal_dep_package_jsons],
+        data = internal_dep_package_jsons + [
+            packageJson,
+            "//tools:check-package-json.ts",
+            "//:package.json",
+            "//:tsconfig.json",
+            "@npm//@types/fs-extra",
+            "@npm//@types/minimist",
+            "@npm//fs-extra",
+            "@npm//json-stable-stringify",
+            "@npm//@types/json-stable-stringify",
+            "@npm//minimist",
+            "@npm//lodash",
+            "@npm//@types/lodash",
+            "@npm//unidiff",
+            "@npm//tslib",
+            "//:tsconfig.node.json",
+        ],
     )

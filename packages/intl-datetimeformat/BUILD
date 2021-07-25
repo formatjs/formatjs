@@ -3,7 +3,7 @@ load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//ts-node:index.bzl", "ts_node")
 load("//tools:index.bzl", "check_format", "esbuild", "generate_src_file", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
-
+exports_files(["package.json"])
 PACKAGE_NAME = "intl-datetimeformat"
 
 TEST_LOCALES = [

@@ -3,6 +3,8 @@ load("@npm//ts-node:index.bzl", "ts_node")
 load("//tools:index.bzl", "check_format", "esbuild", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
+exports_files(["package.json"])
+
 PACKAGE_NAME = "intl-messageformat"
 
 pkg_npm(

@@ -1,7 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("//tools:index.bzl", "check_format", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
-
+exports_files(["package.json"])
 PACKAGE_NAME = "vue-intl"
 
 pkg_npm(
