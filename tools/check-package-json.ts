@@ -44,15 +44,17 @@ function main(args: Args) {
       return all
     }, {}),
   }
-  if (packageJsonContent.peerDependenciesMeta) {
-    for (const dep in packageJsonContent.peerDependenciesMeta) {
-      delete expectedDependencies[dep]
-    }
-  }
   const packageJsonAllDeps = {
     ...packageJsonContent.dependencies,
     ...(packageJsonContent.peerDependencies || {}),
   }
+  if (packageJsonContent.peerDependenciesMeta) {
+    for (const dep in packageJsonContent.peerDependenciesMeta) {
+      delete expectedDependencies[dep]
+      delete packageJsonAllDeps[dep]
+    }
+  }
+
   if (isEqual(packageJsonAllDeps, expectedDependencies)) {
     return
   }

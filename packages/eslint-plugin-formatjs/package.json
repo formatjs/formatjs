@@ -29,6 +29,6 @@
     "tslib": "^2.1.0"
   },
   "peerDependencies": {
-    "eslint": "^7.0.0"
+    "eslint": "^7.4.0"
   }
 }

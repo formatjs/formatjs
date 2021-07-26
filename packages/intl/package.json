@@ -31,14 +31,14 @@
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.9.5",
     "@formatjs/fast-memoize": "1.1.1",
-    "@formatjs/icu-messageformat-parser": "2.0.8",
     "@formatjs/intl-displaynames": "5.2.0",
     "@formatjs/intl-listformat": "6.3.0",
     "intl-messageformat": "9.8.1",
     "tslib": "^2.1.0"
   },
   "peerDependencies": {
-    "typescript": "^4.2"
+    "typescript": "^4.2",
+    "@types/node": "14 || 16"
   },
   "peerDependenciesMeta": {
     "typescript": {

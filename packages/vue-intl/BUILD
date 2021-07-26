@@ -29,10 +29,8 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//typescript",
     "@npm//vue",
     "//packages/intl:dist",
-    "//packages/icu-messageformat-parser:dist",
 ]
 
 ts_compile(

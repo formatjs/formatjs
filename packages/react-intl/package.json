@@ -128,12 +128,11 @@
   "types": "index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.9.5",
-    "@formatjs/icu-messageformat-parser": "2.0.8",
-    "@formatjs/intl": "1.13.4",
     "@formatjs/intl-displaynames": "5.2.0",
     "@formatjs/intl-listformat": "6.3.0",
+    "@formatjs/intl": "1.13.4",
     "@types/hoist-non-react-statics": "^3.3.1",
+    "@types/react": "17",
     "hoist-non-react-statics": "^3.3.2",
     "intl-messageformat": "9.8.1",
     "tslib": "^2.1.0"

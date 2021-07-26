@@ -17,7 +17,8 @@
   ],
   "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {
-    "@formatjs/intl": "1.13.4"
+    "@formatjs/intl": "1.13.4",
+    "tslib": "^2.1.0"
   },
   "peerDependencies": {
     "vue": "3"

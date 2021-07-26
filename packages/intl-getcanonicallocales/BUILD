@@ -38,7 +38,6 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//cldr-core",
     "@npm//@types/node",
 ]
 
