@@ -3016,6 +3016,48 @@ Object {
 }
 `;
 
+exports[`numeric_tag_1 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "children": Array [
+        Object {
+          "location": Object {
+            "end": Object {
+              "column": 8,
+              "line": 1,
+              "offset": 7,
+            },
+            "start": Object {
+              "column": 5,
+              "line": 1,
+              "offset": 4,
+            },
+          },
+          "type": 0,
+          "value": "foo",
+        },
+      ],
+      "location": Object {
+        "end": Object {
+          "column": 13,
+          "line": 1,
+          "offset": 12,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "type": 8,
+      "value": "i0",
+    },
+  ],
+}
+`;
+
 exports[`open_close_tag_1 1`] = `
 Object {
   "err": null,

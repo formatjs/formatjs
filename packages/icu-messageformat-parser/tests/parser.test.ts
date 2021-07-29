@@ -237,6 +237,8 @@ test('open_close_tag_1', () => testParser('<test-tag></test-tag>', {}))
 
 test('open_close_tag_2', () => testParser('<test-tag>foo</test-tag>', {}))
 
+test('numeric_tag_1', () => testParser('<i0>foo</i0>', {}))
+
 test('open_close_tag_3', () =>
   testParser('<test-tag>foo {0} bar</test-tag>', {}))
 
