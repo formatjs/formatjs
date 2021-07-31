@@ -151,7 +151,7 @@ to autofix this issue`
 
   if (!message) {
     if (
-      !defaultMessage ||
+      typeof defaultMessage !== 'string' ||
       (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())
     ) {
       // This prevents warnings from littering the console in development
@@ -159,7 +159,7 @@ to autofix this issue`
       // default locale.
       onError(new MissingTranslationError(messageDescriptor, locale))
     }
-    if (defaultMessage) {
+    if (typeof defaultMessage === 'string') {
       try {
         const formatter = state.getMessageFormat(
           defaultMessage,
