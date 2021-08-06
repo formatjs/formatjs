@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@6.3.0...@formatjs/intl-listformat@6.3.1) (2021-08-06)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
 # [6.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@6.2.6...@formatjs/intl-listformat@6.3.0) (2021-07-24)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma376@0.3.0...@formatjs/ecma376@0.3.1) (2021-08-06)
+
+**Note:** Version bump only for package @formatjs/ecma376
+
+
+
+
+
 # 0.3.0 (2021-05-20)
 
 
