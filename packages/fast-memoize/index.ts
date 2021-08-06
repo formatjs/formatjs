@@ -15,7 +15,6 @@ interface CacheCreateFunc<K, V> {
 interface DefaultCache<K, V> {
   get(key: K): V
   set(key: K, value: V): void
-  has(key: K): boolean
 }
 
 export type Serializer = (args: any[]) => string
@@ -166,10 +165,6 @@ const serializerDefault: Serializer = function (): string {
 
 function ObjectWithoutPrototypeCache(this: any) {
   this.cache = Object.create(null) as Record<string, any>
-}
-
-ObjectWithoutPrototypeCache.prototype.has = function (key: string) {
-  return key in this.cache
 }
 
 ObjectWithoutPrototypeCache.prototype.get = function (key: string) {
