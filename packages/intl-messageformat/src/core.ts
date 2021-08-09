@@ -68,9 +68,6 @@ function createFastMemoizeCache<V>(store: Record<string, V>): Cache<string, V> {
   return {
     create() {
       return {
-        has(key) {
-          return key in store
-        },
         get(key) {
           return store[key]
         },
