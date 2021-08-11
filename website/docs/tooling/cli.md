@@ -91,7 +91,7 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm run formatjs extract --help
+npm run extract --help
 # Usage: formatjs extract [options] [files...]
 
 # Extract string messages from React components that use react-intl.
@@ -101,14 +101,14 @@ npm run formatjs extract --help
 For example:
 
 ```sh
-npm run formatjs extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
+npm run extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
 ```sh
-yarn formatjs extract --help
+yarn extract --help
 # Usage: formatjs extract [options] [files...]
 
 # Extract string messages from React components that use react-intl.
@@ -118,7 +118,7 @@ yarn formatjs extract --help
 For example:
 
 ```sh
-yarn formatjs extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
+yarn extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
 ```
 
 </TabItem>
@@ -219,14 +219,14 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm run formatjs compile --help
+npm run compile --help
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
 ```sh
-yarn formatjs compile --help
+yarn compile --help
 ```
 
 </TabItem>
