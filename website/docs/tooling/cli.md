@@ -81,8 +81,17 @@ function Comp(props) {
 
 ## Extraction
 
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
-formatjs extract --help
+npm run extract --help
 # Usage: formatjs extract [options] [files...]
 
 # Extract string messages from React components that use react-intl.
@@ -92,8 +101,28 @@ formatjs extract --help
 For example:
 
 ```sh
-formatjs extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
+npm run extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn extract --help
+# Usage: formatjs extract [options] [files...]
+
+# Extract string messages from React components that use react-intl.
+# The input language is expected to be TypeScript or ES2017 with JSX.
+```
+
+For example:
+
+```sh
+yarn extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
+```
+
+</TabItem>
+</Tabs>
 
 :::caution
 You should always quote (`"` or `'`) your glob pattern (like `"src/**/*"`) to avoid auto shell expansion of those glob, which varies depending on your shell (`zsh` vs `fish` vs `bash`).
@@ -180,9 +209,28 @@ sentences are not translator-friendly.
 Compile extracted file from `formatjs extract` to a react-intl consumable
 JSON file. This also does ICU message verification. See [Message Distribution](../getting-started/message-distribution.md) for more details.
 
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
-formatjs compile --help
+npm run compile --help
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn compile --help
+```
+
+</TabItem>
+</Tabs>
 
 ### `--format [path]`
 
@@ -306,9 +354,28 @@ values={[
 
 Batch compile a folder with extracted files from `formatjs extract` to a folder containing react-intl consumable JSON files. This also does ICU message verification. See [Message Distribution](../getting-started/message-distribution.md) for more details.
 
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
-formatjs compile-folder [options] <folder> <outFolder>
+npm run formatjs compile-folder [options] <folder> <outFolder>
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn formatjs compile-folder [options] <folder> <outFolder>
+```
+
+</TabItem>
+</Tabs>
 
 Folder structure should be in the form of `<folder>/<locale>.json` and the output would be `<outFolder>/<locale>.json`.
 
