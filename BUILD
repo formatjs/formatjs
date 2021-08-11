@@ -18,7 +18,7 @@ exports_files(
         "karma.conf-ci.js",
         "jest.config.js",
         ".prettierrc.json",
-        "package.json"
+        "package.json",
     ] + glob(["npm_package_patches/*"]),
     visibility = ["//:__subpackages__"],
 )

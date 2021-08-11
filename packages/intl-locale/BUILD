@@ -1,9 +1,11 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-load("//tools:index.bzl", "check_format", "esbuild", "ts_compile", "package_json_test")
+load("//tools:index.bzl", "check_format", "esbuild", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
+
 exports_files(["package.json"])
+
 PACKAGE_NAME = "intl-locale"
 
 pkg_npm(
@@ -128,7 +130,8 @@ check_format(
         ],
     ),
 )
+
 package_json_test(
-    name="package_json_test",
-    deps=SRC_DEPS
+    name = "package_json_test",
+    deps = SRC_DEPS,
 )
