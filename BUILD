@@ -2,6 +2,7 @@ load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//@bazel/typescript:index.bzl", "ts_config")
 load("@npm//karma:index.bzl", "karma_test")
+load("@npm//lerna:index.bzl", "lerna")
 load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
 
 # Allow any ts_library rules in this workspace to reference the config
@@ -153,4 +154,13 @@ buildifier(
     lint_mode = "fix",
     lint_warnings = BUILDIFIER_WARNINGS,
     verbose = True,
+)
+
+lerna(
+    name = "version",
+    templated_args = [
+        "version",
+        "prerelease",
+        "--yes",
+    ],
 )
