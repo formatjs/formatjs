@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-datetimeformat",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "Intl.DateTimeFormat polyfill",
   "main": "index.js",
   "types": "index.d.ts",
@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.9.6",
-    "@formatjs/intl-localematcher": "0.2.19",
+    "@formatjs/ecma402-abstract": "1.9.7",
+    "@formatjs/intl-localematcher": "0.2.20",
     "tslib": "^2.1.0"
   }
 }

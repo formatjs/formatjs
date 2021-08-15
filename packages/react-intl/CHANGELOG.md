@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.20.8](https://github.com/formatjs/formatjs/compare/react-intl@5.20.7...react-intl@5.20.8) (2021-08-15)
+
+
+### Bug Fixes
+
+* **react-intl:** add generic constraint to defineMessage for better intellisense experience ([#3111](https://github.com/formatjs/formatjs/issues/3111)) ([9eae9cd](https://github.com/formatjs/formatjs/commit/9eae9cdc12e2f073767d89e18d03f70917d7d1b0))
+
+
+
+
+
 ## [5.20.7](https://github.com/formatjs/formatjs/compare/react-intl@5.20.6...react-intl@5.20.7) (2021-08-06)
 
 **Note:** Version bump only for package react-intl

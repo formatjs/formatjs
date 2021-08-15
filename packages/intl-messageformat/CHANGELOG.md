@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.9.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.8.2...intl-messageformat@9.9.0) (2021-08-15)
+
+
+### Features
+
+* **@formatjs/fast-memoize:** remove unused Cache.has ([#3102](https://github.com/formatjs/formatjs/issues/3102)) ([5e9a425](https://github.com/formatjs/formatjs/commit/5e9a425519fd2b2473172687fccb58a6979ec81e))
+
+
+
+
+
 ## [9.8.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.8.1...intl-messageformat@9.8.2) (2021-08-06)
 
 **Note:** Version bump only for package intl-messageformat
