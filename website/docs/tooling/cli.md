@@ -206,7 +206,7 @@ sentences are not translator-friendly.
 
 ## Compilation
 
-Compile extracted file from `formatjs extract` to a react-intl consumable
+Compile extracted files from `formatjs extract` to a [react-intl](../react-intl.md) consumable
 JSON file. This also does ICU message verification. See [Message Distribution](../getting-started/message-distribution.md) for more details.
 
 <Tabs
