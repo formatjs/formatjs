@@ -51,7 +51,7 @@ export function defineMessages<
   return msgs
 }
 
-export function defineMessage<T>(msg: T): T {
+export function defineMessage<T extends MessageDescriptor>(msg: T): T {
   return msg
 }
 export {
