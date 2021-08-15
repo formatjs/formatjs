@@ -338,6 +338,7 @@ values={[
 
 </TabItem>
 <TabItem value="compiled">
+
 ```json
 {
   "hak27d": "Control Panel",
