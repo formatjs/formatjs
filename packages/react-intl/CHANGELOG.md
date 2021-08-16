@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.20.9](https://github.com/formatjs/formatjs/compare/react-intl@5.20.8...react-intl@5.20.9) (2021-08-16)
+
+
+### Bug Fixes
+
+* **react-intl:** fix children type of FormattedMessage, fix [#3117](https://github.com/formatjs/formatjs/issues/3117) ([567a131](https://github.com/formatjs/formatjs/commit/567a131a910e0bc2584cc031235b8987d91d815a))
+
+
+
+
+
 ## [5.20.8](https://github.com/formatjs/formatjs/compare/react-intl@5.20.7...react-intl@5.20.8) (2021-08-15)
 
 
