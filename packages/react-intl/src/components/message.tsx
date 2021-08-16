@@ -16,7 +16,7 @@ export interface Props<
 > extends MessageDescriptor {
   values?: V
   tagName?: React.ElementType<any>
-  children?(...nodes: React.ReactNodeArray): React.ReactElement | null
+  children?(nodes: React.ReactNodeArray): React.ReactElement | null
   ignoreTag?: IntlMessageFormatOptions['ignoreTag']
 }
 
@@ -47,12 +47,8 @@ function FormattedMessage(props: Props) {
     ignoreTag,
   })
 
-  if (!Array.isArray(nodes)) {
-    nodes = [nodes]
-  }
-
   if (typeof children === 'function') {
-    return children(nodes)
+    return children(Array.isArray(nodes) ? nodes : [nodes])
   }
 
   if (Component) {

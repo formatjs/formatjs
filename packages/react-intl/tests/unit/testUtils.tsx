@@ -6,7 +6,7 @@ export function mountFormattedComponentWithProvider<P>(
   Comp: React.ComponentType<P>
 ) {
   return (
-    props: P & {children?(...nodes: React.ReactNodeArray): React.ReactNode},
+    props: P & {children?(nodes: React.ReactNodeArray): React.ReactNode},
     providerProps: IntlConfig = {locale: 'en'}
   ) => {
     const result = render(
@@ -22,7 +22,7 @@ export function mountFormattedComponentWithProvider<P>(
     const {rerender} = result
     const rerenderProps = (
       newProps: P & {
-        children?(...nodes: React.ReactNodeArray): React.ReactNode
+        children?(nodes: React.ReactNodeArray): React.ReactNode
       } = props,
       newProviderProps: IntlConfig = providerProps
     ) =>
