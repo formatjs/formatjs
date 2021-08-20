@@ -1,5 +1,6 @@
 import {warn, getStdinAsString, debug} from './console_utils'
 import {readFile, outputFile} from 'fs-extra'
+import {promisify} from 'util';
 import {
   interpolateName,
   Opts,
@@ -265,5 +266,7 @@ export default async function extractAndWrite(
     debug('Writing output file:', outFile)
     return outputFile(outFile, serializedResult)
   }
-  process.stdout.write(serializedResult)
+  await promisify(process.stdout.write.bind(process.stdout))(
+    serializedResult
+  )
 }

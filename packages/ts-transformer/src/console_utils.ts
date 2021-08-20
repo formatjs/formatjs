@@ -13,20 +13,20 @@ function label(level: keyof typeof LEVEL_COLORS, message: string) {
   )}] ${message}`
 }
 
-export function debug(message: string, ...args: any[]): void {
+export async function debug(message: string, ...args: any[]) {
   if (process.env.LOG_LEVEL !== 'debug') {
     return
   }
-  process.stderr.write(format(label('debug', message), ...args))
-  process.stderr.write('\n')
+  console.error(format(label('debug', message), ...args))
+  console.error('\n')
 }
 
 export function warn(message: string, ...args: any[]): void {
-  process.stderr.write(format(label('warn', message), ...args))
-  process.stderr.write('\n')
+  console.error(format(label('warn', message), ...args))
+  console.error('\n')
 }
 
 export function error(message: string, ...args: any[]): void {
-  process.stderr.write(format(label('error', message), ...args))
-  process.stderr.write('\n')
+  console.error(format(label('error', message), ...args))
+  console.error('\n')
 }
