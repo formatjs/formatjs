@@ -32,12 +32,13 @@ alias(
 SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
-    "//packages/ecma402-abstract:dist",
-    "//packages/intl-listformat:dist",
-    "//packages/intl-displaynames:dist",
-    "//packages/intl-messageformat:dist",
-    "//packages/fast-memoize:dist",
     "@npm//@types/node",
+    "//packages/ecma402-abstract:dist",
+    "//packages/fast-memoize:dist",
+    "//packages/icu-messageformat-parser:dist",
+    "//packages/intl-displaynames:dist",
+    "//packages/intl-listformat:dist",
+    "//packages/intl-messageformat:dist",
 ]
 
 TESTS = glob([

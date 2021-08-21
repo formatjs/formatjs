@@ -31,6 +31,7 @@
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.9.7",
     "@formatjs/fast-memoize": "1.2.0",
+    "@formatjs/icu-messageformat-parser": "2.0.10",
     "@formatjs/intl-displaynames": "5.2.2",
     "@formatjs/intl-listformat": "6.3.2",
     "intl-messageformat": "9.9.0",

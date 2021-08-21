@@ -21,10 +21,7 @@ import {
   UnsupportedFormatterError,
 } from './error'
 import {DEFAULT_INTL_CONFIG} from './utils'
-import {
-  DateTimeFormatOptions,
-  NumberFormatOptions,
-} from '@formatjs/ecma402-abstract'
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 export type OnErrorFn = (
   err:
@@ -61,7 +58,7 @@ export interface CustomFormatConfig {
 }
 
 export type FormatDateOptions = Exclude<
-  DateTimeFormatOptions,
+  Intl.DateTimeFormatOptions,
   'localeMatcher'
 > &
   CustomFormatConfig

@@ -2,9 +2,9 @@ import {Formatters, IntlFormatters, CustomFormats, OnErrorFn} from './types'
 
 import {filterProps, getNamedFormat} from './utils'
 import {IntlError, IntlErrorCode} from './error'
-import {DateTimeFormatOptions, DateTimeFormat} from '@formatjs/ecma402-abstract'
+import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 
-const DATE_TIME_FORMAT_OPTIONS: Array<keyof DateTimeFormatOptions> = [
+const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
   'formatMatcher',
 
