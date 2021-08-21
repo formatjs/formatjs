@@ -1,7 +1,7 @@
 import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import {outputFile, readJSON} from 'fs-extra'
 import stringify from 'json-stable-stringify'
-import {debug, warn} from './console_utils'
+import {debug, warn, writeStdout} from './console_utils'
 import {resolveBuiltinFormatter, Formatter} from './formatters'
 import {
   generateXXAC,
@@ -136,6 +136,6 @@ export default async function compileAndWrite(
     debug('Writing output file:', outFile)
     return outputFile(outFile, serializedResult)
   }
-  process.stdout.write(serializedResult)
-  process.stdout.write('\n')
+  await writeStdout(serializedResult)
+  await writeStdout('\n')
 }
