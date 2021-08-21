@@ -1,13 +1,5 @@
-export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
-  hourCycle?: 'h11' | 'h12' | 'h23' | 'h24'
-  dateStyle?: 'full' | 'long' | 'medium' | 'short'
-  timeStyle?: 'full' | 'long' | 'medium' | 'short'
-  calendar?: string
-  numberingSystem?: string
-}
-
 export type Formats = Pick<
-  DateTimeFormatOptions,
+  Intl.DateTimeFormatOptions,
   | 'weekday'
   | 'era'
   | 'year'
@@ -62,7 +54,7 @@ export interface RangePatternPart<
 }
 
 export type RangePatterns = Pick<
-  DateTimeFormatOptions,
+  Intl.DateTimeFormatOptions,
   | 'weekday'
   | 'era'
   | 'year'
