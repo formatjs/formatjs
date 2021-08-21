@@ -15,10 +15,7 @@ import {
 } from '@formatjs/intl'
 import {IntlListFormatOptions} from '@formatjs/intl-listformat'
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames'
-import {
-  DateTimeFormatOptions,
-  NumberFormatOptions,
-} from '@formatjs/ecma402-abstract'
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 export {IntlConfig, ResolvedIntlConfig, IntlShape} from './src/types'
 export {
   createIntlCache,
@@ -65,13 +62,13 @@ export {default as useIntl} from './src/components/useIntl'
 export {default as IntlProvider, createIntl} from './src/components/provider'
 // IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./src/types').CustomFormatConfig`
 export const FormattedDate: React.FC<
-  DateTimeFormatOptions &
+  Intl.DateTimeFormatOptions &
     CustomFormatConfig & {
       value: string | number | Date | undefined
     }
 > = createFormattedComponent('formatDate')
 export const FormattedTime: React.FC<
-  DateTimeFormatOptions &
+  Intl.DateTimeFormatOptions &
     CustomFormatConfig & {
       value: string | number | Date | undefined
     }
