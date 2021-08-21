@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.8](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.7...@formatjs/ecma402-abstract@1.9.8) (2021-08-21)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** rm custom DateTimeFormatOptions and use the native one ([61ea5c9](https://github.com/formatjs/formatjs/commit/61ea5c9ee6819b8af8925e2352275e9e86f2cb1a))
+
+
+
+
+
 ## [1.9.7](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.6...@formatjs/ecma402-abstract@1.9.7) (2021-08-15)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract

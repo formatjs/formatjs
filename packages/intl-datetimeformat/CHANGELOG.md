@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.2.2...@formatjs/intl-datetimeformat@4.2.3) (2021-08-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** use native DateTimeFormatOptions instead of custom one ([eb1d49b](https://github.com/formatjs/formatjs/commit/eb1d49b983ffd4006d9500168e978aeb7a5d8c1c))
+
+
+
+
+
 ## [4.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.2.1...@formatjs/intl-datetimeformat@4.2.2) (2021-08-15)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-displaynames",
-  "version": "5.2.2",
+  "version": "5.2.3",
   "description": "Polyfill for: https://tc39.es/proposal-intl-displaynames",
   "keywords": [
     "i18n",
@@ -21,7 +21,7 @@
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.9.7",
+    "@formatjs/ecma402-abstract": "1.9.8",
     "@formatjs/intl-localematcher": "0.2.20",
     "tslib": "^2.1.0"
   },

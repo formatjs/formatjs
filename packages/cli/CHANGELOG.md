@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.32](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.31...@formatjs/cli@4.2.32) (2021-08-21)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix async process.stderr issue, close [#3125](https://github.com/formatjs/formatjs/issues/3125) ([4f4633e](https://github.com/formatjs/formatjs/commit/4f4633e1e87a4b90dfbcf688b8657dc0c6498a61))
+* **@formatjs/ts-transformer:** use console.error to avoid async process.stderr issue ([b7886a9](https://github.com/formatjs/formatjs/commit/b7886a9552c62b1c4e311cf74960fbec6ccb3a05))
+
+
+
+
+
 ## [4.2.31](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.30...@formatjs/cli@4.2.31) (2021-08-15)
 
 **Note:** Version bump only for package @formatjs/cli

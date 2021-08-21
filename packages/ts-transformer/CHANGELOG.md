@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.9](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.4.8...@formatjs/ts-transformer@3.4.9) (2021-08-21)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** use console.error to avoid async process.stderr issue ([b7886a9](https://github.com/formatjs/formatjs/commit/b7886a9552c62b1c4e311cf74960fbec6ccb3a05))
+
+
+
+
+
 ## [3.4.8](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.4.7...@formatjs/ts-transformer@3.4.8) (2021-08-15)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
