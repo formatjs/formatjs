@@ -1,8 +1,4 @@
-import {
-  DateTimeFormatOptions,
-  Formats,
-  invariant,
-} from '@formatjs/ecma402-abstract'
+import {Formats, invariant} from '@formatjs/ecma402-abstract'
 import {
   DATE_TIME_PROPS,
   additionPenalty,
@@ -19,7 +15,7 @@ import {
  * @param formats
  */
 export function BasicFormatMatcher(
-  options: DateTimeFormatOptions,
+  options: Intl.DateTimeFormatOptions,
   formats: Formats[]
 ): Formats {
   let bestScore = -Infinity

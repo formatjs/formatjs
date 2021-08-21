@@ -1,5 +1,4 @@
 import {
-  DateTimeFormatOptions,
   Formats,
   RangePatternPart,
   RangePatterns,
@@ -21,7 +20,7 @@ const expPatternTrimmer = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g
 function matchSkeletonPattern(
   match: string,
   result: Pick<
-    DateTimeFormatOptions,
+    Intl.DateTimeFormatOptions,
     | 'weekday'
     | 'era'
     | 'year'
@@ -218,7 +217,7 @@ function skeletonTokenToTable2(c: string): TABLE_2 {
 export function processDateTimePattern(
   pattern: string,
   result?: Pick<
-    DateTimeFormatOptions,
+    Intl.DateTimeFormatOptions,
     | 'weekday'
     | 'era'
     | 'year'

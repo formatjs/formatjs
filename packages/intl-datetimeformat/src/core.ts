@@ -4,7 +4,6 @@ import {
   SupportedLocales,
   IsValidTimeZoneName,
   CanonicalizeTimeZoneName,
-  DateTimeFormatOptions,
   TABLE_6,
   DateTimeFormat as IDateTimeFormat,
   CanonicalizeLocaleList,
@@ -120,17 +119,17 @@ try {
 export interface DateTimeFormatConstructor {
   new (
     locales?: string | string[],
-    options?: DateTimeFormatOptions
+    options?: Intl.DateTimeFormatOptions
   ): IDateTimeFormat
   (
     locales?: string | string[],
-    options?: DateTimeFormatOptions
+    options?: Intl.DateTimeFormatOptions
   ): IDateTimeFormat
 
   __addLocaleData(...data: RawDateTimeLocaleData[]): void
   supportedLocalesOf(
     locales: string | string[],
-    options?: Pick<DateTimeFormatOptions, 'localeMatcher'>
+    options?: Pick<Intl.DateTimeFormatOptions, 'localeMatcher'>
   ): string[]
   getDefaultLocale(): string
   relevantExtensionKeys: string[]
@@ -148,7 +147,7 @@ export interface DateTimeFormatConstructor {
 export const DateTimeFormat = function (
   this: IDateTimeFormat,
   locales?: string | string[],
-  options?: DateTimeFormatOptions
+  options?: Intl.DateTimeFormatOptions
 ) {
   // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
   if (!this || !OrdinaryHasInstance(DateTimeFormat, this)) {
@@ -182,7 +181,7 @@ export const DateTimeFormat = function (
 defineProperty(DateTimeFormat, 'supportedLocalesOf', {
   value: function supportedLocalesOf(
     locales: string | string[],
-    options?: Pick<DateTimeFormatOptions, 'localeMatcher'>
+    options?: Pick<Intl.DateTimeFormatOptions, 'localeMatcher'>
   ) {
     return SupportedLocales(
       DateTimeFormat.availableLocales,

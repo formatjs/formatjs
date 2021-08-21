@@ -3,10 +3,9 @@ import {
   BestFitFormatMatcher,
 } from '../../src/abstract/BestFitFormatMatcher'
 import {parseDateTimeSkeleton} from '../../src/abstract/skeleton'
-import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract'
 
 test('bestFitFormatMatcherScore', function () {
-  const opts: DateTimeFormatOptions = {
+  const opts: Intl.DateTimeFormatOptions = {
     weekday: 'short',
     era: 'short',
     year: '2-digit',
@@ -70,7 +69,7 @@ test('BestFitFormatMatcher second tz', function () {
   })
 })
 test('bestFitFormatMatcherScore second tz', function () {
-  const opts: DateTimeFormatOptions = {
+  const opts: Intl.DateTimeFormatOptions = {
     year: undefined,
     month: undefined,
     day: undefined,
@@ -90,7 +89,7 @@ test('bestFitFormatMatcherScore second tz', function () {
   )
 })
 test('bestFitFormatMatcherScore long weekday (ko)', function () {
-  const opts: DateTimeFormatOptions = {
+  const opts: Intl.DateTimeFormatOptions = {
     weekday: 'long',
     era: 'short',
     year: '2-digit',
@@ -115,7 +114,7 @@ test('bestFitFormatMatcherScore long weekday (ko)', function () {
   )
 })
 test('bestFitFormatMatcherScore narrow weekday (ko)', function () {
-  const opts: DateTimeFormatOptions = {
+  const opts: Intl.DateTimeFormatOptions = {
     weekday: 'short',
     era: 'short',
     year: '2-digit',
@@ -684,7 +683,7 @@ const PROCESSED_FORMATS = Object.keys(FORMATS).map(skeleton =>
 )
 
 test('test #2291', function () {
-  const opts: DateTimeFormatOptions = {
+  const opts: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'short',
     day: '2-digit',

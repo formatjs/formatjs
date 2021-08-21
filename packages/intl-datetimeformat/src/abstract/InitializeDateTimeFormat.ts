@@ -1,5 +1,4 @@
 import {
-  DateTimeFormatOptions,
   Formats,
   IntlDateTimeFormatInternal,
   DateTimeFormatLocaleInternalData,
@@ -53,10 +52,10 @@ function resolveHourCycle(hc: string, hcDefault: string, hour12?: boolean) {
 }
 
 interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
-  localeMatcher: DateTimeFormatOptions['localeMatcher']
-  ca: DateTimeFormatOptions['calendar']
-  nu: DateTimeFormatOptions['numberingSystem']
-  hc: DateTimeFormatOptions['hourCycle']
+  localeMatcher: Intl.DateTimeFormatOptions['localeMatcher']
+  ca: Intl.DateTimeFormatOptions['calendar']
+  nu: Intl.DateTimeFormatOptions['numberingSystem']
+  hc: Intl.DateTimeFormatOptions['hourCycle']
 }
 const TYPE_REGEX = /^[a-z0-9]{3,8}$/i
 /**
@@ -68,7 +67,7 @@ const TYPE_REGEX = /^[a-z0-9]{3,8}$/i
 export function InitializeDateTimeFormat(
   dtf: Intl.DateTimeFormat,
   locales: string | string[] | undefined,
-  opts: DateTimeFormatOptions | undefined,
+  opts: Intl.DateTimeFormatOptions | undefined,
   {
     getInternalSlots,
     availableLocales,

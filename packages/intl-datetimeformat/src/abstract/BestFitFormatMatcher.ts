@@ -1,9 +1,4 @@
-import {
-  DateTimeFormatOptions,
-  Formats,
-  TABLE_6,
-  invariant,
-} from '@formatjs/ecma402-abstract'
+import {Formats, TABLE_6, invariant} from '@formatjs/ecma402-abstract'
 import {
   DATE_TIME_PROPS,
   removalPenalty,
@@ -29,7 +24,7 @@ function isNumericType(
  * @param format
  */
 export function bestFitFormatMatcherScore(
-  options: DateTimeFormatOptions,
+  options: Intl.DateTimeFormatOptions,
   format: Formats
 ): number {
   let score = 0
@@ -83,7 +78,7 @@ export function bestFitFormatMatcherScore(
  * @param implDetails Implementation details
  */
 export function BestFitFormatMatcher(
-  options: DateTimeFormatOptions,
+  options: Intl.DateTimeFormatOptions,
   formats: Formats[]
 ) {
   let bestScore = -Infinity

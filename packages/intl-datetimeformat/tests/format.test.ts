@@ -7,13 +7,16 @@ import {
   toLocaleTimeString,
 } from '../src/to_locale_string'
 import {DateTimeFormat} from '../src/core'
-import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract'
 
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, ko)
 DateTimeFormat.__addTZData(allData)
 
-const tests: Array<{options: DateTimeFormatOptions; ko: string; en: string}> = [
+const tests: Array<{
+  options: Intl.DateTimeFormatOptions
+  ko: string
+  en: string
+}> = [
   {
     options: {
       weekday: 'long',

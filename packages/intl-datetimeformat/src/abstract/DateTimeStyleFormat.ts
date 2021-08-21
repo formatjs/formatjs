@@ -1,13 +1,12 @@
 import {
-  DateTimeFormatOptions,
   DateTimeFormatLocaleInternalData,
   Formats,
   invariant,
 } from '@formatjs/ecma402-abstract'
 
 export function DateTimeStyleFormat(
-  dateStyle: DateTimeFormatOptions['dateStyle'],
-  timeStyle: DateTimeFormatOptions['timeStyle'],
+  dateStyle: Intl.DateTimeFormatOptions['dateStyle'],
+  timeStyle: Intl.DateTimeFormatOptions['timeStyle'],
   dataLocaleData: DateTimeFormatLocaleInternalData
 ): Formats {
   let dateFormat: Formats | undefined, timeFormat: Formats | undefined

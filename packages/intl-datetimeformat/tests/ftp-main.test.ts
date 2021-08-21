@@ -4,7 +4,6 @@ import * as de from './locale-data/de.json'
 import * as ar from './locale-data/ar.json'
 import allData from '../src/data/all-tz'
 import {DateTimeFormat} from '../src/core'
-import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, pl, de, ar)
 DateTimeFormat.__addTZData(allData)
@@ -14,7 +13,7 @@ function reduce(parts: Intl.DateTimeFormatPart[]) {
 
 function compareFTPtoFormat(
   locales?: string | string[],
-  options?: DateTimeFormatOptions,
+  options?: Intl.DateTimeFormatOptions,
   value?: number
 ) {
   const dtf = new DateTimeFormat(locales, options)
