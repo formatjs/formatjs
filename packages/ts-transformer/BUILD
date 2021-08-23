@@ -34,6 +34,7 @@ SRCS = glob([
 SRC_DEPS = [
     "@npm//@types/node",
     "@npm//typescript",
+    "@npm//chalk",
     "//packages/icu-messageformat-parser:dist",
 ]
 
