@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.10](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.4.9...@formatjs/ts-transformer@3.4.10) (2021-08-24)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** add chalk to dependencies ([b355b9b](https://github.com/formatjs/formatjs/commit/b355b9b15e96ea8f71c035005b8366681288c817))
+
+
+
+
+
 ## [3.4.9](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.4.8...@formatjs/ts-transformer@3.4.9) (2021-08-21)
 
 
