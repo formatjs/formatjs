@@ -200,7 +200,7 @@ The user's current locale and what the app should be rendered in. While `default
 
 ### defaultLocale and defaultFormats
 
-Default locale & formats for when a message is not translated (missing from `messages`). `defaultLocale` should be the locale that `defaultMessage`s are declared in so that a sentence is coherent in a single locale. Without `defaultLocale` and/or if it's set incorrectly, you might run into scenario where a sentence is in English but embeded date/time is in Spanish.
+Default locale & formats for when a message is not translated (missing from `messages`). `defaultLocale` should be the locale that `defaultMessage`s are declared in so that a sentence is coherent in a single locale. Without `defaultLocale` and/or if it's set incorrectly, you might run into scenario where a sentence is in English but embedded date/time is in Spanish.
 
 ### textComponent
 
