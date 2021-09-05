@@ -51,7 +51,9 @@ export const visitor: VisitNodeFunction<
   const descriptorPath = createMessageDescriptor(
     attributes.map(attr => [
       attr.get('name') as NodePath<t.JSXIdentifier>,
-      attr.get('value') as NodePath<t.StringLiteral>,
+      attr.get('value') as
+        | NodePath<t.StringLiteral>
+        | NodePath<t.JSXExpressionContainer>,
     ])
   )
 

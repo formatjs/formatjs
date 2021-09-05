@@ -194,6 +194,13 @@ defineMessages({
       \\"value\\": \\"dt\\",
       \\"style\\": null
     }]
+  },
+  baz: {
+    id: 'compiled',
+    defaultMessage: [{
+      type: 0,
+      value: 'asd'
+    }]
   }
 });
 export default class Foo extends Component {
@@ -224,13 +231,19 @@ export default class Foo extends Component {
         \\"pluralType\\": \\"cardinal\\"
       }]
     });
-    return /*#__PURE__*/React.createElement(FormattedMessage, {
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, {
       id: \\"foo.bar.baz\\",
       defaultMessage: [{
         \\"type\\": 0,
         \\"value\\": \\"Hello World!\\"
       }]
-    });
+    }), /*#__PURE__*/React.createElement(FormattedMessage, {
+      id: \\"compiled2\\",
+      defaultMessage: [{
+        type: 0,
+        value: 'compiled comp'
+      }]
+    }));
   }
 
 }",
@@ -260,6 +273,11 @@ export default class Foo extends Component {
         "defaultMessage": "Hello World!",
         "description": "The default message.",
         "id": "foo.bar.baz",
+      },
+      Object {
+        "defaultMessage": undefined,
+        "description": "The default message.",
+        "id": "compiled2",
       },
     ],
     "meta": Object {},

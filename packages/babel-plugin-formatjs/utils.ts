@@ -10,7 +10,11 @@ import {
 } from './types'
 import {NodePath} from '@babel/core'
 
-const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage'])
+const DESCRIPTOR_PROPS = new Set<keyof MessageDescriptorPath>([
+  'id',
+  'description',
+  'defaultMessage',
+])
 
 function evaluatePath(path: NodePath<any>): string {
   const evaluated = path.evaluate()
@@ -35,12 +39,17 @@ function getMessageDescriptorValue(
   path?:
     | NodePath<t.StringLiteral>
     | NodePath<t.JSXExpressionContainer>
-    | NodePath<t.TemplateLiteral>
+    | NodePath<t.TemplateLiteral>,
+  isMessageNode?: boolean
 ) {
   if (!path) {
     return ''
   }
   if (path.isJSXExpressionContainer()) {
+    // If this is already compiled, no need to recompiled it
+    if (isMessageNode && path.get('expression').isArrayExpression()) {
+      return ''
+    }
     path = path.get('expression') as NodePath<t.StringLiteral>
   }
 
@@ -58,10 +67,12 @@ export function createMessageDescriptor(
 ): MessageDescriptorPath {
   return propPaths.reduce(
     (hash: MessageDescriptorPath, [keyPath, valuePath]) => {
-      const key = getMessageDescriptorKey(keyPath)
+      const key = getMessageDescriptorKey(
+        keyPath
+      ) as keyof MessageDescriptorPath
 
       if (DESCRIPTOR_PROPS.has(key)) {
-        hash[key as 'id'] = valuePath as NodePath<t.StringLiteral>
+        hash[key] = valuePath
       }
 
       return hash
@@ -120,14 +131,17 @@ export function evaluateMessageDescriptor(
 }
 
 function getICUMessageValue(
-  messagePath?: NodePath<t.StringLiteral> | NodePath<t.TemplateLiteral>,
+  messagePath?:
+    | NodePath<t.StringLiteral>
+    | NodePath<t.TemplateLiteral>
+    | NodePath<t.JSXExpressionContainer>,
   {isJSXSource = false} = {},
   preserveWhitespace?: Options['preserveWhitespace']
 ) {
   if (!messagePath) {
     return ''
   }
-  let message = getMessageDescriptorValue(messagePath)
+  let message = getMessageDescriptorValue(messagePath, true)
 
   if (!preserveWhitespace) {
     message = message.trim().replace(/\s+/gm, ' ')

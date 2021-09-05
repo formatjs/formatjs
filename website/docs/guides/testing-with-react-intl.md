@@ -273,7 +273,7 @@ test('app main should be rendered', () => {
 
 ### DOM Testing
 
-If you want use Jest with DOM Testing read more info above in Enzyme section or in offical Jest [documentation](http://facebook.github.io/jest/docs/tutorial-react.html#dom-testing).
+If you want use Jest with DOM Testing read more info above in Enzyme section or in official Jest [documentation](http://facebook.github.io/jest/docs/tutorial-react.html#dom-testing).
 
 ## Storybook
 

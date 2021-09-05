@@ -1,5 +1,9 @@
 import {NodePath} from '@babel/core'
-import {SourceLocation, StringLiteral} from '@babel/types'
+import {
+  JSXExpressionContainer,
+  SourceLocation,
+  StringLiteral,
+} from '@babel/types'
 
 export interface MessageDescriptor {
   id: string
@@ -19,7 +23,7 @@ export type ExtractedMessageDescriptor = MessageDescriptor &
 
 export type MessageDescriptorPath = Record<
   keyof MessageDescriptor,
-  NodePath<StringLiteral> | undefined
+  NodePath<StringLiteral> | NodePath<JSXExpressionContainer> | undefined
 >
 
 export interface Options {

@@ -100,6 +100,11 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
         )
       )
 
+      // If the message is already compiled, don't re-compile it
+      if (descriptorPath.defaultMessage?.isArrayExpression()) {
+        return
+      }
+
       // Evaluate the Message Descriptor values, then store it.
       const descriptor = evaluateMessageDescriptor(
         descriptorPath,
