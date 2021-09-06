@@ -1,4 +1,4 @@
-name: Unit + Karma Tests
+name: Unit Tests
 
 on: [push]
 
@@ -23,15 +23,3 @@ jobs:
           bazel test //... --config=ci --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
         env:
           CI: true
-      - uses: saucelabs/sauce-connect-action@v1.1.3
-        with:
-          username: ${{ secrets.SAUCE_USERNAME }}
-          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
-          tunnelIdentifier: github-action-tunnel
-        if: matrix.os == 'ubuntu-18.04'
-      - name: Karma
-        run: bazel test --config=ci :karma-ci --action_env=SAUCE_ACCESS_KEY --action_env=SAUCE_USERNAME --action_env=GITHUB_RUN_ID
-        if: matrix.os == 'ubuntu-18.04'
-        env:
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
