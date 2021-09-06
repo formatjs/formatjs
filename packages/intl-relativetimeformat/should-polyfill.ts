@@ -9,6 +9,23 @@ function supportedLocalesOf(locale?: string | string[]) {
   )
 }
 
+function hasResolvedOptionsNumberingSystem(locale?: string | string[]) {
+  try {
+    return (
+      'numberingSystem' in
+      new Intl.RelativeTimeFormat(locale || 'en', {
+        numeric: 'auto',
+      }).resolvedOptions()
+    )
+  } catch (_) {
+    return false
+  }
+}
+
 export function shouldPolyfill(locale?: string | string[]) {
-  return !('RelativeTimeFormat' in Intl) || !supportedLocalesOf(locale)
+  return (
+    !('RelativeTimeFormat' in Intl) ||
+    !supportedLocalesOf(locale) ||
+    !hasResolvedOptionsNumberingSystem(locale)
+  )
 }
