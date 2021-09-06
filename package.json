@@ -89,7 +89,7 @@
     "fast-glob": "^3.2.7",
     "fs-extra": "10",
     "hoist-non-react-statics": "^3.3.2",
-    "http-server": "^0.12.3",
+    "http-server": "^13.0.1",
     "husky": "^7.0.0",
     "jasmine-expect": "^5.0.0",
     "jest": "27",
