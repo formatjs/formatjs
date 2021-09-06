@@ -27,7 +27,7 @@ npm i -S @formatjs/intl
 <TabItem value="yarn">
 
 ```sh
-yarn add -S @formatjs/intl
+yarn add @formatjs/intl
 ```
 
 </TabItem>

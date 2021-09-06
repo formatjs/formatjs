@@ -27,7 +27,7 @@ npm i -S vue-intl
 <TabItem value="yarn">
 
 ```sh
-yarn add -S vue-intl
+yarn add vue-intl
 ```
 
 </TabItem>
