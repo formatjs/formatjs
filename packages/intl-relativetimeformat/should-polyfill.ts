@@ -11,12 +11,21 @@ function supportedLocalesOf(locale?: string | string[]) {
 
 function hasResolvedOptionsNumberingSystem(locale?: string | string[]) {
   try {
-    return ('numberingSystem' in (new Intl.RelativeTimeFormat(locale || "en", { numeric: "auto" }).resolvedOptions()));
+    return (
+      'numberingSystem' in
+      new Intl.RelativeTimeFormat(locale || 'en', {
+        numeric: 'auto',
+      }).resolvedOptions()
+    )
   } catch (_) {
-    return false;
+    return false
   }
 }
 
 export function shouldPolyfill(locale?: string | string[]) {
-  return !('RelativeTimeFormat' in Intl) || !supportedLocalesOf(locale) || !hasResolvedOptionsNumberingSystem(locale);
+  return (
+    !('RelativeTimeFormat' in Intl) ||
+    !supportedLocalesOf(locale) ||
+    !hasResolvedOptionsNumberingSystem(locale)
+  )
 }
