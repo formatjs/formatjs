@@ -34,7 +34,6 @@ SRCS = glob(["rules/*.ts"]) + [
 ]
 
 SRC_DEPS = [
-    "@npm//@types/emoji-regex",
     "@npm//@types/eslint",
     "@npm//@typescript-eslint/typescript-estree",
     "@npm//emoji-regex",
