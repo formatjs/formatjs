@@ -31,7 +31,8 @@ intl.formatMessage(
 
 ```tsx
 import {FormattedMessage} from 'react-intl'
-;<FormattedMessage
+
+<FormattedMessage
   description="A message" // Description should be a string literal
   defaultMessage="My name is {name}" // Message should be a string literal
   values={
