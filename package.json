@@ -35,7 +35,7 @@
     "@bazel/ibazel": "^0.15.0",
     "@bazel/typescript": "3.7.0",
     "@commitlint/cli": "12",
-    "@commitlint/config-angular": "12",
+    "@commitlint/config-angular": "13",
     "@docusaurus/core": "2.0.0-beta.6",
     "@docusaurus/plugin-google-analytics": "2.0.0-beta.6",
     "@docusaurus/preset-classic": "2.0.0-beta.6",
