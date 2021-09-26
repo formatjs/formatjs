@@ -80,7 +80,7 @@ export function parseFile(
   if (errors.length) {
     throw errors[0]
   }
-  const {script, template} = descriptor
+  const {script, scriptSetup, template} = descriptor
 
   if (template) {
     walk(template.ast, templateSimpleExpressionNodeVisitor(parseScriptFn))
@@ -88,5 +88,9 @@ export function parseFile(
 
   if (script) {
     parseScriptFn(script.content)
+  }
+
+  if (scriptSetup) {
+    parseScriptFn(scriptSetup.content)
   }
 }

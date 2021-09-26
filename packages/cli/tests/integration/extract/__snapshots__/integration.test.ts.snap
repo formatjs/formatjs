@@ -858,6 +858,9 @@ Object {
     "defaultMessage": "in template",
     "description": "in template desc",
   },
+  "S3wEt4": Object {
+    "defaultMessage": "script setup",
+  },
 }
 `;
 

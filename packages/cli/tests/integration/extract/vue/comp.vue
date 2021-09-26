@@ -15,3 +15,8 @@ intl.formatMessage({
   description: 'in script desc',
 })
 </script>
+
+<script lang="ts" setup>
+const intl = useIntl()
+console.log(intl.formatMessage({defaultMessage: 'script setup'}))
+</script>

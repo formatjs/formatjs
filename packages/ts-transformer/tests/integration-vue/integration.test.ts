@@ -51,6 +51,9 @@ test('dummy', function (done) {
       expect(outFileContent).toContain(
         '$formatMessage({id:"GuoEHM",defaultMessage:"test message (id not injected)"}))'
       )
+      expect(outFileContent).toContain(
+        '.formatMessage({id:"S3wEt4",defaultMessage:"script setup"}))'
+      )
       done()
     }
   )

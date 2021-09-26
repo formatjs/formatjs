@@ -23,3 +23,8 @@ class Index extends Vue {
 
 export default Index
 </script>
+
+<script lang="ts" setup>
+const intl = useIntl()
+console.log(intl.formatMessage({defaultMessage: 'script setup'}))
+</script>
