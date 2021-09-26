@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.17.7](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.17.6...eslint-plugin-formatjs@2.17.7) (2021-09-26)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** remove deprecated @types/emoji-regex 9 ([#3159](https://github.com/formatjs/formatjs/issues/3159)) ([49b9dfb](https://github.com/formatjs/formatjs/commit/49b9dfb969f08d3ba4b5fbefddecdd82070f156c))
+
+
+
+
+
 ## [2.17.6](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.17.5...eslint-plugin-formatjs@2.17.6) (2021-08-24)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

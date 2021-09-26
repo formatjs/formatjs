@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@9.2.3...@formatjs/intl-relativetimeformat@9.3.0) (2021-09-26)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** update shouldPolyfill for Intl.RelativeTimeFormat ([#3139](https://github.com/formatjs/formatjs/issues/3139)) ([0435ad1](https://github.com/formatjs/formatjs/commit/0435ad113469adad27451f59fce42c3bf6e5f75e))
+
+
+
+
+
 ## [9.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@9.2.2...@formatjs/intl-relativetimeformat@9.2.3) (2021-08-21)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

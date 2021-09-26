@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.33...@formatjs/cli@4.3.0) (2021-09-26)
+
+
+### Features
+
+* **@formatjs/cli:** upgrade vue libs, handle script setup, fix [#3181](https://github.com/formatjs/formatjs/issues/3181) ([a7b2960](https://github.com/formatjs/formatjs/commit/a7b296088367d1eeea3b142f0651920ffc2bc505))
+
+
+
+
+
 ## [4.2.33](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.32...@formatjs/cli@4.2.33) (2021-08-24)
 
 **Note:** Version bump only for package @formatjs/cli

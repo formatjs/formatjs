@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.30](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.1.29...@formatjs/editor@1.1.30) (2021-09-26)
+
+
+### Bug Fixes
+
+* **react-intl:** allow @types/react 16 as well ([7a8cef1](https://github.com/formatjs/formatjs/commit/7a8cef142a20c96e847ac5c10efcd88dd032a074)), closes [#3138](https://github.com/formatjs/formatjs/issues/3138)
+
+
+
+
+
 ## [1.1.29](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.1.28...@formatjs/editor@1.1.29) (2021-08-21)
 
 **Note:** Version bump only for package @formatjs/editor
