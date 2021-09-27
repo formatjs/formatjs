@@ -32,7 +32,6 @@ alias(
 SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
-    "@npm//@types/node",
     "//packages/ecma402-abstract:dist",
     "//packages/fast-memoize:dist",
     "//packages/icu-messageformat-parser:dist",
@@ -73,6 +72,7 @@ jest_test(
         "//packages/intl-messageformat:types",
         "//packages/intl-numberformat:dist",
         "//packages/intl-numberformat:types",
+        "@npm//@types/node",
     ],
 )
 

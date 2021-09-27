@@ -27,6 +27,7 @@ export function filterProps<T extends Record<string, any>, K extends string>(
 }
 
 const defaultErrorHandler: OnErrorFn = error => {
+  // @ts-ignore just so we don't need to declare dep on @types/node
   if (process.env.NODE_ENV !== 'production') {
     console.error(error)
   }

@@ -19,7 +19,9 @@ export class IntlError<
 ${exception ? `\n${exception.message}\n${exception.stack}` : ''}`
     )
     this.code = code
+    // @ts-ignore just so we don't need to declare dep on @types/node
     if (typeof Error.captureStackTrace === 'function') {
+      // @ts-ignore just so we don't need to declare dep on @types/node
       Error.captureStackTrace(this, IntlError)
     }
   }
