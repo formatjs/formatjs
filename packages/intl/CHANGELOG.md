@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.14.1...@formatjs/intl@1.14.2) (2021-09-27)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** rm dep on @types/node ([245301f](https://github.com/formatjs/formatjs/commit/245301f72c77e487f1a3a9dcf6d88f459e4fa92f))
+
+
+
+
+
 ## [1.14.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.14.0...@formatjs/intl@1.14.1) (2021-08-21)
 
 

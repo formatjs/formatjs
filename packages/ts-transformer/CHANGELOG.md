@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.4.10...@formatjs/ts-transformer@3.5.0) (2021-09-27)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** move @types/node to dep ([6a07668](https://github.com/formatjs/formatjs/commit/6a07668010a68b0a3e3aed9b3801c74cbd860101))
+* **@formatjs/ts-transformer:** move typescript back to dep, fix [#3173](https://github.com/formatjs/formatjs/issues/3173) ([3b52418](https://github.com/formatjs/formatjs/commit/3b5241828ed4d1705eb00d2e32136b1fc6f5ba6d))
+
+
+### Features
+
+* **@formatjs/cli:** upgrade vue libs, handle script setup, fix [#3181](https://github.com/formatjs/formatjs/issues/3181) ([a7b2960](https://github.com/formatjs/formatjs/commit/a7b296088367d1eeea3b142f0651920ffc2bc505))
+
+
+
+
+
 ## [3.4.10](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.4.9...@formatjs/ts-transformer@3.4.10) (2021-08-24)
 
 

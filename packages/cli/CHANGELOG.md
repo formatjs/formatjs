@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.3.0...@formatjs/cli@4.3.1) (2021-09-27)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
 # [4.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.2.33...@formatjs/cli@4.3.0) (2021-09-26)
 
 

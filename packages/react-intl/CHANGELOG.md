@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.20.12](https://github.com/formatjs/formatjs/compare/react-intl@5.20.11...react-intl@5.20.12) (2021-09-27)
+
+
+### Bug Fixes
+
+* **react-intl:** use indexOf instead of includes ([aed19a2](https://github.com/formatjs/formatjs/commit/aed19a2719b8c28dbe064482e54da70f8aae1160))
+
+
+
+
+
 ## [5.20.11](https://github.com/formatjs/formatjs/compare/react-intl@5.20.10...react-intl@5.20.11) (2021-09-26)
 
 
