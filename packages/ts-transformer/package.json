@@ -24,7 +24,7 @@
   },
   "peerDependencies": {
     "ts-jest": "27",
-    "typescript": "4"
+    "typescript": "^4.3"
   },
   "peerDependenciesMeta": {
     "ts-jest": {
