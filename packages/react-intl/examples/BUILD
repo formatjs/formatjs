@@ -33,8 +33,8 @@ ts_project(
     declaration_map = True,
     extends = "//:tsconfig.json",
     out_dir = "lib",
+    resolve_json_module = True,
     tsconfig = "//:tsconfig.esm.json",
-    resolve_json_module=True,
     deps = SRC_DEPS,
 )
 

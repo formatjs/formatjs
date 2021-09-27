@@ -73,6 +73,7 @@ export const FormattedTime: React.FC<
       value: string | number | Date | undefined
     }
 > = createFormattedComponent('formatTime')
+// @ts-ignore issue w/ TS Intl types
 export const FormattedNumber: React.FC<
   NumberFormatOptions &
     CustomFormatConfig & {
