@@ -161,8 +161,8 @@ ts_project(
     extends =
         "//:tsconfig.json",
     out_dir = "test262",
+    resolve_json_module = True,
     tsconfig = "//:tsconfig.es6.json",
-    resolve_json_module=True,
     deps = SRC_DEPS,
 )
 

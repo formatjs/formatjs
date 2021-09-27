@@ -42,7 +42,6 @@ http_archive(
 )
 
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "npm_install")
-
 load("@build_bazel_rules_nodejs//toolchains/esbuild:esbuild_repositories.bzl", "esbuild_repositories")
 
 node_repositories(
@@ -50,7 +49,7 @@ node_repositories(
     package_json = ["//:package.json"],
 )
 
-esbuild_repositories(npm_repository = "npm") 
+esbuild_repositories(npm_repository = "npm")
 
 # The npm_install rule runs yarn anytime the package.json or yarn.lock file changes.
 # It also extracts and installs any Bazel rules distributed in an npm package.

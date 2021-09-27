@@ -65,7 +65,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
         declaration = True,
         declaration_map = True,
         tsconfig = ":%s-tsconfig" % name,
-        resolve_json_module=True,
+        resolve_json_module = True,
         deps = deps,
     )
     if not skip_esm:
@@ -76,7 +76,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
             declaration_map = True,
             out_dir = "lib",
             tsconfig = "//:tsconfig.esm",
-            resolve_json_module=True,
+            resolve_json_module = True,
             deps = deps,
         )
     if not skip_esm_esnext:
@@ -87,7 +87,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
             declaration_map = True,
             out_dir = "lib_esnext",
             tsconfig = "//:tsconfig.esm.esnext",
-            resolve_json_module=True,
+            resolve_json_module = True,
             deps = deps,
         )
 
@@ -192,7 +192,7 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
         declaration_map = True,
         extends = "//:tsconfig.json",
         out_dir = name,
-        resolve_json_module=True,
+        resolve_json_module = True,
         tsconfig = "//:tsconfig.esm.json",
         deps = deps + [
             "@npm//@jest/transform",
