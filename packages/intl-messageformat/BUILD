@@ -65,9 +65,9 @@ jest_test(
 
 esbuild(
     name = "%s.iife" % PACKAGE_NAME,
-    args = [
-        "--global-name=IntlMessageFormat",
-    ],
+    args = {
+        "globalName": "IntlMessageFormat",
+    },
     entry_point = "lib/index.js",
     target = "es5",
     deps = [
@@ -77,9 +77,9 @@ esbuild(
 
 esbuild(
     name = "%s.esm" % PACKAGE_NAME,
-    args = [
-        "--global-name=IntlMessageFormat",
-    ],
+    args = {
+        "globalName": "IntlMessageFormat",
+    },
     entry_point = "lib_esnext/index.js",
     format = "esm",
     target = "esnext",

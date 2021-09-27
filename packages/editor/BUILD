@@ -89,9 +89,9 @@ check_format(
 
 esbuild(
     name = "app",
-    define = [
-        "process.env.NODE_ENV=\"development\"",
-    ],
+    define = {
+        "process.env.NODE_ENV": "development",
+    },
     entry_point = "lib/main.js",
     format = "iife",
     deps = [":dist-esm"] + SRC_DEPS + [

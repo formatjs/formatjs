@@ -13,8 +13,6 @@ workspace(
     },
 )
 
-_ESBUILD_VERSION = "0.11.20"
-
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # Install the nodejs "bootstrap" package
@@ -23,8 +21,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "8f5f192ba02319254aaf2cdcca00ec12eaafeb979a80a1e946773c520ae0a2c9",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/3.7.0/rules_nodejs-3.7.0.tar.gz"],
+    sha256 = "4e1a5633267a0ca1d550cced2919dd4148575c0bafd47608b88aea79c41b5ca3",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.2.0/rules_nodejs-4.2.0.tar.gz"],
 )
 
 IANA_TZ_VERSION = "2021a"
@@ -45,40 +43,14 @@ http_archive(
 
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "npm_install")
 
+load("@build_bazel_rules_nodejs//toolchains/esbuild:esbuild_repositories.bzl", "esbuild_repositories")
+
 node_repositories(
     node_version = "16.1.0",
     package_json = ["//:package.json"],
 )
 
-http_archive(
-    name = "esbuild_darwin",
-    build_file_content = """exports_files(["bin/esbuild"])""",
-    sha256 = "3a21951ea2fc44a8a5ef4f67b62a4bdd28644d7eaf082ff578d83d00083ef42b",
-    strip_prefix = "package",
-    urls = [
-        "https://registry.npmjs.org/esbuild-darwin-64/-/esbuild-darwin-64-%s.tgz" % _ESBUILD_VERSION,
-    ],
-)
-
-http_archive(
-    name = "esbuild_windows",
-    build_file_content = """exports_files(["esbuild.exe"])""",
-    sha256 = "febc03f11a6181a23ea681a22de1e8e3e27f78fdca37d0acbab5a0fd66fe3fd7",
-    strip_prefix = "package",
-    urls = [
-        "https://registry.npmjs.org/esbuild-windows-64/-/esbuild-windows-64-%s.tgz" % _ESBUILD_VERSION,
-    ],
-)
-
-http_archive(
-    name = "esbuild_linux",
-    build_file_content = """exports_files(["bin/esbuild"])""",
-    sha256 = "f1199545c4ba85dbfb4b758350c37e9d9ebf2e79ca8d4cecceb79eb4c64fe63c",
-    strip_prefix = "package",
-    urls = [
-        "https://registry.npmjs.org/esbuild-linux-64/-/esbuild-linux-64-%s.tgz" % _ESBUILD_VERSION,
-    ],
-)
+esbuild_repositories(npm_repository = "npm") 
 
 # The npm_install rule runs yarn anytime the package.json or yarn.lock file changes.
 # It also extracts and installs any Bazel rules distributed in an npm package.

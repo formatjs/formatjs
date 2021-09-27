@@ -74,9 +74,9 @@ ts_compile(
 
 esbuild(
     name = "%s.esbuild.iife" % PACKAGE_NAME,
-    args = [
-        "--global-name=ReactIntl",
-    ],
+    args = {
+        "globalName": "ReactIntl",
+    },
     entry_point = "lib/index.js",
     external = ["react"],
     target = "es5",

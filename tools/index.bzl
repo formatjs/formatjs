@@ -65,6 +65,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
         declaration = True,
         declaration_map = True,
         tsconfig = ":%s-tsconfig" % name,
+        resolve_json_module=True,
         deps = deps,
     )
     if not skip_esm:
@@ -75,6 +76,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
             declaration_map = True,
             out_dir = "lib",
             tsconfig = "//:tsconfig.esm",
+            resolve_json_module=True,
             deps = deps,
         )
     if not skip_esm_esnext:
@@ -85,6 +87,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
             declaration_map = True,
             out_dir = "lib_esnext",
             tsconfig = "//:tsconfig.esm.esnext",
+            resolve_json_module=True,
             deps = deps,
         )
 
@@ -189,6 +192,7 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
         declaration_map = True,
         extends = "//:tsconfig.json",
         out_dir = name,
+        resolve_json_module=True,
         tsconfig = "//:tsconfig.esm.json",
         deps = deps + [
             "@npm//@jest/transform",
@@ -206,9 +210,9 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
             entry_point = "%s/%s.js" % (name, f[:f.rindex(".")]),
             format = "iife",
             target = "es5",
-            define = [
-                "process.version=0",
-            ],
+            define = {
+                "process.version": "0",
+            },
             deps = [
                 ":%s-compile" % name,
                 "@npm//tslib",
@@ -282,11 +286,6 @@ def check_format(name, srcs, config = "//:.prettierrc.json"):
 def esbuild(name, **kwargs):
     _esbuild(
         name = name,
-        tool = select({
-            "@bazel_tools//src/conditions:darwin": "@esbuild_darwin//:bin/esbuild",
-            "@bazel_tools//src/conditions:linux_x86_64": "@esbuild_linux//:bin/esbuild",
-            "@bazel_tools//src/conditions:windows": "@esbuild_windows//:esbuild.exe",
-        }),
         **kwargs
     )
 

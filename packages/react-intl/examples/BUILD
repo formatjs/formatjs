@@ -34,14 +34,15 @@ ts_project(
     extends = "//:tsconfig.json",
     out_dir = "lib",
     tsconfig = "//:tsconfig.esm.json",
+    resolve_json_module=True,
     deps = SRC_DEPS,
 )
 
 esbuild(
     name = "main",
-    define = [
-        "process.env.NODE_ENV=\"development\"",
-    ],
+    define = {
+        "process.env.NODE_ENV": "development",
+    },
     entry_point = "lib/index.js",
     format = "iife",
     deps = [":examples-esm"] + SRC_DEPS + [
