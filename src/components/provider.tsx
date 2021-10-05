@@ -165,7 +165,7 @@ export function createIntl(
 }
 
 export default class IntlProvider extends React.PureComponent<
-  OptionalIntlConfig,
+  React.PropsWithChildren<OptionalIntlConfig>,
   State
 > {
   static displayName = 'IntlProvider';
