@@ -74,6 +74,7 @@ Creates a cache instance to be used globally across locales. This memoizes previ
 interface IntlConfig {
   locale: string
   timeZone?: string
+  fallbackOnEmptyString?: boolean
   formats: CustomFormats
   messages: Record<string, string> | Record<string, MessageFormatElement[]>
   defaultLocale: string
@@ -150,6 +151,14 @@ Allows the user to provide a custom error handler. By default, error messages ar
 ### defaultRichTextElements
 
 A map of tag to rich text formatting function. This is meant to provide a centralized way to format common tags such as `<b>`, `<p>`... or enforcing certain Design System in the codebase (e.g standardized `<a>` or `<button>`...). See https://github.com/formatjs/formatjs/issues/1752 for more context.
+
+### fallbackOnEmptyString
+
+Defaults to `true`.
+
+This boolean option can be useful if you want to intentionally provide empty values for certain locales via empty strings. When `fallbackOnEmptyString` is `false`, empty strings will be returned instead of triggering the fallback procedure. This behaviour can be leveraged to "skip" content in specific locales.
+
+See [this issue](https://github.com/formatjs/formatjs/issues/607) for more context.
 
 ## formatDate
 
