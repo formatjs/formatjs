@@ -74,7 +74,7 @@ extracted message descriptors.`,
     )
     .option(
       '--additional-component-names <comma-separated-names>',
-      `Additional component names to extract messages from, e.g: \`['FormattedFooBarMessage']\`. 
+      `Additional component names to extract messages from, e.g: \`'FormattedFooBarMessage'\`. 
 **NOTE**: By default we check for the fact that \`FormattedMessage\` 
 is imported from \`moduleSourceName\` to make sure variable alias 
 works. This option does not do that so it's less safe.`,
@@ -82,7 +82,7 @@ works. This option does not do that so it's less safe.`,
     )
     .option(
       '--additional-function-names <comma-separated-names>',
-      `Additional function names to extract messages from, e.g: \`['$t']\`.`,
+      `Additional function names to extract messages from, e.g: \`'$t'\`.`,
       (val: string) => val.split(',')
     )
     .option(

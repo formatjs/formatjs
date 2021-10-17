@@ -12,7 +12,12 @@ test.each([
 
 test.each([
   'percent .##',
+  '.##',
+  '.##/w',
+  '.',
   '% .##',
+  '.##/@##r',
+  '.##/@##s',
   'percent .000*',
   'percent .0###',
   'percent .00/@##',
