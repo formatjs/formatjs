@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.9...@formatjs/ecma402-abstract@1.10.0) (2021-10-17)
+
+
+### Features
+
+* **@formatjs/icu-skeleton-parser:** parse out NumberFormat v3 options, fix [#3191](https://github.com/formatjs/formatjs/issues/3191) ([24e14d0](https://github.com/formatjs/formatjs/commit/24e14d072467401727a5a96324e5d7e7b758c630))
+
+
+
+
+
 ## [1.9.9](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.9.8...@formatjs/ecma402-abstract@1.9.9) (2021-09-27)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract

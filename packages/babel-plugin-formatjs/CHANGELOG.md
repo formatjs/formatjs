@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.3.10](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.9...babel-plugin-formatjs@10.3.10) (2021-10-17)
+
+**Note:** Version bump only for package babel-plugin-formatjs
+
+
+
+
+
 ## [10.3.9](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.8...babel-plugin-formatjs@10.3.9) (2021-09-27)
 
 **Note:** Version bump only for package babel-plugin-formatjs

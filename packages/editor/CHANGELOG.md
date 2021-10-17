@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.32](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.1.31...@formatjs/editor@1.1.32) (2021-10-17)
+
+**Note:** Version bump only for package @formatjs/editor
+
+
+
+
+
 ## [1.1.31](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.1.30...@formatjs/editor@1.1.31) (2021-09-27)
 
 **Note:** Version bump only for package @formatjs/editor
