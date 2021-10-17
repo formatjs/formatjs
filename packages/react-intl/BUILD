@@ -89,7 +89,7 @@ genrule(
     name = "external-rename",
     srcs = [":%s.esbuild.iife.js" % PACKAGE_NAME],
     outs = ["%s.iife.js" % PACKAGE_NAME],
-    cmd = "cat $< | sed -E 's/require\\(\"react\"\\)/window.React/g' > $@",
+    cmd = "cat $< | sed -E 's/__require\\(\"react\"\\)/window.React/g' > $@",
 )
 
 jest_test(
