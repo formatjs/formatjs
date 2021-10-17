@@ -52,6 +52,18 @@ Object {
 }
 `;
 
+exports[`[parseNumberSkeleton] case: "." 1`] = `
+Object {
+  "maximumFractionDigits": 0,
+}
+`;
+
+exports[`[parseNumberSkeleton] case: ".##" 1`] = `
+Object {
+  "maximumFractionDigits": 2,
+}
+`;
+
 exports[`[parseNumberSkeleton] case: "000" 1`] = `
 Object {
   "minimumIntegerDigits": 3,
