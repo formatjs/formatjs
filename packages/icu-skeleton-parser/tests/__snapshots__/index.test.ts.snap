@@ -64,6 +64,31 @@ Object {
 }
 `;
 
+exports[`[parseNumberSkeleton] case: ".##/@##r" 1`] = `
+Object {
+  "maximumFractionDigits": 2,
+  "maximumSignificantDigits": 3,
+  "minimumSignificantDigits": 1,
+  "roundingPriority": "morePrecision",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: ".##/@##s" 1`] = `
+Object {
+  "maximumFractionDigits": 2,
+  "maximumSignificantDigits": 3,
+  "minimumSignificantDigits": 1,
+  "roundingPriority": "lessPrecision",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: ".##/w" 1`] = `
+Object {
+  "maximumFractionDigits": 2,
+  "trailingZeroDisplay": "stripIfInteger",
+}
+`;
+
 exports[`[parseNumberSkeleton] case: "000" 1`] = `
 Object {
   "minimumIntegerDigits": 3,

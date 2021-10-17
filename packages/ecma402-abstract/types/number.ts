@@ -207,6 +207,8 @@ export type NumberFormatOptions = Intl.NumberFormatOptions &
     unit?: string
     unitDisplay?: NumberFormatOptionsUnitDisplay
     numberingSystem?: string
+    trailingZeroDisplay?: 'auto' | 'stripIfInteger'
+    roundingPriority?: 'auto' | 'morePrecision' | 'lessPrecision'
   }
 
 export type ResolvedNumberFormatOptions = Intl.ResolvedNumberFormatOptions &
