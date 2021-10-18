@@ -47,7 +47,7 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     } catch (e) {
       context.report({
         node: messageNode as any,
-        message: e.message,
+        message: e instanceof Error ? e.message : String(e),
       })
     }
   }
