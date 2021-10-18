@@ -63,6 +63,7 @@ npm_install(
     post_install_patches = [
         "//:npm_package_patches/make-plural-compiler+5.1.0.patch",
         "//:npm_package_patches/tslib+2.3.0.patch",
+        "//:npm_package_patches/@bazel+typescript+4.4.0.patch",
     ],
     # post_install_patches path doesn't work w/o symlink_node_modules = False
     symlink_node_modules = False,
