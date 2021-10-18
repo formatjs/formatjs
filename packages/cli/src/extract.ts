@@ -187,7 +187,7 @@ export async function extract(
           if (throws) {
             throw e
           } else {
-            warn(e)
+            warn(String(e))
           }
         }
       })

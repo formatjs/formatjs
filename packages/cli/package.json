@@ -46,7 +46,7 @@
     "json-stable-stringify": "^1.0.1",
     "loud-rejection": "^2.2.0",
     "tslib": "^2.1.0",
-    "typescript": "^4.3"
+    "typescript": "^4.4"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
