@@ -64,7 +64,7 @@
     "@types/rimraf": "^3.0.0",
     "@types/serialize-javascript": "^5.0.0",
     "@types/webpack": "5",
-    "@typescript-eslint/parser": "^4.11.0",
+    "@typescript-eslint/parser": "^5.0.0",
     "@typescript-eslint/typescript-estree": "^4.11.0",
     "@unicode/unicode-13.0.0": "^1.0.6",
     "@vue/compiler-core": "^3.2.19",
