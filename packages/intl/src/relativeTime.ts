@@ -2,7 +2,7 @@ import {IntlFormatters, Formatters, CustomFormats, OnErrorFn} from './types'
 
 import {getNamedFormat, filterProps} from './utils'
 import {FormatError, ErrorCode} from 'intl-messageformat'
-import {MessageFormatError} from './error'
+import {IntlFormatError} from './error'
 
 const RELATIVE_TIME_FORMAT_OPTIONS: Array<
   keyof Intl.RelativeTimeFormatOptions
@@ -65,7 +65,9 @@ Try polyfilling it using "@formatjs/intl-relativetimeformat"
       unit
     )
   } catch (e) {
-    config.onError(new MessageFormatError('Error formatting relative time.', e))
+    config.onError(
+      new IntlFormatError('Error formatting relative time.', config.locale, e)
+    )
   }
 
   return String(value)
