@@ -15,6 +15,7 @@ export function invariantIntlContext(intl?: any): asserts intl {
 
 export const DEFAULT_INTL_CONFIG: Pick<
   ResolvedIntlConfig,
+  | 'fallbackOnEmptyString'
   | 'formats'
   | 'messages'
   | 'timeZone'

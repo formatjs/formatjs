@@ -50,6 +50,7 @@ function processIntlConfig<P extends IntlConfig = IntlConfig>(
   return {
     locale: config.locale,
     timeZone: config.timeZone,
+    fallbackOnEmptyString: config.fallbackOnEmptyString,
     formats: config.formats,
     textComponent: config.textComponent,
     messages: config.messages,
