@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.20.13](https://github.com/formatjs/formatjs/compare/react-intl@5.20.12...react-intl@5.20.13) (2021-10-17)
+
+
+### Bug Fixes
+
+* **react-intl:** fix iife dist file, fix [#3188](https://github.com/formatjs/formatjs/issues/3188) ([a0767b6](https://github.com/formatjs/formatjs/commit/a0767b6a54c5596a25c45cec830611b1a82608f5))
+
+
+
+
+
 ## [5.20.12](https://github.com/formatjs/formatjs/compare/react-intl@5.20.11...react-intl@5.20.12) (2021-09-27)
 
 

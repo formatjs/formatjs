@@ -79,7 +79,7 @@ export function parseUnicodeLanguageId(
   }
   const variants: Record<string, any> = {}
   while (chunks.length && isUnicodeVariantSubtag(chunks[0])) {
-    const variant = chunks.shift()!
+    const variant: string = chunks.shift()!
     if (variant in variants) {
       throw new RangeError(`Duplicate variant "${variant}"`)
     }

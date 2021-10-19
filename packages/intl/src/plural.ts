@@ -1,6 +1,6 @@
 import {Formatters, IntlFormatters, OnErrorFn} from './types'
 import {filterProps} from './utils'
-import {MessageFormatError} from './error'
+import {IntlFormatError} from './error'
 import {ErrorCode, FormatError} from 'intl-messageformat'
 import {LDMLPluralRule} from '@formatjs/ecma402-abstract'
 
@@ -38,7 +38,7 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
       value
     ) as LDMLPluralRule
   } catch (e) {
-    onError(new MessageFormatError('Error formatting plural.', e))
+    onError(new IntlFormatError('Error formatting plural.', locale, e))
   }
 
   return 'other'

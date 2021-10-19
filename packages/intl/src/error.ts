@@ -13,10 +13,15 @@ export class IntlError<
 > extends Error {
   public readonly code: T
 
-  constructor(code: T, message: string, exception?: Error) {
+  constructor(code: T, message: string, exception?: Error | unknown) {
+    const err = exception
+      ? exception instanceof Error
+        ? exception
+        : new Error(String(exception))
+      : undefined
     super(
       `[@formatjs/intl Error ${code}] ${message} 
-${exception ? `\n${exception.message}\n${exception.stack}` : ''}`
+${err ? `\n${err.message}\n${err.stack}` : ''}`
     )
     this.code = code
     // @ts-ignore just so we don't need to declare dep on @types/node
@@ -28,39 +33,51 @@ ${exception ? `\n${exception.message}\n${exception.stack}` : ''}`
 }
 
 export class UnsupportedFormatterError extends IntlError<IntlErrorCode.UNSUPPORTED_FORMATTER> {
-  constructor(message: string, exception?: Error) {
+  constructor(message: string, exception?: Error | unknown) {
     super(IntlErrorCode.UNSUPPORTED_FORMATTER, message, exception)
   }
 }
 
 export class InvalidConfigError extends IntlError<IntlErrorCode.INVALID_CONFIG> {
-  constructor(message: string, exception?: Error) {
+  constructor(message: string, exception?: Error | unknown) {
     super(IntlErrorCode.INVALID_CONFIG, message, exception)
   }
 }
 
 export class MissingDataError extends IntlError<IntlErrorCode.MISSING_DATA> {
-  constructor(message: string, exception?: Error) {
+  constructor(message: string, exception?: Error | unknown) {
     super(IntlErrorCode.MISSING_DATA, message, exception)
   }
 }
 
-export class MessageFormatError extends IntlError<IntlErrorCode.FORMAT_ERROR> {
+export class IntlFormatError extends IntlError<IntlErrorCode.FORMAT_ERROR> {
+  public readonly descriptor?: MessageDescriptor
+  constructor(message: string, locale: string, exception?: Error | unknown) {
+    super(
+      IntlErrorCode.FORMAT_ERROR,
+      `${message} 
+Locale: ${locale}
+`,
+      exception
+    )
+  }
+}
+
+export class MessageFormatError extends IntlFormatError {
   public readonly descriptor?: MessageDescriptor
   constructor(
     message: string,
     locale: string,
     descriptor?: MessageDescriptor,
-    exception?: Error
+    exception?: Error | unknown
   ) {
     super(
-      IntlErrorCode.FORMAT_ERROR,
       `${message} 
-Locale: ${locale}
 MessageID: ${descriptor?.id}
 Default Message: ${descriptor?.defaultMessage}
 Description: ${descriptor?.description} 
 `,
+      locale,
       exception
     )
     this.descriptor = descriptor

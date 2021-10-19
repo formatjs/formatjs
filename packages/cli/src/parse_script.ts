@@ -25,8 +25,10 @@ export function parseScript(opts: Opts, fn?: string) {
         },
       })
     } catch (e) {
-      e.message = `Error processing file ${fn} 
+      if (e instanceof Error) {
+        e.message = `Error processing file ${fn} 
 ${e.message || ''}`
+      }
       throw e
     }
     if (output.diagnostics) {

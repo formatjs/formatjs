@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.3.1...@formatjs/cli@4.3.2) (2021-10-17)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix help text for --additional-component-names, fix [#3208](https://github.com/formatjs/formatjs/issues/3208) ([ed6cb55](https://github.com/formatjs/formatjs/commit/ed6cb558eac05f0606d8807b48d31aec815abab0))
+
+
+
+
+
 ## [4.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.3.0...@formatjs/cli@4.3.1) (2021-09-27)
 
 **Note:** Version bump only for package @formatjs/cli
