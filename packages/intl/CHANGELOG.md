@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.14.3...@formatjs/intl@1.15.0) (2021-10-22)
+
+
+### Features
+
+* **@formatjs/intl:** add fallbackOnEmptyString option ([#3201](https://github.com/formatjs/formatjs/issues/3201)) ([5c67c28](https://github.com/formatjs/formatjs/commit/5c67c28b60aa361e076bb098a6d081c3f8a1fbd2))
+* **@formatjs/intl:** upgrade to TS 4.4 ([8037bb2](https://github.com/formatjs/formatjs/commit/8037bb2e8c437d7033a3e0761606d54b916e9ff2))
+
+
+
+
+
 ## [1.14.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.14.2...@formatjs/intl@1.14.3) (2021-10-17)
 
 **Note:** Version bump only for package @formatjs/intl

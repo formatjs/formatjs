@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.17.9...eslint-plugin-formatjs@2.18.0) (2021-10-22)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** upgrade to TS 4.4 ([d45d3c1](https://github.com/formatjs/formatjs/commit/d45d3c19e37f64fdf3eb4dfefa6f976fadedbd9f))
+
+
+
+
+
 ## [2.17.9](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.17.8...eslint-plugin-formatjs@2.17.9) (2021-10-17)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

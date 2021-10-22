@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.7.3...@formatjs/intl-getcanonicallocales@1.8.0) (2021-10-22)
+
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** upgrade to TS 4.4 ([8b9b381](https://github.com/formatjs/formatjs/commit/8b9b38121f42d35edb189d94fef4a4f03da0871a))
+
+
+
+
+
 ## [1.7.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.7.2...@formatjs/intl-getcanonicallocales@1.7.3) (2021-08-15)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

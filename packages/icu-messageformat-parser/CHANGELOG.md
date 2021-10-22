@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.14](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.0.13...@formatjs/icu-messageformat-parser@2.0.14) (2021-10-22)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-skeleton-parser:** update package.json to include the repository ([#3230](https://github.com/formatjs/formatjs/issues/3230)) ([36dc6bc](https://github.com/formatjs/formatjs/commit/36dc6bc5d8049caaf377f378d81eb6703eb091d5))
+
+
+
+
+
 ## [2.0.13](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.0.12...@formatjs/icu-messageformat-parser@2.0.13) (2021-10-17)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

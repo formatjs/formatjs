@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.21.0](https://github.com/formatjs/formatjs/compare/react-intl@5.20.13...react-intl@5.21.0) (2021-10-22)
+
+
+### Features
+
+* **@formatjs/intl:** add fallbackOnEmptyString option ([#3201](https://github.com/formatjs/formatjs/issues/3201)) ([5c67c28](https://github.com/formatjs/formatjs/commit/5c67c28b60aa361e076bb098a6d081c3f8a1fbd2))
+* **react-intl:** upgrade to TS 4.4 ([b7f79b4](https://github.com/formatjs/formatjs/commit/b7f79b4a5567f76e3026abd90f3a2b3d894c17c0))
+
+
+
+
+
 ## [5.20.13](https://github.com/formatjs/formatjs/compare/react-intl@5.20.12...react-intl@5.20.13) (2021-10-17)
 
 

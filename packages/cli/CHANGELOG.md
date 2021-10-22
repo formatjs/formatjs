@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.3.2...@formatjs/cli@4.4.0) (2021-10-22)
+
+
+### Features
+
+* **@formatjs/cli:** upgrade to TS 4.4 ([4fec415](https://github.com/formatjs/formatjs/commit/4fec41533617c3e62101512fa06850cf56c43358))
+
+
+
+
+
 ## [4.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.3.1...@formatjs/cli@4.3.2) (2021-10-17)
 
 

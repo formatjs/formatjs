@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.40](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.39...@formatjs/intl-locale@2.4.40) (2021-10-22)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
 ## [2.4.39](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.38...@formatjs/intl-locale@2.4.39) (2021-10-17)
 
 **Note:** Version bump only for package @formatjs/intl-locale
