@@ -5,6 +5,11 @@
   "module": "lib/index.js",
   "types": "index.d.ts",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/formatjs/formatjs.git",
+    "directory": "packages/icu-skeleton-parser"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.10.0",
     "tslib": "^2.1.0"
