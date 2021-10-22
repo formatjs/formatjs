@@ -60,7 +60,7 @@ describe('injectIntl()', () => {
 
     const {getByTestId} = mountWithProvider(<Injected {...props} />)
     expect(getByTestId('comp')).toHaveTextContent(
-      '{"formats":{},"messages":{},"defaultLocale":"en","defaultFormats":{},"locale":"en","formatters":{}}'
+      '{"formats":{},"messages":{},"defaultLocale":"en","defaultFormats":{},"fallbackOnEmptyString":true,"locale":"en","formatters":{}}'
     )
   })
 })

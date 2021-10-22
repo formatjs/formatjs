@@ -86,6 +86,7 @@ export function formatMessage<T>(
     messages,
     defaultLocale,
     defaultFormats,
+    fallbackOnEmptyString,
     onError,
     timeZone,
     defaultRichTextElements,
@@ -97,6 +98,7 @@ export function formatMessage<T>(
     defaultLocale: string
     defaultFormats: CustomFormats
     defaultRichTextElements?: Record<string, FormatXMLElementFn<T>>
+    fallbackOnEmptyString?: boolean
     onError: OnErrorFn
   },
   state: IntlMessageFormatFormatters & Pick<Formatters, 'getMessageFormat'>,
@@ -150,6 +152,10 @@ to autofix this issue`
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone)
 
   if (!message) {
+    if (fallbackOnEmptyString === false && message === '') {
+      return message
+    }
+
     if (
       !defaultMessage ||
       (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())

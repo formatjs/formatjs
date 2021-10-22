@@ -41,6 +41,7 @@ export type OnErrorFn = (
 export interface ResolvedIntlConfig<T = string> {
   locale: string
   timeZone?: string
+  fallbackOnEmptyString?: boolean
   formats: CustomFormats
   messages: Record<string, string> | Record<string, MessageFormatElement[]>
   defaultLocale: string

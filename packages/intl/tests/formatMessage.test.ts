@@ -446,6 +446,24 @@ describe('format API', () => {
         ).toMatchSnapshot()
       })
 
+      it('returns an empty string when `fallbackOnEmptyString` is false', () => {
+        config.fallbackOnEmptyString = false
+        const id = 'empty'
+
+        expect(
+          formatMessage({ id })
+        ).toBe('')
+      })
+
+      it('does not return an empty string when `fallbackOnEmptyString` is true', () => {
+        config.fallbackOnEmptyString = true
+        const id = 'empty'
+
+        expect(
+          formatMessage({ id })
+        ).toBe(id)
+      })
+
       it('returns message `id` when message and `defaultMessage` are empty', () => {
         const {messages} = config
         const id = 'empty'

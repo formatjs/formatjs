@@ -35,6 +35,7 @@ const defaultErrorHandler: OnErrorFn = error => {
 
 export const DEFAULT_INTL_CONFIG: Pick<
   ResolvedIntlConfig<any>,
+  | 'fallbackOnEmptyString'
   | 'formats'
   | 'messages'
   | 'timeZone'
@@ -48,6 +49,8 @@ export const DEFAULT_INTL_CONFIG: Pick<
 
   defaultLocale: 'en',
   defaultFormats: {},
+
+  fallbackOnEmptyString: true,
 
   onError: defaultErrorHandler,
 }
