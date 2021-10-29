@@ -130,6 +130,8 @@ check_format(
         exclude = [
             "CHANGELOG.md",
             "tests/unit/components/__snapshots__/*",
+            '**/.env',
+            '**/.gitignore'
         ],
     ),
 )
