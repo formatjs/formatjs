@@ -23,6 +23,16 @@ import {
 import {DEFAULT_INTL_CONFIG} from './utils'
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
+declare global {
+  namespace FormatjsIntl {
+    interface Message {}
+  }
+}
+
+type MessageIds = FormatjsIntl.Message extends {ids: string}
+  ? FormatjsIntl.Message['ids']
+  : string
+
 export type OnErrorFn = (
   err:
     | MissingTranslationError
@@ -43,7 +53,9 @@ export interface ResolvedIntlConfig<T = string> {
   timeZone?: string
   fallbackOnEmptyString?: boolean
   formats: CustomFormats
-  messages: Record<string, string> | Record<string, MessageFormatElement[]>
+  messages:
+    | Record<MessageIds, string>
+    | Record<MessageIds, MessageFormatElement[]>
   defaultLocale: string
   defaultFormats: CustomFormats
   defaultRichTextElements?: Record<string, FormatXMLElementFn<T>>
@@ -191,7 +203,7 @@ export interface IntlCache {
 }
 
 export interface MessageDescriptor {
-  id?: string | number
+  id?: MessageIds
   description?: string | object
   defaultMessage?: string | MessageFormatElement[]
 }
