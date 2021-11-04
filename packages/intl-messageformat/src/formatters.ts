@@ -136,7 +136,7 @@ export function formatToParts<T>(
     const {value: varName} = el
 
     // Enforce that all required values are provided by the caller.
-    if (!(values && varName in values)) {
+    if (!(values && values[varName] != null)) {
       throw new MissingValueError(varName, originalMessage)
     }
 
