@@ -1,6 +1,7 @@
 import * as React from 'react'
-import Provider, {IntlConfig} from '../../src/components/provider'
+import Provider from '../../src/components/provider'
 import {render} from '@testing-library/react'
+import type {IntlConfig} from '../../src/types'
 
 export function mountFormattedComponentWithProvider<P>(
   Comp: React.ComponentType<P>

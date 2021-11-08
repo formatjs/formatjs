@@ -4,7 +4,7 @@ import FormattedRelativeTime from '../../../src/components/relative'
 import {createIntl} from '../../../src/components/provider'
 import {IntlShape} from '../../../src/types'
 import {mountFormattedComponentWithProvider} from '../testUtils'
-import {IntlConfig} from '../../../src/components/provider'
+import type {IntlConfig} from '../../../src/types'
 import {render, act} from '@testing-library/react'
 
 jest.useFakeTimers()
