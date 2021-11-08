@@ -16,6 +16,32 @@ import {
 import {IntlListFormatOptions} from '@formatjs/intl-listformat'
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames'
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import injectIntl, {
+  Provider as RawIntlProvider,
+  Context as IntlContext,
+  WithIntlProps,
+  WrappedComponentProps,
+} from './src/components/injectIntl'
+import useIntl from './src/components/useIntl'
+import IntlProvider, {createIntl} from './src/components/provider'
+import FormattedRelativeTime from './src/components/relative'
+import FormattedPlural from './src/components/plural'
+import FormattedMessage from './src/components/message'
+import FormattedDateTimeRange from './src/components/dateTimeRange'
+export {
+  FormattedDateTimeRange,
+  FormattedMessage,
+  FormattedPlural,
+  FormattedRelativeTime,
+  IntlContext,
+  IntlProvider,
+  RawIntlProvider,
+  WithIntlProps,
+  WrappedComponentProps,
+  createIntl,
+  injectIntl,
+  useIntl,
+}
 export {IntlConfig, ResolvedIntlConfig, IntlShape} from './src/types'
 export {
   createIntlCache,
@@ -51,15 +77,6 @@ export function defineMessages<
 export function defineMessage<T extends MessageDescriptor>(msg: T): T {
   return msg
 }
-export {
-  default as injectIntl,
-  Provider as RawIntlProvider,
-  Context as IntlContext,
-  WithIntlProps,
-  WrappedComponentProps,
-} from './src/components/injectIntl'
-export {default as useIntl} from './src/components/useIntl'
-export {default as IntlProvider, createIntl} from './src/components/provider'
 // IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./src/types').CustomFormatConfig`
 export const FormattedDate: React.FC<
   Intl.DateTimeFormatOptions &
@@ -107,8 +124,4 @@ export {
   FormattedNumberParts,
   FormattedListParts,
 } from './src/components/createFormattedComponent'
-export {default as FormattedRelativeTime} from './src/components/relative'
-export {default as FormattedPlural} from './src/components/plural'
-export {default as FormattedMessage} from './src/components/message'
-export {default as FormattedDateTimeRange} from './src/components/dateTimeRange'
 export type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
