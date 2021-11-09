@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.21.1](https://github.com/formatjs/formatjs/compare/react-intl@5.21.0...react-intl@5.21.1) (2021-11-09)
+
+
+### Bug Fixes
+
+* **react-intl:** named esm exports ([#3261](https://github.com/formatjs/formatjs/issues/3261)) ([05edd2c](https://github.com/formatjs/formatjs/commit/05edd2cf1eefd5311280e6f64e80d6e078808b7d))
+
+
+
+
+
 # [5.21.0](https://github.com/formatjs/formatjs/compare/react-intl@5.20.13...react-intl@5.21.0) (2021-10-22)
 
 
