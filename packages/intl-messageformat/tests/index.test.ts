@@ -123,14 +123,9 @@ describe('IntlMessageFormat', function () {
       expect(output).toBe('I am 0 years old.')
     })
 
-    it('should ignore false, null, and undefined', function () {
-      const mf = new IntlMessageFormat('{a}{b}{c}')
-      const output = mf.format({
-        a: false,
-        b: null,
-        c: undefined,
-      })
-
+    it('should ignore false', function () {
+      const mf = new IntlMessageFormat('{a}')
+      const output = mf.format({a: false})
       expect(output).toBe('')
     })
   })
@@ -778,6 +773,14 @@ describe('IntlMessageFormat', function () {
         minimumFractionDigits: 5,
         maximumFractionDigits: 5,
       }).format(0.1234567)
+    )
+  })
+
+  it('throws when a date argument is `undefined`', () => {
+    const msg = 'Today is {time, date, long}'
+    const mf = new IntlMessageFormat(msg, 'en')
+    expect(() => mf.format({time: undefined})).toThrow(
+      'The intl string context variable "time" was not provided to the string "Today is {time, date, long}"'
     )
   })
 

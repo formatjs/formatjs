@@ -53,7 +53,9 @@ TESTS = glob([
 TEST_DEPS = SRC_DEPS + [
     "@npm//@testing-library/jest-dom",
     "@npm//@testing-library/react",
+    "@npm//cjs-module-lexer",
     "@npm//react-dom",
+    "@npm//typescript",
     "//packages/ecma402-abstract:types",
     "//packages/icu-messageformat-parser:types",
     "//packages/intl-displaynames:types",
