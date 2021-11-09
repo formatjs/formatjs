@@ -1,4 +1,8 @@
 import * as ReactIntl from '../../'
+import * as ts from 'typescript'
+import fs from 'fs'
+import lexer from 'cjs-module-lexer'
+import path from 'path'
 
 describe('react-intl', () => {
   describe('exports', () => {
@@ -62,6 +66,23 @@ describe('react-intl', () => {
       it('exports `FormattedDisplayNames`', () => {
         expect(typeof ReactIntl.FormattedDisplayName).toBe('function')
       })
+    })
+  })
+  describe('static analysis of named exports ', () => {
+    // Parse dist file for statically analyzable named exports
+    const filePath = path.resolve(__dirname, '..', '..', 'index.ts')
+    const source = fs.readFileSync(filePath, 'utf8')
+    const {outputText} = ts.transpileModule(source, {
+      compilerOptions: {
+        esModuleInterop: true,
+        module: ts.ModuleKind.CommonJS,
+      },
+    })
+    const parsed = lexer.parse(outputText)
+    const keys = Object.keys(ReactIntl)
+
+    it.each(keys)('has named export "%s"', key => {
+      expect(parsed.exports).toContain(key)
     })
   })
 })

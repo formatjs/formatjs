@@ -1,12 +1,10 @@
 import * as React from 'react'
 import FormattedMessage from '../../../src/components/message'
-import IntlProvider, {
-  IntlConfig,
-  createIntl,
-} from '../../../src/components/provider'
+import IntlProvider, {createIntl} from '../../../src/components/provider'
 import {mountFormattedComponentWithProvider} from '../testUtils'
 import {IntlShape} from '../../../'
 import {render} from '@testing-library/react'
+import type {IntlConfig} from '../../../src/types'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage)
 
