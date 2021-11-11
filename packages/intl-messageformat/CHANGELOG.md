@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.9.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.9.4...intl-messageformat@9.9.5) (2021-11-09)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** throw when a value is `undefined` or `null` ([#3256](https://github.com/formatjs/formatjs/issues/3256)) ([b3ac86d](https://github.com/formatjs/formatjs/commit/b3ac86d9a3eb082e349b1683312131df96796231))
+
+
+
+
+
 ## [9.9.4](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.9.3...intl-messageformat@9.9.4) (2021-10-22)
 
 **Note:** Version bump only for package intl-messageformat
