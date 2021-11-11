@@ -284,7 +284,7 @@ In order to use `react-intl` in TypeScript, make sure your `compilerOptions`'s `
 
 ## Typing message IDs
 
-By default, the type for the `id` prop of `<FormattedMessage>` and `formatMessage` is `string`. However, you can set a more restrictive type to get autocomplete and error checking. In order to do this, override the following global namespace with the union type of all of your messge IDs. You can do this by including the following somewhere in your code:
+By default, the type for the `id` prop of `<FormattedMessage>` and `formatMessage` is `string`. However, you can set a more restrictive type to get autocomplete and error checking. In order to do this, override the following global namespace with the union type of all of your message IDs. You can do this by including the following somewhere in your code:
 
 ```ts
 declare global {
