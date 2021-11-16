@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.9.6](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.9.5...intl-messageformat@9.9.6) (2021-11-14)
+
+
+### Reverts
+
+* Revert "fix(intl-messageformat): throw when a value is `undefined` or `null` (#3256)" ([11127cb](https://github.com/formatjs/formatjs/commit/11127cb0f6f605ea613974e1be489f151cbae73b)), closes [#3256](https://github.com/formatjs/formatjs/issues/3256) [#3263](https://github.com/formatjs/formatjs/issues/3263)
+
+
+
+
+
 ## [9.9.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.9.4...intl-messageformat@9.9.5) (2021-11-09)
 
 
