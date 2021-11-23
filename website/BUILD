@@ -64,6 +64,7 @@ docusaurus(
     configuration_env_vars = [
         "USE_SSH",
         "GIT_USER",
+        "DEPLOYMENT_BRANCH"
     ],
     data = DEPS + [
         ":build",
