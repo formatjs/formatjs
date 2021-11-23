@@ -10,8 +10,8 @@
   "scripts": {
     "bazel:lint": "bazel run //:buildifier",
     "build": "bazel build //...",
-    "deploy": "DEPLOYMENT_BRANCH=main USE_SSH=true bazel run //website:deploy",
-    "docs": "bazel run //website:serve",
+    "deploy": "NO_UPDATE_NOTIFIER=1 DEPLOYMENT_BRANCH=main USE_SSH=true bazel run //website:deploy",
+    "docs": "NO_UPDATE_NOTIFIER=1 bazel run //website:serve",
     "examples": "bazel run //packages/react-intl/examples",
     "format": "npm run bazel:lint && bazel run :prettier_all",
     "karma:ci": "bazel test :karma-ci",

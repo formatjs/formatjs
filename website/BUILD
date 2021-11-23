@@ -43,7 +43,7 @@ copy_to_bin(
         "lang/*",
         "src/**/*",
         "static/**/*",
-        "*.js",
+        "*.js"
     ]),
 )
 
@@ -64,7 +64,8 @@ docusaurus(
     configuration_env_vars = [
         "USE_SSH",
         "GIT_USER",
-        "DEPLOYMENT_BRANCH"
+        "DEPLOYMENT_BRANCH",
+        "NO_UPDATE_NOTIFIER"
     ],
     data = DEPS + [
         ":build",
