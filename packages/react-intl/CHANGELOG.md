@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.22.0](https://github.com/formatjs/formatjs/compare/react-intl@5.21.2...react-intl@5.22.0) (2021-11-23)
+
+
+### Features
+
+* **react-intl:** allow setting a stricter type for message IDs ([#3242](https://github.com/formatjs/formatjs/issues/3242)) ([b7cac44](https://github.com/formatjs/formatjs/commit/b7cac443a2ecf791004138699959d46ddc3d4808))
+
+
+
+
+
 ## [5.21.2](https://github.com/formatjs/formatjs/compare/react-intl@5.21.1...react-intl@5.21.2) (2021-11-14)
 
 **Note:** Version bump only for package react-intl
