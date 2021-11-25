@@ -26,11 +26,16 @@ import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 declare global {
   namespace FormatjsIntl {
     interface Message {}
+    interface IntlConfig {}
   }
 }
 
 type MessageIds = FormatjsIntl.Message extends {ids: string}
   ? FormatjsIntl.Message['ids']
+  : string
+
+type Locale = FormatjsIntl.IntlConfig extends {locale: string}
+  ? FormatjsIntl.IntlConfig['locale']
   : string
 
 export type OnErrorFn = (
@@ -49,7 +54,7 @@ export type OnErrorFn = (
  * With React, T would be React.ReactNode
  */
 export interface ResolvedIntlConfig<T = string> {
-  locale: string
+  locale: Locale
   timeZone?: string
   fallbackOnEmptyString?: boolean
   formats: CustomFormats
