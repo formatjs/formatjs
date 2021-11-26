@@ -1,0 +1,10 @@
+{
+  "message": {
+    "id": "message",
+    "defaultMessage": "Message"
+  },
+  "unused": {
+    "id": "unused",
+    "defaultMessage": "Unused"
+  }
+}

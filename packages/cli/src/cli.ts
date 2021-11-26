@@ -1,6 +1,7 @@
 import {program} from 'commander'
 import loudRejection from 'loud-rejection'
 import extract, {ExtractCLIOptions} from './extract'
+import validate, {ValidateCLIOptions} from './validate'
 import compile, {CompileCLIOpts, Opts} from './compile'
 import compileFolder from './compile_folder'
 import {sync as globSync} from 'fast-glob'
@@ -234,6 +235,93 @@ for more information`
       }
       debug('Files to compile:', files)
       await compileFolder(files, outFolder, opts)
+    })
+
+  program
+    .command('validate [files...]')
+    .description(
+      `Validates a translation file is up-to-date for React components that use react-intl.
+The input language is expected to be TypeScript or ES2017 with JSX.`
+    )
+    .option(
+      '--format <path>',
+      `Path to a formatter file that controls the shape of JSON file from \`--out-file\`.
+The formatter file must export a function called \`format\` with the signature
+\`\`\`
+type FormatFn = <T = Record<string, MessageDescriptor>>(
+  msgs: Record<string, MessageDescriptor>
+) => T
+\`\`\` 
+This is especially useful to convert from our extracted format to a TMS-specific format.
+`
+    )
+    .option(
+      '--in-file <path>',
+      `The file path of the translations to validate against.`
+    )
+    .option(
+      '--id-interpolation-pattern <pattern>',
+      `If certain message descriptors don't have id, this \`pattern\` will be used to automatically
+generate IDs for them. Default to \`[sha512:contenthash:base64:6]\` where \`contenthash\` is the hash of
+\`defaultMessage\` and \`description\`.
+See https://github.com/webpack/loader-utils#interpolatename for sample patterns`,
+      '[sha512:contenthash:base64:6]'
+    )
+    .option(
+      '--additional-component-names <comma-separated-names>',
+      `Additional component names to extract messages from, e.g: \`'FormattedFooBarMessage'\`. 
+**NOTE**: By default we check for the fact that \`FormattedMessage\` 
+is imported from \`moduleSourceName\` to make sure variable alias 
+works. This option does not do that so it's less safe.`,
+      (val: string) => val.split(',')
+    )
+    .option(
+      '--additional-function-names <comma-separated-names>',
+      `Additional function names to extract messages from, e.g: \`'$t'\`.`,
+      (val: string) => val.split(',')
+    )
+    .option(
+      '--ignore <files...>',
+      'List of glob paths to **not** extract translations from.'
+    )
+    .option(
+      '--preserve-whitespace',
+      'Whether to preserve whitespace and newlines.'
+    )
+    .option(
+      '--flatten',
+      `Whether to hoist selectors & flatten sentences as much as possible. E.g:
+"I have {count, plural, one{a dog} other{many dogs}}"
+becomes "{count, plural, one{I have a dog} other{I have many dogs}}".
+The goal is to provide as many full sentences as possible since fragmented
+sentences are not translator-friendly.`
+    )
+    .action(async (files: readonly string[], cmdObj: ValidateCLIOptions) => {
+      debug('File pattern:', files)
+      debug('Options:', cmdObj)
+      const processedFiles = []
+      for (const f of files) {
+        processedFiles.push(
+          ...globSync(f, {
+            ignore: cmdObj.ignore,
+          })
+        )
+      }
+      debug('Files to extract:', files)
+
+      const valid = await validate(processedFiles, {
+        inFile: cmdObj.inFile,
+        idInterpolationPattern:
+          cmdObj.idInterpolationPattern || '[sha1:contenthash:base64:6]',
+        removeDefaultMessage: cmdObj.removeDefaultMessage,
+        additionalComponentNames: cmdObj.additionalComponentNames,
+        additionalFunctionNames: cmdObj.additionalFunctionNames,
+        pragma: cmdObj.pragma,
+        format: cmdObj.format,
+        preserveWhitespace: cmdObj.preserveWhitespace,
+        flatten: cmdObj.flatten,
+      })
+      process.exit(valid ? 0 : 1)
     })
 
   if (argv.length < 3) {
