@@ -5,7 +5,7 @@ import {IntlProvider, FormattedMessage, useIntl} from 'react-intl'
 const messages = {
   title: 'Hello CodeSandbox',
   content: 'Start editing to see some magic happen!',
-  body: 'Your locale ({locale}) is now type safe'
+  body: 'Your locale ({locale}) is now type safe',
 }
 
 declare global {
@@ -14,18 +14,20 @@ declare global {
       ids: keyof typeof messages
     }
     interface IntlConfig {
-      locale: "en" | "fr"
+      locale: 'en' | 'fr'
     }
   }
 }
 
 const Component = () => {
   // Here locale is type safe
-  const {locale} = useIntl();
+  const {locale} = useIntl()
 
-  return <p>
-    <FormattedMessage id="body" values={{locale}}></FormattedMessage>
-  </p>
+  return (
+    <p>
+      <FormattedMessage id="body" values={{locale}}></FormattedMessage>
+    </p>
+  )
 }
 
 export default function App() {

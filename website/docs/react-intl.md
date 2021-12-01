@@ -307,11 +307,12 @@ const messages = {
 ```
 
 You can also override the following global to use a custom type for locale
+
 ```ts
 declare global {
   namespace FormatjsIntl {
     interface IntlConfig {
-      locale: "en" | "fr"
+      locale: 'en' | 'fr'
     }
   }
 }
