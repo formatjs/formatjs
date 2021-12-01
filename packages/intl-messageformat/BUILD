@@ -36,6 +36,7 @@ SRCS = glob(["src/*.ts"]) + ["index.ts"]
 SRC_DEPS = [
     "//packages/icu-messageformat-parser:dist",
     "//packages/fast-memoize:dist",
+    "//packages/ecma402-abstract:dist",
 ]
 
 TESTS = glob([
@@ -60,6 +61,7 @@ jest_test(
     srcs = SRCS + TESTS,
     deps = TEST_DEPS + [
         "//packages/icu-messageformat-parser:types",
+    "//packages/ecma402-abstract:types",
     ],
 )
 

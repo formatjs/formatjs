@@ -195,7 +195,10 @@ export interface NumberFormatInternal extends NumberFormatDigitInternalSlots {
   dataLocaleData: NumberFormatLocaleInternalData
 }
 
-export type NumberFormatOptions = Intl.NumberFormatOptions &
+export type NumberFormatOptions = Omit<
+  Intl.NumberFormatOptions,
+  'signDisplay'
+> &
   NumberFormatDigitOptions & {
     localeMatcher?: NumberFormatOptionsLocaleMatcher
     style?: NumberFormatOptionsStyle

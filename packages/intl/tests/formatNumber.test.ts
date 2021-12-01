@@ -124,7 +124,10 @@ describe('format API', () => {
         const format = 'percent'
 
         const {locale, formats} = config
-        nf = new Intl.NumberFormat(locale, formats!.number![format])
+        nf = new Intl.NumberFormat(
+          locale,
+          formats!.number![format] as Intl.NumberFormatOptions
+        )
 
         expect(formatNumber(num, {format})).toBe(nf.format(num))
       })
@@ -138,7 +141,7 @@ describe('format API', () => {
         nf = new Intl.NumberFormat(locale, {
           ...opts,
           ...formats!.number![format],
-        })
+        } as Intl.NumberFormatOptions)
 
         expect(formatNumber(num, {...opts, format})).toBe(nf.format(num))
       })

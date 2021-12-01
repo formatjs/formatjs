@@ -50,12 +50,7 @@ export function getFormatter(
     ...(format && getNamedFormat(formats!, type, format, onError)),
   }
 
-  let filteredOptions = filterProps(
-    options,
-    DATE_TIME_FORMAT_OPTIONS,
-    // @ts-expect-error es2020 has a lot stuff from es2021 bleed in
-    defaults
-  )
+  let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults)
 
   if (
     type === 'time' &&

@@ -9,8 +9,8 @@ export type Formats = Pick<
   | 'minute'
   | 'second'
   | 'timeZoneName'
-  | 'fractionalSecondDigits'
 > & {
+  fractionalSecondDigits?: 0 | 1 | 2
   hour12?: boolean
   pattern: string
   pattern12: string
@@ -153,7 +153,8 @@ export type IntervalFormatsData = {
   intervalFormatFallback: string
 } & Record<string, Record<string, string>>
 
-export interface DateTimeFormat extends Intl.DateTimeFormat {
+export interface DateTimeFormat
+  extends Omit<Intl.DateTimeFormat, 'resolvedOptions'> {
   resolvedOptions(): ResolvedDateTimeFormatOptions
   formatRange(startDate: number | Date, endDate: number | Date): string
   formatRangeToParts(
@@ -166,7 +167,6 @@ export interface ResolvedDateTimeFormatOptions
   extends Intl.ResolvedDateTimeFormatOptions {
   dateStyle?: 'full' | 'long' | 'medium' | 'short'
   timeStyle?: 'full' | 'long' | 'medium' | 'short'
-  hourCycle: string
   numberingSystem: string
 }
 

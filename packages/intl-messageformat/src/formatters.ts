@@ -1,3 +1,4 @@
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {
   isArgumentElement,
   isDateElement,
@@ -22,20 +23,21 @@ import {
 } from './error'
 
 export interface Formats {
-  number: Record<string, Intl.NumberFormatOptions>
+  number: Record<string, NumberFormatOptions>
   date: Record<string, Intl.DateTimeFormatOptions>
   time: Record<string, Intl.DateTimeFormatOptions>
 }
 
 export interface FormatterCache {
-  number: Record<string, Intl.NumberFormat>
+  number: Record<string, NumberFormatOptions>
   dateTime: Record<string, Intl.DateTimeFormat>
   pluralRules: Record<string, Intl.PluralRules>
 }
 
 export interface Formatters {
   getNumberFormat(
-    ...args: ConstructorParameters<typeof Intl.NumberFormat>
+    locals?: string | string[],
+    opts?: NumberFormatOptions
   ): Intl.NumberFormat
   getDateTimeFormat(
     ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
@@ -204,7 +206,7 @@ export function formatToParts<T>(
       result.push({
         type: PART_TYPE.literal,
         value: formatters
-          .getNumberFormat(locales, style as Intl.NumberFormatOptions)
+          .getNumberFormat(locales, style)
           .format(value as number),
       })
       continue

@@ -8,7 +8,7 @@ import {
 import {IntlMessageFormat} from 'intl-messageformat'
 import memoize, {Cache, strategies} from '@formatjs/fast-memoize'
 import {UnsupportedFormatterError} from './error'
-import {DateTimeFormat} from '@formatjs/ecma402-abstract'
+import {DateTimeFormat, NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
@@ -150,7 +150,7 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   name: string,
   onError: OnErrorFn
 ):
-  | Intl.NumberFormatOptions
+  | NumberFormatOptions
   | Intl.DateTimeFormatOptions
   | Intl.RelativeTimeFormatOptions
   | undefined {

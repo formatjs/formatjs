@@ -167,7 +167,8 @@ export interface Formatters {
     ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
   ): DateTimeFormat
   getNumberFormat(
-    ...args: ConstructorParameters<typeof Intl.NumberFormat>
+    locales?: string | string[],
+    opts?: NumberFormatOptions
   ): Intl.NumberFormat
   getMessageFormat(
     ...args: ConstructorParameters<typeof IntlMessageFormat>
