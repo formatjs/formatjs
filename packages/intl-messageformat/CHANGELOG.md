@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.10.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.9.6...intl-messageformat@9.10.0) (2021-12-01)
+
+
+### Features
+
+* support TS 4.5, fix [#3276](https://github.com/formatjs/formatjs/issues/3276) ([31e0699](https://github.com/formatjs/formatjs/commit/31e069972aa16e14532531b9e597cff73a3f4897))
+
+
+
+
+
 ## [9.9.6](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.9.5...intl-messageformat@9.9.6) (2021-11-14)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-locale",
-  "version": "2.4.40",
+  "version": "2.4.41",
   "description": "Intl.Locale polyfill",
   "keywords": [
     "intl",
@@ -24,7 +24,7 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.10.0",
+    "@formatjs/ecma402-abstract": "1.11.0",
     "@formatjs/intl-getcanonicallocales": "1.8.0",
     "tslib": "^2.1.0"
   }
