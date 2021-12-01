@@ -282,7 +282,7 @@ There are a few API layers that React Intl provides and is built on. When using 
 
 In order to use `react-intl` in TypeScript, make sure your `compilerOptions`'s `lib` config include `["esnext.intl", "es2017.intl", "es2018.intl"]`.
 
-## Typing message IDs
+## Typing message IDs and locale
 
 By default, the type for the `id` prop of `<FormattedMessage>` and `formatMessage` is `string`. However, you can set a more restrictive type to get autocomplete and error checking. In order to do this, override the following global namespace with the union type of all of your message IDs. You can do this by including the following somewhere in your code:
 
@@ -303,6 +303,18 @@ const messages = {
   greeting: 'Hello',
   planet: 'World',
   // ...
+}
+```
+
+You can also override the following global to use a custom type for locale
+
+```ts
+declare global {
+  namespace FormatjsIntl {
+    interface IntlConfig {
+      locale: 'en' | 'fr'
+    }
+  }
 }
 ```
 

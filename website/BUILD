@@ -43,7 +43,7 @@ copy_to_bin(
         "lang/*",
         "src/**/*",
         "static/**/*",
-        "*.js"
+        "*.js",
     ]),
 )
 
@@ -65,7 +65,7 @@ docusaurus(
         "USE_SSH",
         "GIT_USER",
         "DEPLOYMENT_BRANCH",
-        "NO_UPDATE_NOTIFIER"
+        "NO_UPDATE_NOTIFIER",
     ],
     data = DEPS + [
         ":build",
