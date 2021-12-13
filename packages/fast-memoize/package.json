@@ -18,7 +18,7 @@
     "i18n"
   ],
   "author": "Long Ho <holevietlong@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
