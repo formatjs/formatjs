@@ -85,7 +85,7 @@
     "commander": "8",
     "core-js": "^3.6.5",
     "emoji-regex": "^9.2.0",
-    "eslint": "^7.4.0",
+    "eslint": "^8.4.1",
     "fast-glob": "^3.2.7",
     "fs-extra": "10",
     "hoist-non-react-statics": "^3.3.2",
