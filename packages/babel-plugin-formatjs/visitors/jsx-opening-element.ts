@@ -13,6 +13,14 @@ import {
   wasExtracted,
 } from '../utils'
 
+function isValidJSXElement(path: NodePath<any>, name: string) {
+  return (
+    path.isJSXIdentifier({name}) ||
+    (path.isJSXMemberExpression() &&
+      path.get('property').isJSXIdentifier({name}))
+  )
+}
+
 export const visitor: VisitNodeFunction<
   PluginPass & State,
   t.JSXOpeningElement
@@ -40,7 +48,7 @@ export const visitor: VisitNodeFunction<
 
   const name = path.get('name')
 
-  if (!componentNames.find(n => name.isJSXIdentifier({name: n}))) {
+  if (!componentNames.find(n => isValidJSXElement(name, n))) {
     return
   }
 

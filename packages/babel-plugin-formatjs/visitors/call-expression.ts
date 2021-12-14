@@ -24,7 +24,7 @@ function assertObjectExpression(
   }
 }
 
-function isFormatMessageCall(
+function isValidCall(
   callee: NodePath<t.Expression | t.V8IntrinsicIdentifier | t.MemberExpression>,
   functionNames: string[]
 ) {
@@ -196,10 +196,7 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
             .forEach(processMessageObject)
         }
       }
-    }
-
-    // Check that this is `intl.formatMessage` call
-    if (isFormatMessageCall(callee, functionNames)) {
+    } else if (isValidCall(callee, functionNames)) {
       const messageDescriptor = args[0]
       if (messageDescriptor.isObjectExpression()) {
         processMessageObject(messageDescriptor)

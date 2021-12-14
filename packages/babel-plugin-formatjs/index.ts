@@ -24,8 +24,14 @@ export default declare<Options, PluginObj>((api, options) => {
   componentNames.add('FormattedMessage')
   const functionNames = new Set<string>(options.additionalFunctionNames)
   functionNames.add('formatMessage')
+  functionNames.add('defineMessage')
+  functionNames.add('defineMessages')
+
   // Vue
   functionNames.add('$formatMessage')
+  functionNames.add('$defineMessage')
+  functionNames.add('$defineMessages')
+
   return {
     inherits: babelPluginSyntaxJsx,
     pre() {

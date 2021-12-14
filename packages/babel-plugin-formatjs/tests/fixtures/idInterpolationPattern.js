@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {defineMessages, FormattedMessage} from 'react-intl'
+import intl, {defineMessages, FormattedMessage} from 'react-intl'
 
 const msgs = defineMessages({
   header: {
@@ -16,6 +16,11 @@ const msgs = defineMessages({
   },
 })
 
+const soloMessage = intl.defineMessage({
+  defaultMessage: 'no-id',
+  description: 'message without an id'
+})
+
 export default class Foo extends Component {
   render() {
     return (
@@ -24,7 +29,7 @@ export default class Foo extends Component {
           <FormattedMessage {...msgs.header} />
         </h1>
         <p>
-          <FormattedMessage {...msgs.content} />
+          <intl.FormattedMessage {...msgs.content} />
         </p>
         <FormattedMessage
           defaultMessage="Hello World!"
