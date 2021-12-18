@@ -8,6 +8,7 @@ import {
   isLiteralElement,
   isSelectElement,
   isPoundElement,
+  isTagElement,
 } from '@formatjs/icu-messageformat-parser'
 
 class PlaceholderEnforcement extends Error {
@@ -65,6 +66,10 @@ function verifyAst(
       for (const selector of Object.keys(el.options)) {
         verifyAst(el.options[selector].value, values, ignoreList)
       }
+    }
+
+    if (isTagElement(el)) {
+      verifyAst(el.children, values, ignoreList)
     }
   }
 }
