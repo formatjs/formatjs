@@ -143,6 +143,16 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
     },
     {
       code: `
+        import {FormattedMessage} from 'react-intl'
+        const a = <FormattedMessage defaultMessage="Hello <bold>{name}</bold>" values={{ bold: (msg) => <strong>{msg}</strong> }} />`,
+      errors: [
+        {
+          message: 'Missing value for placeholder "name"',
+        },
+      ],
+    },
+    {
+      code: `
         intl.formatMessage({
           defaultMessage: '{count, plural, one {<a>#</a>} other {# more}}',
           description: 'asd'
