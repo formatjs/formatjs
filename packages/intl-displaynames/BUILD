@@ -156,6 +156,20 @@ generate_src_file(
     ],
 )
 
+generate_src_file(
+    name = "supported-locales",
+    src = "supported-locales.ts",
+    args = [
+        "--cldrFolder",
+        "$(location :cldr-raw)",
+    ],
+    data = CLDR_DEPS,
+    entry_point = "//tools:supported-locales-gen.ts",
+    visibility = [
+        "//:__pkg__",
+    ],
+)
+
 # Test262
 ts_project(
     name = "test262-main-bundle",
@@ -238,6 +252,7 @@ check_format(
             "CHANGELOG.md",
             "tests/locale-data/*",
             "test262-main.ts",
+            "supported-locales.ts",
         ],
     ),
 )

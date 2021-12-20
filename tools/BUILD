@@ -4,6 +4,7 @@ exports_files([
     "jest-reporter.js",
     "tsconfig.golden.json",
     "check-package-json.ts",
+    "supported-locales-gen.ts",
 ])
 
 check_format(

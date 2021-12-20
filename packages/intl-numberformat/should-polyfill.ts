@@ -1,3 +1,5 @@
+import {match} from '@formatjs/intl-localematcher'
+import {supportedLocales} from './supported-locales'
 /**
  * Check if this is old Node that only supports en
  * @returns
@@ -44,12 +46,14 @@ function supportedLocalesOf(locale?: string | string[]) {
   return Intl.NumberFormat.supportedLocalesOf(locales).length === locales.length
 }
 
-export function shouldPolyfill(locale?: string | string[]) {
-  return (
+export function shouldPolyfill(locale = 'en') {
+  if (
     typeof Intl === 'undefined' ||
     !('NumberFormat' in Intl) ||
     !supportsES2020() ||
     onlySupportsEn() ||
     !supportedLocalesOf(locale)
-  )
+  ) {
+    return locale ? match([locale], supportedLocales, 'en') : undefined
+  }
 }

@@ -1,3 +1,6 @@
+import {match} from '@formatjs/intl-localematcher'
+import {supportedLocales} from './supported-locales'
+
 function supportedLocalesOf(locale?: string | string[]) {
   if (!locale) {
     return true
@@ -9,6 +12,8 @@ function supportedLocalesOf(locale?: string | string[]) {
   )
 }
 
-export function shouldPolyfill(locale?: string | string[]) {
-  return !('ListFormat' in Intl) || !supportedLocalesOf(locale)
+export function shouldPolyfill(locale = 'en') {
+  if (!('ListFormat' in Intl) || !supportedLocalesOf(locale)) {
+    return locale ? match([locale], supportedLocales, 'en') : undefined
+  }
 }

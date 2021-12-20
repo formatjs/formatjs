@@ -82,11 +82,13 @@ TESTS = glob([
 
 SRC_DEPS = [
     "//packages/ecma402-abstract:dist",
+    "//packages/intl-localematcher:dist",
 ]
 
 TEST_DEPS = SRC_DEPS + [
     "//packages/intl-pluralrules",
     "//packages/ecma402-abstract:types",
+    "//packages/intl-localematcher:types",
     "//packages/intl-getcanonicallocales:dist",
     "//packages/intl-getcanonicallocales:types",
     "//packages/intl-locale:dist",
@@ -171,6 +173,20 @@ multirun(
     name = "tests-locale-data-all.update",
     testonly = True,
     commands = [":tests-locale-data-%s.update" % locale for locale in TEST_LOCALES],
+    visibility = [
+        "//:__pkg__",
+    ],
+)
+
+generate_src_file(
+    name = "supported-locales",
+    src = "supported-locales.ts",
+    args = [
+        "--cldrFolder",
+        "$(location :cldr-raw)",
+    ],
+    data = CLDR_DEPS,
+    entry_point = "//tools:supported-locales-gen.ts",
     visibility = [
         "//:__pkg__",
     ],
@@ -312,6 +328,7 @@ check_format(
             "tests/__snapshots__/*",
             "tests/locale-data/*",
             "CHANGELOG.md",
+            "supported-locales.ts",
         ],
     ),
 )

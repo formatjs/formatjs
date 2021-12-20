@@ -135,6 +135,20 @@ ts_script(
     entry_point = "scripts/test-locale-data-gen.ts",
 ) for locale in TEST_LOCALES]
 
+generate_src_file(
+    name = "supported-locales",
+    src = "supported-locales.ts",
+    args = [
+        "--cldrFolder",
+        "$(location :cldr-raw)",
+    ],
+    data = CLDR_DEPS,
+    entry_point = "//tools:supported-locales-gen.ts",
+    visibility = [
+        "//:__pkg__",
+    ],
+)
+
 multirun(
     name = "tests-locale-data-all.update",
     testonly = True,
@@ -241,6 +255,7 @@ check_format(
             "CHANGELOG.md",
             "tests/locale-data/*",
             "test262-main.ts",
+            "supported-locales.ts",
         ],
     ),
 )

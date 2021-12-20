@@ -169,6 +169,20 @@ generate_src_file(
     ],
 )
 
+generate_src_file(
+    name = "supported-locales",
+    src = "supported-locales.ts",
+    args = [
+        "--cldrFolder",
+        "$(location :cldr-raw)",
+    ],
+    data = CLDR_DEPS,
+    entry_point = "//tools:supported-locales-gen.ts",
+    visibility = [
+        "//:__pkg__",
+    ],
+)
+
 # "ts-node scripts/link --input iana-data/backward --output src/links.ts"
 # links
 generate_src_file(
@@ -288,6 +302,7 @@ check_format(
             "tests/locale-data/*",
             "src/data/*",
             "test262-main.ts",
+            "supported-locales.ts",
         ],
     ),
 )

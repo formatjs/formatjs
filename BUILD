@@ -148,6 +148,19 @@ multirun(
     ],
 )
 
+multirun(
+    name = "supported-locales-all.update",
+    testonly = True,
+    commands = [
+        "//packages/intl-datetimeformat:supported-locales.update",
+        "//packages/intl-displaynames:supported-locales.update",
+        "//packages/intl-listformat:supported-locales.update",
+        "//packages/intl-numberformat:supported-locales.update",
+        "//packages/intl-pluralrules:supported-locales.update",
+        "//packages/intl-relativetimeformat:supported-locales.update",
+    ],
+)
+
 buildifier(
     name = "buildifier",
     exclude_patterns = ["./node_modules/*"],

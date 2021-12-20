@@ -1,3 +1,6 @@
+import {match} from '@formatjs/intl-localematcher'
+import {supportedLocales} from './supported-locales'
+
 function supportsDateStyle() {
   try {
     return !!(
@@ -52,8 +55,8 @@ function supportedLocalesOf(locale?: string | string[]) {
   )
 }
 
-export function shouldPolyfill(locale?: string | string[]) {
-  return (
+export function shouldPolyfill(locale = 'en'): string | undefined {
+  if (
     !('DateTimeFormat' in Intl) ||
     !('formatToParts' in Intl.DateTimeFormat.prototype) ||
     !('formatRange' in Intl.DateTimeFormat.prototype) ||
@@ -61,5 +64,7 @@ export function shouldPolyfill(locale?: string | string[]) {
     hasUnthrownDateTimeStyleBug() ||
     !supportsDateStyle() ||
     !supportedLocalesOf(locale)
-  )
+  ) {
+    return locale ? match([locale], supportedLocales, 'en') : undefined
+  }
 }

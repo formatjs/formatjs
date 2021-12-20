@@ -1,3 +1,6 @@
+import {match} from '@formatjs/intl-localematcher'
+import {supportedLocales} from './supported-locales'
+
 function supportedLocalesOf(locale?: string | string[]) {
   if (!locale) {
     return true
@@ -22,10 +25,12 @@ function hasResolvedOptionsNumberingSystem(locale?: string | string[]) {
   }
 }
 
-export function shouldPolyfill(locale?: string | string[]) {
-  return (
+export function shouldPolyfill(locale = 'en') {
+  if (
     !('RelativeTimeFormat' in Intl) ||
     !supportedLocalesOf(locale) ||
     !hasResolvedOptionsNumberingSystem(locale)
-  )
+  ) {
+    return match([locale], supportedLocales, 'en')
+  }
 }
