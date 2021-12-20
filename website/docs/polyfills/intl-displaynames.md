@@ -68,19 +68,13 @@ import '@formatjs/intl-displaynames/locale-data/en' // locale-data for en
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-displaynames/should-polyfill'
 async function polyfill(locale: string) {
-  if (!shouldPolyfill(locale)) {
+  const unsupportedLocale = shouldPolyfill(locale)
+  // This locale is supported
+  if (!unsupportedLocale) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-displaynames/polyfill')
-
-  switch (locale) {
-    default:
-      await import('@formatjs/intl-displaynames/locale-data/en')
-      break
-    case 'fr':
-      await import('@formatjs/intl-displaynames/locale-data/fr')
-      break
-  }
+  await import('@formatjs/intl-displaynames/polyfill-force')
+  await import(`@formatjs/intl-displaynames/locale-data/${unsupportedLocale}`)
 }
 ```

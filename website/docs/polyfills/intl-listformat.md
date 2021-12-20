@@ -64,22 +64,14 @@ import '@formatjs/intl-listformat/locale-data/en' // locale-data for en
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-listformat/should-polyfill'
 async function polyfill(locale: string) {
-  // This platform already supports Intl.ListFormat
-  if (!shouldPolyfill(locale)) {
+  const unsupportedLocale = shouldPolyfill(locale)
+  // This locale is supported
+  if (!unsupportedLocale) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-listformat/polyfill')
-
-  switch (locale) {
-    default:
-      await import('@formatjs/intl-listformat/locale-data/en')
-      break
-
-    case 'fr':
-      await import('@formatjs/intl-listformat/locale-data/fr')
-      break
-  }
+  await import('@formatjs/intl-listformat/polyfill-force')
+  await import(`@formatjs/intl-listformat/locale-data/${unsupportedLocale}`)
 }
 ```
 

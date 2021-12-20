@@ -81,23 +81,19 @@ import '@formatjs/intl-datetimeformat/add-all-tz' // Add ALL tz data
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-datetimeformat/should-polyfill'
 async function polyfill(locale: string) {
-  if (!shouldPolyfill(locale)) {
+  const unsupportedLocale = shouldPolyfill(locale)
+  // This locale is supported
+  if (!unsupportedLocale) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-datetimeformat/polyfill')
+  await import('@formatjs/intl-datetimeformat/polyfill-force')
 
   // Parallelize CLDR data loading
-  const dataPolyfills = [import('@formatjs/intl-datetimeformat/add-all-tz')]
-
-  switch (locale) {
-    default:
-      dataPolyfills.push(import('@formatjs/intl-datetimeformat/locale-data/en'))
-      break
-    case 'fr':
-      dataPolyfills.push(import('@formatjs/intl-datetimeformat/locale-data/fr'))
-      break
-  }
+  const dataPolyfills = [
+    import('@formatjs/intl-datetimeformat/add-all-tz')
+    import(`@formatjs/intl-datetimeformat/locale-data/${unsupportedLocale}`)
+  ]
   await Promise.all(dataPolyfills)
 }
 ```

@@ -68,20 +68,16 @@ import '@formatjs/intl-relativetimeformat/locale-data/en' // locale-data for en
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-relativetimeformat/should-polyfill'
 async function polyfill(locale: string) {
-  if (!shouldPolyfill(locale)) {
+  const unsupportedLocale = shouldPolyfill(locale)
+  // This locale is supported
+  if (!unsupportedLocale) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-relativetimeformat/polyfill')
-
-  switch (locale) {
-    default:
-      await import('@formatjs/intl-relativetimeformat/locale-data/en')
-      break
-    case 'fr':
-      await import('@formatjs/intl-relativetimeformat/locale-data/fr')
-      break
-  }
+  await import('@formatjs/intl-relativetimeformat/polyfill-force')
+  await import(
+    `@formatjs/intl-relativetimeformat/locale-data/${unsupportedLocale}`
+  )
 }
 ```
 
