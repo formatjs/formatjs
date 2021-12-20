@@ -139,6 +139,16 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
     {
       code: `
             import {FormattedMessage} from 'react-intl'
+            const a = <FormattedMessage />`,
+      errors: [
+        {
+          message: '`defaultMessage` has to be specified in message descriptor',
+        },
+      ],
+    },
+    {
+      code: `
+            import {FormattedMessage} from 'react-intl'
             const a = <FormattedMessage description="this is description"></FormattedMessage>`,
       errors: [
         {

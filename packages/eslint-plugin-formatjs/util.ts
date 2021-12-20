@@ -152,7 +152,12 @@ function extractMessageDescriptorFromJSXElement(
     idValueNode: undefined,
     idPropNode: undefined,
   }
+  let hasSpreadAttribute = false
   for (const prop of node.attributes) {
+    // We can't analyze spread attr
+    if (prop.type === 'JSXSpreadAttribute') {
+      hasSpreadAttribute = true
+    }
     if (prop.type !== 'JSXAttribute' || prop.name.type !== 'JSXIdentifier') {
       continue
     }
@@ -209,7 +214,8 @@ function extractMessageDescriptorFromJSXElement(
   if (
     !result.messagePropNode &&
     !result.descriptionNode &&
-    !result.idPropNode
+    !result.idPropNode &&
+    hasSpreadAttribute
   ) {
     return
   }
