@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.19.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.19.0...eslint-plugin-formatjs@2.19.1) (2021-12-20)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** fix empty FormatMessage case, fix [#3304](https://github.com/formatjs/formatjs/issues/3304) ([e71a705](https://github.com/formatjs/formatjs/commit/e71a70509b104e81e70e66c6e6d2678e27aa4411))
+* **eslint-plugin-formatjs:** fix missing error when missing placeholder used inside tag ([#3310](https://github.com/formatjs/formatjs/issues/3310)) ([d65306a](https://github.com/formatjs/formatjs/commit/d65306aacc6fbe5109c3a4a6b898873a482cf7ec))
+
+
+
+
+
 # [2.19.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.18.0...eslint-plugin-formatjs@2.19.0) (2021-12-01)
 
 

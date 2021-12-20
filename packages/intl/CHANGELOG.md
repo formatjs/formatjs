@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.17.0...@formatjs/intl@1.18.0) (2021-12-20)
+
+
+### Features
+
+* **react-intl:** Allow setting a stricter type for locale ([#3284](https://github.com/formatjs/formatjs/issues/3284)) ([c4693d4](https://github.com/formatjs/formatjs/commit/c4693d4c69d3e3036544524720b5a077f3b17786))
+
+
+
+
+
 # [1.17.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.16.0...@formatjs/intl@1.17.0) (2021-12-01)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@7.2.6...@formatjs/intl-numberformat@7.3.0) (2021-12-20)
+
+
+### Features
+
+* change should-polyfill return value to 1 of the supported locales of the polyfill, fix [#3255](https://github.com/formatjs/formatjs/issues/3255) ([eb589db](https://github.com/formatjs/formatjs/commit/eb589dbf048fd549d186e87a011a9c767ed94d98))
+
+
+
+
+
 ## [7.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@7.2.5...@formatjs/intl-numberformat@7.2.6) (2021-12-01)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

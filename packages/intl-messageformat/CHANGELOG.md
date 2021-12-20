@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.11.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.10.0...intl-messageformat@9.11.0) (2021-12-20)
+
+
+### Features
+
+* **react-intl:** Allow setting a stricter type for locale ([#3284](https://github.com/formatjs/formatjs/issues/3284)) ([c4693d4](https://github.com/formatjs/formatjs/commit/c4693d4c69d3e3036544524720b5a077f3b17786))
+
+
+
+
+
 # [9.10.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.9.6...intl-messageformat@9.10.0) (2021-12-01)
 
 

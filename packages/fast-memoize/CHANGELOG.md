@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@1.2.0...@formatjs/fast-memoize@1.2.1) (2021-12-20)
+
+
+### Bug Fixes
+
+* **@formatjs/fast-memoize:** fixed fast-memoize package license information ([#3301](https://github.com/formatjs/formatjs/issues/3301)) ([ff7ea83](https://github.com/formatjs/formatjs/commit/ff7ea837cabf7d82b7e0d808c753557bec1a63b2))
+
+
+
+
+
 # [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@1.1.2...@formatjs/fast-memoize@1.2.0) (2021-08-15)
 
 
