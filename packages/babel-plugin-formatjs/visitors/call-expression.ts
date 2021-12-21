@@ -24,6 +24,25 @@ function assertObjectExpression(
   }
 }
 
+function isReactCreateElement(
+  callee: NodePath<t.Expression | t.V8IntrinsicIdentifier | t.MemberExpression>,
+  componentNames: Array<string>,
+  args: Array<NodePath<any>>
+) {
+  if (callee.isMemberExpression()) {
+    const prop: NodePath<any> = callee.get('property');
+    if (prop.isIdentifier({name: 'createElement'})) {
+      if (args[0].isMemberExpression()) {
+        const memProperty = args[0].get('property');
+        return componentNames.some(name => memProperty.isIdentifier({ name: name }));
+      }
+      return componentNames.some(name => args[0].isIdentifier({ name: name}));
+    }
+
+  }
+  return false;
+}
+
 function isValidCall(
   callee: NodePath<t.Expression | t.V8IntrinsicIdentifier | t.MemberExpression>,
   functionNames: string[]
@@ -73,7 +92,7 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
     if (wasExtracted(path)) {
       return
     }
-    const {messages, functionNames} = this
+    const {messages, functionNames, componentNames} = this
     const callee = path.get('callee')
     const args = path.get('arguments')
 
@@ -201,5 +220,11 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
       if (messageDescriptor.isObjectExpression()) {
         processMessageObject(messageDescriptor)
       }
+    } else if (isReactCreateElement(callee, componentNames, args)) {
+      const messageDescriptor = args[1]
+      if (messageDescriptor.isObjectExpression()) {
+        processMessageObject(messageDescriptor)
+      }
+
     }
   }
