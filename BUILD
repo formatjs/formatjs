@@ -122,6 +122,7 @@ multirun(
         "//packages/react-intl:prettier",
         "//packages/react-intl/examples:prettier",
         "//packages/ts-transformer:prettier",
+        "//packages/swc-plugin:prettier",
         "//packages/vue-intl:prettier",
         "//tools:prettier",
         "//website:prettier",
