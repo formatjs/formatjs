@@ -98,4 +98,12 @@ Pre-parse `defaultMessage` into AST for faster runtime perf. This flag doesn't d
 
 Callback that gets triggered whenever a message is encountered.
 
+### **`preserveWhitespace`**
+
+Whether to preserve whitespace and newlines.
+
+### **`filename`**
+
+Path of the source file
+
 Take a look at out tests [`utils.ts`](https://github.com/formatjs/formatjs/blob/packages/swc-plugin/tests/utils.ts) for example in integration.

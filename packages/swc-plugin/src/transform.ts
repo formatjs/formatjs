@@ -177,20 +177,6 @@ function messageASTToTSNode(
 
 export interface Opts {
   /**
-   * Parse specific additional custom pragma.
-   * This allows you to tag certain file with metadata such as `project`.
-   * For example with this file:
-   * ```tsx
-   * // @intl-meta project:my-custom-project
-   * import {FormattedMessage} from 'react-intl';
-   * <FormattedMessage defaultMessage="foo" id="bar" />;
-   * ```
-   * and with option `{pragma: "@intl-meta"}`,
-   * we'll parse out `// @intl-meta project:my-custom-project`
-   * into `{project: 'my-custom-project'}` in the result file.
-   */
-  pragma?: string
-  /**
    * Whether the metadata about the location of the message in the source file
    * should be extracted. If `true`, then `file`, `start`, and `end`
    * fields will exist for each extracted message descriptors.

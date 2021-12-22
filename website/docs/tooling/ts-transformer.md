@@ -197,4 +197,8 @@ Callback that gets triggered whenever a message is encountered.
 
 Callback that gets triggered whenever a `pragme` meta is encountered.
 
+### **`preserveWhitespace`**
+
+Whether to preserve whitespace and newlines.
+
 Take a look at [`compile.ts`](https://github.com/formatjs/formatjs/blob/main/packages/ts-transformer/examples/compile.ts) for example in integration.

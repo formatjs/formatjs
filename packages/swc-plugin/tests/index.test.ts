@@ -37,7 +37,6 @@ const FILES_TO_TESTS: Record<string, Opts> = {
   },
   removeDescription: {},
   defineMessagesPreserveWhitespace: {
-    pragma: 'react-intl',
     preserveWhitespace: true,
   },
 }
