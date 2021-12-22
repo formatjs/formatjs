@@ -55,6 +55,7 @@ module.exports = {
       'tooling/linter',
       'tooling/babel-plugin',
       'tooling/ts-transformer',
+      'tooling/swc-plugin',
     ],
   },
 }

@@ -12,7 +12,6 @@ import {
   JSXExpressionContainer,
   BinaryExpression,
   KeyValueProperty,
-  AssignmentProperty,
   Span,
   NullLiteral,
   ArrayExpression,
@@ -90,13 +89,24 @@ function createArrayExpression(
   }
 }
 
-function createAssignmentProperty(
+function createObjectExpression(
+  props: Property[],
+  span: Span
+): ObjectExpression {
+  return {
+    type: 'ObjectExpression',
+    properties: props,
+    span,
+  }
+}
+
+function createKeyValueProperty(
   key: string,
   value: string | Expression,
   span: Span
-): AssignmentProperty {
+): KeyValueProperty {
   return {
-    type: 'AssignmentProperty',
+    type: 'KeyValueProperty',
     key: createIdentifier(key, span),
     value: typeof value === 'string' ? createStringLiteral(value, span) : value,
   }
@@ -128,12 +138,14 @@ function objToTSNode(obj: object, span: Span): ObjectExpression | NullLiteral {
   if (typeof obj === 'object' && !obj) {
     return {
       type: 'NullLiteral',
+      span,
     } as NullLiteral
   }
   const properties: Property[] = Object.entries(obj)
     .filter(([_, v]) => typeof v !== 'undefined')
     .map(([k, v]) => ({
       type: 'KeyValueProperty',
+      span,
       key: isValidIdentifier(k)
         ? createIdentifier(k, span)
         : createStringLiteral(k, span),
@@ -141,9 +153,7 @@ function objToTSNode(obj: object, span: Span): ObjectExpression | NullLiteral {
         primitiveToTSNode(v, span) ||
         (Array.isArray(v)
           ? createArrayExpression(
-              v
-                .filter(n => typeof n !== 'undefined')
-                .map(n => objToTSNode(n, span)),
+              v.filter(Boolean).map(n => objToTSNode(n, span)),
               span
             )
           : objToTSNode(v, span)),
@@ -151,6 +161,7 @@ function objToTSNode(obj: object, span: Span): ObjectExpression | NullLiteral {
   return {
     type: 'ObjectExpression',
     properties,
+    span,
   } as ObjectExpression
 }
 
@@ -305,8 +316,10 @@ function extractMessageDescriptor(
 
   properties.forEach(prop => {
     const name: Identifier | undefined =
-      prop.type === 'AssignmentProperty'
-        ? prop.key
+      prop.type === 'KeyValueProperty'
+        ? prop.key.type === 'Identifier'
+          ? prop.key
+          : undefined
         : prop.type === 'JSXAttribute' && prop.name.type === 'Identifier'
         ? prop.name
         : undefined
@@ -319,7 +332,7 @@ function extractMessageDescriptor(
       | JSXExpressionContainer
       | BinaryExpression
       | undefined =
-      prop.type === 'AssignmentProperty' &&
+      prop.type === 'KeyValueProperty' &&
       (prop.value.type === 'StringLiteral' ||
         prop.value.type === 'TemplateLiteral' ||
         prop.value.type === 'BinaryExpression')
@@ -496,46 +509,43 @@ function isMemberMethodFormatMessageCall(
 }
 
 function setAttributesInObject(
-  node: ObjectExpression,
+  props: ObjectExpression['properties'],
   msg: MessageDescriptor,
+  span: Span,
   ast?: boolean
-): ObjectExpression {
-  const newProps: AssignmentProperty[] = [
+): KeyValueProperty[] {
+  const newProps: KeyValueProperty[] = [
     {
-      type: 'AssignmentProperty',
-      key: createIdentifier('id', node.span),
-      value: createStringLiteral(msg.id, node.span),
+      type: 'KeyValueProperty',
+      key: createIdentifier('id', span),
+      value: createStringLiteral(msg.id, span),
     },
     ...(msg.defaultMessage
       ? [
-          createAssignmentProperty(
+          createKeyValueProperty(
             'defaultMessage',
             ast
-              ? messageASTToTSNode(parse(msg.defaultMessage), node.span)
-              : createStringLiteral(msg.defaultMessage, node.span),
-            node.span
+              ? messageASTToTSNode(parse(msg.defaultMessage), span)
+              : createStringLiteral(msg.defaultMessage, span),
+            span
           ),
         ]
       : []),
   ]
 
-  for (const prop of node.properties) {
+  for (const prop of props) {
     if (
-      prop.type === 'AssignmentProperty' &&
+      prop.type === 'KeyValueProperty' &&
       prop.value.type === 'Identifier' &&
       MESSAGE_DESC_KEYS.includes(prop.value.value as keyof MessageDescriptor)
     ) {
       continue
     }
-    if (prop.type === 'AssignmentProperty') {
+    if (prop.type === 'KeyValueProperty') {
       newProps.push(prop)
     }
   }
-  return {
-    type: 'ObjectExpression',
-    properties: newProps,
-    span: node.span,
-  }
+  return newProps
 }
 
 function generateNewProperties(
@@ -630,7 +640,7 @@ export class FormatJSTransformer extends Visitor {
 
         const clonedProperties = properties.map((prop, i) => {
           if (
-            prop.type !== 'AssignmentProperty' ||
+            prop.type !== 'KeyValueProperty' ||
             prop.value.type !== 'ObjectExpression'
           ) {
             return prop
@@ -638,15 +648,19 @@ export class FormatJSTransformer extends Visitor {
 
           return {
             ...prop,
-            value: setAttributesInObject(
-              prop.value,
-              {
-                defaultMessage: opts.removeDefaultMessage
-                  ? undefined
-                  : msgs[i].defaultMessage,
-                id: msgs[i]?.id || '',
-              },
-              opts.ast
+            value: createObjectExpression(
+              setAttributesInObject(
+                prop.value.properties,
+                {
+                  defaultMessage: opts.removeDefaultMessage
+                    ? undefined
+                    : msgs[i].defaultMessage,
+                  id: msgs[i]?.id || '',
+                },
+                prop.value.span,
+                opts.ast
+              ),
+              node.span
             ),
           }
         })
@@ -683,15 +697,19 @@ export class FormatJSTransformer extends Visitor {
           ...node,
           arguments: [
             {
-              expression: setAttributesInObject(
-                descriptorsObj.expression,
-                {
-                  defaultMessage: opts.removeDefaultMessage
-                    ? undefined
-                    : msg.defaultMessage,
-                  id: msg.id,
-                },
-                opts.ast
+              expression: createObjectExpression(
+                setAttributesInObject(
+                  descriptorsObj.expression.properties,
+                  {
+                    defaultMessage: opts.removeDefaultMessage
+                      ? undefined
+                      : msg.defaultMessage,
+                    id: msg.id,
+                  },
+                  descriptorsObj.expression.span,
+                  opts.ast
+                ),
+                node.span
               ),
             },
             ...restArgs,

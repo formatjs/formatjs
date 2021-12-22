@@ -1,26 +1,16 @@
 import {join} from 'path'
-import {FormatJSTransformer, Opts, MessageDescriptor} from '../'
-import {readFile as readFileAsync} from 'fs'
-import {promisify} from 'util'
-import {transformSync} from '@swc/core'
+import {Opts} from '../'
+import {compile, FIXTURES_DIR} from './utils'
 
-const readFile = promisify(readFileAsync)
-
-const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
+const FILES_TO_TESTS: Record<string, Opts> = {
   additionalComponentNames: {
     additionalComponentNames: ['CustomMessage'],
-    pragma: 'react-intl',
   },
   additionalFunctionNames: {
     additionalFunctionNames: ['$formatMessage'],
-    pragma: 'react-intl',
   },
-  defineMessages: {
-    pragma: 'react-intl',
-  },
-  extractFromFormatMessage: {
-    pragma: 'react-intl',
-  },
+  defineMessages: {},
+  extractFromFormatMessage: {},
   extractFromFormatMessageStateless: {},
   nested: {
     overrideIdFn: (id, defaultMessage, description) => {
@@ -33,27 +23,17 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   formatMessageCall: {},
   FormattedMessage: {},
   inline: {},
-  stringConcat: {},
   templateLiteral: {},
   overrideIdFn: {
     overrideIdFn: (id, defaultMessage, description) => {
       return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`
     },
   },
-  // ast: {
-  //   ast: true,
-  //   overrideIdFn: (id, defaultMessage, description) => {
-  //     return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`
-  //   },
-  // },
   removeDefaultMessage: {
     removeDefaultMessage: true,
   },
   noImport: {
     overrideIdFn: '[hash:base64:5]',
-  },
-  resourcePath: {
-    overrideIdFn: '[name]-[hash:base64:5]',
   },
   removeDescription: {},
   defineMessagesPreserveWhitespace: {
@@ -62,9 +42,7 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   },
 }
 
-const FIXTURES_DIR = join(__dirname, 'fixtures')
-
-describe('emit asserts for', function () {
+describe.skip('emit asserts for', function () {
   const filenames = Object.keys(FILES_TO_TESTS)
   filenames.forEach(function (fn) {
     if (fn === 'extractSourceLocation') {
@@ -91,32 +69,3 @@ describe('emit asserts for', function () {
     }
   })
 })
-
-async function compile(filePath: string, options?: Partial<Opts>) {
-  let msgs: MessageDescriptor[] = []
-  const input = await readFile(filePath, 'utf8')
-  const output = transformSync(input, {
-    filename: filePath,
-    jsc: {
-      parser: {
-        syntax: 'typescript',
-        tsx: true,
-        decorators: true,
-        dynamicImport: true,
-      },
-    },
-    plugin: m =>
-      new FormatJSTransformer({
-        filename: filePath,
-        overrideIdFn: '[hash:base64:10]',
-        onMsgExtracted: (_, extractedMsgs) => {
-          msgs = msgs.concat(extractedMsgs)
-        },
-        ...(options || {}),
-      }).visitProgram(m),
-  })
-  return {
-    msgs,
-    code: output.code,
-  }
-}

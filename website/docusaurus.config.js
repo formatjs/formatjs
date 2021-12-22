@@ -49,7 +49,7 @@ module.exports = {
           to: 'docs/tooling/cli',
           label: 'Tooling',
           position: 'left',
-          activeBaseRegex: `docs/tooling/(cli|linter|babel-plugin|ts-transformer)`,
+          activeBaseRegex: `docs/tooling/(cli|linter|babel-plugin|ts-transformer|swc-plugin)`,
         },
         {
           href: 'https://github.com/formatjs/formatjs',
