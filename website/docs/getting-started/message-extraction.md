@@ -305,3 +305,4 @@ We also provide several [builtin formatters](../tooling/cli.md#builtin-formatter
 | [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)              | `crowdin`   |
 | [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json) | `lokalise`  |
 | [SimpleLocalize JSON](https://simplelocalize.io/docs/file-formats/simplelocalize-json/)   | `simple`    |
+| [POEditor Key-Value JSON](https://poeditor.com/localization/files/key-value-json)         | `simple`    |
