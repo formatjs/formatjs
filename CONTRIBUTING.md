@@ -28,13 +28,10 @@ Pull requests are very welcome, but should be within the scope of the project, a
 
 ## Development
 
-We currently use [`bazel`](https://bazel.build/) to develop, along with [lerna](https://lerna.js.org/) for package management.
+### Requirements
 
-Required UNIX dependencies:
-
-- `zic` for `intl-datetimeformat` tz compilation
-- `zdump` for `intl-datetimeformat` tz dump
-- `realpath` for absolute path resolution
+- [`bazel`](https://bazel.build/)
+- [`docker`](https://www.docker.com/)
 
 To setup locally, first initialize the git submodule:
 
@@ -46,7 +43,7 @@ To setup locally, first initialize the git submodule:
 Now you can build & test with npm:
 
 ```sh
-npm i && npm run build && npm t
+npm i && npm t
 ```
 
 To run examples:
@@ -65,4 +62,20 @@ To publish next tag
 
 ```sh
 npm run release:next
+```
+
+### Updating tzdata version
+
+1. Change `IANA_TZ_VERSION` in WORKSPACE to the desired version
+
+1. Make sure you authenticate with GH registry
+
+```sh
+echo $GH_TOKEN | docker login ghcr.io -u <github_username> --password-stdin
+```
+
+1. Publish a new version of the Docker that contains compiled tz data
+
+```sh
+bazel run :tz_image
 ```

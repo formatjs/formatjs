@@ -190,10 +190,10 @@ generate_src_file(
     src = "src/data/links.ts",
     args = [
         "--input",
-        "$(location @tzdata//:backward)",
+        "$(location //:tzdata_backward_extract/tz/backward)",
     ],
     data = [
-        "@tzdata//:backward",
+        "//:tzdata_backward_extract/tz/backward",
     ],
     entry_point = "scripts/link.ts",
 )
@@ -203,16 +203,16 @@ generate_src_file(
     name = "all-tz",
     src = "src/data/all-tz.ts",
     args = [
-        "$(locations @tzdata//:zdumps)",
+        "$(locations //:zdumps)",
     ],
     data = [
         "src/packer.ts",
         "src/types.ts",
+        "//:zdumps",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "@npm//@types/json-stable-stringify",
         "@npm//json-stable-stringify",
-        "@tzdata//:zdumps",
     ],
     entry_point = "scripts/process-zdump.ts",
 )
@@ -224,16 +224,16 @@ ts_script(
     outs = ["add-all-tz.js"],
     args = [
         "--polyfill",
-        "$(locations @tzdata//:zdumps)",
+        "$(locations //:zdumps)",
     ],
     data = [
         "src/packer.ts",
         "src/types.ts",
+        "//:zdumps",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "@npm//@types/json-stable-stringify",
         "@npm//json-stable-stringify",
-        "@tzdata//:zdumps",
     ],
     entry_point = "scripts/process-zdump.ts",
     visibility = [
@@ -249,16 +249,16 @@ ts_script(
     args = [
         "--golden",
         "--polyfill",
-        "$(locations @tzdata//:zdumps)",
+        "$(locations //:zdumps)",
     ],
     data = [
         "src/packer.ts",
         "src/types.ts",
+        "//:zdumps",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "@npm//@types/json-stable-stringify",
         "@npm//json-stable-stringify",
-        "@tzdata//:zdumps",
     ],
     entry_point = "scripts/process-zdump.ts",
 )

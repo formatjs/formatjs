@@ -13,45 +13,7 @@ You can sign-up using this [invitation link](https://join.slack.com/t/formatjs/s
 
 ## Development
 
-We currently use [`bazel`](https://bazel.build/) to develop, along with [lerna](https://lerna.js.org/) for package management.
-
-To setup locally, first initialize the git submodule:
-
-```sh
-git submodule init
-git submodule update
-```
-
-Now you can build & test with `npm`:
-
-```sh
-npm i && npm run build && npm run test
-```
-
-To run examples:
-
-```sh
-npm run examples
-```
-
-To build/test individual package:
-
-```sh
-npx bazel build //packages/react-intl
-npx bazel test //packages/react-intl
-```
-
-Releases can be done with the following steps (**must use `npm`**):
-
-```sh
-npm run release
-```
-
-To publish next tag (**must use `npm`**):
-
-```sh
-npm run release:next
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md#Development) for instructions.
 
 ## Published Packages
 

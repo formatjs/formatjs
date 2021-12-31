@@ -13,7 +13,7 @@ Right now we only support Gregorian calendar in this polyfill. Therefore we reco
 :::
 
 :::caution
-Right now this polyfill supports daylight transition until 2038 due to [Year 2038 problem](https://en.wikipedia.org/wiki/Year_2038_problem).
+Right now this polyfill supports daylight transition until 2100 to reduce the dataset size
 :::
 
 ## Features

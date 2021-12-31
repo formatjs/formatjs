@@ -17,7 +17,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # Install the nodejs "bootstrap" package
 # This provides the basic tools for running and packaging nodejs programs in Bazel
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 
 http_archive(
     name = "build_bazel_rules_nodejs",
@@ -27,16 +27,16 @@ http_archive(
 
 IANA_TZ_VERSION = "2021a"
 
-http_archive(
+http_file(
     name = "tzdata",
-    build_file = "@//:packages/intl-datetimeformat/tzdata.BUILD",
+    downloaded_file_path = "tzdata.tar.gz",
     sha256 = "39e7d2ba08c68cbaefc8de3227aab0dec2521be8042cf56855f7dc3a9fb14e08",
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
-http_archive(
+http_file(
     name = "tzcode",
-    build_file = "@//:packages/intl-datetimeformat/tzcode.BUILD",
+    downloaded_file_path = "tzcode.tar.gz",
     sha256 = "eb46bfa124b5b6bd13d61a609bfde8351bd192894708d33aa06e5c1e255802d0",
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
@@ -153,4 +153,46 @@ new_local_repository(
     name = "com_github_tc39_test262",
     build_file = "@//:test262.BUILD",
     path = "test262",
+)
+
+# Docker
+http_archive(
+    name = "io_bazel_rules_docker",
+    sha256 = "59536e6ae64359b716ba9c46c39183403b01eabfbd57578e84398b4829ca499a",
+    strip_prefix = "rules_docker-0.22.0",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.22.0/rules_docker-v0.22.0.tar.gz"],
+)
+
+load(
+    "@io_bazel_rules_docker//repositories:repositories.bzl",
+    container_repositories = "repositories",
+)
+
+container_repositories()
+
+load("@io_bazel_rules_docker//repositories:deps.bzl", container_deps = "deps")
+
+container_deps()
+
+load(
+    "@io_bazel_rules_docker//container:container.bzl",
+    "container_pull",
+)
+
+container_pull(
+    name = "ubuntu2110",
+    architecture = "amd64",
+    digest = "sha256:d0b4808a158b42b6efb3ae93abb567b1cb6ee097221813c0315390de0fa320b9",
+    registry = "index.docker.io",
+    repository = "library/ubuntu",
+    tag = "21.10",
+)
+
+container_pull(
+    name = "tz_image",
+    architecture = "amd64",
+    digest = "sha256:fcfdcede7acaba1188ebcefa6dab54a8862b95ce5c557109f153489aa3b8275b",
+    registry = "ghcr.io",
+    repository = "formatjs/tz_image",
+    tag = "latest",
 )

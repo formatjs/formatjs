@@ -34,7 +34,9 @@
   },
   "json.schemas": [
     {
-      "fileMatch": ["/lerna.json"],
+      "fileMatch": [
+        "/lerna.json"
+      ],
       "url": "http://json.schemastore.org/lerna"
     }
   ],
@@ -49,5 +51,8 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
   }
 }
