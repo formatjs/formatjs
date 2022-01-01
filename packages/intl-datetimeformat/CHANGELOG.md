@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.3.0...@formatjs/intl-datetimeformat@4.4.0) (2022-01-01)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** fix Y2038 issue, package tz data in a docker ([a8e782f](https://github.com/formatjs/formatjs/commit/a8e782fdc7cafe13be8012e518187c59fa51c116))
+* **@formatjs/intl-datetimeformat:** upgrade iana db to 2021e ([3129289](https://github.com/formatjs/formatjs/commit/3129289c4569cf0741a81430dbf5740d52af4125))
+
+
+
+
+
 # [4.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.2.6...@formatjs/intl-datetimeformat@4.3.0) (2021-12-20)
 
 
