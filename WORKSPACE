@@ -25,19 +25,19 @@ http_archive(
     urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.4.6/rules_nodejs-4.4.6.tar.gz"],
 )
 
-IANA_TZ_VERSION = "2021a"
+IANA_TZ_VERSION = "2021e"
 
 http_file(
     name = "tzdata",
     downloaded_file_path = "tzdata.tar.gz",
-    sha256 = "39e7d2ba08c68cbaefc8de3227aab0dec2521be8042cf56855f7dc3a9fb14e08",
+    sha256 = "07ec42b737d0d3c6be9c337f8abb5f00554a0f9cc4fcf01a703d69403b6bb2b1",
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
 http_file(
     name = "tzcode",
     downloaded_file_path = "tzcode.tar.gz",
-    sha256 = "eb46bfa124b5b6bd13d61a609bfde8351bd192894708d33aa06e5c1e255802d0",
+    sha256 = "584666393a5424d13d27ec01183da17703273664742e049d4f62f62dab631775",
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
@@ -191,7 +191,7 @@ container_pull(
 container_pull(
     name = "tz_image",
     architecture = "amd64",
-    digest = "sha256:fcfdcede7acaba1188ebcefa6dab54a8862b95ce5c557109f153489aa3b8275b",
+    digest = "sha256:2fc12c03bc38e21fc94bb88181aed639456ba931ca205a65b8114dc44d30a7df",
     registry = "ghcr.io",
     repository = "formatjs/tz_image",
     tag = "latest",
