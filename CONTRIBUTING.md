@@ -68,14 +68,8 @@ npm run release:next
 
 1. Change `IANA_TZ_VERSION` in WORKSPACE to the desired version
 
-1. Make sure you authenticate with GH registry
+1. Potentially update tz data
 
-```sh
-echo $GH_TOKEN | docker login ghcr.io -u <github_username> --password-stdin
 ```
-
-1. Publish a new version of the Docker that contains compiled tz data
-
-```sh
-bazel run :tz_image
+bazel run //packages/intl-datetimeformat:tz_data.update
 ```

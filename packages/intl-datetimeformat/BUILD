@@ -1,8 +1,10 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//ts-node:index.bzl", "ts_node")
+load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "check_format", "esbuild", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
+load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 
 exports_files(["package.json"])
 
@@ -90,6 +92,22 @@ ts_compile(
     srcs = SRCS + [t] + TEST_LOCALE_DATA,
     deps = TEST_DEPS,
 ) for t in TESTS]
+
+# Expand zdump files
+genrule(
+    name = "tz_data_extract",
+    srcs = [
+    ],
+    outs = ["tz_data/zdump/%s" % zone for zone in ZONES] + ["tz_data/backward"],
+    cmd = "tar -xzvf $(location //:tz_install/tz_data.tar.gz) -C $(@D)",
+    message = "Extracting zdump data files",
+    tools=["//:tz_install/tz_data.tar.gz"]
+)
+
+filegroup(
+    name = "zdumps",
+    srcs = [":tz_data/zdump/%s" % zone for zone in ZONES],
+)
 
 # CLDR
 CLDR_DEPS = [
@@ -190,10 +208,10 @@ generate_src_file(
     src = "src/data/links.ts",
     args = [
         "--input",
-        "$(location //:tzdata_backward_extract/tz/backward)",
+        "$(location :tz_data/backward)",
     ],
     data = [
-        "//:tzdata_backward_extract/tz/backward",
+        ":tz_data/backward",
     ],
     entry_point = "scripts/link.ts",
 )
@@ -203,12 +221,12 @@ generate_src_file(
     name = "all-tz",
     src = "src/data/all-tz.ts",
     args = [
-        "$(locations //:zdumps)",
+        "$(locations :zdumps)",
     ],
     data = [
         "src/packer.ts",
         "src/types.ts",
-        "//:zdumps",
+        ":zdumps",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "@npm//@types/json-stable-stringify",
@@ -224,12 +242,12 @@ ts_script(
     outs = ["add-all-tz.js"],
     args = [
         "--polyfill",
-        "$(locations //:zdumps)",
+        "$(locations :zdumps)",
     ],
     data = [
         "src/packer.ts",
         "src/types.ts",
-        "//:zdumps",
+        ":zdumps",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "@npm//@types/json-stable-stringify",
@@ -249,12 +267,12 @@ ts_script(
     args = [
         "--golden",
         "--polyfill",
-        "$(locations //:zdumps)",
+        "$(locations :zdumps)",
     ],
     data = [
         "src/packer.ts",
         "src/types.ts",
-        "//:zdumps",
+        ":zdumps",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "@npm//@types/json-stable-stringify",
@@ -303,6 +321,7 @@ check_format(
             "src/data/*",
             "test262-main.ts",
             "supported-locales.ts",
+            "*.gz"
         ],
     ),
 )
@@ -325,4 +344,13 @@ ts_node(
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
+)
+
+multirun(
+    name = "tz_data.update",
+    testonly = True,
+    commands = [
+        ":links.update",
+        ":all-tz.update"
+    ],
 )

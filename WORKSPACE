@@ -187,12 +187,3 @@ container_pull(
     repository = "library/ubuntu",
     tag = "21.10",
 )
-
-container_pull(
-    name = "tz_image",
-    architecture = "amd64",
-    digest = "sha256:2fc12c03bc38e21fc94bb88181aed639456ba931ca205a65b8114dc44d30a7df",
-    registry = "ghcr.io",
-    repository = "formatjs/tz_image",
-    tag = "latest",
-)
