@@ -13,13 +13,8 @@ export function BestFitMatcher(
   requestedLocales: string[],
   getDefaultLocale: () => string
 ): LookupMatcherResult {
-  const minimizedAvailableLocaleMap = Array.from(availableLocales).reduce(
-    (all: Record<string, string>, l) => {
-      all[l] = l
-      return all
-    },
-    {}
-  )
+  const minimizedAvailableLocaleMap: Record<string, string> = {}
+  availableLocales.forEach(l => (minimizedAvailableLocaleMap[l] = l))
   const minimizedAvailableLocales: Set<string> = new Set()
   availableLocales.forEach(locale => {
     const minimizedLocale = new (Intl as any).Locale(locale)
