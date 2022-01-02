@@ -3,7 +3,7 @@ import {VueLoaderPlugin} from 'vue-loader'
 import {readFileSync} from 'fs'
 import {resolve} from 'path'
 import {transform} from '../..'
-test('dummy', function (done) {
+test('tranpilation', function (done) {
   webpack(
     {
       entry: require.resolve('./fixtures/main.ts'),
@@ -57,4 +57,4 @@ test('dummy', function (done) {
       done()
     }
   )
-}, 10000)
+}, 30000)
