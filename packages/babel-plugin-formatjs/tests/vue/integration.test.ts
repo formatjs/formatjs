@@ -45,4 +45,4 @@ test('dummy', function (done) {
       done()
     }
   )
-}, 20000)
+}, 30000)
