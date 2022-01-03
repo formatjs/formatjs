@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.22](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.21...@formatjs/intl-localematcher@0.2.22) (2022-01-03)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** iterate through set instead of Array.from so we dont rely on polyfill ([2114518](https://github.com/formatjs/formatjs/commit/211451805d09aae543a8a0aeae1b62a179aaae07))
+
+
+
+
+
 ## [0.2.21](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.20...@formatjs/intl-localematcher@0.2.21) (2021-09-27)
 
 **Note:** Version bump only for package @formatjs/intl-localematcher

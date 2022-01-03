@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.7.0...@formatjs/ts-transformer@3.8.0) (2022-01-03)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** bump eslint peerDep version to 8 ([d143d38](https://github.com/formatjs/formatjs/commit/d143d38ea1115b2481e2dad71b2d934ca2e3cedc))
+
+
+
+
+
 # [3.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.6.0...@formatjs/ts-transformer@3.7.0) (2021-12-01)
 
 

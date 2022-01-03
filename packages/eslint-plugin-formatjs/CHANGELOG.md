@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.20.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.19.1...eslint-plugin-formatjs@2.20.0) (2022-01-03)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** bump eslint peerDep version to 8 ([d143d38](https://github.com/formatjs/formatjs/commit/d143d38ea1115b2481e2dad71b2d934ca2e3cedc))
+
+
+
+
+
 ## [2.19.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.19.0...eslint-plugin-formatjs@2.19.1) (2021-12-20)
 
 
