@@ -107,7 +107,6 @@ jest_test(
         "//packages/icu-messageformat-parser:types",
         "@npm//@types/node",
         "@npm//@types/webpack",
-        "@npm//@vue/compiler-sfc",
         "@npm//ts-loader",
         "@npm//vue",
         "@npm//vue-class-component",
