@@ -18,10 +18,11 @@
   "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {
     "@formatjs/intl": "1.18.1",
+    "@babel/types": "^7.12.11",
     "tslib": "^2.1.0"
   },
   "peerDependencies": {
-    "vue": "3"
+    "vue": "^3.2.23"
   },
   "license": "ISC"
 }

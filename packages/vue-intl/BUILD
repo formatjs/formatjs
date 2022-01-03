@@ -32,6 +32,7 @@ SRCS = glob([
 
 SRC_DEPS = [
     "@npm//vue",
+    "@npm//@babel/types",
     "//packages/intl:dist",
 ]
 
