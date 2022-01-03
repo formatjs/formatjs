@@ -39,7 +39,6 @@ SRC_DEPS = [
     "@npm//@types/json-stable-stringify",
     "@npm//@types/node",
     "@npm//@vue/compiler-core",
-    "@npm//@vue/compiler-sfc",
     "@npm//chalk",
     "@npm//commander",
     "@npm//fast-glob",
@@ -47,6 +46,7 @@ SRC_DEPS = [
     "@npm//json-stable-stringify",
     "@npm//loud-rejection",
     "@npm//typescript",
+    "@npm//vue",
     "//packages/icu-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
 ]
