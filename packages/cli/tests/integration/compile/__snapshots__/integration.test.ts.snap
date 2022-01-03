@@ -149,7 +149,7 @@ Object {
 exports[`basic case: help 1`] = `
 Object {
   "stderr": "",
-  "stdout": "Usage: formatjs compile [options] <translation_files>
+  "stdout": "Usage: formatjs compile [options] [translation_files...]
 
 Compile extracted translation file into react-intl consumable JSON
 We also verify that the messages are valid ICU and not malformed. 

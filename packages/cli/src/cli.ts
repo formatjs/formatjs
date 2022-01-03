@@ -118,20 +118,16 @@ becomes "{count, plural, one{I have a dog} other{I have many dogs}}".
 The goal is to provide as many full sentences as possible since fragmented
 sentences are not translator-friendly.`
     )
-    .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
-      debug('File pattern:', files)
+    .action(async (filePatterns: string[], cmdObj: ExtractCLIOptions) => {
+      debug('File pattern:', filePatterns)
       debug('Options:', cmdObj)
-      const processedFiles = []
-      for (const f of files) {
-        processedFiles.push(
-          ...globSync(f, {
-            ignore: cmdObj.ignore,
-          })
-        )
-      }
+      const files = globSync(filePatterns, {
+        ignore: cmdObj.ignore,
+      })
+
       debug('Files to extract:', files)
 
-      await extract(processedFiles, {
+      await extract(files, {
         outFile: cmdObj.outFile,
         idInterpolationPattern:
           cmdObj.idInterpolationPattern || '[sha1:contenthash:base64:6]',
@@ -144,7 +140,7 @@ sentences are not translator-friendly.`
         format: cmdObj.format,
         // It is possible that the glob pattern does NOT match anything.
         // But so long as the glob pattern is provided, don't read from stdin.
-        readFromStdin: files.length === 0,
+        readFromStdin: filePatterns.length === 0,
         preserveWhitespace: cmdObj.preserveWhitespace,
         flatten: cmdObj.flatten,
       })
@@ -152,7 +148,7 @@ sentences are not translator-friendly.`
     })
 
   program
-    .command('compile <translation_files>')
+    .command('compile [translation_files...]')
     .description(
       `Compile extracted translation file into react-intl consumable JSON
 We also verify that the messages are valid ICU and not malformed. 
@@ -189,12 +185,12 @@ for more information`
       `Whether to generate pseudo-locale files. See https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. 
 "--ast" is required for this to work.`
     )
-    .action(async (filePattern: string, opts: CompileCLIOpts) => {
-      debug('File pattern:', filePattern)
+    .action(async (filePatterns: string[], opts: CompileCLIOpts) => {
+      debug('File pattern:', filePatterns)
       debug('Options:', opts)
-      const files = globSync(filePattern)
+      const files = globSync(filePatterns)
       if (!files.length) {
-        throw new Error(`No input file found with pattern ${filePattern}`)
+        throw new Error(`No input file found with pattern ${filePatterns}`)
       }
       debug('Files to compile:', files)
       await compile(files, opts)
