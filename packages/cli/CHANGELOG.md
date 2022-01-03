@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.6.1...@formatjs/cli@4.7.0) (2022-01-03)
+
+
+### Features
+
+* **@formatjs/cli:** support multiple files compilation, fix [#3327](https://github.com/formatjs/formatjs/issues/3327) ([fed426b](https://github.com/formatjs/formatjs/commit/fed426b645af3e06b877298b08b0333b54e9f485))
+
+
+
+
+
 ## [4.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.6.0...@formatjs/cli@4.6.1) (2022-01-03)
 
 
