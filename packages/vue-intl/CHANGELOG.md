@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/formatjs/formatjs/compare/vue-intl@6.0.20...vue-intl@6.1.0) (2022-01-03)
+
+
+### Features
+
+* **vue-intl:** use vue/compiler-src instead of separate @vue/compiler-sfc ([3192667](https://github.com/formatjs/formatjs/commit/31926670e79e8d125e6c34909d4063fdb3e849a6))
+
+
+
+
+
 ## [6.0.20](https://github.com/formatjs/formatjs/compare/vue-intl@6.0.19...vue-intl@6.0.20) (2022-01-03)
 
 **Note:** Version bump only for package vue-intl

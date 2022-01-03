@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.5.1...@formatjs/cli@4.6.0) (2022-01-03)
+
+
+### Features
+
+* **@formatjs/cli:** use vue/compiler-src instead of separate @vue/compiler-sfc ([e9d526f](https://github.com/formatjs/formatjs/commit/e9d526f7e6aaa3036b4236afdb6e4d573fa895d0))
+
+
+
+
+
 ## [4.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.5.0...@formatjs/cli@4.5.1) (2022-01-03)
 
 **Note:** Version bump only for package @formatjs/cli
