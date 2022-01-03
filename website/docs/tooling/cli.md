@@ -478,7 +478,7 @@ export const compareMessages = (el1, el2) => {
 export const compile: CompileFn = msgs => {
   const results: Record<string, string> = {}
   for (const k in msgs) {
-    results[k] = msgs[k].defaultMessage!
+    results[k] = msgs[k].defaultMessage;
   }
   return results
 }
