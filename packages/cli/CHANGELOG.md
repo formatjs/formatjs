@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.6.0...@formatjs/cli@4.6.1) (2022-01-03)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** add vue to dependencies ([4bbdbbd](https://github.com/formatjs/formatjs/commit/4bbdbbdc3891e94a396fd9e648e1f5d944a1a620)), closes [#3324](https://github.com/formatjs/formatjs/issues/3324)
+
+
+
+
+
 # [4.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.5.1...@formatjs/cli@4.6.0) (2022-01-03)
 
 
