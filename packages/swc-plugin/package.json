@@ -19,7 +19,7 @@
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "2.0.16",
     "@formatjs/ts-transformer": "3.8.1",
-    "@types/node": "14 || 16",
+    "@types/node": "14 || 16 || 17",
     "chalk": "^4.0.0",
     "tslib": "^2.1.0"
   },

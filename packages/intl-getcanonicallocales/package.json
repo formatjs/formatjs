@@ -28,6 +28,6 @@
     "tslib": "^2.1.0"
   },
   "peerDependencies": {
-    "@types/node": "14 || 16"
+    "@types/node": "14 || 16 || 17"
   }
 }

@@ -21,10 +21,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file"
 
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "cfc289523cf1594598215901154a6c2515e8bf3671fd708264a6f6aefe02bf39",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.4.6/rules_nodejs-4.4.6.tar.gz"],
+    sha256 = "778ed059ad37c3373c22adcb5c200cbbca72b370dd4de93379deb8325c0045cb",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.5.0/rules_nodejs-4.5.0.tar.gz"],
 )
-
 IANA_TZ_VERSION = "2021e"
 
 http_file(
