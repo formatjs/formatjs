@@ -113,37 +113,44 @@ const formatMessage: typeof coreFormatMessage = (
  * @param config intl config
  * @param cache cache for formatter instances to prevent memory leak
  */
-export const createIntl: CreateIntlFn<React.ReactNode, IntlConfig, IntlShape> =
-  ({defaultRichTextElements: rawDefaultRichTextElements, ...config}, cache) => {
-    const defaultRichTextElements =
-      assignUniqueKeysToFormatXMLElementFnArgument(rawDefaultRichTextElements)
-    const coreIntl = coreCreateIntl<React.ReactNode>(
+export const createIntl: CreateIntlFn<
+  React.ReactNode,
+  IntlConfig,
+  IntlShape
+> = (
+  {defaultRichTextElements: rawDefaultRichTextElements, ...config},
+  cache
+) => {
+  const defaultRichTextElements = assignUniqueKeysToFormatXMLElementFnArgument(
+    rawDefaultRichTextElements
+  )
+  const coreIntl = coreCreateIntl<React.ReactNode>(
+    {
+      ...DEFAULT_INTL_CONFIG,
+      ...config,
+      defaultRichTextElements,
+    },
+    cache
+  )
+
+  return {
+    ...coreIntl,
+    formatMessage: formatMessage.bind(
+      null,
       {
-        ...DEFAULT_INTL_CONFIG,
-        ...config,
+        locale: coreIntl.locale,
+        timeZone: coreIntl.timeZone,
+        formats: coreIntl.formats,
+        defaultLocale: coreIntl.defaultLocale,
+        defaultFormats: coreIntl.defaultFormats,
+        messages: coreIntl.messages,
+        onError: coreIntl.onError,
         defaultRichTextElements,
       },
-      cache
-    )
-
-    return {
-      ...coreIntl,
-      formatMessage: formatMessage.bind(
-        null,
-        {
-          locale: coreIntl.locale,
-          timeZone: coreIntl.timeZone,
-          formats: coreIntl.formats,
-          defaultLocale: coreIntl.defaultLocale,
-          defaultFormats: coreIntl.defaultFormats,
-          messages: coreIntl.messages,
-          onError: coreIntl.onError,
-          defaultRichTextElements,
-        },
-        coreIntl.formatters
-      ),
-    }
+      coreIntl.formatters
+    ),
   }
+}
 
 export default class IntlProvider extends React.PureComponent<
   // Exporting children props so it is composable with other HOCs.

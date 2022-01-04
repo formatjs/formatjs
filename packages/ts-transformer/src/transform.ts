@@ -679,29 +679,30 @@ function getVisitor(
 export function transformWithTs(ts: TypeScript, opts: Opts) {
   opts = {...DEFAULT_OPTS, ...opts}
   debug('Transforming options', opts)
-  const transformFn: typescript.TransformerFactory<typescript.SourceFile> =
-    ctx => {
-      return (sf: typescript.SourceFile) => {
-        const pragmaResult = PRAGMA_REGEX.exec(sf.text)
-        if (pragmaResult) {
-          debug('Pragma found', pragmaResult)
-          const [, pragma, kvString] = pragmaResult
-          if (pragma === opts.pragma) {
-            const kvs = kvString.split(' ')
-            const result: Record<string, string> = {}
-            for (const kv of kvs) {
-              const [k, v] = kv.split(':')
-              result[k] = v
-            }
-            debug('Pragma extracted', result)
-            if (typeof opts.onMetaExtracted === 'function') {
-              opts.onMetaExtracted(sf.fileName, result)
-            }
+  const transformFn: typescript.TransformerFactory<
+    typescript.SourceFile
+  > = ctx => {
+    return (sf: typescript.SourceFile) => {
+      const pragmaResult = PRAGMA_REGEX.exec(sf.text)
+      if (pragmaResult) {
+        debug('Pragma found', pragmaResult)
+        const [, pragma, kvString] = pragmaResult
+        if (pragma === opts.pragma) {
+          const kvs = kvString.split(' ')
+          const result: Record<string, string> = {}
+          for (const kv of kvs) {
+            const [k, v] = kv.split(':')
+            result[k] = v
+          }
+          debug('Pragma extracted', result)
+          if (typeof opts.onMetaExtracted === 'function') {
+            opts.onMetaExtracted(sf.fileName, result)
           }
         }
-        return ts.visitNode(sf, getVisitor(ts, ctx, sf, opts))
       }
+      return ts.visitNode(sf, getVisitor(ts, ctx, sf, opts))
     }
+  }
 
   return transformFn
 }

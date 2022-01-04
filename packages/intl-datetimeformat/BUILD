@@ -4,7 +4,6 @@ load("@npm//ts-node:index.bzl", "ts_node")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "check_format", "esbuild", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
-load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 
 exports_files(["package.json"])
 
@@ -101,7 +100,7 @@ genrule(
     outs = ["tz_data/zdump/%s" % zone for zone in ZONES] + ["tz_data/backward"],
     cmd = "tar -xzvf $(location //:tz_install/tz_data.tar.gz) -C $(@D)",
     message = "Extracting zdump data files",
-    tools=["//:tz_install/tz_data.tar.gz"]
+    tools = ["//:tz_install/tz_data.tar.gz"],
 )
 
 filegroup(
@@ -321,7 +320,7 @@ check_format(
             "src/data/*",
             "test262-main.ts",
             "supported-locales.ts",
-            "*.gz"
+            "*.gz",
         ],
     ),
 )
@@ -351,6 +350,6 @@ multirun(
     testonly = True,
     commands = [
         ":links.update",
-        ":all-tz.update"
+        ":all-tz.update",
     ],
 )
