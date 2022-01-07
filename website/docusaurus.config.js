@@ -114,6 +114,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
+          showLastUpdateTime: true,
           editUrl: 'https://github.com/formatjs/formatjs/edit/main/website/',
         },
         theme: {
