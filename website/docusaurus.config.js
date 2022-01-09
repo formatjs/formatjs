@@ -32,13 +32,14 @@ module.exports = {
           to: 'docs/getting-started/installation',
           label: 'Docs',
           position: 'left',
-          activeBaseRegex: `docs/(getting-started|guides|core-concepts)`,
+          activeBaseRegex: 'docs/(getting-started|guides|core-concepts)',
         },
         {
           to: 'docs/react-intl',
           label: 'API References',
           position: 'left',
-          activeBaseRegex: `docs/(vue-intl|intl|react-intl|intl-messageformat|icu-messageformat-parser)`,
+          activeBaseRegex:
+            'docs/(vue-intl|intl|react-intl|intl-messageformat|icu-messageformat-parser)',
         },
         {
           to: 'docs/polyfills',
@@ -49,7 +50,8 @@ module.exports = {
           to: 'docs/tooling/cli',
           label: 'Tooling',
           position: 'left',
-          activeBaseRegex: `docs/tooling/(cli|linter|babel-plugin|ts-transformer|swc-plugin)`,
+          activeBaseRegex:
+            'docs/tooling/(cli|linter|babel-plugin|ts-transformer|swc-plugin)',
         },
         {
           href: 'https://github.com/formatjs/formatjs',
@@ -115,6 +117,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
           editUrl: 'https://github.com/formatjs/formatjs/edit/main/website/',
         },
         theme: {
