@@ -106,4 +106,4 @@ Whether to preserve whitespace and newlines.
 
 Path of the source file
 
-Take a look at out tests [`utils.ts`](https://github.com/formatjs/formatjs/blob/packages/swc-plugin/tests/utils.ts) for example in integration.
+Take a look at out tests [`utils.ts`](https://github.com/formatjs/formatjs/blob/main/packages/swc-plugin/tests/utils.ts) for example in integration.
