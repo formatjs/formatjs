@@ -13968,41 +13968,41 @@ exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', cur
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD 10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+GBP 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"GBP +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+GBP 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"GBP +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+GBP 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"GBP +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+GBP 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"GBP +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+GBP 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"GBP +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+GBP 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"GBP +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"GBP 10,00E3"`;
 
@@ -14040,41 +14040,41 @@ exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', cur
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD 10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+GBP 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"GBP +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+GBP 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"GBP +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+GBP 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"GBP +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+GBP 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"GBP +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+GBP 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"GBP +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+GBP 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"GBP +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"GBP 10,00E3"`;
 
@@ -14544,41 +14544,41 @@ exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymb
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD 10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+$ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"$ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+$ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"$ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+$ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"$ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+$ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"$ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+$ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"$ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+$ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"$ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ 10,00E3"`;
 
@@ -14616,41 +14616,41 @@ exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymb
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD 10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+$ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"$ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+$ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"$ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+$ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"$ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+$ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"$ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+$ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"$ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+$ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"$ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ 10,00E3"`;
 
@@ -14832,41 +14832,41 @@ exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', c
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD 10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ 10,00E3"`;
 
@@ -14904,41 +14904,41 @@ exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', c
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD 10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 10,00E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +10,00E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10E3"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10E3"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 1,00E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +1,00E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 1E4"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +1E4"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+USD 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"USD +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+£ 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"£ +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+USD 10 000,00"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"USD +10 000,00"`;
 
-exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+ZWD 10 000"`;
+exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD +10 000"`;
 
 exports[`Intl.NumberFormat 'nb', style: 'currency', currencyDisplay: 'symbol', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"£ 10,00E3"`;
 
