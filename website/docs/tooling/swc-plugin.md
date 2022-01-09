@@ -45,7 +45,7 @@ yarn add @formatjs/swc-plugin
 The default message descriptors for the app's default language will be processed from: `defineMessages()`, `defineMessage()`, `intl.formatMessage` and `<FormattedMessage>`; all of which are named exports of the React Intl package.
 
 ```tsx
-import {transform} from '@formatjs/swc-plugin'
+import {transform} from '@swc/core'
 import {FormatJSTransformer, Opts} from '@formatjs/swc-plugin'
 
 const opts: Opts = {
