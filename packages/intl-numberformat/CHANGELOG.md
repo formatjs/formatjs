@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@7.3.1...@formatjs/intl-numberformat@7.4.0) (2022-01-09)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** upgrade cldr to v40 ([843fa51](https://github.com/formatjs/formatjs/commit/843fa5174e523bffc4247623f1430bbe4ffeee06))
+
+
+
+
+
 ## [7.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@7.3.0...@formatjs/intl-numberformat@7.3.1) (2022-01-03)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

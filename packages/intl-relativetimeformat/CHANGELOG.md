@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@9.4.1...@formatjs/intl-relativetimeformat@9.5.0) (2022-01-09)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** upgrade cldr to v40 ([45629aa](https://github.com/formatjs/formatjs/commit/45629aa6dc2b1535a70fb24fed14a1be3bfe70de))
+
+
+
+
+
 ## [9.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@9.4.0...@formatjs/intl-relativetimeformat@9.4.1) (2022-01-03)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

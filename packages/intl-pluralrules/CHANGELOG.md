@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.2.1...@formatjs/intl-pluralrules@4.3.0) (2022-01-09)
+
+
+### Features
+
+* **@formatjs/intl-pluralrules:** upgrade cldr to v40 ([907cd40](https://github.com/formatjs/formatjs/commit/907cd403f08a99da166a9f11cf5576dd1d9a4135))
+
+
+
+
+
 ## [4.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.2.0...@formatjs/intl-pluralrules@4.2.1) (2022-01-03)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules
