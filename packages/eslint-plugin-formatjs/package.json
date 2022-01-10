@@ -24,7 +24,7 @@
     "@formatjs/ts-transformer": "3.8.2",
     "@types/eslint": "8",
     "@typescript-eslint/typescript-estree": "^5.9.1",
-    "emoji-regex": "^9.2.0",
+    "emoji-regex": "^10.0.0",
     "tslib": "^2.1.0",
     "typescript": "^4.5"
   },
