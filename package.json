@@ -66,7 +66,7 @@
     "@types/serialize-javascript": "^5.0.0",
     "@types/webpack": "5",
     "@typescript-eslint/parser": "^5.0.0",
-    "@typescript-eslint/typescript-estree": "^4.11.0",
+    "@typescript-eslint/typescript-estree": "^5.9.1",
     "@unicode/unicode-13.0.0": "^1.0.6",
     "@vue/compiler-core": "^3.2.23",
     "@vue/test-utils": "2.0.0-beta.13",
