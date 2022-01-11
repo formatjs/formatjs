@@ -57,6 +57,7 @@ jest_test(
     ]),
     deps = SRC_DEPS + [
         "//packages/icu-messageformat-parser:types",
+        "//packages/ts-transformer:types",
     ],
 )
 

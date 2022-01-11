@@ -61,6 +61,7 @@ jest_test(
     srcs = SRCS + TESTS,
     deps = TEST_DEPS + [
         "//packages/icu-messageformat-parser:types",
+        "//packages/fast-memoize:types",
         "//packages/ecma402-abstract:types",
     ],
 )
