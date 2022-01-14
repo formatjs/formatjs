@@ -41,7 +41,7 @@ const FILES_TO_TESTS: Record<string, Opts> = {
   },
 }
 
-describe.skip('emit asserts for', function () {
+describe('emit asserts for', function () {
   const filenames = Object.keys(FILES_TO_TESTS)
   filenames.forEach(function (fn) {
     if (fn === 'extractSourceLocation') {

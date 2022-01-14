@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`github issue #3362 2`] = `
+"import React from 'react';
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+var _obj, _obj1;
+var InputTest = function(param) {
+    var intl = param.intl;
+    var placeholder = intl.formatMessage((_obj = {
+        id: \\"HELLO.Krqghu.4.undefined\\",
+        defaultMessage: \\"test\\"
+    }, _defineProperty(_obj, \\"defaultMessage\\", 'test'), _defineProperty(_obj, \\"id\\", 'Krqghu'), _obj));
+    return(/*#__PURE__*/ React.createElement(\\"input\\", {
+        placeholder: placeholder,
+        placeholder2: intl.formatMessage((_obj1 = {
+            id: \\"HELLO.Krqghus.7.undefined\\",
+            defaultMessage: \\"testsss\\"
+        }, _defineProperty(_obj1, \\"defaultMessage\\", 'testsss'), _defineProperty(_obj1, \\"id\\", 'Krqghus'), _obj1))
+    }));
+};
+export default InputTest;
+"
+`;

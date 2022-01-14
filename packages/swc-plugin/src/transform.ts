@@ -709,11 +709,23 @@ export class FormatJSTransformer extends Visitor {
     const {opts} = this
     const {onMsgExtracted, filename = ''} = opts
     if (!isSingularMessageDecl(node, opts.additionalComponentNames || [])) {
-      return node
+      return {
+        ...node,
+        name: this.visitJSXElementName(node.name),
+        attributes: !node.attributes
+          ? undefined
+          : node.attributes.map(this.visitJSXAttributeOrSpread, this),
+      }
     }
     const msg = extractMessageDescriptor(node, opts)
     if (!msg) {
-      return node
+      return {
+        ...node,
+        name: this.visitJSXElementName(node.name),
+        attributes: !node.attributes
+          ? undefined
+          : node.attributes.map(this.visitJSXAttributeOrSpread, this),
+      }
     }
     debug('Message extracted from "%s": %s', filename, msg)
     if (typeof onMsgExtracted === 'function') {

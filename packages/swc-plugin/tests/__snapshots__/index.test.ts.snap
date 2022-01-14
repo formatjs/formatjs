@@ -116,10 +116,10 @@ export { Foo as default };
 exports[`emit asserts for [special] extractSourceLocation 2`] = `
 Object {
   "defaultMessage": "Hello World!",
-  "end": 5246,
+  "end": 6936,
   "file": StringContaining "extractSourceLocation.tsx",
   "id": "foo.bar.baz",
-  "start": 5179,
+  "start": 6869,
 }
 `;
 
@@ -421,6 +421,19 @@ function _createClass(Constructor, protoProps, staticProps) {
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
 }
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
@@ -496,12 +509,14 @@ var Foo = /*#__PURE__*/ function(Component1) {
             key: \\"render\\",
             value: function render() {
                 return(/*#__PURE__*/ React.createElement(CustomMessage, {
-                    id: formatMessage({
-                        defaultMessage: 'foo'
-                    }),
-                    description: $formatMessage({
-                        defaultMessage: 'foo'
-                    }),
+                    id: formatMessage(_defineProperty({
+                        id: \\"rL0Y20zC+F\\",
+                        defaultMessage: \\"foo\\"
+                    }, \\"defaultMessage\\", 'foo')),
+                    description: $formatMessage(_defineProperty({
+                        id: \\"rL0Y20zC+F\\",
+                        defaultMessage: \\"foo\\"
+                    }, \\"defaultMessage\\", 'foo')),
                     defaultMessage: \\"Hello World!\\"
                 }));
             }
@@ -511,7 +526,16 @@ var Foo = /*#__PURE__*/ function(Component1) {
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [],
+  "msgs": Array [
+    Object {
+      "defaultMessage": "foo",
+      "id": "rL0Y20zC+F",
+    },
+    Object {
+      "defaultMessage": "foo",
+      "id": "rL0Y20zC+F",
+    },
+  ],
 }
 `;
 
@@ -918,6 +942,19 @@ function _createClass(Constructor, protoProps, staticProps) {
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
 }
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
@@ -983,6 +1020,7 @@ var objectPointer = {
     defaultMessage: 'This cannot be extracted',
     description: 'the plugin only supports inline objects'
 };
+var _obj, _obj1;
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
     _inherits(Foo, Component1);
@@ -997,16 +1035,14 @@ var Foo = /*#__PURE__*/ function(Component1) {
             value: function render() {
                 var intl = this.props.intl;
                 var msgs = {
-                    baz: this.props.intl.formatMessage({
-                        id: 'foo.bar.baz',
-                        defaultMessage: 'Hello World!',
-                        description: 'The default message'
-                    }),
-                    biff: intl.formatMessage({
-                        id: 'foo.bar.biff',
-                        defaultMessage: 'Hello Nurse!',
-                        description: 'Another message'
-                    }),
+                    baz: this.props.intl.formatMessage((_obj = {
+                        id: \\"foo.bar.baz\\",
+                        defaultMessage: \\"Hello World!\\"
+                    }, _defineProperty(_obj, \\"id\\", 'foo.bar.baz'), _defineProperty(_obj, \\"defaultMessage\\", 'Hello World!'), _defineProperty(_obj, \\"description\\", 'The default message'), _obj)),
+                    biff: intl.formatMessage((_obj1 = {
+                        id: \\"foo.bar.biff\\",
+                        defaultMessage: \\"Hello Nurse!\\"
+                    }, _defineProperty(_obj1, \\"id\\", 'foo.bar.biff'), _defineProperty(_obj1, \\"defaultMessage\\", 'Hello Nurse!'), _defineProperty(_obj1, \\"description\\", 'Another message'), _obj1)),
                     invalid: this.props.intl.formatMessage(objectPointer),
                     invalid2: this.props.intl.formatMessage({
                         id: id,
@@ -1015,9 +1051,10 @@ var Foo = /*#__PURE__*/ function(Component1) {
                     })
                 };
                 return(/*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/ React.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/ React.createElement(\\"input\\", {
-                    placeholder: intl.formatMessage({
-                        defaultMessage: 'inline'
-                    })
+                    placeholder: intl.formatMessage(_defineProperty({
+                        id: \\"A/2tFVt1SI\\",
+                        defaultMessage: \\"inline\\"
+                    }, \\"defaultMessage\\", 'inline'))
                 }), /*#__PURE__*/ React.createElement(\\"span\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
                     id: \\"foo\\",
                     defaultMessage: \\"bar\\"
@@ -1031,6 +1068,20 @@ export default injectIntl(Foo);
 ",
   "msgs": Array [
     Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "foo.bar.baz",
+    },
+    Object {
+      "defaultMessage": "Hello Nurse!",
+      "description": "Another message",
+      "id": "foo.bar.biff",
+    },
+    Object {
+      "defaultMessage": "inline",
+      "id": "A/2tFVt1SI",
+    },
+    Object {
       "defaultMessage": "bar",
       "description": "baz",
       "id": "foo",
@@ -1043,31 +1094,44 @@ exports[`emit asserts for extractFromFormatMessageStateless 1`] = `
 Object {
   "code": "import { FormattedMessage, injectIntl, useIntl } from 'react-intl';
 import React from 'react';
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+var _obj;
 function myFunction(param1, param) {
     var formatMessage = param.formatMessage, formatDate = param.formatDate;
-    return formatMessage({
-        id: 'inline1',
-        defaultMessage: 'Hello params!',
-        description: 'A stateless message'
-    }) + formatDate(new Date());
+    return formatMessage((_obj = {
+        id: \\"inline1\\",
+        defaultMessage: \\"Hello params!\\"
+    }, _defineProperty(_obj, \\"id\\", 'inline1'), _defineProperty(_obj, \\"defaultMessage\\", 'Hello params!'), _defineProperty(_obj, \\"description\\", 'A stateless message'), _obj)) + formatDate(new Date());
 }
 var child = myFunction(filterable, intl);
+var _obj1;
 function SFC() {
     var formatMessage = useIntl().formatMessage;
-    return formatMessage({
-        id: 'hook',
-        defaultMessage: 'hook',
-        description: 'hook'
-    });
+    return formatMessage((_obj1 = {
+        id: \\"hook\\",
+        defaultMessage: \\"hook\\"
+    }, _defineProperty(_obj1, \\"id\\", 'hook'), _defineProperty(_obj1, \\"defaultMessage\\", 'hook'), _defineProperty(_obj1, \\"description\\", 'hook'), _obj1));
 }
+var _obj2;
 var Foo = function(param) {
     var formatMessage = param.intl.formatMessage;
     var msgs = {
-        qux: formatMessage({
-            id: 'foo.bar.quux',
-            defaultMessage: 'Hello Stateless!',
-            description: 'A stateless message'
-        })
+        qux: formatMessage((_obj2 = {
+            id: \\"foo.bar.quux\\",
+            defaultMessage: \\"Hello Stateless!\\"
+        }, _defineProperty(_obj2, \\"id\\", 'foo.bar.quux'), _defineProperty(_obj2, \\"defaultMessage\\", 'Hello Stateless!'), _defineProperty(_obj2, \\"description\\", 'A stateless message'), _obj2))
     };
     return(/*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/ React.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/ React.createElement(\\"span\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
         id: \\"foo\\",
@@ -1077,6 +1141,21 @@ var Foo = function(param) {
 export default injectIntl(Foo);
 ",
   "msgs": Array [
+    Object {
+      "defaultMessage": "Hello params!",
+      "description": "A stateless message",
+      "id": "inline1",
+    },
+    Object {
+      "defaultMessage": "hook",
+      "description": "hook",
+      "id": "hook",
+    },
+    Object {
+      "defaultMessage": "Hello Stateless!",
+      "description": "A stateless message",
+      "id": "foo.bar.quux",
+    },
     Object {
       "defaultMessage": "bar",
       "description": "baz",
@@ -1115,6 +1194,19 @@ function _createClass(Constructor, protoProps, staticProps) {
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
 }
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
@@ -1180,6 +1272,7 @@ var objectPointer = {
     defaultMessage: 'This cannot be extracted',
     description: 'the plugin only supports inline objects'
 };
+var _obj, _obj1, _obj2;
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
     _inherits(Foo, Component1);
@@ -1193,27 +1286,25 @@ var Foo = /*#__PURE__*/ function(Component1) {
             key: \\"render\\",
             value: function render() {
                 var msgs = {
-                    baz: formatMessage({
-                        id: 'foo.bar.baz',
-                        defaultMessage: 'Hello World!',
-                        description: 'The default message'
-                    }),
-                    baz2: this.props.intl.$formatMessage({
-                        id: 'foo.bar.baz2',
-                        defaultMessage: 'Hello World!',
-                        description: 'The default message $$$'
-                    }),
-                    biff: $formatMessage({
-                        id: 'foo.bar.biff',
-                        defaultMessage: 'Hello Nurse!',
-                        description: 'Another message'
-                    }),
+                    baz: formatMessage((_obj = {
+                        id: \\"foo.bar.baz\\",
+                        defaultMessage: \\"Hello World!\\"
+                    }, _defineProperty(_obj, \\"id\\", 'foo.bar.baz'), _defineProperty(_obj, \\"defaultMessage\\", 'Hello World!'), _defineProperty(_obj, \\"description\\", 'The default message'), _obj)),
+                    baz2: this.props.intl.$formatMessage((_obj1 = {
+                        id: \\"foo.bar.baz2\\",
+                        defaultMessage: \\"Hello World!\\"
+                    }, _defineProperty(_obj1, \\"id\\", 'foo.bar.baz2'), _defineProperty(_obj1, \\"defaultMessage\\", 'Hello World!'), _defineProperty(_obj1, \\"description\\", 'The default message $$$'), _obj1)),
+                    biff: $formatMessage((_obj2 = {
+                        id: \\"foo.bar.biff\\",
+                        defaultMessage: \\"Hello Nurse!\\"
+                    }, _defineProperty(_obj2, \\"id\\", 'foo.bar.biff'), _defineProperty(_obj2, \\"defaultMessage\\", 'Hello Nurse!'), _defineProperty(_obj2, \\"description\\", 'Another message'), _obj2)),
                     invalid: this.props.intl.formatMessage(objectPointer)
                 };
                 return(/*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/ React.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/ React.createElement(\\"input\\", {
-                    placeholder: intl.formatMessage({
-                        defaultMessage: 'inline'
-                    })
+                    placeholder: intl.formatMessage(_defineProperty({
+                        id: \\"A/2tFVt1SI\\",
+                        defaultMessage: \\"inline\\"
+                    }, \\"defaultMessage\\", 'inline'))
                 }), /*#__PURE__*/ React.createElement(\\"span\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
                     id: \\"foo\\",
                     defaultMessage: \\"bar\\"
@@ -1226,6 +1317,25 @@ var Foo = /*#__PURE__*/ function(Component1) {
 export default injectIntl(Foo);
 ",
   "msgs": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "foo.bar.baz",
+    },
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message $$$",
+      "id": "foo.bar.baz2",
+    },
+    Object {
+      "defaultMessage": "Hello Nurse!",
+      "description": "Another message",
+      "id": "foo.bar.biff",
+    },
+    Object {
+      "defaultMessage": "inline",
+      "id": "A/2tFVt1SI",
+    },
     Object {
       "defaultMessage": "bar",
       "description": "baz",
@@ -1263,6 +1373,19 @@ function _createClass(Constructor, protoProps, staticProps) {
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
+}
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
 }
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
@@ -1324,6 +1447,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
+var _obj, _obj1;
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
     _inherits(Foo, Component1);
@@ -1339,15 +1463,13 @@ var Foo = /*#__PURE__*/ function(Component1) {
                 return(/*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
                     id: \\"foo.bar.baz\\",
                     defaultMessage: \\"Hello World!\\"
-                }), defineMessage({
-                    id: 'header',
-                    defaultMessage: 'Hello World!',
-                    description: 'The default message'
-                }), defineMessage({
-                    id: 'header2',
-                    defaultMessage: 'Hello World!',
-                    description: 'The default message'
-                })));
+                }), defineMessage((_obj = {
+                    id: \\"header\\",
+                    defaultMessage: \\"Hello World!\\"
+                }, _defineProperty(_obj, \\"id\\", 'header'), _defineProperty(_obj, \\"defaultMessage\\", 'Hello World!'), _defineProperty(_obj, \\"description\\", 'The default message'), _obj)), defineMessage((_obj1 = {
+                    id: \\"header2\\",
+                    defaultMessage: \\"Hello World!\\"
+                }, _defineProperty(_obj1, \\"id\\", 'header2'), _defineProperty(_obj1, \\"defaultMessage\\", 'Hello World!'), _defineProperty(_obj1, \\"description\\", 'The default message'), _obj1))));
             }
         }
     ]);
@@ -1361,48 +1483,107 @@ export { Foo as default };
       "description": "The default message.",
       "id": "foo.bar.baz",
     },
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "header",
+    },
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "header2",
+    },
   ],
 }
 `;
 
 exports[`emit asserts for nested 1`] = `
 Object {
-  "code": "intl.formatMessage({
-    defaultMessage: 'layer1 {name}'
-}, {
+  "code": "function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+intl.formatMessage(_defineProperty({
+    id: \\"HELLO..13.undefined\\",
+    defaultMessage: \\"layer1 {name}\\"
+}, \\"defaultMessage\\", 'layer1 {name}'), {
     name: intl.formatMessage({
         defaultMessage: 'layer2'
     })
 });
 ",
-  "msgs": Array [],
+  "msgs": Array [
+    Object {
+      "defaultMessage": "layer1 {name}",
+      "id": "HELLO..13.undefined",
+    },
+  ],
 }
 `;
 
 exports[`emit asserts for noImport 1`] = `
 Object {
-  "code": "export function foo() {
-    props.intl.formatMessage({
-        defaultMessage: 'props {intl}',
-        description: 'bar'
-    }, {
+  "code": "function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+var _obj, _obj1, _obj2;
+export function foo() {
+    props.intl.formatMessage((_obj = {
+        id: \\"hYpBl\\",
+        defaultMessage: \\"props {intl}\\"
+    }, _defineProperty(_obj, \\"defaultMessage\\", 'props {intl}'), _defineProperty(_obj, \\"description\\", 'bar'), _obj), {
         bar: 'bar'
     });
-    this.props.intl.formatMessage({
-        defaultMessage: 'this props {intl}',
-        description: 'bar'
-    }, {
+    this.props.intl.formatMessage((_obj1 = {
+        id: \\"tBZlS\\",
+        defaultMessage: \\"this props {intl}\\"
+    }, _defineProperty(_obj1, \\"defaultMessage\\", 'this props {intl}'), _defineProperty(_obj1, \\"description\\", 'bar'), _obj1), {
         bar: 'bar'
     });
-    return intl.formatMessage({
-        defaultMessage: 'foo {bar}',
-        description: 'bar'
-    }, {
+    return intl.formatMessage((_obj2 = {
+        id: \\"ALfyd\\",
+        defaultMessage: \\"foo {bar}\\"
+    }, _defineProperty(_obj2, \\"defaultMessage\\", 'foo {bar}'), _defineProperty(_obj2, \\"description\\", 'bar'), _obj2), {
         bar: 'bar'
     });
 }
 ",
-  "msgs": Array [],
+  "msgs": Array [
+    Object {
+      "defaultMessage": "props {intl}",
+      "description": "bar",
+      "id": "hYpBl",
+    },
+    Object {
+      "defaultMessage": "this props {intl}",
+      "description": "bar",
+      "id": "tBZlS",
+    },
+    Object {
+      "defaultMessage": "foo {bar}",
+      "description": "bar",
+      "id": "ALfyd",
+    },
+  ],
 }
 `;
 
@@ -1434,6 +1615,19 @@ function _createClass(Constructor, protoProps, staticProps) {
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
+}
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
 }
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -1509,25 +1703,26 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
+var _obj, _obj1;
 var msgs = defineMessages({
-    header: {
-        id: 'foo.bar.baz',
-        defaultMessage: 'Hello World!',
-        description: 'The default message'
-    },
-    content: {
-        id: 'foo.bar.biff',
-        defaultMessage: 'Hello Nurse!',
-        description: {
-            text: 'Something for the translator.',
-            metadata: 'Additional metadata content.'
-        }
-    }
+    header: (_obj = {
+        id: \\"HELLO.foo.bar.baz.12.string\\",
+        defaultMessage: \\"Hello World!\\"
+    }, _defineProperty(_obj, \\"id\\", 'foo.bar.baz'), _defineProperty(_obj, \\"defaultMessage\\", 'Hello World!'), _defineProperty(_obj, \\"description\\", 'The default message'), _obj),
+    content: (_obj1 = {
+        id: \\"HELLO.foo.bar.biff.12.undefined\\",
+        defaultMessage: \\"Hello Nurse!\\"
+    }, _defineProperty(_obj1, \\"id\\", 'foo.bar.biff'), _defineProperty(_obj1, \\"defaultMessage\\", 'Hello Nurse!'), _defineProperty(_obj1, \\"description\\", {
+        text: 'Something for the translator.',
+        metadata: 'Additional metadata content.'
+    }), _obj1)
 });
-defineMessage({
-    defaultMessage: 'defineMessage',
-    description: 'foo'
-});
+var _obj2;
+defineMessage((_obj2 = {
+    id: \\"HELLO..13.string\\",
+    defaultMessage: \\"defineMessage\\"
+}, _defineProperty(_obj2, \\"defaultMessage\\", 'defineMessage'), _defineProperty(_obj2, \\"description\\", 'foo'), _obj2));
+var _obj3, _obj4, _obj5;
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
     _inherits(Foo, Component1);
@@ -1542,18 +1737,18 @@ var Foo = /*#__PURE__*/ function(Component1) {
             value: function render() {
                 var intl = this.props.intl;
                 var formatMessage = intl.formatMessage;
-                this.props.intl.formatMessage({
-                    defaultMessage: 'no-id',
-                    description: 'no-id'
-                });
-                intl.formatMessage({
-                    defaultMessage: 'intl.formatMessage',
-                    description: 'no-id'
-                });
-                formatMessage({
-                    defaultMessage: 'formatMessage',
-                    description: 'no-id'
-                });
+                this.props.intl.formatMessage((_obj3 = {
+                    id: \\"HELLO..5.string\\",
+                    defaultMessage: \\"no-id\\"
+                }, _defineProperty(_obj3, \\"defaultMessage\\", 'no-id'), _defineProperty(_obj3, \\"description\\", 'no-id'), _obj3));
+                intl.formatMessage((_obj4 = {
+                    id: \\"HELLO..18.string\\",
+                    defaultMessage: \\"intl.formatMessage\\"
+                }, _defineProperty(_obj4, \\"defaultMessage\\", 'intl.formatMessage'), _defineProperty(_obj4, \\"description\\", 'no-id'), _obj4));
+                formatMessage((_obj5 = {
+                    id: \\"HELLO..13.string\\",
+                    defaultMessage: \\"formatMessage\\"
+                }, _defineProperty(_obj5, \\"defaultMessage\\", 'formatMessage'), _defineProperty(_obj5, \\"description\\", 'no-id'), _obj5));
                 return(/*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({
                 }, msgs.header))), /*#__PURE__*/ React.createElement(\\"p\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({
                 }, msgs.content))), /*#__PURE__*/ React.createElement(FormattedMessage, {
@@ -1577,6 +1772,35 @@ var Foo = /*#__PURE__*/ function(Component1) {
 export { Foo as default };
 ",
   "msgs": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "HELLO.foo.bar.baz.12.string",
+    },
+    Object {
+      "defaultMessage": "Hello Nurse!",
+      "id": "HELLO.foo.bar.biff.12.undefined",
+    },
+    Object {
+      "defaultMessage": "defineMessage",
+      "description": "foo",
+      "id": "HELLO..13.string",
+    },
+    Object {
+      "defaultMessage": "no-id",
+      "description": "no-id",
+      "id": "HELLO..5.string",
+    },
+    Object {
+      "defaultMessage": "intl.formatMessage",
+      "description": "no-id",
+      "id": "HELLO..18.string",
+    },
+    Object {
+      "defaultMessage": "formatMessage",
+      "description": "no-id",
+      "id": "HELLO..13.string",
+    },
     Object {
       "defaultMessage": "Hello World! {abc}",
       "id": "HELLO.foo.bar.zoo.18.undefined",
@@ -1618,6 +1842,19 @@ function _createClass(Constructor, protoProps, staticProps) {
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
 }
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
@@ -1678,12 +1915,11 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
+var _obj;
 var messages = defineMessages({
-    foo: {
-        id: 'greeting-user',
-        description: 'Greeting the user',
-        defaultMessage: 'Hello, {name}'
-    }
+    foo: (_obj = {
+        id: \\"greeting-user\\"
+    }, _defineProperty(_obj, \\"id\\", 'greeting-user'), _defineProperty(_obj, \\"description\\", 'Greeting the user'), _defineProperty(_obj, \\"defaultMessage\\", 'Hello, {name}'), _obj)
 });
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
@@ -1708,6 +1944,11 @@ var Foo = /*#__PURE__*/ function(Component1) {
 export { Foo as default };
 ",
   "msgs": Array [
+    Object {
+      "defaultMessage": "Hello, {name}",
+      "description": "Greeting the user",
+      "id": "greeting-user",
+    },
     Object {
       "defaultMessage": "Hello World!",
       "description": "Greeting to the world",
@@ -1746,6 +1987,19 @@ function _createClass(Constructor, protoProps, staticProps) {
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
 }
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
@@ -1806,12 +2060,12 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
+var _obj;
 var messages = defineMessages({
-    foo: {
-        id: 'greeting-user',
-        description: 'Greeting the user',
-        defaultMessage: 'Hello, {name}'
-    }
+    foo: (_obj = {
+        id: \\"greeting-user\\",
+        defaultMessage: \\"Hello, {name}\\"
+    }, _defineProperty(_obj, \\"id\\", 'greeting-user'), _defineProperty(_obj, \\"description\\", 'Greeting the user'), _defineProperty(_obj, \\"defaultMessage\\", 'Hello, {name}'), _obj)
 });
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
@@ -1837,6 +2091,11 @@ var Foo = /*#__PURE__*/ function(Component1) {
 export { Foo as default };
 ",
   "msgs": Array [
+    Object {
+      "defaultMessage": "Hello, {name}",
+      "description": "Greeting the user",
+      "id": "greeting-user",
+    },
     Object {
       "defaultMessage": "Hello World!",
       "description": "Greeting to the world",
@@ -1875,6 +2134,19 @@ function _createClass(Constructor, protoProps, staticProps) {
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
 }
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
@@ -1935,10 +2207,11 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-defineMessage({
+var _obj;
+defineMessage((_obj = {
     id: \\"template\\",
-    defaultMessage: \\"should remove\\\\n    newline and\\\\n    extra spaces\\"
-});
+    defaultMessage: \\"should remove newline and extra spaces\\"
+}, _defineProperty(_obj, \\"id\\", \\"template\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"should remove\\\\n    newline and\\\\n    extra spaces\\"), _obj));
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
     _inherits(Foo, Component1);
@@ -1963,6 +2236,10 @@ var Foo = /*#__PURE__*/ function(Component1) {
 export { Foo as default };
 ",
   "msgs": Array [
+    Object {
+      "defaultMessage": "should remove newline and extra spaces",
+      "id": "template",
+    },
     Object {
       "defaultMessage": "Hello World!",
       "description": "The default message.",
