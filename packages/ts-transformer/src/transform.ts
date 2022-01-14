@@ -20,6 +20,7 @@ const MESSAGE_DESC_KEYS: Array<keyof MessageDescriptor> = [
   'id',
   'defaultMessage',
   'description',
+  'img'
 ]
 
 type TypeScript = typeof typescript
@@ -259,6 +260,9 @@ function extractMessageDescriptor(
           case 'description':
             msg.description = initializer.expression.text
             break
+          case 'img':
+            msg.img = initializer.expression.text
+            break
         }
       }
       // {id: 'id'}
@@ -272,6 +276,9 @@ function extractMessageDescriptor(
             break
           case 'description':
             msg.description = initializer.text
+            break
+          case 'img':
+            msg.img = initializer.text
             break
         }
       }
@@ -287,6 +294,9 @@ function extractMessageDescriptor(
           case 'description':
             msg.description = initializer.text
             break
+          case 'img':
+            msg.img = initializer.text
+            break
         }
       } else if (ts.isJsxExpression(initializer) && initializer.expression) {
         // <FormattedMessage foo={`bar`} />
@@ -301,6 +311,9 @@ function extractMessageDescriptor(
               break
             case 'description':
               msg.description = expression.text
+              break
+            case 'img':
+              msg.img = expression.text
               break
           }
         }
@@ -319,6 +332,9 @@ function extractMessageDescriptor(
               case 'description':
                 msg.description = result
                 break
+              case 'img':
+                msg.img = result
+                break
             }
           }
         }
@@ -336,6 +352,9 @@ function extractMessageDescriptor(
               break
             case 'description':
               msg.description = result
+              break
+            case 'img':
+              msg.img = result
               break
           }
         }

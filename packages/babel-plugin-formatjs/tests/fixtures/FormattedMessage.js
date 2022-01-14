@@ -6,6 +6,7 @@ export default class Foo extends Component {
     return (
       <FormattedMessage
         id="foo.bar.baz"
+        img="https://foo.com"
         defaultMessage="Hello World!"
         description="The default message."
       />

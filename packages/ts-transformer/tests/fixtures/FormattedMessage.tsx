@@ -29,6 +29,15 @@ export default class Foo extends Component {
             foo: 1,
           }}
         />
+        <FormattedMessage
+          id="foo.bar.baz"
+          img="https://foo.com"
+          defaultMessage="Hello World! {foo, number}"
+          description="The default message."
+          values={{
+            foo: 1,
+          }}
+        />
       </p>
     )
   }

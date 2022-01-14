@@ -158,6 +158,17 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
         })
         ?.remove()
 
+      // Remove img
+      properties
+        .find(prop => {
+          const keyProp = prop.get('key')
+          return (
+            keyProp.isIdentifier({name: 'img'}) ||
+            keyProp.isStringLiteral({value: 'img'})
+          )
+        })
+        ?.remove()
+
       // Pre-parse or remove defaultMessage
       if (defaultMessageProp) {
         if (removeDefaultMessage) {

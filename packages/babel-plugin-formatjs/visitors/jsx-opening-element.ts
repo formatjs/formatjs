@@ -88,6 +88,7 @@ export const visitor: VisitNodeFunction<
 
   let idAttr: NodePath<t.JSXAttribute> | undefined
   let descriptionAttr: NodePath<t.JSXAttribute> | undefined
+  let imgAttr: NodePath<t.JSXAttribute> | undefined
   let defaultMessageAttr: NodePath<t.JSXAttribute> | undefined
   const firstAttr = attributes[0]
   for (const attr of attributes) {
@@ -99,6 +100,9 @@ export const visitor: VisitNodeFunction<
     ) {
       case 'description':
         descriptionAttr = attr
+        break
+      case 'img':
+        imgAttr = attr
         break
       case 'defaultMessage':
         defaultMessageAttr = attr
@@ -122,6 +126,10 @@ export const visitor: VisitNodeFunction<
 
   if (descriptionAttr) {
     descriptionAttr.remove()
+  }
+
+  if (imgAttr) {
+    imgAttr.remove()
   }
 
   if (defaultMessageAttr) {

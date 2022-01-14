@@ -6,7 +6,7 @@ title: babel-plugin-formatjs
 Process string messages for translation from modules that use react-intl, specifically:
 
 - Parse and verify that messages are ICU-compliant w/o any syntax issues.
-- Remove `description` from message descriptor to save bytes since it isn't used at runtime.
+- Remove `description` and `img` from message descriptor to save bytes since it isn't used at runtime.
 - Option to remove `defaultMessage` from message descriptor to save bytes since it isn't used at runtime.
 - Automatically inject message ID based on specific pattern.
 
