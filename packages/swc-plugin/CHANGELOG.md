@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.1.5...@formatjs/swc-plugin@1.1.6) (2022-01-16)
+
+
+### Bug Fixes
+
+* **@formatjs/swc-plugin:** recursively visit arguments in call expr, fix [#3362](https://github.com/formatjs/formatjs/issues/3362) ([6f33429](https://github.com/formatjs/formatjs/commit/6f334290710c1cfb7a83ee13c8bafb67a4009d0b))
+
+
+
+
+
 ## [1.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.1.4...@formatjs/swc-plugin@1.1.5) (2022-01-14)
 
 
