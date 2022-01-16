@@ -22,6 +22,10 @@ var InputTest = function(param) {
         id: \\"HELLO.Krqghu.4.undefined\\",
         defaultMessage: \\"test\\"
     }, _defineProperty(_obj, \\"defaultMessage\\", 'test'), _defineProperty(_obj, \\"id\\", 'Krqghu'), _obj));
+    console.log(intl.formatMessage(_defineProperty({
+        id: \\"HELLO..7.undefined\\",
+        defaultMessage: \\"in call\\"
+    }, \\"defaultMessage\\", 'in call')));
     return(/*#__PURE__*/ React.createElement(\\"input\\", {
         placeholder: placeholder,
         placeholder2: intl.formatMessage((_obj1 = {

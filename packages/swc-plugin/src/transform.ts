@@ -703,7 +703,10 @@ export class FormatJSTransformer extends Visitor {
         }
       }
     }
-    return node
+    return {
+      ...node,
+      arguments: this.visitArguments(node.arguments),
+    }
   }
   visitJSXOpeningElement(node: JSXOpeningElement): JSXOpeningElement {
     const {opts} = this

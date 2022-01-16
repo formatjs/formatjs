@@ -5,6 +5,11 @@ const InputTest = ({intl}) => {
     defaultMessage: 'test',
     id: 'Krqghu',
   })
+  console.log(
+    intl.formatMessage({
+      defaultMessage: 'in call',
+    })
+  )
   return (
     <input
       placeholder={placeholder}

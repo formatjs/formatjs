@@ -116,10 +116,10 @@ export { Foo as default };
 exports[`emit asserts for [special] extractSourceLocation 2`] = `
 Object {
   "defaultMessage": "Hello World!",
-  "end": 6936,
+  "end": 7020,
   "file": StringContaining "extractSourceLocation.tsx",
   "id": "foo.bar.baz",
-  "start": 6869,
+  "start": 6953,
 }
 `;
 
