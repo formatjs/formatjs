@@ -89,6 +89,16 @@ Object {
 }
 `;
 
+exports[`[parseNumberSkeleton] case: ".00/w currency/CAD" 1`] = `
+Object {
+  "currency": "CAD",
+  "maximumFractionDigits": 2,
+  "minimumFractionDigits": 2,
+  "style": "currency",
+  "trailingZeroDisplay": "stripIfInteger",
+}
+`;
+
 exports[`[parseNumberSkeleton] case: "000" 1`] = `
 Object {
   "minimumIntegerDigits": 3,
