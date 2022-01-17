@@ -452,7 +452,12 @@ function extractMessageDescriptor(
         }
         break
       case 'function':
-        msg.id = overrideIdFn(msg.id, msg.defaultMessage, msg.description)
+        msg.id = overrideIdFn(
+          msg.id,
+          msg.defaultMessage,
+          msg.description,
+          filename
+        )
         break
     }
   }

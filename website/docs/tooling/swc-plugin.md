@@ -70,7 +70,7 @@ const output = await transform(input, {
 
 ### **`overrideIdFn`**
 
-A function with the signature `(id: string, defaultMessage: string, description: string|object) => string` which allows you to override the ID both in the extracted javascript and messages.
+A function with the signature `(id: string, defaultMessage: string, description?: string|object, filePath: string) => string` which allows you to override the ID both in the extracted javascript and messages.
 
 Alternatively, `overrideIdFn` can be a template string, which is used only if the message ID is empty.
 
