@@ -3,11 +3,18 @@ import {extractMessages} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {interpolateName} from '@formatjs/ts-transformer'
 
-function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
+interface Opts {
+  idInterpolationPattern: string
+  idWhitelistRegexps?: RegExp[]
+  idWhitelistErrorMsg?: string
+}
+
+function checkNode(
+  context: Rule.RuleContext,
+  node: TSESTree.Node,
+  {idInterpolationPattern, idWhitelistRegexps, idWhitelistErrorMsg}: Opts
+) {
   const msgs = extractMessages(node, context.settings)
-  const {options} = context
-  const [opt = {}] = options
-  const {idInterpolationPattern} = opt
   for (const [
     {
       message: {defaultMessage, description, id},
@@ -33,6 +40,15 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
           message: `description must be a string literal to calculate generated IDs`,
         })
       } else {
+        if (
+          idWhitelistRegexps &&
+          id &&
+          idWhitelistRegexps.some((r: RegExp) => r.test(id))
+        ) {
+          // messageId is whitelisted so skip interpolation id check
+          return
+        }
+
         const correctId = interpolateName(
           {
             resourcePath: context.getFilename(),
@@ -47,7 +63,9 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
         if (id !== correctId) {
           context.report({
             node: node as any,
-            message: `"id" does not match with hash pattern ${idInterpolationPattern}.
+            message: `"id" does not match with hash pattern ${idInterpolationPattern}${
+              idWhitelistErrorMsg ?? ''
+            }.
 Expected: ${correctId}
 Actual: ${id}`,
             fix(fixer) {
@@ -98,6 +116,16 @@ export default {
         properties: {
           idInterpolationPattern: {
             type: 'string',
+            description:
+              'Pattern to verify ID against. Recommended value: [sha512:contenthash:base64:6]',
+          },
+          idWhitelist: {
+            type: 'array',
+            description:
+              "An array of strings with regular expressions. This array allows whitelist custom ids for messages. For example '`\\\\.`' allows any id which has dot; `'^payment_.*'` - allows any custom id which has prefix `payment_`. Be aware that any backslash \\ provided via string must be escaped with an additional backslash.",
+            items: {
+              type: 'string',
+            },
           },
         },
         required: ['idInterpolationPattern'],
@@ -106,8 +134,22 @@ export default {
     ],
   },
   create(context) {
+    const tmp = context?.options?.[0]
+    const opts = {
+      idInterpolationPattern: tmp?.idInterpolationPattern,
+    } as Opts
+    if (Array.isArray(tmp?.idWhitelist)) {
+      const {idWhitelist} = tmp
+      opts.idWhitelistRegexps = idWhitelist.map(
+        (str: string) => new RegExp(str, 'i')
+      )
+      opts.idWhitelistErrorMsg = ` or does not match whitelisted patterns ["${idWhitelist.join(
+        '", "'
+      )}"]`
+    }
+
     const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node)
+      checkNode(context, node, opts)
 
     if (context.parserServices.defineTemplateBodyVisitor) {
       return context.parserServices.defineTemplateBodyVisitor(
@@ -120,7 +162,8 @@ export default {
       )
     }
     return {
-      JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
+      JSXOpeningElement: (node: TSESTree.Node) =>
+        checkNode(context, node, opts),
       CallExpression: callExpressionVisitor,
     }
   },
