@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.1.6...@formatjs/swc-plugin@1.2.0) (2022-01-17)
+
+
+### Features
+
+* **@formatjs/swc-plugin:** pass filename to `overrideIdFn` in swc-plugin ([abc046c](https://github.com/formatjs/formatjs/commit/abc046c2c18535615be3954766d757584e611af4))
+
+
+
+
+
 ## [1.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.1.5...@formatjs/swc-plugin@1.1.6) (2022-01-16)
 
 
