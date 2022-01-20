@@ -15,7 +15,10 @@ export const format: FormatFn<StructuredJson> = msgs => {
   for (const [id, msg] of Object.entries(msgs)) {
     results[id] = {
       string: msg.defaultMessage!,
-      developer_comment: msg.description,
+      developer_comment:
+        typeof msg.description === 'string'
+          ? msg.description
+          : JSON.stringify(msg.description),
     }
   }
   return results
