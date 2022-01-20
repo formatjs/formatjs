@@ -710,6 +710,7 @@ export class FormatJSTransformer extends Visitor {
     }
     return {
       ...node,
+      callee: this.visitExpressionOrSuper(node.callee),
       arguments: this.visitArguments(node.arguments),
     }
   }

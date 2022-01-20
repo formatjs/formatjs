@@ -18,6 +18,10 @@ test.only('github issue #3362', async function () {
         "id": "HELLO..7.undefined",
       },
       Object {
+        "defaultMessage": "nesttt",
+        "id": "HELLO.1.6.undefined",
+      },
+      Object {
         "defaultMessage": "testsss",
         "id": "HELLO.Krqghus.7.undefined",
       },

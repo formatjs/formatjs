@@ -11,13 +11,27 @@ const InputTest = ({intl}) => {
     })
   )
   return (
-    <input
-      placeholder={placeholder}
-      placeholder2={intl.formatMessage({
-        defaultMessage: 'testsss',
-        id: 'Krqghus',
-      })}
-    />
+    <div>
+      {getFieldDecorator('emails', {
+        rules: [
+          {
+            required: true,
+            message: intl.formatMessage({
+              defaultMessage: 'nesttt',
+              id: '1',
+            }),
+          },
+        ],
+      })(
+        <input
+          placeholder={placeholder}
+          placeholder2={intl.formatMessage({
+            defaultMessage: 'testsss',
+            id: 'Krqghus',
+          })}
+        />
+      )}
+    </div>
   )
 }
 
