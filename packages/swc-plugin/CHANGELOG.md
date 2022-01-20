@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.2.0...@formatjs/swc-plugin@1.2.1) (2022-01-20)
+
+
+### Bug Fixes
+
+* **@formatjs/swc-plugin:** recursively visit callee as well, fix [#3362](https://github.com/formatjs/formatjs/issues/3362) ([9aad97c](https://github.com/formatjs/formatjs/commit/9aad97c8745c95e4facd2d09c8e225dff2305b94))
+
+
+
+
+
 # [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.1.6...@formatjs/swc-plugin@1.2.0) (2022-01-17)
 
 
