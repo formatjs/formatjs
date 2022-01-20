@@ -6,13 +6,12 @@ import {interpolateName} from '@formatjs/ts-transformer'
 interface Opts {
   idInterpolationPattern: string
   idWhitelistRegexps?: RegExp[]
-  idWhitelistErrorMsg?: string
 }
 
 function checkNode(
   context: Rule.RuleContext,
   node: TSESTree.Node,
-  {idInterpolationPattern, idWhitelistRegexps, idWhitelistErrorMsg}: Opts
+  {idInterpolationPattern, idWhitelistRegexps}: Opts
 ) {
   const msgs = extractMessages(node, context.settings)
   for (const [
@@ -61,11 +60,16 @@ function checkNode(
           }
         )
         if (id !== correctId) {
+          let message = `"id" does not match with hash pattern ${idInterpolationPattern}`
+          if (idWhitelistRegexps) {
+            message += ` or whitelisted patterns ["${idWhitelistRegexps
+              .map(r => r.toString())
+              .join('", "')}"]`
+          }
+
           context.report({
             node: node as any,
-            message: `"id" does not match with hash pattern ${idInterpolationPattern}${
-              idWhitelistErrorMsg ?? ''
-            }.
+            message: `${message}.
 Expected: ${correctId}
 Actual: ${id}`,
             fix(fixer) {
@@ -143,9 +147,6 @@ export default {
       opts.idWhitelistRegexps = idWhitelist.map(
         (str: string) => new RegExp(str, 'i')
       )
-      opts.idWhitelistErrorMsg = ` or does not match whitelisted patterns ["${idWhitelist.join(
-        '", "'
-      )}"]`
     }
 
     const callExpressionVisitor = (node: TSESTree.Node) =>
