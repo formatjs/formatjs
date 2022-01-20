@@ -1,6 +1,6 @@
 export interface MessageDescriptor {
   id: string
-  description?: string
+  description?: string | object
   defaultMessage?: string
   file?: string
   start?: number

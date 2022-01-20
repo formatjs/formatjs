@@ -32,7 +32,7 @@ export type MetaExtractor = (
 export type InterpolateNameFn = (
   id?: string,
   defaultMessage?: string,
-  description?: string,
+  description?: string | object,
   filePath?: string
 ) => string
 
@@ -240,6 +240,29 @@ function isMultipleMessageDecl(node: CallExpression) {
   )
 }
 
+function literalToPrimitive(n: Expression) {
+  if (n.type === 'StringLiteral') {
+    return n.value
+  }
+  if (n.type === 'BooleanLiteral') {
+    return n.value
+  }
+  if (n.type === 'NumericLiteral') {
+    return n.value
+  }
+}
+
+function expressionToObject(obj: ObjectExpression) {
+  return obj.properties.reduce((all: Record<string, any>, prop) => {
+    if (prop.type === 'KeyValueProperty') {
+      if (prop.key.type === 'Identifier' || prop.key.type === 'StringLiteral') {
+        all[prop.key.value] = literalToPrimitive(prop.value)
+      }
+    }
+    return all
+  }, {})
+}
+
 function isSingularMessageDecl(
   node: CallExpression | JSXOpeningElement,
   additionalComponentNames: string[]
@@ -317,10 +340,12 @@ function extractMessageDescriptor(
       | StringLiteral
       | JSXExpressionContainer
       | BinaryExpression
+      | ObjectExpression
       | undefined =
       prop.type === 'KeyValueProperty' &&
       (prop.value.type === 'StringLiteral' ||
         prop.value.type === 'TemplateLiteral' ||
+        prop.value.type === 'ObjectExpression' ||
         prop.value.type === 'BinaryExpression')
         ? prop.value
         : prop.type === 'JSXAttribute' &&
@@ -330,25 +355,8 @@ function extractMessageDescriptor(
         : undefined
 
     if (name && name.type === 'Identifier' && value) {
-      // <FormattedMessage foo={'barbaz'} />
-      if (
-        value.type === 'JSXExpressionContainer' &&
-        value.expression.type === 'StringLiteral'
-      ) {
-        switch (name.value) {
-          case 'id':
-            msg.id = value.expression.value
-            break
-          case 'defaultMessage':
-            msg.defaultMessage = value.expression.value
-            break
-          case 'description':
-            msg.description = value.expression.value
-            break
-        }
-      }
       // {id: 'id'}
-      else if (value.type === 'StringLiteral') {
+      if (value.type === 'StringLiteral') {
         switch (name.value) {
           case 'id':
             msg.id = value.value
@@ -375,8 +383,27 @@ function extractMessageDescriptor(
             break
         }
       } else if (value.type === 'JSXExpressionContainer') {
+        // <FormattedMessage foo={'barbaz'} />
+        if (value.expression.type === 'StringLiteral') {
+          switch (name.value) {
+            case 'id':
+              msg.id = value.expression.value
+              break
+            case 'defaultMessage':
+              msg.defaultMessage = value.expression.value
+              break
+            case 'description':
+              msg.description = value.expression.value
+              break
+          }
+        } else if (
+          value.expression.type === 'ObjectExpression' &&
+          name.value === 'description'
+        ) {
+          msg.description = expressionToObject(value.expression)
+        }
         // <FormattedMessage foo={`bar`} />
-        if (value.expression.type === 'TemplateLiteral') {
+        else if (value.expression.type === 'TemplateLiteral') {
           const {expression} = value
           switch (name.value) {
             case 'id':
@@ -425,6 +452,11 @@ function extractMessageDescriptor(
               break
           }
         }
+      } else if (
+        value.type === 'ObjectExpression' &&
+        name.value === 'description'
+      ) {
+        msg.description = expressionToObject(value)
       }
     }
   })
