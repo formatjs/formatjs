@@ -30,6 +30,7 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   extractSourceLocation: {
     extractSourceLocation: true,
   },
+  descriptionsAsObjects: {},
   formatMessageCall: {},
   FormattedMessage: {},
   inline: {},

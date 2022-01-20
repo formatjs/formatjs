@@ -15,7 +15,7 @@ function _defineProperty(obj, key, value) {
     }
     return obj;
 }
-var _obj, _obj1;
+var _obj, _obj1, _obj2;
 var InputTest = function(param) {
     var intl = param.intl;
     var placeholder = intl.formatMessage((_obj = {
@@ -26,13 +26,23 @@ var InputTest = function(param) {
         id: \\"HELLO..7.undefined\\",
         defaultMessage: \\"in call\\"
     }, \\"defaultMessage\\", 'in call')));
-    return(/*#__PURE__*/ React.createElement(\\"input\\", {
+    return(/*#__PURE__*/ React.createElement(\\"div\\", null, getFieldDecorator('emails', {
+        rules: [
+            {
+                required: true,
+                message: intl.formatMessage((_obj1 = {
+                    id: \\"HELLO.1.6.undefined\\",
+                    defaultMessage: \\"nesttt\\"
+                }, _defineProperty(_obj1, \\"defaultMessage\\", 'nesttt'), _defineProperty(_obj1, \\"id\\", '1'), _obj1))
+            }, 
+        ]
+    })(/*#__PURE__*/ React.createElement(\\"input\\", {
         placeholder: placeholder,
-        placeholder2: intl.formatMessage((_obj1 = {
+        placeholder2: intl.formatMessage((_obj2 = {
             id: \\"HELLO.Krqghus.7.undefined\\",
             defaultMessage: \\"testsss\\"
-        }, _defineProperty(_obj1, \\"defaultMessage\\", 'testsss'), _defineProperty(_obj1, \\"id\\", 'Krqghus'), _obj1))
-    }));
+        }, _defineProperty(_obj2, \\"defaultMessage\\", 'testsss'), _defineProperty(_obj2, \\"id\\", 'Krqghus'), _obj2))
+    }))));
 };
 export default InputTest;
 "

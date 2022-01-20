@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.8.2...@formatjs/ts-transformer@3.9.0) (2022-01-20)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** extract object-type description, fix [#3373](https://github.com/formatjs/formatjs/issues/3373) ([3f75923](https://github.com/formatjs/formatjs/commit/3f75923d5b7d5da2ff73c1d8600ab4148b0ed2dd))
+
+
+
+
+
 ## [3.8.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.8.1...@formatjs/ts-transformer@3.8.2) (2022-01-09)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

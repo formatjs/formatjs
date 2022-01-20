@@ -10,9 +10,9 @@ export type MetaExtractor = (
 ) => void
 
 export type InterpolateNameFn = (
-  id?: string,
-  defaultMessage?: string,
-  description?: string,
+  id?: MessageDescriptor['id'],
+  defaultMessage?: MessageDescriptor['defaultMessage'],
+  description?: MessageDescriptor['description'],
   filePath?: string
 ) => string
 
@@ -77,6 +77,40 @@ function messageASTToTSNode(
   return factory.createArrayLiteralExpression(
     ast.map(el => objToTSNode(factory, el))
   )
+}
+
+function literalToObj(ts: TypeScript, n: typescript.Node) {
+  if (ts.isNumericLiteral(n)) {
+    return +n.text
+  }
+  if (ts.isStringLiteral(n)) {
+    return n.text
+  }
+  if (n.kind === ts.SyntaxKind.TrueKeyword) {
+    return true
+  }
+  if (n.kind === ts.SyntaxKind.FalseKeyword) {
+    return false
+  }
+}
+
+function objectLiteralExpressionToObj(
+  ts: TypeScript,
+  obj: typescript.ObjectLiteralExpression
+): object {
+  return obj.properties.reduce((all: Record<string, any>, prop) => {
+    if (ts.isPropertyAssignment(prop) && prop.name) {
+      if (ts.isIdentifier(prop.name)) {
+        all[prop.name.escapedText.toString()] = literalToObj(
+          ts,
+          prop.initializer
+        )
+      } else if (ts.isStringLiteral(prop.name)) {
+        all[prop.name.text] = literalToObj(ts, prop.initializer)
+      }
+    }
+    return all
+  }, {})
 }
 
 export interface Opts {
@@ -243,26 +277,8 @@ function extractMessageDescriptor(
         : undefined
 
     if (name && ts.isIdentifier(name) && initializer) {
-      // <FormattedMessage foo={'barbaz'} />
-      if (
-        ts.isJsxExpression(initializer) &&
-        initializer.expression &&
-        ts.isStringLiteral(initializer.expression)
-      ) {
-        switch (name.text) {
-          case 'id':
-            msg.id = initializer.expression.text
-            break
-          case 'defaultMessage':
-            msg.defaultMessage = initializer.expression.text
-            break
-          case 'description':
-            msg.description = initializer.expression.text
-            break
-        }
-      }
       // {id: 'id'}
-      else if (ts.isStringLiteral(initializer)) {
+      if (ts.isStringLiteral(initializer)) {
         switch (name.text) {
           case 'id':
             msg.id = initializer.text
@@ -289,8 +305,32 @@ function extractMessageDescriptor(
             break
         }
       } else if (ts.isJsxExpression(initializer) && initializer.expression) {
+        // <FormattedMessage foo={'barbaz'} />
+        if (ts.isStringLiteral(initializer.expression)) {
+          switch (name.text) {
+            case 'id':
+              msg.id = initializer.expression.text
+              break
+            case 'defaultMessage':
+              msg.defaultMessage = initializer.expression.text
+              break
+            case 'description':
+              msg.description = initializer.expression.text
+              break
+          }
+        }
+        // description={{custom: 1}}
+        else if (
+          ts.isObjectLiteralExpression(initializer.expression) &&
+          name.text === 'description'
+        ) {
+          msg.description = objectLiteralExpressionToObj(
+            ts,
+            initializer.expression
+          )
+        }
         // <FormattedMessage foo={`bar`} />
-        if (ts.isNoSubstitutionTemplateLiteral(initializer.expression)) {
+        else if (ts.isNoSubstitutionTemplateLiteral(initializer.expression)) {
           const {expression} = initializer
           switch (name.text) {
             case 'id':
@@ -339,6 +379,13 @@ function extractMessageDescriptor(
               break
           }
         }
+      }
+      // description: {custom: 1}
+      else if (
+        ts.isObjectLiteralExpression(initializer) &&
+        name.text === 'description'
+      ) {
+        msg.description = objectLiteralExpressionToObj(ts, initializer)
       }
     }
   })

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.7.1...@formatjs/cli@4.8.0) (2022-01-20)
+
+
+### Features
+
+* **@formatjs/cli:** extract object-type description from message, fix [#3373](https://github.com/formatjs/formatjs/issues/3373) ([d463673](https://github.com/formatjs/formatjs/commit/d463673ac28ae1b63de7854fd03febe65da3ec35))
+
+
+
+
+
 ## [4.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.7.0...@formatjs/cli@4.7.1) (2022-01-09)
 
 **Note:** Version bump only for package @formatjs/cli

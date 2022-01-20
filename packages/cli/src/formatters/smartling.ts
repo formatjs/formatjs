@@ -41,7 +41,10 @@ export const format: FormatFn<SmartlingJson> = msgs => {
   for (const [id, msg] of Object.entries(msgs)) {
     results[id] = {
       message: msg.defaultMessage!,
-      description: msg.description,
+      description:
+        typeof msg.description === 'string'
+          ? msg.description
+          : JSON.stringify(msg.description),
     }
   }
   return results
