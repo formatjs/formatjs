@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.2.1...@formatjs/swc-plugin@1.3.0) (2022-01-20)
+
+
+### Features
+
+* **@formatjs/swc-plugin:** support using object as description in message ([914f766](https://github.com/formatjs/formatjs/commit/914f7662872946bb25bf95cb4fac4837a0df2c9f))
+
+
+
+
+
 ## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.2.0...@formatjs/swc-plugin@1.2.1) (2022-01-20)
 
 
