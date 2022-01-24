@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.23](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.22...@formatjs/intl-localematcher@0.2.23) (2022-01-24)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** fix best fit to account for canonicalization ([cacad92](https://github.com/formatjs/formatjs/commit/cacad921ed4eb2f608979fe03b8cdcd3d1719766))
+
+
+
+
+
 ## [0.2.22](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.21...@formatjs/intl-localematcher@0.2.22) (2022-01-03)
 
 
