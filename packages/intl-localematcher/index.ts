@@ -1,3 +1,4 @@
+import {CanonicalizeLocaleList} from './abstract/CanonicalizeLocaleList'
 import {ResolveLocale} from './abstract/ResolveLocale'
 
 export interface Opts {
@@ -17,7 +18,7 @@ export function match(
 
   return ResolveLocale(
     locales,
-    requestedLocales,
+    CanonicalizeLocaleList(requestedLocales),
     {
       localeMatcher: opts?.algorithm || 'best fit',
     },

@@ -14,15 +14,21 @@ export function BestFitMatcher(
   getDefaultLocale: () => string
 ): LookupMatcherResult {
   const minimizedAvailableLocaleMap: Record<string, string> = {}
-  availableLocales.forEach(l => (minimizedAvailableLocaleMap[l] = l))
   const minimizedAvailableLocales: Set<string> = new Set()
   availableLocales.forEach(locale => {
     const minimizedLocale = new (Intl as any).Locale(locale)
       .minimize()
       .toString()
 
+    const canonicalizedLocale =
+      (Intl as any).getCanonicalLocales(locale)[0] || locale
+
     minimizedAvailableLocaleMap[minimizedLocale] = locale
+    minimizedAvailableLocaleMap[locale] = locale
+    minimizedAvailableLocaleMap[canonicalizedLocale] = locale
     minimizedAvailableLocales.add(minimizedLocale)
+    minimizedAvailableLocales.add(locale)
+    minimizedAvailableLocales.add(canonicalizedLocale)
   })
 
   let foundLocale: string | undefined
@@ -59,9 +65,10 @@ export function BestFitMatcher(
       maximizedRequestedLocale
     )
   }
+  if (!foundLocale) {
+    return {locale: getDefaultLocale()}
+  }
   return {
-    locale:
-      (foundLocale && minimizedAvailableLocaleMap[foundLocale]) ||
-      getDefaultLocale(),
+    locale: minimizedAvailableLocaleMap[foundLocale] || foundLocale,
   }
 }

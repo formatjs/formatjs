@@ -1,5 +1,9 @@
 import {match} from '../'
 
+test('zh-HK', function () {
+  expect(match(['zh-HK'], ['zh', 'zh-HANT', 'en'], 'en')).toEqual('zh-HANT')
+})
+
 test('Intl.LocaleMatcher', function () {
   expect(match(['fr-XX', 'en'], ['fr', 'en'], 'en')).toEqual('fr')
   expect(match(['zh-TW', 'en'], ['zh-Hant-TW', 'en'], 'en')).toEqual(
