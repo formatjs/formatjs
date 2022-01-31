@@ -140,6 +140,7 @@ export const createIntl: CreateIntlFn<
       {
         locale: coreIntl.locale,
         timeZone: coreIntl.timeZone,
+        fallbackOnEmptyString: coreIntl.fallbackOnEmptyString,
         formats: coreIntl.formats,
         defaultLocale: coreIntl.defaultLocale,
         defaultFormats: coreIntl.defaultFormats,
