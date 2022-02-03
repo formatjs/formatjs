@@ -502,6 +502,7 @@ const messages = defineMessages({
 ```
 
 - `idInterpolationPattern`: Pattern to verify ID against
+- `idWhitelist`: An array of strings with regular expressions. This array allows whitelist custom ids for messages. For example '`\\.`' allows any id which has dot; `'^payment_.*'` - allows any custom id which has prefix `payment_`. Be aware that any backslash \ provided via string must be escaped with an additional backslash.
 
 ### `no-id`
 

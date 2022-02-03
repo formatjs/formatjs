@@ -173,3 +173,37 @@ defineMessages({ example: { defaultMessage: 'example', id: 'O7Eu2j' } })`,
     },
   ],
 })
+
+const optionsWithWhitelist = [
+  {
+    idInterpolationPattern: '[sha512:contenthash:base64:6]',
+    idWhitelist: ['\\.', '^payment_.*'],
+  },
+]
+ruleTester.run('enforce-id', enforceId, {
+  valid: [
+    {
+      options: optionsWithWhitelist,
+      code: `
+import { defineMessages } from 'react-intl'
+defineMessages({ example: { defaultMessage: 'example1', id: 'my.custom.id' } })
+defineMessages({ example: { defaultMessage: 'example2', id: 'payment_string' } })`,
+    },
+  ],
+  invalid: [
+    {
+      code: `
+intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
+      errors: [
+        {
+          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6] or whitelisted patterns ["/\\./i", "/^payment_.*/i"].
+Expected: j9qhn+
+Actual: undefined`,
+        },
+      ],
+      options: optionsWithWhitelist,
+      output: `
+intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', id: 'j9qhn+', description: 'asd'})`,
+    },
+  ],
+})
