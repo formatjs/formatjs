@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.24.5](https://github.com/formatjs/formatjs/compare/react-intl@5.24.4...react-intl@5.24.5) (2022-02-06)
+
+
+### Bug Fixes
+
+* **react-intl:** createIntl now correctly sets fallbackOnEmptyString ([#3396](https://github.com/formatjs/formatjs/issues/3396)) ([6f7aa1d](https://github.com/formatjs/formatjs/commit/6f7aa1df37a2fdd12e0b55486765caf47544c770))
+
+
+
+
+
 ## [5.24.4](https://github.com/formatjs/formatjs/compare/react-intl@5.24.3...react-intl@5.24.4) (2022-01-24)
 
 **Note:** Version bump only for package react-intl

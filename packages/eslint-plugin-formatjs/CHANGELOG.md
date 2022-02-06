@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.20.5...eslint-plugin-formatjs@2.21.0) (2022-02-06)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add `idWhitelist` option to `enforce-id` rule ([#3374](https://github.com/formatjs/formatjs/issues/3374)) ([7538296](https://github.com/formatjs/formatjs/commit/75382963a515d22ed295dd461333fd2ed91bcc0f))
+
+
+
+
+
 ## [2.20.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.20.4...eslint-plugin-formatjs@2.20.5) (2022-01-24)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
