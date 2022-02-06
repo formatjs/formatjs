@@ -14,6 +14,8 @@ export function BestFitMatcher(
   getDefaultLocale: () => string
 ): LookupMatcherResult {
   const minimizedAvailableLocaleMap: Record<string, string> = {}
+  const availableLocaleMap: Record<string, string> = {}
+  const canonicalizedLocaleMap: Record<string, string> = {}
   const minimizedAvailableLocales: Set<string> = new Set()
   availableLocales.forEach(locale => {
     const minimizedLocale = new (Intl as any).Locale(locale)
@@ -24,8 +26,8 @@ export function BestFitMatcher(
       (Intl as any).getCanonicalLocales(locale)[0] || locale
 
     minimizedAvailableLocaleMap[minimizedLocale] = locale
-    minimizedAvailableLocaleMap[locale] = locale
-    minimizedAvailableLocaleMap[canonicalizedLocale] = locale
+    availableLocaleMap[locale] = locale
+    canonicalizedLocaleMap[canonicalizedLocale] = locale
     minimizedAvailableLocales.add(minimizedLocale)
     minimizedAvailableLocales.add(locale)
     minimizedAvailableLocales.add(canonicalizedLocale)
@@ -69,6 +71,10 @@ export function BestFitMatcher(
     return {locale: getDefaultLocale()}
   }
   return {
-    locale: minimizedAvailableLocaleMap[foundLocale] || foundLocale,
+    locale:
+      availableLocaleMap[foundLocale] ||
+      canonicalizedLocaleMap[foundLocale] ||
+      minimizedAvailableLocaleMap[foundLocale] ||
+      foundLocale,
   }
 }

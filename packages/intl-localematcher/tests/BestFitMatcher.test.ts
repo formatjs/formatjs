@@ -15,3 +15,9 @@ test('BestFitMatcher zh-TW', function () {
     locale: 'zh-Hant',
   })
 })
+
+test('BestFitMatcher en', function () {
+  expect(BestFitMatcher(new Set(['en', 'und']), ['en'], () => 'en')).toEqual({
+    locale: 'en',
+  })
+})
