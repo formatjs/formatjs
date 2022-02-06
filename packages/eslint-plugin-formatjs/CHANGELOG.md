@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.21.0...eslint-plugin-formatjs@3.0.0) (2022-02-06)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** rename `blacklist` to `blocklist`, fix [#3399](https://github.com/formatjs/formatjs/issues/3399) ([d363881](https://github.com/formatjs/formatjs/commit/d363881c87e6d792c4e933cd0167d1b3faa0897a))
+
+
+### BREAKING CHANGES
+
+* **eslint-plugin-formatjs:** This changes the rule name from `blacklist-elements` to `blocklist-elements`
+
+
+
+
+
 # [2.21.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.20.5...eslint-plugin-formatjs@2.21.0) (2022-02-06)
 
 

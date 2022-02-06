@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.18.5...@formatjs/intl@2.0.0) (2022-02-06)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** rename `blacklist` to `blocklist`, fix [#3399](https://github.com/formatjs/formatjs/issues/3399) ([d363881](https://github.com/formatjs/formatjs/commit/d363881c87e6d792c4e933cd0167d1b3faa0897a))
+
+
+### BREAKING CHANGES
+
+* **eslint-plugin-formatjs:** This changes the rule name from `blacklist-elements` to `blocklist-elements`
+
+
+
+
+
 ## [1.18.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.18.4...@formatjs/intl@1.18.5) (2022-02-06)
 
 **Note:** Version bump only for package @formatjs/intl

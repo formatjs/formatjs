@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/editor",
-  "version": "1.1.43",
+  "version": "1.1.44",
   "description": "A ICU MessageFormat Editor UI",
   "keywords": [
     "intl",
@@ -34,7 +34,7 @@
     "@material-ui/lab": "4.0.0-alpha.57",
     "@types/react": "17",
     "react": "17",
-    "react-intl": "5.24.5"
+    "react-intl": "5.24.6"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

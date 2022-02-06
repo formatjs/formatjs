@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.5.2...@formatjs/intl-datetimeformat@5.0.0) (2022-02-06)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** rename `blacklist` to `blocklist`, fix [#3399](https://github.com/formatjs/formatjs/issues/3399) ([d363881](https://github.com/formatjs/formatjs/commit/d363881c87e6d792c4e933cd0167d1b3faa0897a))
+
+
+### BREAKING CHANGES
+
+* **eslint-plugin-formatjs:** This changes the rule name from `blacklist-elements` to `blocklist-elements`
+
+
+
+
+
 ## [4.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@4.5.1...@formatjs/intl-datetimeformat@4.5.2) (2022-02-06)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat
