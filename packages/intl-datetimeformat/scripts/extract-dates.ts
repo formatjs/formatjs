@@ -136,7 +136,7 @@ async function loadDatesFields(
     if (locale !== 'root') {
       region = new IntlLocale(locale).maximize().region
     }
-    // Reduce the date fields data down to whitelist of fields needed in the
+    // Reduce the date fields data down to allowlist of fields needed in the
     // FormatJS libs.
     hc = (
       processedTimeData[locale] ||

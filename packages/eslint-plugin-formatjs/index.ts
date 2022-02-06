@@ -1,4 +1,4 @@
-import blacklistElements from './rules/blacklist-elements'
+import blocklistElements from './rules/blocklist-elements'
 import enforceDefaultMessage from './rules/enforce-default-message'
 import enforceDescription from './rules/enforce-description'
 import enforceId from './rules/enforce-id'
@@ -13,7 +13,7 @@ import noMultipleWhitespaces from './rules/no-multiple-whitespaces'
 import noOffset from './rules/no-offset'
 const plugin = {
   rules: {
-    'blacklist-elements': blacklistElements,
+    'blocklist-elements': blocklistElements,
     'enforce-default-message': enforceDefaultMessage,
     'enforce-description': enforceDescription,
     'enforce-id': enforceId,

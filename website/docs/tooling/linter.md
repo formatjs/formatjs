@@ -106,9 +106,9 @@ Similar to [babel-plugin-formatjs](./babel-plugin.md#additionalcomponentnames) &
 
 ## Available Rules
 
-### `blacklist-elements`
+### `blocklist-elements`
 
-This blacklists usage of specific elements in ICU message.
+This blocklists usage of specific elements in ICU message.
 
 #### Why
 
@@ -143,7 +143,7 @@ enum Element {
 {
   "plugins": ["formatjs"],
   "rules": {
-    "formatjs/blacklist-elements": [2, ["selectordinal"]]
+    "formatjs/blocklist-elements": [2, ["selectordinal"]]
   }
 }
 ```
@@ -502,7 +502,7 @@ const messages = defineMessages({
 ```
 
 - `idInterpolationPattern`: Pattern to verify ID against
-- `idWhitelist`: An array of strings with regular expressions. This array allows whitelist custom ids for messages. For example '`\\.`' allows any id which has dot; `'^payment_.*'` - allows any custom id which has prefix `payment_`. Be aware that any backslash \ provided via string must be escaped with an additional backslash.
+- `idWhitelist`: An array of strings with regular expressions. This array allows allowlist custom ids for messages. For example '`\\.`' allows any id which has dot; `'^payment_.*'` - allows any custom id which has prefix `payment_`. Be aware that any backslash \ provided via string must be escaped with an additional backslash.
 
 ### `no-id`
 

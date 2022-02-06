@@ -71,7 +71,7 @@ async function loadRelativeFields(locale: string): Promise<LocaleFieldsData> {
   const fields = dateFileds.main[locale as 'en'].dates.fields
   const nu = numbers?.main[locale as 'en'].numbers.defaultNumberingSystem
 
-  // Reduce the date fields data down to whitelist of fields needed in the
+  // Reduce the date fields data down to allowlist of fields needed in the
   // FormatJS libs.
   return FIELD_NAMES.reduce(
     (relative: LocaleFieldsData, field) => {

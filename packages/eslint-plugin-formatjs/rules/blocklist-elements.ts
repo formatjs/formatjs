@@ -18,7 +18,7 @@ class BlacklistElement extends Error {
   public message: string
   constructor(type: Element) {
     super()
-    this.message = `${type} element is blacklisted`
+    this.message = `${type} element is blocklisted`
   }
 }
 
@@ -34,36 +34,36 @@ enum Element {
   tag = 'tag',
 }
 
-function verifyAst(blacklist: Element[], ast: MessageFormatElement[]) {
+function verifyAst(blocklist: Element[], ast: MessageFormatElement[]) {
   for (const el of ast) {
-    if (isLiteralElement(el) && blacklist.includes(Element.literal)) {
+    if (isLiteralElement(el) && blocklist.includes(Element.literal)) {
       throw new BlacklistElement(Element.literal)
     }
-    if (isArgumentElement(el) && blacklist.includes(Element.argument)) {
+    if (isArgumentElement(el) && blocklist.includes(Element.argument)) {
       throw new BlacklistElement(Element.argument)
     }
-    if (isNumberElement(el) && blacklist.includes(Element.number)) {
+    if (isNumberElement(el) && blocklist.includes(Element.number)) {
       throw new BlacklistElement(Element.number)
     }
-    if (isDateElement(el) && blacklist.includes(Element.date)) {
+    if (isDateElement(el) && blocklist.includes(Element.date)) {
       throw new BlacklistElement(Element.date)
     }
-    if (isTimeElement(el) && blacklist.includes(Element.time)) {
+    if (isTimeElement(el) && blocklist.includes(Element.time)) {
       throw new BlacklistElement(Element.time)
     }
-    if (isSelectElement(el) && blacklist.includes(Element.select)) {
+    if (isSelectElement(el) && blocklist.includes(Element.select)) {
       throw new BlacklistElement(Element.select)
     }
-    if (isTagElement(el) && blacklist.includes(Element.tag)) {
+    if (isTagElement(el) && blocklist.includes(Element.tag)) {
       throw new BlacklistElement(Element.tag)
     }
     if (isPluralElement(el)) {
-      if (blacklist.includes(Element.plural)) {
+      if (blocklist.includes(Element.plural)) {
         throw new BlacklistElement(Element.argument)
       }
       if (
         el.pluralType === 'ordinal' &&
-        blacklist.includes(Element.selectordinal)
+        blocklist.includes(Element.selectordinal)
       ) {
         throw new BlacklistElement(Element.selectordinal)
       }
@@ -71,7 +71,7 @@ function verifyAst(blacklist: Element[], ast: MessageFormatElement[]) {
     if (isSelectElement(el) || isPluralElement(el)) {
       const {options} = el
       for (const selector of Object.keys(options)) {
-        verifyAst(blacklist, options[selector].value)
+        verifyAst(blocklist, options[selector].value)
       }
     }
   }
@@ -83,8 +83,8 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     return
   }
 
-  const blacklist = context.options[0]
-  if (!Array.isArray(blacklist) || !blacklist.length) {
+  const blocklist = context.options[0]
+  if (!Array.isArray(blocklist) || !blocklist.length) {
     return
   }
   for (const [
@@ -119,7 +119,7 @@ const rule: Rule.RuleModule = {
       description: 'Disallow specific elements in ICU message format',
       category: 'Errors',
       recommended: false,
-      url: 'https://formatjs.io/docs/tooling/linter#blacklist-elements',
+      url: 'https://formatjs.io/docs/tooling/linter#blocklist-elements',
     },
     fixable: 'code',
     schema: [

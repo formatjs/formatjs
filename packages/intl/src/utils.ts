@@ -12,10 +12,10 @@ import {DateTimeFormat, NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
-  whitelist: Array<K>,
+  allowlist: Array<K>,
   defaults: Partial<T> = {}
 ): Pick<T, K> {
-  return whitelist.reduce((filtered, name) => {
+  return allowlist.reduce((filtered, name) => {
     if (name in props) {
       filtered[name] = props[name]
     } else if (name in defaults) {

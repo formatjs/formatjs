@@ -1,8 +1,8 @@
-import blacklistElements from '../rules/blacklist-elements'
+import blocklistElements from '../rules/blocklist-elements'
 import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester, vueRuleTester} from './util'
 
-ruleTester.run('blacklist-elements', blacklistElements, {
+ruleTester.run('blocklist-elements', blocklistElements, {
   valid: [
     {
       code: `import {defineMessage} from 'react-intl'
@@ -46,7 +46,7 @@ ruleTester.run('blacklist-elements', blacklistElements, {
       options: [['selectordinal']],
       errors: [
         {
-          message: 'selectordinal element is blacklisted',
+          message: 'selectordinal element is blocklisted',
         },
       ],
     },
@@ -61,14 +61,14 @@ ruleTester.run('blacklist-elements', blacklistElements, {
       },
       errors: [
         {
-          message: 'selectordinal element is blacklisted',
+          message: 'selectordinal element is blocklisted',
         },
       ],
     },
   ],
 })
 
-vueRuleTester.run('vue/blacklist-elements', blacklistElements, {
+vueRuleTester.run('vue/blocklist-elements', blocklistElements, {
   valid: [
     {
       code: `<template>
@@ -92,7 +92,7 @@ vueRuleTester.run('vue/blacklist-elements', blacklistElements, {
       options: [['selectordinal']],
       errors: [
         {
-          message: 'selectordinal element is blacklisted',
+          message: 'selectordinal element is blocklisted',
         },
       ],
     },
@@ -106,7 +106,7 @@ vueRuleTester.run('vue/blacklist-elements', blacklistElements, {
       options: [['selectordinal']],
       errors: [
         {
-          message: 'selectordinal element is blacklisted',
+          message: 'selectordinal element is blocklisted',
         },
       ],
     },
