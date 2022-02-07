@@ -8,6 +8,16 @@ import {
   isTagElement,
 } from '@formatjs/icu-messageformat-parser'
 
+export type PseudoLocale = 'xx-LS' | 'xx-AC' | 'xx-HA' | 'en-XA' | 'en-XB'
+
+export const pseudoLocales: String[] = [
+  'xx-LS',
+  'xx-AC',
+  'xx-HA',
+  'en-XA',
+  'en-XB',
+]
+
 export function generateXXLS(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
@@ -110,4 +120,41 @@ export function generateENXB(
     }
   })
   return ast
+}
+
+/**
+ * Pseudo localize the input string / AST
+ * @param msgAst message string | AST
+ * @param pseudoLocale name of the pseudo locale
+ * @returns a pseudo loclaized string ! AST
+ */
+export function pseudoLocalize(
+  msg: string | MessageFormatElement[],
+  pseudoLocale: PseudoLocale | String | undefined
+) {
+  const msgAst = typeof msg === 'string' ? parse(msg) : msg
+  let pseudoLocalizedMessage: MessageFormatElement[]
+
+  switch (pseudoLocale) {
+    case 'xx-LS':
+      pseudoLocalizedMessage = generateXXLS(msgAst)
+      break
+    case 'xx-AC':
+      pseudoLocalizedMessage = generateXXAC(msgAst)
+      break
+    case 'xx-HA':
+      pseudoLocalizedMessage = generateXXHA(msgAst)
+      break
+    case 'en-XA':
+      pseudoLocalizedMessage = generateENXA(msgAst)
+      break
+    case 'en-XB':
+      pseudoLocalizedMessage = generateENXB(msgAst)
+      break
+    default:
+      pseudoLocalizedMessage = msgAst
+      break
+  }
+
+  return pseudoLocalizedMessage
 }

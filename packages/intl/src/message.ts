@@ -10,7 +10,13 @@ import {
   Options,
 } from 'intl-messageformat'
 import {MissingTranslationError, MessageFormatError} from './error'
-import {TYPE, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+import {
+  TYPE,
+  MessageFormatElement,
+  parse,
+} from '@formatjs/icu-messageformat-parser'
+import {pseudoLocalize, pseudoLocales} from './pseudo-localize'
+import stringify from 'json-stable-stringify'
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
@@ -118,6 +124,14 @@ or [@formatjs/ts-transformer](https://formatjs.io/docs/tooling/ts-transformer) O
 to autofix this issue`
   )
   const id = String(msgId)
+
+  const isPseudoLocale = pseudoLocales.includes(locale)
+
+  if (defaultMessage && isPseudoLocale) {
+    const pseudoLocalizedAst = pseudoLocalize(defaultMessage, locale)
+    return stringify(pseudoLocalizedAst)
+  }
+
   const message =
     // In case messages is Object.create(null)
     // e.g import('foo.json') from webpack)

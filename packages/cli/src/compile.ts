@@ -3,17 +3,9 @@ import {outputFile, readJSON} from 'fs-extra'
 import stringify from 'json-stable-stringify'
 import {debug, warn, writeStdout} from './console_utils'
 import {resolveBuiltinFormatter, Formatter} from './formatters'
-import {
-  generateXXAC,
-  generateXXLS,
-  generateXXHA,
-  generateENXA,
-  generateENXB,
-} from './pseudo_locale'
+import {pseudoLocalize, PseudoLocale} from '@formatjs/intl'
 
 export type CompileFn = (msgs: any) => Record<string, string>
-
-export type PseudoLocale = 'xx-LS' | 'xx-AC' | 'xx-HA' | 'en-XA' | 'en-XB'
 
 export interface CompileCLIOpts extends Opts {
   /**
@@ -78,26 +70,7 @@ Message from ${compiled[id]}: ${inputFile}
       try {
         const msgAst = parse(compiled[id])
         messages[id] = compiled[id]
-        switch (pseudoLocale) {
-          case 'xx-LS':
-            messageAsts[id] = generateXXLS(msgAst)
-            break
-          case 'xx-AC':
-            messageAsts[id] = generateXXAC(msgAst)
-            break
-          case 'xx-HA':
-            messageAsts[id] = generateXXHA(msgAst)
-            break
-          case 'en-XA':
-            messageAsts[id] = generateENXA(msgAst)
-            break
-          case 'en-XB':
-            messageAsts[id] = generateENXB(msgAst)
-            break
-          default:
-            messageAsts[id] = msgAst
-            break
-        }
+        messageAsts[id] = pseudoLocalize(msgAst, pseudoLocale)
         idsWithFileName[id] = inputFile
       } catch (e) {
         warn(

@@ -35,3 +35,8 @@ export {formatRelativeTime} from './src/relativeTime'
 export {formatNumber, formatNumberToParts} from './src/number'
 export {createIntl} from './src/create-intl'
 export type {CreateIntlFn} from './src/create-intl'
+export {
+  pseudoLocales,
+  PseudoLocale,
+  pseudoLocalize,
+} from './src/pseudo-localize'

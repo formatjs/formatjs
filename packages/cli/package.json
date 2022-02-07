@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "2.0.18",
+    "@formatjs/intl": "2.0.0",
     "@formatjs/ts-transformer": "3.9.2",
     "@types/estree": "^0.0.50",
     "@types/fs-extra": "^9.0.1",
