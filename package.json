@@ -72,7 +72,7 @@
     "@vue/test-utils": "2.0.0-beta.13",
     "babel-loader": "^8.2.2",
     "benchmark": "^2.1.4",
-    "chalk": "^4.0.0",
+    "chalk": "^5.0.0",
     "chokidar": "^3.4.2",
     "cjs-module-lexer": "^1.2.2",
     "classnames": "^2.2.6",
