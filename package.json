@@ -45,7 +45,7 @@
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-    "@swc/core": "1.2.121",
+    "@swc/core": "1.2.138",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^12.0.0",
     "@types/babel__core": "^7.1.7",
