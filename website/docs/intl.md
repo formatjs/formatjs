@@ -425,7 +425,7 @@ type MessageDescriptor = {
 ```
 
 :::info Extracting Message Descriptor
-You can extract inline-declared messages from source files using [our CLI](http://localhost:3000/docs/getting-started/message-extraction).
+You can extract inline-declared messages from source files using [our CLI](./getting-started/message-extraction.md).
 :::
 
 ### Message Formatting Fallbacks
