@@ -415,6 +415,7 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 | [locize](https://docs.locize.com/integration/supported-formats#json-nested)               | `simple`    |
 | [SimpleLocalize](https://simplelocalize.io/docs/integrations/format-js-cli/)              | `simple`    |
 | [POEditor Key-Value JSON](https://poeditor.com/localization/files/key-value-json)         | `simple`    |
+| [Localize's Simple JSON](https://developers.localizejs.com/docs/simple-json-import-export)| `simple`    |
 
 :::caution
 The `format`s of `extract` & `compile` have to be the same, which means if you `extract --format smartling`, you have to `compile --format smartling` as well & vice versa.
