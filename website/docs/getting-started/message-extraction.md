@@ -296,13 +296,14 @@ exports.format = function (msgs) {
 
 We also provide several [builtin formatters](../tooling/cli.md#builtin-formatters) to integrate with 3rd party TMSes so feel free to create PRs to add more.
 
-| TMS                                                                                       | `--format`  |
-| ----------------------------------------------------------------------------------------- | ----------- |
-| [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)    | `transifex` |
-| [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)      | `smartling` |
-| [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)             | `simple`    |
-| [Phrase](https://help.phrase.com/help/simple-json)                                        | `simple`    |
-| [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)              | `crowdin`   |
-| [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json) | `lokalise`  |
-| [SimpleLocalize JSON](https://simplelocalize.io/docs/file-formats/simplelocalize-json/)   | `simple`    |
-| [POEditor Key-Value JSON](https://poeditor.com/localization/files/key-value-json)         | `simple`    |
+| TMS                                                                                        | `--format`  |
+| ------------------------------------------------------------------------------------------ | ----------- |
+| [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)     | `transifex` |
+| [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)       | `smartling` |
+| [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)              | `simple`    |
+| [Phrase](https://help.phrase.com/help/simple-json)                                         | `simple`    |
+| [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)               | `crowdin`   |
+| [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json)  | `lokalise`  |
+| [SimpleLocalize JSON](https://simplelocalize.io/docs/file-formats/simplelocalize-json/)    | `simple`    |
+| [POEditor Key-Value JSON](https://poeditor.com/localization/files/key-value-json)          | `simple`    |
+| [Localize's Simple JSON](https://developers.localizejs.com/docs/simple-json-import-export) | `simple`    |
