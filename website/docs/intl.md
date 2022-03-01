@@ -532,7 +532,7 @@ function defineMessages(
 function defineMessage(messageDescriptor: MessageDescriptor): MessageDescriptor
 ```
 
-These functions is exported by the `@formatjs/intl` package and is simply a _hook_ for our CLI & babel/TS plugin to use when compiling default messages defined in JavaScript source files. This function simply returns the Message Descriptor map object that's passed-in.
+These functions are exported by the `@formatjs/intl` package and are simply a _hook_ for our CLI & babel/TS plugin to use when compiling default messages defined in JavaScript source files. This function simply returns the Message Descriptor map object that's passed-in.
 
 ```ts
 import {defineMessages, defineMessage} from '@formatjs/intl'
