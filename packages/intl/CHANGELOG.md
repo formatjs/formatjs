@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.0.0...@formatjs/intl@2.1.0) (2022-03-13)
+
+
+### Features
+
+* **@formatjs/intl:** add $t as an shorter hand alias for formatMessagge ([a0ab2d4](https://github.com/formatjs/formatjs/commit/a0ab2d431b0bb714fd9173b7492190fa006c88be))
+
+
+
+
+
 # [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.18.5...@formatjs/intl@2.0.0) (2022-02-06)
 
 
