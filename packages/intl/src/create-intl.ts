@@ -140,6 +140,7 @@ export function createIntl<T = string>(
       formatters.getPluralRules
     ),
     formatMessage: formatMessage.bind(null, resolvedConfig, formatters),
+    $t: formatMessage.bind(null, resolvedConfig, formatters),
     formatList: formatList.bind(null, resolvedConfig, formatters.getListFormat),
     formatListToParts: formatListToParts.bind(
       null,

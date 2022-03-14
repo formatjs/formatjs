@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.9.0...@formatjs/intl-getcanonicallocales@1.9.1) (2022-03-13)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** add peerDependenciesMeta field ([#3415](https://github.com/formatjs/formatjs/issues/3415)) ([d5a7b90](https://github.com/formatjs/formatjs/commit/d5a7b900f806f0ca51007ca86a13a42918db3a1c))
+
+
+
+
+
 # [1.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.8.0...@formatjs/intl-getcanonicallocales@1.9.0) (2022-01-09)
 
 

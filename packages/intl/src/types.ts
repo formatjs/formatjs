@@ -152,6 +152,16 @@ export interface IntlFormatters<T = any, R = T> {
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T, R>>,
     opts?: IntlMessageFormatOptions
   ): R
+  $t(
+    descriptor: MessageDescriptor,
+    values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
+    opts?: IntlMessageFormatOptions
+  ): string
+  $t(
+    descriptor: MessageDescriptor,
+    values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T, R>>,
+    opts?: IntlMessageFormatOptions
+  ): R
   formatList(values: ReadonlyArray<string>, opts?: FormatListOptions): string
   formatList(
     values: ReadonlyArray<string | T>,
