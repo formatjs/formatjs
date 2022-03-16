@@ -30,10 +30,6 @@ If you need to support older browsers, we recommend you do the following:
 
 5. If you need `Intl.DisplayNames`, include this [polyfill](polyfills/intl-displaynames.md) in your build along with individual CLDR data for each locale you support.
 
-### Browser
-
-We officially support IE11 along with 2 most recent versions of Edge, Chrome & Firefox.
-
 ### Node.js
 
 #### full-icu
