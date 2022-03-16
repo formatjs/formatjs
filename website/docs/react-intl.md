@@ -57,13 +57,6 @@ If you're using `react-intl` in React Native, make sure your runtime has built-i
 
 If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions in [Runtime Requirements](#runtime-requirements) to polyfill those APIs accordingly.
 
-## Experimental Intl Features
-
-FormatJS also provides types & polyfill for the following Intl API proposals:
-
-- NumberFormat: [polyfill](polyfills/intl-numberformat.md) & [spec](https://tc39.es/ecma402/)
-- DisplayNames: [polyfill](polyfills/intl-displaynames.md) & [spec](https://tc39.es/proposal-intl-displaynames/)
-
 ## The `react-intl` Package
 
 Install the [`react-intl` npm package](https://www.npmjs.com/package/react-intl) via npm:
