@@ -22,13 +22,14 @@ React Intl relies on these `Intl` APIs:
 
 If you need to support older browsers, we recommend you do the following:
 
-1. Polyfill `Intl.NumberFormat` with [`@formatjs/intl-numberformat`](polyfills/intl-numberformat.md).
-2. Polyfill `Intl.DateTimeFormat` with [`@formatjs/intl-datetimeformat`](polyfills/intl-datetimeformat.md)
-3. If you're supporting browsers that do not have [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](polyfills/intl-pluralrules.md) in your build.
+1. If you're supporting browsers that do not have `Intl`, include this [polyfill](polyfills/intl-getcanonicallocales.md) in your build.
+2. Polyfill `Intl.NumberFormat` with [`@formatjs/intl-numberformat`](polyfills/intl-numberformat.md).
+3. Polyfill `Intl.DateTimeFormat` with [`@formatjs/intl-datetimeformat`](polyfills/intl-datetimeformat.md)
+4. If you're supporting browsers that do not have [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](polyfills/intl-pluralrules.md) in your build.
 
-4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](polyfills/intl-relativetimeformat.md) in your build along with individual CLDR data for each locale you support.
+5. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](polyfills/intl-relativetimeformat.md) in your build along with individual CLDR data for each locale you support.
 
-5. If you need `Intl.DisplayNames`, include this [polyfill](polyfills/intl-displaynames.md) in your build along with individual CLDR data for each locale you support.
+6. If you need `Intl.DisplayNames`, include this [polyfill](polyfills/intl-displaynames.md) in your build along with individual CLDR data for each locale you support.
 
 ### Node.js
 
