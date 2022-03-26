@@ -30,10 +30,6 @@ If you need to support older browsers, we recommend you do the following:
 
 5. If you need `Intl.DisplayNames`, include this [polyfill](polyfills/intl-displaynames.md) in your build along with individual CLDR data for each locale you support.
 
-### Browser
-
-We officially support IE11 along with 2 most recent versions of Edge, Chrome & Firefox.
-
 ### Node.js
 
 #### full-icu
@@ -60,13 +56,6 @@ If you're using `react-intl` in React Native, make sure your runtime has built-i
 #### React Native on iOS
 
 If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions in [Runtime Requirements](#runtime-requirements) to polyfill those APIs accordingly.
-
-## Experimental Intl Features
-
-FormatJS also provides types & polyfill for the following Intl API proposals:
-
-- NumberFormat: [polyfill](polyfills/intl-numberformat.md) & [spec](https://tc39.es/ecma402/)
-- DisplayNames: [polyfill](polyfills/intl-displaynames.md) & [spec](https://tc39.es/proposal-intl-displaynames/)
 
 ## The `react-intl` Package
 
