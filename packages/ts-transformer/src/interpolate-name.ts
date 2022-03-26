@@ -66,7 +66,7 @@ export function interpolateName(
     let resourcePath = loaderContext.resourcePath
 
     if (parsed.ext) {
-      ext = parsed.ext.substr(1)
+      ext = parsed.ext.slice(1)
     }
 
     if (parsed.dir) {
@@ -79,7 +79,7 @@ export function interpolateName(
         .relative(context, resourcePath + '_')
         .replace(/\\/g, '/')
         .replace(/\.\.(\/)?/g, '_$1')
-      directory = directory.substr(0, directory.length - 1)
+      directory = directory.slice(0, -1)
     } else {
       directory = resourcePath.replace(/\\/g, '/').replace(/\.\.(\/)?/g, '_$1')
     }
@@ -97,7 +97,7 @@ export function interpolateName(
     const hashIdx = query.indexOf('#')
 
     if (hashIdx >= 0) {
-      query = query.substr(0, hashIdx)
+      query = query.slice(0, hashIdx)
     }
   }
 
