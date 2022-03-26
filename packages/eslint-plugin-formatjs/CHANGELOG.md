@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@3.0.1...eslint-plugin-formatjs@3.1.0) (2022-03-26)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** allow eslint 7 ([260b0ec](https://github.com/formatjs/formatjs/commit/260b0ec2e74fb634f469ef640131a1b0f1fae72d))
+
+
+
+
+
 ## [3.0.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@3.0.0...eslint-plugin-formatjs@3.0.1) (2022-03-26)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
