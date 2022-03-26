@@ -17,6 +17,7 @@ export const createIntl = (options: IntlConfig): Vue.Plugin => ({
     app.config.globalProperties.$formatRelativeTime = intl.formatRelativeTime
     app.config.globalProperties.$formatDisplayName = intl.formatDisplayName
     app.config.globalProperties.$formatNumber = intl.formatNumber
+    app.config.globalProperties.$formatList = intl.formatList
 
     app.provide(intlKey, intl)
   },
