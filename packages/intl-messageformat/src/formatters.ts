@@ -181,7 +181,7 @@ export function formatToParts<T>(
           ? formats.time[el.style]
           : isDateTimeSkeleton(el.style)
           ? el.style.parsedOptions
-          : undefined
+          : formats.time.medium
       result.push({
         type: PART_TYPE.literal,
         value: formatters

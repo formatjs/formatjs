@@ -28,7 +28,9 @@ describe('IntlMessageFormat', function () {
       date: ts,
     })
 
-    expect(output).toContain('My name is Anthony Pipkin, age 8')
+    expect(output).toMatch(
+      /My name is Anthony Pipkin, age 8, time \d{1,2}:\d{1,2}:\d{1,2} [AP]M, date \d{1,2}\/\d{1,2}\/\d{4}\./
+    )
     expect(output).toContain(new Intl.DateTimeFormat().format(ts))
   })
 
