@@ -40,7 +40,6 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//@types/node",
 ]
 
 TEST_DEPS = SRC_DEPS

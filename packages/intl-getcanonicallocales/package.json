@@ -26,13 +26,5 @@
   },
   "dependencies": {
     "tslib": "^2.1.0"
-  },
-  "peerDependencies": {
-    "@types/node": "14 || 16 || 17"
-  },
-  "peerDependenciesMeta": {
-    "@types/node": {
-      "optional": true
-    }
   }
 }
