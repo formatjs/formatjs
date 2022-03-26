@@ -15,6 +15,7 @@
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "license": "MIT",
   "main": "index.js",
+  "module": "lib/index.js",
   "types": "index.d.ts",
   "repository": {
     "type": "git",
