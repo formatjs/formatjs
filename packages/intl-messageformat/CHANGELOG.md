@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.12.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.11.4...intl-messageformat@9.12.0) (2022-03-26)
+
+
+### Features
+
+* **intl-messageformat:** default undefined time style to medium to match with ICU ([10400af](https://github.com/formatjs/formatjs/commit/10400af24dbcf397f1bf40e621ca13df66ccaf97)), closes [#3497](https://github.com/formatjs/formatjs/issues/3497)
+
+
+
+
+
 ## [9.11.4](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.11.3...intl-messageformat@9.11.4) (2022-02-06)
 
 **Note:** Version bump only for package intl-messageformat

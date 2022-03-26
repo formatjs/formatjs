@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.9.1...@formatjs/intl-getcanonicallocales@1.9.2) (2022-03-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** rm @types/node dep, fix [#3474](https://github.com/formatjs/formatjs/issues/3474) ([587e0f1](https://github.com/formatjs/formatjs/commit/587e0f1a5563a9ba0effceb2801fb11e0061be11))
+
+
+
+
+
 ## [1.9.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.9.0...@formatjs/intl-getcanonicallocales@1.9.1) (2022-03-13)
 
 

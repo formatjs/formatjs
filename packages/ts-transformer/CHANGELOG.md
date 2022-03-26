@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.9.2...@formatjs/ts-transformer@3.9.3) (2022-03-26)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** replace deprecated String.prototype.substr() ([#3496](https://github.com/formatjs/formatjs/issues/3496)) ([b2942f0](https://github.com/formatjs/formatjs/commit/b2942f0a2d8d7de3833539395371567a0f5b8b41))
+
+
+
+
+
 ## [3.9.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.9.1...@formatjs/ts-transformer@3.9.2) (2022-02-06)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-numberformat",
-  "version": "7.4.2",
+  "version": "7.4.3",
   "description": "Ponyfill for ES2020 Intl.NumberFormat",
   "keywords": [
     "polyfill",
@@ -22,8 +22,8 @@
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.11.3",
-    "@formatjs/intl-localematcher": "0.2.24",
+    "@formatjs/ecma402-abstract": "1.11.4",
+    "@formatjs/intl-localematcher": "0.2.25",
     "tslib": "^2.1.0"
   },
   "bugs": {
