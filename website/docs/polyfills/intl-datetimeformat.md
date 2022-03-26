@@ -92,7 +92,7 @@ async function polyfill(locale: string) {
   // Parallelize CLDR data loading
   const dataPolyfills = [
     import('@formatjs/intl-datetimeformat/add-all-tz'),
-    import(`@formatjs/intl-datetimeformat/locale-data/${unsupportedLocale}`)
+    import(`@formatjs/intl-datetimeformat/locale-data/${unsupportedLocale}`),
   ]
   await Promise.all(dataPolyfills)
 }
