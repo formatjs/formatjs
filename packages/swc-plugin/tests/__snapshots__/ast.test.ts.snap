@@ -14,8 +14,8 @@ exports[`ast 2`] = `
     }
     return obj;
 }
-var _obj, _obj1, _obj2;
 export function foo() {
+    var _obj;
     props.intl.formatMessage((_obj = {
         id: \\"HELLO..12.string\\",
         defaultMessage: [
@@ -28,9 +28,10 @@ export function foo() {
                 value: \\"intl\\"
             }, 
         ]
-    }, _defineProperty(_obj, \\"defaultMessage\\", 'props {intl}'), _defineProperty(_obj, \\"description\\", 'bar'), _obj), {
-        bar: 'bar'
+    }, _defineProperty(_obj, \\"defaultMessage\\", \\"props {intl}\\"), _defineProperty(_obj, \\"description\\", \\"bar\\"), _obj), {
+        bar: \\"bar\\"
     });
+    var _obj1;
     this.props.intl.formatMessage((_obj1 = {
         id: \\"HELLO..17.string\\",
         defaultMessage: [
@@ -43,9 +44,10 @@ export function foo() {
                 value: \\"intl\\"
             }, 
         ]
-    }, _defineProperty(_obj1, \\"defaultMessage\\", 'this props {intl}'), _defineProperty(_obj1, \\"description\\", 'bar'), _obj1), {
-        bar: 'bar'
+    }, _defineProperty(_obj1, \\"defaultMessage\\", \\"this props {intl}\\"), _defineProperty(_obj1, \\"description\\", \\"bar\\"), _obj1), {
+        bar: \\"bar\\"
     });
+    var _obj2;
     return intl.formatMessage((_obj2 = {
         id: \\"HELLO..9.string\\",
         defaultMessage: [
@@ -58,8 +60,8 @@ export function foo() {
                 value: \\"bar\\"
             }, 
         ]
-    }, _defineProperty(_obj2, \\"defaultMessage\\", 'foo {bar}'), _defineProperty(_obj2, \\"description\\", 'bar'), _obj2), {
-        bar: 'bar'
+    }, _defineProperty(_obj2, \\"defaultMessage\\", \\"foo {bar}\\"), _defineProperty(_obj2, \\"description\\", \\"bar\\"), _obj2), {
+        bar: \\"bar\\"
     });
 }
 "

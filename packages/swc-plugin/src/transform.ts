@@ -46,7 +46,7 @@ function createStringLiteral(value: string, span: Span): StringLiteral {
   return {
     type: 'StringLiteral',
     value,
-    has_escape: false,
+    hasEscape: false,
     span,
   }
 }
@@ -742,7 +742,7 @@ export class FormatJSTransformer extends Visitor {
     }
     return {
       ...node,
-      callee: this.visitExpressionOrSuper(node.callee),
+      callee: this.visitCallee(node.callee),
       arguments: this.visitArguments(node.arguments),
     }
   }

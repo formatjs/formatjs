@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`stringConcat 2`] = `
-"import React, { Component } from 'react';
-import { FormattedMessage, defineMessage } from 'react-intl';
-function _assertThisInitialized(self) {
+"function _assertThisInitialized(self) {
     if (self === void 0) {
         throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
     }
@@ -13,20 +11,6 @@ function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
-}
-function _defineProperties(target, props) {
-    for(var i = 0; i < props.length; i++){
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if (\\"value\\" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-    }
-}
-function _createClass(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    return Constructor;
 }
 function _defineProperty(obj, key, value) {
     if (key in obj) {
@@ -74,6 +58,7 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
+    \\"@swc/helpers - typeof\\";
     return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
 };
 function _isNativeReflectConstruct() {
@@ -81,8 +66,7 @@ function _isNativeReflectConstruct() {
     if (Reflect.construct.sham) return false;
     if (typeof Proxy === \\"function\\") return true;
     try {
-        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {
-        }));
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
     } catch (e) {
         return false;
@@ -101,7 +85,8 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-var _obj, _obj1;
+import React, { Component } from \\"react\\";
+import { FormattedMessage, defineMessage } from \\"react-intl\\";
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
     _inherits(Foo, Component1);
@@ -110,23 +95,20 @@ var Foo = /*#__PURE__*/ function(Component1) {
         _classCallCheck(this, Foo);
         return _super.apply(this, arguments);
     }
-    _createClass(Foo, [
-        {
-            key: \\"render\\",
-            value: function render() {
-                return(/*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
-                    id: \\"foo.bar.bazid\\",
-                    defaultMessage: \\"Hello World!farbaz\\"
-                }), intl.formatMessage((_obj = {
-                    id: \\"header\\",
-                    defaultMessage: \\"Hello World!foobar\\"
-                }, _defineProperty(_obj, \\"id\\", 'header'), _defineProperty(_obj, \\"defaultMessage\\", 'Hello World!' + 'foo' + 'bar'), _defineProperty(_obj, \\"description\\", 'The default message'), _obj)), defineMessage((_obj1 = {
-                    id: \\"header2\\",
-                    defaultMessage: \\"Hello World!\\"
-                }, _defineProperty(_obj1, \\"id\\", 'header2'), _defineProperty(_obj1, \\"defaultMessage\\", 'Hello World!'), _defineProperty(_obj1, \\"description\\", 'The default message' + ' asd'), _obj1))));
-            }
-        }
-    ]);
+    var _proto = Foo.prototype;
+    _proto.render = function render() {
+        var _obj, _obj1;
+        return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: \\"foo.bar.bazid\\",
+            defaultMessage: \\"Hello World!farbaz\\"
+        }), intl.formatMessage((_obj = {
+            id: \\"header\\",
+            defaultMessage: \\"Hello World!foobar\\"
+        }, _defineProperty(_obj, \\"id\\", \\"header\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello World!\\" + \\"foo\\" + \\"bar\\"), _defineProperty(_obj, \\"description\\", \\"The default message\\"), _obj)), defineMessage((_obj1 = {
+            id: \\"header2\\",
+            defaultMessage: \\"Hello World!\\"
+        }, _defineProperty(_obj1, \\"id\\", \\"header2\\"), _defineProperty(_obj1, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj1, \\"description\\", \\"The default message\\" + \\" asd\\"), _obj1)));
+    };
     return Foo;
 }(Component);
 export { Foo as default };

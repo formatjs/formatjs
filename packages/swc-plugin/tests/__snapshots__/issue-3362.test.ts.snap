@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`github issue #3362 2`] = `
-"import React from 'react';
-function _defineProperty(obj, key, value) {
+"function _defineProperty(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
             value: value,
@@ -15,25 +14,27 @@ function _defineProperty(obj, key, value) {
     }
     return obj;
 }
-var _obj, _obj1, _obj2;
+import React from \\"react\\";
 var InputTest = function(param) {
     var intl = param.intl;
+    var _obj;
     var placeholder = intl.formatMessage((_obj = {
         id: \\"HELLO.Krqghu.4.undefined\\",
         defaultMessage: \\"test\\"
-    }, _defineProperty(_obj, \\"defaultMessage\\", 'test'), _defineProperty(_obj, \\"id\\", 'Krqghu'), _obj));
+    }, _defineProperty(_obj, \\"defaultMessage\\", \\"test\\"), _defineProperty(_obj, \\"id\\", \\"Krqghu\\"), _obj));
     console.log(intl.formatMessage(_defineProperty({
         id: \\"HELLO..7.undefined\\",
         defaultMessage: \\"in call\\"
-    }, \\"defaultMessage\\", 'in call')));
-    return(/*#__PURE__*/ React.createElement(\\"div\\", null, getFieldDecorator('emails', {
+    }, \\"defaultMessage\\", \\"in call\\")));
+    var _obj1, _obj2;
+    return /*#__PURE__*/ React.createElement(\\"div\\", null, getFieldDecorator(\\"emails\\", {
         rules: [
             {
                 required: true,
                 message: intl.formatMessage((_obj1 = {
                     id: \\"HELLO.1.6.undefined\\",
                     defaultMessage: \\"nesttt\\"
-                }, _defineProperty(_obj1, \\"defaultMessage\\", 'nesttt'), _defineProperty(_obj1, \\"id\\", '1'), _obj1))
+                }, _defineProperty(_obj1, \\"defaultMessage\\", \\"nesttt\\"), _defineProperty(_obj1, \\"id\\", \\"1\\"), _obj1))
             }, 
         ]
     })(/*#__PURE__*/ React.createElement(\\"input\\", {
@@ -41,8 +42,8 @@ var InputTest = function(param) {
         placeholder2: intl.formatMessage((_obj2 = {
             id: \\"HELLO.Krqghus.7.undefined\\",
             defaultMessage: \\"testsss\\"
-        }, _defineProperty(_obj2, \\"defaultMessage\\", 'testsss'), _defineProperty(_obj2, \\"id\\", 'Krqghus'), _obj2))
-    }))));
+        }, _defineProperty(_obj2, \\"defaultMessage\\", \\"testsss\\"), _defineProperty(_obj2, \\"id\\", \\"Krqghus\\"), _obj2))
+    })));
 };
 export default InputTest;
 "
