@@ -48,6 +48,8 @@ export type OnErrorFn = (
     | FormatError
 ) => void
 
+export type OnWarnFn = (warning: string) => void
+
 /**
  * Config for intl object.
  * Generic type T is the type of potential rich text element. For example:
@@ -65,6 +67,7 @@ export interface ResolvedIntlConfig<T = string> {
   defaultFormats: CustomFormats
   defaultRichTextElements?: Record<string, FormatXMLElementFn<T>>
   onError: OnErrorFn
+  onWarn?: OnWarnFn
 }
 
 export interface CustomFormats extends Partial<Formats> {

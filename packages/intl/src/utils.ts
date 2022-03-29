@@ -3,6 +3,7 @@ import {
   CustomFormats,
   Formatters,
   OnErrorFn,
+  OnWarnFn,
   ResolvedIntlConfig,
 } from './types'
 import {IntlMessageFormat} from 'intl-messageformat'
@@ -33,6 +34,13 @@ const defaultErrorHandler: OnErrorFn = error => {
   }
 }
 
+const defaultWarnHandler: OnWarnFn = (warning: string) => {
+  // @ts-ignore just so we don't need to declare dep on @types/node
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(warning)
+  }
+}
+
 export const DEFAULT_INTL_CONFIG: Pick<
   ResolvedIntlConfig<any>,
   | 'fallbackOnEmptyString'
@@ -42,6 +50,7 @@ export const DEFAULT_INTL_CONFIG: Pick<
   | 'defaultLocale'
   | 'defaultFormats'
   | 'onError'
+  | 'onWarn'
 > = {
   formats: {},
   messages: {},
@@ -53,6 +62,7 @@ export const DEFAULT_INTL_CONFIG: Pick<
   fallbackOnEmptyString: true,
 
   onError: defaultErrorHandler,
+  onWarn: defaultWarnHandler,
 }
 
 export function createIntlCache(): IntlCache {
