@@ -34,10 +34,11 @@ function messagesContainString(
 
 function verifyConfigMessages<T = string>(config: IntlConfig<T>) {
   if (
+    config.onWarn &&
     config.defaultRichTextElements &&
     messagesContainString(config.messages || {})
   ) {
-    console.warn(`[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+    config.onWarn(`[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
 Please consider using "@formatjs/cli" to pre-compile your messages for performance.
 For more details see https://formatjs.io/docs/getting-started/message-distribution`)
   }

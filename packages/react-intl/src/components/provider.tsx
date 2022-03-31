@@ -57,6 +57,7 @@ function processIntlConfig<P extends IntlConfig = IntlConfig>(
     defaultLocale: config.defaultLocale,
     defaultFormats: config.defaultFormats,
     onError: config.onError,
+    onWarn: config.onWarn,
     wrapRichTextChunksInFragment: config.wrapRichTextChunksInFragment,
     defaultRichTextElements: config.defaultRichTextElements,
   }
