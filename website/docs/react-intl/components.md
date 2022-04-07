@@ -55,6 +55,10 @@ Provides a way to configure the default wrapper for React Intl's `<Formatted*>` 
 
 Allows the user to provide a custom error handler. By default, error messages are logged using `console.error` if `NODE_ENV` is not set to `production`.
 
+### onWarn
+
+Allows the user to provide a custom warning handler. By default, warning messages are logged using `console.warning` if `NODE_ENV` is not set to `production`.
+
 ### wrapRichTextChunksInFragment
 
 When formatting rich text message, the output we produced is of type `Array<string | React.ReactElement>`, which will trigger key error. This wraps the output in a single `React.Fragment` to suppress that.
