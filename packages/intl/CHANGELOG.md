@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.1.1...@formatjs/intl@2.2.0) (2022-04-17)
+
+
+### Features
+
+* **react-intl:** add onWarn ([#3506](https://github.com/formatjs/formatjs/issues/3506)) ([09273e3](https://github.com/formatjs/formatjs/commit/09273e3b183252bee0dbcbcb3066bb77d79c4de1))
+
+
+
+
+
 ## [2.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.1.0...@formatjs/intl@2.1.1) (2022-03-26)
 
 **Note:** Version bump only for package @formatjs/intl
