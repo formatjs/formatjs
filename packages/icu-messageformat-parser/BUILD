@@ -106,6 +106,15 @@ generate_src_file(
     entry_point = "scripts/regex-gen.ts",
 )
 
+generate_src_file(
+    name = "time-data",
+    src = "time-data.generated.ts",
+    data = [
+        "@npm//cldr-core",
+    ],
+    entry_point = "scripts/time-data-gen.ts",
+)
+
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,

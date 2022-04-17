@@ -892,6 +892,35 @@ describe('IntlMessageFormat', function () {
           d: new Date(0),
         })
       ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[AP]M/) // Deal w/ IE11
+      expect(
+        new IntlMessageFormat('{d, time, ::hhmmssz}', 'en-US').format({
+          d: new Date(0),
+        })
+      ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[AP]M/) // Deal w/ IE11
+
+      expect(
+        new IntlMessageFormat('{d, time, ::jjmmss}', 'de-DE').format({
+          d: new Date(0),
+        })
+      ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}$/) // Deal w/ IE11
+
+      expect(
+        new IntlMessageFormat('{d, time, ::jjmmss}', 'en-US').format({
+          d: new Date(0),
+        })
+      ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[AP]M$/) // Deal w/ IE11
+
+      expect(
+        new IntlMessageFormat('{d, time, ::jjmmssz}', 'de-DE').format({
+          d: new Date(0),
+        })
+      ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[A-Z]{3}/) // Deal w/ IE11
+
+      expect(
+        new IntlMessageFormat('{d, time, ::jjmmssz}', 'en-US').format({
+          d: new Date(0),
+        })
+      ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[AP]M(.*?)[A-Z]{3}/) // Deal w/ IE11
     })
   }
 

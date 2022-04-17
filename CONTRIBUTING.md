@@ -73,3 +73,25 @@ npm run release:next
 ```
 bazel run //packages/intl-datetimeformat:tz_data.update
 ```
+
+### Generating CLDR data
+
+1. Check out `./BUILD` file for generatable data — which are identifiable via `generate_src_file()` call
+   ```BUILD
+   generate_src_file(
+     name = "regex",
+     ...
+   )
+   ```
+2. Create an empty file with the given `src` attribute — path is relative to module root
+   ```shell
+   touch packages/icu-messageformat-parser/regex.generated.ts
+   ```
+3. Run update script
+   ```shell
+   bazel run //packages/icu-messageformat-parser:regex.update
+   ```
+4. Verify
+   ```shell
+   bazel run //packages/icu-messageformat-parser:regex
+   ```
