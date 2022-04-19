@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.1](https://github.com/formatjs/formatjs/compare/vue-intl@6.2.0...vue-intl@6.2.1) (2022-04-17)
+
+**Note:** Version bump only for package vue-intl
+
+
+
+
+
 # [6.2.0](https://github.com/formatjs/formatjs/compare/vue-intl@6.1.6...vue-intl@6.2.0) (2022-03-26)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.25.0](https://github.com/formatjs/formatjs/compare/react-intl@5.24.8...react-intl@5.25.0) (2022-04-17)
+
+
+### Features
+
+* **@formatjs/intl:** change constrains of react and react-dom versions to allow version 18 ([8808a95](https://github.com/formatjs/formatjs/commit/8808a95c3b377ee9b4e765ecfce74b45fd1c7700)), closes [#3526](https://github.com/formatjs/formatjs/issues/3526) [#3510](https://github.com/formatjs/formatjs/issues/3510)
+* **react-intl:** add onWarn ([#3506](https://github.com/formatjs/formatjs/issues/3506)) ([09273e3](https://github.com/formatjs/formatjs/commit/09273e3b183252bee0dbcbcb3066bb77d79c4de1))
+
+
+
+
+
 ## [5.24.8](https://github.com/formatjs/formatjs/compare/react-intl@5.24.7...react-intl@5.24.8) (2022-03-26)
 
 **Note:** Version bump only for package react-intl
