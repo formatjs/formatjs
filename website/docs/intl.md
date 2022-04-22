@@ -81,6 +81,7 @@ interface IntlConfig {
   defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>
   defaultFormats: CustomFormats
   onError(err: string): void
+  onWarn(warning: string): void
 }
 
 interface IntlFormatters {

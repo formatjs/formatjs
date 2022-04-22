@@ -137,6 +137,7 @@ interface IntlConfig {
   defaultLocale: string
   defaultFormats: CustomFormats
   onError(err: string): void
+  onWarn(warning: string): void
 }
 
 interface IntlFormatters {
