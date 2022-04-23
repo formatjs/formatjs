@@ -8,7 +8,6 @@ import {
 
 import {resolveBuiltinFormatter, Formatter} from './formatters'
 import stringify from 'json-stable-stringify'
-import {parseFile} from './vue_extractor'
 import {parseScript} from './parse_script'
 import {printAST} from '@formatjs/icu-messageformat-parser/printer'
 import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator'
@@ -90,7 +89,7 @@ function calculateLineColFromOffset(
   return {line: lines.length, col: lastLine.length}
 }
 
-function processFile(
+async function processFile(
   source: string,
   fn: string,
   {idInterpolationPattern, ...opts}: Opts & {idInterpolationPattern?: string}
@@ -142,6 +141,7 @@ function processFile(
   const scriptParseFn = parseScript(opts, fn)
   if (fn.endsWith('.vue')) {
     debug('Processing %s using vue extractor', fn)
+    const {parseFile} = await import('./vue_extractor')
     parseFile(source, fn, scriptParseFn)
   } else {
     debug('Processing %s using typescript extractor', fn)
@@ -175,7 +175,7 @@ export async function extract(
       warn('Reading source file from TTY.')
     }
     const stdinSource = await getStdinAsString()
-    rawResults = [processFile(stdinSource, 'dummy', opts)]
+    rawResults = [await processFile(stdinSource, 'dummy', opts)]
   } else {
     rawResults = await Promise.all(
       files.map(async fn => {

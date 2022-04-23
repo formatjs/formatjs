@@ -5,13 +5,12 @@ import compile, {CompileCLIOpts, Opts} from './compile'
 import compileFolder from './compile_folder'
 import {sync as globSync} from 'fast-glob'
 import {debug} from './console_utils'
+import {version} from '../package.json'
 
 const KNOWN_COMMANDS = ['extract']
 
 async function main(argv: string[]) {
   loudRejection()
-
-  const version = require('../package.json').version
 
   program
     .version(version, '-v, --version')

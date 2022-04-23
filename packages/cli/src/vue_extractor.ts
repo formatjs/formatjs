@@ -1,13 +1,13 @@
-import {parse} from 'vue/compiler-sfc'
-import {
+import {parse} from '@vue/compiler-sfc'
+import type {
   TemplateChildNode,
-  NodeTypes,
   SimpleExpressionNode,
   ElementNode,
   InterpolationNode,
   CompoundExpressionNode,
   DirectiveNode,
 } from '@vue/compiler-core'
+import {NodeTypes} from '@vue/compiler-core'
 
 export type ScriptParseFn = (source: string) => void
 

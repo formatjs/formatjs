@@ -1,6 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@npm//@bazel/esbuild:index.bzl", "esbuild")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "check_format", "esbuild", "package_json_test", "ts_compile")
+load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 exports_files(["package.json"])

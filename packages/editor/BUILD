@@ -2,7 +2,7 @@
 
 # # load("//tools:jest.bzl", "jest_test")
 # load("@npm//http-server:index.bzl", "http_server")
-# load("//tools:index.bzl", "check_format", "esbuild", "ts_compile")
+load("//tools:index.bzl", "check_format")
 
 # exports_files(["package.json"])
 
@@ -75,17 +75,17 @@
 #     generated = "//tools:tsconfig.golden.json",
 # )
 
-# check_format(
-#     name = "prettier",
-#     srcs = glob(
-#         [
-#             "**/*",
-#         ],
-#         exclude = [
-#             "CHANGELOG.md",
-#         ],
-#     ),
-# )
+check_format(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "CHANGELOG.md",
+        ],
+    ),
+)
 
 # esbuild(
 #     name = "app",

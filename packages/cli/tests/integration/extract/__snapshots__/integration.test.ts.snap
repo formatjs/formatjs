@@ -848,22 +848,6 @@ Object {
 }
 `;
 
-exports[`vue 1`] = `
-Object {
-  "3mGZ30": Object {
-    "defaultMessage": "in script",
-    "description": "in script desc",
-  },
-  "7MCO2v": Object {
-    "defaultMessage": "in template",
-    "description": "in template desc",
-  },
-  "S3wEt4": Object {
-    "defaultMessage": "script setup",
-  },
-}
-`;
-
 exports[`whitespace and newlines should be preserved 1`] = `
 Object {
   "stderr": "",

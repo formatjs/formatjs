@@ -51,7 +51,7 @@ http_file(
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
-load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "npm_install")
+load("@build_bazel_rules_nodejs//:index.bzl", "npm_install")
 load("@build_bazel_rules_nodejs//toolchains/esbuild:esbuild_repositories.bzl", "esbuild_repositories")
 
 esbuild_repositories(npm_repository = "npm")

@@ -223,11 +223,3 @@ test('whitespace and newlines should be preserved', async () => {
     await readJSON(join(ARTIFACT_PATH, 'defineMessages/actual.json'))
   ).toMatchSnapshot()
 }, 20000)
-
-test('vue', async () => {
-  const {stdout} = await exec(
-    `${BIN_PATH} extract '${join(__dirname, 'vue/*.vue')}'`
-  )
-
-  expect(JSON.parse(stdout)).toMatchSnapshot()
-})

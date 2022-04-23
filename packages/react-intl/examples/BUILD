@@ -1,7 +1,8 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
+load("@npm//@bazel/esbuild:index.bzl", "esbuild")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//http-server:index.bzl", "http_server")
-load("//tools:index.bzl", "check_format", "esbuild")
+load("//tools:index.bzl", "check_format")
 
 SRC_DEPS = [
     "//packages/ecma402-abstract:dist",

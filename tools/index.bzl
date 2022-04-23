@@ -3,7 +3,7 @@
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier_test")
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test")
 load("@build_bazel_rules_nodejs//internal/js_library:js_library.bzl", "js_library")
-load("@npm//@bazel/esbuild:index.bzl", _esbuild = "esbuild")
+load("@npm//@bazel/esbuild:index.bzl", "esbuild")
 load("@npm//@bazel/typescript:index.bzl", "ts_config", "ts_project")
 load("@npm//prettier:index.bzl", "prettier", "prettier_test")
 load("@npm//ts-node:index.bzl", "ts_node", "ts_node_test")
@@ -76,6 +76,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
             declaration_map = True,
             out_dir = "lib",
             tsconfig = "//:tsconfig.esm",
+            extends = "//:tsconfig.json",
             resolve_json_module = True,
             deps = deps,
         )
@@ -87,6 +88,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
             declaration_map = True,
             out_dir = "lib_esnext",
             tsconfig = "//:tsconfig.esm.esnext",
+            extends = "//:tsconfig.json",
             resolve_json_module = True,
             deps = deps,
         )
@@ -101,7 +103,6 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
     js_library(
         name = name,
         package_name = package_name,
-        srcs = ["package.json"],
         deps = [":%s-base" % name] + ([":%s-esm" % name] if not skip_esm else []),
         visibility = ["//visibility:public"],
     )
@@ -281,12 +282,6 @@ def check_format(name, srcs, config = "//:.prettierrc.json"):
         visibility = [
             "//:__pkg__",
         ],
-    )
-
-def esbuild(name, **kwargs):
-    _esbuild(
-        name = name,
-        **kwargs
     )
 
 def package_json_test(name, packageJson = "package.json", deps = []):
