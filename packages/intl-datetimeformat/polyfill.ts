@@ -14,7 +14,11 @@ if (shouldPolyfill()) {
       locales?: string | string[],
       options?: Intl.DateTimeFormatOptions
     ) {
-      return _toLocaleString(this, locales, options)
+      try {
+        return _toLocaleString(this, locales, options)
+      } catch (error) {
+        return 'Invalid Date'
+      }
     },
   })
   defineProperty(Date.prototype, 'toLocaleDateString', {
@@ -22,7 +26,11 @@ if (shouldPolyfill()) {
       locales?: string | string[],
       options?: Intl.DateTimeFormatOptions
     ) {
-      return _toLocaleDateString(this, locales, options)
+      try {
+        return _toLocaleDateString(this, locales, options)
+      } catch (error) {
+        return 'Invalid Date'
+      }
     },
   })
   defineProperty(Date.prototype, 'toLocaleTimeString', {
@@ -30,7 +38,11 @@ if (shouldPolyfill()) {
       locales?: string | string[],
       options?: Intl.DateTimeFormatOptions
     ) {
-      return _toLocaleTimeString(this, locales, options)
+      try {
+        return _toLocaleTimeString(this, locales, options)
+      } catch (error) {
+        return 'Invalid Date'
+      }
     },
   })
 }
