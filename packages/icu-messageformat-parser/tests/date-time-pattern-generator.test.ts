@@ -6,12 +6,12 @@ describe('date-time-pattern-generator', () => {
     {skeleton: '', expectedTimePattern: ''},
 
     // h12
-    {skeleton: 'j', expectedTimePattern: 'ah'},
-    {skeleton: 'jj', expectedTimePattern: 'ahh'},
-    {skeleton: 'jjj', expectedTimePattern: 'aaaah'},
-    {skeleton: 'jjjj', expectedTimePattern: 'aaaahh'},
-    {skeleton: 'jjjjj', expectedTimePattern: 'aaaaah'},
-    {skeleton: 'jjjjjj', expectedTimePattern: 'aaaaahh'},
+    {skeleton: 'j', expectedTimePattern: 'ha'},
+    {skeleton: 'jj', expectedTimePattern: 'hha'},
+    {skeleton: 'jjj', expectedTimePattern: 'haaaa'},
+    {skeleton: 'jjjj', expectedTimePattern: 'hhaaaa'},
+    {skeleton: 'jjjjj', expectedTimePattern: 'haaaaa'},
+    {skeleton: 'jjjjjj', expectedTimePattern: 'hhaaaaa'},
   ]
   const testDatah23 = [
     // h23
