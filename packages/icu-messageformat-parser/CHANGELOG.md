@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.0.19...@formatjs/icu-messageformat-parser@2.1.0) (2022-04-27)
+
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** preprocess 'j' date time skeleton before parsing as suggested in the Unicode guide ([#3544](https://github.com/formatjs/formatjs/issues/3544)) ([7173e29](https://github.com/formatjs/formatjs/commit/7173e297a229254dd9faed4abe25db17fb96dc68))
+
+
+
+
+
 ## [2.0.19](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.0.18...@formatjs/icu-messageformat-parser@2.0.19) (2022-03-26)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

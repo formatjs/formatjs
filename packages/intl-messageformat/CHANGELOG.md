@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.13.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.12.0...intl-messageformat@9.13.0) (2022-04-27)
+
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** preprocess 'j' date time skeleton before parsing as suggested in the Unicode guide ([#3544](https://github.com/formatjs/formatjs/issues/3544)) ([7173e29](https://github.com/formatjs/formatjs/commit/7173e297a229254dd9faed4abe25db17fb96dc68))
+
+
+
+
+
 # [9.12.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.11.4...intl-messageformat@9.12.0) (2022-03-26)
 
 
