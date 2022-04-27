@@ -105,6 +105,7 @@ function createDefaultFormatters(
 export class IntlMessageFormat {
   private readonly ast: MessageFormatElement[]
   private readonly locales: string | string[]
+  private readonly resolvedLocale: Intl.Locale
   private readonly formatters: Formatters
   private readonly formats: Formats
   private readonly message: string | undefined
@@ -119,6 +120,10 @@ export class IntlMessageFormat {
     overrideFormats?: Partial<Formats>,
     opts?: Options
   ) {
+    // Defined first because it's used to build the format pattern.
+    this.locales = locales
+    this.resolvedLocale = IntlMessageFormat.resolveLocale(locales)
+
     if (typeof message === 'string') {
       this.message = message
       if (!IntlMessageFormat.__parse) {
@@ -129,6 +134,7 @@ export class IntlMessageFormat {
       // Parse string messages into an AST.
       this.ast = IntlMessageFormat.__parse(message, {
         ignoreTag: opts?.ignoreTag,
+        locale: this.resolvedLocale,
       })
     } else {
       this.ast = message
@@ -141,9 +147,6 @@ export class IntlMessageFormat {
     // Creates a new object with the specified `formats` merged with the default
     // formats.
     this.formats = mergeConfigs(IntlMessageFormat.formats, overrideFormats)
-
-    // Defined first because it's used to build the format pattern.
-    this.locales = locales
 
     this.formatters =
       (opts && opts.formatters) || createDefaultFormatters(this.formatterCache)
@@ -188,7 +191,7 @@ export class IntlMessageFormat {
       this.message
     )
   resolvedOptions = () => ({
-    locale: Intl.NumberFormat.supportedLocalesOf(this.locales)[0],
+    locale: this.resolvedLocale.toString(),
   })
   getAst = () => this.ast
   private static memoizedDefaultLocale: string | null = null
@@ -200,6 +203,14 @@ export class IntlMessageFormat {
     }
 
     return IntlMessageFormat.memoizedDefaultLocale
+  }
+  static resolveLocale = (locales: string | string[]): Intl.Locale => {
+    const supportedLocales = Intl.NumberFormat.supportedLocalesOf(locales)
+    if (supportedLocales.length > 0) {
+      return new Intl.Locale(supportedLocales[0])
+    }
+
+    return new Intl.Locale(typeof locales === 'string' ? locales : locales[0])
   }
   static __parse: typeof parse | undefined = parse
   // Default format options used as the prototype of the `formats` provided to the

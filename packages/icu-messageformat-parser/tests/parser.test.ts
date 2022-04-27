@@ -141,6 +141,28 @@ test('date_arg_skeleton_2', () =>
 
 test('date_arg_skeleton_3', () => testParser('{0, date, ::h:mm a}', {}))
 
+describe('date_skeleton', function () {
+  const locale = new Intl.Locale('und', {hourCycle: 'h12'})
+  const options = {
+    locale,
+    shouldParseSkeletons: true,
+    requiresOtherClause: true,
+  }
+
+  test.each([
+    {skeleton: '{0, date, ::j}'},
+    {skeleton: '{0, date, ::jj}'},
+    {skeleton: '{0, date, ::jjj}'},
+    {skeleton: '{0, date, ::jjjj}'},
+    {skeleton: '{0, date, ::jjjjj}'},
+    {skeleton: '{0, date, ::jjjjjj}'},
+    {skeleton: '{0, date, ::J}'},
+    {skeleton: '{0, date, ::JJ}'},
+  ])('date_arg_skeleton_with_jJ', ({skeleton}) => {
+    testParser(skeleton, options)
+  })
+})
+
 test('duplicate_plural_selectors', () =>
   testParser(
     'You have {count, plural, one {# hot dog} one {# hamburger} one {# sandwich} other {# snacks}} in your lunch bag.'

@@ -434,6 +434,364 @@ Object {
 }
 `;
 
+exports[`date_skeleton date_arg_skeleton_with_jJ 1`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 15,
+          "line": 1,
+          "offset": 14,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+            "offset": 13,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+            "offset": 10,
+          },
+        },
+        "parsedOptions": Object {
+          "hour": "numeric",
+          "hour12": true,
+          "hourCycle": "h12",
+        },
+        "pattern": "ha",
+        "type": 1,
+      },
+      "type": 3,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`date_skeleton date_arg_skeleton_with_jJ 2`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+          "offset": 15,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 15,
+            "line": 1,
+            "offset": 14,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+            "offset": 10,
+          },
+        },
+        "parsedOptions": Object {
+          "hour": "2-digit",
+          "hour12": true,
+          "hourCycle": "h12",
+        },
+        "pattern": "hha",
+        "type": 1,
+      },
+      "type": 3,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`date_skeleton date_arg_skeleton_with_jJ 3`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+          "offset": 16,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 16,
+            "line": 1,
+            "offset": 15,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+            "offset": 10,
+          },
+        },
+        "parsedOptions": Object {
+          "hour": "numeric",
+          "hour12": true,
+          "hourCycle": "h12",
+        },
+        "pattern": "haaaa",
+        "type": 1,
+      },
+      "type": 3,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`date_skeleton date_arg_skeleton_with_jJ 4`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 18,
+          "line": 1,
+          "offset": 17,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 17,
+            "line": 1,
+            "offset": 16,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+            "offset": 10,
+          },
+        },
+        "parsedOptions": Object {
+          "hour": "2-digit",
+          "hour12": true,
+          "hourCycle": "h12",
+        },
+        "pattern": "hhaaaa",
+        "type": 1,
+      },
+      "type": 3,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`date_skeleton date_arg_skeleton_with_jJ 5`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 19,
+          "line": 1,
+          "offset": 18,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 18,
+            "line": 1,
+            "offset": 17,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+            "offset": 10,
+          },
+        },
+        "parsedOptions": Object {
+          "hour": "numeric",
+          "hour12": true,
+          "hourCycle": "h12",
+        },
+        "pattern": "haaaaa",
+        "type": 1,
+      },
+      "type": 3,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`date_skeleton date_arg_skeleton_with_jJ 6`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 20,
+          "line": 1,
+          "offset": 19,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 19,
+            "line": 1,
+            "offset": 18,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+            "offset": 10,
+          },
+        },
+        "parsedOptions": Object {
+          "hour": "2-digit",
+          "hour12": true,
+          "hourCycle": "h12",
+        },
+        "pattern": "hhaaaaa",
+        "type": 1,
+      },
+      "type": 3,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`date_skeleton date_arg_skeleton_with_jJ 7`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 15,
+          "line": 1,
+          "offset": 14,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 14,
+            "line": 1,
+            "offset": 13,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+            "offset": 10,
+          },
+        },
+        "parsedOptions": Object {
+          "hour": "numeric",
+          "hourCycle": "h23",
+        },
+        "pattern": "H",
+        "type": 1,
+      },
+      "type": 3,
+      "value": "0",
+    },
+  ],
+}
+`;
+
+exports[`date_skeleton date_arg_skeleton_with_jJ 8`] = `
+Object {
+  "err": null,
+  "val": Array [
+    Object {
+      "location": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+          "offset": 15,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "style": Object {
+        "location": Object {
+          "end": Object {
+            "column": 15,
+            "line": 1,
+            "offset": 14,
+          },
+          "start": Object {
+            "column": 11,
+            "line": 1,
+            "offset": 10,
+          },
+        },
+        "parsedOptions": Object {
+          "hour": "2-digit",
+          "hourCycle": "h23",
+        },
+        "pattern": "HH",
+        "type": 1,
+      },
+      "type": 3,
+      "value": "0",
+    },
+  ],
+}
+`;
+
 exports[`double_apostrophes_1 1`] = `
 Object {
   "err": null,
