@@ -56,7 +56,7 @@ new IntlMessageFormat(
       =1 {tiene una foto.}
       other {tiene # fotos.}
     }`,
-  'en-US'
+  'es-ES'
 ).format({numPhotos: 1000})
 ```
 
