@@ -90,7 +90,7 @@ export class MissingTranslationError extends IntlError<IntlErrorCode.MISSING_TRA
     super(
       IntlErrorCode.MISSING_TRANSLATION,
       `Missing message: "${descriptor.id}" for locale "${locale}", using ${
-        descriptor.defaultMessage ? 'default message' : 'id'
+        descriptor.defaultMessage ? `default message (${descriptor.defaultMessage})` : 'id'
       } as fallback.`
     )
     this.descriptor = descriptor
