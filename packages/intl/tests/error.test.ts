@@ -18,6 +18,6 @@ describe('MissingTranslationError', () => {
     const e = new MissingTranslationError(
       { defaultMessage: [{ type: 7 }] },
       'en')
-    expect(e.toString()).toMatch(/default message \(\{type:7\}\)/)
+    expect(e.toString()).toMatch(/default message \(\{"type":7\}\)/)
   })
 })
