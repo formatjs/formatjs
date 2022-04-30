@@ -1,4 +1,4 @@
-import { MessageDescriptor } from './types'
+import {MessageDescriptor} from './types'
 
 export enum IntlErrorCode {
   FORMAT_ERROR = 'FORMAT_ERROR',
@@ -10,7 +10,7 @@ export enum IntlErrorCode {
 
 export class IntlError<
   T extends IntlErrorCode = IntlErrorCode.FORMAT_ERROR
-  > extends Error {
+> extends Error {
   public readonly code: T
 
   constructor(code: T, message: string, exception?: Error | unknown) {
@@ -89,10 +89,16 @@ export class MissingTranslationError extends IntlError<IntlErrorCode.MISSING_TRA
   constructor(descriptor: MessageDescriptor, locale: string) {
     super(
       IntlErrorCode.MISSING_TRANSLATION,
-      `Missing message: "${descriptor.id}" for locale "${locale}", using ${descriptor.defaultMessage
-        ? `default message (${typeof descriptor.defaultMessage === 'string'
-          ? descriptor.defaultMessage
-          : descriptor.defaultMessage.map((e: any) => e.value ?? JSON.stringify(e)).join()})` : 'id'
+      `Missing message: "${descriptor.id}" for locale "${locale}", using ${
+        descriptor.defaultMessage
+          ? `default message (${
+              typeof descriptor.defaultMessage === 'string'
+                ? descriptor.defaultMessage
+                : descriptor.defaultMessage
+                    .map((e: any) => e.value ?? JSON.stringify(e))
+                    .join()
+            })`
+          : 'id'
       } as fallback.`
     )
     this.descriptor = descriptor
