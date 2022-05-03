@@ -20,7 +20,7 @@ export class IntlError<
         : new Error(String(exception))
       : undefined
     super(
-      `[@formatjs/intl Error ${code}] ${message} 
+      `[@formatjs/intl Error ${code}] ${message}
 ${err ? `\n${err.message}\n${err.stack}` : ''}`
     )
     this.code = code
@@ -55,7 +55,7 @@ export class IntlFormatError extends IntlError<IntlErrorCode.FORMAT_ERROR> {
   constructor(message: string, locale: string, exception?: Error | unknown) {
     super(
       IntlErrorCode.FORMAT_ERROR,
-      `${message} 
+      `${message}
 Locale: ${locale}
 `,
       exception
@@ -72,10 +72,10 @@ export class MessageFormatError extends IntlFormatError {
     exception?: Error | unknown
   ) {
     super(
-      `${message} 
+      `${message}
 MessageID: ${descriptor?.id}
 Default Message: ${descriptor?.defaultMessage}
-Description: ${descriptor?.description} 
+Description: ${descriptor?.description}
 `,
       locale,
       exception
@@ -90,7 +90,15 @@ export class MissingTranslationError extends IntlError<IntlErrorCode.MISSING_TRA
     super(
       IntlErrorCode.MISSING_TRANSLATION,
       `Missing message: "${descriptor.id}" for locale "${locale}", using ${
-        descriptor.defaultMessage ? 'default message' : 'id'
+        descriptor.defaultMessage
+          ? `default message (${
+              typeof descriptor.defaultMessage === 'string'
+                ? descriptor.defaultMessage
+                : descriptor.defaultMessage
+                    .map((e: any) => e.value ?? JSON.stringify(e))
+                    .join()
+            })`
+          : 'id'
       } as fallback.`
     )
     this.descriptor = descriptor
