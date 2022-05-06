@@ -307,3 +307,4 @@ We also provide several [builtin formatters](../tooling/cli.md#builtin-formatter
 | [SimpleLocalize JSON](https://simplelocalize.io/docs/file-formats/simplelocalize-json/)    | `simple`    |
 | [POEditor Key-Value JSON](https://poeditor.com/localization/files/key-value-json)          | `simple`    |
 | [Localize's Simple JSON](https://developers.localizejs.com/docs/simple-json-import-export) | `simple`    |
+| [locize](https://docs.locize.com/integration/supported-formats#json-nested)                | `simple`    |
