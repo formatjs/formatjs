@@ -177,7 +177,7 @@ Output
 
 ## Adding our babel-plugin/TypeScript Transformer for compilation
 
-Our tooling supports `babel`, `ts-loader`, `ts-jest`, `rollup-plugin-typescript2` & `ttypescript` for message compilation:
+Our tooling supports `babel`, `ts-loader`, `ts-jest`, `rollup-plugin-typescript2` & `typescript` for message compilation:
 
 ### Babel
 
