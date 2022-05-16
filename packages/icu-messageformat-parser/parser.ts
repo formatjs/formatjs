@@ -57,7 +57,9 @@ export interface ParserOptions {
    * Default is false
    */
   captureLocation?: boolean
-
+  /**
+   * Instance of Intl.Locale to resolve locale-dependent skeleton
+   */
   locale?: Intl.Locale
 }
 

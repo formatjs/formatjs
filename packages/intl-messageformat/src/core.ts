@@ -105,7 +105,7 @@ function createDefaultFormatters(
 export class IntlMessageFormat {
   private readonly ast: MessageFormatElement[]
   private readonly locales: string | string[]
-  private readonly resolvedLocale: Intl.Locale
+  private readonly resolvedLocale?: Intl.Locale
   private readonly formatters: Formatters
   private readonly formats: Formats
   private readonly message: string | undefined
@@ -191,7 +191,9 @@ export class IntlMessageFormat {
       this.message
     )
   resolvedOptions = () => ({
-    locale: this.resolvedLocale.toString(),
+    locale:
+      this.resolvedLocale?.toString() ||
+      Intl.NumberFormat.supportedLocalesOf(this.locales)[0],
   })
   getAst = () => this.ast
   private static memoizedDefaultLocale: string | null = null
@@ -204,7 +206,12 @@ export class IntlMessageFormat {
 
     return IntlMessageFormat.memoizedDefaultLocale
   }
-  static resolveLocale = (locales: string | string[]): Intl.Locale => {
+  static resolveLocale = (
+    locales: string | string[]
+  ): Intl.Locale | undefined => {
+    if (typeof Intl.Locale === 'undefined') {
+      return
+    }
     const supportedLocales = Intl.NumberFormat.supportedLocalesOf(locales)
     if (supportedLocales.length > 0) {
       return new Intl.Locale(supportedLocales[0])
