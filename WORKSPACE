@@ -21,8 +21,18 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file"
 
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "ddb78717b802f8dd5d4c01c340ecdc007c8ced5c1df7db421d0df3d642ea0580",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.6.0/rules_nodejs-4.6.0.tar.gz"],
+    sha256 = "0fad45a9bda7dc1990c47b002fd64f55041ea751fafc00cd34efb96107675778",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.5.0/rules_nodejs-5.5.0.tar.gz"],
+)
+
+load("@build_bazel_rules_nodejs//:repositories.bzl", "build_bazel_rules_nodejs_dependencies")
+
+build_bazel_rules_nodejs_dependencies()
+
+load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
+
+nodejs_register_toolchains(
+    name = "nodejs",
 )
 
 IANA_TZ_VERSION = "2021e"
@@ -44,11 +54,6 @@ http_file(
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "npm_install")
 load("@build_bazel_rules_nodejs//toolchains/esbuild:esbuild_repositories.bzl", "esbuild_repositories")
 
-node_repositories(
-    node_version = "16.1.0",
-    package_json = ["//:package.json"],
-)
-
 esbuild_repositories(npm_repository = "npm")
 
 # The npm_install rule runs yarn anytime the package.json or yarn.lock file changes.
@@ -63,7 +68,6 @@ npm_install(
     post_install_patches = [
         "//:npm_package_patches/make-plural-compiler+5.1.0.patch",
         "//:npm_package_patches/tslib+2.3.0.patch",
-        "//:npm_package_patches/@bazel+typescript+4.4.0.patch",
     ],
     # post_install_patches path doesn't work w/o symlink_node_modules = False
     symlink_node_modules = False,
