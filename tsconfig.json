@@ -28,7 +28,8 @@
     "rootDirs": [
       ".",
       "bazel-out/k8-fastbuild-ST-4a519fd6d3e4/bin",
-      "bazel-out/darwin-fastbuild/bin"
+      "bazel-out/darwin-fastbuild/bin",
+      "bazel-out/k8-fastbuild/bin"
     ],
     "typeRoots": [
       // Stop TS from climbing up the tree to arbitrary node_modules, thus
