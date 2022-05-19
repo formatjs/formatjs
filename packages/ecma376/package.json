@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/ecma376",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "generate ecma376 numFmt in different locales & currencies",
   "main": "index.js",
   "module": "lib/index.js",
