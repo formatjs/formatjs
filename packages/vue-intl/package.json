@@ -19,7 +19,7 @@
   "dependencies": {
     "@babel/types": "^7.12.11",
     "@formatjs/intl": "2.2.1",
-    "tslib": "^2.1.0"
+    "tslib": "2.4.0"
   },
   "peerDependencies": {
     "vue": "^3.2.23"

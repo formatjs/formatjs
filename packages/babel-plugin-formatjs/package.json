@@ -20,7 +20,7 @@
     "@formatjs/ts-transformer": "3.9.4",
     "@types/babel__core": "^7.1.7",
     "@types/babel__helper-plugin-utils": "^7.10.0",
-    "tslib": "^2.1.0"
+    "tslib": "2.4.0"
   },
   "keywords": [
     "babel-plugin",

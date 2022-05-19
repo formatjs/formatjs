@@ -12,13 +12,14 @@ import {
   assignUniqueKeysToParts,
   shallowEqual,
 } from '../utils'
-import {IntlConfig, IntlShape} from '../types'
+import type {IntlConfig, IntlShape, ResolvedIntlConfig} from '../types'
 import {
   formatMessage as coreFormatMessage,
   IntlCache,
   createIntl as coreCreateIntl,
   CreateIntlFn,
   createIntlCache,
+  FormatMessageFn,
 } from '@formatjs/intl'
 
 import {
@@ -88,7 +89,7 @@ function assignUniqueKeysToFormatXMLElementFnArgument<
   }, {} as T)
 }
 
-const formatMessage: typeof coreFormatMessage = (
+const formatMessage: FormatMessageFn<React.ReactNode> = (
   config,
   formatters,
   descriptor,
@@ -134,24 +135,27 @@ export const createIntl: CreateIntlFn<
     cache
   )
 
+  const resolvedConfig: ResolvedIntlConfig = {
+    locale: coreIntl.locale,
+    timeZone: coreIntl.timeZone,
+    fallbackOnEmptyString: coreIntl.fallbackOnEmptyString,
+    formats: coreIntl.formats,
+    defaultLocale: coreIntl.defaultLocale,
+    defaultFormats: coreIntl.defaultFormats,
+    messages: coreIntl.messages,
+    onError: coreIntl.onError,
+    defaultRichTextElements,
+  }
+
   return {
     ...coreIntl,
     formatMessage: formatMessage.bind(
       null,
-      {
-        locale: coreIntl.locale,
-        timeZone: coreIntl.timeZone,
-        fallbackOnEmptyString: coreIntl.fallbackOnEmptyString,
-        formats: coreIntl.formats,
-        defaultLocale: coreIntl.defaultLocale,
-        defaultFormats: coreIntl.defaultFormats,
-        messages: coreIntl.messages,
-        onError: coreIntl.onError,
-        defaultRichTextElements,
-      },
+      resolvedConfig,
       coreIntl.formatters
     ),
-  }
+    $t: formatMessage.bind(null, resolvedConfig, coreIntl.formatters),
+  } as any
 }
 
 export default class IntlProvider extends React.PureComponent<

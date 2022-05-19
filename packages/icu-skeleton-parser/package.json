@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.11.4",
-    "tslib": "^2.1.0"
+    "tslib": "2.4.0"
   }
 }

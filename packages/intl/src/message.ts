@@ -64,22 +64,7 @@ function deepMergeFormatsAndSetTimeZone(
   }
 }
 
-export function formatMessage(
-  config: {
-    locale: string
-    timeZone?: string
-    formats: CustomFormats
-    messages: Record<string, string> | Record<string, MessageFormatElement[]>
-    defaultLocale: string
-    defaultFormats: CustomFormats
-    onError: OnErrorFn
-  },
-  state: Formatters,
-  messageDescriptor?: MessageDescriptor,
-  values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
-  opts?: Options
-): string
-export function formatMessage<T>(
+export type FormatMessageFn<T> = (
   {
     locale,
     formats,
@@ -102,10 +87,28 @@ export function formatMessage<T>(
     onError: OnErrorFn
   },
   state: IntlMessageFormatFormatters & Pick<Formatters, 'getMessageFormat'>,
-  messageDescriptor: MessageDescriptor = {id: ''},
+  messageDescriptor: MessageDescriptor,
   values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
   opts?: Options
-): Array<T | string> | string | T {
+) => T extends string ? string : Array<T | string> | string | T
+
+export const formatMessage: FormatMessageFn<any> = (
+  {
+    locale,
+    formats,
+    messages,
+    defaultLocale,
+    defaultFormats,
+    fallbackOnEmptyString,
+    onError,
+    timeZone,
+    defaultRichTextElements,
+  },
+  state,
+  messageDescriptor = {id: ''},
+  values,
+  opts
+) => {
   const {id: msgId, defaultMessage} = messageDescriptor
 
   // `id` is a required field of a Message Descriptor.
@@ -197,7 +200,7 @@ to autofix this issue`
       ...(opts || {}),
     })
 
-    return formatter.format<T>(values)
+    return formatter.format<any>(values)
   } catch (e) {
     onError(
       new MessageFormatError(

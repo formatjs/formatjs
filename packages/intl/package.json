@@ -35,7 +35,7 @@
     "@formatjs/intl-displaynames": "5.4.3",
     "@formatjs/intl-listformat": "6.5.3",
     "intl-messageformat": "9.13.0",
-    "tslib": "^2.1.0"
+    "tslib": "2.4.0"
   },
   "peerDependencies": {
     "typescript": "^4.5"

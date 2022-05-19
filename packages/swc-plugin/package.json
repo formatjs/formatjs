@@ -21,7 +21,7 @@
     "@formatjs/ts-transformer": "3.9.4",
     "@types/node": "14 || 16 || 17",
     "chalk": "^4.0.0",
-    "tslib": "^2.1.0"
+    "tslib": "2.4.0"
   },
   "peerDependencies": {
     "ts-jest": "27"

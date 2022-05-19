@@ -5,18 +5,27 @@
  */
 
 import * as React from 'react'
-import type {Options as IntlMessageFormatOptions} from 'intl-messageformat'
+import type {
+  FormatXMLElementFn,
+  Options as IntlMessageFormatOptions,
+  PrimitiveType,
+} from 'intl-messageformat'
 
 import {MessageDescriptor} from '@formatjs/intl'
 import useIntl from './useIntl'
 import {shallowEqual} from '../utils'
 
 export interface Props<
-  V extends Record<string, any> = Record<string, React.ReactNode>
+  V extends Record<string, any> = Record<
+    string,
+    | React.ReactNode
+    | PrimitiveType
+    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
+  >
 > extends MessageDescriptor {
   values?: V
   tagName?: React.ElementType<any>
-  children?(nodes: React.ReactNodeArray): React.ReactElement | null
+  children?(nodes: React.ReactNode[]): React.ReactElement | null
   ignoreTag?: IntlMessageFormatOptions['ignoreTag']
 }
 

@@ -1,9 +1,9 @@
 import {
   IntlMessageFormat,
   Formats,
-  PrimitiveType,
   FormatXMLElementFn,
   FormatError,
+  PrimitiveType,
   Options as IntlMessageFormatOptions,
 } from 'intl-messageformat'
 import {DateTimeFormat} from '@formatjs/ecma402-abstract'

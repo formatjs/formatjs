@@ -535,7 +535,7 @@ function formatMessage(
     string,
     MessageFormatPrimitiveValue | React.ReactElement | FormatXMLElementFn
   >
-): string | React.ReactNodeArray
+): string | React.ReactNode[]
 ```
 
 This function will return a formatted message string. It expects a `MessageDescriptor` with at least an `id` property, and accepts a shallow `values` object which are used to fill placeholders in the message.

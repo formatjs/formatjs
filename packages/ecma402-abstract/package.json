@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "@formatjs/intl-localematcher": "0.2.25",
-    "tslib": "^2.1.0"
+    "tslib": "2.4.0"
   },
   "author": "Long Ho <holevietlong@gmail.com",
   "bugs": {

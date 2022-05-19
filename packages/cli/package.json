@@ -44,7 +44,7 @@
     "fs-extra": "10",
     "json-stable-stringify": "^1.0.1",
     "loud-rejection": "^2.2.0",
-    "tslib": "^2.1.0",
+    "tslib": "2.4.0",
     "typescript": "^4.5",
     "vue": "^3.2.23"
   },

@@ -34,7 +34,7 @@
     "@formatjs/ecma402-abstract": "1.11.4",
     "@formatjs/fast-memoize": "1.2.1",
     "@formatjs/icu-messageformat-parser": "2.1.0",
-    "tslib": "^2.1.0"
+    "tslib": "2.4.0"
   },
   "sideEffects": false,
   "homepage": "https://github.com/formatjs/formatjs",

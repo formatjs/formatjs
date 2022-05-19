@@ -1,4 +1,4 @@
-import {IntlCache, IntlShape, IntlConfig} from './types'
+import {IntlCache, IntlShape, IntlConfig, ResolvedIntlConfig} from './types'
 import {createFormatters, DEFAULT_INTL_CONFIG} from './utils'
 import {InvalidConfigError, MissingDataError} from './error'
 import {formatNumber, formatNumberToParts} from './number'
@@ -54,7 +54,7 @@ export function createIntl<T = string>(
   cache?: IntlCache
 ): IntlShape<T> {
   const formatters = createFormatters(cache)
-  const resolvedConfig = {
+  const resolvedConfig: ResolvedIntlConfig<T> = {
     ...DEFAULT_INTL_CONFIG,
     ...config,
   }

@@ -24,7 +24,7 @@
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.11.4",
     "@formatjs/intl-localematcher": "0.2.25",
-    "tslib": "^2.1.0"
+    "tslib": "2.4.0"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

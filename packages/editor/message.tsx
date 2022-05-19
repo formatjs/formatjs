@@ -17,8 +17,8 @@ interface Props {
   message: string
 }
 
-function formatAst(ast: MessageFormatElement[]): React.ReactNodeArray {
-  const els: React.ReactNodeArray = []
+function formatAst(ast: MessageFormatElement[]): React.ReactNode[] {
+  const els: React.ReactNode[] = []
   for (const el of ast) {
     if (isLiteralElement(el)) {
       els.push(el.value)
