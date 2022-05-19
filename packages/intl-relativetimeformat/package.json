@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-relativetimeformat",
-  "version": "10.0.1",
+  "version": "11.0.0",
   "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",
@@ -20,8 +20,8 @@
     "url": "git@github.com:formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.11.4",
-    "@formatjs/intl-localematcher": "0.2.25",
+    "@formatjs/ecma402-abstract": "1.11.5",
+    "@formatjs/intl-localematcher": "0.2.26",
     "tslib": "2.4.0"
   },
   "main": "index.js",

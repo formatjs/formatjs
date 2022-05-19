@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/ecma402-abstract",
-  "version": "1.11.4",
+  "version": "1.11.5",
   "description": "A collection of implementation for ECMAScript abstract operations",
   "keywords": [
     "intl",
@@ -14,7 +14,7 @@
     "format"
   ],
   "dependencies": {
-    "@formatjs/intl-localematcher": "0.2.25",
+    "@formatjs/intl-localematcher": "0.2.26",
     "tslib": "2.4.0"
   },
   "author": "Long Ho <holevietlong@gmail.com",

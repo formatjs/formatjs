@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.2.1...@formatjs/intl@2.2.2) (2022-05-19)
+
+
+### Bug Fixes
+
+* add actual default message to Missing translation ([#3574](https://github.com/formatjs/formatjs/issues/3574)) ([adb9844](https://github.com/formatjs/formatjs/commit/adb98449b66ccce4c4356f5abf23781be19955d9)), closes [#3573](https://github.com/formatjs/formatjs/issues/3573)
+* **react-intl:** fix type issue with react18, fix [#3550](https://github.com/formatjs/formatjs/issues/3550) ([2567b93](https://github.com/formatjs/formatjs/commit/2567b932c5d18b097a43842563046c20ce0c49f1))
+
+
+
+
+
 ## [2.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.2.0...@formatjs/intl@2.2.1) (2022-04-27)
 
 **Note:** Version bump only for package @formatjs/intl

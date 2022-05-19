@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.8.4...@formatjs/cli@5.0.0) (2022-05-19)
+
+
+### Bug Fixes
+
+* **react-intl:** fix type issue with react18, fix [#3550](https://github.com/formatjs/formatjs/issues/3550) ([2567b93](https://github.com/formatjs/formatjs/commit/2567b932c5d18b097a43842563046c20ce0c49f1))
+
+
+### Features
+
+* **@formatjs/cli:** package CLI into a single file ([1760787](https://github.com/formatjs/formatjs/commit/176078792894d18b0af72ce1f413f25835f7eb44)), closes [#3547](https://github.com/formatjs/formatjs/issues/3547)
+* **@formatjs/cli:** set minimum node version to 16.5 ([8397a67](https://github.com/formatjs/formatjs/commit/8397a67d1d67c8c1ab73020f434562ed3cb88643)), closes [#3602](https://github.com/formatjs/formatjs/issues/3602)
+
+
+### BREAKING CHANGES
+
+* **@formatjs/cli:** we push @vue/compiler-core out to `peerDependencies` so if u use vue u should pull this in manuallywip on packaging cli.
+* **@formatjs/cli:** set minimum node version to 16.5
+
+
+
+
+
 ## [4.8.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.8.3...@formatjs/cli@4.8.4) (2022-04-27)
 
 **Note:** Version bump only for package @formatjs/cli

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.0...@formatjs/icu-messageformat-parser@2.1.1) (2022-05-19)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** check Intl.Locale existence before usage ([590f1f8](https://github.com/formatjs/formatjs/commit/590f1f81b26934c6dc7a55fff938df5436c6f158)), closes [#3588](https://github.com/formatjs/formatjs/issues/3588)
+* **react-intl:** fix type issue with react18, fix [#3550](https://github.com/formatjs/formatjs/issues/3550) ([2567b93](https://github.com/formatjs/formatjs/commit/2567b932c5d18b097a43842563046c20ce0c49f1))
+
+
+
+
+
 # [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.0.19...@formatjs/icu-messageformat-parser@2.1.0) (2022-04-27)
 
 

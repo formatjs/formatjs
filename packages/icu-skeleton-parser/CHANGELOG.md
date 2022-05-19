@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.3.6...@formatjs/icu-skeleton-parser@1.3.7) (2022-05-19)
+
+
+### Bug Fixes
+
+* **react-intl:** fix type issue with react18, fix [#3550](https://github.com/formatjs/formatjs/issues/3550) ([2567b93](https://github.com/formatjs/formatjs/commit/2567b932c5d18b097a43842563046c20ce0c49f1))
+
+
+
+
+
 ## [1.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.3.5...@formatjs/icu-skeleton-parser@1.3.6) (2022-03-26)
 
 **Note:** Version bump only for package @formatjs/icu-skeleton-parser

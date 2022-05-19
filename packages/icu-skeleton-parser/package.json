@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/icu-skeleton-parser",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "main": "index.js",
   "module": "lib/index.js",
   "types": "index.d.ts",
@@ -11,7 +11,7 @@
     "directory": "packages/icu-skeleton-parser"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.11.4",
+    "@formatjs/ecma402-abstract": "1.11.5",
     "tslib": "2.4.0"
   }
 }

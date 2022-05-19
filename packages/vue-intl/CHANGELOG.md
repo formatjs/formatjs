@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.3](https://github.com/formatjs/formatjs/compare/vue-intl@6.2.2...vue-intl@6.2.3) (2022-05-19)
+
+
+### Bug Fixes
+
+* **react-intl:** fix type issue with react18, fix [#3550](https://github.com/formatjs/formatjs/issues/3550) ([2567b93](https://github.com/formatjs/formatjs/commit/2567b932c5d18b097a43842563046c20ce0c49f1))
+
+
+
+
+
 ## [6.2.2](https://github.com/formatjs/formatjs/compare/vue-intl@6.2.1...vue-intl@6.2.2) (2022-04-27)
 
 **Note:** Version bump only for package vue-intl

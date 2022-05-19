@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma376@0.3.2...@formatjs/ecma376@0.3.3) (2022-05-19)
+
+
+### Bug Fixes
+
+* **react-intl:** fix type issue with react18, fix [#3550](https://github.com/formatjs/formatjs/issues/3550) ([2567b93](https://github.com/formatjs/formatjs/commit/2567b932c5d18b097a43842563046c20ce0c49f1))
+
+
+
+
+
 ## [0.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma376@0.3.1...@formatjs/ecma376@0.3.2) (2021-08-15)
 
 **Note:** Version bump only for package @formatjs/ecma376
