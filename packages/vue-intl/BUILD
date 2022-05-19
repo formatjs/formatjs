@@ -8,10 +8,11 @@ PACKAGE_NAME = "vue-intl"
 
 pkg_npm(
     name = PACKAGE_NAME,
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
+    package_name = PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
+        "package.json"
     ],
     deps = [":dist"],
 )
@@ -38,7 +39,7 @@ SRC_DEPS = [
 
 ts_compile(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
+    package_name = PACKAGE_NAME,
     srcs = SRCS,
     deps = SRC_DEPS,
 )

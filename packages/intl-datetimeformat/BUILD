@@ -30,6 +30,7 @@ pkg_npm(
     srcs = [
         "LICENSE.md",
         "README.md",
+        "package.json"
     ],
     deps = [
         "add-all-tz.js",
