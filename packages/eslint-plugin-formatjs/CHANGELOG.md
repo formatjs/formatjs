@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@3.1.3...eslint-plugin-formatjs@3.1.4) (2022-05-20)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** fix description obj serialization, fix [#3575](https://github.com/formatjs/formatjs/issues/3575) ([83c1fe0](https://github.com/formatjs/formatjs/commit/83c1fe0fade75b568b0600badbc9e4e09f5cba5a))
+
+
+
+
+
 ## [3.1.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@3.1.2...eslint-plugin-formatjs@3.1.3) (2022-05-19)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

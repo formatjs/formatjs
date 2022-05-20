@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.7](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.9.6...@formatjs/ts-transformer@3.9.7) (2022-05-20)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix description obj serialization, fix [#3575](https://github.com/formatjs/formatjs/issues/3575) ([93cd1e2](https://github.com/formatjs/formatjs/commit/93cd1e28f461618404cea45a8fe595c23c6b562a))
+
+
+
+
+
 ## [3.9.6](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.9.5...@formatjs/ts-transformer@3.9.6) (2022-05-19)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

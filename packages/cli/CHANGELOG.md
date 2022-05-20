@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@5.0.0...@formatjs/cli@5.0.1) (2022-05-20)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix description obj serialization, fix [#3575](https://github.com/formatjs/formatjs/issues/3575) ([248c962](https://github.com/formatjs/formatjs/commit/248c962bd5a07864163c203361df830ff36babc2))
+
+
+
+
+
 # [5.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@4.8.4...@formatjs/cli@5.0.0) (2022-05-19)
 
 

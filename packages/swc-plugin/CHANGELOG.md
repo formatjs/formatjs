@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.3...@formatjs/swc-plugin@1.4.4) (2022-05-20)
+
+
+### Bug Fixes
+
+* **@formatjs/swc-plugin:** fix description obj serialization, fix [#3575](https://github.com/formatjs/formatjs/issues/3575) ([157e60b](https://github.com/formatjs/formatjs/commit/157e60bd510fd9b949f88bb4d2fab8309206409a))
+
+
+
+
+
 ## [1.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.2...@formatjs/swc-plugin@1.4.3) (2022-05-19)
 
 **Note:** Version bump only for package @formatjs/swc-plugin
