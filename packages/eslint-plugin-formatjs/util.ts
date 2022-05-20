@@ -3,7 +3,7 @@ import {TSESTree} from '@typescript-eslint/typescript-estree'
 export interface MessageDescriptor {
   id?: string
   defaultMessage?: string
-  description?: string
+  description?: string | object
 }
 
 const FORMAT_FUNCTION_NAMES = new Set(['$formatMessage', 'formatMessage'])
