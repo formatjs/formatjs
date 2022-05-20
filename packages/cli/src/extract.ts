@@ -129,7 +129,11 @@ async function processFile(
           idInterpolationPattern,
           {
             content: description
-              ? `${defaultMessage}#${description}`
+              ? `${defaultMessage}#${
+                  typeof description === 'string'
+                    ? description
+                    : stringify(description)
+                }`
               : defaultMessage,
           }
         ),
