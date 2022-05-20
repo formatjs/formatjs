@@ -35,6 +35,8 @@ SRCS = glob([
 SRC_DEPS = [
     "@npm//@types/node",
     "@npm//chalk",
+    "@npm//json-stable-stringify",
+    "@npm//@types/json-stable-stringify",
     "//packages/icu-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
 ]

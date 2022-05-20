@@ -22,6 +22,7 @@ import {
   StringLiteral,
 } from '@swc/core'
 import {debug} from './console_utils'
+import stringify from 'json-stable-stringify'
 
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void
 export type MetaExtractor = (
@@ -477,7 +478,11 @@ function extractMessageDescriptor(
             overrideIdFn,
             {
               content: msg.description
-                ? `${msg.defaultMessage}#${msg.description}`
+                ? `${msg.defaultMessage}#${
+                    typeof msg.description === 'string'
+                      ? msg.description
+                      : stringify(msg.description)
+                  }`
                 : msg.defaultMessage,
             }
           )
