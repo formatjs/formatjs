@@ -632,6 +632,9 @@ Object {
   "code": "export function foo() {
     props.intl.formatMessage({ id: \\"hYpBl\\", defaultMessage: \\"props {intl}\\" }, { bar: 'bar' });
     this.props.intl.formatMessage({ id: \\"tBZlS\\", defaultMessage: \\"this props {intl}\\" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: \\"T+ycr\\", defaultMessage: \\"this props {intl}\\" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: \\"T+ycr\\", defaultMessage: \\"this props {intl}\\" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: \\"WUKCt\\", defaultMessage: \\"this props {intl}\\" }, { bar: 'bar' });
     return intl.formatMessage({ id: \\"ALfyd\\", defaultMessage: \\"foo {bar}\\" }, { bar: 'bar' });
 }
 ",
@@ -646,6 +649,29 @@ Object {
       "defaultMessage": "this props {intl}",
       "description": "bar",
       "id": "tBZlS",
+    },
+    Object {
+      "defaultMessage": "this props {intl}",
+      "description": Object {
+        "obj1": 1,
+        "obj2": "123",
+      },
+      "id": "T+ycr",
+    },
+    Object {
+      "defaultMessage": "this props {intl}",
+      "description": Object {
+        "obj1": 1,
+        "obj2": "123",
+      },
+      "id": "T+ycr",
+    },
+    Object {
+      "defaultMessage": "this props {intl}",
+      "description": Object {
+        "obj2": "123",
+      },
+      "id": "WUKCt",
     },
     Object {
       "defaultMessage": "foo {bar}",

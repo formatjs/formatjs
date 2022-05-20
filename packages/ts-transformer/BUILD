@@ -36,6 +36,8 @@ SRC_DEPS = [
     "@npm//@types/node",
     "@npm//typescript",
     "@npm//chalk",
+    "@npm//json-stable-stringify",
+    "@npm//@types/json-stable-stringify",
     "//packages/icu-messageformat-parser:dist",
 ]
 

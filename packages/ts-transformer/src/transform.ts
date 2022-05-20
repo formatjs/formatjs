@@ -3,6 +3,7 @@ import {MessageDescriptor} from './types'
 import {interpolateName} from './interpolate-name'
 import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import {debug} from './console_utils'
+import stringify from 'json-stable-stringify'
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void
 export type MetaExtractor = (
   filePath: string,
@@ -406,7 +407,11 @@ function extractMessageDescriptor(
             overrideIdFn,
             {
               content: msg.description
-                ? `${msg.defaultMessage}#${msg.description}`
+                ? `${msg.defaultMessage}#${
+                    typeof msg.description === 'string'
+                      ? msg.description
+                      : stringify(msg.description)
+                  }`
                 : msg.defaultMessage,
             }
           )
