@@ -406,16 +406,16 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 
 | TMS                                                                                        | `--format`  |
 | ------------------------------------------------------------------------------------------ | ----------- |
-| [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)     | `transifex` |
-| [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)       | `smartling` |
-| [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)              | `simple`    |
-| [Phrase](https://help.phrase.com/help/simple-json)                                         | `simple`    |
 | [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)               | `crowdin`   |
-| [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json)  | `lokalise`  |
-| [locize](https://docs.locize.com/integration/supported-formats#json-nested)                | `simple`    |
-| [SimpleLocalize](https://simplelocalize.io/docs/integrations/format-js-cli/)               | `simple`    |
-| [POEditor Key-Value JSON](https://poeditor.com/localization/files/key-value-json)          | `simple`    |
+| [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)              | `simple`    |
 | [Localize's Simple JSON](https://developers.localizejs.com/docs/simple-json-import-export) | `simple`    |
+| [locize](https://docs.locize.com/integration/supported-formats#json-nested)                | `simple`    |
+| [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json)  | `lokalise`  |
+| [Phrase](https://help.phrase.com/help/simple-json)                                         | `simple`    |
+| [POEditor Key-Value JSON](https://poeditor.com/localization/files/key-value-json)          | `simple`    |
+| [SimpleLocalize](https://simplelocalize.io/docs/integrations/format-js-cli/)               | `simple`    |
+| [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)       | `smartling` |
+| [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)     | `transifex` |
 
 :::caution
 The `format`s of `extract` & `compile` have to be the same, which means if you `extract --format smartling`, you have to `compile --format smartling` as well & vice versa.
