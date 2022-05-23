@@ -8,7 +8,6 @@ import {FormatError, ErrorCode} from 'intl-messageformat'
 import {IntlErrorCode, IntlError} from './error'
 
 const DISPLAY_NAMES_OPTONS: Array<keyof DisplayNamesOptions> = [
-  'localeMatcher',
   'style',
   'type',
   'fallback',
@@ -37,7 +36,10 @@ Try polyfilling it using "@formatjs/intl-displaynames"
       )
     )
   }
-  const filteredOptions = filterProps(options, DISPLAY_NAMES_OPTONS)
+  const filteredOptions = filterProps(
+    options,
+    DISPLAY_NAMES_OPTONS
+  ) as DisplayNamesOptions
   try {
     return getDisplayNames(locale, filteredOptions).of(value)
   } catch (e) {

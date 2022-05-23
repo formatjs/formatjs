@@ -4,8 +4,6 @@ import {IntlError, IntlErrorCode} from './error'
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
-  'localeMatcher',
-
   'style',
   'currency',
   'currencyDisplay',
@@ -48,7 +46,11 @@ export function getFormatter(
   const defaults = ((format &&
     getNamedFormat(formats!, 'number', format, onError)) ||
     {}) as NumberFormatOptions
-  const filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults)
+  const filteredOptions = filterProps(
+    options,
+    NUMBER_FORMAT_OPTIONS,
+    defaults
+  ) as NumberFormatOptions
 
   return getNumberFormat(locale, filteredOptions)
 }

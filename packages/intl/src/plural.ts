@@ -4,10 +4,7 @@ import {IntlFormatError} from './error'
 import {ErrorCode, FormatError} from 'intl-messageformat'
 import {LDMLPluralRule} from '@formatjs/ecma402-abstract'
 
-const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = [
-  'localeMatcher',
-  'type',
-]
+const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = ['type']
 
 export function formatPlural(
   {
@@ -31,7 +28,10 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
       )
     )
   }
-  const filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS)
+  const filteredOptions = filterProps(
+    options,
+    PLURAL_FORMAT_OPTIONS
+  ) as Intl.PluralRulesOptions
 
   try {
     return getPluralRules(locale, filteredOptions).select(
