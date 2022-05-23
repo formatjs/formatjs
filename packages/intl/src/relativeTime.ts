@@ -29,7 +29,7 @@ function getFormatter(
     options,
     RELATIVE_TIME_FORMAT_OPTIONS,
     defaults as Intl.RelativeTimeFormatOptions
-  )
+  ) as Intl.RelativeTimeFormatOptions
 
   return getRelativeTimeFormat(locale, filteredOptions)
 }

@@ -5,7 +5,6 @@ import {IntlError, IntlErrorCode} from './error'
 import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
-  'localeMatcher',
   'formatMatcher',
 
   'timeZone',
@@ -50,7 +49,11 @@ export function getFormatter(
     ...(format && getNamedFormat(formats!, type, format, onError)),
   }
 
-  let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults)
+  let filteredOptions = filterProps(
+    options,
+    DATE_TIME_FORMAT_OPTIONS,
+    defaults
+  ) as Intl.DateTimeFormatOptions
 
   if (
     type === 'time' &&
@@ -127,7 +130,7 @@ export function formatDateTimeRange(
     options,
     DATE_TIME_FORMAT_OPTIONS,
     timeZone ? {timeZone} : {}
-  )
+  ) as Intl.DateTimeFormatOptions
 
   try {
     return getDateTimeFormat(locale, filteredOptions).formatRange(from, to)

@@ -29,6 +29,7 @@
       ".",
       "bazel-out/k8-fastbuild-ST-4a519fd6d3e4/bin",
       "bazel-out/darwin-fastbuild/bin",
+      "bazel-out/darwin_arm64-fastbuild/bin",
       "bazel-out/k8-fastbuild/bin"
     ],
     "typeRoots": [
@@ -42,23 +43,28 @@
       "@formatjs/*": [
         // k8 is 64-bit GNU/Linux output location, darwin is macOS.
         "bazel-out/k8-fastbuild/bin/packages/*",
-        "bazel-out/darwin-fastbuild/bin/packages/*"
+        "bazel-out/darwin-fastbuild/bin/packages/*",
+        "bazel-out/darwin_arm64-fastbuild/bin/packages/*",
       ],
       "intl-messageformat": [
         "bazel-out/k8-fastbuild/bin/packages/intl-messageformat",
-        "bazel-out/darwin-fastbuild/bin/packages/intl-messageformat"
+        "bazel-out/darwin-fastbuild/bin/packages/intl-messageformat",
+        "bazel-out/darwin_arm64-fastbuild/bin/packages/intl-messageformat",
       ],
       "babel-plugin-formatjs": [
         "bazel-out/k8-fastbuild/bin/packages/babel-plugin-formatjs",
-        "bazel-out/darwin-fastbuild/bin/packages/babel-plugin-formatjs"
+        "bazel-out/darwin-fastbuild/bin/packages/babel-plugin-formatjs",
+        "bazel-out/darwin_arm64-fastbuild/bin/packages/babel-plugin-formatjs",
       ],
       "eslint-plugin-formatjs": [
         "bazel-out/k8-fastbuild/bin/packages/eslint-plugin-formatjs",
-        "bazel-out/darwin-fastbuild/bin/packages/eslint-plugin-formatjs"
+        "bazel-out/darwin-fastbuild/bin/packages/eslint-plugin-formatjs",
+        "bazel-out/darwin_arm64-fastbuild/bin/packages/eslint-plugin-formatjs",
       ],
       "react-intl": [
         "bazel-out/k8-fastbuild/bin/packages/react-intl",
-        "bazel-out/darwin-fastbuild/bin/packages/react-intl"
+        "bazel-out/darwin-fastbuild/bin/packages/react-intl",
+        "bazel-out/darwin_arm64-fastbuild/bin/packages/react-intl",
       ]
     }
   }

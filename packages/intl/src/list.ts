@@ -7,7 +7,6 @@ import {FormatError, ErrorCode} from 'intl-messageformat'
 import {IntlError, IntlErrorCode} from './error'
 
 const LIST_FORMAT_OPTIONS: Array<keyof IntlListFormatOptions> = [
-  'localeMatcher',
   'type',
   'style',
 ]
@@ -87,7 +86,10 @@ Try polyfilling it using "@formatjs/intl-listformat"
       )
     )
   }
-  const filteredOptions = filterProps(options, LIST_FORMAT_OPTIONS)
+  const filteredOptions = filterProps(
+    options,
+    LIST_FORMAT_OPTIONS
+  ) as IntlListFormatOptions
 
   try {
     const richValues: Record<string, T> = {}

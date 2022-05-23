@@ -78,30 +78,27 @@ export interface CustomFormatConfig {
   format?: string
 }
 
-export type FormatDateOptions = Exclude<
+export type FormatDateOptions = Omit<
   Intl.DateTimeFormatOptions,
   'localeMatcher'
 > &
   CustomFormatConfig
-export type FormatNumberOptions = Exclude<
-  NumberFormatOptions,
-  'localeMatcher'
-> &
+export type FormatNumberOptions = Omit<NumberFormatOptions, 'localeMatcher'> &
   CustomFormatConfig
-export type FormatRelativeTimeOptions = Exclude<
+export type FormatRelativeTimeOptions = Omit<
   Intl.RelativeTimeFormatOptions,
   'localeMatcher'
 > &
   CustomFormatConfig
-export type FormatPluralOptions = Exclude<
+export type FormatPluralOptions = Omit<
   Intl.PluralRulesOptions,
   'localeMatcher'
 > &
   CustomFormatConfig
 
-export type FormatListOptions = Exclude<IntlListFormatOptions, 'localeMatcher'>
+export type FormatListOptions = Omit<IntlListFormatOptions, 'localeMatcher'>
 
-export type FormatDisplayNameOptions = Exclude<
+export type FormatDisplayNameOptions = Omit<
   DisplayNamesOptions,
   'localeMatcher'
 >
