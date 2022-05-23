@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.2](https://github.com/formatjs/formatjs/compare/react-intl@6.0.1...react-intl@6.0.2) (2022-05-23)
+
+
+### Bug Fixes
+
+* **react-intl:** bump minimum react version req to 16.6.0 ([cd21549](https://github.com/formatjs/formatjs/commit/cd21549fe22a64045a65caef2d394d30042a705b)), closes [#3612](https://github.com/formatjs/formatjs/issues/3612)
+
+
+
+
+
 ## [6.0.1](https://github.com/formatjs/formatjs/compare/react-intl@6.0.0...react-intl@6.0.1) (2022-05-19)
 
 **Note:** Version bump only for package react-intl
