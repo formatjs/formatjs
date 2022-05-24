@@ -25,6 +25,7 @@ const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'calendar',
   // 'dayPeriod',
   'numberingSystem',
+  'fractionalSecondDigits',
 ]
 
 export function getFormatter(
