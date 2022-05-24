@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.2.4...@formatjs/intl@2.2.5) (2022-05-24)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** add fractionalSecondDigits to list of options, fix [#3594](https://github.com/formatjs/formatjs/issues/3594) ([a2b7bc6](https://github.com/formatjs/formatjs/commit/a2b7bc6ea8426ee1ea76066fd5da6df8ebe7c153))
+
+
+
+
+
 ## [2.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.2.3...@formatjs/intl@2.2.4) (2022-05-23)
 
 
