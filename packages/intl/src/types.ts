@@ -27,6 +27,7 @@ declare global {
   namespace FormatjsIntl {
     interface Message {}
     interface IntlConfig {}
+    interface Formats {}
   }
 }
 
@@ -74,22 +75,24 @@ export interface CustomFormats extends Partial<Formats> {
   relative?: Record<string, Intl.RelativeTimeFormatOptions>
 }
 
-export interface CustomFormatConfig {
-  format?: string
+export interface CustomFormatConfig<Source = string> {
+  format?: Source extends keyof FormatjsIntl.Formats
+    ? FormatjsIntl.Formats[Source]
+    : string
 }
 
 export type FormatDateOptions = Omit<
   Intl.DateTimeFormatOptions,
   'localeMatcher'
 > &
-  CustomFormatConfig
+  CustomFormatConfig<'date'>
 export type FormatNumberOptions = Omit<NumberFormatOptions, 'localeMatcher'> &
-  CustomFormatConfig
+  CustomFormatConfig<'number'>
 export type FormatRelativeTimeOptions = Omit<
   Intl.RelativeTimeFormatOptions,
   'localeMatcher'
 > &
-  CustomFormatConfig
+  CustomFormatConfig<'time'>
 export type FormatPluralOptions = Omit<
   Intl.PluralRulesOptions,
   'localeMatcher'

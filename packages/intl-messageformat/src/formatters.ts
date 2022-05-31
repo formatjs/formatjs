@@ -22,10 +22,22 @@ import {
   InvalidValueTypeError,
 } from './error'
 
+declare global {
+  namespace FormatjsIntl {
+    interface Message {}
+    interface IntlConfig {}
+    interface Formats {}
+  }
+}
+
+type Format<Source = string> = Source extends keyof FormatjsIntl.Formats
+  ? FormatjsIntl.Formats[Source]
+  : string
+
 export interface Formats {
-  number: Record<string, NumberFormatOptions>
-  date: Record<string, Intl.DateTimeFormatOptions>
-  time: Record<string, Intl.DateTimeFormatOptions>
+  number: Record<Format<'number'>, NumberFormatOptions>
+  date: Record<Format<'date'>, Intl.DateTimeFormatOptions>
+  time: Record<Format<'time'>, Intl.DateTimeFormatOptions>
 }
 
 export interface FormatterCache {
