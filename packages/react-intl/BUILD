@@ -13,7 +13,7 @@ pkg_npm(
     srcs = [
         "LICENSE.md",
         "README.md",
-        "package.json"
+        "package.json",
     ],
     deps = [
         "%s.iife.js" % PACKAGE_NAME,
