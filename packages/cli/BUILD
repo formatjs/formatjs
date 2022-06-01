@@ -1,4 +1,4 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm", "copy_to_bin")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/esbuild:index.bzl", "esbuild")
 load("//tools:index.bzl", "check_format", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
@@ -33,11 +33,13 @@ alias(
 SRCS = glob(["src/**/*.ts"]) + [
     "index.ts",
     "main.ts",
-    "package.json"
+    "package.json",
 ]
 
-VUE_DEPS = [ "@npm//@vue/compiler-core",
-    "@npm//@vue/compiler-sfc",]
+VUE_DEPS = [
+    "@npm//@vue/compiler-core",
+    "@npm//@vue/compiler-sfc",
+]
 
 SRC_DEPS = [
     "@npm//@types/estree",
@@ -58,8 +60,8 @@ SRC_DEPS = [
 ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
-    skip_esm_esnext=False,
     srcs = SRCS,
+    skip_esm_esnext = False,
     deps = SRC_DEPS,
 )
 
@@ -89,11 +91,11 @@ jest_test(
     ),
     flaky = True,
     deps = [
+        ":dist",
         "//packages/icu-messageformat-parser:types",
         "//packages/ts-transformer:types",
-        "@npm//rimraf",
         "@npm//@types/rimraf",
-        ":dist",
+        "@npm//rimraf",
     ],
 )
 
@@ -111,10 +113,10 @@ jest_test(
     deps = [
         "//packages/icu-messageformat-parser:types",
         "//packages/ts-transformer:types",
-        "@npm//rimraf",
+        "@npm//@types/fs-extra",
         "@npm//@types/rimraf",
-    "@npm//@types/fs-extra",
-    "@npm//fs-extra",
+        "@npm//fs-extra",
+        "@npm//rimraf",
     ],
 )
 
@@ -133,13 +135,12 @@ jest_test(
     deps = [
         "//packages/icu-messageformat-parser:types",
         "//packages/ts-transformer:types",
-        "@npm//rimraf",
+        "@npm//@types/fs-extra",
         "@npm//@types/rimraf",
-    "@npm//@types/fs-extra",
-    "@npm//fs-extra",
+        "@npm//fs-extra",
+        "@npm//rimraf",
     ],
 )
-
 
 jest_test(
     name = "integration-extract-vue",
@@ -154,7 +155,6 @@ jest_test(
     flaky = True,
     deps = VUE_DEPS,
 )
-
 
 generated_file_test(
     name = "tsconfig_json",
@@ -197,7 +197,7 @@ genrule(
 
 esbuild(
     name = "formatjs",
-    srcs = [ ":dist-esm-esnext"],
+    srcs = [":dist-esm-esnext"],
     entry_point = "lib_esnext/main.js",
     external = [
         "@vue/compiler-sfc",
