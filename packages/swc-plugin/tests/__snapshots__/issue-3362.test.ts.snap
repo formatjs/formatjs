@@ -1,48 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`github issue #3362 2`] = `
-"function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
-import React from \\"react\\";
+"import React from \\"react\\";
 var InputTest = function(param) {
     var intl = param.intl;
-    var _obj;
-    var placeholder = intl.formatMessage((_obj = {
+    var placeholder = intl.formatMessage({
         id: \\"HELLO.Krqghu.4.undefined\\",
         defaultMessage: \\"test\\"
-    }, _defineProperty(_obj, \\"defaultMessage\\", \\"test\\"), _defineProperty(_obj, \\"id\\", \\"Krqghu\\"), _obj));
-    console.log(intl.formatMessage(_defineProperty({
+    });
+    console.log(intl.formatMessage({
         id: \\"HELLO..7.undefined\\",
         defaultMessage: \\"in call\\"
-    }, \\"defaultMessage\\", \\"in call\\")));
-    var _obj1, _obj2;
+    }));
     return /*#__PURE__*/ React.createElement(\\"div\\", null, getFieldDecorator(\\"emails\\", {
         rules: [
             {
                 required: true,
-                message: intl.formatMessage((_obj1 = {
+                message: intl.formatMessage({
                     id: \\"HELLO.1.6.undefined\\",
                     defaultMessage: \\"nesttt\\"
-                }, _defineProperty(_obj1, \\"defaultMessage\\", \\"nesttt\\"), _defineProperty(_obj1, \\"id\\", \\"1\\"), _obj1))
+                })
             }, 
         ]
     })(/*#__PURE__*/ React.createElement(\\"input\\", {
         placeholder: placeholder,
-        placeholder2: intl.formatMessage((_obj2 = {
+        placeholder2: intl.formatMessage({
             id: \\"HELLO.Krqghus.7.undefined\\",
             defaultMessage: \\"testsss\\"
-        }, _defineProperty(_obj2, \\"defaultMessage\\", \\"testsss\\"), _defineProperty(_obj2, \\"id\\", \\"Krqghus\\"), _obj2))
+        })
     })));
 };
 export default InputTest;
