@@ -464,19 +464,6 @@ function _classCallCheck(instance, Constructor) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
 }
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
 function _extends() {
     _extends = Object.assign || function(target) {
         for(var i = 1; i < arguments.length; i++){
@@ -553,36 +540,35 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage } from \\"react-intl\\";
-var _obj, _obj1, _obj2, _obj3, _obj4, _obj5, _obj6;
 var msgs = defineMessages({
-    header: (_obj = {
+    header: {
         id: \\"foo.bar.baz\\",
         defaultMessage: \\"Hello World!\\"
-    }, _defineProperty(_obj, \\"id\\", \\"foo.bar.baz\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj, \\"description\\", \\"The default message\\"), _obj),
-    content: (_obj1 = {
+    },
+    content: {
         id: \\"foo.bar.biff\\",
         defaultMessage: \\"Hello Nurse!\\"
-    }, _defineProperty(_obj1, \\"id\\", \\"foo.bar.biff\\"), _defineProperty(_obj1, \\"defaultMessage\\", \\"Hello Nurse!\\"), _defineProperty(_obj1, \\"description\\", \\"Another message\\"), _obj1),
-    kittens: (_obj2 = {
+    },
+    kittens: {
         id: \\"app.home.kittens\\",
         defaultMessage: \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
-    }, _defineProperty(_obj2, \\"id\\", \\"app.home.kittens\\"), _defineProperty(_obj2, \\"description\\", \\"Counts kittens\\"), _defineProperty(_obj2, \\"defaultMessage\\", \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"), _obj2),
-    trailingWhitespace: (_obj3 = {
+    },
+    trailingWhitespace: {
         id: \\"trailing.ws\\",
         defaultMessage: \\"Some whitespace\\"
-    }, _defineProperty(_obj3, \\"id\\", \\"trailing.ws\\"), _defineProperty(_obj3, \\"description\\", \\"Whitespace\\"), _defineProperty(_obj3, \\"defaultMessage\\", \\"   Some whitespace   \\"), _obj3),
-    escaped: (_obj4 = {
+    },
+    escaped: {
         id: \\"escaped.apostrophe\\",
         defaultMessage: \\"A quoted value ''{value}'\\"
-    }, _defineProperty(_obj4, \\"id\\", \\"escaped.apostrophe\\"), _defineProperty(_obj4, \\"description\\", \\"Escaped apostrophe\\"), _defineProperty(_obj4, \\"defaultMessage\\", \\"A quoted value ''{value}'\\"), _obj4),
-    quoted: (_obj5 = {
+    },
+    quoted: {
         id: \\"escaped.apostrophe\\",
         defaultMessage: \\"What's going on\\"
-    }, _defineProperty(_obj5, \\"id\\", \\"escaped.apostrophe\\"), _defineProperty(_obj5, \\"description\\", \\"Escaped apostrophe\\"), _defineProperty(_obj5, \\"defaultMessage\\", \\"What's going on\\"), _obj5),
-    newline: (_obj6 = {
+    },
+    newline: {
         id: \\"newline\\",
         defaultMessage: \\"this is a message\\"
-    }, _defineProperty(_obj6, \\"id\\", \\"newline\\"), _defineProperty(_obj6, \\"description\\", \\"this is     a     description\\"), _defineProperty(_obj6, \\"defaultMessage\\", \\"this is     a message\\"), _obj6)
+    }
 });
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
@@ -661,19 +647,6 @@ function _classCallCheck(instance, Constructor) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
 }
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
 function _extends() {
     _extends = Object.assign || function(target) {
         for(var i = 1; i < arguments.length; i++){
@@ -750,43 +723,42 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage } from \\"react-intl\\";
-var _obj, _obj1, _obj2, _obj3, _obj4, _obj5, _obj6, _obj7, _obj8;
 var msgs = defineMessages({
-    header: (_obj = {
+    header: {
         id: \\"foo.bar.baz\\",
         defaultMessage: \\"Hello World!\\"
-    }, _defineProperty(_obj, \\"id\\", \\"foo.bar.baz\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj, \\"description\\", \\"The default message\\"), _obj),
-    content: (_obj1 = {
+    },
+    content: {
         id: \\"foo.bar.biff\\",
         defaultMessage: \\"Hello Nurse!\\"
-    }, _defineProperty(_obj1, \\"id\\", \\"foo.bar.biff\\"), _defineProperty(_obj1, \\"defaultMessage\\", \\"Hello Nurse!\\"), _defineProperty(_obj1, \\"description\\", \\"Another message\\"), _obj1),
-    kittens: (_obj2 = {
+    },
+    kittens: {
         id: \\"app.home.kittens\\",
         defaultMessage: \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
-    }, _defineProperty(_obj2, \\"id\\", \\"app.home.kittens\\"), _defineProperty(_obj2, \\"description\\", \\"Counts kittens\\"), _defineProperty(_obj2, \\"defaultMessage\\", \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"), _obj2),
-    trailingWhitespace: (_obj3 = {
+    },
+    trailingWhitespace: {
         id: \\"trailing.ws\\",
         defaultMessage: \\"   Some whitespace   \\"
-    }, _defineProperty(_obj3, \\"id\\", \\"trailing.ws\\"), _defineProperty(_obj3, \\"description\\", \\"Whitespace\\"), _defineProperty(_obj3, \\"defaultMessage\\", \\"   Some whitespace   \\"), _obj3),
-    escaped: (_obj4 = {
+    },
+    escaped: {
         id: \\"escaped.apostrophe\\",
         defaultMessage: \\"A quoted value ''{value}'\\"
-    }, _defineProperty(_obj4, \\"id\\", \\"escaped.apostrophe\\"), _defineProperty(_obj4, \\"description\\", \\"Escaped apostrophe\\"), _defineProperty(_obj4, \\"defaultMessage\\", \\"A quoted value ''{value}'\\"), _obj4),
-    quoted: (_obj5 = {
+    },
+    quoted: {
         id: \\"escaped.apostrophe\\",
         defaultMessage: \\"What's going on\\"
-    }, _defineProperty(_obj5, \\"id\\", \\"escaped.apostrophe\\"), _defineProperty(_obj5, \\"description\\", \\"Escaped apostrophe\\"), _defineProperty(_obj5, \\"defaultMessage\\", \\"What's going on\\"), _obj5),
-    newline: (_obj6 = {
+    },
+    newline: {
         id: \\"newline\\",
         defaultMessage: \\"this is     a message\\"
-    }, _defineProperty(_obj6, \\"id\\", \\"newline\\"), _defineProperty(_obj6, \\"description\\", \\"this is     a     description\\"), _defineProperty(_obj6, \\"defaultMessage\\", \\"this is     a message\\"), _obj6),
-    linebreak: (_obj7 = {
+    },
+    linebreak: {
         id: \\"linebreak\\",
         defaultMessage: \\"this is\\\\na message\\"
-    }, _defineProperty(_obj7, \\"id\\", \\"linebreak\\"), _defineProperty(_obj7, \\"description\\", \\"this is\\\\na\\\\ndescription\\"), _defineProperty(_obj7, \\"defaultMessage\\", \\"this is\\\\na message\\"), _obj7),
-    templateLinebreak: (_obj8 = {
+    },
+    templateLinebreak: {
         id: \\"templateLinebreak\\"
-    }, _defineProperty(_obj8, \\"id\\", \\"templateLinebreak\\"), _defineProperty(_obj8, \\"description\\", \\"this is\\\\n    a\\\\n    description\\"), _defineProperty(_obj8, \\"defaultMessage\\", \\"this is\\\\n    a message\\"), _obj8)
+    }
 });
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
