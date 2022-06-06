@@ -350,19 +350,6 @@ function _classCallCheck(instance, Constructor) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
 }
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
@@ -436,14 +423,14 @@ var Foo = /*#__PURE__*/ function(Component1) {
     var _proto = Foo.prototype;
     _proto.render = function render() {
         return /*#__PURE__*/ React.createElement(CustomMessage, {
-            id: formatMessage(_defineProperty({
+            id: formatMessage({
                 id: \\"rL0Y20zC+F\\",
                 defaultMessage: \\"foo\\"
-            }, \\"defaultMessage\\", \\"foo\\")),
-            description: $formatMessage(_defineProperty({
+            }),
+            description: $formatMessage({
                 id: \\"rL0Y20zC+F\\",
                 defaultMessage: \\"foo\\"
-            }, \\"defaultMessage\\", \\"foo\\")),
+            }),
             defaultMessage: \\"Hello World!\\"
         });
     };
@@ -914,19 +901,6 @@ function _classCallCheck(instance, Constructor) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
 }
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
@@ -1005,16 +979,15 @@ var Foo = /*#__PURE__*/ function(Component1) {
     var _proto = Foo.prototype;
     _proto.render = function render() {
         var intl = this.props.intl;
-        var _obj, _obj1;
         var msgs = {
-            baz: this.props.intl.formatMessage((_obj = {
+            baz: this.props.intl.formatMessage({
                 id: \\"foo.bar.baz\\",
                 defaultMessage: \\"Hello World!\\"
-            }, _defineProperty(_obj, \\"id\\", \\"foo.bar.baz\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj, \\"description\\", \\"The default message\\"), _obj)),
-            biff: intl.formatMessage((_obj1 = {
+            }),
+            biff: intl.formatMessage({
                 id: \\"foo.bar.biff\\",
                 defaultMessage: \\"Hello Nurse!\\"
-            }, _defineProperty(_obj1, \\"id\\", \\"foo.bar.biff\\"), _defineProperty(_obj1, \\"defaultMessage\\", \\"Hello Nurse!\\"), _defineProperty(_obj1, \\"description\\", \\"Another message\\"), _obj1)),
+            }),
             invalid: this.props.intl.formatMessage(objectPointer),
             invalid2: this.props.intl.formatMessage({
                 id: id,
@@ -1023,10 +996,10 @@ var Foo = /*#__PURE__*/ function(Component1) {
             })
         };
         return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/ React.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/ React.createElement(\\"input\\", {
-            placeholder: intl.formatMessage(_defineProperty({
+            placeholder: intl.formatMessage({
                 id: \\"A/2tFVt1SI\\",
                 defaultMessage: \\"inline\\"
-            }, \\"defaultMessage\\", \\"inline\\"))
+            })
         }), /*#__PURE__*/ React.createElement(\\"span\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
             id: \\"foo\\",
             defaultMessage: \\"bar\\"
@@ -1062,46 +1035,30 @@ export default injectIntl(Foo);
 
 exports[`emit asserts for extractFromFormatMessageStateless 1`] = `
 Object {
-  "code": "function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
-import { FormattedMessage, injectIntl, useIntl } from \\"react-intl\\";
+  "code": "import { FormattedMessage, injectIntl, useIntl } from \\"react-intl\\";
 import React from \\"react\\";
 function myFunction(param1, param) {
     var formatMessage = param.formatMessage, formatDate = param.formatDate;
-    var _obj;
-    return formatMessage((_obj = {
+    return formatMessage({
         id: \\"inline1\\",
         defaultMessage: \\"Hello params!\\"
-    }, _defineProperty(_obj, \\"id\\", \\"inline1\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello params!\\"), _defineProperty(_obj, \\"description\\", \\"A stateless message\\"), _obj)) + formatDate(new Date());
+    }) + formatDate(new Date());
 }
 var child = myFunction(filterable, intl);
 function SFC() {
     var formatMessage = useIntl().formatMessage;
-    var _obj;
-    return formatMessage((_obj = {
+    return formatMessage({
         id: \\"hook\\",
         defaultMessage: \\"hook\\"
-    }, _defineProperty(_obj, \\"id\\", \\"hook\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"hook\\"), _defineProperty(_obj, \\"description\\", \\"hook\\"), _obj));
+    });
 }
 var Foo = function(param) {
     var formatMessage = param.intl.formatMessage;
-    var _obj;
     var msgs = {
-        qux: formatMessage((_obj = {
+        qux: formatMessage({
             id: \\"foo.bar.quux\\",
             defaultMessage: \\"Hello Stateless!\\"
-        }, _defineProperty(_obj, \\"id\\", \\"foo.bar.quux\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello Stateless!\\"), _defineProperty(_obj, \\"description\\", \\"A stateless message\\"), _obj))
+        })
     };
     return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/ React.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/ React.createElement(\\"span\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
         id: \\"foo\\",
@@ -1147,19 +1104,6 @@ function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
-}
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
 }
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
@@ -1238,27 +1182,26 @@ var Foo = /*#__PURE__*/ function(Component1) {
     }
     var _proto = Foo.prototype;
     _proto.render = function render() {
-        var _obj, _obj1, _obj2;
         var msgs = {
-            baz: formatMessage((_obj = {
+            baz: formatMessage({
                 id: \\"foo.bar.baz\\",
                 defaultMessage: \\"Hello World!\\"
-            }, _defineProperty(_obj, \\"id\\", \\"foo.bar.baz\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj, \\"description\\", \\"The default message\\"), _obj)),
-            baz2: this.props.intl.$formatMessage((_obj1 = {
+            }),
+            baz2: this.props.intl.$formatMessage({
                 id: \\"foo.bar.baz2\\",
                 defaultMessage: \\"Hello World!\\"
-            }, _defineProperty(_obj1, \\"id\\", \\"foo.bar.baz2\\"), _defineProperty(_obj1, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj1, \\"description\\", \\"The default message $$$\\"), _obj1)),
-            biff: $formatMessage((_obj2 = {
+            }),
+            biff: $formatMessage({
                 id: \\"foo.bar.biff\\",
                 defaultMessage: \\"Hello Nurse!\\"
-            }, _defineProperty(_obj2, \\"id\\", \\"foo.bar.biff\\"), _defineProperty(_obj2, \\"defaultMessage\\", \\"Hello Nurse!\\"), _defineProperty(_obj2, \\"description\\", \\"Another message\\"), _obj2)),
+            }),
             invalid: this.props.intl.formatMessage(objectPointer)
         };
         return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/ React.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/ React.createElement(\\"input\\", {
-            placeholder: intl.formatMessage(_defineProperty({
+            placeholder: intl.formatMessage({
                 id: \\"A/2tFVt1SI\\",
                 defaultMessage: \\"inline\\"
-            }, \\"defaultMessage\\", \\"inline\\"))
+            })
         }), /*#__PURE__*/ React.createElement(\\"span\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
             id: \\"foo\\",
             defaultMessage: \\"bar\\"
@@ -1309,19 +1252,6 @@ function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
-}
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
 }
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
@@ -1395,17 +1325,16 @@ var Foo = /*#__PURE__*/ function(Component1) {
     }
     var _proto = Foo.prototype;
     _proto.render = function render() {
-        var _obj, _obj1;
         return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
             id: \\"foo.bar.baz\\",
             defaultMessage: \\"Hello World!\\"
-        }), defineMessage((_obj = {
+        }), defineMessage({
             id: \\"header\\",
             defaultMessage: \\"Hello World!\\"
-        }, _defineProperty(_obj, \\"id\\", \\"header\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj, \\"description\\", \\"The default message\\"), _obj)), defineMessage((_obj1 = {
+        }), defineMessage({
             id: \\"header2\\",
             defaultMessage: \\"Hello World!\\"
-        }, _defineProperty(_obj1, \\"id\\", \\"header2\\"), _defineProperty(_obj1, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj1, \\"description\\", \\"The default message\\"), _obj1)));
+        }));
     };
     return Foo;
 }(Component);
@@ -1433,23 +1362,10 @@ export { Foo as default };
 
 exports[`emit asserts for nested 1`] = `
 Object {
-  "code": "function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
-intl.formatMessage(_defineProperty({
+  "code": "intl.formatMessage({
     id: \\"HELLO..13.undefined\\",
     defaultMessage: \\"layer1 {name}\\"
-}, \\"defaultMessage\\", \\"layer1 {name}\\"), {
+}, {
     name: intl.formatMessage({
         defaultMessage: \\"layer2\\"
     })
@@ -1466,39 +1382,23 @@ intl.formatMessage(_defineProperty({
 
 exports[`emit asserts for noImport 1`] = `
 Object {
-  "code": "function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
-export function foo() {
-    var _obj;
-    props.intl.formatMessage((_obj = {
+  "code": "export function foo() {
+    props.intl.formatMessage({
         id: \\"hYpBl\\",
         defaultMessage: \\"props {intl}\\"
-    }, _defineProperty(_obj, \\"defaultMessage\\", \\"props {intl}\\"), _defineProperty(_obj, \\"description\\", \\"bar\\"), _obj), {
+    }, {
         bar: \\"bar\\"
     });
-    var _obj1;
-    this.props.intl.formatMessage((_obj1 = {
+    this.props.intl.formatMessage({
         id: \\"tBZlS\\",
         defaultMessage: \\"this props {intl}\\"
-    }, _defineProperty(_obj1, \\"defaultMessage\\", \\"this props {intl}\\"), _defineProperty(_obj1, \\"description\\", \\"bar\\"), _obj1), {
+    }, {
         bar: \\"bar\\"
     });
-    var _obj2;
-    return intl.formatMessage((_obj2 = {
+    return intl.formatMessage({
         id: \\"ALfyd\\",
         defaultMessage: \\"foo {bar}\\"
-    }, _defineProperty(_obj2, \\"defaultMessage\\", \\"foo {bar}\\"), _defineProperty(_obj2, \\"description\\", \\"bar\\"), _obj2), {
+    }, {
         bar: \\"bar\\"
     });
 }
@@ -1535,19 +1435,6 @@ function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
-}
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
 }
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -1625,25 +1512,20 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage, defineMessage } from \\"react-intl\\";
-var _obj, _obj1;
 var msgs = defineMessages({
-    header: (_obj = {
+    header: {
         id: \\"HELLO.foo.bar.baz.12.string\\",
         defaultMessage: \\"Hello World!\\"
-    }, _defineProperty(_obj, \\"id\\", \\"foo.bar.baz\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj, \\"description\\", \\"The default message\\"), _obj),
-    content: (_obj1 = {
+    },
+    content: {
         id: \\"HELLO.foo.bar.biff.12.object\\",
         defaultMessage: \\"Hello Nurse!\\"
-    }, _defineProperty(_obj1, \\"id\\", \\"foo.bar.biff\\"), _defineProperty(_obj1, \\"defaultMessage\\", \\"Hello Nurse!\\"), _defineProperty(_obj1, \\"description\\", {
-        text: \\"Something for the translator.\\",
-        metadata: \\"Additional metadata content.\\"
-    }), _obj1)
+    }
 });
-var _obj2;
-defineMessage((_obj2 = {
+defineMessage({
     id: \\"HELLO..13.string\\",
     defaultMessage: \\"defineMessage\\"
-}, _defineProperty(_obj2, \\"defaultMessage\\", \\"defineMessage\\"), _defineProperty(_obj2, \\"description\\", \\"foo\\"), _obj2));
+});
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
     _inherits(Foo, Component1);
@@ -1656,21 +1538,18 @@ var Foo = /*#__PURE__*/ function(Component1) {
     _proto.render = function render() {
         var intl = this.props.intl;
         var formatMessage = intl.formatMessage;
-        var _obj5;
-        this.props.intl.formatMessage((_obj5 = {
+        this.props.intl.formatMessage({
             id: \\"HELLO..5.string\\",
             defaultMessage: \\"no-id\\"
-        }, _defineProperty(_obj5, \\"defaultMessage\\", \\"no-id\\"), _defineProperty(_obj5, \\"description\\", \\"no-id\\"), _obj5));
-        var _obj3;
-        intl.formatMessage((_obj3 = {
+        });
+        intl.formatMessage({
             id: \\"HELLO..18.string\\",
             defaultMessage: \\"intl.formatMessage\\"
-        }, _defineProperty(_obj3, \\"defaultMessage\\", \\"intl.formatMessage\\"), _defineProperty(_obj3, \\"description\\", \\"no-id\\"), _obj3));
-        var _obj4;
-        formatMessage((_obj4 = {
+        });
+        formatMessage({
             id: \\"HELLO..13.string\\",
             defaultMessage: \\"formatMessage\\"
-        }, _defineProperty(_obj4, \\"defaultMessage\\", \\"formatMessage\\"), _defineProperty(_obj4, \\"description\\", \\"no-id\\"), _obj4));
+        });
         return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement(\\"p\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement(FormattedMessage, {
             id: \\"HELLO.foo.bar.zoo.18.object\\",
             defaultMessage: \\"Hello World! {abc}\\",
@@ -1756,19 +1635,6 @@ function _classCallCheck(instance, Constructor) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
 }
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
@@ -1831,11 +1697,10 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage } from \\"react-intl\\";
-var _obj;
 var messages = defineMessages({
-    foo: (_obj = {
+    foo: {
         id: \\"greeting-user\\"
-    }, _defineProperty(_obj, \\"id\\", \\"greeting-user\\"), _defineProperty(_obj, \\"description\\", \\"Greeting the user\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello, {name}\\"), _obj)
+    }
 });
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
@@ -1883,19 +1748,6 @@ function _classCallCheck(instance, Constructor) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
 }
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
 function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
@@ -1958,12 +1810,11 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage } from \\"react-intl\\";
-var _obj;
 var messages = defineMessages({
-    foo: (_obj = {
+    foo: {
         id: \\"greeting-user\\",
         defaultMessage: \\"Hello, {name}\\"
-    }, _defineProperty(_obj, \\"id\\", \\"greeting-user\\"), _defineProperty(_obj, \\"description\\", \\"Greeting the user\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello, {name}\\"), _obj)
+    }
 });
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";

@@ -564,8 +564,8 @@ function setAttributesInObject(
   for (const prop of props) {
     if (
       prop.type === 'KeyValueProperty' &&
-      prop.value.type === 'Identifier' &&
-      MESSAGE_DESC_KEYS.includes(prop.value.value as keyof MessageDescriptor)
+      prop.key.type === 'Identifier' &&
+      MESSAGE_DESC_KEYS.includes(prop.key.value as keyof MessageDescriptor)
     ) {
       continue
     }

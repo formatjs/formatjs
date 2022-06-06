@@ -1,22 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ast 2`] = `
-"function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
-export function foo() {
-    var _obj;
-    props.intl.formatMessage((_obj = {
+"export function foo() {
+    props.intl.formatMessage({
         id: \\"HELLO..12.string\\",
         defaultMessage: [
             {
@@ -28,11 +14,10 @@ export function foo() {
                 value: \\"intl\\"
             }, 
         ]
-    }, _defineProperty(_obj, \\"defaultMessage\\", \\"props {intl}\\"), _defineProperty(_obj, \\"description\\", \\"bar\\"), _obj), {
+    }, {
         bar: \\"bar\\"
     });
-    var _obj1;
-    this.props.intl.formatMessage((_obj1 = {
+    this.props.intl.formatMessage({
         id: \\"HELLO..17.string\\",
         defaultMessage: [
             {
@@ -44,11 +29,10 @@ export function foo() {
                 value: \\"intl\\"
             }, 
         ]
-    }, _defineProperty(_obj1, \\"defaultMessage\\", \\"this props {intl}\\"), _defineProperty(_obj1, \\"description\\", \\"bar\\"), _obj1), {
+    }, {
         bar: \\"bar\\"
     });
-    var _obj2;
-    return intl.formatMessage((_obj2 = {
+    return intl.formatMessage({
         id: \\"HELLO..9.string\\",
         defaultMessage: [
             {
@@ -60,7 +44,7 @@ export function foo() {
                 value: \\"bar\\"
             }, 
         ]
-    }, _defineProperty(_obj2, \\"defaultMessage\\", \\"foo {bar}\\"), _defineProperty(_obj2, \\"description\\", \\"bar\\"), _obj2), {
+    }, {
         bar: \\"bar\\"
     });
 }
