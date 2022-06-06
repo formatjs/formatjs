@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.1.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.0.1...intl-messageformat@10.1.0) (2022-06-06)
+
+
+### Features
+
+* **@formatjs/intl:** allow module augmentation for custom formatters ([#3634](https://github.com/formatjs/formatjs/issues/3634)) ([49b2588](https://github.com/formatjs/formatjs/commit/49b2588e1efe135debed9935cb217d2cb5937f07))
+
+
+
+
+
 ## [10.0.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.0.0...intl-messageformat@10.0.1) (2022-05-19)
 
 **Note:** Version bump only for package intl-messageformat

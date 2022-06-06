@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.2.5...@formatjs/intl@2.3.0) (2022-06-06)
+
+
+### Features
+
+* **@formatjs/intl:** allow module augmentation for custom formatters ([#3634](https://github.com/formatjs/formatjs/issues/3634)) ([49b2588](https://github.com/formatjs/formatjs/commit/49b2588e1efe135debed9935cb217d2cb5937f07))
+
+
+
+
+
 ## [2.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.2.4...@formatjs/intl@2.2.5) (2022-05-24)
 
 

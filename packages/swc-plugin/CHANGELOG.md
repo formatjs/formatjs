@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.4...@formatjs/swc-plugin@1.4.5) (2022-06-06)
+
+
+### Bug Fixes
+
+* **@formatjs/swc-plugin:** fix const assertion handling ([#3646](https://github.com/formatjs/formatjs/issues/3646)) ([#3647](https://github.com/formatjs/formatjs/issues/3647)) ([daf9966](https://github.com/formatjs/formatjs/commit/daf9966a3d8e3a362079c518e2006a14ed98f625))
+* **@formatjs/swc-plugin:** fix duplicate defaultMessage property ([#3641](https://github.com/formatjs/formatjs/issues/3641)) ([#3644](https://github.com/formatjs/formatjs/issues/3644)) ([3016fac](https://github.com/formatjs/formatjs/commit/3016fac879037dcb783162b7c64a9f4eb9555e5c))
+
+
+
+
+
 ## [1.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.3...@formatjs/swc-plugin@1.4.4) (2022-05-20)
 
 
