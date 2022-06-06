@@ -98,10 +98,10 @@ export { Foo as default };
 exports[`emit asserts for [special] extractSourceLocation 2`] = `
 Object {
   "defaultMessage": "Hello World!",
-  "end": 7810,
+  "end": 8130,
   "file": StringContaining "extractSourceLocation.tsx",
   "id": "foo.bar.baz",
-  "start": 7743,
+  "start": 8063,
 }
 `;
 
@@ -464,6 +464,19 @@ function _classCallCheck(instance, Constructor) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
 }
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
 function _extends() {
     _extends = Object.assign || function(target) {
         for(var i = 1; i < arguments.length; i++){
@@ -540,42 +553,36 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage } from \\"react-intl\\";
+var _obj, _obj1, _obj2, _obj3, _obj4, _obj5, _obj6;
 var msgs = defineMessages({
-    header: {
+    header: (_obj = {
         id: \\"foo.bar.baz\\",
-        defaultMessage: \\"Hello World!\\",
-        description: \\"The default message\\"
-    },
-    content: {
+        defaultMessage: \\"Hello World!\\"
+    }, _defineProperty(_obj, \\"id\\", \\"foo.bar.baz\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj, \\"description\\", \\"The default message\\"), _obj),
+    content: (_obj1 = {
         id: \\"foo.bar.biff\\",
-        defaultMessage: \\"Hello Nurse!\\",
-        description: \\"Another message\\"
-    },
-    kittens: {
+        defaultMessage: \\"Hello Nurse!\\"
+    }, _defineProperty(_obj1, \\"id\\", \\"foo.bar.biff\\"), _defineProperty(_obj1, \\"defaultMessage\\", \\"Hello Nurse!\\"), _defineProperty(_obj1, \\"description\\", \\"Another message\\"), _obj1),
+    kittens: (_obj2 = {
         id: \\"app.home.kittens\\",
-        description: \\"Counts kittens\\",
         defaultMessage: \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
-    },
-    trailingWhitespace: {
+    }, _defineProperty(_obj2, \\"id\\", \\"app.home.kittens\\"), _defineProperty(_obj2, \\"description\\", \\"Counts kittens\\"), _defineProperty(_obj2, \\"defaultMessage\\", \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"), _obj2),
+    trailingWhitespace: (_obj3 = {
         id: \\"trailing.ws\\",
-        description: \\"Whitespace\\",
-        defaultMessage: \\"   Some whitespace   \\"
-    },
-    escaped: {
+        defaultMessage: \\"Some whitespace\\"
+    }, _defineProperty(_obj3, \\"id\\", \\"trailing.ws\\"), _defineProperty(_obj3, \\"description\\", \\"Whitespace\\"), _defineProperty(_obj3, \\"defaultMessage\\", \\"   Some whitespace   \\"), _obj3),
+    escaped: (_obj4 = {
         id: \\"escaped.apostrophe\\",
-        description: \\"Escaped apostrophe\\",
         defaultMessage: \\"A quoted value ''{value}'\\"
-    },
-    quoted: {
+    }, _defineProperty(_obj4, \\"id\\", \\"escaped.apostrophe\\"), _defineProperty(_obj4, \\"description\\", \\"Escaped apostrophe\\"), _defineProperty(_obj4, \\"defaultMessage\\", \\"A quoted value ''{value}'\\"), _obj4),
+    quoted: (_obj5 = {
         id: \\"escaped.apostrophe\\",
-        description: \\"Escaped apostrophe\\",
         defaultMessage: \\"What's going on\\"
-    },
-    newline: {
+    }, _defineProperty(_obj5, \\"id\\", \\"escaped.apostrophe\\"), _defineProperty(_obj5, \\"description\\", \\"Escaped apostrophe\\"), _defineProperty(_obj5, \\"defaultMessage\\", \\"What's going on\\"), _obj5),
+    newline: (_obj6 = {
         id: \\"newline\\",
-        description: \\"this is     a     description\\",
-        defaultMessage: \\"this is     a message\\"
-    }
+        defaultMessage: \\"this is a message\\"
+    }, _defineProperty(_obj6, \\"id\\", \\"newline\\"), _defineProperty(_obj6, \\"description\\", \\"this is     a     description\\"), _defineProperty(_obj6, \\"defaultMessage\\", \\"this is     a message\\"), _obj6)
 });
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
@@ -598,6 +605,41 @@ export { Foo as default };
 ",
   "msgs": Array [
     Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "foo.bar.baz",
+    },
+    Object {
+      "defaultMessage": "Hello Nurse!",
+      "description": "Another message",
+      "id": "foo.bar.biff",
+    },
+    Object {
+      "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+      "description": "Counts kittens",
+      "id": "app.home.kittens",
+    },
+    Object {
+      "defaultMessage": "Some whitespace",
+      "description": "Whitespace",
+      "id": "trailing.ws",
+    },
+    Object {
+      "defaultMessage": "A quoted value ''{value}'",
+      "description": "Escaped apostrophe",
+      "id": "escaped.apostrophe",
+    },
+    Object {
+      "defaultMessage": "What's going on",
+      "description": "Escaped apostrophe",
+      "id": "escaped.apostrophe",
+    },
+    Object {
+      "defaultMessage": "this is a message",
+      "description": "this is     a     description",
+      "id": "newline",
+    },
+    Object {
       "defaultMessage": "formatted message",
       "description": "foo",
       "id": "inline",
@@ -618,6 +660,19 @@ function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError(\\"Cannot call a class as a function\\");
     }
+}
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
 }
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -695,52 +750,43 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage } from \\"react-intl\\";
+var _obj, _obj1, _obj2, _obj3, _obj4, _obj5, _obj6, _obj7, _obj8;
 var msgs = defineMessages({
-    header: {
+    header: (_obj = {
         id: \\"foo.bar.baz\\",
-        defaultMessage: \\"Hello World!\\",
-        description: \\"The default message\\"
-    },
-    content: {
+        defaultMessage: \\"Hello World!\\"
+    }, _defineProperty(_obj, \\"id\\", \\"foo.bar.baz\\"), _defineProperty(_obj, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj, \\"description\\", \\"The default message\\"), _obj),
+    content: (_obj1 = {
         id: \\"foo.bar.biff\\",
-        defaultMessage: \\"Hello Nurse!\\",
-        description: \\"Another message\\"
-    },
-    kittens: {
+        defaultMessage: \\"Hello Nurse!\\"
+    }, _defineProperty(_obj1, \\"id\\", \\"foo.bar.biff\\"), _defineProperty(_obj1, \\"defaultMessage\\", \\"Hello Nurse!\\"), _defineProperty(_obj1, \\"description\\", \\"Another message\\"), _obj1),
+    kittens: (_obj2 = {
         id: \\"app.home.kittens\\",
-        description: \\"Counts kittens\\",
         defaultMessage: \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
-    },
-    trailingWhitespace: {
+    }, _defineProperty(_obj2, \\"id\\", \\"app.home.kittens\\"), _defineProperty(_obj2, \\"description\\", \\"Counts kittens\\"), _defineProperty(_obj2, \\"defaultMessage\\", \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"), _obj2),
+    trailingWhitespace: (_obj3 = {
         id: \\"trailing.ws\\",
-        description: \\"Whitespace\\",
         defaultMessage: \\"   Some whitespace   \\"
-    },
-    escaped: {
+    }, _defineProperty(_obj3, \\"id\\", \\"trailing.ws\\"), _defineProperty(_obj3, \\"description\\", \\"Whitespace\\"), _defineProperty(_obj3, \\"defaultMessage\\", \\"   Some whitespace   \\"), _obj3),
+    escaped: (_obj4 = {
         id: \\"escaped.apostrophe\\",
-        description: \\"Escaped apostrophe\\",
         defaultMessage: \\"A quoted value ''{value}'\\"
-    },
-    quoted: {
+    }, _defineProperty(_obj4, \\"id\\", \\"escaped.apostrophe\\"), _defineProperty(_obj4, \\"description\\", \\"Escaped apostrophe\\"), _defineProperty(_obj4, \\"defaultMessage\\", \\"A quoted value ''{value}'\\"), _obj4),
+    quoted: (_obj5 = {
         id: \\"escaped.apostrophe\\",
-        description: \\"Escaped apostrophe\\",
         defaultMessage: \\"What's going on\\"
-    },
-    newline: {
+    }, _defineProperty(_obj5, \\"id\\", \\"escaped.apostrophe\\"), _defineProperty(_obj5, \\"description\\", \\"Escaped apostrophe\\"), _defineProperty(_obj5, \\"defaultMessage\\", \\"What's going on\\"), _obj5),
+    newline: (_obj6 = {
         id: \\"newline\\",
-        description: \\"this is     a     description\\",
         defaultMessage: \\"this is     a message\\"
-    },
-    linebreak: {
+    }, _defineProperty(_obj6, \\"id\\", \\"newline\\"), _defineProperty(_obj6, \\"description\\", \\"this is     a     description\\"), _defineProperty(_obj6, \\"defaultMessage\\", \\"this is     a message\\"), _obj6),
+    linebreak: (_obj7 = {
         id: \\"linebreak\\",
-        description: \\"this is\\\\na\\\\ndescription\\",
         defaultMessage: \\"this is\\\\na message\\"
-    },
-    templateLinebreak: {
-        id: \\"templateLinebreak\\",
-        description: \\"this is\\\\n    a\\\\n    description\\",
-        defaultMessage: \\"this is\\\\n    a message\\"
-    }
+    }, _defineProperty(_obj7, \\"id\\", \\"linebreak\\"), _defineProperty(_obj7, \\"description\\", \\"this is\\\\na\\\\ndescription\\"), _defineProperty(_obj7, \\"defaultMessage\\", \\"this is\\\\na message\\"), _obj7),
+    templateLinebreak: (_obj8 = {
+        id: \\"templateLinebreak\\"
+    }, _defineProperty(_obj8, \\"id\\", \\"templateLinebreak\\"), _defineProperty(_obj8, \\"description\\", \\"this is\\\\n    a\\\\n    description\\"), _defineProperty(_obj8, \\"defaultMessage\\", \\"this is\\\\n    a message\\"), _obj8)
 });
 var Foo = /*#__PURE__*/ function(Component1) {
     \\"use strict\\";
@@ -765,6 +811,54 @@ var Foo = /*#__PURE__*/ function(Component1) {
 export { Foo as default };
 ",
   "msgs": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "foo.bar.baz",
+    },
+    Object {
+      "defaultMessage": "Hello Nurse!",
+      "description": "Another message",
+      "id": "foo.bar.biff",
+    },
+    Object {
+      "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+      "description": "Counts kittens",
+      "id": "app.home.kittens",
+    },
+    Object {
+      "defaultMessage": "   Some whitespace   ",
+      "description": "Whitespace",
+      "id": "trailing.ws",
+    },
+    Object {
+      "defaultMessage": "A quoted value ''{value}'",
+      "description": "Escaped apostrophe",
+      "id": "escaped.apostrophe",
+    },
+    Object {
+      "defaultMessage": "What's going on",
+      "description": "Escaped apostrophe",
+      "id": "escaped.apostrophe",
+    },
+    Object {
+      "defaultMessage": "this is     a message",
+      "description": "this is     a     description",
+      "id": "newline",
+    },
+    Object {
+      "defaultMessage": "this is
+a message",
+      "description": "this is
+a
+description",
+      "id": "linebreak",
+    },
+    Object {
+      "defaultMessage": undefined,
+      "description": undefined,
+      "id": "templateLinebreak",
+    },
     Object {
       "defaultMessage": "formatted message",
       "description": "foo",

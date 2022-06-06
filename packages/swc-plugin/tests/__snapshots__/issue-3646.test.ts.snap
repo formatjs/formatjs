@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`github issue #3646 2`] = `
+"function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+var _obj, _obj1;
+var msgs = defineMessages({
+    header: (_obj = {
+        id: \\"GCdcoTfS3U\\",
+        defaultMessage: \\"Hello World!\\"
+    }, _defineProperty(_obj, \\"defaultMessage\\", \\"Hello World!\\"), _defineProperty(_obj, \\"description\\", \\"The default message\\"), _obj),
+    content: (_obj1 = {
+        id: \\"foo.bar.biff\\",
+        defaultMessage: \\"Hello Nurse!\\"
+    }, _defineProperty(_obj1, \\"id\\", \\"foo.bar.biff\\"), _defineProperty(_obj1, \\"defaultMessage\\", \\"Hello Nurse!\\"), _defineProperty(_obj1, \\"description\\", \\"Another message\\"), _obj1)
+});
+"
+`;

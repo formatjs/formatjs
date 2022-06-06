@@ -637,7 +637,8 @@ export class FormatJSTransformer extends Visitor {
       if (arg.expression.type === 'ObjectExpression') {
         descriptorsObj = arg.expression
       } else if (
-        arg.expression.type === 'TsAsExpression' &&
+        (arg.expression.type === 'TsAsExpression' ||
+          arg.expression.type === 'TsConstAssertion') &&
         arg.expression.expression.type === 'ObjectExpression'
       ) {
         descriptorsObj = arg.expression.expression
