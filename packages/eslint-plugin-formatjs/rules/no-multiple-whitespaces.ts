@@ -40,7 +40,7 @@ const rule: Rule.RuleModule = {
       description: 'Disallow emojis in message',
       category: 'Errors',
       recommended: false,
-      url: 'https://formatjs.io/docs/tooling/linter#no-emoji',
+      url: 'https://formatjs.io/docs/tooling/linter#no-multiple-whitespaces',
     },
     fixable: 'whitespace',
   },
