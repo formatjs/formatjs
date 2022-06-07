@@ -62,6 +62,16 @@ The default message descriptors for the app's default language will be processed
 }
 ```
 
+### Via Node API
+
+The extract message descriptors are available via the `metadata` property on the object returned from Babel's `transform()` API:
+
+```javascript
+require('@babel/core').transform('code', {
+  plugins: ['formatjs'],
+}) // => { code, map, ast, metadata['formatjs'].messages, metadata['formatjs'].meta };
+```
+
 ## Options
 
 ### **`overrideIdFn`**
@@ -100,12 +110,3 @@ and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project
 
 Pre-parse `defaultMessage` into AST for faster runtime perf. This flag doesn't do anything when `removeDefaultMessage` is `true`.
 
-### Via Node API
-
-The extract message descriptors are available via the `metadata` property on the object returned from Babel's `transform()` API:
-
-```javascript
-require('@babel/core').transform('code', {
-  plugins: ['formatjs'],
-}) // => { code, map, ast, metadata['formatjs'].messages, metadata['formatjs'].meta };
-```
