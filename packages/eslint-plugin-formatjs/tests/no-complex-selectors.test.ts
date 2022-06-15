@@ -26,6 +26,17 @@ ruleTester.run('no-complex-selectors', noComplexSelectors, {
     },
   ],
   invalid: [
+    // Syntax error
+    {
+      code: `
+        import {defineMessage} from 'react-intl'
+        defineMessage({
+            defaultMessage: '{'
+        })
+      `,
+      options: [{limit: 1}],
+      errors: [{message: 'EXPECT_ARGUMENT_CLOSING_BRACE'}],
+    },
     {
       code: `
               import {defineMessage} from 'react-intl'
