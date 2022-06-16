@@ -95,7 +95,7 @@ Actual: ${id}`,
               const quote = defaultMessage.indexOf('\'') === -1 ? "'" : '"';
               return fixer.replaceText(
                 messagePropNode as any,
-                `defaultMessage: ${quote}${defaultMessage}${quote}, id: '${correctId}'`
+                `defaultMessage: '${defaultMessage.split(`'`).join(`\\'`)}', id: '${correctId}'`
               )
             },
           })
