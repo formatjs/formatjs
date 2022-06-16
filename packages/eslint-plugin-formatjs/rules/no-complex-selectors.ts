@@ -45,11 +45,21 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     if (!defaultMessage || !messageNode) {
       continue
     }
-    const hoistedAst = hoistSelectors(
-      parse(defaultMessage, {
+
+    let ast: MessageFormatElement[]
+    try {
+      ast = parse(defaultMessage, {
         ignoreTag: context.settings.ignoreTag,
       })
-    )
+    } catch (e) {
+      context.report({
+        node: messageNode as any,
+        message: e instanceof Error ? e.message : String(e),
+      })
+      return
+    }
+
+    const hoistedAst = hoistSelectors(ast)
     const complexity = calculateComplexity(hoistedAst)
     if (complexity > config.limit) {
       context.report({
