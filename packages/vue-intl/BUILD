@@ -1,30 +1,17 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
-
-exports_files(["package.json"])
 
 PACKAGE_NAME = "vue-intl"
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
+        ":dist",
     ],
-    deps = [":dist"],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
 )
 
 SRCS = glob([
@@ -32,15 +19,17 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//vue",
-    "@npm//@babel/types",
-    "//packages/intl:dist",
+    "//:node_modules/vue",
+    "//:node_modules/@vue/runtime-core",
+    "//:node_modules/@babel/types",
+    "//:node_modules/@formatjs/intl",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
 ]
 
-ts_compile(
+ts_compile_node(
     name = "dist",
-    package_name = PACKAGE_NAME,
     srcs = SRCS,
+    package = PACKAGE_NAME,
     deps = SRC_DEPS,
 )
 
@@ -54,9 +43,7 @@ jest_test(
         "jsdom",
     ],
     deps = SRC_DEPS + [
-        "@npm//@vue/test-utils",
-        "//packages/intl:types",
-        "//packages/icu-messageformat-parser:types",
+        "//:node_modules/@vue/test-utils",
     ],
 )
 

@@ -27,22 +27,44 @@ function generateLocaleData(locale: string): PluralRulesLocaleData | undefined {
   }
 }
 
-function main(args: minimist.ParsedArgs) {
-  const {outDir} = args
+interface Args extends minimist.ParsedArgs {
+  outDir: string
+  out: string
+}
 
-  for (const locale of languages) {
-    try {
-      ;(Intl as any).getCanonicalLocales(locale)
-    } catch (e) {
-      console.warn(`Invalid locale ${locale}`)
-      continue
-    }
+function main(args: Args) {
+  const {outDir, out} = args
+
+  const locales = languages
+    .filter(locale => {
+      try {
+        ;(Intl as any).getCanonicalLocales(locale)
+      } catch (e) {
+        console.warn(`Invalid locale ${locale}`)
+        return false
+      }
+      return true
+    })
+    .sort()
+
+  if (outDir) {
+    locales.forEach(
+      locale =>
+        +console.log(join(outDir, `${locale}.js`)) ||
+        outputFileSync(
+          join(outDir, `${locale}.js`),
+          serialize(generateLocaleData(locale))
+        )
+    )
+  } else if (out) {
     outputFileSync(
-      join(outDir, `${locale}.js`),
-      serialize(generateLocaleData(locale))
+      out,
+      `// This file is generated from supported-locales-gen.ts
+export const supportedLocales: string[] = ${JSON.stringify(locales)}
+`
     )
   }
 }
 if (require.main === module) {
-  main(minimist(process.argv))
+  main(minimist<Args>(process.argv))
 }

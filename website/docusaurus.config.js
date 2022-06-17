@@ -12,13 +12,9 @@ module.exports = {
       additionalLanguages: ['markup'],
     },
     algolia: {
+      appId: '4V7OJU17Z9',
       apiKey: '64ffba7fb3e3ee96182a32b6bf44591f',
       indexName: 'formatjs',
-    },
-    googleAnalytics: {
-      trackingID: 'UA-173519367-1',
-      // Optional fields.
-      anonymizeIP: true, // Should IPs be anonymized?
     },
     navbar: {
       title: 'Format.JS',
@@ -122,6 +118,11 @@ module.exports = {
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
+        },
+        googleAnalytics: {
+          trackingID: 'UA-173519367-1',
+          // Optional fields.
+          anonymizeIP: true, // Should IPs be anonymized?
         },
       },
     ],

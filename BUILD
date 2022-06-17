@@ -1,46 +1,63 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_layer")
 load("@io_bazel_rules_docker//docker/package_managers:download_pkgs.bzl", "download_pkgs")
 load("@io_bazel_rules_docker//docker/package_managers:install_pkgs.bzl", "install_pkgs")
 load("@io_bazel_rules_docker//docker/util:run.bzl", "container_run_and_extract")
-load("@npm//@bazel/typescript:index.bzl", "ts_config")
-load("@npm//karma:index.bzl", "karma_test")
-load("@npm//lerna:index.bzl", "lerna")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//:karma/package_json.bzl", karma_bin = "bin")
 load("//:index.bzl", "ZONES")
-load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
+load("//tools:index.bzl", "BUILDIFIER_WARNINGS", "npm_link_packages")
 
 # Allow any ts_library rules in this workspace to reference the config
 # Note: if you move the tsconfig.json file to a subdirectory, you can add an alias() here instead
 #   so that ts_library rules still use it by default.
-#   See https://www.npmjs.com/package/@bazel/typescript#installation
+#   See https://www.npmjs.com/package/@aspect_rules_ts#installation
 exports_files(
     [
-        "tsconfig.json",
-        "tsconfig.esm.json",
-        "tsconfig.es6.json",
-        "tsconfig.node.json",
         "karma.conf.js",
         "karma.conf-ci.js",
         "jest.config.js",
         ".prettierrc.json",
-        "package.json",
     ] + glob(["npm_package_patches/*"]),
     visibility = ["//:__subpackages__"],
 )
 
-ts_config(
-    name = "tsconfig.esm",
-    src = "tsconfig.esm.json",
-    visibility = ["//:__subpackages__"],
-    deps = ["//:tsconfig.json"],
-)
+npm_link_all_packages(name = "node_modules")
 
-ts_config(
-    name = "tsconfig.esm.esnext",
-    src = "tsconfig.esm.esnext.json",
-    visibility = ["//:__subpackages__"],
-    deps = ["//:tsconfig.json"],
+npm_link_packages(
+    packages = {
+        "node_modules/@formatjs/cli": "//packages/cli",
+        "node_modules/@formatjs/cli-lib": "//packages/cli-lib",
+        "node_modules/@formatjs/ecma376": "//packages/ecma376",
+        "node_modules/@formatjs/ecma402-abstract": "//packages/ecma402-abstract",
+        "node_modules/@formatjs/fast-memoize": "//packages/fast-memoize",
+        "node_modules/@formatjs/icu-messageformat-parser": "//packages/icu-messageformat-parser",
+        "node_modules/@formatjs/icu-skeleton-parser": "//packages/icu-skeleton-parser",
+        "node_modules/@formatjs/intl": "//packages/intl",
+        "node_modules/@formatjs/intl-datetimeformat": "//packages/intl-datetimeformat",
+        "node_modules/@formatjs/intl-displaynames": "//packages/intl-displaynames",
+        "node_modules/@formatjs/intl-durationformat": "//packages/intl-durationformat",
+        "node_modules/@formatjs/intl-enumerator": "//packages/intl-enumerator",
+        "node_modules/@formatjs/intl-getcanonicallocales": "//packages/intl-getcanonicallocales",
+        "node_modules/@formatjs/intl-listformat": "//packages/intl-listformat",
+        "node_modules/@formatjs/intl-locale": "//packages/intl-locale",
+        "node_modules/@formatjs/intl-localematcher": "//packages/intl-localematcher",
+        "node_modules/@formatjs/intl-numberformat": "//packages/intl-numberformat",
+        "node_modules/@formatjs/intl-pluralrules": "//packages/intl-pluralrules",
+        "node_modules/@formatjs/intl-relativetimeformat": "//packages/intl-relativetimeformat",
+        "node_modules/@formatjs/swc-plugin": "//packages/swc-plugin",
+        "node_modules/@formatjs/ts-transformer": "//packages/ts-transformer",
+        "node_modules/babel-plugin-formatjs": "//packages/babel-plugin-formatjs",
+        "node_modules/eslint-plugin-formatjs": "//packages/eslint-plugin-formatjs",
+        "node_modules/intl-messageformat": "//packages/intl-messageformat",
+        "node_modules/react-intl": "//packages/react-intl",
+        "node_modules/vue-intl": "//packages/vue-intl",
+        # "node_modules/@formatjs/editor": "//packages/editor",
+    },
+    visibility = ["//visibility:public"],
 )
 
 # We run this centrally so it doesn't spawn
@@ -55,44 +72,44 @@ KARMA_TESTS = [
     "//packages/intl-relativetimeformat:bundled-karma-tests",
 ]
 
-karma_test(
+karma_bin.karma_test(
     name = "karma",
-    configuration_env_vars = [
-        "SAUCE_USERNAME",
-        "SAUCE_ACCESS_KEY",
-    ],
+    # configuration_env_vars = [
+    #     "SAUCE_USERNAME",
+    #     "SAUCE_ACCESS_KEY",
+    # ],
     data = [
         "//:karma.conf.js",
-        "@npm//karma-jasmine",
-        "@npm//karma-chrome-launcher",
-        "@npm//karma-sauce-launcher",
-        "@npm//karma-jasmine-matchers",
+        "//:node_modules/karma-jasmine",
+        "//:node_modules/karma-chrome-launcher",
+        "//:node_modules/karma-sauce-launcher",
+        "//:node_modules/karma-jasmine-matchers",
     ] + KARMA_TESTS,
     tags = ["manual"],
-    templated_args = [
+    args = [
         "start",
         "$(rootpath //:karma.conf.js)",
         "--no-single-run",
     ],
 )
 
-karma_test(
+karma_bin.karma_test(
     name = "karma-ci",
     size = "large",
-    configuration_env_vars = [
-        "SAUCE_USERNAME",
-        "SAUCE_ACCESS_KEY",
-        "GITHUB_RUN_ID",
-    ],
+    # configuration_env_vars = [
+    #     "SAUCE_USERNAME",
+    #     "SAUCE_ACCESS_KEY",
+    #     "GITHUB_RUN_ID",
+    # ],
     data = [
         "//:karma.conf.js",
-        "@npm//karma-jasmine",
-        "@npm//karma-chrome-launcher",
-        "@npm//karma-sauce-launcher",
-        "@npm//karma-jasmine-matchers",
+        "//:node_modules/karma-jasmine",
+        "//:node_modules/karma-chrome-launcher",
+        "//:node_modules/karma-sauce-launcher",
+        "//:node_modules/karma-jasmine-matchers",
     ] + KARMA_TESTS,
     tags = ["manual"],
-    templated_args = [
+    args = [
         "start",
         "$(rootpath //:karma.conf.js)",
         "--browsers",
@@ -125,7 +142,6 @@ multirun(
         "//packages/intl-relativetimeformat:prettier",
         "//packages/intl:prettier",
         "//packages/react-intl:prettier",
-        "//packages/react-intl/examples:prettier",
         "//packages/ts-transformer:prettier",
         "//packages/swc-plugin:prettier",
         "//packages/vue-intl:prettier",
@@ -135,35 +151,35 @@ multirun(
 )
 
 multirun(
-    name = "tests-locale-data-all.update",
+    name = "generated-test-files",
     testonly = True,
     commands = [
-        "//packages/intl-datetimeformat:test262-main.update",
-        "//packages/intl-datetimeformat:tests-locale-data-all.update",
-        "//packages/intl-displaynames:test262-main.update",
-        "//packages/intl-displaynames:tests-locale-data-all.update",
-        "//packages/intl-listformat:test262-main.update",
-        "//packages/intl-listformat:tests-locale-data-all.update",
-        "//packages/intl-numberformat:test262-main.update",
-        "//packages/intl-numberformat:tests-locale-data-all.update",
-        "//packages/intl-pluralrules:test262-main.update",
-        "//packages/intl-pluralrules:tests-locale-data-all.update",
-        "//packages/intl-relativetimeformat:test262-main.update",
-        "//packages/intl-relativetimeformat:tests-locale-data-all.update",
-        "//packages/intl-getcanonicallocales:aliases.update",
+        "//packages/intl-datetimeformat:test262-main",
+        "//packages/intl-datetimeformat:generated-test-files",
+        "//packages/intl-displaynames:test262-main",
+        "//packages/intl-displaynames:generated-test-files",
+        "//packages/intl-listformat:test262-main",
+        "//packages/intl-listformat:generated-test-files",
+        "//packages/intl-numberformat:test262-main",
+        "//packages/intl-numberformat:generated-test-files",
+        "//packages/intl-pluralrules:test262-main",
+        "//packages/intl-pluralrules:generated-test-files",
+        "//packages/intl-relativetimeformat:test262-main",
+        "//packages/intl-relativetimeformat:generated-test-files",
+        "//packages/intl-getcanonicallocales:aliases",
     ],
 )
 
 multirun(
-    name = "supported-locales-all.update",
+    name = "generated-files",
     testonly = True,
     commands = [
-        "//packages/intl-datetimeformat:supported-locales.update",
-        "//packages/intl-displaynames:supported-locales.update",
-        "//packages/intl-listformat:supported-locales.update",
-        "//packages/intl-numberformat:supported-locales.update",
-        "//packages/intl-pluralrules:supported-locales.update",
-        "//packages/intl-relativetimeformat:supported-locales.update",
+        "//packages/intl-datetimeformat:generated-files",
+        "//packages/intl-displaynames:generated-files",
+        "//packages/intl-listformat:generated-files",
+        "//packages/intl-numberformat:generated-files",
+        "//packages/intl-pluralrules:generated-files",
+        "//packages/intl-relativetimeformat:generated-files",
     ],
 )
 
@@ -173,15 +189,6 @@ buildifier(
     lint_mode = "fix",
     lint_warnings = BUILDIFIER_WARNINGS,
     verbose = True,
-)
-
-lerna(
-    name = "version",
-    templated_args = [
-        "version",
-        "prerelease",
-        "--yes",
-    ],
 )
 
 # Build the Docker container so can compile tzcode + tzdata at the version we want
@@ -238,7 +245,7 @@ container_run_and_extract(
                    # Run make install in the container
                    "make TOPDIR=/tzdir install",
                    "echo 'Compiling zic data'",
-                   "/tzdir/usr/sbin/zic -d /zic %s" % (" ".join(["/tz/%s" % f for f in ZIC_FILES])),
+                   "/tzdir/usr/sbin/zic -d /zic %s" % " ".join(["/tz/%s" % f for f in ZIC_FILES]),
                    # Make a folder to house all the data we need to extract
                    "mkdir /tz_data",
                    # Copy backward file
@@ -256,4 +263,56 @@ container_run_and_extract(
     extract_file = "/tz_data.tar.gz",
     image = ":build_essential_bazel_wrapper.tar",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+copy_to_bin(
+    name = ".prettierrc",
+    srcs = [".prettierrc.json"],
+    visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "tsconfig",
+    srcs = ["tsconfig.json"],
+    visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "jest.config",
+    srcs = ["jest.config.js"],
+    visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "package",
+    srcs = ["package.json"],
+    visibility = ["//visibility:public"],
+)
+
+ts_config(
+    name = "tsconfig.es6",
+    src = "tsconfig.es6.json",
+    visibility = ["//:__subpackages__"],
+    deps = ["tsconfig.json"],
+)
+
+ts_config(
+    name = "tsconfig.node",
+    src = "tsconfig.node.json",
+    visibility = ["//:__subpackages__"],
+    deps = ["tsconfig.json"],
+)
+
+ts_config(
+    name = "tsconfig.esm",
+    src = "tsconfig.esm.json",
+    visibility = ["//:__subpackages__"],
+    deps = ["tsconfig.json"],
+)
+
+ts_config(
+    name = "tsconfig.esm.esnext",
+    src = "tsconfig.esm.esnext.json",
+    visibility = ["//:__subpackages__"],
+    deps = ["tsconfig.json"],
 )

@@ -79,7 +79,7 @@ const formatDescriptor = {
         } else {
           x = Number(date)
         }
-        return FormatDateTime(dtf, x, {
+        return FormatDateTime(dtf as Intl.DateTimeFormat, x, {
           getInternalSlots,
           localeData: DateTimeFormat.localeData,
           tzData: DateTimeFormat.tzData,
@@ -154,7 +154,7 @@ export const DateTimeFormat = function (
     return new DateTimeFormat(locales, options)
   }
 
-  InitializeDateTimeFormat(this, locales, options, {
+  InitializeDateTimeFormat(this as Intl.DateTimeFormat, locales, options, {
     tzData: DateTimeFormat.tzData,
     uppercaseLinks: UPPERCASED_LINKS,
     availableLocales: DateTimeFormat.availableLocales,

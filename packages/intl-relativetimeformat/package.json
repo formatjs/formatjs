@@ -20,8 +20,8 @@
     "url": "git@github.com:formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.11.8",
-    "@formatjs/intl-localematcher": "0.2.28",
+    "@formatjs/ecma402-abstract": "workspace:*",
+    "@formatjs/intl-localematcher": "workspace:*",
     "tslib": "2.4.0"
   },
   "main": "index.js",

@@ -31,9 +31,9 @@
   "module": "lib/index.js",
   "types": "index.d.ts",
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.11.8",
-    "@formatjs/fast-memoize": "1.2.4",
-    "@formatjs/icu-messageformat-parser": "2.1.4",
+    "@formatjs/ecma402-abstract": "workspace:*",
+    "@formatjs/fast-memoize": "workspace:*",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
     "tslib": "2.4.0"
   },
   "sideEffects": false,

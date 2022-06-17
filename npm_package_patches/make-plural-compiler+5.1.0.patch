@@ -1,7 +1,7 @@
 diff --git a/node_modules/make-plural-compiler/lib/parser.js b/node_modules/make-plural-compiler/lib/parser.js
 index 63be531..b4d4bf6 100644
---- a/node_modules/make-plural-compiler/lib/parser.js
-+++ b/node_modules/make-plural-compiler/lib/parser.js
+--- a/lib/parser.js
++++ b/lib/parser.js
 @@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", {
  exports.default = void 0;
  
@@ -43,8 +43,8 @@ index 63be531..b4d4bf6 100644
  }
 diff --git a/node_modules/make-plural-compiler/lib/tests.js b/node_modules/make-plural-compiler/lib/tests.js
 index 967ffb2..768636c 100644
---- a/node_modules/make-plural-compiler/lib/tests.js
-+++ b/node_modules/make-plural-compiler/lib/tests.js
+--- a/lib/tests.js
++++ b/lib/tests.js
 @@ -19,10 +19,11 @@ class Tests {
      };
    }

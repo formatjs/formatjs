@@ -149,11 +149,13 @@ export const createIntl: CreateIntlFn<
 
   return {
     ...coreIntl,
+    // @ts-expect-error fix this
     formatMessage: formatMessage.bind(
       null,
       resolvedConfig,
       coreIntl.formatters
     ),
+    // @ts-expect-error fix this
     $t: formatMessage.bind(null, resolvedConfig, coreIntl.formatters),
   } as any
 }

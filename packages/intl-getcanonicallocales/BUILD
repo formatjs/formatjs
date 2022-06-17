@@ -1,35 +1,28 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//@bazel/esbuild:index.bzl", "esbuild")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("//tools:index.bzl", "bundle_karma_tests", "check_format", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-exports_files(["package.json"])
+exports_files([
+    "package.json",
+    "tsconfig.json",
+])
 
 PACKAGE_NAME = "intl-getcanonicallocales"
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
-    ],
-    deps = [
         ":dist",
         # polyfill-library uses this
         "polyfill.iife.js",
     ],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
+    package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob([
@@ -48,8 +41,8 @@ TEST_DEPS = SRC_DEPS
 
 ts_compile(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
     deps = SRC_DEPS,
 )
@@ -65,7 +58,7 @@ generate_src_file(
     name = "aliases",
     src = "src/aliases.generated.ts",
     data = [
-        "@npm//cldr-core",
+        "//:node_modules/cldr-core",
     ],
     entry_point = "scripts/aliases.ts",
     visibility = ["//:__pkg__"],
@@ -75,7 +68,7 @@ generate_src_file(
     name = "likelySubtags",
     src = "src/likelySubtags.generated.ts",
     data = [
-        "@npm//cldr-core",
+        "//:node_modules/cldr-core",
     ],
     entry_point = "scripts/likely-subtags.ts",
     visibility = ["//:__pkg__"],
@@ -89,19 +82,18 @@ bundle_karma_tests(
     deps = TEST_DEPS,
 )
 
-generated_file_test(
+write_source_files(
     name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
+    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
 esbuild(
     name = "polyfill.iife",
     entry_point = "lib/polyfill.js",
-    target = "es5",
+    target = "es6",
     deps = [
         ":dist-esm",
-        "@npm//tslib",
+        "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
 

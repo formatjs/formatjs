@@ -140,7 +140,9 @@ export function createIntl<T = string>(
       resolvedConfig,
       formatters.getPluralRules
     ),
+    // @ts-expect-error TODO: will get to this later
     formatMessage: formatMessage.bind(null, resolvedConfig, formatters),
+    // @ts-expect-error TODO: will get to this later
     $t: formatMessage.bind(null, resolvedConfig, formatters),
     formatList: formatList.bind(null, resolvedConfig, formatters.getListFormat),
     formatListToParts: formatListToParts.bind(

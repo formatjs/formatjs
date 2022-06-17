@@ -1,30 +1,24 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
 
-exports_files(["package.json"])
+exports_files([
+    "package.json",
+])
 
 PACKAGE_NAME = "ts-transformer"
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
+        ":dist",
     ],
-    deps = [":dist"],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
+    package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob([
@@ -33,22 +27,23 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//@types/node",
-    "@npm//typescript",
-    "@npm//chalk",
-    "@npm//json-stable-stringify",
-    "@npm//@types/json-stable-stringify",
-    "//packages/icu-messageformat-parser:dist",
+    "//:node_modules/@types/node",
+    "//:node_modules/typescript",
+    "//:node_modules/chalk",
+    "//:node_modules/json-stable-stringify",
+    "//:node_modules/@types/json-stable-stringify",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
 ]
 
-ts_compile(
+ts_compile_node(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     deps = SRC_DEPS + [
-        "@npm//ts-jest",
-        "@npm//@jest/types",
+        "//:node_modules/@types/jest",
+        "//:node_modules/ts-jest",
+        "//:node_modules/@jest/types",
     ],
+    data=SRC_DEPS
 )
 
 jest_test(
@@ -58,9 +53,7 @@ jest_test(
         "tests/fixtures/*.ts*",
         "tests/__snapshots__/*.snap",
     ]),
-    deps = SRC_DEPS + [
-        "//packages/icu-messageformat-parser:types",
-    ],
+    deps = SRC_DEPS,
 )
 
 jest_test(
@@ -71,18 +64,16 @@ jest_test(
     jest_config = "tests/integration/jest.config.js",
     deps = [
         ":dist",
-        "//packages/icu-messageformat-parser:types",
-        "@npm//@types/react",
-        "@npm//@types/react-dom",
-        "@npm//react",
-        "@npm//react-dom",
+        "//:node_modules/@types/react",
+        "//:node_modules/@types/react-dom",
+        "//:node_modules/react",
+        "//:node_modules/react-dom",
     ],
 )
 
-generated_file_test(
+write_source_files(
     name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
+    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
 check_format(
@@ -105,16 +96,14 @@ jest_test(
     ]),
     flaky = True,
     deps = [
-        ":dist",
-        ":types",
-        "//packages/icu-messageformat-parser:types",
-        "@npm//@types/node",
-        "@npm//@types/webpack",
-        "@npm//ts-loader",
-        "@npm//vue",
-        "@npm//vue-class-component",
-        "@npm//vue-loader",
-        "@npm//webpack",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/webpack",
+        "//:node_modules/ts-loader",
+        "//:node_modules/vue",
+        "//:node_modules/vue-class-component",
+        "//:node_modules/vue-loader",
+        "//:node_modules/webpack",
     ],
 )
 

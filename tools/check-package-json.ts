@@ -8,39 +8,31 @@ interface Args {
   packageJson: string
   rootPackageJson: string
   out: string
-  internalDepPackageJson: string | string[]
+  internalDep: string | string[]
   externalDep: string | string[]
 }
 
 const cmp: stringify.Comparator = (a, b) => (a.key < b.key ? 1 : -1)
 
 function main(args: Args) {
-  const {externalDep, internalDepPackageJson, packageJson, rootPackageJson} =
-    args
+  const {externalDep, internalDep, packageJson, rootPackageJson} = args
   const externalDeps = Array.isArray(externalDep)
     ? externalDep
     : externalDep
     ? [externalDep]
     : []
-  const internalDepPackageJsons = Array.isArray(internalDepPackageJson)
-    ? internalDepPackageJson
-    : internalDepPackageJson
-    ? [internalDepPackageJson]
+  const internalDeps = Array.isArray(internalDep)
+    ? internalDep
+    : internalDep
+    ? [internalDep]
     : []
   const packageJsonContent = readJSONSync(packageJson)
   const rootPackageJsonContent = readJSONSync(rootPackageJson)
-  const internalPackageJsonContents = internalDepPackageJsons.map(p =>
-    readJSONSync(p)
-  )
   const {devDependencies: rootDependencies} = rootPackageJsonContent
-  const expectedDependencies = {
+  const expectedDependencies: Record<string, string> = {
     tslib: rootDependencies.tslib,
     ...externalDeps.reduce((all: Record<string, string>, dep) => {
       all[dep] = rootDependencies[dep]
-      return all
-    }, {}),
-    ...internalPackageJsonContents.reduce((all: Record<string, string>, c) => {
-      all[c.name] = c.version
       return all
     }, {}),
   }
@@ -48,6 +40,9 @@ function main(args: Args) {
     ...packageJsonContent.dependencies,
     ...(packageJsonContent.peerDependencies || {}),
   }
+  internalDeps.forEach(pkg => {
+    delete packageJsonAllDeps[pkg]
+  })
   if (packageJsonContent.peerDependenciesMeta) {
     for (const dep in packageJsonContent.peerDependenciesMeta) {
       delete expectedDependencies[dep]

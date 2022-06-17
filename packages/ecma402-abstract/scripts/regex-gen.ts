@@ -1,4 +1,3 @@
-import './global'
 import regenerate from 'regenerate'
 import {outputFileSync} from 'fs-extra'
 import minimist from 'minimist'

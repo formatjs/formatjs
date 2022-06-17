@@ -24,8 +24,8 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.11.8",
-    "@formatjs/intl-getcanonicallocales": "2.0.2",
+    "@formatjs/ecma402-abstract": "workspace:*",
+    "@formatjs/intl-getcanonicallocales": "workspace:*",
     "tslib": "2.4.0"
   }
 }

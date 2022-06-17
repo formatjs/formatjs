@@ -1,6 +1,6 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
-load("@npm//@docusaurus/core:index.bzl", "docusaurus")
-load("@npm//http-server:index.bzl", "http_server")
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@npm//:@docusaurus/core/package_json.bzl", docusaurus_bin = "bin")
+load("@npm//:http-server/package_json.bzl", http_server_bin = "bin")
 load("//tools:index.bzl", "check_format")
 
 check_format(
@@ -20,20 +20,19 @@ check_format(
 
 DEPS = [
     ":copy",
-    "//packages/intl-locale:dist",
-    "//packages/intl-displaynames:dist",
-    "//packages/intl-displaynames:locale-data",
-    "//packages/intl-listformat:dist",
-    "//packages/intl-listformat:locale-data",
-    "//packages/intl-messageformat:dist",
-    "//packages/icu-messageformat-parser:dist",
-    "//packages/react-intl:dist",
-    "@npm//@docusaurus/plugin-google-analytics",
-    "@npm//@docusaurus/preset-classic",
-    "@npm//@docusaurus/theme-live-codeblock",
-    "@npm//classnames",
-    "@npm//react",
-    "@npm//react-dom",
+    "//:node_modules/@docusaurus/plugin-google-analytics",
+    "//:node_modules/@docusaurus/preset-classic",
+    "//:node_modules/@docusaurus/theme-common",
+    "//:node_modules/@docusaurus/theme-live-codeblock",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/@formatjs/intl-displaynames",
+    "//:node_modules/@formatjs/intl-listformat",
+    "//:node_modules/@formatjs/intl-locale",
+    "//:node_modules/classnames",
+    "//:node_modules/intl-messageformat",
+    "//:node_modules/react-dom",
+    "//:node_modules/react-intl",
+    "//:node_modules/react",
 ]
 
 copy_to_bin(
@@ -44,48 +43,55 @@ copy_to_bin(
         "src/**/*",
         "static/**/*",
         "*.js",
-    ]),
+    ] + ["package.json"]),
 )
 
-docusaurus(
-    name = "build",
-    args = [
-        "build",
-        "--out-dir",
-        "$(@D)",
-        "$(BINDIR)/website",
-    ],
-    data = DEPS,
-    output_dir = True,
-)
+# docusaurus_bin.docusaurus(
+#     name = "build",
+#     args = [
+#         "build",
+#         "--out-dir",
+#         "$(@D)",
+#         "website",
+#     ],
+#     srcs = DEPS + [
+#         "//:node_modules/tslib",
+#         "//:node_modules/hoist-non-react-statics",
+#         "//:node_modules/react-live",
+#         "//:node_modules/@mdx-js/react",
+#         "//:node_modules/clsx",
+#     ],
+#     out_dirs = ["build"],
+#     tags = ["manual"],
+# )
 
-docusaurus(
+docusaurus_bin.docusaurus_binary(
     name = "deploy",
-    configuration_env_vars = [
-        "USE_SSH",
-        "GIT_USER",
-        "DEPLOYMENT_BRANCH",
-        "NO_UPDATE_NOTIFIER",
-    ],
+    # configuration_env_vars = [
+    #     "USE_SSH",
+    #     "GIT_USER",
+    #     "DEPLOYMENT_BRANCH",
+    #     "NO_UPDATE_NOTIFIER",
+    # ],
     data = DEPS + [
         ":build",
         "docusaurus.config.js",
     ],
-    templated_args = [
+    args = [
         "deploy",
         "--skip-build",
         "--out-dir",
-        "$$(rlocation $(location :build))",
+        "$$(rlocation $(rootpath :build))",
         "website",
     ],
 )
 
-http_server(
+http_server_bin.http_server_binary(
     name = "serve",
     data = [
         ":build",
     ],
-    templated_args = [
+    args = [
         "$$(rlocation $(location :build))",
     ],
 )

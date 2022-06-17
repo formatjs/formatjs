@@ -17,13 +17,14 @@
     "react-intl"
   ],
   "dependencies": {
-    "@formatjs/icu-messageformat-parser": "2.1.4",
-    "@formatjs/ts-transformer": "3.9.9",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "@formatjs/ts-transformer": "workspace:*",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/node": "14 || 16 || 17",
     "chalk": "^4.0.0",
     "json-stable-stringify": "^1.0.1",
-    "tslib": "2.4.0"
+    "tslib": "2.4.0",
+    "@swc/core": "1.2"
   },
   "peerDependencies": {
     "ts-jest": "27"

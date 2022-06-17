@@ -1,45 +1,39 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "nodejs_binary", "pkg_npm")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("//tools:index.bzl", "bundle_karma_tests", "check_format", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-exports_files(["package.json"])
+exports_files([
+    "package.json",
+])
 
 PACKAGE_NAME = "icu-messageformat-parser"
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
-    ],
-    deps = [
         ":dist",
     ],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
+    package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
-    "//packages/ecma402-abstract:dist",
-    "//packages/icu-skeleton-parser:dist",
+    "//:node_modules/@formatjs/ecma402-abstract",
+    "//:node_modules/@formatjs/icu-skeleton-parser",
 ]
 
 ts_compile(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    data = SRC_DEPS,
+    package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
     deps = SRC_DEPS,
 )
@@ -51,26 +45,22 @@ jest_test(
         "tests/**/*.tsx",
         "tests/**/*.snap",
     ]),
-    deps = [
-        "//packages/ecma402-abstract:types",
-        "//packages/icu-skeleton-parser:types",
-    ] + SRC_DEPS,
+    deps = SRC_DEPS,
 )
 
-nodejs_binary(
+js_binary(
     name = "benchmark",
     data = [
         ":dist",
-        "@npm//benchmark",
+        "//:node_modules/benchmark",
         "benchmark.js",
     ] + SRC_DEPS,
     entry_point = "benchmark.js",
 )
 
-generated_file_test(
+write_source_files(
     name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
+    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
 check_format(
@@ -101,8 +91,8 @@ generate_src_file(
     src = "regex.generated.ts",
     data = [
         "scripts/global.ts",
-        "@npm//@unicode/unicode-13.0.0",
-        "@npm//regenerate",
+        "//:node_modules/@unicode/unicode-13.0.0",
+        "//:node_modules/regenerate",
     ],
     entry_point = "scripts/regex-gen.ts",
 )
@@ -111,7 +101,7 @@ generate_src_file(
     name = "time-data",
     src = "time-data.generated.ts",
     data = [
-        "@npm//cldr-core",
+        "//:node_modules/cldr-core",
     ],
     entry_point = "scripts/time-data-gen.ts",
 )
