@@ -1,7 +1,42 @@
 import {Rule} from 'eslint'
 import {extractMessages} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
-const MULTIPLE_SPACES = /\s{2,}/g
+import {
+  parse,
+  MessageFormatElement,
+  TYPE,
+} from '@formatjs/icu-messageformat-parser'
+
+class MultipleWhitespacesError extends Error {
+  public message = 'Multiple consecutive whitespaces are not allowed'
+}
+
+function verifyAst(ast: MessageFormatElement[]): void {
+  for (const element of ast) {
+    switch (element.type) {
+      case TYPE.literal:
+        if (/\s{2,}/gm.test(element.value)) {
+          throw new MultipleWhitespacesError()
+        }
+        break
+      case TYPE.argument:
+      case TYPE.date:
+      case TYPE.literal:
+      case TYPE.number:
+      case TYPE.pound:
+      case TYPE.tag:
+      case TYPE.time:
+        break
+      case TYPE.plural:
+      case TYPE.select: {
+        for (const option of Object.values(element.options)) {
+          verifyAst(option.value)
+        }
+        break
+      }
+    }
+  }
+}
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
   const msgs = extractMessages(node, context.settings)
@@ -15,20 +50,14 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     if (!defaultMessage || !messageNode) {
       continue
     }
-    if (MULTIPLE_SPACES.test(defaultMessage)) {
-      const reportObject: Parameters<typeof context['report']>[0] = {
+
+    try {
+      verifyAst(parse(defaultMessage))
+    } catch (e) {
+      context.report({
         node: messageNode as any,
-        message: 'Multiple consecutive whitespaces are not allowed',
-      }
-      if (messageNode.type === 'Literal' && messageNode.raw) {
-        reportObject.fix = function (fixer) {
-          return fixer.replaceText(
-            messageNode as any,
-            messageNode.raw!.replace(MULTIPLE_SPACES, ' ')
-          )
-        }
-      }
-      context.report(reportObject)
+        message: e instanceof Error ? e.message : String(e),
+      })
     }
   }
 }
@@ -43,7 +72,6 @@ const rule: Rule.RuleModule = {
       recommended: false,
       url: 'https://formatjs.io/docs/tooling/linter#no-multiple-whitespaces',
     },
-    fixable: 'whitespace',
   },
   create(context) {
     const callExpressionVisitor = (node: TSESTree.Node) =>
