@@ -37,10 +37,11 @@ const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow emojis in message',
+      description:
+        'Prevents usage of multiple consecutive whitespaces in message',
       category: 'Errors',
       recommended: false,
-      url: 'https://formatjs.io/docs/tooling/linter#no-emoji',
+      url: 'https://formatjs.io/docs/tooling/linter#no-multiple-whitespaces',
     },
     fixable: 'whitespace',
   },
