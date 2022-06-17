@@ -109,4 +109,3 @@ and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project
 ### **`ast`**
 
 Pre-parse `defaultMessage` into AST for faster runtime perf. This flag doesn't do anything when `removeDefaultMessage` is `true`.
-
