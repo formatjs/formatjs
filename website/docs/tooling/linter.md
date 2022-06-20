@@ -376,6 +376,94 @@ const messages = defineMessages({
 })
 ```
 
+### `no-literal-string-in-jsx`
+
+This prevents untranslated strings in JSX.
+
+#### Why
+
+- It is easy to forget wrapping JSX text in translation functions or components.
+- It is easy to forget wrapping certain accessibility attributes (e.g. `aria-label`) in translation functions.
+
+```tsx
+// WORKS
+<Button>
+  <FormattedMessage defaultMessage="Submit" />
+</Button>
+// WORKS
+<Button>
+  {customTranslateFn("Submit")}
+</Button>
+// WORKS
+<input aria-label={intl.formatMessage({defaultMessage: "Label"})} />
+// WORKS
+<img
+  src="/example.png"
+  alt={intl.formatMessage({defaultMessage: "Image description"})}
+/>
+// FAILS
+<Button>Submit</Button>
+// FAILS
+<Button>{'Submit'}</Button>
+// FAILS
+<Button>{`Te` + 's' + t}</Button>
+// FAILS
+<input aria-label="Untranslated label" />
+// FAILS
+<img src="/example.png" alt="Image description" />
+// FAILS
+<input aria-label={`Untranslated label`} />
+```
+
+This linter reporter text literals or string expressions, including string
+concatenation expressions in the JSX children. It also checks certain JSX
+attributes that you can customize. Example:
+
+```javascript
+// In .eslintrc.js
+module.exports = {
+  // other rules...
+  'formatjs/no-literal-string-in-jsx': [
+    2,
+    {
+      // Include or exclude additional prop checks (merged with the default checks)
+      props: {
+        include: [
+          // picomatch style glob pattern for tag name and prop name.
+          // check `name` prop of `UI.Button` tag.
+          ['UI.Button', 'name'],
+          // check `message` of any component.
+          ['*', 'message'],
+        ],
+        // Exclude will always override include.
+        exclude: [
+          // do not check `message` of the `Foo` tag.
+          ['Foo', 'message'],
+          // do not check aria-label and aria-description of `Bar` tag.
+          ['Bar', 'aria-{label,description}'],
+        ],
+      },
+    },
+  ],
+}
+```
+
+The default prop checks are:
+
+```jsx
+{
+  include: [
+    // check aria attributes that the screen reader announces.
+    ['*', 'aria-{label,description,details,errormessage}'],
+    // check placeholder and title attribute of all native DOM elements.
+    ['[a-z]*([a-z0-9])', '(placeholder|title)'],
+    // check alt attribute of the img tag.
+    ['img', 'alt'],
+  ],
+  exclude: []
+}
+```
+
 ### `no-multiple-whitespaces`
 
 This prevents usage of multiple consecutive whitespaces in message.
