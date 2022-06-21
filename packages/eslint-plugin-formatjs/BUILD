@@ -36,9 +36,11 @@ SRCS = glob(["rules/*.ts"]) + [
 
 SRC_DEPS = [
     "@npm//@types/eslint",
+    "@npm//@types/picomatch",
     "@npm//@typescript-eslint/typescript-estree",
     "@npm//emoji-regex",
     "@npm//eslint",
+    "@npm//picomatch",
     "@npm//typescript",
     "//packages/icu-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
