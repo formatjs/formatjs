@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@3.1.5...eslint-plugin-formatjs@4.0.0) (2022-06-21)
+
+
+### Bug Fixes
+
+* **@formatjs/eslint-plugin-formatjs:** handle ICU message syntax error in no-complex-selectors rule ([dc8ecdc](https://github.com/formatjs/formatjs/commit/dc8ecdcb94efd592d4169a618ab60b6b80122290))
+
+
+### Features
+
+* **eslint-plugin-formatjs:** introduce no-literal-string-in-jsx ([#3674](https://github.com/formatjs/formatjs/issues/3674)) ([a5da037](https://github.com/formatjs/formatjs/commit/a5da0375a1703f60be1da06903e0982ddfc3b06e))
+* **eslint-plugin-formatjs:** no-multiple-whitespaces now allows whitespaces in non-literals ([#3671](https://github.com/formatjs/formatjs/issues/3671)) ([3cf262a](https://github.com/formatjs/formatjs/commit/3cf262a3c74ce1989aaec44d3459c32f65bad452))
+
+
+
+
+
 ## [3.1.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@3.1.4...eslint-plugin-formatjs@3.1.5) (2022-06-06)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
