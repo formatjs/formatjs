@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.0.0...eslint-plugin-formatjs@4.0.1) (2022-06-21)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** actually add no-literal-string-in-jsx to the plugin registry ([#3680](https://github.com/formatjs/formatjs/issues/3680)) ([f834cd5](https://github.com/formatjs/formatjs/commit/f834cd590e7b01052e017515c284e6512babcfd9))
+
+
+
+
+
 # [4.0.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@3.1.5...eslint-plugin-formatjs@4.0.0) (2022-06-21)
 
 
