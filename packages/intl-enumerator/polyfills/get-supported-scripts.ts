@@ -1,8 +1,8 @@
-import type { Script } from "../data/scripts";
-import { scripts } from "../data/scripts";
+import type { Script } from '../data/scripts';
+import { scripts } from '../data/scripts';
 
 export function getSupportedScripts(): Script[] {
-  const ATOZ = "abcdefghijklmnopqrstuvwxyz";
+  const ATOZ = 'abcdefghijklmnopqrstuvwxyz';
   const supportedScripts: Script[] = [];
 
   for (const script of scripts) {

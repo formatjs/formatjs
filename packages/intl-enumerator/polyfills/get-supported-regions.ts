@@ -2,8 +2,8 @@ import type { Region } from '../data/regions';
 import { regions } from '../data/regions';
 
 export function getSupportedRegions(): Region[] {
-  const ATOZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const _0TO9 = "0123456789";
+  const ATOZ = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const _0TO9 = '0123456789';
   const supportedRegions: Region[] = [];
 
   for (const region of regions) {
