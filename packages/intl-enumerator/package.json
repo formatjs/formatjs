@@ -1,0 +1,32 @@
+{
+  "name": "@formatjs/intl-enumerator",
+  "version": "0.0.1",
+  "description": "Intl.Enumerator polyfill",
+  "keywords": [
+    "intl",
+    "enumerator",
+    "formatjs",
+    "react-intl",
+    "i18n",
+    "ecma402",
+    "tc39"
+  ],
+  "author": "Michele Riva <ciao@micheleriva.it>",
+  "private": true,
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "license": "MIT",
+  "main": "index.umd.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formatjs/formatjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "dependencies": {
+    "@formatjs/ecma402-abstract": "1.6.4",
+    "@formatjs/intl-localematcher": "0.2.17",
+    "tslib": "2.4.0"
+  }
+}
