@@ -1,16 +1,15 @@
-import type { Timezone } from '../data/timezones';
-import { timezones } from '../data/timezones';
+import type {Timezone} from '../data/timezones'
+import {timezones} from '../data/timezones'
 
 function isSupported(timeZone: Timezone): boolean {
   try {
-    const formatter = new Intl.DateTimeFormat('en', { timeZone });
-    return formatter.resolvedOptions().timeZone === timeZone;
+    const formatter = new Intl.DateTimeFormat('en', {timeZone})
+    return formatter.resolvedOptions().timeZone === timeZone
+  } catch (_err) {}
 
-  } catch (_err) {};
-
-  return false;
+  return false
 }
 
 export function getSupportedTimeZones(): Timezone[] {
-  return timezones.filter(isSupported);
+  return timezones.filter(isSupported)
 }

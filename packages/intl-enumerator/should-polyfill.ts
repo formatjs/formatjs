@@ -5,8 +5,8 @@ type AvailablePolyfills =
   | 'getSupportedRegions'
   | 'getSupportedScripts'
   | 'getSupportedTimeZones'
-  | 'getSupportedUnits';
+  | 'getSupportedUnits'
 
 export function shouldPolyfill(polyfill: AvailablePolyfills): boolean {
-  return !(polyfill in Intl);
+  return !(polyfill in Intl)
 }

@@ -1,7 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:index.bzl", "check_format", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
 
 exports_files(["package.json"])
 
@@ -30,12 +29,9 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["*.ts"])
+SRCS = glob(["**/*.ts"])
 
-SRC_DEPS = [
-    "//packages/ecma402-abstract:dist",
-    "//packages/intl-localematcher:dist",
-]
+SRC_DEPS = []
 
 ts_compile(
     name = "dist",
@@ -45,18 +41,15 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-jest_test(
-    name = "unit",
-    srcs = SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-        "tests/**/*.snap",
-    ]),
-    deps = [
-        "//packages/ecma402-abstract:types",
-        "//packages/intl-localematcher:types",
-    ] + SRC_DEPS,
-)
+#jest_test(
+#    name = "unit",
+#    srcs = SRCS + glob([
+#        "tests/**/*.ts",
+#        "tests/**/*.tsx",
+#        "tests/**/*.snap",
+#    ]),
+#    deps = SRC_DEPS,
+#)
 
 # Test262
 ts_project(
@@ -85,6 +78,7 @@ check_format(
         ],
         exclude = [
             "CHANGELOG.md",
+            "tests/locale-data/*",
         ],
     ),
 )

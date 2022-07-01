@@ -1,19 +1,19 @@
-export type { Calendar } from './data/calendars';
-export type { Currency } from './data/currencies';
-export type { NumberingSystem } from './data/numbering-systems';
-export type { Region } from './data/regions';
-export type { Script } from './data/scripts';
-export type { Timezone } from './data/timezones';
-export type { Unit } from './data/units';
+export type {Calendar} from './data/calendars'
+export type {Currency} from './data/currencies'
+export type {NumberingSystem} from './data/numbering-systems'
+export type {Region} from './data/regions'
+export type {Script} from './data/scripts'
+export type {Timezone} from './data/timezones'
+export type {Unit} from './data/units'
 
-import { shouldPolyfill } from './should-polyfill';
-import { getSupportedCalendars } from './polyfills/get-supported-calendars';
-import { getSupportedCurrencies } from './polyfills/get-supported-currencies';
-import { getSupportedNumberingSystems } from './polyfills/get-supported-numbering-systems';
-import { getSupportedRegions } from './polyfills/get-supported-regions';
-import { getSupportedScripts } from './polyfills/get-supported-scripts';
-import { getSupportedTimeZones } from './polyfills/get-supported-timezones';
-import { getSupportedUnits } from './polyfills/get-supported-units';
+import {shouldPolyfill} from './should-polyfill'
+import {getSupportedCalendars} from './polyfills/get-supported-calendars'
+import {getSupportedCurrencies} from './polyfills/get-supported-currencies'
+import {getSupportedNumberingSystems} from './polyfills/get-supported-numbering-systems'
+import {getSupportedRegions} from './polyfills/get-supported-regions'
+import {getSupportedScripts} from './polyfills/get-supported-scripts'
+import {getSupportedTimeZones} from './polyfills/get-supported-timezones'
+import {getSupportedUnits} from './polyfills/get-supported-units'
 
 if (shouldPolyfill('getSupportedCalendars')) {
   Object.defineProperty(Intl, 'getSupportedCalendars', {
@@ -21,7 +21,7 @@ if (shouldPolyfill('getSupportedCalendars')) {
     enumerable: true,
     writable: false,
     configurable: false,
-  });
+  })
 }
 
 if (shouldPolyfill('getSupportedCurrencies')) {
@@ -30,7 +30,7 @@ if (shouldPolyfill('getSupportedCurrencies')) {
     enumerable: true,
     writable: false,
     configurable: false,
-  });
+  })
 }
 
 if (shouldPolyfill('getSupportedNumberingSystems')) {
@@ -39,7 +39,7 @@ if (shouldPolyfill('getSupportedNumberingSystems')) {
     enumerable: true,
     writable: false,
     configurable: false,
-  });
+  })
 }
 
 if (shouldPolyfill('getSupportedRegions')) {
@@ -48,7 +48,7 @@ if (shouldPolyfill('getSupportedRegions')) {
     enumerable: true,
     writable: false,
     configurable: false,
-  });
+  })
 }
 
 if (shouldPolyfill('getSupportedScripts')) {
@@ -57,7 +57,7 @@ if (shouldPolyfill('getSupportedScripts')) {
     enumerable: true,
     writable: false,
     configurable: false,
-  });
+  })
 }
 
 if (shouldPolyfill('getSupportedTimeZones')) {
@@ -66,7 +66,7 @@ if (shouldPolyfill('getSupportedTimeZones')) {
     enumerable: true,
     writable: false,
     configurable: false,
-  });
+  })
 }
 
 if (shouldPolyfill('getSupportedUnits')) {
@@ -75,5 +75,5 @@ if (shouldPolyfill('getSupportedUnits')) {
     enumerable: true,
     writable: false,
     configurable: false,
-  });
+  })
 }
