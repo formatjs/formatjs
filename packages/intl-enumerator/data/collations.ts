@@ -4,20 +4,20 @@ export const collations = [
   'big5han',
   'compat',
   'dict',
-  'direct', // deprecated
-  'ducet', // not available on web
+  'direct',
+  'ducet',
   'emoji',
   'eor',
-  'gb2312', // not available on Chrome or Edge anymore
+  'gb2312',
   'phonebk',
   'phonetic',
   'pinyin',
-  'reformed', // default for Swedish as of May 2022
-  'search', // do not use
+  'reformed',
+  'search',
   'searchjl',
-  'standard', // do not use explicitly
+  'standard',
   'stroke',
   'trad',
-  'unihan', // Not available on chrome or edge
+  'unihan',
   'zhuyin',
 ] as const
