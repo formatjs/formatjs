@@ -6,14 +6,5 @@ export type {NumberingSystem} from './data/numbering-systems'
 export type {Timezone} from './data/timezones'
 export type {Unit} from './data/units'
 
-import {shouldPolyfill} from './should-polyfill'
-import {supportedValuesOf} from './polyfills'
-
-if (shouldPolyfill()) {
-  Object.defineProperty(Intl, 'supportedValuesOf', {
-    value: supportedValuesOf,
-    enumerable: true,
-    writable: false,
-    configurable: false,
-  })
-}
+export {shouldPolyfill} from './should-polyfill'
+export {supportedValuesOf} from './polyfills'

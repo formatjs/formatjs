@@ -28,6 +28,6 @@ export function supportedValuesOf(key: SupportedValuesOf): string[] {
     case 'unit':
       return getSupportedUnits()
     default:
-      throw RangeError('Invalid key:' + key)
+      throw RangeError('Invalid key: ' + key)
   }
 }

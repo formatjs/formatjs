@@ -1,6 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:index.bzl", "check_format", "ts_compile")
+load("//tools:jest.bzl", "jest_test")
 
 exports_files(["package.json"])
 
@@ -29,9 +30,20 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["**/*.ts"])
+SRCS = glob([
+    "data/**/*.ts",
+    "polyfills/**/*.ts",
+    "*.ts",
+])
 
-SRC_DEPS = []
+TESTS = glob([
+    "tests/*.test.ts",
+])
+
+SRC_DEPS = [
+]
+
+TEST_DEPS = SRC_DEPS
 
 ts_compile(
     name = "dist",
@@ -41,15 +53,11 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-#jest_test(
-#    name = "unit",
-#    srcs = SRCS + glob([
-#        "tests/**/*.ts",
-#        "tests/**/*.tsx",
-#        "tests/**/*.snap",
-#    ]),
-#    deps = SRC_DEPS,
-#)
+jest_test(
+    name = "unit",
+    srcs = SRCS + TESTS,
+    deps = TEST_DEPS
+)
 
 # Test262
 ts_project(
@@ -61,7 +69,7 @@ ts_project(
     out_dir = "test262",
     resolve_json_module = True,
     tsconfig = "//:tsconfig.es6.json",
-    deps = SRC_DEPS,
+    deps = [],
 )
 
 generated_file_test(
@@ -78,7 +86,6 @@ check_format(
         ],
         exclude = [
             "CHANGELOG.md",
-            "tests/locale-data/*",
         ],
     ),
 )
