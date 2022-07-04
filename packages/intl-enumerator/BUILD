@@ -41,6 +41,7 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
+    "@npm//cldr-numbers-full"
 ]
 
 TEST_DEPS = SRC_DEPS
@@ -69,7 +70,7 @@ ts_project(
     out_dir = "test262",
     resolve_json_module = True,
     tsconfig = "//:tsconfig.es6.json",
-    deps = [],
+    deps = SRC_DEPS,
 )
 
 generated_file_test(
