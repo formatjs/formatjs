@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.9](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.9.8...@formatjs/ts-transformer@3.9.9) (2022-07-04)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** update package.json to allow ts-jest 28 in peer dependencies ([#3685](https://github.com/formatjs/formatjs/issues/3685)) ([a6b5f2c](https://github.com/formatjs/formatjs/commit/a6b5f2c21334ebd3b1fe28f3b42e60eef8bc6cb8))
+
+
+
+
+
 ## [3.9.8](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.9.7...@formatjs/ts-transformer@3.9.8) (2022-06-06)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
