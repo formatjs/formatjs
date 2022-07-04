@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.8](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.11.7...@formatjs/ecma402-abstract@1.11.8) (2022-07-04)
+
+
+### Bug Fixes
+
+* fix date-time types for TS 4.7, fix [#3623](https://github.com/formatjs/formatjs/issues/3623) ([97753ce](https://github.com/formatjs/formatjs/commit/97753ceb374968e7e00d7516ced24e12b167ad0d))
+
+
+
+
+
 ## [1.11.7](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.11.6...@formatjs/ecma402-abstract@1.11.7) (2022-06-06)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract
