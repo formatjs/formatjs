@@ -8,6 +8,15 @@ load("//tools:jest.bzl", "jest_test")
 
 exports_files(["package.json"])
 
+exports_files(
+    [
+        "scripts/utils.ts",
+        "scripts/extract-numbers.ts",
+        "scripts/numbering-systems.ts",
+    ],
+    visibility = ["//packages/intl-enumerator:__pkg__"],
+)
+
 PACKAGE_NAME = "intl-numberformat"
 
 TEST_LOCALES = [

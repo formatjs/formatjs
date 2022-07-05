@@ -1,6 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
-load("//tools:index.bzl", "check_format", "ts_compile")
+load("//:index.bzl", "ZONES")
+load("//tools:index.bzl", "check_format", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 exports_files(["package.json"])
@@ -31,8 +32,7 @@ alias(
 )
 
 SRCS = glob([
-    "data/**/*.ts",
-    "polyfills/**/*.ts",
+    "src/**/*.ts",
     "*.ts",
 ])
 
@@ -41,7 +41,6 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//cldr-numbers-full"
 ]
 
 TEST_DEPS = SRC_DEPS
@@ -57,7 +56,7 @@ ts_compile(
 jest_test(
     name = "unit",
     srcs = SRCS + TESTS,
-    deps = TEST_DEPS
+    deps = TEST_DEPS,
 )
 
 # Test262
@@ -87,6 +86,64 @@ check_format(
         ],
         exclude = [
             "CHANGELOG.md",
+            "src/*.generated.*",
         ],
     ),
+)
+
+# numbering-systems
+generate_src_file(
+    name = "calendars",
+    src = "src/calendars.generated.ts",
+    data = [
+        "@npm//cldr-bcp47",
+    ],
+    entry_point = "scripts/calendars.ts",
+)
+
+# timezones
+generate_src_file(
+    name = "timezones",
+    src = "src/timezones.generated.ts",
+    args = ["--zone %s" % z for z in ZONES],
+    data = [
+    ],
+    entry_point = "scripts/timezones.ts",
+)
+
+# numbering-systems
+generate_src_file(
+    name = "numbering-systems",
+    src = "src/numbering-systems.generated.ts",
+    data = [
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract:types",
+        "//packages/intl-numberformat:scripts/extract-numbers.ts",
+        "//packages/intl-numberformat:scripts/utils.ts",
+        "@npm//@types/lodash",
+        "@npm//cldr-core",
+        "@npm//cldr-numbers-full",
+        "@npm//lodash",
+    ],
+    entry_point = "//packages/intl-numberformat:scripts/numbering-systems.ts",
+)
+
+# currencies 
+generate_src_file(
+    name = "currencies",
+    src = "src/currencies.generated.ts",
+    data = [
+        "@npm//cldr-numbers-full",
+    ],
+    entry_point = "scripts/currencies.ts",
+)
+
+# currencies 
+generate_src_file(
+    name = "collations",
+    src = "src/collations.generated.ts",
+    data = [
+        "@npm//cldr-bcp47",
+    ],
+    entry_point = "scripts/collations.ts",
 )

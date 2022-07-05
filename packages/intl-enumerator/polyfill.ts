@@ -1,5 +1,5 @@
 import {shouldPolyfill} from './should-polyfill'
-import {supportedValuesOf} from './polyfills'
+import {supportedValuesOf} from './src'
 
 if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'supportedValuesOf', {

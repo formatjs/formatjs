@@ -1,5 +1,5 @@
-import type {Currency} from '../data/currencies'
-import {currencies} from '../data/currencies'
+import type {Currency} from './currencies.generated'
+import {currencies} from './currencies.generated'
 
 function isSupportedCurrency(currency: Currency): boolean {
   try {

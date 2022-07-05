@@ -1,5 +1,5 @@
-import type {Calendar} from '../data/calendars'
-import {calendars} from '../data/calendars'
+import type {Calendar} from './calendars.generated'
+import {calendars} from './calendars.generated'
 
 function isSupportedCalendar(item: Calendar): boolean {
   try {

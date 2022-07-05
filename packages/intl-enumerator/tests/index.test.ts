@@ -1,4 +1,4 @@
-import {supportedValuesOf} from '../polyfills'
+import {supportedValuesOf} from '../src'
 
 describe('Intl.supportedValueOf("calendar")', () => {
   it('should return an array of supported calendars', () => {

@@ -1,4 +1,4 @@
-import {supportedValuesOf} from './polyfills/index'
+import {supportedValuesOf} from './src'
 
 Object.defineProperty(Intl, 'supportedValuesOf', {
   value: supportedValuesOf,

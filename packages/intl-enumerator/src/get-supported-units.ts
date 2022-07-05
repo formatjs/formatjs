@@ -1,5 +1,5 @@
-import type {Unit} from '../data/units'
-import {units} from '../data/units'
+import type {Unit} from './units.generated'
+import {units} from './units.generated'
 
 function isSupported(unit: Unit): boolean {
   try {

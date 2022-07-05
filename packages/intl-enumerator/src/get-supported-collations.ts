@@ -1,5 +1,5 @@
-import type {Collation} from '../data/collations'
-import {collations} from '../data/collations'
+import type {Collation} from './collations.generated'
+import {collations} from './collations.generated'
 
 function isSupported(collation: Collation): boolean {
   try {
