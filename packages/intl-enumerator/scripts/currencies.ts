@@ -8,7 +8,9 @@ function main(args: minimist.ParsedArgs) {
   // Output numbering systems file
   outputFileSync(
     out,
-    `export const currencies = ${JSON.stringify(currencies)} as const
+    `/* @generated */
+// prettier-ignore
+export const currencies = ${JSON.stringify(currencies)} as const
 export type Currency = typeof currencies[number]
     `
   )

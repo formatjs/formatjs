@@ -91,7 +91,7 @@ check_format(
     ),
 )
 
-# numbering-systems
+# calendars
 generate_src_file(
     name = "calendars",
     src = "src/calendars.generated.ts",
@@ -138,7 +138,7 @@ generate_src_file(
     entry_point = "scripts/currencies.ts",
 )
 
-# currencies 
+# collations
 generate_src_file(
     name = "collations",
     src = "src/collations.generated.ts",
@@ -146,4 +146,16 @@ generate_src_file(
         "@npm//cldr-bcp47",
     ],
     entry_point = "scripts/collations.ts",
+)
+
+# units
+generate_src_file(
+    name = "units",
+    src = "src/units.generated.ts",
+    data = [
+        "@npm//cldr-bcp47",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract:types",
+    ],
+    entry_point = "scripts/units.ts",
 )
