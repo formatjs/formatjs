@@ -8,7 +8,9 @@ function main(args: minimist.ParsedArgs) {
   // Output numbering systems file
   outputFileSync(
     out,
-    `export const collations = ${JSON.stringify(collations)} as const
+    `/* @generated */
+// prettier-ignore
+export const collations = ${JSON.stringify(collations)} as const
 export type Collation = typeof collations[number]
     `
   )

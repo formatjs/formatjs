@@ -8,7 +8,9 @@ function main(args: minimist.ParsedArgs) {
   // Output numbering systems file
   outputFileSync(
     out,
-    `export const calendars = ${JSON.stringify(calendars)} as const
+    `/* @generated */
+// prettier-ignore
+export const calendars = ${JSON.stringify(calendars)} as const
 export type Calendar = typeof calendars[number]
     `
   )
