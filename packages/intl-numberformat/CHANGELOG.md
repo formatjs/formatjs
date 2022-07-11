@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.0.3...@formatjs/intl-numberformat@8.0.4) (2022-07-11)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-enumerator:** fix intl-enumerator build ([a1d95e1](https://github.com/formatjs/formatjs/commit/a1d95e13e21fddf8f13475254daf13d86dd34b6a))
+
+
+
+
+
 ## [8.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.0.2...@formatjs/intl-numberformat@8.0.3) (2022-07-04)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

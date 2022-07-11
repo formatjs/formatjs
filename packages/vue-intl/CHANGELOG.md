@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.9](https://github.com/formatjs/formatjs/compare/vue-intl@6.2.8...vue-intl@6.2.9) (2022-07-11)
+
+
+### Bug Fixes
+
+* **vue-intl:** type augmentation for global properties ([#3703](https://github.com/formatjs/formatjs/issues/3703)) ([50cb9f2](https://github.com/formatjs/formatjs/commit/50cb9f2da90fe989fe65516c3846dd91482d9d66))
+
+
+
+
+
 ## [6.2.8](https://github.com/formatjs/formatjs/compare/vue-intl@6.2.7...vue-intl@6.2.8) (2022-07-04)
 
 **Note:** Version bump only for package vue-intl
