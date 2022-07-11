@@ -222,7 +222,7 @@ ${JSON.stringify(message, undefined, 2)}`
       if (extractedMessages.has(id)) {
         const existing = extractedMessages.get(id)!
         if (
-          description !== existing.description ||
+          stringify(description) !== stringify(existing.description) ||
           defaultMessage !== existing.defaultMessage
         ) {
           const error = new Error(
