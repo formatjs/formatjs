@@ -4,6 +4,13 @@ PACKAGE_NAME = "cli"
 
 exports_files(["package.json"])
 
+genrule(
+    name = "bin",
+    srcs = ["//packages/cli-lib:formatjs.js"],
+    outs = ["bin/formatjs"],
+    cmd = "cp $< $@",
+)
+
 pkg_npm(
     name = PACKAGE_NAME,
     package_name = "@formatjs/%s" % PACKAGE_NAME,
@@ -13,6 +20,6 @@ pkg_npm(
     ],
     deps = [
         "package.json",
-        "//packages/cli-lib:bin/formatjs",
+        ":bin/formatjs",
     ],
 )

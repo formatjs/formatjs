@@ -201,6 +201,7 @@ esbuild(
     ],
     platform = "node",
     target = "node16",
+    visibility = ["//packages/cli:__pkg__"],
     deps = [
         "@npm//tslib",
     ] + SRC_DEPS,
@@ -211,5 +212,4 @@ genrule(
     srcs = [":formatjs.js"],
     outs = ["bin/formatjs"],
     cmd = "cp $< $@",
-    visibility = ["//packages/cli:__pkg__"],
 )
