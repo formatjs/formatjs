@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.0.3 (2022-07-16)
+
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** introduce @formatjs/cli-lib as @formatjs/cli Node API ([7c4ebef](https://github.com/formatjs/formatjs/commit/7c4ebef00a6ac2a197b5007e328306bc8e00b445)), closes [#3625](https://github.com/formatjs/formatjs/issues/3625)
+
+
+
+
+
 ## [5.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@5.0.1...@formatjs/cli@5.0.2) (2022-06-06)
 
 **Note:** Version bump only for package @formatjs/cli

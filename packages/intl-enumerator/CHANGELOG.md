@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.1.0...@formatjs/intl-enumerator@1.1.1) (2022-07-16)
+
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** introduce @formatjs/cli-lib as @formatjs/cli Node API ([7c4ebef](https://github.com/formatjs/formatjs/commit/7c4ebef00a6ac2a197b5007e328306bc8e00b445)), closes [#3625](https://github.com/formatjs/formatjs/issues/3625)
+
+
+
+
+
 # 1.1.0 (2022-07-11)
 
 
