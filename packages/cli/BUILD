@@ -23,3 +23,8 @@ pkg_npm(
         ":bin/formatjs",
     ],
 )
+
+alias(
+    name = "publish",
+    actual = "%s.publish" % PACKAGE_NAME,
+)
