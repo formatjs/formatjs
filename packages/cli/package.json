@@ -32,6 +32,9 @@
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
+  "devDependencies": {
+    "@formatjs/cli-lib": "5.0.3"
+  },
   "peerDependencies": {
     "@vue/compiler-sfc": "^3.2.34"
   },
