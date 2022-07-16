@@ -128,7 +128,7 @@ generate_src_file(
     entry_point = "//packages/intl-numberformat:scripts/numbering-systems.ts",
 )
 
-# currencies 
+# currencies
 generate_src_file(
     name = "currencies",
     src = "src/currencies.generated.ts",
@@ -153,9 +153,9 @@ generate_src_file(
     name = "units",
     src = "src/units.generated.ts",
     data = [
-        "@npm//cldr-bcp47",
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
+        "@npm//cldr-bcp47",
     ],
     entry_point = "scripts/units.ts",
 )

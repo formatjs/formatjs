@@ -717,7 +717,7 @@ Object {
 
 exports[`skipped malformed ICU message json 1`] = `
 Object {
-  "stderr": StringMatching /\\^\\\\\\[@formatjs\\\\/cli\\\\\\] \\\\\\[WARN\\\\\\] Error validating message "my name is \\{name" with ID "a1dd2" in file \\.\\*\\\\/packages\\\\/cli\\\\/tests\\\\/integration\\\\/compile\\\\/lang\\\\/malformed-messages\\.json/,
+  "stderr": StringMatching /\\^\\\\\\[@formatjs\\\\/cli\\\\\\] \\\\\\[WARN\\\\\\] Error validating message "my name is \\{name" with ID "a1dd2" in file \\.\\*\\\\/packages\\\\/cli-lib\\\\/tests\\\\/integration\\\\/compile\\\\/lang\\\\/malformed-messages\\.json/,
   "stdout": "{
   \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
   \\"ashd2\\": \\"a message\\"

@@ -442,12 +442,35 @@ Take a look at our [builtin formatter code](https://github.com/formatjs/formatjs
 
 ## Node API
 
-`@formatjs/cli` can also be consumed programmatically like below:
+Install `@formatjs/cli-lib` instead to use programmatically
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -D @formatjs/cli-lib
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D @formatjs/cli-lib
+```
+
+</TabItem>
+</Tabs>
 
 ### Extraction
 
 ```tsx
-import {extract} from '@formatjs/cli'
+import {extract} from '@formatjs/cli-lib'
 
 const resultAsString: Promise<string> = extract(files, {
   idInterpolationPattern: '[sha512:contenthash:base64:6]',
@@ -457,7 +480,7 @@ const resultAsString: Promise<string> = extract(files, {
 ### Compilation
 
 ```tsx
-import {compile} from '@formatjs/cli'
+import {compile} from '@formatjs/cli-lib'
 
 const resultAsString: Promise<string> = compile(files, {
   ast: true,
@@ -467,7 +490,7 @@ const resultAsString: Promise<string> = compile(files, {
 ### Custom Formatter
 
 ```tsx
-import {FormatFn, CompileFn, Comparator} from '@formatjs/cli'
+import {FormatFn, CompileFn, Comparator} from '@formatjs/cli-lib'
 
 export const format: FormatFn = msgs => msgs
 

@@ -104,7 +104,7 @@ multirun(
     name = "prettier_all",
     commands = [
         "//packages/babel-plugin-formatjs:prettier",
-        "//packages/cli:prettier",
+        "//packages/cli-lib:prettier",
         "//packages/ecma376:prettier",
         "//packages/ecma402-abstract:prettier",
         "//packages/editor:prettier",

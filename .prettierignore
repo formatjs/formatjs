@@ -8,7 +8,7 @@ packages/intl-datetimeformat/src/data/
 packages/intl-getcanonicallocales/src/data/
 packages/intl-numberformat/src/data/
 packages/ecma402-abstract/src/NumberFormat/digit-mapping.json
-packages/cli/tests/extract/typescript/err.tsx
+packages/cli-lib/tests/extract/typescript/err.tsx
 test262*
 test262/
 website/.docusaurus

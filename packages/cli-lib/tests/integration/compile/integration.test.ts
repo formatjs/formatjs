@@ -161,7 +161,7 @@ test('skipped malformed ICU message json', async () => {
     )
   ).resolves.toMatchSnapshot({
     stderr: expect.stringMatching(
-      /^\[@formatjs\/cli\] \[WARN\] Error validating message "my name is {name" with ID "a1dd2" in file .*\/packages\/cli\/tests\/integration\/compile\/lang\/malformed-messages.json/
+      /^\[@formatjs\/cli\] \[WARN\] Error validating message "my name is {name" with ID "a1dd2" in file .*\/packages\/cli-lib\/tests\/integration\/compile\/lang\/malformed-messages.json/
     ),
   } as Partial<any>)
 }, 20000)
