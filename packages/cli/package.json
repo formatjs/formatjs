@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "A CLI for formatjs.",
   "keywords": [
     "intl",
@@ -33,7 +33,7 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "devDependencies": {
-    "@formatjs/cli-lib": "5.0.3"
+    "@formatjs/cli-lib": "5.0.4"
   },
   "peerDependencies": {
     "@vue/compiler-sfc": "^3.2.34"

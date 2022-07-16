@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli@5.0.3...@formatjs/cli@5.0.4) (2022-07-16)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** attempt to bind cli & cli-lib on the same version ([39d55fa](https://github.com/formatjs/formatjs/commit/39d55fa55b7250c5334a6955289f07ff7ef1636a))
+* **@formatjs/cli:** fix publishing issue ([f110227](https://github.com/formatjs/formatjs/commit/f110227c7bb1c34d150d91a3a52513cf59c6f494))
+
+
+
+
+
 ## [5.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@5.0.2...@formatjs/cli@5.0.3) (2022-07-16)
 
 
