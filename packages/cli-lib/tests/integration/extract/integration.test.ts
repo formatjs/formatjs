@@ -202,13 +202,16 @@ test('duplicated descriptor ids throws', async () => {
 
 test('non duplicated descriptors does not throw', async () => {
   await expect(
-      exec(
-          `${BIN_PATH} extract --throws '${join(__dirname, 'nonDuplicated/*.tsx')}' --out-file ${ARTIFACT_PATH}/nonDuplicated/actual.json`
-      )
+    exec(
+      `${BIN_PATH} extract --throws '${join(
+        __dirname,
+        'nonDuplicated/*.tsx'
+      )}' --out-file ${ARTIFACT_PATH}/nonDuplicated/actual.json`
+    )
   ).resolves.toMatchSnapshot()
 
   expect(
-      await readJSON(join(ARTIFACT_PATH, 'nonDuplicated/actual.json'))
+    await readJSON(join(ARTIFACT_PATH, 'nonDuplicated/actual.json'))
   ).toMatchSnapshot()
 }, 20000)
 
