@@ -4,3 +4,4 @@ node_modules
 .cache
 .bazelrc.user
 *.log
+.idea

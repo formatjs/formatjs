@@ -408,6 +408,25 @@ Object {
 }
 `;
 
+exports[`non duplicated descriptors does not throw 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`non duplicated descriptors does not throw 2`] = `
+Object {
+  "foo": Object {
+    "defaultMessage": "Foo",
+    "description": Object {
+      "maxCharacterCount": 2,
+      "text": "Bar",
+    },
+  },
+}
+`;
+
 exports[`pragma 1`] = `
 Object {
   "stderr": "",
