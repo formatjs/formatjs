@@ -3,6 +3,7 @@ import enforceDefaultMessage from './rules/enforce-default-message'
 import enforceDescription from './rules/enforce-description'
 import enforceId from './rules/enforce-id'
 import enforcePlaceholders from './rules/enforce-placeholders'
+import noInvalidICU from './rules/no-invalid-icu'
 import enforcePluralRules from './rules/enforce-plural-rules'
 import noCamelCase from './rules/no-camel-case'
 import noComplexSelectors from './rules/no-complex-selectors'
@@ -27,6 +28,7 @@ const plugin = {
     'no-literal-string-in-jsx': noLiteralStringInJsx,
     'no-multiple-plurals': noMultiplePlurals,
     'no-multiple-whitespaces': noMultipleWhitespaces,
+    'no-invalid-icu': noInvalidICU,
     'no-offset': noOffset,
   },
 }
