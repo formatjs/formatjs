@@ -38,7 +38,7 @@ export async function resolveBuiltinFormatter(
   }
   try {
     // eslint-disable-next-line import/dynamic-import-chunkname
-    return import(pathToFileURL(resolve(process.cwd(), format)))
+    return import(pathToFileURL(resolve(process.cwd(), format)).href)
   } catch (e) {
     console.error(`Cannot resolve formatter ${format}`)
     throw e
