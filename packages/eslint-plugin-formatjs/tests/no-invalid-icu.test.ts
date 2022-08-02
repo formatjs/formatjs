@@ -78,12 +78,14 @@ ruleTester.run('no-invalid-icu', noMalformedICU, {
     {
       code: `
         intl.formatMessage({
-          defaultMessage: '{count, plural, oe {#} other {# more}}',
+          defaultMessage: '{count, plural, {#} other {# more}}',
           description: 'asd'
-      })`,
+        }, {
+          count: 1
+        })`,
       errors: [
         {
-          message: 'Error parsing ICU string: EXPECT_SELECT_ARGUMENT_OPTIONS',
+          message: 'Error parsing ICU string: EXPECT_PLURAL_ARGUMENT_SELECTOR',
         },
       ],
     },
