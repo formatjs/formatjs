@@ -592,6 +592,25 @@ const messages = defineMessages({
 - `idInterpolationPattern`: Pattern to verify ID against
 - `idWhitelist`: An array of strings with regular expressions. This array allows allowlist custom ids for messages. For example '`\\.`' allows any id which has dot; `'^payment_.*'` - allows any custom id which has prefix `payment_`. Be aware that any backslash \ provided via string must be escaped with an additional backslash.
 
+### `no-invalid-icu`
+
+This bans strings inside `defaultMessage` that are syntactically invalid.
+
+#### Why
+
+It's easy to miss strings that look correct to you as a developer but which are actually syntactically invalid ICU strings. For instance, the following would cause an eslint error:
+
+```typescript
+formatMessage(
+  {
+    defaultMessage: '{count, plural one {#} other {# more}}', //Missing a comma!
+  },
+  {
+    count: 1,
+  }
+)
+```
+
 ### `no-id`
 
 This bans explicit ID in `MessageDescriptor`.
