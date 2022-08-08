@@ -17,7 +17,7 @@
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
     "postinstall": "husky install && patch-package",
-    "prerelease": "lerna version --yes",
+    "prerelease": "lerna version --yes --loglevel=debug",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
     "release": "lerna exec --no-bail -- bazel run :publish",
     "test": "bazel test //..."
