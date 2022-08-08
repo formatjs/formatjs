@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.0.2...eslint-plugin-formatjs@4.1.0) (2022-08-08)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add no-invalid-icu eslint rule ([#3740](https://github.com/formatjs/formatjs/issues/3740)) ([d394a5e](https://github.com/formatjs/formatjs/commit/d394a5e6d20577fd5e7bf0b15bbbee5dd9bc9d67))
+
+
+
+
+
 ## [4.0.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.0.1...eslint-plugin-formatjs@4.0.2) (2022-07-04)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

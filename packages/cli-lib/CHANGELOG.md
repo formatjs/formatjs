@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.6](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.0.5...@formatjs/cli-lib@5.0.6) (2022-08-08)
+
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** formatter path on Windows ([#3741](https://github.com/formatjs/formatjs/issues/3741)) ([2ce952c](https://github.com/formatjs/formatjs/commit/2ce952c29cdc2ab5a913243ef89af7885463d8ad))
+
+
+
+
+
 ## [5.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.0.4...@formatjs/cli-lib@5.0.5) (2022-07-19)
 
 
