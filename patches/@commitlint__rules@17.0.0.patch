@@ -1,5 +1,5 @@
 diff --git a/lib/scope-enum.js b/lib/scope-enum.js
-index 04f5361fd0163ba04ca6e7b44e9627c66ba623d5..057d1a048bae6b9c9c75c80c0b7bb7646607cb3c 100644
+index 04f5361fd0163ba04ca6e7b44e9627c66ba623d5..288c0ef52b81137db4990bf3da3f3e14313e966f 100644
 --- a/lib/scope-enum.js
 +++ b/lib/scope-enum.js
 @@ -35,7 +35,7 @@ const scopeEnum = (parsed, when = 'always', value = []) => {

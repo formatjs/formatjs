@@ -44,14 +44,15 @@ TESTS = glob([
 ])
 
 TEST_DEPS = SRC_DEPS + [
-    "//:node_modules/@testing-library/jest-dom",
-    "//:node_modules/@testing-library/react",
-    "//:node_modules/cjs-module-lexer",
-    "//:node_modules/react-dom",
-    "//:node_modules/typescript",
     ":node_modules/@formatjs/intl-numberformat",
     ":node_modules/@formatjs/intl-relativetimeformat",
+    "//:node_modules/@testing-library/jest-dom",
+    "//:node_modules/@testing-library/react",
     "//:node_modules/@types/node",
+    "//:node_modules/cjs-module-lexer",
+    "//:node_modules/jest-environment-jsdom",
+    "//:node_modules/react-dom",
+    "//:node_modules/typescript",
 ]
 
 ts_compile(

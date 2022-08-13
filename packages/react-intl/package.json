@@ -145,7 +145,7 @@
   },
   "peerDependencies": {
     "react": "^16.6.0 || 17 || 18",
-    "typescript": "^4.5"
+    "typescript": "^4.7"
   },
   "peerDependenciesMeta": {
     "typescript": {

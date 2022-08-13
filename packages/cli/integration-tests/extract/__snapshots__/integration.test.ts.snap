@@ -43,6 +43,15 @@ Object {
 }
 `;
 
+exports[`TypeScript 4.7 syntax 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`TypeScript 4.7 syntax 2`] = `Object {}`;
+
 exports[`basic case: defineMessages -> out-file 1`] = `
 Object {
   "stderr": "",

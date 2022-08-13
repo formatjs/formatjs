@@ -42,7 +42,7 @@
     "@formatjs/intl-numberformat": "workspace:*"
   },
   "peerDependencies": {
-    "typescript": "^4.5"
+    "typescript": "^4.7"
   },
   "peerDependenciesMeta": {
     "typescript": {
