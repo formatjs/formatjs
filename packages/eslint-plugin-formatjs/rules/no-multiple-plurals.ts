@@ -1,6 +1,6 @@
 import {Rule} from 'eslint'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 import {
   parse,
   isPluralElement,
@@ -27,7 +27,8 @@ function verifyAst(ast: MessageFormatElement[], pluralCount = {count: 0}) {
 }
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node, context.settings)
+  const settings = getSettings(context)
+  const msgs = extractMessages(node, settings)
 
   for (const [
     {
@@ -41,7 +42,7 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     try {
       verifyAst(
         parse(defaultMessage, {
-          ignoreTag: context.settings.ignoreTag,
+          ignoreTag: settings.ignoreTag,
         })
       )
     } catch (e) {

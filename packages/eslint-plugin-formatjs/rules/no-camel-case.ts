@@ -6,7 +6,7 @@ import {
   MessageFormatElement,
   isArgumentElement,
 } from '@formatjs/icu-messageformat-parser'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 
 const CAMEL_CASE_REGEX = /[A-Z]/
 
@@ -35,7 +35,8 @@ function verifyAst(ast: MessageFormatElement[]) {
 }
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node, context.settings)
+  const settings = getSettings(context)
+  const msgs = extractMessages(node, settings)
 
   for (const [
     {
@@ -49,7 +50,7 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     try {
       verifyAst(
         parse(defaultMessage, {
-          ignoreTag: context.settings.ignoreTag,
+          ignoreTag: settings.ignoreTag,
         })
       )
     } catch (e) {

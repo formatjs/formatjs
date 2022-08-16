@@ -1,11 +1,11 @@
 import {Rule} from 'eslint'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 import emojiRegex from 'emoji-regex'
 const EMOJI_REGEX: RegExp = (emojiRegex as any)()
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node, context.settings)
+  const msgs = extractMessages(node, getSettings(context))
 
   for (const [
     {

@@ -1,6 +1,6 @@
 import {Rule} from 'eslint'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 import {
   parse,
   isPluralElement,
@@ -75,9 +75,10 @@ function verifyAst(
 }
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
+  const settings = getSettings(context)
   const msgs = extractMessages(node, {
     excludeMessageDeclCalls: true,
-    ...context.settings,
+    ...settings,
   })
   const {
     options: [opt],
@@ -96,7 +97,7 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     try {
       verifyAst(
         parse(defaultMessage, {
-          ignoreTag: context.settings.ignoreTag,
+          ignoreTag: settings.ignoreTag,
         }),
         values,
         ignoreList

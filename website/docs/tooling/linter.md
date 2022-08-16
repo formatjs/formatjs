@@ -96,11 +96,11 @@ This will check against `intl.formatMessage`, `$formatMessage` function calls in
 
 These settings are applied globally to all formatjs rules once specified. See [Shared Settings](https://eslint.org/docs/user-guide/configuring/configuration-files#adding-shared-settings) for more details on how to set them.
 
-### `additionalFunctionNames`
+### `formatjs.additionalFunctionNames`
 
 Similar to [babel-plugin-formatjs](./babel-plugin.md#additionalfunctionnames) & [@formatjs/ts-transformer](./ts-transformer.md#additionalfunctionnames), this allows you to specify additional function names to check besides `formatMessage` & `$formatMessage`.
 
-### `additionalComponentNames`
+### `formatjs.additionalComponentNames`
 
 Similar to [babel-plugin-formatjs](./babel-plugin.md#additionalcomponentnames) & [@formatjs/ts-transformer](./ts-transformer.md#additionalcomponentnames), this allows you to specify additional component names to check besides `FormattedMessage`.
 

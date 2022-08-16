@@ -18,7 +18,9 @@ ruleTester.run('blocklist-elements', blocklistElements, {
   })`,
       options: [['selectordinal']],
       settings: {
-        ignoreTag: true,
+        formatjs: {
+          ignoreTag: true,
+        },
       },
     },
     {
@@ -28,7 +30,9 @@ ruleTester.run('blocklist-elements', blocklistElements, {
   })`,
       options: [['selectordinal']],
       settings: {
-        additionalFunctionNames: ['$t'],
+        formatjs: {
+          additionalFunctionNames: ['$t'],
+        },
       },
     },
     dynamicMessage,
@@ -57,7 +61,9 @@ ruleTester.run('blocklist-elements', blocklistElements, {
               })`,
       options: [['selectordinal']],
       settings: {
-        additionalFunctionNames: ['$t'],
+        formatjs: {
+          additionalFunctionNames: ['$t'],
+        },
       },
       errors: [
         {

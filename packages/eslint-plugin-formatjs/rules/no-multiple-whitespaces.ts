@@ -6,7 +6,7 @@ import {
 } from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {Rule} from 'eslint'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 
 function isAstValid(ast: MessageFormatElement[]): boolean {
   for (const element of ast) {
@@ -94,7 +94,7 @@ function trimMultiWhitespaces(
 }
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node, context.settings)
+  const msgs = extractMessages(node, getSettings(context))
 
   for (const [
     {

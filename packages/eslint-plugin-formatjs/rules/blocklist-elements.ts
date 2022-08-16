@@ -1,5 +1,5 @@
 import {Rule} from 'eslint'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 import {
   parse,
   isPluralElement,
@@ -78,7 +78,8 @@ function verifyAst(blocklist: Element[], ast: MessageFormatElement[]) {
 }
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node, context.settings)
+  const settings = getSettings(context)
+  const msgs = extractMessages(node, settings)
   if (!msgs.length) {
     return
   }
@@ -100,7 +101,7 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
       verifyAst(
         context.options[0],
         parse(defaultMessage, {
-          ignoreTag: context.settings.ignoreTag,
+          ignoreTag: settings.ignoreTag,
         })
       )
     } catch (e) {
