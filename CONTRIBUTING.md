@@ -40,10 +40,10 @@ To setup locally, first initialize the git submodule:
 > git submodule update
 ```
 
-Now you can build & test with npm:
+Now you can build & test with `pnpm`:
 
 ```sh
-npm i && npm t
+pnpm i && pnpm t
 ```
 
 To run examples:

@@ -1,12 +1,229 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
-load("@npm//@bazel/esbuild:index.bzl", "esbuild")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
-load("@npm//test262-harness:index.bzl", "test262_harness_test")
+load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "bundle_karma_tests", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
 
-exports_files(["package.json"])
+ALL_LOCALES = [
+    "af",
+    "ak",
+    "am",
+    "an",
+    "ar",
+    "ars",
+    "as",
+    "asa",
+    "ast",
+    "az",
+    "bal",
+    "be",
+    "bem",
+    "bez",
+    "bg",
+    "bho",
+    "bm",
+    "bn",
+    "bo",
+    "br",
+    "brx",
+    "bs",
+    "ca",
+    "ce",
+    "ceb",
+    "cgg",
+    "chr",
+    "ckb",
+    "cs",
+    "cy",
+    "da",
+    "de",
+    "doi",
+    "dsb",
+    "dv",
+    "dz",
+    "ee",
+    "el",
+    "en",
+    "eo",
+    "es",
+    "et",
+    "eu",
+    "fa",
+    "ff",
+    "fi",
+    "fil",
+    "fo",
+    "fr",
+    "fur",
+    "fy",
+    "ga",
+    "gd",
+    "gl",
+    "gsw",
+    "gu",
+    "guw",
+    "gv",
+    "ha",
+    "haw",
+    "he",
+    "hi",
+    "hnj",
+    "hr",
+    "hsb",
+    "hu",
+    "hy",
+    "ia",
+    "id",
+    "ig",
+    "ii",
+    "io",
+    "is",
+    "it",
+    "iu",
+    "ja",
+    "jbo",
+    "jgo",
+    "jmc",
+    "jv",
+    "jw",
+    "ka",
+    "kab",
+    "kaj",
+    "kcg",
+    "kde",
+    "kea",
+    "kk",
+    "kkj",
+    "kl",
+    "km",
+    "kn",
+    "ko",
+    "ks",
+    "ksb",
+    "ksh",
+    "ku",
+    "kw",
+    "ky",
+    "lag",
+    "lb",
+    "lg",
+    "lij",
+    "lkt",
+    "ln",
+    "lo",
+    "lt",
+    "lv",
+    "mas",
+    "mg",
+    "mgo",
+    "mk",
+    "ml",
+    "mn",
+    "mo",
+    "mr",
+    "ms",
+    "mt",
+    "my",
+    "nah",
+    "naq",
+    "nb",
+    "nd",
+    "ne",
+    "nl",
+    "nn",
+    "nnh",
+    "no",
+    "nqo",
+    "nr",
+    "nso",
+    "ny",
+    "nyn",
+    "om",
+    "or",
+    "os",
+    "osa",
+    "pa",
+    "pap",
+    "pcm",
+    "pl",
+    "prg",
+    "ps",
+    "pt",
+    "pt-PT",
+    "rm",
+    "ro",
+    "rof",
+    "ru",
+    "rwk",
+    "sah",
+    "saq",
+    "sat",
+    "sc",
+    "scn",
+    "sd",
+    "sdh",
+    "se",
+    "seh",
+    "ses",
+    "sg",
+    "sh",
+    "shi",
+    "si",
+    "sk",
+    "sl",
+    "sma",
+    "smi",
+    "smj",
+    "smn",
+    "sms",
+    "sn",
+    "so",
+    "sq",
+    "sr",
+    "ss",
+    "ssy",
+    "st",
+    "su",
+    "sv",
+    "sw",
+    "syr",
+    "ta",
+    "te",
+    "teo",
+    "th",
+    "ti",
+    "tig",
+    "tk",
+    "tl",
+    "tn",
+    "to",
+    "tpi",
+    "tr",
+    "ts",
+    "tzm",
+    "ug",
+    "uk",
+    "und",
+    "ur",
+    "uz",
+    "ve",
+    "vi",
+    "vo",
+    "vun",
+    "wa",
+    "wae",
+    "wo",
+    "xh",
+    "xog",
+    "yi",
+    "yo",
+    "yue",
+    "zh",
+    "zu",
+]
 
 PACKAGE_NAME = "intl-pluralrules"
 
@@ -18,31 +235,21 @@ TEST_LOCALES = [
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.ts" % locale for locale in TEST_LOCALES]
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
         ":dist",
         ":locale-data",
         # polyfill-library uses this
         "polyfill.iife.js",
     ],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
+    package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility = [
+        "//visibility:public",
+    ],
 )
 
 SRCS = glob(
@@ -58,17 +265,8 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "//packages/ecma402-abstract:dist",
-    "//packages/intl-localematcher:dist",
-]
-
-TEST_DEPS = SRC_DEPS + [
-    "//packages/ecma402-abstract:types",
-    "//packages/intl-localematcher:types",
-    "//packages/intl-getcanonicallocales:dist",
-    "//packages/intl-getcanonicallocales:types",
-    "//packages/intl-locale:dist",
-    "//packages/intl-locale:types",
+    "//:node_modules/@formatjs/ecma402-abstract",
+    "//:node_modules/@formatjs/intl-localematcher",
 ]
 
 ts_compile(
@@ -81,52 +279,63 @@ ts_compile(
 jest_test(
     name = "unit",
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
-    deps = TEST_DEPS,
+    deps = SRC_DEPS + [
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@types/node",
+    ],
 )
 
 # CLDR
-CLDR_DEPS = [
-    ":cldr-raw",
-    "@npm//fast-glob",
-]
+CLDR_RAW_FILES = ["cldr-raw/%s.js" % locale for locale in ALL_LOCALES]
 
 ts_script(
     name = "cldr-raw",
+    outs = CLDR_RAW_FILES,
+    args = [
+        "--outDir",
+        package_name() + "/cldr-raw",
+    ],
     data = [
-        "//packages/ecma402-abstract:dist",
-        "//packages/ecma402-abstract:types",
-        "@npm//@types/serialize-javascript",
-        "@npm//cldr-core",
-        "@npm//make-plural-compiler",
-        "@npm//serialize-javascript",
+        "//:node_modules/@formatjs/ecma402-abstract",
+        "//:node_modules/@types/serialize-javascript",
+        "//:node_modules/cldr-core",
+        "//:node_modules/make-plural-compiler",
+        "//:node_modules/serialize-javascript",
     ],
     entry_point = "scripts/cldr-raw.ts",
-    output_dir = True,
+)
+
+genrule(
+    name = "supported-locales-gen",
+    srcs = [],
+    outs = ["supported-locales.tmp"],
+    cmd = "echo 'export const supportedLocales: string[] = %s' > $@" % ALL_LOCALES,
 )
 
 ts_script(
     name = "locale-data",
+    outs = ["locale-data/%s.js" % locale for locale in ALL_LOCALES] + ["locale-data/%s.d.ts" % locale for locale in ALL_LOCALES],
     args = [
-        "--cldrFolder",
-        "$(location :cldr-raw)",
+        "--cldrFile %s/%s" % (
+            package_name(),
+            f,
+        )
+        for f in CLDR_RAW_FILES
+    ] + [
+        "--outDir",
+        package_name() + "/locale-data",
     ],
-    data = CLDR_DEPS,
+    data = CLDR_RAW_FILES,
     entry_point = "scripts/cldr.ts",
-    output_dir = True,
     visibility = ["//visibility:public"],
 )
 
-[generate_src_file(
+[genrule(
     name = "tests-locale-data-%s" % locale,
-    src = "tests/locale-data/%s.ts" % locale,
-    args = [
-        "--cldrFolder",
-        "$(location :cldr-raw)",
-        "--locales",
-        locale,
-    ],
-    data = CLDR_DEPS,
-    entry_point = "scripts/test-locale-data-gen.ts",
+    srcs = ["cldr-raw/%s.js" % locale],
+    outs = ["tests-locale-data/%s.ts" % locale],
+    cmd = "printf \"%s %s\n\" \"/* @generated */\n// prettier-ignore\n// @ts-nocheck\nexport default\" \"$$(cat $<)\" > $@",
 ) for locale in TEST_LOCALES]
 
 multirun(
@@ -139,27 +348,16 @@ multirun(
 )
 
 generate_src_file(
-    name = "supported-locales",
-    src = "supported-locales.ts",
-    args = [
-        "--cldrFolder",
-        "$(location :cldr-raw)",
-    ],
-    data = CLDR_DEPS,
-    entry_point = "//tools:supported-locales-gen.ts",
-    visibility = [
-        "//:__pkg__",
-    ],
-)
-
-generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",
     args = [
-        "--cldrFolder",
-        "$(location :cldr-raw)",
+        "--cldrFile %s/%s" % (
+            package_name(),
+            f,
+        )
+        for f in CLDR_RAW_FILES
     ],
-    data = CLDR_DEPS,
+    data = [":cldr-raw"],
     entry_point = "scripts/test262-main-gen.ts",
     visibility = [
         "//:__pkg__",
@@ -173,10 +371,10 @@ ts_project(
     declaration = True,
     declaration_map = True,
     extends =
-        "//:tsconfig.json",
+        "//:tsconfig",
     out_dir = "test262",
     resolve_json_module = True,
-    tsconfig = "//:tsconfig.es6.json",
+    tsconfig = "//:tsconfig.es6",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -190,15 +388,15 @@ esbuild(
     ] + SRC_DEPS,
 )
 
-test262_harness_test(
+test262_harness_bin.test262_harness_test(
     name = "test262",
     size = "large",
     data = [
         "test262-polyfill.js",
-        "@com_github_tc39_test262//:test262-harness",
-        "@com_github_tc39_test262//:test262-pluralrules",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-pluralrules-copy",
     ],
-    templated_args = [
+    args = [
         "--reporter-keys",
         "file,attrs,result",
         "--errorForFailures",
@@ -217,26 +415,41 @@ bundle_karma_tests(
     srcs = SRCS,
     data = TEST_LOCALE_DATA,
     esbuild_deps = [
-        "//packages/intl-getcanonicallocales:dist",
-        "//packages/intl-locale:dist",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-locale",
     ],
     tests = TESTS,
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + [
+        "//:node_modules/@types/node",
+    ],
 )
 
-generated_file_test(
-    name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
+write_source_files(
+    name = "generated-files",
+    files = {
+        "supported-locales.generated.ts": ":supported-locales-gen",
+        "tsconfig.json": "//tools:tsconfig.golden.json",
+    },
+    visibility=["//:__pkg__"]
+)
+
+write_source_files(
+    name = "generated-test-files",
+    files = {
+        "tests/locale-data/%s.ts" % k: ":tests-locale-data/%s.ts" % k
+        for k in TEST_LOCALES
+    },
+    visibility=["//:__pkg__"]
 )
 
 esbuild(
     name = "polyfill.iife",
     entry_point = "lib/polyfill.js",
-    target = "es5",
+    target = "es6",
+    # TODO: fix this and set it back to es5
     deps = [
         ":dist-esm",
-        "@npm//tslib",
+        "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
 
@@ -250,7 +463,7 @@ check_format(
             "CHANGELOG.md",
             "tests/locale-data/*",
             "test262-main.ts",
-            "supported-locales.ts",
+            "supported-locales.generated.ts",
         ],
     ),
 )

@@ -1,44 +1,32 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-exports_files(["package.json"])
-
 PACKAGE_NAME = "intl"
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
-    ],
-    deps = [
         ":dist",
         ":dist-esm",
     ],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
+    package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
-    "//packages/ecma402-abstract:dist",
-    "//packages/fast-memoize:dist",
-    "//packages/icu-messageformat-parser:dist",
-    "//packages/intl-displaynames:dist",
-    "//packages/intl-listformat:dist",
-    "//packages/intl-messageformat:dist",
+    "//:node_modules/@formatjs/ecma402-abstract",
+    "//:node_modules/@formatjs/fast-memoize",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/@formatjs/intl-displaynames",
+    "//:node_modules/@formatjs/intl-listformat",
+    "//:node_modules/intl-messageformat",
 ]
 
 TESTS = glob([
@@ -48,39 +36,25 @@ TESTS = glob([
 
 ts_compile(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
     deps = SRC_DEPS,
 )
 
 jest_test(
     name = "unit",
-    srcs = SRCS + TESTS + [
-        "//packages/intl-datetimeformat:add-all-tz",
-        "//packages/intl-datetimeformat:locale-data",
-        "//packages/intl-displaynames:locale-data",
-        "//packages/intl-numberformat:locale-data",
-    ],
+    srcs = SRCS + TESTS,
     deps = SRC_DEPS + [
-        "//packages/ecma402-abstract:types",
-        "//packages/intl-datetimeformat:dist",
-        "//packages/intl-datetimeformat:types",
-        "//packages/intl-displaynames:types",
-        "//packages/fast-memoize:types",
-        "//packages/intl-listformat:types",
-        "//packages/icu-messageformat-parser:types",
-        "//packages/intl-messageformat:types",
-        "//packages/intl-numberformat:dist",
-        "//packages/intl-numberformat:types",
-        "@npm//@types/node",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@types/node",
     ],
 )
 
-generated_file_test(
+write_source_files(
     name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
+    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
 check_format(

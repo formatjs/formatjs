@@ -1,34 +1,22 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "check_format", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
-
-exports_files(["package.json"])
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 
 PACKAGE_NAME = "intl-enumerator"
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
-    ],
-    deps = [
         ":dist",
     ],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
+    package = "@formatjs/%s" % PACKAGE_NAME,
 )
 
 SRCS = glob([
@@ -47,8 +35,8 @@ TEST_DEPS = SRC_DEPS
 
 ts_compile(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
     deps = SRC_DEPS,
 )
@@ -65,17 +53,16 @@ ts_project(
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
-    extends = "//:tsconfig.json",
+    extends = "//:tsconfig",
     out_dir = "test262",
     resolve_json_module = True,
-    tsconfig = "//:tsconfig.es6.json",
+    tsconfig = "//:tsconfig.es6",
     deps = SRC_DEPS,
 )
 
-generated_file_test(
+write_source_files(
     name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
+    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
 check_format(
@@ -96,7 +83,7 @@ generate_src_file(
     name = "calendars",
     src = "src/calendars.generated.ts",
     data = [
-        "@npm//cldr-bcp47",
+        "//:node_modules/cldr-bcp47",
     ],
     entry_point = "scripts/calendars.ts",
 )
@@ -112,20 +99,11 @@ generate_src_file(
 )
 
 # numbering-systems
-generate_src_file(
+write_source_files(
     name = "numbering-systems",
-    src = "src/numbering-systems.generated.ts",
-    data = [
-        "//packages/ecma402-abstract:dist",
-        "//packages/ecma402-abstract:types",
-        "//packages/intl-numberformat:scripts/extract-numbers.ts",
-        "//packages/intl-numberformat:scripts/utils.ts",
-        "@npm//@types/lodash",
-        "@npm//cldr-core",
-        "@npm//cldr-numbers-full",
-        "@npm//lodash",
-    ],
-    entry_point = "//packages/intl-numberformat:scripts/numbering-systems.ts",
+    files={
+        "src/numbering-systems.generated.ts": "//packages/intl-numberformat:src/numbering-systems.generated.ts"
+    }
 )
 
 # currencies
@@ -133,7 +111,7 @@ generate_src_file(
     name = "currencies",
     src = "src/currencies.generated.ts",
     data = [
-        "@npm//cldr-numbers-full",
+        "//:node_modules/cldr-numbers-full",
     ],
     entry_point = "scripts/currencies.ts",
 )
@@ -143,7 +121,7 @@ generate_src_file(
     name = "collations",
     src = "src/collations.generated.ts",
     data = [
-        "@npm//cldr-bcp47",
+        "//:node_modules/cldr-bcp47",
     ],
     entry_point = "scripts/collations.ts",
 )
@@ -153,9 +131,8 @@ generate_src_file(
     name = "units",
     src = "src/units.generated.ts",
     data = [
-        "//packages/ecma402-abstract:dist",
-        "//packages/ecma402-abstract:types",
-        "@npm//cldr-bcp47",
+        "//:node_modules/@formatjs/ecma402-abstract",
+        "//:node_modules/cldr-bcp47",
     ],
     entry_point = "scripts/units.ts",
 )

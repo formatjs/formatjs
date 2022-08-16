@@ -1,18 +1,19 @@
 import {join, basename} from 'path'
 import {outputFileSync, readFileSync} from 'fs-extra'
 import minimist from 'minimist'
-import {sync as globSync} from 'fast-glob'
 
-function main(args: minimist.ParsedArgs) {
-  const {cldrFolder, locales: localesToGen = '', outDir} = args
-  const allFiles = globSync(join(cldrFolder, '*.json'))
-  allFiles.sort()
-  const locales = localesToGen
-    ? localesToGen.split(',')
-    : allFiles.map(f => basename(f, '.json'))
-  // Dist all locale files to locale-data (JS)
-  for (const locale of locales) {
-    const data = readFileSync(join(cldrFolder, `${locale}.json`))
+interface Args extends minimist.ParsedArgs {
+  cldrFile: string[]
+  outDir: string
+}
+
+function main(args: Args) {
+  const {cldrFile: cldrFiles, outDir} = args
+  cldrFiles.sort()
+  cldrFiles.forEach(cldrFile => {
+    const locale = basename(cldrFile, '.json')
+    // Dist all locale files to locale-data (JS)
+    const data = readFileSync(cldrFile)
     outputFileSync(
       join(outDir, locale + '.js'),
       `/* @generated */
@@ -22,9 +23,9 @@ if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function'
 }`
     )
     outputFileSync(join(outDir, locale + '.d.ts'), 'export {}')
-  }
+  })
 }
 
 if (require.main === module) {
-  main(minimist(process.argv))
+  main(minimist<Args>(process.argv))
 }

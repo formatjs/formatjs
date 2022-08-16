@@ -18,7 +18,7 @@
   "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {
     "@babel/types": "^7.12.11",
-    "@formatjs/intl": "2.3.1",
+    "@formatjs/intl": "workspace:*",
     "tslib": "2.4.0"
   },
   "peerDependencies": {

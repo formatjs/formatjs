@@ -9,6 +9,8 @@ interface Args extends minimist.ParsedArgs {
 }
 
 function main(args: Args) {
+  console.log(args, '------')
+  throw new Error('asd')
   const {cldrFolder, out} = args
   const allFiles = globSync(join(cldrFolder, '*.js*'))
   allFiles.sort()

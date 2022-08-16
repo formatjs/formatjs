@@ -26,8 +26,8 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.6.4",
-    "@formatjs/intl-localematcher": "0.2.17",
+    "@formatjs/ecma402-abstract": "workspace:*",
+    "@formatjs/intl-localematcher": "workspace:*",
     "tslib": "2.4.0"
   }
 }

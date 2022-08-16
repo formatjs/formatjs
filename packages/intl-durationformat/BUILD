@@ -1,46 +1,33 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("//tools:index.bzl", "check_format", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-exports_files(["package.json"])
-
 PACKAGE_NAME = "intl-durationformat"
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
-    ],
-    deps = [
         ":dist",
     ],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
+    package = "@formatjs/%s" % PACKAGE_NAME,
 )
 
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
-    "//packages/ecma402-abstract:dist",
-    "//packages/intl-localematcher:dist",
+    "//:node_modules/@formatjs/ecma402-abstract",
+    "//:node_modules/@formatjs/intl-localematcher",
 ]
 
 ts_compile(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
     deps = SRC_DEPS,
 )
@@ -53,8 +40,6 @@ jest_test(
         "tests/**/*.snap",
     ]),
     deps = [
-        "//packages/ecma402-abstract:types",
-        "//packages/intl-localematcher:types",
     ] + SRC_DEPS,
 )
 
@@ -64,17 +49,16 @@ ts_project(
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
-    extends = "//:tsconfig.json",
+    extends = "//:tsconfig",
     out_dir = "test262",
     resolve_json_module = True,
-    tsconfig = "//:tsconfig.es6.json",
+    tsconfig = "//:tsconfig.es6",
     deps = SRC_DEPS,
 )
 
-generated_file_test(
+write_source_files(
     name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
+    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
 check_format(

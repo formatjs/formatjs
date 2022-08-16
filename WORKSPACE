@@ -14,26 +14,46 @@ workspace(
 )
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
-
-# Install the nodejs "bootstrap" package
-# This provides the basic tools for running and packaging nodejs programs in Bazel
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 
+# rules_js
 http_archive(
-    name = "build_bazel_rules_nodejs",
-    sha256 = "0fad45a9bda7dc1990c47b002fd64f55041ea751fafc00cd34efb96107675778",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.5.0/rules_nodejs-5.5.0.tar.gz"],
+    name = "aspect_rules_js",
+    sha256 = "538049993bec3ee1ae9b1c3cd669156bca04eb67027b222883e47b0a2aed2e67",
+    strip_prefix = "rules_js-1.0.0",
+    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.0.0.tar.gz",
 )
 
-load("@build_bazel_rules_nodejs//:repositories.bzl", "build_bazel_rules_nodejs_dependencies")
+load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
 
-build_bazel_rules_nodejs_dependencies()
+rules_js_dependencies()
 
-load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
+load("@rules_nodejs//nodejs:repositories.bzl", "DEFAULT_NODE_VERSION", "nodejs_register_toolchains")
 
 nodejs_register_toolchains(
     name = "nodejs",
+    node_version = DEFAULT_NODE_VERSION,
 )
+
+load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")
+
+npm_translate_lock(
+    name = "npm",
+    patch_args = {
+        "make-plural-compiler@5.1.0": ["-p1"],
+        "tslib@2.4.0": ["-p1"],
+    },
+    patches = {
+        "make-plural-compiler@5.1.0": ["//:npm_package_patches/make-plural-compiler+5.1.0.patch"],
+        "tslib@2.4.0": ["//:npm_package_patches/tslib+2.4.0.patch"],
+    },
+    pnpm_lock = "//:pnpm-lock.yaml",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+
+load("@npm//:repositories.bzl", "npm_repositories")
+
+npm_repositories()
 
 IANA_TZ_VERSION = "2021e"
 
@@ -51,27 +71,48 @@ http_file(
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
-load("@build_bazel_rules_nodejs//:index.bzl", "npm_install")
-load("@build_bazel_rules_nodejs//toolchains/esbuild:esbuild_repositories.bzl", "esbuild_repositories")
-
-esbuild_repositories(npm_repository = "npm")
-
-# The npm_install rule runs yarn anytime the package.json or yarn.lock file changes.
-# It also extracts and installs any Bazel rules distributed in an npm package.
-
-npm_install(
-    # Name this npm so that Bazel Label references look like @npm//package
-    name = "npm",
-    package_json = "//:package.json",
-    package_lock_json = "//:package-lock.json",
-    patch_args = ["-p1"],
-    post_install_patches = [
-        "//:npm_package_patches/make-plural-compiler+5.1.0.patch",
-        "//:npm_package_patches/tslib+2.4.0.patch",
-    ],
-    # post_install_patches path doesn't work w/o symlink_node_modules = False
-    symlink_node_modules = False,
+# esbuild
+# https://github.com/aspect-build/rules_esbuild/issues/58
+# this tag preserve symlink which makes esbuild escape the sandbox, but w/o it it cannot
+# resolve transitive dep
+http_archive(
+    name = "aspect_rules_esbuild",
+    sha256 = "c5af277eb0692fa69212c1eb4d44cb8936ae4e0f518f5a12ac11abf1b976e63b",
+    strip_prefix = "rules_esbuild-fe714f6fc18f1b5e81beb9e4de42ccb1cd8c45de",
+    url = "https://github.com/aspect-build/rules_esbuild/archive/fe714f6fc18f1b5e81beb9e4de42ccb1cd8c45de.tar.gz",
 )
+
+load("@aspect_rules_esbuild//esbuild:dependencies.bzl", "rules_esbuild_dependencies")
+
+rules_esbuild_dependencies()
+
+# Register a toolchain containing esbuild npm package and native bindings
+load("@aspect_rules_esbuild//esbuild:repositories.bzl", "LATEST_VERSION", "esbuild_register_toolchains")
+
+esbuild_register_toolchains(
+    name = "esbuild",
+    esbuild_version = LATEST_VERSION,
+)
+
+# Typescript
+http_archive(
+    name = "aspect_rules_ts",
+    sha256 = "1945d5a356d0ec85359dea411467dec0f98502503a53798ead7f54aef849598b",
+    strip_prefix = "rules_ts-1.0.0-rc1",
+    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.0-rc1.tar.gz",
+)
+
+##################
+# rules_ts setup #
+##################
+# Fetches the rules_ts dependencies.
+# If you want to have a different version of some dependency,
+# you should fetch it *before* calling this.
+# Alternatively, you can skip calling this function, so long as you've
+# already fetched all the dependencies.
+load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies", LATEST_TS_VERSION = "LATEST_VERSION")
+
+rules_ts_dependencies(ts_version = LATEST_TS_VERSION)
 
 # Setup skylib
 http_archive(

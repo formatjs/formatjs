@@ -19,6 +19,7 @@
     "@formatjs/icu-messageformat-parser": "2.1.4",
     "@formatjs/ts-transformer": "3.9.9",
     "@types/babel__core": "^7.1.7",
+    "@types/babel__traverse": "^7.1.7",
     "@types/babel__helper-plugin-utils": "^7.10.0",
     "tslib": "2.4.0"
   },

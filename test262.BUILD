@@ -1,8 +1,14 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+
 filegroup(
     name = "test262-pluralrules",
     srcs = glob(
         ["test/intl402/PluralRules/**/*.js"],
-        exclude = ["**/proto-from-ctor-realm.js"],
+        # TODO: support selectRange
+        exclude = [
+            "**/proto-from-ctor-realm.js",
+            "**/selectRange/**",
+        ],
     ),
     visibility = ["@//packages/intl-pluralrules:__pkg__"],
 )
@@ -116,5 +122,52 @@ filegroup(
             "harness/**/*.js",
         ] + ["package.json"],
     ),
+)
+
+copy_to_bin(
+    name = "test262-harness-copy",
+    srcs = [":test262-harness"],
     visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "test262-pluralrules-copy",
+    srcs = [":test262-pluralrules"],
+    visibility = ["@//packages/intl-pluralrules:__pkg__"],
+)
+
+copy_to_bin(
+    name = "test262-displaynames-copy",
+    srcs = [":test262-displaynames"],
+    visibility = ["@//packages/intl-displaynames:__pkg__"],
+)
+
+copy_to_bin(
+    name = "test262-listformat-copy",
+    srcs = [":test262-listformat"],
+    visibility = ["@//packages/intl-listformat:__pkg__"],
+)
+
+copy_to_bin(
+    name = "test262-numberformat-copy",
+    srcs = [":test262-numberformat"],
+    visibility = ["@//packages/intl-numberformat:__pkg__"],
+)
+
+copy_to_bin(
+    name = "test262-datetimeformat-copy",
+    srcs = [":test262-datetimeformat"],
+    visibility = ["@//packages/intl-datetimeformat:__pkg__"],
+)
+
+copy_to_bin(
+    name = "test262-relativetimeformat-copy",
+    srcs = [":test262-relativetimeformat"],
+    visibility = ["@//packages/intl-relativetimeformat:__pkg__"],
+)
+
+copy_to_bin(
+    name = "test262-locale-copy",
+    srcs = [":test262-locale"],
+    visibility = ["@//packages/intl-locale:__pkg__"],
 )

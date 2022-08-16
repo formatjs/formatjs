@@ -6,7 +6,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from './styles.module.css'
 import {IntlProvider, FormattedMessage, useIntl} from 'react-intl'
-import useThemeContext from '@theme/hooks/useThemeContext'
+import {useColorMode} from '@docusaurus/theme-common'
 
 import en from '../../lang/strings_en-US.json'
 import fr from '../../lang/strings_fr-FR.json'
@@ -166,7 +166,7 @@ function EnvSection({className}) {
 }
 
 function ShowcaseSection({className}) {
-  const {isDarkTheme} = useThemeContext()
+  const {colorMode} = useColorMode()
   return (
     <div className={cx(className, styles.showcase)}>
       <h3>
@@ -194,7 +194,9 @@ function ShowcaseSection({className}) {
         <div className="col col--2">
           <img
             src={useBaseUrl(
-              isDarkTheme ? 'img/coinbase_white.svg' : 'img/coinbase.svg'
+              colorMode === 'dark'
+                ? 'img/coinbase_white.svg'
+                : 'img/coinbase.svg'
             )}
           />
         </div>

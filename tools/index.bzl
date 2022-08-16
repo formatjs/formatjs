@@ -1,12 +1,14 @@
 "Custom macro"
 
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier_test")
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test")
-load("@build_bazel_rules_nodejs//internal/js_library:js_library.bzl", "js_library")
-load("@npm//@bazel/esbuild:index.bzl", "esbuild")
-load("@npm//@bazel/typescript:index.bzl", "ts_config", "ts_project")
-load("@npm//prettier:index.bzl", "prettier", "prettier_test")
-load("@npm//ts-node:index.bzl", "ts_node", "ts_node_test")
+load("@npm//:prettier/package_json.bzl", prettier_bin = "bin")
+load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
 
 BUILDIFIER_WARNINGS = [
     "attr-cfg",
@@ -42,31 +44,73 @@ BUILDIFIER_WARNINGS = [
     "unused-variable",
 ]
 
-def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_esnext = True):
+def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_esnext = True):
+    """Compile TS with prefilled args, specifically for Node tooling.
+
+    Args:
+        name: target name
+        srcs: src files
+        deps: deps
+        package: name from package.json
+        data: add data deps like internal transitive deps
+        skip_esm_esnext: whether to skip building esnext
+    """
+    deps = deps + ["//:node_modules/tslib"]
+    internal_deps = [d for d in deps if is_internal_dep(d)]
+    ts_project(
+        name = "%s-base" % name,
+        srcs = srcs,
+        declaration = True,
+        declaration_map = True,
+        tsconfig = "//:tsconfig.node",
+        resolve_json_module = True,
+        deps = deps,
+        data = data if data else internal_deps,
+    )
+    if not skip_esm_esnext:
+        ts_project(
+            name = "%s-esm-esnext" % name,
+            srcs = srcs,
+            declaration = True,
+            declaration_map = True,
+            out_dir = "lib_esnext",
+            tsconfig = "//:tsconfig.esm.esnext",
+            resolve_json_module = True,
+            deps = deps,
+            data = data if data else internal_deps,
+        )
+
+    js_library(
+        name = name,
+        # package = package,
+        srcs = [":%s-base" % name, "package.json"],
+        visibility = ["//visibility:public"],
+        data = data,
+    )
+
+def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True, skip_esm_esnext = True):
     """Compile TS with prefilled args.
 
     Args:
         name: target name
         srcs: src files
         deps: deps
-        package_name: name from package.json
+        package: name from package.json
         skip_esm: skip building ESM bundle
         skip_esm_esnext: skip building the ESM ESNext bundle
+        data: add data deps like internal transitive deps
     """
-    deps = deps + ["@npm//tslib"]
-    ts_config(
-        name = "%s-tsconfig" % name,
-        src = "tsconfig.json",
-        deps = ["//:tsconfig.json"],
-    )
+    deps = deps + ["//:node_modules/tslib"]
+    internal_deps = [d for d in deps if is_internal_dep(d)]
     ts_project(
         name = "%s-base" % name,
         srcs = srcs,
         declaration = True,
         declaration_map = True,
-        tsconfig = ":%s-tsconfig" % name,
+        tsconfig = "//:tsconfig",
         resolve_json_module = True,
         deps = deps,
+        data = data if data else internal_deps,
     )
     if not skip_esm:
         ts_project(
@@ -76,9 +120,9 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
             declaration_map = True,
             out_dir = "lib",
             tsconfig = "//:tsconfig.esm",
-            extends = "//:tsconfig.json",
             resolve_json_module = True,
             deps = deps,
+            data = data if data else internal_deps,
         )
     if not skip_esm_esnext:
         ts_project(
@@ -88,9 +132,9 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
             declaration_map = True,
             out_dir = "lib_esnext",
             tsconfig = "//:tsconfig.esm.esnext",
-            extends = "//:tsconfig.json",
             resolve_json_module = True,
             deps = deps,
+            data = data if data else internal_deps,
         )
 
     native.filegroup(
@@ -102,12 +146,13 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True, skip_esm_
 
     js_library(
         name = name,
-        package_name = package_name,
-        deps = [":%s-base" % name] + ([":%s-esm" % name] if not skip_esm else []),
+        # package = package,
+        srcs = [":%s-base" % name] + ([":%s-esm" % name] if not skip_esm else []) + ["package.json"],
         visibility = ["//visibility:public"],
+        data = data if data else internal_deps,
     )
 
-def ts_script(name, entry_point, args = [], data = [], outs = None, output_dir = False, visibility = None):
+def ts_script(name, entry_point, args = [], chdir = None, data = [], outs = [], output_dir = False, out_dirs = [], visibility = None):
     """Execute a TS script
 
     Args:
@@ -117,37 +162,34 @@ def ts_script(name, entry_point, args = [], data = [], outs = None, output_dir =
         data: runtime data
         outs: output
         output_dir: whether output is a dir
+        out_dirs: output directories
+        chdir: whether to chdir to a dir
         visibility: visibility
     """
-    all_args = [
-        "$(execpath %s)" % entry_point,
-        "--project",
-        "$(location //:tsconfig.node.json)",
-    ]
-    if output_dir:
-        all_args += ["--outDir", "$(@D)"]
-    else:
-        all_args += ["--out", "$@"]
-    all_args += args
-    ts_node(
+    ts_node_bin.ts_node(
         name = name,
         outs = outs,
-        args = all_args,
-        data = data + [
+        chdir = chdir,
+        args = [
+            "$(location %s)" % entry_point,
+            "--project",
+            "$(location //:tsconfig.node)",
+        ] + (["--outDir", "$(@D)"] if output_dir or out_dirs else ["--out %s/%s" % (native.package_name(), outFile) for outFile in outs]) + args,
+        out_dirs = out_dirs if out_dirs else [],
+        srcs = data + [
             entry_point,
-            "//:tsconfig.json",
-            "@npm//@types/fs-extra",
-            "@npm//@types/minimist",
-            "@npm//fs-extra",
-            "@npm//minimist",
-            "@npm//tslib",
-            "//:tsconfig.node.json",
+            "//:node_modules/@types/fs-extra",
+            "//:node_modules/@types/minimist",
+            "//:node_modules/fs-extra",
+            "//:node_modules/minimist",
+            "//:node_modules/tslib",
+            "//:tsconfig.node",
+            "//:tsconfig",
         ],
-        output_dir = output_dir,
         visibility = visibility,
     )
 
-def generate_src_file(name, entry_point, src, args = [], data = [], visibility = None):
+def generate_src_file(name, entry_point, src, chdir = None, args = [], data = [], visibility = None):
     """Generate a source file.
 
     Args:
@@ -157,6 +199,7 @@ def generate_src_file(name, entry_point, src, args = [], data = [], visibility =
         src: src file to generate
         entry_point: generation script entry point
         visibility: target visibility
+        chdir: whether to chdir to another dir
     """
     tmp_filename = "%s-gen.tmp" % name
     ts_script(
@@ -164,15 +207,18 @@ def generate_src_file(name, entry_point, src, args = [], data = [], visibility =
         outs = [tmp_filename],
         entry_point = entry_point,
         args = args,
+        chdir = chdir,
         data = data,
-        visibility = visibility,
     )
 
-    generated_file_test(
+    files = {}
+    files[src] = tmp_filename
+
+    write_source_files(
         name = name,
-        src = src,
-        generated = tmp_filename,
+        files = files,
         visibility = visibility,
+        suggested_update_target = "//%s:%s" % (native.package_name(), tmp_filename[:tmp_filename.rindex(".")]),
     )
 
 def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = []):
@@ -191,16 +237,17 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
         srcs = srcs + tests + data,
         declaration = True,
         declaration_map = True,
-        extends = "//:tsconfig.json",
+        extends = "//:tsconfig",
         out_dir = name,
         resolve_json_module = True,
-        tsconfig = "//:tsconfig.esm.json",
+        tsconfig = "//:tsconfig.esm",
         deps = deps + [
-            "@npm//@jest/transform",
-            "@npm//ts-jest",
-            "@npm//@types/jest",
-            "@npm//tslib",
+            "//:node_modules/@jest/transform",
+            "//:node_modules/ts-jest",
+            "//:node_modules/@types/jest",
+            "//:node_modules/tslib",
         ],
+        data = data,
     )
 
     BUNDLE_KARMA_TESTS = ["%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]) for f in tests]
@@ -210,13 +257,14 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
             name = "%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]),
             entry_point = "%s/%s.js" % (name, f[:f.rindex(".")]),
             format = "iife",
-            target = "es5",
+            target = "es6",
+            # TODO: fix this and set it back to es5
             define = {
                 "process.version": "0",
             },
             deps = [
                 ":%s-compile" % name,
-                "@npm//tslib",
+                "//:node_modules/tslib",
             ] + deps + esbuild_deps,
         )
 
@@ -227,7 +275,7 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
         visibility = ["//:__pkg__"],
     )
 
-def check_format(name, srcs, config = "//:.prettierrc.json"):
+def check_format(name, srcs, config = "//:.prettierrc"):
     """
     Run all file formatting checks like prettier/buildifier.
 
@@ -249,71 +297,102 @@ def check_format(name, srcs, config = "//:.prettierrc.json"):
         verbose = True,
     )
 
-    prettier_test(
+    prettier_bin.prettier_test(
         name = "%s_prettier_test" % name,
         data = [
             "%s_prettier_srcs" % name,
             config,
         ],
-        templated_args = [
+        args = [
             "--config",
-            "$(rootpath %s)" % config,
+            "$(location %s)" % config,
             "--loglevel",
             "warn",
             "--check",
-            "$(rootpaths :%s_prettier_srcs)" % name,
+            "$(locations :%s_prettier_srcs)" % name,
         ],
     )
 
-    prettier(
+    prettier_bin.prettier_binary(
         name = name,
         data = [
-            "%s_prettier_srcs" % name,
+            ":%s_prettier_srcs" % name,
             config,
         ],
-        templated_args = [
+        args = [
             "--config",
-            "$(rootpath %s)" % config,
+            "$(location %s)" % config,
             "--loglevel",
             "warn",
             "--write",
-            "$(rootpaths :%s_prettier_srcs)" % name,
+            "$(locations :%s_prettier_srcs)" % name,
         ],
+        chdir = "$$BUILD_WORKSPACE_DIRECTORY",
         visibility = [
             "//:__pkg__",
         ],
     )
 
+def is_internal_dep(s):
+    return s.startswith("//:node_modules/@formatjs") or s in [
+        "//:node_modules/babel-plugin-formatjs",
+        "//:node_modules/eslint-plugin-formatjs",
+        "//:node_modules/intl-messageformat",
+        "//:node_modules/react-intl",
+        "//:node_modules/vue-intl",
+    ]
+
 def package_json_test(name, packageJson = "package.json", deps = []):
-    external_deps = [s.replace("@npm//", "") for s in deps if s.startswith("@npm//")]
-    internal_dep_package_jsons = ["%s:package.json" % s.split(":")[0] for s in deps if not s.startswith("@npm//")]
-    ts_node_test(
-        name = name,
-        args = [
-                   "--transpile-only",
-                   "$(execpath //tools:check-package-json.ts)",
-                   "--rootPackageJson",
-                   "$(location //:package.json)",
-                   "--packageJson",
-                   "$(location %s)" % packageJson,
-               ] +
-               ["--externalDep %s" % n for n in external_deps] +
-               ["--internalDepPackageJson $(location %s)" % d for d in internal_dep_package_jsons],
-        data = internal_dep_package_jsons + [
-            packageJson,
-            "//tools:check-package-json.ts",
-            "//:package.json",
-            "//:tsconfig.json",
-            "@npm//@types/fs-extra",
-            "@npm//@types/minimist",
-            "@npm//fs-extra",
-            "@npm//json-stable-stringify",
-            "@npm//@types/json-stable-stringify",
-            "@npm//minimist",
-            "@npm//lodash",
-            "@npm//@types/lodash",
-            "@npm//unidiff",
-            "@npm//tslib",
-            "//:tsconfig.node.json",
-        ],
+    copy_to_bin(
+        name = "package",
+        srcs = ["package.json"],
+        visibility = ["//visibility:public"],
     )
+
+    internal_deps = [
+        s
+        for s in deps
+        if is_internal_dep(s)
+    ]
+
+    external_deps = [s for s in deps if s not in internal_deps]
+
+    # TODO: fix this
+    # ts_node_bin.ts_node_test(
+    #     name = name,
+    #     args = [
+    #                "--transpile-only",
+    #                "$(location //tools:check-package-json)",
+    #                "--rootPackageJson",
+    #                "$(location //:package)",
+    #                "--packageJson",
+    #                "$(location %s)" % packageJson,
+    #            ] +
+    #            (["--externalDep %s" % n for n in external_deps] if external_deps else []) +
+    #            (["--internalDep %s" % d.split("//:node_modules/")[1] for d in internal_deps] if internal_deps else []),
+    #     data = internal_deps + [
+    #         packageJson,
+    #         "//tools:check-package-json",
+    #         "//:package",
+    #         "//:tsconfig",
+    #         "//:node_modules/@types/fs-extra",
+    #         "//:node_modules/@types/minimist",
+    #         "//:node_modules/fs-extra",
+    #         "//:node_modules/json-stable-stringify",
+    #         "//:node_modules/@types/json-stable-stringify",
+    #         "//:node_modules/minimist",
+    #         "//:node_modules/lodash",
+    #         "//:node_modules/@types/lodash",
+    #         "//:node_modules/unidiff",
+    #         "//:node_modules/tslib",
+    #         "//:tsconfig.node",
+    #     ],
+    # )
+
+def npm_link_packages(packages = {}, visibility = ["//visibility:public"]):
+    for name, src in packages.items():
+        npm_link_package(
+            name = name,
+            src = src,
+            visibility = visibility,
+        )

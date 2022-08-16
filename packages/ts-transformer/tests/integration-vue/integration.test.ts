@@ -1,8 +1,8 @@
 import webpack from 'webpack'
 import {VueLoaderPlugin} from 'vue-loader'
 import {readFileSync} from 'fs'
-import {resolve} from 'path'
-import {transform} from '../..'
+import {join} from 'path'
+import {transform} from '@formatjs/ts-transformer'
 test('tranpilation', function (done) {
   webpack(
     {
@@ -42,9 +42,24 @@ test('tranpilation', function (done) {
       },
       plugins: [new VueLoaderPlugin()],
     },
-    err => {
+    (err, stats) => {
       expect(err).toBeNull()
-      const outFileContent = readFileSync(resolve(__dirname, 'out.js'), 'utf-8')
+      const statsJson = stats?.toJson()
+      if (!statsJson) {
+        throw new Error('missing stats')
+      }
+      if (err) {
+        throw err
+      }
+      if (stats?.hasErrors()) {
+        console.error(statsJson.errors)
+        throw new Error('err compiling')
+      }
+      const outFile = join(
+        statsJson.outputPath || __dirname,
+        statsJson.assets?.[0].name || 'out.js'
+      )
+      const outFileContent = readFileSync(outFile, 'utf-8')
       expect(outFileContent).toContain(
         '.formatMessage({id:"XOeJ9m",defaultMessage:"message in created (id injected)"}))}'
       )

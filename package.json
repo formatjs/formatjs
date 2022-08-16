@@ -19,7 +19,7 @@
     "postinstall": "husky install && patch-package",
     "prerelease": "HUSKY=0 lerna version --yes",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
-    "release": "lerna exec --no-bail -- bazel run :publish",
+    "release": "ls packages/ | xargs -I % sh -c 'bazel run @nodejs_host//:npm publish -- --dry-run dist/bin/packages/%'",
     "test": "bazel test //..."
   },
   "devDependencies": {
@@ -31,25 +31,26 @@
     "@babel/traverse": "7",
     "@babel/types": "^7.12.11",
     "@bazel/bazelisk": "^1.5.0",
-    "@bazel/esbuild": "5.5.0",
     "@bazel/ibazel": "^0.15.0",
-    "@bazel/typescript": "5.5.0",
     "@commitlint/cli": "16",
     "@commitlint/config-angular": "16",
-    "@docusaurus/core": "2.0.0-beta.14",
-    "@docusaurus/plugin-google-analytics": "2.0.0-beta.14",
-    "@docusaurus/preset-classic": "2.0.0-beta.14",
-    "@docusaurus/theme-live-codeblock": "2.0.0-beta.14",
+    "@docusaurus/core": "2",
+    "@docusaurus/plugin-google-analytics": "2",
+    "@docusaurus/preset-classic": "2",
+    "@docusaurus/theme-common": "2",
+    "@docusaurus/theme-live-codeblock": "2",
     "@jest/transform": "27",
     "@jest/types": "27",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "@mdx-js/react": "^2.1.2",
     "@swc/core": "1.2.160",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^12.0.0",
     "@types/babel__core": "^7.1.7",
     "@types/babel__helper-plugin-utils": "^7.10.0",
+    "@types/babel__traverse": "^7.1.7",
     "@types/benchmark": "^2.1.0",
     "@types/eslint": "7 || 8",
     "@types/estree": "^0.0.50",
@@ -63,6 +64,7 @@
     "@types/picomatch": "^2.3.0",
     "@types/react": "16 || 17 || 18",
     "@types/react-dom": "17 || 18",
+    "@types/regenerate": "^1.4.1",
     "@types/rimraf": "^3.0.0",
     "@types/serialize-javascript": "^5.0.0",
     "@types/webpack": "5",
@@ -71,6 +73,7 @@
     "@unicode/unicode-13.0.0": "^1.0.6",
     "@vue/compiler-core": "^3.2.23",
     "@vue/compiler-sfc": "^3.2.23",
+    "@vue/runtime-core": "^3.2.37",
     "@vue/test-utils": "2.0.0-beta.13",
     "babel-loader": "^8.2.2",
     "benchmark": "^2.1.4",
@@ -85,6 +88,7 @@
     "cldr-misc-full": "40",
     "cldr-numbers-full": "40",
     "cldr-units-full": "40",
+    "clsx": "1",
     "commander": "8",
     "core-js": "^3.6.5",
     "emoji-regex": "^10.0.0",
@@ -105,13 +109,15 @@
     "lerna": "4",
     "lodash": "^4.17.15",
     "loud-rejection": "^2.2.0",
-    "make-plural-compiler": "^5.1.0",
+    "make-plural-compiler": "5.1.0",
     "minimist": "^1.2.5",
     "patch-package": "^6.2.2",
     "picomatch": "^2.3.1",
     "prettier": "^2.0.5",
-    "react": "^16.6.0 || 17 || 18",
-    "react-dom": "^16.6.0 || 17 || 18",
+    "prism-react-renderer": "^1.3.3",
+    "react": "^16.6.0 || 17",
+    "react-dom": "^16.6.0 || 17",
+    "react-live": "2",
     "regenerate": "^1.4.2",
     "rimraf": "^3.0.2",
     "serialize-javascript": "^6.0.0",
@@ -133,8 +139,32 @@
     "npm": "6.x"
   },
   "resolutions": {
-    "**/chokidar": "^3.4.2",
     "terser": "4.8.0"
+  },
+  "pnpm": {
+    "packageExtensions": {
+      "ts-jest": {
+        "dependencies": {
+          "@jest/transform": "*",
+          "@types/babel__core": "*"
+        }
+      },
+      "@vue/compiler-core": {
+        "dependencies": {
+          "@babel/types": "*"
+        }
+      },
+      "@vue/reactivity-transform": {
+        "dependencies": {
+          "@babel/types": "*"
+        }
+      },
+      "@vue/test-utils": {
+        "dependencies": {
+          "@vue/compiler-dom": "*"
+        }
+      }
+    }
   },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
 }

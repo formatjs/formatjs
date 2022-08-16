@@ -1,14 +1,12 @@
 import webpack from 'webpack'
 import {VueLoaderPlugin} from 'vue-loader'
 import {readFileSync} from 'fs'
-import {resolve} from 'path'
-
+import {join} from 'path'
 test('dummy', function (done) {
   webpack(
     {
       entry: require.resolve('./fixtures/app.js'),
       output: {
-        path: __dirname,
         filename: 'out.js',
       },
       module: {
@@ -38,8 +36,23 @@ test('dummy', function (done) {
       },
       plugins: [new VueLoaderPlugin()],
     },
-    _ => {
-      expect(readFileSync(resolve(__dirname, 'out.js'), 'utf-8')).toContain(
+    function (err, stats) {
+      const statsJson = stats?.toJson()
+      if (!statsJson) {
+        throw new Error('missing stats')
+      }
+      if (err) {
+        throw err
+      }
+      if (stats?.hasErrors()) {
+        console.error(statsJson.errors)
+        throw new Error('err compiling')
+      }
+      const outFile = join(
+        statsJson.outputPath || __dirname,
+        statsJson.assets?.[0].name || 'out.js'
+      )
+      expect(readFileSync(outFile, 'utf-8')).toContain(
         '[{type:0,value:"Today is "},{type:3,value:"ts",style:{type:1,pattern:"yyyyMMdd",parsedOptions:{year:"numeric",month:"2-digit",day:"2-digit"}}}]'
       )
       done()

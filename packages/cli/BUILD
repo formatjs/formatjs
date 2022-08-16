@@ -1,8 +1,6 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 
 PACKAGE_NAME = "cli"
-
-exports_files(["package.json"])
 
 genrule(
     name = "bin",
@@ -11,20 +9,13 @@ genrule(
     cmd = "cp $< $@",
 )
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
-    ],
-    deps = [
         "package.json",
         ":bin/formatjs",
     ],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
+    package = "@formatjs/%s" % PACKAGE_NAME,
 )

@@ -1,32 +1,20 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
-
-exports_files(["package.json"])
 
 PACKAGE_NAME = "babel-plugin-formatjs"
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
-    ],
-    deps = [
         ":dist",
     ],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
+    package = PACKAGE_NAME,
+    visibility=["//visibility:public"]
 )
 
 SRCS = glob(
@@ -35,20 +23,20 @@ SRCS = glob(
 )
 
 SRC_DEPS = [
-    "//packages/icu-messageformat-parser:dist",
-    "//packages/ts-transformer:dist",
-    "@npm//@babel/helper-plugin-utils",
-    "@npm//@babel/core",
-    "@npm//@babel/types",
-    "@npm//@types/babel__core",
-    "@npm//@types/babel__helper-plugin-utils",
-    "@npm//@babel/plugin-syntax-jsx",
-    "@npm//@babel/traverse",
+    "//:node_modules/@babel/core",
+    "//:node_modules/@babel/helper-plugin-utils",
+    "//:node_modules/@babel/plugin-syntax-jsx",
+    "//:node_modules/@babel/traverse",
+    "//:node_modules/@babel/types",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/@formatjs/ts-transformer",
+    "//:node_modules/@types/babel__core",
+    "//:node_modules/@types/babel__helper-plugin-utils",
+    "//:node_modules/@types/babel__traverse",
 ]
 
-ts_compile(
+ts_compile_node(
     name = "dist",
-    package_name = PACKAGE_NAME,
     srcs = SRCS,
     deps = SRC_DEPS,
 )
@@ -68,10 +56,13 @@ jest_test(
         "tests/**/*.snap",
     ]),
     deps = [
-        "//packages/icu-messageformat-parser:types",
-        "//packages/ts-transformer:types",
-        "@npm//@babel/preset-env",
-        "@npm//@babel/preset-react",
+        "//:node_modules/@babel/preset-env",
+        "//:node_modules/@babel/preset-react",
+        # Transitive
+        "//:node_modules/chalk",
+        "//:node_modules/typescript",
+        "//:node_modules/@types/node",
+        "//:node_modules/json-stable-stringify",
     ] + SRC_DEPS,
 )
 
@@ -82,15 +73,23 @@ jest_test(
     ]),
     flaky = True,
     deps = [
-        ":dist",
-        ":types",
-        "//packages/icu-messageformat-parser:types",
-        "@npm//@types/node",
-        "@npm//@types/webpack",
-        "@npm//babel-loader",
-        "@npm//vue",
-        "@npm//vue-loader",
-        "@npm//webpack",
+        "//:node_modules/babel-plugin-formatjs",
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/webpack",
+        "//:node_modules/babel-loader",
+        "//:node_modules/vue",
+        "//:node_modules/vue-loader",
+        "//:node_modules/webpack",
+        # Transitive
+        "//:node_modules/chalk",
+        "//:node_modules/typescript",
+        "//:node_modules/json-stable-stringify",
+        # Transitive babel-plugin-formatjs
+        "//:node_modules/@babel/helper-plugin-utils",
+        "//:node_modules/@babel/plugin-syntax-jsx",
+        "//:node_modules/@babel/types",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
     ],
 )
 
@@ -99,10 +98,9 @@ package_json_test(
     deps = SRC_DEPS,
 )
 
-generated_file_test(
+write_source_files(
     name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
+    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
 check_format(

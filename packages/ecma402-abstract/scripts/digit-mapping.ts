@@ -1,4 +1,4 @@
-import minimist from 'minimist'
+import minimist, {ParsedArgs} from 'minimist'
 import {outputFileSync} from 'fs-extra'
 
 // Generate an array of 10 characters with consecutive codepoint, starting from `starCharCode`.
@@ -90,7 +90,11 @@ const digitMapping: Record<string, string[]> = {
   wcho: generateDigitChars(0x1e2f0),
 }
 
-function main(args: minimist.ParsedArgs) {
+interface Args extends ParsedArgs {
+  out: string
+}
+
+function main(args: Args) {
   const {out} = args
   outputFileSync(
     out,
@@ -101,5 +105,5 @@ function main(args: minimist.ParsedArgs) {
 }
 
 if (require.main === module) {
-  main(minimist(process.argv))
+  main(minimist<Args>(process.argv))
 }

@@ -1,65 +1,57 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//@bazel/esbuild:index.bzl", "esbuild")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "cli-lib"
 
 exports_files(["package.json"])
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
-    ],
-    deps = [
+        "package.json",
         ":dist",
     ],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
+    package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility=["//visibility:public"]
 )
 
 SRCS = glob(["src/**/*.ts"]) + [
     "index.ts",
     "main.ts",
-    "package.json",
+    # "package.json",
 ]
 
 VUE_DEPS = [
-    "@npm//@vue/compiler-core",
-    "@npm//@vue/compiler-sfc",
+    "//:node_modules/@vue/compiler-core",
+    "//:node_modules/@babel/types",
+    "//:node_modules/@vue/compiler-sfc",
 ]
 
 SRC_DEPS = [
-    "@npm//@types/estree",
-    "@npm//@types/fs-extra",
-    "@npm//@types/json-stable-stringify",
-    "@npm//@types/node",
-    "@npm//chalk",
-    "@npm//commander",
-    "@npm//fast-glob",
-    "@npm//fs-extra",
-    "@npm//json-stable-stringify",
-    "@npm//loud-rejection",
-    "@npm//typescript",
-    "//packages/icu-messageformat-parser:dist",
-    "//packages/ts-transformer:dist",
+    "//:node_modules/@types/estree",
+    "//:node_modules/@types/fs-extra",
+    "//:node_modules/@types/json-stable-stringify",
+    "//:node_modules/@types/node",
+    "//:node_modules/chalk",
+    "//:node_modules/commander",
+    "//:node_modules/fast-glob",
+    "//:node_modules/fs-extra",
+    "//:node_modules/json-stable-stringify",
+    "//:node_modules/loud-rejection",
+    "//:node_modules/typescript",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/@formatjs/ts-transformer",
 ] + VUE_DEPS
 
-ts_compile(
+ts_compile_node(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm_esnext = False,
     deps = SRC_DEPS,
 )
@@ -70,10 +62,8 @@ jest_test(
         "tests/unit/**/*",
     ]),
     deps = [
-        "//packages/icu-messageformat-parser:types",
-        "//packages/ts-transformer:types",
-        "@npm//rimraf",
-        "@npm//@types/rimraf",
+        "//:node_modules/rimraf",
+        "//:node_modules/@types/rimraf",
     ] + SRC_DEPS,
 )
 
@@ -90,11 +80,9 @@ jest_test(
     ),
     flaky = True,
     deps = [
-        ":dist",
-        "//packages/icu-messageformat-parser:types",
-        "//packages/ts-transformer:types",
-        "@npm//@types/rimraf",
-        "@npm//rimraf",
+        "//:node_modules/@formatjs/cli-lib",
+        "//:node_modules/@types/rimraf",
+        "//:node_modules/rimraf",
     ],
 )
 
@@ -110,12 +98,11 @@ jest_test(
     ),
     flaky = True,
     deps = [
-        "//packages/icu-messageformat-parser:types",
-        "//packages/ts-transformer:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/rimraf",
-        "@npm//fs-extra",
-        "@npm//rimraf",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/rimraf",
+        "//:node_modules/fs-extra",
+        "//:node_modules/rimraf",
+        "//:node_modules/fast-glob",
     ],
 )
 
@@ -132,12 +119,11 @@ jest_test(
     ),
     flaky = True,
     deps = [
-        "//packages/icu-messageformat-parser:types",
-        "//packages/ts-transformer:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/rimraf",
-        "@npm//fs-extra",
-        "@npm//rimraf",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/rimraf",
+        "//:node_modules/fs-extra",
+        "//:node_modules/rimraf",
+        "//:node_modules/fast-glob",
     ],
 )
 
@@ -152,24 +138,15 @@ jest_test(
         ],
     ),
     flaky = True,
-    deps = VUE_DEPS,
+    deps = VUE_DEPS + [
+        "//:node_modules/fast-glob",
+        "//:node_modules/@types/node",
+    ],
 )
 
-generated_file_test(
+write_source_files(
     name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
-)
-
-# generated_file_test(
-#     name = "integration_test",
-#     src = "tsconfig.json",
-#     generated = "//tools:tsconfig.golden.json",
-# )
-
-package_json_test(
-    name = "package_json_test",
-    deps = SRC_DEPS,
+    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
 check_format(
@@ -192,6 +169,13 @@ check_format(
 #     srcs=["package.json"]
 # )
 
+genrule(
+    name = "bin",
+    srcs = [":formatjs.js"],
+    outs = ["bin/formatjs"],
+    cmd = "cp $< $@",
+)
+
 esbuild(
     name = "formatjs",
     srcs = [":dist-esm-esnext"],
@@ -203,13 +187,11 @@ esbuild(
     target = "node16",
     visibility = ["//packages/cli:__pkg__"],
     deps = [
-        "@npm//tslib",
+        "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
 
-genrule(
-    name = "bin",
-    srcs = [":formatjs.js"],
-    outs = ["bin/formatjs"],
-    cmd = "cp $< $@",
+package_json_test(
+    name = "package_json_test",
+    deps = SRC_DEPS,
 )

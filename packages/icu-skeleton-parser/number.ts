@@ -1,4 +1,4 @@
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import type {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {WHITE_SPACE_REGEX} from './regex.generated'
 
 export interface ExtendedNumberFormatOptions extends NumberFormatOptions {

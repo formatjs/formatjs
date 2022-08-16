@@ -1,44 +1,36 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//@bazel/esbuild:index.bzl", "esbuild")
-load("@npm//ts-node:index.bzl", "ts_node")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
 load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-exports_files(["package.json"])
+exports_files([
+    "package.json",
+])
 
 PACKAGE_NAME = "intl-messageformat"
 
-pkg_npm(
+npm_package(
     name = PACKAGE_NAME,
-    package_name = PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
-    ],
-    deps = [
         "%s.esm.js" % PACKAGE_NAME,
         "%s.iife.js" % PACKAGE_NAME,
         ":dist",
     ],
-)
-
-alias(
-    name = "publish",
-    actual = "%s.publish" % PACKAGE_NAME,
-)
-
-alias(
-    name = "pack",
-    actual = "%s.pack" % PACKAGE_NAME,
+    package = PACKAGE_NAME,
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob(["src/*.ts"]) + ["index.ts"]
 
 SRC_DEPS = [
-    "//packages/icu-messageformat-parser:dist",
-    "//packages/fast-memoize:dist",
-    "//packages/ecma402-abstract:dist",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/@formatjs/fast-memoize",
+    "//:node_modules/@formatjs/ecma402-abstract",
 ]
 
 TESTS = glob([
@@ -46,13 +38,13 @@ TESTS = glob([
 ])
 
 TEST_DEPS = SRC_DEPS + [
-    "@npm//jasmine-expect",
+    "//:node_modules/jasmine-expect",
 ]
 
 ts_compile(
     name = "dist",
-    package_name = PACKAGE_NAME,
     srcs = SRCS,
+    package = PACKAGE_NAME,
     skip_esm = False,
     skip_esm_esnext = False,
     deps = SRC_DEPS,
@@ -62,19 +54,18 @@ jest_test(
     name = "unit",
     srcs = SRCS + TESTS,
     deps = TEST_DEPS + [
-        "//packages/icu-messageformat-parser:types",
-        "//packages/fast-memoize:types",
-        "//packages/ecma402-abstract:types",
+        "//:node_modules/@types/node",
     ],
 )
 
 esbuild(
     name = "%s.iife" % PACKAGE_NAME,
-    args = {
+    config = {
         "globalName": "IntlMessageFormat",
     },
     entry_point = "lib/index.js",
-    target = "es5",
+    target = "es6",
+    # TODO: fix this and set it back to es5
     deps = [
         ":dist-esm",
     ] + SRC_DEPS,
@@ -82,7 +73,7 @@ esbuild(
 
 esbuild(
     name = "%s.esm" % PACKAGE_NAME,
-    args = {
+    config = {
         "globalName": "IntlMessageFormat",
     },
     entry_point = "lib_esnext/index.js",
@@ -93,10 +84,9 @@ esbuild(
     ] + SRC_DEPS,
 )
 
-generated_file_test(
+write_source_files(
     name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
+    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
 check_format(
@@ -111,7 +101,7 @@ check_format(
     ),
 )
 
-ts_node(
+ts_node_bin.ts_node_binary(
     name = "benchmark",
     args = [
         "--transpile-only",
@@ -119,11 +109,11 @@ ts_node(
     ],
     data = SRCS + SRC_DEPS + [
         "tests/benchmark.ts",
-        "//:tsconfig.json",
-        "@npm//tslib",
+        "//:tsconfig",
+        "//:node_modules/tslib",
         "//packages/intl-pluralrules",
         "//packages/intl-pluralrules:locale-data",
-        "//:tsconfig.node.json",
+        "//:tsconfig.node",
     ],
 )
 
