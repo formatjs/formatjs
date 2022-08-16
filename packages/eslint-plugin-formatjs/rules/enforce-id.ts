@@ -1,5 +1,5 @@
 import {Rule} from 'eslint'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {interpolateName} from '@formatjs/ts-transformer'
 
@@ -13,7 +13,7 @@ function checkNode(
   node: TSESTree.Node,
   {idInterpolationPattern, idWhitelistRegexps}: Opts
 ) {
-  const msgs = extractMessages(node, context.settings)
+  const msgs = extractMessages(node, getSettings(context))
   for (const [
     {
       message: {defaultMessage, description, id},

@@ -1,10 +1,11 @@
 import {Rule} from 'eslint'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {parse} from '@formatjs/icu-messageformat-parser'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node as any, context.settings)
+  const settings = getSettings(context)
+  const msgs = extractMessages(node, settings)
 
   if (!msgs.length) {
     return
@@ -22,7 +23,7 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
 
     try {
       parse(defaultMessage, {
-        ignoreTag: context.settings['ignoreTag'],
+        ignoreTag: settings.ignoreTag,
       })
     } catch (e) {
       const msg = e instanceof Error ? e.message : e

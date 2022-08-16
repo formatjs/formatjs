@@ -1,5 +1,5 @@
 import {Rule, SourceCode} from 'eslint'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import * as ESTree from 'estree'
 
@@ -10,7 +10,7 @@ function isComment(
 }
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node, context.settings)
+  const msgs = extractMessages(node, getSettings(context))
   for (const [{idPropNode}] of msgs) {
     if (idPropNode) {
       context.report({

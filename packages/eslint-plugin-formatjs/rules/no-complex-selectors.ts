@@ -1,6 +1,6 @@
 import {Rule} from 'eslint'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 import {
   parse,
   isPluralElement,
@@ -26,7 +26,8 @@ function calculateComplexity(ast: MessageFormatElement[]): number {
 }
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node, context.settings)
+  const settings = getSettings(context)
+  const msgs = extractMessages(node, settings)
   if (!msgs.length) {
     return
   }
@@ -49,7 +50,7 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     let ast: MessageFormatElement[]
     try {
       ast = parse(defaultMessage, {
-        ignoreTag: context.settings.ignoreTag,
+        ignoreTag: settings.ignoreTag,
       })
     } catch (e) {
       context.report({

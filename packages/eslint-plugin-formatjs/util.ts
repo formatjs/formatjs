@@ -1,3 +1,4 @@
+import {Rule} from 'eslint'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 
 export interface MessageDescriptor {
@@ -23,6 +24,10 @@ export interface MessageDescriptorNodeInfo {
   descriptionNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
   idValueNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
   idPropNode?: TSESTree.Property | TSESTree.JSXAttribute
+}
+
+export function getSettings({settings}: Rule.RuleContext): Settings {
+  return settings.formatjs ?? settings
 }
 
 function isStringLiteral(node: TSESTree.Node): node is TSESTree.StringLiteral {

@@ -1,9 +1,9 @@
 import {Rule} from 'eslint'
-import {extractMessages} from '../util'
+import {extractMessages, getSettings} from '../util'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
-  const msgs = extractMessages(node, context.settings)
+  const msgs = extractMessages(node, getSettings(context))
   const {
     options: [type],
   } = context
