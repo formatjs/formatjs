@@ -46,6 +46,7 @@ copy_to_bin(
     ] + ["package.json"]),
 )
 
+# TODO: fix
 # docusaurus_bin.docusaurus(
 #     name = "build",
 #     args = [
@@ -65,33 +66,33 @@ copy_to_bin(
 #     tags = ["manual"],
 # )
 
-docusaurus_bin.docusaurus_binary(
-    name = "deploy",
-    # configuration_env_vars = [
-    #     "USE_SSH",
-    #     "GIT_USER",
-    #     "DEPLOYMENT_BRANCH",
-    #     "NO_UPDATE_NOTIFIER",
-    # ],
-    data = DEPS + [
-        ":build",
-        "docusaurus.config.js",
-    ],
-    args = [
-        "deploy",
-        "--skip-build",
-        "--out-dir",
-        "$$(rlocation $(rootpath :build))",
-        "website",
-    ],
-)
+# docusaurus_bin.docusaurus_binary(
+#     name = "deploy",
+#     # configuration_env_vars = [
+#     #     "USE_SSH",
+#     #     "GIT_USER",
+#     #     "DEPLOYMENT_BRANCH",
+#     #     "NO_UPDATE_NOTIFIER",
+#     # ],
+#     data = DEPS + [
+#         ":build",
+#         "docusaurus.config.js",
+#     ],
+#     args = [
+#         "deploy",
+#         "--skip-build",
+#         "--out-dir",
+#         "$$(rlocation $(rootpath :build))",
+#         "website",
+#     ],
+# )
 
-http_server_bin.http_server_binary(
-    name = "serve",
-    data = [
-        ":build",
-    ],
-    args = [
-        "$$(rlocation $(location :build))",
-    ],
-)
+# http_server_bin.http_server_binary(
+#     name = "serve",
+#     data = [
+#         ":build",
+#     ],
+#     args = [
+#         "$$(rlocation $(location :build))",
+#     ],
+# )
