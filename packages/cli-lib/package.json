@@ -31,8 +31,8 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@formatjs/icu-messageformat-parser": "2.1.4",
-    "@formatjs/ts-transformer": "3.9.9",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "@formatjs/ts-transformer": "workspace:*",
     "@types/estree": "^0.0.50",
     "@types/fs-extra": "^9.0.1",
     "@types/json-stable-stringify": "^1.0.32",

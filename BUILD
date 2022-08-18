@@ -9,7 +9,7 @@ load("@io_bazel_rules_docker//docker/util:run.bzl", "container_run_and_extract")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
 load("//:index.bzl", "ZONES")
-load("//tools:index.bzl", "BUILDIFIER_WARNINGS", "npm_link_packages")
+load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
 
 # Allow any ts_library rules in this workspace to reference the config
 # Note: if you move the tsconfig.json file to a subdirectory, you can add an alias() here instead
@@ -27,38 +27,38 @@ exports_files(
 
 npm_link_all_packages(name = "node_modules")
 
-npm_link_packages(
-    packages = {
-        "node_modules/@formatjs/cli": "//packages/cli",
-        "node_modules/@formatjs/cli-lib": "//packages/cli-lib",
-        "node_modules/@formatjs/ecma376": "//packages/ecma376",
-        "node_modules/@formatjs/ecma402-abstract": "//packages/ecma402-abstract",
-        "node_modules/@formatjs/fast-memoize": "//packages/fast-memoize",
-        "node_modules/@formatjs/icu-messageformat-parser": "//packages/icu-messageformat-parser",
-        "node_modules/@formatjs/icu-skeleton-parser": "//packages/icu-skeleton-parser",
-        "node_modules/@formatjs/intl": "//packages/intl",
-        "node_modules/@formatjs/intl-datetimeformat": "//packages/intl-datetimeformat",
-        "node_modules/@formatjs/intl-displaynames": "//packages/intl-displaynames",
-        "node_modules/@formatjs/intl-durationformat": "//packages/intl-durationformat",
-        "node_modules/@formatjs/intl-enumerator": "//packages/intl-enumerator",
-        "node_modules/@formatjs/intl-getcanonicallocales": "//packages/intl-getcanonicallocales",
-        "node_modules/@formatjs/intl-listformat": "//packages/intl-listformat",
-        "node_modules/@formatjs/intl-locale": "//packages/intl-locale",
-        "node_modules/@formatjs/intl-localematcher": "//packages/intl-localematcher",
-        "node_modules/@formatjs/intl-numberformat": "//packages/intl-numberformat",
-        "node_modules/@formatjs/intl-pluralrules": "//packages/intl-pluralrules",
-        "node_modules/@formatjs/intl-relativetimeformat": "//packages/intl-relativetimeformat",
-        "node_modules/@formatjs/swc-plugin": "//packages/swc-plugin",
-        "node_modules/@formatjs/ts-transformer": "//packages/ts-transformer",
-        "node_modules/babel-plugin-formatjs": "//packages/babel-plugin-formatjs",
-        "node_modules/eslint-plugin-formatjs": "//packages/eslint-plugin-formatjs",
-        "node_modules/intl-messageformat": "//packages/intl-messageformat",
-        "node_modules/react-intl": "//packages/react-intl",
-        "node_modules/vue-intl": "//packages/vue-intl",
-        # "node_modules/@formatjs/editor": "//packages/editor",
-    },
-    visibility = ["//visibility:public"],
-)
+# npm_link_packages(
+#     packages = {
+# "node_modules/@formatjs/cli": "//packages/cli",
+# "node_modules/@formatjs/cli-lib": "//packages/cli-lib",
+# "node_modules/@formatjs/ecma376": "//packages/ecma376",
+# "node_modules/@formatjs/ecma402-abstract": "//packages/ecma402-abstract",
+# "node_modules/@formatjs/fast-memoize": "//packages/fast-memoize",
+# "node_modules/@formatjs/icu-messageformat-parser": "//packages/icu-messageformat-parser",
+# "node_modules/@formatjs/icu-skeleton-parser": "//packages/icu-skeleton-parser",
+# "node_modules/@formatjs/intl": "//packages/intl",
+# "node_modules/@formatjs/intl-datetimeformat": "//packages/intl-datetimeformat",
+# "node_modules/@formatjs/intl-displaynames": "//packages/intl-displaynames",
+# "node_modules/@formatjs/intl-durationformat": "//packages/intl-durationformat",
+# "node_modules/@formatjs/intl-enumerator": "//packages/intl-enumerator",
+# "node_modules/@formatjs/intl-getcanonicallocales": "//packages/intl-getcanonicallocales",
+# "node_modules/@formatjs/intl-listformat": "//packages/intl-listformat",
+# "node_modules/@formatjs/intl-locale": "//packages/intl-locale",
+# "node_modules/@formatjs/intl-localematcher": "//packages/intl-localematcher",
+# "node_modules/@formatjs/intl-numberformat": "//packages/intl-numberformat",
+# "node_modules/@formatjs/intl-pluralrules": "//packages/intl-pluralrules",
+# "node_modules/@formatjs/intl-relativetimeformat": "//packages/intl-relativetimeformat",
+# "node_modules/@formatjs/swc-plugin": "//packages/swc-plugin",
+# "node_modules/@formatjs/ts-transformer": "//packages/ts-transformer",
+# "internal_node_modules/babel-plugin-formatjs": "//packages/babel-plugin-formatjs",
+# "node_modules/eslint-plugin-formatjs": "//packages/eslint-plugin-formatjs",
+# "node_modules/intl-messageformat": "//packages/intl-messageformat",
+# "node_modules/react-intl": "//packages/react-intl",
+# "node_modules/vue-intl": "//packages/vue-intl",
+# "node_modules/@formatjs/editor": "//packages/editor",
+#     },
+#     visibility = ["//visibility:public"],
+# )
 
 # We run this centrally so it doesn't spawn
 # multiple browser sessions which overwhelms SauceLabs

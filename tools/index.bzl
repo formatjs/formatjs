@@ -65,7 +65,7 @@ def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_e
         tsconfig = "//:tsconfig.node",
         resolve_json_module = True,
         deps = deps,
-        data = data if data else internal_deps,
+        # data = data if data else internal_deps,
     )
     if not skip_esm_esnext:
         ts_project(
@@ -77,7 +77,7 @@ def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_e
             tsconfig = "//:tsconfig.esm.esnext",
             resolve_json_module = True,
             deps = deps,
-            data = data if data else internal_deps,
+            # data = data if data else internal_deps,
         )
 
     js_library(
@@ -110,7 +110,7 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
         tsconfig = "//:tsconfig",
         resolve_json_module = True,
         deps = deps,
-        data = data if data else internal_deps,
+        # data = data if data else internal_deps,
     )
     if not skip_esm:
         ts_project(
@@ -122,7 +122,7 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
             tsconfig = "//:tsconfig.esm",
             resolve_json_module = True,
             deps = deps,
-            data = data if data else internal_deps,
+            # data = data if data else internal_deps,
         )
     if not skip_esm_esnext:
         ts_project(
@@ -134,7 +134,7 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
             tsconfig = "//:tsconfig.esm.esnext",
             resolve_json_module = True,
             deps = deps,
-            data = data if data else internal_deps,
+            # data = data if data else internal_deps,
         )
 
     native.filegroup(
@@ -149,7 +149,7 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
         # package = package,
         srcs = [":%s-base" % name] + ([":%s-esm" % name] if not skip_esm else []) + ["package.json"],
         visibility = ["//visibility:public"],
-        data = data if data else internal_deps,
+        # data = data if data else internal_deps,
     )
 
 def ts_script(name, entry_point, args = [], chdir = None, data = [], outs = [], output_dir = False, out_dirs = [], visibility = None):

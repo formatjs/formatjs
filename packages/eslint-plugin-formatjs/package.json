@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
-    "@formatjs/icu-messageformat-parser": "2.1.4",
-    "@formatjs/ts-transformer": "3.9.9",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "@formatjs/ts-transformer": "workspace:*",
     "@types/eslint": "7 || 8",
     "@types/picomatch": "^2.3.0",
     "@typescript-eslint/typescript-estree": "^5.9.1",

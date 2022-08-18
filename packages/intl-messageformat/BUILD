@@ -1,9 +1,12 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
 load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
+
+npm_link_all_packages(name = "node_modules")
 
 exports_files([
     "package.json",
@@ -28,9 +31,9 @@ npm_package(
 SRCS = glob(["src/*.ts"]) + ["index.ts"]
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/@formatjs/fast-memoize",
-    "//:node_modules/@formatjs/ecma402-abstract",
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/fast-memoize",
+    ":node_modules/@formatjs/ecma402-abstract",
 ]
 
 TESTS = glob([

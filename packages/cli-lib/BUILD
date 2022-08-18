@@ -1,8 +1,11 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "cli-lib"
 
@@ -17,7 +20,7 @@ npm_package(
         ":dist",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
-    visibility=["//visibility:public"]
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob(["src/**/*.ts"]) + [
@@ -44,8 +47,8 @@ SRC_DEPS = [
     "//:node_modules/json-stable-stringify",
     "//:node_modules/loud-rejection",
     "//:node_modules/typescript",
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/@formatjs/ts-transformer",
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/ts-transformer",
 ] + VUE_DEPS
 
 ts_compile_node(
@@ -67,83 +70,6 @@ jest_test(
     ] + SRC_DEPS,
 )
 
-jest_test(
-    name = "integration-compile",
-    size = "large",
-    srcs = [
-        ":bin/formatjs",
-        "tests/integration/formatter.js",
-    ] + SRCS + glob(
-        [
-            "tests/integration/compile/**/*",
-        ],
-    ),
-    flaky = True,
-    deps = [
-        "//:node_modules/@formatjs/cli-lib",
-        "//:node_modules/@types/rimraf",
-        "//:node_modules/rimraf",
-    ],
-)
-
-jest_test(
-    name = "integration-compile-folder",
-    size = "large",
-    srcs = [
-        ":bin/formatjs",
-    ] + glob(
-        [
-            "tests/integration/compile_folder/**/*",
-        ],
-    ),
-    flaky = True,
-    deps = [
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/rimraf",
-        "//:node_modules/fs-extra",
-        "//:node_modules/rimraf",
-        "//:node_modules/fast-glob",
-    ],
-)
-
-jest_test(
-    name = "integration-extract",
-    size = "large",
-    srcs = [
-        ":bin/formatjs",
-        "tests/integration/formatter.js",
-    ] + glob(
-        [
-            "tests/integration/extract/**/*",
-        ],
-    ),
-    flaky = True,
-    deps = [
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/rimraf",
-        "//:node_modules/fs-extra",
-        "//:node_modules/rimraf",
-        "//:node_modules/fast-glob",
-    ],
-)
-
-jest_test(
-    name = "integration-extract-vue",
-    size = "large",
-    srcs = [
-        ":bin/formatjs",
-    ] + glob(
-        [
-            "tests/integration/extract-vue/**/*",
-        ],
-    ),
-    flaky = True,
-    deps = VUE_DEPS + [
-        "//:node_modules/fast-glob",
-        "//:node_modules/@types/node",
-    ],
-)
-
 write_source_files(
     name = "tsconfig_json",
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
@@ -163,11 +89,6 @@ check_format(
         ],
     ),
 )
-
-# copy_to_bin(
-#     name="package_json",
-#     srcs=["package.json"]
-# )
 
 genrule(
     name = "bin",

@@ -29,13 +29,17 @@
   "module": "lib/index.js",
   "sideEffects": false,
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.11.8",
-    "@formatjs/fast-memoize": "1.2.4",
-    "@formatjs/icu-messageformat-parser": "2.1.4",
-    "@formatjs/intl-displaynames": "6.0.3",
-    "@formatjs/intl-listformat": "7.0.3",
-    "intl-messageformat": "10.1.1",
+    "@formatjs/ecma402-abstract": "workspace:*",
+    "@formatjs/fast-memoize": "workspace:*",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "@formatjs/intl-displaynames": "workspace:*",
+    "@formatjs/intl-listformat": "workspace:*",
+    "intl-messageformat": "workspace:*",
     "tslib": "2.4.0"
+  },
+  "devDependencies": {
+    "@formatjs/intl-datetimeformat": "workspace:*",
+    "@formatjs/intl-numberformat": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^4.5"

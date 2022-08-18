@@ -1,5 +1,5 @@
 import {exec as nodeExec} from 'child_process'
-import {join, resolve} from 'path'
+import {join} from 'path'
 import _rimraf from 'rimraf'
 import {promisify} from 'util'
 import {sync as globSync} from 'fast-glob'
@@ -7,7 +7,7 @@ import {basename} from 'path'
 import {mkdtempSync} from 'fs'
 import {readJSON} from 'fs-extra'
 const exec = promisify(nodeExec)
-const BIN_PATH = resolve(__dirname, '../../../bin/formatjs')
+const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
 
 test('basic case: help', async () => {
   await expect(

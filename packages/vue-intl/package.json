@@ -19,6 +19,7 @@
   "dependencies": {
     "@babel/types": "^7.12.11",
     "@formatjs/intl": "workspace:*",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
     "tslib": "2.4.0"
   },
   "peerDependencies": {

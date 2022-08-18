@@ -3,7 +3,7 @@ import {join, resolve} from 'path'
 import _rimraf from 'rimraf'
 import {promisify} from 'util'
 const exec = promisify(nodeExec)
-const BIN_PATH = resolve(__dirname, '../../../bin/formatjs')
+const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
 const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts')
 
 test('basic case: help', async () => {
@@ -161,7 +161,7 @@ test('skipped malformed ICU message json', async () => {
     )
   ).resolves.toMatchSnapshot({
     stderr: expect.stringMatching(
-      /^\[@formatjs\/cli\] \[WARN\] Error validating message "my name is {name" with ID "a1dd2" in file .*\/packages\/cli-lib\/tests\/integration\/compile\/lang\/malformed-messages.json/
+      /^\[@formatjs\/cli\] \[WARN\] Error validating message "my name is {name" with ID "a1dd2" in file .*\/packages\/cli\/integration-tests\/compile\/lang\/malformed-messages.json/
     ),
   } as Partial<any>)
 }, 20000)

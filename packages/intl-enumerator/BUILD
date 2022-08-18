@@ -4,7 +4,9 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "check_format", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "intl-enumerator"
 
@@ -28,23 +30,18 @@ TESTS = glob([
     "tests/*.test.ts",
 ])
 
-SRC_DEPS = [
-]
-
-TEST_DEPS = SRC_DEPS
-
 ts_compile(
     name = "dist",
     srcs = SRCS,
     package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
-    deps = SRC_DEPS,
+    deps = [],
 )
 
 jest_test(
     name = "unit",
     srcs = SRCS + TESTS,
-    deps = TEST_DEPS,
+    deps = [],
 )
 
 # Test262
@@ -57,7 +54,7 @@ ts_project(
     out_dir = "test262",
     resolve_json_module = True,
     tsconfig = "//:tsconfig.es6",
-    deps = SRC_DEPS,
+    deps = [],
 )
 
 write_source_files(
@@ -101,9 +98,9 @@ generate_src_file(
 # numbering-systems
 write_source_files(
     name = "numbering-systems",
-    files={
-        "src/numbering-systems.generated.ts": "//packages/intl-numberformat:src/numbering-systems.generated.ts"
-    }
+    files = {
+        "src/numbering-systems.generated.ts": "//packages/intl-numberformat:src/numbering-systems.generated.ts",
+    },
 )
 
 # currencies
@@ -131,7 +128,7 @@ generate_src_file(
     name = "units",
     src = "src/units.generated.ts",
     data = [
-        "//:node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/cldr-bcp47",
     ],
     entry_point = "scripts/units.ts",

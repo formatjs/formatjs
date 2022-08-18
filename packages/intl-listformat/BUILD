@@ -3,9 +3,12 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "bundle_karma_tests", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "intl-listformat"
 
@@ -49,13 +52,13 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
-    "//:node_modules/@formatjs/intl-localematcher",
+    ":node_modules/@formatjs/ecma402-abstract",
+    ":node_modules/@formatjs/intl-localematcher",
 ]
 
 TEST_DEPS = SRC_DEPS + [
-    "//:node_modules/@formatjs/intl-getcanonicallocales",
-    "//:node_modules/@formatjs/intl-locale",
+    ":node_modules/@formatjs/intl-getcanonicallocales",
+    ":node_modules/@formatjs/intl-locale",
     "//:node_modules/@types/node",
 ]
 
@@ -659,7 +662,7 @@ ts_script(
     ],
     data = [
         "scripts/extract-list.ts",
-        "//:node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-misc-full",
@@ -770,7 +773,7 @@ test262_harness_bin.test262_harness_test(
         "../com_github_tc39_test262/test/intl402/ListFormat/**/*.js",
     ],
     # TODO: fix
-    tags=["manual"]
+    tags = ["manual"],
 )
 
 bundle_karma_tests(
@@ -778,8 +781,8 @@ bundle_karma_tests(
     srcs = SRCS,
     data = TEST_LOCALE_DATA,
     esbuild_deps = [
-        "//:node_modules/@formatjs/intl-getcanonicallocales",
-        "//:node_modules/@formatjs/intl-locale",
+        ":node_modules/@formatjs/intl-getcanonicallocales",
+        ":node_modules/@formatjs/intl-locale",
     ],
     tests = TESTS,
     deps = SRC_DEPS + ["//:node_modules/@types/node"],
@@ -791,7 +794,7 @@ write_source_files(
         "supported-locales.generated.ts": ":supported-locales-gen",
         "tsconfig.json": "//tools:tsconfig.golden.json",
     },
-    visibility=["//:__pkg__"]
+    visibility = ["//:__pkg__"],
 )
 
 write_source_files(
@@ -800,7 +803,7 @@ write_source_files(
         "tests/locale-data/%s.json" % k: ":tests-locale-data/%s.json" % k
         for k in TEST_LOCALES
     },
-    visibility=["//:__pkg__"]
+    visibility = ["//:__pkg__"],
 )
 
 esbuild(

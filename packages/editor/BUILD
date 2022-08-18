@@ -31,7 +31,7 @@ load("//tools:index.bzl", "check_format")
 #     "//:node_modules/react-dom",
 #     "//:node_modules/@types/react-dom",
 #     "//:node_modules/react-intl",
-#     "//:node_modules/@formatjs/icu-messageformat-parser",
+#     ":node_modules/@formatjs/icu-messageformat-parser",
 # ]
 
 # ts_compile(

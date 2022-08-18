@@ -26,7 +26,7 @@
     "not op_mini all"
   ],
   "alias": {
-    "@formatjs/*": "../../../../bazel-out/darwin-fastbuild/bin/packages/$1",
+    "@formatjs/*": "workspace:*",
     "intl-messageformat": "../../../../bazel-out/darwin-fastbuild/bin/packages/intl-messageformat",
     "babel-plugin-formatjs": "../../../../bazel-out/darwin-fastbuild/bin/packages/babel-plugin-formatjs",
     "eslint-plugin-formatjs": "../../../../bazel-out/darwin-fastbuild/bin/packages/eslint-plugin-formatjs",

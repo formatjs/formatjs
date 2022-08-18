@@ -1,11 +1,11 @@
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:http-server/package_json.bzl", "bin")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "react-intl"
 
@@ -26,16 +26,16 @@ npm_package(
 SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
+    ":node_modules/@formatjs/ecma402-abstract",
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/intl-displaynames",
+    ":node_modules/@formatjs/intl-listformat",
+    ":node_modules/@formatjs/intl",
+    ":node_modules/intl-messageformat",
     "//:node_modules/@types/hoist-non-react-statics",
     "//:node_modules/@types/react",
     "//:node_modules/hoist-non-react-statics",
     "//:node_modules/react",
-    "//:node_modules/@formatjs/ecma402-abstract",
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/@formatjs/intl-displaynames",
-    "//:node_modules/@formatjs/intl-listformat",
-    "//:node_modules/intl-messageformat",
-    "//:node_modules/@formatjs/intl",
 ]
 
 TESTS = glob([
@@ -49,9 +49,9 @@ TEST_DEPS = SRC_DEPS + [
     "//:node_modules/cjs-module-lexer",
     "//:node_modules/react-dom",
     "//:node_modules/typescript",
-    "//:node_modules/@formatjs/intl-numberformat",
-    "//:node_modules/@formatjs/intl-relativetimeformat",
-    "//:node_modules/@types/node"
+    ":node_modules/@formatjs/intl-numberformat",
+    ":node_modules/@formatjs/intl-relativetimeformat",
+    "//:node_modules/@types/node",
 ]
 
 ts_compile(
@@ -89,9 +89,9 @@ jest_test(
         "tests/setup.js",
     ],
     jest_config = "jest.config.js",
-    deps = TEST_DEPS,
     # TODO: fix
-    tags=["manual"]
+    tags = ["manual"],
+    deps = TEST_DEPS,
 )
 
 jest_test(
@@ -127,66 +127,4 @@ check_format(
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
-)
-
-EXAMPLES_SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
-    "//:node_modules/@formatjs/intl-datetimeformat",
-    "//:node_modules/@formatjs/intl-getcanonicallocales",
-    "//:node_modules/@formatjs/intl-locale",
-    "//:node_modules/intl-messageformat",
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/@formatjs/intl-numberformat",
-    "//:node_modules/@formatjs/intl-pluralrules",
-    "//:node_modules/react-intl",
-    "//:node_modules/core-js",
-    "//:node_modules/@types/react",
-    "//:node_modules/@types/react-dom",
-    "//:node_modules/react",
-    "//:node_modules/react-dom",
-    "//:node_modules/tslib",
-]
-
-ts_project(
-    name = "examples-esm",
-    srcs = glob(
-        [
-            "examples/**/*.ts",
-            "examples/**/*.tsx",
-            "examples/**/*.json",
-        ],
-    ),
-    declaration = True,
-    declaration_map = True,
-    extends = "//:tsconfig",
-    out_dir = "examples-lib",
-    resolve_json_module = True,
-    tsconfig = "//:tsconfig.esm",
-    deps = EXAMPLES_SRC_DEPS,
-)
-
-esbuild(
-    name = "main",
-    define = {
-        "process.env.NODE_ENV": "development",
-    },
-    entry_point = "examples-lib/examples/index.js",
-    format = "iife",
-    deps = [":examples-esm"] + EXAMPLES_SRC_DEPS,
-)
-
-copy_to_bin(
-    name = "index",
-    srcs = ["examples/index.html"],
-)
-
-bin.http_server_binary(
-    name = "examples",
-    data = [
-        ":index",
-        ":main",
-    ],
-    args = [
-        "packages/react-intl/examples",
-    ],
 )

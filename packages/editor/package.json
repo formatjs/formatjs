@@ -28,13 +28,13 @@
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/icu-messageformat-parser": "2.1.4",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "4.0.0-alpha.57",
     "@types/react": "17",
     "react": "17",
-    "react-intl": "6.0.5"
+    "react-intl": "workspace:*"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

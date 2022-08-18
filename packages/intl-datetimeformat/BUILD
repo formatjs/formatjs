@@ -2,10 +2,13 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "intl-datetimeformat"
 
@@ -54,16 +57,15 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
-    "//:node_modules/@formatjs/intl-localematcher",
+    ":node_modules/@formatjs/ecma402-abstract",
+    ":node_modules/@formatjs/intl-localematcher",
 ]
 
 TEST_DEPS = SRC_DEPS + [
     "//packages/intl-pluralrules",
-    "//:node_modules/@formatjs/intl-getcanonicallocales",
-    "//:node_modules/@formatjs/intl-locale",
-    # Transitive
-    "//:node_modules/@types/node"
+    ":node_modules/@formatjs/intl-getcanonicallocales",
+    ":node_modules/@formatjs/intl-locale",
+    "//:node_modules/@types/node",
 ]
 
 ts_compile(
@@ -684,8 +686,8 @@ ts_script(
         "scripts/extract-dates.ts",
         "src/abstract/skeleton.ts",
         "src/types.ts",
-        "//:node_modules/@formatjs/ecma402-abstract",
-        "//:node_modules/@formatjs/intl-locale",
+        ":node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/intl-locale",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-dates-full",
         "//:node_modules/cldr-numbers-full",
@@ -789,8 +791,8 @@ generate_src_file(
     data = [
         "src/packer.ts",
         "src/types.ts",
+        ":node_modules/@formatjs/ecma402-abstract",
         ":zdumps",
-        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/json-stable-stringify",
     ],
@@ -809,8 +811,8 @@ ts_script(
     data = [
         "src/packer.ts",
         "src/types.ts",
+        ":node_modules/@formatjs/ecma402-abstract",
         ":zdumps",
-        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/json-stable-stringify",
     ],
@@ -833,8 +835,8 @@ ts_script(
     data = [
         "src/packer.ts",
         "src/types.ts",
+        ":node_modules/@formatjs/ecma402-abstract",
         ":zdumps",
-        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/json-stable-stringify",
     ],
@@ -859,7 +861,7 @@ write_source_files(
         "supported-locales.generated.ts": ":supported-locales-gen",
         "tsconfig.json": "//tools:tsconfig.golden.json",
     },
-    visibility=["//:__pkg__"]
+    visibility = ["//:__pkg__"],
 )
 
 write_source_files(
@@ -868,7 +870,7 @@ write_source_files(
         "tests/locale-data/%s.json" % k: ":tests-locale-data/%s.json" % k
         for k in TEST_LOCALES
     },
-    visibility=["//:__pkg__"]
+    visibility = ["//:__pkg__"],
 )
 
 esbuild(

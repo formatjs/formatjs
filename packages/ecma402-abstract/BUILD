@@ -1,7 +1,10 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "check_format", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "ecma402-abstract"
 
@@ -29,13 +32,12 @@ SRCS = glob(
 )
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/intl-localematcher",
+    ":node_modules/@formatjs/intl-localematcher",
 ]
 
 ts_compile(
     name = "dist",
     srcs = SRCS,
-    data = SRC_DEPS + ["//:node_modules/tslib"],
     package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
     deps = SRC_DEPS,

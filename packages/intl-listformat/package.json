@@ -23,6 +23,10 @@
     "@formatjs/intl-localematcher": "workspace:*",
     "tslib": "2.4.0"
   },
+  "devDependencies": {
+    "@formatjs/intl-getcanonicallocales": "workspace:*",
+    "@formatjs/intl-locale": "workspace:*"
+  },
   "main": "index.js",
   "types": "index.d.ts",
   "homepage": "https://github.com/formatjs/formatjs",

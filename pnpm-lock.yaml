@@ -9,6 +9,7 @@ importers:
 
   .:
     specifiers:
+      '@algolia/client-search': ^4.14.2
       '@babel/core': ^7.10.4
       '@babel/helper-plugin-utils': ^7.10.4
       '@babel/plugin-syntax-jsx': '7'
@@ -28,6 +29,7 @@ importers:
       '@jest/transform': '27'
       '@jest/types': '27'
       '@lerna-lite/cli': ^1.10.0
+      '@lerna-lite/list': ^1.10.0
       '@material-ui/core': ^4.11.3
       '@material-ui/icons': ^4.11.2
       '@material-ui/lab': ^4.0.0-alpha.57
@@ -120,6 +122,7 @@ importers:
       vue-loader: '17'
       webpack: '5'
     devDependencies:
+      '@algolia/client-search': 4.14.2
       '@babel/core': 7.18.5
       '@babel/helper-plugin-utils': 7.17.12
       '@babel/plugin-syntax-jsx': 7.17.12_@babel+core@7.18.5
@@ -133,12 +136,13 @@ importers:
       '@commitlint/config-angular': 16.3.0
       '@docusaurus/core': 2.0.1_pb3er6vvqjpybnu4ahep7lk3ki
       '@docusaurus/plugin-google-analytics': 2.0.1_pb3er6vvqjpybnu4ahep7lk3ki
-      '@docusaurus/preset-classic': 2.0.1_kjwcjpcbrwejjpvavkaby3cb6a
+      '@docusaurus/preset-classic': 2.0.1_hnud4onofyh7t2w5dutafuyoz4
       '@docusaurus/theme-common': 2.0.1_pb3er6vvqjpybnu4ahep7lk3ki
       '@docusaurus/theme-live-codeblock': 2.0.1_pb3er6vvqjpybnu4ahep7lk3ki
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
       '@lerna-lite/cli': 1.10.0
+      '@lerna-lite/list': 1.10.0
       '@material-ui/core': 4.12.4_4dt2r24i4v24wrx5gqs2w2gty4
       '@material-ui/icons': 4.11.3_r6ncatpun2nxs2zf46p5yik63a
       '@material-ui/lab': 4.0.0-alpha.61_r6ncatpun2nxs2zf46p5yik63a
@@ -257,6 +261,12 @@ importers:
       '@types/babel__traverse': 7.17.1
       tslib: 2.4.0
 
+  packages/babel-plugin-formatjs/integration-tests:
+    specifiers:
+      babel-plugin-formatjs: workspace:*
+    dependencies:
+      babel-plugin-formatjs: link:..
+
   packages/cli:
     specifiers:
       '@formatjs/cli-lib': workspace:*
@@ -294,6 +304,12 @@ importers:
       loud-rejection: 2.2.0
       tslib: 2.4.0
       typescript: 4.7.4
+
+  packages/cli/integration-tests:
+    specifiers:
+      '@formatjs/cli': workspace:*
+    devDependencies:
+      '@formatjs/cli': link:..
 
   packages/ecma376:
     specifiers:
@@ -360,9 +376,11 @@ importers:
       '@formatjs/ecma402-abstract': workspace:*
       '@formatjs/fast-memoize': workspace:*
       '@formatjs/icu-messageformat-parser': workspace:*
+      '@formatjs/intl-datetimeformat': workspace:*
       '@formatjs/intl-displaynames': workspace:*
       '@formatjs/intl-listformat': workspace:*
-      intl-messageformat: 10.1.1
+      '@formatjs/intl-numberformat': workspace:*
+      intl-messageformat: workspace:*
       tslib: 2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
@@ -372,26 +390,39 @@ importers:
       '@formatjs/intl-listformat': link:../intl-listformat
       intl-messageformat: link:../intl-messageformat
       tslib: 2.4.0
+    devDependencies:
+      '@formatjs/intl-datetimeformat': link:../intl-datetimeformat
+      '@formatjs/intl-numberformat': link:../intl-numberformat
 
   packages/intl-datetimeformat:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
+      '@formatjs/intl-getcanonicallocales': workspace:*
+      '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
       tslib: 2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
       tslib: 2.4.0
+    devDependencies:
+      '@formatjs/intl-getcanonicallocales': link:../intl-getcanonicallocales
+      '@formatjs/intl-locale': link:../intl-locale
 
   packages/intl-displaynames:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
+      '@formatjs/intl-getcanonicallocales': workspace:*
+      '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
       tslib: 2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
       tslib: 2.4.0
+    devDependencies:
+      '@formatjs/intl-getcanonicallocales': link:../intl-getcanonicallocales
+      '@formatjs/intl-locale': link:../intl-locale
 
   packages/intl-durationformat:
     specifiers:
@@ -405,9 +436,12 @@ importers:
 
   packages/intl-enumerator:
     specifiers:
+      '@formatjs/ecma402-abstract': workspace:*
       tslib: 2.4.0
     dependencies:
       tslib: 2.4.0
+    devDependencies:
+      '@formatjs/ecma402-abstract': link:../ecma402-abstract
 
   packages/intl-getcanonicallocales:
     specifiers:
@@ -418,12 +452,17 @@ importers:
   packages/intl-listformat:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
+      '@formatjs/intl-getcanonicallocales': workspace:*
+      '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
       tslib: 2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
       tslib: 2.4.0
+    devDependencies:
+      '@formatjs/intl-getcanonicallocales': link:../intl-getcanonicallocales
+      '@formatjs/intl-locale': link:../intl-locale
 
   packages/intl-locale:
     specifiers:
@@ -473,22 +512,34 @@ importers:
   packages/intl-pluralrules:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
+      '@formatjs/intl-getcanonicallocales': workspace:*
+      '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
       tslib: 2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
       tslib: 2.4.0
+    devDependencies:
+      '@formatjs/intl-getcanonicallocales': link:../intl-getcanonicallocales
+      '@formatjs/intl-locale': link:../intl-locale
 
   packages/intl-relativetimeformat:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
+      '@formatjs/intl-getcanonicallocales': workspace:*
+      '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
+      '@formatjs/intl-pluralrules': workspace:*
       tslib: 2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
       tslib: 2.4.0
+    devDependencies:
+      '@formatjs/intl-getcanonicallocales': link:../intl-getcanonicallocales
+      '@formatjs/intl-locale': link:../intl-locale
+      '@formatjs/intl-pluralrules': link:../intl-pluralrules
 
   packages/react-intl:
     specifiers:
@@ -497,10 +548,12 @@ importers:
       '@formatjs/intl': workspace:*
       '@formatjs/intl-displaynames': workspace:*
       '@formatjs/intl-listformat': workspace:*
+      '@formatjs/intl-numberformat': workspace:*
+      '@formatjs/intl-relativetimeformat': workspace:*
       '@types/hoist-non-react-statics': ^3.3.1
       '@types/react': 16 || 17 || 18
       hoist-non-react-statics: ^3.3.2
-      intl-messageformat: 10.1.1
+      intl-messageformat: workspace:*
       tslib: 2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
@@ -512,6 +565,45 @@ importers:
       '@types/react': 18.0.14
       hoist-non-react-statics: 3.3.2
       intl-messageformat: link:../intl-messageformat
+      tslib: 2.4.0
+    devDependencies:
+      '@formatjs/intl-numberformat': link:../intl-numberformat
+      '@formatjs/intl-relativetimeformat': link:../intl-relativetimeformat
+
+  packages/react-intl/examples:
+    specifiers:
+      '@formatjs/ecma402-abstract': workspace:*
+      '@formatjs/icu-messageformat-parser': workspace:*
+      '@formatjs/intl': workspace:*
+      '@formatjs/intl-datetimeformat': workspace:*
+      '@formatjs/intl-displaynames': workspace:*
+      '@formatjs/intl-getcanonicallocales': workspace:*
+      '@formatjs/intl-listformat': workspace:*
+      '@formatjs/intl-locale': workspace:*
+      '@formatjs/intl-numberformat': workspace:*
+      '@formatjs/intl-pluralrules': workspace:*
+      '@types/hoist-non-react-statics': ^3.3.1
+      '@types/react': 16 || 17 || 18
+      hoist-non-react-statics: ^3.3.2
+      intl-messageformat: workspace:*
+      react-intl: workspace:*
+      tslib: 2.4.0
+    devDependencies:
+      '@formatjs/ecma402-abstract': link:../../ecma402-abstract
+      '@formatjs/icu-messageformat-parser': link:../../icu-messageformat-parser
+      '@formatjs/intl': link:../../intl
+      '@formatjs/intl-datetimeformat': link:../../intl-datetimeformat
+      '@formatjs/intl-displaynames': link:../../intl-displaynames
+      '@formatjs/intl-getcanonicallocales': link:../../intl-getcanonicallocales
+      '@formatjs/intl-listformat': link:../../intl-listformat
+      '@formatjs/intl-locale': link:../../intl-locale
+      '@formatjs/intl-numberformat': link:../../intl-numberformat
+      '@formatjs/intl-pluralrules': link:../../intl-pluralrules
+      '@types/hoist-non-react-statics': 3.3.1
+      '@types/react': 18.0.14
+      hoist-non-react-statics: 3.3.2
+      intl-messageformat: link:../../intl-messageformat
+      react-intl: link:..
       tslib: 2.4.0
 
   packages/swc-plugin:
@@ -552,15 +644,26 @@ importers:
       tslib: 2.4.0
       typescript: 4.7.4
 
+  packages/ts-transformer/integration-tests:
+    specifiers:
+      '@formatjs/ts-transformer': workspace:*
+    devDependencies:
+      '@formatjs/ts-transformer': link:..
+
   packages/vue-intl:
     specifiers:
       '@babel/types': ^7.12.11
+      '@formatjs/icu-messageformat-parser': workspace:*
       '@formatjs/intl': workspace:*
       tslib: 2.4.0
     dependencies:
       '@babel/types': 7.18.4
+      '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
       '@formatjs/intl': link:../intl
       tslib: 2.4.0
+
+  website:
+    specifiers: {}
 
 packages:
 
@@ -570,13 +673,14 @@ packages:
       '@algolia/autocomplete-shared': 1.7.1
     dev: true
 
-  /@algolia/autocomplete-preset-algolia/1.7.1_algoliasearch@4.13.1:
+  /@algolia/autocomplete-preset-algolia/1.7.1_bynjdelmk7kqfxl6rolmquprhm:
     resolution: {integrity: sha512-pJwmIxeJCymU1M6cGujnaIYcY3QPOVYZOXhFkWVM7IxKzy272BwCvMFMyc5NpG/QmiObBxjo7myd060OeTNJXg==}
     peerDependencies:
       '@algolia/client-search': ^4.9.1
       algoliasearch: ^4.9.1
     dependencies:
       '@algolia/autocomplete-shared': 1.7.1
+      '@algolia/client-search': 4.14.2
       algoliasearch: 4.13.1
     dev: true
 
@@ -592,6 +696,10 @@ packages:
 
   /@algolia/cache-common/4.13.1:
     resolution: {integrity: sha512-7Vaf6IM4L0Jkl3sYXbwK+2beQOgVJ0mKFbz/4qSxKd1iy2Sp77uTAazcX+Dlexekg1fqGUOSO7HS4Sx47ZJmjA==}
+    dev: true
+
+  /@algolia/cache-common/4.14.2:
+    resolution: {integrity: sha512-SbvAlG9VqNanCErr44q6lEKD2qoK4XtFNx9Qn8FK26ePCI8I9yU7pYB+eM/cZdS9SzQCRJBbHUumVr4bsQ4uxg==}
     dev: true
 
   /@algolia/cache-in-memory/4.13.1:
@@ -624,6 +732,13 @@ packages:
       '@algolia/transporter': 4.13.1
     dev: true
 
+  /@algolia/client-common/4.14.2:
+    resolution: {integrity: sha512-43o4fslNLcktgtDMVaT5XwlzsDPzlqvqesRi4MjQz2x4/Sxm7zYg5LRYFol1BIhG6EwxKvSUq8HcC/KxJu3J0Q==}
+    dependencies:
+      '@algolia/requester-common': 4.14.2
+      '@algolia/transporter': 4.14.2
+    dev: true
+
   /@algolia/client-personalization/4.13.1:
     resolution: {integrity: sha512-1CqrOW1ypVrB4Lssh02hP//YxluoIYXAQCpg03L+/RiXJlCs+uIqlzC0ctpQPmxSlTK6h07kr50JQoYH/TIM9w==}
     dependencies:
@@ -640,12 +755,24 @@ packages:
       '@algolia/transporter': 4.13.1
     dev: true
 
+  /@algolia/client-search/4.14.2:
+    resolution: {integrity: sha512-L5zScdOmcZ6NGiVbLKTvP02UbxZ0njd5Vq9nJAmPFtjffUSOGEp11BmD2oMJ5QvARgx2XbX4KzTTNS5ECYIMWw==}
+    dependencies:
+      '@algolia/client-common': 4.14.2
+      '@algolia/requester-common': 4.14.2
+      '@algolia/transporter': 4.14.2
+    dev: true
+
   /@algolia/events/4.0.1:
     resolution: {integrity: sha512-FQzvOCgoFXAbf5Y6mYozw2aj5KCJoA3m4heImceldzPSMbdyS4atVjJzXKMsfX3wnZTFYwkkt8/z8UesLHlSBQ==}
     dev: true
 
   /@algolia/logger-common/4.13.1:
     resolution: {integrity: sha512-L6slbL/OyZaAXNtS/1A8SAbOJeEXD5JcZeDCPYDqSTYScfHu+2ePRTDMgUTY4gQ7HsYZ39N1LujOd8WBTmM2Aw==}
+    dev: true
+
+  /@algolia/logger-common/4.14.2:
+    resolution: {integrity: sha512-/JGlYvdV++IcMHBnVFsqEisTiOeEr6cUJtpjz8zc0A9c31JrtLm318Njc72p14Pnkw3A/5lHHh+QxpJ6WFTmsA==}
     dev: true
 
   /@algolia/logger-console/4.13.1:
@@ -664,6 +791,10 @@ packages:
     resolution: {integrity: sha512-eGVf0ID84apfFEuXsaoSgIxbU3oFsIbz4XiotU3VS8qGCJAaLVUC5BUJEkiFENZIhon7hIB4d0RI13HY4RSA+w==}
     dev: true
 
+  /@algolia/requester-common/4.14.2:
+    resolution: {integrity: sha512-73YQsBOKa5fvVV3My7iZHu1sUqmjjfs9TteFWwPwDmnad7T0VTCopttcsM3OjLxZFtBnX61Xxl2T2gmG2O4ehg==}
+    dev: true
+
   /@algolia/requester-node-http/4.13.1:
     resolution: {integrity: sha512-7C0skwtLdCz5heKTVe/vjvrqgL/eJxmiEjHqXdtypcE5GCQCYI15cb+wC4ytYioZDMiuDGeVYmCYImPoEgUGPw==}
     dependencies:
@@ -676,6 +807,14 @@ packages:
       '@algolia/cache-common': 4.13.1
       '@algolia/logger-common': 4.13.1
       '@algolia/requester-common': 4.13.1
+    dev: true
+
+  /@algolia/transporter/4.14.2:
+    resolution: {integrity: sha512-t89dfQb2T9MFQHidjHcfhh6iGMNwvuKUvojAj+JsrHAGbuSy7yE4BylhLX6R0Q1xYRoC4Vvv+O5qIw/LdnQfsQ==}
+    dependencies:
+      '@algolia/cache-common': 4.14.2
+      '@algolia/logger-common': 4.14.2
+      '@algolia/requester-common': 4.14.2
     dev: true
 
   /@ampproject/remapping/2.2.0:
@@ -3463,7 +3602,7 @@ packages:
     resolution: {integrity: sha512-jnNrO2JVYYhj2pP2FomlHIy6220n6mrLn2t9v2/qc+rM7M/fbIcKMgk9ky4RN+L/maUEmteckzg6/PIYoAAXJg==}
     dev: true
 
-  /@docsearch/react/3.2.0_4dt2r24i4v24wrx5gqs2w2gty4:
+  /@docsearch/react/3.2.0_slppnct3seqes5hnn77ta6hxzq:
     resolution: {integrity: sha512-ATS3w5JBgQGQF0kHn5iOAPfnCCaoLouZQMmI7oENV//QMFrYbjhUZxBU9lIwAT7Rzybud+Jtb4nG5IEjBk3Ixw==}
     peerDependencies:
       '@types/react': '>= 16.8.0 < 19.0.0'
@@ -3471,7 +3610,7 @@ packages:
       react-dom: '>= 16.8.0 < 19.0.0'
     dependencies:
       '@algolia/autocomplete-core': 1.7.1
-      '@algolia/autocomplete-preset-algolia': 1.7.1_algoliasearch@4.13.1
+      '@algolia/autocomplete-preset-algolia': 1.7.1_bynjdelmk7kqfxl6rolmquprhm
       '@docsearch/css': 3.2.0
       '@types/react': 18.0.14
       algoliasearch: 4.13.1
@@ -4028,7 +4167,7 @@ packages:
       - webpack-cli
     dev: true
 
-  /@docusaurus/preset-classic/2.0.1_kjwcjpcbrwejjpvavkaby3cb6a:
+  /@docusaurus/preset-classic/2.0.1_hnud4onofyh7t2w5dutafuyoz4:
     resolution: {integrity: sha512-nOoniTg46My1qdDlLWeFs55uEmxOJ+9WMF8KKG8KMCu5LAvpemMi7rQd4x8Tw+xiPHZ/sQzH9JmPTMPRE4QGPw==}
     engines: {node: '>=16.14'}
     peerDependencies:
@@ -4045,7 +4184,7 @@ packages:
       '@docusaurus/plugin-sitemap': 2.0.1_pb3er6vvqjpybnu4ahep7lk3ki
       '@docusaurus/theme-classic': 2.0.1_pb3er6vvqjpybnu4ahep7lk3ki
       '@docusaurus/theme-common': 2.0.1_hs327vkvfc7lkxmq2pebqwcdza
-      '@docusaurus/theme-search-algolia': 2.0.1_c2bnnw3fpbywqoy6dcykfc7lde
+      '@docusaurus/theme-search-algolia': 2.0.1_bs2z56j7gve3vonb2tfirtgf7e
       '@docusaurus/types': 2.0.1_um7ajpncqnjn7yqtzhm3jzjnci
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -4243,14 +4382,14 @@ packages:
       - webpack-cli
     dev: true
 
-  /@docusaurus/theme-search-algolia/2.0.1_c2bnnw3fpbywqoy6dcykfc7lde:
+  /@docusaurus/theme-search-algolia/2.0.1_bs2z56j7gve3vonb2tfirtgf7e:
     resolution: {integrity: sha512-cw3NaOSKbYlsY6uNj4PgO+5mwyQ3aEWre5RlmvjStaz2cbD15Nr69VG8Rd/F6Q5VsCT8BvSdkPDdDG5d/ACexg==}
     engines: {node: '>=16.14'}
     peerDependencies:
       react: ^16.8.4 || ^17.0.0
       react-dom: ^16.8.4 || ^17.0.0
     dependencies:
-      '@docsearch/react': 3.2.0_4dt2r24i4v24wrx5gqs2w2gty4
+      '@docsearch/react': 3.2.0_slppnct3seqes5hnn77ta6hxzq
       '@docusaurus/core': 2.0.1_hs327vkvfc7lkxmq2pebqwcdza
       '@docusaurus/logger': 2.0.1
       '@docusaurus/plugin-content-docs': 2.0.1_pb3er6vvqjpybnu4ahep7lk3ki
@@ -4886,6 +5025,19 @@ packages:
       - supports-color
     dev: true
 
+  /@lerna-lite/list/1.10.0:
+    resolution: {integrity: sha512-JTZFWhPcmh+P4ZWD4Ru74g7JTe0FLHHVEowGb4kZvUXGBAoH7pl5Pm5SllzP1xVOh+YvhrcBly8g2Wqo7sjA9A==}
+    engines: {node: '>=14.15.0', npm: '>=8.0.0'}
+    dependencies:
+      '@lerna-lite/core': 1.10.0
+      '@lerna-lite/listable': 1.10.0
+      '@lerna-lite/optional-cmd-common': 1.10.0
+    transitivePeerDependencies:
+      - bluebird
+      - encoding
+      - supports-color
+    dev: true
+
   /@lerna-lite/listable/1.10.0:
     resolution: {integrity: sha512-ov8Jxfqwqd5rRjPQNuDCvpwZSsHocxc63RxWciJJV30xSJVmbRBFNO7NSBAtyj/gzfBCybqrd57Znm5W3zArEg==}
     engines: {node: '>=14.15.0', npm: '>=8.0.0'}
@@ -4893,6 +5045,23 @@ packages:
       '@lerna-lite/core': 1.10.0
       chalk: 4.1.2
       columnify: 1.6.0
+    transitivePeerDependencies:
+      - bluebird
+      - encoding
+      - supports-color
+    dev: true
+
+  /@lerna-lite/optional-cmd-common/1.10.0:
+    resolution: {integrity: sha512-XGWKdifnxgnwor6f4HTuH//5P62RdsbK04fH8m2mky7kmNlIcOdK2L2TrUzA3H8ALa/RN3neHcUCiTITXxxzAQ==}
+    engines: {node: '>=14.15.0', npm: '>=8.0.0'}
+    dependencies:
+      '@lerna-lite/core': 1.10.0
+      fs-extra: 10.1.0
+      multimatch: 5.0.0
+      npmlog: 6.0.2
+      p-map: 4.0.0
+      upath: 2.0.1
+      yargs: 17.5.1
     transitivePeerDependencies:
       - bluebird
       - encoding
@@ -5004,7 +5173,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.18.3
+      '@babel/runtime': 7.18.9
       '@material-ui/core': 4.12.4_4dt2r24i4v24wrx5gqs2w2gty4
       '@types/react': 18.0.14
       react: 17.0.2
@@ -5104,7 +5273,7 @@ packages:
       react: ^16.8.0 || ^17.0.0
       react-dom: ^16.8.0 || ^17.0.0
     dependencies:
-      '@babel/runtime': 7.18.3
+      '@babel/runtime': 7.18.9
       prop-types: 15.8.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -6488,8 +6657,8 @@ packages:
   /@vue/compiler-core/3.2.37:
     resolution: {integrity: sha512-81KhEjo7YAOh0vQJoSmAD68wLfYqJvoiD4ulyedzF+OEk/bk6/hx3fTNVfuzugIIaTrOx4PGx6pAiBRe5e9Zmg==}
     dependencies:
-      '@babel/parser': 7.18.5
-      '@babel/types': 7.18.4
+      '@babel/parser': 7.18.11
+      '@babel/types': 7.18.10
       '@vue/shared': 3.2.37
       estree-walker: 2.0.2
       source-map: 0.6.1
@@ -6505,7 +6674,7 @@ packages:
   /@vue/compiler-sfc/3.2.37:
     resolution: {integrity: sha512-+7i/2+9LYlpqDv+KTtWhOZH+pa8/HnX/905MdVmAcI/mPQOBwkHHIzrsEsucyOIZQYMkXUiTkmZq5am/NyXKkg==}
     dependencies:
-      '@babel/parser': 7.18.5
+      '@babel/parser': 7.18.11
       '@vue/compiler-core': 3.2.37
       '@vue/compiler-dom': 3.2.37
       '@vue/compiler-ssr': 3.2.37
@@ -7104,6 +7273,11 @@ packages:
     engines: {node: '>=6.0'}
     dev: true
 
+  /array-differ/3.0.0:
+    resolution: {integrity: sha512-THtfYS6KtME/yIAhKjZ2ul7XI96lQGHRputJQHO80LAWQnuGP4iCIN8vdMRboGbIEYBwU33q8Tch1os2+X0kMg==}
+    engines: {node: '>=8'}
+    dev: true
+
   /array-find-index/1.0.2:
     resolution: {integrity: sha512-M1HQyIXcBGtVywBt8WVdim+lrNaK7VHp99Qt5pSNziXznKHViIBbXWtfRTpEFpF/c4FdfxNAsCCwPp5phBYJtw==}
     engines: {node: '>=0.10.0'}
@@ -7131,6 +7305,11 @@ packages:
   /arrify/1.0.1:
     resolution: {integrity: sha512-3CYzex9M9FGQjCGMGyi6/31c8GJbgb0qGyrx5HWxPd0aCwh4cB2YjMb2Xf9UuoogrMrlO9cTqnB5rI5GHZTcUA==}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /arrify/2.0.1:
+    resolution: {integrity: sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==}
+    engines: {node: '>=8'}
     dev: true
 
   /asap/2.0.6:
@@ -13202,6 +13381,17 @@ packages:
       thunky: 1.1.0
     dev: true
 
+  /multimatch/5.0.0:
+    resolution: {integrity: sha512-ypMKuglUrZUD99Tk2bUQ+xNQj43lPEfAeX2o9cTteAmShXy2VHDJpuwu1o0xqoKCt9jLVAvwyFKdLTPXKAfJyA==}
+    engines: {node: '>=10'}
+    dependencies:
+      '@types/minimatch': 3.0.5
+      array-differ: 3.0.0
+      array-union: 2.1.0
+      arrify: 2.0.1
+      minimatch: 3.1.2
+    dev: true
+
   /mute-stream/0.0.8:
     resolution: {integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==}
     dev: true
@@ -17073,6 +17263,11 @@ packages:
   /unpipe/1.0.0:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
+    dev: true
+
+  /upath/2.0.1:
+    resolution: {integrity: sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==}
+    engines: {node: '>=4'}
     dev: true
 
   /update-browserslist-db/1.0.4_browserslist@4.21.0:

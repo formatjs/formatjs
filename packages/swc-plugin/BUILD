@@ -1,11 +1,13 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
+npm_link_all_packages(name = "node_modules")
+
 exports_files([
     "package.json",
-    "tsconfig.json",
 ])
 
 PACKAGE_NAME = "swc-plugin"
@@ -32,8 +34,8 @@ SRC_DEPS = [
     "//:node_modules/@swc/core",
     "//:node_modules/json-stable-stringify",
     "//:node_modules/@types/json-stable-stringify",
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/@formatjs/ts-transformer",
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/ts-transformer",
 ]
 
 ts_compile(

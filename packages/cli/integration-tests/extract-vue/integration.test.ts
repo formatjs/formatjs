@@ -1,9 +1,9 @@
-import {resolve, join} from 'path'
+import {join} from 'path'
 import {promisify} from 'util'
 import {exec as nodeExec} from 'child_process'
 const exec = promisify(nodeExec)
 
-const BIN_PATH = resolve(__dirname, '../../../bin/formatjs')
+const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
 
 test('vue', async () => {
   const {stdout} = await exec(

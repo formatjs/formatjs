@@ -2,6 +2,10 @@ node_modules
 dist
 bazel-out
 
+packages/babel-plugin-formatjs/integration-tests/node_modules
+packages/ts-transformer/integration-tests/node_modules
+packages/cli/integration-tests/node_modules
+packages/react-intl/examples/node_modules
 packages/babel-plugin-formatjs/node_modules
 packages/cli/node_modules
 packages/cli-lib/node_modules
@@ -29,4 +33,4 @@ packages/react-intl/node_modules
 packages/swc-plugin/node_modules
 packages/ts-transformer/node_modules
 packages/vue-intl/node_modules
-
+website/node_modules

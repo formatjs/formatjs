@@ -1,7 +1,8 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@npm//:@docusaurus/core/package_json.bzl", docusaurus_bin = "bin")
-load("@npm//:http-server/package_json.bzl", http_server_bin = "bin")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "check_format")
+
+npm_link_all_packages(name = "node_modules")
 
 check_format(
     name = "prettier",
@@ -20,18 +21,18 @@ check_format(
 
 DEPS = [
     ":copy",
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/intl-displaynames",
+    ":node_modules/@formatjs/intl-listformat",
+    ":node_modules/@formatjs/intl-locale",
+    ":node_modules/intl-messageformat",
+    ":node_modules/react-intl",
     "//:node_modules/@docusaurus/plugin-google-analytics",
     "//:node_modules/@docusaurus/preset-classic",
     "//:node_modules/@docusaurus/theme-common",
     "//:node_modules/@docusaurus/theme-live-codeblock",
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/@formatjs/intl-displaynames",
-    "//:node_modules/@formatjs/intl-listformat",
-    "//:node_modules/@formatjs/intl-locale",
     "//:node_modules/classnames",
-    "//:node_modules/intl-messageformat",
     "//:node_modules/react-dom",
-    "//:node_modules/react-intl",
     "//:node_modules/react",
 ]
 

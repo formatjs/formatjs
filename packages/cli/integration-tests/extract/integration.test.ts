@@ -6,7 +6,7 @@ import _rimraf from 'rimraf'
 const exec = promisify(nodeExec)
 const rimraf = promisify(_rimraf)
 
-const BIN_PATH = resolve(__dirname, '../../../bin/formatjs')
+const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
 const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts')
 
 beforeEach(async () => {

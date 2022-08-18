@@ -2,9 +2,12 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "intl-locale"
 
@@ -25,14 +28,13 @@ npm_package(
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
-    "//:node_modules/@formatjs/intl-getcanonicallocales",
+    ":node_modules/@formatjs/ecma402-abstract",
+    ":node_modules/@formatjs/intl-getcanonicallocales",
 ]
 
 ts_compile(
     name = "dist",
     srcs = SRCS,
-    data = SRC_DEPS,
     package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
     deps = SRC_DEPS,
@@ -92,7 +94,7 @@ test262_harness_bin.test262_harness_test(
         "../com_github_tc39_test262/test/intl402/Locale/**/*.js",
     ],
     # TODO: fix
-    tags=["manual"]
+    tags = ["manual"],
 )
 
 write_source_files(

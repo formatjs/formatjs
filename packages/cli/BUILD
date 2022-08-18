@@ -18,4 +18,5 @@ npm_package(
         ":bin/formatjs",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility=["//visibility:public"]
 )

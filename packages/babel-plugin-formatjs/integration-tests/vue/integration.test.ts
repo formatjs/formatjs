@@ -3,6 +3,7 @@ import {VueLoaderPlugin} from 'vue-loader'
 import {readFileSync} from 'fs'
 import {join} from 'path'
 test('dummy', function (done) {
+  console.log(require.resolve('babel-plugin-formatjs'))
   webpack(
     {
       entry: require.resolve('./fixtures/app.js'),
@@ -23,7 +24,7 @@ test('dummy', function (done) {
             options: {
               plugins: [
                 [
-                  'babel-plugin-formatjs',
+                  require.resolve('babel-plugin-formatjs'),
                   {
                     idInterpolationPattern: '[sha512:contenthash:base64:6]',
                     ast: true,
