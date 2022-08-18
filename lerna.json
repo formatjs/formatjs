@@ -8,10 +8,16 @@
       "private": false,
       "exact": true,
       "createRelease": "github",
-      "ignoreChanges": ["**/tests/**", "**/*.md"]
+      "ignoreChanges": [
+        "**/tests/**",
+        "**/*.md"
+      ]
     },
     "run": {
       "stream": true
     }
-  }
+  },
+  "packages": [
+    "packages/*"
+  ]
 }
