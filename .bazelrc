@@ -15,6 +15,7 @@ build --verbose_failures
 build --disk_cache=~/.cache/bazel-disk-cache
 build --experimental_remote_cache_compression
 build --remote_download_toplevel
+common --bes_upload_mode=fully_async
 
 # Bazel will create symlinks from the workspace directory to output artifacts.
 # Build results will be placed in a directory called "dist/bin"
