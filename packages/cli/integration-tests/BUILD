@@ -1,5 +1,5 @@
-load("//tools:jest.bzl", "jest_test")
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -54,14 +54,13 @@ jest_test(
     flaky = True,
     deps = [
         ":node_modules/@formatjs/cli",
-        "//:node_modules/@vue/compiler-core",
         "//:node_modules/@babel/types",
+        "//:node_modules/@types/node",
+        "//:node_modules/@vue/compiler-core",
         "//:node_modules/@vue/compiler-sfc",
         "//:node_modules/fast-glob",
-        "//:node_modules/@types/node",
     ],
 )
-
 
 jest_test(
     name = "integration-compile",

@@ -1,10 +1,11 @@
-
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@npm//:http-server/package_json.bzl", "bin")
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//:http-server/package_json.bzl", "bin")
+
 npm_link_all_packages(name = "node_modules")
+
 EXAMPLES_SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-datetimeformat",
@@ -31,7 +32,7 @@ ts_project(
             "**/*.tsx",
             "**/*.json",
         ],
-        exclude=["package.json"]
+        exclude = ["package.json"],
     ),
     declaration = True,
     declaration_map = True,
@@ -41,7 +42,6 @@ ts_project(
     tsconfig = "//:tsconfig.esm",
     deps = EXAMPLES_SRC_DEPS,
 )
-
 
 esbuild(
     name = "main",

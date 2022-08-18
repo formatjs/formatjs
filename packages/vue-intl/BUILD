@@ -26,7 +26,7 @@ SRC_DEPS = [
     "//:node_modules/@vue/runtime-core",
     "//:node_modules/@babel/types",
     ":node_modules/@formatjs/intl",
-    ":node_modules/@formatjs/icu-messageformat-parser"
+    ":node_modules/@formatjs/icu-messageformat-parser",
 ]
 
 ts_compile_node(
