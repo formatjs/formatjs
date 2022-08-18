@@ -728,15 +728,6 @@ ts_script(
     cmd = "cp $< $@",
 ) for locale in TEST_LOCALES]
 
-multirun(
-    name = "tests-locale-data-all.update",
-    testonly = True,
-    commands = [":tests-locale-data-%s.update" % locale for locale in TEST_LOCALES],
-    visibility = [
-        "//:__pkg__",
-    ],
-)
-
 TEST262_LOCALES = [
     "ar",
     "de",
@@ -925,7 +916,7 @@ multirun(
     name = "tz_data.update",
     testonly = True,
     commands = [
-        ":links.update",
-        ":all-tz.update",
+        ":links",
+        ":all-tz",
     ],
 )

@@ -68,6 +68,8 @@ npm run release:next
 
 1. Change `IANA_TZ_VERSION` in WORKSPACE to the desired version
 
+1. Update the sha512 for tzdata & tzcode targets
+
 1. Potentially update tz data
 
 ```

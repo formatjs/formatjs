@@ -3,7 +3,6 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
@@ -744,15 +743,6 @@ ts_script(
     outs = ["tests-locale-data/%s.json" % locale],
     cmd = "cp $< $@",
 ) for locale in TEST_LOCALES]
-
-multirun(
-    name = "tests-locale-data-all.update",
-    testonly = True,
-    commands = [":tests-locale-data-%s.update" % locale for locale in TEST_LOCALES],
-    visibility = [
-        "//:__pkg__",
-    ],
-)
 
 TEST262_LOCALES = [
     "ar",
