@@ -4,7 +4,6 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js:defs.bzl", "js_library")
-load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier_test")
 load("@npm//:prettier/package_json.bzl", prettier_bin = "bin")
@@ -388,11 +387,3 @@ def package_json_test(name, packageJson = "package.json", deps = []):
     #         "//:tsconfig.node",
     #     ],
     # )
-
-def npm_link_packages(packages = {}, visibility = ["//visibility:public"]):
-    for name, src in packages.items():
-        npm_link_package(
-            name = name,
-            src = src,
-            visibility = visibility,
-        )
