@@ -74,9 +74,9 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { FormattedMessage, defineMessage } from \\"react-intl\\";
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);

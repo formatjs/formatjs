@@ -74,9 +74,9 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { FormattedMessage } from \\"react-intl\\";
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -98,10 +98,10 @@ export { Foo as default };
 exports[`emit asserts for [special] extractSourceLocation 2`] = `
 Object {
   "defaultMessage": "Hello World!",
-  "end": 8130,
+  "end": 8380,
   "file": StringContaining "extractSourceLocation.tsx",
   "id": "foo.bar.baz",
-  "start": 8063,
+  "start": 8313,
 }
 `;
 
@@ -180,9 +180,9 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { FormattedMessage } from \\"react-intl\\";
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -198,6 +198,7 @@ var Foo = /*#__PURE__*/ function(Component1) {
             }
         }), /*#__PURE__*/ React.createElement(FormattedMessage, {
             id: \\"foo.bar.baz\\",
+            defaultMessage: \\"Hello World! {foo, number}\\",
             values: {
                 foo: 1
             }
@@ -220,7 +221,7 @@ export { Foo as default };
       "id": "foo.bar.baz",
     },
     Object {
-      "defaultMessage": undefined,
+      "defaultMessage": "Hello World! {foo, number}",
       "description": "The default message.",
       "id": "foo.bar.baz",
     },
@@ -308,9 +309,9 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 function CustomMessage() {}
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -412,9 +413,9 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 function CustomMessage() {}
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -570,9 +571,9 @@ var msgs = defineMessages({
         defaultMessage: \\"this is a message\\"
     }
 });
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -757,12 +758,13 @@ var msgs = defineMessages({
         defaultMessage: \\"this is\\\\na message\\"
     },
     templateLinebreak: {
-        id: \\"templateLinebreak\\"
+        id: \\"templateLinebreak\\",
+        defaultMessage: \\"this is\\\\n    a message\\"
     }
 });
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -827,8 +829,11 @@ description",
       "id": "linebreak",
     },
     Object {
-      "defaultMessage": undefined,
-      "description": undefined,
+      "defaultMessage": "this is
+    a message",
+      "description": "this is
+    a
+    description",
       "id": "templateLinebreak",
     },
     Object {
@@ -922,9 +927,9 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { FormattedMessage } from \\"react-intl\\";
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -1034,9 +1039,9 @@ var objectPointer = {
     defaultMessage: \\"This cannot be extracted\\",
     description: \\"the plugin only supports inline objects\\"
 };
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -1238,9 +1243,9 @@ var objectPointer = {
     defaultMessage: \\"This cannot be extracted\\",
     description: \\"the plugin only supports inline objects\\"
 };
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -1381,9 +1386,9 @@ function _createSuper(Derived) {
 }
 import React, { Component } from \\"react\\";
 import { FormattedMessage, defineMessage } from \\"react-intl\\";
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -1592,9 +1597,9 @@ defineMessage({
     id: \\"HELLO..13.string\\",
     defaultMessage: \\"defineMessage\\"
 });
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -1768,9 +1773,9 @@ var messages = defineMessages({
         id: \\"greeting-user\\"
     }
 });
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -1882,9 +1887,9 @@ var messages = defineMessages({
         defaultMessage: \\"Hello, {name}\\"
     }
 });
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -1993,11 +1998,11 @@ import React, { Component } from \\"react\\";
 import { FormattedMessage, defineMessage } from \\"react-intl\\";
 defineMessage({
     id: \\"template\\",
-    defaultMessage: \\"should remove\\\\n    newline and\\\\n    extra spaces\\"
+    defaultMessage: \\"should remove newline and extra spaces\\"
 });
-var Foo = /*#__PURE__*/ function(Component1) {
+var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
-    _inherits(Foo, Component1);
+    _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
         _classCallCheck(this, Foo);
@@ -2006,7 +2011,8 @@ var Foo = /*#__PURE__*/ function(Component1) {
     var _proto = Foo.prototype;
     _proto.render = function render() {
         return /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"foo.bar.baz\\"
+            id: \\"foo.bar.baz\\",
+            defaultMessage: \\"Hello World!\\"
         });
     };
     return Foo;
@@ -2015,7 +2021,11 @@ export { Foo as default };
 ",
   "msgs": Array [
     Object {
-      "defaultMessage": undefined,
+      "defaultMessage": "should remove newline and extra spaces",
+      "id": "template",
+    },
+    Object {
+      "defaultMessage": "Hello World!",
       "description": "The default message.",
       "id": "foo.bar.baz",
     },

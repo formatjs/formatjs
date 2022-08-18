@@ -47,7 +47,6 @@ function createStringLiteral(value: string, span: Span): StringLiteral {
   return {
     type: 'StringLiteral',
     value,
-    hasEscape: false,
     span,
   }
 }
@@ -374,13 +373,13 @@ function extractMessageDescriptor(
       else if (value.type === 'TemplateLiteral') {
         switch (name.value) {
           case 'id':
-            msg.id = value.quasis[0].cooked.value
+            msg.id = value.quasis[0].cooked || ''
             break
           case 'defaultMessage':
-            msg.defaultMessage = value.quasis[0].cooked.value
+            msg.defaultMessage = value.quasis[0].cooked
             break
           case 'description':
-            msg.description = value.quasis[0].cooked.value
+            msg.description = value.quasis[0].cooked
             break
         }
       } else if (value.type === 'JSXExpressionContainer') {
@@ -408,13 +407,13 @@ function extractMessageDescriptor(
           const {expression} = value
           switch (name.value) {
             case 'id':
-              msg.id = expression.quasis[0].cooked.value
+              msg.id = expression.quasis[0].cooked || ''
               break
             case 'defaultMessage':
-              msg.defaultMessage = expression.quasis[0].cooked.value
+              msg.defaultMessage = expression.quasis[0].cooked
               break
             case 'description':
-              msg.description = expression.quasis[0].cooked.value
+              msg.description = expression.quasis[0].cooked
               break
           }
         }
@@ -591,19 +590,20 @@ function generateNewProperties(
     ...(msg.defaultMessage
       ? [
           {
-            type: 'JSXAttribute',
+            type: 'JSXAttribute' as 'JSXAttribute',
             name: createIdentifier('defaultMessage', span),
             value: ast
-              ? ({
-                  type: 'JSXExpressionContainer',
+              ? {
+                  type: 'JSXExpressionContainer' as 'JSXExpressionContainer',
                   expression: messageASTToTSNode(
                     parse(msg.defaultMessage),
                     span
                   ),
-                } as JSXExpressionContainer)
+                  span,
+                }
               : createStringLiteral(msg.defaultMessage, span),
             span,
-          } as JSXAttribute,
+          },
         ]
       : []),
   ]
@@ -759,9 +759,7 @@ export class FormatJSTransformer extends Visitor {
       return {
         ...node,
         name: this.visitJSXElementName(node.name),
-        attributes: !node.attributes
-          ? undefined
-          : node.attributes.map(this.visitJSXAttributeOrSpread, this),
+        attributes: node.attributes.map(this.visitJSXAttributeOrSpread, this),
       }
     }
     const msg = extractMessageDescriptor(node, opts)
@@ -769,9 +767,7 @@ export class FormatJSTransformer extends Visitor {
       return {
         ...node,
         name: this.visitJSXElementName(node.name),
-        attributes: !node.attributes
-          ? undefined
-          : node.attributes.map(this.visitJSXAttributeOrSpread, this),
+        attributes: node.attributes.map(this.visitJSXAttributeOrSpread, this),
       }
     }
     debug('Message extracted from "%s": %s', filename, msg)
@@ -789,7 +785,6 @@ export class FormatJSTransformer extends Visitor {
       },
       opts.ast
     )
-
     return {
       ...node,
       attributes: newProps,
