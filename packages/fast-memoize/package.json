@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/fast-memoize",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "fork of fast-memoize and support esm",
   "main": "index.js",
   "module": "lib/index.js",

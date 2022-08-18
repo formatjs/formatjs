@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-relativetimeformat",
-  "version": "11.0.3",
+  "version": "11.1.0",
   "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",
@@ -25,9 +25,9 @@
     "tslib": "2.4.0"
   },
   "devDependencies": {
-    "@formatjs/intl-pluralrules": "workspace:*",
     "@formatjs/intl-getcanonicallocales": "workspace:*",
-    "@formatjs/intl-locale": "workspace:*"
+    "@formatjs/intl-locale": "workspace:*",
+    "@formatjs/intl-pluralrules": "workspace:*"
   },
   "main": "index.js",
   "types": "index.d.ts",

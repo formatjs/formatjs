@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/swc-plugin",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "SWC plugin for formatjs",
   "main": "index.js",
   "types": "index.d.ts",
@@ -19,12 +19,12 @@
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
+    "@swc/core": "1.2",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/node": "14 || 16 || 17",
     "chalk": "^4.0.0",
     "json-stable-stringify": "^1.0.1",
-    "tslib": "2.4.0",
-    "@swc/core": "1.2"
+    "tslib": "2.4.0"
   },
   "peerDependencies": {
     "ts-jest": "27"

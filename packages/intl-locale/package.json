@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-locale",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Intl.Locale polyfill",
   "keywords": [
     "intl",
