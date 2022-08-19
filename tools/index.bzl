@@ -43,7 +43,7 @@ BUILDIFIER_WARNINGS = [
     "unused-variable",
 ]
 
-def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_esnext = True):
+def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_esnext = True, visibility=None):
     """Compile TS with prefilled args, specifically for Node tooling.
 
     Args:
@@ -53,6 +53,7 @@ def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_e
         package: name from package.json
         data: add data deps like internal transitive deps
         skip_esm_esnext: whether to skip building esnext
+        visibility: visibility
     """
     deps = deps + ["//:node_modules/tslib"]
     internal_deps = [d for d in deps if is_internal_dep(d)]
@@ -64,7 +65,6 @@ def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_e
         tsconfig = "//:tsconfig.node",
         resolve_json_module = True,
         deps = deps,
-        # data = data if data else internal_deps,
     )
     if not skip_esm_esnext:
         ts_project(
@@ -76,18 +76,16 @@ def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_e
             tsconfig = "//:tsconfig.esm.esnext",
             resolve_json_module = True,
             deps = deps,
-            # data = data if data else internal_deps,
         )
 
     js_library(
         name = name,
-        # package = package,
         srcs = [":%s-base" % name, "package.json"],
-        visibility = ["//visibility:public"],
         data = data,
+        visibility=visibility
     )
 
-def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True, skip_esm_esnext = True):
+def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True, skip_esm_esnext = True, visibility=None):
     """Compile TS with prefilled args.
 
     Args:
@@ -98,6 +96,7 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
         skip_esm: skip building ESM bundle
         skip_esm_esnext: skip building the ESM ESNext bundle
         data: add data deps like internal transitive deps
+        visibility: visibility
     """
     deps = deps + ["//:node_modules/tslib"]
     internal_deps = [d for d in deps if is_internal_dep(d)]
@@ -109,7 +108,6 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
         tsconfig = "//:tsconfig",
         resolve_json_module = True,
         deps = deps,
-        # data = data if data else internal_deps,
     )
     if not skip_esm:
         ts_project(
@@ -121,7 +119,6 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
             tsconfig = "//:tsconfig.esm",
             resolve_json_module = True,
             deps = deps,
-            # data = data if data else internal_deps,
         )
     if not skip_esm_esnext:
         ts_project(
@@ -133,22 +130,12 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
             tsconfig = "//:tsconfig.esm.esnext",
             resolve_json_module = True,
             deps = deps,
-            # data = data if data else internal_deps,
         )
-
-    native.filegroup(
-        name = "types",
-        srcs = [":%s-base" % name],
-        output_group = "types",
-        visibility = ["//visibility:public"],
-    )
 
     js_library(
         name = name,
-        # package = package,
         srcs = [":%s-base" % name] + ([":%s-esm" % name] if not skip_esm else []) + ["package.json"],
-        visibility = ["//visibility:public"],
-        # data = data if data else internal_deps,
+        visibility=visibility
     )
 
 def ts_script(name, entry_point, args = [], chdir = None, data = [], outs = [], output_dir = False, out_dirs = [], visibility = None):
