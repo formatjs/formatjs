@@ -56,6 +56,8 @@ describe('emit asserts for', function () {
         expect(output.msgs).toHaveLength(1)
         expect(output.msgs[0]).toMatchSnapshot({
           file: expect.stringContaining('extractSourceLocation.tsx'),
+          start: expect.any(Number),
+          end: expect.any(Number),
         })
       })
     } else {

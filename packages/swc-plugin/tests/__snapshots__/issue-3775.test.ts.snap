@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GH issue #3690 1`] = `
+Object {
+  "code": "const msgs = defineMessages({
+    header: {
+        id: \\"TRRgnX\\",
+        defaultMessage: [
+            {
+                type: 0,
+                value: \\"Hello World!\\"
+            }, 
+        ]
+    }
+});
+",
+}
+`;

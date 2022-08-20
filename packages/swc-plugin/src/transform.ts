@@ -308,7 +308,7 @@ function extractMessageDescriptor(
   node: ObjectExpression | JSXOpeningElement,
   {overrideIdFn, extractSourceLocation, preserveWhitespace, filename = ''}: Opts
 ): MessageDescriptor | undefined {
-  let properties: Property[] | JSXAttribute[] | undefined = undefined
+  let properties: Array<Property | JSXAttribute> | undefined = undefined
   if (node.type === 'ObjectExpression') {
     properties = node.properties.filter(
       (prop): prop is Property => prop.type !== 'SpreadElement'

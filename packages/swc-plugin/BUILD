@@ -29,13 +29,13 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    "//:node_modules/@types/node",
-    "//:node_modules/chalk",
-    "//:node_modules/@swc/core",
-    "//:node_modules/json-stable-stringify",
-    "//:node_modules/@types/json-stable-stringify",
     ":node_modules/@formatjs/icu-messageformat-parser",
     ":node_modules/@formatjs/ts-transformer",
+    ":node_modules/@swc/core",
+    "//:node_modules/@types/json-stable-stringify",
+    "//:node_modules/@types/node",
+    "//:node_modules/chalk",
+    "//:node_modules/json-stable-stringify",
 ]
 
 ts_compile(
