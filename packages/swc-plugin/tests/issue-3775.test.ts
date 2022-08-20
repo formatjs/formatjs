@@ -22,8 +22,6 @@ test('GH issue #3690', function () {
       plugin: m => {
         return new FormatJSTransformer({
           overrideIdFn: '[sha512:contenthash:base64:6]',
-          ast: true,
-          removeDefaultMessage: false,
         }).visitProgram(m)
       },
     }

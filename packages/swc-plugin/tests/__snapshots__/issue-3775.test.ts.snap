@@ -5,12 +5,7 @@ Object {
   "code": "const msgs = defineMessages({
     header: {
         id: \\"TRRgnX\\",
-        defaultMessage: [
-            {
-                type: 0,
-                value: \\"Hello World!\\"
-            }, 
-        ]
+        defaultMessage: \\"Hello World!\\"
     }
 });
 ",

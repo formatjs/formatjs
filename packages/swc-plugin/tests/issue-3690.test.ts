@@ -28,5 +28,5 @@ test('GH issue #3690', function () {
       },
     }
   )
-  expect(out).toBeTruthy()
+  expect(out).toMatchSnapshot()
 })

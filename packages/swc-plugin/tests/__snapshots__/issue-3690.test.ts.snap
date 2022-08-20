@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GH issue #3690 1`] = `
+Object {
+  "code": "import { FormattedMessage } from \\"react-intl\\";
+export const Foo = ()=>/*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+        id: \\"uTfkpD\\",
+        defaultMessage: [
+            {
+                type: 0,
+                value: \\"issue-3690\\"
+            }
+        ]
+    }));
+",
+}
+`;
