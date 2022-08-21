@@ -19,7 +19,7 @@
     "postinstall": "husky install && patch-package",
     "prerelease": "HUSKY=0 lerna version --yes",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
-    "release": "ls packages/ | xargs -I % sh -c 'bazel run @nodejs_host//:npm publish -- --dry-run dist/bin/packages/%'",
+    "release": "pnpm publish --no-git-checks -r dist/bin/formatjs_dist",
     "test": "bazel test //..."
   },
   "devDependencies": {
@@ -114,6 +114,7 @@
     "minimist": "^1.2.5",
     "patch-package": "^6.2.2",
     "picomatch": "^2.3.1",
+    "pnpm": "^7.9.3",
     "prettier": "^2.0.5",
     "prism-react-renderer": "^1.3.3",
     "react": "^16.6.0 || 17",
