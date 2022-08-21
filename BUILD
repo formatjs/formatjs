@@ -1,4 +1,5 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
@@ -23,6 +24,40 @@ exports_files(
         ".prettierrc.json",
     ] + glob(["npm_package_patches/*"]),
     visibility = ["//:__subpackages__"],
+)
+
+copy_to_directory(
+    name = "dist",
+    srcs = [
+        "package.json",
+        "pnpm-lock.yaml",
+        "//packages/babel-plugin-formatjs",
+        "//packages/cli-lib",
+        "//packages/ecma376",
+        "//packages/ecma402-abstract",
+        "//packages/eslint-plugin-formatjs",
+        "//packages/fast-memoize",
+        "//packages/icu-messageformat-parser",
+        "//packages/icu-skeleton-parser",
+        "//packages/intl",
+        "//packages/intl-datetimeformat",
+        "//packages/intl-displaynames",
+        "//packages/intl-durationformat",
+        "//packages/intl-enumerator",
+        "//packages/intl-getcanonicallocales",
+        "//packages/intl-listformat",
+        "//packages/intl-locale",
+        "//packages/intl-localematcher",
+        "//packages/intl-messageformat",
+        "//packages/intl-numberformat",
+        "//packages/intl-pluralrules",
+        "//packages/intl-relativetimeformat",
+        "//packages/react-intl",
+        "//packages/swc-plugin",
+        "//packages/ts-transformer",
+        "//packages/vue-intl",
+    ],
+    out = "dist",
 )
 
 npm_link_all_packages(name = "node_modules")
@@ -99,6 +134,7 @@ multirun(
         "//packages/intl-datetimeformat:prettier",
         "//packages/intl-displaynames:prettier",
         "//packages/intl-durationformat:prettier",
+        "//packages/intl-enumerator:prettier",
         "//packages/intl-getcanonicallocales:prettier",
         "//packages/intl-listformat:prettier",
         "//packages/intl-locale:prettier",
@@ -109,8 +145,8 @@ multirun(
         "//packages/intl-relativetimeformat:prettier",
         "//packages/intl:prettier",
         "//packages/react-intl:prettier",
-        "//packages/ts-transformer:prettier",
         "//packages/swc-plugin:prettier",
+        "//packages/ts-transformer:prettier",
         "//packages/vue-intl:prettier",
         "//tools:prettier",
         "//website:prettier",

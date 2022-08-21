@@ -249,9 +249,7 @@ npm_package(
         "polyfill.iife.js",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
-    visibility = [
-        "//visibility:public",
-    ],
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob(

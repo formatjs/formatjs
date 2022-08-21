@@ -43,7 +43,7 @@ BUILDIFIER_WARNINGS = [
     "unused-variable",
 ]
 
-def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_esnext = True, visibility=None):
+def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_esnext = True, visibility = None):
     """Compile TS with prefilled args, specifically for Node tooling.
 
     Args:
@@ -82,10 +82,10 @@ def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_e
         name = name,
         srcs = [":%s-base" % name, "package.json"],
         data = data,
-        visibility=visibility
+        visibility = visibility,
     )
 
-def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True, skip_esm_esnext = True, visibility=None):
+def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True, skip_esm_esnext = True, visibility = None):
     """Compile TS with prefilled args.
 
     Args:
@@ -135,7 +135,7 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
     js_library(
         name = name,
         srcs = [":%s-base" % name] + ([":%s-esm" % name] if not skip_esm else []) + ["package.json"],
-        visibility=visibility
+        visibility = visibility,
     )
 
 def ts_script(name, entry_point, args = [], chdir = None, data = [], outs = [], output_dir = False, out_dirs = [], visibility = None):

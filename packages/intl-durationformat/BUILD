@@ -18,6 +18,7 @@ npm_package(
         ":dist",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob(["*.ts"])

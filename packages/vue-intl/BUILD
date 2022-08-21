@@ -15,6 +15,7 @@ npm_package(
         "package.json",
         ":dist",
     ],
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob([

@@ -20,6 +20,7 @@ npm_package(
         ":dist-esm",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob([

@@ -17,6 +17,7 @@ npm_package(
         ":dist",
     ],
     package = PACKAGE_NAME,
+    visibility = ["//visibility:public"],
 )
 
 SRCS = glob(["rules/*.ts"]) + [
