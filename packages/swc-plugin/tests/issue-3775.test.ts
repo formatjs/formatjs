@@ -1,30 +1,30 @@
-import {transformSync} from '@swc/core'
+import {transform} from '@swc/core'
 import FormatJSTransformer from '..'
 
-test('GH issue #3690', function () {
-  const out = transformSync(
-    `
-    const msgs = defineMessages({
-        header: {
-          defaultMessage: \`Hello World!\`,
-          description: 'The default message',
-        },
-      });
-  `,
-    {
-      jsc: {
-        parser: {
-          syntax: 'typescript',
-          tsx: true,
-        },
-        target: 'es2018',
+const input = `
+const msgs = defineMessages({
+  message: {
+    defaultMessage: \`Hello World!\`,
+    description: 'The default message',
+  },
+});
+`
+
+test('GH issue #3775', async function () {
+  const out = await transform(input, {
+    filename: 'test.ts',
+    jsc: {
+      parser: {
+        syntax: 'typescript',
+        decorators: true,
+        dynamicImport: true,
       },
-      plugin: m => {
-        return new FormatJSTransformer({
-          overrideIdFn: '[sha512:contenthash:base64:6]',
-        }).visitProgram(m)
-      },
-    }
-  )
+    },
+    plugin: m =>
+      new FormatJSTransformer({
+        filename: 'test.js',
+        overrideIdFn: '[hash:base64:10]',
+      }).visitProgram(m),
+  })
   expect(out).toMatchSnapshot()
 })

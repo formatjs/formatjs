@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GH issue #3690 1`] = `
+exports[`GH issue #3775 1`] = `
 Object {
-  "code": "const msgs = defineMessages({
-    header: {
-        id: \\"TRRgnX\\",
+  "code": "var msgs = defineMessages({
+    message: {
+        id: \\"GCdcoTfS3U\\",
         defaultMessage: \\"Hello World!\\"
     }
 });
