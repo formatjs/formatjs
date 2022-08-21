@@ -35,6 +35,15 @@ genrule(
 ' > $@",
 )
 
+genrule(
+    name="npmrc",
+    srcs=[],
+    outs=[".npmrc"],
+    cmd="echo 'registry=http://localhost:4000/\n\
+//localhost:4000/:_authToken=\"PCQTYjgHpY1Wz8UNyiaQ4w==\"\n\
+' > $@"
+)
+
 PACKAGES_TO_DIST = [
     "//packages/babel-plugin-formatjs",
     "//packages/cli-lib",
@@ -68,9 +77,11 @@ PACKAGE_DIRNAMES = [p.split("packages/")[1] for p in PACKAGES_TO_DIST]
 copy_to_directory(
     name = "dist",
     srcs = [
+        # to verify, run verdaccio at port 4000 and enable this
+        # ":npmrc",
+        ":pnpm_workspace_config",
         "package.json",
         "pnpm-lock.yaml",
-        ":pnpm_workspace_config",
     ] + PACKAGES_TO_DIST,
     out = "formatjs_dist",
     replace_prefixes = {k: v for k, v in [(
