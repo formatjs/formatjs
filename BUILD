@@ -26,38 +26,57 @@ exports_files(
     visibility = ["//:__subpackages__"],
 )
 
+genrule(
+    name = "pnpm_workspace_config",
+    srcs = [],
+    outs = ["pnpm-workspace.yaml"],
+    cmd = "echo 'packages:\n\
+  - 'packages/*' \
+' > $@",
+)
+
+PACKAGES_TO_DIST = [
+    "//packages/babel-plugin-formatjs",
+    "//packages/cli-lib",
+    "//packages/ecma376",
+    "//packages/ecma402-abstract",
+    "//packages/eslint-plugin-formatjs",
+    "//packages/fast-memoize",
+    "//packages/icu-messageformat-parser",
+    "//packages/icu-skeleton-parser",
+    "//packages/intl",
+    "//packages/intl-datetimeformat",
+    "//packages/intl-displaynames",
+    "//packages/intl-durationformat",
+    "//packages/intl-enumerator",
+    "//packages/intl-getcanonicallocales",
+    "//packages/intl-listformat",
+    "//packages/intl-locale",
+    "//packages/intl-localematcher",
+    "//packages/intl-messageformat",
+    "//packages/intl-numberformat",
+    "//packages/intl-pluralrules",
+    "//packages/intl-relativetimeformat",
+    "//packages/react-intl",
+    "//packages/swc-plugin",
+    "//packages/ts-transformer",
+    "//packages/vue-intl",
+]
+
+PACKAGE_DIRNAMES = [p.split("packages/")[1] for p in PACKAGES_TO_DIST]
+
 copy_to_directory(
     name = "dist",
     srcs = [
         "package.json",
         "pnpm-lock.yaml",
-        "//packages/babel-plugin-formatjs",
-        "//packages/cli-lib",
-        "//packages/ecma376",
-        "//packages/ecma402-abstract",
-        "//packages/eslint-plugin-formatjs",
-        "//packages/fast-memoize",
-        "//packages/icu-messageformat-parser",
-        "//packages/icu-skeleton-parser",
-        "//packages/intl",
-        "//packages/intl-datetimeformat",
-        "//packages/intl-displaynames",
-        "//packages/intl-durationformat",
-        "//packages/intl-enumerator",
-        "//packages/intl-getcanonicallocales",
-        "//packages/intl-listformat",
-        "//packages/intl-locale",
-        "//packages/intl-localematcher",
-        "//packages/intl-messageformat",
-        "//packages/intl-numberformat",
-        "//packages/intl-pluralrules",
-        "//packages/intl-relativetimeformat",
-        "//packages/react-intl",
-        "//packages/swc-plugin",
-        "//packages/ts-transformer",
-        "//packages/vue-intl",
-    ],
+        ":pnpm_workspace_config",
+    ] + PACKAGES_TO_DIST,
     out = "formatjs_dist",
+    replace_prefixes = {k: v for k, v in [(
+        "packages/%s" % p,
+        "packages/",
+    ) for p in PACKAGE_DIRNAMES]},
 )
 
 npm_link_all_packages(name = "node_modules")
