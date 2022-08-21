@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.8](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.7...@formatjs/swc-plugin@1.4.8) (2022-08-21)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
 ## [1.4.7](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.6...@formatjs/swc-plugin@1.4.7) (2022-08-18)
 
 ### Bug Fixes
