@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.30](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.29...@formatjs/intl-localematcher@0.2.30) (2022-08-21)
+
+**Note:** Version bump only for package @formatjs/intl-localematcher
+
 ## [0.2.29](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.28...@formatjs/intl-localematcher@0.2.29) (2022-08-18)
 
 **Note:** Version bump only for package @formatjs/intl-localematcher

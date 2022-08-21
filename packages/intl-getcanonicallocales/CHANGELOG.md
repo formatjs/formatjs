@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@2.0.3...@formatjs/intl-getcanonicallocales@2.0.4) (2022-08-21)
+
+**Note:** Version bump only for package @formatjs/intl-getcanonicallocales
+
 ## [2.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@2.0.2...@formatjs/intl-getcanonicallocales@2.0.3) (2022-08-18)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

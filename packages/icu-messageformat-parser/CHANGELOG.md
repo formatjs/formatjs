@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.5...@formatjs/icu-messageformat-parser@2.1.6) (2022-08-21)
+
+**Note:** Version bump only for package @formatjs/icu-messageformat-parser
+
 ## [2.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.4...@formatjs/icu-messageformat-parser@2.1.5) (2022-08-18)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

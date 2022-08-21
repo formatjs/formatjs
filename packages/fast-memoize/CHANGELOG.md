@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@1.2.5...@formatjs/fast-memoize@1.2.6) (2022-08-21)
+
+**Note:** Version bump only for package @formatjs/fast-memoize
+
 ## [1.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@1.2.4...@formatjs/fast-memoize@1.2.5) (2022-08-18)
 
 **Note:** Version bump only for package @formatjs/fast-memoize
