@@ -57,7 +57,7 @@ copy_to_directory(
         "//packages/ts-transformer",
         "//packages/vue-intl",
     ],
-    out = "dist",
+    out = "formatjs_dist",
 )
 
 npm_link_all_packages(name = "node_modules")
