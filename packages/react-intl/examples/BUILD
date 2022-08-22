@@ -36,7 +36,6 @@ ts_project(
     ),
     declaration = True,
     declaration_map = True,
-    extends = "//:tsconfig",
     out_dir = "examples-lib",
     resolve_json_module = True,
     tsconfig = "//:tsconfig.esm",

@@ -223,7 +223,6 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
         srcs = srcs + tests + data,
         declaration = True,
         declaration_map = True,
-        extends = "//:tsconfig",
         out_dir = name,
         resolve_json_module = True,
         tsconfig = "//:tsconfig.esm",

@@ -5,20 +5,12 @@ load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
-load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
-load("@npm//:pnpm/package_json.bzl", pnpm_bin = "bin")
 
-# Allow any ts_library rules in this workspace to reference the config
-# Note: if you move the tsconfig.json file to a subdirectory, you can add an alias() here instead
-#   so that ts_library rules still use it by default.
-#   See https://www.npmjs.com/package/@aspect_rules_ts#installation
 exports_files(
     [
         "karma.conf.js",
         "karma.conf-ci.js",
-        "jest.config.js",
-        ".prettierrc.json",
     ] + glob(["npm_package_patches/*"]),
     visibility = ["//:__subpackages__"],
 )
@@ -33,12 +25,12 @@ genrule(
 )
 
 genrule(
-    name="dev_npmrc",
-    srcs=[],
-    outs=[".npmrc"],
-    cmd="echo 'registry=http://localhost:4000/\n\
+    name = "dev_npmrc",
+    srcs = [],
+    outs = [".npmrc"],
+    cmd = "echo 'registry=http://localhost:4000/\n\
 //localhost:4000/:_authToken=\"PCQTYjgHpY1Wz8UNyiaQ4w==\"\n\
-' > $@"
+' > $@",
 )
 
 PACKAGES_TO_DIST = [
@@ -230,54 +222,34 @@ buildifier(
     verbose = True,
 )
 
-copy_to_bin(
-    name = ".prettierrc",
-    srcs = [".prettierrc.json"],
-    visibility = ["//visibility:public"],
-)
+CONFIG_FILES = [
+    ".prettierrc.json",
+    "jest.config.js",
+    "package.json",
+    "tsconfig.json",
+]
 
-copy_to_bin(
-    name = "tsconfig",
-    srcs = ["tsconfig.json"],
-    visibility = ["//visibility:public"],
-)
+[
+    copy_to_bin(
+        name = f.rsplit(".", 1)[0],
+        srcs=[f],
+        visibility=["//visibility:public"]
+    ) for f in CONFIG_FILES
+]
 
-copy_to_bin(
-    name = "jest.config",
-    srcs = ["jest.config.js"],
-    visibility = ["//visibility:public"],
-)
+TSCONFIG_FILES = [
+    "tsconfig.es6.json",
+    "tsconfig.node.json",
+    "tsconfig.esm.json",
+    "tsconfig.esm.esnext.json",
+]
 
-copy_to_bin(
-    name = "package",
-    srcs = ["package.json"],
-    visibility = ["//visibility:public"],
-)
-
-ts_config(
-    name = "tsconfig.es6",
-    src = "tsconfig.es6.json",
-    visibility = ["//:__subpackages__"],
-    deps = ["tsconfig.json"],
-)
-
-ts_config(
-    name = "tsconfig.node",
-    src = "tsconfig.node.json",
-    visibility = ["//:__subpackages__"],
-    deps = ["tsconfig.json"],
-)
-
-ts_config(
-    name = "tsconfig.esm",
-    src = "tsconfig.esm.json",
-    visibility = ["//:__subpackages__"],
-    deps = ["tsconfig.json"],
-)
-
-ts_config(
-    name = "tsconfig.esm.esnext",
-    src = "tsconfig.esm.esnext.json",
-    visibility = ["//:__subpackages__"],
-    deps = ["tsconfig.json"],
-)
+[
+    ts_config(
+        name = f.replace(".json", ""),
+        src = f,
+        visibility = ["//visibility:public"],
+        deps = ["tsconfig.json"],
+    )
+    for f in TSCONFIG_FILES
+]
