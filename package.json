@@ -91,7 +91,7 @@
     "cldr-numbers-full": "40",
     "cldr-units-full": "40",
     "clsx": "1",
-    "commander": "8",
+    "commander": "9",
     "core-js": "^3.6.5",
     "emoji-regex": "^10.0.0",
     "eslint": "7 || 8",
