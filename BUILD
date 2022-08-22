@@ -3,14 +3,11 @@ load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
-load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_layer")
-load("@io_bazel_rules_docker//docker/package_managers:download_pkgs.bzl", "download_pkgs")
-load("@io_bazel_rules_docker//docker/package_managers:install_pkgs.bzl", "install_pkgs")
-load("@io_bazel_rules_docker//docker/util:run.bzl", "container_run_and_extract")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
+load("@npm//:pnpm/package_json.bzl", pnpm_bin = "bin")
 
 # Allow any ts_library rules in this workspace to reference the config
 # Note: if you move the tsconfig.json file to a subdirectory, you can add an alias() here instead
@@ -36,7 +33,7 @@ genrule(
 )
 
 genrule(
-    name="npmrc",
+    name="dev_npmrc",
     srcs=[],
     outs=[".npmrc"],
     cmd="echo 'registry=http://localhost:4000/\n\
@@ -75,15 +72,23 @@ PACKAGES_TO_DIST = [
 
 PACKAGE_DIRNAMES = [p.split("packages/")[1] for p in PACKAGES_TO_DIST]
 
+# pnpm_bin.pnpm(
+#    name="deploy",
+#    srcs=[":dist"],
+#    out_dirs=["deploy_result"],
+#    chdir="$(rootpath :dist)",
+#    args=["deploy", "--filter", "@formatjs/cli-lib", "../$(@D)"]
+# )
+
 copy_to_directory(
     name = "dist",
     srcs = [
         # to verify, run verdaccio at port 4000 and enable this
-        # ":npmrc",
+        # ":dev_npmrc",
         ":pnpm_workspace_config",
         "package.json",
         "pnpm-lock.yaml",
-    ] + PACKAGES_TO_DIST,
+    ] + PACKAGES_TO_DIST + glob(["patches/*"]),
     out = "formatjs_dist",
     replace_prefixes = {k: v for k, v in [(
         "packages/%s" % p,
@@ -223,80 +228,6 @@ buildifier(
     lint_mode = "fix",
     lint_warnings = BUILDIFIER_WARNINGS,
     verbose = True,
-)
-
-# Build the Docker container so can compile tzcode + tzdata at the version we want
-# First thing, apt install build-essential
-download_pkgs(
-    name = "build_essential_pkgs",
-    image_tar = "@ubuntu2204//image",
-    packages = [
-        "build-essential",
-    ],
-)
-
-install_pkgs(
-    name = "ubuntu_build_essential_image",
-    image_tar = "@ubuntu2204//image",
-    installables_tar = ":build_essential_pkgs.tar",
-    output_image_name = "ubuntu_build_essential_image",
-)
-
-# Package tzcode + tzdata into a single Docker layer
-container_layer(
-    name = "tz",
-    directory = "tz",
-    tars = [
-        "@tzcode//file",
-        "@tzdata//file",
-    ],
-)
-
-# Create a new Docker image with build-essential, tzcode + tzdata
-container_image(
-    name = "build_essential_bazel_wrapper",
-    base = ":ubuntu_build_essential_image.tar",
-    layers = [":tz"],
-)
-
-# Pre-compile tzdata
-ZIC_FILES = [
-    "backward",
-    "africa",
-    "antarctica",
-    "asia",
-    "australasia",
-    "etcetera",
-    "europe",
-    "northamerica",
-    "southamerica",
-]
-
-container_run_and_extract(
-    name = "tz_install",
-    commands = [
-                   "cd /tz",
-                   # Run make install in the container
-                   "make TOPDIR=/tzdir install",
-                   "echo 'Compiling zic data'",
-                   "/tzdir/usr/sbin/zic -d /zic %s" % " ".join(["/tz/%s" % f for f in ZIC_FILES]),
-                   # Make a folder to house all the data we need to extract
-                   "mkdir /tz_data",
-                   # Copy backward file
-                   "cp /tz/backward /tz_data",
-                   # Compile zdump into it
-                   "echo 'Compiling zdump data'",
-               ] + [
-                   "mkdir -p /tz_data/zdump/%s" %
-                   zone.rsplit("/", 1)[0]
-                   for zone in ZONES
-               ] +
-               ["/tzdir/usr/bin/zdump -c 2100 -v /zic/%s > /tz_data/zdump/%s" % (zone, zone) for zone in ZONES] + [
-        "tar -czvf /tz_data.tar.gz /tz_data",
-    ],
-    extract_file = "/tz_data.tar.gz",
-    image = ":build_essential_bazel_wrapper.tar",
-    visibility = ["//packages/intl-datetimeformat:__pkg__"],
 )
 
 copy_to_bin(

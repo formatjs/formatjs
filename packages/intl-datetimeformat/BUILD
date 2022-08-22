@@ -7,6 +7,10 @@ load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
+load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_layer")
+load("@io_bazel_rules_docker//docker/package_managers:download_pkgs.bzl", "download_pkgs")
+load("@io_bazel_rules_docker//docker/package_managers:install_pkgs.bzl", "install_pkgs")
+load("@io_bazel_rules_docker//docker/util:run.bzl", "container_run_and_extract")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -88,9 +92,9 @@ genrule(
     srcs = [
     ],
     outs = ["tz_data/zdump/%s" % zone for zone in ZONES] + ["tz_data/backward"],
-    cmd = "tar -xzvf $(location //:tz_install/tz_data.tar.gz) -C $(@D)",
+    cmd = "tar -xzvf $(location :tz_install/tz_data.tar.gz) -C $(@D)",
     message = "Extracting zdump data files",
-    tools = ["//:tz_install/tz_data.tar.gz"],
+    tools = [":tz_install/tz_data.tar.gz"],
 )
 
 filegroup(
@@ -919,4 +923,77 @@ multirun(
         ":links",
         ":all-tz",
     ],
+)
+
+# Build the Docker container so can compile tzcode + tzdata at the version we want
+# First thing, apt install build-essential
+download_pkgs(
+    name = "build_essential_pkgs",
+    image_tar = "@ubuntu2204//image",
+    packages = [
+        "build-essential",
+    ],
+)
+
+install_pkgs(
+    name = "ubuntu_build_essential_image",
+    image_tar = "@ubuntu2204//image",
+    installables_tar = ":build_essential_pkgs.tar",
+    output_image_name = "ubuntu_build_essential_image",
+)
+
+# Package tzcode + tzdata into a single Docker layer
+container_layer(
+    name = "tz",
+    directory = "tz",
+    tars = [
+        "@tzcode//file",
+        "@tzdata//file",
+    ],
+)
+
+# Create a new Docker image with build-essential, tzcode + tzdata
+container_image(
+    name = "build_essential_bazel_wrapper",
+    base = ":ubuntu_build_essential_image.tar",
+    layers = [":tz"],
+)
+
+# Pre-compile tzdata
+ZIC_FILES = [
+    "backward",
+    "africa",
+    "antarctica",
+    "asia",
+    "australasia",
+    "etcetera",
+    "europe",
+    "northamerica",
+    "southamerica",
+]
+
+container_run_and_extract(
+    name = "tz_install",
+    commands = [
+                   "cd /tz",
+                   # Run make install in the container
+                   "make TOPDIR=/tzdir install",
+                   "echo 'Compiling zic data'",
+                   "/tzdir/usr/sbin/zic -d /zic %s" % " ".join(["/tz/%s" % f for f in ZIC_FILES]),
+                   # Make a folder to house all the data we need to extract
+                   "mkdir /tz_data",
+                   # Copy backward file
+                   "cp /tz/backward /tz_data",
+                   # Compile zdump into it
+                   "echo 'Compiling zdump data'",
+               ] + [
+                   "mkdir -p /tz_data/zdump/%s" %
+                   zone.rsplit("/", 1)[0]
+                   for zone in ZONES
+               ] +
+               ["/tzdir/usr/bin/zdump -c 2100 -v /zic/%s > /tz_data/zdump/%s" % (zone, zone) for zone in ZONES] + [
+        "tar -czvf /tz_data.tar.gz /tz_data",
+    ],
+    extract_file = "/tz_data.tar.gz",
+    image = ":build_essential_bazel_wrapper.tar",
 )
