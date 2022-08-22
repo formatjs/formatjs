@@ -47,6 +47,7 @@ genrule(
 PACKAGES_TO_DIST = [
     "//packages/babel-plugin-formatjs",
     "//packages/cli-lib",
+    "//packages/cli",
     "//packages/ecma376",
     "//packages/ecma402-abstract",
     "//packages/eslint-plugin-formatjs",
