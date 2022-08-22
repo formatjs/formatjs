@@ -41,7 +41,7 @@
     "@docusaurus/theme-common": "2",
     "@docusaurus/theme-live-codeblock": "2",
     "@jest/transform": "27",
-    "@jest/types": "28",
+    "@jest/types": "27",
     "@lerna-lite/cli": "^1.10.0",
     "@lerna-lite/list": "^1.10.0",
     "@material-ui/core": "^4.11.3",
