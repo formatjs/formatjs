@@ -1,0 +1,13 @@
+diff --git a/lib/scope-enum.js b/lib/scope-enum.js
+index 04f5361fd0163ba04ca6e7b44e9627c66ba623d5..057d1a048bae6b9c9c75c80c0b7bb7646607cb3c 100644
+--- a/lib/scope-enum.js
++++ b/lib/scope-enum.js
+@@ -35,7 +35,7 @@ const scopeEnum = (parsed, when = 'always', value = []) => {
+     }
+     // Scopes may contain slash or comma delimiters to separate them and mark them as individual segments.
+     // This means that each of these segments should be tested separately with `ensure`.
+-    const delimiters = /\/|\\|,/g;
++    const delimiters = /\\|,/g;
+     const scopeSegments = parsed.scope.split(delimiters);
+     const negated = when === 'never';
+     const result = value.length === 0 ||

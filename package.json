@@ -16,7 +16,7 @@
     "format": "npm run bazel:lint && bazel run :prettier_all",
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
-    "postinstall": "husky install && patch-package",
+    "postinstall": "husky install",
     "prerelease": "HUSKY=0 lerna version --yes",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
     "release": "bazel build :dist && cd dist/bin/formatjs_dist && pnpm publish --no-git-checks -r --dry-run",
@@ -33,8 +33,8 @@
     "@babel/types": "^7.12.11",
     "@bazel/bazelisk": "^1.5.0",
     "@bazel/ibazel": "^0.15.0",
-    "@commitlint/cli": "16",
-    "@commitlint/config-angular": "16",
+    "@commitlint/cli": "17",
+    "@commitlint/config-angular": "17",
     "@docusaurus/core": "2",
     "@docusaurus/plugin-google-analytics": "2",
     "@docusaurus/preset-classic": "2",
@@ -112,7 +112,6 @@
     "loud-rejection": "^2.2.0",
     "make-plural-compiler": "5.1.0",
     "minimist": "^1.2.5",
-    "patch-package": "^6.2.2",
     "picomatch": "^2.3.1",
     "pnpm": "^7.9.3",
     "prettier": "^2.0.5",
@@ -144,6 +143,9 @@
     "terser": "4.8.0"
   },
   "pnpm": {
+    "patchedDependencies": {
+      "@commitlint/rules@17.0.0": "patches/@commitlint__rules@17.0.0.patch"
+    },
     "packageExtensions": {
       "ts-jest": {
         "dependencies": {
