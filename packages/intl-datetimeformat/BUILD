@@ -905,7 +905,6 @@ ts_node_bin.ts_node_binary(
     data = SRCS + SRC_DEPS + [
         "tests/benchmark.ts",
         "tests/locale-data/en.json",
-        "//:tsconfig",
         "//:node_modules/tslib",
         "//:tsconfig.node",
     ],

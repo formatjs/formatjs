@@ -112,7 +112,6 @@ ts_node_bin.ts_node_binary(
     ],
     data = SRCS + SRC_DEPS + [
         "tests/benchmark.ts",
-        "//:tsconfig",
         "//:node_modules/tslib",
         "//packages/intl-pluralrules",
         "//packages/intl-pluralrules:locale-data",
