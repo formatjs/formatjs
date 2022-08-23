@@ -46,8 +46,10 @@ jest_test(
         "--env",
         "jsdom",
     ],
+    jest_config = "jest.config.js",
     deps = SRC_DEPS + [
         "//:node_modules/@vue/test-utils",
+        "//:node_modules/jest-environment-jsdom",
     ],
 )
 

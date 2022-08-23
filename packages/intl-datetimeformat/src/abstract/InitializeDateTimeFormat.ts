@@ -8,6 +8,7 @@ import {
   IsValidTimeZoneName,
   CanonicalizeTimeZoneName,
   GetNumberOption,
+  DateTimeFormat as DateTimeFormat,
 } from '@formatjs/ecma402-abstract'
 import {BasicFormatMatcher} from './BasicFormatMatcher'
 import {BestFitFormatMatcher} from './BestFitFormatMatcher'
@@ -65,7 +66,7 @@ const TYPE_REGEX = /^[a-z0-9]{3,8}$/i
  * @param opts options
  */
 export function InitializeDateTimeFormat(
-  dtf: Intl.DateTimeFormat,
+  dtf: DateTimeFormat,
   locales: string | string[] | undefined,
   opts: Intl.DateTimeFormatOptions | undefined,
   {
@@ -78,7 +79,7 @@ export function InitializeDateTimeFormat(
     tzData,
     uppercaseLinks,
   }: {
-    getInternalSlots(dtf: Intl.DateTimeFormat): IntlDateTimeFormatInternal
+    getInternalSlots(dtf: DateTimeFormat): IntlDateTimeFormatInternal
     availableLocales: Set<string>
     getDefaultLocale(): string
     getDefaultTimeZone(): string
@@ -330,5 +331,5 @@ export function InitializeDateTimeFormat(
   }
   internalSlots.pattern = pattern
   internalSlots.rangePatterns = rangePatterns
-  return dtf
+  return dtf as Intl.DateTimeFormat // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
 }

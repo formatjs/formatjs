@@ -24,48 +24,6 @@
     "noFallthroughCasesInSwitch": true,
     "declarationMap": true,
     "importHelpers": true,
-    "jsx": "react",
-    "rootDirs": [
-      ".",
-      "bazel-out/k8-fastbuild-ST-4a519fd6d3e4/bin",
-      "bazel-out/darwin-fastbuild/bin",
-      "bazel-out/darwin_arm64-fastbuild/bin",
-      "bazel-out/k8-fastbuild/bin"
-    ],
-    "typeRoots": [
-      // Stop TS from climbing up the tree to arbitrary node_modules, thus
-      // making build non-hermetic
-      "./node_modules/@types",
-      // This is for tests where working dir is formatjs/
-      "../npm/node_modules/@types"
-    ],
-    "paths": {
-      "@formatjs/*": [
-        // k8 is 64-bit GNU/Linux output location, darwin is macOS.
-        "dist/out/k8-fastbuild/bin/packages/*",
-        "dist/out/darwin-fastbuild/bin/packages/*",
-        "dist/out/darwin_arm64-fastbuild/bin/packages/*",
-      ],
-      "intl-messageformat": [
-        "dist/out/k8-fastbuild/bin/packages/intl-messageformat",
-        "dist/out/darwin-fastbuild/bin/packages/intl-messageformat",
-        "dist/out/darwin_arm64-fastbuild/bin/packages/intl-messageformat",
-      ],
-      "babel-plugin-formatjs": [
-        "dist/out/k8-fastbuild/bin/packages/babel-plugin-formatjs",
-        "dist/out/darwin-fastbuild/bin/packages/babel-plugin-formatjs",
-        "dist/out/darwin_arm64-fastbuild/bin/packages/babel-plugin-formatjs",
-      ],
-      "eslint-plugin-formatjs": [
-        "dist/out/k8-fastbuild/bin/packages/eslint-plugin-formatjs",
-        "dist/out/darwin-fastbuild/bin/packages/eslint-plugin-formatjs",
-        "dist/out/darwin_arm64-fastbuild/bin/packages/eslint-plugin-formatjs",
-      ],
-      "react-intl": [
-        "dist/out/k8-fastbuild/bin/packages/react-intl",
-        "dist/out/darwin-fastbuild/bin/packages/react-intl",
-        "dist/out/darwin_arm64-fastbuild/bin/packages/react-intl",
-      ]
-    }
+    "jsx": "react"
   }
 }

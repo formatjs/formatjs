@@ -165,7 +165,7 @@ export function formatDateToParts(
       'date',
       getDateTimeFormat,
       options
-    ).formatToParts(date)
+    ).formatToParts(date) as Intl.DateTimeFormatPart[] // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
   } catch (e) {
     config.onError(
       new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting date.', e)
@@ -193,7 +193,7 @@ export function formatTimeToParts(
       'time',
       getDateTimeFormat,
       options
-    ).formatToParts(date)
+    ).formatToParts(date) as Intl.DateTimeFormatPart[] // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
   } catch (e) {
     config.onError(
       new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting time.', e)

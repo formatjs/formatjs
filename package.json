@@ -41,7 +41,7 @@
     "@docusaurus/theme-common": "2",
     "@docusaurus/theme-live-codeblock": "2",
     "@jest/transform": "27",
-    "@jest/types": "27",
+    "@jest/types": "28",
     "@lerna-lite/cli": "^1.10.0",
     "@lerna-lite/list": "^1.10.0",
     "@material-ui/core": "^4.11.3",
@@ -76,7 +76,7 @@
     "@vue/compiler-core": "^3.2.23",
     "@vue/compiler-sfc": "^3.2.23",
     "@vue/runtime-core": "^3.2.37",
-    "@vue/test-utils": "2.0.0-beta.13",
+    "@vue/test-utils": "2",
     "babel-loader": "^8.2.2",
     "benchmark": "^2.1.4",
     "chalk": "^4.0.0",
@@ -101,7 +101,8 @@
     "http-server": "^14.0.0",
     "husky": "^7.0.0",
     "jasmine-expect": "^5.0.0",
-    "jest": "27",
+    "jest": "28",
+    "jest-environment-jsdom": "^28.1.3",
     "json-stable-stringify": "^1.0.1",
     "karma": "^6.0.4",
     "karma-chrome-launcher": "^3.1.0",
@@ -123,11 +124,11 @@
     "rimraf": "^3.0.2",
     "serialize-javascript": "^6.0.0",
     "test262-harness": "^9.0.0",
-    "ts-jest": "27",
+    "ts-jest": "28",
     "ts-loader": "^9.1.2",
-    "ts-node": "10",
+    "ts-node": "^10.8",
     "tslib": "2.4.0",
-    "typescript": "^4.5",
+    "typescript": "^4.7",
     "unidiff": "^1.0.2",
     "vue": "^3.2.23",
     "vue-class-component": "^8.0.0-rc.1",
@@ -143,14 +144,12 @@
     "terser": "4.8.0"
   },
   "pnpm": {
-    "patchedDependencies": {
-      "@commitlint/rules@17.0.0": "patches/@commitlint__rules@17.0.0.patch"
-    },
     "packageExtensions": {
       "ts-jest": {
         "dependencies": {
           "@jest/transform": "*",
-          "@types/babel__core": "*"
+          "@types/babel__core": "*",
+          "babel-jest": "*"
         }
       },
       "@vue/compiler-core": {
@@ -168,6 +167,9 @@
           "@vue/compiler-dom": "*"
         }
       }
+    },
+    "patchedDependencies": {
+      "@commitlint/rules@17.0.0": "patches/@commitlint__rules@17.0.0.patch"
     }
   },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>"

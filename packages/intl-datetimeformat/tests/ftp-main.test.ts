@@ -4,10 +4,11 @@ import * as de from './locale-data/de.json'
 import * as ar from './locale-data/ar.json'
 import allData from '../src/data/all-tz'
 import {DateTimeFormat} from '../src/core'
+import {IntlDateTimeFormatPart} from '@formatjs/ecma402-abstract'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, pl, de, ar)
 DateTimeFormat.__addTZData(allData)
-function reduce(parts: Intl.DateTimeFormatPart[]) {
+function reduce(parts: IntlDateTimeFormatPart[]) {
   return parts.map(part => part.value).join('')
 }
 

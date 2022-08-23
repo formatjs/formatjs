@@ -238,3 +238,19 @@ test('whitespace and newlines should be preserved', async () => {
     await readJSON(join(ARTIFACT_PATH, 'defineMessages/actual.json'))
   ).toMatchSnapshot()
 }, 20000)
+
+// See: https://github.com/formatjs/formatjs/issues/3630
+test('TypeScript 4.7 syntax', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} extract --throws '${join(
+        __dirname,
+        'typescript/ts47.tsx'
+      )}' --out-file ${ARTIFACT_PATH}/typescript/ts47.json`
+    )
+  ).resolves.toMatchSnapshot()
+
+  expect(
+    await readJSON(join(ARTIFACT_PATH, 'typescript/ts47.json'))
+  ).toMatchSnapshot()
+})

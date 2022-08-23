@@ -156,9 +156,10 @@ export type IntervalFormatsData = {
 export interface DateTimeFormat
   extends Omit<
     Intl.DateTimeFormat,
-    'resolvedOptions' | 'formatRange' | 'formatRangeToParts'
+    'resolvedOptions' | 'formatRange' | 'formatRangeToParts' | 'formatToParts'
   > {
   resolvedOptions(): ResolvedDateTimeFormatOptions
+  formatToParts(date?: Date | number): IntlDateTimeFormatPart[]
   formatRange(startDate: number | Date, endDate: number | Date): string
   formatRangeToParts(
     startDate: number | Date,
