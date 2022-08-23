@@ -165,7 +165,7 @@ describe('<FormattedMessage>', () => {
       providerProps
     )
 
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(2)
 
     expect(spy.mock.calls[0][0]).toEqual([intl.formatMessage(descriptor)])
 

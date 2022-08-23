@@ -40,7 +40,7 @@ describe('<FormattedRelativeTime>', () => {
     const spy = jest.fn().mockImplementation(() => null)
     mountWithProvider({value: 0, children: spy}, intlConfig)
     mountWithProvider({value: 1, children: spy}, intlConfig)
-    expect(spy).toHaveBeenCalledTimes(2)
+    expect(spy).toHaveBeenCalledTimes(4)
   })
 
   it('should re-render when context changes', () => {
@@ -51,7 +51,7 @@ describe('<FormattedRelativeTime>', () => {
     mountWithProvider({value: 0, children: spy}, intlConfig)
     mountWithProvider({value: 0, children: spy}, otherIntl)
 
-    expect(spy).toHaveBeenCalledTimes(2)
+    expect(spy).toHaveBeenCalledTimes(4)
   })
 
   it('accepts valid IntlRelativeTimeFormat options as props', () => {
@@ -86,7 +86,7 @@ describe('<FormattedRelativeTime>', () => {
       {onError, locale: 'en'}
     )
     expect(getByTestId('comp')).toHaveTextContent('0')
-    expect(onError).toHaveBeenCalledTimes(1)
+    expect(onError).toHaveBeenCalledTimes(2)
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR')
   })
 
@@ -119,7 +119,7 @@ describe('<FormattedRelativeTime>', () => {
       intlConfig
     )
 
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(2)
     expect(spy.mock.calls[0]).toEqual([intl.formatRelativeTime(0)])
 
     expect(getByTestId('comp')).toMatchSnapshot()

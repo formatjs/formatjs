@@ -91,7 +91,7 @@ describe('<FormattedDateTimeRange>', () => {
       intl
     )
 
-    expect(spyChildren).toHaveBeenCalledTimes(1)
+    expect(spyChildren).toHaveBeenCalledTimes(2)
     expect(spyChildren.mock.calls[0]).toEqual([
       intl.formatDateTimeRange(from, to),
     ])

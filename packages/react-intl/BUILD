@@ -90,8 +90,6 @@ jest_test(
         "tests/setup.js",
     ],
     jest_config = "jest.config.js",
-    # TODO: fix
-    tags = ["manual"],
     deps = TEST_DEPS,
 )
 

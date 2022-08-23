@@ -25,5 +25,8 @@
     "declarationMap": true,
     "importHelpers": true,
     "jsx": "react"
-  }
+  },
+  "exclude": [
+    "packages/react-intl/example-sandboxes"
+  ]
 }

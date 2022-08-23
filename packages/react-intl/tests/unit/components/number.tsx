@@ -84,7 +84,7 @@ describe('<FormattedNumber>', () => {
 
     expect(getByTestId('comp')).toHaveTextContent('0')
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR')
-    expect(onError).toHaveBeenCalledTimes(1)
+    expect(onError).toHaveBeenCalledTimes(2)
   })
 
   it('accepts `format` prop', () => {
@@ -119,7 +119,7 @@ describe('<FormattedNumber>', () => {
       .mockImplementation(() => <span data-testid="spy">Jest</span>)
     const {getByTestId} = mountWithProvider({value: num, children: spy}, intl)
 
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(2)
     expect(spy.mock.calls[0]).toEqual([intl.formatNumber(num)])
 
     expect(getByTestId('spy').tagName).toBe('SPAN')

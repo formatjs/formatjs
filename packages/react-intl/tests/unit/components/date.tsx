@@ -36,7 +36,7 @@ describe('<FormattedDate>', () => {
     expect(onError).toHaveBeenCalledTimes(0)
 
     mountWithProvider({value: NaN}, {...intl, onError})
-    expect(onError).toHaveBeenCalledTimes(1)
+    expect(onError).toHaveBeenCalledTimes(2)
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR')
   })
 
@@ -118,7 +118,7 @@ describe('<FormattedDate>', () => {
       intl
     )
 
-    expect(spyChildren).toHaveBeenCalledTimes(1)
+    expect(spyChildren).toHaveBeenCalledTimes(2)
     expect(spyChildren.mock.calls[0]).toEqual([intl.formatDate(date)])
 
     expect(getByTestId('b')).toHaveTextContent('Jest')
@@ -162,7 +162,7 @@ describe('<FormattedDateParts>', () => {
     expect(onError).toHaveBeenCalledTimes(0)
 
     mountPartsWithProvider({value: NaN, children}, {...intl, onError})
-    expect(onError).toHaveBeenCalledTimes(1)
+    expect(onError).toHaveBeenCalledTimes(2)
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR')
   })
 

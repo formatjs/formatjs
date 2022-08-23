@@ -42,7 +42,7 @@ describe('<FormattedTime>', () => {
       },
       intl
     )
-    expect(onError).toHaveBeenCalledTimes(1)
+    expect(onError).toHaveBeenCalledTimes(2)
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR')
   })
 
@@ -91,7 +91,7 @@ describe('<FormattedTime>', () => {
 
     expect(getByTestId('comp')).toHaveTextContent(String(date))
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR')
-    expect(onError).toHaveBeenCalledTimes(1)
+    expect(onError).toHaveBeenCalledTimes(2)
   })
 
   it('accepts `format` prop', () => {
@@ -127,7 +127,7 @@ describe('<FormattedTime>', () => {
     expect(getByTestId('b').tagName).toBe('B')
     expect(getByTestId('comp')).toHaveTextContent('Jest')
 
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(2)
     expect(spy.mock.calls[0]).toEqual([intl.formatTime(date)])
   })
 })
@@ -173,7 +173,7 @@ describe('<FormattedTimeParts>', () => {
       intl
     )
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR')
-    expect(onError).toHaveBeenCalledTimes(1)
+    expect(onError).toHaveBeenCalledTimes(2)
   })
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
@@ -213,7 +213,7 @@ describe('<FormattedTimeParts>', () => {
       intl.formatTimeToParts(date, {hour: 'invalid'})
     )
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR')
-    expect(onError).toHaveBeenCalledTimes(2)
+    expect(onError).toHaveBeenCalledTimes(3)
   })
 
   it('accepts `format` prop', () => {
