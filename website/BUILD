@@ -27,13 +27,13 @@ DEPS = [
     ":node_modules/@formatjs/intl-locale",
     ":node_modules/intl-messageformat",
     ":node_modules/react-intl",
-    "//:node_modules/@docusaurus/plugin-google-analytics",
-    "//:node_modules/@docusaurus/preset-classic",
-    "//:node_modules/@docusaurus/theme-common",
-    "//:node_modules/@docusaurus/theme-live-codeblock",
-    "//:node_modules/classnames",
-    "//:node_modules/react-dom",
-    "//:node_modules/react",
+    ":node_modules/@docusaurus/plugin-google-analytics",
+    ":node_modules/@docusaurus/preset-classic",
+    ":node_modules/@docusaurus/theme-common",
+    ":node_modules/@docusaurus/theme-live-codeblock",
+    ":node_modules/classnames",
+    ":node_modules/react-dom",
+    ":node_modules/react",
 ]
 
 copy_to_bin(
