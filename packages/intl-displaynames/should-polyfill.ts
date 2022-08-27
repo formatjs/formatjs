@@ -47,7 +47,11 @@ export function _shouldPolyfillWithoutLocale() {
 }
 
 export function shouldPolyfill(locale = 'en') {
-  if (_shouldPolyfillWithoutLocale() || !supportedLocalesOf(locale)) {
-    return match([locale], supportedLocales, 'en')
+  try {
+    if (_shouldPolyfillWithoutLocale() || !supportedLocalesOf(locale)) {
+      return match([locale], supportedLocales, 'en')
+    }
+  } catch (e) {
+    return true
   }
 }
