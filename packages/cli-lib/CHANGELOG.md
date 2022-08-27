@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.0.8...@formatjs/cli-lib@5.1.0) (2022-08-27)
+
+### Features
+
+* **@formatjs/ts-transformer:** support TypeScript 4.7 syntax ([#3764](https://github.com/formatjs/formatjs/issues/3764)) ([1b3388e](https://github.com/formatjs/formatjs/commit/1b3388e9344de3a948068f5cf449341c1eb597a8))
+
+### Reverts
+
+* Revert "chore(deps-dev): bump commander from 8.3.0 to 9.4.0 (#3772)" ([f45a2f7](https://github.com/formatjs/formatjs/commit/f45a2f743f84dc83b44ebc12d6e15959c9d70ab0)), closes [#3772](https://github.com/formatjs/formatjs/issues/3772)
+
 ## [5.0.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.0.7...@formatjs/cli-lib@5.0.8) (2022-08-21)
 
 **Note:** Version bump only for package @formatjs/cli-lib

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.9.11...@formatjs/ts-transformer@3.10.0) (2022-08-27)
+
+### Features
+
+* **@formatjs/ts-transformer:** support TypeScript 4.7 syntax ([#3764](https://github.com/formatjs/formatjs/issues/3764)) ([1b3388e](https://github.com/formatjs/formatjs/commit/1b3388e9344de3a948068f5cf449341c1eb597a8))
+
 ## [3.9.11](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.9.10...@formatjs/ts-transformer@3.9.11) (2022-08-21)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

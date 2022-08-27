@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.2.2...eslint-plugin-formatjs@4.3.0) (2022-08-27)
+
+### Features
+
+* **@formatjs/ts-transformer:** support TypeScript 4.7 syntax ([#3764](https://github.com/formatjs/formatjs/issues/3764)) ([1b3388e](https://github.com/formatjs/formatjs/commit/1b3388e9344de3a948068f5cf449341c1eb597a8))
+
 ## [4.2.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.2.1...eslint-plugin-formatjs@4.2.2) (2022-08-21)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
