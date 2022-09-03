@@ -205,5 +205,19 @@ Actual: undefined`,
       output: `
 intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', id: 'j9qhn+', description: 'asd'})`,
     },
+    {
+      code: `
+intl.formatMessage({defaultMessage: "{count, plural, one {#} other {# more}}", description: "asd"})`,
+      errors: [
+        {
+          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6] or allowlisted patterns ["/\\./i", "/^payment_.*/i"].
+Expected: j9qhn+
+Actual: undefined`,
+        },
+      ],
+      options: optionsWithWhitelist,
+      output: `
+intl.formatMessage({defaultMessage: "{count, plural, one {#} other {# more}}", id: 'j9qhn+', description: "asd"})`,
+    },
   ],
 })

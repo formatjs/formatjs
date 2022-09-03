@@ -92,9 +92,9 @@ Actual: ${id}`,
                   ` id="${correctId}"`
                 )
               }
-              return fixer.replaceText(
+              return fixer.insertTextAfter(
                 messagePropNode as any,
-                `defaultMessage: '${defaultMessage}', id: '${correctId}'`
+                `, id: '${correctId}'`
               )
             },
           })
