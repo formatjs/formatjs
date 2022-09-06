@@ -51,7 +51,6 @@ jest_test(
         "//:node_modules/@types/lodash",
         "//:node_modules/fast-glob",
         "//:node_modules/lodash",
-        "//packages/icu-messageformat-parser-tests:test-cases-copy",
     ] + SRC_DEPS,
 )
 

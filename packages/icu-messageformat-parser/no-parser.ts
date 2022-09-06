@@ -4,3 +4,4 @@ export function parse() {
   )
 }
 export * from './types'
+export const _Parser = undefined
