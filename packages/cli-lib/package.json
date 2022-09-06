@@ -33,7 +33,7 @@
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
-    "@types/estree": "^0.0.50",
+    "@types/estree": "^1.0.0",
     "@types/fs-extra": "^9.0.1",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/node": "14 || 16 || 17",
