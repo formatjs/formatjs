@@ -22,7 +22,7 @@ importers:
       '@babel/traverse': '7'
       '@babel/types': ^7.12.11
       '@bazel/bazelisk': ^1.5.0
-      '@bazel/ibazel': ^0.15.0
+      '@bazel/ibazel': '0.16'
       '@commitlint/cli': '17'
       '@commitlint/config-angular': '17'
       '@jest/transform': '27'
@@ -36,7 +36,7 @@ importers:
       '@types/babel__traverse': ^7.1.7
       '@types/benchmark': ^2.1.0
       '@types/eslint': 7 || 8
-      '@types/estree': ^0.0.50
+      '@types/estree': '1'
       '@types/fs-extra': ^9.0.1
       '@types/hoist-non-react-statics': ^3.3.1
       '@types/jest': ^26.0.24
@@ -86,8 +86,8 @@ importers:
       json-stable-stringify: ^1.0.1
       karma: ^6.0.4
       karma-chrome-launcher: ^3.1.0
-      karma-jasmine: ^4.0.0
-      karma-jasmine-matchers: ^4.0.2
+      karma-jasmine: '5'
+      karma-jasmine-matchers: '5'
       karma-sauce-launcher: 4.3.6
       lodash: ^4.17.15
       loud-rejection: ^2.2.0
@@ -101,7 +101,7 @@ importers:
       regenerate: ^1.4.2
       rimraf: ^3.0.2
       serialize-javascript: ^6.0.0
-      test262-harness: ^9.0.0
+      test262-harness: '10'
       ts-jest: '28'
       ts-loader: ^9.1.2
       ts-node: ^10.8
@@ -122,7 +122,7 @@ importers:
       '@babel/traverse': 7.18.5
       '@babel/types': 7.18.4
       '@bazel/bazelisk': 1.12.0
-      '@bazel/ibazel': 0.15.10
+      '@bazel/ibazel': 0.16.2
       '@commitlint/cli': 17.0.3
       '@commitlint/config-angular': 17.0.3
       '@jest/transform': 27.5.1
@@ -136,7 +136,7 @@ importers:
       '@types/babel__traverse': 7.17.1
       '@types/benchmark': 2.1.1
       '@types/eslint': 8.4.3
-      '@types/estree': 0.0.50
+      '@types/estree': 1.0.0
       '@types/fs-extra': 9.0.13
       '@types/hoist-non-react-statics': 3.3.1
       '@types/jest': 26.0.24
@@ -186,8 +186,8 @@ importers:
       json-stable-stringify: 1.0.1
       karma: 6.4.0
       karma-chrome-launcher: 3.1.1
-      karma-jasmine: 4.0.2_karma@6.4.0
-      karma-jasmine-matchers: 4.0.2
+      karma-jasmine: 5.1.0_karma@6.4.0
+      karma-jasmine-matchers: 5.0.0
       karma-sauce-launcher: 4.3.6
       lodash: 4.17.21
       loud-rejection: 2.2.0
@@ -201,7 +201,7 @@ importers:
       regenerate: 1.4.2
       rimraf: 3.0.2
       serialize-javascript: 6.0.0
-      test262-harness: 9.2.0
+      test262-harness: 10.0.0
       ts-jest: 28.0.8_gagsrpfcf57grbi77unje5kuni
       ts-loader: 9.3.1_3o2jfq6vfqxns3sz6wn2nnc3ei
       ts-node: 10.8.1_x2utdhayajzrh747hktprshhby
@@ -3420,8 +3420,8 @@ packages:
     hasBin: true
     dev: true
 
-  /@bazel/ibazel/0.15.10:
-    resolution: {integrity: sha512-0v+OwCQ6fsGFa50r6MXWbUkSGuWOoZ22K4pMSdtWiL5LKFIE4kfmMmtQS+M7/ICNwk2EIYob+NRreyi/DGUz5A==}
+  /@bazel/ibazel/0.16.2:
+    resolution: {integrity: sha512-KgqAWMH0emL6f3xH6nqyTryoBMqlJ627LBIe9PT1PRRQPz2FtHib3FIHJPukp1slzF3hJYZvdiVwgPnHbaSOOA==}
     hasBin: true
     dev: true
 
@@ -5997,21 +5997,25 @@ packages:
     resolution: {integrity: sha512-PB3ldyrcnAicT35TWPs5IcwKD8S333HMaa2VVv4+wdvebJkjWuW/xESoB8IwRcog8HYVYamb1g/R31Qv5Bx03g==}
     dependencies:
       '@types/eslint': 8.4.3
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
     dev: true
 
   /@types/eslint/8.4.3:
     resolution: {integrity: sha512-YP1S7YJRMPs+7KZKDb9G63n8YejIwW9BALq7a5j2+H4yl6iOv9CB29edho+cuFRrvmJbbaH2yiVChKLJVysDGw==}
     dependencies:
-      '@types/estree': 0.0.50
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
 
   /@types/estree/0.0.50:
     resolution: {integrity: sha512-C6N5s2ZFtuZRj54k2/zyRhNDjJwwcViAM3Nbm8zjBpbqAdZ00mr0CFxvSKeO8Y/e03WVFLpQMdHYVfUd6SB+Hw==}
+    dev: false
 
   /@types/estree/0.0.51:
     resolution: {integrity: sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==}
     dev: true
+
+  /@types/estree/1.0.0:
+    resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
 
   /@types/express-serve-static-core/4.17.29:
     resolution: {integrity: sha512-uMd++6dMKS32EOuw1Uli3e3BPgdLIXmezcfHv7N4c1s3gkhikBplORPpMq3fuWkxncZN1reb16d5n8yhQ80x7Q==}
@@ -9619,8 +9623,8 @@ packages:
       source-map: 0.6.1
     dev: true
 
-  /eshost/8.2.0:
-    resolution: {integrity: sha512-My+waAewZXrvREelM86z2NinWyXhonmCL/hrz6t1J1BXUEceI5OfykFJZdbpWgBkPe9k45/WybWjc5dNM2A6MQ==}
+  /eshost/9.0.0:
+    resolution: {integrity: sha512-hq1phapnwdDoBO/o5PhcGoex9ueAY2xlQEcvA0zq/u4J+yUypFnBEh1gZABLlmdM1ZmOBDbjawUb/ICDdvyJVw==}
     dependencies:
       error-stack-parser: 1.3.6
       is-symlink: 0.1.1
@@ -11639,14 +11643,8 @@ packages:
       is-object: 1.0.2
     dev: true
 
-  /jasmine-core/3.99.1:
-    resolution: {integrity: sha512-Hu1dmuoGcZ7AfyynN3LsfruwMbxMALMka+YtZeGoLuDEySVmVAPaonkNoBRIw/ectu8b9tVQCJNgp4a4knp+tg==}
-    dev: true
-
-  /jasmine-expect/4.0.2:
-    resolution: {integrity: sha512-VpHLwpBE1chVIhiJ7kJHBbdsm2GVvBli5bem4pGqkbiuvIW2mxghPNhYrKyoHBQKVmlq+xLUTGlrWMC/Ovn+2g==}
-    dependencies:
-      add-matchers: 0.6.2
+  /jasmine-core/4.4.0:
+    resolution: {integrity: sha512-+l482uImx5BVd6brJYlaHe2UwfKoZBqQfNp20ZmdNfsjGFTemGfqHLsXjKEW23w9R/m8WYeFc9JmIgjj6dUtAA==}
     dev: true
 
   /jasmine-expect/5.0.0:
@@ -12302,19 +12300,19 @@ packages:
       which: 1.3.1
     dev: true
 
-  /karma-jasmine-matchers/4.0.2:
-    resolution: {integrity: sha512-NJjJ0UI7TH2Nw1kEnc3uFv//TkELlq6Z+O/Z9KScl49MCItFs8xaRthZxzDEKlwKtMAclhzbFAP9f0RHtI9g1A==}
+  /karma-jasmine-matchers/5.0.0:
+    resolution: {integrity: sha512-XnwKFbeQ8vqCkL/6bLiCFsHR4+TWTIVByuUYFrPM38JBD1hb7TNLP7cPRkQs4QBNWQ1o8z/u4EOetQC2ZFMb8A==}
     dependencies:
-      jasmine-expect: 4.0.2
+      jasmine-expect: 5.0.0
     dev: true
 
-  /karma-jasmine/4.0.2_karma@6.4.0:
-    resolution: {integrity: sha512-ggi84RMNQffSDmWSyyt4zxzh2CQGwsxvYYsprgyR1j8ikzIduEdOlcLvXjZGwXG/0j41KUXOWsUCBfbEHPWP9g==}
-    engines: {node: '>= 10'}
+  /karma-jasmine/5.1.0_karma@6.4.0:
+    resolution: {integrity: sha512-i/zQLFrfEpRyQoJF9fsCdTMOF5c2dK7C7OmsuKg2D0YSsuZSfQDiLuaiktbuio6F2wiCsZSnSnieIQ0ant/uzQ==}
+    engines: {node: '>=12'}
     peerDependencies:
-      karma: '*'
+      karma: ^6.0.0
     dependencies:
-      jasmine-core: 3.99.1
+      jasmine-core: 4.4.0
       karma: 6.4.0
     dev: true
 
@@ -16403,11 +16401,11 @@ packages:
       minimatch: 3.1.2
     dev: true
 
-  /test262-harness/9.2.0:
-    resolution: {integrity: sha512-yx0ccm/D2muGXsX3uGnnRidJn5sFZSTHfTpOWV1QCdV4ya/G5sYG5gx/8PeNR1/zwCkbWxeSHt6sg9FU4c0geA==}
+  /test262-harness/10.0.0:
+    resolution: {integrity: sha512-ntNOi+q6NMXYNAa7nwg7IgP+8ahcdqvPvkEUu6TN38nkTHIBjB/KY5jLIUD70Qk4EKd15rHHfSGDc1SVdblj4w==}
     hasBin: true
     dependencies:
-      eshost: 8.2.0
+      eshost: 9.0.0
       minimatch: 3.1.2
       rxjs: 6.6.7
       test262-stream: 1.4.0
