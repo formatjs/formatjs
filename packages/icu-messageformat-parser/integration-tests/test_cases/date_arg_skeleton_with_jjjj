@@ -1,4 +1,4 @@
-{0, date, ::j}
+{0, date, ::jjjj}
 ---
 {
   "locale": "und-u-hc-h12",
@@ -18,14 +18,14 @@
           "column": 1
         },
         "end": {
-          "offset": 14,
+          "offset": 17,
           "line": 1,
-          "column": 15
+          "column": 18
         }
       },
       "style": {
         "type": 1,
-        "pattern": "ha",
+        "pattern": "hhaaaa",
         "location": {
           "start": {
             "offset": 10,
@@ -33,14 +33,14 @@
             "column": 11
           },
           "end": {
-            "offset": 13,
+            "offset": 16,
             "line": 1,
-            "column": 14
+            "column": 17
           }
         },
         "parsedOptions": {
           "hourCycle": "h12",
-          "hour": "numeric",
+          "hour": "2-digit",
           "hour12": true
         }
       }

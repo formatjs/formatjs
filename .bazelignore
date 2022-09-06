@@ -4,6 +4,7 @@ bazel-out
 
 packages/babel-plugin-formatjs/integration-tests/node_modules
 packages/ts-transformer/integration-tests/node_modules
+packages/icu-messageformat-parser/integration-tests/node_modules
 packages/cli/integration-tests/node_modules
 packages/react-intl/examples/node_modules
 packages/babel-plugin-formatjs/node_modules
