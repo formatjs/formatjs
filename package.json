@@ -35,7 +35,7 @@
     "@commitlint/cli": "17",
     "@commitlint/config-angular": "17",
     "@jest/transform": "27",
-    "@jest/types": "28",
+    "@jest/types": "29",
     "@lerna-lite/cli": "^1.10.0",
     "@lerna-lite/list": "^1.10.0",
     "@testing-library/jest-dom": "^5.11.5",
