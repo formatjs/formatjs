@@ -96,7 +96,7 @@
     "karma": "^6.0.4",
     "karma-chrome-launcher": "^3.1.0",
     "karma-jasmine": "^4.0.0",
-    "karma-jasmine-matchers": "^4.0.2",
+    "karma-jasmine-matchers": "^5.0.0",
     "karma-sauce-launcher": "4.3.6",
     "lodash": "^4.17.15",
     "loud-rejection": "^2.2.0",
