@@ -119,7 +119,7 @@
     "unidiff": "^1.0.2",
     "vue": "^3.2.23",
     "vue-class-component": "^8.0.0-rc.1",
-    "vue-eslint-parser": "^7.3.0",
+    "vue-eslint-parser": "^9.0.3",
     "vue-loader": "17",
     "webpack": "5"
   },
