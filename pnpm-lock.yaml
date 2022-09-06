@@ -14,7 +14,6 @@ importers:
 
   .:
     specifiers:
-      '@algolia/client-search': ^4.14.2
       '@babel/core': ^7.10.4
       '@babel/helper-plugin-utils': ^7.10.4
       '@babel/plugin-syntax-jsx': '7'
@@ -115,7 +114,6 @@ importers:
       vue-loader: '17'
       webpack: '5'
     devDependencies:
-      '@algolia/client-search': 4.14.2
       '@babel/core': 7.18.5
       '@babel/helper-plugin-utils': 7.17.12
       '@babel/plugin-syntax-jsx': 7.17.12_@babel+core@7.18.5
@@ -645,6 +643,7 @@ importers:
 
   website:
     specifiers:
+      '@algolia/client-search': ^4.14.2
       '@docusaurus/core': '2'
       '@docusaurus/plugin-google-analytics': '2'
       '@docusaurus/preset-classic': '2'
@@ -657,9 +656,10 @@ importers:
       react-dom: ^16.6.0 || 17
       react-live: '2'
     devDependencies:
+      '@algolia/client-search': 4.14.2
       '@docusaurus/core': 2.0.1_sfoxds7t5ydpegc3knd667wn6m
       '@docusaurus/plugin-google-analytics': 2.0.1_sfoxds7t5ydpegc3knd667wn6m
-      '@docusaurus/preset-classic': 2.0.1_sfoxds7t5ydpegc3knd667wn6m
+      '@docusaurus/preset-classic': 2.0.1_2oftdjc235pafh5xn5kpmut4wm
       '@docusaurus/theme-common': 2.0.1_sfoxds7t5ydpegc3knd667wn6m
       '@docusaurus/theme-live-codeblock': 2.0.1_sfoxds7t5ydpegc3knd667wn6m
       '@mdx-js/react': 2.1.3_react@17.0.2
@@ -677,13 +677,14 @@ packages:
       '@algolia/autocomplete-shared': 1.7.1
     dev: true
 
-  /@algolia/autocomplete-preset-algolia/1.7.1_algoliasearch@4.13.1:
+  /@algolia/autocomplete-preset-algolia/1.7.1_bynjdelmk7kqfxl6rolmquprhm:
     resolution: {integrity: sha512-pJwmIxeJCymU1M6cGujnaIYcY3QPOVYZOXhFkWVM7IxKzy272BwCvMFMyc5NpG/QmiObBxjo7myd060OeTNJXg==}
     peerDependencies:
       '@algolia/client-search': ^4.9.1
       algoliasearch: ^4.9.1
     dependencies:
       '@algolia/autocomplete-shared': 1.7.1
+      '@algolia/client-search': 4.14.2
       algoliasearch: 4.13.1
     dev: true
 
@@ -3604,7 +3605,7 @@ packages:
     resolution: {integrity: sha512-jnNrO2JVYYhj2pP2FomlHIy6220n6mrLn2t9v2/qc+rM7M/fbIcKMgk9ky4RN+L/maUEmteckzg6/PIYoAAXJg==}
     dev: true
 
-  /@docsearch/react/3.2.0_sfoxds7t5ydpegc3knd667wn6m:
+  /@docsearch/react/3.2.0_2oftdjc235pafh5xn5kpmut4wm:
     resolution: {integrity: sha512-ATS3w5JBgQGQF0kHn5iOAPfnCCaoLouZQMmI7oENV//QMFrYbjhUZxBU9lIwAT7Rzybud+Jtb4nG5IEjBk3Ixw==}
     peerDependencies:
       '@types/react': '>= 16.8.0 < 19.0.0'
@@ -3612,7 +3613,7 @@ packages:
       react-dom: '>= 16.8.0 < 19.0.0'
     dependencies:
       '@algolia/autocomplete-core': 1.7.1
-      '@algolia/autocomplete-preset-algolia': 1.7.1_algoliasearch@4.13.1
+      '@algolia/autocomplete-preset-algolia': 1.7.1_bynjdelmk7kqfxl6rolmquprhm
       '@docsearch/css': 3.2.0
       algoliasearch: 4.13.1
       react: 17.0.2
@@ -4168,7 +4169,7 @@ packages:
       - webpack-cli
     dev: true
 
-  /@docusaurus/preset-classic/2.0.1_sfoxds7t5ydpegc3knd667wn6m:
+  /@docusaurus/preset-classic/2.0.1_2oftdjc235pafh5xn5kpmut4wm:
     resolution: {integrity: sha512-nOoniTg46My1qdDlLWeFs55uEmxOJ+9WMF8KKG8KMCu5LAvpemMi7rQd4x8Tw+xiPHZ/sQzH9JmPTMPRE4QGPw==}
     engines: {node: '>=16.14'}
     peerDependencies:
@@ -4185,7 +4186,7 @@ packages:
       '@docusaurus/plugin-sitemap': 2.0.1_sfoxds7t5ydpegc3knd667wn6m
       '@docusaurus/theme-classic': 2.0.1_sfoxds7t5ydpegc3knd667wn6m
       '@docusaurus/theme-common': 2.0.1_e7njuyukwke3dfkpruzdf3gfhy
-      '@docusaurus/theme-search-algolia': 2.0.1_e7njuyukwke3dfkpruzdf3gfhy
+      '@docusaurus/theme-search-algolia': 2.0.1_gkcu77vd2rtfzybh54upfr5ulu
       '@docusaurus/types': 2.0.1_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -4383,14 +4384,14 @@ packages:
       - webpack-cli
     dev: true
 
-  /@docusaurus/theme-search-algolia/2.0.1_e7njuyukwke3dfkpruzdf3gfhy:
+  /@docusaurus/theme-search-algolia/2.0.1_gkcu77vd2rtfzybh54upfr5ulu:
     resolution: {integrity: sha512-cw3NaOSKbYlsY6uNj4PgO+5mwyQ3aEWre5RlmvjStaz2cbD15Nr69VG8Rd/F6Q5VsCT8BvSdkPDdDG5d/ACexg==}
     engines: {node: '>=16.14'}
     peerDependencies:
       react: ^16.8.4 || ^17.0.0
       react-dom: ^16.8.4 || ^17.0.0
     dependencies:
-      '@docsearch/react': 3.2.0_sfoxds7t5ydpegc3knd667wn6m
+      '@docsearch/react': 3.2.0_2oftdjc235pafh5xn5kpmut4wm
       '@docusaurus/core': 2.0.1_e7njuyukwke3dfkpruzdf3gfhy
       '@docusaurus/logger': 2.0.1
       '@docusaurus/plugin-content-docs': 2.0.1_sfoxds7t5ydpegc3knd667wn6m

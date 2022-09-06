@@ -27,7 +27,7 @@
     "tslib": "2.4.0"
   },
   "peerDependencies": {
-    "ts-jest": "27"
+    "ts-jest": "27 || 28"
   },
   "peerDependenciesMeta": {
     "ts-jest": {
