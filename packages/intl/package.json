@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Internationalize JS apps. This library provides an API to format dates, numbers, and strings, including pluralization and handling translations.",
   "keywords": [
     "intl",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.4.0...@formatjs/intl@2.4.1) (2022-09-06)
+
+### Bug Fixes
+
+* **@formatjs/intl:** fix empty array handling in formatList, fix [#3784](https://github.com/formatjs/formatjs/issues/3784) ([5585e0e](https://github.com/formatjs/formatjs/commit/5585e0e758da1ef18f8ebab5bfa7920ce27b2403))
+
 # [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.3.4...@formatjs/intl@2.4.0) (2022-08-27)
 
 ### Features
