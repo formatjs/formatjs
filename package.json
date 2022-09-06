@@ -34,7 +34,7 @@
     "@bazel/ibazel": "0.16",
     "@commitlint/cli": "17",
     "@commitlint/config-angular": "17",
-    "@jest/transform": "27",
+    "@jest/transform": "29",
     "@jest/types": "28",
     "@lerna-lite/cli": "^1.10.0",
     "@lerna-lite/list": "^1.10.0",
