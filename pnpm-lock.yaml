@@ -342,6 +342,12 @@ importers:
       '@formatjs/icu-skeleton-parser': link:../icu-skeleton-parser
       tslib: 2.4.0
 
+  packages/icu-messageformat-parser/integration-tests:
+    specifiers:
+      '@formatjs/icu-messageformat-parser': workspace:*
+    dependencies:
+      '@formatjs/icu-messageformat-parser': link:..
+
   packages/icu-skeleton-parser:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*

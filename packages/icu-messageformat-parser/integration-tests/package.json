@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@formatjs/icu-messageformat-parser": "workspace:*"
+  }
+}
