@@ -110,7 +110,7 @@
     "regenerate": "^1.4.2",
     "rimraf": "^3.0.2",
     "serialize-javascript": "^6.0.0",
-    "test262-harness": "^9.0.0",
+    "test262-harness": "^10.0.0",
     "ts-jest": "28",
     "ts-loader": "^9.1.2",
     "ts-node": "^10.8",
