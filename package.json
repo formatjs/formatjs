@@ -23,7 +23,6 @@
     "test": "bazel test //..."
   },
   "devDependencies": {
-    "@algolia/client-search": "^4.14.2",
     "@babel/core": "^7.10.4",
     "@babel/helper-plugin-utils": "^7.10.4",
     "@babel/plugin-syntax-jsx": "7",

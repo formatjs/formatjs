@@ -51,7 +51,7 @@ export function formatList<T>(
     }
     return all
   }, [])
-  return results.length === 1 ? results[0] : results
+  return results.length === 1 ? results[0] : results.length === 0 ? '' : results
 }
 
 export function formatListToParts<T>(

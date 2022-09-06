@@ -15,6 +15,7 @@
     ]
   },
   "devDependencies": {
+    "@algolia/client-search": "^4.14.2",
     "@docusaurus/core": "2",
     "@docusaurus/plugin-google-analytics": "2",
     "@docusaurus/preset-classic": "2",

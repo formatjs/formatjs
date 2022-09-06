@@ -47,5 +47,8 @@ describe('format API', () => {
         ', and I',
       ])
     })
+    it('should format [] as ""', function () {
+      expect(formatList([])).toBe('')
+    })
   })
 })
