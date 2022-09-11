@@ -735,8 +735,8 @@ export function transformWithTs(ts: TypeScript, opts: Opts) {
     typescript.SourceFile
   > = ctx => {
     return (sf: typescript.SourceFile) => {
-      const pragmaResult = PRAGMA_REGEX.exec(sf.text)
-      if (pragmaResult) {
+      const pragmaResults = sf.text.matchAll(PRAGMA_REGEX)
+      for(const pragmaResult of pragmaResults) {
         debug('Pragma found', pragmaResult)
         const [, pragma, kvString] = pragmaResult
         if (pragma === opts.pragma) {
