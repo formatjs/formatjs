@@ -707,7 +707,7 @@ function extractMessagesFromCallExpression(
   return node
 }
 
-const PRAGMA_REGEX = /^\s*\/\/ @([^\s]*) (.*)$/m
+const PRAGMA_REGEX = /^\s*\/\/\s*@([^\s]*)\s+(.*)$/m
 
 function getVisitor(
   ts: TypeScript,
@@ -740,7 +740,7 @@ export function transformWithTs(ts: TypeScript, opts: Opts) {
         debug('Pragma found', pragmaResult)
         const [, pragma, kvString] = pragmaResult
         if (pragma === opts.pragma) {
-          const kvs = kvString.split(' ')
+          const kvs = kvString.trim().split(' ')
           const result: Record<string, string> = {}
           for (const kv of kvs) {
             const [k, v] = kv.split(':')
