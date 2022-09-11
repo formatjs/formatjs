@@ -707,7 +707,7 @@ function extractMessagesFromCallExpression(
   return node
 }
 
-const PRAGMA_REGEX = /^\/\/ @([^\s]*) (.*)$/m
+const PRAGMA_REGEX = /^\s*\/\/ @([^\s]*) (.*)$/m
 
 function getVisitor(
   ts: TypeScript,
