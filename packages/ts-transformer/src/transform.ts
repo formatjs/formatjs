@@ -740,7 +740,7 @@ export function transformWithTs(ts: TypeScript, opts: Opts) {
         debug('Pragma found', pragmaResult)
         const [, pragma, kvString] = pragmaResult
         if (pragma === opts.pragma) {
-          const kvs = kvString.trim().split(' ')
+          const kvs = kvString.split(' ').filter(Boolean)
           const result: Record<string, string> = {}
           for (const kv of kvs) {
             const [k, v] = kv.split(':')
