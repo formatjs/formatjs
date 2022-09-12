@@ -88,11 +88,11 @@ build:ci --build_metadata=VISIBILITY=PUBLIC
 build:ci --tls_client_certificate=buildbuddy-cert.pem
 build:ci --tls_client_key=buildbuddy-key.pem
 build:ci --bes_results_url=https://app.buildbuddy.io/invocation/
-build:ci --bes_backend=grpcs://cloud.buildbuddy.io
-build --remote_cache=grpcs://cloud.buildbuddy.io
+build:ci --bes_backend=grpcs://remote.buildbuddy.io
+build --remote_cache=grpcs://remote.buildbuddy.io
 build --remote_timeout=3600
 build --remote_header=x-buildbuddy-api-key=IbBEgXVMNesRlnMMW5Xh
-test --remote_cache=grpcs://cloud.buildbuddy.io
+test --remote_cache=grpcs://remote.buildbuddy.io
 test --remote_timeout=3600
 test --remote_header=x-buildbuddy-api-key=IbBEgXVMNesRlnMMW5Xh
 
