@@ -1,8 +1,0 @@
-name: 'CodeQL config'
-
-paths-ignore:
-  - node_modules
-  - '**/*.test.*'
-  - test262
-paths:
-  - packages
