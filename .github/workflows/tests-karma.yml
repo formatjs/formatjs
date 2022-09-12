@@ -14,7 +14,7 @@ jobs:
         run: |
           echo "${{ secrets.BUILDBUDDY_ORG_CERT }}">buildbuddy-cert.pem
           echo "${{ secrets.BUILDBUDDY_ORG_KEY }}">buildbuddy-key.pem
-      - uses: saucelabs/sauce-connect-action@v2.2.0
+      - uses: saucelabs/sauce-connect-action@v2.2.1
         with:
           username: ${{ secrets.SAUCE_USERNAME }}
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
