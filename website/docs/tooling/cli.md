@@ -141,7 +141,7 @@ type FormatFn = <T = Record<string, MessageDescriptor>>(
 
 This is especially useful to convert from our extracted format to a TMS-specific format.
 
-See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for examples.
+See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli-lib/src/formatters) for examples.
 
 ### `--out-file [path]`
 
