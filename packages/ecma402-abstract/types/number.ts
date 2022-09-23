@@ -7,10 +7,26 @@ export type NumberFormatNotation =
   | 'engineering'
   | 'compact'
 
+export type RoundingPriorityType = 'auto' | 'morePrecision' | 'lessPrecision'
+
 export type NumberFormatRoundingType =
+  | 'morePrecision'
+  | 'lessPrecision'
   | 'significantDigits'
   | 'fractionDigits'
-  | 'compactRounding'
+
+export type RoundingModeType =
+  | 'ceil'
+  | 'floor'
+  | 'expand'
+  | 'trunc'
+  | 'halfCeil'
+  | 'halfFloor'
+  | 'halfExpand'
+  | 'halfTrunc'
+  | 'halfEven'
+
+export type UseGroupingType = 'min2' | 'auto' | 'always' | boolean
 
 export interface NumberFormatDigitOptions {
   minimumIntegerDigits?: number
@@ -18,6 +34,7 @@ export interface NumberFormatDigitOptions {
   maximumSignificantDigits?: number
   minimumFractionDigits?: number
   maximumFractionDigits?: number
+  roundingPriority?: RoundingPriorityType
 }
 
 export interface NumberFormatDigitInternalSlots {
@@ -29,6 +46,8 @@ export interface NumberFormatDigitInternalSlots {
   minimumFractionDigits?: number
   maximumFractionDigits?: number
   notation?: NumberFormatNotation
+  roundingIncrement?: number
+  trailingZeroDisplay?: TrailingZeroDisplay
 }
 
 // All fields are optional due to de-duping
@@ -173,7 +192,9 @@ export type NumberFormatOptionsSignDisplay =
   | 'always'
   | 'never'
   | 'exceptZero'
+  | 'negative'
 export type NumberFormatOptionsUnitDisplay = 'long' | 'short' | 'narrow'
+export type TrailingZeroDisplay = 'auto' | 'stripIfInteger'
 
 export interface NumberFormatInternal extends NumberFormatDigitInternalSlots {
   locale: string
@@ -187,17 +208,18 @@ export interface NumberFormatInternal extends NumberFormatDigitInternalSlots {
   notation: NumberFormatOptionsNotation
   compactDisplay: NumberFormatOptionsCompactDisplay
   signDisplay: NumberFormatOptionsSignDisplay
-  useGrouping: boolean
+  useGrouping?: UseGroupingType
   pl: Intl.PluralRules
   boundFormat?: Intl.NumberFormat['format']
   numberingSystem: string
   // Locale-dependent formatter data
   dataLocaleData: NumberFormatLocaleInternalData
+  roundingMode?: RoundingModeType
 }
 
 export type NumberFormatOptions = Omit<
   Intl.NumberFormatOptions,
-  'signDisplay'
+  'signDisplay' | 'useGrouping'
 > &
   NumberFormatDigitOptions & {
     localeMatcher?: NumberFormatOptionsLocaleMatcher
@@ -210,8 +232,11 @@ export type NumberFormatOptions = Omit<
     unit?: string
     unitDisplay?: NumberFormatOptionsUnitDisplay
     numberingSystem?: string
-    trailingZeroDisplay?: 'auto' | 'stripIfInteger'
-    roundingPriority?: 'auto' | 'morePrecision' | 'lessPrecision'
+    trailingZeroDisplay?: TrailingZeroDisplay
+    roundingPriority?: RoundingPriorityType
+    roundingIncrement?: number
+    roundingMode?: RoundingModeType
+    useGrouping?: UseGroupingType
   }
 
 export type ResolvedNumberFormatOptions = Intl.ResolvedNumberFormatOptions &
