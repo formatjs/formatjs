@@ -141,6 +141,8 @@ export interface SymbolsData {
   negativeInfinity: string
   nan: string
   timeSeparator: string
+  rangeSeparator: string
+  approximatelySign: string
 }
 
 export interface RawNumberData {
@@ -260,8 +262,10 @@ export type NumberFormatPartTypes =
   | 'compact'
   | 'unit'
   | 'literal'
+  | 'approximatelySign'
 
 export interface NumberFormatPart {
   type: NumberFormatPartTypes
   value: string
+  source?: string
 }
