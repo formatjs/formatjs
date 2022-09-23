@@ -28,15 +28,21 @@ export function PartitionNumberPattern(
 
   if (isNaN(x)) {
     n = symbols.nan
-  } else if (!isFinite(x)) {
-    n = symbols.infinity
+  } else if (x == Number.POSITIVE_INFINITY) {
+    n = symbols.positiveInfinity
+  } else if (x == Number.NEGATIVE_INFINITY) {
+    n = symbols.negativeInfinity
   } else {
-    if (internalSlots.style === 'percent') {
-      x *= 100
+    if (!SameValue(x, -0)) {
+      if (!isFinite(x)) {
+        throw new Error('Input must be a mathematical number')
+      }
+      if (internalSlots.style == 'percent') {
+        x = x * 100
+      }
+      const [exponent] = ComputeExponent(numberFormat, x, {getInternalSlots})
+      x = x * Math.pow(10, -exponent)
     }
-    ;[exponent, magnitude] = ComputeExponent(numberFormat, x, {
-      getInternalSlots,
-    })
     // Preserve more precision by doing multiplication when exponent is negative.
     x = exponent < 0 ? x * 10 ** -exponent : x / 10 ** exponent
     const formatNumberResult = FormatNumericToString(internalSlots, x)

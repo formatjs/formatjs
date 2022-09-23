@@ -137,6 +137,8 @@ export interface SymbolsData {
   superscriptingExponent: string
   perMille: string
   infinity: string
+  positiveInfinity: string
+  negativeInfinity: string
   nan: string
   timeSeparator: string
 }

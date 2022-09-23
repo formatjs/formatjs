@@ -1,9 +1,10 @@
 /**
- * https://tc39.es/ecma402/#sec-getnumberoption
- * @param options
- * @param property
- * @param min
- * @param max
+ * https://tc39.es/ecma402/#sec-getstringorbooleanoption
+ * @param opts
+ * @param prop
+ * @param values
+ * @param trueValue
+ * @param falsyValue
  * @param fallback
  */
 
