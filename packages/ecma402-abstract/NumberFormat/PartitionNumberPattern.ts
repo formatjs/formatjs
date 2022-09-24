@@ -29,9 +29,9 @@ export function PartitionNumberPattern(
   if (isNaN(x)) {
     n = symbols.nan
   } else if (x == Number.POSITIVE_INFINITY) {
-    n = symbols.positiveInfinity
+    n = `${symbols.plusSign}${symbols.infinity}`
   } else if (x == Number.NEGATIVE_INFINITY) {
-    n = symbols.negativeInfinity
+    n = `${symbols.minusSign}${symbols.infinity}`
   } else {
     if (!SameValue(x, -0)) {
       if (!isFinite(x)) {

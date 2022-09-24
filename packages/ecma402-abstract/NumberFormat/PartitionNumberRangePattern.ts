@@ -60,7 +60,7 @@ export function PartitionNumberRangePattern(
   const symbols =
     internalSlots.dataLocaleData.numbers.symbols[internalSlots.numberingSystem]
 
-  let rangeSeparator = symbols.rangeSeparator
+  const rangeSeparator = symbols.timeSeparator
 
   result.push({type: 'literal', value: rangeSeparator, source: 'shared'})
 
