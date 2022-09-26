@@ -17,9 +17,6 @@
     "@formatjs/intl-localematcher": "workspace:*",
     "tslib": "2.4.0"
   },
-  "devDependencies": {
-    "@formatjs/intl-pluralrules": "workspace:*"
-  },
   "author": "Long Ho <holevietlong@gmail.com",
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
