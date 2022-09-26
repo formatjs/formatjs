@@ -19,7 +19,7 @@ export function PartitionNumberRangePattern(
 ) {
   const internalSlots = getInternalSlots(numberFormat)
   if (isNaN(Number(x)) || isNaN(Number(y))) {
-    throw new RangeError('Input mut be number')
+    throw new RangeError('Input must be a number')
   }
 
   if (isFinite(x)) {
@@ -31,11 +31,8 @@ export function PartitionNumberRangePattern(
       throw new RangeError('Y input must be bigger than X')
     }
   } else if (x == Number.POSITIVE_INFINITY) {
-    if (isFinite(y)) {
+    if (isFinite(y) || y == Number.NEGATIVE_INFINITY || SameValue(y, -0)) {
       throw new RangeError('Y input must be bigger than X')
-    } else if (y == Number.NEGATIVE_INFINITY) {
-      throw new RangeError('Y input must be bigger than X')
-    } else if (SameValue(y, -0)) {
     }
   } else if (SameValue(x, -0)) {
     if (isFinite(y) && y < 0) {
@@ -45,8 +42,8 @@ export function PartitionNumberRangePattern(
     }
   }
   let result: NumberFormatPart[] = []
-  let xResult = PartitionNumberPattern(numberFormat, x, {getInternalSlots})
-  let yResult = PartitionNumberPattern(numberFormat, y, {getInternalSlots})
+  const xResult = PartitionNumberPattern(numberFormat, x, {getInternalSlots})
+  const yResult = PartitionNumberPattern(numberFormat, y, {getInternalSlots})
   if (xResult === yResult) {
     return FormatApproximately(numberFormat, xResult, {getInternalSlots})
   }
