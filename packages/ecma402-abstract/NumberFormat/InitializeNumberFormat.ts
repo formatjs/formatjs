@@ -129,7 +129,7 @@ export function InitializeNumberFormat(
     1
   )
 
-  if (!(roundingIncrement in VALID_ROUND_INCREMENT_VALUES)) {
+  if (VALID_ROUND_INCREMENT_VALUES.indexOf(roundingIncrement) === -1) {
     throw new RangeError(
       `Invalid rounding increment value: ${roundingIncrement}.
       Valid values are ${VALID_ROUND_INCREMENT_VALUES}.`

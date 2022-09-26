@@ -14,10 +14,10 @@ export function GetStringOrBooleanOption<T extends object, K extends keyof T>(
   opts: T,
   prop: K,
   values: T[K][] | undefined,
-  trueValue: T[K],
-  falsyValue: T[K],
-  fallback: T[K]
-): T[K] {
+  trueValue: T[K] | boolean,
+  falsyValue: T[K] | boolean,
+  fallback: T[K] | boolean
+): T[K] | boolean {
   let value: any = opts[prop]
   if (value === undefined) {
     return fallback
@@ -37,7 +37,7 @@ export function GetStringOrBooleanOption<T extends object, K extends keyof T>(
     return fallback
   }
 
-  if (!(value in (values || []))) {
+  if ((values || []).indexOf(value) === -1) {
     throw new RangeError(`Invalid value ${value}`)
   }
 

@@ -28,23 +28,22 @@ export function PartitionNumberPattern(
 
   if (isNaN(x)) {
     n = symbols.nan
-  } else if (x == Number.POSITIVE_INFINITY) {
-    n = `${symbols.plusSign}${symbols.infinity}`
-  } else if (x == Number.NEGATIVE_INFINITY) {
-    n = `${symbols.minusSign}${symbols.infinity}`
+  } else if (x == Number.POSITIVE_INFINITY || x == Number.NEGATIVE_INFINITY) {
+    n = symbols.infinity
   } else {
     if (!SameValue(x, -0)) {
       if (!isFinite(x)) {
-        throw new Error('Input must be a mathematical number')
+        throw new Error('Input must be a mathematical value')
       }
       if (internalSlots.style == 'percent') {
-        x = x * 100
+        x *= 100
       }
-      const [exponent] = ComputeExponent(numberFormat, x, {getInternalSlots})
-      x = x * Math.pow(10, -exponent)
+      ;[exponent, magnitude] = ComputeExponent(numberFormat, x, {
+        getInternalSlots,
+      })
+      // Preserve more precision by doing multiplication when exponent is negative.
+      x = exponent < 0 ? x * 10 ** -exponent : x / 10 ** exponent
     }
-    // Preserve more precision by doing multiplication when exponent is negative.
-    x = exponent < 0 ? x * 10 ** -exponent : x / 10 ** exponent
     const formatNumberResult = FormatNumericToString(internalSlots, x)
     n = formatNumberResult.formattedString
     x = formatNumberResult.roundedNumber
