@@ -171,7 +171,7 @@ export function InitializeNumberFormat(
     'compactDisplay',
     'string',
     ['short', 'long'],
-    'long'
+    'short'
   )
 
   let defaultUseGrouping: UseGroupingType = 'auto'
