@@ -26,6 +26,13 @@ export type RoundingModeType =
   | 'halfTrunc'
   | 'halfEven'
 
+export type UnsignedRoundingMode =
+  | 'infinity'
+  | 'zero'
+  | 'half-infinity'
+  | 'half-zero'
+  | 'half-even'
+
 export type UseGroupingType = 'min2' | 'auto' | 'always' | boolean
 
 export interface NumberFormatDigitOptions {
