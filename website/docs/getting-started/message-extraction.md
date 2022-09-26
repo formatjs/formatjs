@@ -298,13 +298,13 @@ We also provide several [builtin formatters](../tooling/cli.md#builtin-formatter
 
 | TMS                                                                                        | `--format`  |
 | ------------------------------------------------------------------------------------------ | ----------- |
-| [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)     | `transifex` |
-| [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)       | `smartling` |
-| [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)              | `simple`    |
-| [Phrase](https://help.phrase.com/help/simple-json)                                         | `simple`    |
 | [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)               | `crowdin`   |
-| [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json)  | `lokalise`  |
-| [SimpleLocalize JSON](https://simplelocalize.io/docs/file-formats/simplelocalize-json/)    | `simple`    |
-| [POEditor Key-Value JSON](https://poeditor.com/localization/files/key-value-json)          | `simple`    |
+| [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)              | `simple`    |
 | [Localize's Simple JSON](https://developers.localizejs.com/docs/simple-json-import-export) | `simple`    |
 | [locize](https://docs.locize.com/integration/supported-formats#json-nested)                | `simple`    |
+| [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json)  | `lokalise`  |
+| [Phrase](https://help.phrase.com/help/simple-json)                                         | `simple`    |
+| [POEditor Key-Value JSON](https://poeditor.com/localization/files/key-value-json)          | `simple`    |
+| [SimpleLocalize JSON](https://simplelocalize.io/docs/file-formats/simplelocalize-json/)    | `simple`    |
+| [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)       | `smartling` |
+| [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)     | `transifex` |
