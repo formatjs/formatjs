@@ -25,7 +25,7 @@ export function GetStringOrBooleanOption<T extends object, K extends keyof T>(
   if (value === true) {
     return trueValue
   }
-  let valueBoolean = Boolean(value)
+  const valueBoolean = Boolean(value)
 
   if (valueBoolean === false) {
     return falsyValue

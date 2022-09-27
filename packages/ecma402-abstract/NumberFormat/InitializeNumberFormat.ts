@@ -121,7 +121,7 @@ export function InitializeNumberFormat(
     notation
   )
 
-  let roundingIncrement = GetNumberOption(
+  const roundingIncrement = GetNumberOption(
     options,
     'roundingIncrement',
     1,
@@ -156,7 +156,7 @@ export function InitializeNumberFormat(
 
   internalSlots.roundingIncrement = roundingIncrement
 
-  let trailingZeroDisplay = GetOption(
+  const trailingZeroDisplay = GetOption(
     options,
     'trailingZeroDisplay',
     'string',
@@ -166,7 +166,7 @@ export function InitializeNumberFormat(
 
   internalSlots.trailingZeroDisplay = trailingZeroDisplay
 
-  let compactDisplay = GetOption(
+  const compactDisplay = GetOption(
     options,
     'compactDisplay',
     'string',
