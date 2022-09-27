@@ -26,7 +26,7 @@ export type RoundingModeType =
   | 'halfTrunc'
   | 'halfEven'
 
-export type UnsignedRoundingMode =
+export type UnsignedRoundingModeType =
   | 'infinity'
   | 'zero'
   | 'half-infinity'

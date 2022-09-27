@@ -1,6 +1,6 @@
-import {RoundingModeType, UnsignedRoundingMode} from '../types/number'
+import {RoundingModeType, UnsignedRoundingModeType} from '../types/number'
 
-const negativeMapping: Record<RoundingModeType, UnsignedRoundingMode> = {
+const negativeMapping: Record<RoundingModeType, UnsignedRoundingModeType> = {
   ceil: 'zero',
   floor: 'infinity',
   expand: 'infinity',
@@ -12,7 +12,7 @@ const negativeMapping: Record<RoundingModeType, UnsignedRoundingMode> = {
   halfEven: 'half-even',
 }
 
-const positiveMapping: Record<RoundingModeType, UnsignedRoundingMode> = {
+const positiveMapping: Record<RoundingModeType, UnsignedRoundingModeType> = {
   ceil: 'infinity',
   floor: 'zero',
   expand: 'infinity',
@@ -27,7 +27,7 @@ const positiveMapping: Record<RoundingModeType, UnsignedRoundingMode> = {
 export function GetUnsignedRoundingMode(
   roundingMode: RoundingModeType,
   isNegative: boolean
-): UnsignedRoundingMode {
+): UnsignedRoundingModeType {
   if (isNegative) {
     return negativeMapping[roundingMode]
   }

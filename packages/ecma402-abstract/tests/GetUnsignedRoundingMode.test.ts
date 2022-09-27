@@ -1,8 +1,8 @@
 import {GetUnsignedRoundingMode} from '../NumberFormat/GetUnsignedRoundingMode'
-import {RoundingModeType, UnsignedRoundingMode} from '../types/number'
+import {RoundingModeType, UnsignedRoundingModeType} from '../types/number'
 
 describe('GetUnsignedRoundingMod', () => {
-  const negativeMapping: Record<RoundingModeType, UnsignedRoundingMode> = {
+  const negativeMapping: Record<RoundingModeType, UnsignedRoundingModeType> = {
     ceil: 'zero',
     floor: 'infinity',
     expand: 'infinity',
@@ -14,7 +14,7 @@ describe('GetUnsignedRoundingMod', () => {
     halfEven: 'half-even',
   }
 
-  const positiveMapping: Record<RoundingModeType, UnsignedRoundingMode> = {
+  const positiveMapping: Record<RoundingModeType, UnsignedRoundingModeType> = {
     ceil: 'infinity',
     floor: 'zero',
     expand: 'infinity',
@@ -27,26 +27,24 @@ describe('GetUnsignedRoundingMod', () => {
   }
 
   it('positive', () => {
-    Object.entries(positiveMapping).forEach(
-      ([roundingMode, unsignedRoundingMode]) => {
-        const foundUnsingedRoundingMode = GetUnsignedRoundingMode(
-          roundingMode as RoundingModeType,
-          false
-        )
-        expect(foundUnsingedRoundingMode).toEqual(unsignedRoundingMode)
-      }
-    )
+    Object.keys(positiveMapping).forEach(key => {
+      const roundingMode = key as RoundingModeType
+      const foundUnsingedRoundingMode = GetUnsignedRoundingMode(
+        roundingMode,
+        false
+      )
+      expect(foundUnsingedRoundingMode).toEqual(positiveMapping[roundingMode])
+    })
   })
 
   it('negative', () => {
-    Object.entries(negativeMapping).forEach(
-      ([roundingMode, unsignedRoundingMode]) => {
-        const foundUnsingedRoundingMode = GetUnsignedRoundingMode(
-          roundingMode as RoundingModeType,
-          true
-        )
-        expect(foundUnsingedRoundingMode).toEqual(unsignedRoundingMode)
-      }
-    )
+    Object.keys(negativeMapping).forEach(key => {
+      const roundingMode = key as RoundingModeType
+      const foundUnsingedRoundingMode = GetUnsignedRoundingMode(
+        roundingMode,
+        true
+      )
+      expect(foundUnsingedRoundingMode).toEqual(negativeMapping[roundingMode])
+    })
   })
 })
