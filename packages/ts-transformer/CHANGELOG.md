@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.10.0...@formatjs/ts-transformer@3.10.1) (2022-09-28)
+
+### Reverts
+
+* Revert "chore(deps): bump chalk from 4.1.2 to 5.0.1 (#3794)" ([f1af8b1](https://github.com/formatjs/formatjs/commit/f1af8b13433d1d98ed55addf5450dcafa4b8bdae)), closes [#3794](https://github.com/formatjs/formatjs/issues/3794)
+
 # [3.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.9.11...@formatjs/ts-transformer@3.10.0) (2022-08-27)
 
 ### Features
