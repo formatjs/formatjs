@@ -299,7 +299,7 @@ it('GH#2887', function () {
   ).toBe('€30')
 })
 
-it('correctly set default internal slots', () => {
+it('correctly set default options', () => {
   const nf = new NumberFormat('en', {minimumFractionDigits: 1})
   expect(nf.resolvedOptions()).toEqual({
     locale: 'en',

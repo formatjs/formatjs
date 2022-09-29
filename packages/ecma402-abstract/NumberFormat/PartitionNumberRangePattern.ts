@@ -18,7 +18,7 @@ export function PartitionNumberRangePattern(
   }
 ) {
   const internalSlots = getInternalSlots(numberFormat)
-  if (isNaN(Number(x)) || isNaN(Number(y))) {
+  if (isNaN(x) || isNaN(y)) {
     throw new RangeError('Input must be a number')
   }
 
