@@ -131,8 +131,7 @@ export function InitializeNumberFormat(
 
   if (VALID_ROUND_INCREMENT_VALUES.indexOf(roundingIncrement) === -1) {
     throw new RangeError(
-      `Invalid rounding increment value: ${roundingIncrement}.
-      Valid values are ${VALID_ROUND_INCREMENT_VALUES}.`
+      `Invalid rounding increment value: ${roundingIncrement}.\nValid values are ${VALID_ROUND_INCREMENT_VALUES}.`
     )
   }
 
@@ -150,7 +149,7 @@ export function InitializeNumberFormat(
     internalSlots.maximumFractionDigits !== internalSlots.minimumFractionDigits
   ) {
     throw new RangeError(
-      'With roundingIncrement = 1, maximumFractionDigits and minimumFractionDigits must be equal'
+      'With roundingIncrement > 1, maximumFractionDigits and minimumFractionDigits must be equal.'
     )
   }
 
