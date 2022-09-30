@@ -109,7 +109,7 @@ export function interpolateName(
       // `hash` and `contenthash` are same in `loader-utils` context
       // let's keep `hash` for backward compatibility
       .replace(
-        /\[(?:([^:\]]+):)?(?:hash|contenthash)(?::([a-z]+\d*))?(?::(\d+))?\]/gi,
+        /\[(?:([^:\]]+):)?(?:hash|contenthash)(?::([a-z]+\d*[a-z]*))?(?::(\d+))?\]/gi,
         (_, hashType, digestType, maxLength) =>
           getHashDigest(content, hashType, digestType, parseInt(maxLength, 10))
       )

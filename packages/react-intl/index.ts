@@ -127,3 +127,4 @@ export {
   FormattedListParts,
 } from './src/components/createFormattedComponent'
 export type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+export type {PrimitiveType} from 'intl-messageformat'

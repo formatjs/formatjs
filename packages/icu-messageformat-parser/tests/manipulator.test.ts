@@ -49,3 +49,15 @@ test('should hoist plural & select and tag', function () {
     )
   ).toMatchSnapshot()
 })
+
+test('should hoist 1 plural with number', function () {
+  expect(
+    printAST(
+      hoistSelectors(
+        parse(
+          '{count, plural, one {{count, number} cat} other {{count, number} cats}}'
+        )
+      )
+    )
+  ).toBe('{count,plural,one{{count, number} cat} other{{count, number} cats}}')
+})

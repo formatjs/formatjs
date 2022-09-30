@@ -10,7 +10,7 @@ function cloneDeep<T>(obj: T): T {
     // @ts-expect-error meh
     return [...obj.map(cloneDeep)]
   }
-  if (typeof obj === 'object') {
+  if (obj !== null && typeof obj === 'object') {
     // @ts-expect-error meh
     return Object.keys(obj).reduce((cloned, k) => {
       // @ts-expect-error meh
