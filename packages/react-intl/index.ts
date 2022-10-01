@@ -99,6 +99,7 @@ export const FormattedNumber: React.FC<
       value: number | bigint
     }
 > = createFormattedComponent('formatNumber')
+// @ts-ignore issue w/ TS Intl types
 export const FormattedList: React.FC<
   IntlListFormatOptions & {
     value: readonly React.ReactNode[]
