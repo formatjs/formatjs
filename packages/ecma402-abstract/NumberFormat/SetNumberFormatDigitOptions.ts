@@ -23,7 +23,7 @@ export function SetNumberFormatDigitOptions(
   let mnsd = opts.minimumSignificantDigits
   let mxsd = opts.maximumSignificantDigits
   internalSlots.minimumIntegerDigits = mnid
-  let roundingPriority = GetOption(
+  const roundingPriority = GetOption(
     opts,
     'roundingPriority',
     'string',
@@ -37,8 +37,8 @@ export function SetNumberFormatDigitOptions(
   let needSd = true
   let needFd = true
   if (roundingPriority === 'auto') {
-    needSd = hasFd
-    if (hasSd || notation === 'compact') {
+    needSd = hasSd
+    if (hasSd || (!hasFd && notation === 'compact')) {
       needFd = false
     }
   }
@@ -73,7 +73,7 @@ export function SetNumberFormatDigitOptions(
       internalSlots.maximumFractionDigits = mxfdDefault
     }
   }
-  if (needFd || needFd) {
+  if (needSd || needFd) {
     if (roundingPriority === 'morePrecision') {
       internalSlots.roundingType = 'morePrecision'
     } else if (roundingPriority === 'lessPrecision') {

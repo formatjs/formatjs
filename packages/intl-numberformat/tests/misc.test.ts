@@ -304,10 +304,8 @@ it('correctly set default options', () => {
   expect(nf.resolvedOptions()).toEqual({
     locale: 'en',
     maximumFractionDigits: 3,
-    maximumSignificantDigits: 21,
     minimumFractionDigits: 1,
     minimumIntegerDigits: 1,
-    minimumSignificantDigits: 1,
     notation: 'standard',
     numberingSystem: 'latn',
     roundingPriority: 'auto',
