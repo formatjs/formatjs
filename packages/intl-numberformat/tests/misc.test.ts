@@ -207,8 +207,8 @@ it('chose compact pattern with rounded number', () => {
     notation: 'compact',
   })
 
-  expect(nf.format(999.995)).toEqual('1K')
-  expect(nf.format(999995000)).toEqual('1B')
+  expect(nf.format(999.995)).toEqual('1.00K')
+  expect(nf.format(999995000)).toEqual('1.00B')
 })
 
 describe('For wrong options NumberFormat correctly throws exception', () => {
