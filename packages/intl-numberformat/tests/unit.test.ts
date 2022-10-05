@@ -64,40 +64,67 @@ function test() {
               describe(`signDisplay/${signDisplay}`, function () {
                 NOTATIONS.forEach(notation =>
                   describe(`notation/${notation}`, function () {
-                    COMPACT_DISPLAYS.forEach(compactDisplay =>
-                      it(`compactDisplay/${compactDisplay}`, function () {
+                    COMPACT_DISPLAYS.forEach(compactDisplay => {
+                      const numberFormatBit = new NumberFormat(locale, {
+                        style: 'unit',
+                        unit: 'bit',
+                        unitDisplay,
+                        signDisplay,
+                        notation,
+                        compactDisplay,
+                      })
+                      const numberFormatCelsius = new NumberFormat(locale, {
+                        style: 'unit',
+                        unit: 'celsius',
+                        unitDisplay,
+                        signDisplay,
+                        notation,
+                        compactDisplay,
+                      })
+                      const numberFormatGallon = new NumberFormat(locale, {
+                        style: 'unit',
+                        unit: 'gallon',
+                        unitDisplay,
+                        signDisplay,
+                        notation,
+                        compactDisplay,
+                      })
+                      it(`compactDisplay/${compactDisplay} formatToParts`, function () {
                         expect(
-                          new NumberFormat(locale, {
-                            style: 'unit',
-                            unit: 'bit',
-                            unitDisplay,
-                            signDisplay,
-                            notation,
-                            compactDisplay,
-                          }).formatToParts(10000)
+                          numberFormatBit.formatToParts(10000)
                         ).toMatchSnapshot()
                         expect(
-                          new NumberFormat(locale, {
-                            style: 'unit',
-                            unit: 'celsius',
-                            unitDisplay,
-                            signDisplay,
-                            notation,
-                            compactDisplay,
-                          }).formatToParts(10000)
+                          numberFormatCelsius.formatToParts(10000)
                         ).toMatchSnapshot()
                         expect(
-                          new NumberFormat(locale, {
-                            style: 'unit',
-                            unit: 'gallon',
-                            unitDisplay,
-                            signDisplay,
-                            notation,
-                            compactDisplay,
-                          }).formatToParts(10000)
+                          numberFormatGallon.formatToParts(10000)
                         ).toMatchSnapshot()
                       })
-                    )
+
+                      it(`compactDisplay/${compactDisplay} formatRange`, function () {
+                        expect(
+                          numberFormatBit.formatRange(10000, 20000)
+                        ).toMatchSnapshot()
+                        expect(
+                          numberFormatCelsius.formatRange(10000, 20000)
+                        ).toMatchSnapshot()
+                        expect(
+                          numberFormatGallon.formatRange(10000, 20000)
+                        ).toMatchSnapshot()
+                      })
+
+                      it(`compactDisplay/${compactDisplay} formatRangeToParts`, function () {
+                        expect(
+                          numberFormatBit.formatRangeToParts(10000, 20000)
+                        ).toMatchSnapshot()
+                        expect(
+                          numberFormatCelsius.formatRangeToParts(10000, 20000)
+                        ).toMatchSnapshot()
+                        expect(
+                          numberFormatGallon.formatRangeToParts(10000, 20000)
+                        ).toMatchSnapshot()
+                      })
+                    })
                   })
                 )
               })

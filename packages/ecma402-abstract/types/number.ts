@@ -273,3 +273,7 @@ export interface NumberFormatPart {
   value: string
   source?: string
 }
+
+export interface NumberRangeToParts extends NumberFormatPart {
+  result: string
+}

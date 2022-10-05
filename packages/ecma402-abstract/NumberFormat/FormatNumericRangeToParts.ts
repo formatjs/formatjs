@@ -1,4 +1,4 @@
-import {NumberFormatInternal} from '../types/number'
+import {NumberFormatInternal, NumberRangeToParts} from '../types/number'
 import {PartitionNumberRangePattern} from './PartitionNumberRangePattern'
 
 /**
@@ -13,7 +13,7 @@ export function FormatNumericRangeToParts(
   }: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
-) {
+): NumberRangeToParts[] {
   const parts = PartitionNumberRangePattern(numberFormat, x, y, {
     getInternalSlots,
   })
