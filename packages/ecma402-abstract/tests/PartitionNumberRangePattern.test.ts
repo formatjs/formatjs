@@ -86,7 +86,7 @@ describe('PartitionNumberRangePattern', () => {
     })
     expect(result).toMatchObject([
       {source: 'startRange', type: 'integer', value: '0'},
-      {source: 'shared', type: 'literal', value: ':'},
+      {source: 'shared', type: 'literal', value: '-'},
       {source: 'endRange', type: 'integer', value: '1'},
     ])
   })
