@@ -2,6 +2,7 @@ import {
   NumberFormatInternal,
   NumberFormatOptions,
   NumberFormatLocaleInternalData,
+  UseGroupingType,
 } from '../types/number'
 import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
 import {GetOption} from '../GetOption'
@@ -11,6 +12,12 @@ import {CurrencyDigits} from './CurrencyDigits'
 import {SetNumberFormatDigitOptions} from './SetNumberFormatDigitOptions'
 import {invariant} from '../utils'
 import {CoerceOptionsToObject} from '../CoerceOptionsToObject'
+import {GetNumberOption} from '../GetNumberOption'
+import {GetStringOrBooleanOption} from '../GetStringOrBooleanOption'
+
+const VALID_ROUND_INCREMENT_VALUES = [
+  1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000,
+]
 
 /**
  * https://tc39.es/ecma402/#sec-initializenumberformat
@@ -114,6 +121,50 @@ export function InitializeNumberFormat(
     notation
   )
 
+  const roundingIncrement = GetNumberOption(
+    options,
+    'roundingIncrement',
+    1,
+    5000,
+    1
+  )
+
+  if (VALID_ROUND_INCREMENT_VALUES.indexOf(roundingIncrement) === -1) {
+    throw new RangeError(
+      `Invalid rounding increment value: ${roundingIncrement}.\nValid values are ${VALID_ROUND_INCREMENT_VALUES}.`
+    )
+  }
+
+  if (
+    roundingIncrement !== 1 &&
+    internalSlots.roundingType !== 'fractionDigits'
+  ) {
+    throw new TypeError(
+      `For roundingIncrement > 1 only fractionDigits is a valid roundingType`
+    )
+  }
+
+  if (
+    roundingIncrement !== 1 &&
+    internalSlots.maximumFractionDigits !== internalSlots.minimumFractionDigits
+  ) {
+    throw new RangeError(
+      'With roundingIncrement > 1, maximumFractionDigits and minimumFractionDigits must be equal.'
+    )
+  }
+
+  internalSlots.roundingIncrement = roundingIncrement
+
+  const trailingZeroDisplay = GetOption(
+    options,
+    'trailingZeroDisplay',
+    'string',
+    ['auto', 'stripIfInteger'],
+    'auto'
+  )
+
+  internalSlots.trailingZeroDisplay = trailingZeroDisplay
+
   const compactDisplay = GetOption(
     options,
     'compactDisplay',
@@ -121,27 +172,48 @@ export function InitializeNumberFormat(
     ['short', 'long'],
     'short'
   )
+
+  let defaultUseGrouping: UseGroupingType = 'auto'
+
   if (notation === 'compact') {
     internalSlots.compactDisplay = compactDisplay
+    defaultUseGrouping = 'min2'
   }
 
-  const useGrouping = GetOption(
+  internalSlots.useGrouping = GetStringOrBooleanOption(
     options,
     'useGrouping',
-    'boolean',
-    undefined,
-    true
+    ['min2', 'auto', 'always'],
+    'always',
+    false,
+    defaultUseGrouping
   )
-  internalSlots.useGrouping = useGrouping
 
-  const signDisplay = GetOption(
+  internalSlots.signDisplay = GetOption(
     options,
     'signDisplay',
     'string',
-    ['auto', 'never', 'always', 'exceptZero'],
+    ['auto', 'never', 'always', 'exceptZero', 'negative'],
     'auto'
   )
-  internalSlots.signDisplay = signDisplay
+
+  internalSlots.roundingMode = GetOption(
+    options,
+    'roundingMode',
+    'string',
+    [
+      'ceil',
+      'floor',
+      'expand',
+      'trunc',
+      'halfCeil',
+      'halfFloor',
+      'halfExpand',
+      'halfTrunc',
+      'halfEven',
+    ],
+    'halfExpand'
+  )
 
   return nf
 }

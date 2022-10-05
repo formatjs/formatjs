@@ -119,6 +119,13 @@ defineProperty(NumberFormat.prototype, 'resolvedOptions', {
         ro[key] = value
       }
     }
+    if (internalSlots.roundingType === 'morePrecision') {
+      ro.roundingPriority = 'morePrecision'
+    } else if (internalSlots.roundingType === 'lessPrecision') {
+      ro.roundingPriority = 'lessPrecision'
+    } else {
+      ro.roundingPriority = 'auto'
+    }
     return ro as any
   },
 })
