@@ -1,7 +1,7 @@
 import {FormatNumericRange} from '../NumberFormat/FormatNumericRange'
 import {getInternalSlots} from './utils'
 
-describe('FormatApproximately', () => {
+describe('FormatNumericRange', () => {
   const numberFormat: Intl.NumberFormat = new Intl.NumberFormat('it')
 
   it('correctly return numeric range', () => {
