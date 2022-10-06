@@ -21,3 +21,4 @@ export const longLessPenalty = 8
 export const longMorePenalty = 6
 export const shortLessPenalty = 6
 export const shortMorePenalty = 3
+export const offsetPenalty = 1
