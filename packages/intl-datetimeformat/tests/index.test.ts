@@ -231,6 +231,55 @@ describe('Intl.DateTimeFormat', function () {
     })
     expect(dtf.format(date)).toBe('2020年2月01日 下午06:10:10')
   })
+
+  describe('Basic matcher', function () {
+    const date = new Date(2020, 1, 1, 10, 10, 10, 0)
+
+    describe('timeZoneName', () => {
+      const timezoneTests = [
+        {timeZoneName: 'long', result: 'Feb 1, 2020, 6:10:10 PM GMT+08:00'},
+        {timeZoneName: 'short', result: 'Feb 1, 2020, 6:10:10 PM GMT+8'},
+        {
+          timeZoneName: 'longGeneric',
+          result: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+        },
+        {
+          timeZoneName: 'shortGeneric',
+          result: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+        },
+        {
+          timeZoneName: 'longOffset',
+          result: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+        },
+        {
+          timeZoneName: 'shortOffset',
+          result: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+        },
+      ]
+
+      timezoneTests.forEach(({timeZoneName, result}) => {
+        it(`timeZoneName ${timeZoneName}`, () => {
+          const dtf = new DateTimeFormat('en', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            hourCycle: 'h12',
+            localeMatcher: 'lookup',
+            formatMatcher: 'basic',
+            timeZone: 'Asia/Kuala_Lumpur',
+            // @ts-ignore
+            timeZoneName,
+          })
+          expect(dtf.format(date)).toBe(result)
+        })
+      })
+    })
+  })
+
   it('test #2609, should handle Etc/GMT-14 short', function () {
     const date = new Date(2020, 1, 1, 10, 10, 10, 0)
     const dtf = new DateTimeFormat('zh-Hans', {
