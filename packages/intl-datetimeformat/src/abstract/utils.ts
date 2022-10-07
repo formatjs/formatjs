@@ -8,9 +8,11 @@ export const DATE_TIME_PROPS: Array<
   'year',
   'month',
   'day',
+  'dayPeriod',
   'hour',
   'minute',
   'second',
+  'fractionalSecondDigits',
   'timeZoneName',
 ]
 
