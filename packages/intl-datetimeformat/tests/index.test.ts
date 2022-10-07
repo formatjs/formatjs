@@ -237,44 +237,73 @@ describe('Intl.DateTimeFormat', function () {
 
     describe('timeZoneName', () => {
       const timezoneTests = [
-        {timeZoneName: 'long', result: 'Feb 1, 2020, 6:10:10 PM GMT+08:00'},
-        {timeZoneName: 'short', result: 'Feb 1, 2020, 6:10:10 PM GMT+8'},
+        {
+          timeZoneName: 'long',
+          results: {
+            en: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+            'zh-Hans': '2020年2月月1日 GMT+08:00 06:10:10',
+          },
+        },
+        {
+          timeZoneName: 'short',
+          results: {
+            en: 'Feb 1, 2020, 6:10:10 PM GMT+8',
+            'zh-Hans': '2020年2月月1日 GMT+8 06:10:10',
+          },
+        },
         {
           timeZoneName: 'longGeneric',
-          result: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+          results: {
+            en: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+            'zh-Hans': '2020年2月月1日 GMT+08:00 06:10:10',
+          },
         },
         {
           timeZoneName: 'shortGeneric',
-          result: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+          results: {
+            en: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+            'zh-Hans': '2020年2月月1日 GMT+08:00 06:10:10',
+          },
         },
         {
           timeZoneName: 'longOffset',
-          result: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+          results: {
+            en: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+            'zh-Hans': '2020年2月月1日 GMT+08:00 06:10:10',
+          },
         },
         {
           timeZoneName: 'shortOffset',
-          result: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+          results: {
+            en: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
+            'zh-Hans': '2020年2月月1日 GMT+08:00 06:10:10',
+          },
         },
       ]
 
-      timezoneTests.forEach(({timeZoneName, result}) => {
-        it(`timeZoneName ${timeZoneName}`, () => {
-          const dtf = new DateTimeFormat('en', {
-            year: 'numeric',
-            month: 'short',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true,
-            hourCycle: 'h12',
-            localeMatcher: 'lookup',
-            formatMatcher: 'basic',
-            timeZone: 'Asia/Kuala_Lumpur',
-            // @ts-ignore
-            timeZoneName,
+      timezoneTests.forEach(({timeZoneName, results}) => {
+        describe(`timeZoneName ${timeZoneName}`, () => {
+          Object.keys(results).forEach(locale => {
+            it(`locale ${locale}`, () => {
+              const dtf = new DateTimeFormat(locale, {
+                year: 'numeric',
+                month: 'short',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true,
+                hourCycle: 'h12',
+                localeMatcher: 'lookup',
+                timeZone: 'Asia/Kuala_Lumpur',
+                formatMatcher: 'basic',
+                // @ts-ignore
+                timeZoneName,
+              })
+              // @ts-ignore
+              expect(dtf.format(date)).toBe(results[locale])
+            })
           })
-          expect(dtf.format(date)).toBe(result)
         })
       })
     })
