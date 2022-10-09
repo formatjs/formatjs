@@ -92,14 +92,12 @@ export const FormattedTime: React.FC<
       children?(formattedTime: string): React.ReactElement | null
     }
 > = createFormattedComponent('formatTime')
-// @ts-ignore issue w/ TS Intl types
 export const FormattedNumber: React.FC<
   NumberFormatOptions &
     CustomFormatConfig & {
       value: number | bigint
     }
 > = createFormattedComponent('formatNumber')
-// @ts-ignore issue w/ TS Intl types
 export const FormattedList: React.FC<
   IntlListFormatOptions & {
     value: readonly React.ReactNode[]
