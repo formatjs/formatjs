@@ -198,7 +198,7 @@ describe('<FormattedMessage>', () => {
           defaultMessage: 'Hello, <b>{name}</b>!',
           values: {
             name: 'Jest',
-            b: (name: React.ReactNode[]) => <b data-testid="b">{name}</b>,
+            b: name => <b data-testid="b">{name}</b>,
           },
         },
         providerProps
@@ -254,8 +254,8 @@ describe('<FormattedMessage>', () => {
           defaultMessage: 'Hello, <b>{name}<i>!</i></b>',
           values: {
             name: 'Jest',
-            b: (chunks: any[]) => <b>{chunks}</b>,
-            i: (msg: React.ReactNode[]) => <i>{msg}</i>,
+            b: chunks => <b>{chunks}</b>,
+            i: msg => <i>{msg}</i>,
           },
         },
         providerProps
@@ -271,7 +271,7 @@ describe('<FormattedMessage>', () => {
           values: {
             name: 'Jest',
             b: (chunks: any) => <b>{chunks}</b>,
-            i: (msg: React.ReactNode[]) => <i>{msg}</i>,
+            i: msg => <i>{msg}</i>,
           },
         },
         providerProps
