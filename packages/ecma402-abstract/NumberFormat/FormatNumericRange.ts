@@ -18,12 +18,5 @@ export function FormatNumericRange(
     getInternalSlots,
   })
 
-  return parts
-    .map(part => {
-      if (part.source === 'shared') {
-        return ` ${part.value} `
-      }
-      return part.value
-    })
-    .join('')
+  return parts.map(part => part.value).join('')
 }

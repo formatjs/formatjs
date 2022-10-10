@@ -17,7 +17,6 @@ export function PartitionNumberRangePattern(
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
 ) {
-  const internalSlots = getInternalSlots(numberFormat)
   if (isNaN(x) || isNaN(y)) {
     throw new RangeError('Input must be a number')
   }
@@ -54,12 +53,7 @@ export function PartitionNumberRangePattern(
 
   result = result.concat(xResult)
 
-  const symbols =
-    internalSlots.dataLocaleData.numbers.symbols[internalSlots.numberingSystem]
-
-  const rangeSeparator = symbols.minusSign
-
-  result.push({type: 'literal', value: rangeSeparator, source: 'shared'})
+  result.push({type: 'literal', value: '–', source: 'shared'})
 
   for (const r of yResult) {
     r.source = 'endRange'
