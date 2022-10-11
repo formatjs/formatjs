@@ -8,9 +8,11 @@ export const DATE_TIME_PROPS: Array<
   'year',
   'month',
   'day',
+  'dayPeriod',
   'hour',
   'minute',
   'second',
+  'fractionalSecondDigits',
   'timeZoneName',
 ]
 
@@ -21,3 +23,4 @@ export const longLessPenalty = 8
 export const longMorePenalty = 6
 export const shortLessPenalty = 6
 export const shortMorePenalty = 3
+export const offsetPenalty = 1
