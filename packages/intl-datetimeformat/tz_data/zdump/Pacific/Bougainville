@@ -1,0 +1,20 @@
+/zic/Pacific/Bougainville  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Bougainville  -67768040609778137 (gmtime failed) = -67768040609778137 (localtime failed)
+/zic/Pacific/Bougainville  -67768040609778136 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=37336
+/zic/Pacific/Bougainville  -67768040609740801 (gmtime failed) = Thu Jan  1 10:22:15 -2147481748 LMT isdst=0 gmtoff=37336
+/zic/Pacific/Bougainville  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 10:22:16 -2147481748 LMT isdst=0 gmtoff=37336
+/zic/Pacific/Bougainville  Wed Dec 31 13:37:43 1879 UT = Wed Dec 31 23:59:59 1879 LMT isdst=0 gmtoff=37336
+/zic/Pacific/Bougainville  Wed Dec 31 13:37:44 1879 UT = Wed Dec 31 23:26:16 1879 PMMT isdst=0 gmtoff=35312
+/zic/Pacific/Bougainville  Mon Dec 31 14:11:27 1894 UT = Mon Dec 31 23:59:59 1894 PMMT isdst=0 gmtoff=35312
+/zic/Pacific/Bougainville  Mon Dec 31 14:11:28 1894 UT = Tue Jan  1 00:11:28 1895 +10 isdst=0 gmtoff=36000
+/zic/Pacific/Bougainville  Tue Jun 30 13:59:59 1942 UT = Tue Jun 30 23:59:59 1942 +10 isdst=0 gmtoff=36000
+/zic/Pacific/Bougainville  Tue Jun 30 14:00:00 1942 UT = Tue Jun 30 23:00:00 1942 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Bougainville  Mon Aug 20 14:59:59 1945 UT = Mon Aug 20 23:59:59 1945 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Bougainville  Mon Aug 20 15:00:00 1945 UT = Tue Aug 21 01:00:00 1945 +10 isdst=0 gmtoff=36000
+/zic/Pacific/Bougainville  Sat Dec 27 15:59:59 2014 UT = Sun Dec 28 01:59:59 2014 +10 isdst=0 gmtoff=36000
+/zic/Pacific/Bougainville  Sat Dec 27 16:00:00 2014 UT = Sun Dec 28 03:00:00 2014 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Bougainville  Wed Dec 31 12:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Bougainville  Wed Dec 31 13:00:00 2147485547 UT = 67768036191637200 (localtime failed)
+/zic/Pacific/Bougainville  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Bougainville  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Bougainville  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

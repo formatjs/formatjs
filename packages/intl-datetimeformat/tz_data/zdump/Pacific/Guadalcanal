@@ -1,0 +1,12 @@
+/zic/Pacific/Guadalcanal  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Guadalcanal  -67768040609779189 (gmtime failed) = -67768040609779189 (localtime failed)
+/zic/Pacific/Guadalcanal  -67768040609779188 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=38388
+/zic/Pacific/Guadalcanal  -67768040609740801 (gmtime failed) = Thu Jan  1 10:39:47 -2147481748 LMT isdst=0 gmtoff=38388
+/zic/Pacific/Guadalcanal  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 10:39:48 -2147481748 LMT isdst=0 gmtoff=38388
+/zic/Pacific/Guadalcanal  Mon Sep 30 13:20:11 1912 UT = Mon Sep 30 23:59:59 1912 LMT isdst=0 gmtoff=38388
+/zic/Pacific/Guadalcanal  Mon Sep 30 13:20:12 1912 UT = Tue Oct  1 00:20:12 1912 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Guadalcanal  Wed Dec 31 12:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Guadalcanal  Wed Dec 31 13:00:00 2147485547 UT = 67768036191637200 (localtime failed)
+/zic/Pacific/Guadalcanal  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Guadalcanal  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Guadalcanal  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

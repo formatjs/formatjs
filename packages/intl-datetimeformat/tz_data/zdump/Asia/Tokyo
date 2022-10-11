@@ -1,0 +1,28 @@
+/zic/Asia/Tokyo  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Tokyo  -67768040609774340 (gmtime failed) = -67768040609774340 (localtime failed)
+/zic/Asia/Tokyo  -67768040609774339 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=33539
+/zic/Asia/Tokyo  -67768040609740801 (gmtime failed) = Thu Jan  1 09:18:58 -2147481748 LMT isdst=0 gmtoff=33539
+/zic/Asia/Tokyo  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 09:18:59 -2147481748 LMT isdst=0 gmtoff=33539
+/zic/Asia/Tokyo  Sat Dec 31 14:59:59 1887 UT = Sun Jan  1 00:18:58 1888 LMT isdst=0 gmtoff=33539
+/zic/Asia/Tokyo  Sat Dec 31 15:00:00 1887 UT = Sun Jan  1 00:00:00 1888 JST isdst=0 gmtoff=32400
+/zic/Asia/Tokyo  Sat May  1 14:59:59 1948 UT = Sat May  1 23:59:59 1948 JST isdst=0 gmtoff=32400
+/zic/Asia/Tokyo  Sat May  1 15:00:00 1948 UT = Sun May  2 01:00:00 1948 JDT isdst=1 gmtoff=36000
+/zic/Asia/Tokyo  Sat Sep 11 14:59:59 1948 UT = Sun Sep 12 00:59:59 1948 JDT isdst=1 gmtoff=36000
+/zic/Asia/Tokyo  Sat Sep 11 15:00:00 1948 UT = Sun Sep 12 00:00:00 1948 JST isdst=0 gmtoff=32400
+/zic/Asia/Tokyo  Sat Apr  2 14:59:59 1949 UT = Sat Apr  2 23:59:59 1949 JST isdst=0 gmtoff=32400
+/zic/Asia/Tokyo  Sat Apr  2 15:00:00 1949 UT = Sun Apr  3 01:00:00 1949 JDT isdst=1 gmtoff=36000
+/zic/Asia/Tokyo  Sat Sep 10 14:59:59 1949 UT = Sun Sep 11 00:59:59 1949 JDT isdst=1 gmtoff=36000
+/zic/Asia/Tokyo  Sat Sep 10 15:00:00 1949 UT = Sun Sep 11 00:00:00 1949 JST isdst=0 gmtoff=32400
+/zic/Asia/Tokyo  Sat May  6 14:59:59 1950 UT = Sat May  6 23:59:59 1950 JST isdst=0 gmtoff=32400
+/zic/Asia/Tokyo  Sat May  6 15:00:00 1950 UT = Sun May  7 01:00:00 1950 JDT isdst=1 gmtoff=36000
+/zic/Asia/Tokyo  Sat Sep  9 14:59:59 1950 UT = Sun Sep 10 00:59:59 1950 JDT isdst=1 gmtoff=36000
+/zic/Asia/Tokyo  Sat Sep  9 15:00:00 1950 UT = Sun Sep 10 00:00:00 1950 JST isdst=0 gmtoff=32400
+/zic/Asia/Tokyo  Sat May  5 14:59:59 1951 UT = Sat May  5 23:59:59 1951 JST isdst=0 gmtoff=32400
+/zic/Asia/Tokyo  Sat May  5 15:00:00 1951 UT = Sun May  6 01:00:00 1951 JDT isdst=1 gmtoff=36000
+/zic/Asia/Tokyo  Sat Sep  8 14:59:59 1951 UT = Sun Sep  9 00:59:59 1951 JDT isdst=1 gmtoff=36000
+/zic/Asia/Tokyo  Sat Sep  8 15:00:00 1951 UT = Sun Sep  9 00:00:00 1951 JST isdst=0 gmtoff=32400
+/zic/Asia/Tokyo  Wed Dec 31 14:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 JST isdst=0 gmtoff=32400
+/zic/Asia/Tokyo  Wed Dec 31 15:00:00 2147485547 UT = 67768036191644400 (localtime failed)
+/zic/Asia/Tokyo  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Tokyo  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Tokyo  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

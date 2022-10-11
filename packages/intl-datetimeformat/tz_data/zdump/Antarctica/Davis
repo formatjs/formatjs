@@ -1,0 +1,22 @@
+/zic/Antarctica/Davis  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Antarctica/Davis  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Antarctica/Davis  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 -00 isdst=0 gmtoff=0
+/zic/Antarctica/Davis  Sat Jan 12 23:59:59 1957 UT = Sat Jan 12 23:59:59 1957 -00 isdst=0 gmtoff=0
+/zic/Antarctica/Davis  Sun Jan 13 00:00:00 1957 UT = Sun Jan 13 07:00:00 1957 +07 isdst=0 gmtoff=25200
+/zic/Antarctica/Davis  Sat Oct 31 16:59:59 1964 UT = Sat Oct 31 23:59:59 1964 +07 isdst=0 gmtoff=25200
+/zic/Antarctica/Davis  Sat Oct 31 17:00:00 1964 UT = Sat Oct 31 17:00:00 1964 -00 isdst=0 gmtoff=0
+/zic/Antarctica/Davis  Fri Jan 31 23:59:59 1969 UT = Fri Jan 31 23:59:59 1969 -00 isdst=0 gmtoff=0
+/zic/Antarctica/Davis  Sat Feb  1 00:00:00 1969 UT = Sat Feb  1 07:00:00 1969 +07 isdst=0 gmtoff=25200
+/zic/Antarctica/Davis  Sat Oct 17 18:59:59 2009 UT = Sun Oct 18 01:59:59 2009 +07 isdst=0 gmtoff=25200
+/zic/Antarctica/Davis  Sat Oct 17 19:00:00 2009 UT = Sun Oct 18 00:00:00 2009 +05 isdst=0 gmtoff=18000
+/zic/Antarctica/Davis  Wed Mar 10 19:59:59 2010 UT = Thu Mar 11 00:59:59 2010 +05 isdst=0 gmtoff=18000
+/zic/Antarctica/Davis  Wed Mar 10 20:00:00 2010 UT = Thu Mar 11 03:00:00 2010 +07 isdst=0 gmtoff=25200
+/zic/Antarctica/Davis  Thu Oct 27 18:59:59 2011 UT = Fri Oct 28 01:59:59 2011 +07 isdst=0 gmtoff=25200
+/zic/Antarctica/Davis  Thu Oct 27 19:00:00 2011 UT = Fri Oct 28 00:00:00 2011 +05 isdst=0 gmtoff=18000
+/zic/Antarctica/Davis  Tue Feb 21 19:59:59 2012 UT = Wed Feb 22 00:59:59 2012 +05 isdst=0 gmtoff=18000
+/zic/Antarctica/Davis  Tue Feb 21 20:00:00 2012 UT = Wed Feb 22 03:00:00 2012 +07 isdst=0 gmtoff=25200
+/zic/Antarctica/Davis  Wed Dec 31 16:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +07 isdst=0 gmtoff=25200
+/zic/Antarctica/Davis  Wed Dec 31 17:00:00 2147485547 UT = 67768036191651600 (localtime failed)
+/zic/Antarctica/Davis  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Antarctica/Davis  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Antarctica/Davis  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

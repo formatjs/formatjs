@@ -90,16 +90,17 @@ ts_compile(
 genrule(
     name = "tz_data_extract",
     srcs = [
-        "tz_data.tar.gz"
+        ":tz_install/tz_data.tar.gz"
     ],
-    outs = ["tz_data/zdump/%s" % zone for zone in ZONES] + ["tz_data/backward"],
-    cmd = "tar -xvf $< -C $(@D)",
+    outs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES] + ["tz_data_generated/backward"],
+    cmd = "tar -xzvf $< -C $(@D)",
     message = "Extracting zdump data files",
+    tags=["manual"]
 )
 
 filegroup(
     name = "zdumps",
-    srcs = [":tz_data/zdump/%s" % zone for zone in ZONES],
+    srcs = ["tz_data/zdump/%s" % zone for zone in ZONES],
 )
 
 # CLDR
@@ -860,21 +861,22 @@ write_source_files(
 )
 
 write_source_files(
-    name = "tz_data_dump",
-    files = {
-        "tz_data.tar.gz": ":tz_install/tz_data.tar.gz"
-    },
-    visibility = ["//:__pkg__"],
-    tags=["manual"]
-)
-
-write_source_files(
     name = "generated-test-files",
     files = {
         "tests/locale-data/%s.json" % k: ":tests-locale-data/%s.json" % k
         for k in TEST_LOCALES
     },
     visibility = ["//:__pkg__"],
+)
+
+TZ_DATA_FILES = [":tz_data_generated/zdump/%s" % zone for zone in ZONES] + [":tz_data_generated/backward"]
+TZ_DATA_SRC_FILES = [k.replace(":tz_data_generated", "tz_data") for k in TZ_DATA_FILES]
+
+write_source_files(
+    name = "generated_tz_data",
+    files = {k:v for k,v in zip(TZ_DATA_SRC_FILES, TZ_DATA_FILES)},
+    visibility = ["//:__pkg__"],
+    tags=["manual"]
 )
 
 esbuild(
@@ -993,18 +995,18 @@ container_run_and_extract(
                    "echo 'Compiling zic data'",
                    "/tzdir/usr/sbin/zic -d /zic %s" % " ".join(["/tz/%s" % f for f in ZIC_FILES]),
                    # Make a folder to house all the data we need to extract
-                   "mkdir /tz_data",
+                   "mkdir /tz_data_generated",
                    # Copy backward file
-                   "cp /tz/backward /tz_data",
+                   "cp /tz/backward /tz_data_generated",
                    # Compile zdump into it
                    "echo 'Compiling zdump data'",
                ] + [
-                   "mkdir -p /tz_data/zdump/%s" %
+                   "mkdir -p /tz_data_generated/zdump/%s" %
                    zone.rsplit("/", 1)[0]
                    for zone in ZONES
                ] +
-               ["/tzdir/usr/bin/zdump -c 2100 -v /zic/%s > /tz_data/zdump/%s" % (zone, zone) for zone in ZONES] + [
-        "tar -czvf /tz_data.tar.gz /tz_data",
+               ["/tzdir/usr/bin/zdump -c 2100 -v /zic/%s > /tz_data_generated/zdump/%s" % (zone, zone) for zone in ZONES] + [
+        "tar -czvf /tz_data.tar.gz /tz_data_generated",
     ],
     extract_file = "/tz_data.tar.gz",
     image = ":build_essential_bazel_wrapper.tar",

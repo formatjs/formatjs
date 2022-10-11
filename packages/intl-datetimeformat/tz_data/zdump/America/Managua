@@ -1,0 +1,42 @@
+/zic/America/Managua  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Managua  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Managua  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Managua  Thu Jan  1 05:45:07 -2147481748 UT = -67768040609720093 (localtime failed)
+/zic/America/Managua  Thu Jan  1 05:45:08 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-20708
+/zic/America/Managua  Wed Jan  1 05:45:07 1890 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=-20708
+/zic/America/Managua  Wed Jan  1 05:45:08 1890 UT = Tue Dec 31 23:59:56 1889 MMT isdst=0 gmtoff=-20712
+/zic/America/Managua  Sat Jun 23 05:45:11 1934 UT = Fri Jun 22 23:59:59 1934 MMT isdst=0 gmtoff=-20712
+/zic/America/Managua  Sat Jun 23 05:45:12 1934 UT = Fri Jun 22 23:45:12 1934 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Tue May  1 05:59:59 1973 UT = Mon Apr 30 23:59:59 1973 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Tue May  1 06:00:00 1973 UT = Tue May  1 01:00:00 1973 EST isdst=0 gmtoff=-18000
+/zic/America/Managua  Sun Feb 16 04:59:59 1975 UT = Sat Feb 15 23:59:59 1975 EST isdst=0 gmtoff=-18000
+/zic/America/Managua  Sun Feb 16 05:00:00 1975 UT = Sat Feb 15 23:00:00 1975 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Sun Mar 18 05:59:59 1979 UT = Sat Mar 17 23:59:59 1979 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Sun Mar 18 06:00:00 1979 UT = Sun Mar 18 01:00:00 1979 CDT isdst=1 gmtoff=-18000
+/zic/America/Managua  Mon Jun 25 04:59:59 1979 UT = Sun Jun 24 23:59:59 1979 CDT isdst=1 gmtoff=-18000
+/zic/America/Managua  Mon Jun 25 05:00:00 1979 UT = Sun Jun 24 23:00:00 1979 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Sun Mar 16 05:59:59 1980 UT = Sat Mar 15 23:59:59 1980 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Sun Mar 16 06:00:00 1980 UT = Sun Mar 16 01:00:00 1980 CDT isdst=1 gmtoff=-18000
+/zic/America/Managua  Mon Jun 23 04:59:59 1980 UT = Sun Jun 22 23:59:59 1980 CDT isdst=1 gmtoff=-18000
+/zic/America/Managua  Mon Jun 23 05:00:00 1980 UT = Sun Jun 22 23:00:00 1980 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Wed Jan  1 09:59:59 1992 UT = Wed Jan  1 03:59:59 1992 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Wed Jan  1 10:00:00 1992 UT = Wed Jan  1 05:00:00 1992 EST isdst=0 gmtoff=-18000
+/zic/America/Managua  Thu Sep 24 04:59:59 1992 UT = Wed Sep 23 23:59:59 1992 EST isdst=0 gmtoff=-18000
+/zic/America/Managua  Thu Sep 24 05:00:00 1992 UT = Wed Sep 23 23:00:00 1992 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Fri Jan  1 05:59:59 1993 UT = Thu Dec 31 23:59:59 1992 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Fri Jan  1 06:00:00 1993 UT = Fri Jan  1 01:00:00 1993 EST isdst=0 gmtoff=-18000
+/zic/America/Managua  Wed Jan  1 04:59:59 1997 UT = Tue Dec 31 23:59:59 1996 EST isdst=0 gmtoff=-18000
+/zic/America/Managua  Wed Jan  1 05:00:00 1997 UT = Tue Dec 31 23:00:00 1996 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Sun Apr 10 05:59:59 2005 UT = Sat Apr  9 23:59:59 2005 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Sun Apr 10 06:00:00 2005 UT = Sun Apr 10 01:00:00 2005 CDT isdst=1 gmtoff=-18000
+/zic/America/Managua  Sun Oct  2 04:59:59 2005 UT = Sat Oct  1 23:59:59 2005 CDT isdst=1 gmtoff=-18000
+/zic/America/Managua  Sun Oct  2 05:00:00 2005 UT = Sat Oct  1 23:00:00 2005 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Sun Apr 30 07:59:59 2006 UT = Sun Apr 30 01:59:59 2006 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Sun Apr 30 08:00:00 2006 UT = Sun Apr 30 03:00:00 2006 CDT isdst=1 gmtoff=-18000
+/zic/America/Managua  Sun Oct  1 05:59:59 2006 UT = Sun Oct  1 00:59:59 2006 CDT isdst=1 gmtoff=-18000
+/zic/America/Managua  Sun Oct  1 06:00:00 2006 UT = Sun Oct  1 00:00:00 2006 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 17:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  67768036191676800 (gmtime failed) = Wed Dec 31 18:00:00 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  67768036191698399 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Managua  67768036191698400 (gmtime failed) = 67768036191698400 (localtime failed)
+/zic/America/Managua  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

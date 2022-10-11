@@ -1,0 +1,18 @@
+/zic/America/Guyana  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Guyana  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Guyana  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Guyana  Thu Jan  1 03:52:38 -2147481748 UT = -67768040609726842 (localtime failed)
+/zic/America/Guyana  Thu Jan  1 03:52:39 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-13959
+/zic/America/Guyana  Tue Aug  1 03:52:38 1911 UT = Mon Jul 31 23:59:59 1911 LMT isdst=0 gmtoff=-13959
+/zic/America/Guyana  Tue Aug  1 03:52:39 1911 UT = Mon Jul 31 23:52:39 1911 -04 isdst=0 gmtoff=-14400
+/zic/America/Guyana  Mon Mar  1 03:59:59 1915 UT = Sun Feb 28 23:59:59 1915 -04 isdst=0 gmtoff=-14400
+/zic/America/Guyana  Mon Mar  1 04:00:00 1915 UT = Mon Mar  1 00:15:00 1915 -0345 isdst=0 gmtoff=-13500
+/zic/America/Guyana  Fri Aug  1 03:44:59 1975 UT = Thu Jul 31 23:59:59 1975 -0345 isdst=0 gmtoff=-13500
+/zic/America/Guyana  Fri Aug  1 03:45:00 1975 UT = Fri Aug  1 00:45:00 1975 -03 isdst=0 gmtoff=-10800
+/zic/America/Guyana  Sun Mar 29 03:59:59 1992 UT = Sun Mar 29 00:59:59 1992 -03 isdst=0 gmtoff=-10800
+/zic/America/Guyana  Sun Mar 29 04:00:00 1992 UT = Sun Mar 29 00:00:00 1992 -04 isdst=0 gmtoff=-14400
+/zic/America/Guyana  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 19:59:59 2147485547 -04 isdst=0 gmtoff=-14400
+/zic/America/Guyana  67768036191676800 (gmtime failed) = Wed Dec 31 20:00:00 2147485547 -04 isdst=0 gmtoff=-14400
+/zic/America/Guyana  67768036191691199 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -04 isdst=0 gmtoff=-14400
+/zic/America/Guyana  67768036191691200 (gmtime failed) = 67768036191691200 (localtime failed)
+/zic/America/Guyana  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

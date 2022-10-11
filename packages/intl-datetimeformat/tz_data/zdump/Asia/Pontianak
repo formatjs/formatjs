@@ -1,0 +1,26 @@
+/zic/Asia/Pontianak  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Pontianak  -67768040609767041 (gmtime failed) = -67768040609767041 (localtime failed)
+/zic/Asia/Pontianak  -67768040609767040 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=26240
+/zic/Asia/Pontianak  -67768040609740801 (gmtime failed) = Thu Jan  1 07:17:19 -2147481748 LMT isdst=0 gmtoff=26240
+/zic/Asia/Pontianak  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 07:17:20 -2147481748 LMT isdst=0 gmtoff=26240
+/zic/Asia/Pontianak  Thu Apr 30 16:42:39 1908 UT = Thu Apr 30 23:59:59 1908 LMT isdst=0 gmtoff=26240
+/zic/Asia/Pontianak  Thu Apr 30 16:42:40 1908 UT = Fri May  1 00:00:00 1908 PMT isdst=0 gmtoff=26240
+/zic/Asia/Pontianak  Mon Oct 31 16:42:39 1932 UT = Mon Oct 31 23:59:59 1932 PMT isdst=0 gmtoff=26240
+/zic/Asia/Pontianak  Mon Oct 31 16:42:40 1932 UT = Tue Nov  1 00:12:40 1932 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Pontianak  Wed Jan 28 16:29:59 1942 UT = Wed Jan 28 23:59:59 1942 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Pontianak  Wed Jan 28 16:30:00 1942 UT = Thu Jan 29 01:30:00 1942 +09 isdst=0 gmtoff=32400
+/zic/Asia/Pontianak  Sat Sep 22 14:59:59 1945 UT = Sat Sep 22 23:59:59 1945 +09 isdst=0 gmtoff=32400
+/zic/Asia/Pontianak  Sat Sep 22 15:00:00 1945 UT = Sat Sep 22 22:30:00 1945 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Pontianak  Fri Apr 30 16:29:59 1948 UT = Fri Apr 30 23:59:59 1948 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Pontianak  Fri Apr 30 16:30:00 1948 UT = Sat May  1 00:30:00 1948 +08 isdst=0 gmtoff=28800
+/zic/Asia/Pontianak  Sun Apr 30 15:59:59 1950 UT = Sun Apr 30 23:59:59 1950 +08 isdst=0 gmtoff=28800
+/zic/Asia/Pontianak  Sun Apr 30 16:00:00 1950 UT = Sun Apr 30 23:30:00 1950 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Pontianak  Tue Dec 31 16:29:59 1963 UT = Tue Dec 31 23:59:59 1963 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Pontianak  Tue Dec 31 16:30:00 1963 UT = Wed Jan  1 00:30:00 1964 WITA isdst=0 gmtoff=28800
+/zic/Asia/Pontianak  Thu Dec 31 15:59:59 1987 UT = Thu Dec 31 23:59:59 1987 WITA isdst=0 gmtoff=28800
+/zic/Asia/Pontianak  Thu Dec 31 16:00:00 1987 UT = Thu Dec 31 23:00:00 1987 WIB isdst=0 gmtoff=25200
+/zic/Asia/Pontianak  Wed Dec 31 16:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 WIB isdst=0 gmtoff=25200
+/zic/Asia/Pontianak  Wed Dec 31 17:00:00 2147485547 UT = 67768036191651600 (localtime failed)
+/zic/Asia/Pontianak  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Pontianak  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Pontianak  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

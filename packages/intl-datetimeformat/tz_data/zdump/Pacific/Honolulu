@@ -1,0 +1,24 @@
+/zic/Pacific/Honolulu  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Honolulu  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Honolulu  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Honolulu  Thu Jan  1 10:31:25 -2147481748 UT = -67768040609702915 (localtime failed)
+/zic/Pacific/Honolulu  Thu Jan  1 10:31:26 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-37886
+/zic/Pacific/Honolulu  Mon Jan 13 22:31:25 1896 UT = Mon Jan 13 11:59:59 1896 LMT isdst=0 gmtoff=-37886
+/zic/Pacific/Honolulu  Mon Jan 13 22:31:26 1896 UT = Mon Jan 13 12:01:26 1896 HST isdst=0 gmtoff=-37800
+/zic/Pacific/Honolulu  Sun Apr 30 12:29:59 1933 UT = Sun Apr 30 01:59:59 1933 HST isdst=0 gmtoff=-37800
+/zic/Pacific/Honolulu  Sun Apr 30 12:30:00 1933 UT = Sun Apr 30 03:00:00 1933 HDT isdst=1 gmtoff=-34200
+/zic/Pacific/Honolulu  Sun May 21 21:29:59 1933 UT = Sun May 21 11:59:59 1933 HDT isdst=1 gmtoff=-34200
+/zic/Pacific/Honolulu  Sun May 21 21:30:00 1933 UT = Sun May 21 11:00:00 1933 HST isdst=0 gmtoff=-37800
+/zic/Pacific/Honolulu  Mon Feb  9 12:29:59 1942 UT = Mon Feb  9 01:59:59 1942 HST isdst=0 gmtoff=-37800
+/zic/Pacific/Honolulu  Mon Feb  9 12:30:00 1942 UT = Mon Feb  9 03:00:00 1942 HWT isdst=1 gmtoff=-34200
+/zic/Pacific/Honolulu  Tue Aug 14 22:59:59 1945 UT = Tue Aug 14 13:29:59 1945 HWT isdst=1 gmtoff=-34200
+/zic/Pacific/Honolulu  Tue Aug 14 23:00:00 1945 UT = Tue Aug 14 13:30:00 1945 HPT isdst=1 gmtoff=-34200
+/zic/Pacific/Honolulu  Sun Sep 30 11:29:59 1945 UT = Sun Sep 30 01:59:59 1945 HPT isdst=1 gmtoff=-34200
+/zic/Pacific/Honolulu  Sun Sep 30 11:30:00 1945 UT = Sun Sep 30 01:00:00 1945 HST isdst=0 gmtoff=-37800
+/zic/Pacific/Honolulu  Sun Jun  8 12:29:59 1947 UT = Sun Jun  8 01:59:59 1947 HST isdst=0 gmtoff=-37800
+/zic/Pacific/Honolulu  Sun Jun  8 12:30:00 1947 UT = Sun Jun  8 02:30:00 1947 HST isdst=0 gmtoff=-36000
+/zic/Pacific/Honolulu  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 13:59:59 2147485547 HST isdst=0 gmtoff=-36000
+/zic/Pacific/Honolulu  67768036191676800 (gmtime failed) = Wed Dec 31 14:00:00 2147485547 HST isdst=0 gmtoff=-36000
+/zic/Pacific/Honolulu  67768036191712799 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 HST isdst=0 gmtoff=-36000
+/zic/Pacific/Honolulu  67768036191712800 (gmtime failed) = 67768036191712800 (localtime failed)
+/zic/Pacific/Honolulu  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

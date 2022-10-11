@@ -1,0 +1,14 @@
+/zic/Pacific/Niue  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Niue  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Niue  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Niue  Thu Jan  1 11:19:39 -2147481748 UT = -67768040609700021 (localtime failed)
+/zic/Pacific/Niue  Thu Jan  1 11:19:40 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-40780
+/zic/Pacific/Niue  Thu Oct 16 11:19:39 1952 UT = Wed Oct 15 23:59:59 1952 LMT isdst=0 gmtoff=-40780
+/zic/Pacific/Niue  Thu Oct 16 11:19:40 1952 UT = Wed Oct 15 23:59:40 1952 -1120 isdst=0 gmtoff=-40800
+/zic/Pacific/Niue  Wed Jul  1 11:19:59 1964 UT = Tue Jun 30 23:59:59 1964 -1120 isdst=0 gmtoff=-40800
+/zic/Pacific/Niue  Wed Jul  1 11:20:00 1964 UT = Wed Jul  1 00:20:00 1964 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Niue  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 12:59:59 2147485547 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Niue  67768036191676800 (gmtime failed) = Wed Dec 31 13:00:00 2147485547 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Niue  67768036191716399 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Niue  67768036191716400 (gmtime failed) = 67768036191716400 (localtime failed)
+/zic/Pacific/Niue  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

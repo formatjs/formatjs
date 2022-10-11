@@ -1,0 +1,78 @@
+/zic/Africa/Tunis  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Tunis  -67768040609743245 (gmtime failed) = -67768040609743245 (localtime failed)
+/zic/Africa/Tunis  -67768040609743244 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=2444
+/zic/Africa/Tunis  -67768040609740801 (gmtime failed) = Thu Jan  1 00:40:43 -2147481748 LMT isdst=0 gmtoff=2444
+/zic/Africa/Tunis  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 00:40:44 -2147481748 LMT isdst=0 gmtoff=2444
+/zic/Africa/Tunis  Wed May 11 23:19:15 1881 UT = Wed May 11 23:59:59 1881 LMT isdst=0 gmtoff=2444
+/zic/Africa/Tunis  Wed May 11 23:19:16 1881 UT = Wed May 11 23:28:37 1881 PMT isdst=0 gmtoff=561
+/zic/Africa/Tunis  Fri Mar 10 23:50:38 1911 UT = Fri Mar 10 23:59:59 1911 PMT isdst=0 gmtoff=561
+/zic/Africa/Tunis  Fri Mar 10 23:50:39 1911 UT = Sat Mar 11 00:50:39 1911 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sat Apr 15 21:59:59 1939 UT = Sat Apr 15 22:59:59 1939 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sat Apr 15 22:00:00 1939 UT = Sun Apr 16 00:00:00 1939 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Nov 18 21:59:59 1939 UT = Sat Nov 18 23:59:59 1939 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Nov 18 22:00:00 1939 UT = Sat Nov 18 23:00:00 1939 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Feb 25 21:59:59 1940 UT = Sun Feb 25 22:59:59 1940 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Feb 25 22:00:00 1940 UT = Mon Feb 26 00:00:00 1940 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sun Oct  5 21:59:59 1941 UT = Sun Oct  5 23:59:59 1941 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sun Oct  5 22:00:00 1941 UT = Sun Oct  5 23:00:00 1941 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Mar  8 22:59:59 1942 UT = Sun Mar  8 23:59:59 1942 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Mar  8 23:00:00 1942 UT = Mon Mar  9 01:00:00 1942 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Mon Nov  2 00:59:59 1942 UT = Mon Nov  2 02:59:59 1942 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Mon Nov  2 01:00:00 1942 UT = Mon Nov  2 02:00:00 1942 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Mon Mar 29 00:59:59 1943 UT = Mon Mar 29 01:59:59 1943 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Mon Mar 29 01:00:00 1943 UT = Mon Mar 29 03:00:00 1943 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Fri Apr 16 23:59:59 1943 UT = Sat Apr 17 01:59:59 1943 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Apr 17 00:00:00 1943 UT = Sat Apr 17 01:00:00 1943 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Apr 25 00:59:59 1943 UT = Sun Apr 25 01:59:59 1943 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Apr 25 01:00:00 1943 UT = Sun Apr 25 03:00:00 1943 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sun Oct  3 23:59:59 1943 UT = Mon Oct  4 01:59:59 1943 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Mon Oct  4 00:00:00 1943 UT = Mon Oct  4 01:00:00 1943 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Mon Apr  3 00:59:59 1944 UT = Mon Apr  3 01:59:59 1944 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Mon Apr  3 01:00:00 1944 UT = Mon Apr  3 03:00:00 1944 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Oct  7 21:59:59 1944 UT = Sat Oct  7 23:59:59 1944 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Oct  7 22:00:00 1944 UT = Sat Oct  7 23:00:00 1944 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Mon Apr  2 00:59:59 1945 UT = Mon Apr  2 01:59:59 1945 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Mon Apr  2 01:00:00 1945 UT = Mon Apr  2 03:00:00 1945 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Sep 15 21:59:59 1945 UT = Sat Sep 15 23:59:59 1945 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Sep 15 22:00:00 1945 UT = Sat Sep 15 23:00:00 1945 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Fri Apr 29 22:59:59 1977 UT = Fri Apr 29 23:59:59 1977 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Fri Apr 29 23:00:00 1977 UT = Sat Apr 30 01:00:00 1977 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Fri Sep 23 22:59:59 1977 UT = Sat Sep 24 00:59:59 1977 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Fri Sep 23 23:00:00 1977 UT = Sat Sep 24 00:00:00 1977 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Apr 30 22:59:59 1978 UT = Sun Apr 30 23:59:59 1978 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Apr 30 23:00:00 1978 UT = Mon May  1 01:00:00 1978 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Sep 30 22:59:59 1978 UT = Sun Oct  1 00:59:59 1978 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Sep 30 23:00:00 1978 UT = Sun Oct  1 00:00:00 1978 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Tue May 31 22:59:59 1988 UT = Tue May 31 23:59:59 1988 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Tue May 31 23:00:00 1988 UT = Wed Jun  1 01:00:00 1988 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Sep 24 22:59:59 1988 UT = Sun Sep 25 00:59:59 1988 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Sep 24 23:00:00 1988 UT = Sun Sep 25 00:00:00 1988 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sat Mar 25 22:59:59 1989 UT = Sat Mar 25 23:59:59 1989 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sat Mar 25 23:00:00 1989 UT = Sun Mar 26 01:00:00 1989 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Sep 23 22:59:59 1989 UT = Sun Sep 24 00:59:59 1989 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Sep 23 23:00:00 1989 UT = Sun Sep 24 00:00:00 1989 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Mon Apr 30 22:59:59 1990 UT = Mon Apr 30 23:59:59 1990 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Mon Apr 30 23:00:00 1990 UT = Tue May  1 01:00:00 1990 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Sep 29 22:59:59 1990 UT = Sun Sep 30 00:59:59 1990 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sat Sep 29 23:00:00 1990 UT = Sun Sep 30 00:00:00 1990 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sat Apr 30 22:59:59 2005 UT = Sat Apr 30 23:59:59 2005 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sat Apr 30 23:00:00 2005 UT = Sun May  1 01:00:00 2005 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Thu Sep 29 23:59:59 2005 UT = Fri Sep 30 01:59:59 2005 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Fri Sep 30 00:00:00 2005 UT = Fri Sep 30 01:00:00 2005 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Mar 26 00:59:59 2006 UT = Sun Mar 26 01:59:59 2006 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Mar 26 01:00:00 2006 UT = Sun Mar 26 03:00:00 2006 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sun Oct 29 00:59:59 2006 UT = Sun Oct 29 02:59:59 2006 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sun Oct 29 01:00:00 2006 UT = Sun Oct 29 02:00:00 2006 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Mar 25 00:59:59 2007 UT = Sun Mar 25 01:59:59 2007 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Mar 25 01:00:00 2007 UT = Sun Mar 25 03:00:00 2007 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sun Oct 28 00:59:59 2007 UT = Sun Oct 28 02:59:59 2007 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sun Oct 28 01:00:00 2007 UT = Sun Oct 28 02:00:00 2007 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Mar 30 00:59:59 2008 UT = Sun Mar 30 01:59:59 2008 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Sun Mar 30 01:00:00 2008 UT = Sun Mar 30 03:00:00 2008 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sun Oct 26 00:59:59 2008 UT = Sun Oct 26 02:59:59 2008 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tunis  Sun Oct 26 01:00:00 2008 UT = Sun Oct 26 02:00:00 2008 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Wed Dec 31 22:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 CET isdst=0 gmtoff=3600
+/zic/Africa/Tunis  Wed Dec 31 23:00:00 2147485547 UT = 67768036191673200 (localtime failed)
+/zic/Africa/Tunis  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Africa/Tunis  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Tunis  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -73,7 +73,7 @@ npm run release:next
 1. Potentially update tz data
 
 ```
-bazel run //packages/intl-datetimeformat:tz_data_dump
+bazel run //packages/intl-datetimeformat:generated_tz_data
 ```
 
 ### Generating CLDR data

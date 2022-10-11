@@ -1,0 +1,32 @@
+/zic/Antarctica/Casey  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Antarctica/Casey  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Antarctica/Casey  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 -00 isdst=0 gmtoff=0
+/zic/Antarctica/Casey  Tue Dec 31 23:59:59 1968 UT = Tue Dec 31 23:59:59 1968 -00 isdst=0 gmtoff=0
+/zic/Antarctica/Casey  Wed Jan  1 00:00:00 1969 UT = Wed Jan  1 08:00:00 1969 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Sat Oct 17 17:59:59 2009 UT = Sun Oct 18 01:59:59 2009 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Sat Oct 17 18:00:00 2009 UT = Sun Oct 18 05:00:00 2009 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Thu Mar  4 14:59:59 2010 UT = Fri Mar  5 01:59:59 2010 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Thu Mar  4 15:00:00 2010 UT = Thu Mar  4 23:00:00 2010 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Thu Oct 27 17:59:59 2011 UT = Fri Oct 28 01:59:59 2011 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Thu Oct 27 18:00:00 2011 UT = Fri Oct 28 05:00:00 2011 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Tue Feb 21 16:59:59 2012 UT = Wed Feb 22 03:59:59 2012 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Tue Feb 21 17:00:00 2012 UT = Wed Feb 22 01:00:00 2012 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Fri Oct 21 15:59:59 2016 UT = Fri Oct 21 23:59:59 2016 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Fri Oct 21 16:00:00 2016 UT = Sat Oct 22 03:00:00 2016 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Sat Mar 10 16:59:59 2018 UT = Sun Mar 11 03:59:59 2018 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Sat Mar 10 17:00:00 2018 UT = Sun Mar 11 01:00:00 2018 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Sat Oct  6 19:59:59 2018 UT = Sun Oct  7 03:59:59 2018 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Sat Oct  6 20:00:00 2018 UT = Sun Oct  7 07:00:00 2018 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Sat Mar 16 15:59:59 2019 UT = Sun Mar 17 02:59:59 2019 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Sat Mar 16 16:00:00 2019 UT = Sun Mar 17 00:00:00 2019 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Thu Oct  3 18:59:59 2019 UT = Fri Oct  4 02:59:59 2019 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Thu Oct  3 19:00:00 2019 UT = Fri Oct  4 06:00:00 2019 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Sat Mar  7 15:59:59 2020 UT = Sun Mar  8 02:59:59 2020 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Sat Mar  7 16:00:00 2020 UT = Sun Mar  8 00:00:00 2020 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Sat Oct  3 16:00:59 2020 UT = Sun Oct  4 00:00:59 2020 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Sat Oct  3 16:01:00 2020 UT = Sun Oct  4 03:01:00 2020 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Wed Dec 31 12:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Wed Dec 31 13:00:00 2147485547 UT = 67768036191637200 (localtime failed)
+/zic/Antarctica/Casey  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Antarctica/Casey  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Antarctica/Casey  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

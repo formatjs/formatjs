@@ -1,0 +1,14 @@
+/zic/America/Cayenne  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Cayenne  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Cayenne  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Cayenne  Thu Jan  1 03:29:19 -2147481748 UT = -67768040609728241 (localtime failed)
+/zic/America/Cayenne  Thu Jan  1 03:29:20 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-12560
+/zic/America/Cayenne  Sat Jul  1 03:29:19 1911 UT = Fri Jun 30 23:59:59 1911 LMT isdst=0 gmtoff=-12560
+/zic/America/Cayenne  Sat Jul  1 03:29:20 1911 UT = Fri Jun 30 23:29:20 1911 -04 isdst=0 gmtoff=-14400
+/zic/America/Cayenne  Sun Oct  1 03:59:59 1967 UT = Sat Sep 30 23:59:59 1967 -04 isdst=0 gmtoff=-14400
+/zic/America/Cayenne  Sun Oct  1 04:00:00 1967 UT = Sun Oct  1 01:00:00 1967 -03 isdst=0 gmtoff=-10800
+/zic/America/Cayenne  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 20:59:59 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Cayenne  67768036191676800 (gmtime failed) = Wed Dec 31 21:00:00 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Cayenne  67768036191687599 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Cayenne  67768036191687600 (gmtime failed) = 67768036191687600 (localtime failed)
+/zic/America/Cayenne  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

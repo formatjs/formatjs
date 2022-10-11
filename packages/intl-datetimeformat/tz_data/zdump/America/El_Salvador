@@ -1,0 +1,20 @@
+/zic/America/El_Salvador  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/El_Salvador  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/El_Salvador  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/El_Salvador  Thu Jan  1 05:56:47 -2147481748 UT = -67768040609719393 (localtime failed)
+/zic/America/El_Salvador  Thu Jan  1 05:56:48 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-21408
+/zic/America/El_Salvador  Sat Jan  1 05:56:47 1921 UT = Fri Dec 31 23:59:59 1920 LMT isdst=0 gmtoff=-21408
+/zic/America/El_Salvador  Sat Jan  1 05:56:48 1921 UT = Fri Dec 31 23:56:48 1920 CST isdst=0 gmtoff=-21600
+/zic/America/El_Salvador  Sun May  3 05:59:59 1987 UT = Sat May  2 23:59:59 1987 CST isdst=0 gmtoff=-21600
+/zic/America/El_Salvador  Sun May  3 06:00:00 1987 UT = Sun May  3 01:00:00 1987 CDT isdst=1 gmtoff=-18000
+/zic/America/El_Salvador  Sun Sep 27 04:59:59 1987 UT = Sat Sep 26 23:59:59 1987 CDT isdst=1 gmtoff=-18000
+/zic/America/El_Salvador  Sun Sep 27 05:00:00 1987 UT = Sat Sep 26 23:00:00 1987 CST isdst=0 gmtoff=-21600
+/zic/America/El_Salvador  Sun May  1 05:59:59 1988 UT = Sat Apr 30 23:59:59 1988 CST isdst=0 gmtoff=-21600
+/zic/America/El_Salvador  Sun May  1 06:00:00 1988 UT = Sun May  1 01:00:00 1988 CDT isdst=1 gmtoff=-18000
+/zic/America/El_Salvador  Sun Sep 25 04:59:59 1988 UT = Sat Sep 24 23:59:59 1988 CDT isdst=1 gmtoff=-18000
+/zic/America/El_Salvador  Sun Sep 25 05:00:00 1988 UT = Sat Sep 24 23:00:00 1988 CST isdst=0 gmtoff=-21600
+/zic/America/El_Salvador  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 17:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/El_Salvador  67768036191676800 (gmtime failed) = Wed Dec 31 18:00:00 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/El_Salvador  67768036191698399 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/El_Salvador  67768036191698400 (gmtime failed) = 67768036191698400 (localtime failed)
+/zic/America/El_Salvador  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

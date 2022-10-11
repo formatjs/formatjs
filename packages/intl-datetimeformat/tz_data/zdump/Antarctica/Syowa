@@ -1,0 +1,12 @@
+/zic/Antarctica/Syowa  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Antarctica/Syowa  -67768040609752013 (gmtime failed) = -67768040609752013 (localtime failed)
+/zic/Antarctica/Syowa  -67768040609752012 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=11212
+/zic/Antarctica/Syowa  -67768040609740801 (gmtime failed) = Thu Jan  1 03:06:51 -2147481748 LMT isdst=0 gmtoff=11212
+/zic/Antarctica/Syowa  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 03:06:52 -2147481748 LMT isdst=0 gmtoff=11212
+/zic/Antarctica/Syowa  Thu Mar 13 20:53:07 1947 UT = Thu Mar 13 23:59:59 1947 LMT isdst=0 gmtoff=11212
+/zic/Antarctica/Syowa  Thu Mar 13 20:53:08 1947 UT = Thu Mar 13 23:53:08 1947 +03 isdst=0 gmtoff=10800
+/zic/Antarctica/Syowa  Wed Dec 31 20:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +03 isdst=0 gmtoff=10800
+/zic/Antarctica/Syowa  Wed Dec 31 21:00:00 2147485547 UT = 67768036191666000 (localtime failed)
+/zic/Antarctica/Syowa  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Antarctica/Syowa  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Antarctica/Syowa  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

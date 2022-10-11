@@ -1,0 +1,14 @@
+/zic/Indian/Chagos  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Indian/Chagos  -67768040609758181 (gmtime failed) = -67768040609758181 (localtime failed)
+/zic/Indian/Chagos  -67768040609758180 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=17380
+/zic/Indian/Chagos  -67768040609740801 (gmtime failed) = Thu Jan  1 04:49:39 -2147481748 LMT isdst=0 gmtoff=17380
+/zic/Indian/Chagos  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 04:49:40 -2147481748 LMT isdst=0 gmtoff=17380
+/zic/Indian/Chagos  Mon Dec 31 19:10:19 1906 UT = Mon Dec 31 23:59:59 1906 LMT isdst=0 gmtoff=17380
+/zic/Indian/Chagos  Mon Dec 31 19:10:20 1906 UT = Tue Jan  1 00:10:20 1907 +05 isdst=0 gmtoff=18000
+/zic/Indian/Chagos  Sun Dec 31 18:59:59 1995 UT = Sun Dec 31 23:59:59 1995 +05 isdst=0 gmtoff=18000
+/zic/Indian/Chagos  Sun Dec 31 19:00:00 1995 UT = Mon Jan  1 01:00:00 1996 +06 isdst=0 gmtoff=21600
+/zic/Indian/Chagos  Wed Dec 31 17:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +06 isdst=0 gmtoff=21600
+/zic/Indian/Chagos  Wed Dec 31 18:00:00 2147485547 UT = 67768036191655200 (localtime failed)
+/zic/Indian/Chagos  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Indian/Chagos  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Indian/Chagos  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)
