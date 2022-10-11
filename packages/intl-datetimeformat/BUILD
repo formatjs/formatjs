@@ -928,7 +928,7 @@ multirun(
 # First thing, apt install build-essential
 download_pkgs(
     name = "build_essential_pkgs",
-    image_tar = "@ubuntu2204//image",
+    image_tar = "@ubuntu22//image",
     packages = [
         "build-essential",
     ],
@@ -936,7 +936,7 @@ download_pkgs(
 
 install_pkgs(
     name = "ubuntu_build_essential_image",
-    image_tar = "@ubuntu2204//image",
+    image_tar = "@ubuntu22//image",
     installables_tar = ":build_essential_pkgs.tar",
     output_image_name = "ubuntu_build_essential_image",
 )
