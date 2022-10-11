@@ -91,12 +91,6 @@ build:remote --platforms=@buildbuddy_toolchain//:platform
 build:remote --crosstool_top=@buildbuddy_toolchain//:toolchain
 build:remote --jobs=100
 
-build:ci --build_metadata=ROLE=CI
-build:ci --build_metadata=VISIBILITY=PUBLIC
-build:ci --tls_client_certificate=buildbuddy-cert.pem
-build:ci --tls_client_key=buildbuddy-key.pem
-build:ci --bes_results_url=https://app.buildbuddy.io/invocation/
-build:ci --bes_backend=grpcs://remote.buildbuddy.io
 build:ci --config=remote
 
 build --remote_cache=grpcs://remote.buildbuddy.io
