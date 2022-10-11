@@ -90,11 +90,11 @@ ts_compile(
 genrule(
     name = "tz_data_extract",
     srcs = [
+        "tz_data.tar.gz"
     ],
     outs = ["tz_data/zdump/%s" % zone for zone in ZONES] + ["tz_data/backward"],
-    cmd = "tar -xzvf $(location :tz_install/tz_data.tar.gz) -C $(@D)",
+    cmd = "tar -xzvf $< -C $(@D)",
     message = "Extracting zdump data files",
-    tools = [":tz_install/tz_data.tar.gz"],
 )
 
 filegroup(
@@ -860,6 +860,15 @@ write_source_files(
 )
 
 write_source_files(
+    name = "tz_data_dump",
+    files = {
+        "tz_data.tar.gz": ":tz_install/tz_data.tar.gz"
+    },
+    visibility = ["//:__pkg__"],
+    tags=["manual"]
+)
+
+write_source_files(
     name = "generated-test-files",
     files = {
         "tests/locale-data/%s.json" % k: ":tests-locale-data/%s.json" % k
@@ -932,15 +941,7 @@ download_pkgs(
     packages = [
         "build-essential",
     ],
-    exec_properties = {
-        # Tell BuildBuddy to run this test using a Firecracker microVM.
-        "workload-isolation-type": "firecracker",
-        # Tell BuildBuddy to ensure that the Docker daemon is started
-        # inside the microVM before this action runs, so that we don't
-        # have to worry about starting it ourselves.
-        "init-dockerd": "true",
-        "recycle-runner": "true",
-    },
+    tags=["manual"]
 )
 
 install_pkgs(
@@ -948,15 +949,7 @@ install_pkgs(
     image_tar = "@ubuntu22//image",
     installables_tar = ":build_essential_pkgs.tar",
     output_image_name = "ubuntu_build_essential_image",
-    exec_properties = {
-        # Tell BuildBuddy to run this test using a Firecracker microVM.
-        "workload-isolation-type": "firecracker",
-        # Tell BuildBuddy to ensure that the Docker daemon is started
-        # inside the microVM before this action runs, so that we don't
-        # have to worry about starting it ourselves.
-        "init-dockerd": "true",
-        "recycle-runner": "true",
-    },
+    tags=["manual"]
 )
 
 # Package tzcode + tzdata into a single Docker layer
@@ -967,15 +960,7 @@ container_layer(
         "@tzcode//file",
         "@tzdata//file",
     ],
-    exec_properties = {
-        # Tell BuildBuddy to run this test using a Firecracker microVM.
-        "workload-isolation-type": "firecracker",
-        # Tell BuildBuddy to ensure that the Docker daemon is started
-        # inside the microVM before this action runs, so that we don't
-        # have to worry about starting it ourselves.
-        "init-dockerd": "true",
-        "recycle-runner": "true",
-    },
+    tags=["manual"]
 )
 
 # Create a new Docker image with build-essential, tzcode + tzdata
@@ -983,15 +968,7 @@ container_image(
     name = "build_essential_bazel_wrapper",
     base = ":ubuntu_build_essential_image.tar",
     layers = [":tz"],
-    exec_properties = {
-        # Tell BuildBuddy to run this test using a Firecracker microVM.
-        "workload-isolation-type": "firecracker",
-        # Tell BuildBuddy to ensure that the Docker daemon is started
-        # inside the microVM before this action runs, so that we don't
-        # have to worry about starting it ourselves.
-        "init-dockerd": "true",
-        "recycle-runner": "true",
-    },
+    tags=["manual"]
 )
 
 # Pre-compile tzdata
@@ -1031,13 +1008,6 @@ container_run_and_extract(
     ],
     extract_file = "/tz_data.tar.gz",
     image = ":build_essential_bazel_wrapper.tar",
-    exec_properties = {
-        # Tell BuildBuddy to run this test using a Firecracker microVM.
-        "workload-isolation-type": "firecracker",
-        # Tell BuildBuddy to ensure that the Docker daemon is started
-        # inside the microVM before this action runs, so that we don't
-        # have to worry about starting it ourselves.
-        "init-dockerd": "true",
-        "recycle-runner": "true",
-    },
+    tags=["manual"]
+   
 )
