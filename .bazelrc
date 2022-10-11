@@ -83,26 +83,11 @@ run --incompatible_strict_action_env
 
 # BuildBuddy GH Actions Config
 # https://www.buildbuddy.io/docs/rbe-github-actions
-build:remote --remote_executor=grpcs://remote.buildbuddy.io
-build:remote --host_platform=@buildbuddy_toolchain//:platform
-build:remote --platforms=@buildbuddy_toolchain//:platform
-build:remote --extra_execution_platforms=@buildbuddy_toolchain//:platform
-build:remote --crosstool_top=@buildbuddy_toolchain//:toolchain
-build:remote --extra_toolchains=@buildbuddy_toolchain//:cc_toolchain
-build:remote --javabase=@buildbuddy_toolchain//:javabase_jdk8
-build:remote --host_javabase=@buildbuddy_toolchain//:javabase_jdk8
-build:remote --java_toolchain=@buildbuddy_toolchain//:toolchain_jdk8
-build:remote --host_java_toolchain=@buildbuddy_toolchain//:toolchain_jdk8
-build:remote --define=EXECUTOR=remote
-
-build:ci --config=remote
-
+build --bes_results_url=https://app.buildbuddy.io/invocation/
+build --bes_backend=grpcs://remote.buildbuddy.io
 build --remote_cache=grpcs://remote.buildbuddy.io
 build --remote_timeout=3600
 build --remote_header=x-buildbuddy-api-key=IbBEgXVMNesRlnMMW5Xh
-test --remote_cache=grpcs://remote.buildbuddy.io
-test --remote_timeout=3600
-test --remote_header=x-buildbuddy-api-key=IbBEgXVMNesRlnMMW5Xh
 
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
