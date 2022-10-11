@@ -93,9 +93,10 @@ export const FormattedTime: React.FC<
     }
 > = createFormattedComponent('formatTime')
 export const FormattedNumber: React.FC<
-  NumberFormatOptions &
-    CustomFormatConfig & {
-      value: number | bigint
+  Omit<NumberFormatOptions, 'localeMatcher'> &
+    CustomFormatConfig<'number'> & {
+      value: number
+      children?(formattedNumber: string): React.ReactElement | null
     }
 > = createFormattedComponent('formatNumber')
 export const FormattedList: React.FC<
