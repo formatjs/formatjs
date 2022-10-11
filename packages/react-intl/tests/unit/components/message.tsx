@@ -123,7 +123,9 @@ describe('<FormattedMessage>', () => {
       defaultMessage: 'Hello, World!',
     }
 
-    const H1: React.FC = ({children}) => <h1 data-testid="h1">{children}</h1>
+    const H1: React.FC<{children: React.ReactNode[]}> = ({children}) => (
+      <h1 data-testid="h1">{children}</h1>
+    )
     const {getByTestId} = mountWithProvider(
       {...descriptor, tagName: H1},
       providerProps
@@ -196,7 +198,7 @@ describe('<FormattedMessage>', () => {
           defaultMessage: 'Hello, <b>{name}</b>!',
           values: {
             name: 'Jest',
-            b: (name: string) => <b data-testid="b">{name}</b>,
+            b: name => <b data-testid="b">{name}</b>,
           },
         },
         providerProps
@@ -252,8 +254,8 @@ describe('<FormattedMessage>', () => {
           defaultMessage: 'Hello, <b>{name}<i>!</i></b>',
           values: {
             name: 'Jest',
-            b: (chunks: any[]) => <b>{chunks}</b>,
-            i: (msg: string) => <i>{msg}</i>,
+            b: chunks => <b>{chunks}</b>,
+            i: msg => <i>{msg}</i>,
           },
         },
         providerProps
@@ -269,7 +271,7 @@ describe('<FormattedMessage>', () => {
           values: {
             name: 'Jest',
             b: (chunks: any) => <b>{chunks}</b>,
-            i: (msg: string) => <i>{msg}</i>,
+            i: msg => <i>{msg}</i>,
           },
         },
         providerProps

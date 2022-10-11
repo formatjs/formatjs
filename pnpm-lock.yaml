@@ -30,7 +30,7 @@ importers:
       '@lerna-lite/cli': ^1.10.0
       '@lerna-lite/list': ^1.10.0
       '@testing-library/jest-dom': ^5.11.5
-      '@testing-library/react': ^12.0.0
+      '@testing-library/react': ^13.4.0
       '@types/babel__core': ^7.1.7
       '@types/babel__helper-plugin-utils': ^7.10.0
       '@types/babel__traverse': ^7.1.7
@@ -130,7 +130,7 @@ importers:
       '@lerna-lite/cli': 1.10.0
       '@lerna-lite/list': 1.10.0
       '@testing-library/jest-dom': 5.16.4
-      '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
+      '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
       '@types/babel__core': 7.1.19
       '@types/babel__helper-plugin-utils': 7.10.0
       '@types/babel__traverse': 7.17.1
@@ -196,8 +196,8 @@ importers:
       picomatch: 2.3.1
       pnpm: 7.9.3
       prettier: 2.7.1
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
       regenerate: 1.4.2
       rimraf: 3.0.2
       serialize-javascript: 6.0.0
@@ -5885,7 +5885,7 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@babel/code-frame': 7.18.6
-      '@babel/runtime': 7.18.3
+      '@babel/runtime': 7.18.9
       '@types/aria-query': 4.2.2
       aria-query: 5.0.0
       chalk: 4.1.2
@@ -5909,18 +5909,18 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@testing-library/react/12.1.5_sfoxds7t5ydpegc3knd667wn6m:
-    resolution: {integrity: sha512-OfTXCJUFgjd/digLUuPxa0+/3ZxsQmE7ub9kcbW/wi96Bh3o/p5vrETcBGfP17NWPGqeYYl5LTRpwyGoMC4ysg==}
+  /@testing-library/react/13.4.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-sXOGON+WNTh3MLE9rve97ftaZukN3oNf2KjDy7YTx6hcTO2uuLHuCGynMDhFwGw/jYf4OJ2Qk0i4i79qMNNkyw==}
     engines: {node: '>=12'}
     peerDependencies:
-      react: <18.0.0
-      react-dom: <18.0.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
     dependencies:
-      '@babel/runtime': 7.18.3
+      '@babel/runtime': 7.18.9
       '@testing-library/dom': 8.14.0
-      '@types/react-dom': 17.0.17
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
+      '@types/react-dom': 18.0.5
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: true
 
   /@tootallnate/once/2.0.0:
@@ -6248,12 +6248,6 @@ packages:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
     dev: true
 
-  /@types/react-dom/17.0.17:
-    resolution: {integrity: sha512-VjnqEmqGnasQKV0CWLevqMTXBYG9GbwuE6x3VetERLh0cq2LTptFE73MrQi2S7GkKXCf2GgwItB/melLnxfnsg==}
-    dependencies:
-      '@types/react': 17.0.47
-    dev: true
-
   /@types/react-dom/18.0.5:
     resolution: {integrity: sha512-OWPWTUrY/NIrjsAPkAk1wW9LZeIjSvkXRhclsFO8CZcZGCOg2G0YZy4ft+rOyYxy8B7ui5iZzi9OkDebZ7/QSA==}
     dependencies:
@@ -6281,14 +6275,6 @@ packages:
     dependencies:
       '@types/history': 4.7.11
       '@types/react': 18.0.14
-    dev: true
-
-  /@types/react/17.0.47:
-    resolution: {integrity: sha512-mk0BL8zBinf2ozNr3qPnlu1oyVTYq+4V7WA76RgxUAtf0Em/Wbid38KN6n4abEkvO4xMTBWmnP1FtQzgkEiJoA==}
-    dependencies:
-      '@types/prop-types': 15.7.5
-      '@types/scheduler': 0.16.2
-      csstype: 3.1.0
     dev: true
 
   /@types/react/18.0.14:
@@ -14822,6 +14808,16 @@ packages:
       scheduler: 0.20.2
     dev: true
 
+  /react-dom/18.2.0_react@18.2.0:
+    resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      loose-envify: 1.4.0
+      react: 18.2.0
+      scheduler: 0.23.0
+    dev: true
+
   /react-error-overlay/6.0.11:
     resolution: {integrity: sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==}
     dev: true
@@ -14981,6 +14977,13 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
+    dev: true
+
+  /react/18.2.0:
+    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
     dev: true
 
   /read-package-json-fast/2.0.3:
@@ -15498,6 +15501,12 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
+    dev: true
+
+  /scheduler/0.23.0:
+    resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
+    dependencies:
+      loose-envify: 1.4.0
     dev: true
 
   /schema-utils/2.7.0:

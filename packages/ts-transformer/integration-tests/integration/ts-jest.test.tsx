@@ -26,7 +26,7 @@ describe('ts-jest transformer', function () {
   })
   it('Comp', function () {
     expect(ReactDOMServer.renderToString(<Component />)).toEqual(
-      '<span data-reactroot="">lQsqfv<!-- --> - <!-- -->[{&quot;type&quot;:0,&quot;value&quot;:&quot;test message&quot;}]<!-- --> - <!-- --> <!-- -->- <!-- -->fooo</span>'
+      '<span>lQsqfv<!-- --> - <!-- -->[{&quot;type&quot;:0,&quot;value&quot;:&quot;test message&quot;}]<!-- --> - <!-- --> <!-- -->- <!-- -->fooo</span>'
     )
   })
 })

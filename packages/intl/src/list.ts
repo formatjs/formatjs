@@ -32,7 +32,7 @@ export function formatList<T>(
     onError: OnErrorFn
   },
   getListFormat: Formatters['getListFormat'],
-  values: Parameters<IntlFormatters['formatList']>[0],
+  values: ReadonlyArray<string | T>,
   options: Parameters<IntlFormatters['formatList']>[1] = {}
 ): Array<T | string> | T | string {
   const results = formatListToParts(
@@ -60,7 +60,7 @@ export function formatListToParts<T>(
     onError: OnErrorFn
   },
   getListFormat: Formatters['getListFormat'],
-  values: ReadonlyArray<string>,
+  values: ReadonlyArray<string | T>,
   options: Parameters<IntlFormatters['formatList']>[1]
 ): Part[]
 export function formatListToParts<T>(
