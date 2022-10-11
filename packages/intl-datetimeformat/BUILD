@@ -93,7 +93,7 @@ genrule(
         "tz_data.tar.gz"
     ],
     outs = ["tz_data/zdump/%s" % zone for zone in ZONES] + ["tz_data/backward"],
-    cmd = "tar -xzvf $< -C $(@D)",
+    cmd = "tar -xvf $< -C $(@D)",
     message = "Extracting zdump data files",
 )
 
