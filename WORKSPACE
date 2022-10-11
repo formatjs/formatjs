@@ -227,7 +227,7 @@ load(
 container_pull(
     name = "ubuntu2204",
     architecture = "amd64",
-    digest = "sha256:2d7ecc9c5e08953d586a6e50c29b91479a48f69ac1ba1f9dc0420d18a728dfc5",
+    digest = "sha256:a8fe6fd30333dc60fc5306982a7c51385c2091af1e0ee887166b40a905691fd0",
     registry = "index.docker.io",
     repository = "library/ubuntu",
     tag = "22.04",
