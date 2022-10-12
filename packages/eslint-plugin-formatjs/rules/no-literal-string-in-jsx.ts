@@ -135,9 +135,13 @@ const rule: Rule.RuleModule = {
       node: TSESTree.Expression | TSESTree.PrivateIdentifier
     ) => {
       // Check if this is either a string literal / template literal, or the concat of them.
+      // It also ignores the empty string.
       if (
-        (node.type === 'Literal' && typeof node.value === 'string') ||
-        node.type === 'TemplateLiteral'
+        (node.type === 'Literal' &&
+          typeof node.value === 'string' &&
+          node.value.length > 0) ||
+        (node.type === 'TemplateLiteral' &&
+          (node.quasis.length > 1 || node.quasis[0].value.raw.length > 0))
       ) {
         context.report({
           node: node as any,
@@ -173,7 +177,11 @@ const rule: Rule.RuleModule = {
           return
         }
 
-        if (node.value.type === 'Literal') {
+        if (
+          node.value.type === 'Literal' &&
+          typeof node.value.value === 'string' &&
+          node.value.value.length > 0
+        ) {
           context.report({
             node: node as any,
             message: 'Cannot have untranslated text in JSX',

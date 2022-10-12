@@ -85,6 +85,18 @@ ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
         },
       ],
     },
+    {
+      // Ignores empty attributes (as string).
+      code: '<img alt="" role="presentational" />',
+    },
+    {
+      // Ignores empty attributes (as literal expression in the attribute value).
+      code: '<img alt={""} role="presentational" />',
+    },
+    {
+      // Ignores empty attributes (as template literal expression in the attribute value).
+      code: '<img alt={``} role="presentational" />',
+    },
   ],
   invalid: [
     {
