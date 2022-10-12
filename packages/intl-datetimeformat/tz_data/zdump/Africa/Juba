@@ -1,0 +1,80 @@
+/zic/Africa/Juba  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Juba  -67768040609748389 (gmtime failed) = -67768040609748389 (localtime failed)
+/zic/Africa/Juba  -67768040609748388 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=7588
+/zic/Africa/Juba  -67768040609740801 (gmtime failed) = Thu Jan  1 02:06:27 -2147481748 LMT isdst=0 gmtoff=7588
+/zic/Africa/Juba  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 02:06:28 -2147481748 LMT isdst=0 gmtoff=7588
+/zic/Africa/Juba  Wed Dec 31 21:53:31 1930 UT = Wed Dec 31 23:59:59 1930 LMT isdst=0 gmtoff=7588
+/zic/Africa/Juba  Wed Dec 31 21:53:32 1930 UT = Wed Dec 31 23:53:32 1930 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Thu Apr 30 21:59:59 1970 UT = Thu Apr 30 23:59:59 1970 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Thu Apr 30 22:00:00 1970 UT = Fri May  1 01:00:00 1970 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Wed Oct 14 20:59:59 1970 UT = Wed Oct 14 23:59:59 1970 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Wed Oct 14 21:00:00 1970 UT = Wed Oct 14 23:00:00 1970 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Thu Apr 29 21:59:59 1971 UT = Thu Apr 29 23:59:59 1971 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Thu Apr 29 22:00:00 1971 UT = Fri Apr 30 01:00:00 1971 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Thu Oct 14 20:59:59 1971 UT = Thu Oct 14 23:59:59 1971 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Thu Oct 14 21:00:00 1971 UT = Thu Oct 14 23:00:00 1971 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 29 21:59:59 1972 UT = Sat Apr 29 23:59:59 1972 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 29 22:00:00 1972 UT = Sun Apr 30 01:00:00 1972 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Sat Oct 14 20:59:59 1972 UT = Sat Oct 14 23:59:59 1972 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Sat Oct 14 21:00:00 1972 UT = Sat Oct 14 23:00:00 1972 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 28 21:59:59 1973 UT = Sat Apr 28 23:59:59 1973 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 28 22:00:00 1973 UT = Sun Apr 29 01:00:00 1973 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Sun Oct 14 20:59:59 1973 UT = Sun Oct 14 23:59:59 1973 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Sun Oct 14 21:00:00 1973 UT = Sun Oct 14 23:00:00 1973 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 27 21:59:59 1974 UT = Sat Apr 27 23:59:59 1974 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 27 22:00:00 1974 UT = Sun Apr 28 01:00:00 1974 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Mon Oct 14 20:59:59 1974 UT = Mon Oct 14 23:59:59 1974 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Mon Oct 14 21:00:00 1974 UT = Mon Oct 14 23:00:00 1974 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 26 21:59:59 1975 UT = Sat Apr 26 23:59:59 1975 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 26 22:00:00 1975 UT = Sun Apr 27 01:00:00 1975 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Tue Oct 14 20:59:59 1975 UT = Tue Oct 14 23:59:59 1975 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Tue Oct 14 21:00:00 1975 UT = Tue Oct 14 23:00:00 1975 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 24 21:59:59 1976 UT = Sat Apr 24 23:59:59 1976 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 24 22:00:00 1976 UT = Sun Apr 25 01:00:00 1976 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Thu Oct 14 20:59:59 1976 UT = Thu Oct 14 23:59:59 1976 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Thu Oct 14 21:00:00 1976 UT = Thu Oct 14 23:00:00 1976 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 23 21:59:59 1977 UT = Sat Apr 23 23:59:59 1977 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 23 22:00:00 1977 UT = Sun Apr 24 01:00:00 1977 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Fri Oct 14 20:59:59 1977 UT = Fri Oct 14 23:59:59 1977 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Fri Oct 14 21:00:00 1977 UT = Fri Oct 14 23:00:00 1977 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 29 21:59:59 1978 UT = Sat Apr 29 23:59:59 1978 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 29 22:00:00 1978 UT = Sun Apr 30 01:00:00 1978 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Sat Oct 14 20:59:59 1978 UT = Sat Oct 14 23:59:59 1978 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Sat Oct 14 21:00:00 1978 UT = Sat Oct 14 23:00:00 1978 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 28 21:59:59 1979 UT = Sat Apr 28 23:59:59 1979 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 28 22:00:00 1979 UT = Sun Apr 29 01:00:00 1979 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Sun Oct 14 20:59:59 1979 UT = Sun Oct 14 23:59:59 1979 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Sun Oct 14 21:00:00 1979 UT = Sun Oct 14 23:00:00 1979 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 26 21:59:59 1980 UT = Sat Apr 26 23:59:59 1980 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 26 22:00:00 1980 UT = Sun Apr 27 01:00:00 1980 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Tue Oct 14 20:59:59 1980 UT = Tue Oct 14 23:59:59 1980 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Tue Oct 14 21:00:00 1980 UT = Tue Oct 14 23:00:00 1980 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 25 21:59:59 1981 UT = Sat Apr 25 23:59:59 1981 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 25 22:00:00 1981 UT = Sun Apr 26 01:00:00 1981 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Wed Oct 14 20:59:59 1981 UT = Wed Oct 14 23:59:59 1981 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Wed Oct 14 21:00:00 1981 UT = Wed Oct 14 23:00:00 1981 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 24 21:59:59 1982 UT = Sat Apr 24 23:59:59 1982 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 24 22:00:00 1982 UT = Sun Apr 25 01:00:00 1982 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Thu Oct 14 20:59:59 1982 UT = Thu Oct 14 23:59:59 1982 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Thu Oct 14 21:00:00 1982 UT = Thu Oct 14 23:00:00 1982 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 23 21:59:59 1983 UT = Sat Apr 23 23:59:59 1983 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 23 22:00:00 1983 UT = Sun Apr 24 01:00:00 1983 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Fri Oct 14 20:59:59 1983 UT = Fri Oct 14 23:59:59 1983 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Fri Oct 14 21:00:00 1983 UT = Fri Oct 14 23:00:00 1983 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 28 21:59:59 1984 UT = Sat Apr 28 23:59:59 1984 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 28 22:00:00 1984 UT = Sun Apr 29 01:00:00 1984 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Sun Oct 14 20:59:59 1984 UT = Sun Oct 14 23:59:59 1984 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Sun Oct 14 21:00:00 1984 UT = Sun Oct 14 23:00:00 1984 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 27 21:59:59 1985 UT = Sat Apr 27 23:59:59 1985 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Apr 27 22:00:00 1985 UT = Sun Apr 28 01:00:00 1985 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Mon Oct 14 20:59:59 1985 UT = Mon Oct 14 23:59:59 1985 CAST isdst=1 gmtoff=10800
+/zic/Africa/Juba  Mon Oct 14 21:00:00 1985 UT = Mon Oct 14 23:00:00 1985 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Jan 15 09:59:59 2000 UT = Sat Jan 15 11:59:59 2000 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Sat Jan 15 10:00:00 2000 UT = Sat Jan 15 13:00:00 2000 EAT isdst=0 gmtoff=10800
+/zic/Africa/Juba  Sun Jan 31 20:59:59 2021 UT = Sun Jan 31 23:59:59 2021 EAT isdst=0 gmtoff=10800
+/zic/Africa/Juba  Sun Jan 31 21:00:00 2021 UT = Sun Jan 31 23:00:00 2021 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Wed Dec 31 21:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 CAT isdst=0 gmtoff=7200
+/zic/Africa/Juba  Wed Dec 31 22:00:00 2147485547 UT = 67768036191669600 (localtime failed)
+/zic/Africa/Juba  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Africa/Juba  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Juba  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

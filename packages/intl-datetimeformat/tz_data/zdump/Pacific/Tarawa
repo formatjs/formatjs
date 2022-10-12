@@ -1,0 +1,12 @@
+/zic/Pacific/Tarawa  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Tarawa  -67768040609782325 (gmtime failed) = -67768040609782325 (localtime failed)
+/zic/Pacific/Tarawa  -67768040609782324 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=41524
+/zic/Pacific/Tarawa  -67768040609740801 (gmtime failed) = Thu Jan  1 11:32:03 -2147481748 LMT isdst=0 gmtoff=41524
+/zic/Pacific/Tarawa  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 11:32:04 -2147481748 LMT isdst=0 gmtoff=41524
+/zic/Pacific/Tarawa  Mon Dec 31 12:27:55 1900 UT = Mon Dec 31 23:59:59 1900 LMT isdst=0 gmtoff=41524
+/zic/Pacific/Tarawa  Mon Dec 31 12:27:56 1900 UT = Tue Jan  1 00:27:56 1901 +12 isdst=0 gmtoff=43200
+/zic/Pacific/Tarawa  Wed Dec 31 11:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +12 isdst=0 gmtoff=43200
+/zic/Pacific/Tarawa  Wed Dec 31 12:00:00 2147485547 UT = 67768036191633600 (localtime failed)
+/zic/Pacific/Tarawa  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Tarawa  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Tarawa  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

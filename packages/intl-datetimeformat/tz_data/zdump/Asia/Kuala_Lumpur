@@ -1,0 +1,26 @@
+/zic/Asia/Kuala_Lumpur  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Kuala_Lumpur  -67768040609765726 (gmtime failed) = -67768040609765726 (localtime failed)
+/zic/Asia/Kuala_Lumpur  -67768040609765725 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=24925
+/zic/Asia/Kuala_Lumpur  -67768040609740801 (gmtime failed) = Thu Jan  1 06:55:24 -2147481748 LMT isdst=0 gmtoff=24925
+/zic/Asia/Kuala_Lumpur  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 06:55:25 -2147481748 LMT isdst=0 gmtoff=24925
+/zic/Asia/Kuala_Lumpur  Mon Dec 31 17:04:34 1900 UT = Mon Dec 31 23:59:59 1900 LMT isdst=0 gmtoff=24925
+/zic/Asia/Kuala_Lumpur  Mon Dec 31 17:04:35 1900 UT = Tue Jan  1 00:00:00 1901 SMT isdst=0 gmtoff=24925
+/zic/Asia/Kuala_Lumpur  Wed May 31 17:04:34 1905 UT = Wed May 31 23:59:59 1905 SMT isdst=0 gmtoff=24925
+/zic/Asia/Kuala_Lumpur  Wed May 31 17:04:35 1905 UT = Thu Jun  1 00:04:35 1905 +07 isdst=0 gmtoff=25200
+/zic/Asia/Kuala_Lumpur  Sat Dec 31 16:59:59 1932 UT = Sat Dec 31 23:59:59 1932 +07 isdst=0 gmtoff=25200
+/zic/Asia/Kuala_Lumpur  Sat Dec 31 17:00:00 1932 UT = Sun Jan  1 00:20:00 1933 +0720 isdst=1 gmtoff=26400
+/zic/Asia/Kuala_Lumpur  Tue Dec 31 16:39:59 1935 UT = Tue Dec 31 23:59:59 1935 +0720 isdst=1 gmtoff=26400
+/zic/Asia/Kuala_Lumpur  Tue Dec 31 16:40:00 1935 UT = Wed Jan  1 00:00:00 1936 +0720 isdst=0 gmtoff=26400
+/zic/Asia/Kuala_Lumpur  Sun Aug 31 16:39:59 1941 UT = Sun Aug 31 23:59:59 1941 +0720 isdst=0 gmtoff=26400
+/zic/Asia/Kuala_Lumpur  Sun Aug 31 16:40:00 1941 UT = Mon Sep  1 00:10:00 1941 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Kuala_Lumpur  Sun Feb 15 16:29:59 1942 UT = Sun Feb 15 23:59:59 1942 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Kuala_Lumpur  Sun Feb 15 16:30:00 1942 UT = Mon Feb 16 01:30:00 1942 +09 isdst=0 gmtoff=32400
+/zic/Asia/Kuala_Lumpur  Tue Sep 11 14:59:59 1945 UT = Tue Sep 11 23:59:59 1945 +09 isdst=0 gmtoff=32400
+/zic/Asia/Kuala_Lumpur  Tue Sep 11 15:00:00 1945 UT = Tue Sep 11 22:30:00 1945 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Kuala_Lumpur  Thu Dec 31 16:29:59 1981 UT = Thu Dec 31 23:59:59 1981 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Kuala_Lumpur  Thu Dec 31 16:30:00 1981 UT = Fri Jan  1 00:30:00 1982 +08 isdst=0 gmtoff=28800
+/zic/Asia/Kuala_Lumpur  Wed Dec 31 15:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +08 isdst=0 gmtoff=28800
+/zic/Asia/Kuala_Lumpur  Wed Dec 31 16:00:00 2147485547 UT = 67768036191648000 (localtime failed)
+/zic/Asia/Kuala_Lumpur  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Kuala_Lumpur  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Kuala_Lumpur  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

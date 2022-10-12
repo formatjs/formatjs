@@ -1,0 +1,68 @@
+/zic/Asia/Shanghai  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Shanghai  -67768040609769944 (gmtime failed) = -67768040609769944 (localtime failed)
+/zic/Asia/Shanghai  -67768040609769943 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=29143
+/zic/Asia/Shanghai  -67768040609740801 (gmtime failed) = Thu Jan  1 08:05:42 -2147481748 LMT isdst=0 gmtoff=29143
+/zic/Asia/Shanghai  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 08:05:43 -2147481748 LMT isdst=0 gmtoff=29143
+/zic/Asia/Shanghai  Mon Dec 31 15:54:16 1900 UT = Mon Dec 31 23:59:59 1900 LMT isdst=0 gmtoff=29143
+/zic/Asia/Shanghai  Mon Dec 31 15:54:17 1900 UT = Mon Dec 31 23:54:17 1900 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 12 15:59:59 1919 UT = Sat Apr 12 23:59:59 1919 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 12 16:00:00 1919 UT = Sun Apr 13 01:00:00 1919 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Tue Sep 30 14:59:59 1919 UT = Tue Sep 30 23:59:59 1919 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Tue Sep 30 15:00:00 1919 UT = Tue Sep 30 23:00:00 1919 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Fri May 31 15:59:59 1940 UT = Fri May 31 23:59:59 1940 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Fri May 31 16:00:00 1940 UT = Sat Jun  1 01:00:00 1940 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Oct 12 14:59:59 1940 UT = Sat Oct 12 23:59:59 1940 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Oct 12 15:00:00 1940 UT = Sat Oct 12 23:00:00 1940 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Fri Mar 14 15:59:59 1941 UT = Fri Mar 14 23:59:59 1941 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Fri Mar 14 16:00:00 1941 UT = Sat Mar 15 01:00:00 1941 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Nov  1 14:59:59 1941 UT = Sat Nov  1 23:59:59 1941 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Nov  1 15:00:00 1941 UT = Sat Nov  1 23:00:00 1941 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Fri Jan 30 15:59:59 1942 UT = Fri Jan 30 23:59:59 1942 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Fri Jan 30 16:00:00 1942 UT = Sat Jan 31 01:00:00 1942 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep  1 14:59:59 1945 UT = Sat Sep  1 23:59:59 1945 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep  1 15:00:00 1945 UT = Sat Sep  1 23:00:00 1945 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Tue May 14 15:59:59 1946 UT = Tue May 14 23:59:59 1946 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Tue May 14 16:00:00 1946 UT = Wed May 15 01:00:00 1946 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Mon Sep 30 14:59:59 1946 UT = Mon Sep 30 23:59:59 1946 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Mon Sep 30 15:00:00 1946 UT = Mon Sep 30 23:00:00 1946 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Mon Apr 14 15:59:59 1947 UT = Mon Apr 14 23:59:59 1947 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Mon Apr 14 16:00:00 1947 UT = Tue Apr 15 01:00:00 1947 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Fri Oct 31 14:59:59 1947 UT = Fri Oct 31 23:59:59 1947 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Fri Oct 31 15:00:00 1947 UT = Fri Oct 31 23:00:00 1947 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Fri Apr 30 15:59:59 1948 UT = Fri Apr 30 23:59:59 1948 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Fri Apr 30 16:00:00 1948 UT = Sat May  1 01:00:00 1948 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Thu Sep 30 14:59:59 1948 UT = Thu Sep 30 23:59:59 1948 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Thu Sep 30 15:00:00 1948 UT = Thu Sep 30 23:00:00 1948 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 30 15:59:59 1949 UT = Sat Apr 30 23:59:59 1949 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 30 16:00:00 1949 UT = Sun May  1 01:00:00 1949 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Fri May 27 14:59:59 1949 UT = Fri May 27 23:59:59 1949 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Fri May 27 15:00:00 1949 UT = Fri May 27 23:00:00 1949 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat May  3 17:59:59 1986 UT = Sun May  4 01:59:59 1986 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat May  3 18:00:00 1986 UT = Sun May  4 03:00:00 1986 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 13 16:59:59 1986 UT = Sun Sep 14 01:59:59 1986 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 13 17:00:00 1986 UT = Sun Sep 14 01:00:00 1986 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 11 17:59:59 1987 UT = Sun Apr 12 01:59:59 1987 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 11 18:00:00 1987 UT = Sun Apr 12 03:00:00 1987 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 12 16:59:59 1987 UT = Sun Sep 13 01:59:59 1987 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 12 17:00:00 1987 UT = Sun Sep 13 01:00:00 1987 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 16 17:59:59 1988 UT = Sun Apr 17 01:59:59 1988 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 16 18:00:00 1988 UT = Sun Apr 17 03:00:00 1988 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 10 16:59:59 1988 UT = Sun Sep 11 01:59:59 1988 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 10 17:00:00 1988 UT = Sun Sep 11 01:00:00 1988 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 15 17:59:59 1989 UT = Sun Apr 16 01:59:59 1989 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 15 18:00:00 1989 UT = Sun Apr 16 03:00:00 1989 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 16 16:59:59 1989 UT = Sun Sep 17 01:59:59 1989 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 16 17:00:00 1989 UT = Sun Sep 17 01:00:00 1989 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 14 17:59:59 1990 UT = Sun Apr 15 01:59:59 1990 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 14 18:00:00 1990 UT = Sun Apr 15 03:00:00 1990 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 15 16:59:59 1990 UT = Sun Sep 16 01:59:59 1990 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 15 17:00:00 1990 UT = Sun Sep 16 01:00:00 1990 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 13 17:59:59 1991 UT = Sun Apr 14 01:59:59 1991 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Sat Apr 13 18:00:00 1991 UT = Sun Apr 14 03:00:00 1991 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 14 16:59:59 1991 UT = Sun Sep 15 01:59:59 1991 CDT isdst=1 gmtoff=32400
+/zic/Asia/Shanghai  Sat Sep 14 17:00:00 1991 UT = Sun Sep 15 01:00:00 1991 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Wed Dec 31 15:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 CST isdst=0 gmtoff=28800
+/zic/Asia/Shanghai  Wed Dec 31 16:00:00 2147485547 UT = 67768036191648000 (localtime failed)
+/zic/Asia/Shanghai  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Shanghai  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Shanghai  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

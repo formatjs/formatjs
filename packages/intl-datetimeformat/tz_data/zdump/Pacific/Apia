@@ -1,0 +1,62 @@
+/zic/Pacific/Apia  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Apia  -67768040609785985 (gmtime failed) = -67768040609785985 (localtime failed)
+/zic/Pacific/Apia  -67768040609785984 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=45184
+/zic/Pacific/Apia  -67768040609740801 (gmtime failed) = Thu Jan  1 12:33:03 -2147481748 LMT isdst=0 gmtoff=45184
+/zic/Pacific/Apia  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 12:33:04 -2147481748 LMT isdst=0 gmtoff=45184
+/zic/Pacific/Apia  Mon Jul  4 11:26:55 1892 UT = Mon Jul  4 23:59:59 1892 LMT isdst=0 gmtoff=45184
+/zic/Pacific/Apia  Mon Jul  4 11:26:56 1892 UT = Mon Jul  4 00:00:00 1892 LMT isdst=0 gmtoff=-41216
+/zic/Pacific/Apia  Sun Jan  1 11:26:55 1911 UT = Sat Dec 31 23:59:59 1910 LMT isdst=0 gmtoff=-41216
+/zic/Pacific/Apia  Sun Jan  1 11:26:56 1911 UT = Sat Dec 31 23:56:56 1910 -1130 isdst=0 gmtoff=-41400
+/zic/Pacific/Apia  Sun Jan  1 11:29:59 1950 UT = Sat Dec 31 23:59:59 1949 -1130 isdst=0 gmtoff=-41400
+/zic/Pacific/Apia  Sun Jan  1 11:30:00 1950 UT = Sun Jan  1 00:30:00 1950 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Apia  Sun Sep 26 10:59:59 2010 UT = Sat Sep 25 23:59:59 2010 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Apia  Sun Sep 26 11:00:00 2010 UT = Sun Sep 26 01:00:00 2010 -10 isdst=1 gmtoff=-36000
+/zic/Pacific/Apia  Sat Apr  2 13:59:59 2011 UT = Sat Apr  2 03:59:59 2011 -10 isdst=1 gmtoff=-36000
+/zic/Pacific/Apia  Sat Apr  2 14:00:00 2011 UT = Sat Apr  2 03:00:00 2011 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Apia  Sat Sep 24 13:59:59 2011 UT = Sat Sep 24 02:59:59 2011 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Apia  Sat Sep 24 14:00:00 2011 UT = Sat Sep 24 04:00:00 2011 -10 isdst=1 gmtoff=-36000
+/zic/Pacific/Apia  Fri Dec 30 09:59:59 2011 UT = Thu Dec 29 23:59:59 2011 -10 isdst=1 gmtoff=-36000
+/zic/Pacific/Apia  Fri Dec 30 10:00:00 2011 UT = Sat Dec 31 00:00:00 2011 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Mar 31 13:59:59 2012 UT = Sun Apr  1 03:59:59 2012 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Mar 31 14:00:00 2012 UT = Sun Apr  1 03:00:00 2012 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 29 13:59:59 2012 UT = Sun Sep 30 02:59:59 2012 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 29 14:00:00 2012 UT = Sun Sep 30 04:00:00 2012 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  6 13:59:59 2013 UT = Sun Apr  7 03:59:59 2013 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  6 14:00:00 2013 UT = Sun Apr  7 03:00:00 2013 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 28 13:59:59 2013 UT = Sun Sep 29 02:59:59 2013 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 28 14:00:00 2013 UT = Sun Sep 29 04:00:00 2013 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  5 13:59:59 2014 UT = Sun Apr  6 03:59:59 2014 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  5 14:00:00 2014 UT = Sun Apr  6 03:00:00 2014 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 27 13:59:59 2014 UT = Sun Sep 28 02:59:59 2014 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 27 14:00:00 2014 UT = Sun Sep 28 04:00:00 2014 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  4 13:59:59 2015 UT = Sun Apr  5 03:59:59 2015 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  4 14:00:00 2015 UT = Sun Apr  5 03:00:00 2015 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 26 13:59:59 2015 UT = Sun Sep 27 02:59:59 2015 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 26 14:00:00 2015 UT = Sun Sep 27 04:00:00 2015 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  2 13:59:59 2016 UT = Sun Apr  3 03:59:59 2016 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  2 14:00:00 2016 UT = Sun Apr  3 03:00:00 2016 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 24 13:59:59 2016 UT = Sun Sep 25 02:59:59 2016 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 24 14:00:00 2016 UT = Sun Sep 25 04:00:00 2016 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  1 13:59:59 2017 UT = Sun Apr  2 03:59:59 2017 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  1 14:00:00 2017 UT = Sun Apr  2 03:00:00 2017 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 23 13:59:59 2017 UT = Sun Sep 24 02:59:59 2017 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 23 14:00:00 2017 UT = Sun Sep 24 04:00:00 2017 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Mar 31 13:59:59 2018 UT = Sun Apr  1 03:59:59 2018 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Mar 31 14:00:00 2018 UT = Sun Apr  1 03:00:00 2018 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 29 13:59:59 2018 UT = Sun Sep 30 02:59:59 2018 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 29 14:00:00 2018 UT = Sun Sep 30 04:00:00 2018 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  6 13:59:59 2019 UT = Sun Apr  7 03:59:59 2019 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  6 14:00:00 2019 UT = Sun Apr  7 03:00:00 2019 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 28 13:59:59 2019 UT = Sun Sep 29 02:59:59 2019 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 28 14:00:00 2019 UT = Sun Sep 29 04:00:00 2019 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  4 13:59:59 2020 UT = Sun Apr  5 03:59:59 2020 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  4 14:00:00 2020 UT = Sun Apr  5 03:00:00 2020 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 26 13:59:59 2020 UT = Sun Sep 27 02:59:59 2020 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Sat Sep 26 14:00:00 2020 UT = Sun Sep 27 04:00:00 2020 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  3 13:59:59 2021 UT = Sun Apr  4 03:59:59 2021 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Apia  Sat Apr  3 14:00:00 2021 UT = Sun Apr  4 03:00:00 2021 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Wed Dec 31 10:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Apia  Wed Dec 31 11:00:00 2147485547 UT = 67768036191630000 (localtime failed)
+/zic/Pacific/Apia  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Apia  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Apia  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

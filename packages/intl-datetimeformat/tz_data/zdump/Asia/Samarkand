@@ -1,0 +1,58 @@
+/zic/Asia/Samarkand  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Samarkand  -67768040609756874 (gmtime failed) = -67768040609756874 (localtime failed)
+/zic/Asia/Samarkand  -67768040609756873 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=16073
+/zic/Asia/Samarkand  -67768040609740801 (gmtime failed) = Thu Jan  1 04:27:52 -2147481748 LMT isdst=0 gmtoff=16073
+/zic/Asia/Samarkand  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 04:27:53 -2147481748 LMT isdst=0 gmtoff=16073
+/zic/Asia/Samarkand  Thu May  1 19:32:06 1924 UT = Thu May  1 23:59:59 1924 LMT isdst=0 gmtoff=16073
+/zic/Asia/Samarkand  Thu May  1 19:32:07 1924 UT = Thu May  1 23:32:07 1924 +04 isdst=0 gmtoff=14400
+/zic/Asia/Samarkand  Fri Jun 20 19:59:59 1930 UT = Fri Jun 20 23:59:59 1930 +04 isdst=0 gmtoff=14400
+/zic/Asia/Samarkand  Fri Jun 20 20:00:00 1930 UT = Sat Jun 21 01:00:00 1930 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Tue Mar 31 18:59:59 1981 UT = Tue Mar 31 23:59:59 1981 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Tue Mar 31 19:00:00 1981 UT = Wed Apr  1 01:00:00 1981 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Wed Sep 30 17:59:59 1981 UT = Wed Sep 30 23:59:59 1981 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Wed Sep 30 18:00:00 1981 UT = Thu Oct  1 00:00:00 1981 +06 isdst=0 gmtoff=21600
+/zic/Asia/Samarkand  Wed Mar 31 17:59:59 1982 UT = Wed Mar 31 23:59:59 1982 +06 isdst=0 gmtoff=21600
+/zic/Asia/Samarkand  Wed Mar 31 18:00:00 1982 UT = Thu Apr  1 00:00:00 1982 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Thu Sep 30 17:59:59 1982 UT = Thu Sep 30 23:59:59 1982 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Thu Sep 30 18:00:00 1982 UT = Thu Sep 30 23:00:00 1982 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Thu Mar 31 18:59:59 1983 UT = Thu Mar 31 23:59:59 1983 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Thu Mar 31 19:00:00 1983 UT = Fri Apr  1 01:00:00 1983 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Fri Sep 30 17:59:59 1983 UT = Fri Sep 30 23:59:59 1983 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Fri Sep 30 18:00:00 1983 UT = Fri Sep 30 23:00:00 1983 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 31 18:59:59 1984 UT = Sat Mar 31 23:59:59 1984 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 31 19:00:00 1984 UT = Sun Apr  1 01:00:00 1984 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 29 20:59:59 1984 UT = Sun Sep 30 02:59:59 1984 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 29 21:00:00 1984 UT = Sun Sep 30 02:00:00 1984 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 30 20:59:59 1985 UT = Sun Mar 31 01:59:59 1985 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 30 21:00:00 1985 UT = Sun Mar 31 03:00:00 1985 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 28 20:59:59 1985 UT = Sun Sep 29 02:59:59 1985 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 28 21:00:00 1985 UT = Sun Sep 29 02:00:00 1985 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 29 20:59:59 1986 UT = Sun Mar 30 01:59:59 1986 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 29 21:00:00 1986 UT = Sun Mar 30 03:00:00 1986 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 27 20:59:59 1986 UT = Sun Sep 28 02:59:59 1986 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 27 21:00:00 1986 UT = Sun Sep 28 02:00:00 1986 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 28 20:59:59 1987 UT = Sun Mar 29 01:59:59 1987 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 28 21:00:00 1987 UT = Sun Mar 29 03:00:00 1987 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 26 20:59:59 1987 UT = Sun Sep 27 02:59:59 1987 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 26 21:00:00 1987 UT = Sun Sep 27 02:00:00 1987 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 26 20:59:59 1988 UT = Sun Mar 27 01:59:59 1988 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 26 21:00:00 1988 UT = Sun Mar 27 03:00:00 1988 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 24 20:59:59 1988 UT = Sun Sep 25 02:59:59 1988 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 24 21:00:00 1988 UT = Sun Sep 25 02:00:00 1988 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 25 20:59:59 1989 UT = Sun Mar 26 01:59:59 1989 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 25 21:00:00 1989 UT = Sun Mar 26 03:00:00 1989 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 23 20:59:59 1989 UT = Sun Sep 24 02:59:59 1989 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 23 21:00:00 1989 UT = Sun Sep 24 02:00:00 1989 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 24 20:59:59 1990 UT = Sun Mar 25 01:59:59 1990 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 24 21:00:00 1990 UT = Sun Mar 25 03:00:00 1990 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 29 20:59:59 1990 UT = Sun Sep 30 02:59:59 1990 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 29 21:00:00 1990 UT = Sun Sep 30 02:00:00 1990 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 30 20:59:59 1991 UT = Sun Mar 31 01:59:59 1991 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Sat Mar 30 21:00:00 1991 UT = Sun Mar 31 03:00:00 1991 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 28 20:59:59 1991 UT = Sun Sep 29 02:59:59 1991 +06 isdst=1 gmtoff=21600
+/zic/Asia/Samarkand  Sat Sep 28 21:00:00 1991 UT = Sun Sep 29 02:00:00 1991 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Wed Dec 31 18:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +05 isdst=0 gmtoff=18000
+/zic/Asia/Samarkand  Wed Dec 31 19:00:00 2147485547 UT = 67768036191658800 (localtime failed)
+/zic/Asia/Samarkand  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Samarkand  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Samarkand  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

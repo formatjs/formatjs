@@ -1,4 +1,7 @@
-import {MessageDescriptor} from '@formatjs/intl'
+import {
+  IntlFormatters as CoreIntlFormatters,
+  MessageDescriptor,
+} from '@formatjs/intl'
 export * from './plugin'
 export * from './provider'
 export {intlKey} from './injection-key'
@@ -10,7 +13,6 @@ export {
   MessageDescriptor,
   IntlCache,
   Formatters,
-  IntlFormatters,
   FormatDisplayNameOptions,
   FormatListOptions,
   FormatPluralOptions,
@@ -27,6 +29,10 @@ export {
   IntlErrorCode,
   IntlError,
 } from '@formatjs/intl'
+import {VNode} from 'vue'
+
+export type IntlFormatters = CoreIntlFormatters<VNode>
+
 export function defineMessages<
   K extends keyof any,
   T = MessageDescriptor,

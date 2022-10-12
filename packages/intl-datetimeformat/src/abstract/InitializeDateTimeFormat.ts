@@ -219,7 +219,14 @@ export function InitializeDateTimeFormat(
     options,
     'timeZoneName',
     'string',
-    ['short', 'long'],
+    [
+      'long',
+      'short',
+      'longOffset',
+      'shortOffset',
+      'longGeneric',
+      'shortGeneric',
+    ],
     undefined
   )
   opt.fractionalSecondDigits = GetNumberOption(

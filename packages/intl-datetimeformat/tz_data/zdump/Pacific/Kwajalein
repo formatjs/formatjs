@@ -1,0 +1,22 @@
+/zic/Pacific/Kwajalein  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Kwajalein  -67768040609780961 (gmtime failed) = -67768040609780961 (localtime failed)
+/zic/Pacific/Kwajalein  -67768040609780960 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=40160
+/zic/Pacific/Kwajalein  -67768040609740801 (gmtime failed) = Thu Jan  1 11:09:19 -2147481748 LMT isdst=0 gmtoff=40160
+/zic/Pacific/Kwajalein  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 11:09:20 -2147481748 LMT isdst=0 gmtoff=40160
+/zic/Pacific/Kwajalein  Mon Dec 31 12:50:39 1900 UT = Mon Dec 31 23:59:59 1900 LMT isdst=0 gmtoff=40160
+/zic/Pacific/Kwajalein  Mon Dec 31 12:50:40 1900 UT = Mon Dec 31 23:50:40 1900 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kwajalein  Thu Dec 31 12:59:59 1936 UT = Thu Dec 31 23:59:59 1936 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kwajalein  Thu Dec 31 13:00:00 1936 UT = Thu Dec 31 23:00:00 1936 +10 isdst=0 gmtoff=36000
+/zic/Pacific/Kwajalein  Mon Mar 31 13:59:59 1941 UT = Mon Mar 31 23:59:59 1941 +10 isdst=0 gmtoff=36000
+/zic/Pacific/Kwajalein  Mon Mar 31 14:00:00 1941 UT = Mon Mar 31 23:00:00 1941 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Kwajalein  Sat Feb  5 14:59:59 1944 UT = Sat Feb  5 23:59:59 1944 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Kwajalein  Sat Feb  5 15:00:00 1944 UT = Sun Feb  6 02:00:00 1944 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kwajalein  Tue Sep 30 12:59:59 1969 UT = Tue Sep 30 23:59:59 1969 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kwajalein  Tue Sep 30 13:00:00 1969 UT = Tue Sep 30 01:00:00 1969 -12 isdst=0 gmtoff=-43200
+/zic/Pacific/Kwajalein  Sat Aug 21 11:59:59 1993 UT = Fri Aug 20 23:59:59 1993 -12 isdst=0 gmtoff=-43200
+/zic/Pacific/Kwajalein  Sat Aug 21 12:00:00 1993 UT = Sun Aug 22 00:00:00 1993 +12 isdst=0 gmtoff=43200
+/zic/Pacific/Kwajalein  Wed Dec 31 11:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +12 isdst=0 gmtoff=43200
+/zic/Pacific/Kwajalein  Wed Dec 31 12:00:00 2147485547 UT = 67768036191633600 (localtime failed)
+/zic/Pacific/Kwajalein  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Kwajalein  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Kwajalein  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

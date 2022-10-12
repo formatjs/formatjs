@@ -1,0 +1,14 @@
+/zic/Asia/Thimphu  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Thimphu  -67768040609762317 (gmtime failed) = -67768040609762317 (localtime failed)
+/zic/Asia/Thimphu  -67768040609762316 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=21516
+/zic/Asia/Thimphu  -67768040609740801 (gmtime failed) = Thu Jan  1 05:58:35 -2147481748 LMT isdst=0 gmtoff=21516
+/zic/Asia/Thimphu  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 05:58:36 -2147481748 LMT isdst=0 gmtoff=21516
+/zic/Asia/Thimphu  Thu Aug 14 18:01:23 1947 UT = Thu Aug 14 23:59:59 1947 LMT isdst=0 gmtoff=21516
+/zic/Asia/Thimphu  Thu Aug 14 18:01:24 1947 UT = Thu Aug 14 23:31:24 1947 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Thimphu  Wed Sep 30 18:29:59 1987 UT = Wed Sep 30 23:59:59 1987 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Thimphu  Wed Sep 30 18:30:00 1987 UT = Thu Oct  1 00:30:00 1987 +06 isdst=0 gmtoff=21600
+/zic/Asia/Thimphu  Wed Dec 31 17:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +06 isdst=0 gmtoff=21600
+/zic/Asia/Thimphu  Wed Dec 31 18:00:00 2147485547 UT = 67768036191655200 (localtime failed)
+/zic/Asia/Thimphu  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Thimphu  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Thimphu  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

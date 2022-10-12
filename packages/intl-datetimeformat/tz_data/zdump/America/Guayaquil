@@ -1,0 +1,18 @@
+/zic/America/Guayaquil  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Guayaquil  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Guayaquil  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Guayaquil  Thu Jan  1 05:19:19 -2147481748 UT = -67768040609721641 (localtime failed)
+/zic/America/Guayaquil  Thu Jan  1 05:19:20 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-19160
+/zic/America/Guayaquil  Wed Jan  1 05:19:19 1890 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=-19160
+/zic/America/Guayaquil  Wed Jan  1 05:19:20 1890 UT = Wed Jan  1 00:05:20 1890 QMT isdst=0 gmtoff=-18840
+/zic/America/Guayaquil  Thu Jan  1 05:13:59 1931 UT = Wed Dec 31 23:59:59 1930 QMT isdst=0 gmtoff=-18840
+/zic/America/Guayaquil  Thu Jan  1 05:14:00 1931 UT = Thu Jan  1 00:14:00 1931 -05 isdst=0 gmtoff=-18000
+/zic/America/Guayaquil  Sat Nov 28 04:59:59 1992 UT = Fri Nov 27 23:59:59 1992 -05 isdst=0 gmtoff=-18000
+/zic/America/Guayaquil  Sat Nov 28 05:00:00 1992 UT = Sat Nov 28 01:00:00 1992 -04 isdst=1 gmtoff=-14400
+/zic/America/Guayaquil  Fri Feb  5 03:59:59 1993 UT = Thu Feb  4 23:59:59 1993 -04 isdst=1 gmtoff=-14400
+/zic/America/Guayaquil  Fri Feb  5 04:00:00 1993 UT = Thu Feb  4 23:00:00 1993 -05 isdst=0 gmtoff=-18000
+/zic/America/Guayaquil  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 18:59:59 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Guayaquil  67768036191676800 (gmtime failed) = Wed Dec 31 19:00:00 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Guayaquil  67768036191694799 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Guayaquil  67768036191694800 (gmtime failed) = 67768036191694800 (localtime failed)
+/zic/America/Guayaquil  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

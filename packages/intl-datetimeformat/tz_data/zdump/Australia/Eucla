@@ -1,0 +1,48 @@
+/zic/Australia/Eucla  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Australia/Eucla  -67768040609771729 (gmtime failed) = -67768040609771729 (localtime failed)
+/zic/Australia/Eucla  -67768040609771728 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=30928
+/zic/Australia/Eucla  -67768040609740801 (gmtime failed) = Thu Jan  1 08:35:27 -2147481748 LMT isdst=0 gmtoff=30928
+/zic/Australia/Eucla  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 08:35:28 -2147481748 LMT isdst=0 gmtoff=30928
+/zic/Australia/Eucla  Sat Nov 30 15:24:31 1895 UT = Sat Nov 30 23:59:59 1895 LMT isdst=0 gmtoff=30928
+/zic/Australia/Eucla  Sat Nov 30 15:24:32 1895 UT = Sun Dec  1 00:09:32 1895 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sun Dec 31 17:14:59 1916 UT = Mon Jan  1 01:59:59 1917 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sun Dec 31 17:15:00 1916 UT = Mon Jan  1 03:00:00 1917 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 24 17:14:59 1917 UT = Sun Mar 25 02:59:59 1917 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 24 17:15:00 1917 UT = Sun Mar 25 02:00:00 1917 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Wed Dec 31 17:14:59 1941 UT = Thu Jan  1 01:59:59 1942 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Wed Dec 31 17:15:00 1941 UT = Thu Jan  1 03:00:00 1942 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 28 17:14:59 1942 UT = Sun Mar 29 02:59:59 1942 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 28 17:15:00 1942 UT = Sun Mar 29 02:00:00 1942 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Sep 26 17:14:59 1942 UT = Sun Sep 27 01:59:59 1942 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Sep 26 17:15:00 1942 UT = Sun Sep 27 03:00:00 1942 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 27 17:14:59 1943 UT = Sun Mar 28 02:59:59 1943 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 27 17:15:00 1943 UT = Sun Mar 28 02:00:00 1943 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Oct 26 17:14:59 1974 UT = Sun Oct 27 01:59:59 1974 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Oct 26 17:15:00 1974 UT = Sun Oct 27 03:00:00 1974 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar  1 17:14:59 1975 UT = Sun Mar  2 02:59:59 1975 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar  1 17:15:00 1975 UT = Sun Mar  2 02:00:00 1975 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Oct 29 17:14:59 1983 UT = Sun Oct 30 01:59:59 1983 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Oct 29 17:15:00 1983 UT = Sun Oct 30 03:00:00 1983 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar  3 17:14:59 1984 UT = Sun Mar  4 02:59:59 1984 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar  3 17:15:00 1984 UT = Sun Mar  4 02:00:00 1984 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Nov 16 17:14:59 1991 UT = Sun Nov 17 01:59:59 1991 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Nov 16 17:15:00 1991 UT = Sun Nov 17 03:00:00 1991 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Feb 29 17:14:59 1992 UT = Sun Mar  1 02:59:59 1992 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Feb 29 17:15:00 1992 UT = Sun Mar  1 02:00:00 1992 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Dec  2 17:14:59 2006 UT = Sun Dec  3 01:59:59 2006 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Dec  2 17:15:00 2006 UT = Sun Dec  3 03:00:00 2006 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 24 17:14:59 2007 UT = Sun Mar 25 02:59:59 2007 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 24 17:15:00 2007 UT = Sun Mar 25 02:00:00 2007 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Oct 27 17:14:59 2007 UT = Sun Oct 28 01:59:59 2007 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Oct 27 17:15:00 2007 UT = Sun Oct 28 03:00:00 2007 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 29 17:14:59 2008 UT = Sun Mar 30 02:59:59 2008 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 29 17:15:00 2008 UT = Sun Mar 30 02:00:00 2008 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Oct 25 17:14:59 2008 UT = Sun Oct 26 01:59:59 2008 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Sat Oct 25 17:15:00 2008 UT = Sun Oct 26 03:00:00 2008 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 28 17:14:59 2009 UT = Sun Mar 29 02:59:59 2009 +0945 isdst=1 gmtoff=35100
+/zic/Australia/Eucla  Sat Mar 28 17:15:00 2009 UT = Sun Mar 29 02:00:00 2009 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Wed Dec 31 15:14:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +0845 isdst=0 gmtoff=31500
+/zic/Australia/Eucla  Wed Dec 31 15:15:00 2147485547 UT = 67768036191645300 (localtime failed)
+/zic/Australia/Eucla  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Australia/Eucla  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Australia/Eucla  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)
