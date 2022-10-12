@@ -1,0 +1,30 @@
+/zic/Pacific/Tongatapu  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Tongatapu  -67768040609785153 (gmtime failed) = -67768040609785153 (localtime failed)
+/zic/Pacific/Tongatapu  -67768040609785152 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=44352
+/zic/Pacific/Tongatapu  -67768040609740801 (gmtime failed) = Thu Jan  1 12:19:11 -2147481748 LMT isdst=0 gmtoff=44352
+/zic/Pacific/Tongatapu  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 12:19:12 -2147481748 LMT isdst=0 gmtoff=44352
+/zic/Pacific/Tongatapu  Sun Sep  9 11:40:47 1945 UT = Sun Sep  9 23:59:59 1945 LMT isdst=0 gmtoff=44352
+/zic/Pacific/Tongatapu  Sun Sep  9 11:40:48 1945 UT = Mon Sep 10 00:00:48 1945 +1220 isdst=0 gmtoff=44400
+/zic/Pacific/Tongatapu  Sat Dec 31 11:39:59 1960 UT = Sat Dec 31 23:59:59 1960 +1220 isdst=0 gmtoff=44400
+/zic/Pacific/Tongatapu  Sat Dec 31 11:40:00 1960 UT = Sun Jan  1 00:40:00 1961 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Tongatapu  Wed Oct  6 12:59:59 1999 UT = Thu Oct  7 01:59:59 1999 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Tongatapu  Wed Oct  6 13:00:00 1999 UT = Thu Oct  7 03:00:00 1999 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Tongatapu  Sat Mar 18 12:59:59 2000 UT = Sun Mar 19 02:59:59 2000 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Tongatapu  Sat Mar 18 13:00:00 2000 UT = Sun Mar 19 02:00:00 2000 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Tongatapu  Sat Nov  4 12:59:59 2000 UT = Sun Nov  5 01:59:59 2000 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Tongatapu  Sat Nov  4 13:00:00 2000 UT = Sun Nov  5 03:00:00 2000 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Tongatapu  Sat Jan 27 11:59:59 2001 UT = Sun Jan 28 01:59:59 2001 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Tongatapu  Sat Jan 27 12:00:00 2001 UT = Sun Jan 28 01:00:00 2001 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Tongatapu  Sat Nov  3 12:59:59 2001 UT = Sun Nov  4 01:59:59 2001 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Tongatapu  Sat Nov  3 13:00:00 2001 UT = Sun Nov  4 03:00:00 2001 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Tongatapu  Sat Jan 26 11:59:59 2002 UT = Sun Jan 27 01:59:59 2002 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Tongatapu  Sat Jan 26 12:00:00 2002 UT = Sun Jan 27 01:00:00 2002 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Tongatapu  Sat Nov  5 12:59:59 2016 UT = Sun Nov  6 01:59:59 2016 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Tongatapu  Sat Nov  5 13:00:00 2016 UT = Sun Nov  6 03:00:00 2016 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Tongatapu  Sat Jan 14 12:59:59 2017 UT = Sun Jan 15 02:59:59 2017 +14 isdst=1 gmtoff=50400
+/zic/Pacific/Tongatapu  Sat Jan 14 13:00:00 2017 UT = Sun Jan 15 02:00:00 2017 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Tongatapu  Wed Dec 31 10:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Tongatapu  Wed Dec 31 11:00:00 2147485547 UT = 67768036191630000 (localtime failed)
+/zic/Pacific/Tongatapu  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Tongatapu  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Tongatapu  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

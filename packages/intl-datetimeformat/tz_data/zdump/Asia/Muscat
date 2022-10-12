@@ -1,0 +1,12 @@
+/zic/Asia/Muscat  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Muscat  -67768040609754073 (gmtime failed) = -67768040609754073 (localtime failed)
+/zic/Asia/Muscat  -67768040609754072 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=13272
+/zic/Asia/Muscat  -67768040609740801 (gmtime failed) = Thu Jan  1 03:41:11 -2147481748 LMT isdst=0 gmtoff=13272
+/zic/Asia/Muscat  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 03:41:12 -2147481748 LMT isdst=0 gmtoff=13272
+/zic/Asia/Muscat  Wed Dec 31 20:18:47 1919 UT = Wed Dec 31 23:59:59 1919 LMT isdst=0 gmtoff=13272
+/zic/Asia/Muscat  Wed Dec 31 20:18:48 1919 UT = Thu Jan  1 00:18:48 1920 +04 isdst=0 gmtoff=14400
+/zic/Asia/Muscat  Wed Dec 31 19:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +04 isdst=0 gmtoff=14400
+/zic/Asia/Muscat  Wed Dec 31 20:00:00 2147485547 UT = 67768036191662400 (localtime failed)
+/zic/Asia/Muscat  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Muscat  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Muscat  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -1,0 +1,18 @@
+/zic/America/Paramaribo  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Paramaribo  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Paramaribo  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Paramaribo  Thu Jan  1 03:40:39 -2147481748 UT = -67768040609727561 (localtime failed)
+/zic/America/Paramaribo  Thu Jan  1 03:40:40 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-13240
+/zic/America/Paramaribo  Sun Jan  1 03:40:39 1911 UT = Sat Dec 31 23:59:59 1910 LMT isdst=0 gmtoff=-13240
+/zic/America/Paramaribo  Sun Jan  1 03:40:40 1911 UT = Sat Dec 31 23:59:48 1910 PMT isdst=0 gmtoff=-13252
+/zic/America/Paramaribo  Tue Jan  1 03:40:51 1935 UT = Mon Dec 31 23:59:59 1934 PMT isdst=0 gmtoff=-13252
+/zic/America/Paramaribo  Tue Jan  1 03:40:52 1935 UT = Tue Jan  1 00:00:16 1935 PMT isdst=0 gmtoff=-13236
+/zic/America/Paramaribo  Mon Oct  1 03:40:35 1945 UT = Sun Sep 30 23:59:59 1945 PMT isdst=0 gmtoff=-13236
+/zic/America/Paramaribo  Mon Oct  1 03:40:36 1945 UT = Mon Oct  1 00:10:36 1945 -0330 isdst=0 gmtoff=-12600
+/zic/America/Paramaribo  Mon Oct  1 03:29:59 1984 UT = Sun Sep 30 23:59:59 1984 -0330 isdst=0 gmtoff=-12600
+/zic/America/Paramaribo  Mon Oct  1 03:30:00 1984 UT = Mon Oct  1 00:30:00 1984 -03 isdst=0 gmtoff=-10800
+/zic/America/Paramaribo  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 20:59:59 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Paramaribo  67768036191676800 (gmtime failed) = Wed Dec 31 21:00:00 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Paramaribo  67768036191687599 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Paramaribo  67768036191687600 (gmtime failed) = 67768036191687600 (localtime failed)
+/zic/America/Paramaribo  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

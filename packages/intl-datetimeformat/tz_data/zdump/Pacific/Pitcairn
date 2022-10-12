@@ -1,0 +1,14 @@
+/zic/Pacific/Pitcairn  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Pitcairn  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Pitcairn  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Pitcairn  Thu Jan  1 08:40:19 -2147481748 UT = -67768040609709581 (localtime failed)
+/zic/Pacific/Pitcairn  Thu Jan  1 08:40:20 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-31220
+/zic/Pacific/Pitcairn  Tue Jan  1 08:40:19 1901 UT = Mon Dec 31 23:59:59 1900 LMT isdst=0 gmtoff=-31220
+/zic/Pacific/Pitcairn  Tue Jan  1 08:40:20 1901 UT = Tue Jan  1 00:10:20 1901 -0830 isdst=0 gmtoff=-30600
+/zic/Pacific/Pitcairn  Mon Apr 27 08:29:59 1998 UT = Sun Apr 26 23:59:59 1998 -0830 isdst=0 gmtoff=-30600
+/zic/Pacific/Pitcairn  Mon Apr 27 08:30:00 1998 UT = Mon Apr 27 00:30:00 1998 -08 isdst=0 gmtoff=-28800
+/zic/Pacific/Pitcairn  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 15:59:59 2147485547 -08 isdst=0 gmtoff=-28800
+/zic/Pacific/Pitcairn  67768036191676800 (gmtime failed) = Wed Dec 31 16:00:00 2147485547 -08 isdst=0 gmtoff=-28800
+/zic/Pacific/Pitcairn  67768036191705599 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -08 isdst=0 gmtoff=-28800
+/zic/Pacific/Pitcairn  67768036191705600 (gmtime failed) = 67768036191705600 (localtime failed)
+/zic/Pacific/Pitcairn  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

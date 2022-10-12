@@ -1,0 +1,16 @@
+/zic/Africa/Ndjamena  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Ndjamena  -67768040609744413 (gmtime failed) = -67768040609744413 (localtime failed)
+/zic/Africa/Ndjamena  -67768040609744412 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=3612
+/zic/Africa/Ndjamena  -67768040609740801 (gmtime failed) = Thu Jan  1 01:00:11 -2147481748 LMT isdst=0 gmtoff=3612
+/zic/Africa/Ndjamena  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 01:00:12 -2147481748 LMT isdst=0 gmtoff=3612
+/zic/Africa/Ndjamena  Sun Dec 31 22:59:47 1911 UT = Sun Dec 31 23:59:59 1911 LMT isdst=0 gmtoff=3612
+/zic/Africa/Ndjamena  Sun Dec 31 22:59:48 1911 UT = Sun Dec 31 23:59:48 1911 WAT isdst=0 gmtoff=3600
+/zic/Africa/Ndjamena  Sat Oct 13 22:59:59 1979 UT = Sat Oct 13 23:59:59 1979 WAT isdst=0 gmtoff=3600
+/zic/Africa/Ndjamena  Sat Oct 13 23:00:00 1979 UT = Sun Oct 14 01:00:00 1979 WAST isdst=1 gmtoff=7200
+/zic/Africa/Ndjamena  Fri Mar  7 21:59:59 1980 UT = Fri Mar  7 23:59:59 1980 WAST isdst=1 gmtoff=7200
+/zic/Africa/Ndjamena  Fri Mar  7 22:00:00 1980 UT = Fri Mar  7 23:00:00 1980 WAT isdst=0 gmtoff=3600
+/zic/Africa/Ndjamena  Wed Dec 31 22:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 WAT isdst=0 gmtoff=3600
+/zic/Africa/Ndjamena  Wed Dec 31 23:00:00 2147485547 UT = 67768036191673200 (localtime failed)
+/zic/Africa/Ndjamena  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Africa/Ndjamena  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Ndjamena  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

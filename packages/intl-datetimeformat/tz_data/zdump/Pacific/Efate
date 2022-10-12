@@ -1,0 +1,56 @@
+/zic/Pacific/Efate  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Efate  -67768040609781197 (gmtime failed) = -67768040609781197 (localtime failed)
+/zic/Pacific/Efate  -67768040609781196 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=40396
+/zic/Pacific/Efate  -67768040609740801 (gmtime failed) = Thu Jan  1 11:13:15 -2147481748 LMT isdst=0 gmtoff=40396
+/zic/Pacific/Efate  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 11:13:16 -2147481748 LMT isdst=0 gmtoff=40396
+/zic/Pacific/Efate  Fri Jan 12 12:46:43 1912 UT = Fri Jan 12 23:59:59 1912 LMT isdst=0 gmtoff=40396
+/zic/Pacific/Efate  Fri Jan 12 12:46:44 1912 UT = Fri Jan 12 23:46:44 1912 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Dec 22 11:59:59 1973 UT = Sat Dec 22 22:59:59 1973 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Dec 22 12:00:00 1973 UT = Sun Dec 23 00:00:00 1973 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 30 11:59:59 1974 UT = Sat Mar 30 23:59:59 1974 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 30 12:00:00 1974 UT = Sat Mar 30 23:00:00 1974 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 24 12:59:59 1983 UT = Sat Sep 24 23:59:59 1983 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 24 13:00:00 1983 UT = Sun Sep 25 01:00:00 1983 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 24 11:59:59 1984 UT = Sat Mar 24 23:59:59 1984 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 24 12:00:00 1984 UT = Sat Mar 24 23:00:00 1984 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 22 12:59:59 1984 UT = Sat Sep 22 23:59:59 1984 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 22 13:00:00 1984 UT = Sun Sep 23 01:00:00 1984 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 23 11:59:59 1985 UT = Sat Mar 23 23:59:59 1985 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 23 12:00:00 1985 UT = Sat Mar 23 23:00:00 1985 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 28 12:59:59 1985 UT = Sat Sep 28 23:59:59 1985 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 28 13:00:00 1985 UT = Sun Sep 29 01:00:00 1985 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 22 11:59:59 1986 UT = Sat Mar 22 23:59:59 1986 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 22 12:00:00 1986 UT = Sat Mar 22 23:00:00 1986 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 27 12:59:59 1986 UT = Sat Sep 27 23:59:59 1986 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 27 13:00:00 1986 UT = Sun Sep 28 01:00:00 1986 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 28 11:59:59 1987 UT = Sat Mar 28 23:59:59 1987 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 28 12:00:00 1987 UT = Sat Mar 28 23:00:00 1987 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 26 12:59:59 1987 UT = Sat Sep 26 23:59:59 1987 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 26 13:00:00 1987 UT = Sun Sep 27 01:00:00 1987 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 26 11:59:59 1988 UT = Sat Mar 26 23:59:59 1988 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 26 12:00:00 1988 UT = Sat Mar 26 23:00:00 1988 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 24 12:59:59 1988 UT = Sat Sep 24 23:59:59 1988 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 24 13:00:00 1988 UT = Sun Sep 25 01:00:00 1988 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 25 11:59:59 1989 UT = Sat Mar 25 23:59:59 1989 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 25 12:00:00 1989 UT = Sat Mar 25 23:00:00 1989 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 23 12:59:59 1989 UT = Sat Sep 23 23:59:59 1989 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 23 13:00:00 1989 UT = Sun Sep 24 01:00:00 1989 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 24 11:59:59 1990 UT = Sat Mar 24 23:59:59 1990 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 24 12:00:00 1990 UT = Sat Mar 24 23:00:00 1990 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 22 12:59:59 1990 UT = Sat Sep 22 23:59:59 1990 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 22 13:00:00 1990 UT = Sun Sep 23 01:00:00 1990 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 23 11:59:59 1991 UT = Sat Mar 23 23:59:59 1991 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Mar 23 12:00:00 1991 UT = Sat Mar 23 23:00:00 1991 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 28 12:59:59 1991 UT = Sat Sep 28 23:59:59 1991 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Sep 28 13:00:00 1991 UT = Sun Sep 29 01:00:00 1991 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Jan 25 11:59:59 1992 UT = Sat Jan 25 23:59:59 1992 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Jan 25 12:00:00 1992 UT = Sat Jan 25 23:00:00 1992 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Oct 24 12:59:59 1992 UT = Sat Oct 24 23:59:59 1992 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Sat Oct 24 13:00:00 1992 UT = Sun Oct 25 01:00:00 1992 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Jan 23 11:59:59 1993 UT = Sat Jan 23 23:59:59 1993 +12 isdst=1 gmtoff=43200
+/zic/Pacific/Efate  Sat Jan 23 12:00:00 1993 UT = Sat Jan 23 23:00:00 1993 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Wed Dec 31 12:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Efate  Wed Dec 31 13:00:00 2147485547 UT = 67768036191637200 (localtime failed)
+/zic/Pacific/Efate  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Efate  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Efate  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -1,0 +1,18 @@
+/zic/Pacific/Nauru  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Nauru  -67768040609780861 (gmtime failed) = -67768040609780861 (localtime failed)
+/zic/Pacific/Nauru  -67768040609780860 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=40060
+/zic/Pacific/Nauru  -67768040609740801 (gmtime failed) = Thu Jan  1 11:07:39 -2147481748 LMT isdst=0 gmtoff=40060
+/zic/Pacific/Nauru  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 11:07:40 -2147481748 LMT isdst=0 gmtoff=40060
+/zic/Pacific/Nauru  Fri Jan 14 12:52:19 1921 UT = Fri Jan 14 23:59:59 1921 LMT isdst=0 gmtoff=40060
+/zic/Pacific/Nauru  Fri Jan 14 12:52:20 1921 UT = Sat Jan 15 00:22:20 1921 +1130 isdst=0 gmtoff=41400
+/zic/Pacific/Nauru  Fri Aug 28 12:29:59 1942 UT = Fri Aug 28 23:59:59 1942 +1130 isdst=0 gmtoff=41400
+/zic/Pacific/Nauru  Fri Aug 28 12:30:00 1942 UT = Fri Aug 28 21:30:00 1942 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Nauru  Fri Sep  7 14:59:59 1945 UT = Fri Sep  7 23:59:59 1945 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Nauru  Fri Sep  7 15:00:00 1945 UT = Sat Sep  8 02:30:00 1945 +1130 isdst=0 gmtoff=41400
+/zic/Pacific/Nauru  Fri Feb  9 14:29:59 1979 UT = Sat Feb 10 01:59:59 1979 +1130 isdst=0 gmtoff=41400
+/zic/Pacific/Nauru  Fri Feb  9 14:30:00 1979 UT = Sat Feb 10 02:30:00 1979 +12 isdst=0 gmtoff=43200
+/zic/Pacific/Nauru  Wed Dec 31 11:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +12 isdst=0 gmtoff=43200
+/zic/Pacific/Nauru  Wed Dec 31 12:00:00 2147485547 UT = 67768036191633600 (localtime failed)
+/zic/Pacific/Nauru  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Nauru  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Nauru  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

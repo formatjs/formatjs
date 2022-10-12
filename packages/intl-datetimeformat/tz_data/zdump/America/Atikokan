@@ -1,0 +1,14 @@
+/zic/America/Atikokan  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Atikokan  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Atikokan  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Atikokan  Thu Jan  1 05:18:07 -2147481748 UT = -67768040609721713 (localtime failed)
+/zic/America/Atikokan  Thu Jan  1 05:18:08 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-19088
+/zic/America/Atikokan  Wed Jan  1 05:18:07 1890 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=-19088
+/zic/America/Atikokan  Wed Jan  1 05:18:08 1890 UT = Tue Dec 31 23:58:32 1889 CMT isdst=0 gmtoff=-19176
+/zic/America/Atikokan  Wed Apr 22 05:19:35 1908 UT = Tue Apr 21 23:59:59 1908 CMT isdst=0 gmtoff=-19176
+/zic/America/Atikokan  Wed Apr 22 05:19:36 1908 UT = Wed Apr 22 00:19:36 1908 EST isdst=0 gmtoff=-18000
+/zic/America/Atikokan  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 18:59:59 2147485547 EST isdst=0 gmtoff=-18000
+/zic/America/Atikokan  67768036191676800 (gmtime failed) = Wed Dec 31 19:00:00 2147485547 EST isdst=0 gmtoff=-18000
+/zic/America/Atikokan  67768036191694799 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 EST isdst=0 gmtoff=-18000
+/zic/America/Atikokan  67768036191694800 (gmtime failed) = 67768036191694800 (localtime failed)
+/zic/America/Atikokan  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

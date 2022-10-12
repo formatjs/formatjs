@@ -1,0 +1,14 @@
+/zic/Pacific/Midway  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Midway  -67768040609786233 (gmtime failed) = -67768040609786233 (localtime failed)
+/zic/Pacific/Midway  -67768040609786232 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=45432
+/zic/Pacific/Midway  -67768040609740801 (gmtime failed) = Thu Jan  1 12:37:11 -2147481748 LMT isdst=0 gmtoff=45432
+/zic/Pacific/Midway  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 12:37:12 -2147481748 LMT isdst=0 gmtoff=45432
+/zic/Pacific/Midway  Mon Jul  4 11:22:47 1892 UT = Mon Jul  4 23:59:59 1892 LMT isdst=0 gmtoff=45432
+/zic/Pacific/Midway  Mon Jul  4 11:22:48 1892 UT = Mon Jul  4 00:00:00 1892 LMT isdst=0 gmtoff=-40968
+/zic/Pacific/Midway  Sun Jan  1 11:22:47 1911 UT = Sat Dec 31 23:59:59 1910 LMT isdst=0 gmtoff=-40968
+/zic/Pacific/Midway  Sun Jan  1 11:22:48 1911 UT = Sun Jan  1 00:22:48 1911 SST isdst=0 gmtoff=-39600
+/zic/Pacific/Midway  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 12:59:59 2147485547 SST isdst=0 gmtoff=-39600
+/zic/Pacific/Midway  67768036191676800 (gmtime failed) = Wed Dec 31 13:00:00 2147485547 SST isdst=0 gmtoff=-39600
+/zic/Pacific/Midway  67768036191716399 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 SST isdst=0 gmtoff=-39600
+/zic/Pacific/Midway  67768036191716400 (gmtime failed) = 67768036191716400 (localtime failed)
+/zic/Pacific/Midway  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

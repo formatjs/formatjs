@@ -1,0 +1,18 @@
+/zic/America/Bogota  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Bogota  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Bogota  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Bogota  Thu Jan  1 04:56:15 -2147481748 UT = -67768040609723025 (localtime failed)
+/zic/America/Bogota  Thu Jan  1 04:56:16 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-17776
+/zic/America/Bogota  Thu Mar 13 04:56:15 1884 UT = Wed Mar 12 23:59:59 1884 LMT isdst=0 gmtoff=-17776
+/zic/America/Bogota  Thu Mar 13 04:56:16 1884 UT = Thu Mar 13 00:00:00 1884 BMT isdst=0 gmtoff=-17776
+/zic/America/Bogota  Mon Nov 23 04:56:15 1914 UT = Sun Nov 22 23:59:59 1914 BMT isdst=0 gmtoff=-17776
+/zic/America/Bogota  Mon Nov 23 04:56:16 1914 UT = Sun Nov 22 23:56:16 1914 -05 isdst=0 gmtoff=-18000
+/zic/America/Bogota  Sun May  3 04:59:59 1992 UT = Sat May  2 23:59:59 1992 -05 isdst=0 gmtoff=-18000
+/zic/America/Bogota  Sun May  3 05:00:00 1992 UT = Sun May  3 01:00:00 1992 -04 isdst=1 gmtoff=-14400
+/zic/America/Bogota  Sun Apr  4 03:59:59 1993 UT = Sat Apr  3 23:59:59 1993 -04 isdst=1 gmtoff=-14400
+/zic/America/Bogota  Sun Apr  4 04:00:00 1993 UT = Sat Apr  3 23:00:00 1993 -05 isdst=0 gmtoff=-18000
+/zic/America/Bogota  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 18:59:59 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Bogota  67768036191676800 (gmtime failed) = Wed Dec 31 19:00:00 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Bogota  67768036191694799 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Bogota  67768036191694800 (gmtime failed) = 67768036191694800 (localtime failed)
+/zic/America/Bogota  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

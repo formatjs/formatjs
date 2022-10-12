@@ -1,0 +1,16 @@
+/zic/Asia/Jayapura  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Jayapura  -67768040609774569 (gmtime failed) = -67768040609774569 (localtime failed)
+/zic/Asia/Jayapura  -67768040609774568 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=33768
+/zic/Asia/Jayapura  -67768040609740801 (gmtime failed) = Thu Jan  1 09:22:47 -2147481748 LMT isdst=0 gmtoff=33768
+/zic/Asia/Jayapura  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 09:22:48 -2147481748 LMT isdst=0 gmtoff=33768
+/zic/Asia/Jayapura  Mon Oct 31 14:37:11 1932 UT = Mon Oct 31 23:59:59 1932 LMT isdst=0 gmtoff=33768
+/zic/Asia/Jayapura  Mon Oct 31 14:37:12 1932 UT = Mon Oct 31 23:37:12 1932 +09 isdst=0 gmtoff=32400
+/zic/Asia/Jayapura  Thu Aug 31 14:59:59 1944 UT = Thu Aug 31 23:59:59 1944 +09 isdst=0 gmtoff=32400
+/zic/Asia/Jayapura  Thu Aug 31 15:00:00 1944 UT = Fri Sep  1 00:30:00 1944 +0930 isdst=0 gmtoff=34200
+/zic/Asia/Jayapura  Tue Dec 31 14:29:59 1963 UT = Tue Dec 31 23:59:59 1963 +0930 isdst=0 gmtoff=34200
+/zic/Asia/Jayapura  Tue Dec 31 14:30:00 1963 UT = Tue Dec 31 23:30:00 1963 WIT isdst=0 gmtoff=32400
+/zic/Asia/Jayapura  Wed Dec 31 14:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 WIT isdst=0 gmtoff=32400
+/zic/Asia/Jayapura  Wed Dec 31 15:00:00 2147485547 UT = 67768036191644400 (localtime failed)
+/zic/Asia/Jayapura  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Jayapura  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Jayapura  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

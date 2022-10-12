@@ -1,0 +1,10 @@
+/zic/Antarctica/Rothera  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Antarctica/Rothera  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Antarctica/Rothera  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 -00 isdst=0 gmtoff=0
+/zic/Antarctica/Rothera  Tue Nov 30 23:59:59 1976 UT = Tue Nov 30 23:59:59 1976 -00 isdst=0 gmtoff=0
+/zic/Antarctica/Rothera  Wed Dec  1 00:00:00 1976 UT = Tue Nov 30 21:00:00 1976 -03 isdst=0 gmtoff=-10800
+/zic/Antarctica/Rothera  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 20:59:59 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/Antarctica/Rothera  67768036191676800 (gmtime failed) = Wed Dec 31 21:00:00 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/Antarctica/Rothera  67768036191687599 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/Antarctica/Rothera  67768036191687600 (gmtime failed) = 67768036191687600 (localtime failed)
+/zic/Antarctica/Rothera  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -1,0 +1,28 @@
+/zic/Pacific/Kosrae  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Kosrae  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Kosrae  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Kosrae  Thu Jan  1 13:08:03 -2147481748 UT = -67768040609693517 (localtime failed)
+/zic/Pacific/Kosrae  Thu Jan  1 13:08:04 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-47284
+/zic/Pacific/Kosrae  Tue Dec 31 13:08:03 1844 UT = Mon Dec 30 23:59:59 1844 LMT isdst=0 gmtoff=-47284
+/zic/Pacific/Kosrae  Tue Dec 31 13:08:04 1844 UT = Wed Jan  1 00:00:00 1845 LMT isdst=0 gmtoff=39116
+/zic/Pacific/Kosrae  Mon Dec 31 13:08:03 1900 UT = Mon Dec 31 23:59:59 1900 LMT isdst=0 gmtoff=39116
+/zic/Pacific/Kosrae  Mon Dec 31 13:08:04 1900 UT = Tue Jan  1 00:08:04 1901 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kosrae  Wed Sep 30 12:59:59 1914 UT = Wed Sep 30 23:59:59 1914 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kosrae  Wed Sep 30 13:00:00 1914 UT = Wed Sep 30 22:00:00 1914 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Kosrae  Fri Jan 31 14:59:59 1919 UT = Fri Jan 31 23:59:59 1919 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Kosrae  Fri Jan 31 15:00:00 1919 UT = Sat Feb  1 02:00:00 1919 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kosrae  Thu Dec 31 12:59:59 1936 UT = Thu Dec 31 23:59:59 1936 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kosrae  Thu Dec 31 13:00:00 1936 UT = Thu Dec 31 23:00:00 1936 +10 isdst=0 gmtoff=36000
+/zic/Pacific/Kosrae  Mon Mar 31 13:59:59 1941 UT = Mon Mar 31 23:59:59 1941 +10 isdst=0 gmtoff=36000
+/zic/Pacific/Kosrae  Mon Mar 31 14:00:00 1941 UT = Mon Mar 31 23:00:00 1941 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Kosrae  Tue Jul 31 14:59:59 1945 UT = Tue Jul 31 23:59:59 1945 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Kosrae  Tue Jul 31 15:00:00 1945 UT = Wed Aug  1 02:00:00 1945 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kosrae  Tue Sep 30 12:59:59 1969 UT = Tue Sep 30 23:59:59 1969 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kosrae  Tue Sep 30 13:00:00 1969 UT = Wed Oct  1 01:00:00 1969 +12 isdst=0 gmtoff=43200
+/zic/Pacific/Kosrae  Thu Dec 31 11:59:59 1998 UT = Thu Dec 31 23:59:59 1998 +12 isdst=0 gmtoff=43200
+/zic/Pacific/Kosrae  Thu Dec 31 12:00:00 1998 UT = Thu Dec 31 23:00:00 1998 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kosrae  Wed Dec 31 12:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +11 isdst=0 gmtoff=39600
+/zic/Pacific/Kosrae  Wed Dec 31 13:00:00 2147485547 UT = 67768036191637200 (localtime failed)
+/zic/Pacific/Kosrae  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Kosrae  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Kosrae  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

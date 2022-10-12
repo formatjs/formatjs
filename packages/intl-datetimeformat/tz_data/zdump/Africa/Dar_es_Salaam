@@ -1,0 +1,20 @@
+/zic/Africa/Dar_es_Salaam  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Dar_es_Salaam  -67768040609749637 (gmtime failed) = -67768040609749637 (localtime failed)
+/zic/Africa/Dar_es_Salaam  -67768040609749636 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=8836
+/zic/Africa/Dar_es_Salaam  -67768040609740801 (gmtime failed) = Thu Jan  1 02:27:15 -2147481748 LMT isdst=0 gmtoff=8836
+/zic/Africa/Dar_es_Salaam  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 02:27:16 -2147481748 LMT isdst=0 gmtoff=8836
+/zic/Africa/Dar_es_Salaam  Thu Apr 30 21:32:43 1908 UT = Thu Apr 30 23:59:59 1908 LMT isdst=0 gmtoff=8836
+/zic/Africa/Dar_es_Salaam  Thu Apr 30 21:32:44 1908 UT = Fri May  1 00:02:44 1908 +0230 isdst=0 gmtoff=9000
+/zic/Africa/Dar_es_Salaam  Sat Jun 30 21:29:59 1928 UT = Sat Jun 30 23:59:59 1928 +0230 isdst=0 gmtoff=9000
+/zic/Africa/Dar_es_Salaam  Sat Jun 30 21:30:00 1928 UT = Sun Jul  1 00:30:00 1928 EAT isdst=0 gmtoff=10800
+/zic/Africa/Dar_es_Salaam  Sat Jan  4 20:59:59 1930 UT = Sat Jan  4 23:59:59 1930 EAT isdst=0 gmtoff=10800
+/zic/Africa/Dar_es_Salaam  Sat Jan  4 21:00:00 1930 UT = Sat Jan  4 23:30:00 1930 +0230 isdst=0 gmtoff=9000
+/zic/Africa/Dar_es_Salaam  Thu Dec 31 21:29:59 1936 UT = Thu Dec 31 23:59:59 1936 +0230 isdst=0 gmtoff=9000
+/zic/Africa/Dar_es_Salaam  Thu Dec 31 21:30:00 1936 UT = Fri Jan  1 00:15:00 1937 +0245 isdst=0 gmtoff=9900
+/zic/Africa/Dar_es_Salaam  Fri Jul 31 21:14:59 1942 UT = Fri Jul 31 23:59:59 1942 +0245 isdst=0 gmtoff=9900
+/zic/Africa/Dar_es_Salaam  Fri Jul 31 21:15:00 1942 UT = Sat Aug  1 00:15:00 1942 EAT isdst=0 gmtoff=10800
+/zic/Africa/Dar_es_Salaam  Wed Dec 31 20:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 EAT isdst=0 gmtoff=10800
+/zic/Africa/Dar_es_Salaam  Wed Dec 31 21:00:00 2147485547 UT = 67768036191666000 (localtime failed)
+/zic/Africa/Dar_es_Salaam  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Africa/Dar_es_Salaam  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Dar_es_Salaam  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)
