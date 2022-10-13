@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.4.2...@formatjs/intl@2.5.0) (2022-10-13)
+
+### Features
+
+* **@formatjs/intl,react-intl:** move IntlFormatter type parameters to methods ([#3858](https://github.com/formatjs/formatjs/issues/3858)) ([0d03bb6](https://github.com/formatjs/formatjs/commit/0d03bb66123cb49fbd1c7d27908979bc4521b41f))
+
 ## [2.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.4.1...@formatjs/intl@2.4.2) (2022-09-28)
 
 **Note:** Version bump only for package @formatjs/intl

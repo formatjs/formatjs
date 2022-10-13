@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.9](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.8...@formatjs/icu-messageformat-parser@2.1.9) (2022-10-13)
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** fix object null check ([#3849](https://github.com/formatjs/formatjs/issues/3849)) ([#3850](https://github.com/formatjs/formatjs/issues/3850)) ([d1c78e9](https://github.com/formatjs/formatjs/commit/d1c78e9076bf8499b89a5870dfa3bdb5ead4a741))
+
 ## [2.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.7...@formatjs/icu-messageformat-parser@2.1.8) (2022-09-28)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

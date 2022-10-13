@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/formatjs/formatjs/compare/react-intl@6.1.2...react-intl@6.2.0) (2022-10-13)
+
+### Bug Fixes
+
+* **react-intl:** fix type issue w/ ts4.7 ([c366cc8](https://github.com/formatjs/formatjs/commit/c366cc88ca77579c34825bf79941be499fbc5156))
+
+### Features
+
+* **@formatjs/intl,react-intl:** move IntlFormatter type parameters to methods ([#3858](https://github.com/formatjs/formatjs/issues/3858)) ([0d03bb6](https://github.com/formatjs/formatjs/commit/0d03bb66123cb49fbd1c7d27908979bc4521b41f))
+
 ## [6.1.2](https://github.com/formatjs/formatjs/compare/react-intl@6.1.1...react-intl@6.1.2) (2022-09-28)
 
 ### Bug Fixes

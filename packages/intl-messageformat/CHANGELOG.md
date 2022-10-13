@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.2.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.1.5...intl-messageformat@10.2.0) (2022-10-13)
+
+### Features
+
+* **@formatjs/intl,react-intl:** move IntlFormatter type parameters to methods ([#3858](https://github.com/formatjs/formatjs/issues/3858)) ([0d03bb6](https://github.com/formatjs/formatjs/commit/0d03bb66123cb49fbd1c7d27908979bc4521b41f))
+
 ## [10.1.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.1.4...intl-messageformat@10.1.5) (2022-09-28)
 
 **Note:** Version bump only for package intl-messageformat

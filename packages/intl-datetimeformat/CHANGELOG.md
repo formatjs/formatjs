@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.2.0...@formatjs/intl-datetimeformat@6.3.0) (2022-10-13)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** implemented extend timeZoneName ([#3861](https://github.com/formatjs/formatjs/issues/3861)) ([4fa0204](https://github.com/formatjs/formatjs/commit/4fa0204c049c77f05dd37ddd8109b98be67de7da))
+
 # [6.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.1.1...@formatjs/intl-datetimeformat@6.2.0) (2022-08-27)
 
 ### Features
