@@ -3,9 +3,46 @@ id: application-workflow
 title: Application Workflow
 ---
 
-While our [Installation](./installation.md) guide can help you get started, most production-ready i18n applications require a translation pipeline and workflow. This guide will give you an idea of how to build one.
+While our [Installation](./installation.md) guide can help you get started, this guide gives you an overview how your daily translation workflow might look like.
 
-## Project Structure
+There are 2 types of translations tools and services: 
+- Tools that work locally on your computer - just like your IDE.
+- Cloud translation services that require an upload of your translation files. These require a translation pipeline with a complex workflow.
+
+This guide will give you an idea of how to work with both types of tools.
+
+## Simple application workflow with a local translation tool
+
+```
+projectRoot
+|-- src
+|   |-- App.js
+|-- extracted
+|   |-- en.json
+|-- lang
+|   |-- fr.json
+|   |-- de.json
+|-- package.json
+|-- .eslintrc.js
+```
+
+The extracted translation files live in the `extracted` folder since they have a different internal structure (e.g. they contain additional information like the comments). The translation files produced during the translation process are stored in the `lang` folder. 
+
+### The workflow
+
+The workflow looks like this:
+
+![Pipeline](/img/simple-workflow.svg)
+
+1. **Extraction**: This step aggregates all `defaultMessage`s from your application into a single JSON file along with `description`, ready to be translated.
+2. **Edit**: Edit the translations, save when done.
+3. The changes immediately show up in your build
+
+
+
+## Complex application workflow with a cloud based translation service
+
+### Project Structure
 
 A minimal i18n-friendly project can have the following structure:
 
@@ -22,7 +59,7 @@ projectRoot
 
 where `lang` folder is where the aggregated strings file from your application would live. Integration with 3rd-party translation vendor can consume the `en-US.json` file and produce `fr.json` or other locale files accordingly.
 
-## Pipeline
+### Pipeline
 
 A generic translation pipeline looks something like this:
 
