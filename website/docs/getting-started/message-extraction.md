@@ -298,6 +298,7 @@ We also provide several [builtin formatters](../tooling/cli.md#builtin-formatter
 
 | TMS                                                                                        | `--format`  |
 | ------------------------------------------------------------------------------------------ | ----------- |
+| [BabelEdit](https://www.codeandweb.com/babeledit/format-js)                                | `simple`    |
 | [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)     | `transifex` |
 | [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)       | `smartling` |
 | [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)              | `simple`    |
