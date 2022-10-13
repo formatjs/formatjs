@@ -1,0 +1,16 @@
+/zic/Africa/Sao_Tome  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Sao_Tome  -67768040609742417 (gmtime failed) = -67768040609742417 (localtime failed)
+/zic/Africa/Sao_Tome  -67768040609742416 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=1616
+/zic/Africa/Sao_Tome  -67768040609740801 (gmtime failed) = Thu Jan  1 00:26:55 -2147481748 LMT isdst=0 gmtoff=1616
+/zic/Africa/Sao_Tome  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 00:26:56 -2147481748 LMT isdst=0 gmtoff=1616
+/zic/Africa/Sao_Tome  Mon Dec 31 23:33:03 1883 UT = Mon Dec 31 23:59:59 1883 LMT isdst=0 gmtoff=1616
+/zic/Africa/Sao_Tome  Mon Dec 31 23:33:04 1883 UT = Mon Dec 31 22:56:19 1883 LMT isdst=0 gmtoff=-2205
+/zic/Africa/Sao_Tome  Sun Dec 31 23:59:59 1911 UT = Sun Dec 31 23:23:14 1911 LMT isdst=0 gmtoff=-2205
+/zic/Africa/Sao_Tome  Mon Jan  1 00:00:00 1912 UT = Mon Jan  1 00:00:00 1912 GMT isdst=0 gmtoff=0
+/zic/Africa/Sao_Tome  Mon Jan  1 00:59:59 2018 UT = Mon Jan  1 00:59:59 2018 GMT isdst=0 gmtoff=0
+/zic/Africa/Sao_Tome  Mon Jan  1 01:00:00 2018 UT = Mon Jan  1 02:00:00 2018 WAT isdst=0 gmtoff=3600
+/zic/Africa/Sao_Tome  Tue Jan  1 00:59:59 2019 UT = Tue Jan  1 01:59:59 2019 WAT isdst=0 gmtoff=3600
+/zic/Africa/Sao_Tome  Tue Jan  1 01:00:00 2019 UT = Tue Jan  1 01:00:00 2019 GMT isdst=0 gmtoff=0
+/zic/Africa/Sao_Tome  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 GMT isdst=0 gmtoff=0
+/zic/Africa/Sao_Tome  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Sao_Tome  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

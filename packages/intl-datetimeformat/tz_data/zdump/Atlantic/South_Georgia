@@ -1,0 +1,12 @@
+/zic/Atlantic/South_Georgia  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Atlantic/South_Georgia  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Atlantic/South_Georgia  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Atlantic/South_Georgia  Thu Jan  1 02:26:07 -2147481748 UT = -67768040609732033 (localtime failed)
+/zic/Atlantic/South_Georgia  Thu Jan  1 02:26:08 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-8768
+/zic/Atlantic/South_Georgia  Wed Jan  1 02:26:07 1890 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=-8768
+/zic/Atlantic/South_Georgia  Wed Jan  1 02:26:08 1890 UT = Wed Jan  1 00:26:08 1890 -02 isdst=0 gmtoff=-7200
+/zic/Atlantic/South_Georgia  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 21:59:59 2147485547 -02 isdst=0 gmtoff=-7200
+/zic/Atlantic/South_Georgia  67768036191676800 (gmtime failed) = Wed Dec 31 22:00:00 2147485547 -02 isdst=0 gmtoff=-7200
+/zic/Atlantic/South_Georgia  67768036191683999 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -02 isdst=0 gmtoff=-7200
+/zic/Atlantic/South_Georgia  67768036191684000 (gmtime failed) = 67768036191684000 (localtime failed)
+/zic/Atlantic/South_Georgia  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

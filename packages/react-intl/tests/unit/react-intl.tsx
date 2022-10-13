@@ -1,4 +1,5 @@
-import * as ReactIntl from '../../'
+import * as React from 'react'
+import * as ReactIntl from '../..'
 import * as ts from 'typescript'
 import fs from 'fs'
 import lexer from 'cjs-module-lexer'
@@ -83,6 +84,31 @@ describe('react-intl', () => {
 
     it.each(keys)('has named export "%s"', key => {
       expect(parsed.exports).toContain(key)
+    })
+  })
+
+  describe('types', () => {
+    // https://github.com/formatjs/formatjs/issues/3856
+    it('works with react18 typing', () => {
+      function Test() {
+        const messages = ReactIntl.defineMessages({
+          greeting: {
+            id: 'app.greeting',
+            defaultMessage: 'Hello, <bold>{name}</bold>!',
+            description: 'Greeting to welcome the user to the app',
+          },
+        })
+
+        const intl = ReactIntl.useIntl()
+
+        return intl.formatMessage(messages.greeting, {
+          name: 'Eric',
+          bold: str => <b>{str}</b>,
+        })
+      }
+
+      // This test only need to pass the type checking.
+      ;<Test />
     })
   })
 })

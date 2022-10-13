@@ -1,0 +1,88 @@
+/zic/America/Noronha  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Noronha  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Noronha  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Noronha  Thu Jan  1 02:09:39 -2147481748 UT = -67768040609733021 (localtime failed)
+/zic/America/Noronha  Thu Jan  1 02:09:40 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-7780
+/zic/America/Noronha  Thu Jan  1 02:09:39 1914 UT = Wed Dec 31 23:59:59 1913 LMT isdst=0 gmtoff=-7780
+/zic/America/Noronha  Thu Jan  1 02:09:40 1914 UT = Thu Jan  1 00:09:40 1914 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sat Oct  3 12:59:59 1931 UT = Sat Oct  3 10:59:59 1931 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sat Oct  3 13:00:00 1931 UT = Sat Oct  3 12:00:00 1931 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Fri Apr  1 00:59:59 1932 UT = Thu Mar 31 23:59:59 1932 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Fri Apr  1 01:00:00 1932 UT = Thu Mar 31 23:00:00 1932 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Mon Oct  3 01:59:59 1932 UT = Sun Oct  2 23:59:59 1932 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Mon Oct  3 02:00:00 1932 UT = Mon Oct  3 01:00:00 1932 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sat Apr  1 00:59:59 1933 UT = Fri Mar 31 23:59:59 1933 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sat Apr  1 01:00:00 1933 UT = Fri Mar 31 23:00:00 1933 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Thu Dec  1 01:59:59 1949 UT = Wed Nov 30 23:59:59 1949 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Thu Dec  1 02:00:00 1949 UT = Thu Dec  1 01:00:00 1949 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Apr 16 01:59:59 1950 UT = Sun Apr 16 00:59:59 1950 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Apr 16 02:00:00 1950 UT = Sun Apr 16 00:00:00 1950 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Fri Dec  1 01:59:59 1950 UT = Thu Nov 30 23:59:59 1950 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Fri Dec  1 02:00:00 1950 UT = Fri Dec  1 01:00:00 1950 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Apr  1 00:59:59 1951 UT = Sat Mar 31 23:59:59 1951 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Apr  1 01:00:00 1951 UT = Sat Mar 31 23:00:00 1951 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sat Dec  1 01:59:59 1951 UT = Fri Nov 30 23:59:59 1951 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sat Dec  1 02:00:00 1951 UT = Sat Dec  1 01:00:00 1951 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Tue Apr  1 00:59:59 1952 UT = Mon Mar 31 23:59:59 1952 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Tue Apr  1 01:00:00 1952 UT = Mon Mar 31 23:00:00 1952 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Mon Dec  1 01:59:59 1952 UT = Sun Nov 30 23:59:59 1952 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Mon Dec  1 02:00:00 1952 UT = Mon Dec  1 01:00:00 1952 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Mar  1 00:59:59 1953 UT = Sat Feb 28 23:59:59 1953 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Mar  1 01:00:00 1953 UT = Sat Feb 28 23:00:00 1953 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Mon Dec  9 01:59:59 1963 UT = Sun Dec  8 23:59:59 1963 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Mon Dec  9 02:00:00 1963 UT = Mon Dec  9 01:00:00 1963 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Mar  1 00:59:59 1964 UT = Sat Feb 29 23:59:59 1964 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Mar  1 01:00:00 1964 UT = Sat Feb 29 23:00:00 1964 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Jan 31 01:59:59 1965 UT = Sat Jan 30 23:59:59 1965 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Jan 31 02:00:00 1965 UT = Sun Jan 31 01:00:00 1965 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Wed Mar 31 00:59:59 1965 UT = Tue Mar 30 23:59:59 1965 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Wed Mar 31 01:00:00 1965 UT = Tue Mar 30 23:00:00 1965 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Wed Dec  1 01:59:59 1965 UT = Tue Nov 30 23:59:59 1965 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Wed Dec  1 02:00:00 1965 UT = Wed Dec  1 01:00:00 1965 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Tue Mar  1 00:59:59 1966 UT = Mon Feb 28 23:59:59 1966 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Tue Mar  1 01:00:00 1966 UT = Mon Feb 28 23:00:00 1966 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Tue Nov  1 01:59:59 1966 UT = Mon Oct 31 23:59:59 1966 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Tue Nov  1 02:00:00 1966 UT = Tue Nov  1 01:00:00 1966 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Wed Mar  1 00:59:59 1967 UT = Tue Feb 28 23:59:59 1967 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Wed Mar  1 01:00:00 1967 UT = Tue Feb 28 23:00:00 1967 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Wed Nov  1 01:59:59 1967 UT = Tue Oct 31 23:59:59 1967 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Wed Nov  1 02:00:00 1967 UT = Wed Nov  1 01:00:00 1967 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Fri Mar  1 00:59:59 1968 UT = Thu Feb 29 23:59:59 1968 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Fri Mar  1 01:00:00 1968 UT = Thu Feb 29 23:00:00 1968 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sat Nov  2 01:59:59 1985 UT = Fri Nov  1 23:59:59 1985 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sat Nov  2 02:00:00 1985 UT = Sat Nov  2 01:00:00 1985 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sat Mar 15 00:59:59 1986 UT = Fri Mar 14 23:59:59 1986 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sat Mar 15 01:00:00 1986 UT = Fri Mar 14 23:00:00 1986 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sat Oct 25 01:59:59 1986 UT = Fri Oct 24 23:59:59 1986 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sat Oct 25 02:00:00 1986 UT = Sat Oct 25 01:00:00 1986 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sat Feb 14 00:59:59 1987 UT = Fri Feb 13 23:59:59 1987 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sat Feb 14 01:00:00 1987 UT = Fri Feb 13 23:00:00 1987 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct 25 01:59:59 1987 UT = Sat Oct 24 23:59:59 1987 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct 25 02:00:00 1987 UT = Sun Oct 25 01:00:00 1987 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Feb  7 00:59:59 1988 UT = Sat Feb  6 23:59:59 1988 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Feb  7 01:00:00 1988 UT = Sat Feb  6 23:00:00 1988 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct 16 01:59:59 1988 UT = Sat Oct 15 23:59:59 1988 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct 16 02:00:00 1988 UT = Sun Oct 16 01:00:00 1988 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Jan 29 00:59:59 1989 UT = Sat Jan 28 23:59:59 1989 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Jan 29 01:00:00 1989 UT = Sat Jan 28 23:00:00 1989 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct 15 01:59:59 1989 UT = Sat Oct 14 23:59:59 1989 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct 15 02:00:00 1989 UT = Sun Oct 15 01:00:00 1989 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Feb 11 00:59:59 1990 UT = Sat Feb 10 23:59:59 1990 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Feb 11 01:00:00 1990 UT = Sat Feb 10 23:00:00 1990 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct  3 01:59:59 1999 UT = Sat Oct  2 23:59:59 1999 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct  3 02:00:00 1999 UT = Sun Oct  3 01:00:00 1999 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Feb 27 00:59:59 2000 UT = Sat Feb 26 23:59:59 2000 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Feb 27 01:00:00 2000 UT = Sat Feb 26 23:00:00 2000 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct  8 01:59:59 2000 UT = Sat Oct  7 23:59:59 2000 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct  8 02:00:00 2000 UT = Sun Oct  8 01:00:00 2000 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Oct 15 00:59:59 2000 UT = Sat Oct 14 23:59:59 2000 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Oct 15 01:00:00 2000 UT = Sat Oct 14 23:00:00 2000 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct 14 01:59:59 2001 UT = Sat Oct 13 23:59:59 2001 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Sun Oct 14 02:00:00 2001 UT = Sun Oct 14 01:00:00 2001 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Feb 17 00:59:59 2002 UT = Sat Feb 16 23:59:59 2002 -01 isdst=1 gmtoff=-3600
+/zic/America/Noronha  Sun Feb 17 01:00:00 2002 UT = Sat Feb 16 23:00:00 2002 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 21:59:59 2147485547 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  67768036191676800 (gmtime failed) = Wed Dec 31 22:00:00 2147485547 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  67768036191683999 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -02 isdst=0 gmtoff=-7200
+/zic/America/Noronha  67768036191684000 (gmtime failed) = 67768036191684000 (localtime failed)
+/zic/America/Noronha  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

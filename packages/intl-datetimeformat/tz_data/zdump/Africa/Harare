@@ -1,0 +1,12 @@
+/zic/Africa/Harare  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Harare  -67768040609748621 (gmtime failed) = -67768040609748621 (localtime failed)
+/zic/Africa/Harare  -67768040609748620 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=7820
+/zic/Africa/Harare  -67768040609740801 (gmtime failed) = Thu Jan  1 02:10:19 -2147481748 LMT isdst=0 gmtoff=7820
+/zic/Africa/Harare  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 02:10:20 -2147481748 LMT isdst=0 gmtoff=7820
+/zic/Africa/Harare  Sat Feb 28 21:49:39 1903 UT = Sat Feb 28 23:59:59 1903 LMT isdst=0 gmtoff=7820
+/zic/Africa/Harare  Sat Feb 28 21:49:40 1903 UT = Sat Feb 28 23:49:40 1903 CAT isdst=0 gmtoff=7200
+/zic/Africa/Harare  Wed Dec 31 21:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 CAT isdst=0 gmtoff=7200
+/zic/Africa/Harare  Wed Dec 31 22:00:00 2147485547 UT = 67768036191669600 (localtime failed)
+/zic/Africa/Harare  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Africa/Harare  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Harare  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

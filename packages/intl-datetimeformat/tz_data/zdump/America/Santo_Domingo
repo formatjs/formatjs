@@ -1,0 +1,44 @@
+/zic/America/Santo_Domingo  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Santo_Domingo  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Santo_Domingo  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Santo_Domingo  Thu Jan  1 04:39:35 -2147481748 UT = -67768040609724025 (localtime failed)
+/zic/America/Santo_Domingo  Thu Jan  1 04:39:36 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-16776
+/zic/America/Santo_Domingo  Wed Jan  1 04:39:35 1890 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=-16776
+/zic/America/Santo_Domingo  Wed Jan  1 04:39:36 1890 UT = Tue Dec 31 23:59:36 1889 SDMT isdst=0 gmtoff=-16800
+/zic/America/Santo_Domingo  Sat Apr  1 16:39:59 1933 UT = Sat Apr  1 11:59:59 1933 SDMT isdst=0 gmtoff=-16800
+/zic/America/Santo_Domingo  Sat Apr  1 16:40:00 1933 UT = Sat Apr  1 11:40:00 1933 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 30 04:59:59 1966 UT = Sat Oct 29 23:59:59 1966 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 30 05:00:00 1966 UT = Sun Oct 30 01:00:00 1966 EDT isdst=1 gmtoff=-14400
+/zic/America/Santo_Domingo  Tue Feb 28 03:59:59 1967 UT = Mon Feb 27 23:59:59 1967 EDT isdst=1 gmtoff=-14400
+/zic/America/Santo_Domingo  Tue Feb 28 04:00:00 1967 UT = Mon Feb 27 23:00:00 1967 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 26 04:59:59 1969 UT = Sat Oct 25 23:59:59 1969 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 26 05:00:00 1969 UT = Sun Oct 26 00:30:00 1969 -0430 isdst=1 gmtoff=-16200
+/zic/America/Santo_Domingo  Sat Feb 21 04:29:59 1970 UT = Fri Feb 20 23:59:59 1970 -0430 isdst=1 gmtoff=-16200
+/zic/America/Santo_Domingo  Sat Feb 21 04:30:00 1970 UT = Fri Feb 20 23:30:00 1970 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 25 04:59:59 1970 UT = Sat Oct 24 23:59:59 1970 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 25 05:00:00 1970 UT = Sun Oct 25 00:30:00 1970 -0430 isdst=1 gmtoff=-16200
+/zic/America/Santo_Domingo  Wed Jan 20 04:29:59 1971 UT = Tue Jan 19 23:59:59 1971 -0430 isdst=1 gmtoff=-16200
+/zic/America/Santo_Domingo  Wed Jan 20 04:30:00 1971 UT = Tue Jan 19 23:30:00 1971 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 31 04:59:59 1971 UT = Sat Oct 30 23:59:59 1971 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 31 05:00:00 1971 UT = Sun Oct 31 00:30:00 1971 -0430 isdst=1 gmtoff=-16200
+/zic/America/Santo_Domingo  Fri Jan 21 04:29:59 1972 UT = Thu Jan 20 23:59:59 1972 -0430 isdst=1 gmtoff=-16200
+/zic/America/Santo_Domingo  Fri Jan 21 04:30:00 1972 UT = Thu Jan 20 23:30:00 1972 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 29 04:59:59 1972 UT = Sat Oct 28 23:59:59 1972 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 29 05:00:00 1972 UT = Sun Oct 29 00:30:00 1972 -0430 isdst=1 gmtoff=-16200
+/zic/America/Santo_Domingo  Sun Jan 21 04:29:59 1973 UT = Sat Jan 20 23:59:59 1973 -0430 isdst=1 gmtoff=-16200
+/zic/America/Santo_Domingo  Sun Jan 21 04:30:00 1973 UT = Sat Jan 20 23:30:00 1973 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 28 04:59:59 1973 UT = Sat Oct 27 23:59:59 1973 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 28 05:00:00 1973 UT = Sun Oct 28 00:30:00 1973 -0430 isdst=1 gmtoff=-16200
+/zic/America/Santo_Domingo  Mon Jan 21 04:29:59 1974 UT = Sun Jan 20 23:59:59 1974 -0430 isdst=1 gmtoff=-16200
+/zic/America/Santo_Domingo  Mon Jan 21 04:30:00 1974 UT = Sun Jan 20 23:30:00 1974 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 27 04:59:59 1974 UT = Sat Oct 26 23:59:59 1974 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Oct 27 05:00:00 1974 UT = Sun Oct 27 01:00:00 1974 AST isdst=0 gmtoff=-14400
+/zic/America/Santo_Domingo  Sun Oct 29 05:59:59 2000 UT = Sun Oct 29 01:59:59 2000 AST isdst=0 gmtoff=-14400
+/zic/America/Santo_Domingo  Sun Oct 29 06:00:00 2000 UT = Sun Oct 29 01:00:00 2000 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Dec  3 05:59:59 2000 UT = Sun Dec  3 00:59:59 2000 EST isdst=0 gmtoff=-18000
+/zic/America/Santo_Domingo  Sun Dec  3 06:00:00 2000 UT = Sun Dec  3 02:00:00 2000 AST isdst=0 gmtoff=-14400
+/zic/America/Santo_Domingo  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 19:59:59 2147485547 AST isdst=0 gmtoff=-14400
+/zic/America/Santo_Domingo  67768036191676800 (gmtime failed) = Wed Dec 31 20:00:00 2147485547 AST isdst=0 gmtoff=-14400
+/zic/America/Santo_Domingo  67768036191691199 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 AST isdst=0 gmtoff=-14400
+/zic/America/Santo_Domingo  67768036191691200 (gmtime failed) = 67768036191691200 (localtime failed)
+/zic/America/Santo_Domingo  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

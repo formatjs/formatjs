@@ -12,6 +12,7 @@ import {
   DecimalFormatNum,
   LDMLPluralRuleMap,
   NumberFormatPart,
+  UseGroupingType,
 } from '../types/number'
 import {ToRawFixed} from './ToRawFixed'
 import {LDMLPluralRule} from '../types/plural-rules'
@@ -42,7 +43,7 @@ export default function formatToParts(
   pl: Intl.PluralRules,
   options: {
     numberingSystem: string
-    useGrouping: boolean
+    useGrouping?: UseGroupingType
     style: NumberFormatOptionsStyle
     // Notation
     notation: NumberFormatOptionsNotation
@@ -195,7 +196,7 @@ export default function formatToParts(
             exponent,
             numberingSystem,
             // If compact number pattern exists, do not insert group separators.
-            !compactNumberPattern && options.useGrouping,
+            !compactNumberPattern && Boolean(options.useGrouping),
             decimalNumberPattern
           )
         )

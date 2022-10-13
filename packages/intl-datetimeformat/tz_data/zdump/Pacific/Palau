@@ -1,0 +1,14 @@
+/zic/Pacific/Palau  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Palau  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Palau  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Palau  Thu Jan  1 15:02:03 -2147481748 UT = -67768040609686677 (localtime failed)
+/zic/Pacific/Palau  Thu Jan  1 15:02:04 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-54124
+/zic/Pacific/Palau  Tue Dec 31 15:02:03 1844 UT = Mon Dec 30 23:59:59 1844 LMT isdst=0 gmtoff=-54124
+/zic/Pacific/Palau  Tue Dec 31 15:02:04 1844 UT = Wed Jan  1 00:00:00 1845 LMT isdst=0 gmtoff=32276
+/zic/Pacific/Palau  Mon Dec 31 15:02:03 1900 UT = Mon Dec 31 23:59:59 1900 LMT isdst=0 gmtoff=32276
+/zic/Pacific/Palau  Mon Dec 31 15:02:04 1900 UT = Tue Jan  1 00:02:04 1901 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Palau  Wed Dec 31 14:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Palau  Wed Dec 31 15:00:00 2147485547 UT = 67768036191644400 (localtime failed)
+/zic/Pacific/Palau  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Palau  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Palau  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

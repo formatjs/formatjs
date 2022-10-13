@@ -1,0 +1,26 @@
+/zic/Asia/Jakarta  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Jakarta  -67768040609766433 (gmtime failed) = -67768040609766433 (localtime failed)
+/zic/Asia/Jakarta  -67768040609766432 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=25632
+/zic/Asia/Jakarta  -67768040609740801 (gmtime failed) = Thu Jan  1 07:07:11 -2147481748 LMT isdst=0 gmtoff=25632
+/zic/Asia/Jakarta  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 07:07:12 -2147481748 LMT isdst=0 gmtoff=25632
+/zic/Asia/Jakarta  Fri Aug  9 16:52:47 1867 UT = Fri Aug  9 23:59:59 1867 LMT isdst=0 gmtoff=25632
+/zic/Asia/Jakarta  Fri Aug  9 16:52:48 1867 UT = Sat Aug 10 00:00:00 1867 BMT isdst=0 gmtoff=25632
+/zic/Asia/Jakarta  Mon Dec 31 16:39:59 1923 UT = Mon Dec 31 23:47:11 1923 BMT isdst=0 gmtoff=25632
+/zic/Asia/Jakarta  Mon Dec 31 16:40:00 1923 UT = Tue Jan  1 00:00:00 1924 +0720 isdst=0 gmtoff=26400
+/zic/Asia/Jakarta  Mon Oct 31 16:39:59 1932 UT = Mon Oct 31 23:59:59 1932 +0720 isdst=0 gmtoff=26400
+/zic/Asia/Jakarta  Mon Oct 31 16:40:00 1932 UT = Tue Nov  1 00:10:00 1932 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Jakarta  Sun Mar 22 16:29:59 1942 UT = Sun Mar 22 23:59:59 1942 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Jakarta  Sun Mar 22 16:30:00 1942 UT = Mon Mar 23 01:30:00 1942 +09 isdst=0 gmtoff=32400
+/zic/Asia/Jakarta  Sat Sep 22 14:59:59 1945 UT = Sat Sep 22 23:59:59 1945 +09 isdst=0 gmtoff=32400
+/zic/Asia/Jakarta  Sat Sep 22 15:00:00 1945 UT = Sat Sep 22 22:30:00 1945 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Jakarta  Fri Apr 30 16:29:59 1948 UT = Fri Apr 30 23:59:59 1948 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Jakarta  Fri Apr 30 16:30:00 1948 UT = Sat May  1 00:30:00 1948 +08 isdst=0 gmtoff=28800
+/zic/Asia/Jakarta  Sun Apr 30 15:59:59 1950 UT = Sun Apr 30 23:59:59 1950 +08 isdst=0 gmtoff=28800
+/zic/Asia/Jakarta  Sun Apr 30 16:00:00 1950 UT = Sun Apr 30 23:30:00 1950 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Jakarta  Tue Dec 31 16:29:59 1963 UT = Tue Dec 31 23:59:59 1963 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Jakarta  Tue Dec 31 16:30:00 1963 UT = Tue Dec 31 23:30:00 1963 WIB isdst=0 gmtoff=25200
+/zic/Asia/Jakarta  Wed Dec 31 16:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 WIB isdst=0 gmtoff=25200
+/zic/Asia/Jakarta  Wed Dec 31 17:00:00 2147485547 UT = 67768036191651600 (localtime failed)
+/zic/Asia/Jakarta  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Jakarta  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Jakarta  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

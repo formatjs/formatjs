@@ -1,0 +1,10 @@
+/zic/Africa/Abidjan  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Abidjan  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Africa/Abidjan  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Africa/Abidjan  Thu Jan  1 00:16:07 -2147481748 UT = -67768040609739833 (localtime failed)
+/zic/Africa/Abidjan  Thu Jan  1 00:16:08 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-968
+/zic/Africa/Abidjan  Mon Jan  1 00:16:07 1912 UT = Sun Dec 31 23:59:59 1911 LMT isdst=0 gmtoff=-968
+/zic/Africa/Abidjan  Mon Jan  1 00:16:08 1912 UT = Mon Jan  1 00:16:08 1912 GMT isdst=0 gmtoff=0
+/zic/Africa/Abidjan  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 GMT isdst=0 gmtoff=0
+/zic/Africa/Abidjan  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Abidjan  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

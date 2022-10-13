@@ -106,7 +106,11 @@ export type FormatDisplayNameOptions = Omit<
   'localeMatcher'
 >
 
-export interface IntlFormatters<T = any, R = T> {
+/**
+ * `TBase` is the type constraints of the rich text element in the formatted output.
+ * For example, with React, `TBase` should be `React.ReactNode`.
+ */
+export interface IntlFormatters<TBase = unknown> {
   formatDateTimeRange(
     from: Parameters<DateTimeFormat['formatRange']>[0],
     to: Parameters<DateTimeFormat['formatRange']>[1],
@@ -150,27 +154,27 @@ export interface IntlFormatters<T = any, R = T> {
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
-  formatMessage(
+  formatMessage<T extends TBase>(
     descriptor: MessageDescriptor,
-    values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T, R>>,
+    values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
     opts?: IntlMessageFormatOptions
-  ): R
+  ): string | T | (T | string)[]
   $t(
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
-  $t(
+  $t<T extends TBase>(
     descriptor: MessageDescriptor,
-    values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T, R>>,
+    values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
     opts?: IntlMessageFormatOptions
-  ): R
+  ): string | T | (T | string)[]
   formatList(values: ReadonlyArray<string>, opts?: FormatListOptions): string
-  formatList(
+  formatList<T extends TBase>(
     values: ReadonlyArray<string | T>,
     opts?: FormatListOptions
-  ): T | string | Array<string | T>
-  formatListToParts(
+  ): T | string | (string | T)[]
+  formatListToParts<T extends TBase>(
     values: ReadonlyArray<string | T>,
     opts?: FormatListOptions
   ): Part[]
@@ -207,7 +211,7 @@ export interface Formatters {
 
 export interface IntlShape<T = string>
   extends ResolvedIntlConfig<T>,
-    IntlFormatters {
+    IntlFormatters<T> {
   formatters: Formatters
 }
 

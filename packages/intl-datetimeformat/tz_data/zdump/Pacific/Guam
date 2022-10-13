@@ -1,0 +1,52 @@
+/zic/Pacific/Guam  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Guam  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Guam  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Guam  Thu Jan  1 14:20:59 -2147481748 UT = -67768040609689141 (localtime failed)
+/zic/Pacific/Guam  Thu Jan  1 14:21:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-51660
+/zic/Pacific/Guam  Tue Dec 31 14:20:59 1844 UT = Mon Dec 30 23:59:59 1844 LMT isdst=0 gmtoff=-51660
+/zic/Pacific/Guam  Tue Dec 31 14:21:00 1844 UT = Wed Jan  1 00:00:00 1845 LMT isdst=0 gmtoff=34740
+/zic/Pacific/Guam  Mon Dec 31 14:20:59 1900 UT = Mon Dec 31 23:59:59 1900 LMT isdst=0 gmtoff=34740
+/zic/Pacific/Guam  Mon Dec 31 14:21:00 1900 UT = Tue Jan  1 00:21:00 1901 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Tue Dec  9 13:59:59 1941 UT = Tue Dec  9 23:59:59 1941 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Tue Dec  9 14:00:00 1941 UT = Tue Dec  9 23:00:00 1941 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Guam  Sun Jul 30 14:59:59 1944 UT = Sun Jul 30 23:59:59 1944 +09 isdst=0 gmtoff=32400
+/zic/Pacific/Guam  Sun Jul 30 15:00:00 1944 UT = Mon Jul 31 01:00:00 1944 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Fri Jun 26 15:59:59 1959 UT = Sat Jun 27 01:59:59 1959 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Fri Jun 26 16:00:00 1959 UT = Sat Jun 27 03:00:00 1959 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Jan 28 14:59:59 1961 UT = Sun Jan 29 01:59:59 1961 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Jan 28 15:00:00 1961 UT = Sun Jan 29 01:00:00 1961 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Thu Aug 31 15:59:59 1967 UT = Fri Sep  1 01:59:59 1967 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Thu Aug 31 16:00:00 1967 UT = Fri Sep  1 03:00:00 1967 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Jan 25 13:00:59 1969 UT = Sun Jan 26 00:00:59 1969 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Jan 25 13:01:00 1969 UT = Sat Jan 25 23:01:00 1969 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Sat Jun 21 15:59:59 1969 UT = Sun Jun 22 01:59:59 1969 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Sat Jun 21 16:00:00 1969 UT = Sun Jun 22 03:00:00 1969 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Aug 30 14:59:59 1969 UT = Sun Aug 31 01:59:59 1969 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Aug 30 15:00:00 1969 UT = Sun Aug 31 01:00:00 1969 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Sat Apr 25 15:59:59 1970 UT = Sun Apr 26 01:59:59 1970 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Sat Apr 25 16:00:00 1970 UT = Sun Apr 26 03:00:00 1970 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Sep  5 14:59:59 1970 UT = Sun Sep  6 01:59:59 1970 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Sep  5 15:00:00 1970 UT = Sun Sep  6 01:00:00 1970 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Sat Apr 24 15:59:59 1971 UT = Sun Apr 25 01:59:59 1971 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Sat Apr 24 16:00:00 1971 UT = Sun Apr 25 03:00:00 1971 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Sep  4 14:59:59 1971 UT = Sun Sep  5 01:59:59 1971 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Sep  4 15:00:00 1971 UT = Sun Sep  5 01:00:00 1971 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Sat Dec 15 15:59:59 1973 UT = Sun Dec 16 01:59:59 1973 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Sat Dec 15 16:00:00 1973 UT = Sun Dec 16 03:00:00 1973 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Feb 23 14:59:59 1974 UT = Sun Feb 24 01:59:59 1974 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Feb 23 15:00:00 1974 UT = Sun Feb 24 01:00:00 1974 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Tue May 25 15:59:59 1976 UT = Wed May 26 01:59:59 1976 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Tue May 25 16:00:00 1976 UT = Wed May 26 03:00:00 1976 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Aug 21 15:00:59 1976 UT = Sun Aug 22 02:00:59 1976 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Aug 21 15:01:00 1976 UT = Sun Aug 22 01:01:00 1976 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Sat Apr 23 15:59:59 1977 UT = Sun Apr 24 01:59:59 1977 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Sat Apr 23 16:00:00 1977 UT = Sun Apr 24 03:00:00 1977 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Aug 27 14:59:59 1977 UT = Sun Aug 28 01:59:59 1977 GDT isdst=1 gmtoff=39600
+/zic/Pacific/Guam  Sat Aug 27 15:00:00 1977 UT = Sun Aug 28 01:00:00 1977 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Fri Dec 22 13:59:59 2000 UT = Fri Dec 22 23:59:59 2000 GST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Fri Dec 22 14:00:00 2000 UT = Sat Dec 23 00:00:00 2000 ChST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Wed Dec 31 13:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 ChST isdst=0 gmtoff=36000
+/zic/Pacific/Guam  Wed Dec 31 14:00:00 2147485547 UT = 67768036191640800 (localtime failed)
+/zic/Pacific/Guam  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Guam  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Guam  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

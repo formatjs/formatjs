@@ -1,0 +1,14 @@
+/zic/Pacific/Chuuk  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Chuuk  -67768040609776121 (gmtime failed) = -67768040609776121 (localtime failed)
+/zic/Pacific/Chuuk  -67768040609776120 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=35320
+/zic/Pacific/Chuuk  -67768040609740801 (gmtime failed) = Thu Jan  1 09:48:39 -2147481748 LMT isdst=0 gmtoff=35320
+/zic/Pacific/Chuuk  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 09:48:40 -2147481748 LMT isdst=0 gmtoff=35320
+/zic/Pacific/Chuuk  Wed Dec 31 14:11:19 1879 UT = Wed Dec 31 23:59:59 1879 LMT isdst=0 gmtoff=35320
+/zic/Pacific/Chuuk  Wed Dec 31 14:11:20 1879 UT = Wed Dec 31 23:59:52 1879 PMMT isdst=0 gmtoff=35312
+/zic/Pacific/Chuuk  Mon Dec 31 14:11:27 1894 UT = Mon Dec 31 23:59:59 1894 PMMT isdst=0 gmtoff=35312
+/zic/Pacific/Chuuk  Mon Dec 31 14:11:28 1894 UT = Tue Jan  1 00:11:28 1895 +10 isdst=0 gmtoff=36000
+/zic/Pacific/Chuuk  Wed Dec 31 13:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +10 isdst=0 gmtoff=36000
+/zic/Pacific/Chuuk  Wed Dec 31 14:00:00 2147485547 UT = 67768036191640800 (localtime failed)
+/zic/Pacific/Chuuk  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Chuuk  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Chuuk  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

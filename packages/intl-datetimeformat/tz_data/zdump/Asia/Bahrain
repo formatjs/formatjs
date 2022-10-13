@@ -1,0 +1,14 @@
+/zic/Asia/Bahrain  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Bahrain  -67768040609753169 (gmtime failed) = -67768040609753169 (localtime failed)
+/zic/Asia/Bahrain  -67768040609753168 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=12368
+/zic/Asia/Bahrain  -67768040609740801 (gmtime failed) = Thu Jan  1 03:26:07 -2147481748 LMT isdst=0 gmtoff=12368
+/zic/Asia/Bahrain  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 03:26:08 -2147481748 LMT isdst=0 gmtoff=12368
+/zic/Asia/Bahrain  Wed Dec 31 20:33:51 1919 UT = Wed Dec 31 23:59:59 1919 LMT isdst=0 gmtoff=12368
+/zic/Asia/Bahrain  Wed Dec 31 20:33:52 1919 UT = Thu Jan  1 00:33:52 1920 +04 isdst=0 gmtoff=14400
+/zic/Asia/Bahrain  Wed May 31 19:59:59 1972 UT = Wed May 31 23:59:59 1972 +04 isdst=0 gmtoff=14400
+/zic/Asia/Bahrain  Wed May 31 20:00:00 1972 UT = Wed May 31 23:00:00 1972 +03 isdst=0 gmtoff=10800
+/zic/Asia/Bahrain  Wed Dec 31 20:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +03 isdst=0 gmtoff=10800
+/zic/Asia/Bahrain  Wed Dec 31 21:00:00 2147485547 UT = 67768036191666000 (localtime failed)
+/zic/Asia/Bahrain  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Bahrain  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Bahrain  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -1,0 +1,12 @@
+/zic/Antarctica/Mawson  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Antarctica/Mawson  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Antarctica/Mawson  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 -00 isdst=0 gmtoff=0
+/zic/Antarctica/Mawson  Fri Feb 12 23:59:59 1954 UT = Fri Feb 12 23:59:59 1954 -00 isdst=0 gmtoff=0
+/zic/Antarctica/Mawson  Sat Feb 13 00:00:00 1954 UT = Sat Feb 13 06:00:00 1954 +06 isdst=0 gmtoff=21600
+/zic/Antarctica/Mawson  Sat Oct 17 19:59:59 2009 UT = Sun Oct 18 01:59:59 2009 +06 isdst=0 gmtoff=21600
+/zic/Antarctica/Mawson  Sat Oct 17 20:00:00 2009 UT = Sun Oct 18 01:00:00 2009 +05 isdst=0 gmtoff=18000
+/zic/Antarctica/Mawson  Wed Dec 31 18:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +05 isdst=0 gmtoff=18000
+/zic/Antarctica/Mawson  Wed Dec 31 19:00:00 2147485547 UT = 67768036191658800 (localtime failed)
+/zic/Antarctica/Mawson  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Antarctica/Mawson  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Antarctica/Mawson  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

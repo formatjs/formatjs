@@ -1,0 +1,14 @@
+/zic/Africa/Monrovia  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Monrovia  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Africa/Monrovia  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Africa/Monrovia  Thu Jan  1 00:43:07 -2147481748 UT = -67768040609738213 (localtime failed)
+/zic/Africa/Monrovia  Thu Jan  1 00:43:08 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-2588
+/zic/Africa/Monrovia  Sun Jan  1 00:43:07 1882 UT = Sat Dec 31 23:59:59 1881 LMT isdst=0 gmtoff=-2588
+/zic/Africa/Monrovia  Sun Jan  1 00:43:08 1882 UT = Sun Jan  1 00:00:00 1882 MMT isdst=0 gmtoff=-2588
+/zic/Africa/Monrovia  Sat Mar  1 00:43:07 1919 UT = Fri Feb 28 23:59:59 1919 MMT isdst=0 gmtoff=-2588
+/zic/Africa/Monrovia  Sat Mar  1 00:43:08 1919 UT = Fri Feb 28 23:58:38 1919 MMT isdst=0 gmtoff=-2670
+/zic/Africa/Monrovia  Fri Jan  7 00:44:29 1972 UT = Thu Jan  6 23:59:59 1972 MMT isdst=0 gmtoff=-2670
+/zic/Africa/Monrovia  Fri Jan  7 00:44:30 1972 UT = Fri Jan  7 00:44:30 1972 GMT isdst=0 gmtoff=0
+/zic/Africa/Monrovia  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 GMT isdst=0 gmtoff=0
+/zic/Africa/Monrovia  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Monrovia  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)
