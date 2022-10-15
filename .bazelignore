@@ -30,7 +30,7 @@ packages/intl-relativetimeformat/node_modules
 packages/intl/node_modules
 packages/react-intl/examples/node_modules
 packages/react-intl/node_modules
-packages/swc-plugin-formatjs/node_modules
+packages/swc-plugin-experimental/node_modules
 packages/swc-plugin/node_modules
 packages/ts-transformer/integration-tests/node_modules
 packages/ts-transformer/node_modules

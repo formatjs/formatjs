@@ -8,6 +8,8 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier_test")
 load("@npm//:prettier/package_json.bzl", prettier_bin = "bin")
 load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
+load("@npm//:@taplo/cli/package_json.bzl", taplo_bin = "bin")
+# load("@rules_rust//rust:defs.bzl", "rustfmt_test")
 
 BUILDIFIER_WARNINGS = [
     "attr-cfg",
@@ -262,17 +264,16 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
 
 def check_format(name, srcs, config = "//:.prettierrc"):
     """
-    Run all file formatting checks like prettier/buildifier.
+    Run all file formatting checks like prettier/buildifier/rustfmt/taplo.
 
     Args:
         name: name of target
         srcs: list of srcs files
         config: prettier config
     """
-    native.filegroup(
-        name = "%s_prettier_srcs" % name,
-        srcs = [s for s in srcs if not s.endswith("BUILD") and not s.endswith(".bzl")],
-    )
+
+    # Bazel
+    # -----
 
     buildifier_test(
         name = "%s_buildifier_test" % name,
@@ -282,6 +283,21 @@ def check_format(name, srcs, config = "//:.prettierrc"):
         verbose = True,
     )
 
+    # Prettier
+    # --------
+
+    native.filegroup(
+        name = "%s_prettier_srcs" % name,
+        srcs = [
+            s
+            for s in srcs
+            if not s.endswith("BUILD") and
+               not s.endswith(".bzl") and
+               not s.endswith(".toml") and
+               not s.endswith(".rs")
+        ],
+    )
+
     prettier_bin.prettier_test(
         name = "%s_prettier_test" % name,
         data = [
@@ -289,6 +305,7 @@ def check_format(name, srcs, config = "//:.prettierrc"):
             config,
         ],
         args = [
+            "--ignore-unknown",
             "--config",
             "$(location %s)" % config,
             "--loglevel",
@@ -305,6 +322,7 @@ def check_format(name, srcs, config = "//:.prettierrc"):
             config,
         ],
         args = [
+            "--ignore-unknown",
             "--config",
             "$(location %s)" % config,
             "--loglevel",
@@ -317,6 +335,62 @@ def check_format(name, srcs, config = "//:.prettierrc"):
             "//:__pkg__",
         ],
     )
+
+    # TODO: fix this.
+
+    # # Rust
+    # # ----
+
+    # native.filegroup(
+    #     name = "%s_rustfmt_srcs" % name,
+    #     srcs = [s for s in srcs if s.endswith(".rs")],
+    # )
+
+    # rustfmt_test(
+    #     name = "%s_rustfmt_test" % name,
+    #     targets = [":%s_rustfmt_srcs" % name],
+    # )
+
+    # Taplo
+    # -----
+
+    # native.filegroup(
+    #     name = "%s_taplo_srcs" % name,
+    #     srcs = [s for s in srcs if s.endswith(".toml")],
+    # )
+
+    # taplo_bin.taplo_test(
+    #     name = "%s_taplo_test" % name,
+    #     data = [
+    #         "%s_taplo_srcs" % name,
+    #         "//:.taplo",
+    #     ],
+    #     args = [
+    #         "format",
+    #         "--config",
+    #         "$(location //:.taplo)",
+    #         "--check",
+    #         "$(locations :%s_taplo_srcs)" % name,
+    #     ],
+    # )
+
+    # taplo_bin.taplo_binary(
+    #     name = "taplo",
+    #     data = [
+    #         ":%s_taplo_srcs" % name,
+    #         "//:.taplo",
+    #     ],
+    #     args = [
+    #         "format",
+    #         "--config",
+    #         "$(location //:.taplo)",
+    #         "$(locations :%s_taplo_srcs)" % name,
+    #     ],
+    #     chdir = "$$BUILD_WORKSPACE_DIRECTORY",
+    #     visibility = [
+    #         "//:__pkg__",
+    #     ],
+    # )
 
 def is_internal_dep(s):
     return s.startswith("//:node_modules/@formatjs") or s in [

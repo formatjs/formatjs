@@ -227,6 +227,7 @@ CONFIG_FILES = [
     "jest.config.js",
     "package.json",
     "tsconfig.json",
+    ".taplo.toml",
 ]
 
 [
