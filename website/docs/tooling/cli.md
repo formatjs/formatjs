@@ -406,7 +406,7 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 
 | TMS                                                                                        | `--format`  |
 | ------------------------------------------------------------------------------------------ | ----------- |
-| [BabelEdit](https://www.codeandweb.com/babeledit/format-js)                                | `simple`    |   
+| [BabelEdit](https://www.codeandweb.com/babeledit/format-js)                                | `simple`    |
 | [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)               | `crowdin`   |
 | [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)              | `simple`    |
 | [Localize's Simple JSON](https://developers.localizejs.com/docs/simple-json-import-export) | `simple`    |

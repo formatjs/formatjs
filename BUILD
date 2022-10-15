@@ -232,9 +232,10 @@ CONFIG_FILES = [
 [
     copy_to_bin(
         name = f.rsplit(".", 1)[0],
-        srcs=[f],
-        visibility=["//visibility:public"]
-    ) for f in CONFIG_FILES
+        srcs = [f],
+        visibility = ["//visibility:public"],
+    )
+    for f in CONFIG_FILES
 ]
 
 TSCONFIG_FILES = [

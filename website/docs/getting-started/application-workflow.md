@@ -5,7 +5,8 @@ title: Application Workflow
 
 While our [Installation](./installation.md) guide can help you get started, this guide gives you an overview how your daily translation workflow might look like.
 
-There are 2 types of translations tools and services: 
+There are 2 types of translations tools and services:
+
 - Tools that work locally on your computer - just like your IDE.
 - Cloud translation services that require an upload of your translation files. These require a translation pipeline with a complex workflow.
 
@@ -26,7 +27,7 @@ projectRoot
 |-- .eslintrc.js
 ```
 
-The extracted translation files live in the `extracted` folder since they have a different internal structure (e.g. they contain additional information like the comments). The translation files produced during the translation process are stored in the `lang` folder. 
+The extracted translation files live in the `extracted` folder since they have a different internal structure (e.g. they contain additional information like the comments). The translation files produced during the translation process are stored in the `lang` folder.
 
 ### The workflow
 
@@ -37,8 +38,6 @@ The workflow looks like this:
 1. **Extraction**: This step aggregates all `defaultMessage`s from your application into a single JSON file along with `description`, ready to be translated.
 2. **Edit**: Edit the translations, save when done.
 3. The changes immediately show up in your build
-
-
 
 ## Complex application workflow with a cloud based translation service
 

@@ -90,12 +90,12 @@ ts_compile(
 genrule(
     name = "tz_data_extract",
     srcs = [
-        ":tz_install/tz_data.tar.gz"
+        ":tz_install/tz_data.tar.gz",
     ],
     outs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES] + ["tz_data_generated/backward"],
     cmd = "tar -xzvf $< -C $(@D)",
     message = "Extracting zdump data files",
-    tags=["manual"]
+    tags = ["manual"],
 )
 
 filegroup(
@@ -870,13 +870,14 @@ write_source_files(
 )
 
 TZ_DATA_FILES = [":tz_data_generated/zdump/%s" % zone for zone in ZONES] + [":tz_data_generated/backward"]
+
 TZ_DATA_SRC_FILES = [k.replace(":tz_data_generated", "tz_data") for k in TZ_DATA_FILES]
 
 write_source_files(
     name = "generated_tz_data",
-    files = {k:v for k,v in zip(TZ_DATA_SRC_FILES, TZ_DATA_FILES)},
+    files = {k: v for k, v in zip(TZ_DATA_SRC_FILES, TZ_DATA_FILES)},
+    tags = ["manual"],
     visibility = ["//:__pkg__"],
-    tags=["manual"]
 )
 
 esbuild(
@@ -943,7 +944,7 @@ download_pkgs(
     packages = [
         "build-essential",
     ],
-    tags=["manual"]
+    tags = ["manual"],
 )
 
 install_pkgs(
@@ -951,18 +952,18 @@ install_pkgs(
     image_tar = "@ubuntu22//image",
     installables_tar = ":build_essential_pkgs.tar",
     output_image_name = "ubuntu_build_essential_image",
-    tags=["manual"]
+    tags = ["manual"],
 )
 
 # Package tzcode + tzdata into a single Docker layer
 container_layer(
     name = "tz",
     directory = "tz",
+    tags = ["manual"],
     tars = [
         "@tzcode//file",
         "@tzdata//file",
     ],
-    tags=["manual"]
 )
 
 # Create a new Docker image with build-essential, tzcode + tzdata
@@ -970,7 +971,7 @@ container_image(
     name = "build_essential_bazel_wrapper",
     base = ":ubuntu_build_essential_image.tar",
     layers = [":tz"],
-    tags=["manual"]
+    tags = ["manual"],
 )
 
 # Pre-compile tzdata
@@ -1010,6 +1011,5 @@ container_run_and_extract(
     ],
     extract_file = "/tz_data.tar.gz",
     image = ":build_essential_bazel_wrapper.tar",
-    tags=["manual"]
-   
+    tags = ["manual"],
 )
