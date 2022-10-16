@@ -3,21 +3,18 @@ dist
 bazel-out
 
 packages/babel-plugin-formatjs/integration-tests/node_modules
-packages/ts-transformer/integration-tests/node_modules
-packages/icu-messageformat-parser/integration-tests/node_modules
-packages/cli/integration-tests/node_modules
-packages/react-intl/examples/node_modules
 packages/babel-plugin-formatjs/node_modules
-packages/cli/node_modules
 packages/cli-lib/node_modules
+packages/cli/integration-tests/node_modules
+packages/cli/node_modules
 packages/ecma376/node_modules
 packages/ecma402-abstract/node_modules
 packages/editor/node_modules
 packages/eslint-plugin-formatjs/node_modules
 packages/fast-memoize/node_modules
+packages/icu-messageformat-parser/integration-tests/node_modules
 packages/icu-messageformat-parser/node_modules
 packages/icu-skeleton-parser/node_modules
-packages/intl/node_modules
 packages/intl-datetimeformat/node_modules
 packages/intl-displaynames/node_modules
 packages/intl-durationformat/node_modules
@@ -30,8 +27,12 @@ packages/intl-messageformat/node_modules
 packages/intl-numberformat/node_modules
 packages/intl-pluralrules/node_modules
 packages/intl-relativetimeformat/node_modules
+packages/intl/node_modules
+packages/react-intl/examples/node_modules
 packages/react-intl/node_modules
+packages/swc-plugin-formatjs/node_modules
 packages/swc-plugin/node_modules
+packages/ts-transformer/integration-tests/node_modules
 packages/ts-transformer/node_modules
 packages/vue-intl/node_modules
 website/node_modules
