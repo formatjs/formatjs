@@ -32,9 +32,9 @@ export function doPrintAST(
   ast: MessageFormatElement[],
   isInPlural: boolean
 ): string {
-  const printedNodes = ast.map(el => {
+  const printedNodes = ast.map((el, i) => {
     if (isLiteralElement(el)) {
-      return printLiteralElement(el, isInPlural)
+      return printLiteralElement(el, isInPlural, i === 0, i === ast.length - 1)
     }
 
     if (isArgumentElement(el)) {
@@ -71,8 +71,23 @@ function printEscapedMessage(message: string): string {
   return message.replace(/([{}](?:.*[{}])?)/su, `'$1'`)
 }
 
-function printLiteralElement({value}: LiteralElement, isInPlural: boolean) {
-  const escaped = printEscapedMessage(value)
+function printLiteralElement(
+  {value}: LiteralElement,
+  isInPlural: boolean,
+  isFirstEl: boolean,
+  isLastEl: boolean
+) {
+  let escaped = value
+  // If this literal starts with a ' and its not the 1st node, this means the node before it is non-literal
+  // and the `'` needs to be unescaped
+  if (!isFirstEl && escaped[0] === `'`) {
+    escaped = `''${escaped.slice(1)}`
+  }
+  // Same logic but for last el
+  if (!isLastEl && escaped[escaped.length - 1] === `'`) {
+    escaped = `${escaped.slice(0, escaped.length - 1)}''`
+  }
+  escaped = printEscapedMessage(escaped)
   return isInPlural ? escaped.replace('#', "'#'") : escaped
 }
 
