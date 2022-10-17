@@ -36,8 +36,7 @@ Pull requests are very welcome, but should be within the scope of the project, a
 To setup locally, first initialize the git submodule:
 
 ```sh
-> git submodule init
-> git submodule update
+> bazel run //tools:update_submodules
 ```
 
 Now you can build & test with `pnpm`:
@@ -55,13 +54,12 @@ npm run examples
 Releases can be done with the following steps:
 
 ```sh
-npm run release
-```
-
-To publish next tag
-
-```sh
-npm run release:next
+npm run prerelease
+bazel build :dist
+mkdir ../formatjs2
+\cp -rf dist/bin/formatjs_dist/ ../formatjs2/
+cd ../formatjs2/
+npx pnpm -r publish
 ```
 
 ### Updating tzdata version
