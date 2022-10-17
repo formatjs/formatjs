@@ -1,11 +1,12 @@
 actions:
-  - name: push
-    triggers: push
+  - name: 'Test all targets'
+    triggers:
+      push:
+        branches:
+          - 'main'
+      pull_request:
+        branches:
+          - '*'
     bazel_commands:
-      - bazel run //tools:update_submodules
-      - bazel test //...
-  - name: pr
-    triggers: pull_request
-    bazel_commands:
-      - bazel run //tools:update_submodules
-      - bazel test //...
+      - 'run //tools:update_submodules'
+      - 'test //...'
