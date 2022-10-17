@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.11.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.0...@formatjs/ts-transformer@3.11.1) (2022-10-17)
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** change ts-jest peer dependencies to be >= 27 ([#3862](https://github.com/formatjs/formatjs/issues/3862)) ([c2154eb](https://github.com/formatjs/formatjs/commit/c2154eb11af2926c76ec08acc87d2802bbc07668))
+
 # [3.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.10.1...@formatjs/ts-transformer@3.11.0) (2022-10-13)
 
 ### Bug Fixes
