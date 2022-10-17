@@ -1,0 +1,11 @@
+actions:
+  - name: push
+    triggers: push
+    bazel_commands:
+      - bazel run //tools:update_submodules
+      - bazel test //...
+  - name: pr
+    triggers: pull_request
+    bazel_commands:
+      - bazel run //tools:update_submodules
+      - bazel test //...
