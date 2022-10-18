@@ -14,6 +14,10 @@ type LocalePatternRawData =
   typeof import('cldr-localenames-full/main/en/localeDisplayNames.json')['main']['en']['localeDisplayNames']['localeDisplayPattern']['localePattern']
 type CurrencyRawData =
   typeof import('cldr-numbers-full/main/en/currencies.json')['main']['en']['numbers']['currencies']
+type CalendarRawData =
+  typeof import('cldr-localenames-full/main/en/localeDisplayNames.json')['main']['en']['localeDisplayNames']['types']['calendar']
+type DateTimeFieldRawData =
+  typeof import('cldr-dates-full/main/en/dateFields.json')['main']['en']['dates']['fields']
 // -------------------------------------------------------------------------------------------------
 
 export async function getAllLocales(): Promise<string[]> {
@@ -73,15 +77,61 @@ function extractCurrencyStyleData(
   return {long: longData, short: {}, narrow: {}}
 }
 
+// Some keys used in the CLDR file differ from the ones in the TC39 proposal.
+// This constant maps them.
+const CLDR_TO_TC39_KEYS: Record<string, string> = {
+  week: 'weekOfYear',
+  zone: 'timeZoneName',
+}
+function extractDateTimeFieldStyleData(
+  cldrData: DateTimeFieldRawData
+): Record<'long' | 'short' | 'narrow', Record<string, string>> {
+  const longData: Record<string, string> = {}
+  const shortData: Record<string, string> = {}
+  const narrowData: Record<string, string> = {}
+  for (const [key, value] of Object.entries(cldrData)) {
+    if ('displayName' in value) {
+      if (key.includes('-narrow')) {
+        const newKey = key.replace(/-narrow.*/, '')
+        narrowData[CLDR_TO_TC39_KEYS[newKey] || newKey] = value.displayName
+      } else if (key.includes('-short')) {
+        const newKey = key.replace(/-short.*/, '')
+        shortData[CLDR_TO_TC39_KEYS[newKey] || newKey] = value.displayName
+      } else {
+        longData[CLDR_TO_TC39_KEYS[key] || key] = value.displayName
+      }
+    }
+  }
+  return {long: longData, short: shortData, narrow: narrowData}
+}
+
+function extractLanguageStyleData(cldrData: LanguageRawData): {
+  dialect: Record<'long' | 'short' | 'narrow', Record<string, string>>
+  standard: Record<'long' | 'short' | 'narrow', Record<string, string>>
+} {
+  const languageStyleData = extractStyleData(cldrData)
+  return {
+    dialect: languageStyleData,
+    standard: {long: {}, short: {}, narrow: {}},
+  }
+}
+
 async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
-  const [languages, territories, scripts, localeDisplayNames, currencies] =
-    await Promise.all([
-      import(`cldr-localenames-full/main/${locale}/languages.json`),
-      import(`cldr-localenames-full/main/${locale}/territories.json`),
-      import(`cldr-localenames-full/main/${locale}/scripts.json`),
-      import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`),
-      import(`cldr-numbers-full/main/${locale}/currencies.json`),
-    ])
+  const [
+    languages,
+    territories,
+    scripts,
+    localeDisplayNames,
+    currencies,
+    dateFields,
+  ] = await Promise.all([
+    import(`cldr-localenames-full/main/${locale}/languages.json`),
+    import(`cldr-localenames-full/main/${locale}/territories.json`),
+    import(`cldr-localenames-full/main/${locale}/scripts.json`),
+    import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`),
+    import(`cldr-numbers-full/main/${locale}/currencies.json`),
+    import(`cldr-dates-full/main/${locale}/dateFields.json`),
+  ])
   const langData: LanguageRawData =
     languages.main[locale].localeDisplayNames.languages
   const regionData: RegionRawData =
@@ -93,13 +143,19 @@ async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
       .localePattern
   const currencyData: CurrencyRawData =
     currencies.main[locale].numbers.currencies
+  const calendarData: CalendarRawData =
+    localeDisplayNames.main[locale].localeDisplayNames.types.calendar
+  const dateTimeFieldData: DateTimeFieldRawData =
+    dateFields.main[locale].dates.fields
 
   return {
     types: {
-      language: extractStyleData(langData),
+      language: extractLanguageStyleData(langData),
       region: extractStyleData(regionData),
       script: extractStyleData(scriptData),
       currency: extractCurrencyStyleData(locale, currencyData),
+      calendar: extractStyleData(calendarData),
+      dateTimeField: extractDateTimeFieldStyleData(dateTimeFieldData),
     },
     patterns: {
       // No support for alt variants
