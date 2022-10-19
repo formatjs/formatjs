@@ -28,10 +28,40 @@ describe('.of()', () => {
     ).toBe('简体中文（XY）')
   })
 
-  it('find script correctly', function () {
+  it('finds script correctly', function () {
     expect(
       new DisplayNames('zh', {type: 'script', fallback: 'code'}).of('arab')
     ).toBe('阿拉伯文')
+  })
+
+  it('finds the calendar correctly', () => {
+    expect(new DisplayNames('en', {type: 'calendar'}).of('roc')).toBe(
+      'Minguo Calendar'
+    )
+  })
+
+  describe('with type set to "dateTimeField"', () => {
+    it('finds the name for "year" correctly', () => {
+      expect(new DisplayNames('en', {type: 'dateTimeField'}).of('year')).toBe(
+        'year'
+      )
+    })
+
+    it('finds the short name for "weekOfYear" correctly', () => {
+      expect(
+        new DisplayNames('en', {type: 'dateTimeField', style: 'short'}).of(
+          'weekOfYear'
+        )
+      ).toBe('wk.')
+    })
+
+    it('finds the narrow name for "timeZoneName" correctly', () => {
+      expect(
+        new DisplayNames('en', {type: 'dateTimeField', style: 'narrow'}).of(
+          'timeZoneName'
+        )
+      ).toBe('zone')
+    })
   })
 
   describe('with fallback set to "none"', () => {
