@@ -105,14 +105,77 @@ function extractDateTimeFieldStyleData(
   return {long: longData, short: shortData, narrow: narrowData}
 }
 
-function extractLanguageStyleData(cldrData: LanguageRawData): {
+function getStandardLanguageValue(
+  key: string,
+  dialectValue: string,
+  cldrLanguageData: Record<string, string>,
+  cldrRegionData: Record<string, string>
+): string {
+  if (key.includes('-')) {
+    const [languageSubTab, regionSubTag] = key.split('-')
+    const isRegionSubTag = cldrRegionData[regionSubTag] !== undefined
+    if (isRegionSubTag) {
+      return `${cldrLanguageData[languageSubTab]} (${cldrRegionData[regionSubTag]})`
+    }
+  }
+  return dialectValue
+}
+
+function extractStandardLanguageStyleData(
+  cldrLanguageData: Record<string, string>,
+  cldrRegionData: Record<string, string>
+): Record<'long' | 'short' | 'narrow', Record<string, string>> {
+  const longData: Record<string, string> = {}
+  const shortData: Record<string, string> = {}
+  const narrowData: Record<string, string> = {}
+  for (const [key, value] of Object.entries(cldrLanguageData)) {
+    if (key.includes('-alt-')) {
+      // As of Jan 2020, there is no `-alt-narrow`.
+      if (key.includes('-alt-narrow')) {
+        const newKey = key.replace(/-alt-narrow.*/, '')
+        narrowData[newKey] = getStandardLanguageValue(
+          newKey,
+          value,
+          cldrLanguageData,
+          cldrRegionData
+        )
+      } else if (key.includes('-alt-short')) {
+        const newKey = key.replace(/-alt-short.*/, '')
+        shortData[newKey] = getStandardLanguageValue(
+          newKey,
+          value,
+          cldrLanguageData,
+          cldrRegionData
+        )
+      }
+      // Not sure why `-alt-long` exists. Ignore them for now.
+    } else {
+      longData[key] = getStandardLanguageValue(
+        key,
+        value,
+        cldrLanguageData,
+        cldrRegionData
+      )
+    }
+  }
+  return {long: longData, short: shortData, narrow: narrowData}
+}
+
+function extractLanguageStyleData(
+  cldrLanguageData: LanguageRawData,
+  cldrRegionData: RegionRawData
+): {
   dialect: Record<'long' | 'short' | 'narrow', Record<string, string>>
   standard: Record<'long' | 'short' | 'narrow', Record<string, string>>
 } {
-  const languageStyleData = extractStyleData(cldrData)
+  const dialectStyleData = extractStyleData(cldrLanguageData)
+  const standardStyleData = extractStandardLanguageStyleData(
+    cldrLanguageData,
+    cldrRegionData
+  )
   return {
-    dialect: languageStyleData,
-    standard: {long: {}, short: {}, narrow: {}},
+    dialect: dialectStyleData,
+    standard: standardStyleData,
   }
 }
 
@@ -150,7 +213,7 @@ async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
 
   return {
     types: {
-      language: extractLanguageStyleData(langData),
+      language: extractLanguageStyleData(langData, regionData),
       region: extractStyleData(regionData),
       script: extractStyleData(scriptData),
       currency: extractCurrencyStyleData(locale, currencyData),
