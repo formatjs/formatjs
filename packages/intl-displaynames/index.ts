@@ -191,49 +191,54 @@ export class DisplayNames {
     // Canonicalize the case.
     let canonicalCode = CanonicalCodeForDisplayNames(type, codeAsString)
 
-    // This is only used to store extracted language region.
-    let regionSubTag: string | undefined
-    if (type === 'language') {
-      const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(canonicalCode)
-      if (regionMatch) {
-        // Remove region subtag
-        canonicalCode =
-          canonicalCode.substring(0, regionMatch.index) +
-          canonicalCode.substring(regionMatch.index + regionMatch[0].length)
-        regionSubTag = regionMatch[1]
-      }
-    }
-
-    // This is used to extract the correct typesData.
-    // If the type is "language", the language display data is required.
-    let typesData
     if (type === 'language') {
       const languageDisplay = getSlot(this, 'languageDisplay')
-      typesData = localeData.types.language[languageDisplay]
-    } else {
-      typesData = localeData.types[type]
-    }
+      const typesData = localeData.types.language[languageDisplay]
+      const name =
+        typesData[style][canonicalCode] || typesData.long[canonicalCode]
 
-    // If the style of choice does not exist, fallback to "long".
-    const name =
-      typesData[style][canonicalCode] || typesData.long[canonicalCode]
+      // If no name has been found with that canonicalCode,
+      // check if the latter contains a region sub tag
+      if (name === undefined) {
+        const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(canonicalCode)
+        if (regionMatch) {
+          // Extract the language and region sub tags
+          const languageSubTag =
+            canonicalCode.substring(0, regionMatch.index) +
+            canonicalCode.substring(regionMatch.index + regionMatch[0].length)
+          const regionSubTag = regionMatch[1]
 
-    if (name !== undefined) {
-      // If there is a region subtag in the language id, use locale pattern to interpolate the region
-      if (regionSubTag) {
-        // Retrieve region display names
-        const regionsData = localeData.types.region
-        const regionDisplayName: string | undefined =
-          regionsData[style][regionSubTag] || regionsData.long[regionSubTag]
+          // Let's try again using languageSubTag instead
+          const name =
+            typesData[style][languageSubTag] || typesData.long[languageSubTag]
 
-        if (regionDisplayName || fallback === 'code') {
-          // Interpolate into locale-specific pattern.
-          const pattern = localeData.patterns.locale
-          return pattern
-            .replace('{0}', name)
-            .replace('{1}', regionDisplayName || regionSubTag)
+          if (name !== undefined && regionSubTag) {
+            // Retrieve region display names
+            const regionsData = localeData.types.region
+            const regionDisplayName: string | undefined =
+              regionsData[style][regionSubTag] || regionsData.long[regionSubTag]
+
+            if (regionDisplayName || fallback === 'code') {
+              // Interpolate into locale-specific pattern.
+              const pattern = localeData.patterns.locale
+              return pattern
+                .replace('{0}', name)
+                .replace('{1}', regionDisplayName || regionSubTag)
+            }
+          } else {
+            return name
+          }
         }
       } else {
+        return name
+      }
+    } else {
+      // All the other types
+      const typesData = localeData.types[type]
+      const name =
+        typesData[style][canonicalCode] || typesData.long[canonicalCode]
+
+      if (name !== undefined) {
         return name
       }
     }

@@ -49,6 +49,24 @@ describe('format API', () => {
       )
     })
 
+    it('should return dialect locale display name as string', function () {
+      expect(
+        formatDisplayName('en-GB', {
+          type: 'language',
+          languageDisplay: 'dialect',
+        })
+      ).toBe('British English')
+    })
+
+    it('should return standard locale display name as string', function () {
+      expect(
+        formatDisplayName('en-GB', {
+          type: 'language',
+          languageDisplay: 'standard',
+        })
+      ).toBe('English (United Kingdom)')
+    })
+
     it('will return undefined if Intl.DisplayName would return undefined', function () {
       const displayName = new (Intl as any).DisplayNames('en', {
         type: 'language',

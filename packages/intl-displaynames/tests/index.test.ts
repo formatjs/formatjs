@@ -8,24 +8,89 @@ import * as zh from './locale-data/zh.json'
 DisplayNames.__addLocaleData(en, zh)
 
 describe('.of()', () => {
-  it('accepts case-insensitive language code with region subtag', () => {
-    expect(new DisplayNames('zh', {type: 'language'}).of('zh-hANs-sG')).toBe(
-      '简体中文（新加坡）'
-    )
+  describe('with type set to "language"', () => {
+    it('accepts case-insensitive language code with region subtag', () => {
+      expect(new DisplayNames('zh', {type: 'language'}).of('zh-hANs-sG')).toBe(
+        '简体中文（新加坡）'
+      )
+    })
+
+    it('preserves unrecognized region subtag in language code when fallback option is code', () => {
+      expect(
+        new DisplayNames('zh', {type: 'language', fallback: 'code'}).of(
+          'zh-Hans-Xy'
+        )
+      ).toBe('简体中文（XY）')
+    })
+
+    it('finds the long style language correctly', () => {
+      expect(
+        new DisplayNames('en', {type: 'language', style: 'long'}).of('en-GB')
+      ).toBe('British English')
+    })
+
+    it('finds the short style language correctly', () => {
+      expect(
+        new DisplayNames('en', {type: 'language', style: 'short'}).of('en-GB')
+      ).toBe('UK English')
+    })
+
+    describe('with languageDisplay set to "dialect"', () => {
+      it('finds the style language correctly', () => {
+        expect(
+          new Intl.DisplayNames('en', {
+            type: 'language',
+            languageDisplay: 'dialect',
+          }).of('en-GB')
+        ).toBe('British English')
+      })
+    })
+
+    describe('with languageDisplay set to "standard"', () => {
+      it('finds the long style language correctly', () => {
+        expect(
+          new DisplayNames('en', {
+            type: 'language',
+            style: 'long',
+            languageDisplay: 'standard',
+          }).of('en-GB')
+        ).toBe('English (United Kingdom)')
+      })
+
+      it('finds the short style language correctly', () => {
+        expect(
+          new DisplayNames('en', {
+            type: 'language',
+            style: 'short',
+            languageDisplay: 'standard',
+          }).of('en-GB')
+        ).toBe('English (UK)')
+      })
+    })
+
+    describe('with fallback set to "none"', () => {
+      it('returns undefined when called with language code that has unrecognized region subtag', () => {
+        expect(
+          new DisplayNames('zh', {type: 'language', fallback: 'none'}).of(
+            'zh-Hans-XY'
+          )
+        ).toBe(undefined)
+      })
+
+      it('returns undefined when called with language code that valid region subtag but invalid language subtag', () => {
+        expect(
+          new DisplayNames('zh', {type: 'language', fallback: 'none'}).of(
+            'xx-CN'
+          )
+        ).toBe(undefined)
+      })
+    })
   })
 
   it('accepts case-insensitive currency code', () => {
     expect(
-      new DisplayNames('en-US', {type: 'currency', style: 'long'}).of('cNy')
+      new DisplayNames('en', {type: 'currency', style: 'long'}).of('cNy')
     ).toBe('Chinese Yuan')
-  })
-
-  it('preserves unrecognized region subtag in language code when fallback option is code', () => {
-    expect(
-      new DisplayNames('zh', {type: 'language', fallback: 'code'}).of(
-        'zh-Hans-Xy'
-      )
-    ).toBe('简体中文（XY）')
   })
 
   it('finds script correctly', function () {
@@ -63,20 +128,22 @@ describe('.of()', () => {
       ).toBe('zone')
     })
   })
+})
 
-  describe('with fallback set to "none"', () => {
-    it('returns undefined when called with language code that has unrecognized region subtag', () => {
+describe('.resolvedOptions()', () => {
+  describe('option "languageDisplay"', () => {
+    it('defaults to "dialect" when the option is omitted and type is "language"', () => {
       expect(
-        new DisplayNames('zh', {type: 'language', fallback: 'none'}).of(
-          'zh-Hans-XY'
-        )
-      ).toBe(undefined)
+        new DisplayNames('en', {type: 'language'}).resolvedOptions()
+          .languageDisplay
+      ).toBe('dialect')
     })
 
-    it('returns undefined when called with language code that valid region subtag but invalid language subtag', () => {
+    it('is undefined when the option is omitted and type is not "language"', () => {
       expect(
-        new DisplayNames('zh', {type: 'language', fallback: 'none'}).of('xx-CN')
-      ).toBe(undefined)
+        new DisplayNames('en', {type: 'currency'}).resolvedOptions()
+          .languageDisplay
+      ).toBeUndefined()
     })
   })
 })

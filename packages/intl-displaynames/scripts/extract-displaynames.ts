@@ -107,23 +107,32 @@ function extractDateTimeFieldStyleData(
 
 function getStandardLanguageValue(
   key: string,
+  style: '-alt-narrow' | '-alt-short' | '',
   dialectValue: string,
   cldrLanguageData: Record<string, string>,
-  cldrRegionData: Record<string, string>
+  cldrRegionData: Record<string, string>,
+  localePattern: string
 ): string {
-  if (key.includes('-')) {
-    const [languageSubTab, regionSubTag] = key.split('-')
-    const isRegionSubTag = cldrRegionData[regionSubTag] !== undefined
-    if (isRegionSubTag) {
-      return `${cldrLanguageData[languageSubTab]} (${cldrRegionData[regionSubTag]})`
-    }
+  const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(key)
+  if (regionMatch) {
+    const languageSubTag =
+      key.substring(0, regionMatch.index) +
+      key.substring(regionMatch.index + regionMatch[0].length)
+    const regionSubTag = regionMatch[1]
+
+    const languageDisplayName = cldrLanguageData[languageSubTag]
+    const regionDisplayName = cldrRegionData[regionSubTag + style]
+    return localePattern
+      .replace('{0}', languageDisplayName)
+      .replace('{1}', regionDisplayName || regionSubTag)
   }
   return dialectValue
 }
 
 function extractStandardLanguageStyleData(
   cldrLanguageData: Record<string, string>,
-  cldrRegionData: Record<string, string>
+  cldrRegionData: Record<string, string>,
+  localePattern: string
 ): Record<'long' | 'short' | 'narrow', Record<string, string>> {
   const longData: Record<string, string> = {}
   const shortData: Record<string, string> = {}
@@ -135,26 +144,32 @@ function extractStandardLanguageStyleData(
         const newKey = key.replace(/-alt-narrow.*/, '')
         narrowData[newKey] = getStandardLanguageValue(
           newKey,
+          '-alt-narrow',
           value,
           cldrLanguageData,
-          cldrRegionData
+          cldrRegionData,
+          localePattern
         )
       } else if (key.includes('-alt-short')) {
         const newKey = key.replace(/-alt-short.*/, '')
         shortData[newKey] = getStandardLanguageValue(
           newKey,
+          '-alt-short',
           value,
           cldrLanguageData,
-          cldrRegionData
+          cldrRegionData,
+          localePattern
         )
       }
       // Not sure why `-alt-long` exists. Ignore them for now.
     } else {
       longData[key] = getStandardLanguageValue(
         key,
+        '',
         value,
         cldrLanguageData,
-        cldrRegionData
+        cldrRegionData,
+        localePattern
       )
     }
   }
@@ -163,19 +178,19 @@ function extractStandardLanguageStyleData(
 
 function extractLanguageStyleData(
   cldrLanguageData: LanguageRawData,
-  cldrRegionData: RegionRawData
+  cldrRegionData: RegionRawData,
+  cldrLocalePatternData: LocalePatternRawData
 ): {
   dialect: Record<'long' | 'short' | 'narrow', Record<string, string>>
   standard: Record<'long' | 'short' | 'narrow', Record<string, string>>
 } {
-  const dialectStyleData = extractStyleData(cldrLanguageData)
-  const standardStyleData = extractStandardLanguageStyleData(
-    cldrLanguageData,
-    cldrRegionData
-  )
   return {
-    dialect: dialectStyleData,
-    standard: standardStyleData,
+    dialect: extractStyleData(cldrLanguageData),
+    standard: extractStandardLanguageStyleData(
+      cldrLanguageData,
+      cldrRegionData,
+      cldrLocalePatternData
+    ),
   }
 }
 
@@ -213,7 +228,11 @@ async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
 
   return {
     types: {
-      language: extractLanguageStyleData(langData, regionData),
+      language: extractLanguageStyleData(
+        langData,
+        regionData,
+        localePatternData
+      ),
       region: extractStyleData(regionData),
       script: extractStyleData(scriptData),
       currency: extractCurrencyStyleData(locale, currencyData),
