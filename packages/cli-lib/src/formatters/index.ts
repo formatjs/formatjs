@@ -35,6 +35,8 @@ export async function resolveBuiltinFormatter(
       return lokalise
     case 'crowdin':
       return crowdin
+    case 'default':
+      return defaultFormatter
   }
   try {
     // eslint-disable-next-line import/dynamic-import-chunkname
