@@ -18,16 +18,21 @@ This guide will give you an idea of how to work with both types of tools.
 projectRoot
 |-- src
 |   |-- App.js
+|   |-- lang
+|      |-- fr.json
+|      |-- de.json
 |-- extracted
 |   |-- en.json
-|-- lang
-|   |-- fr.json
-|   |-- de.json
 |-- package.json
 |-- .eslintrc.js
 ```
 
-The extracted translation files live in the `extracted` folder since they have a different internal structure (e.g. they contain additional information like the comments). The translation files produced during the translation process are stored in the `lang` folder.
+In this scenario, the default messages are extracted from your source code into the `extracted` folder. The translation editor treats this file as read only because it would be overwritten with the next extraction run. 
+
+The translated messages are stored in the `lang` folder for a direct import into your application. This has the advantage that your app updates automatically with each save in the editor. The translations in this folder have the simple format.
+
+It's also possible to compile the translation files. This requires an additional step in which the files are parsed and stored with some additional information. The files are a bit bigger but speed up you application startup if you have many translations.
+
 
 ### The workflow
 
