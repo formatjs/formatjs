@@ -33,13 +33,7 @@ Pull requests are very welcome, but should be within the scope of the project, a
 - [`bazel`](https://bazel.build/)
 - [`docker`](https://www.docker.com/)
 
-To setup locally, first initialize the git submodule:
-
-```sh
-> bazel run //tools:update_submodules
-```
-
-Now you can build & test with `pnpm`:
+You can build & test with `pnpm`:
 
 ```sh
 pnpm i && pnpm t
