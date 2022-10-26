@@ -89,7 +89,7 @@ describe('.of()', () => {
 
   it('accepts case-insensitive currency code', () => {
     expect(
-      new DisplayNames('en', {type: 'currency', style: 'long'}).of('cNy')
+      new DisplayNames('en-US', {type: 'currency', style: 'long'}).of('cNy')
     ).toBe('Chinese Yuan')
   })
 
