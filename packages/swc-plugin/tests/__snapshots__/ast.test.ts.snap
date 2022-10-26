@@ -12,7 +12,7 @@ exports[`ast 2`] = `
             {
                 type: 1,
                 value: \\"intl\\"
-            }, 
+            }
         ]
     }, {
         bar: \\"bar\\"
@@ -27,7 +27,7 @@ exports[`ast 2`] = `
             {
                 type: 1,
                 value: \\"intl\\"
-            }, 
+            }
         ]
     }, {
         bar: \\"bar\\"
@@ -42,7 +42,7 @@ exports[`ast 2`] = `
             {
                 type: 1,
                 value: \\"bar\\"
-            }, 
+            }
         ]
     }, {
         bar: \\"bar\\"

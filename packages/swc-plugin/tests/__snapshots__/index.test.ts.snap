@@ -72,7 +72,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { FormattedMessage } from \\"react-intl\\";
 var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
@@ -178,7 +178,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { FormattedMessage } from \\"react-intl\\";
 var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
@@ -307,7 +307,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 function CustomMessage() {}
 var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
@@ -411,7 +411,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 function CustomMessage() {}
 var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
@@ -539,7 +539,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage } from \\"react-intl\\";
 var msgs = defineMessages({
     header: {
@@ -722,7 +722,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage } from \\"react-intl\\";
 var msgs = defineMessages({
     header: {
@@ -925,7 +925,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { FormattedMessage } from \\"react-intl\\";
 var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
@@ -1032,7 +1032,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { injectIntl, FormattedMessage } from \\"react-intl\\";
 var objectPointer = {
     id: \\"foo.bar.invalid\\",
@@ -1107,7 +1107,7 @@ export default injectIntl(Foo);
 exports[`emit asserts for extractFromFormatMessageStateless 1`] = `
 Object {
   "code": "import { FormattedMessage, injectIntl, useIntl } from \\"react-intl\\";
-import React from \\"react\\";
+import React1 from \\"react\\";
 function myFunction(param1, param) {
     var formatMessage = param.formatMessage, formatDate = param.formatDate;
     return formatMessage({
@@ -1236,7 +1236,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { injectIntl, FormattedMessage } from \\"react-intl\\";
 var objectPointer = {
     id: \\"foo.bar.invalid\\",
@@ -1384,7 +1384,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { FormattedMessage, defineMessage } from \\"react-intl\\";
 var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
@@ -1581,7 +1581,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage, defineMessage } from \\"react-intl\\";
 var msgs = defineMessages({
     header: {
@@ -1766,7 +1766,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage } from \\"react-intl\\";
 var messages = defineMessages({
     foo: {
@@ -1879,7 +1879,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { defineMessages, FormattedMessage } from \\"react-intl\\";
 var messages = defineMessages({
     foo: {
@@ -1994,7 +1994,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { FormattedMessage, defineMessage } from \\"react-intl\\";
 defineMessage({
     id: \\"template\\",

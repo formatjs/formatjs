@@ -72,7 +72,7 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React1, { Component } from \\"react\\";
 import { FormattedMessage, defineMessage } from \\"react-intl\\";
 var Foo = /*#__PURE__*/ function(Component) {
     \\"use strict\\";
