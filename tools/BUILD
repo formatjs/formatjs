@@ -6,7 +6,6 @@ load(":index.bzl", "check_format")
 exports_files([
     "tsconfig.golden.json",
     "supported-locales-gen.ts",
-    "update_submodules.sh",
 ])
 
 check_format(
@@ -69,9 +68,4 @@ js_binary(
     ],
     entry_point = ":supported-locales-gen-transpiled",
     visibility = ["//visibility:public"],
-)
-
-sh_binary(
-    name = "update_submodules",
-    srcs = ["//tools:update_submodules.sh"],
 )
