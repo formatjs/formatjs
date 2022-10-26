@@ -2,11 +2,13 @@
 bazel-out
 dist
 locale-data
+*.generated.ts
 packages/*/CHANGELOG.md
 packages/babel-plugin-formatjs/options.ts
 packages/intl-datetimeformat/src/data/
 packages/intl-getcanonicallocales/src/data/
 packages/intl-numberformat/src/data/
+packages/intl-durationformat/src/test262-main.ts
 packages/ecma402-abstract/src/NumberFormat/digit-mapping.json
 packages/cli-lib/tests/extract/typescript/err.tsx
 test262*

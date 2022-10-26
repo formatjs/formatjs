@@ -38,6 +38,19 @@ function supportsES2020() {
   return true
 }
 
+function supportsES2022() {
+  try {
+    new Intl.NumberFormat('en', {
+      style: 'unit',
+      unit: 'microsecond',
+      unitDisplay: 'long',
+    }).format(10000)
+  } catch (e) {
+    return false
+  }
+  return true
+}
+
 function supportedLocalesOf(locale?: string | string[]) {
   if (!locale) {
     return true
@@ -51,6 +64,7 @@ export function shouldPolyfill(locale = 'en') {
     typeof Intl === 'undefined' ||
     !('NumberFormat' in Intl) ||
     !supportsES2020() ||
+    !supportsES2022() ||
     onlySupportsEn() ||
     !supportedLocalesOf(locale)
   ) {

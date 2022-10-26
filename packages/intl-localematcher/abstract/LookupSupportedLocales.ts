@@ -21,7 +21,8 @@ export function LookupSupportedLocales(
       noExtensionLocale
     )
     if (availableLocale) {
-      subset.push(availableLocale)
+      // test262/test/intl402/DurationFormat/supportedLocalesOf/locales-specific.js
+      subset.push(locale)
     }
   }
   return subset

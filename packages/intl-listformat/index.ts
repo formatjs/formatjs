@@ -119,10 +119,18 @@ function stringListFromIterable(list: any[]): string[] {
   return result
 }
 
+function getPart(part: string | {type: string; value: string}): string {
+  if (typeof part === 'string') {
+    return part
+  }
+
+  return part.value
+}
+
 function createPartsFromList(
   internalSlotMap: WeakMap<ListFormat, ListFormatInternal>,
   lf: ListFormat,
-  list: string[]
+  list: (string | {type: string; value: string})[]
 ) {
   const size = list.length
   if (size === 0) {
@@ -130,13 +138,13 @@ function createPartsFromList(
   }
   if (size === 2) {
     const pattern = getInternalSlot(internalSlotMap, lf, 'templatePair')
-    const first = {type: 'element', value: list[0]}
-    const second = {type: 'element', value: list[1]}
+    const first = {type: 'element', value: getPart(list[0])}
+    const second = {type: 'element', value: getPart(list[1])}
     return deconstructPattern(pattern, {'0': first, '1': second})
   }
   const last = {
     type: 'element',
-    value: list[size - 1],
+    value: getPart(list[size - 1]),
   }
   let parts: Placeable[] | Placeable = last
   let i = size - 2
@@ -149,11 +157,38 @@ function createPartsFromList(
     } else {
       pattern = getInternalSlot(internalSlotMap, lf, 'templateEnd')
     }
-    const head = {type: 'element', value: list[i]}
+    const head = {type: 'element', value: getPart(list[i])}
     parts = deconstructPattern(pattern, {'0': head, '1': parts})
     i--
   }
   return parts
+}
+
+/**
+ * https://tc39.es/ecma402/#sec-createpartsfromlist
+ *
+ * @param lf the list format object
+ * @param list an array of strings or objects to format
+ * @returns an array of {@link Placeable} objects
+ */
+export function CreatePartsFromList(
+  lf: Intl.ListFormat,
+  list: (string | {type: string; value: string})[]
+): Placeable[] {
+  // If not polyfilled, fallback on the prototype
+  // @ts-expect-error
+  if (!Intl.ListFormat.__addLocaleData) {
+    return lf.formatToParts(list.map(getPart))
+  }
+
+  // @ts-expect-error __INTERNAL_SLOT_MAP__ is private.
+  const result = createPartsFromList(ListFormat.__INTERNAL_SLOT_MAP__, lf, list)
+
+  if (!Array.isArray(result)) {
+    return [result]
+  }
+
+  return result
 }
 
 function deconstructPattern(

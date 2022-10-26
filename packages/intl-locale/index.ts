@@ -4,6 +4,7 @@ import {
   invariant,
   SameValue,
   CoerceOptionsToObject,
+  IsValidUnicodeLanguageTag,
 } from '@formatjs/ecma402-abstract'
 import {
   isStructurallyValidLanguageTag,
@@ -52,8 +53,6 @@ export interface IntlLocaleInternal extends IntlLocaleOptions {
   locale: string
   initializedLocale: boolean
 }
-
-const UNICODE_TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 
 function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
   invariant(typeof tag === 'string', 'language tag must be a string')
@@ -491,7 +490,7 @@ export class Locale {
       undefined
     )
     if (calendar !== undefined) {
-      if (!UNICODE_TYPE_REGEX.test(calendar)) {
+      if (!IsValidUnicodeLanguageTag(calendar)) {
         throw new RangeError('invalid calendar')
       }
     }
@@ -505,7 +504,7 @@ export class Locale {
       undefined
     )
     if (collation !== undefined) {
-      if (!UNICODE_TYPE_REGEX.test(collation)) {
+      if (!IsValidUnicodeLanguageTag(collation)) {
         throw new RangeError('invalid collation')
       }
     }
@@ -540,7 +539,7 @@ export class Locale {
       undefined
     )
     if (numberingSystem !== undefined) {
-      if (!UNICODE_TYPE_REGEX.test(numberingSystem)) {
+      if (!IsValidUnicodeLanguageTag(numberingSystem)) {
         throw new RangeError('Invalid numberingSystem')
       }
     }

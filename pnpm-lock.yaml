@@ -386,6 +386,7 @@ importers:
       '@formatjs/icu-messageformat-parser': workspace:*
       '@formatjs/intl-datetimeformat': workspace:*
       '@formatjs/intl-displaynames': workspace:*
+      '@formatjs/intl-durationformat': workspace:*
       '@formatjs/intl-listformat': workspace:*
       '@formatjs/intl-numberformat': workspace:*
       intl-messageformat: workspace:*
@@ -395,6 +396,7 @@ importers:
       '@formatjs/fast-memoize': link:../fast-memoize
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
       '@formatjs/intl-displaynames': link:../intl-displaynames
+      '@formatjs/intl-durationformat': link:../intl-durationformat
       '@formatjs/intl-listformat': link:../intl-listformat
       intl-messageformat: link:../intl-messageformat
       tslib: 2.4.0
@@ -435,12 +437,23 @@ importers:
   packages/intl-durationformat:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
+      '@formatjs/intl-enumerator': workspace:*
+      '@formatjs/intl-getcanonicallocales': workspace:*
+      '@formatjs/intl-listformat': workspace:*
+      '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
+      '@formatjs/intl-numberformat': workspace:*
       tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
+      '@formatjs/intl-listformat': link:../intl-listformat
       '@formatjs/intl-localematcher': link:../intl-localematcher
+      '@formatjs/intl-numberformat': link:../intl-numberformat
       tslib: 2.4.0
+    devDependencies:
+      '@formatjs/intl-enumerator': link:../intl-enumerator
+      '@formatjs/intl-getcanonicallocales': link:../intl-getcanonicallocales
+      '@formatjs/intl-locale': link:../intl-locale
 
   packages/intl-enumerator:
     specifiers:
@@ -567,6 +580,7 @@ importers:
       '@formatjs/icu-messageformat-parser': workspace:*
       '@formatjs/intl': workspace:*
       '@formatjs/intl-displaynames': workspace:*
+      '@formatjs/intl-durationformat': workspace:*
       '@formatjs/intl-listformat': workspace:*
       '@formatjs/intl-numberformat': workspace:*
       '@formatjs/intl-relativetimeformat': workspace:*
@@ -580,6 +594,7 @@ importers:
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
       '@formatjs/intl': link:../intl
       '@formatjs/intl-displaynames': link:../intl-displaynames
+      '@formatjs/intl-durationformat': link:../intl-durationformat
       '@formatjs/intl-listformat': link:../intl-listformat
       '@types/hoist-non-react-statics': 3.3.1
       '@types/react': 18.0.14
@@ -597,6 +612,7 @@ importers:
       '@formatjs/intl': workspace:*
       '@formatjs/intl-datetimeformat': workspace:*
       '@formatjs/intl-displaynames': workspace:*
+      '@formatjs/intl-durationformat': workspace:*
       '@formatjs/intl-getcanonicallocales': workspace:*
       '@formatjs/intl-listformat': workspace:*
       '@formatjs/intl-locale': workspace:*
@@ -614,6 +630,7 @@ importers:
       '@formatjs/intl': link:../../intl
       '@formatjs/intl-datetimeformat': link:../../intl-datetimeformat
       '@formatjs/intl-displaynames': link:../../intl-displaynames
+      '@formatjs/intl-durationformat': link:../../intl-durationformat
       '@formatjs/intl-getcanonicallocales': link:../../intl-getcanonicallocales
       '@formatjs/intl-listformat': link:../../intl-listformat
       '@formatjs/intl-locale': link:../../intl-locale

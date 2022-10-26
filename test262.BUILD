@@ -50,6 +50,17 @@ filegroup(
 )
 
 filegroup(
+    name = "test262-durationformat",
+    srcs = glob(
+        ["test/intl402/DurationFormat/**/*.js"],
+        exclude = [
+        ],
+    ),
+    visibility = ["@//packages/intl-listformat:__pkg__"],
+)
+
+
+filegroup(
     name = "test262-locale",
     srcs = glob(
         ["test/intl402/Locale/**/*.js"],
@@ -166,6 +177,12 @@ copy_to_bin(
     name = "test262-listformat-copy",
     srcs = [":test262-listformat"],
     visibility = ["@//packages/intl-listformat:__pkg__"],
+)
+
+copy_to_bin(
+    name = "test262-durationformat-copy",
+    srcs = [":test262-durationformat"],
+    visibility = ["@//packages/intl-durationformat:__pkg__"],
 )
 
 copy_to_bin(

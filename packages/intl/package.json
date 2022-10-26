@@ -34,6 +34,7 @@
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/intl-displaynames": "workspace:*",
     "@formatjs/intl-listformat": "workspace:*",
+    "@formatjs/intl-durationformat": "workspace:*",
     "intl-messageformat": "workspace:*",
     "tslib": "^2.4.0"
   },
