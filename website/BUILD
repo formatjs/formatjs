@@ -1,8 +1,8 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "check_format")
 load("@npm//website:@docusaurus/core/package_json.bzl", docusaurus_bin = "bin")
 load("@npm//website:http-server/package_json.bzl", http_server_bin = "bin")
+load("//tools:index.bzl", "check_format")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -63,7 +63,7 @@ docusaurus_bin.docusaurus(
     ],
     out_dirs = ["build"],
     tags = ["manual"],
-    chdir = package_name()
+    chdir = package_name(),
 )
 
 docusaurus_bin.docusaurus_binary(
@@ -85,7 +85,7 @@ docusaurus_bin.docusaurus_binary(
         "$$(rlocation $(rootpath :build))",
         "website",
     ],
-    tags=["manual"]
+    tags = ["manual"],
 )
 
 http_server_bin.http_server_binary(
@@ -96,5 +96,5 @@ http_server_bin.http_server_binary(
     args = [
         "$$(rlocation $(location :build))",
     ],
-    tags=["manual"]
+    tags = ["manual"],
 )

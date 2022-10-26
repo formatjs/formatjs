@@ -194,10 +194,15 @@ http_archive(
 )
 
 # Test262
-new_local_repository(
+TEST262_COMMIT = "ade328d530525333751e8a3b58f02e18624da085"
+
+http_archive(
     name = "com_github_tc39_test262",
     build_file = "@//:test262.BUILD",
-    path = "test262",
+    sha256 = "f4915077f38016d0f20ad8cbeaeec4e3d4a5eca3a98a895e01653f3375802a4b",
+    strip_prefix = "tc39-test262-%s" % TEST262_COMMIT[:7],
+    type = "tar.gz",
+    urls = ["https://github.com/tc39/test262/tarball/%s" % TEST262_COMMIT],
 )
 
 # Docker
