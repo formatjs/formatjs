@@ -11,6 +11,7 @@ const DISPLAY_NAMES_OPTONS: Array<keyof DisplayNamesOptions> = [
   'style',
   'type',
   'fallback',
+  'languageDisplay',
 ]
 
 export function formatDisplayName(
