@@ -18,68 +18,6 @@ describe('PartitionNumberRangePattern', () => {
     })
   })
 
-  describe('X is finite', () => {
-    test('Y must be bigger than X', () => {
-      const executeFunction = () =>
-        PartitionNumberRangePattern(numberFormat, 3, 2, {getInternalSlots})
-      expect(executeFunction).toThrowError('Y input must be bigger than X')
-    })
-
-    test('Y must not be NegativeInfinity', () => {
-      const executeFunction = () =>
-        PartitionNumberRangePattern(numberFormat, 3, Number.NEGATIVE_INFINITY, {
-          getInternalSlots,
-        })
-      expect(executeFunction).toThrowError(
-        'Y input must not be NegativeInfinity'
-      )
-    })
-
-    test('Y is negative zero', () => {
-      const executeFunction = () =>
-        PartitionNumberRangePattern(numberFormat, 0, -0, {
-          getInternalSlots,
-        })
-      expect(executeFunction).toThrowError('Y input must be bigger than X')
-    })
-  })
-
-  describe('X is positive infinity', () => {
-    test('Y is finite', () => {
-      const executeFunction = () =>
-        PartitionNumberRangePattern(numberFormat, Number.POSITIVE_INFINITY, 1, {
-          getInternalSlots,
-        })
-      expect(executeFunction).toThrowError('Y input must be bigger than X')
-    })
-
-    test('Y is negative infinity', () => {
-      const executeFunction = () =>
-        PartitionNumberRangePattern(
-          numberFormat,
-          Number.POSITIVE_INFINITY,
-          Number.NEGATIVE_INFINITY,
-          {
-            getInternalSlots,
-          }
-        )
-      expect(executeFunction).toThrowError('Y input must be bigger than X')
-    })
-
-    test('Y is negative zero', () => {
-      const executeFunction = () =>
-        PartitionNumberRangePattern(
-          numberFormat,
-          Number.POSITIVE_INFINITY,
-          -0,
-          {
-            getInternalSlots,
-          }
-        )
-      expect(executeFunction).toThrowError('Y input must be bigger than X')
-    })
-  })
-
   test('return range', () => {
     const result = PartitionNumberRangePattern(numberFormat, 0, 1, {
       getInternalSlots,
