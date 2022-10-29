@@ -11,7 +11,7 @@ describe('FormatNumericRangeToParts', () => {
 
     expect(result).toMatchObject([
       {result: '0', source: 'startRange', type: 'integer', value: '3'},
-      {result: '1', source: 'shared', type: 'literal', value: '–'},
+      {result: '1', source: 'shared', type: 'literal', value: '-'},
       {result: '2', source: 'endRange', type: 'integer', value: '10'},
     ])
   })
@@ -24,7 +24,7 @@ describe('FormatNumericRangeToParts', () => {
     expect(result).toMatchObject([
       {result: '0', source: 'startRange', type: 'minusSign', value: '-'},
       {result: '1', source: 'startRange', type: 'integer', value: '3'},
-      {result: '2', source: 'shared', type: 'literal', value: '–'},
+      {result: '2', source: 'shared', type: 'literal', value: '-'},
       {result: '3', source: 'endRange', type: 'integer', value: '10'},
     ])
   })
@@ -37,18 +37,9 @@ describe('FormatNumericRangeToParts', () => {
     expect(result).toMatchObject([
       {result: '0', source: 'startRange', type: 'minusSign', value: '-'},
       {result: '1', source: 'startRange', type: 'integer', value: '10'},
-      {result: '2', source: 'shared', type: 'literal', value: '–'},
+      {result: '2', source: 'shared', type: 'literal', value: '-'},
       {result: '3', source: 'endRange', type: 'minusSign', value: '-'},
       {result: '4', source: 'endRange', type: 'integer', value: '3'},
     ])
-  })
-
-  it('throws for invalid range', () => {
-    const executeFunction = () =>
-      FormatNumericRangeToParts(numberFormat, -3, -10, {getInternalSlots})
-
-    expect(executeFunction).toThrowError(
-      new RangeError('Y input must be bigger than X')
-    )
   })
 })

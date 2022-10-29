@@ -31,6 +31,7 @@ export function getInternalSlots(x: Intl.NumberFormat): NumberFormatInternal {
             infinity: '∞',
             nan: 'NaN',
             timeSeparator: ':',
+            rangeSign: '-',
           },
         },
         percent: {

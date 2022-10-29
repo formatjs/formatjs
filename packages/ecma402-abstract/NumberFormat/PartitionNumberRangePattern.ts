@@ -33,7 +33,12 @@ export function PartitionNumberRangePattern(
 
   result = result.concat(xResult)
 
-  result.push({type: 'literal', value: '–', source: 'shared'})
+  const internalSlots = getInternalSlots(numberFormat)
+
+  const symbols =
+    internalSlots.dataLocaleData.numbers.symbols[internalSlots.numberingSystem]
+
+  result.push({type: 'literal', value: symbols.rangeSign, source: 'shared'})
 
   for (const r of yResult) {
     r.source = 'endRange'

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NumberFormat da percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 million–+2 millioner"`;
+exports[`NumberFormat da percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 million-+2 millioner"`;
 
 exports[`NumberFormat da percent signDisplay/always notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -32,7 +32,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -82,7 +82,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1 mio.–+2 mio."`;
+exports[`NumberFormat da percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1 mio.-+2 mio."`;
 
 exports[`NumberFormat da percent signDisplay/always notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -114,7 +114,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -164,7 +164,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat da percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/always notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -208,7 +208,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -278,7 +278,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat da percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/always notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -322,7 +322,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -392,7 +392,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat da percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/always notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -436,7 +436,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -506,7 +506,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat da percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/always notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -550,7 +550,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -620,7 +620,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000 %–+2.000.000 %"`;
+exports[`NumberFormat da percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000 %-+2.000.000 %"`;
 
 exports[`NumberFormat da percent signDisplay/always notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -676,7 +676,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "9",
@@ -766,7 +766,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000 %–+2.000.000 %"`;
+exports[`NumberFormat da percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000 %-+2.000.000 %"`;
 
 exports[`NumberFormat da percent signDisplay/always notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -822,7 +822,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "9",
@@ -912,7 +912,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 million–2 millioner"`;
+exports[`NumberFormat da percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 million-2 millioner"`;
 
 exports[`NumberFormat da percent signDisplay/auto notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -938,7 +938,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -978,7 +978,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1 mio.–2 mio."`;
+exports[`NumberFormat da percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1 mio.-2 mio."`;
 
 exports[`NumberFormat da percent signDisplay/auto notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -1004,7 +1004,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -1044,7 +1044,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat da percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/auto notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -1082,7 +1082,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -1142,7 +1142,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat da percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/auto notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -1180,7 +1180,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -1240,7 +1240,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat da percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/auto notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -1278,7 +1278,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -1338,7 +1338,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat da percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/auto notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -1376,7 +1376,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -1436,7 +1436,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1.000.000 %–2.000.000 %"`;
+exports[`NumberFormat da percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1.000.000 %-2.000.000 %"`;
 
 exports[`NumberFormat da percent signDisplay/auto notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -1486,7 +1486,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -1566,7 +1566,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1.000.000 %–2.000.000 %"`;
+exports[`NumberFormat da percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1.000.000 %-2.000.000 %"`;
 
 exports[`NumberFormat da percent signDisplay/auto notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -1616,7 +1616,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -1696,7 +1696,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 million–+2 millioner"`;
+exports[`NumberFormat da percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 million-+2 millioner"`;
 
 exports[`NumberFormat da percent signDisplay/exceptZero notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -1728,7 +1728,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -1778,7 +1778,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1 mio.–+2 mio."`;
+exports[`NumberFormat da percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1 mio.-+2 mio."`;
 
 exports[`NumberFormat da percent signDisplay/exceptZero notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -1810,7 +1810,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -1860,7 +1860,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat da percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -1904,7 +1904,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -1974,7 +1974,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat da percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -2018,7 +2018,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -2088,7 +2088,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat da percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -2132,7 +2132,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -2202,7 +2202,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat da percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -2246,7 +2246,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -2316,7 +2316,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000 %–+2.000.000 %"`;
+exports[`NumberFormat da percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000 %-+2.000.000 %"`;
 
 exports[`NumberFormat da percent signDisplay/exceptZero notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -2372,7 +2372,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "9",
@@ -2462,7 +2462,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000 %–+2.000.000 %"`;
+exports[`NumberFormat da percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000 %-+2.000.000 %"`;
 
 exports[`NumberFormat da percent signDisplay/exceptZero notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -2518,7 +2518,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "9",
@@ -2608,7 +2608,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 million–2 millioner"`;
+exports[`NumberFormat da percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 million-2 millioner"`;
 
 exports[`NumberFormat da percent signDisplay/never notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -2634,7 +2634,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -2674,7 +2674,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1 mio.–2 mio."`;
+exports[`NumberFormat da percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1 mio.-2 mio."`;
 
 exports[`NumberFormat da percent signDisplay/never notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -2700,7 +2700,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -2740,7 +2740,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat da percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/never notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -2778,7 +2778,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -2838,7 +2838,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat da percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/never notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -2876,7 +2876,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -2936,7 +2936,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat da percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/never notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -2974,7 +2974,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -3034,7 +3034,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat da percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat da percent signDisplay/never notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -3072,7 +3072,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -3132,7 +3132,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1.000.000 %–2.000.000 %"`;
+exports[`NumberFormat da percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1.000.000 %-2.000.000 %"`;
 
 exports[`NumberFormat da percent signDisplay/never notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -3182,7 +3182,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -3262,7 +3262,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1.000.000 %–2.000.000 %"`;
+exports[`NumberFormat da percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1.000.000 %-2.000.000 %"`;
 
 exports[`NumberFormat da percent signDisplay/never notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -3312,7 +3312,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -15616,7 +15616,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 millón–+2 millones"`;
+exports[`NumberFormat es percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 millón-+2 millones"`;
 
 exports[`NumberFormat es percent signDisplay/always notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -15648,7 +15648,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -15698,7 +15698,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1 M–+2 M"`;
+exports[`NumberFormat es percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1 M-+2 M"`;
 
 exports[`NumberFormat es percent signDisplay/always notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -15730,7 +15730,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -15780,7 +15780,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat es percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/always notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -15824,7 +15824,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -15894,7 +15894,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat es percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/always notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -15938,7 +15938,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -16008,7 +16008,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat es percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/always notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -16052,7 +16052,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -16122,7 +16122,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat es percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/always notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -16166,7 +16166,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -16236,7 +16236,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000 %–+2.000.000 %"`;
+exports[`NumberFormat es percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000 %-+2.000.000 %"`;
 
 exports[`NumberFormat es percent signDisplay/always notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -16292,7 +16292,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "9",
@@ -16382,7 +16382,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000 %–+2.000.000 %"`;
+exports[`NumberFormat es percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000 %-+2.000.000 %"`;
 
 exports[`NumberFormat es percent signDisplay/always notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -16438,7 +16438,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "9",
@@ -16528,7 +16528,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 millón–2 millones"`;
+exports[`NumberFormat es percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 millón-2 millones"`;
 
 exports[`NumberFormat es percent signDisplay/auto notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -16554,7 +16554,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -16594,7 +16594,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1 M–2 M"`;
+exports[`NumberFormat es percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1 M-2 M"`;
 
 exports[`NumberFormat es percent signDisplay/auto notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -16620,7 +16620,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -16660,7 +16660,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat es percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/auto notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -16698,7 +16698,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -16758,7 +16758,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat es percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/auto notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -16796,7 +16796,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -16856,7 +16856,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat es percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/auto notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -16894,7 +16894,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -16954,7 +16954,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat es percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/auto notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -16992,7 +16992,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -17052,7 +17052,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1.000.000 %–2.000.000 %"`;
+exports[`NumberFormat es percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1.000.000 %-2.000.000 %"`;
 
 exports[`NumberFormat es percent signDisplay/auto notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -17102,7 +17102,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -17182,7 +17182,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1.000.000 %–2.000.000 %"`;
+exports[`NumberFormat es percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1.000.000 %-2.000.000 %"`;
 
 exports[`NumberFormat es percent signDisplay/auto notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -17232,7 +17232,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -17312,7 +17312,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 millón–+2 millones"`;
+exports[`NumberFormat es percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 millón-+2 millones"`;
 
 exports[`NumberFormat es percent signDisplay/exceptZero notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -17344,7 +17344,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -17394,7 +17394,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1 M–+2 M"`;
+exports[`NumberFormat es percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1 M-+2 M"`;
 
 exports[`NumberFormat es percent signDisplay/exceptZero notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -17426,7 +17426,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -17476,7 +17476,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat es percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -17520,7 +17520,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -17590,7 +17590,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat es percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -17634,7 +17634,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -17704,7 +17704,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat es percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -17748,7 +17748,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -17818,7 +17818,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6 %–+2E6 %"`;
+exports[`NumberFormat es percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6 %-+2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -17862,7 +17862,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -17932,7 +17932,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000 %–+2.000.000 %"`;
+exports[`NumberFormat es percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000 %-+2.000.000 %"`;
 
 exports[`NumberFormat es percent signDisplay/exceptZero notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -17988,7 +17988,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "9",
@@ -18078,7 +18078,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000 %–+2.000.000 %"`;
+exports[`NumberFormat es percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000 %-+2.000.000 %"`;
 
 exports[`NumberFormat es percent signDisplay/exceptZero notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -18134,7 +18134,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "9",
@@ -18224,7 +18224,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 millón–2 millones"`;
+exports[`NumberFormat es percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 millón-2 millones"`;
 
 exports[`NumberFormat es percent signDisplay/never notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -18250,7 +18250,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -18290,7 +18290,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1 M–2 M"`;
+exports[`NumberFormat es percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1 M-2 M"`;
 
 exports[`NumberFormat es percent signDisplay/never notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -18316,7 +18316,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -18356,7 +18356,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat es percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/never notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -18394,7 +18394,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -18454,7 +18454,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat es percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/never notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -18492,7 +18492,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -18552,7 +18552,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat es percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/never notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -18590,7 +18590,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -18650,7 +18650,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6 %–2E6 %"`;
+exports[`NumberFormat es percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6 %-2E6 %"`;
 
 exports[`NumberFormat es percent signDisplay/never notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -18688,7 +18688,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -18748,7 +18748,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1.000.000 %–2.000.000 %"`;
+exports[`NumberFormat es percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1.000.000 %-2.000.000 %"`;
 
 exports[`NumberFormat es percent signDisplay/never notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -18798,7 +18798,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -18878,7 +18878,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1.000.000 %–2.000.000 %"`;
+exports[`NumberFormat es percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1.000.000 %-2.000.000 %"`;
 
 exports[`NumberFormat es percent signDisplay/never notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -18928,7 +18928,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -25408,7 +25408,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 milione–+2 milioni"`;
+exports[`NumberFormat it percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 milione-+2 milioni"`;
 
 exports[`NumberFormat it percent signDisplay/always notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -25440,7 +25440,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -25490,7 +25490,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1 Mln–+2 Mln"`;
+exports[`NumberFormat it percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1 Mln-+2 Mln"`;
 
 exports[`NumberFormat it percent signDisplay/always notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -25522,7 +25522,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -25572,7 +25572,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat it percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/always notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -25610,7 +25610,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -25670,7 +25670,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat it percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/always notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -25708,7 +25708,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -25768,7 +25768,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat it percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/always notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -25806,7 +25806,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -25866,7 +25866,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat it percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/always notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -25904,7 +25904,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -25964,7 +25964,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000%–+2.000.000%"`;
+exports[`NumberFormat it percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000%-+2.000.000%"`;
 
 exports[`NumberFormat it percent signDisplay/always notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -26014,7 +26014,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -26094,7 +26094,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000%–+2.000.000%"`;
+exports[`NumberFormat it percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000%-+2.000.000%"`;
 
 exports[`NumberFormat it percent signDisplay/always notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -26144,7 +26144,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -26224,7 +26224,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 milione–2 milioni"`;
+exports[`NumberFormat it percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 milione-2 milioni"`;
 
 exports[`NumberFormat it percent signDisplay/auto notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -26250,7 +26250,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -26290,7 +26290,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1 Mln–2 Mln"`;
+exports[`NumberFormat it percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1 Mln-2 Mln"`;
 
 exports[`NumberFormat it percent signDisplay/auto notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -26316,7 +26316,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -26356,7 +26356,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat it percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/auto notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -26388,7 +26388,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -26438,7 +26438,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat it percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/auto notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -26470,7 +26470,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -26520,7 +26520,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat it percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/auto notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -26552,7 +26552,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -26602,7 +26602,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat it percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/auto notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -26634,7 +26634,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -26684,7 +26684,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1.000.000%–2.000.000%"`;
+exports[`NumberFormat it percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1.000.000%-2.000.000%"`;
 
 exports[`NumberFormat it percent signDisplay/auto notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -26728,7 +26728,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -26798,7 +26798,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1.000.000%–2.000.000%"`;
+exports[`NumberFormat it percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1.000.000%-2.000.000%"`;
 
 exports[`NumberFormat it percent signDisplay/auto notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -26842,7 +26842,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -26912,7 +26912,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 milione–+2 milioni"`;
+exports[`NumberFormat it percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 milione-+2 milioni"`;
 
 exports[`NumberFormat it percent signDisplay/exceptZero notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -26944,7 +26944,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -26994,7 +26994,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1 Mln–+2 Mln"`;
+exports[`NumberFormat it percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1 Mln-+2 Mln"`;
 
 exports[`NumberFormat it percent signDisplay/exceptZero notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -27026,7 +27026,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -27076,7 +27076,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat it percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -27114,7 +27114,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -27174,7 +27174,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat it percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -27212,7 +27212,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -27272,7 +27272,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat it percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -27310,7 +27310,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -27370,7 +27370,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat it percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -27408,7 +27408,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -27468,7 +27468,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000%–+2.000.000%"`;
+exports[`NumberFormat it percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000%-+2.000.000%"`;
 
 exports[`NumberFormat it percent signDisplay/exceptZero notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -27518,7 +27518,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -27598,7 +27598,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000%–+2.000.000%"`;
+exports[`NumberFormat it percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000%-+2.000.000%"`;
 
 exports[`NumberFormat it percent signDisplay/exceptZero notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -27648,7 +27648,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -27728,7 +27728,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 milione–2 milioni"`;
+exports[`NumberFormat it percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 milione-2 milioni"`;
 
 exports[`NumberFormat it percent signDisplay/never notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -27754,7 +27754,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -27794,7 +27794,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1 Mln–2 Mln"`;
+exports[`NumberFormat it percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1 Mln-2 Mln"`;
 
 exports[`NumberFormat it percent signDisplay/never notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -27820,7 +27820,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -27860,7 +27860,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat it percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/never notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -27892,7 +27892,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -27942,7 +27942,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat it percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/never notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -27974,7 +27974,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -28024,7 +28024,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat it percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/never notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -28056,7 +28056,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -28106,7 +28106,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat it percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat it percent signDisplay/never notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -28138,7 +28138,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -28188,7 +28188,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1.000.000%–2.000.000%"`;
+exports[`NumberFormat it percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1.000.000%-2.000.000%"`;
 
 exports[`NumberFormat it percent signDisplay/never notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -28232,7 +28232,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -28302,7 +28302,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1.000.000%–2.000.000%"`;
+exports[`NumberFormat it percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1.000.000%-2.000.000%"`;
 
 exports[`NumberFormat it percent signDisplay/never notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -28346,7 +28346,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -28416,7 +28416,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+100万–+200万"`;
+exports[`NumberFormat ja percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+100万～+200万"`;
 
 exports[`NumberFormat ja percent signDisplay/always notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -28442,7 +28442,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "4",
@@ -28482,7 +28482,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+100万–+200万"`;
+exports[`NumberFormat ja percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+100万～+200万"`;
 
 exports[`NumberFormat ja percent signDisplay/always notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -28508,7 +28508,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "4",
@@ -28548,7 +28548,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ja percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%～+2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/always notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -28586,7 +28586,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "6",
@@ -28646,7 +28646,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ja percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%～+2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/always notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -28684,7 +28684,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "6",
@@ -28744,7 +28744,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ja percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%～+2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/always notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -28782,7 +28782,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "6",
@@ -28842,7 +28842,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ja percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%～+2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/always notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -28880,7 +28880,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "6",
@@ -28940,7 +28940,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat ja percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%～+2,000,000%"`;
 
 exports[`NumberFormat ja percent signDisplay/always notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -28990,7 +28990,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "8",
@@ -29070,7 +29070,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat ja percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%～+2,000,000%"`;
 
 exports[`NumberFormat ja percent signDisplay/always notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -29120,7 +29120,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "8",
@@ -29200,7 +29200,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"100万–200万"`;
+exports[`NumberFormat ja percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"100万～200万"`;
 
 exports[`NumberFormat ja percent signDisplay/auto notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -29220,7 +29220,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "3",
@@ -29250,7 +29250,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"100万–200万"`;
+exports[`NumberFormat ja percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"100万～200万"`;
 
 exports[`NumberFormat ja percent signDisplay/auto notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -29270,7 +29270,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "3",
@@ -29300,7 +29300,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ja percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%～2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/auto notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -29332,7 +29332,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "5",
@@ -29382,7 +29382,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ja percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%～2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/auto notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -29414,7 +29414,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "5",
@@ -29464,7 +29464,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ja percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%～2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/auto notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -29496,7 +29496,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "5",
@@ -29546,7 +29546,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ja percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%～2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/auto notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -29578,7 +29578,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "5",
@@ -29628,7 +29628,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat ja percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%～2,000,000%"`;
 
 exports[`NumberFormat ja percent signDisplay/auto notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -29672,7 +29672,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "7",
@@ -29742,7 +29742,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat ja percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%～2,000,000%"`;
 
 exports[`NumberFormat ja percent signDisplay/auto notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -29786,7 +29786,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "7",
@@ -29856,7 +29856,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+100万–+200万"`;
+exports[`NumberFormat ja percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+100万～+200万"`;
 
 exports[`NumberFormat ja percent signDisplay/exceptZero notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -29882,7 +29882,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "4",
@@ -29922,7 +29922,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+100万–+200万"`;
+exports[`NumberFormat ja percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+100万～+200万"`;
 
 exports[`NumberFormat ja percent signDisplay/exceptZero notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -29948,7 +29948,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "4",
@@ -29988,7 +29988,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ja percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%～+2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -30026,7 +30026,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "6",
@@ -30086,7 +30086,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ja percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%～+2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -30124,7 +30124,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "6",
@@ -30184,7 +30184,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ja percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%～+2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -30222,7 +30222,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "6",
@@ -30282,7 +30282,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ja percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%～+2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -30320,7 +30320,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "6",
@@ -30380,7 +30380,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat ja percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%～+2,000,000%"`;
 
 exports[`NumberFormat ja percent signDisplay/exceptZero notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -30430,7 +30430,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "8",
@@ -30510,7 +30510,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat ja percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%～+2,000,000%"`;
 
 exports[`NumberFormat ja percent signDisplay/exceptZero notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -30560,7 +30560,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "8",
@@ -30640,7 +30640,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"100万–200万"`;
+exports[`NumberFormat ja percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"100万～200万"`;
 
 exports[`NumberFormat ja percent signDisplay/never notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -30660,7 +30660,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "3",
@@ -30690,7 +30690,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"100万–200万"`;
+exports[`NumberFormat ja percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"100万～200万"`;
 
 exports[`NumberFormat ja percent signDisplay/never notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -30710,7 +30710,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "3",
@@ -30740,7 +30740,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ja percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%～2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/never notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -30772,7 +30772,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "5",
@@ -30822,7 +30822,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ja percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%～2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/never notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -30854,7 +30854,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "5",
@@ -30904,7 +30904,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ja percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%～2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/never notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -30936,7 +30936,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "5",
@@ -30986,7 +30986,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ja percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%～2E6%"`;
 
 exports[`NumberFormat ja percent signDisplay/never notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -31018,7 +31018,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "5",
@@ -31068,7 +31068,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat ja percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%～2,000,000%"`;
 
 exports[`NumberFormat ja percent signDisplay/never notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -31112,7 +31112,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "7",
@@ -31182,7 +31182,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat ja percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%～2,000,000%"`;
 
 exports[`NumberFormat ja percent signDisplay/never notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -31226,7 +31226,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "～",
   },
   Object {
     "result": "7",
@@ -31296,7 +31296,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+100만–+200만"`;
+exports[`NumberFormat ko percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+100만~+200만"`;
 
 exports[`NumberFormat ko percent signDisplay/always notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -31322,7 +31322,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "4",
@@ -31362,7 +31362,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+100만–+200만"`;
+exports[`NumberFormat ko percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+100만~+200만"`;
 
 exports[`NumberFormat ko percent signDisplay/always notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -31388,7 +31388,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "4",
@@ -31428,7 +31428,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ko percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%~+2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/always notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -31466,7 +31466,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "6",
@@ -31526,7 +31526,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ko percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%~+2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/always notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -31564,7 +31564,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "6",
@@ -31624,7 +31624,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ko percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%~+2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/always notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -31662,7 +31662,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "6",
@@ -31722,7 +31722,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ko percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%~+2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/always notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -31760,7 +31760,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "6",
@@ -31820,7 +31820,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat ko percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%~+2,000,000%"`;
 
 exports[`NumberFormat ko percent signDisplay/always notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -31870,7 +31870,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "8",
@@ -31950,7 +31950,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat ko percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%~+2,000,000%"`;
 
 exports[`NumberFormat ko percent signDisplay/always notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -32000,7 +32000,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "8",
@@ -32080,7 +32080,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"100만–200만"`;
+exports[`NumberFormat ko percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"100만~200만"`;
 
 exports[`NumberFormat ko percent signDisplay/auto notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -32100,7 +32100,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "3",
@@ -32130,7 +32130,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"100만–200만"`;
+exports[`NumberFormat ko percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"100만~200만"`;
 
 exports[`NumberFormat ko percent signDisplay/auto notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -32150,7 +32150,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "3",
@@ -32180,7 +32180,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ko percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%~2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/auto notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -32212,7 +32212,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "5",
@@ -32262,7 +32262,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ko percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%~2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/auto notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -32294,7 +32294,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "5",
@@ -32344,7 +32344,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ko percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%~2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/auto notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -32376,7 +32376,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "5",
@@ -32426,7 +32426,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ko percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%~2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/auto notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -32458,7 +32458,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "5",
@@ -32508,7 +32508,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat ko percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%~2,000,000%"`;
 
 exports[`NumberFormat ko percent signDisplay/auto notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -32552,7 +32552,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "7",
@@ -32622,7 +32622,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat ko percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%~2,000,000%"`;
 
 exports[`NumberFormat ko percent signDisplay/auto notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -32666,7 +32666,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "7",
@@ -32736,7 +32736,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+100만–+200만"`;
+exports[`NumberFormat ko percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+100만~+200만"`;
 
 exports[`NumberFormat ko percent signDisplay/exceptZero notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -32762,7 +32762,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "4",
@@ -32802,7 +32802,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+100만–+200만"`;
+exports[`NumberFormat ko percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+100만~+200만"`;
 
 exports[`NumberFormat ko percent signDisplay/exceptZero notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -32828,7 +32828,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "4",
@@ -32868,7 +32868,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ko percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%~+2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -32906,7 +32906,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "6",
@@ -32966,7 +32966,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ko percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%~+2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -33004,7 +33004,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "6",
@@ -33064,7 +33064,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ko percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%~+2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -33102,7 +33102,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "6",
@@ -33162,7 +33162,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat ko percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%~+2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -33200,7 +33200,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "6",
@@ -33260,7 +33260,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat ko percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%~+2,000,000%"`;
 
 exports[`NumberFormat ko percent signDisplay/exceptZero notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -33310,7 +33310,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "8",
@@ -33390,7 +33390,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat ko percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%~+2,000,000%"`;
 
 exports[`NumberFormat ko percent signDisplay/exceptZero notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -33440,7 +33440,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "8",
@@ -33520,7 +33520,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"100만–200만"`;
+exports[`NumberFormat ko percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"100만~200만"`;
 
 exports[`NumberFormat ko percent signDisplay/never notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -33540,7 +33540,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "3",
@@ -33570,7 +33570,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"100만–200만"`;
+exports[`NumberFormat ko percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"100만~200만"`;
 
 exports[`NumberFormat ko percent signDisplay/never notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -33590,7 +33590,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "3",
@@ -33620,7 +33620,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ko percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%~2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/never notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -33652,7 +33652,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "5",
@@ -33702,7 +33702,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ko percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%~2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/never notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -33734,7 +33734,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "5",
@@ -33784,7 +33784,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ko percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%~2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/never notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -33816,7 +33816,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "5",
@@ -33866,7 +33866,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat ko percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%~2E6%"`;
 
 exports[`NumberFormat ko percent signDisplay/never notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -33898,7 +33898,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "5",
@@ -33948,7 +33948,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat ko percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%~2,000,000%"`;
 
 exports[`NumberFormat ko percent signDisplay/never notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -33992,7 +33992,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "7",
@@ -34062,7 +34062,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat ko percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%~2,000,000%"`;
 
 exports[`NumberFormat ko percent signDisplay/never notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -34106,7 +34106,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "~",
   },
   Object {
     "result": "7",
@@ -40512,7 +40512,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 miljoen–+2 miljoen"`;
+exports[`NumberFormat nl percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 miljoen-+2 miljoen"`;
 
 exports[`NumberFormat nl percent signDisplay/always notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -40544,7 +40544,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -40594,7 +40594,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1 mln.–+2 mln."`;
+exports[`NumberFormat nl percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1 mln.-+2 mln."`;
 
 exports[`NumberFormat nl percent signDisplay/always notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -40626,7 +40626,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -40676,7 +40676,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat nl percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/always notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -40714,7 +40714,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -40774,7 +40774,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat nl percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/always notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -40812,7 +40812,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -40872,7 +40872,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat nl percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/always notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -40910,7 +40910,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -40970,7 +40970,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat nl percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/always notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -41008,7 +41008,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -41068,7 +41068,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000%–+2.000.000%"`;
+exports[`NumberFormat nl percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000%-+2.000.000%"`;
 
 exports[`NumberFormat nl percent signDisplay/always notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -41118,7 +41118,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -41198,7 +41198,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000%–+2.000.000%"`;
+exports[`NumberFormat nl percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000%-+2.000.000%"`;
 
 exports[`NumberFormat nl percent signDisplay/always notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -41248,7 +41248,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -41328,7 +41328,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 miljoen–2 miljoen"`;
+exports[`NumberFormat nl percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 miljoen-2 miljoen"`;
 
 exports[`NumberFormat nl percent signDisplay/auto notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -41354,7 +41354,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -41394,7 +41394,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1 mln.–2 mln."`;
+exports[`NumberFormat nl percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1 mln.-2 mln."`;
 
 exports[`NumberFormat nl percent signDisplay/auto notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -41420,7 +41420,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -41460,7 +41460,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat nl percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/auto notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -41492,7 +41492,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -41542,7 +41542,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat nl percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/auto notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -41574,7 +41574,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -41624,7 +41624,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat nl percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/auto notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -41656,7 +41656,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -41706,7 +41706,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat nl percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/auto notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -41738,7 +41738,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -41788,7 +41788,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1.000.000%–2.000.000%"`;
+exports[`NumberFormat nl percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1.000.000%-2.000.000%"`;
 
 exports[`NumberFormat nl percent signDisplay/auto notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -41832,7 +41832,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -41902,7 +41902,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1.000.000%–2.000.000%"`;
+exports[`NumberFormat nl percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1.000.000%-2.000.000%"`;
 
 exports[`NumberFormat nl percent signDisplay/auto notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -41946,7 +41946,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -42016,7 +42016,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 miljoen–+2 miljoen"`;
+exports[`NumberFormat nl percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 miljoen-+2 miljoen"`;
 
 exports[`NumberFormat nl percent signDisplay/exceptZero notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -42048,7 +42048,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -42098,7 +42098,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1 mln.–+2 mln."`;
+exports[`NumberFormat nl percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1 mln.-+2 mln."`;
 
 exports[`NumberFormat nl percent signDisplay/exceptZero notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -42130,7 +42130,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -42180,7 +42180,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat nl percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -42218,7 +42218,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -42278,7 +42278,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat nl percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -42316,7 +42316,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -42376,7 +42376,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat nl percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -42414,7 +42414,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -42474,7 +42474,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat nl percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -42512,7 +42512,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -42572,7 +42572,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000%–+2.000.000%"`;
+exports[`NumberFormat nl percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1.000.000%-+2.000.000%"`;
 
 exports[`NumberFormat nl percent signDisplay/exceptZero notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -42622,7 +42622,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -42702,7 +42702,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000%–+2.000.000%"`;
+exports[`NumberFormat nl percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1.000.000%-+2.000.000%"`;
 
 exports[`NumberFormat nl percent signDisplay/exceptZero notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -42752,7 +42752,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -42832,7 +42832,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 miljoen–2 miljoen"`;
+exports[`NumberFormat nl percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 miljoen-2 miljoen"`;
 
 exports[`NumberFormat nl percent signDisplay/never notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -42858,7 +42858,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -42898,7 +42898,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1 mln.–2 mln."`;
+exports[`NumberFormat nl percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1 mln.-2 mln."`;
 
 exports[`NumberFormat nl percent signDisplay/never notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -42924,7 +42924,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -42964,7 +42964,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat nl percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/never notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -42996,7 +42996,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -43046,7 +43046,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat nl percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/never notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -43078,7 +43078,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -43128,7 +43128,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat nl percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/never notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -43160,7 +43160,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -43210,7 +43210,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat nl percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat nl percent signDisplay/never notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -43242,7 +43242,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -43292,7 +43292,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1.000.000%–2.000.000%"`;
+exports[`NumberFormat nl percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1.000.000%-2.000.000%"`;
 
 exports[`NumberFormat nl percent signDisplay/never notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -43336,7 +43336,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -43406,7 +43406,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1.000.000%–2.000.000%"`;
+exports[`NumberFormat nl percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1.000.000%-2.000.000%"`;
 
 exports[`NumberFormat nl percent signDisplay/never notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -43450,7 +43450,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -52928,7 +52928,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 miljon–+2 miljoner"`;
+exports[`NumberFormat sv percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 miljon‒+2 miljoner"`;
 
 exports[`NumberFormat sv percent signDisplay/always notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -52960,7 +52960,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "5",
@@ -53010,7 +53010,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1 mn–+2 mn"`;
+exports[`NumberFormat sv percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1 mn‒+2 mn"`;
 
 exports[`NumberFormat sv percent signDisplay/always notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -53042,7 +53042,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "5",
@@ -53092,7 +53092,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1×10^6 %–+2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1×10^6 %‒+2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/always notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -53136,7 +53136,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "7",
@@ -53206,7 +53206,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1×10^6 %–+2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1×10^6 %‒+2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/always notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -53250,7 +53250,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "7",
@@ -53320,7 +53320,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1×10^6 %–+2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1×10^6 %‒+2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/always notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -53364,7 +53364,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "7",
@@ -53434,7 +53434,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1×10^6 %–+2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1×10^6 %‒+2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/always notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -53478,7 +53478,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "7",
@@ -53548,7 +53548,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1 000 000 %–+2 000 000 %"`;
+exports[`NumberFormat sv percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1 000 000 %‒+2 000 000 %"`;
 
 exports[`NumberFormat sv percent signDisplay/always notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -53604,7 +53604,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "9",
@@ -53694,7 +53694,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1 000 000 %–+2 000 000 %"`;
+exports[`NumberFormat sv percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1 000 000 %‒+2 000 000 %"`;
 
 exports[`NumberFormat sv percent signDisplay/always notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -53750,7 +53750,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "9",
@@ -53840,7 +53840,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 miljon–2 miljoner"`;
+exports[`NumberFormat sv percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 miljon‒2 miljoner"`;
 
 exports[`NumberFormat sv percent signDisplay/auto notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -53866,7 +53866,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "4",
@@ -53906,7 +53906,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1 mn–2 mn"`;
+exports[`NumberFormat sv percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1 mn‒2 mn"`;
 
 exports[`NumberFormat sv percent signDisplay/auto notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -53932,7 +53932,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "4",
@@ -53972,7 +53972,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1×10^6 %–2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1×10^6 %‒2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/auto notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -54010,7 +54010,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "6",
@@ -54070,7 +54070,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1×10^6 %–2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1×10^6 %‒2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/auto notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -54108,7 +54108,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "6",
@@ -54168,7 +54168,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1×10^6 %–2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1×10^6 %‒2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/auto notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -54206,7 +54206,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "6",
@@ -54266,7 +54266,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1×10^6 %–2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1×10^6 %‒2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/auto notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -54304,7 +54304,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "6",
@@ -54364,7 +54364,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1 000 000 %–2 000 000 %"`;
+exports[`NumberFormat sv percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1 000 000 %‒2 000 000 %"`;
 
 exports[`NumberFormat sv percent signDisplay/auto notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -54414,7 +54414,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "8",
@@ -54494,7 +54494,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1 000 000 %–2 000 000 %"`;
+exports[`NumberFormat sv percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1 000 000 %‒2 000 000 %"`;
 
 exports[`NumberFormat sv percent signDisplay/auto notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -54544,7 +54544,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "8",
@@ -54624,7 +54624,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 miljon–+2 miljoner"`;
+exports[`NumberFormat sv percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 miljon‒+2 miljoner"`;
 
 exports[`NumberFormat sv percent signDisplay/exceptZero notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -54656,7 +54656,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "5",
@@ -54706,7 +54706,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1 mn–+2 mn"`;
+exports[`NumberFormat sv percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1 mn‒+2 mn"`;
 
 exports[`NumberFormat sv percent signDisplay/exceptZero notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -54738,7 +54738,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "5",
@@ -54788,7 +54788,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1×10^6 %–+2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1×10^6 %‒+2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -54832,7 +54832,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "7",
@@ -54902,7 +54902,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1×10^6 %–+2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1×10^6 %‒+2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -54946,7 +54946,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "7",
@@ -55016,7 +55016,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1×10^6 %–+2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1×10^6 %‒+2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -55060,7 +55060,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "7",
@@ -55130,7 +55130,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1×10^6 %–+2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1×10^6 %‒+2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -55174,7 +55174,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "7",
@@ -55244,7 +55244,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1 000 000 %–+2 000 000 %"`;
+exports[`NumberFormat sv percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1 000 000 %‒+2 000 000 %"`;
 
 exports[`NumberFormat sv percent signDisplay/exceptZero notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -55300,7 +55300,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "9",
@@ -55390,7 +55390,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1 000 000 %–+2 000 000 %"`;
+exports[`NumberFormat sv percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1 000 000 %‒+2 000 000 %"`;
 
 exports[`NumberFormat sv percent signDisplay/exceptZero notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -55446,7 +55446,7 @@ Array [
     "result": "8",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "9",
@@ -55536,7 +55536,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 miljon–2 miljoner"`;
+exports[`NumberFormat sv percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 miljon‒2 miljoner"`;
 
 exports[`NumberFormat sv percent signDisplay/never notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -55562,7 +55562,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "4",
@@ -55602,7 +55602,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1 mn–2 mn"`;
+exports[`NumberFormat sv percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1 mn‒2 mn"`;
 
 exports[`NumberFormat sv percent signDisplay/never notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -55628,7 +55628,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "4",
@@ -55668,7 +55668,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1×10^6 %–2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1×10^6 %‒2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/never notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -55706,7 +55706,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "6",
@@ -55766,7 +55766,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1×10^6 %–2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1×10^6 %‒2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/never notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -55804,7 +55804,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "6",
@@ -55864,7 +55864,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1×10^6 %–2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1×10^6 %‒2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/never notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -55902,7 +55902,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "6",
@@ -55962,7 +55962,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1×10^6 %–2×10^6 %"`;
+exports[`NumberFormat sv percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1×10^6 %‒2×10^6 %"`;
 
 exports[`NumberFormat sv percent signDisplay/never notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -56000,7 +56000,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "6",
@@ -56060,7 +56060,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1 000 000 %–2 000 000 %"`;
+exports[`NumberFormat sv percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1 000 000 %‒2 000 000 %"`;
 
 exports[`NumberFormat sv percent signDisplay/never notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -56110,7 +56110,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "8",
@@ -56190,7 +56190,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1 000 000 %–2 000 000 %"`;
+exports[`NumberFormat sv percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1 000 000 %‒2 000 000 %"`;
 
 exports[`NumberFormat sv percent signDisplay/never notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -56240,7 +56240,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "‒",
   },
   Object {
     "result": "8",
@@ -56320,7 +56320,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 ล้าน–+2 ล้าน"`;
+exports[`NumberFormat th percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 ล้าน-+2 ล้าน"`;
 
 exports[`NumberFormat th percent signDisplay/always notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -56352,7 +56352,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -56402,7 +56402,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1M–+2M"`;
+exports[`NumberFormat th percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1M-+2M"`;
 
 exports[`NumberFormat th percent signDisplay/always notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -56428,7 +56428,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -56468,7 +56468,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat th percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/always notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -56506,7 +56506,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -56566,7 +56566,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat th percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/always notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -56604,7 +56604,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -56664,7 +56664,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat th percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/always notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -56702,7 +56702,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -56762,7 +56762,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat th percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/always notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -56800,7 +56800,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -56860,7 +56860,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat th percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%-+2,000,000%"`;
 
 exports[`NumberFormat th percent signDisplay/always notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -56910,7 +56910,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -56990,7 +56990,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat th percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%-+2,000,000%"`;
 
 exports[`NumberFormat th percent signDisplay/always notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -57040,7 +57040,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -57120,7 +57120,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 ล้าน–2 ล้าน"`;
+exports[`NumberFormat th percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 ล้าน-2 ล้าน"`;
 
 exports[`NumberFormat th percent signDisplay/auto notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -57146,7 +57146,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -57186,7 +57186,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1M–2M"`;
+exports[`NumberFormat th percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1M-2M"`;
 
 exports[`NumberFormat th percent signDisplay/auto notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -57206,7 +57206,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "3",
@@ -57236,7 +57236,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat th percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/auto notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -57268,7 +57268,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -57318,7 +57318,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat th percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/auto notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -57350,7 +57350,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -57400,7 +57400,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat th percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/auto notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -57432,7 +57432,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -57482,7 +57482,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat th percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/auto notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -57514,7 +57514,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -57564,7 +57564,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat th percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%-2,000,000%"`;
 
 exports[`NumberFormat th percent signDisplay/auto notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -57608,7 +57608,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -57678,7 +57678,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat th percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%-2,000,000%"`;
 
 exports[`NumberFormat th percent signDisplay/auto notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -57722,7 +57722,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -57792,7 +57792,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 ล้าน–+2 ล้าน"`;
+exports[`NumberFormat th percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 ล้าน-+2 ล้าน"`;
 
 exports[`NumberFormat th percent signDisplay/exceptZero notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -57824,7 +57824,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -57874,7 +57874,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1M–+2M"`;
+exports[`NumberFormat th percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1M-+2M"`;
 
 exports[`NumberFormat th percent signDisplay/exceptZero notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -57900,7 +57900,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -57940,7 +57940,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat th percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -57978,7 +57978,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -58038,7 +58038,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat th percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -58076,7 +58076,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -58136,7 +58136,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat th percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -58174,7 +58174,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -58234,7 +58234,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat th percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -58272,7 +58272,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -58332,7 +58332,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat th percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%-+2,000,000%"`;
 
 exports[`NumberFormat th percent signDisplay/exceptZero notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -58382,7 +58382,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -58462,7 +58462,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat th percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%-+2,000,000%"`;
 
 exports[`NumberFormat th percent signDisplay/exceptZero notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -58512,7 +58512,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -58592,7 +58592,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 ล้าน–2 ล้าน"`;
+exports[`NumberFormat th percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 ล้าน-2 ล้าน"`;
 
 exports[`NumberFormat th percent signDisplay/never notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -58618,7 +58618,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -58658,7 +58658,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1M–2M"`;
+exports[`NumberFormat th percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1M-2M"`;
 
 exports[`NumberFormat th percent signDisplay/never notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -58678,7 +58678,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "3",
@@ -58708,7 +58708,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat th percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/never notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -58740,7 +58740,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -58790,7 +58790,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat th percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/never notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -58822,7 +58822,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -58872,7 +58872,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat th percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/never notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -58904,7 +58904,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -58954,7 +58954,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat th percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat th percent signDisplay/never notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -58986,7 +58986,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -59036,7 +59036,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat th percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%-2,000,000%"`;
 
 exports[`NumberFormat th percent signDisplay/never notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -59080,7 +59080,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -59150,7 +59150,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat th percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%-2,000,000%"`;
 
 exports[`NumberFormat th percent signDisplay/never notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -59194,7 +59194,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -65280,7 +65280,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+100万–+200万"`;
+exports[`NumberFormat zh percent signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+100万-+200万"`;
 
 exports[`NumberFormat zh percent signDisplay/always notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -65306,7 +65306,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -65346,7 +65346,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+100万–+200万"`;
+exports[`NumberFormat zh percent signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+100万-+200万"`;
 
 exports[`NumberFormat zh percent signDisplay/always notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -65372,7 +65372,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -65412,7 +65412,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat zh percent signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/always notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -65450,7 +65450,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -65510,7 +65510,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat zh percent signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/always notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -65548,7 +65548,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -65608,7 +65608,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat zh percent signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/always notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -65646,7 +65646,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -65706,7 +65706,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat zh percent signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/always notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -65744,7 +65744,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -65804,7 +65804,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat zh percent signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%-+2,000,000%"`;
 
 exports[`NumberFormat zh percent signDisplay/always notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -65854,7 +65854,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -65934,7 +65934,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat zh percent signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%-+2,000,000%"`;
 
 exports[`NumberFormat zh percent signDisplay/always notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -65984,7 +65984,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -66064,7 +66064,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"100万–200万"`;
+exports[`NumberFormat zh percent signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"100万-200万"`;
 
 exports[`NumberFormat zh percent signDisplay/auto notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -66084,7 +66084,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "3",
@@ -66114,7 +66114,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"100万–200万"`;
+exports[`NumberFormat zh percent signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"100万-200万"`;
 
 exports[`NumberFormat zh percent signDisplay/auto notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -66134,7 +66134,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "3",
@@ -66164,7 +66164,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat zh percent signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/auto notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -66196,7 +66196,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -66246,7 +66246,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat zh percent signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/auto notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -66278,7 +66278,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -66328,7 +66328,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat zh percent signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/auto notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -66360,7 +66360,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -66410,7 +66410,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat zh percent signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/auto notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -66442,7 +66442,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -66492,7 +66492,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat zh percent signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%-2,000,000%"`;
 
 exports[`NumberFormat zh percent signDisplay/auto notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -66536,7 +66536,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -66606,7 +66606,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat zh percent signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%-2,000,000%"`;
 
 exports[`NumberFormat zh percent signDisplay/auto notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -66650,7 +66650,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -66720,7 +66720,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+100万–+200万"`;
+exports[`NumberFormat zh percent signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+100万-+200万"`;
 
 exports[`NumberFormat zh percent signDisplay/exceptZero notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -66746,7 +66746,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -66786,7 +66786,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+100万–+200万"`;
+exports[`NumberFormat zh percent signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+100万-+200万"`;
 
 exports[`NumberFormat zh percent signDisplay/exceptZero notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -66812,7 +66812,7 @@ Array [
     "result": "3",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "4",
@@ -66852,7 +66852,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat zh percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/exceptZero notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -66890,7 +66890,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -66950,7 +66950,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat zh percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/exceptZero notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -66988,7 +66988,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -67048,7 +67048,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat zh percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/exceptZero notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -67086,7 +67086,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -67146,7 +67146,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%–+2E6%"`;
+exports[`NumberFormat zh percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E6%-+2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/exceptZero notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -67184,7 +67184,7 @@ Array [
     "result": "5",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "6",
@@ -67244,7 +67244,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat zh percent signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+1,000,000%-+2,000,000%"`;
 
 exports[`NumberFormat zh percent signDisplay/exceptZero notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -67294,7 +67294,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -67374,7 +67374,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%–+2,000,000%"`;
+exports[`NumberFormat zh percent signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+1,000,000%-+2,000,000%"`;
 
 exports[`NumberFormat zh percent signDisplay/exceptZero notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -67424,7 +67424,7 @@ Array [
     "result": "7",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "8",
@@ -67504,7 +67504,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"100万–200万"`;
+exports[`NumberFormat zh percent signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"100万-200万"`;
 
 exports[`NumberFormat zh percent signDisplay/never notation/compact compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -67524,7 +67524,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "3",
@@ -67554,7 +67554,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"100万–200万"`;
+exports[`NumberFormat zh percent signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"100万-200万"`;
 
 exports[`NumberFormat zh percent signDisplay/never notation/compact compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -67574,7 +67574,7 @@ Array [
     "result": "2",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "3",
@@ -67604,7 +67604,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat zh percent signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/never notation/engineering compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -67636,7 +67636,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -67686,7 +67686,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat zh percent signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/never notation/engineering compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -67718,7 +67718,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -67768,7 +67768,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat zh percent signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/never notation/scientific compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -67800,7 +67800,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -67850,7 +67850,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%–2E6%"`;
+exports[`NumberFormat zh percent signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E6%-2E6%"`;
 
 exports[`NumberFormat zh percent signDisplay/never notation/scientific compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -67882,7 +67882,7 @@ Array [
     "result": "4",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "5",
@@ -67932,7 +67932,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat zh percent signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"1,000,000%-2,000,000%"`;
 
 exports[`NumberFormat zh percent signDisplay/never notation/standard compactDisplay/long formatRangeToParts 1`] = `
 Array [
@@ -67976,7 +67976,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",
@@ -68046,7 +68046,7 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%–2,000,000%"`;
+exports[`NumberFormat zh percent signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"1,000,000%-2,000,000%"`;
 
 exports[`NumberFormat zh percent signDisplay/never notation/standard compactDisplay/short formatRangeToParts 1`] = `
 Array [
@@ -68090,7 +68090,7 @@ Array [
     "result": "6",
     "source": "shared",
     "type": "literal",
-    "value": "–",
+    "value": "-",
   },
   Object {
     "result": "7",

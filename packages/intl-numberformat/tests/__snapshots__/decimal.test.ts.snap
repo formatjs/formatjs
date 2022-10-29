@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NumberFormat da decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+10 tusind–+20 tusind"`;
+exports[`NumberFormat da decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+10 tusind-+20 tusind"`;
 
-exports[`NumberFormat da decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+10 tusind–+20 tusind"`;
+exports[`NumberFormat da decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+10 tusind-+20 tusind"`;
 
 exports[`NumberFormat da decimal signDisplay/always notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -25,9 +25,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10 t–+20 t"`;
+exports[`NumberFormat da decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10 t-+20 t"`;
 
-exports[`NumberFormat da decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10 t–+20 t"`;
+exports[`NumberFormat da decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10 t-+20 t"`;
 
 exports[`NumberFormat da decimal signDisplay/always notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -50,9 +50,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat da decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat da decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat da decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat da decimal signDisplay/always notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -75,9 +75,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat da decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat da decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat da decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat da decimal signDisplay/always notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -100,9 +100,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat da decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat da decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat da decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat da decimal signDisplay/always notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -125,9 +125,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat da decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat da decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat da decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat da decimal signDisplay/always notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -150,9 +150,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat da decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat da decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat da decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat da decimal signDisplay/always notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -175,9 +175,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat da decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat da decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat da decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat da decimal signDisplay/always notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -200,9 +200,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"10 tusind–20 tusind"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"10 tusind-20 tusind"`;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"10 tusind–20 tusind"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"10 tusind-20 tusind"`;
 
 exports[`NumberFormat da decimal signDisplay/auto notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -221,9 +221,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10 t–20 t"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10 t-20 t"`;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10 t–20 t"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10 t-20 t"`;
 
 exports[`NumberFormat da decimal signDisplay/auto notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -242,9 +242,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat da decimal signDisplay/auto notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -263,9 +263,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat da decimal signDisplay/auto notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -284,9 +284,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat da decimal signDisplay/auto notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -305,9 +305,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat da decimal signDisplay/auto notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -326,9 +326,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat da decimal signDisplay/auto notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -347,9 +347,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat da decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat da decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat da decimal signDisplay/auto notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -368,9 +368,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+10 tusind–+20 tusind"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+10 tusind-+20 tusind"`;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+10 tusind–+20 tusind"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+10 tusind-+20 tusind"`;
 
 exports[`NumberFormat da decimal signDisplay/exceptZero notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -393,9 +393,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10 t–+20 t"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10 t-+20 t"`;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10 t–+20 t"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10 t-+20 t"`;
 
 exports[`NumberFormat da decimal signDisplay/exceptZero notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -418,9 +418,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat da decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -443,9 +443,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat da decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -468,9 +468,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat da decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -493,9 +493,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat da decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -518,9 +518,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat da decimal signDisplay/exceptZero notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -543,9 +543,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat da decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat da decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat da decimal signDisplay/exceptZero notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -568,9 +568,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"10 tusind–20 tusind"`;
+exports[`NumberFormat da decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"10 tusind-20 tusind"`;
 
-exports[`NumberFormat da decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"10 tusind–20 tusind"`;
+exports[`NumberFormat da decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"10 tusind-20 tusind"`;
 
 exports[`NumberFormat da decimal signDisplay/never notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -589,9 +589,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10 t–20 t"`;
+exports[`NumberFormat da decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10 t-20 t"`;
 
-exports[`NumberFormat da decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10 t–20 t"`;
+exports[`NumberFormat da decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10 t-20 t"`;
 
 exports[`NumberFormat da decimal signDisplay/never notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -610,9 +610,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat da decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat da decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat da decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat da decimal signDisplay/never notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -631,9 +631,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat da decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat da decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat da decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat da decimal signDisplay/never notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -652,9 +652,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat da decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat da decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat da decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat da decimal signDisplay/never notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -673,9 +673,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat da decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat da decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat da decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat da decimal signDisplay/never notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -694,9 +694,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat da decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat da decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat da decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat da decimal signDisplay/never notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -715,9 +715,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat da decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat da decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat da decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat da decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat da decimal signDisplay/never notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -3632,9 +3632,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+10 mil–+20 mil"`;
+exports[`NumberFormat es decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+10 mil-+20 mil"`;
 
-exports[`NumberFormat es decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+10 mil–+20 mil"`;
+exports[`NumberFormat es decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+10 mil-+20 mil"`;
 
 exports[`NumberFormat es decimal signDisplay/always notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -3657,9 +3657,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10 mil–+20 mil"`;
+exports[`NumberFormat es decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10 mil-+20 mil"`;
 
-exports[`NumberFormat es decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10 mil–+20 mil"`;
+exports[`NumberFormat es decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10 mil-+20 mil"`;
 
 exports[`NumberFormat es decimal signDisplay/always notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -3682,9 +3682,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat es decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat es decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat es decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat es decimal signDisplay/always notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -3707,9 +3707,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat es decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat es decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat es decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat es decimal signDisplay/always notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -3732,9 +3732,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat es decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat es decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat es decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat es decimal signDisplay/always notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -3757,9 +3757,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat es decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat es decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat es decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat es decimal signDisplay/always notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -3782,9 +3782,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat es decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat es decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat es decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat es decimal signDisplay/always notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -3807,9 +3807,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat es decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat es decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat es decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat es decimal signDisplay/always notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -3832,9 +3832,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"10 mil–20 mil"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"10 mil-20 mil"`;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"10 mil–20 mil"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"10 mil-20 mil"`;
 
 exports[`NumberFormat es decimal signDisplay/auto notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -3853,9 +3853,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10 mil–20 mil"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10 mil-20 mil"`;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10 mil–20 mil"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10 mil-20 mil"`;
 
 exports[`NumberFormat es decimal signDisplay/auto notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -3874,9 +3874,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat es decimal signDisplay/auto notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -3895,9 +3895,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat es decimal signDisplay/auto notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -3916,9 +3916,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat es decimal signDisplay/auto notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -3937,9 +3937,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat es decimal signDisplay/auto notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -3958,9 +3958,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat es decimal signDisplay/auto notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -3979,9 +3979,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat es decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat es decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat es decimal signDisplay/auto notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -4000,9 +4000,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+10 mil–+20 mil"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+10 mil-+20 mil"`;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+10 mil–+20 mil"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+10 mil-+20 mil"`;
 
 exports[`NumberFormat es decimal signDisplay/exceptZero notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -4025,9 +4025,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10 mil–+20 mil"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10 mil-+20 mil"`;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10 mil–+20 mil"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10 mil-+20 mil"`;
 
 exports[`NumberFormat es decimal signDisplay/exceptZero notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -4050,9 +4050,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat es decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -4075,9 +4075,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat es decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -4100,9 +4100,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat es decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -4125,9 +4125,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat es decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -4150,9 +4150,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat es decimal signDisplay/exceptZero notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -4175,9 +4175,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat es decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat es decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat es decimal signDisplay/exceptZero notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -4200,9 +4200,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"10 mil–20 mil"`;
+exports[`NumberFormat es decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"10 mil-20 mil"`;
 
-exports[`NumberFormat es decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"10 mil–20 mil"`;
+exports[`NumberFormat es decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"10 mil-20 mil"`;
 
 exports[`NumberFormat es decimal signDisplay/never notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -4221,9 +4221,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10 mil–20 mil"`;
+exports[`NumberFormat es decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10 mil-20 mil"`;
 
-exports[`NumberFormat es decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10 mil–20 mil"`;
+exports[`NumberFormat es decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10 mil-20 mil"`;
 
 exports[`NumberFormat es decimal signDisplay/never notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -4242,9 +4242,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat es decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat es decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat es decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat es decimal signDisplay/never notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -4263,9 +4263,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat es decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat es decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat es decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat es decimal signDisplay/never notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -4284,9 +4284,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat es decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat es decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat es decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat es decimal signDisplay/never notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -4305,9 +4305,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat es decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat es decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat es decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat es decimal signDisplay/never notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -4326,9 +4326,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat es decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat es decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat es decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat es decimal signDisplay/never notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -4347,9 +4347,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat es decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat es decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat es decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat es decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat es decimal signDisplay/never notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -5840,9 +5840,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+10 mila–+20 mila"`;
+exports[`NumberFormat it decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+10 mila-+20 mila"`;
 
-exports[`NumberFormat it decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+10 mila–+20 mila"`;
+exports[`NumberFormat it decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+10 mila-+20 mila"`;
 
 exports[`NumberFormat it decimal signDisplay/always notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -5865,9 +5865,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/always notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -5890,9 +5890,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat it decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat it decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat it decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat it decimal signDisplay/always notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -5915,9 +5915,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat it decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat it decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat it decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat it decimal signDisplay/always notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -5940,9 +5940,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat it decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat it decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat it decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat it decimal signDisplay/always notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -5965,9 +5965,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat it decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat it decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat it decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat it decimal signDisplay/always notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -5990,9 +5990,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/always notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6015,9 +6015,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/always notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6040,9 +6040,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"10 mila–20 mila"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"10 mila-20 mila"`;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"10 mila–20 mila"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"10 mila-20 mila"`;
 
 exports[`NumberFormat it decimal signDisplay/auto notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6061,9 +6061,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/auto notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6082,9 +6082,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat it decimal signDisplay/auto notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6103,9 +6103,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat it decimal signDisplay/auto notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6124,9 +6124,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat it decimal signDisplay/auto notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6145,9 +6145,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat it decimal signDisplay/auto notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6166,9 +6166,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/auto notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6187,9 +6187,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/auto notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6208,9 +6208,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+10 mila–+20 mila"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+10 mila-+20 mila"`;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+10 mila–+20 mila"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+10 mila-+20 mila"`;
 
 exports[`NumberFormat it decimal signDisplay/exceptZero notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6233,9 +6233,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/exceptZero notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6258,9 +6258,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat it decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6283,9 +6283,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat it decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6308,9 +6308,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat it decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6333,9 +6333,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat it decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6358,9 +6358,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/exceptZero notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6383,9 +6383,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat it decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/exceptZero notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6408,9 +6408,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"10 mila–20 mila"`;
+exports[`NumberFormat it decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"10 mila-20 mila"`;
 
-exports[`NumberFormat it decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"10 mila–20 mila"`;
+exports[`NumberFormat it decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"10 mila-20 mila"`;
 
 exports[`NumberFormat it decimal signDisplay/never notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6429,9 +6429,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/never notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6450,9 +6450,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat it decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat it decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat it decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat it decimal signDisplay/never notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6471,9 +6471,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat it decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat it decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat it decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat it decimal signDisplay/never notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6492,9 +6492,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat it decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat it decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat it decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat it decimal signDisplay/never notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6513,9 +6513,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat it decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat it decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat it decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat it decimal signDisplay/never notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6534,9 +6534,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/never notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6555,9 +6555,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat it decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat it decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat it decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat it decimal signDisplay/never notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6576,9 +6576,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1万–+2万"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1万～+2万"`;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+1万–+2万"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+1万～+2万"`;
 
 exports[`NumberFormat ja decimal signDisplay/always notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6597,9 +6597,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1万–+2万"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1万～+2万"`;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+1万–+2万"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+1万～+2万"`;
 
 exports[`NumberFormat ja decimal signDisplay/always notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6618,9 +6618,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3～+20E3"`;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3～+20E3"`;
 
 exports[`NumberFormat ja decimal signDisplay/always notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6643,9 +6643,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3～+20E3"`;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3～+20E3"`;
 
 exports[`NumberFormat ja decimal signDisplay/always notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6668,9 +6668,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4～+2E4"`;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4～+2E4"`;
 
 exports[`NumberFormat ja decimal signDisplay/always notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6693,9 +6693,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4～+2E4"`;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4～+2E4"`;
 
 exports[`NumberFormat ja decimal signDisplay/always notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6718,9 +6718,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10,000～+20,000"`;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10,000～+20,000"`;
 
 exports[`NumberFormat ja decimal signDisplay/always notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6743,9 +6743,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10,000～+20,000"`;
 
-exports[`NumberFormat ja decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ja decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10,000～+20,000"`;
 
 exports[`NumberFormat ja decimal signDisplay/always notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6768,9 +6768,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1万–2万"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1万～2万"`;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"1万–2万"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"1万～2万"`;
 
 exports[`NumberFormat ja decimal signDisplay/auto notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6785,9 +6785,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1万–2万"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1万～2万"`;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"1万–2万"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"1万～2万"`;
 
 exports[`NumberFormat ja decimal signDisplay/auto notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6802,9 +6802,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3～20E3"`;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3～20E3"`;
 
 exports[`NumberFormat ja decimal signDisplay/auto notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6823,9 +6823,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3～20E3"`;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3～20E3"`;
 
 exports[`NumberFormat ja decimal signDisplay/auto notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6844,9 +6844,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4～2E4"`;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4～2E4"`;
 
 exports[`NumberFormat ja decimal signDisplay/auto notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6865,9 +6865,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4～2E4"`;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4～2E4"`;
 
 exports[`NumberFormat ja decimal signDisplay/auto notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6886,9 +6886,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10,000～20,000"`;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10,000～20,000"`;
 
 exports[`NumberFormat ja decimal signDisplay/auto notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6907,9 +6907,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10,000～20,000"`;
 
-exports[`NumberFormat ja decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat ja decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10,000～20,000"`;
 
 exports[`NumberFormat ja decimal signDisplay/auto notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6928,9 +6928,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1万–+2万"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1万～+2万"`;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+1万–+2万"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+1万～+2万"`;
 
 exports[`NumberFormat ja decimal signDisplay/exceptZero notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6949,9 +6949,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1万–+2万"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1万～+2万"`;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+1万–+2万"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+1万～+2万"`;
 
 exports[`NumberFormat ja decimal signDisplay/exceptZero notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -6970,9 +6970,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3～+20E3"`;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3～+20E3"`;
 
 exports[`NumberFormat ja decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -6995,9 +6995,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3～+20E3"`;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3～+20E3"`;
 
 exports[`NumberFormat ja decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7020,9 +7020,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4～+2E4"`;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4～+2E4"`;
 
 exports[`NumberFormat ja decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7045,9 +7045,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4～+2E4"`;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4～+2E4"`;
 
 exports[`NumberFormat ja decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7070,9 +7070,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10,000～+20,000"`;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10,000～+20,000"`;
 
 exports[`NumberFormat ja decimal signDisplay/exceptZero notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7095,9 +7095,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10,000～+20,000"`;
 
-exports[`NumberFormat ja decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ja decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10,000～+20,000"`;
 
 exports[`NumberFormat ja decimal signDisplay/exceptZero notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7120,9 +7120,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1万–2万"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1万～2万"`;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"1万–2万"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"1万～2万"`;
 
 exports[`NumberFormat ja decimal signDisplay/never notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7137,9 +7137,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1万–2万"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1万～2万"`;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"1万–2万"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"1万～2万"`;
 
 exports[`NumberFormat ja decimal signDisplay/never notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7154,9 +7154,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3～20E3"`;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3～20E3"`;
 
 exports[`NumberFormat ja decimal signDisplay/never notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7175,9 +7175,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3～20E3"`;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3～20E3"`;
 
 exports[`NumberFormat ja decimal signDisplay/never notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7196,9 +7196,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4～2E4"`;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4～2E4"`;
 
 exports[`NumberFormat ja decimal signDisplay/never notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7217,9 +7217,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4～2E4"`;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4～2E4"`;
 
 exports[`NumberFormat ja decimal signDisplay/never notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7238,9 +7238,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10,000～20,000"`;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10,000～20,000"`;
 
 exports[`NumberFormat ja decimal signDisplay/never notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7259,9 +7259,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10,000～20,000"`;
 
-exports[`NumberFormat ja decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat ja decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10,000～20,000"`;
 
 exports[`NumberFormat ja decimal signDisplay/never notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7280,9 +7280,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1만–+2만"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1만~+2만"`;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+1만–+2만"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+1만~+2만"`;
 
 exports[`NumberFormat ko decimal signDisplay/always notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7301,9 +7301,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1만–+2만"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1만~+2만"`;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+1만–+2만"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+1만~+2만"`;
 
 exports[`NumberFormat ko decimal signDisplay/always notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7322,9 +7322,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3~+20E3"`;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3~+20E3"`;
 
 exports[`NumberFormat ko decimal signDisplay/always notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7347,9 +7347,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3~+20E3"`;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3~+20E3"`;
 
 exports[`NumberFormat ko decimal signDisplay/always notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7372,9 +7372,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4~+2E4"`;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4~+2E4"`;
 
 exports[`NumberFormat ko decimal signDisplay/always notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7397,9 +7397,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4~+2E4"`;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4~+2E4"`;
 
 exports[`NumberFormat ko decimal signDisplay/always notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7422,9 +7422,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10,000~+20,000"`;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10,000~+20,000"`;
 
 exports[`NumberFormat ko decimal signDisplay/always notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7447,9 +7447,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10,000~+20,000"`;
 
-exports[`NumberFormat ko decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ko decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10,000~+20,000"`;
 
 exports[`NumberFormat ko decimal signDisplay/always notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7472,9 +7472,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1만–2만"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1만~2만"`;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"1만–2만"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"1만~2만"`;
 
 exports[`NumberFormat ko decimal signDisplay/auto notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7489,9 +7489,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1만–2만"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1만~2만"`;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"1만–2만"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"1만~2만"`;
 
 exports[`NumberFormat ko decimal signDisplay/auto notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7506,9 +7506,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3~20E3"`;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3~20E3"`;
 
 exports[`NumberFormat ko decimal signDisplay/auto notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7527,9 +7527,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3~20E3"`;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3~20E3"`;
 
 exports[`NumberFormat ko decimal signDisplay/auto notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7548,9 +7548,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4~2E4"`;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4~2E4"`;
 
 exports[`NumberFormat ko decimal signDisplay/auto notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7569,9 +7569,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4~2E4"`;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4~2E4"`;
 
 exports[`NumberFormat ko decimal signDisplay/auto notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7590,9 +7590,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10,000~20,000"`;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10,000~20,000"`;
 
 exports[`NumberFormat ko decimal signDisplay/auto notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7611,9 +7611,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10,000~20,000"`;
 
-exports[`NumberFormat ko decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat ko decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10,000~20,000"`;
 
 exports[`NumberFormat ko decimal signDisplay/auto notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7632,9 +7632,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1만–+2만"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1만~+2만"`;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+1만–+2만"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+1만~+2만"`;
 
 exports[`NumberFormat ko decimal signDisplay/exceptZero notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7653,9 +7653,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1만–+2만"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1만~+2만"`;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+1만–+2만"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+1만~+2만"`;
 
 exports[`NumberFormat ko decimal signDisplay/exceptZero notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7674,9 +7674,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3~+20E3"`;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3~+20E3"`;
 
 exports[`NumberFormat ko decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7699,9 +7699,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3~+20E3"`;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3~+20E3"`;
 
 exports[`NumberFormat ko decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7724,9 +7724,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4~+2E4"`;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4~+2E4"`;
 
 exports[`NumberFormat ko decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7749,9 +7749,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4~+2E4"`;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4~+2E4"`;
 
 exports[`NumberFormat ko decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7774,9 +7774,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10,000~+20,000"`;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10,000~+20,000"`;
 
 exports[`NumberFormat ko decimal signDisplay/exceptZero notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7799,9 +7799,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10,000~+20,000"`;
 
-exports[`NumberFormat ko decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat ko decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10,000~+20,000"`;
 
 exports[`NumberFormat ko decimal signDisplay/exceptZero notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7824,9 +7824,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1만–2만"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1만~2만"`;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"1만–2만"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"1만~2만"`;
 
 exports[`NumberFormat ko decimal signDisplay/never notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7841,9 +7841,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1만–2만"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1만~2만"`;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"1만–2만"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"1만~2만"`;
 
 exports[`NumberFormat ko decimal signDisplay/never notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7858,9 +7858,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3~20E3"`;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3~20E3"`;
 
 exports[`NumberFormat ko decimal signDisplay/never notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7879,9 +7879,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3~20E3"`;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3~20E3"`;
 
 exports[`NumberFormat ko decimal signDisplay/never notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7900,9 +7900,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4~2E4"`;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4~2E4"`;
 
 exports[`NumberFormat ko decimal signDisplay/never notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7921,9 +7921,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4~2E4"`;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4~2E4"`;
 
 exports[`NumberFormat ko decimal signDisplay/never notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -7942,9 +7942,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10,000~20,000"`;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10,000~20,000"`;
 
 exports[`NumberFormat ko decimal signDisplay/never notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -7963,9 +7963,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10,000~20,000"`;
 
-exports[`NumberFormat ko decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat ko decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10,000~20,000"`;
 
 exports[`NumberFormat ko decimal signDisplay/never notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9424,9 +9424,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+10 duizend–+20 duizend"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+10 duizend-+20 duizend"`;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+10 duizend–+20 duizend"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+10 duizend-+20 duizend"`;
 
 exports[`NumberFormat nl decimal signDisplay/always notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9449,9 +9449,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10K–+20K"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10K-+20K"`;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10K–+20K"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10K-+20K"`;
 
 exports[`NumberFormat nl decimal signDisplay/always notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9470,9 +9470,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat nl decimal signDisplay/always notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9495,9 +9495,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat nl decimal signDisplay/always notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9520,9 +9520,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat nl decimal signDisplay/always notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9545,9 +9545,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat nl decimal signDisplay/always notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9570,9 +9570,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat nl decimal signDisplay/always notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9595,9 +9595,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat nl decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat nl decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat nl decimal signDisplay/always notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9620,9 +9620,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"10 duizend–20 duizend"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"10 duizend-20 duizend"`;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"10 duizend–20 duizend"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"10 duizend-20 duizend"`;
 
 exports[`NumberFormat nl decimal signDisplay/auto notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9641,9 +9641,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10K–20K"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10K-20K"`;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10K–20K"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10K-20K"`;
 
 exports[`NumberFormat nl decimal signDisplay/auto notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9658,9 +9658,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat nl decimal signDisplay/auto notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9679,9 +9679,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat nl decimal signDisplay/auto notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9700,9 +9700,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat nl decimal signDisplay/auto notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9721,9 +9721,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat nl decimal signDisplay/auto notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9742,9 +9742,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat nl decimal signDisplay/auto notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9763,9 +9763,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat nl decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat nl decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat nl decimal signDisplay/auto notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9784,9 +9784,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+10 duizend–+20 duizend"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+10 duizend-+20 duizend"`;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+10 duizend–+20 duizend"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+10 duizend-+20 duizend"`;
 
 exports[`NumberFormat nl decimal signDisplay/exceptZero notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9809,9 +9809,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10K–+20K"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10K-+20K"`;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10K–+20K"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10K-+20K"`;
 
 exports[`NumberFormat nl decimal signDisplay/exceptZero notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9830,9 +9830,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat nl decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9855,9 +9855,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat nl decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9880,9 +9880,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat nl decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9905,9 +9905,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat nl decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9930,9 +9930,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat nl decimal signDisplay/exceptZero notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -9955,9 +9955,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10.000–+20.000"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10.000-+20.000"`;
 
-exports[`NumberFormat nl decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10.000–+20.000"`;
+exports[`NumberFormat nl decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10.000-+20.000"`;
 
 exports[`NumberFormat nl decimal signDisplay/exceptZero notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -9980,9 +9980,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"10 duizend–20 duizend"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"10 duizend-20 duizend"`;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"10 duizend–20 duizend"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"10 duizend-20 duizend"`;
 
 exports[`NumberFormat nl decimal signDisplay/never notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -10001,9 +10001,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10K–20K"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10K-20K"`;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10K–20K"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10K-20K"`;
 
 exports[`NumberFormat nl decimal signDisplay/never notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -10018,9 +10018,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat nl decimal signDisplay/never notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -10039,9 +10039,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat nl decimal signDisplay/never notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -10060,9 +10060,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat nl decimal signDisplay/never notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -10081,9 +10081,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat nl decimal signDisplay/never notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -10102,9 +10102,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat nl decimal signDisplay/never notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -10123,9 +10123,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10.000–20.000"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10.000-20.000"`;
 
-exports[`NumberFormat nl decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10.000–20.000"`;
+exports[`NumberFormat nl decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10.000-20.000"`;
 
 exports[`NumberFormat nl decimal signDisplay/never notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12352,9 +12352,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+10 tusen–+20 tusen"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+10 tusen‒+20 tusen"`;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+10 tusen–+20 tusen"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+10 tusen‒+20 tusen"`;
 
 exports[`NumberFormat sv decimal signDisplay/always notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12377,9 +12377,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10 tn–+20 tn"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10 tn‒+20 tn"`;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10 tn–+20 tn"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10 tn‒+20 tn"`;
 
 exports[`NumberFormat sv decimal signDisplay/always notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12402,9 +12402,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10×10^3–+20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10×10^3‒+20×10^3"`;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10×10^3–+20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10×10^3‒+20×10^3"`;
 
 exports[`NumberFormat sv decimal signDisplay/always notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12427,9 +12427,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10×10^3–+20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10×10^3‒+20×10^3"`;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10×10^3–+20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10×10^3‒+20×10^3"`;
 
 exports[`NumberFormat sv decimal signDisplay/always notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12452,9 +12452,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1×10^4–+2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1×10^4‒+2×10^4"`;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1×10^4–+2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1×10^4‒+2×10^4"`;
 
 exports[`NumberFormat sv decimal signDisplay/always notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12477,9 +12477,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1×10^4–+2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1×10^4‒+2×10^4"`;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1×10^4–+2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1×10^4‒+2×10^4"`;
 
 exports[`NumberFormat sv decimal signDisplay/always notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12502,9 +12502,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10 000–+20 000"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10 000‒+20 000"`;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10 000–+20 000"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10 000‒+20 000"`;
 
 exports[`NumberFormat sv decimal signDisplay/always notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12527,9 +12527,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10 000–+20 000"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10 000‒+20 000"`;
 
-exports[`NumberFormat sv decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10 000–+20 000"`;
+exports[`NumberFormat sv decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10 000‒+20 000"`;
 
 exports[`NumberFormat sv decimal signDisplay/always notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12552,9 +12552,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"10 tusen–20 tusen"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"10 tusen‒20 tusen"`;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"10 tusen–20 tusen"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"10 tusen‒20 tusen"`;
 
 exports[`NumberFormat sv decimal signDisplay/auto notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12573,9 +12573,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10 tn–20 tn"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10 tn‒20 tn"`;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10 tn–20 tn"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10 tn‒20 tn"`;
 
 exports[`NumberFormat sv decimal signDisplay/auto notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12594,9 +12594,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10×10^3–20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10×10^3‒20×10^3"`;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10×10^3–20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10×10^3‒20×10^3"`;
 
 exports[`NumberFormat sv decimal signDisplay/auto notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12615,9 +12615,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10×10^3–20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10×10^3‒20×10^3"`;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10×10^3–20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10×10^3‒20×10^3"`;
 
 exports[`NumberFormat sv decimal signDisplay/auto notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12636,9 +12636,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1×10^4–2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1×10^4‒2×10^4"`;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1×10^4–2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1×10^4‒2×10^4"`;
 
 exports[`NumberFormat sv decimal signDisplay/auto notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12657,9 +12657,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1×10^4–2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1×10^4‒2×10^4"`;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1×10^4–2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1×10^4‒2×10^4"`;
 
 exports[`NumberFormat sv decimal signDisplay/auto notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12678,9 +12678,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10 000–20 000"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10 000‒20 000"`;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10 000–20 000"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10 000‒20 000"`;
 
 exports[`NumberFormat sv decimal signDisplay/auto notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12699,9 +12699,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10 000–20 000"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10 000‒20 000"`;
 
-exports[`NumberFormat sv decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10 000–20 000"`;
+exports[`NumberFormat sv decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10 000‒20 000"`;
 
 exports[`NumberFormat sv decimal signDisplay/auto notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12720,9 +12720,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+10 tusen–+20 tusen"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+10 tusen‒+20 tusen"`;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+10 tusen–+20 tusen"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+10 tusen‒+20 tusen"`;
 
 exports[`NumberFormat sv decimal signDisplay/exceptZero notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12745,9 +12745,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10 tn–+20 tn"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10 tn‒+20 tn"`;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10 tn–+20 tn"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10 tn‒+20 tn"`;
 
 exports[`NumberFormat sv decimal signDisplay/exceptZero notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12770,9 +12770,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10×10^3–+20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10×10^3‒+20×10^3"`;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10×10^3–+20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10×10^3‒+20×10^3"`;
 
 exports[`NumberFormat sv decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12795,9 +12795,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10×10^3–+20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10×10^3‒+20×10^3"`;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10×10^3–+20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10×10^3‒+20×10^3"`;
 
 exports[`NumberFormat sv decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12820,9 +12820,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1×10^4–+2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1×10^4‒+2×10^4"`;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1×10^4–+2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1×10^4‒+2×10^4"`;
 
 exports[`NumberFormat sv decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12845,9 +12845,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1×10^4–+2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1×10^4‒+2×10^4"`;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1×10^4–+2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1×10^4‒+2×10^4"`;
 
 exports[`NumberFormat sv decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12870,9 +12870,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10 000–+20 000"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10 000‒+20 000"`;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10 000–+20 000"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10 000‒+20 000"`;
 
 exports[`NumberFormat sv decimal signDisplay/exceptZero notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12895,9 +12895,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10 000–+20 000"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10 000‒+20 000"`;
 
-exports[`NumberFormat sv decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10 000–+20 000"`;
+exports[`NumberFormat sv decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10 000‒+20 000"`;
 
 exports[`NumberFormat sv decimal signDisplay/exceptZero notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12920,9 +12920,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"10 tusen–20 tusen"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"10 tusen‒20 tusen"`;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"10 tusen–20 tusen"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"10 tusen‒20 tusen"`;
 
 exports[`NumberFormat sv decimal signDisplay/never notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12941,9 +12941,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10 tn–20 tn"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10 tn‒20 tn"`;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10 tn–20 tn"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10 tn‒20 tn"`;
 
 exports[`NumberFormat sv decimal signDisplay/never notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -12962,9 +12962,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10×10^3–20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10×10^3‒20×10^3"`;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10×10^3–20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10×10^3‒20×10^3"`;
 
 exports[`NumberFormat sv decimal signDisplay/never notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -12983,9 +12983,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10×10^3–20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10×10^3‒20×10^3"`;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10×10^3–20×10^3"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10×10^3‒20×10^3"`;
 
 exports[`NumberFormat sv decimal signDisplay/never notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13004,9 +13004,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1×10^4–2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1×10^4‒2×10^4"`;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1×10^4–2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1×10^4‒2×10^4"`;
 
 exports[`NumberFormat sv decimal signDisplay/never notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13025,9 +13025,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1×10^4–2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1×10^4‒2×10^4"`;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1×10^4–2×10^4"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1×10^4‒2×10^4"`;
 
 exports[`NumberFormat sv decimal signDisplay/never notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13046,9 +13046,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10 000–20 000"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10 000‒20 000"`;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10 000–20 000"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10 000‒20 000"`;
 
 exports[`NumberFormat sv decimal signDisplay/never notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13067,9 +13067,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10 000–20 000"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10 000‒20 000"`;
 
-exports[`NumberFormat sv decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10 000–20 000"`;
+exports[`NumberFormat sv decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10 000‒20 000"`;
 
 exports[`NumberFormat sv decimal signDisplay/never notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13088,9 +13088,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 หมื่น–+2 หมื่น"`;
+exports[`NumberFormat th decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1 หมื่น-+2 หมื่น"`;
 
-exports[`NumberFormat th decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+1 หมื่น–+2 หมื่น"`;
+exports[`NumberFormat th decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+1 หมื่น-+2 หมื่น"`;
 
 exports[`NumberFormat th decimal signDisplay/always notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13113,9 +13113,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10K–+20K"`;
+exports[`NumberFormat th decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+10K-+20K"`;
 
-exports[`NumberFormat th decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10K–+20K"`;
+exports[`NumberFormat th decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+10K-+20K"`;
 
 exports[`NumberFormat th decimal signDisplay/always notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13134,9 +13134,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat th decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat th decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat th decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat th decimal signDisplay/always notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13159,9 +13159,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat th decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat th decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat th decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat th decimal signDisplay/always notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13184,9 +13184,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat th decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat th decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat th decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat th decimal signDisplay/always notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13209,9 +13209,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat th decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat th decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat th decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat th decimal signDisplay/always notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13234,9 +13234,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat th decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10,000-+20,000"`;
 
-exports[`NumberFormat th decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat th decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10,000-+20,000"`;
 
 exports[`NumberFormat th decimal signDisplay/always notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13259,9 +13259,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat th decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10,000-+20,000"`;
 
-exports[`NumberFormat th decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat th decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10,000-+20,000"`;
 
 exports[`NumberFormat th decimal signDisplay/always notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13284,9 +13284,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 หมื่น–2 หมื่น"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1 หมื่น-2 หมื่น"`;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"1 หมื่น–2 หมื่น"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"1 หมื่น-2 หมื่น"`;
 
 exports[`NumberFormat th decimal signDisplay/auto notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13305,9 +13305,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10K–20K"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"10K-20K"`;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10K–20K"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"10K-20K"`;
 
 exports[`NumberFormat th decimal signDisplay/auto notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13322,9 +13322,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat th decimal signDisplay/auto notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13343,9 +13343,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat th decimal signDisplay/auto notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13364,9 +13364,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat th decimal signDisplay/auto notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13385,9 +13385,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat th decimal signDisplay/auto notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13406,9 +13406,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10,000-20,000"`;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10,000-20,000"`;
 
 exports[`NumberFormat th decimal signDisplay/auto notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13427,9 +13427,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10,000-20,000"`;
 
-exports[`NumberFormat th decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat th decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10,000-20,000"`;
 
 exports[`NumberFormat th decimal signDisplay/auto notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13448,9 +13448,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 หมื่น–+2 หมื่น"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1 หมื่น-+2 หมื่น"`;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+1 หมื่น–+2 หมื่น"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+1 หมื่น-+2 หมื่น"`;
 
 exports[`NumberFormat th decimal signDisplay/exceptZero notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13473,9 +13473,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10K–+20K"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+10K-+20K"`;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10K–+20K"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+10K-+20K"`;
 
 exports[`NumberFormat th decimal signDisplay/exceptZero notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13494,9 +13494,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat th decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13519,9 +13519,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat th decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13544,9 +13544,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat th decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13569,9 +13569,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat th decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13594,9 +13594,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10,000-+20,000"`;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10,000-+20,000"`;
 
 exports[`NumberFormat th decimal signDisplay/exceptZero notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13619,9 +13619,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10,000-+20,000"`;
 
-exports[`NumberFormat th decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat th decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10,000-+20,000"`;
 
 exports[`NumberFormat th decimal signDisplay/exceptZero notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13644,9 +13644,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 หมื่น–2 หมื่น"`;
+exports[`NumberFormat th decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1 หมื่น-2 หมื่น"`;
 
-exports[`NumberFormat th decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"1 หมื่น–2 หมื่น"`;
+exports[`NumberFormat th decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"1 หมื่น-2 หมื่น"`;
 
 exports[`NumberFormat th decimal signDisplay/never notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13665,9 +13665,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10K–20K"`;
+exports[`NumberFormat th decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"10K-20K"`;
 
-exports[`NumberFormat th decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10K–20K"`;
+exports[`NumberFormat th decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"10K-20K"`;
 
 exports[`NumberFormat th decimal signDisplay/never notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13682,9 +13682,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat th decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat th decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat th decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat th decimal signDisplay/never notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13703,9 +13703,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat th decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat th decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat th decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat th decimal signDisplay/never notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13724,9 +13724,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat th decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat th decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat th decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat th decimal signDisplay/never notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13745,9 +13745,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat th decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat th decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat th decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat th decimal signDisplay/never notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -13766,9 +13766,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat th decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10,000-20,000"`;
 
-exports[`NumberFormat th decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat th decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10,000-20,000"`;
 
 exports[`NumberFormat th decimal signDisplay/never notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -13787,9 +13787,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat th decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat th decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10,000-20,000"`;
 
-exports[`NumberFormat th decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat th decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10,000-20,000"`;
 
 exports[`NumberFormat th decimal signDisplay/never notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15280,9 +15280,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1万–+2万"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/compact compactDisplay/long formatRange 1`] = `"+1万-+2万"`;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+1万–+2万"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/compact compactDisplay/long formatRange 2`] = `"+1万-+2万"`;
 
 exports[`NumberFormat zh decimal signDisplay/always notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15301,9 +15301,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1万–+2万"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/compact compactDisplay/short formatRange 1`] = `"+1万-+2万"`;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+1万–+2万"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/compact compactDisplay/short formatRange 2`] = `"+1万-+2万"`;
 
 exports[`NumberFormat zh decimal signDisplay/always notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15322,9 +15322,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat zh decimal signDisplay/always notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15347,9 +15347,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat zh decimal signDisplay/always notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15372,9 +15372,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat zh decimal signDisplay/always notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15397,9 +15397,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat zh decimal signDisplay/always notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15422,9 +15422,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/standard compactDisplay/long formatRange 1`] = `"+10,000-+20,000"`;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/standard compactDisplay/long formatRange 2`] = `"+10,000-+20,000"`;
 
 exports[`NumberFormat zh decimal signDisplay/always notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15447,9 +15447,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/standard compactDisplay/short formatRange 1`] = `"+10,000-+20,000"`;
 
-exports[`NumberFormat zh decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat zh decimal signDisplay/always notation/standard compactDisplay/short formatRange 2`] = `"+10,000-+20,000"`;
 
 exports[`NumberFormat zh decimal signDisplay/always notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15472,9 +15472,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1万–2万"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/compact compactDisplay/long formatRange 1`] = `"1万-2万"`;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"1万–2万"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/compact compactDisplay/long formatRange 2`] = `"1万-2万"`;
 
 exports[`NumberFormat zh decimal signDisplay/auto notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15489,9 +15489,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1万–2万"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/compact compactDisplay/short formatRange 1`] = `"1万-2万"`;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"1万–2万"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/compact compactDisplay/short formatRange 2`] = `"1万-2万"`;
 
 exports[`NumberFormat zh decimal signDisplay/auto notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15506,9 +15506,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat zh decimal signDisplay/auto notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15527,9 +15527,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat zh decimal signDisplay/auto notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15548,9 +15548,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat zh decimal signDisplay/auto notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15569,9 +15569,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat zh decimal signDisplay/auto notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15590,9 +15590,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/standard compactDisplay/long formatRange 1`] = `"10,000-20,000"`;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/standard compactDisplay/long formatRange 2`] = `"10,000-20,000"`;
 
 exports[`NumberFormat zh decimal signDisplay/auto notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15611,9 +15611,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/standard compactDisplay/short formatRange 1`] = `"10,000-20,000"`;
 
-exports[`NumberFormat zh decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat zh decimal signDisplay/auto notation/standard compactDisplay/short formatRange 2`] = `"10,000-20,000"`;
 
 exports[`NumberFormat zh decimal signDisplay/auto notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15632,9 +15632,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1万–+2万"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 1`] = `"+1万-+2万"`;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+1万–+2万"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/compact compactDisplay/long formatRange 2`] = `"+1万-+2万"`;
 
 exports[`NumberFormat zh decimal signDisplay/exceptZero notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15653,9 +15653,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1万–+2万"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 1`] = `"+1万-+2万"`;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+1万–+2万"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/compact compactDisplay/short formatRange 2`] = `"+1万-+2万"`;
 
 exports[`NumberFormat zh decimal signDisplay/exceptZero notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15674,9 +15674,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat zh decimal signDisplay/exceptZero notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15699,9 +15699,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3–+20E3"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 1`] = `"+10E3-+20E3"`;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3–+20E3"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatRange 2`] = `"+10E3-+20E3"`;
 
 exports[`NumberFormat zh decimal signDisplay/exceptZero notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15724,9 +15724,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat zh decimal signDisplay/exceptZero notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15749,9 +15749,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4–+2E4"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 1`] = `"+1E4-+2E4"`;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4–+2E4"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatRange 2`] = `"+1E4-+2E4"`;
 
 exports[`NumberFormat zh decimal signDisplay/exceptZero notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15774,9 +15774,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 1`] = `"+10,000-+20,000"`;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/standard compactDisplay/long formatRange 2`] = `"+10,000-+20,000"`;
 
 exports[`NumberFormat zh decimal signDisplay/exceptZero notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15799,9 +15799,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10,000–+20,000"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 1`] = `"+10,000-+20,000"`;
 
-exports[`NumberFormat zh decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10,000–+20,000"`;
+exports[`NumberFormat zh decimal signDisplay/exceptZero notation/standard compactDisplay/short formatRange 2`] = `"+10,000-+20,000"`;
 
 exports[`NumberFormat zh decimal signDisplay/exceptZero notation/standard compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15824,9 +15824,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1万–2万"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/compact compactDisplay/long formatRange 1`] = `"1万-2万"`;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"1万–2万"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/compact compactDisplay/long formatRange 2`] = `"1万-2万"`;
 
 exports[`NumberFormat zh decimal signDisplay/never notation/compact compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15841,9 +15841,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1万–2万"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/compact compactDisplay/short formatRange 1`] = `"1万-2万"`;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"1万–2万"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/compact compactDisplay/short formatRange 2`] = `"1万-2万"`;
 
 exports[`NumberFormat zh decimal signDisplay/never notation/compact compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15858,9 +15858,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/engineering compactDisplay/long formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/engineering compactDisplay/long formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat zh decimal signDisplay/never notation/engineering compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15879,9 +15879,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3–20E3"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/engineering compactDisplay/short formatRange 1`] = `"10E3-20E3"`;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3–20E3"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/engineering compactDisplay/short formatRange 2`] = `"10E3-20E3"`;
 
 exports[`NumberFormat zh decimal signDisplay/never notation/engineering compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15900,9 +15900,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/scientific compactDisplay/long formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/scientific compactDisplay/long formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat zh decimal signDisplay/never notation/scientific compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15921,9 +15921,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4–2E4"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/scientific compactDisplay/short formatRange 1`] = `"1E4-2E4"`;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4–2E4"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/scientific compactDisplay/short formatRange 2`] = `"1E4-2E4"`;
 
 exports[`NumberFormat zh decimal signDisplay/never notation/scientific compactDisplay/short formatToPars 1`] = `
 Array [
@@ -15942,9 +15942,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/standard compactDisplay/long formatRange 1`] = `"10,000-20,000"`;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/standard compactDisplay/long formatRange 2`] = `"10,000-20,000"`;
 
 exports[`NumberFormat zh decimal signDisplay/never notation/standard compactDisplay/long formatToPars 1`] = `
 Array [
@@ -15963,9 +15963,9 @@ Array [
 ]
 `;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10,000–20,000"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/standard compactDisplay/short formatRange 1`] = `"10,000-20,000"`;
 
-exports[`NumberFormat zh decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10,000–20,000"`;
+exports[`NumberFormat zh decimal signDisplay/never notation/standard compactDisplay/short formatRange 2`] = `"10,000-20,000"`;
 
 exports[`NumberFormat zh decimal signDisplay/never notation/standard compactDisplay/short formatToPars 1`] = `
 Array [

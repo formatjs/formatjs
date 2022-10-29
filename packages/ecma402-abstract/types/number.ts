@@ -147,6 +147,7 @@ export interface SymbolsData {
   nan: string
   timeSeparator: string
   approximatelySign: string
+  rangeSign: string
 }
 
 export interface RawNumberData {
