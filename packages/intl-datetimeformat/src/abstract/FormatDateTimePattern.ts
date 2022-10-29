@@ -116,7 +116,28 @@ export function FormatDateTimePattern(
         value: nf3!.format(v),
       })
     } else if (p === 'dayPeriod') {
-      // TODO
+      const f = internalSlots.dayPeriod
+      // @ts-ignore
+      const fv = tm[f]
+      result.push({type: p, value: fv})
+    } else if (p === 'timeZoneName') {
+      const f = internalSlots.timeZoneName
+      let fv
+      const {timeZoneName, gmtFormat, hourFormat} = dataLocaleData
+      const timeZone = internalSlots.timeZone || getDefaultTimeZone()
+      const timeZoneData = timeZoneName[timeZone]
+      if (timeZoneData && timeZoneData[f as 'short']) {
+        fv = timeZoneData[f as 'short']![+tm.inDST]
+      } else {
+        // Fallback to gmtFormat
+        fv = offsetToGmtString(
+          gmtFormat,
+          hourFormat,
+          tm.timeZoneOffset,
+          f as 'long'
+        )
+      }
+      result.push({type: p, value: fv})
     } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
       let fv = ''
       const f = internalSlots[p as 'year'] as
@@ -155,21 +176,6 @@ export function FormatDateTimePattern(
       } else if (f === 'narrow' || f === 'short' || f === 'long') {
         if (p === 'era') {
           fv = dataLocaleData[p][f][v as 'BC']
-        } else if (p === 'timeZoneName') {
-          const {timeZoneName, gmtFormat, hourFormat} = dataLocaleData
-          const timeZone = internalSlots.timeZone || getDefaultTimeZone()
-          const timeZoneData = timeZoneName[timeZone]
-          if (timeZoneData && timeZoneData[f as 'short']) {
-            fv = timeZoneData[f as 'short']![+tm.inDST]
-          } else {
-            // Fallback to gmtFormat
-            fv = offsetToGmtString(
-              gmtFormat,
-              hourFormat,
-              tm.timeZoneOffset,
-              f as 'long'
-            )
-          }
         } else if (p === 'month') {
           fv = dataLocaleData.month[f][v - 1]
         } else {

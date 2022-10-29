@@ -1,0 +1,20 @@
+/zic/Asia/Pyongyang  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Pyongyang  -67768040609770981 (gmtime failed) = -67768040609770981 (localtime failed)
+/zic/Asia/Pyongyang  -67768040609770980 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=30180
+/zic/Asia/Pyongyang  -67768040609740801 (gmtime failed) = Thu Jan  1 08:22:59 -2147481748 LMT isdst=0 gmtoff=30180
+/zic/Asia/Pyongyang  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 08:23:00 -2147481748 LMT isdst=0 gmtoff=30180
+/zic/Asia/Pyongyang  Tue Mar 31 15:36:59 1908 UT = Tue Mar 31 23:59:59 1908 LMT isdst=0 gmtoff=30180
+/zic/Asia/Pyongyang  Tue Mar 31 15:37:00 1908 UT = Wed Apr  1 00:07:00 1908 KST isdst=0 gmtoff=30600
+/zic/Asia/Pyongyang  Sun Dec 31 15:29:59 1911 UT = Sun Dec 31 23:59:59 1911 KST isdst=0 gmtoff=30600
+/zic/Asia/Pyongyang  Sun Dec 31 15:30:00 1911 UT = Mon Jan  1 00:30:00 1912 JST isdst=0 gmtoff=32400
+/zic/Asia/Pyongyang  Thu Aug 23 14:59:59 1945 UT = Thu Aug 23 23:59:59 1945 JST isdst=0 gmtoff=32400
+/zic/Asia/Pyongyang  Thu Aug 23 15:00:00 1945 UT = Fri Aug 24 00:00:00 1945 KST isdst=0 gmtoff=32400
+/zic/Asia/Pyongyang  Fri Aug 14 14:59:59 2015 UT = Fri Aug 14 23:59:59 2015 KST isdst=0 gmtoff=32400
+/zic/Asia/Pyongyang  Fri Aug 14 15:00:00 2015 UT = Fri Aug 14 23:30:00 2015 KST isdst=0 gmtoff=30600
+/zic/Asia/Pyongyang  Fri May  4 14:59:59 2018 UT = Fri May  4 23:29:59 2018 KST isdst=0 gmtoff=30600
+/zic/Asia/Pyongyang  Fri May  4 15:00:00 2018 UT = Sat May  5 00:00:00 2018 KST isdst=0 gmtoff=32400
+/zic/Asia/Pyongyang  Wed Dec 31 14:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 KST isdst=0 gmtoff=32400
+/zic/Asia/Pyongyang  Wed Dec 31 15:00:00 2147485547 UT = 67768036191644400 (localtime failed)
+/zic/Asia/Pyongyang  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Pyongyang  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Pyongyang  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

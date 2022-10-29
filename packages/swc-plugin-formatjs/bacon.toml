@@ -1,0 +1,41 @@
+# This is a configuration file for the bacon tool
+# More info at https://github.com/Canop/bacon
+
+default_job = "check"
+
+[jobs]
+
+  [jobs.check]
+  command     = ["cargo", "check", "--color", "always"]
+  need_stdout = false
+
+  [jobs.check-all]
+  command     = ["cargo", "check", "--all-targets", "--color", "always"]
+  need_stdout = false
+  watch       = ["tests", "benches", "examples"]
+
+  [jobs.clippy]
+  command     = ["cargo", "clippy", "--color", "always"]
+  need_stdout = false
+
+  [jobs.clippy-all]
+  command     = ["cargo", "clippy", "--all-targets", "--color", "always"]
+  need_stdout = false
+  watch       = ["tests", "benches", "examples"]
+
+  [jobs.test]
+  command     = ["cargo", "test", "--color", "always"]
+  need_stdout = true
+  watch       = ["tests"]
+
+# You may define here keybindings that would be specific to
+# a project, for example a shortcut to launch a specific job.
+# Shortcuts to internal functions (scrolling, toggling, etc.)
+# should go in your personal prefs.toml file instead.
+[keybindings]
+a = "job:check-all"
+c = "job:clippy"
+d = "job:doc-open"
+i = "job:initial"
+r = "job:run"
+t = "job:test"

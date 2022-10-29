@@ -1,0 +1,66 @@
+/zic/Pacific/Rarotonga  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Rarotonga  -67768040609788857 (gmtime failed) = -67768040609788857 (localtime failed)
+/zic/Pacific/Rarotonga  -67768040609788856 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=48056
+/zic/Pacific/Rarotonga  -67768040609740801 (gmtime failed) = Thu Jan  1 13:20:55 -2147481748 LMT isdst=0 gmtoff=48056
+/zic/Pacific/Rarotonga  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 13:20:56 -2147481748 LMT isdst=0 gmtoff=48056
+/zic/Pacific/Rarotonga  Mon Dec 25 10:39:03 1899 UT = Mon Dec 25 23:59:59 1899 LMT isdst=0 gmtoff=48056
+/zic/Pacific/Rarotonga  Mon Dec 25 10:39:04 1899 UT = Mon Dec 25 00:00:00 1899 LMT isdst=0 gmtoff=-38344
+/zic/Pacific/Rarotonga  Thu Oct 16 10:39:03 1952 UT = Wed Oct 15 23:59:59 1952 LMT isdst=0 gmtoff=-38344
+/zic/Pacific/Rarotonga  Thu Oct 16 10:39:04 1952 UT = Thu Oct 16 00:09:04 1952 -1030 isdst=0 gmtoff=-37800
+/zic/Pacific/Rarotonga  Sun Nov 12 10:29:59 1978 UT = Sat Nov 11 23:59:59 1978 -1030 isdst=0 gmtoff=-37800
+/zic/Pacific/Rarotonga  Sun Nov 12 10:30:00 1978 UT = Sun Nov 12 01:00:00 1978 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  4 09:29:59 1979 UT = Sat Mar  3 23:59:59 1979 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  4 09:30:00 1979 UT = Sat Mar  3 23:30:00 1979 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 28 09:59:59 1979 UT = Sat Oct 27 23:59:59 1979 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 28 10:00:00 1979 UT = Sun Oct 28 00:30:00 1979 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  2 09:29:59 1980 UT = Sat Mar  1 23:59:59 1980 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  2 09:30:00 1980 UT = Sat Mar  1 23:30:00 1980 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 26 09:59:59 1980 UT = Sat Oct 25 23:59:59 1980 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 26 10:00:00 1980 UT = Sun Oct 26 00:30:00 1980 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  1 09:29:59 1981 UT = Sat Feb 28 23:59:59 1981 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  1 09:30:00 1981 UT = Sat Feb 28 23:30:00 1981 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 25 09:59:59 1981 UT = Sat Oct 24 23:59:59 1981 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 25 10:00:00 1981 UT = Sun Oct 25 00:30:00 1981 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  7 09:29:59 1982 UT = Sat Mar  6 23:59:59 1982 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  7 09:30:00 1982 UT = Sat Mar  6 23:30:00 1982 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 31 09:59:59 1982 UT = Sat Oct 30 23:59:59 1982 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 31 10:00:00 1982 UT = Sun Oct 31 00:30:00 1982 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  6 09:29:59 1983 UT = Sat Mar  5 23:59:59 1983 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  6 09:30:00 1983 UT = Sat Mar  5 23:30:00 1983 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 30 09:59:59 1983 UT = Sat Oct 29 23:59:59 1983 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 30 10:00:00 1983 UT = Sun Oct 30 00:30:00 1983 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  4 09:29:59 1984 UT = Sat Mar  3 23:59:59 1984 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  4 09:30:00 1984 UT = Sat Mar  3 23:30:00 1984 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 28 09:59:59 1984 UT = Sat Oct 27 23:59:59 1984 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 28 10:00:00 1984 UT = Sun Oct 28 00:30:00 1984 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  3 09:29:59 1985 UT = Sat Mar  2 23:59:59 1985 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  3 09:30:00 1985 UT = Sat Mar  2 23:30:00 1985 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 27 09:59:59 1985 UT = Sat Oct 26 23:59:59 1985 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 27 10:00:00 1985 UT = Sun Oct 27 00:30:00 1985 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  2 09:29:59 1986 UT = Sat Mar  1 23:59:59 1986 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  2 09:30:00 1986 UT = Sat Mar  1 23:30:00 1986 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 26 09:59:59 1986 UT = Sat Oct 25 23:59:59 1986 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 26 10:00:00 1986 UT = Sun Oct 26 00:30:00 1986 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  1 09:29:59 1987 UT = Sat Feb 28 23:59:59 1987 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  1 09:30:00 1987 UT = Sat Feb 28 23:30:00 1987 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 25 09:59:59 1987 UT = Sat Oct 24 23:59:59 1987 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 25 10:00:00 1987 UT = Sun Oct 25 00:30:00 1987 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  6 09:29:59 1988 UT = Sat Mar  5 23:59:59 1988 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  6 09:30:00 1988 UT = Sat Mar  5 23:30:00 1988 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 30 09:59:59 1988 UT = Sat Oct 29 23:59:59 1988 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 30 10:00:00 1988 UT = Sun Oct 30 00:30:00 1988 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  5 09:29:59 1989 UT = Sat Mar  4 23:59:59 1989 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  5 09:30:00 1989 UT = Sat Mar  4 23:30:00 1989 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 29 09:59:59 1989 UT = Sat Oct 28 23:59:59 1989 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 29 10:00:00 1989 UT = Sun Oct 29 00:30:00 1989 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  4 09:29:59 1990 UT = Sat Mar  3 23:59:59 1990 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  4 09:30:00 1990 UT = Sat Mar  3 23:30:00 1990 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 28 09:59:59 1990 UT = Sat Oct 27 23:59:59 1990 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Sun Oct 28 10:00:00 1990 UT = Sun Oct 28 00:30:00 1990 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  3 09:29:59 1991 UT = Sat Mar  2 23:59:59 1991 -0930 isdst=1 gmtoff=-34200
+/zic/Pacific/Rarotonga  Sun Mar  3 09:30:00 1991 UT = Sat Mar  2 23:30:00 1991 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 13:59:59 2147485547 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  67768036191676800 (gmtime failed) = Wed Dec 31 14:00:00 2147485547 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  67768036191712799 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Rarotonga  67768036191712800 (gmtime failed) = 67768036191712800 (localtime failed)
+/zic/Pacific/Rarotonga  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

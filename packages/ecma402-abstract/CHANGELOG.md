@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.12.0...@formatjs/ecma402-abstract@1.13.0) (2022-10-13)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** implemented extend timeZoneName ([#3861](https://github.com/formatjs/formatjs/issues/3861)) ([4fa0204](https://github.com/formatjs/formatjs/commit/4fa0204c049c77f05dd37ddd8109b98be67de7da))
+* **@formatjs/intl-numberformat:** initial NumberFormat v3 implementation ([#3853](https://github.com/formatjs/formatjs/issues/3853)) ([6cc06ec](https://github.com/formatjs/formatjs/commit/6cc06ece7f433dc8d586ac0f969e1d8b47790f1c))
+
 # [1.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.11.10...@formatjs/ecma402-abstract@1.12.0) (2022-08-27)
 
 ### Features

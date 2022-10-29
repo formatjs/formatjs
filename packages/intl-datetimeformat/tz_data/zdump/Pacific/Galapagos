@@ -1,0 +1,18 @@
+/zic/Pacific/Galapagos  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Galapagos  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Galapagos  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Galapagos  Thu Jan  1 05:58:23 -2147481748 UT = -67768040609719297 (localtime failed)
+/zic/Pacific/Galapagos  Thu Jan  1 05:58:24 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-21504
+/zic/Pacific/Galapagos  Thu Jan  1 05:58:23 1931 UT = Wed Dec 31 23:59:59 1930 LMT isdst=0 gmtoff=-21504
+/zic/Pacific/Galapagos  Thu Jan  1 05:58:24 1931 UT = Thu Jan  1 00:58:24 1931 -05 isdst=0 gmtoff=-18000
+/zic/Pacific/Galapagos  Wed Jan  1 04:59:59 1986 UT = Tue Dec 31 23:59:59 1985 -05 isdst=0 gmtoff=-18000
+/zic/Pacific/Galapagos  Wed Jan  1 05:00:00 1986 UT = Tue Dec 31 23:00:00 1985 -06 isdst=0 gmtoff=-21600
+/zic/Pacific/Galapagos  Sat Nov 28 05:59:59 1992 UT = Fri Nov 27 23:59:59 1992 -06 isdst=0 gmtoff=-21600
+/zic/Pacific/Galapagos  Sat Nov 28 06:00:00 1992 UT = Sat Nov 28 01:00:00 1992 -05 isdst=1 gmtoff=-18000
+/zic/Pacific/Galapagos  Fri Feb  5 04:59:59 1993 UT = Thu Feb  4 23:59:59 1993 -05 isdst=1 gmtoff=-18000
+/zic/Pacific/Galapagos  Fri Feb  5 05:00:00 1993 UT = Thu Feb  4 23:00:00 1993 -06 isdst=0 gmtoff=-21600
+/zic/Pacific/Galapagos  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 17:59:59 2147485547 -06 isdst=0 gmtoff=-21600
+/zic/Pacific/Galapagos  67768036191676800 (gmtime failed) = Wed Dec 31 18:00:00 2147485547 -06 isdst=0 gmtoff=-21600
+/zic/Pacific/Galapagos  67768036191698399 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -06 isdst=0 gmtoff=-21600
+/zic/Pacific/Galapagos  67768036191698400 (gmtime failed) = 67768036191698400 (localtime failed)
+/zic/Pacific/Galapagos  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

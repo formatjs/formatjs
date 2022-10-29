@@ -1,0 +1,16 @@
+/zic/Pacific/Kiritimati  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Kiritimati  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Kiritimati  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Kiritimati  Thu Jan  1 10:29:19 -2147481748 UT = -67768040609703041 (localtime failed)
+/zic/Pacific/Kiritimati  Thu Jan  1 10:29:20 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-37760
+/zic/Pacific/Kiritimati  Tue Jan  1 10:29:19 1901 UT = Mon Dec 31 23:59:59 1900 LMT isdst=0 gmtoff=-37760
+/zic/Pacific/Kiritimati  Tue Jan  1 10:29:20 1901 UT = Mon Dec 31 23:49:20 1900 -1040 isdst=0 gmtoff=-38400
+/zic/Pacific/Kiritimati  Mon Oct  1 10:39:59 1979 UT = Sun Sep 30 23:59:59 1979 -1040 isdst=0 gmtoff=-38400
+/zic/Pacific/Kiritimati  Mon Oct  1 10:40:00 1979 UT = Mon Oct  1 00:40:00 1979 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Kiritimati  Sat Dec 31 09:59:59 1994 UT = Fri Dec 30 23:59:59 1994 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Kiritimati  Sat Dec 31 10:00:00 1994 UT = Sun Jan  1 00:00:00 1995 +14 isdst=0 gmtoff=50400
+/zic/Pacific/Kiritimati  Wed Dec 31 09:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +14 isdst=0 gmtoff=50400
+/zic/Pacific/Kiritimati  Wed Dec 31 10:00:00 2147485547 UT = 67768036191626400 (localtime failed)
+/zic/Pacific/Kiritimati  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Kiritimati  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Kiritimati  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

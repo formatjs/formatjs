@@ -1,0 +1,76 @@
+/zic/America/Eirunepe  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Eirunepe  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Eirunepe  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Eirunepe  Thu Jan  1 04:39:27 -2147481748 UT = -67768040609724033 (localtime failed)
+/zic/America/Eirunepe  Thu Jan  1 04:39:28 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-16768
+/zic/America/Eirunepe  Thu Jan  1 04:39:27 1914 UT = Wed Dec 31 23:59:59 1913 LMT isdst=0 gmtoff=-16768
+/zic/America/Eirunepe  Thu Jan  1 04:39:28 1914 UT = Wed Dec 31 23:39:28 1913 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sat Oct  3 15:59:59 1931 UT = Sat Oct  3 10:59:59 1931 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sat Oct  3 16:00:00 1931 UT = Sat Oct  3 12:00:00 1931 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Fri Apr  1 03:59:59 1932 UT = Thu Mar 31 23:59:59 1932 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Fri Apr  1 04:00:00 1932 UT = Thu Mar 31 23:00:00 1932 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Mon Oct  3 04:59:59 1932 UT = Sun Oct  2 23:59:59 1932 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Mon Oct  3 05:00:00 1932 UT = Mon Oct  3 01:00:00 1932 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sat Apr  1 03:59:59 1933 UT = Fri Mar 31 23:59:59 1933 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sat Apr  1 04:00:00 1933 UT = Fri Mar 31 23:00:00 1933 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Thu Dec  1 04:59:59 1949 UT = Wed Nov 30 23:59:59 1949 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Thu Dec  1 05:00:00 1949 UT = Thu Dec  1 01:00:00 1949 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Apr 16 04:59:59 1950 UT = Sun Apr 16 00:59:59 1950 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Apr 16 05:00:00 1950 UT = Sun Apr 16 00:00:00 1950 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Fri Dec  1 04:59:59 1950 UT = Thu Nov 30 23:59:59 1950 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Fri Dec  1 05:00:00 1950 UT = Fri Dec  1 01:00:00 1950 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Apr  1 03:59:59 1951 UT = Sat Mar 31 23:59:59 1951 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Apr  1 04:00:00 1951 UT = Sat Mar 31 23:00:00 1951 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sat Dec  1 04:59:59 1951 UT = Fri Nov 30 23:59:59 1951 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sat Dec  1 05:00:00 1951 UT = Sat Dec  1 01:00:00 1951 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Tue Apr  1 03:59:59 1952 UT = Mon Mar 31 23:59:59 1952 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Tue Apr  1 04:00:00 1952 UT = Mon Mar 31 23:00:00 1952 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Mon Dec  1 04:59:59 1952 UT = Sun Nov 30 23:59:59 1952 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Mon Dec  1 05:00:00 1952 UT = Mon Dec  1 01:00:00 1952 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Mar  1 03:59:59 1953 UT = Sat Feb 28 23:59:59 1953 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Mar  1 04:00:00 1953 UT = Sat Feb 28 23:00:00 1953 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Mon Dec  9 04:59:59 1963 UT = Sun Dec  8 23:59:59 1963 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Mon Dec  9 05:00:00 1963 UT = Mon Dec  9 01:00:00 1963 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Mar  1 03:59:59 1964 UT = Sat Feb 29 23:59:59 1964 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Mar  1 04:00:00 1964 UT = Sat Feb 29 23:00:00 1964 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sun Jan 31 04:59:59 1965 UT = Sat Jan 30 23:59:59 1965 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sun Jan 31 05:00:00 1965 UT = Sun Jan 31 01:00:00 1965 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Wed Mar 31 03:59:59 1965 UT = Tue Mar 30 23:59:59 1965 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Wed Mar 31 04:00:00 1965 UT = Tue Mar 30 23:00:00 1965 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Wed Dec  1 04:59:59 1965 UT = Tue Nov 30 23:59:59 1965 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Wed Dec  1 05:00:00 1965 UT = Wed Dec  1 01:00:00 1965 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Tue Mar  1 03:59:59 1966 UT = Mon Feb 28 23:59:59 1966 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Tue Mar  1 04:00:00 1966 UT = Mon Feb 28 23:00:00 1966 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Tue Nov  1 04:59:59 1966 UT = Mon Oct 31 23:59:59 1966 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Tue Nov  1 05:00:00 1966 UT = Tue Nov  1 01:00:00 1966 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Wed Mar  1 03:59:59 1967 UT = Tue Feb 28 23:59:59 1967 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Wed Mar  1 04:00:00 1967 UT = Tue Feb 28 23:00:00 1967 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Wed Nov  1 04:59:59 1967 UT = Tue Oct 31 23:59:59 1967 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Wed Nov  1 05:00:00 1967 UT = Wed Nov  1 01:00:00 1967 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Fri Mar  1 03:59:59 1968 UT = Thu Feb 29 23:59:59 1968 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Fri Mar  1 04:00:00 1968 UT = Thu Feb 29 23:00:00 1968 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sat Nov  2 04:59:59 1985 UT = Fri Nov  1 23:59:59 1985 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sat Nov  2 05:00:00 1985 UT = Sat Nov  2 01:00:00 1985 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sat Mar 15 03:59:59 1986 UT = Fri Mar 14 23:59:59 1986 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sat Mar 15 04:00:00 1986 UT = Fri Mar 14 23:00:00 1986 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sat Oct 25 04:59:59 1986 UT = Fri Oct 24 23:59:59 1986 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sat Oct 25 05:00:00 1986 UT = Sat Oct 25 01:00:00 1986 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sat Feb 14 03:59:59 1987 UT = Fri Feb 13 23:59:59 1987 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sat Feb 14 04:00:00 1987 UT = Fri Feb 13 23:00:00 1987 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sun Oct 25 04:59:59 1987 UT = Sat Oct 24 23:59:59 1987 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sun Oct 25 05:00:00 1987 UT = Sun Oct 25 01:00:00 1987 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Feb  7 03:59:59 1988 UT = Sat Feb  6 23:59:59 1988 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Feb  7 04:00:00 1988 UT = Sat Feb  6 23:00:00 1988 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sun Oct 17 04:59:59 1993 UT = Sat Oct 16 23:59:59 1993 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Sun Oct 17 05:00:00 1993 UT = Sun Oct 17 01:00:00 1993 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Feb 20 03:59:59 1994 UT = Sat Feb 19 23:59:59 1994 -04 isdst=1 gmtoff=-14400
+/zic/America/Eirunepe  Sun Feb 20 04:00:00 1994 UT = Sat Feb 19 23:00:00 1994 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Tue Jun 24 04:59:59 2008 UT = Mon Jun 23 23:59:59 2008 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Tue Jun 24 05:00:00 2008 UT = Tue Jun 24 01:00:00 2008 -04 isdst=0 gmtoff=-14400
+/zic/America/Eirunepe  Sun Nov 10 03:59:59 2013 UT = Sat Nov  9 23:59:59 2013 -04 isdst=0 gmtoff=-14400
+/zic/America/Eirunepe  Sun Nov 10 04:00:00 2013 UT = Sat Nov  9 23:00:00 2013 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 18:59:59 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  67768036191676800 (gmtime failed) = Wed Dec 31 19:00:00 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  67768036191694799 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Eirunepe  67768036191694800 (gmtime failed) = 67768036191694800 (localtime failed)
+/zic/America/Eirunepe  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -1,0 +1,52 @@
+/zic/Australia/Lindeman  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Australia/Lindeman  -67768040609776557 (gmtime failed) = -67768040609776557 (localtime failed)
+/zic/Australia/Lindeman  -67768040609776556 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=35756
+/zic/Australia/Lindeman  -67768040609740801 (gmtime failed) = Thu Jan  1 09:55:55 -2147481748 LMT isdst=0 gmtoff=35756
+/zic/Australia/Lindeman  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 09:55:56 -2147481748 LMT isdst=0 gmtoff=35756
+/zic/Australia/Lindeman  Mon Dec 31 14:04:03 1894 UT = Mon Dec 31 23:59:59 1894 LMT isdst=0 gmtoff=35756
+/zic/Australia/Lindeman  Mon Dec 31 14:04:04 1894 UT = Tue Jan  1 00:04:04 1895 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sun Dec 31 15:59:59 1916 UT = Mon Jan  1 01:59:59 1917 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sun Dec 31 16:00:00 1916 UT = Mon Jan  1 03:00:00 1917 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar 24 15:59:59 1917 UT = Sun Mar 25 02:59:59 1917 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar 24 16:00:00 1917 UT = Sun Mar 25 02:00:00 1917 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Wed Dec 31 15:59:59 1941 UT = Thu Jan  1 01:59:59 1942 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Wed Dec 31 16:00:00 1941 UT = Thu Jan  1 03:00:00 1942 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar 28 15:59:59 1942 UT = Sun Mar 29 02:59:59 1942 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar 28 16:00:00 1942 UT = Sun Mar 29 02:00:00 1942 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Sep 26 15:59:59 1942 UT = Sun Sep 27 01:59:59 1942 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Sep 26 16:00:00 1942 UT = Sun Sep 27 03:00:00 1942 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar 27 15:59:59 1943 UT = Sun Mar 28 02:59:59 1943 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar 27 16:00:00 1943 UT = Sun Mar 28 02:00:00 1943 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct  2 15:59:59 1943 UT = Sun Oct  3 01:59:59 1943 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct  2 16:00:00 1943 UT = Sun Oct  3 03:00:00 1943 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar 25 15:59:59 1944 UT = Sun Mar 26 02:59:59 1944 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar 25 16:00:00 1944 UT = Sun Mar 26 02:00:00 1944 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 30 15:59:59 1971 UT = Sun Oct 31 01:59:59 1971 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 30 16:00:00 1971 UT = Sun Oct 31 03:00:00 1971 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Feb 26 15:59:59 1972 UT = Sun Feb 27 02:59:59 1972 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Feb 26 16:00:00 1972 UT = Sun Feb 27 02:00:00 1972 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 28 15:59:59 1989 UT = Sun Oct 29 01:59:59 1989 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 28 16:00:00 1989 UT = Sun Oct 29 03:00:00 1989 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar  3 15:59:59 1990 UT = Sun Mar  4 02:59:59 1990 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar  3 16:00:00 1990 UT = Sun Mar  4 02:00:00 1990 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 27 15:59:59 1990 UT = Sun Oct 28 01:59:59 1990 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 27 16:00:00 1990 UT = Sun Oct 28 03:00:00 1990 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar  2 15:59:59 1991 UT = Sun Mar  3 02:59:59 1991 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar  2 16:00:00 1991 UT = Sun Mar  3 02:00:00 1991 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 26 15:59:59 1991 UT = Sun Oct 27 01:59:59 1991 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 26 16:00:00 1991 UT = Sun Oct 27 03:00:00 1991 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Feb 29 15:59:59 1992 UT = Sun Mar  1 02:59:59 1992 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Feb 29 16:00:00 1992 UT = Sun Mar  1 02:00:00 1992 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 24 15:59:59 1992 UT = Sun Oct 25 01:59:59 1992 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 24 16:00:00 1992 UT = Sun Oct 25 03:00:00 1992 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar  6 15:59:59 1993 UT = Sun Mar  7 02:59:59 1993 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar  6 16:00:00 1993 UT = Sun Mar  7 02:00:00 1993 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 30 15:59:59 1993 UT = Sun Oct 31 01:59:59 1993 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Sat Oct 30 16:00:00 1993 UT = Sun Oct 31 03:00:00 1993 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar  5 15:59:59 1994 UT = Sun Mar  6 02:59:59 1994 AEDT isdst=1 gmtoff=39600
+/zic/Australia/Lindeman  Sat Mar  5 16:00:00 1994 UT = Sun Mar  6 02:00:00 1994 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Wed Dec 31 13:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 AEST isdst=0 gmtoff=36000
+/zic/Australia/Lindeman  Wed Dec 31 14:00:00 2147485547 UT = 67768036191640800 (localtime failed)
+/zic/Australia/Lindeman  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Australia/Lindeman  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Australia/Lindeman  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

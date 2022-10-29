@@ -298,7 +298,7 @@ Object {
     \\"description\\": \\"Counts kittens\\"
   },
   \\"escaped.apostrophe\\": {
-    \\"defaultMessage\\": \\"A quoted value '{value}'\\",
+    \\"defaultMessage\\": \\"A quoted value ''{value}''\\",
     \\"description\\": \\"Escaped apostrophe\\"
   },
   \\"foo.bar.baz\\": {

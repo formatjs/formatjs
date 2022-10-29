@@ -1,0 +1,16 @@
+/zic/America/La_Paz  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/La_Paz  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/La_Paz  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/La_Paz  Thu Jan  1 04:32:35 -2147481748 UT = -67768040609724445 (localtime failed)
+/zic/America/La_Paz  Thu Jan  1 04:32:36 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-16356
+/zic/America/La_Paz  Wed Jan  1 04:32:35 1890 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=-16356
+/zic/America/La_Paz  Wed Jan  1 04:32:36 1890 UT = Wed Jan  1 00:00:00 1890 CMT isdst=0 gmtoff=-16356
+/zic/America/La_Paz  Thu Oct 15 04:32:35 1931 UT = Wed Oct 14 23:59:59 1931 CMT isdst=0 gmtoff=-16356
+/zic/America/La_Paz  Thu Oct 15 04:32:36 1931 UT = Thu Oct 15 01:00:00 1931 BST isdst=1 gmtoff=-12756
+/zic/America/La_Paz  Mon Mar 21 03:32:35 1932 UT = Sun Mar 20 23:59:59 1932 BST isdst=1 gmtoff=-12756
+/zic/America/La_Paz  Mon Mar 21 03:32:36 1932 UT = Sun Mar 20 23:32:36 1932 -04 isdst=0 gmtoff=-14400
+/zic/America/La_Paz  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 19:59:59 2147485547 -04 isdst=0 gmtoff=-14400
+/zic/America/La_Paz  67768036191676800 (gmtime failed) = Wed Dec 31 20:00:00 2147485547 -04 isdst=0 gmtoff=-14400
+/zic/America/La_Paz  67768036191691199 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -04 isdst=0 gmtoff=-14400
+/zic/America/La_Paz  67768036191691200 (gmtime failed) = 67768036191691200 (localtime failed)
+/zic/America/La_Paz  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

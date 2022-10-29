@@ -1,0 +1,18 @@
+/zic/Asia/Makassar  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Makassar  -67768040609769457 (gmtime failed) = -67768040609769457 (localtime failed)
+/zic/Asia/Makassar  -67768040609769456 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=28656
+/zic/Asia/Makassar  -67768040609740801 (gmtime failed) = Thu Jan  1 07:57:35 -2147481748 LMT isdst=0 gmtoff=28656
+/zic/Asia/Makassar  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 07:57:36 -2147481748 LMT isdst=0 gmtoff=28656
+/zic/Asia/Makassar  Wed Dec 31 16:02:23 1919 UT = Wed Dec 31 23:59:59 1919 LMT isdst=0 gmtoff=28656
+/zic/Asia/Makassar  Wed Dec 31 16:02:24 1919 UT = Thu Jan  1 00:00:00 1920 MMT isdst=0 gmtoff=28656
+/zic/Asia/Makassar  Mon Oct 31 16:02:23 1932 UT = Mon Oct 31 23:59:59 1932 MMT isdst=0 gmtoff=28656
+/zic/Asia/Makassar  Mon Oct 31 16:02:24 1932 UT = Tue Nov  1 00:02:24 1932 +08 isdst=0 gmtoff=28800
+/zic/Asia/Makassar  Sun Feb  8 15:59:59 1942 UT = Sun Feb  8 23:59:59 1942 +08 isdst=0 gmtoff=28800
+/zic/Asia/Makassar  Sun Feb  8 16:00:00 1942 UT = Mon Feb  9 01:00:00 1942 +09 isdst=0 gmtoff=32400
+/zic/Asia/Makassar  Sat Sep 22 14:59:59 1945 UT = Sat Sep 22 23:59:59 1945 +09 isdst=0 gmtoff=32400
+/zic/Asia/Makassar  Sat Sep 22 15:00:00 1945 UT = Sat Sep 22 23:00:00 1945 WITA isdst=0 gmtoff=28800
+/zic/Asia/Makassar  Wed Dec 31 15:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 WITA isdst=0 gmtoff=28800
+/zic/Asia/Makassar  Wed Dec 31 16:00:00 2147485547 UT = 67768036191648000 (localtime failed)
+/zic/Asia/Makassar  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Makassar  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Makassar  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

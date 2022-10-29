@@ -1,0 +1,10 @@
+[workspace]
+exclude = ["spec/swc-formatjs-custom-transform"]
+members = [
+  "packages/icu-messageformat-parser",
+  "packages/swc-formatjs-visitor",
+  "packages/swc-plugin-formatjs"
+]
+
+[profile.release]
+lto = true

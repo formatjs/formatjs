@@ -1,0 +1,40 @@
+/zic/America/Hermosillo  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Hermosillo  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Hermosillo  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Hermosillo  Thu Jan  1 07:23:51 -2147481748 UT = -67768040609714169 (localtime failed)
+/zic/America/Hermosillo  Thu Jan  1 07:23:52 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-26632
+/zic/America/Hermosillo  Sun Jan  1 06:59:59 1922 UT = Sat Dec 31 23:36:07 1921 LMT isdst=0 gmtoff=-26632
+/zic/America/Hermosillo  Sun Jan  1 07:00:00 1922 UT = Sun Jan  1 00:00:00 1922 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Sat Jun 11 05:59:59 1927 UT = Fri Jun 10 22:59:59 1927 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Sat Jun 11 06:00:00 1927 UT = Sat Jun 11 00:00:00 1927 CST isdst=0 gmtoff=-21600
+/zic/America/Hermosillo  Sat Nov 15 05:59:59 1930 UT = Fri Nov 14 23:59:59 1930 CST isdst=0 gmtoff=-21600
+/zic/America/Hermosillo  Sat Nov 15 06:00:00 1930 UT = Fri Nov 14 23:00:00 1930 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Sat May  2 05:59:59 1931 UT = Fri May  1 22:59:59 1931 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Sat May  2 06:00:00 1931 UT = Sat May  2 00:00:00 1931 CST isdst=0 gmtoff=-21600
+/zic/America/Hermosillo  Thu Oct  1 05:59:59 1931 UT = Wed Sep 30 23:59:59 1931 CST isdst=0 gmtoff=-21600
+/zic/America/Hermosillo  Thu Oct  1 06:00:00 1931 UT = Wed Sep 30 23:00:00 1931 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Fri Apr  1 06:59:59 1932 UT = Thu Mar 31 23:59:59 1932 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Fri Apr  1 07:00:00 1932 UT = Fri Apr  1 01:00:00 1932 CST isdst=0 gmtoff=-21600
+/zic/America/Hermosillo  Fri Apr 24 05:59:59 1942 UT = Thu Apr 23 23:59:59 1942 CST isdst=0 gmtoff=-21600
+/zic/America/Hermosillo  Fri Apr 24 06:00:00 1942 UT = Thu Apr 23 23:00:00 1942 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Fri Jan 14 06:59:59 1949 UT = Thu Jan 13 23:59:59 1949 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Fri Jan 14 07:00:00 1949 UT = Thu Jan 13 23:00:00 1949 PST isdst=0 gmtoff=-28800
+/zic/America/Hermosillo  Thu Jan  1 07:59:59 1970 UT = Wed Dec 31 23:59:59 1969 PST isdst=0 gmtoff=-28800
+/zic/America/Hermosillo  Thu Jan  1 08:00:00 1970 UT = Thu Jan  1 01:00:00 1970 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Sun Apr  7 08:59:59 1996 UT = Sun Apr  7 01:59:59 1996 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Sun Apr  7 09:00:00 1996 UT = Sun Apr  7 03:00:00 1996 MDT isdst=1 gmtoff=-21600
+/zic/America/Hermosillo  Sun Oct 27 07:59:59 1996 UT = Sun Oct 27 01:59:59 1996 MDT isdst=1 gmtoff=-21600
+/zic/America/Hermosillo  Sun Oct 27 08:00:00 1996 UT = Sun Oct 27 01:00:00 1996 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Sun Apr  6 08:59:59 1997 UT = Sun Apr  6 01:59:59 1997 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Sun Apr  6 09:00:00 1997 UT = Sun Apr  6 03:00:00 1997 MDT isdst=1 gmtoff=-21600
+/zic/America/Hermosillo  Sun Oct 26 07:59:59 1997 UT = Sun Oct 26 01:59:59 1997 MDT isdst=1 gmtoff=-21600
+/zic/America/Hermosillo  Sun Oct 26 08:00:00 1997 UT = Sun Oct 26 01:00:00 1997 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Sun Apr  5 08:59:59 1998 UT = Sun Apr  5 01:59:59 1998 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Sun Apr  5 09:00:00 1998 UT = Sun Apr  5 03:00:00 1998 MDT isdst=1 gmtoff=-21600
+/zic/America/Hermosillo  Sun Oct 25 07:59:59 1998 UT = Sun Oct 25 01:59:59 1998 MDT isdst=1 gmtoff=-21600
+/zic/America/Hermosillo  Sun Oct 25 08:00:00 1998 UT = Sun Oct 25 01:00:00 1998 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 16:59:59 2147485547 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  67768036191676800 (gmtime failed) = Wed Dec 31 17:00:00 2147485547 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  67768036191701999 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 MST isdst=0 gmtoff=-25200
+/zic/America/Hermosillo  67768036191702000 (gmtime failed) = 67768036191702000 (localtime failed)
+/zic/America/Hermosillo  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

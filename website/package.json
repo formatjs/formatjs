@@ -15,17 +15,20 @@
     ]
   },
   "devDependencies": {
-    "@algolia/client-search": "^4.14.2",
+    "@algolia/client-search": "4",
     "@docusaurus/core": "2",
     "@docusaurus/plugin-google-analytics": "2",
     "@docusaurus/preset-classic": "2",
     "@docusaurus/theme-common": "2",
     "@docusaurus/theme-live-codeblock": "2",
-    "classnames": "^2.2.6",
-    "react-dom": "^16.6.0 || 17",
-    "prism-react-renderer": "^1.3.3",
-    "@mdx-js/react": "^2.1.2",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "@mdx-js/react": "1",
+    "classnames": "2",
+    "http-server": "14",
+    "intl-messageformat": "workspace:*",
+    "prism-react-renderer": "1",
+    "react-intl": "workspace:*",
     "react-live": "2",
-    "react": "^16.6.0 || 17"
+    "typescript": "^4.7"
   }
 }

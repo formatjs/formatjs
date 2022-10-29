@@ -12,6 +12,10 @@ Process string messages for translation from modules that use react-intl, specif
 - Option to remove `defaultMessage` from message descriptor to save bytes since it isn't used at runtime.
 - Automatically inject message ID based on specific pattern.
 
+:::caution
+`@formatjs/swc-plugin` is not currently compatible with TypeScript due to [swc-project/swc#4648](https://github.com/swc-project/swc/issues/4648). Attempting to compile a TypeScript codebase with the swc plugin will likely result in the error "Method visitTsType not implemented."
+:::
+
 ## Installation
 
 import Tabs from '@theme/Tabs'

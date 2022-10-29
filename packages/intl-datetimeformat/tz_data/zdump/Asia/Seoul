@@ -1,0 +1,68 @@
+/zic/Asia/Seoul  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Seoul  -67768040609771273 (gmtime failed) = -67768040609771273 (localtime failed)
+/zic/Asia/Seoul  -67768040609771272 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=30472
+/zic/Asia/Seoul  -67768040609740801 (gmtime failed) = Thu Jan  1 08:27:51 -2147481748 LMT isdst=0 gmtoff=30472
+/zic/Asia/Seoul  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 08:27:52 -2147481748 LMT isdst=0 gmtoff=30472
+/zic/Asia/Seoul  Tue Mar 31 15:32:07 1908 UT = Tue Mar 31 23:59:59 1908 LMT isdst=0 gmtoff=30472
+/zic/Asia/Seoul  Tue Mar 31 15:32:08 1908 UT = Wed Apr  1 00:02:08 1908 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sun Dec 31 15:29:59 1911 UT = Sun Dec 31 23:59:59 1911 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sun Dec 31 15:30:00 1911 UT = Mon Jan  1 00:30:00 1912 JST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Fri Sep  7 14:59:59 1945 UT = Fri Sep  7 23:59:59 1945 JST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Fri Sep  7 15:00:00 1945 UT = Sat Sep  8 00:00:00 1945 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Mon May 31 14:59:59 1948 UT = Mon May 31 23:59:59 1948 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Mon May 31 15:00:00 1948 UT = Tue Jun  1 01:00:00 1948 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sun Sep 12 13:59:59 1948 UT = Sun Sep 12 23:59:59 1948 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sun Sep 12 14:00:00 1948 UT = Sun Sep 12 23:00:00 1948 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Sat Apr  2 14:59:59 1949 UT = Sat Apr  2 23:59:59 1949 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Sat Apr  2 15:00:00 1949 UT = Sun Apr  3 01:00:00 1949 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sat Sep 10 13:59:59 1949 UT = Sat Sep 10 23:59:59 1949 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sat Sep 10 14:00:00 1949 UT = Sat Sep 10 23:00:00 1949 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Fri Mar 31 14:59:59 1950 UT = Fri Mar 31 23:59:59 1950 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Fri Mar 31 15:00:00 1950 UT = Sat Apr  1 01:00:00 1950 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sat Sep  9 13:59:59 1950 UT = Sat Sep  9 23:59:59 1950 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sat Sep  9 14:00:00 1950 UT = Sat Sep  9 23:00:00 1950 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Sat May  5 14:59:59 1951 UT = Sat May  5 23:59:59 1951 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Sat May  5 15:00:00 1951 UT = Sun May  6 01:00:00 1951 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sat Sep  8 13:59:59 1951 UT = Sat Sep  8 23:59:59 1951 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sat Sep  8 14:00:00 1951 UT = Sat Sep  8 23:00:00 1951 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Sat Mar 20 14:59:59 1954 UT = Sat Mar 20 23:59:59 1954 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Sat Mar 20 15:00:00 1954 UT = Sat Mar 20 23:30:00 1954 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Wed May  4 15:29:59 1955 UT = Wed May  4 23:59:59 1955 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Wed May  4 15:30:00 1955 UT = Thu May  5 01:00:00 1955 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Thu Sep  8 14:29:59 1955 UT = Thu Sep  8 23:59:59 1955 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Thu Sep  8 14:30:00 1955 UT = Thu Sep  8 23:00:00 1955 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sat May 19 15:29:59 1956 UT = Sat May 19 23:59:59 1956 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sat May 19 15:30:00 1956 UT = Sun May 20 01:00:00 1956 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Sat Sep 29 14:29:59 1956 UT = Sat Sep 29 23:59:59 1956 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Sat Sep 29 14:30:00 1956 UT = Sat Sep 29 23:00:00 1956 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sat May  4 15:29:59 1957 UT = Sat May  4 23:59:59 1957 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sat May  4 15:30:00 1957 UT = Sun May  5 01:00:00 1957 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Sat Sep 21 14:29:59 1957 UT = Sat Sep 21 23:59:59 1957 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Sat Sep 21 14:30:00 1957 UT = Sat Sep 21 23:00:00 1957 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sat May  3 15:29:59 1958 UT = Sat May  3 23:59:59 1958 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sat May  3 15:30:00 1958 UT = Sun May  4 01:00:00 1958 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Sat Sep 20 14:29:59 1958 UT = Sat Sep 20 23:59:59 1958 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Sat Sep 20 14:30:00 1958 UT = Sat Sep 20 23:00:00 1958 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sat May  2 15:29:59 1959 UT = Sat May  2 23:59:59 1959 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sat May  2 15:30:00 1959 UT = Sun May  3 01:00:00 1959 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Sat Sep 19 14:29:59 1959 UT = Sat Sep 19 23:59:59 1959 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Sat Sep 19 14:30:00 1959 UT = Sat Sep 19 23:00:00 1959 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sat Apr 30 15:29:59 1960 UT = Sat Apr 30 23:59:59 1960 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Sat Apr 30 15:30:00 1960 UT = Sun May  1 01:00:00 1960 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Sat Sep 17 14:29:59 1960 UT = Sat Sep 17 23:59:59 1960 KDT isdst=1 gmtoff=34200
+/zic/Asia/Seoul  Sat Sep 17 14:30:00 1960 UT = Sat Sep 17 23:00:00 1960 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Wed Aug  9 15:29:59 1961 UT = Wed Aug  9 23:59:59 1961 KST isdst=0 gmtoff=30600
+/zic/Asia/Seoul  Wed Aug  9 15:30:00 1961 UT = Thu Aug 10 00:30:00 1961 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Sat May  9 16:59:59 1987 UT = Sun May 10 01:59:59 1987 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Sat May  9 17:00:00 1987 UT = Sun May 10 03:00:00 1987 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sat Oct 10 16:59:59 1987 UT = Sun Oct 11 02:59:59 1987 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sat Oct 10 17:00:00 1987 UT = Sun Oct 11 02:00:00 1987 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Sat May  7 16:59:59 1988 UT = Sun May  8 01:59:59 1988 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Sat May  7 17:00:00 1988 UT = Sun May  8 03:00:00 1988 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sat Oct  8 16:59:59 1988 UT = Sun Oct  9 02:59:59 1988 KDT isdst=1 gmtoff=36000
+/zic/Asia/Seoul  Sat Oct  8 17:00:00 1988 UT = Sun Oct  9 02:00:00 1988 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Wed Dec 31 14:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 KST isdst=0 gmtoff=32400
+/zic/Asia/Seoul  Wed Dec 31 15:00:00 2147485547 UT = 67768036191644400 (localtime failed)
+/zic/Asia/Seoul  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Seoul  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Seoul  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

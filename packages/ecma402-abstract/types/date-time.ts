@@ -5,6 +5,7 @@ export type Formats = Pick<
   | 'year'
   | 'month'
   | 'day'
+  | 'dayPeriod'
   | 'hour'
   | 'minute'
   | 'second'
@@ -35,7 +36,13 @@ export interface IntlDateTimeFormatInternal {
   hour: '2-digit' | 'numeric'
   minute: '2-digit' | 'numeric'
   second: '2-digit' | 'numeric'
-  timeZoneName: 'short' | 'long'
+  timeZoneName:
+    | 'short'
+    | 'long'
+    | 'shortOffset'
+    | 'longOffset'
+    | 'shortGeneric'
+    | 'longGeneric'
   fractionalSecondDigits?: 1 | 2 | 3
   hourCycle: string
   numberingSystem: string
@@ -81,6 +88,7 @@ export type TABLE_6 =
   | 'year'
   | 'month'
   | 'day'
+  | 'dayPeriod'
   | 'hour'
   | 'minute'
   | 'second'

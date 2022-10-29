@@ -1,0 +1,42 @@
+/zic/America/Lima  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Lima  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Lima  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Lima  Thu Jan  1 05:08:11 -2147481748 UT = -67768040609722309 (localtime failed)
+/zic/America/Lima  Thu Jan  1 05:08:12 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-18492
+/zic/America/Lima  Wed Jan  1 05:08:11 1890 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=-18492
+/zic/America/Lima  Wed Jan  1 05:08:12 1890 UT = Tue Dec 31 23:59:36 1889 LMT isdst=0 gmtoff=-18516
+/zic/America/Lima  Tue Jul 28 05:08:35 1908 UT = Mon Jul 27 23:59:59 1908 LMT isdst=0 gmtoff=-18516
+/zic/America/Lima  Tue Jul 28 05:08:36 1908 UT = Tue Jul 28 00:08:36 1908 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Sat Jan  1 04:59:59 1938 UT = Fri Dec 31 23:59:59 1937 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Sat Jan  1 05:00:00 1938 UT = Sat Jan  1 01:00:00 1938 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Fri Apr  1 03:59:59 1938 UT = Thu Mar 31 23:59:59 1938 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Fri Apr  1 04:00:00 1938 UT = Thu Mar 31 23:00:00 1938 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Sun Sep 25 04:59:59 1938 UT = Sat Sep 24 23:59:59 1938 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Sun Sep 25 05:00:00 1938 UT = Sun Sep 25 01:00:00 1938 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Sun Mar 26 03:59:59 1939 UT = Sat Mar 25 23:59:59 1939 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Sun Mar 26 04:00:00 1939 UT = Sat Mar 25 23:00:00 1939 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Sun Sep 24 04:59:59 1939 UT = Sat Sep 23 23:59:59 1939 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Sun Sep 24 05:00:00 1939 UT = Sun Sep 24 01:00:00 1939 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Sun Mar 24 03:59:59 1940 UT = Sat Mar 23 23:59:59 1940 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Sun Mar 24 04:00:00 1940 UT = Sat Mar 23 23:00:00 1940 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Wed Jan  1 04:59:59 1986 UT = Tue Dec 31 23:59:59 1985 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Wed Jan  1 05:00:00 1986 UT = Wed Jan  1 01:00:00 1986 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Tue Apr  1 03:59:59 1986 UT = Mon Mar 31 23:59:59 1986 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Tue Apr  1 04:00:00 1986 UT = Mon Mar 31 23:00:00 1986 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Thu Jan  1 04:59:59 1987 UT = Wed Dec 31 23:59:59 1986 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Thu Jan  1 05:00:00 1987 UT = Thu Jan  1 01:00:00 1987 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Wed Apr  1 03:59:59 1987 UT = Tue Mar 31 23:59:59 1987 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Wed Apr  1 04:00:00 1987 UT = Tue Mar 31 23:00:00 1987 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Mon Jan  1 04:59:59 1990 UT = Sun Dec 31 23:59:59 1989 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Mon Jan  1 05:00:00 1990 UT = Mon Jan  1 01:00:00 1990 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Sun Apr  1 03:59:59 1990 UT = Sat Mar 31 23:59:59 1990 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Sun Apr  1 04:00:00 1990 UT = Sat Mar 31 23:00:00 1990 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Sat Jan  1 04:59:59 1994 UT = Fri Dec 31 23:59:59 1993 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Sat Jan  1 05:00:00 1994 UT = Sat Jan  1 01:00:00 1994 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Fri Apr  1 03:59:59 1994 UT = Thu Mar 31 23:59:59 1994 -04 isdst=1 gmtoff=-14400
+/zic/America/Lima  Fri Apr  1 04:00:00 1994 UT = Thu Mar 31 23:00:00 1994 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 18:59:59 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  67768036191676800 (gmtime failed) = Wed Dec 31 19:00:00 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  67768036191694799 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -05 isdst=0 gmtoff=-18000
+/zic/America/Lima  67768036191694800 (gmtime failed) = 67768036191694800 (localtime failed)
+/zic/America/Lima  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

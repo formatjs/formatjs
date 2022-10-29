@@ -1,0 +1,12 @@
+/zic/Pacific/Gambier  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Gambier  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Gambier  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Gambier  Thu Jan  1 08:59:47 -2147481748 UT = -67768040609708413 (localtime failed)
+/zic/Pacific/Gambier  Thu Jan  1 08:59:48 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-32388
+/zic/Pacific/Gambier  Tue Oct  1 08:59:47 1912 UT = Mon Sep 30 23:59:59 1912 LMT isdst=0 gmtoff=-32388
+/zic/Pacific/Gambier  Tue Oct  1 08:59:48 1912 UT = Mon Sep 30 23:59:48 1912 -09 isdst=0 gmtoff=-32400
+/zic/Pacific/Gambier  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 14:59:59 2147485547 -09 isdst=0 gmtoff=-32400
+/zic/Pacific/Gambier  67768036191676800 (gmtime failed) = Wed Dec 31 15:00:00 2147485547 -09 isdst=0 gmtoff=-32400
+/zic/Pacific/Gambier  67768036191709199 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -09 isdst=0 gmtoff=-32400
+/zic/Pacific/Gambier  67768036191709200 (gmtime failed) = 67768036191709200 (localtime failed)
+/zic/Pacific/Gambier  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

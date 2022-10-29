@@ -132,10 +132,10 @@ bazel_skylib_workspace()
 # See https://github.com/bazelbuild/rules_go for the up to date setup instructions.
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "f2dcd210c7095febe54b804bb1cd3a58fe8435a909db2ec04e31542631cf715c",
+    sha256 = "099a9fb96a376ccbbb7d291ed4ecbdfd42f6bc822ab77ae6f1b5cb9e914e94fa",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.31.0/rules_go-v0.31.0.zip",
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.31.0/rules_go-v0.31.0.zip",
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.35.0/rules_go-v0.35.0.zip",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.35.0/rules_go-v0.35.0.zip",
     ],
 )
 
@@ -194,18 +194,22 @@ http_archive(
 )
 
 # Test262
-new_local_repository(
+TEST262_COMMIT = "ade328d530525333751e8a3b58f02e18624da085"
+
+http_archive(
     name = "com_github_tc39_test262",
     build_file = "@//:test262.BUILD",
-    path = "test262",
+    sha256 = "f4915077f38016d0f20ad8cbeaeec4e3d4a5eca3a98a895e01653f3375802a4b",
+    strip_prefix = "tc39-test262-%s" % TEST262_COMMIT[:7],
+    type = "tar.gz",
+    urls = ["https://github.com/tc39/test262/tarball/%s" % TEST262_COMMIT],
 )
 
 # Docker
 http_archive(
     name = "io_bazel_rules_docker",
-    sha256 = "59536e6ae64359b716ba9c46c39183403b01eabfbd57578e84398b4829ca499a",
-    strip_prefix = "rules_docker-0.22.0",
-    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.22.0/rules_docker-v0.22.0.tar.gz"],
+    sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
 )
 
 load(
@@ -225,10 +229,25 @@ load(
 )
 
 container_pull(
-    name = "ubuntu2204",
+    name = "ubuntu22",
     architecture = "amd64",
-    digest = "sha256:2d7ecc9c5e08953d586a6e50c29b91479a48f69ac1ba1f9dc0420d18a728dfc5",
+    digest = "sha256:6f07fc47ac37fd94fb0bf6b791aa4692f17f6a2fdfccd856d5a62043cf927be1",
     registry = "index.docker.io",
     repository = "library/ubuntu",
-    tag = "22.04",
+    tag = "22.10",
 )
+
+http_archive(
+    name = "io_buildbuddy_buildbuddy_toolchain",
+    sha256 = "603fb15023d57353f5975aa42084630895916a46060f86edabd58623b1693e27",
+    strip_prefix = "buildbuddy-toolchain-9d7a9b7f893b3cb396ea262c64a148b1e46769a7",
+    urls = ["https://github.com/buildbuddy-io/buildbuddy-toolchain/archive/9d7a9b7f893b3cb396ea262c64a148b1e46769a7.tar.gz"],
+)
+
+load("@io_buildbuddy_buildbuddy_toolchain//:deps.bzl", "buildbuddy_deps")
+
+buildbuddy_deps()
+
+load("@io_buildbuddy_buildbuddy_toolchain//:rules.bzl", "buildbuddy")
+
+buildbuddy(name = "buildbuddy_toolchain")

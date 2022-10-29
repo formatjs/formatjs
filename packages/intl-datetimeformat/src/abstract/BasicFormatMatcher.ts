@@ -7,6 +7,7 @@ import {
   shortMorePenalty,
   shortLessPenalty,
   longLessPenalty,
+  offsetPenalty,
 } from './utils'
 
 /**
@@ -30,6 +31,50 @@ export function BasicFormatMatcher(
         score -= additionPenalty
       } else if (optionsProp !== undefined && formatProp === undefined) {
         score -= removalPenalty
+      } else if (prop === 'timeZoneName') {
+        if (optionsProp === 'short' || optionsProp === 'shortGeneric') {
+          if (formatProp === 'shortOffset') {
+            score -= offsetPenalty
+          } else if (formatProp === 'longOffset') {
+            score -= offsetPenalty + shortMorePenalty
+          } else if (optionsProp === 'short' && formatProp === 'long') {
+            score -= shortMorePenalty
+          } else if (
+            optionsProp === 'shortGeneric' &&
+            formatProp === 'longGeneric'
+          ) {
+            score -= shortMorePenalty
+          } else if (optionsProp !== formatProp) {
+            score -= removalPenalty
+          }
+        } else if (
+          optionsProp === 'shortOffset' &&
+          formatProp === 'longOffset'
+        ) {
+          score -= shortMorePenalty
+        } else if (optionsProp === 'long' || optionsProp === 'longGeneric') {
+          if (formatProp === 'longOffset') {
+            score -= offsetPenalty
+          } else if (formatProp === 'shortOffset') {
+            score -= offsetPenalty + longLessPenalty
+          } else if (optionsProp === 'long' && formatProp === 'short') {
+            score -= longLessPenalty
+          } else if (
+            optionsProp === 'longGeneric' &&
+            formatProp === 'shortGeneric'
+          ) {
+            score -= longLessPenalty
+          } else if (optionsProp !== formatProp) {
+            score -= removalPenalty
+          }
+        } else if (
+          optionsProp === 'longOffset' &&
+          formatProp === 'shortOffset'
+        ) {
+          score -= longLessPenalty
+        } else if (optionsProp !== formatProp) {
+          score -= removalPenalty
+        }
       } else if (optionsProp !== formatProp) {
         let values: any[]
         if (prop === 'fractionalSecondDigits') {

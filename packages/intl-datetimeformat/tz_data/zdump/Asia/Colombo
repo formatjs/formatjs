@@ -1,0 +1,26 @@
+/zic/Asia/Colombo  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Colombo  -67768040609759965 (gmtime failed) = -67768040609759965 (localtime failed)
+/zic/Asia/Colombo  -67768040609759964 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=19164
+/zic/Asia/Colombo  -67768040609740801 (gmtime failed) = Thu Jan  1 05:19:23 -2147481748 LMT isdst=0 gmtoff=19164
+/zic/Asia/Colombo  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 05:19:24 -2147481748 LMT isdst=0 gmtoff=19164
+/zic/Asia/Colombo  Wed Dec 31 18:40:35 1879 UT = Wed Dec 31 23:59:59 1879 LMT isdst=0 gmtoff=19164
+/zic/Asia/Colombo  Wed Dec 31 18:40:36 1879 UT = Thu Jan  1 00:00:08 1880 MMT isdst=0 gmtoff=19172
+/zic/Asia/Colombo  Sun Dec 31 18:40:27 1905 UT = Sun Dec 31 23:59:59 1905 MMT isdst=0 gmtoff=19172
+/zic/Asia/Colombo  Sun Dec 31 18:40:28 1905 UT = Mon Jan  1 00:10:28 1906 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Colombo  Sun Jan  4 18:29:59 1942 UT = Sun Jan  4 23:59:59 1942 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Colombo  Sun Jan  4 18:30:00 1942 UT = Mon Jan  5 00:30:00 1942 +06 isdst=1 gmtoff=21600
+/zic/Asia/Colombo  Mon Aug 31 17:59:59 1942 UT = Mon Aug 31 23:59:59 1942 +06 isdst=1 gmtoff=21600
+/zic/Asia/Colombo  Mon Aug 31 18:00:00 1942 UT = Tue Sep  1 00:30:00 1942 +0630 isdst=1 gmtoff=23400
+/zic/Asia/Colombo  Mon Oct 15 19:29:59 1945 UT = Tue Oct 16 01:59:59 1945 +0630 isdst=1 gmtoff=23400
+/zic/Asia/Colombo  Mon Oct 15 19:30:00 1945 UT = Tue Oct 16 01:00:00 1945 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Colombo  Fri May 24 18:29:59 1996 UT = Fri May 24 23:59:59 1996 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Colombo  Fri May 24 18:30:00 1996 UT = Sat May 25 01:00:00 1996 +0630 isdst=0 gmtoff=23400
+/zic/Asia/Colombo  Fri Oct 25 17:59:59 1996 UT = Sat Oct 26 00:29:59 1996 +0630 isdst=0 gmtoff=23400
+/zic/Asia/Colombo  Fri Oct 25 18:00:00 1996 UT = Sat Oct 26 00:00:00 1996 +06 isdst=0 gmtoff=21600
+/zic/Asia/Colombo  Fri Apr 14 18:29:59 2006 UT = Sat Apr 15 00:29:59 2006 +06 isdst=0 gmtoff=21600
+/zic/Asia/Colombo  Fri Apr 14 18:30:00 2006 UT = Sat Apr 15 00:00:00 2006 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Colombo  Wed Dec 31 18:29:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Colombo  Wed Dec 31 18:30:00 2147485547 UT = 67768036191657000 (localtime failed)
+/zic/Asia/Colombo  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Colombo  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Colombo  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

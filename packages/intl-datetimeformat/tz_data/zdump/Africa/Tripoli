@@ -1,0 +1,74 @@
+/zic/Africa/Tripoli  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Tripoli  -67768040609743965 (gmtime failed) = -67768040609743965 (localtime failed)
+/zic/Africa/Tripoli  -67768040609743964 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=3164
+/zic/Africa/Tripoli  -67768040609740801 (gmtime failed) = Thu Jan  1 00:52:43 -2147481748 LMT isdst=0 gmtoff=3164
+/zic/Africa/Tripoli  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 00:52:44 -2147481748 LMT isdst=0 gmtoff=3164
+/zic/Africa/Tripoli  Wed Dec 31 23:07:15 1919 UT = Wed Dec 31 23:59:59 1919 LMT isdst=0 gmtoff=3164
+/zic/Africa/Tripoli  Wed Dec 31 23:07:16 1919 UT = Thu Jan  1 00:07:16 1920 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Sun Oct 14 00:59:59 1951 UT = Sun Oct 14 01:59:59 1951 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Sun Oct 14 01:00:00 1951 UT = Sun Oct 14 03:00:00 1951 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Mon Dec 31 21:59:59 1951 UT = Mon Dec 31 23:59:59 1951 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Mon Dec 31 22:00:00 1951 UT = Mon Dec 31 23:00:00 1951 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Fri Oct  9 00:59:59 1953 UT = Fri Oct  9 01:59:59 1953 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Fri Oct  9 01:00:00 1953 UT = Fri Oct  9 03:00:00 1953 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Thu Dec 31 21:59:59 1953 UT = Thu Dec 31 23:59:59 1953 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Thu Dec 31 22:00:00 1953 UT = Thu Dec 31 23:00:00 1953 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Sep 29 22:59:59 1955 UT = Thu Sep 29 23:59:59 1955 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Sep 29 23:00:00 1955 UT = Fri Sep 30 01:00:00 1955 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Sat Dec 31 21:59:59 1955 UT = Sat Dec 31 23:59:59 1955 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Sat Dec 31 22:00:00 1955 UT = Sat Dec 31 23:00:00 1955 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Wed Dec 31 22:59:59 1958 UT = Wed Dec 31 23:59:59 1958 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Wed Dec 31 23:00:00 1958 UT = Thu Jan  1 01:00:00 1959 EET isdst=0 gmtoff=7200
+/zic/Africa/Tripoli  Thu Dec 31 21:59:59 1981 UT = Thu Dec 31 23:59:59 1981 EET isdst=0 gmtoff=7200
+/zic/Africa/Tripoli  Thu Dec 31 22:00:00 1981 UT = Thu Dec 31 23:00:00 1981 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Wed Mar 31 22:59:59 1982 UT = Wed Mar 31 23:59:59 1982 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Wed Mar 31 23:00:00 1982 UT = Thu Apr  1 01:00:00 1982 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Thu Sep 30 21:59:59 1982 UT = Thu Sep 30 23:59:59 1982 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Thu Sep 30 22:00:00 1982 UT = Thu Sep 30 23:00:00 1982 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Mar 31 22:59:59 1983 UT = Thu Mar 31 23:59:59 1983 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Mar 31 23:00:00 1983 UT = Fri Apr  1 01:00:00 1983 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Fri Sep 30 21:59:59 1983 UT = Fri Sep 30 23:59:59 1983 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Fri Sep 30 22:00:00 1983 UT = Fri Sep 30 23:00:00 1983 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Sat Mar 31 22:59:59 1984 UT = Sat Mar 31 23:59:59 1984 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Sat Mar 31 23:00:00 1984 UT = Sun Apr  1 01:00:00 1984 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Sun Sep 30 21:59:59 1984 UT = Sun Sep 30 23:59:59 1984 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Sun Sep 30 22:00:00 1984 UT = Sun Sep 30 23:00:00 1984 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Fri Apr  5 22:59:59 1985 UT = Fri Apr  5 23:59:59 1985 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Fri Apr  5 23:00:00 1985 UT = Sat Apr  6 01:00:00 1985 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Mon Sep 30 21:59:59 1985 UT = Mon Sep 30 23:59:59 1985 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Mon Sep 30 22:00:00 1985 UT = Mon Sep 30 23:00:00 1985 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Apr  3 22:59:59 1986 UT = Thu Apr  3 23:59:59 1986 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Apr  3 23:00:00 1986 UT = Fri Apr  4 01:00:00 1986 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Thu Oct  2 21:59:59 1986 UT = Thu Oct  2 23:59:59 1986 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Thu Oct  2 22:00:00 1986 UT = Thu Oct  2 23:00:00 1986 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Tue Mar 31 22:59:59 1987 UT = Tue Mar 31 23:59:59 1987 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Tue Mar 31 23:00:00 1987 UT = Wed Apr  1 01:00:00 1987 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Wed Sep 30 21:59:59 1987 UT = Wed Sep 30 23:59:59 1987 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Wed Sep 30 22:00:00 1987 UT = Wed Sep 30 23:00:00 1987 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Mar 31 22:59:59 1988 UT = Thu Mar 31 23:59:59 1988 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Mar 31 23:00:00 1988 UT = Fri Apr  1 01:00:00 1988 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Fri Sep 30 21:59:59 1988 UT = Fri Sep 30 23:59:59 1988 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Fri Sep 30 22:00:00 1988 UT = Fri Sep 30 23:00:00 1988 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Fri Mar 31 22:59:59 1989 UT = Fri Mar 31 23:59:59 1989 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Fri Mar 31 23:00:00 1989 UT = Sat Apr  1 01:00:00 1989 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Sat Sep 30 21:59:59 1989 UT = Sat Sep 30 23:59:59 1989 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Sat Sep 30 22:00:00 1989 UT = Sat Sep 30 23:00:00 1989 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu May  3 22:59:59 1990 UT = Thu May  3 23:59:59 1990 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu May  3 23:00:00 1990 UT = Fri May  4 01:00:00 1990 EET isdst=0 gmtoff=7200
+/zic/Africa/Tripoli  Sun Sep 29 21:59:59 1996 UT = Sun Sep 29 23:59:59 1996 EET isdst=0 gmtoff=7200
+/zic/Africa/Tripoli  Sun Sep 29 22:00:00 1996 UT = Sun Sep 29 23:00:00 1996 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Apr  3 22:59:59 1997 UT = Thu Apr  3 23:59:59 1997 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Apr  3 23:00:00 1997 UT = Fri Apr  4 01:00:00 1997 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Fri Oct  3 21:59:59 1997 UT = Fri Oct  3 23:59:59 1997 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Fri Oct  3 22:00:00 1997 UT = Sat Oct  4 00:00:00 1997 EET isdst=0 gmtoff=7200
+/zic/Africa/Tripoli  Fri Nov  9 23:59:59 2012 UT = Sat Nov 10 01:59:59 2012 EET isdst=0 gmtoff=7200
+/zic/Africa/Tripoli  Sat Nov 10 00:00:00 2012 UT = Sat Nov 10 01:00:00 2012 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Thu Mar 28 23:59:59 2013 UT = Fri Mar 29 00:59:59 2013 CET isdst=0 gmtoff=3600
+/zic/Africa/Tripoli  Fri Mar 29 00:00:00 2013 UT = Fri Mar 29 02:00:00 2013 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Thu Oct 24 23:59:59 2013 UT = Fri Oct 25 01:59:59 2013 CEST isdst=1 gmtoff=7200
+/zic/Africa/Tripoli  Fri Oct 25 00:00:00 2013 UT = Fri Oct 25 02:00:00 2013 EET isdst=0 gmtoff=7200
+/zic/Africa/Tripoli  Wed Dec 31 21:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 EET isdst=0 gmtoff=7200
+/zic/Africa/Tripoli  Wed Dec 31 22:00:00 2147485547 UT = 67768036191669600 (localtime failed)
+/zic/Africa/Tripoli  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Africa/Tripoli  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Tripoli  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)
