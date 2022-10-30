@@ -4,6 +4,7 @@ import {
   ResolvedNumberFormatOptions,
   NumberFormatOptions,
   NumberFormatPart,
+  NumberRangeToParts,
 } from '@formatjs/ecma402-abstract'
 
 // Public --------------------------------------------------------------------------------------------------------------
@@ -12,6 +13,8 @@ export interface NumberFormat {
   resolvedOptions(): ResolvedNumberFormatOptions
   formatToParts(x: number): NumberFormatPart[]
   format(x: number): string
+  formatRange(start: number, end: number): string
+  formatRangeToParts(start: number, end: number): NumberRangeToParts[]
 }
 
 export interface NumberFormatConstructor {

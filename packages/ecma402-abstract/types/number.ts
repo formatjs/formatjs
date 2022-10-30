@@ -147,6 +147,7 @@ export interface SymbolsData {
   nan: string
   timeSeparator: string
   approximatelySign: string
+  rangeSign: string
 }
 
 export interface RawNumberData {
@@ -272,4 +273,8 @@ export interface NumberFormatPart {
   type: NumberFormatPartTypes
   value: string
   source?: string
+}
+
+export interface NumberRangeToParts extends NumberFormatPart {
+  result: string
 }

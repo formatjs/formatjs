@@ -9,6 +9,8 @@ import {
   ToNumber,
   CanonicalizeLocaleList,
   OrdinaryHasInstance,
+  FormatNumericRange,
+  FormatNumericRangeToParts,
 } from '@formatjs/ecma402-abstract'
 import {currencyDigitsData} from './currency-digits.generated'
 import {numberingSystemNames} from './numbering-systems.generated'
@@ -88,6 +90,19 @@ function formatToParts(this: Intl.NumberFormat, x: number) {
     getInternalSlots,
   })
 }
+
+function formatRange(this: Intl.NumberFormat, start: number, end: number) {
+  return FormatNumericRange(this, start, end, {getInternalSlots})
+}
+
+function formatRangeToParts(
+  this: Intl.NumberFormat,
+  start: number,
+  end: number
+) {
+  return FormatNumericRangeToParts(this, start, end, {getInternalSlots})
+}
+
 try {
   Object.defineProperty(formatToParts, 'name', {
     value: 'formatToParts',
@@ -102,6 +117,14 @@ try {
 
 defineProperty(NumberFormat.prototype, 'formatToParts', {
   value: formatToParts,
+})
+
+defineProperty(NumberFormat.prototype, 'formatRange', {
+  value: formatRange,
+})
+
+defineProperty(NumberFormat.prototype, 'formatRangeToParts', {
+  value: formatRangeToParts,
 })
 
 defineProperty(NumberFormat.prototype, 'resolvedOptions', {
