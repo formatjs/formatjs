@@ -10,8 +10,8 @@
 /zic/America/Hermosillo  Sat Nov 15 05:59:59 1930 UT = Fri Nov 14 23:59:59 1930 CST isdst=0 gmtoff=-21600
 /zic/America/Hermosillo  Sat Nov 15 06:00:00 1930 UT = Fri Nov 14 23:00:00 1930 MST isdst=0 gmtoff=-25200
 /zic/America/Hermosillo  Sat May  2 05:59:59 1931 UT = Fri May  1 22:59:59 1931 MST isdst=0 gmtoff=-25200
-/zic/America/Hermosillo  Sat May  2 06:00:00 1931 UT = Sat May  2 00:00:00 1931 CST isdst=0 gmtoff=-21600
-/zic/America/Hermosillo  Thu Oct  1 05:59:59 1931 UT = Wed Sep 30 23:59:59 1931 CST isdst=0 gmtoff=-21600
+/zic/America/Hermosillo  Sat May  2 06:00:00 1931 UT = Sat May  2 00:00:00 1931 MDT isdst=1 gmtoff=-21600
+/zic/America/Hermosillo  Thu Oct  1 05:59:59 1931 UT = Wed Sep 30 23:59:59 1931 MDT isdst=1 gmtoff=-21600
 /zic/America/Hermosillo  Thu Oct  1 06:00:00 1931 UT = Wed Sep 30 23:00:00 1931 MST isdst=0 gmtoff=-25200
 /zic/America/Hermosillo  Fri Apr  1 06:59:59 1932 UT = Thu Mar 31 23:59:59 1932 MST isdst=0 gmtoff=-25200
 /zic/America/Hermosillo  Fri Apr  1 07:00:00 1932 UT = Fri Apr  1 01:00:00 1932 CST isdst=0 gmtoff=-21600

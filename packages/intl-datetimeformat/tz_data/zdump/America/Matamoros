@@ -1,9 +1,9 @@
 /zic/America/Matamoros  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
 /zic/America/Matamoros  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
 /zic/America/Matamoros  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
-/zic/America/Matamoros  Thu Jan  1 06:39:59 -2147481748 UT = -67768040609716801 (localtime failed)
-/zic/America/Matamoros  Thu Jan  1 06:40:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-24000
-/zic/America/Matamoros  Sun Jan  1 05:59:59 1922 UT = Sat Dec 31 23:19:59 1921 LMT isdst=0 gmtoff=-24000
+/zic/America/Matamoros  Thu Jan  1 06:29:59 -2147481748 UT = -67768040609717401 (localtime failed)
+/zic/America/Matamoros  Thu Jan  1 06:30:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-23400
+/zic/America/Matamoros  Sun Jan  1 05:59:59 1922 UT = Sat Dec 31 23:29:59 1921 LMT isdst=0 gmtoff=-23400
 /zic/America/Matamoros  Sun Jan  1 06:00:00 1922 UT = Sun Jan  1 00:00:00 1922 CST isdst=0 gmtoff=-21600
 /zic/America/Matamoros  Sun Apr  3 07:59:59 1988 UT = Sun Apr  3 01:59:59 1988 CST isdst=0 gmtoff=-21600
 /zic/America/Matamoros  Sun Apr  3 08:00:00 1988 UT = Sun Apr  3 03:00:00 1988 CDT isdst=1 gmtoff=-18000
