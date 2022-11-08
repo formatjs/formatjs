@@ -3,8 +3,8 @@
 /zic/America/Tijuana  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
 /zic/America/Tijuana  Thu Jan  1 07:48:03 -2147481748 UT = -67768040609712717 (localtime failed)
 /zic/America/Tijuana  Thu Jan  1 07:48:04 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-28084
-/zic/America/Tijuana  Sun Jan  1 07:59:59 1922 UT = Sun Jan  1 00:11:55 1922 LMT isdst=0 gmtoff=-28084
-/zic/America/Tijuana  Sun Jan  1 08:00:00 1922 UT = Sun Jan  1 01:00:00 1922 MST isdst=0 gmtoff=-25200
+/zic/America/Tijuana  Sun Jan  1 06:59:59 1922 UT = Sat Dec 31 23:11:55 1921 LMT isdst=0 gmtoff=-28084
+/zic/America/Tijuana  Sun Jan  1 07:00:00 1922 UT = Sun Jan  1 00:00:00 1922 MST isdst=0 gmtoff=-25200
 /zic/America/Tijuana  Tue Jan  1 06:59:59 1924 UT = Mon Dec 31 23:59:59 1923 MST isdst=0 gmtoff=-25200
 /zic/America/Tijuana  Tue Jan  1 07:00:00 1924 UT = Mon Dec 31 23:00:00 1923 PST isdst=0 gmtoff=-28800
 /zic/America/Tijuana  Sat Jun 11 06:59:59 1927 UT = Fri Jun 10 22:59:59 1927 PST isdst=0 gmtoff=-28800
