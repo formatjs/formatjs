@@ -240,8 +240,8 @@ describe('Intl.DateTimeFormat', function () {
         {
           timeZoneName: 'long',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
-            'zh-Hans': '2020年2月月1日 GMT+08:00 06:10:10',
+            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
+            'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
           },
         },
         {
@@ -254,29 +254,29 @@ describe('Intl.DateTimeFormat', function () {
         {
           timeZoneName: 'longGeneric',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
-            'zh-Hans': '2020年2月月1日 GMT+08:00 06:10:10',
+            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
+            'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
           },
         },
         {
           timeZoneName: 'shortGeneric',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
-            'zh-Hans': '2020年2月月1日 GMT+08:00 06:10:10',
+            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
+            'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
           },
         },
         {
           timeZoneName: 'longOffset',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
-            'zh-Hans': '2020年2月月1日 GMT+08:00 06:10:10',
+            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
+            'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
           },
         },
         {
           timeZoneName: 'shortOffset',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM GMT+08:00',
-            'zh-Hans': '2020年2月月1日 GMT+08:00 06:10:10',
+            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
+            'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
           },
         },
       ]
