@@ -1,6 +1,4 @@
-# SWC-plugin-formatjs
-
-`SWC-plugin-formatjs`
+# swc-plugin-formatjs
 
 `swc-plugin-formatjs` is a port of `babel-plugin-formatjs` for the SWC. Transform can be performed either via SWC's wasm-based plugin, or using custom passes in rust side transform chains.
 
@@ -44,7 +42,7 @@ jsc: {
   ...
   experimental: {
     plugins: [
-      ["SWC-plugin-formatjs", {
+      ["swc-plugin-formatjs", {
         //pluginOptions
       }]
     ]
