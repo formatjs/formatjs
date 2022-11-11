@@ -91,7 +91,7 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm run extract --help
+npm run extract -- --help
 # Usage: formatjs extract [options] [files...]
 
 # Extract string messages from React components that use react-intl.
@@ -101,7 +101,7 @@ npm run extract --help
 For example:
 
 ```sh
-npm run extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
+npm run extract -- "src/**/*.{ts,tsx,vue}" --out-file lang.json
 ```
 
 </TabItem>
@@ -219,7 +219,7 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm run compile --help
+npm run compile -- --help
 ```
 
 </TabItem>
