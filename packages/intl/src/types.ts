@@ -25,8 +25,8 @@ import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 declare global {
   namespace FormatjsIntl {
-    interface Message {}
-    interface IntlConfig {}
+    interface Message { ids?: string }
+    interface IntlConfig { locale?: string }
     interface Formats {}
   }
 }
