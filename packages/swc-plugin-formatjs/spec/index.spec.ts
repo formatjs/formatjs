@@ -421,7 +421,7 @@ test("extractFromFormatMessageCall", function () {
     class Foo extends Component {
         render() {
             const { intl  } = this.props;
-            const { intl: { formatMessage  } ,  } = this.props;
+            const { intl: { formatMessage  }  } = this.props;
             const msgs = {
                 baz: this.props.intl.formatMessage({
                     id: 'foo.bar.baz',
@@ -1087,14 +1087,15 @@ test("GH #2663_plugin", function () {
     }
     function _error1() {
         _error1 = _asyncToGenerator(function() {
-            var _tmp;
             return __generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
-                        _tmp = {};
                         return [
                             4,
-                            intl.formatMessage((_tmp.id = "dI+HS6", _tmp.defaultMessage = "foo", _tmp))
+                            intl.formatMessage({
+                                id: "dI+HS6",
+                                defaultMessage: "foo"
+                            })
                         ];
                     case 1:
                         _state.sent();
