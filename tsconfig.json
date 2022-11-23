@@ -27,6 +27,9 @@
     "jsx": "react"
   },
   "exclude": [
-    "packages/react-intl/example-sandboxes"
+    "packages/react-intl/example-sandboxes",
+    // Exclude any tsd tests because they can mess with normal
+    // type checking in editors.
+    "**/*.test-d.ts"
   ]
 }

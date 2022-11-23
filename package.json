@@ -114,6 +114,7 @@
     "ts-jest": "28",
     "ts-loader": "^9.1.2",
     "ts-node": "^10.8",
+    "tsd": "^0.24.1",
     "tslib": "2.4.0",
     "typescript": "^4.7",
     "unidiff": "^1.0.2",

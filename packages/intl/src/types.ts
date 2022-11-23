@@ -23,6 +23,9 @@ import {
 import {DEFAULT_INTL_CONFIG} from './utils'
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
+// Note: FormatjsIntl is defined as a global namespace so the library user can
+// override the default types of Message.ids (e.g. as string literal unions from extracted strings)
+// or IntlConfig.locale (e.g. to a list of supported locales).
 declare global {
   namespace FormatjsIntl {
     interface Message {}
@@ -31,12 +34,14 @@ declare global {
   }
 }
 
-type MessageIds = FormatjsIntl.Message extends {ids: string}
-  ? FormatjsIntl.Message['ids']
-  : string
+// NOTE: workaround the TypeScript 4.9 bug: https://github.com/formatjs/formatjs/issues/3910
+type _Message = FormatjsIntl.Message
+type MessageIds = _Message extends {ids: string} ? _Message['ids'] : string
 
-type Locale = FormatjsIntl.IntlConfig extends {locale: string}
-  ? FormatjsIntl.IntlConfig['locale']
+// NOTE: workaround the TypeScript 4.9 bug: https://github.com/formatjs/formatjs/issues/3910
+type _IntlConfig = FormatjsIntl.IntlConfig
+type Locale = _IntlConfig extends {locale: string}
+  ? _IntlConfig['locale']
   : string
 
 export type OnErrorFn = (
