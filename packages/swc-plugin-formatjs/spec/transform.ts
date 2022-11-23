@@ -2,7 +2,7 @@ import * as path from 'path'
 import {Options as swcOptions, transformSync} from '@swc/core'
 import * as fs from 'fs'
 
-const pluginBinary = path.resolve(__dirname, '../swc_plugin_formatjs.wasm')
+const pluginBinary = path.resolve(__dirname, '../target/wasm32-wasi/debug/swc_plugin_formatjs.wasm')
 
 let cacheBust = 1
 

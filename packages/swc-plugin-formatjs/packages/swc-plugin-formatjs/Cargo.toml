@@ -16,4 +16,4 @@ serde_json = "1"
 swc-formatjs-visitor = { path = "../swc-formatjs-visitor", version = "0.0.2", features = [
   "plugin",
 ] }
-swc_core = { version = "0.23.13", features = ["plugin_transform"] }
+swc_core = { version = "0.43", features = ["plugin_transform"] }
