@@ -73,6 +73,7 @@ importers:
       cldr-localenames-full: '40'
       cldr-misc-full: '40'
       cldr-numbers-full: '40'
+      cldr-segments-full: '40'
       cldr-units-full: '40'
       clsx: '1'
       commander: '8'
@@ -103,6 +104,7 @@ importers:
       react: ^16.6.0 || 17 || 18
       react-dom: ^16.6.0 || 17 || 18
       regenerate: ^1.4.2
+      regexpu-core: ^5.2.2
       rimraf: ^3.0.2
       serialize-javascript: ^6.0.0
       test262-harness: '10'
@@ -178,6 +180,7 @@ importers:
       cldr-localenames-full: 40.0.0_cldr-core@40.0.0
       cldr-misc-full: 40.0.0_cldr-core@40.0.0
       cldr-numbers-full: 40.0.0_cldr-core@40.0.0
+      cldr-segments-full: 40.0.0_cldr-core@40.0.0
       cldr-units-full: 40.0.0_cldr-core@40.0.0
       clsx: 1.1.1
       commander: 8.3.0
@@ -208,6 +211,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       regenerate: 1.4.2
+      regexpu-core: 5.2.2
       rimraf: 3.0.2
       serialize-javascript: 6.0.0
       test262-harness: 10.0.0
@@ -535,6 +539,16 @@ importers:
       '@formatjs/intl-getcanonicallocales': link:../intl-getcanonicallocales
       '@formatjs/intl-locale': link:../intl-locale
       '@formatjs/intl-pluralrules': link:../intl-pluralrules
+
+  packages/intl-segmenter:
+    specifiers:
+      '@formatjs/ecma402-abstract': workspace:*
+      '@formatjs/intl-localematcher': workspace:*
+      tslib: 2.4.0
+    dependencies:
+      '@formatjs/ecma402-abstract': link:../ecma402-abstract
+      '@formatjs/intl-localematcher': link:../intl-localematcher
+      tslib: 2.4.0
 
   packages/react-intl:
     specifiers:
@@ -1071,7 +1085,7 @@ packages:
     dependencies:
       '@babel/core': 7.18.10
       '@babel/helper-annotate-as-pure': 7.16.7
-      regexpu-core: 5.0.1
+      regexpu-core: 5.2.2
     dev: true
 
   /@babel/helper-create-regexp-features-plugin/7.17.12_@babel+core@7.18.5:
@@ -1082,7 +1096,7 @@ packages:
     dependencies:
       '@babel/core': 7.18.5
       '@babel/helper-annotate-as-pure': 7.16.7
-      regexpu-core: 5.0.1
+      regexpu-core: 5.2.2
     dev: true
 
   /@babel/helper-create-regexp-features-plugin/7.18.6_@babel+core@7.18.10:
@@ -1093,7 +1107,7 @@ packages:
     dependencies:
       '@babel/core': 7.18.10
       '@babel/helper-annotate-as-pure': 7.18.6
-      regexpu-core: 5.1.0
+      regexpu-core: 5.2.2
     dev: true
 
   /@babel/helper-define-polyfill-provider/0.3.1_@babel+core@7.18.5:
@@ -8274,6 +8288,14 @@ packages:
       cldr-core: 40.0.0
     dev: true
 
+  /cldr-segments-full/40.0.0_cldr-core@40.0.0:
+    resolution: {integrity: sha512-etpdMtOYG0z3X6I0vdD1Y3JBYXClVvFsqHmRbAWMcyQAKUTtpXin9etRuNb8skBcjCki+6orhlrjn2jz0v79XA==}
+    peerDependencies:
+      cldr-core: 40.0.0
+    dependencies:
+      cldr-core: 40.0.0
+    dev: true
+
   /cldr-units-full/40.0.0_cldr-core@40.0.0:
     resolution: {integrity: sha512-fw00RYjkckYIasIKgFwE1EKRtPVeWNkIiYQWoHUECCVeT8fvI/YUW+e25rgH+8xrN2k2ywSaixntGH/gurtUvQ==}
     peerDependencies:
@@ -15442,8 +15464,8 @@ packages:
       strip-indent: 3.0.0
     dev: true
 
-  /regenerate-unicode-properties/10.0.1:
-    resolution: {integrity: sha512-vn5DU6yg6h8hP/2OkQo3K7uVILvY4iu0oI4t3HFa81UPkhGJwkRwM10JEc3upjdhHjs/k8GJY1sRBhk5sr69Bw==}
+  /regenerate-unicode-properties/10.1.0:
+    resolution: {integrity: sha512-d1VudCLoIGitcU/hEg2QqvyGZQmdC0Lf8BqdOMXGFSvJP4bNV1+XqbPQeHHLD51Jh4QJJ225dlIFvY4Ly6MXmQ==}
     engines: {node: '>=4'}
     dependencies:
       regenerate: 1.4.2
@@ -15484,31 +15506,19 @@ packages:
       regjsgen: 0.5.2
       regjsparser: 0.7.0
       unicode-match-property-ecmascript: 2.0.0
-      unicode-match-property-value-ecmascript: 2.0.0
+      unicode-match-property-value-ecmascript: 2.1.0
     dev: true
 
-  /regexpu-core/5.0.1:
-    resolution: {integrity: sha512-CriEZlrKK9VJw/xQGJpQM5rY88BtuL8DM+AEwvcThHilbxiTAy8vq4iJnd2tqq8wLmjbGZzP7ZcKFjbGkmEFrw==}
+  /regexpu-core/5.2.2:
+    resolution: {integrity: sha512-T0+1Zp2wjF/juXMrMxHxidqGYn8U4R+zleSJhX9tQ1PUsS8a9UtYfbsF9LdiVgNX3kiX8RNaKM42nfSgvFJjmw==}
     engines: {node: '>=4'}
     dependencies:
       regenerate: 1.4.2
-      regenerate-unicode-properties: 10.0.1
-      regjsgen: 0.6.0
-      regjsparser: 0.8.4
+      regenerate-unicode-properties: 10.1.0
+      regjsgen: 0.7.1
+      regjsparser: 0.9.1
       unicode-match-property-ecmascript: 2.0.0
-      unicode-match-property-value-ecmascript: 2.0.0
-    dev: true
-
-  /regexpu-core/5.1.0:
-    resolution: {integrity: sha512-bb6hk+xWd2PEOkj5It46A16zFMs2mv86Iwpdu94la4S3sJ7C973h2dHpYKwIBGaWSO7cIRJ+UX0IeMaWcO4qwA==}
-    engines: {node: '>=4'}
-    dependencies:
-      regenerate: 1.4.2
-      regenerate-unicode-properties: 10.0.1
-      regjsgen: 0.6.0
-      regjsparser: 0.8.4
-      unicode-match-property-ecmascript: 2.0.0
-      unicode-match-property-value-ecmascript: 2.0.0
+      unicode-match-property-value-ecmascript: 2.1.0
     dev: true
 
   /registry-auth-token/4.2.2:
@@ -15529,8 +15539,8 @@ packages:
     resolution: {integrity: sha512-OFFT3MfrH90xIW8OOSyUrk6QHD5E9JOTeGodiJeBS3J6IwlgzJMNE/1bZklWz5oTg+9dCMyEetclvCVXOPoN3A==}
     dev: true
 
-  /regjsgen/0.6.0:
-    resolution: {integrity: sha512-ozE883Uigtqj3bx7OhL1KNbCzGyW2NQZPl6Hs09WTvCuZD5sTI4JY58bkbQWa/Y9hxIsvJ3M8Nbf7j54IqeZbA==}
+  /regjsgen/0.7.1:
+    resolution: {integrity: sha512-RAt+8H2ZEzHeYWxZ3H2z6tF18zyyOnlcdaafLrm21Bguj7uZy6ULibiAFdXEtKQY4Sy7wDTwDiOazasMLc4KPA==}
     dev: true
 
   /regjsparser/0.7.0:
@@ -15540,8 +15550,8 @@ packages:
       jsesc: 0.5.0
     dev: true
 
-  /regjsparser/0.8.4:
-    resolution: {integrity: sha512-J3LABycON/VNEu3abOviqGHuB/LOtOQj8SKmfP9anY5GfAVw/SPjwzSjxGjbZXIxbGfqTHtJw58C2Li/WkStmA==}
+  /regjsparser/0.9.1:
+    resolution: {integrity: sha512-dQUtn90WanSNl+7mQKcXAgZxvUe7Z0SqXlgzv0za4LwiUhyzBC58yQO3liFoUgu8GiJVInAhJjkj1N0EtQ5nkQ==}
     hasBin: true
     dependencies:
       jsesc: 0.5.0
@@ -17259,8 +17269,8 @@ packages:
       unicode-property-aliases-ecmascript: 2.0.0
     dev: true
 
-  /unicode-match-property-value-ecmascript/2.0.0:
-    resolution: {integrity: sha512-7Yhkc0Ye+t4PNYzOGKedDhXbYIBe1XEQYQxOPyhcXNMJ0WCABqqj6ckydd6pWRZTHV4GuCPKdBAUiMc60tsKVw==}
+  /unicode-match-property-value-ecmascript/2.1.0:
+    resolution: {integrity: sha512-qxkjQt6qjg/mYscYMC0XKRn3Rh0wFPlfxB0xkt9CfyTvpX1Ra0+rAmdX2QyAobptSEvuy4RtpPRui6XkV+8wjA==}
     engines: {node: '>=4'}
     dev: true
 

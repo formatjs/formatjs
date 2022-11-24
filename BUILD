@@ -105,6 +105,11 @@ KARMA_TESTS = [
 
 karma_bin.karma_test(
     name = "karma",
+    args = [
+        "start",
+        "$(rootpath //:karma.conf.js)",
+        "--no-single-run",
+    ],
     # configuration_env_vars = [
     #     "SAUCE_USERNAME",
     #     "SAUCE_ACCESS_KEY",
@@ -117,16 +122,17 @@ karma_bin.karma_test(
         "//:node_modules/karma-jasmine-matchers",
     ] + KARMA_TESTS,
     tags = ["manual"],
-    args = [
-        "start",
-        "$(rootpath //:karma.conf.js)",
-        "--no-single-run",
-    ],
 )
 
 karma_bin.karma_test(
     name = "karma-ci",
     size = "large",
+    args = [
+        "start",
+        "$(rootpath //:karma.conf.js)",
+        "--browsers",
+        "sl_edge,sl_chrome,sl_firefox,sl_ie_11,sl_safari",
+    ],
     # configuration_env_vars = [
     #     "SAUCE_USERNAME",
     #     "SAUCE_ACCESS_KEY",
@@ -140,12 +146,6 @@ karma_bin.karma_test(
         "//:node_modules/karma-jasmine-matchers",
     ] + KARMA_TESTS,
     tags = ["manual"],
-    args = [
-        "start",
-        "$(rootpath //:karma.conf.js)",
-        "--browsers",
-        "sl_edge,sl_chrome,sl_firefox,sl_ie_11,sl_safari",
-    ],
 )
 
 multirun(
@@ -162,6 +162,7 @@ multirun(
         "//packages/icu-skeleton-parser:prettier",
         "//packages/intl-datetimeformat:prettier",
         "//packages/intl-displaynames:prettier",
+        "//packages/intl-segmenter:prettier",
         "//packages/intl-durationformat:prettier",
         "//packages/intl-enumerator:prettier",
         "//packages/intl-getcanonicallocales:prettier",
@@ -190,6 +191,8 @@ multirun(
         "//packages/intl-datetimeformat:generated-test-files",
         "//packages/intl-displaynames:test262-main",
         "//packages/intl-displaynames:generated-test-files",
+        "//packages/intl-segmenter:test262-main",
+        "//packages/intl-segmenter:generated-file",
         "//packages/intl-listformat:test262-main",
         "//packages/intl-listformat:generated-test-files",
         "//packages/intl-numberformat:test262-main",
@@ -212,6 +215,7 @@ multirun(
         "//packages/intl-numberformat:generated-files",
         "//packages/intl-pluralrules:generated-files",
         "//packages/intl-relativetimeformat:generated-files",
+        "//packages/intl-segmenter:generated-file",
     ],
 )
 
