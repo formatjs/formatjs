@@ -120,7 +120,7 @@
                 },
                 "5": {
                     "breaks": false,
-                    "after": "(?:$Format$Extend)"
+                    "after": "(?:$Format|$Extend)"
                 },
                 "6": {
                     "breaks": false,
@@ -153,7 +153,7 @@
                 },
                 "998": {
                     "breaks": false,
-                    "after": "$Any"
+                    "after": "[\\s\\S]"
                 },
                 "8.1": {
                     "breaks": false,
@@ -198,7 +198,7 @@
                 "4": {
                     "breaks": false,
                     "before": "$NotBreak_",
-                    "after": "(?:$Format$Extend$ZWJ)"
+                    "after": "(?:$Format|$Extend|$ZWJ)"
                 },
                 "5": {
                     "breaks": false,

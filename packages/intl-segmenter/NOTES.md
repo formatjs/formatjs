@@ -60,7 +60,7 @@ Word break segmentation tests: https://www.unicode.org/Public/UCD/latest/ucd/aux
 ## Other segmentation implementations found
 
 - JS: https://github.com/orling/grapheme-splitter
-- JS Polyfill: https://www.npmjs.com/package/intl-segmenter-polyfill (using icu C compiled in wasm)
+- JS Polyfill: https://www.npmjs.com/package/intl-segmenter-polyfill (using icu C compiled in wasm+)
 - GO: https://github.com/clipperhouse/uax29
 - Rust: https://github.com/unicode-rs/unicode-segmentation
 
@@ -94,10 +94,6 @@ The unicode regexs have other syntax incompatiblities:
 Even after accounting for all of those, there are issues left:
 
 `cldr-segments-full/segments/el/suppressions.json` has a rule `"$STerm": "[[$STerm] [\\u003B \\u037E]]"` which I currently do not know how to correctly process.
-
-Rules with negative character classes can not be correctly transpiled by regexpu `[^$RI]` would be transpiled into `(?:(?!\uD83C[\uDDE6-\uDDFF])[\s\S])` which is incorrect. Workaround I found is the following regex: `(?:(?!\uD83C[\uDDE6-\uDDFF])[^\uDDE6-\uDDFF])`
-
-Ticket on `regexpu-core`: https://github.com/mathiasbynens/regexpu-core/issues/72
 
 ## isWordLike
 

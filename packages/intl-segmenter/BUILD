@@ -32,6 +32,7 @@ SRC_DEPS = [
 #     ":node_modules/@formatjs/intl-locale",
 TEST_DEPS = SRC_DEPS + [
     "//:node_modules/@types/node",
+    "tests/test-utils.ts",
     "unicodeFiles/GraphemeBreakTest.txt",
     "unicodeFiles/WordBreakTest.txt",
     "unicodeFiles/SentenceBreakTest.txt",

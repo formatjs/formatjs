@@ -1,41 +1,6 @@
-//test comment split regex ([×÷])\s(\[[0-9\.]+\])?([^×÷]+)
-import {Segmenter} from '../src/segmenter'
-
 import {readFileSync} from 'node:fs'
 import * as pathUtil from 'node:path'
 import {__read, __spreadArray} from 'tslib'
-
-// //@ts-ignore
-// function testDataFromLine(line: string) {
-//   const [test, comment] = line.split('#')
-//   const codePoints = test
-//     .split(/\s*[×÷]\s*/)
-//     .map(c => parseInt(c, 16))
-//     .filter(c => !!c)
-
-//   const input = String.fromCodePoint(...codePoints)
-
-//   const expected = test
-//     .split(/\s*÷\s*/)
-//     .map(sequence => {
-//       const codePoints = sequence
-//         .split(/\s*×\s*/)
-//         .map(c => parseInt(c, 16))
-//         .filter(c => !!c)
-//       return String.fromCodePoint(...codePoints)
-//     })
-//     .filter(c => !!c)
-
-//   return {input, expected, comment}
-// }
-// //@ts-ignore
-// const escapeCodePoints = (input: string) => {
-//   const result = []
-//   for (let i = 0; i < input.length; i++) {
-//     result.push(input.codePointAt(i)?.toString(16))
-//   }
-//   return result
-// }
 
 function testDataFromLine2(line: string) {
   const [test, comment] = line.split('#')
@@ -130,28 +95,9 @@ const loadUCDTestFile = (filePath: string) => {
   )
 }
 
-const segmentationTests = {
+export const segmentationTests = {
   grapheme: loadUCDTestFile('../unicodeFiles/GraphemeBreakTest.txt'),
   //commented out until fixed
-  // sentence: loadUCDTestFile('../unicodeFiles/SentenceBreakTest.txt'),
-  // word: loadUCDTestFile('../unicodeFiles/WordBreakTest.txt'),
+  sentence: loadUCDTestFile('../unicodeFiles/SentenceBreakTest.txt'),
+  word: loadUCDTestFile('../unicodeFiles/WordBreakTest.txt'),
 }
-
-describe.each(Object.entries(segmentationTests))(
-  'Granularity %s',
-  (granularity, ucdTests) => {
-    const segmenter = new Segmenter('en', {
-      granularity: granularity as keyof typeof segmentationTests,
-    })
-    it.each(
-      ucdTests.map(test => [test.comment, test.testInput, test.expected])
-    )(`Test ${granularity} %#: '%s'`, (_, testInput, expected) => {
-      //@ts-ignore - to fix
-      const segmentedInput = __read(segmenter.segment(testInput)).map(
-        ({segment}) => segment
-      )
-      //@ts-ignore - to fix
-      expect(segmentedInput).toEqual(expected)
-    })
-  }
-)

@@ -5,7 +5,7 @@ import {
   SupportedLocales,
   CanonicalizeLocaleList,
   GetOptionsObject,
-  // getInternalSlot,
+  getInternalSlot,
   setInternalSlot,
   getMultiInternalSlots,
 } from '@formatjs/ecma402-abstract'
@@ -14,7 +14,6 @@ import {ResolveLocale} from '@formatjs/intl-localematcher'
 const {root: rootSegmentationRules, ...localeSegmentationRules} =
   SegmentationRules
 
-//prep the root rules,
 type SegmentationRule = {
   breaks: boolean
   before?: RegExp
@@ -37,8 +36,6 @@ type SegmentResult =
   | {segment: string; breakingRule?: string; nonBreakingRules?: string[]}
   | undefined
 
-// type SegmenterGranularity = 'word' | 'sentence' | 'grapheme'
-
 export interface SegmenterOptions {
   localeMatcher?: 'lookup' | 'best fit'
   granularity?: 'word' | 'sentence' | 'grapheme'
@@ -54,9 +51,9 @@ export interface SegmenterResolvedOptions {
  * Replaces variables
  * Initializes the RegExp
  *
- * @param rule
+ * @param rule raw rule string from cldr-segmentation-rules.generated
  * @param variables
- * @param after
+ * @param after appends ^ if true and $ if false
  * @returns
  */
 const generateRuleRegex = (
@@ -99,6 +96,11 @@ const prepareLocaleSegmentationRules = (
   return preparedRules
 }
 
+const breaksAtResult = (breaks: boolean, matchingRule: string) => ({
+  breaks,
+  matchingRule,
+})
+
 export class Segmenter {
   private readonly rules
   private readonly ruleSortedKeys
@@ -133,6 +135,7 @@ export class Segmenter {
     ) as keyof typeof SegmentationRules.root
     setSlot(this, 'granularity', granularity)
 
+    //TODO: figure out correct availible locales
     const r = ResolveLocale(
       Segmenter.availableLocales, //availible locales
       requestedLocales,
@@ -141,18 +144,12 @@ export class Segmenter {
       {},
       () => '' //use only root rules
     )
-
     setSlot(this, 'locale', r.locale)
 
-    // rootSegmentationRules
-    // localeSegmentationRules
-
-    //based on locale merge root with locale, else use root
-    //prep the rules
-
+    //root rules based on granularity
     this.mergedSegmentationTypeValue = SegmentationRules.root[granularity]
 
-    //merge with locale
+    //merge root rules with locale ones if locale is specified
     if (r.locale.length) {
       const localeOverrides =
         localeSegmentationRules[
@@ -187,35 +184,38 @@ export class Segmenter {
     )
   }
 
-  public breaksAt(position: number, input: string) {
+  public breaksAt(
+    position: number,
+    input: string
+  ): ReturnType<typeof breaksAtResult> {
     const ruleSortedKeys = this.ruleSortedKeys
     const rules = this.rules
     const mergedSegmentationTypeValue = this.mergedSegmentationTypeValue
 
-    //todo: add return debug? which rule
+    //artificial rule 0.2
     if (position === 0) {
-      //rule 0.2
-      return true
+      return breaksAtResult(true, '0.2')
     }
 
     if (position === input.length) {
       //rule 0.3
-      return true
+      return breaksAtResult(true, '0.3')
     }
 
-    //js specific, due to es5 regex not being unicode aware 0.4
+    //artificial rule 0.1: js specific, due to es5 regex not being unicode aware
+    //number 0.1 chosen to mimic java implementation, but needs to execute after 0.2 and 0.3 to be inside the string bounds
     if (isSurrogate(input, position)) {
-      return false
+      return breaksAtResult(false, '0.1')
     }
 
     const stringBeforeBreak = input.substring(0, position)
     const stringAfterBreak = input.substring(position)
 
-    //handle surpressions
+    //artificial rule 0.4: handle surpressions
     if ('surpressions' in mergedSegmentationTypeValue) {
       for (const surpression of mergedSegmentationTypeValue.surpressions) {
         if (stringBeforeBreak.trim().endsWith(surpression)) {
-          return false
+          return breaksAtResult(false, '0.4')
         }
       }
     }
@@ -223,10 +223,10 @@ export class Segmenter {
     // loop through rules and find a match
     for (const ruleKey of ruleSortedKeys) {
       const {before, after, breaks} = rules[ruleKey]
-      // if (ruleKey === '12' || ruleKey === '13') {
-      //   console.log({before, after, breaks})
+      // for debugging
+      // if (ruleKey === '16' && position === 4) {
+      //   console.log({before, after, stringBeforeBreak, stringAfterBreak})
       // }
-
       if (before) {
         if (!before.test(stringBeforeBreak)) {
           //didn't match the before part, therfore skipping
@@ -241,16 +241,11 @@ export class Segmenter {
         }
       }
 
-      //got here, a rule was matched!
-      // console.log(`pos: ${position} matched a rule ${ruleKey}`, breaks)
-
-      return breaks
+      return breaksAtResult(breaks, ruleKey)
     }
 
-    //all rules checked, none matched
-    // console.log(`no rule matched at ${position}`)
-    //if no rule matched is Any ÷ Any so return true
-    return true
+    //artificial rule 999: if no rule matched is Any ÷ Any so return true
+    return breaksAtResult(true, '999')
   }
 
   segment(input: string) {
@@ -284,6 +279,28 @@ export class Segmenter {
   public static readonly polyfilled = true
 }
 
+const createSegmentDataObject = (
+  segmenter: Segmenter,
+  segment: string,
+  index: number,
+  input: string,
+  matchingRule: string
+) => {
+  const returnValue: {
+    segment: string
+    index: number
+    input: string
+    isWordLike?: boolean
+  } = {
+    segment,
+    index,
+    input,
+  }
+  if (getSlot(segmenter, 'granularity') === 'word') {
+    returnValue.isWordLike = matchingRule !== '3.1' && matchingRule !== '3.2'
+  }
+  return returnValue
+}
 class SegmentIterator
   implements Iterable<SegmentResult>, Iterator<SegmentResult>
 {
@@ -309,12 +326,25 @@ class SegmentIterator
 
     //loop from the start of the checkString, until exactly length (breaksAt returns break at pos=== lenght)
     for (let position = 1; position <= checkString.length; position++) {
-      const brk = this.segmenter.breaksAt(position, checkString)
-      if (brk) {
+      const {breaks, matchingRule} = this.segmenter.breaksAt(
+        position,
+        checkString
+      )
+      if (breaks) {
         const segment = checkString.substring(0, position)
         const index = this.lastSegmentIndex
         this.lastSegmentIndex += position
-        return {done: false, value: {segment, index, input: this.input}}
+
+        return {
+          done: false,
+          value: createSegmentDataObject(
+            this.segmenter,
+            segment,
+            index,
+            this.input,
+            matchingRule
+          ),
+        }
       }
     }
     //loop was skipped therfore the segmentation must be done!
@@ -343,8 +373,8 @@ class SegmentIterator
     } else {
       const checkString = this.input
       for (let cursor = position; cursor >= 0; cursor--) {
-        const brk = this.segmenter.breaksAt(cursor, checkString)
-        if (brk) {
+        const {breaks} = this.segmenter.breaksAt(cursor, checkString)
+        if (breaks) {
           previousBreakPoint = cursor
           break
         }
@@ -353,10 +383,19 @@ class SegmentIterator
     let checkString = this.input.substring(previousBreakPoint)
     //find next break point
     for (let cursor = 1; cursor <= checkString.length; cursor++) {
-      const brk = this.segmenter.breaksAt(cursor, checkString)
-      if (brk) {
+      const {breaks, matchingRule} = this.segmenter.breaksAt(
+        cursor,
+        checkString
+      )
+      if (breaks) {
         const segment = checkString.substring(0, cursor)
-        return {segment, index: previousBreakPoint, input: this.input}
+        return createSegmentDataObject(
+          this.segmenter,
+          segment,
+          previousBreakPoint,
+          this.input,
+          matchingRule
+        )
       }
     }
   }
@@ -369,12 +408,12 @@ interface SegmenterInternalSlots {
 
 const __INTERNAL_SLOT_MAP__ = new WeakMap<Segmenter, SegmenterInternalSlots>()
 
-// function getSlot<K extends keyof SegmenterInternalSlots>(
-//   instance: Segmenter,
-//   key: K
-// ): SegmenterInternalSlots[K] {
-//   return getInternalSlot(__INTERNAL_SLOT_MAP__, instance, key)
-// }
+function getSlot<K extends keyof SegmenterInternalSlots>(
+  instance: Segmenter,
+  key: K
+): SegmenterInternalSlots[K] {
+  return getInternalSlot(__INTERNAL_SLOT_MAP__, instance, key)
+}
 
 function setSlot<K extends keyof SegmenterInternalSlots>(
   instance: Segmenter,

@@ -9,16 +9,6 @@ export const replaceVariables = (
     }
     return variables[match]
   })
-
-  // Alternative implementation using match index
-  // let m
-
-  // while ((m = regex.exec(str)) !== null) {
-  //   // This is necessary to avoid infinite loops with zero-width matches
-  //   if (m.index === regex.lastIndex) {
-  //     regex.lastIndex++
-  //   }
-  // }
 }
 
 export const isSurrogate = (str: string, pos: number) => {
@@ -30,6 +20,7 @@ export const isSurrogate = (str: string, pos: number) => {
   )
 }
 
+// mimicing the java implementation
 // const TRAIL_SURROGATE_BITMASK = 0xfffffc00
 // const TRAIL_SURROGATE_BITS = 0xdc00
 // const LEAD_SURROGATE_BITMASK = 0xfffffc00

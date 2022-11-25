@@ -295,12 +295,19 @@ const transformCLDRVariablesRegex = (unicodeRegex: string) => {
   return jsCompatibleRegex
 }
 
-//Because of: https://github.com/mathiasbynens/regexpu-core/issues/72
+//look at wordbreak $RI variable, is acting strange
 const hardcodedRuleReplacments: Record<string, string> = {
+  //Because of: https://github.com/mathiasbynens/regexpu-core/issues/72
+  //could be implemented on the runtime
   'root.GraphemeClusterBreak.13.before':
     '(?:(?!\\uD83C[\\uDDE6-\\uDDFF])[^\\uDDE6-\\uDDFF])((?:\\uD83C[\\uDDE6-\\uDDFF])(?:\\uD83C[\\uDDE6-\\uDDFF]))*(?:\\uD83C[\\uDDE6-\\uDDFF])',
+
+  //This is still broken: L450
   'root.WordBreak.16.before':
     '(?:(?!\\uD83C[\\uDDE6-\\uDDFF])[^\\uDDE6-\\uDDFF])((?:\\uD83C[\\uDDE6-\\uDDFF])(?:\\uD83C[\\uDDE6-\\uDDFF]))*(?:\\uD83C[\\uDDE6-\\uDDFF])',
+
+  //issue with regexpu-dot transpilation, needs investigation
+  'root.SentenceBreak.998.after': '[\\s\\S]',
 }
 
 const replaceVariables = (variables: Record<string, string>, input: string) => {
@@ -437,12 +444,23 @@ const remapSegmentationJson = (
         // }
 
         //replace negated character class to negative lookahead inside noncapturing group (doesn't work correctly, needs fixing)
+        //somewhat hacky way to transform the rule regex, can't use regexpu because we need to preserve the varialbes
+        //TODO: needs fixing
         let fixedRuleString = ruleString.replace(
           /(\[\^)(.+)(\])/gm,
           '(?:(?!$2))'
         )
-        //replaces character class to a non capturing group - so is compatible with regexpu output
-        fixedRuleString = fixedRuleString.replace(/(\[)(.+)(\])/gm, '(?:$2)')
+
+        //replaces character class to a non capturing group and adding | between variables - so is compatible with regexpu output on variables
+        fixedRuleString = fixedRuleString.replace(
+          //find character classes, so [<contents>]
+          /(\[)(.+)(\])/gm,
+          (_, _p1, p2) => {
+            //find variables and add | inbwtween - it will not work if the rule has hardcoded codepoints, but they don't and shouldn't
+            const addedOrSigns = p2.replace(/(.)(\s?)(\$)/g, '$1|$3')
+            return `(?:${addedOrSigns})`
+          }
+        )
 
         let breaks = true
         let relationPosition = fixedRuleString.indexOf('\u00F7')
