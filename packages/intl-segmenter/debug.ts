@@ -1,6 +1,8 @@
 // @ts-nocheck
 /**
  * To debug failing UCD tests
+ * `npx ts-node debug <word|sentence|grapheme> [testRange]`
+ * example: `npx ts-node debug word 1700-1701`
  */
 
 import {Segmenter} from './src/segmenter'
@@ -8,7 +10,7 @@ import {Segmenter} from './src/segmenter'
 import {__read} from 'tslib'
 import {segmentationTests} from './tests/test-utils'
 
-//parse arvs
+//parse argvs
 const lastArg = process.argv[process.argv.length - 1]
 const beforeLastArg = process.argv[process.argv.length - 2]
 
@@ -30,12 +32,14 @@ const debugRun = (
   granularity: keyof typeof segmentationTests,
   testRange?: undefined | number[]
 ) => {
-  let failedtestsNr = 0
-  let sucessTestNr = 0
+  let failedTestsNr = 0
+  let successTestNr = 0
   const segmenter = new Segmenter(undefined, {granularity})
 
   const testSubset = testRange
-    ? segmentationTests[granularity].slice(...testRange)
+    ? testRange.length === 1
+      ? [segmentationTests[granularity][testRange]]
+      : segmentationTests[granularity].slice(...testRange)
     : segmentationTests[granularity]
 
   let testNr = testRange ? testRange[0] : 0
@@ -67,7 +71,7 @@ const debugRun = (
       actualSegments[segmentIndex] =
         (actualSegments[segmentIndex] || '') + (test.testInput[position] || '')
 
-      //there is a missmatch here
+      //there is a mismatch here
       if (breaks !== test.testDetails[position].breaks) {
         correctSplit = false
       }
@@ -80,7 +84,7 @@ const debugRun = (
     }
 
     if (!correctSplit) {
-      failedtestsNr++
+      failedTestsNr++
 
       const table = breaksAtResults.map((result, i) => ({
         correct: result.breaks === test.testDetails[i].breaks ? '✅' : '❌',
@@ -102,14 +106,14 @@ const debugRun = (
       )
       console.table(table)
     } else {
-      sucessTestNr++
+      successTestNr++
     }
     testNr++
   }
   console.log(
-    `Test suceess: ${
-      sucessTestNr + failedtestsNr
-    } Tests failed: ${failedtestsNr} Tests Total: ${sucessTestNr}`
+    `Test success: ${
+      successTestNr + failedTestsNr
+    } Tests failed: ${failedTestsNr} Tests Total: ${successTestNr}`
   )
 }
 debugRun(granularity, range)

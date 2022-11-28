@@ -20,7 +20,7 @@ export const isSurrogate = (str: string, pos: number) => {
   )
 }
 
-// mimicing the java implementation
+// alternative surrogate check mimicking the java implementation
 // const TRAIL_SURROGATE_BITMASK = 0xfffffc00
 // const TRAIL_SURROGATE_BITS = 0xdc00
 // const LEAD_SURROGATE_BITMASK = 0xfffffc00

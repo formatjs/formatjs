@@ -11,9 +11,6 @@ import {
 } from '@formatjs/ecma402-abstract'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 
-const {root: rootSegmentationRules, ...localeSegmentationRules} =
-  SegmentationRules
-
 type SegmentationRule = {
   breaks: boolean
   before?: RegExp
@@ -29,7 +26,7 @@ type SegmentationRuleRaw = {
 type SegmentationTypeTypeRaw = {
   variables: Record<string, string>
   segmentRules: Record<string, SegmentationRuleRaw>
-  surpressions: string[]
+  suppressions: string[]
 }
 
 type SegmentResult =
@@ -152,9 +149,7 @@ export class Segmenter {
     //merge root rules with locale ones if locale is specified
     if (r.locale.length) {
       const localeOverrides =
-        localeSegmentationRules[
-          r.locale as keyof typeof localeSegmentationRules
-        ]
+        SegmentationRules[r.locale as keyof typeof SegmentationRules]
       if (granularity in localeOverrides) {
         const localeSegmentationTypeValue: SegmentationTypeTypeRaw =
           localeOverrides[granularity as keyof typeof localeOverrides]
@@ -166,9 +161,9 @@ export class Segmenter {
           ...this.mergedSegmentationTypeValue.segmentRules,
           ...localeSegmentationTypeValue.segmentRules,
         }
-        this.mergedSegmentationTypeValue.surpressions = [
-          ...this.mergedSegmentationTypeValue.surpressions,
-          ...localeSegmentationTypeValue.surpressions,
+        this.mergedSegmentationTypeValue.suppressions = [
+          ...this.mergedSegmentationTypeValue.suppressions,
+          ...localeSegmentationTypeValue.suppressions,
         ]
       }
     }
@@ -211,10 +206,10 @@ export class Segmenter {
     const stringBeforeBreak = input.substring(0, position)
     const stringAfterBreak = input.substring(position)
 
-    //artificial rule 0.4: handle surpressions
-    if ('surpressions' in mergedSegmentationTypeValue) {
-      for (const surpression of mergedSegmentationTypeValue.surpressions) {
-        if (stringBeforeBreak.trim().endsWith(surpression)) {
+    //artificial rule 0.4: handle suppressions
+    if ('suppressions' in mergedSegmentationTypeValue) {
+      for (const suppressions of mergedSegmentationTypeValue.suppressions) {
+        if (stringBeforeBreak.trim().endsWith(suppressions)) {
           return breaksAtResult(false, '0.4')
         }
       }
@@ -265,7 +260,9 @@ export class Segmenter {
     }
   }
 
-  static availableLocales = new Set(Object.keys(localeSegmentationRules))
+  static availableLocales = new Set(
+    Object.keys(SegmentationRules).filter(key => key !== 'root')
+  )
   static supportedLocalesOf(
     locales?: string | string[],
     options?: Pick<SegmenterOptions, 'localeMatcher'>
@@ -311,7 +308,7 @@ class SegmentIterator
     this.segmenter = segmenter
     this.lastSegmentIndex = 0
     if (typeof input == 'symbol') {
-      throw TypeError(`Input must not be asymbol`)
+      throw TypeError(`Input must not be a symbol`)
     }
     this.input = String(input)
   }
@@ -347,7 +344,7 @@ class SegmentIterator
         }
       }
     }
-    //loop was skipped therfore the segmentation must be done!
+    //no segment was found by the loop, therefore the segmentation is done
     return {done: true, value: undefined}
   }
 
@@ -400,6 +397,8 @@ class SegmentIterator
     }
   }
 }
+
+export type {SegmentIterator}
 
 interface SegmenterInternalSlots {
   locale: string

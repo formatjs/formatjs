@@ -1,8 +1,12 @@
+/**
+ * Loads the 3 UCD test files: GraphemeBreakTest.txt SentenceBreakTest.txt WordBreakTest.txt
+ * Parses them so they can be easily consumed by either uint tests or debug util
+ */
 import {readFileSync} from 'node:fs'
 import * as pathUtil from 'node:path'
 import {__read, __spreadArray} from 'tslib'
 
-function testDataFromLine2(line: string) {
+function testDataFromLine(line: string) {
   const [test, comment] = line.split('#')
   const trimmedTest = test.trim()
   const trimmedComment = comment.trim()
@@ -11,25 +15,25 @@ function testDataFromLine2(line: string) {
     trimmedTest.matchAll(/\s?([÷×])\s?([0-9A-F]{4,})?\s?/g)
   )
 
-  let totalmatchedLength = 0
+  let totalMatchedLength = 0
   const testDefinition = testMatches.map(testPart => {
-    totalmatchedLength += testPart[0].length
+    totalMatchedLength += testPart[0].length
     return {
       breaks: testPart[1] === '÷',
       codePoint: testPart[2] && parseInt(testPart[2], 16),
     }
   })
-  //stricter matching so future UCD updates don't accidentally pass the tests due to misparse
-  if (trimmedTest.length !== totalmatchedLength) {
+  //stricter matching so future UCD updates don't accidentally pass the tests due to partial parsing
+  if (trimmedTest.length !== totalMatchedLength) {
     throw new Error(`Error parsing test line: '${trimmedTest}'`)
   }
 
   const commentMatches = __read(
     trimmedComment.matchAll(/([×÷])\s(\[([0-9\.]+)\])?([^×÷]+)?/g)
   )
-  totalmatchedLength = 0
+  totalMatchedLength = 0
   const commentDefinition = commentMatches.map(commentPart => {
-    totalmatchedLength += commentPart[0].length
+    totalMatchedLength += commentPart[0].length
     return {
       breaks: commentPart[1] === '÷',
       rule: commentPart[3],
@@ -37,8 +41,8 @@ function testDataFromLine2(line: string) {
     }
   })
 
-  //stricter matching so future UCD updates don't accidentally pass the tests due to misparse
-  if (trimmedComment.length !== totalmatchedLength) {
+  //stricter matching so future UCD updates don't accidentally pass the tests due to partial parsing
+  if (trimmedComment.length !== totalMatchedLength) {
     throw new Error(`Error parsing comment line: '${trimmedComment}'`)
   }
 
@@ -91,13 +95,12 @@ const loadUCDTestFile = (filePath: string) => {
       //filter out empty lines, and lines that start with #
       .filter(line => line.length > 0 && !/^[\s]*#/.test(line))
       //parse each line
-      .map(testDataFromLine2)
+      .map(testDataFromLine)
   )
 }
 
 export const segmentationTests = {
   grapheme: loadUCDTestFile('../unicodeFiles/GraphemeBreakTest.txt'),
-  //commented out until fixed
   sentence: loadUCDTestFile('../unicodeFiles/SentenceBreakTest.txt'),
   word: loadUCDTestFile('../unicodeFiles/WordBreakTest.txt'),
 }

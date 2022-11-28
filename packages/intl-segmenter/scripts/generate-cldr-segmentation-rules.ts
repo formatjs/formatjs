@@ -10,7 +10,7 @@ import path from 'node:path'
 
 const SEGMENTATION_LOCALES = [
   'de',
-  // 'el', //not sure how to correctly interpert: "$STerm": "[[$STerm] [\\u003B \\u037E]]"
+  // 'el', //not sure how to correctly interpret: "$STerm": "[[$STerm] [\\u003B \\u037E]]"
   'en',
   'es',
   'fr',
@@ -22,74 +22,62 @@ const SEGMENTATION_LOCALES = [
   'zh',
 ] as const
 
-// //from PropertyValueAliases.txt (could be dynamically parsed from the file)
-// const lineBreakPropertyValues = {
-//   AI: 'Ambiguous',
-//   AL: 'Alphabetic',
-//   B2: 'Break_Both',
-//   BA: 'Break_After',
-//   BB: 'Break_Before',
-//   BK: 'Mandatory_Break',
-//   CB: 'Contingent_Break',
-//   CJ: 'Conditional_Japanese_Starter',
-//   CL: 'Close_Punctuation',
-//   CM: 'Combining_Mark',
-//   CP: 'Close_Parenthesis',
-//   CR: 'Carriage_Return',
-//   EB: 'E_Base',
-//   EM: 'E_Modifier',
-//   EX: 'Exclamation',
-//   GL: 'Glue',
-//   H2: 'H2',
-//   H3: 'H3',
-//   HL: 'Hebrew_Letter',
-//   HY: 'Hyphen',
-//   ID: 'Ideographic',
-//   IN: 'Inseparable',
-//   IS: 'Infix_Numeric',
-//   JL: 'JL',
-//   JT: 'JT',
-//   JV: 'JV',
-//   LF: 'Line_Feed',
-//   NL: 'Next_Line',
-//   NS: 'Nonstarter',
-//   NU: 'Numeric',
-//   OP: 'Open_Punctuation',
-//   PO: 'Postfix_Numeric',
-//   PR: 'Prefix_Numeric',
-//   QU: 'Quotation',
-//   RI: 'Regional_Indicator',
-//   SA: 'Complex_Context',
-//   SG: 'Surrogate',
-//   SP: 'Space',
-//   SY: 'Break_Symbols',
-//   WJ: 'Word_Joiner',
-//   XX: 'Unknown',
-//   ZW: 'ZWSpace',
-//   ZWJ: 'ZWJ',
-// }
-
 const SEGMENTATION_TYPE_NAME_TO_GRANULARITY = {
   WordBreak: 'word',
   SentenceBreak: 'sentence',
   GraphemeClusterBreak: 'grapheme',
 } as const
 
-const getGranularity = (segmentationTypeName: string) => {
+type Granularity =
+  typeof SEGMENTATION_TYPE_NAME_TO_GRANULARITY[keyof typeof SEGMENTATION_TYPE_NAME_TO_GRANULARITY]
+
+type SegmentationsJsonBreakType =
+  | keyof typeof SEGMENTATION_TYPE_NAME_TO_GRANULARITY
+  | 'LineBreak'
+
+type SegmentationsJsonBreakTypeValue = {
+  variables?: [{[variableName: string]: string}]
+  segmentRules?: {[ruleNumber: string]: string}
+  standard: [{suppression: string}]
+}
+
+type SegmentationsJson = {
+  segments: {
+    identity: {
+      version: {
+        _cldrVersion: string
+      }
+      language: string
+    }
+
+    segmentations: Partial<{
+      [breakType in SegmentationsJsonBreakType]: SegmentationsJsonBreakTypeValue
+    }>
+  }
+}
+
+type ParsedBreakRule = {
+  breaks: boolean
+  before?: string
+  after?: string
+}
+type SegmentationsBreakTypeValue = {
+  variables?: {[variableName: string]: string}
+  segmentRules?: {[ruleNumber: string]: ParsedBreakRule}
+  suppressions?: string[]
+}
+
+const getGranularity = (
+  segmentationTypeName: keyof typeof SEGMENTATION_TYPE_NAME_TO_GRANULARITY
+) => {
   if (segmentationTypeName in SEGMENTATION_TYPE_NAME_TO_GRANULARITY) {
-    return SEGMENTATION_TYPE_NAME_TO_GRANULARITY[
-      segmentationTypeName as keyof typeof SEGMENTATION_TYPE_NAME_TO_GRANULARITY
-    ]
+    return SEGMENTATION_TYPE_NAME_TO_GRANULARITY[segmentationTypeName]
   } else {
     throw new Error(
       `${segmentationTypeName} not found in SEGMENTATION_TYPE_NAME_TO_GRANULARITY `
     )
   }
 }
-
-type SegmentationsJson =
-  typeof import('cldr-segments-full/segments/und/suppressions.json') &
-    typeof import('cldr-segments-full/segments/en/suppressions.json')
 
 /**
  *
@@ -98,7 +86,6 @@ type SegmentationsJson =
 const cldrSegmentationRules = async () => {
   const rules: Record<string, SegmentationsJson> = {}
   for (const locale of SEGMENTATION_LOCALES) {
-    //todo maybe paralelize
     rules[locale] = await import(
       `cldr-segments-full/segments/${locale}/suppressions.json`
     )
@@ -109,17 +96,19 @@ const cldrSegmentationRules = async () => {
   }
 }
 
-//Utility regegex for UCD file parsing
-//splits by ; and trims
+//Utility regexes for UCD file parsing
+
+//splits by ; and trim each
 const UCD_LINE_FIELDS_REGEX = /(.+?)\s*;\s*([^\s]+)/
 
+// get the code range in the form of [startCode, endCode]
 const UCD_CODE_RANGE_REGEX = /(.+)\.\.(.+)/
 
 //only valid lines: non-empty and lines not starting with #
 const UCD_LINE_SPLIT_REGEX = /^[^#^\r^\n]+\s/gm
 
 /**
- * Extracts codepoints and codepoint ranges for each property value name
+ * Extracts codepoints and codepoint ranges for each property value name: `{[propertyName: string]: <u_flag_regex_compatible_code_range: string>}`
  * @param filePath path to the UCD text file
  * @returns
  */
@@ -129,13 +118,10 @@ const parseUCDTextFile = (filePath: string) => {
   const regexResult = GraphemeClusterBreakText.match(UCD_LINE_SPLIT_REGEX) || []
 
   return regexResult.reduce((result, current) => {
-    // const [ rawCodes, propertyValueName ] = current.split(';')
-
-    // const lineMatch =
     const lineFieldsMatch = current.match(UCD_LINE_FIELDS_REGEX)
     if (!lineFieldsMatch) {
       throw new Error(
-        `Failed to parse line ${current} didnt match UCD_LINE_FIELDS_REGEX`
+        `Failed to parse line ${current} didn't match UCD_LINE_FIELDS_REGEX`
       )
     }
 
@@ -150,16 +136,9 @@ const parseUCDTextFile = (filePath: string) => {
       result[
         propertyValueName
       ] += `\\u{${rangeResult[1]}}-\\u{${rangeResult[2]}}`
-      // addRange(
-      //   parseInt(rangeResult[1], 16),
-      //   parseInt(rangeResult[2], 16)
-      // )
     } else {
       result[propertyValueName] += `\\u{${rawCodes}}`
-      //.add(parseInt(rawCodes, 16))
     }
-
-    // result[propertyValueName].push(categoryRegex);
 
     return result
   }, {} as Record<string, string>)
@@ -178,10 +157,6 @@ const generateRegexForUnsupportedProperties = () => {
   const GraphemeClusterBreak = parseUCDTextFile(
     path.resolve(__dirname, '../unicodeFiles/GraphemeBreakProperty.txt')
   )
-
-  // const LineBreak = parseUCDTextFile(
-  //   path.resolve(__dirname, '../unicodeFiles/LineBreak.txt')
-  // )
 
   const WordBreak = parseUCDTextFile(
     path.resolve(__dirname, '../unicodeFiles/WordBreakProperty.txt')
@@ -203,12 +178,11 @@ const generateRegexForUnsupportedProperties = () => {
     path.resolve(__dirname, '../unicodeFiles/DerivedEastAsianWidth.txt')
   )
 
-  // Collect regex replacments that regexpu-core can not rewrite
+  // Collect regex replacements that regexpu-core can not rewrite
+
   // Replace all of the \p{Grapheme_Cluster_Break=*}
   for (const [key, value] of Object.entries(GraphemeClusterBreak)) {
-    regexReplacements[
-      `\\p{Grapheme_Cluster_Break=${key}}`
-    ] = `${value.toString()}`
+    regexReplacements[`\\p{Grapheme_Cluster_Break=${key}}`] = value.toString()
   }
 
   // Replace all of the \p{Word_Break=*}
@@ -220,19 +194,6 @@ const generateRegexForUnsupportedProperties = () => {
     regexReplacements[`\\p{Sentence_Break=${key}}`] = value.toString()
   }
 
-  // line break is not part of the proposal: https://github.com/tc39/proposal-intl-segmenter#why-is-line-breaking-not-included
-  // Replace all of the \p{Line_Break=*} (including aliases)
-  // for (const [key, value] of Object.entries(LineBreak)) {
-  //   //for some reason they use shsort property value name in LineBreak.txt and the full name in the segmentation rules
-  //   //ie: \p{Line_Break=Alphabetic} but is "AL" in LineBreak.txt
-  //   const LineBreakKey =
-  //     lineBreakPropertyValues[key as keyof typeof lineBreakPropertyValues]
-
-  //   regexReplacements[`\\p{Line_Break=${LineBreakKey}}`] = value.toString()
-  //   //for some reason there are mixed aliases in CLDR rules
-  //   regexReplacements[`\\p{Line_Break=${key}}`] = value.toString()
-  // }
-
   // replace all east asian width (using ea alias)
   for (const [key, value] of Object.entries(EastAsianWidth)) {
     regexReplacements[`\\p{ea=${key}}`] = value.toString()
@@ -240,22 +201,15 @@ const generateRegexForUnsupportedProperties = () => {
 
   // Replace all of the \p{Indic_Syllabic_Category=*}
   for (const [key, value] of Object.entries(IndicSyllabicCategory)) {
-    regexReplacements[
-      `\\p{Indic_Syllabic_Category=${key}}`
-    ] = `${value.toString()}`
+    regexReplacements[`\\p{Indic_Syllabic_Category=${key}}`] = value.toString()
   }
 
   //only `ccc=0` is ever used from the CombiningClass
   regexReplacements['\\p{ccc=0}'] = `${DerivedCombiningClass['0'].toString()}`
 
-  // There is no sc= in front Gujr, the Unicode regex recognizes it but regexpu-core does not.
-  // also the list of sets needs to be encapsulated into []
-  regexReplacements[
-    '\\p{Gujr}\\p{sc=Telu}\\p{sc=Mlym}\\p{sc=Orya}\\p{sc=Beng}\\p{sc=Deva}'
-  ] =
-    '[\\p{sc=Gujr}\\p{sc=Telu}\\p{sc=Mlym}\\p{sc=Orya}\\p{sc=Beng}\\p{sc=Deva}]'
-
+  // There is no sc= in front Gujr and Hiragana, the Unicode regex recognizes it but regexpu-core does not.
   regexReplacements['\\p{Hiragana}'] = '\\p{sc=Hiragana}'
+  regexReplacements['\\p{Gujr}'] = '\\p{sc=Gujr}'
 
   return regexReplacements
 }
@@ -276,15 +230,25 @@ const transformCLDRVariablesRegex = (unicodeRegex: string) => {
   //replace all spaces in the regex (js interprets spaces in regex as literal, but unicode regex seems to be ignoring it)
   jsCompatibleRegex = unicodeRegex.replaceAll(/\u0020/gm, '')
 
-  //property escapes in cldr-json are unnecessarly double quoted
+  //property escapes in cldr-json are unnecessarily double quoted
   jsCompatibleRegex = jsCompatibleRegex.replaceAll('\\\\p', '\\p')
 
-  //change unicode regex set opperands to javascipt format (https://github.com/tc39/proposal-regexp-v-flag)
+  //change unicode regex set operands to javascript format (https://github.com/tc39/proposal-regexp-v-flag)
   jsCompatibleRegex = jsCompatibleRegex.replaceAll(/-/gm, '--')
   jsCompatibleRegex = jsCompatibleRegex.replaceAll(/\&/gm, '&&')
 
-  //replace unsupported unicodePropertyEscapes (see generateRegexForUnsupportedProperties ), wrap the ressult into [] due to the differences between js regex and unicode regex handling set operands
-  //If there is a -- or && between multiple sequential characters not wrapped into [] regexpu core will only apply the set operand between those specific characters and not the whole list
+  //handles the strange case of multiple consecutive properties treated as a single group when performing set operations
+  //example:
+  //  `\\\\p{Gujr}\\\\p{sc=Telu}\\\\p{sc=Mlym}\\\\p{sc=Orya}\\\\p{sc=Beng}\\\\p{sc=Deva}&\\\\p{Indic_Syllabic_Category=Virama}`
+  // needs to become
+  //  `[\\\\p{Gujr}\\\\p{sc=Telu}\\\\p{sc=Mlym}\\\\p{sc=Orya}\\\\p{sc=Beng}\\\\p{sc=Deva}]&\\\\p{Indic_Syllabic_Category=Virama}`
+  jsCompatibleRegex = jsCompatibleRegex.replaceAll(
+    /\\p\{[^&\-]+?\}(\\p\{[^&\-]+?\})+/gm,
+    match => `[${match}]`
+  )
+
+  //replace unsupported unicodePropertyEscapes (see generateRegexForUnsupportedProperties ),
+  //wrap the result into [], because if there is a -- or && between properties not wrapped into [] regexpu core will throw an error
   for (const [toReplace, replacement] of Object.entries(regexReplacements)) {
     jsCompatibleRegex = jsCompatibleRegex.replaceAll(
       toReplace,
@@ -295,19 +259,15 @@ const transformCLDRVariablesRegex = (unicodeRegex: string) => {
   return jsCompatibleRegex
 }
 
-//look at wordbreak $RI variable, is acting strange
 const hardcodedRuleReplacments: Record<string, string> = {
   //Because of: https://github.com/mathiasbynens/regexpu-core/issues/72
   //could be implemented on the runtime
   'root.GraphemeClusterBreak.13.before':
     '(?:(?!\\uD83C[\\uDDE6-\\uDDFF])[^\\uDDE6-\\uDDFF])((?:\\uD83C[\\uDDE6-\\uDDFF])(?:\\uD83C[\\uDDE6-\\uDDFF]))*(?:\\uD83C[\\uDDE6-\\uDDFF])',
 
-  //This is still broken: L450
+  //This is only partially fixes the word break, there is still 1 failing test (see L385)
   'root.WordBreak.16.before':
     '(?:(?!\\uD83C[\\uDDE6-\\uDDFF])[^\\uDDE6-\\uDDFF])((?:\\uD83C[\\uDDE6-\\uDDFF])(?:\\uD83C[\\uDDE6-\\uDDFF]))*(?:\\uD83C[\\uDDE6-\\uDDFF])',
-
-  //issue with regexpu-dot transpilation, needs investigation
-  'root.SentenceBreak.998.after': '[\\s\\S]',
 }
 
 const replaceVariables = (variables: Record<string, string>, input: string) => {
@@ -318,16 +278,6 @@ const replaceVariables = (variables: Record<string, string>, input: string) => {
     }
     return variables[match]
   })
-
-  // Alternative implementation using match index
-  // let m
-
-  // while ((m = regex.exec(str)) !== null) {
-  //   // This is necessary to avoid infinite loops with zero-width matches
-  //   if (m.index === regex.lastIndex) {
-  //     regex.lastIndex++
-  //   }
-  // }
 }
 
 /**
@@ -339,34 +289,33 @@ const replaceVariables = (variables: Record<string, string>, input: string) => {
  *   - replaces variables inside variables (required for the regex transpilation)
  *   - transpiles the regex to es5 compatible
  * - remaps rules
- *   - replaces negated character class with regex compatible with regexpu otuput from variables (needs fixing)
- *   - replaces character class with regex compativle with regexpu output
- *   - extracts if the rule allows or disalows break
+ *   - replaces negated character class with regex compatible with regexpu output from variables (needs fixing)
+ *   - replaces character class with regex compatible with regexpu output
+ *   - extracts if the rule allows or disallows break
  *   - extracts the "before" part of the rule
  *   - extracts the "after"  part of the rule
  *   - applies the hardcoded replacements (needs fixing) of broken rules
  *   - removes literal spaces from rules (unicode regex ignores them, but js treats them as literals)
- * - remaps surpressions into an array of strings
+ * - remaps suppressions into an array of strings
  * @param segmentationFile - cldr locale json
  * @param contextVariables - to pass the root variables as context, needed by some locales
  * @returns
  */
 const remapSegmentationJson = (
   segmentationFile: SegmentationsJson,
-  contextVariables?: Record<string, Record<string, string>>
+  contextVariables?: Record<SegmentationsJsonBreakType, Record<string, string>>
 ) => {
   const language = segmentationFile.segments.identity.language
   const segmentations = segmentationFile.segments.segmentations
 
   const currentContexVariables: Record<string, {[x: string]: string}> = {}
-  const remappedSegmentations: Record<
-    string,
-    {variables?: any; segmentRules?: any; surpressions?: string[]}
+  const remappedSegmentations: Partial<
+    Record<Granularity, SegmentationsBreakTypeValue>
   > = {}
 
   for (const [segmentationTypeName, segmentationTypeValue] of Object.entries(
     segmentations
-  )) {
+  ) as [SegmentationsJsonBreakType, SegmentationsJsonBreakTypeValue][]) {
     //line break is not part of the proposal: https://github.com/tc39/proposal-intl-segmenter#why-is-line-breaking-not-included
     if (segmentationTypeName === 'LineBreak') {
       continue
@@ -379,7 +328,10 @@ const remapSegmentationJson = (
 
     const variableMap: Record<string, string> = {}
 
-    if ('variables' in segmentationTypeValue) {
+    if (
+      'variables' in segmentationTypeValue &&
+      segmentationTypeValue.variables
+    ) {
       for (const variable of segmentationTypeValue.variables) {
         for (const [variableName, variableValue] of Object.entries(variable)) {
           try {
@@ -395,21 +347,23 @@ const remapSegmentationJson = (
             currentContexVariables[segmentationTypeName][variableName] =
               variableRegex
 
-            let transformedRegex = rewritePattern(variableRegex, 'v', {
+            //v flag enables unicode regex sets
+            //s flag enables dotAll flag
+            let transformedRegex = rewritePattern(variableRegex, 'vs', {
               unicodeSetsFlag: 'transform',
-              // unicodePropertyEscapes: 'transform',
-              // unicodeFlag: 'transform',
+              dotAllFlag: 'transform',
             })
 
             //need two steps to correctly downlevel certain unicode property escapes
             transformedRegex = rewritePattern(transformedRegex, 'u', {
-              // unicodeSetsFlag: 'transform',
               unicodePropertyEscapes: 'transform',
               unicodeFlag: 'transform',
             })
 
             variableMap[variableName] = transformedRegex
-          } catch (e: any) {
+          } catch (_e) {
+            //so typescript does not complain
+            const e = _e as Error
             e.message = `${language}:${segmentationTypeName}:${variableName}: ${e.message}`
             throw e
           }
@@ -417,32 +371,15 @@ const remapSegmentationJson = (
       }
     }
 
-    let segmentRules: Record<
-      string,
-      {before?: string; breaks: boolean; after?: string}
-    > = {}
+    let segmentRules: Record<string, ParsedBreakRule> = {}
 
-    if ('segmentRules' in segmentationTypeValue) {
+    if (
+      'segmentRules' in segmentationTypeValue &&
+      segmentationTypeValue.segmentRules
+    ) {
       for (const [ruleNr, ruleString] of Object.entries(
         segmentationTypeValue.segmentRules
       )) {
-        //hardcode rule replacements
-        //hardcode replacements
-        // let fixedRuleString = ruleString.replace(
-        //   '[^$RI]',
-        //   '[^\\U0001F1E6-\\U0001F1FF]'
-        // )
-        // {
-        //   before: /^((?:\uD83C[\uDDE6-\uDDFF])(?:\uD83C[\uDDE6-\uDDFF]))*(?:\uD83C[\uDDE6-\uDDFF])$/,
-        //   after: /^(?:\uD83C[\uDDE6-\uDDFF])/,
-        //   breaks: false
-        // }
-        // {
-        //   before: /(?:(?!\uD83C[\uDDE6-\uDDFF])[\s\S])((?:\uD83C[\uDDE6-\uDDFF])(?:\uD83C[\uDDE6-\uDDFF]))*(?:\uD83C[\uDDE6-\uDDFF])$/,
-        //   after: /^(?:\uD83C[\uDDE6-\uDDFF])/,
-        //   breaks: false
-        // }
-
         //replace negated character class to negative lookahead inside noncapturing group (doesn't work correctly, needs fixing)
         //somewhat hacky way to transform the rule regex, can't use regexpu because we need to preserve the varialbes
         //TODO: needs fixing
@@ -452,6 +389,10 @@ const remapSegmentationJson = (
         )
 
         //replaces character class to a non capturing group and adding | between variables - so is compatible with regexpu output on variables
+        //example:
+        //   `[$Format $Extend]` where $Format and $Extend are variables in a format of (?:...)
+        //to
+        //   `(?:$Format|$Format)`
         fixedRuleString = fixedRuleString.replace(
           //find character classes, so [<contents>]
           /(\[)(.+)(\])/gm,
@@ -479,43 +420,43 @@ const remapSegmentationJson = (
         //fix the regex
         let before = fixedRuleString.substring(0, relationPosition).trim()
         if (before) {
-          const hardcodedReplacementKey = `${language}.${segmentationTypeName}.${ruleNr}.before`
+          const hardcodedReplacementKey: string = `${language}.${segmentationTypeName}.${ruleNr}.before`
           if (hardcodedReplacementKey in hardcodedRuleReplacments) {
             segmentRules[ruleNr].before =
               hardcodedRuleReplacments[hardcodedReplacementKey]
           } else {
-            //remove spaces, they are not neccessary
+            //remove spaces, they are not necessary
             segmentRules[ruleNr].before = before.replaceAll(/\u0020/gm, '')
           }
         }
 
         const after = fixedRuleString.substring(relationPosition + 1).trim()
         if (after) {
-          const hardcodedReplacementKey = `${language}.${segmentationTypeName}.${ruleNr}.after`
+          const hardcodedReplacementKey: string = `${language}.${segmentationTypeName}.${ruleNr}.after`
           if (hardcodedReplacementKey in hardcodedRuleReplacments) {
             segmentRules[ruleNr].after =
               hardcodedRuleReplacments[hardcodedReplacementKey]
           } else {
-            //remove spaces, they are not neccessary
+            //remove spaces, they are not necessary
             segmentRules[ruleNr].after = after.replaceAll(/\u0020/gm, '')
           }
         }
       }
     }
 
-    let surpressions: string[] = []
+    let suppressions: string[] = []
     if ('standard' in segmentationTypeValue) {
-      surpressions = segmentationTypeValue.standard
+      suppressions = segmentationTypeValue.standard
         .map(sur => Object.values(sur))
         .flat()
     }
 
-    const granularityKey: string = getGranularity(segmentationTypeName)
+    const granularityKey = getGranularity(segmentationTypeName)
 
     remappedSegmentations[granularityKey] = {
       variables: variableMap,
       segmentRules,
-      surpressions,
+      suppressions,
     }
   }
 
@@ -526,28 +467,30 @@ const remapSegmentationJson = (
   }
 }
 
-// Function to get current filenames
-// in directory with specific extension
-
 async function main(args: minimist.ParsedArgs) {
   const {out} = args
-  //locale cldr rules
+  //root rules (needed to be separate for the context Variables)
   const {und: rootSegmentation, ...localeSegmentations} =
     await cldrSegmentationRules()
 
+  //locale rules
   const {
-    currentContexVariables: rootContextVariabvles,
+    currentContexVariables: rootContextVariables,
     segmentations: remappedRootSegmentation,
   } = remapSegmentationJson(rootSegmentation)
 
-  const remappedLocaleSegmentations: Record<string, any> = {
+  const remappedLocaleSegmentations: Record<
+    string,
+    Partial<Record<Granularity, SegmentationsBreakTypeValue>>
+  > = {
     root: remappedRootSegmentation,
   }
 
+  //remap each locale using root context
   for (const [_, segmentationsFile] of Object.entries(localeSegmentations)) {
     const {language, segmentations} = remapSegmentationJson(
       segmentationsFile,
-      rootContextVariabvles
+      rootContextVariables
     )
     remappedLocaleSegmentations[language] = segmentations
   }

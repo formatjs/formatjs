@@ -29,7 +29,6 @@ SRC_DEPS = [
     ":node_modules/@formatjs/intl-localematcher",
 ]
 
-#     ":node_modules/@formatjs/intl-locale",
 TEST_DEPS = SRC_DEPS + [
     "//:node_modules/@types/node",
     "tests/test-utils.ts",
@@ -38,10 +37,18 @@ TEST_DEPS = SRC_DEPS + [
     "unicodeFiles/SentenceBreakTest.txt",
 ]
 
-SRCS = glob([
-    "src/**/*.ts",
-    "*.ts",
-])
+SRCS = glob(
+    [
+        "src/**/*.ts",
+        "*.ts",
+    ],
+    exclude = [
+        #for development only
+        "debug.ts",
+        "benchmark.ts",
+        "tests/**/*",
+    ],
+)
 
 TESTS = glob([
     "tests/*.test.ts",
@@ -79,7 +86,7 @@ ts_project(
     out_dir = "test262",
     resolve_json_module = True,
     tsconfig = "//:tsconfig.es6",
-    deps = ["//:node_modules/tslib"] + SRC_DEPS,
+    deps = SRC_DEPS,
 )
 
 esbuild(
@@ -121,6 +128,16 @@ write_source_files(
     visibility = ["//:__pkg__"],
 )
 
+esbuild(
+    name = "polyfill.iife",
+    entry_point = "lib/polyfill.js",
+    target = "es5",
+    deps = [
+        ":dist-esm",
+        "//:node_modules/tslib",
+    ] + SRC_DEPS,
+)
+
 check_format(
     name = "prettier",
     srcs = glob(
@@ -145,13 +162,10 @@ generate_src_file(
         "unicodeFiles/DerivedEastAsianWidth.txt",
         "unicodeFiles/GraphemeBreakProperty.txt",
         "unicodeFiles/IndicSyllabicCategory.txt",
-        "unicodeFiles/LineBreak.txt",
-        "unicodeFiles/PropertyValueAliases.txt",
         "unicodeFiles/SentenceBreakProperty.txt",
         "unicodeFiles/WordBreakProperty.txt",
         "//:node_modules/@types/regenerate",
         "//:node_modules/cldr-segments-full",
-        "//:node_modules/regenerate",
         "//:node_modules/regexpu-core",
     ],
     entry_point = "scripts/generate-cldr-segmentation-rules.ts",
