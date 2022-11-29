@@ -355,13 +355,18 @@ class SegmentIterator
 
     let position = Number(positionInput)
 
+    //https://tc39.es/ecma262/#sec-tointegerorinfinity
+    // 2. If number is NaN, +0𝔽, or -0𝔽, return 0.
     if (isNaN(position) || !position) {
       position = 0
     }
+    // 5. Let integer be floor(abs(ℝ(number))).
+    // 6. If number < -0𝔽, set integer to -integer.
+    position = Math.floor(Math.abs(position)) * (position < 0 ? -1 : 1)
+
     if (position < 0 || position >= this.input.length) {
       return undefined
     }
-    position = Math.floor(position)
 
     //find previous break point
     let previousBreakPoint = 0
