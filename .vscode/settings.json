@@ -11,7 +11,8 @@
     "**/.project": true,
     "**/.settings": true,
     "**/.factorypath": true,
-    "dist": true
+    "dist": true,
+    ".swc": true,
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -42,10 +43,12 @@
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "npm.packageManager": "yarn",
-  "prettier.packageManager": "yarn",
   "eslint.packageManager": "yarn",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "rust-analyzer.linkedProjects": [
+    "rust/Cargo.toml"
+  ],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -60,5 +63,8 @@
   },
   "[shellscript]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
   }
 }

@@ -1,0 +1,27 @@
+{
+  "name": "swc-plugin-experimental",
+  "version": "0.1.0",
+  "description": "SWC plugin for formatjs",
+  "main": "./index.wasm",
+  "files": [
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "index.wasm"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formatjs/formatjs"
+  },
+  "keywords": [
+    "SWC",
+    "plugin",
+    "formatjs"
+  ],
+  "author": "OJ Kwon <kwon.ohjoong@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "homepage": "https://github.com/formatjs/formatjs#readme"
+}
