@@ -154,7 +154,7 @@ export const DateTimeFormat = function (
     return new DateTimeFormat(locales, options)
   }
 
-  InitializeDateTimeFormat(this as Intl.DateTimeFormat, locales, options, {
+  InitializeDateTimeFormat(this, locales, options, {
     tzData: DateTimeFormat.tzData,
     uppercaseLinks: UPPERCASED_LINKS,
     availableLocales: DateTimeFormat.availableLocales,

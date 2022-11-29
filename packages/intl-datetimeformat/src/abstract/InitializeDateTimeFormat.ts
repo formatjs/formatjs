@@ -66,7 +66,7 @@ const TYPE_REGEX = /^[a-z0-9]{3,8}$/i
  * @param opts options
  */
 export function InitializeDateTimeFormat(
-  dtf: DateTimeFormat,
+  dtf: Intl.DateTimeFormat | DateTimeFormat,
   locales: string | string[] | undefined,
   opts: Intl.DateTimeFormatOptions | undefined,
   {
@@ -79,7 +79,9 @@ export function InitializeDateTimeFormat(
     tzData,
     uppercaseLinks,
   }: {
-    getInternalSlots(dtf: DateTimeFormat): IntlDateTimeFormatInternal
+    getInternalSlots(
+      dtf: DateTimeFormat | Intl.DateTimeFormat
+    ): IntlDateTimeFormatInternal
     availableLocales: Set<string>
     getDefaultLocale(): string
     getDefaultTimeZone(): string

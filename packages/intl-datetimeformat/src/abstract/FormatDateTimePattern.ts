@@ -3,6 +3,7 @@ import {
   DateTimeFormatLocaleInternalData,
   IntlDateTimeFormatPart,
   TimeClip,
+  DateTimeFormat,
 } from '@formatjs/ecma402-abstract'
 
 import {DATE_TIME_PROPS} from './utils'
@@ -45,7 +46,9 @@ function offsetToGmtString(
 }
 
 export interface FormatDateTimePatternImplDetails {
-  getInternalSlots(dtf: Intl.DateTimeFormat): IntlDateTimeFormatInternal
+  getInternalSlots(
+    dtf: Intl.DateTimeFormat | DateTimeFormat
+  ): IntlDateTimeFormatInternal
   localeData: Record<string, DateTimeFormatLocaleInternalData>
   getDefaultTimeZone(): string
 }
@@ -56,7 +59,7 @@ export interface FormatDateTimePatternImplDetails {
  * @param x
  */
 export function FormatDateTimePattern(
-  dtf: Intl.DateTimeFormat,
+  dtf: Intl.DateTimeFormat | DateTimeFormat,
   patternParts: IntlDateTimeFormatPart[],
   x: number,
   {
@@ -111,7 +114,6 @@ export function FormatDateTimePattern(
         tm.millisecond * 10 ** ((fractionalSecondDigits || 0) - 3)
       )
       result.push({
-        // @ts-expect-error Spec is not there yet
         type: 'fractionalSecond',
         value: nf3!.format(v),
       })
