@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.3.1...@formatjs/intl-datetimeformat@6.4.0) (2022-11-29)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** upgrade tzdata to 2022f, fix [#3898](https://github.com/formatjs/formatjs/issues/3898) ([aab9f05](https://github.com/formatjs/formatjs/commit/aab9f05b954ac4c91cb1660eebe82b1be4bd5c6d))
+
 ## [6.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.3.0...@formatjs/intl-datetimeformat@6.3.1) (2022-10-17)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.5.1...@formatjs/intl@2.6.0) (2022-11-29)
+
+### Bug Fixes
+
+* **@formatjs/intl:** fix type checker errors with TypeScript 4.9 ([#3916](https://github.com/formatjs/formatjs/issues/3916)) ([36d0437](https://github.com/formatjs/formatjs/commit/36d04373cb6c3a768265792fe808bbe036bb0804)), closes [#3912](https://github.com/formatjs/formatjs/issues/3912) [#3905](https://github.com/formatjs/formatjs/issues/3905) [#3910](https://github.com/formatjs/formatjs/issues/3910)
+
+### Features
+
+* **@formatjs/intl-displaynames:** Intl DisplayNames API V2 (Stage 3) implementation ([#3890](https://github.com/formatjs/formatjs/issues/3890)) ([e39a89e](https://github.com/formatjs/formatjs/commit/e39a89ecee56a0c234e661e3860b61aa3a34f65e))
+
 ## [2.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.5.0...@formatjs/intl@2.5.1) (2022-10-17)
 
 **Note:** Version bump only for package @formatjs/intl

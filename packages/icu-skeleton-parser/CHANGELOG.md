@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.15](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.3.14...@formatjs/icu-skeleton-parser@1.3.15) (2022-11-29)
+
+**Note:** Version bump only for package @formatjs/icu-skeleton-parser
+
 ## [1.3.14](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.3.13...@formatjs/icu-skeleton-parser@1.3.14) (2022-10-13)
 
 **Note:** Version bump only for package @formatjs/icu-skeleton-parser

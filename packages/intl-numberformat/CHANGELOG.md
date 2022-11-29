@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.2.0...@formatjs/intl-numberformat@8.3.0) (2022-11-29)
+
+### Features
+
+* **@formatjs/intl-numberformat:** implemented formatNumericRange and formatNumericRangeToParts ([#3860](https://github.com/formatjs/formatjs/issues/3860)) ([113a169](https://github.com/formatjs/formatjs/commit/113a169e41830ff4ddb6ae0c797292b2297bdf1d))
+
 # [8.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.1.3...@formatjs/intl-numberformat@8.2.0) (2022-10-13)
 
 ### Features

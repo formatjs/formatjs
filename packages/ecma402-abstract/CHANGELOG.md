@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.13.0...@formatjs/ecma402-abstract@1.14.0) (2022-11-29)
+
+### Features
+
+* **@formatjs/intl-displaynames:** Intl DisplayNames API V2 (Stage 3) implementation ([#3890](https://github.com/formatjs/formatjs/issues/3890)) ([e39a89e](https://github.com/formatjs/formatjs/commit/e39a89ecee56a0c234e661e3860b61aa3a34f65e))
+* **@formatjs/intl-numberformat:** implemented formatNumericRange and formatNumericRangeToParts ([#3860](https://github.com/formatjs/formatjs/issues/3860)) ([113a169](https://github.com/formatjs/formatjs/commit/113a169e41830ff4ddb6ae0c797292b2297bdf1d))
+
 # [1.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.12.0...@formatjs/ecma402-abstract@1.13.0) (2022-10-13)
 
 ### Features
