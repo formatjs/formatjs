@@ -48,10 +48,12 @@ npm run examples
 Releases can be done with the following steps:
 
 ```sh
+# Make sure you have GH_TOKEN setup as indicated by:
+# https://github.com/lerna/lerna/blob/05ad1860e2da7fc16c9c0a072c9389e94792ab64/commands/version/README.md#--create-release-type
 npm run prerelease
 bazel build :dist
 mkdir ../formatjs2
-\cp -rf dist/bin/formatjs_dist/ ../formatjs2/
+cp -rf dist/bin/formatjs_dist/ ../formatjs2/
 cd ../formatjs2/
 npx pnpm -r publish
 ```
