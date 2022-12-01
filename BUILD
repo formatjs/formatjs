@@ -58,6 +58,7 @@ PACKAGES_TO_DIST = [
     "//packages/intl-relativetimeformat",
     "//packages/react-intl",
     "//packages/swc-plugin",
+    "//packages/swc-plugin-experimental",
     "//packages/ts-transformer",
     "//packages/vue-intl",
 ]
