@@ -54,10 +54,8 @@ GH_TOKEN=xxxxxxx npm run prerelease
 bazel build :dist
 mkdir ../formatjs2
 cp -rf dist/bin/formatjs_dist/ ../formatjs2/
-cd ../formatjs2/
-find . -type d -exec chmod 755 {} \;
-npx pnpm install
-npx pnpm -r publish
+# Use `--access=public` to publish new packages with `@formatjs/` scope.
+npx pnpm -r publish --force
 ```
 
 ### Updating tzdata version
