@@ -1,4 +1,5 @@
 import {
+  DateTimeFormat,
   IntlDateTimeFormatPart,
   IntlDateTimeFormatPartType,
   PartitionPattern,
@@ -16,7 +17,7 @@ import {
  * @param x
  */
 export function PartitionDateTimePattern(
-  dtf: Intl.DateTimeFormat,
+  dtf: Intl.DateTimeFormat | DateTimeFormat,
   x: number,
   implDetails: ToLocalTimeImplDetails & FormatDateTimePatternImplDetails
 ): IntlDateTimeFormatPart[] {

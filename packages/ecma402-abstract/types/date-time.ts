@@ -11,7 +11,7 @@ export type Formats = Pick<
   | 'second'
   | 'timeZoneName'
 > & {
-  fractionalSecondDigits?: 0 | 1 | 2
+  fractionalSecondDigits?: 1 | 2 | 3
   hour12?: boolean
   pattern: string
   pattern12: string

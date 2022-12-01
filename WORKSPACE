@@ -19,9 +19,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file"
 # rules_js
 http_archive(
     name = "aspect_rules_js",
-    sha256 = "538049993bec3ee1ae9b1c3cd669156bca04eb67027b222883e47b0a2aed2e67",
-    strip_prefix = "rules_js-1.0.0",
-    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.0.0.tar.gz",
+    sha256 = "f58d7be1bb0e4b7edb7a0085f969900345f5914e4e647b4f0d2650d5252aa87d",
+    strip_prefix = "rules_js-1.8.0",
+    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.8.0.tar.gz",
 )
 
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
@@ -77,9 +77,9 @@ http_file(
 # resolve transitive dep
 http_archive(
     name = "aspect_rules_esbuild",
-    sha256 = "c5af277eb0692fa69212c1eb4d44cb8936ae4e0f518f5a12ac11abf1b976e63b",
-    strip_prefix = "rules_esbuild-fe714f6fc18f1b5e81beb9e4de42ccb1cd8c45de",
-    url = "https://github.com/aspect-build/rules_esbuild/archive/fe714f6fc18f1b5e81beb9e4de42ccb1cd8c45de.tar.gz",
+    sha256 = "f9b5bf16251e3e4e127337ef968e6a398c9a4f353f1730e6c7ff6c9a8981e858",
+    strip_prefix = "rules_esbuild-0.13.4",
+    url = "https://github.com/aspect-build/rules_esbuild/archive/refs/tags/v0.13.4.tar.gz",
 )
 
 load("@aspect_rules_esbuild//esbuild:dependencies.bzl", "rules_esbuild_dependencies")
@@ -97,9 +97,9 @@ esbuild_register_toolchains(
 # Typescript
 http_archive(
     name = "aspect_rules_ts",
-    sha256 = "1945d5a356d0ec85359dea411467dec0f98502503a53798ead7f54aef849598b",
-    strip_prefix = "rules_ts-1.0.0-rc1",
-    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.0-rc1.tar.gz",
+    sha256 = "5b501313118b06093497b6429f124b973f99d1eb5a27a1cc372e5d6836360e9d",
+    strip_prefix = "rules_ts-1.0.2",
+    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.2.tar.gz",
 )
 
 ##################
@@ -110,9 +110,12 @@ http_archive(
 # you should fetch it *before* calling this.
 # Alternatively, you can skip calling this function, so long as you've
 # already fetched all the dependencies.
-load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies", LATEST_TS_VERSION = "LATEST_VERSION")
+load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")
 
-rules_ts_dependencies(ts_version = LATEST_TS_VERSION)
+rules_ts_dependencies(
+    ts_version_from = "//:package.json",
+    ts_integrity = "sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==",
+)
 
 # Setup skylib
 http_archive(

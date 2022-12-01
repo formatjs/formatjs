@@ -87,7 +87,7 @@ copy_to_directory(
         ":%s" % PACKAGE_NAME,
         "tests/global_type_overrides.test-d.ts"
     ],
-    out = "type_test_files",
+    out = "global_type_overrides_test_files",
     # Remove the prefix so the package directory merges with the test file directory.
     replace_prefixes = dict([
         ("%s" % PACKAGE_NAME, "")
@@ -103,7 +103,7 @@ tsd_bin.tsd_test(
     ] + SRC_DEPS,
     args = [
         "--files",
-        "tests/**/*.test-d.ts"
+        "tests/global_type_overrides.test-d.ts"
     ],
-    chdir = "packages/%s/type_test_files" % PACKAGE_NAME
+    chdir = "packages/%s/global_type_overrides_test_files" % PACKAGE_NAME
 )

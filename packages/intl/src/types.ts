@@ -34,14 +34,16 @@ declare global {
   }
 }
 
-// NOTE: workaround the TypeScript 4.9 bug: https://github.com/formatjs/formatjs/issues/3910
-type _Message = FormatjsIntl.Message
-type MessageIds = _Message extends {ids: string} ? _Message['ids'] : string
+type MessageIds = FormatjsIntl.Message extends {ids: infer T}
+  ? T extends string
+    ? T
+    : string
+  : string
 
-// NOTE: workaround the TypeScript 4.9 bug: https://github.com/formatjs/formatjs/issues/3910
-type _IntlConfig = FormatjsIntl.IntlConfig
-type Locale = _IntlConfig extends {locale: string}
-  ? _IntlConfig['locale']
+type Locale = FormatjsIntl.IntlConfig extends {locale: infer T}
+  ? T extends string
+    ? T
+    : string
   : string
 
 export type OnErrorFn = (

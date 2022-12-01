@@ -24,7 +24,6 @@ SRCS = glob([
 
 SRC_DEPS = [
     "//:node_modules/vue",
-    "//:node_modules/@vue/runtime-core",
     "//:node_modules/@babel/types",
     ":node_modules/@formatjs/intl",
     ":node_modules/@formatjs/icu-messageformat-parser",
