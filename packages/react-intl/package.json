@@ -137,7 +137,7 @@
     "@types/react": "16 || 17 || 18",
     "hoist-non-react-statics": "^3.3.2",
     "intl-messageformat": "workspace:*",
-    "tslib": "2.4.0"
+    "tslib": "^2.4.0"
   },
   "devDependencies": {
     "@formatjs/intl-numberformat": "workspace:*",

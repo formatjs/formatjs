@@ -110,7 +110,7 @@ importers:
       ts-loader: ^9.1.2
       ts-node: ^10.8.1
       tsd: ^0.24.1
-      tslib: 2.4.0
+      tslib: ^2.4.0
       typescript: 4.9.3
       unidiff: ^1.0.2
       vue: ^3.2.45
@@ -236,7 +236,7 @@ importers:
       '@types/babel__core': ^7.1.7
       '@types/babel__helper-plugin-utils': ^7.10.0
       '@types/babel__traverse': ^7.1.7
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@babel/core': 7.18.5
       '@babel/helper-plugin-utils': 7.17.12
@@ -276,7 +276,7 @@ importers:
       fs-extra: '10'
       json-stable-stringify: ^1.0.1
       loud-rejection: ^2.2.0
-      tslib: 2.4.0
+      tslib: ^2.4.0
       typescript: ^4.7
     dependencies:
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
@@ -302,14 +302,14 @@ importers:
 
   packages/ecma376:
     specifiers:
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       tslib: 2.4.0
 
   packages/ecma402-abstract:
     specifiers:
       '@formatjs/intl-localematcher': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/intl-localematcher': link:../intl-localematcher
       tslib: 2.4.0
@@ -323,7 +323,7 @@ importers:
       '@typescript-eslint/typescript-estree': ^5.9.1
       emoji-regex: ^10.0.0
       picomatch: ^2.3.1
-      tslib: 2.4.0
+      tslib: ^2.4.0
       typescript: ^4.7
     dependencies:
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
@@ -338,7 +338,7 @@ importers:
 
   packages/fast-memoize:
     specifiers:
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       tslib: 2.4.0
 
@@ -346,7 +346,7 @@ importers:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
       '@formatjs/icu-skeleton-parser': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/icu-skeleton-parser': link:../icu-skeleton-parser
@@ -361,7 +361,7 @@ importers:
   packages/icu-skeleton-parser:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       tslib: 2.4.0
@@ -376,7 +376,7 @@ importers:
       '@formatjs/intl-listformat': workspace:*
       '@formatjs/intl-numberformat': workspace:*
       intl-messageformat: workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/fast-memoize': link:../fast-memoize
@@ -395,7 +395,7 @@ importers:
       '@formatjs/intl-getcanonicallocales': workspace:*
       '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
@@ -410,7 +410,7 @@ importers:
       '@formatjs/intl-getcanonicallocales': workspace:*
       '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
@@ -423,7 +423,7 @@ importers:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
       '@formatjs/intl-localematcher': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
@@ -432,7 +432,7 @@ importers:
   packages/intl-enumerator:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       tslib: 2.4.0
     devDependencies:
@@ -440,7 +440,7 @@ importers:
 
   packages/intl-getcanonicallocales:
     specifiers:
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       tslib: 2.4.0
 
@@ -450,7 +450,7 @@ importers:
       '@formatjs/intl-getcanonicallocales': workspace:*
       '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
@@ -463,7 +463,7 @@ importers:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
       '@formatjs/intl-getcanonicallocales': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-getcanonicallocales': link:../intl-getcanonicallocales
@@ -471,7 +471,7 @@ importers:
 
   packages/intl-localematcher:
     specifiers:
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       tslib: 2.4.0
 
@@ -480,7 +480,7 @@ importers:
       '@formatjs/ecma402-abstract': workspace:*
       '@formatjs/fast-memoize': workspace:*
       '@formatjs/icu-messageformat-parser': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/fast-memoize': link:../fast-memoize
@@ -494,7 +494,7 @@ importers:
       '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
       '@formatjs/intl-pluralrules': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
@@ -510,7 +510,7 @@ importers:
       '@formatjs/intl-getcanonicallocales': workspace:*
       '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
@@ -526,7 +526,7 @@ importers:
       '@formatjs/intl-locale': workspace:*
       '@formatjs/intl-localematcher': workspace:*
       '@formatjs/intl-pluralrules': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
@@ -549,7 +549,7 @@ importers:
       '@types/react': 16 || 17 || 18
       hoist-non-react-statics: ^3.3.2
       intl-messageformat: workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
@@ -582,7 +582,7 @@ importers:
       hoist-non-react-statics: ^3.3.2
       intl-messageformat: workspace:*
       react-intl: workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     devDependencies:
       '@formatjs/ecma402-abstract': link:../../ecma402-abstract
       '@formatjs/icu-messageformat-parser': link:../../icu-messageformat-parser
@@ -610,7 +610,7 @@ importers:
       '@types/node': 14 || 16 || 17
       chalk: ^4.0.0
       json-stable-stringify: ^1.0.1
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
       '@formatjs/ts-transformer': link:../ts-transformer
@@ -631,7 +631,7 @@ importers:
       '@types/node': 14 || 16 || 17
       chalk: ^4.0.0
       json-stable-stringify: ^1.0.1
-      tslib: 2.4.0
+      tslib: ^2.4.0
       typescript: ^4.7
     dependencies:
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
@@ -653,7 +653,7 @@ importers:
       '@babel/types': ^7.12.11
       '@formatjs/icu-messageformat-parser': workspace:*
       '@formatjs/intl': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@babel/types': 7.18.4
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser

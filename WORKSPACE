@@ -41,11 +41,9 @@ npm_translate_lock(
     name = "npm",
     patch_args = {
         "make-plural-compiler@5.1.0": ["-p1"],
-        "tslib@2.4.0": ["-p1"],
     },
     patches = {
         "make-plural-compiler@5.1.0": ["//:npm_package_patches/make-plural-compiler+5.1.0.patch"],
-        "tslib@2.4.0": ["//:npm_package_patches/tslib+2.4.0.patch"],
     },
     pnpm_lock = "//:pnpm-lock.yaml",
     verify_node_modules_ignored = "//:.bazelignore",
