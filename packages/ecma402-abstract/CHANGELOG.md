@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.14.0...@formatjs/ecma402-abstract@1.14.2) (2022-12-01)
+
+### Bug Fixes
+
+* **@formatjs/intl:** update monorepo to use TypeScript 4.9 and actually fix the type issue ([#3919](https://github.com/formatjs/formatjs/issues/3919)) ([051527b](https://github.com/formatjs/formatjs/commit/051527b6391c8f4548254ab20630173789d555cd))
+
 ## [1.14.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.14.0...@formatjs/ecma402-abstract@1.14.1) (2022-12-01)
 
 ### Bug Fixes
