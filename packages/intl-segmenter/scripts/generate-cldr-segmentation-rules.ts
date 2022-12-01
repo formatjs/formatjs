@@ -131,33 +131,37 @@ const UCD_LINE_SPLIT_REGEX = /^[^#^\r^\n]+\s/gm
 const parseUCDTextFile = (filePath: string) => {
   const GraphemeClusterBreakText = readFileSync(filePath, 'utf-8')
 
-  const regexResult = GraphemeClusterBreakText.match(UCD_LINE_SPLIT_REGEX) || []
+  const regexResult = (GraphemeClusterBreakText.match(UCD_LINE_SPLIT_REGEX) ||
+    []) as string[]
 
-  return regexResult.reduce((result, current) => {
-    const lineFieldsMatch = current.match(UCD_LINE_FIELDS_REGEX)
-    if (!lineFieldsMatch) {
-      throw new Error(
-        `Failed to parse line ${current} didn't match UCD_LINE_FIELDS_REGEX`
-      )
-    }
+  return regexResult.reduce(
+    (result: Record<string, string>, current: string) => {
+      const lineFieldsMatch = current.match(UCD_LINE_FIELDS_REGEX)
+      if (!lineFieldsMatch) {
+        throw new Error(
+          `Failed to parse line ${current} didn't match UCD_LINE_FIELDS_REGEX`
+        )
+      }
 
-    const [_, rawCodes, propertyValueName] = lineFieldsMatch
+      const [_, rawCodes, propertyValueName] = lineFieldsMatch
 
-    if (!(propertyValueName in result)) {
-      result[propertyValueName] = '' //regenerate()
-    }
+      if (!(propertyValueName in result)) {
+        result[propertyValueName] = '' //regenerate()
+      }
 
-    const rangeResult = rawCodes.match(UCD_CODE_RANGE_REGEX)
-    if (rangeResult) {
-      result[
-        propertyValueName
-      ] += `\\u{${rangeResult[1]}}-\\u{${rangeResult[2]}}`
-    } else {
-      result[propertyValueName] += `\\u{${rawCodes}}`
-    }
+      const rangeResult = rawCodes.match(UCD_CODE_RANGE_REGEX)
+      if (rangeResult) {
+        result[
+          propertyValueName
+        ] += `\\u{${rangeResult[1]}}-\\u{${rangeResult[2]}}`
+      } else {
+        result[propertyValueName] += `\\u{${rawCodes}}`
+      }
 
-    return result
-  }, {} as Record<string, string>)
+      return result
+    },
+    {} as Record<string, string>
+  )
 }
 
 /**
@@ -198,26 +202,26 @@ const generateRegexForUnsupportedProperties = () => {
 
   // Replace all of the \p{Grapheme_Cluster_Break=*}
   for (const [key, value] of Object.entries(GraphemeClusterBreak)) {
-    regexReplacements[`\\p{Grapheme_Cluster_Break=${key}}`] = value.toString()
+    regexReplacements[`\\p{Grapheme_Cluster_Break=${key}}`] = String(value)
   }
 
   // Replace all of the \p{Word_Break=*}
   for (const [key, value] of Object.entries(WordBreak)) {
-    regexReplacements[`\\p{Word_Break=${key}}`] = value.toString()
+    regexReplacements[`\\p{Word_Break=${key}}`] = String(value)
   }
 
   for (const [key, value] of Object.entries(SentenceBreak)) {
-    regexReplacements[`\\p{Sentence_Break=${key}}`] = value.toString()
+    regexReplacements[`\\p{Sentence_Break=${key}}`] = String(value)
   }
 
   // replace all east asian width (using ea alias)
   for (const [key, value] of Object.entries(EastAsianWidth)) {
-    regexReplacements[`\\p{ea=${key}}`] = value.toString()
+    regexReplacements[`\\p{ea=${key}}`] = String(value)
   }
 
   // Replace all of the \p{Indic_Syllabic_Category=*}
   for (const [key, value] of Object.entries(IndicSyllabicCategory)) {
-    regexReplacements[`\\p{Indic_Syllabic_Category=${key}}`] = value.toString()
+    regexReplacements[`\\p{Indic_Syllabic_Category=${key}}`] = String(value)
   }
 
   //only `ccc=0` is ever used from the CombiningClass
