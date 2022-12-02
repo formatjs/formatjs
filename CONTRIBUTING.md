@@ -55,7 +55,7 @@ bazel build :dist
 mkdir ../formatjs2
 cp -rf dist/bin/formatjs_dist/ ../formatjs2/
 # Use `--access=public` to publish new packages with `@formatjs/` scope.
-npx pnpm -r publish --force
+npx pnpm -r publish
 ```
 
 ### Updating tzdata version
