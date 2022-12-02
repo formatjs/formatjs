@@ -283,6 +283,7 @@ rust_register_toolchains(
 crates_repository(
     name = "crate_index",
     cargo_lockfile = "//rust:Cargo.lock",
+    lockfile = "//rust:cargo-bazel-lock.json",
     manifests = [
         "//rust:Cargo.toml",
         "//rust/icu-messageformat-parser:Cargo.toml",
