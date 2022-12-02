@@ -20,7 +20,7 @@
     "@babel/types": "^7.12.11",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/intl": "workspace:*",
-    "tslib": "2.4.0"
+    "tslib": "^2.4.0"
   },
   "peerDependencies": {
     "vue": "^3.2.45"

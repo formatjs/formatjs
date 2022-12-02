@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
-    "tslib": "2.4.0"
+    "tslib": "^2.4.0"
   }
 }
