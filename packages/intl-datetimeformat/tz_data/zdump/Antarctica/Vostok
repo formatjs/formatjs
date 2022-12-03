@@ -1,0 +1,12 @@
+/zic/Antarctica/Vostok  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Antarctica/Vostok  -67768040609761821 (gmtime failed) = -67768040609761821 (localtime failed)
+/zic/Antarctica/Vostok  -67768040609761820 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=21020
+/zic/Antarctica/Vostok  -67768040609740801 (gmtime failed) = Thu Jan  1 05:50:19 -2147481748 LMT isdst=0 gmtoff=21020
+/zic/Antarctica/Vostok  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 05:50:20 -2147481748 LMT isdst=0 gmtoff=21020
+/zic/Antarctica/Vostok  Sat Dec 31 18:09:39 1927 UT = Sat Dec 31 23:59:59 1927 LMT isdst=0 gmtoff=21020
+/zic/Antarctica/Vostok  Sat Dec 31 18:09:40 1927 UT = Sun Jan  1 00:09:40 1928 +06 isdst=0 gmtoff=21600
+/zic/Antarctica/Vostok  Wed Dec 31 17:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +06 isdst=0 gmtoff=21600
+/zic/Antarctica/Vostok  Wed Dec 31 18:00:00 2147485547 UT = 67768036191655200 (localtime failed)
+/zic/Antarctica/Vostok  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Antarctica/Vostok  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Antarctica/Vostok  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

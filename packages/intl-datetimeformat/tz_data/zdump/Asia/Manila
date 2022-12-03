@@ -1,0 +1,30 @@
+/zic/Asia/Manila  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Manila  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Asia/Manila  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Asia/Manila  Thu Jan  1 15:55:59 -2147481748 UT = -67768040609683441 (localtime failed)
+/zic/Asia/Manila  Thu Jan  1 15:56:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-57360
+/zic/Asia/Manila  Tue Dec 31 15:55:59 1844 UT = Mon Dec 30 23:59:59 1844 LMT isdst=0 gmtoff=-57360
+/zic/Asia/Manila  Tue Dec 31 15:56:00 1844 UT = Wed Jan  1 00:00:00 1845 LMT isdst=0 gmtoff=29040
+/zic/Asia/Manila  Wed May 10 15:55:59 1899 UT = Wed May 10 23:59:59 1899 LMT isdst=0 gmtoff=29040
+/zic/Asia/Manila  Wed May 10 15:56:00 1899 UT = Wed May 10 23:56:00 1899 PST isdst=0 gmtoff=28800
+/zic/Asia/Manila  Sat Oct 31 15:59:59 1936 UT = Sat Oct 31 23:59:59 1936 PST isdst=0 gmtoff=28800
+/zic/Asia/Manila  Sat Oct 31 16:00:00 1936 UT = Sun Nov  1 01:00:00 1936 PDT isdst=1 gmtoff=32400
+/zic/Asia/Manila  Sun Jan 31 14:59:59 1937 UT = Sun Jan 31 23:59:59 1937 PDT isdst=1 gmtoff=32400
+/zic/Asia/Manila  Sun Jan 31 15:00:00 1937 UT = Sun Jan 31 23:00:00 1937 PST isdst=0 gmtoff=28800
+/zic/Asia/Manila  Thu Apr 30 15:59:59 1942 UT = Thu Apr 30 23:59:59 1942 PST isdst=0 gmtoff=28800
+/zic/Asia/Manila  Thu Apr 30 16:00:00 1942 UT = Fri May  1 01:00:00 1942 JST isdst=0 gmtoff=32400
+/zic/Asia/Manila  Tue Oct 31 14:59:59 1944 UT = Tue Oct 31 23:59:59 1944 JST isdst=0 gmtoff=32400
+/zic/Asia/Manila  Tue Oct 31 15:00:00 1944 UT = Tue Oct 31 23:00:00 1944 PST isdst=0 gmtoff=28800
+/zic/Asia/Manila  Sun Apr 11 15:59:59 1954 UT = Sun Apr 11 23:59:59 1954 PST isdst=0 gmtoff=28800
+/zic/Asia/Manila  Sun Apr 11 16:00:00 1954 UT = Mon Apr 12 01:00:00 1954 PDT isdst=1 gmtoff=32400
+/zic/Asia/Manila  Wed Jun 30 14:59:59 1954 UT = Wed Jun 30 23:59:59 1954 PDT isdst=1 gmtoff=32400
+/zic/Asia/Manila  Wed Jun 30 15:00:00 1954 UT = Wed Jun 30 23:00:00 1954 PST isdst=0 gmtoff=28800
+/zic/Asia/Manila  Tue Mar 21 15:59:59 1978 UT = Tue Mar 21 23:59:59 1978 PST isdst=0 gmtoff=28800
+/zic/Asia/Manila  Tue Mar 21 16:00:00 1978 UT = Wed Mar 22 01:00:00 1978 PDT isdst=1 gmtoff=32400
+/zic/Asia/Manila  Wed Sep 20 14:59:59 1978 UT = Wed Sep 20 23:59:59 1978 PDT isdst=1 gmtoff=32400
+/zic/Asia/Manila  Wed Sep 20 15:00:00 1978 UT = Wed Sep 20 23:00:00 1978 PST isdst=0 gmtoff=28800
+/zic/Asia/Manila  Wed Dec 31 15:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 PST isdst=0 gmtoff=28800
+/zic/Asia/Manila  Wed Dec 31 16:00:00 2147485547 UT = 67768036191648000 (localtime failed)
+/zic/Asia/Manila  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Manila  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Manila  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

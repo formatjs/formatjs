@@ -659,6 +659,7 @@ ts_script(
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-numbers-full",
+        "//:node_modules/cldr-dates-full",
         "//:node_modules/fast-glob",
     ],
     entry_point = "scripts/cldr-raw.ts",

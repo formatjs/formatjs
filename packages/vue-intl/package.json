@@ -1,6 +1,6 @@
 {
   "name": "vue-intl",
-  "version": "6.3.1",
+  "version": "6.4.5",
   "description": "formatjs intl binding for vue",
   "main": "index.js",
   "repository": {
@@ -20,10 +20,10 @@
     "@babel/types": "^7.12.11",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/intl": "workspace:*",
-    "tslib": "2.4.0"
+    "tslib": "^2.4.0"
   },
   "peerDependencies": {
-    "vue": "^3.2.23"
+    "vue": "^3.2.45"
   },
   "license": "ISC"
 }

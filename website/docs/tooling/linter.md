@@ -646,3 +646,11 @@ Default complexity limit is 20 (using [Smartling as a reference](https://help.sm
   }
 }
 ```
+
+### `no-invalid-icu`
+
+This validates the ICU syntax.
+
+#### Why
+
+This will make sure that the ICU message are valid and ready for translation.

@@ -1,0 +1,14 @@
+/zic/Pacific/Fakaofo  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Fakaofo  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Fakaofo  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Fakaofo  Thu Jan  1 11:24:55 -2147481748 UT = -67768040609699705 (localtime failed)
+/zic/Pacific/Fakaofo  Thu Jan  1 11:24:56 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-41096
+/zic/Pacific/Fakaofo  Tue Jan  1 11:24:55 1901 UT = Mon Dec 31 23:59:59 1900 LMT isdst=0 gmtoff=-41096
+/zic/Pacific/Fakaofo  Tue Jan  1 11:24:56 1901 UT = Tue Jan  1 00:24:56 1901 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Fakaofo  Fri Dec 30 10:59:59 2011 UT = Thu Dec 29 23:59:59 2011 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Fakaofo  Fri Dec 30 11:00:00 2011 UT = Sat Dec 31 00:00:00 2011 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Fakaofo  Wed Dec 31 10:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Fakaofo  Wed Dec 31 11:00:00 2147485547 UT = 67768036191630000 (localtime failed)
+/zic/Pacific/Fakaofo  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Fakaofo  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Fakaofo  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -19,9 +19,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file"
 # rules_js
 http_archive(
     name = "aspect_rules_js",
-    sha256 = "538049993bec3ee1ae9b1c3cd669156bca04eb67027b222883e47b0a2aed2e67",
-    strip_prefix = "rules_js-1.0.0",
-    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.0.0.tar.gz",
+    sha256 = "f58d7be1bb0e4b7edb7a0085f969900345f5914e4e647b4f0d2650d5252aa87d",
+    strip_prefix = "rules_js-1.8.0",
+    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.8.0.tar.gz",
 )
 
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
@@ -41,11 +41,9 @@ npm_translate_lock(
     name = "npm",
     patch_args = {
         "make-plural-compiler@5.1.0": ["-p1"],
-        "tslib@2.4.0": ["-p1"],
     },
     patches = {
         "make-plural-compiler@5.1.0": ["//:npm_package_patches/make-plural-compiler+5.1.0.patch"],
-        "tslib@2.4.0": ["//:npm_package_patches/tslib+2.4.0.patch"],
     },
     pnpm_lock = "//:pnpm-lock.yaml",
     verify_node_modules_ignored = "//:.bazelignore",
@@ -55,19 +53,19 @@ load("@npm//:repositories.bzl", "npm_repositories")
 
 npm_repositories()
 
-IANA_TZ_VERSION = "2022c"
+IANA_TZ_VERSION = "2022f"
 
 http_file(
     name = "tzdata",
     downloaded_file_path = "tzdata.tar.gz",
-    sha256 = "6974f4e348bf2323274b56dff9e7500247e3159eaa4b485dfa0cd66e75c14bfe",
+    sha256 = "9990d71f675d212567b931fe8aae1cab7027f89fefb8a79d808a6933a67af000",
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
 http_file(
     name = "tzcode",
     downloaded_file_path = "tzcode.tar.gz",
-    sha256 = "3e7ce1f3620cc0481907c7e074d69910793285bffe0ca331ef1a6d1ae3ea90cc",
+    sha256 = "e4543e90f84f91fa82809ea98930052fdbc13880c8a623ee3a4eaa42f8a64c15",
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
@@ -77,9 +75,9 @@ http_file(
 # resolve transitive dep
 http_archive(
     name = "aspect_rules_esbuild",
-    sha256 = "c5af277eb0692fa69212c1eb4d44cb8936ae4e0f518f5a12ac11abf1b976e63b",
-    strip_prefix = "rules_esbuild-fe714f6fc18f1b5e81beb9e4de42ccb1cd8c45de",
-    url = "https://github.com/aspect-build/rules_esbuild/archive/fe714f6fc18f1b5e81beb9e4de42ccb1cd8c45de.tar.gz",
+    sha256 = "f9b5bf16251e3e4e127337ef968e6a398c9a4f353f1730e6c7ff6c9a8981e858",
+    strip_prefix = "rules_esbuild-0.13.4",
+    url = "https://github.com/aspect-build/rules_esbuild/archive/refs/tags/v0.13.4.tar.gz",
 )
 
 load("@aspect_rules_esbuild//esbuild:dependencies.bzl", "rules_esbuild_dependencies")
@@ -97,9 +95,9 @@ esbuild_register_toolchains(
 # Typescript
 http_archive(
     name = "aspect_rules_ts",
-    sha256 = "1945d5a356d0ec85359dea411467dec0f98502503a53798ead7f54aef849598b",
-    strip_prefix = "rules_ts-1.0.0-rc1",
-    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.0-rc1.tar.gz",
+    sha256 = "5b501313118b06093497b6429f124b973f99d1eb5a27a1cc372e5d6836360e9d",
+    strip_prefix = "rules_ts-1.0.2",
+    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.2.tar.gz",
 )
 
 ##################
@@ -110,9 +108,12 @@ http_archive(
 # you should fetch it *before* calling this.
 # Alternatively, you can skip calling this function, so long as you've
 # already fetched all the dependencies.
-load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies", LATEST_TS_VERSION = "LATEST_VERSION")
+load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")
 
-rules_ts_dependencies(ts_version = LATEST_TS_VERSION)
+rules_ts_dependencies(
+    ts_version_from = "//:package.json",
+    ts_integrity = "sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==",
+)
 
 # Setup skylib
 http_archive(
@@ -132,10 +133,10 @@ bazel_skylib_workspace()
 # See https://github.com/bazelbuild/rules_go for the up to date setup instructions.
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "f2dcd210c7095febe54b804bb1cd3a58fe8435a909db2ec04e31542631cf715c",
+    sha256 = "099a9fb96a376ccbbb7d291ed4ecbdfd42f6bc822ab77ae6f1b5cb9e914e94fa",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.31.0/rules_go-v0.31.0.zip",
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.31.0/rules_go-v0.31.0.zip",
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.35.0/rules_go-v0.35.0.zip",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.35.0/rules_go-v0.35.0.zip",
     ],
 )
 
@@ -194,18 +195,22 @@ http_archive(
 )
 
 # Test262
-new_local_repository(
+TEST262_COMMIT = "ade328d530525333751e8a3b58f02e18624da085"
+
+http_archive(
     name = "com_github_tc39_test262",
     build_file = "@//:test262.BUILD",
-    path = "test262",
+    sha256 = "f4915077f38016d0f20ad8cbeaeec4e3d4a5eca3a98a895e01653f3375802a4b",
+    strip_prefix = "tc39-test262-%s" % TEST262_COMMIT[:7],
+    type = "tar.gz",
+    urls = ["https://github.com/tc39/test262/tarball/%s" % TEST262_COMMIT],
 )
 
 # Docker
 http_archive(
     name = "io_bazel_rules_docker",
-    sha256 = "59536e6ae64359b716ba9c46c39183403b01eabfbd57578e84398b4829ca499a",
-    strip_prefix = "rules_docker-0.22.0",
-    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.22.0/rules_docker-v0.22.0.tar.gz"],
+    sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
 )
 
 load(
@@ -225,10 +230,70 @@ load(
 )
 
 container_pull(
-    name = "ubuntu2204",
+    name = "ubuntu22",
     architecture = "amd64",
-    digest = "sha256:2d7ecc9c5e08953d586a6e50c29b91479a48f69ac1ba1f9dc0420d18a728dfc5",
+    digest = "sha256:6f07fc47ac37fd94fb0bf6b791aa4692f17f6a2fdfccd856d5a62043cf927be1",
     registry = "index.docker.io",
     repository = "library/ubuntu",
-    tag = "22.04",
+    tag = "22.10",
 )
+
+http_archive(
+    name = "io_buildbuddy_buildbuddy_toolchain",
+    sha256 = "603fb15023d57353f5975aa42084630895916a46060f86edabd58623b1693e27",
+    strip_prefix = "buildbuddy-toolchain-9d7a9b7f893b3cb396ea262c64a148b1e46769a7",
+    urls = ["https://github.com/buildbuddy-io/buildbuddy-toolchain/archive/9d7a9b7f893b3cb396ea262c64a148b1e46769a7.tar.gz"],
+)
+
+load("@io_buildbuddy_buildbuddy_toolchain//:deps.bzl", "buildbuddy_deps")
+
+buildbuddy_deps()
+
+load("@io_buildbuddy_buildbuddy_toolchain//:rules.bzl", "buildbuddy")
+
+buildbuddy(name = "buildbuddy_toolchain")
+
+# Rust
+# ----
+
+# To find additional information on this release or newer ones visit:
+# https://github.com/bazelbuild/rules_rust/releases
+http_archive(
+    name = "rules_rust",
+    sha256 = "324c2a86a8708d30475f324846b35965c432b63a35567ed2b5051b86791ce345",
+    urls = ["https://github.com/bazelbuild/rules_rust/releases/download/0.13.0/rules_rust-v0.13.0.tar.gz"],
+    # Workaround for https://github.com/bazelbuild/rules_rust/issues/1330
+    patches = ["//tools:rules_rust.patch"],
+)
+
+load("@rules_rust//rust:repositories.bzl", "rules_rust_dependencies", "rust_register_toolchains")
+load("@rules_rust//crate_universe:defs.bzl", "crates_repository")
+
+rules_rust_dependencies()
+
+rust_register_toolchains(
+    edition="2021",
+    extra_target_triples = [
+        "wasm32-unknown-unknown",
+        "wasm32-wasi",
+    ],
+)
+
+# Run `CARGO_BAZEL_REPIN=1 bazel sync --only=crate_index` after updating
+crates_repository(
+    name = "crate_index",
+    cargo_lockfile = "//rust:Cargo.lock",
+    lockfile = "//rust:cargo-bazel-lock.json",
+    manifests = [
+        "//rust:Cargo.toml",
+        "//rust/icu-messageformat-parser:Cargo.toml",
+        "//rust/swc-formatjs-visitor:Cargo.toml",
+        "//rust/swc-plugin-formatjs:Cargo.toml",
+        # FIX THIS
+        # "//rust/swc-formatjs-custom-transform:Cargo.toml",
+    ],
+)
+
+load("@crate_index//:defs.bzl", "crate_repositories")
+
+crate_repositories()

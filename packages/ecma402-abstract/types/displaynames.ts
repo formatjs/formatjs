@@ -4,6 +4,8 @@ type LanguageTag = string
 type RegionCode = string
 type ScriptCode = string
 type CurrencyCode = string
+type CalendarCode = string
+type DateTimeFieldCode = string
 
 export interface DisplayNamesData {
   /**
@@ -15,9 +17,16 @@ export interface DisplayNamesData {
      * Maps language subtag like `zh-CN` to their display names.
      */
     language: {
-      narrow: Record<LanguageTag, string>
-      short: Record<LanguageTag, string>
-      long: Record<LanguageTag, string>
+      dialect: {
+        narrow: Record<LanguageTag, string>
+        short: Record<LanguageTag, string>
+        long: Record<LanguageTag, string>
+      }
+      standard: {
+        narrow: Record<LanguageTag, string>
+        short: Record<LanguageTag, string>
+        long: Record<LanguageTag, string>
+      }
     }
     region: {
       narrow: Record<RegionCode, string>
@@ -33,6 +42,16 @@ export interface DisplayNamesData {
       narrow: Record<CurrencyCode, string>
       short: Record<CurrencyCode, string>
       long: Record<CurrencyCode, string>
+    }
+    calendar: {
+      narrow: Record<CalendarCode, string>
+      short: Record<CalendarCode, string>
+      long: Record<CalendarCode, string>
+    }
+    dateTimeField: {
+      narrow: Record<DateTimeFieldCode, string>
+      short: Record<DateTimeFieldCode, string>
+      long: Record<DateTimeFieldCode, string>
     }
   }
   /**

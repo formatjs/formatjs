@@ -1,0 +1,18 @@
+/zic/Asia/Yangon  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Yangon  -67768040609763888 (gmtime failed) = -67768040609763888 (localtime failed)
+/zic/Asia/Yangon  -67768040609763887 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=23087
+/zic/Asia/Yangon  -67768040609740801 (gmtime failed) = Thu Jan  1 06:24:46 -2147481748 LMT isdst=0 gmtoff=23087
+/zic/Asia/Yangon  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 06:24:47 -2147481748 LMT isdst=0 gmtoff=23087
+/zic/Asia/Yangon  Wed Dec 31 17:35:12 1879 UT = Wed Dec 31 23:59:59 1879 LMT isdst=0 gmtoff=23087
+/zic/Asia/Yangon  Wed Dec 31 17:35:13 1879 UT = Thu Jan  1 00:00:00 1880 RMT isdst=0 gmtoff=23087
+/zic/Asia/Yangon  Wed Dec 31 17:35:12 1919 UT = Wed Dec 31 23:59:59 1919 RMT isdst=0 gmtoff=23087
+/zic/Asia/Yangon  Wed Dec 31 17:35:13 1919 UT = Thu Jan  1 00:05:13 1920 +0630 isdst=0 gmtoff=23400
+/zic/Asia/Yangon  Thu Apr 30 17:29:59 1942 UT = Thu Apr 30 23:59:59 1942 +0630 isdst=0 gmtoff=23400
+/zic/Asia/Yangon  Thu Apr 30 17:30:00 1942 UT = Fri May  1 02:30:00 1942 +09 isdst=0 gmtoff=32400
+/zic/Asia/Yangon  Wed May  2 14:59:59 1945 UT = Wed May  2 23:59:59 1945 +09 isdst=0 gmtoff=32400
+/zic/Asia/Yangon  Wed May  2 15:00:00 1945 UT = Wed May  2 21:30:00 1945 +0630 isdst=0 gmtoff=23400
+/zic/Asia/Yangon  Wed Dec 31 17:29:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +0630 isdst=0 gmtoff=23400
+/zic/Asia/Yangon  Wed Dec 31 17:30:00 2147485547 UT = 67768036191653400 (localtime failed)
+/zic/Asia/Yangon  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Yangon  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Yangon  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

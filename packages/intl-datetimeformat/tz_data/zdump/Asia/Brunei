@@ -1,0 +1,46 @@
+/zic/Asia/Brunei  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Brunei  -67768040609767281 (gmtime failed) = -67768040609767281 (localtime failed)
+/zic/Asia/Brunei  -67768040609767280 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=26480
+/zic/Asia/Brunei  -67768040609740801 (gmtime failed) = Thu Jan  1 07:21:19 -2147481748 LMT isdst=0 gmtoff=26480
+/zic/Asia/Brunei  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 07:21:20 -2147481748 LMT isdst=0 gmtoff=26480
+/zic/Asia/Brunei  Sun Feb 28 16:38:39 1926 UT = Sun Feb 28 23:59:59 1926 LMT isdst=0 gmtoff=26480
+/zic/Asia/Brunei  Sun Feb 28 16:38:40 1926 UT = Mon Mar  1 00:08:40 1926 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Brunei  Sat Dec 31 16:29:59 1932 UT = Sat Dec 31 23:59:59 1932 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Brunei  Sat Dec 31 16:30:00 1932 UT = Sun Jan  1 00:30:00 1933 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Fri Sep 13 15:59:59 1935 UT = Fri Sep 13 23:59:59 1935 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Fri Sep 13 16:00:00 1935 UT = Sat Sep 14 00:20:00 1935 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Fri Dec 13 15:39:59 1935 UT = Fri Dec 13 23:59:59 1935 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Fri Dec 13 15:40:00 1935 UT = Fri Dec 13 23:40:00 1935 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Sun Sep 13 15:59:59 1936 UT = Sun Sep 13 23:59:59 1936 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Sun Sep 13 16:00:00 1936 UT = Mon Sep 14 00:20:00 1936 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Sun Dec 13 15:39:59 1936 UT = Sun Dec 13 23:59:59 1936 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Sun Dec 13 15:40:00 1936 UT = Sun Dec 13 23:40:00 1936 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Mon Sep 13 15:59:59 1937 UT = Mon Sep 13 23:59:59 1937 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Mon Sep 13 16:00:00 1937 UT = Tue Sep 14 00:20:00 1937 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Mon Dec 13 15:39:59 1937 UT = Mon Dec 13 23:59:59 1937 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Mon Dec 13 15:40:00 1937 UT = Mon Dec 13 23:40:00 1937 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Tue Sep 13 15:59:59 1938 UT = Tue Sep 13 23:59:59 1938 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Tue Sep 13 16:00:00 1938 UT = Wed Sep 14 00:20:00 1938 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Tue Dec 13 15:39:59 1938 UT = Tue Dec 13 23:59:59 1938 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Tue Dec 13 15:40:00 1938 UT = Tue Dec 13 23:40:00 1938 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Wed Sep 13 15:59:59 1939 UT = Wed Sep 13 23:59:59 1939 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Wed Sep 13 16:00:00 1939 UT = Thu Sep 14 00:20:00 1939 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Wed Dec 13 15:39:59 1939 UT = Wed Dec 13 23:59:59 1939 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Wed Dec 13 15:40:00 1939 UT = Wed Dec 13 23:40:00 1939 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Fri Sep 13 15:59:59 1940 UT = Fri Sep 13 23:59:59 1940 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Fri Sep 13 16:00:00 1940 UT = Sat Sep 14 00:20:00 1940 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Fri Dec 13 15:39:59 1940 UT = Fri Dec 13 23:59:59 1940 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Fri Dec 13 15:40:00 1940 UT = Fri Dec 13 23:40:00 1940 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Sat Sep 13 15:59:59 1941 UT = Sat Sep 13 23:59:59 1941 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Sat Sep 13 16:00:00 1941 UT = Sun Sep 14 00:20:00 1941 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Sat Dec 13 15:39:59 1941 UT = Sat Dec 13 23:59:59 1941 +0820 isdst=1 gmtoff=30000
+/zic/Asia/Brunei  Sat Dec 13 15:40:00 1941 UT = Sat Dec 13 23:40:00 1941 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Sun Feb 15 15:59:59 1942 UT = Sun Feb 15 23:59:59 1942 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Sun Feb 15 16:00:00 1942 UT = Mon Feb 16 01:00:00 1942 +09 isdst=0 gmtoff=32400
+/zic/Asia/Brunei  Tue Sep 11 14:59:59 1945 UT = Tue Sep 11 23:59:59 1945 +09 isdst=0 gmtoff=32400
+/zic/Asia/Brunei  Tue Sep 11 15:00:00 1945 UT = Tue Sep 11 23:00:00 1945 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Wed Dec 31 15:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +08 isdst=0 gmtoff=28800
+/zic/Asia/Brunei  Wed Dec 31 16:00:00 2147485547 UT = 67768036191648000 (localtime failed)
+/zic/Asia/Brunei  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Brunei  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Brunei  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

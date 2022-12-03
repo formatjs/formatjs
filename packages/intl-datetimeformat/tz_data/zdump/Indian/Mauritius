@@ -1,0 +1,20 @@
+/zic/Indian/Mauritius  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Indian/Mauritius  -67768040609754601 (gmtime failed) = -67768040609754601 (localtime failed)
+/zic/Indian/Mauritius  -67768040609754600 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=13800
+/zic/Indian/Mauritius  -67768040609740801 (gmtime failed) = Thu Jan  1 03:49:59 -2147481748 LMT isdst=0 gmtoff=13800
+/zic/Indian/Mauritius  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 03:50:00 -2147481748 LMT isdst=0 gmtoff=13800
+/zic/Indian/Mauritius  Mon Dec 31 20:09:59 1906 UT = Mon Dec 31 23:59:59 1906 LMT isdst=0 gmtoff=13800
+/zic/Indian/Mauritius  Mon Dec 31 20:10:00 1906 UT = Tue Jan  1 00:10:00 1907 +04 isdst=0 gmtoff=14400
+/zic/Indian/Mauritius  Sat Oct  9 19:59:59 1982 UT = Sat Oct  9 23:59:59 1982 +04 isdst=0 gmtoff=14400
+/zic/Indian/Mauritius  Sat Oct  9 20:00:00 1982 UT = Sun Oct 10 01:00:00 1982 +05 isdst=1 gmtoff=18000
+/zic/Indian/Mauritius  Sun Mar 20 18:59:59 1983 UT = Sun Mar 20 23:59:59 1983 +05 isdst=1 gmtoff=18000
+/zic/Indian/Mauritius  Sun Mar 20 19:00:00 1983 UT = Sun Mar 20 23:00:00 1983 +04 isdst=0 gmtoff=14400
+/zic/Indian/Mauritius  Sat Oct 25 21:59:59 2008 UT = Sun Oct 26 01:59:59 2008 +04 isdst=0 gmtoff=14400
+/zic/Indian/Mauritius  Sat Oct 25 22:00:00 2008 UT = Sun Oct 26 03:00:00 2008 +05 isdst=1 gmtoff=18000
+/zic/Indian/Mauritius  Sat Mar 28 20:59:59 2009 UT = Sun Mar 29 01:59:59 2009 +05 isdst=1 gmtoff=18000
+/zic/Indian/Mauritius  Sat Mar 28 21:00:00 2009 UT = Sun Mar 29 01:00:00 2009 +04 isdst=0 gmtoff=14400
+/zic/Indian/Mauritius  Wed Dec 31 19:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +04 isdst=0 gmtoff=14400
+/zic/Indian/Mauritius  Wed Dec 31 20:00:00 2147485547 UT = 67768036191662400 (localtime failed)
+/zic/Indian/Mauritius  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Indian/Mauritius  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Indian/Mauritius  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

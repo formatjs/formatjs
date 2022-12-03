@@ -1,0 +1,28 @@
+/zic/America/Guatemala  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Guatemala  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Guatemala  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Guatemala  Thu Jan  1 06:02:03 -2147481748 UT = -67768040609719077 (localtime failed)
+/zic/America/Guatemala  Thu Jan  1 06:02:04 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-21724
+/zic/America/Guatemala  Sat Oct  5 06:02:03 1918 UT = Fri Oct  4 23:59:59 1918 LMT isdst=0 gmtoff=-21724
+/zic/America/Guatemala  Sat Oct  5 06:02:04 1918 UT = Sat Oct  5 00:02:04 1918 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  Sun Nov 25 05:59:59 1973 UT = Sat Nov 24 23:59:59 1973 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  Sun Nov 25 06:00:00 1973 UT = Sun Nov 25 01:00:00 1973 CDT isdst=1 gmtoff=-18000
+/zic/America/Guatemala  Sun Feb 24 04:59:59 1974 UT = Sat Feb 23 23:59:59 1974 CDT isdst=1 gmtoff=-18000
+/zic/America/Guatemala  Sun Feb 24 05:00:00 1974 UT = Sat Feb 23 23:00:00 1974 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  Sat May 21 05:59:59 1983 UT = Fri May 20 23:59:59 1983 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  Sat May 21 06:00:00 1983 UT = Sat May 21 01:00:00 1983 CDT isdst=1 gmtoff=-18000
+/zic/America/Guatemala  Thu Sep 22 04:59:59 1983 UT = Wed Sep 21 23:59:59 1983 CDT isdst=1 gmtoff=-18000
+/zic/America/Guatemala  Thu Sep 22 05:00:00 1983 UT = Wed Sep 21 23:00:00 1983 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  Sat Mar 23 05:59:59 1991 UT = Fri Mar 22 23:59:59 1991 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  Sat Mar 23 06:00:00 1991 UT = Sat Mar 23 01:00:00 1991 CDT isdst=1 gmtoff=-18000
+/zic/America/Guatemala  Sat Sep  7 04:59:59 1991 UT = Fri Sep  6 23:59:59 1991 CDT isdst=1 gmtoff=-18000
+/zic/America/Guatemala  Sat Sep  7 05:00:00 1991 UT = Fri Sep  6 23:00:00 1991 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  Sun Apr 30 05:59:59 2006 UT = Sat Apr 29 23:59:59 2006 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  Sun Apr 30 06:00:00 2006 UT = Sun Apr 30 01:00:00 2006 CDT isdst=1 gmtoff=-18000
+/zic/America/Guatemala  Sun Oct  1 04:59:59 2006 UT = Sat Sep 30 23:59:59 2006 CDT isdst=1 gmtoff=-18000
+/zic/America/Guatemala  Sun Oct  1 05:00:00 2006 UT = Sat Sep 30 23:00:00 2006 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 17:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  67768036191676800 (gmtime failed) = Wed Dec 31 18:00:00 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  67768036191698399 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Guatemala  67768036191698400 (gmtime failed) = 67768036191698400 (localtime failed)
+/zic/America/Guatemala  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

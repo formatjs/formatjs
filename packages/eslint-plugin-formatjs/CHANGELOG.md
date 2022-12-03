@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.8](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.7...eslint-plugin-formatjs@4.3.8) (2022-12-02)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.3.7](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.5...eslint-plugin-formatjs@4.3.7) (2022-12-01)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.3.6](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.5...eslint-plugin-formatjs@4.3.6) (2022-12-01)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.3.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.4...eslint-plugin-formatjs@4.3.5) (2022-11-29)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.3.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.3...eslint-plugin-formatjs@4.3.4) (2022-10-17)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.3.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.2...eslint-plugin-formatjs@4.3.3) (2022-10-13)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** no-literal-string-in-jsx now ignores empty string ([#3871](https://github.com/formatjs/formatjs/issues/3871)) ([3a7ae3b](https://github.com/formatjs/formatjs/commit/3a7ae3b72dee6550c16c0655f1caf7bebdc4f4b3))
+
+## [4.3.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.1...eslint-plugin-formatjs@4.3.2) (2022-09-28)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
 ## [4.3.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.0...eslint-plugin-formatjs@4.3.1) (2022-09-06)
 
 ### Bug Fixes

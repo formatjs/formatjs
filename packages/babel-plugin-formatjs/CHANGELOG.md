@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.3.35](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.34...babel-plugin-formatjs@10.3.35) (2022-12-02)
+
+**Note:** Version bump only for package babel-plugin-formatjs
+
+## [10.3.34](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.32...babel-plugin-formatjs@10.3.34) (2022-12-01)
+
+**Note:** Version bump only for package babel-plugin-formatjs
+
+## [10.3.33](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.32...babel-plugin-formatjs@10.3.33) (2022-12-01)
+
+**Note:** Version bump only for package babel-plugin-formatjs
+
+## [10.3.32](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.31...babel-plugin-formatjs@10.3.32) (2022-11-29)
+
+**Note:** Version bump only for package babel-plugin-formatjs
+
+## [10.3.31](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.30...babel-plugin-formatjs@10.3.31) (2022-10-17)
+
+**Note:** Version bump only for package babel-plugin-formatjs
+
+## [10.3.30](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.29...babel-plugin-formatjs@10.3.30) (2022-10-13)
+
+**Note:** Version bump only for package babel-plugin-formatjs
+
+## [10.3.29](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.28...babel-plugin-formatjs@10.3.29) (2022-09-28)
+
+**Note:** Version bump only for package babel-plugin-formatjs
+
 ## [10.3.28](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.27...babel-plugin-formatjs@10.3.28) (2022-08-27)
 
 **Note:** Version bump only for package babel-plugin-formatjs

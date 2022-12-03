@@ -58,18 +58,29 @@ function test() {
           describe(`signDisplay/${signDisplay}`, function () {
             NOTATIONS.forEach(notation =>
               describe(`notation/${notation}`, function () {
-                COMPACT_DISPLAYS.forEach(compactDisplay =>
-                  it(`compactDisplay/${compactDisplay}`, function () {
+                COMPACT_DISPLAYS.forEach(compactDisplay => {
+                  const numberFormat = new NumberFormat(locale, {
+                    style: 'decimal',
+                    signDisplay,
+                    notation,
+                    compactDisplay,
+                  })
+                  it(`compactDisplay/${compactDisplay} formatToPars`, function () {
+                    expect(numberFormat.formatToParts(10000)).toMatchSnapshot()
+                  })
+
+                  it(`compactDisplay/${compactDisplay} formatRange`, function () {
                     expect(
-                      new NumberFormat(locale, {
-                        style: 'decimal',
-                        signDisplay,
-                        notation,
-                        compactDisplay,
-                      }).formatToParts(10000)
+                      numberFormat.formatRange(10000, 20000)
                     ).toMatchSnapshot()
                   })
-                )
+
+                  it(`compactDisplay/${compactDisplay} formatRange`, function () {
+                    expect(
+                      numberFormat.formatRange(10000, 20000)
+                    ).toMatchSnapshot()
+                  })
+                })
               })
             )
           })

@@ -1,0 +1,70 @@
+/zic/America/Santarem  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Santarem  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Santarem  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Santarem  Thu Jan  1 03:38:47 -2147481748 UT = -67768040609727673 (localtime failed)
+/zic/America/Santarem  Thu Jan  1 03:38:48 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-13128
+/zic/America/Santarem  Thu Jan  1 03:38:47 1914 UT = Wed Dec 31 23:59:59 1913 LMT isdst=0 gmtoff=-13128
+/zic/America/Santarem  Thu Jan  1 03:38:48 1914 UT = Wed Dec 31 23:38:48 1913 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sat Oct  3 14:59:59 1931 UT = Sat Oct  3 10:59:59 1931 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sat Oct  3 15:00:00 1931 UT = Sat Oct  3 12:00:00 1931 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Fri Apr  1 02:59:59 1932 UT = Thu Mar 31 23:59:59 1932 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Fri Apr  1 03:00:00 1932 UT = Thu Mar 31 23:00:00 1932 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Mon Oct  3 03:59:59 1932 UT = Sun Oct  2 23:59:59 1932 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Mon Oct  3 04:00:00 1932 UT = Mon Oct  3 01:00:00 1932 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sat Apr  1 02:59:59 1933 UT = Fri Mar 31 23:59:59 1933 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sat Apr  1 03:00:00 1933 UT = Fri Mar 31 23:00:00 1933 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Thu Dec  1 03:59:59 1949 UT = Wed Nov 30 23:59:59 1949 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Thu Dec  1 04:00:00 1949 UT = Thu Dec  1 01:00:00 1949 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sun Apr 16 03:59:59 1950 UT = Sun Apr 16 00:59:59 1950 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sun Apr 16 04:00:00 1950 UT = Sun Apr 16 00:00:00 1950 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Fri Dec  1 03:59:59 1950 UT = Thu Nov 30 23:59:59 1950 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Fri Dec  1 04:00:00 1950 UT = Fri Dec  1 01:00:00 1950 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sun Apr  1 02:59:59 1951 UT = Sat Mar 31 23:59:59 1951 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sun Apr  1 03:00:00 1951 UT = Sat Mar 31 23:00:00 1951 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sat Dec  1 03:59:59 1951 UT = Fri Nov 30 23:59:59 1951 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sat Dec  1 04:00:00 1951 UT = Sat Dec  1 01:00:00 1951 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Tue Apr  1 02:59:59 1952 UT = Mon Mar 31 23:59:59 1952 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Tue Apr  1 03:00:00 1952 UT = Mon Mar 31 23:00:00 1952 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Mon Dec  1 03:59:59 1952 UT = Sun Nov 30 23:59:59 1952 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Mon Dec  1 04:00:00 1952 UT = Mon Dec  1 01:00:00 1952 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sun Mar  1 02:59:59 1953 UT = Sat Feb 28 23:59:59 1953 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sun Mar  1 03:00:00 1953 UT = Sat Feb 28 23:00:00 1953 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Mon Dec  9 03:59:59 1963 UT = Sun Dec  8 23:59:59 1963 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Mon Dec  9 04:00:00 1963 UT = Mon Dec  9 01:00:00 1963 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sun Mar  1 02:59:59 1964 UT = Sat Feb 29 23:59:59 1964 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sun Mar  1 03:00:00 1964 UT = Sat Feb 29 23:00:00 1964 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sun Jan 31 03:59:59 1965 UT = Sat Jan 30 23:59:59 1965 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sun Jan 31 04:00:00 1965 UT = Sun Jan 31 01:00:00 1965 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Wed Mar 31 02:59:59 1965 UT = Tue Mar 30 23:59:59 1965 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Wed Mar 31 03:00:00 1965 UT = Tue Mar 30 23:00:00 1965 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Wed Dec  1 03:59:59 1965 UT = Tue Nov 30 23:59:59 1965 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Wed Dec  1 04:00:00 1965 UT = Wed Dec  1 01:00:00 1965 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Tue Mar  1 02:59:59 1966 UT = Mon Feb 28 23:59:59 1966 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Tue Mar  1 03:00:00 1966 UT = Mon Feb 28 23:00:00 1966 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Tue Nov  1 03:59:59 1966 UT = Mon Oct 31 23:59:59 1966 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Tue Nov  1 04:00:00 1966 UT = Tue Nov  1 01:00:00 1966 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Wed Mar  1 02:59:59 1967 UT = Tue Feb 28 23:59:59 1967 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Wed Mar  1 03:00:00 1967 UT = Tue Feb 28 23:00:00 1967 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Wed Nov  1 03:59:59 1967 UT = Tue Oct 31 23:59:59 1967 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Wed Nov  1 04:00:00 1967 UT = Wed Nov  1 01:00:00 1967 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Fri Mar  1 02:59:59 1968 UT = Thu Feb 29 23:59:59 1968 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Fri Mar  1 03:00:00 1968 UT = Thu Feb 29 23:00:00 1968 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sat Nov  2 03:59:59 1985 UT = Fri Nov  1 23:59:59 1985 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sat Nov  2 04:00:00 1985 UT = Sat Nov  2 01:00:00 1985 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sat Mar 15 02:59:59 1986 UT = Fri Mar 14 23:59:59 1986 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sat Mar 15 03:00:00 1986 UT = Fri Mar 14 23:00:00 1986 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sat Oct 25 03:59:59 1986 UT = Fri Oct 24 23:59:59 1986 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sat Oct 25 04:00:00 1986 UT = Sat Oct 25 01:00:00 1986 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sat Feb 14 02:59:59 1987 UT = Fri Feb 13 23:59:59 1987 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sat Feb 14 03:00:00 1987 UT = Fri Feb 13 23:00:00 1987 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sun Oct 25 03:59:59 1987 UT = Sat Oct 24 23:59:59 1987 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Sun Oct 25 04:00:00 1987 UT = Sun Oct 25 01:00:00 1987 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sun Feb  7 02:59:59 1988 UT = Sat Feb  6 23:59:59 1988 -03 isdst=1 gmtoff=-10800
+/zic/America/Santarem  Sun Feb  7 03:00:00 1988 UT = Sat Feb  6 23:00:00 1988 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Tue Jun 24 03:59:59 2008 UT = Mon Jun 23 23:59:59 2008 -04 isdst=0 gmtoff=-14400
+/zic/America/Santarem  Tue Jun 24 04:00:00 2008 UT = Tue Jun 24 01:00:00 2008 -03 isdst=0 gmtoff=-10800
+/zic/America/Santarem  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 20:59:59 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Santarem  67768036191676800 (gmtime failed) = Wed Dec 31 21:00:00 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Santarem  67768036191687599 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Santarem  67768036191687600 (gmtime failed) = 67768036191687600 (localtime failed)
+/zic/America/Santarem  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

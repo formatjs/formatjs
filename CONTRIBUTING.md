@@ -33,14 +33,7 @@ Pull requests are very welcome, but should be within the scope of the project, a
 - [`bazel`](https://bazel.build/)
 - [`docker`](https://www.docker.com/)
 
-To setup locally, first initialize the git submodule:
-
-```sh
-> git submodule init
-> git submodule update
-```
-
-Now you can build & test with `pnpm`:
+You can build & test with `pnpm`:
 
 ```sh
 pnpm i && pnpm t
@@ -55,13 +48,14 @@ npm run examples
 Releases can be done with the following steps:
 
 ```sh
-npm run release
-```
-
-To publish next tag
-
-```sh
-npm run release:next
+# Make sure you have GH_TOKEN setup as indicated by:
+# https://github.com/lerna/lerna/blob/05ad1860e2da7fc16c9c0a072c9389e94792ab64/commands/version/README.md#--create-release-type
+GH_TOKEN=xxxxxxx npm run prerelease
+bazel build :dist
+mkdir ../formatjs2
+cp -rf dist/bin/formatjs_dist/ ../formatjs2/
+# Use `--access=public` to publish new packages with `@formatjs/` scope.
+npx pnpm -r publish
 ```
 
 ### Updating tzdata version
@@ -73,7 +67,7 @@ npm run release:next
 1. Potentially update tz data
 
 ```
-bazel run //packages/intl-datetimeformat:tz_data.update
+bazel run //packages/intl-datetimeformat:generated_tz_data
 ```
 
 ### Generating CLDR data

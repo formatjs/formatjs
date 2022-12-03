@@ -1,3 +1,4 @@
+import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 import {PartitionDateTimePattern} from './PartitionDateTimePattern'
 
 /**
@@ -6,7 +7,7 @@ import {PartitionDateTimePattern} from './PartitionDateTimePattern'
  * @param x
  */
 export function FormatDateTime(
-  dtf: Intl.DateTimeFormat,
+  dtf: Intl.DateTimeFormat | DateTimeFormat,
   x: number,
   implDetails: Parameters<typeof PartitionDateTimePattern>[2]
 ) {

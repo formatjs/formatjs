@@ -1,0 +1,20 @@
+/zic/America/Caracas  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Caracas  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Caracas  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Caracas  Thu Jan  1 04:27:43 -2147481748 UT = -67768040609724737 (localtime failed)
+/zic/America/Caracas  Thu Jan  1 04:27:44 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-16064
+/zic/America/Caracas  Wed Jan  1 04:27:43 1890 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=-16064
+/zic/America/Caracas  Wed Jan  1 04:27:44 1890 UT = Wed Jan  1 00:00:04 1890 CMT isdst=0 gmtoff=-16060
+/zic/America/Caracas  Mon Feb 12 04:27:39 1912 UT = Sun Feb 11 23:59:59 1912 CMT isdst=0 gmtoff=-16060
+/zic/America/Caracas  Mon Feb 12 04:27:40 1912 UT = Sun Feb 11 23:57:40 1912 -0430 isdst=0 gmtoff=-16200
+/zic/America/Caracas  Fri Jan  1 04:29:59 1965 UT = Thu Dec 31 23:59:59 1964 -0430 isdst=0 gmtoff=-16200
+/zic/America/Caracas  Fri Jan  1 04:30:00 1965 UT = Fri Jan  1 00:30:00 1965 -04 isdst=0 gmtoff=-14400
+/zic/America/Caracas  Sun Dec  9 06:59:59 2007 UT = Sun Dec  9 02:59:59 2007 -04 isdst=0 gmtoff=-14400
+/zic/America/Caracas  Sun Dec  9 07:00:00 2007 UT = Sun Dec  9 02:30:00 2007 -0430 isdst=0 gmtoff=-16200
+/zic/America/Caracas  Sun May  1 06:59:59 2016 UT = Sun May  1 02:29:59 2016 -0430 isdst=0 gmtoff=-16200
+/zic/America/Caracas  Sun May  1 07:00:00 2016 UT = Sun May  1 03:00:00 2016 -04 isdst=0 gmtoff=-14400
+/zic/America/Caracas  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 19:59:59 2147485547 -04 isdst=0 gmtoff=-14400
+/zic/America/Caracas  67768036191676800 (gmtime failed) = Wed Dec 31 20:00:00 2147485547 -04 isdst=0 gmtoff=-14400
+/zic/America/Caracas  67768036191691199 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -04 isdst=0 gmtoff=-14400
+/zic/America/Caracas  67768036191691200 (gmtime failed) = 67768036191691200 (localtime failed)
+/zic/America/Caracas  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

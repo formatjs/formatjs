@@ -1,0 +1,24 @@
+/zic/Asia/Dhaka  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Dhaka  -67768040609762501 (gmtime failed) = -67768040609762501 (localtime failed)
+/zic/Asia/Dhaka  -67768040609762500 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=21700
+/zic/Asia/Dhaka  -67768040609740801 (gmtime failed) = Thu Jan  1 06:01:39 -2147481748 LMT isdst=0 gmtoff=21700
+/zic/Asia/Dhaka  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 06:01:40 -2147481748 LMT isdst=0 gmtoff=21700
+/zic/Asia/Dhaka  Tue Dec 31 17:58:19 1889 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=21700
+/zic/Asia/Dhaka  Tue Dec 31 17:58:20 1889 UT = Tue Dec 31 23:51:40 1889 HMT isdst=0 gmtoff=21200
+/zic/Asia/Dhaka  Tue Sep 30 18:06:39 1941 UT = Tue Sep 30 23:59:59 1941 HMT isdst=0 gmtoff=21200
+/zic/Asia/Dhaka  Tue Sep 30 18:06:40 1941 UT = Wed Oct  1 00:36:40 1941 +0630 isdst=0 gmtoff=23400
+/zic/Asia/Dhaka  Thu May 14 17:29:59 1942 UT = Thu May 14 23:59:59 1942 +0630 isdst=0 gmtoff=23400
+/zic/Asia/Dhaka  Thu May 14 17:30:00 1942 UT = Thu May 14 23:00:00 1942 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Dhaka  Mon Aug 31 18:29:59 1942 UT = Mon Aug 31 23:59:59 1942 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Dhaka  Mon Aug 31 18:30:00 1942 UT = Tue Sep  1 01:00:00 1942 +0630 isdst=0 gmtoff=23400
+/zic/Asia/Dhaka  Sat Sep 29 17:29:59 1951 UT = Sat Sep 29 23:59:59 1951 +0630 isdst=0 gmtoff=23400
+/zic/Asia/Dhaka  Sat Sep 29 17:30:00 1951 UT = Sat Sep 29 23:30:00 1951 +06 isdst=0 gmtoff=21600
+/zic/Asia/Dhaka  Fri Jun 19 16:59:59 2009 UT = Fri Jun 19 22:59:59 2009 +06 isdst=0 gmtoff=21600
+/zic/Asia/Dhaka  Fri Jun 19 17:00:00 2009 UT = Sat Jun 20 00:00:00 2009 +07 isdst=1 gmtoff=25200
+/zic/Asia/Dhaka  Thu Dec 31 16:59:59 2009 UT = Thu Dec 31 23:59:59 2009 +07 isdst=1 gmtoff=25200
+/zic/Asia/Dhaka  Thu Dec 31 17:00:00 2009 UT = Thu Dec 31 23:00:00 2009 +06 isdst=0 gmtoff=21600
+/zic/Asia/Dhaka  Wed Dec 31 17:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +06 isdst=0 gmtoff=21600
+/zic/Asia/Dhaka  Wed Dec 31 18:00:00 2147485547 UT = 67768036191655200 (localtime failed)
+/zic/Asia/Dhaka  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Dhaka  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Dhaka  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

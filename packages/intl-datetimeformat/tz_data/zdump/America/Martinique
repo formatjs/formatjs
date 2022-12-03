@@ -1,0 +1,18 @@
+/zic/America/Martinique  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Martinique  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Martinique  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Martinique  Thu Jan  1 04:04:19 -2147481748 UT = -67768040609726141 (localtime failed)
+/zic/America/Martinique  Thu Jan  1 04:04:20 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-14660
+/zic/America/Martinique  Wed Jan  1 04:04:19 1890 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=-14660
+/zic/America/Martinique  Wed Jan  1 04:04:20 1890 UT = Wed Jan  1 00:00:00 1890 FFMT isdst=0 gmtoff=-14660
+/zic/America/Martinique  Mon May  1 04:04:19 1911 UT = Sun Apr 30 23:59:59 1911 FFMT isdst=0 gmtoff=-14660
+/zic/America/Martinique  Mon May  1 04:04:20 1911 UT = Mon May  1 00:04:20 1911 AST isdst=0 gmtoff=-14400
+/zic/America/Martinique  Sun Apr  6 03:59:59 1980 UT = Sat Apr  5 23:59:59 1980 AST isdst=0 gmtoff=-14400
+/zic/America/Martinique  Sun Apr  6 04:00:00 1980 UT = Sun Apr  6 01:00:00 1980 ADT isdst=1 gmtoff=-10800
+/zic/America/Martinique  Sun Sep 28 02:59:59 1980 UT = Sat Sep 27 23:59:59 1980 ADT isdst=1 gmtoff=-10800
+/zic/America/Martinique  Sun Sep 28 03:00:00 1980 UT = Sat Sep 27 23:00:00 1980 AST isdst=0 gmtoff=-14400
+/zic/America/Martinique  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 19:59:59 2147485547 AST isdst=0 gmtoff=-14400
+/zic/America/Martinique  67768036191676800 (gmtime failed) = Wed Dec 31 20:00:00 2147485547 AST isdst=0 gmtoff=-14400
+/zic/America/Martinique  67768036191691199 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 AST isdst=0 gmtoff=-14400
+/zic/America/Martinique  67768036191691200 (gmtime failed) = 67768036191691200 (localtime failed)
+/zic/America/Martinique  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

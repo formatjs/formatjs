@@ -13,13 +13,22 @@ import {
   GetOptionsObject,
 } from '@formatjs/ecma402-abstract'
 import {CanonicalCodeForDisplayNames} from './abstract/CanonicalCodeForDisplayNames'
+import {IsValidDateTimeFieldCode} from './abstract/IsValidDateTimeFieldCode'
+
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 
 export interface DisplayNamesOptions {
   localeMatcher?: 'lookup' | 'best fit'
   style?: 'narrow' | 'short' | 'long'
-  type: 'language' | 'region' | 'script' | 'currency'
+  type:
+    | 'language'
+    | 'region'
+    | 'script'
+    | 'currency'
+    | 'calendar'
+    | 'dateTimeField'
   fallback?: 'code' | 'none'
+  languageDisplay?: 'dialect' | 'standard'
 }
 
 export interface DisplayNamesResolvedOptions {
@@ -27,6 +36,7 @@ export interface DisplayNamesResolvedOptions {
   style: NonNullable<DisplayNamesOptions['style']>
   type: NonNullable<DisplayNamesOptions['type']>
   fallback: NonNullable<DisplayNamesOptions['fallback']>
+  languageDisplay: NonNullable<DisplayNamesOptions['languageDisplay']>
 }
 
 export class DisplayNames {
@@ -73,7 +83,7 @@ export class DisplayNames {
       options,
       'type',
       'string',
-      ['language', 'currency', 'region', 'script'],
+      ['language', 'region', 'script', 'currency', 'calendar', 'dateTimeField'],
       undefined
     )
     if (type === undefined) {
@@ -107,7 +117,28 @@ export class DisplayNames {
       typeof typeFields === 'object' && typeFields != null,
       'invalid typeFields data'
     )
-    const styleFields = typeFields[style]
+    const languageDisplay = GetOption(
+      options,
+      'languageDisplay',
+      'string',
+      ['dialect', 'standard'],
+      'dialect'
+    )
+    if (type === 'language') {
+      setSlot(this, 'languageDisplay', languageDisplay)
+      // Using types[type] instead of typeFields because TypeScript cannot infer the correct type
+      const typeFields = types[type][languageDisplay]
+      invariant(
+        typeof typeFields === 'object' && typeFields != null,
+        'invalid language typeFields data'
+      )
+    }
+
+    // Using types[type] instead of typeFields because TypeScript cannot infer the correct type
+    const styleFields =
+      type === 'language'
+        ? types[type][languageDisplay][style]
+        : types[type][style]
     invariant(
       typeof styleFields === 'object' && styleFields != null,
       'invalid styleFields data'
@@ -160,41 +191,24 @@ export class DisplayNames {
     // Canonicalize the case.
     let canonicalCode = CanonicalCodeForDisplayNames(type, codeAsString)
 
-    // This is only used to store extracted language region.
-    let regionSubTag: string | undefined
+    let name: string | undefined
     if (type === 'language') {
-      const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(canonicalCode)
-      if (regionMatch) {
-        // Remove region subtag
-        canonicalCode =
-          canonicalCode.substring(0, regionMatch.index) +
-          canonicalCode.substring(regionMatch.index + regionMatch[0].length)
-        regionSubTag = regionMatch[1]
-      }
+      const languageDisplay = getSlot(this, 'languageDisplay')
+      name = getNameForTypeLanguage(
+        languageDisplay,
+        localeData,
+        style,
+        canonicalCode,
+        fallback
+      )
+    } else {
+      // All the other types
+      const typesData = localeData.types[type]
+      name = typesData[style][canonicalCode] || typesData.long[canonicalCode]
     }
-    const typesData = localeData.types[type]
-    // If the style of choice does not exist, fallback to "long".
-    const name =
-      typesData[style][canonicalCode] || typesData.long[canonicalCode]
 
     if (name !== undefined) {
-      // If there is a region subtag in the language id, use locale pattern to interpolate the region
-      if (regionSubTag) {
-        // Retrieve region display names
-        const regionsData = localeData.types.region
-        const regionDisplayName: string | undefined =
-          regionsData[style][regionSubTag] || regionsData.long[regionSubTag]
-
-        if (regionDisplayName || fallback === 'code') {
-          // Interpolate into locale-specific pattern.
-          const pattern = localeData.patterns.locale
-          return pattern
-            .replace('{0}', name)
-            .replace('{1}', regionDisplayName || regionSubTag)
-        }
-      } else {
-        return name
-      }
+      return name
     }
 
     if (fallback === 'code') {
@@ -211,7 +225,8 @@ export class DisplayNames {
         'locale',
         'style',
         'type',
-        'fallback'
+        'fallback',
+        'languageDisplay'
       ),
     }
   }
@@ -249,6 +264,11 @@ function isValidCodeForDisplayNames(
       return /^[a-z]{4}$/i.test(code)
     case 'currency':
       return IsWellFormedCurrencyCode(code)
+    case 'calendar':
+      // unicode locale identifier type
+      return /^[a-z0-9]{3,8}([-_][a-z0-9]{3,8})*$/i.test(code)
+    case 'dateTimeField':
+      return IsValidDateTimeFieldCode(code)
   }
 }
 
@@ -277,6 +297,7 @@ interface DisplayNamesInternalSlots {
   style: NonNullable<DisplayNamesOptions['style']>
   type: NonNullable<DisplayNamesOptions['type']>
   fallback: NonNullable<DisplayNamesOptions['fallback']>
+  languageDisplay: NonNullable<DisplayNamesOptions['languageDisplay']>
   // Note that this differs from `fields` slot in the spec.
   localeData: DisplayNamesData
   fields: Record<string, string>
@@ -307,5 +328,55 @@ function checkReceiver(receiver: unknown, methodName: string) {
     throw TypeError(
       `Method Intl.DisplayNames.prototype.${methodName} called on incompatible receiver`
     )
+  }
+}
+
+function getNameForTypeLanguage(
+  languageDisplay: DisplayNamesInternalSlots['languageDisplay'],
+  localeData: DisplayNamesData,
+  style: DisplayNamesInternalSlots['style'],
+  canonicalCode: string,
+  fallback: DisplayNamesInternalSlots['fallback']
+): string | undefined {
+  // First, try to get the name using the canonicalCode
+  const typesData = localeData.types.language[languageDisplay]
+  const name = typesData[style][canonicalCode] || typesData.long[canonicalCode]
+
+  if (name === undefined) {
+    // If no name has been found using the canonicalCode,
+    // check if the latter contains a region sub tag
+    const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(canonicalCode)
+    if (regionMatch) {
+      // Extract the language and region sub tags
+      const languageSubTag =
+        canonicalCode.substring(0, regionMatch.index) +
+        canonicalCode.substring(regionMatch.index + regionMatch[0].length)
+      const regionSubTag = regionMatch[1]
+
+      // Let's try again using languageSubTag this time
+      const name =
+        typesData[style][languageSubTag] || typesData.long[languageSubTag]
+
+      // If a name has been found and a region sub tag exists,
+      // compose them together or use the code fallback
+      if (name !== undefined && regionSubTag) {
+        // Retrieve region display names
+        const regionsData = localeData.types.region
+        const regionDisplayName: string | undefined =
+          regionsData[style][regionSubTag] || regionsData.long[regionSubTag]
+
+        if (regionDisplayName || fallback === 'code') {
+          // Interpolate into locale-specific pattern.
+          const pattern = localeData.patterns.locale
+          return pattern
+            .replace('{0}', name)
+            .replace('{1}', regionDisplayName || regionSubTag)
+        }
+      } else {
+        return name
+      }
+    }
+  } else {
+    return name
   }
 }

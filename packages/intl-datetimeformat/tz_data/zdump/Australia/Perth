@@ -1,0 +1,48 @@
+/zic/Australia/Perth  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Australia/Perth  -67768040609768605 (gmtime failed) = -67768040609768605 (localtime failed)
+/zic/Australia/Perth  -67768040609768604 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=27804
+/zic/Australia/Perth  -67768040609740801 (gmtime failed) = Thu Jan  1 07:43:23 -2147481748 LMT isdst=0 gmtoff=27804
+/zic/Australia/Perth  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 07:43:24 -2147481748 LMT isdst=0 gmtoff=27804
+/zic/Australia/Perth  Sat Nov 30 16:16:35 1895 UT = Sat Nov 30 23:59:59 1895 LMT isdst=0 gmtoff=27804
+/zic/Australia/Perth  Sat Nov 30 16:16:36 1895 UT = Sun Dec  1 00:16:36 1895 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sun Dec 31 17:59:59 1916 UT = Mon Jan  1 01:59:59 1917 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sun Dec 31 18:00:00 1916 UT = Mon Jan  1 03:00:00 1917 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 24 17:59:59 1917 UT = Sun Mar 25 02:59:59 1917 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 24 18:00:00 1917 UT = Sun Mar 25 02:00:00 1917 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Wed Dec 31 17:59:59 1941 UT = Thu Jan  1 01:59:59 1942 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Wed Dec 31 18:00:00 1941 UT = Thu Jan  1 03:00:00 1942 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 28 17:59:59 1942 UT = Sun Mar 29 02:59:59 1942 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 28 18:00:00 1942 UT = Sun Mar 29 02:00:00 1942 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Sep 26 17:59:59 1942 UT = Sun Sep 27 01:59:59 1942 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Sep 26 18:00:00 1942 UT = Sun Sep 27 03:00:00 1942 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 27 17:59:59 1943 UT = Sun Mar 28 02:59:59 1943 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 27 18:00:00 1943 UT = Sun Mar 28 02:00:00 1943 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Oct 26 17:59:59 1974 UT = Sun Oct 27 01:59:59 1974 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Oct 26 18:00:00 1974 UT = Sun Oct 27 03:00:00 1974 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar  1 17:59:59 1975 UT = Sun Mar  2 02:59:59 1975 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar  1 18:00:00 1975 UT = Sun Mar  2 02:00:00 1975 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Oct 29 17:59:59 1983 UT = Sun Oct 30 01:59:59 1983 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Oct 29 18:00:00 1983 UT = Sun Oct 30 03:00:00 1983 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar  3 17:59:59 1984 UT = Sun Mar  4 02:59:59 1984 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar  3 18:00:00 1984 UT = Sun Mar  4 02:00:00 1984 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Nov 16 17:59:59 1991 UT = Sun Nov 17 01:59:59 1991 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Nov 16 18:00:00 1991 UT = Sun Nov 17 03:00:00 1991 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Feb 29 17:59:59 1992 UT = Sun Mar  1 02:59:59 1992 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Feb 29 18:00:00 1992 UT = Sun Mar  1 02:00:00 1992 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Dec  2 17:59:59 2006 UT = Sun Dec  3 01:59:59 2006 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Dec  2 18:00:00 2006 UT = Sun Dec  3 03:00:00 2006 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 24 17:59:59 2007 UT = Sun Mar 25 02:59:59 2007 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 24 18:00:00 2007 UT = Sun Mar 25 02:00:00 2007 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Oct 27 17:59:59 2007 UT = Sun Oct 28 01:59:59 2007 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Oct 27 18:00:00 2007 UT = Sun Oct 28 03:00:00 2007 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 29 17:59:59 2008 UT = Sun Mar 30 02:59:59 2008 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 29 18:00:00 2008 UT = Sun Mar 30 02:00:00 2008 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Oct 25 17:59:59 2008 UT = Sun Oct 26 01:59:59 2008 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Sat Oct 25 18:00:00 2008 UT = Sun Oct 26 03:00:00 2008 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 28 17:59:59 2009 UT = Sun Mar 29 02:59:59 2009 AWDT isdst=1 gmtoff=32400
+/zic/Australia/Perth  Sat Mar 28 18:00:00 2009 UT = Sun Mar 29 02:00:00 2009 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Wed Dec 31 15:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 AWST isdst=0 gmtoff=28800
+/zic/Australia/Perth  Wed Dec 31 16:00:00 2147485547 UT = 67768036191648000 (localtime failed)
+/zic/Australia/Perth  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Australia/Perth  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Australia/Perth  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

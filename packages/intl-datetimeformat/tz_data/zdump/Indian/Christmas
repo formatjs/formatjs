@@ -1,0 +1,14 @@
+/zic/Indian/Christmas  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Indian/Christmas  -67768040609764925 (gmtime failed) = -67768040609764925 (localtime failed)
+/zic/Indian/Christmas  -67768040609764924 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=24124
+/zic/Indian/Christmas  -67768040609740801 (gmtime failed) = Thu Jan  1 06:42:03 -2147481748 LMT isdst=0 gmtoff=24124
+/zic/Indian/Christmas  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 06:42:04 -2147481748 LMT isdst=0 gmtoff=24124
+/zic/Indian/Christmas  Wed Dec 31 17:17:55 1879 UT = Wed Dec 31 23:59:59 1879 LMT isdst=0 gmtoff=24124
+/zic/Indian/Christmas  Wed Dec 31 17:17:56 1879 UT = Thu Jan  1 00:00:00 1880 BMT isdst=0 gmtoff=24124
+/zic/Indian/Christmas  Wed Mar 31 17:17:55 1920 UT = Wed Mar 31 23:59:59 1920 BMT isdst=0 gmtoff=24124
+/zic/Indian/Christmas  Wed Mar 31 17:17:56 1920 UT = Thu Apr  1 00:17:56 1920 +07 isdst=0 gmtoff=25200
+/zic/Indian/Christmas  Wed Dec 31 16:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +07 isdst=0 gmtoff=25200
+/zic/Indian/Christmas  Wed Dec 31 17:00:00 2147485547 UT = 67768036191651600 (localtime failed)
+/zic/Indian/Christmas  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Indian/Christmas  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Indian/Christmas  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

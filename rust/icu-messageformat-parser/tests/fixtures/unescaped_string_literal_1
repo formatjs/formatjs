@@ -1,0 +1,25 @@
+}
+---
+{}
+---
+{
+  "val": [
+    {
+      "type": 0,
+      "value": "}",
+      "location": {
+        "start": {
+          "offset": 0,
+          "line": 1,
+          "column": 1
+        },
+        "end": {
+          "offset": 1,
+          "line": 1,
+          "column": 2
+        }
+      }
+    }
+  ],
+  "err": null
+}

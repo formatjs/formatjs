@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.2.2...@formatjs/intl-displaynames@6.2.3) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+## [6.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.2.0...@formatjs/intl-displaynames@6.2.2) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+## [6.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.2.0...@formatjs/intl-displaynames@6.2.1) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+# [6.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.1.4...@formatjs/intl-displaynames@6.2.0) (2022-11-29)
+
+### Features
+
+* **@formatjs/intl-displaynames:** Intl DisplayNames API V2 (Stage 3) implementation ([#3890](https://github.com/formatjs/formatjs/issues/3890)) ([e39a89e](https://github.com/formatjs/formatjs/commit/e39a89ecee56a0c234e661e3860b61aa3a34f65e))
+
+## [6.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.1.3...@formatjs/intl-displaynames@6.1.4) (2022-10-13)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
 ## [6.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.1.2...@formatjs/intl-displaynames@6.1.3) (2022-09-06)
 
 ### Bug Fixes

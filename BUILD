@@ -58,6 +58,7 @@ PACKAGES_TO_DIST = [
     "//packages/intl-relativetimeformat",
     "//packages/react-intl",
     "//packages/swc-plugin",
+    "//packages/swc-plugin-experimental",
     "//packages/ts-transformer",
     "//packages/vue-intl",
 ]
@@ -227,14 +228,16 @@ CONFIG_FILES = [
     "jest.config.js",
     "package.json",
     "tsconfig.json",
+    ".taplo.toml",
 ]
 
 [
     copy_to_bin(
         name = f.rsplit(".", 1)[0],
-        srcs=[f],
-        visibility=["//visibility:public"]
-    ) for f in CONFIG_FILES
+        srcs = [f],
+        visibility = ["//visibility:public"],
+    )
+    for f in CONFIG_FILES
 ]
 
 TSCONFIG_FILES = [

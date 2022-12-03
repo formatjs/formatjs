@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.4.2...@formatjs/intl-datetimeformat@6.4.3) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/intl-datetimeformat
+
+## [6.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.4.0...@formatjs/intl-datetimeformat@6.4.2) (2022-12-01)
+
+### Bug Fixes
+
+* **@formatjs/intl:** update monorepo to use TypeScript 4.9 and actually fix the type issue ([#3919](https://github.com/formatjs/formatjs/issues/3919)) ([051527b](https://github.com/formatjs/formatjs/commit/051527b6391c8f4548254ab20630173789d555cd))
+
+## [6.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.4.0...@formatjs/intl-datetimeformat@6.4.1) (2022-12-01)
+
+### Bug Fixes
+
+* **@formatjs/intl:** update monorepo to use TypeScript 4.9 and actually fix the type issue ([#3919](https://github.com/formatjs/formatjs/issues/3919)) ([051527b](https://github.com/formatjs/formatjs/commit/051527b6391c8f4548254ab20630173789d555cd))
+
+# [6.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.3.1...@formatjs/intl-datetimeformat@6.4.0) (2022-11-29)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** upgrade tzdata to 2022f, fix [#3898](https://github.com/formatjs/formatjs/issues/3898) ([aab9f05](https://github.com/formatjs/formatjs/commit/aab9f05b954ac4c91cb1660eebe82b1be4bd5c6d))
+
+## [6.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.3.0...@formatjs/intl-datetimeformat@6.3.1) (2022-10-17)
+
+**Note:** Version bump only for package @formatjs/intl-datetimeformat
+
+# [6.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.2.0...@formatjs/intl-datetimeformat@6.3.0) (2022-10-13)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** implemented extend timeZoneName ([#3861](https://github.com/formatjs/formatjs/issues/3861)) ([4fa0204](https://github.com/formatjs/formatjs/commit/4fa0204c049c77f05dd37ddd8109b98be67de7da))
+
 # [6.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.1.1...@formatjs/intl-datetimeformat@6.2.0) (2022-08-27)
 
 ### Features

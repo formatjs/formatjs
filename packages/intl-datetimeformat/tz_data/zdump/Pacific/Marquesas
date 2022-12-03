@@ -1,0 +1,12 @@
+/zic/Pacific/Marquesas  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Marquesas  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Marquesas  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Marquesas  Thu Jan  1 09:17:59 -2147481748 UT = -67768040609707321 (localtime failed)
+/zic/Pacific/Marquesas  Thu Jan  1 09:18:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-33480
+/zic/Pacific/Marquesas  Tue Oct  1 09:17:59 1912 UT = Mon Sep 30 23:59:59 1912 LMT isdst=0 gmtoff=-33480
+/zic/Pacific/Marquesas  Tue Oct  1 09:18:00 1912 UT = Mon Sep 30 23:48:00 1912 -0930 isdst=0 gmtoff=-34200
+/zic/Pacific/Marquesas  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 14:29:59 2147485547 -0930 isdst=0 gmtoff=-34200
+/zic/Pacific/Marquesas  67768036191676800 (gmtime failed) = Wed Dec 31 14:30:00 2147485547 -0930 isdst=0 gmtoff=-34200
+/zic/Pacific/Marquesas  67768036191710999 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -0930 isdst=0 gmtoff=-34200
+/zic/Pacific/Marquesas  67768036191711000 (gmtime failed) = 67768036191711000 (localtime failed)
+/zic/Pacific/Marquesas  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -1,0 +1,32 @@
+/zic/Asia/Karachi  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Karachi  -67768040609756893 (gmtime failed) = -67768040609756893 (localtime failed)
+/zic/Asia/Karachi  -67768040609756892 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=16092
+/zic/Asia/Karachi  -67768040609740801 (gmtime failed) = Thu Jan  1 04:28:11 -2147481748 LMT isdst=0 gmtoff=16092
+/zic/Asia/Karachi  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 04:28:12 -2147481748 LMT isdst=0 gmtoff=16092
+/zic/Asia/Karachi  Mon Dec 31 19:31:47 1906 UT = Mon Dec 31 23:59:59 1906 LMT isdst=0 gmtoff=16092
+/zic/Asia/Karachi  Mon Dec 31 19:31:48 1906 UT = Tue Jan  1 01:01:48 1907 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Karachi  Mon Aug 31 18:29:59 1942 UT = Mon Aug 31 23:59:59 1942 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Karachi  Mon Aug 31 18:30:00 1942 UT = Tue Sep  1 01:00:00 1942 +0630 isdst=1 gmtoff=23400
+/zic/Asia/Karachi  Sun Oct 14 17:29:59 1945 UT = Sun Oct 14 23:59:59 1945 +0630 isdst=1 gmtoff=23400
+/zic/Asia/Karachi  Sun Oct 14 17:30:00 1945 UT = Sun Oct 14 23:00:00 1945 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Karachi  Sat Sep 29 18:29:59 1951 UT = Sat Sep 29 23:59:59 1951 +0530 isdst=0 gmtoff=19800
+/zic/Asia/Karachi  Sat Sep 29 18:30:00 1951 UT = Sat Sep 29 23:30:00 1951 +05 isdst=0 gmtoff=18000
+/zic/Asia/Karachi  Thu Mar 25 18:59:59 1971 UT = Thu Mar 25 23:59:59 1971 +05 isdst=0 gmtoff=18000
+/zic/Asia/Karachi  Thu Mar 25 19:00:00 1971 UT = Fri Mar 26 00:00:00 1971 PKT isdst=0 gmtoff=18000
+/zic/Asia/Karachi  Sat Apr  6 18:59:59 2002 UT = Sat Apr  6 23:59:59 2002 PKT isdst=0 gmtoff=18000
+/zic/Asia/Karachi  Sat Apr  6 19:00:00 2002 UT = Sun Apr  7 01:00:00 2002 PKST isdst=1 gmtoff=21600
+/zic/Asia/Karachi  Sat Oct  5 17:59:59 2002 UT = Sat Oct  5 23:59:59 2002 PKST isdst=1 gmtoff=21600
+/zic/Asia/Karachi  Sat Oct  5 18:00:00 2002 UT = Sat Oct  5 23:00:00 2002 PKT isdst=0 gmtoff=18000
+/zic/Asia/Karachi  Sat May 31 18:59:59 2008 UT = Sat May 31 23:59:59 2008 PKT isdst=0 gmtoff=18000
+/zic/Asia/Karachi  Sat May 31 19:00:00 2008 UT = Sun Jun  1 01:00:00 2008 PKST isdst=1 gmtoff=21600
+/zic/Asia/Karachi  Fri Oct 31 17:59:59 2008 UT = Fri Oct 31 23:59:59 2008 PKST isdst=1 gmtoff=21600
+/zic/Asia/Karachi  Fri Oct 31 18:00:00 2008 UT = Fri Oct 31 23:00:00 2008 PKT isdst=0 gmtoff=18000
+/zic/Asia/Karachi  Tue Apr 14 18:59:59 2009 UT = Tue Apr 14 23:59:59 2009 PKT isdst=0 gmtoff=18000
+/zic/Asia/Karachi  Tue Apr 14 19:00:00 2009 UT = Wed Apr 15 01:00:00 2009 PKST isdst=1 gmtoff=21600
+/zic/Asia/Karachi  Sat Oct 31 17:59:59 2009 UT = Sat Oct 31 23:59:59 2009 PKST isdst=1 gmtoff=21600
+/zic/Asia/Karachi  Sat Oct 31 18:00:00 2009 UT = Sat Oct 31 23:00:00 2009 PKT isdst=0 gmtoff=18000
+/zic/Asia/Karachi  Wed Dec 31 18:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 PKT isdst=0 gmtoff=18000
+/zic/Asia/Karachi  Wed Dec 31 19:00:00 2147485547 UT = 67768036191658800 (localtime failed)
+/zic/Asia/Karachi  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Karachi  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Karachi  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -1,0 +1,24 @@
+/zic/America/Tegucigalpa  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Tegucigalpa  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Tegucigalpa  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Tegucigalpa  Thu Jan  1 05:48:51 -2147481748 UT = -67768040609719869 (localtime failed)
+/zic/America/Tegucigalpa  Thu Jan  1 05:48:52 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-20932
+/zic/America/Tegucigalpa  Fri Apr  1 05:48:51 1921 UT = Thu Mar 31 23:59:59 1921 LMT isdst=0 gmtoff=-20932
+/zic/America/Tegucigalpa  Fri Apr  1 05:48:52 1921 UT = Thu Mar 31 23:48:52 1921 CST isdst=0 gmtoff=-21600
+/zic/America/Tegucigalpa  Sun May  3 05:59:59 1987 UT = Sat May  2 23:59:59 1987 CST isdst=0 gmtoff=-21600
+/zic/America/Tegucigalpa  Sun May  3 06:00:00 1987 UT = Sun May  3 01:00:00 1987 CDT isdst=1 gmtoff=-18000
+/zic/America/Tegucigalpa  Sun Sep 27 04:59:59 1987 UT = Sat Sep 26 23:59:59 1987 CDT isdst=1 gmtoff=-18000
+/zic/America/Tegucigalpa  Sun Sep 27 05:00:00 1987 UT = Sat Sep 26 23:00:00 1987 CST isdst=0 gmtoff=-21600
+/zic/America/Tegucigalpa  Sun May  1 05:59:59 1988 UT = Sat Apr 30 23:59:59 1988 CST isdst=0 gmtoff=-21600
+/zic/America/Tegucigalpa  Sun May  1 06:00:00 1988 UT = Sun May  1 01:00:00 1988 CDT isdst=1 gmtoff=-18000
+/zic/America/Tegucigalpa  Sun Sep 25 04:59:59 1988 UT = Sat Sep 24 23:59:59 1988 CDT isdst=1 gmtoff=-18000
+/zic/America/Tegucigalpa  Sun Sep 25 05:00:00 1988 UT = Sat Sep 24 23:00:00 1988 CST isdst=0 gmtoff=-21600
+/zic/America/Tegucigalpa  Sun May  7 05:59:59 2006 UT = Sat May  6 23:59:59 2006 CST isdst=0 gmtoff=-21600
+/zic/America/Tegucigalpa  Sun May  7 06:00:00 2006 UT = Sun May  7 01:00:00 2006 CDT isdst=1 gmtoff=-18000
+/zic/America/Tegucigalpa  Mon Aug  7 04:59:59 2006 UT = Sun Aug  6 23:59:59 2006 CDT isdst=1 gmtoff=-18000
+/zic/America/Tegucigalpa  Mon Aug  7 05:00:00 2006 UT = Sun Aug  6 23:00:00 2006 CST isdst=0 gmtoff=-21600
+/zic/America/Tegucigalpa  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 17:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Tegucigalpa  67768036191676800 (gmtime failed) = Wed Dec 31 18:00:00 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Tegucigalpa  67768036191698399 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Tegucigalpa  67768036191698400 (gmtime failed) = 67768036191698400 (localtime failed)
+/zic/America/Tegucigalpa  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.6...@formatjs/cli-lib@5.1.7) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.4...@formatjs/cli-lib@5.1.6) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.4...@formatjs/cli-lib@5.1.5) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.3...@formatjs/cli-lib@5.1.4) (2022-11-29)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.2...@formatjs/cli-lib@5.1.3) (2022-10-17)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.1...@formatjs/cli-lib@5.1.2) (2022-10-13)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.0...@formatjs/cli-lib@5.1.1) (2022-09-28)
+
+### Reverts
+
+* Revert "chore(deps): bump chalk from 4.1.2 to 5.0.1 (#3794)" ([f1af8b1](https://github.com/formatjs/formatjs/commit/f1af8b13433d1d98ed55addf5450dcafa4b8bdae)), closes [#3794](https://github.com/formatjs/formatjs/issues/3794)
+
 # [5.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.0.8...@formatjs/cli-lib@5.1.0) (2022-08-27)
 
 ### Features

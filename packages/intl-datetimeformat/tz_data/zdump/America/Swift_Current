@@ -1,0 +1,56 @@
+/zic/America/Swift_Current  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Swift_Current  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Swift_Current  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Swift_Current  Thu Jan  1 07:11:19 -2147481748 UT = -67768040609714921 (localtime failed)
+/zic/America/Swift_Current  Thu Jan  1 07:11:20 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-25880
+/zic/America/Swift_Current  Fri Sep  1 07:11:19 1905 UT = Thu Aug 31 23:59:59 1905 LMT isdst=0 gmtoff=-25880
+/zic/America/Swift_Current  Fri Sep  1 07:11:20 1905 UT = Fri Sep  1 00:11:20 1905 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 14 08:59:59 1918 UT = Sun Apr 14 01:59:59 1918 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 14 09:00:00 1918 UT = Sun Apr 14 03:00:00 1918 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Oct 27 07:59:59 1918 UT = Sun Oct 27 01:59:59 1918 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Oct 27 08:00:00 1918 UT = Sun Oct 27 01:00:00 1918 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Mon Feb  9 08:59:59 1942 UT = Mon Feb  9 01:59:59 1942 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Mon Feb  9 09:00:00 1942 UT = Mon Feb  9 03:00:00 1942 MWT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Tue Aug 14 22:59:59 1945 UT = Tue Aug 14 16:59:59 1945 MWT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Tue Aug 14 23:00:00 1945 UT = Tue Aug 14 17:00:00 1945 MPT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 30 07:59:59 1945 UT = Sun Sep 30 01:59:59 1945 MPT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 30 08:00:00 1945 UT = Sun Sep 30 01:00:00 1945 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 28 08:59:59 1946 UT = Sun Apr 28 01:59:59 1946 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 28 09:00:00 1946 UT = Sun Apr 28 03:00:00 1946 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Oct 13 07:59:59 1946 UT = Sun Oct 13 01:59:59 1946 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Oct 13 08:00:00 1946 UT = Sun Oct 13 01:00:00 1946 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 27 08:59:59 1947 UT = Sun Apr 27 01:59:59 1947 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 27 09:00:00 1947 UT = Sun Apr 27 03:00:00 1947 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 28 07:59:59 1947 UT = Sun Sep 28 01:59:59 1947 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 28 08:00:00 1947 UT = Sun Sep 28 01:00:00 1947 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 25 08:59:59 1948 UT = Sun Apr 25 01:59:59 1948 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 25 09:00:00 1948 UT = Sun Apr 25 03:00:00 1948 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 26 07:59:59 1948 UT = Sun Sep 26 01:59:59 1948 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 26 08:00:00 1948 UT = Sun Sep 26 01:00:00 1948 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 24 08:59:59 1949 UT = Sun Apr 24 01:59:59 1949 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 24 09:00:00 1949 UT = Sun Apr 24 03:00:00 1949 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 25 07:59:59 1949 UT = Sun Sep 25 01:59:59 1949 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 25 08:00:00 1949 UT = Sun Sep 25 01:00:00 1949 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 28 08:59:59 1957 UT = Sun Apr 28 01:59:59 1957 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 28 09:00:00 1957 UT = Sun Apr 28 03:00:00 1957 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Oct 27 07:59:59 1957 UT = Sun Oct 27 01:59:59 1957 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Oct 27 08:00:00 1957 UT = Sun Oct 27 01:00:00 1957 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 26 08:59:59 1959 UT = Sun Apr 26 01:59:59 1959 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 26 09:00:00 1959 UT = Sun Apr 26 03:00:00 1959 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Oct 25 07:59:59 1959 UT = Sun Oct 25 01:59:59 1959 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Oct 25 08:00:00 1959 UT = Sun Oct 25 01:00:00 1959 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 24 08:59:59 1960 UT = Sun Apr 24 01:59:59 1960 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 24 09:00:00 1960 UT = Sun Apr 24 03:00:00 1960 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 25 07:59:59 1960 UT = Sun Sep 25 01:59:59 1960 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 25 08:00:00 1960 UT = Sun Sep 25 01:00:00 1960 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 30 08:59:59 1961 UT = Sun Apr 30 01:59:59 1961 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 30 09:00:00 1961 UT = Sun Apr 30 03:00:00 1961 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 24 07:59:59 1961 UT = Sun Sep 24 01:59:59 1961 MDT isdst=1 gmtoff=-21600
+/zic/America/Swift_Current  Sun Sep 24 08:00:00 1961 UT = Sun Sep 24 01:00:00 1961 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 30 08:59:59 1972 UT = Sun Apr 30 01:59:59 1972 MST isdst=0 gmtoff=-25200
+/zic/America/Swift_Current  Sun Apr 30 09:00:00 1972 UT = Sun Apr 30 03:00:00 1972 CST isdst=0 gmtoff=-21600
+/zic/America/Swift_Current  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 17:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Swift_Current  67768036191676800 (gmtime failed) = Wed Dec 31 18:00:00 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Swift_Current  67768036191698399 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Swift_Current  67768036191698400 (gmtime failed) = 67768036191698400 (localtime failed)
+/zic/America/Swift_Current  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

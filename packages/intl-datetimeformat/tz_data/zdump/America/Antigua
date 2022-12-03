@@ -1,0 +1,18 @@
+/zic/America/Antigua  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Antigua  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Antigua  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Antigua  Thu Jan  1 04:24:24 -2147481748 UT = -67768040609724936 (localtime failed)
+/zic/America/Antigua  Thu Jan  1 04:24:25 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-15865
+/zic/America/Antigua  Tue Mar 28 16:24:24 1899 UT = Tue Mar 28 11:59:59 1899 LMT isdst=0 gmtoff=-15865
+/zic/America/Antigua  Tue Mar 28 16:24:25 1899 UT = Tue Mar 28 12:24:25 1899 AST isdst=0 gmtoff=-14400
+/zic/America/Antigua  Sun May  3 03:59:59 1942 UT = Sat May  2 23:59:59 1942 AST isdst=0 gmtoff=-14400
+/zic/America/Antigua  Sun May  3 04:00:00 1942 UT = Sun May  3 01:00:00 1942 AWT isdst=1 gmtoff=-10800
+/zic/America/Antigua  Tue Aug 14 22:59:59 1945 UT = Tue Aug 14 19:59:59 1945 AWT isdst=1 gmtoff=-10800
+/zic/America/Antigua  Tue Aug 14 23:00:00 1945 UT = Tue Aug 14 20:00:00 1945 APT isdst=1 gmtoff=-10800
+/zic/America/Antigua  Sun Sep 30 04:59:59 1945 UT = Sun Sep 30 01:59:59 1945 APT isdst=1 gmtoff=-10800
+/zic/America/Antigua  Sun Sep 30 05:00:00 1945 UT = Sun Sep 30 01:00:00 1945 AST isdst=0 gmtoff=-14400
+/zic/America/Antigua  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 19:59:59 2147485547 AST isdst=0 gmtoff=-14400
+/zic/America/Antigua  67768036191676800 (gmtime failed) = Wed Dec 31 20:00:00 2147485547 AST isdst=0 gmtoff=-14400
+/zic/America/Antigua  67768036191691199 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 AST isdst=0 gmtoff=-14400
+/zic/America/Antigua  67768036191691200 (gmtime failed) = 67768036191691200 (localtime failed)
+/zic/America/Antigua  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

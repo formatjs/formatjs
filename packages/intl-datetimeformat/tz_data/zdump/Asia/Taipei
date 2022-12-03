@@ -1,0 +1,92 @@
+/zic/Asia/Taipei  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Taipei  -67768040609769961 (gmtime failed) = -67768040609769961 (localtime failed)
+/zic/Asia/Taipei  -67768040609769960 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=29160
+/zic/Asia/Taipei  -67768040609740801 (gmtime failed) = Thu Jan  1 08:05:59 -2147481748 LMT isdst=0 gmtoff=29160
+/zic/Asia/Taipei  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 08:06:00 -2147481748 LMT isdst=0 gmtoff=29160
+/zic/Asia/Taipei  Tue Dec 31 15:53:59 1895 UT = Tue Dec 31 23:59:59 1895 LMT isdst=0 gmtoff=29160
+/zic/Asia/Taipei  Tue Dec 31 15:54:00 1895 UT = Tue Dec 31 23:54:00 1895 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Thu Sep 30 15:59:59 1937 UT = Thu Sep 30 23:59:59 1937 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Thu Sep 30 16:00:00 1937 UT = Fri Oct  1 01:00:00 1937 JST isdst=0 gmtoff=32400
+/zic/Asia/Taipei  Thu Sep 20 15:59:59 1945 UT = Fri Sep 21 00:59:59 1945 JST isdst=0 gmtoff=32400
+/zic/Asia/Taipei  Thu Sep 20 16:00:00 1945 UT = Fri Sep 21 00:00:00 1945 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Tue May 14 15:59:59 1946 UT = Tue May 14 23:59:59 1946 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Tue May 14 16:00:00 1946 UT = Wed May 15 01:00:00 1946 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Mon Sep 30 14:59:59 1946 UT = Mon Sep 30 23:59:59 1946 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Mon Sep 30 15:00:00 1946 UT = Mon Sep 30 23:00:00 1946 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Mon Apr 14 15:59:59 1947 UT = Mon Apr 14 23:59:59 1947 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Mon Apr 14 16:00:00 1947 UT = Tue Apr 15 01:00:00 1947 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Fri Oct 31 14:59:59 1947 UT = Fri Oct 31 23:59:59 1947 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Fri Oct 31 15:00:00 1947 UT = Fri Oct 31 23:00:00 1947 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Fri Apr 30 15:59:59 1948 UT = Fri Apr 30 23:59:59 1948 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Fri Apr 30 16:00:00 1948 UT = Sat May  1 01:00:00 1948 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Thu Sep 30 14:59:59 1948 UT = Thu Sep 30 23:59:59 1948 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Thu Sep 30 15:00:00 1948 UT = Thu Sep 30 23:00:00 1948 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sat Apr 30 15:59:59 1949 UT = Sat Apr 30 23:59:59 1949 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sat Apr 30 16:00:00 1949 UT = Sun May  1 01:00:00 1949 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Fri Sep 30 14:59:59 1949 UT = Fri Sep 30 23:59:59 1949 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Fri Sep 30 15:00:00 1949 UT = Fri Sep 30 23:00:00 1949 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sun Apr 30 15:59:59 1950 UT = Sun Apr 30 23:59:59 1950 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sun Apr 30 16:00:00 1950 UT = Mon May  1 01:00:00 1950 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sat Sep 30 14:59:59 1950 UT = Sat Sep 30 23:59:59 1950 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sat Sep 30 15:00:00 1950 UT = Sat Sep 30 23:00:00 1950 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Mon Apr 30 15:59:59 1951 UT = Mon Apr 30 23:59:59 1951 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Mon Apr 30 16:00:00 1951 UT = Tue May  1 01:00:00 1951 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sun Sep 30 14:59:59 1951 UT = Sun Sep 30 23:59:59 1951 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sun Sep 30 15:00:00 1951 UT = Sun Sep 30 23:00:00 1951 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Fri Feb 29 15:59:59 1952 UT = Fri Feb 29 23:59:59 1952 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Fri Feb 29 16:00:00 1952 UT = Sat Mar  1 01:00:00 1952 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Fri Oct 31 14:59:59 1952 UT = Fri Oct 31 23:59:59 1952 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Fri Oct 31 15:00:00 1952 UT = Fri Oct 31 23:00:00 1952 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Tue Mar 31 15:59:59 1953 UT = Tue Mar 31 23:59:59 1953 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Tue Mar 31 16:00:00 1953 UT = Wed Apr  1 01:00:00 1953 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sat Oct 31 14:59:59 1953 UT = Sat Oct 31 23:59:59 1953 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sat Oct 31 15:00:00 1953 UT = Sat Oct 31 23:00:00 1953 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Wed Mar 31 15:59:59 1954 UT = Wed Mar 31 23:59:59 1954 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Wed Mar 31 16:00:00 1954 UT = Thu Apr  1 01:00:00 1954 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sun Oct 31 14:59:59 1954 UT = Sun Oct 31 23:59:59 1954 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sun Oct 31 15:00:00 1954 UT = Sun Oct 31 23:00:00 1954 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Thu Mar 31 15:59:59 1955 UT = Thu Mar 31 23:59:59 1955 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Thu Mar 31 16:00:00 1955 UT = Fri Apr  1 01:00:00 1955 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Fri Sep 30 14:59:59 1955 UT = Fri Sep 30 23:59:59 1955 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Fri Sep 30 15:00:00 1955 UT = Fri Sep 30 23:00:00 1955 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sat Mar 31 15:59:59 1956 UT = Sat Mar 31 23:59:59 1956 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sat Mar 31 16:00:00 1956 UT = Sun Apr  1 01:00:00 1956 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sun Sep 30 14:59:59 1956 UT = Sun Sep 30 23:59:59 1956 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sun Sep 30 15:00:00 1956 UT = Sun Sep 30 23:00:00 1956 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sun Mar 31 15:59:59 1957 UT = Sun Mar 31 23:59:59 1957 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sun Mar 31 16:00:00 1957 UT = Mon Apr  1 01:00:00 1957 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Mon Sep 30 14:59:59 1957 UT = Mon Sep 30 23:59:59 1957 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Mon Sep 30 15:00:00 1957 UT = Mon Sep 30 23:00:00 1957 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Mon Mar 31 15:59:59 1958 UT = Mon Mar 31 23:59:59 1958 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Mon Mar 31 16:00:00 1958 UT = Tue Apr  1 01:00:00 1958 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Tue Sep 30 14:59:59 1958 UT = Tue Sep 30 23:59:59 1958 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Tue Sep 30 15:00:00 1958 UT = Tue Sep 30 23:00:00 1958 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Tue Mar 31 15:59:59 1959 UT = Tue Mar 31 23:59:59 1959 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Tue Mar 31 16:00:00 1959 UT = Wed Apr  1 01:00:00 1959 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Wed Sep 30 14:59:59 1959 UT = Wed Sep 30 23:59:59 1959 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Wed Sep 30 15:00:00 1959 UT = Wed Sep 30 23:00:00 1959 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Tue May 31 15:59:59 1960 UT = Tue May 31 23:59:59 1960 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Tue May 31 16:00:00 1960 UT = Wed Jun  1 01:00:00 1960 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Fri Sep 30 14:59:59 1960 UT = Fri Sep 30 23:59:59 1960 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Fri Sep 30 15:00:00 1960 UT = Fri Sep 30 23:00:00 1960 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Wed May 31 15:59:59 1961 UT = Wed May 31 23:59:59 1961 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Wed May 31 16:00:00 1961 UT = Thu Jun  1 01:00:00 1961 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sat Sep 30 14:59:59 1961 UT = Sat Sep 30 23:59:59 1961 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sat Sep 30 15:00:00 1961 UT = Sat Sep 30 23:00:00 1961 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sun Mar 31 15:59:59 1974 UT = Sun Mar 31 23:59:59 1974 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sun Mar 31 16:00:00 1974 UT = Mon Apr  1 01:00:00 1974 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Mon Sep 30 14:59:59 1974 UT = Mon Sep 30 23:59:59 1974 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Mon Sep 30 15:00:00 1974 UT = Mon Sep 30 23:00:00 1974 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Mon Mar 31 15:59:59 1975 UT = Mon Mar 31 23:59:59 1975 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Mon Mar 31 16:00:00 1975 UT = Tue Apr  1 01:00:00 1975 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Tue Sep 30 14:59:59 1975 UT = Tue Sep 30 23:59:59 1975 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Tue Sep 30 15:00:00 1975 UT = Tue Sep 30 23:00:00 1975 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sat Jun 30 15:59:59 1979 UT = Sat Jun 30 23:59:59 1979 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Sat Jun 30 16:00:00 1979 UT = Sun Jul  1 01:00:00 1979 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sun Sep 30 14:59:59 1979 UT = Sun Sep 30 23:59:59 1979 CDT isdst=1 gmtoff=32400
+/zic/Asia/Taipei  Sun Sep 30 15:00:00 1979 UT = Sun Sep 30 23:00:00 1979 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Wed Dec 31 15:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 CST isdst=0 gmtoff=28800
+/zic/Asia/Taipei  Wed Dec 31 16:00:00 2147485547 UT = 67768036191648000 (localtime failed)
+/zic/Asia/Taipei  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Taipei  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Taipei  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

@@ -61,7 +61,16 @@ function extractNumbers(d: Numbers): RawNumberData {
   return {
     nu,
     symbols: nu.reduce((all: Record<string, SymbolsData>, ns) => {
-      all[ns] = d[`symbols-numberSystem-${ns}` as 'symbols-numberSystem-latn']
+      const rangeSign = d[
+        `miscPatterns-numberSystem-${ns}` as 'miscPatterns-numberSystem-latn'
+      ].range
+        .match(/[^{}01]/)!
+        .at(0) as string
+
+      all[ns] = {
+        ...d[`symbols-numberSystem-${ns}` as 'symbols-numberSystem-latn'],
+        rangeSign,
+      }
       return all
     }, {}),
     percent: nu.reduce((all: RawNumberData['percent'], ns) => {
