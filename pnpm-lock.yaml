@@ -78,7 +78,7 @@ importers:
       clsx: '1'
       commander: '8'
       core-js: ^3.6.5
-      emoji-regex: ^10.0.0
+      emoji-regex: ^10.2.1
       eslint: 7 || 8
       fast-glob: ^3.2.7
       fs-extra: '10'
@@ -114,6 +114,7 @@ importers:
       tsd: ^0.24.1
       tslib: ^2.4.0
       typescript: 4.9.3
+      unicode-emoji-utils: ^1.1.1
       unidiff: ^1.0.2
       vue: ^3.2.45
       vue-class-component: ^8.0.0-rc.1
@@ -185,7 +186,7 @@ importers:
       clsx: 1.1.1
       commander: 8.3.0
       core-js: 3.23.2
-      emoji-regex: 10.1.0
+      emoji-regex: 10.2.1
       eslint: 8.18.0
       fast-glob: 3.2.11
       fs-extra: 10.1.0
@@ -221,6 +222,7 @@ importers:
       tsd: 0.24.1
       tslib: 2.4.0
       typescript: 4.9.3
+      unicode-emoji-utils: 1.1.1
       unidiff: 1.0.2
       vue: 3.2.45
       vue-class-component: 8.0.0-rc.1_vue@3.2.45
@@ -324,21 +326,23 @@ importers:
       '@formatjs/ts-transformer': workspace:*
       '@types/eslint': 7 || 8
       '@types/picomatch': ^2.3.0
-      '@typescript-eslint/typescript-estree': ^5.9.1
-      emoji-regex: ^10.0.0
+      '@typescript-eslint/typescript-estree': 5.45.0
+      emoji-regex: ^10.2.1
       picomatch: ^2.3.1
-      tslib: ^2.4.0
+      tslib: 2.4.0
       typescript: ^4.7
+      unicode-emoji-utils: ^1.1.1
     dependencies:
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
       '@formatjs/ts-transformer': link:../ts-transformer
       '@types/eslint': 8.4.3
       '@types/picomatch': 2.3.0
-      '@typescript-eslint/typescript-estree': 5.29.0_typescript@4.9.3
-      emoji-regex: 10.1.0
+      '@typescript-eslint/typescript-estree': 5.45.0_typescript@4.9.3
+      emoji-regex: 10.2.1
       picomatch: 2.3.1
       tslib: 2.4.0
       typescript: 4.9.3
+      unicode-emoji-utils: 1.1.1
 
   packages/fast-memoize:
     specifiers:
@@ -544,7 +548,7 @@ importers:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
       '@formatjs/intl-localematcher': workspace:*
-      tslib: 2.4.0
+      tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
       '@formatjs/intl-localematcher': link:../intl-localematcher
@@ -3964,7 +3968,7 @@ packages:
       '@docusaurus/react-loadable': 5.5.2
       '@docusaurus/types': 2.0.1
       '@types/history': 4.7.11
-      '@types/react': 18.0.14
+      '@types/react': 18.0.25
       '@types/react-router-config': 5.0.6
       '@types/react-router-dom': 5.3.3
       react-helmet-async: 1.3.0
@@ -6458,7 +6462,7 @@ packages:
     resolution: {integrity: sha512-db1mx37a1EJDf1XeX8jJN7R3PZABmJQXR8r28yUjVMFSjkmnQo6X6pOEEmNl+Tp2gYQOGPdYbFIipBtdElZ3Yg==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.0.14
+      '@types/react': 18.0.25
       '@types/react-router': 5.1.18
     dev: true
 
@@ -6466,7 +6470,7 @@ packages:
     resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.0.14
+      '@types/react': 18.0.25
       '@types/react-router': 5.1.18
     dev: true
 
@@ -6474,7 +6478,7 @@ packages:
     resolution: {integrity: sha512-YYknwy0D0iOwKQgz9v8nOzt2J6l4gouBmDnWqUUznltOTaon+r8US8ky8HvN0tXvc38U9m6z/t2RsVsnd1zM0g==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.0.14
+      '@types/react': 18.0.25
     dev: true
 
   /@types/react/18.0.14:
@@ -6647,6 +6651,12 @@ packages:
   /@typescript-eslint/types/5.29.0:
     resolution: {integrity: sha512-X99VbqvAXOMdVyfFmksMy3u8p8yoRGITgU1joBJPzeYa0rhdf5ok9S56/itRoUSh99fiDoMtarSIJXo7H/SnOg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
+  /@typescript-eslint/types/5.45.0:
+    resolution: {integrity: sha512-QQij+u/vgskA66azc9dCmx+rev79PzX8uDHpsqSjEFtfF2gBUTRCpvYMh2gw2ghkJabNkPlSUCimsyBEQZd1DA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: false
 
   /@typescript-eslint/typescript-estree/5.29.0_typescript@4.9.3:
     resolution: {integrity: sha512-mQvSUJ/JjGBdvo+1LwC+GY2XmSYjK1nAaVw2emp/E61wEVYEyibRHCqm1I1vEKbXCpUKuW4G7u9ZCaZhJbLoNQ==}
@@ -6667,6 +6677,28 @@ packages:
       typescript: 4.9.3
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@typescript-eslint/typescript-estree/5.45.0_typescript@4.9.3:
+    resolution: {integrity: sha512-maRhLGSzqUpFcZgXxg1qc/+H0bT36lHK4APhp0AEUVrpSwXiRAomm/JGjSG+kNUio5kAa3uekCYu/47cnGn5EQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/types': 5.45.0
+      '@typescript-eslint/visitor-keys': 5.45.0
+      debug: 4.3.4
+      globby: 11.1.0
+      is-glob: 4.0.3
+      semver: 7.3.7
+      tsutils: 3.21.0_typescript@4.9.3
+      typescript: 4.9.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@typescript-eslint/visitor-keys/5.29.0:
     resolution: {integrity: sha512-Hpb/mCWsjILvikMQoZIE3voc9wtQcS0A9FUw3h8bhr9UxBdtI/tw1ZDZUOXHXLOVMedKCH5NxyzATwnU78bWCQ==}
@@ -6674,6 +6706,15 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.29.0
       eslint-visitor-keys: 3.3.0
+    dev: true
+
+  /@typescript-eslint/visitor-keys/5.45.0:
+    resolution: {integrity: sha512-jc6Eccbn2RtQPr1s7th6jJWQHBHI6GBVQkCHoJFQ5UreaKm59Vxw+ynQUPPY2u2Amquc+7tmEoC2G52ApsGNNg==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      '@typescript-eslint/types': 5.45.0
+      eslint-visitor-keys: 3.3.0
+    dev: false
 
   /@unicode/unicode-13.0.0/1.2.2:
     resolution: {integrity: sha512-bzMRA9J9eXJ0FnrE+ZYJsbCF9wn36VAH0o6dIWpQ2gYje240sK1Z4N2SPg2u75e+913wTD2jvyAqFmXNLSe5Sg==}
@@ -9677,8 +9718,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /emoji-regex/10.1.0:
-    resolution: {integrity: sha512-xAEnNCT3w2Tg6MA7ly6QqYJvEoY1tm9iIjJ3yMKK9JPlWuRHAMoe5iETwQnx3M9TVbFMfsrBgWKR+IsmswwNjg==}
+  /emoji-regex/10.2.1:
+    resolution: {integrity: sha512-97g6QgOk8zlDRdgq1WxwgTMgEWGVAQvB5Fdpgc1MkNy56la5SKP9GsMXKDOdqwn90/41a8yPwIGk1Y6WVbeMQA==}
 
   /emoji-regex/7.0.3:
     resolution: {integrity: sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==}
@@ -17260,6 +17301,11 @@ packages:
     resolution: {integrity: sha512-yY5PpDlfVIU5+y/BSCxAJRBIS1Zc2dDG3Ujq+sR0U+JjUevW2JhocOF+soROYDSaAezOzOKuyyixhD6mBknSmQ==}
     engines: {node: '>=4'}
     dev: true
+
+  /unicode-emoji-utils/1.1.1:
+    resolution: {integrity: sha512-QEg0BNool1kItuftJp79SbWYzgW8Rnf8I+Q5NIDSkUw8y+KS+mLBoOaxSO+nFFUyIHGEt24I2Fn1iJ74LpiDcA==}
+    dependencies:
+      emoji-regex: 10.2.1
 
   /unicode-match-property-ecmascript/2.0.0:
     resolution: {integrity: sha512-5kaZCrbp5mmbz5ulBkDkbY0SsPOjKqVS35VpL9ulMPfSl0J0Xsm+9Evphv9CoIZFwre7aJoa94AY6seMKGVN5Q==}
