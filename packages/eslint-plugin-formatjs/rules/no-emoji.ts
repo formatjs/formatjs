@@ -1,11 +1,31 @@
 import {Rule} from 'eslint'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {extractMessages, getSettings} from '../util'
-import emojiRegex from 'emoji-regex'
-const EMOJI_REGEX: RegExp = (emojiRegex as any)()
+import {
+  extractEmojis,
+  filterEmojis,
+  getAllEmojis,
+  hasEmoji,
+  isValidEmojiVersion,
+  type EmojiVersion,
+} from 'unicode-emoji-utils'
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
   const msgs = extractMessages(node, getSettings(context))
+
+  let allowedEmojis: string[] = []
+  let versionAbove: EmojiVersion | undefined
+  const [emojiConfig] = context.options
+
+  if (
+    emojiConfig?.versionAbove &&
+    isValidEmojiVersion(emojiConfig.versionAbove) &&
+    !versionAbove &&
+    allowedEmojis.length === 0
+  ) {
+    versionAbove = emojiConfig.versionAbove as EmojiVersion
+    allowedEmojis = getAllEmojis(filterEmojis(versionAbove))
+  }
 
   for (const [
     {
@@ -16,11 +36,26 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     if (!defaultMessage || !messageNode) {
       continue
     }
-    if (EMOJI_REGEX.test(defaultMessage)) {
-      context.report({
-        node: messageNode as any,
-        message: 'Emojis are not allowed',
-      })
+    if (hasEmoji(defaultMessage)) {
+      if (versionAbove) {
+        for (const emoji of extractEmojis(defaultMessage)) {
+          if (!allowedEmojis.includes(emoji)) {
+            context.report({
+              node: messageNode as any,
+              messageId: 'notAllowedAboveVersion',
+              data: {
+                versionAbove,
+                emoji,
+              },
+            })
+          }
+        }
+      } else {
+        context.report({
+          node: messageNode as any,
+          messageId: 'notAllowed',
+        })
+      }
     }
   }
 }
@@ -35,6 +70,18 @@ const rule: Rule.RuleModule = {
       url: 'https://formatjs.io/docs/tooling/linter#no-emoji',
     },
     fixable: 'code',
+    schema: [
+      {
+        type: 'object',
+        properties: {versionAbove: {type: 'string'}},
+        additionalProperties: false,
+      },
+    ],
+    messages: {
+      notAllowed: 'Emojis are not allowed',
+      notAllowedAboveVersion:
+        'Emojis above version {{versionAbove}} are not allowed - Emoji: {{emoji}}',
+    },
   },
   create(context) {
     const callExpressionVisitor = (node: TSESTree.Node) =>
