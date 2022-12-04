@@ -354,7 +354,24 @@ const messages = defineMessages({
 
 ### `no-emoji`
 
-This prevents usage of emoji in message.
+This prevents usage of emojis (or above a certain Unicode version) in message
+
+```json
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/no-emoji": ["error"]
+  }
+}
+
+// OR
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/no-emoji": ["error", {"versionAbove": "12.0"}]
+  }
+}
+```
 
 #### Why
 
@@ -369,9 +386,17 @@ const messages = defineMessages({
   foo: {
     defaultMessage: 'Smileys & People',
   },
+  // WORKS with option {versionAbove: '12.0'}
+  foo_bar: {
+    defaultMessage: '😃 Smileys & People',
+  },
   // FAILS
   bar: {
     defaultMessage: '😃 Smileys & People',
+  },
+  // FAILS with option {versionAbove: '12.0'}
+  bar_foo: {
+    defaultMessage: '🥹 Smileys & People',
   },
 })
 ```
