@@ -60,6 +60,23 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
   }
 }
 
+const versionAboveEnums: EmojiVersion[] = [
+  '0.6',
+  '0.7',
+  '1.0',
+  '2.0',
+  '3.0',
+  '4.0',
+  '5.0',
+  '11.0',
+  '12.0',
+  '12.1',
+  '13.0',
+  '13.1',
+  '14.0',
+  '15.0',
+]
+
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
@@ -73,7 +90,7 @@ const rule: Rule.RuleModule = {
     schema: [
       {
         type: 'object',
-        properties: {versionAbove: {type: 'string'}},
+        properties: {versionAbove: {type: 'string', enum: versionAboveEnums}},
         additionalProperties: false,
       },
     ],
