@@ -19,6 +19,8 @@ npm_package(
         "README.md",
         "package.json",
         ":dist",
+        # polyfill-library uses this
+        "polyfill.iife.js",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
@@ -131,7 +133,8 @@ write_source_files(
 esbuild(
     name = "polyfill.iife",
     entry_point = "lib/polyfill.js",
-    target = "es5",
+    target = "es6",
+    # TODO: fix this and set it back to es5
     deps = [
         ":dist-esm",
         "//:node_modules/tslib",
