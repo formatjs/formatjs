@@ -1010,6 +1010,30 @@ Object {
       \\"value\\": \\"I have \\"
     },
     {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"a dog\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"many dogs\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    },
+    {
       \\"type\\": 0,
       \\"value\\": \\"SSSSSSSSSSSSSSSSSSSSSSSSS\\"
     }
@@ -1018,6 +1042,36 @@ Object {
     {
       \\"type\\": 0,
       \\"value\\": \\"I have \\"
+    },
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"a dog\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"many dogs\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
     },
     {
       \\"type\\": 0,
@@ -1030,6 +1084,46 @@ Object {
       \\"value\\": \\"I have \\"
     },
     {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"children\\": [
+                {
+                  \\"type\\": 0,
+                  \\"value\\": \\"a \\"
+                },
+                {
+                  \\"children\\": [
+                    {
+                      \\"type\\": 0,
+                      \\"value\\": \\"dog\\"
+                    }
+                  ],
+                  \\"type\\": 8,
+                  \\"value\\": \\"i\\"
+                }
+              ],
+              \\"type\\": 8,
+              \\"value\\": \\"b\\"
+            }
+          ]
+        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"many dogs\\"
+            }
+          ]
+        }
+      },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    },
+    {
       \\"type\\": 0,
       \\"value\\": \\"SSSSSSSSSSSSSSSSSSSSSSSSS\\"
     }
@@ -1038,6 +1132,10 @@ Object {
     {
       \\"type\\": 0,
       \\"value\\": \\"my name is \\"
+    },
+    {
+      \\"type\\": 1,
+      \\"value\\": \\"name\\"
     },
     {
       \\"type\\": 0,

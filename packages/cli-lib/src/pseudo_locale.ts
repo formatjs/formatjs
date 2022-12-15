@@ -12,10 +12,10 @@ export function generateXXLS(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
   const ast = typeof msg === 'string' ? parse(msg) : msg
-  const lastChunk = ast.pop()
+  const lastChunk = ast[ast.length - 1]
   if (lastChunk && isLiteralElement(lastChunk)) {
     lastChunk.value += 'SSSSSSSSSSSSSSSSSSSSSSSSS'
-    return [...ast, lastChunk]
+    return ast
   }
   return [...ast, {type: TYPE.literal, value: 'SSSSSSSSSSSSSSSSSSSSSSSSS'}]
 }
