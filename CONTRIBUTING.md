@@ -55,6 +55,7 @@ bazel build :dist
 mkdir ../formatjs2
 cp -rf dist/bin/formatjs_dist/ ../formatjs2/
 # Use `--access=public` to publish new packages with `@formatjs/` scope.
+cd ../formatjs2
 npx pnpm -r publish
 ```
 
