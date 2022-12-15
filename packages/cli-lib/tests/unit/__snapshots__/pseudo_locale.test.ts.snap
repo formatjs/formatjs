@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pseudo-locale: xx-LS works with messages that ends with a tag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Foo ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "type": 0,
+        "value": "bar",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+  Object {
+    "type": 0,
+    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
