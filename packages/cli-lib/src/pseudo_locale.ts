@@ -42,12 +42,12 @@ export function generateXXHA(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
   const ast = typeof msg === 'string' ? parse(msg) : msg
-  const firstChunk = ast.shift()
+  const [firstChunk, ...rest] = ast
   if (firstChunk && isLiteralElement(firstChunk)) {
     firstChunk.value = '[javascript]' + firstChunk.value
-    return [firstChunk, ...ast]
+    return [firstChunk, ...rest]
   }
-  return [{type: TYPE.literal, value: '[javascript]'}, ...ast]
+  return [{type: TYPE.literal, value: '[javascript]'}, ...rest]
 }
 
 const ASCII = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
