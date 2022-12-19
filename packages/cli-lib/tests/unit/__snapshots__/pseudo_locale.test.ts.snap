@@ -1,5 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pseudo-locale: en-HA works with message that does not contain literal element 1`] = `
+Array [
+  Object {
+    "type": 1,
+    "value": "foo",
+  },
+  Object {
+    "type": 0,
+    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale: xx-LS works with message that does not contain literal element 1`] = `
+Array [
+  Object {
+    "type": 1,
+    "value": "foo",
+  },
+  Object {
+    "type": 0,
+    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
 exports[`pseudo-locale: xx-LS works with messages that ends with a tag 1`] = `
 Array [
   Object {
