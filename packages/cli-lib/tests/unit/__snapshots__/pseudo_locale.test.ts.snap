@@ -1,14 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pseudo-locale: en-HA works with message that does not contain literal element 1`] = `
+exports[`pseudo-locale: en-HA works with a message that starts with a literal element 1`] = `
 Array [
+  Object {
+    "type": 0,
+    "value": "[javascript]foo ",
+  },
+  Object {
+    "type": 1,
+    "value": "bar",
+  },
+]
+`;
+
+exports[`pseudo-locale: en-HA works with message that does not start with a literal element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[javascript]",
+  },
   Object {
     "type": 1,
     "value": "foo",
   },
   Object {
     "type": 0,
-    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+    "value": " bar",
   },
 ]
 `;
@@ -21,7 +38,7 @@ Array [
   },
   Object {
     "type": 0,
-    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+    "value": " barSSSSSSSSSSSSSSSSSSSSSSSSS",
   },
 ]
 `;
