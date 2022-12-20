@@ -47,7 +47,7 @@ export function generateXXHA(
     firstChunk.value = '[javascript]' + firstChunk.value
     return [firstChunk, ...rest]
   }
-  return [{type: TYPE.literal, value: '[javascript]'}, ...rest]
+  return [{type: TYPE.literal, value: '[javascript]'}, ...ast]
 }
 
 const ASCII = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
