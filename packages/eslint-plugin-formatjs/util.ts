@@ -77,8 +77,11 @@ function isSingleMessageDescriptorDeclaration(
 ) {
   return (
     node.type === 'CallExpression' &&
-    node.callee.type === 'Identifier' &&
-    functionNames.has(node.callee.name)
+    ((node.callee.type === 'Identifier' &&
+      functionNames.has(node.callee.name)) ||
+      (node.callee.type === 'MemberExpression' &&
+        node.callee.property.type === 'Identifier' &&
+        functionNames.has(node.callee.property.name)))
   )
 }
 
