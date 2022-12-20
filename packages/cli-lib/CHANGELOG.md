@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.12](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.11...@formatjs/cli-lib@5.1.12) (2022-12-20)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** actually fix incorrect xx-HA generation ([#3945](https://github.com/formatjs/formatjs/issues/3945)) ([10f4799](https://github.com/formatjs/formatjs/commit/10f4799c913444651687cc7b6d16aec9f7d5a1ad))
+
 ## [5.1.11](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.10...@formatjs/cli-lib@5.1.11) (2022-12-19)
 
 ### Bug Fixes
