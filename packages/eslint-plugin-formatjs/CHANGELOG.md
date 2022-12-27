@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.9](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.8...eslint-plugin-formatjs@4.3.9) (2022-12-27)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** adding $t, an alternative to formatMessage ([#3943](https://github.com/formatjs/formatjs/issues/3943)) ([6d9623f](https://github.com/formatjs/formatjs/commit/6d9623f7fb3eb3bf68acfacdb5e0d88939e70156))
+
 ## [4.3.8](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.7...eslint-plugin-formatjs@4.3.8) (2022-12-02)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
