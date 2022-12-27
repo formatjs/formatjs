@@ -7,7 +7,7 @@ export interface MessageDescriptor {
   description?: string | object
 }
 
-const FORMAT_FUNCTION_NAMES = new Set(['$formatMessage', 'formatMessage'])
+const FORMAT_FUNCTION_NAMES = new Set(['$formatMessage', 'formatMessage', '$t'])
 const COMPONENT_NAMES = new Set(['FormattedMessage'])
 const DECLARATION_FUNCTION_NAMES = new Set(['defineMessage'])
 

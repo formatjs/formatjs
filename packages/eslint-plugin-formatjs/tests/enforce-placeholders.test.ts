@@ -166,5 +166,17 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         },
       ],
     },
+    {
+      code: `
+      {$t({ 
+        defaultMessage: "My name is {name}" 
+      })}
+      `,
+      errors: [
+        {
+          message: 'Missing value for placeholder "name"',
+        },
+      ]
+    }
   ],
 })
