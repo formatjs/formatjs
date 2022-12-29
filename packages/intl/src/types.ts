@@ -145,7 +145,7 @@ export interface IntlFormatters<TBase = unknown> {
     opts?: FormatRelativeTimeOptions
   ): string
   formatNumber(
-    value: Parameters<Intl.NumberFormat['format']>[0],
+    value: Parameters<Intl.NumberFormat['format']>[0] | string,
     opts?: FormatNumberOptions
   ): string
   formatNumberToParts(

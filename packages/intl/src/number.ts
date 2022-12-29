@@ -67,7 +67,9 @@ export function formatNumber(
   options: Parameters<IntlFormatters['formatNumber']>[1] = {}
 ): string {
   try {
-    return getFormatter(config, getNumberFormat, options).format(value)
+    return getFormatter(config, getNumberFormat, options).format(
+      value as number
+    )
   } catch (e) {
     config.onError(
       new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting number.', e)
