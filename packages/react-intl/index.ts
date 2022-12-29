@@ -95,7 +95,7 @@ export const FormattedTime: React.FC<
 export const FormattedNumber: React.FC<
   Omit<NumberFormatOptions, 'localeMatcher'> &
     CustomFormatConfig<'number'> & {
-      value: number
+      value: number | string
       children?(formattedNumber: string): React.ReactElement | null
     }
 > = createFormattedComponent('formatNumber')
