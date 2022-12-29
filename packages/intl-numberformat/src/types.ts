@@ -12,7 +12,7 @@ import {
 export interface NumberFormat {
   resolvedOptions(): ResolvedNumberFormatOptions
   formatToParts(x: number): NumberFormatPart[]
-  format(x: number): string
+  format(x: number | string): string
   formatRange(start: number, end: number): string
   formatRangeToParts(start: number, end: number): NumberRangeToParts[]
 }
