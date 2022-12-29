@@ -156,7 +156,7 @@ interface IntlFormatters {
     unit?: FormattableUnit,
     opts?: FormatRelativeTimeOptions
   ): string
-  formatNumber(value: number, opts?: FormatNumberOptions): string
+  formatNumber(value: number | string, opts?: stringOptions): string
   formatNumberToParts(
     value: number,
     opts?: FormatNumberOptions
