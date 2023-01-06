@@ -1,3 +1,4 @@
+import {supportedValuesOf} from '@formatjs/intl-enumerator'
 import {
   GetOption,
   invariant,
@@ -19,6 +20,14 @@ import {
   likelySubtags,
 } from '@formatjs/intl-getcanonicallocales'
 import getInternalSlots from './get_internal_slots'
+import {
+  getCalendarPreferenceDataForRegion,
+  getHourCyclesPreferenceDataForLocaleOrRegion,
+  getTimeZonePreferenceForRegion,
+  getWeekDataForRegion,
+} from './preference-data'
+
+import type { WeekInfoInternal } from './preference-data'
 
 export interface IntlLocaleOptions {
   language?: string
@@ -292,6 +301,104 @@ function removeLikelySubtags(tag: string): string {
   return tag
 }
 
+function createArrayFromListOrRestricted(list: any[], restricted: any): Array<any> {
+  let result = list
+  if (restricted !== undefined) {
+    result = [restricted]
+  }
+
+  return Array.from(result)
+}
+
+function calendarsOfLocale(loc: Locale): Array<string> {
+  const locInternalSlots = getInternalSlots(loc)
+
+  const restricted = locInternalSlots.calendar
+  const locale = locInternalSlots.locale
+
+  let region: string | undefined
+  if (locale !== 'root') {
+    region = loc.maximize().region
+  }
+
+  const preferredCalendars = getCalendarPreferenceDataForRegion(region)
+  return createArrayFromListOrRestricted(preferredCalendars, restricted)
+}
+
+function collationsOfLocale(loc: Locale): Array<string> {
+  const locInternalSlots = getInternalSlots(loc)
+
+  const restricted = locInternalSlots.collation
+
+  // TODO - how to define the default collations?
+  // Not sure where that info can be found
+  const supportedCollations = supportedValuesOf('collation')
+    .filter((co: string) => co !== 'standard' && co !== 'search')
+  return createArrayFromListOrRestricted(supportedCollations, restricted)
+}
+
+function hourCyclesOfLocale(loc: Locale): Array<string> {
+  const locInternalSlots = getInternalSlots(loc)
+
+  const restricted = locInternalSlots.hourCycle
+  const locale = locInternalSlots.locale
+
+  let region: string | undefined
+  if (locale !== 'root') {
+    region = loc.maximize().region
+  }
+
+  const preferredHourCycles = getHourCyclesPreferenceDataForLocaleOrRegion(locale, region)
+  return createArrayFromListOrRestricted(preferredHourCycles, restricted)
+}
+
+function numberingSystemsOfLocale(loc: Locale): Array<string> {
+  const locInternalSlots = getInternalSlots(loc)
+
+  const restricted = locInternalSlots.hourCycle
+
+  // TODO - how to define the default numbering systems?
+  // As far as I can tell it's only defined in `cidr-numbers-(full|modern)/main/{locale}/numbers.json`, which should only
+  // be available dynamically -- is that acceptable?
+  const preferredNumberingSystems = [locInternalSlots.numberingSystem || 'latn']
+  return createArrayFromListOrRestricted(preferredNumberingSystems, restricted)
+}
+
+function timeZonesOfLocale(loc: Locale): Array<string> | undefined {
+  const locInternalSlots = getInternalSlots(loc)
+
+  const locale = locInternalSlots.locale
+  const region = parseUnicodeLanguageId(locale).region
+
+  if (!region) {
+    return undefined
+  }
+
+  const preferredTimeZones = getTimeZonePreferenceForRegion(region)
+  return Array.from(preferredTimeZones)
+}
+
+//@ts-ignore
+function characterDirectionOfLocale(loc: Locale): string {
+  // TODO - how to define the default characterOrder?
+  // As far as I can tell it's only defined in `cidr-misc-(full|modern)/main/{locale}/layout.json`, which should only
+  // be available dynamically -- is that acceptable?
+  return 'ltr'
+}
+
+function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
+  const locInternalSlots = getInternalSlots(loc)
+
+  const locale = locInternalSlots.locale
+
+  let region: string | undefined
+  if (locale !== 'root') {
+    region = loc.maximize().region
+  }
+
+  return getWeekDataForRegion(region)
+}
+
 export class Locale {
   constructor(tag: string | Locale, opts?: IntlLocaleOptions) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
@@ -501,6 +608,98 @@ export class Locale {
   public get region() {
     const locale = getInternalSlots(this).locale
     return parseUnicodeLanguageId(locale).region
+  }
+
+  /**
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.calendars
+   */
+  public get calendars() {
+    return calendarsOfLocale(this)
+  }
+
+  /**
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.collations
+   */
+  public get collations() {
+    return collationsOfLocale(this)
+  }
+
+  /**
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.hourCycles
+   */
+  public get hourCycles() {
+    return hourCyclesOfLocale(this)
+  }
+
+  /**
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.numberingSystems
+   */
+  public get numberingSystems() {
+    return numberingSystemsOfLocale(this)
+  }
+
+  /**
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.timeZones
+   */
+  public get timeZones() {
+    return timeZonesOfLocale(this)
+  }
+
+  /**
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.textInfo
+   */
+  public get textInfo() {
+    try {
+      const info = Object.create(Object.prototype)
+      const dir = characterDirectionOfLocale(this)
+
+      Object.defineProperty(info, 'direction', {
+        value: dir,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+
+      return info
+    } catch (e) {
+      throw new TypeError('Error retrieving textInfo')
+    }
+  }
+
+  /**
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.weekInfo
+   */
+  public get weekInfo() {
+    try {
+      const info = Object.create(Object.prototype)
+      const wi = weekInfoOfLocale(this)
+      const we = wi.weekend
+
+      Object.defineProperty(info, 'firstDay', {
+        value: wi.firstDay,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+
+      Object.defineProperty(info, 'weekend', {
+        value: we,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+
+      Object.defineProperty(info, 'minimalDays', {
+        value: wi.minimalDays,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+
+      return info
+    } catch (e) {
+      throw new TypeError('Error retrieving weekInfo')
+    }
   }
 
   static relevantExtensionKeys = RELEVANT_EXTENSION_KEYS

@@ -29,7 +29,9 @@ SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
+    ":node_modules/@formatjs/intl-enumerator",
     ":node_modules/@formatjs/intl-getcanonicallocales",
+    "//:node_modules/cldr-core",
 ]
 
 ts_compile(
