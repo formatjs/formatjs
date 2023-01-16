@@ -1,0 +1,31 @@
+{
+  "name": "@formatjs/intl-segmenter",
+  "version": "11.1.4",
+  "description": "Polyfill for Intl.Segmenter",
+  "keywords": [
+    "intl",
+    "i18n",
+    "segmenter",
+    "unicode",
+    "tc39",
+    "ecma402"
+  ],
+  "author": "Matija Gaspar <matijagaspar@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:formatjs/formatjs.git"
+  },
+  "dependencies": {
+    "@formatjs/ecma402-abstract": "workspace:*",
+    "@formatjs/intl-localematcher": "workspace:*",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {},
+  "main": "index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "license": "MIT"
+}

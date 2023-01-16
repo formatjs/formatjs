@@ -56,6 +56,7 @@ PACKAGES_TO_DIST = [
     "//packages/intl-numberformat",
     "//packages/intl-pluralrules",
     "//packages/intl-relativetimeformat",
+    "//packages/intl-segmenter",
     "//packages/react-intl",
     "//packages/swc-plugin",
     "//packages/swc-plugin-experimental",
@@ -105,6 +106,11 @@ KARMA_TESTS = [
 
 karma_bin.karma_test(
     name = "karma",
+    args = [
+        "start",
+        "$(rootpath //:karma.conf.js)",
+        "--no-single-run",
+    ],
     # configuration_env_vars = [
     #     "SAUCE_USERNAME",
     #     "SAUCE_ACCESS_KEY",
@@ -117,16 +123,17 @@ karma_bin.karma_test(
         "//:node_modules/karma-jasmine-matchers",
     ] + KARMA_TESTS,
     tags = ["manual"],
-    args = [
-        "start",
-        "$(rootpath //:karma.conf.js)",
-        "--no-single-run",
-    ],
 )
 
 karma_bin.karma_test(
     name = "karma-ci",
     size = "large",
+    args = [
+        "start",
+        "$(rootpath //:karma.conf.js)",
+        "--browsers",
+        "sl_edge,sl_chrome,sl_firefox,sl_ie_11,sl_safari",
+    ],
     # configuration_env_vars = [
     #     "SAUCE_USERNAME",
     #     "SAUCE_ACCESS_KEY",
@@ -140,12 +147,6 @@ karma_bin.karma_test(
         "//:node_modules/karma-jasmine-matchers",
     ] + KARMA_TESTS,
     tags = ["manual"],
-    args = [
-        "start",
-        "$(rootpath //:karma.conf.js)",
-        "--browsers",
-        "sl_edge,sl_chrome,sl_firefox,sl_ie_11,sl_safari",
-    ],
 )
 
 multirun(
@@ -172,6 +173,7 @@ multirun(
         "//packages/intl-numberformat:prettier",
         "//packages/intl-pluralrules:prettier",
         "//packages/intl-relativetimeformat:prettier",
+        "//packages/intl-segmenter:prettier",
         "//packages/intl:prettier",
         "//packages/react-intl:prettier",
         "//packages/swc-plugin:prettier",
@@ -198,6 +200,8 @@ multirun(
         "//packages/intl-pluralrules:generated-test-files",
         "//packages/intl-relativetimeformat:test262-main",
         "//packages/intl-relativetimeformat:generated-test-files",
+        "//packages/intl-segmenter:test262-main",
+        "//packages/intl-segmenter:generated-file",
         "//packages/intl-getcanonicallocales:aliases",
     ],
 )
@@ -212,6 +216,7 @@ multirun(
         "//packages/intl-numberformat:generated-files",
         "//packages/intl-pluralrules:generated-files",
         "//packages/intl-relativetimeformat:generated-files",
+        "//packages/intl-segmenter:generated-file",
     ],
 )
 
