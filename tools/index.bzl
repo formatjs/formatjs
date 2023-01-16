@@ -8,8 +8,6 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier_test")
 load("@npm//:prettier/package_json.bzl", prettier_bin = "bin")
 load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
-load("@npm//:@taplo/cli/package_json.bzl", taplo_bin = "bin")
-# load("@rules_rust//rust:defs.bzl", "rustfmt_test")
 
 BUILDIFIER_WARNINGS = [
     "attr-cfg",

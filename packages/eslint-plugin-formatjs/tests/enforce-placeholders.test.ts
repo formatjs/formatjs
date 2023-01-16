@@ -176,7 +176,7 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         {
           message: 'Missing value for placeholder "name"',
         },
-      ]
-    }
+      ],
+    },
   ],
 })

@@ -33,13 +33,13 @@ rust_wasm_library(
     name = "swc_plugin_formatjs.wasm",
     srcs = glob(["src/**/*.rs"]),
     aliases = aliases(),
-    wasi = True,
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
+    tags = ["manual"],
+    visibility = ["@//packages/swc-plugin-experimental:__pkg__"],
+    wasi = True,
     deps = ["//rust/swc-formatjs-visitor"] + all_crate_deps(
         normal = True,
     ),
-    visibility = ["@//packages/swc-plugin-experimental:__pkg__"],
-    tags = ["manual"],
 )

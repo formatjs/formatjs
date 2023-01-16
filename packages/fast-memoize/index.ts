@@ -14,7 +14,7 @@ interface CacheCreateFunc<K, V> {
 
 interface DefaultCache<K, V> {
   get(key: K): V | undefined
-  set(key: K, value: V): void
+  set(key: K, value: V | undefined): void
 }
 
 export type Serializer = (args: any[]) => string

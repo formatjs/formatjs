@@ -1,6 +1,6 @@
-load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -18,8 +18,8 @@ npm_package(
     srcs = [
         "LICENSE.md",
         "README.md",
-        "package.json",
         "index.wasm",
+        "package.json",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
