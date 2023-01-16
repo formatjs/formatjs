@@ -72,7 +72,7 @@ const intl = createIntl(
   cache
 )
 
-// Aujourd'hui, nous sommes le {ts, date, ::yyyyMMdd} 23/07/2020
+// Aujourd'hui, nous sommes le 23/07/2020
 console.log(
   intl.formatMessage(
     {
