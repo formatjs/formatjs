@@ -11,6 +11,7 @@
       "es2021.intl",
       "ES2022.Intl",
       "ESNext.Intl",
+      "ES2021.String",
       "ES2015"
     ],
     "baseUrl": ".",

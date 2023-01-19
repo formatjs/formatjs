@@ -1,4 +1,5 @@
 """Rust setup utilities"""
+
 load("@rules_rust//rust:defs.bzl", "rust_binary")
 
 def _rust_wasm_transition_impl(_settings, _attr):
@@ -57,7 +58,7 @@ _rust_wasi_library_rule = rule(
 
 def rust_wasm_library(name, tags = [], wasi = False, **kwargs):
     """Cross compile Rust library to WASM.
-    
+
     Based on https://github.com/envoyproxy/envoy/blob/main/bazel/wasm/wasm.bzl
 
     Args:
@@ -85,5 +86,5 @@ def rust_wasm_library(name, tags = [], wasi = False, **kwargs):
         name = name,
         library = ":" + wasm_name,
         tags = tags,
-        visibility = kwargs.get("visibility")
+        visibility = kwargs.get("visibility"),
     )

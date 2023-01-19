@@ -19,9 +19,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file"
 # rules_js
 http_archive(
     name = "aspect_rules_js",
-    sha256 = "519c92af31ff856659dc48711110f69139b9c3a74511f5b0118c887dcf06e360",
-    strip_prefix = "rules_js-1.12.0",
-    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.12.0.tar.gz",
+    sha256 = "c4a5766a45dff25b2eb1789d7a2decfda81b281fc88350d24687620c37fefb25",
+    strip_prefix = "rules_js-1.14.0",
+    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.14.0.tar.gz",
 )
 
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
@@ -268,9 +268,9 @@ container_pull(
 
 http_archive(
     name = "io_buildbuddy_buildbuddy_toolchain",
-    sha256 = "603fb15023d57353f5975aa42084630895916a46060f86edabd58623b1693e27",
-    strip_prefix = "buildbuddy-toolchain-9d7a9b7f893b3cb396ea262c64a148b1e46769a7",
-    urls = ["https://github.com/buildbuddy-io/buildbuddy-toolchain/archive/9d7a9b7f893b3cb396ea262c64a148b1e46769a7.tar.gz"],
+    sha256 = "e899f235b36cb901b678bd6f55c1229df23fcbc7921ac7a3585d29bff2bf9cfd",
+    strip_prefix = "buildbuddy-toolchain-fd351ca8f152d66fc97f9d98009e0ae000854e8f",
+    urls = ["https://github.com/buildbuddy-io/buildbuddy-toolchain/archive/fd351ca8f152d66fc97f9d98009e0ae000854e8f.tar.gz"],
 )
 
 load("@io_buildbuddy_buildbuddy_toolchain//:deps.bzl", "buildbuddy_deps")
@@ -288,19 +288,19 @@ buildbuddy(name = "buildbuddy_toolchain")
 # https://github.com/bazelbuild/rules_rust/releases
 http_archive(
     name = "rules_rust",
-    sha256 = "324c2a86a8708d30475f324846b35965c432b63a35567ed2b5051b86791ce345",
-    urls = ["https://github.com/bazelbuild/rules_rust/releases/download/0.13.0/rules_rust-v0.13.0.tar.gz"],
     # Workaround for https://github.com/bazelbuild/rules_rust/issues/1330
     patches = ["//tools:rules_rust.patch"],
+    sha256 = "324c2a86a8708d30475f324846b35965c432b63a35567ed2b5051b86791ce345",
+    urls = ["https://github.com/bazelbuild/rules_rust/releases/download/0.13.0/rules_rust-v0.13.0.tar.gz"],
 )
 
-load("@rules_rust//rust:repositories.bzl", "rules_rust_dependencies", "rust_register_toolchains")
 load("@rules_rust//crate_universe:defs.bzl", "crates_repository")
+load("@rules_rust//rust:repositories.bzl", "rules_rust_dependencies", "rust_register_toolchains")
 
 rules_rust_dependencies()
 
 rust_register_toolchains(
-    edition="2021",
+    edition = "2021",
     extra_target_triples = [
         "wasm32-unknown-unknown",
         "wasm32-wasi",

@@ -5,17 +5,17 @@ package(default_visibility = ["//rust:__subpackages__"])
 
 # TODO: support `custom_transform` feature.
 rust_library(
-        name = "swc-formatjs-visitor",
-        srcs = glob(["src/**/*.rs"]),
-        aliases = aliases(),
-        proc_macro_deps = all_crate_deps(
-            proc_macro = True,
-        ),
-        deps = ["//rust/icu-messageformat-parser"] + all_crate_deps(
-            normal = True,
-        ),
-        crate_features = ["plugin"],
-    )
+    name = "swc-formatjs-visitor",
+    srcs = glob(["src/**/*.rs"]),
+    aliases = aliases(),
+    crate_features = ["plugin"],
+    proc_macro_deps = all_crate_deps(
+        proc_macro = True,
+    ),
+    deps = ["//rust/icu-messageformat-parser"] + all_crate_deps(
+        normal = True,
+    ),
+)
 
 rust_test(
     name = "unit_test",

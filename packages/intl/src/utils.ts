@@ -77,7 +77,9 @@ export function createIntlCache(): IntlCache {
   }
 }
 
-function createFastMemoizeCache<V>(store: Record<string, V>): Cache<string, V> {
+function createFastMemoizeCache<V>(
+  store: Record<string, V | undefined>
+): Cache<string, V> {
   return {
     create() {
       return {
