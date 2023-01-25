@@ -473,15 +473,17 @@ describe('IntlMessageFormat', function () {
     const msg = '{variable, select, a {A} b {B} c {C}}'
 
     it('should throw by default', function () {
-      expect(() => IntlMessageFormat.__parse!(msg)).toThrow(
-        /MISSING_OTHER_CLAUSE/
-      )
+      expect(() => {
+        new IntlMessageFormat(msg, 'en')
+      }).toThrow(/MISSING_OTHER_CLAUSE/)
     })
 
     it('should not throw when requiresOtherClause is false', function () {
-      expect(() =>
-        IntlMessageFormat.__parse!(msg, {requiresOtherClause: false})
-      ).not.toThrow()
+      expect(() => {
+        new IntlMessageFormat(msg, 'en', undefined, {
+          requiresOtherClause: false,
+        })
+      }).not.toThrow()
     })
   })
 
