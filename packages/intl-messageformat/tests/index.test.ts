@@ -469,6 +469,24 @@ describe('IntlMessageFormat', function () {
     })
   })
 
+  describe('select message without other clause', function () {
+    const msg = '{variable, select, a {A} b {B} c {C}}'
+
+    it('should throw by default', function () {
+      expect(() => {
+        new IntlMessageFormat(msg, 'en')
+      }).toThrow(/MISSING_OTHER_CLAUSE/)
+    })
+
+    it('should not throw when requiresOtherClause is false', function () {
+      expect(() => {
+        new IntlMessageFormat(msg, 'en', undefined, {
+          requiresOtherClause: false,
+        })
+      }).not.toThrow()
+    })
+  })
+
   describe('selectordinal arguments', function () {
     const msg =
       'This is my {year, selectordinal, one{#st} two{#nd} few{#rd} other{#th}} birthday.'
