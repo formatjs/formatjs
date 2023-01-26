@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.9...eslint-plugin-formatjs@4.4.0) (2023-01-26)
+
+### Features
+
+* **eslint-plugin-formatjs:** capture literals in the conditional expression ([#3974](https://github.com/formatjs/formatjs/issues/3974)) ([1deed4d](https://github.com/formatjs/formatjs/commit/1deed4d6978d1a48f4cf789920e8af8db29e7758))
+* **eslint-plugin-formatjs:** introduce no-useless-message linter rule ([#3973](https://github.com/formatjs/formatjs/issues/3973)) ([9ec4491](https://github.com/formatjs/formatjs/commit/9ec44911bc4b71616f4d5db3a7d7dbf4144a5a6a))
+
 ## [4.3.9](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.8...eslint-plugin-formatjs@4.3.9) (2022-12-27)
 
 ### Bug Fixes
