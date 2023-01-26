@@ -654,3 +654,11 @@ This validates the ICU syntax.
 #### Why
 
 This will make sure that the ICU message are valid and ready for translation.
+
+### `no-useless-message`
+
+This bans messages that do not require translation.
+
+#### Why
+
+Messages like `{test}` is not actionable by translators. The code should just directly reference `test`.

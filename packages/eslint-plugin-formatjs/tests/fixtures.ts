@@ -13,3 +13,10 @@ function foo (props) {
 export const dynamicMessage = `
 import {defineMessage} from 'react-intl'
 defineMessage({id, defaultMessage, description})`
+
+export const defineMessage = `\
+import {defineMessage} from 'react-intl'
+defineMessage({
+    defaultMessage: 'a {placeholder}',
+    description: 'asd'
+})`
