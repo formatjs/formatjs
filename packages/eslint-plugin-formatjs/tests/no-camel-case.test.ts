@@ -1,19 +1,15 @@
 import {ruleTester} from './util'
 import noCamelCase from '../rules/no-camel-case'
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
+import {
+  dynamicMessage,
+  noMatch,
+  spreadJsx,
+  emptyFnCall,
+  defineMessage,
+} from './fixtures'
 
 ruleTester.run('no-camel-case', noCamelCase, {
-  valid: [
-    `import {defineMessage} from 'react-intl'
-  defineMessage({
-      defaultMessage: 'a {placeholder}',
-      description: 'asd'
-  })`,
-    dynamicMessage,
-    noMatch,
-    spreadJsx,
-    emptyFnCall,
-  ],
+  valid: [defineMessage, dynamicMessage, noMatch, spreadJsx, emptyFnCall],
   invalid: [
     {
       code: `
