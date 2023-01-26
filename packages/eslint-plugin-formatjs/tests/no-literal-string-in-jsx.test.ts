@@ -15,6 +15,16 @@ ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
     {
       code: '<div>{f("message")}</div>',
     },
+    // Conditional expression
+    {
+      code: '<div>{a ? b : c}</div>',
+    },
+    {
+      code: '<div>{"a" ? b : c}</div>',
+    },
+    {
+      code: '<div aria-label={a ? b : c} />',
+    },
     // Excluded built-in img alt attribute check
     {
       code: '<img alt="alt" />',
@@ -220,6 +230,25 @@ ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
         {message: 'Cannot have untranslated text in JSX'},
         {message: 'Cannot have untranslated text in JSX'},
       ],
+    },
+    // Conditional expression
+    {
+      code: '<div>{a ? "b" : "c"}</div>',
+      errors: [
+        {message: 'Cannot have untranslated text in JSX'},
+        {message: 'Cannot have untranslated text in JSX'},
+      ],
+    },
+    {
+      code: '<div aria-label={a ? "b" : "c"} />',
+      errors: [
+        {message: 'Cannot have untranslated text in JSX'},
+        {message: 'Cannot have untranslated text in JSX'},
+      ],
+    },
+    {
+      code: '<div aria-label={a ? b ? "c" : d : e} />',
+      errors: [{message: 'Cannot have untranslated text in JSX'}],
     },
   ],
 })
