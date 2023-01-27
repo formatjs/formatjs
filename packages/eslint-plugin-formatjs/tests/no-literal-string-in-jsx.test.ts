@@ -25,6 +25,16 @@ ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
     {
       code: '<div aria-label={a ? b : c} />',
     },
+    // Logical expression
+    {
+      code: '<div>{a && b}</div>',
+    },
+    {
+      code: '<div>{a || b}</div>',
+    },
+    {
+      code: '<div>{a ?? b}</div>',
+    },
     // Excluded built-in img alt attribute check
     {
       code: '<img alt="alt" />',
@@ -249,6 +259,30 @@ ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
     {
       code: '<div aria-label={a ? b ? "c" : d : e} />',
       errors: [{message: 'Cannot have untranslated text in JSX'}],
+    },
+    // Logical expression
+    {
+      code: '<div>{a && "a"}</div>',
+      errors: [{message: 'Cannot have untranslated text in JSX'}],
+    },
+    {
+      code: '<div>{"a" && a}</div>',
+      errors: [{message: 'Cannot have untranslated text in JSX'}],
+    },
+    {
+      code: '<div>{a || "a"}</div>',
+      errors: [{message: 'Cannot have untranslated text in JSX'}],
+    },
+    {
+      code: '<div>{a ?? "a"}</div>',
+      errors: [{message: 'Cannot have untranslated text in JSX'}],
+    },
+    {
+      code: '<div>{a && "b" ?? "c"}</div>',
+      errors: [
+        {message: 'Cannot have untranslated text in JSX'},
+        {message: 'Cannot have untranslated text in JSX'},
+      ],
     },
   ],
 })
