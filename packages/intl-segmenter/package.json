@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-segmenter",
-  "version": "11.1.4",
+  "version": "11.2.0",
   "description": "Polyfill for Intl.Segmenter",
   "keywords": [
     "intl",
@@ -23,7 +23,6 @@
     "@formatjs/intl-localematcher": "workspace:*",
     "tslib": "^2.4.0"
   },
-  "devDependencies": {},
   "main": "index.js",
   "types": "index.d.ts",
   "homepage": "https://github.com/formatjs/formatjs",

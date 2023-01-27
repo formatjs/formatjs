@@ -1,13 +1,16 @@
 import noMultipleWhitespaces from '../rules/no-multiple-whitespaces'
 import {ruleTester} from './util'
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
+import {
+  dynamicMessage,
+  noMatch,
+  spreadJsx,
+  emptyFnCall,
+  defineMessage,
+} from './fixtures'
+
 ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
   valid: [
-    `import {defineMessage} from 'react-intl'
-    defineMessage({
-        defaultMessage: 'a {placeholder}',
-        description: 'asd'
-    })`,
+    defineMessage,
     dynamicMessage,
     noMatch,
     spreadJsx,

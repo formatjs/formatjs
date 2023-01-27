@@ -150,6 +150,12 @@ const rule: Rule.RuleModule = {
       } else if (node.type === 'BinaryExpression' && node.operator === '+') {
         checkJSXExpression(node.left)
         checkJSXExpression(node.right)
+      } else if (node.type === 'ConditionalExpression') {
+        checkJSXExpression(node.consequent)
+        checkJSXExpression(node.alternate)
+      } else if (node.type === 'LogicalExpression') {
+        checkJSXExpression(node.left)
+        checkJSXExpression(node.right)
       }
     }
 
