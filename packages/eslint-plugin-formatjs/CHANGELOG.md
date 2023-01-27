@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.4.0...eslint-plugin-formatjs@4.5.0) (2023-01-27)
+
+### Features
+
+* **eslint-plugin-formatjs:** capture literals in the logical expression ([#3975](https://github.com/formatjs/formatjs/issues/3975)) ([1cc638c](https://github.com/formatjs/formatjs/commit/1cc638c0a56cc19949327e55580e3a3e82a4116a))
+
 # [4.4.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.9...eslint-plugin-formatjs@4.4.0) (2023-01-26)
 
 ### Features
