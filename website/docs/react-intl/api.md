@@ -265,7 +265,7 @@ intl.formatTime(Date.now()) /* "4:03 PM" */
 ## formatDateTimeRange
 
 :::caution browser support
-This requires stage-3 API [Intl.RelativeTimeFormat.prototype.formatRange](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange) which has limited browser support. Please use our [polyfill](../polyfills/intl-datetimeformat.md) if you plan to support them.
+This requires [Intl.DateTimeFormat.prototype.formatRange](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatRange) which has limited browser support. Please use our [polyfill](../polyfills/intl-datetimeformat.md) if you plan to support them.
 :::
 
 ```tsx
