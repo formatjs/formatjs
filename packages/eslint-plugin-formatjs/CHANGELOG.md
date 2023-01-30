@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.5.0...eslint-plugin-formatjs@4.6.0) (2023-01-30)
+
+### Features
+
+* **eslint-plugin-formatjs:** emoji version above config ([fd7776a](https://github.com/formatjs/formatjs/commit/fd7776a0f8c5e07da019a4c6e3158b734ed40169))
+
 # [4.5.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.4.0...eslint-plugin-formatjs@4.5.0) (2023-01-27)
 
 ### Features

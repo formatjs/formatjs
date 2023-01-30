@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.14...@formatjs/icu-messageformat-parser@2.2.0) (2023-01-30)
+
+### Features
+
+* **intl-messageformat:** support more parse options in constructor ([e6b43dc](https://github.com/formatjs/formatjs/commit/e6b43dcc244c53dbfae2a877e1e07546678741db))
+
 ## [2.1.14](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.13...@formatjs/icu-messageformat-parser@2.1.14) (2022-12-02)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser
