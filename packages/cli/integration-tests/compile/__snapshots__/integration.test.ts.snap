@@ -1,135 +1,135 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AST 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": [
+  "a1d12": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"I have \\"
+      "type": 0,
+      "value": "I have "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"a dog\\"
+              "type": 0,
+              "value": "a dog"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"many dogs\\"
+              "type": 0,
+              "value": "many dogs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
-  \\"a1d13\\": [
+  "a1d13": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"I have \\"
+      "type": 0,
+      "value": "I have "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"a dog\\"
+                  "type": 0,
+                  "value": "a dog"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"many dogs\\"
+              "type": 0,
+              "value": "many dogs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
-  \\"a1d14\\": [
+  "a1d14": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"I have \\"
+      "type": 0,
+      "value": "I have "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"a \\"
+                  "type": 0,
+                  "value": "a "
                 },
                 {
-                  \\"children\\": [
+                  "children": [
                     {
-                      \\"type\\": 0,
-                      \\"value\\": \\"dog\\"
+                      "type": 0,
+                      "value": "dog"
                     }
                   ],
-                  \\"type\\": 8,
-                  \\"value\\": \\"i\\"
+                  "type": 8,
+                  "value": "i"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"many dogs\\"
+              "type": 0,
+              "value": "many dogs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
-  \\"a1dd2\\": [
+  "a1dd2": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"my name is \\"
+      "type": 0,
+      "value": "my name is "
     },
     {
-      \\"type\\": 1,
-      \\"value\\": \\"name\\"
+      "type": 1,
+      "value": "name"
     }
   ],
-  \\"ashd2\\": [
+  "ashd2": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"a message\\"
+      "type": 0,
+      "value": "a message"
     }
   ]
 }
@@ -138,7 +138,7 @@ Object {
 `;
 
 exports[`basic case: empty json 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
 }
@@ -147,13 +147,13 @@ Object {
 `;
 
 exports[`basic case: help 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "Usage: formatjs compile [options] [translation_files...]
 
 Compile extracted translation file into react-intl consumable JSON
 We also verify that the messages are valid ICU and not malformed. 
-<translation_files> can be a glob like \\"foo/**/en.json\\"
+<translation_files> can be a glob like "foo/**/en.json"
 
 Options:
   --format <path>                 Path to a formatter file that converts \`<translation_file>\` to \`Record<string, string>\`
@@ -177,157 +177,197 @@ Options:
   --pseudo-locale <pseudoLocale>  Whether to generate pseudo-locale files. See
                                   https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale
                                   for possible values.
-                                  \\"--ast\\" is required for this to work.
+                                  "--ast" is required for this to work.
   -h, --help                      display help for command
 ",
 }
 `;
 
 exports[`compile glob 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"1\\": \\"a message\\",
-  \\"2\\": \\"my name is {name}\\",
-  \\"3\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
-  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
-  \\"a1dd2\\": \\"my name is {name}\\",
-  \\"ashd2\\": \\"a message\\"
+  "1": "a message",
+  "2": "my name is {name}",
+  "3": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
 }
 ",
 }
 `;
 
 exports[`en-XA json 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": [
+  "a1d12": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"Ḭ ḫâṿè \\"
+      "type": 0,
+      "value": "["
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"â ḋŏĝ\\"
+              "type": 0,
+              "value": "ȧȧ ḓǿǿɠ"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"ṁâńẏ ḋŏĝś\\"
+              "type": 0,
+              "value": "ḿȧȧƞẏ ḓǿǿɠş"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
-    }
-  ],
-  \\"a1d13\\": [
-    {
-      \\"type\\": 0,
-      \\"value\\": \\"Ḭ ḫâṿè \\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "a1d13": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"â ḋŏĝ\\"
+                  "type": 0,
+                  "value": "ȧȧ ḓǿǿɠ"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"ṁâńẏ ḋŏĝś\\"
+              "type": 0,
+              "value": "ḿȧȧƞẏ ḓǿǿɠş"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
-    }
-  ],
-  \\"a1d14\\": [
-    {
-      \\"type\\": 0,
-      \\"value\\": \\"Ḭ ḫâṿè \\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "a1d14": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"â \\"
+                  "type": 0,
+                  "value": "ȧȧ "
                 },
                 {
-                  \\"children\\": [
+                  "children": [
                     {
-                      \\"type\\": 0,
-                      \\"value\\": \\"ḋŏĝ\\"
+                      "type": 0,
+                      "value": "ḓǿǿɠ"
                     }
                   ],
-                  \\"type\\": 8,
-                  \\"value\\": \\"i\\"
+                  "type": 8,
+                  "value": "i"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"ṁâńẏ ḋŏĝś\\"
+              "type": 0,
+              "value": "ḿȧȧƞẏ ḓǿǿɠş"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
-    }
-  ],
-  \\"a1dd2\\": [
-    {
-      \\"type\\": 0,
-      \\"value\\": \\"ṁẏ ńâṁè íś \\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     },
     {
-      \\"type\\": 1,
-      \\"value\\": \\"name\\"
+      "type": 0,
+      "value": "]"
     }
   ],
-  \\"ashd2\\": [
+  "a1dd2": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"â ṁèśśâĝè\\"
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ḿẏ ƞȧȧḿḗḗ īş "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "ashd2": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ȧȧ ḿḗḗşşȧȧɠḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ]
 }
@@ -336,135 +376,175 @@ Object {
 `;
 
 exports[`en-XB json 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": [
+  "a1d12": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"[!! Ḭ ḫḫḫâṿèèè  !!]\\"
+      "type": 0,
+      "value": "‮"
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "type": 0,
+      "value": "I ɥɐʌǝ "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"[!! â ḋḋḋŏĝ !!]\\"
+              "type": 0,
+              "value": "ɐ poƃ"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"[!! ṁâńńńẏ ḋḋḋŏĝśśś !!]\\"
+              "type": 0,
+              "value": "ɯɐuʎ poƃs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
-    }
-  ],
-  \\"a1d13\\": [
-    {
-      \\"type\\": 0,
-      \\"value\\": \\"[!! Ḭ ḫḫḫâṿèèè  !!]\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "a1d13": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "I ɥɐʌǝ "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"[!! â ḋḋḋŏĝ !!]\\"
+                  "type": 0,
+                  "value": "ɐ poƃ"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"[!! ṁâńńńẏ ḋḋḋŏĝśśś !!]\\"
+              "type": 0,
+              "value": "ɯɐuʎ poƃs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
-    }
-  ],
-  \\"a1d14\\": [
-    {
-      \\"type\\": 0,
-      \\"value\\": \\"[!! Ḭ ḫḫḫâṿèèè  !!]\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "a1d14": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "I ɥɐʌǝ "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"[!! â  !!]\\"
+                  "type": 0,
+                  "value": "ɐ "
                 },
                 {
-                  \\"children\\": [
+                  "children": [
                     {
-                      \\"type\\": 0,
-                      \\"value\\": \\"[!! ḋŏĝĝĝ !!]\\"
+                      "type": 0,
+                      "value": "poƃ"
                     }
                   ],
-                  \\"type\\": 8,
-                  \\"value\\": \\"i\\"
+                  "type": 8,
+                  "value": "i"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"[!! ṁâńńńẏ ḋḋḋŏĝśśś !!]\\"
+              "type": 0,
+              "value": "ɯɐuʎ poƃs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
-    }
-  ],
-  \\"a1dd2\\": [
-    {
-      \\"type\\": 0,
-      \\"value\\": \\"[!! ṁẏ ńâṁṁṁè íííś  !!]\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     },
     {
-      \\"type\\": 1,
-      \\"value\\": \\"name\\"
+      "type": 0,
+      "value": "‬"
     }
   ],
-  \\"ashd2\\": [
+  "a1dd2": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"[!! â ṁṁṁèśśśśâĝèèè !!]\\"
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɯʎ uɐɯǝ ıs "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "ashd2": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɐ ɯǝssɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ]
 }
@@ -473,119 +553,119 @@ Object {
 `;
 
 exports[`normal json 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
-  \\"a1d13\\": \\"I have {count, plural, one{<b>a dog</b>} other{many dogs}}\\",
-  \\"a1d14\\": \\"I have {count, plural, one{<b>a <i>dog</i></b>} other{many dogs}}\\",
-  \\"a1dd2\\": \\"my name is {name}\\",
-  \\"ashd2\\": \\"a message\\"
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1d13": "I have {count, plural, one{<b>a dog</b>} other{many dogs}}",
+  "a1d14": "I have {count, plural, one{<b>a <i>dog</i></b>} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
 }
 ",
 }
 `;
 
 exports[`normal json with crowdin 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
-  \\"a1dd2\\": \\"my name is {name}\\",
-  \\"ashd2\\": \\"a message\\"
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
 }
 ",
 }
 `;
 
 exports[`normal json with formatter 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
-  \\"a1dd2\\": \\"my name is {name}\\",
-  \\"ashd2\\": \\"a message\\"
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
 }
 ",
 }
 `;
 
 exports[`normal json with lokalise 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
-  \\"a1dd2\\": \\"my name is {name}\\",
-  \\"ashd2\\": \\"a message\\"
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
 }
 ",
 }
 `;
 
 exports[`normal json with simple 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
-  \\"a1dd2\\": \\"my name is {name}\\",
-  \\"ashd2\\": \\"a message\\"
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
 }
 ",
 }
 `;
 
 exports[`normal json with smartling 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
-  \\"a1dd2\\": \\"my name is {name}\\",
-  \\"ashd2\\": \\"a message\\"
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
 }
 ",
 }
 `;
 
 exports[`normal json with transifex 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
-  \\"a1dd2\\": \\"my name is {name}\\",
-  \\"ashd2\\": \\"a message\\"
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
 }
 ",
 }
 `;
 
 exports[`out-file --ast 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "",
 }
 `;
 
 exports[`out-file --ast 2`] = `
-Object {
-  "a1d12": Array [
-    Object {
+{
+  "a1d12": [
+    {
       "type": 0,
       "value": "I have ",
     },
-    Object {
+    {
       "offset": 0,
-      "options": Object {
-        "one": Object {
-          "value": Array [
-            Object {
+      "options": {
+        "one": {
+          "value": [
+            {
               "type": 0,
               "value": "a dog",
             },
           ],
         },
-        "other": Object {
-          "value": Array [
-            Object {
+        "other": {
+          "value": [
+            {
               "type": 0,
               "value": "many dogs",
             },
@@ -597,19 +677,19 @@ Object {
       "value": "count",
     },
   ],
-  "a1d13": Array [
-    Object {
+  "a1d13": [
+    {
       "type": 0,
       "value": "I have ",
     },
-    Object {
+    {
       "offset": 0,
-      "options": Object {
-        "one": Object {
-          "value": Array [
-            Object {
-              "children": Array [
-                Object {
+      "options": {
+        "one": {
+          "value": [
+            {
+              "children": [
+                {
                   "type": 0,
                   "value": "a dog",
                 },
@@ -619,9 +699,9 @@ Object {
             },
           ],
         },
-        "other": Object {
-          "value": Array [
-            Object {
+        "other": {
+          "value": [
+            {
               "type": 0,
               "value": "many dogs",
             },
@@ -633,25 +713,25 @@ Object {
       "value": "count",
     },
   ],
-  "a1d14": Array [
-    Object {
+  "a1d14": [
+    {
       "type": 0,
       "value": "I have ",
     },
-    Object {
+    {
       "offset": 0,
-      "options": Object {
-        "one": Object {
-          "value": Array [
-            Object {
-              "children": Array [
-                Object {
+      "options": {
+        "one": {
+          "value": [
+            {
+              "children": [
+                {
                   "type": 0,
                   "value": "a ",
                 },
-                Object {
-                  "children": Array [
-                    Object {
+                {
+                  "children": [
+                    {
                       "type": 0,
                       "value": "dog",
                     },
@@ -665,9 +745,9 @@ Object {
             },
           ],
         },
-        "other": Object {
-          "value": Array [
-            Object {
+        "other": {
+          "value": [
+            {
               "type": 0,
               "value": "many dogs",
             },
@@ -679,18 +759,18 @@ Object {
       "value": "count",
     },
   ],
-  "a1dd2": Array [
-    Object {
+  "a1dd2": [
+    {
       "type": 0,
       "value": "my name is ",
     },
-    Object {
+    {
       "type": 1,
       "value": "name",
     },
   ],
-  "ashd2": Array [
-    Object {
+  "ashd2": [
+    {
       "type": 0,
       "value": "a message",
     },
@@ -699,14 +779,14 @@ Object {
 `;
 
 exports[`out-file 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "",
 }
 `;
 
 exports[`out-file 2`] = `
-Object {
+{
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
   "a1d13": "I have {count, plural, one{<b>a dog</b>} other{many dogs}}",
   "a1d14": "I have {count, plural, one{<b>a <i>dog</i></b>} other{many dogs}}",
@@ -716,146 +796,146 @@ Object {
 `;
 
 exports[`skipped malformed ICU message json 1`] = `
-Object {
+{
   "stderr": StringMatching /\\^\\\\\\[@formatjs\\\\/cli\\\\\\] \\\\\\[WARN\\\\\\] Error validating message "my name is \\{name" with ID "a1dd2" in file \\.\\*\\\\/packages\\\\/cli\\\\/integration-tests\\\\/compile\\\\/lang\\\\/malformed-messages\\.json/,
   "stdout": "{
-  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
-  \\"ashd2\\": \\"a message\\"
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "ashd2": "a message"
 }
 ",
 }
 `;
 
 exports[`xx-AC json 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": [
+  "a1d12": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"I HAVE \\"
+      "type": 0,
+      "value": "I HAVE "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"A DOG\\"
+              "type": 0,
+              "value": "A DOG"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"MANY DOGS\\"
+              "type": 0,
+              "value": "MANY DOGS"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
-  \\"a1d13\\": [
+  "a1d13": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"I HAVE \\"
+      "type": 0,
+      "value": "I HAVE "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"A DOG\\"
+                  "type": 0,
+                  "value": "A DOG"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"MANY DOGS\\"
+              "type": 0,
+              "value": "MANY DOGS"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
-  \\"a1d14\\": [
+  "a1d14": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"I HAVE \\"
+      "type": 0,
+      "value": "I HAVE "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"A \\"
+                  "type": 0,
+                  "value": "A "
                 },
                 {
-                  \\"children\\": [
+                  "children": [
                     {
-                      \\"type\\": 0,
-                      \\"value\\": \\"DOG\\"
+                      "type": 0,
+                      "value": "DOG"
                     }
                   ],
-                  \\"type\\": 8,
-                  \\"value\\": \\"i\\"
+                  "type": 8,
+                  "value": "i"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"MANY DOGS\\"
+              "type": 0,
+              "value": "MANY DOGS"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
-  \\"a1dd2\\": [
+  "a1dd2": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"MY NAME IS \\"
+      "type": 0,
+      "value": "MY NAME IS "
     },
     {
-      \\"type\\": 1,
-      \\"value\\": \\"name\\"
+      "type": 1,
+      "value": "name"
     }
   ],
-  \\"ashd2\\": [
+  "ashd2": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"A MESSAGE\\"
+      "type": 0,
+      "value": "A MESSAGE"
     }
   ]
 }
@@ -864,135 +944,135 @@ Object {
 `;
 
 exports[`xx-HA json 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": [
+  "a1d12": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"[javascript]I have \\"
+      "type": 0,
+      "value": "[javascript]I have "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"a dog\\"
+              "type": 0,
+              "value": "a dog"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"many dogs\\"
+              "type": 0,
+              "value": "many dogs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
-  \\"a1d13\\": [
+  "a1d13": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"[javascript]I have \\"
+      "type": 0,
+      "value": "[javascript]I have "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"a dog\\"
+                  "type": 0,
+                  "value": "a dog"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"many dogs\\"
+              "type": 0,
+              "value": "many dogs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
-  \\"a1d14\\": [
+  "a1d14": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"[javascript]I have \\"
+      "type": 0,
+      "value": "[javascript]I have "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"a \\"
+                  "type": 0,
+                  "value": "a "
                 },
                 {
-                  \\"children\\": [
+                  "children": [
                     {
-                      \\"type\\": 0,
-                      \\"value\\": \\"dog\\"
+                      "type": 0,
+                      "value": "dog"
                     }
                   ],
-                  \\"type\\": 8,
-                  \\"value\\": \\"i\\"
+                  "type": 8,
+                  "value": "i"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"many dogs\\"
+              "type": 0,
+              "value": "many dogs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
-  \\"a1dd2\\": [
+  "a1dd2": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"[javascript]my name is \\"
+      "type": 0,
+      "value": "[javascript]my name is "
     },
     {
-      \\"type\\": 1,
-      \\"value\\": \\"name\\"
+      "type": 1,
+      "value": "name"
     }
   ],
-  \\"ashd2\\": [
+  "ashd2": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"[javascript]a message\\"
+      "type": 0,
+      "value": "[javascript]a message"
     }
   ]
 }
@@ -1001,151 +1081,151 @@ Object {
 `;
 
 exports[`xx-LS json 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"a1d12\\": [
+  "a1d12": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"I have \\"
+      "type": 0,
+      "value": "I have "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"a dog\\"
+              "type": 0,
+              "value": "a dog"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"many dogs\\"
+              "type": 0,
+              "value": "many dogs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     },
     {
-      \\"type\\": 0,
-      \\"value\\": \\"SSSSSSSSSSSSSSSSSSSSSSSSS\\"
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  \\"a1d13\\": [
+  "a1d13": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"I have \\"
+      "type": 0,
+      "value": "I have "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"a dog\\"
+                  "type": 0,
+                  "value": "a dog"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"many dogs\\"
+              "type": 0,
+              "value": "many dogs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     },
     {
-      \\"type\\": 0,
-      \\"value\\": \\"SSSSSSSSSSSSSSSSSSSSSSSSS\\"
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  \\"a1d14\\": [
+  "a1d14": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"I have \\"
+      "type": 0,
+      "value": "I have "
     },
     {
-      \\"offset\\": 0,
-      \\"options\\": {
-        \\"one\\": {
-          \\"value\\": [
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
             {
-              \\"children\\": [
+              "children": [
                 {
-                  \\"type\\": 0,
-                  \\"value\\": \\"a \\"
+                  "type": 0,
+                  "value": "a "
                 },
                 {
-                  \\"children\\": [
+                  "children": [
                     {
-                      \\"type\\": 0,
-                      \\"value\\": \\"dog\\"
+                      "type": 0,
+                      "value": "dog"
                     }
                   ],
-                  \\"type\\": 8,
-                  \\"value\\": \\"i\\"
+                  "type": 8,
+                  "value": "i"
                 }
               ],
-              \\"type\\": 8,
-              \\"value\\": \\"b\\"
+              "type": 8,
+              "value": "b"
             }
           ]
         },
-        \\"other\\": {
-          \\"value\\": [
+        "other": {
+          "value": [
             {
-              \\"type\\": 0,
-              \\"value\\": \\"many dogs\\"
+              "type": 0,
+              "value": "many dogs"
             }
           ]
         }
       },
-      \\"pluralType\\": \\"cardinal\\",
-      \\"type\\": 6,
-      \\"value\\": \\"count\\"
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     },
     {
-      \\"type\\": 0,
-      \\"value\\": \\"SSSSSSSSSSSSSSSSSSSSSSSSS\\"
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  \\"a1dd2\\": [
+  "a1dd2": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"my name is \\"
+      "type": 0,
+      "value": "my name is "
     },
     {
-      \\"type\\": 1,
-      \\"value\\": \\"name\\"
+      "type": 1,
+      "value": "name"
     },
     {
-      \\"type\\": 0,
-      \\"value\\": \\"SSSSSSSSSSSSSSSSSSSSSSSSS\\"
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  \\"ashd2\\": [
+  "ashd2": [
     {
-      \\"type\\": 0,
-      \\"value\\": \\"a messageSSSSSSSSSSSSSSSSSSSSSSSSS\\"
+      "type": 0,
+      "value": "a messageSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ]
 }

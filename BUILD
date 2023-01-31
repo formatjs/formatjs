@@ -231,6 +231,7 @@ buildifier(
 CONFIG_FILES = [
     ".prettierrc.json",
     "jest.config.js",
+    "jest-aspect.config.js",
     "package.json",
     "tsconfig.json",
     ".taplo.toml",

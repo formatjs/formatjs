@@ -117,9 +117,9 @@ rules_ts_dependencies(
 # Jest
 http_archive(
     name = "aspect_rules_jest",
-    sha256 = "f2be891d9b38473f08a336e5f6ca327bfdc90411b1798a1c476c6f6ceae54520",
-    strip_prefix = "rules_jest-0.13.1",
-    url = "https://github.com/aspect-build/rules_jest/archive/refs/tags/v0.13.1.tar.gz",
+    sha256 = "0ea90fc5ed2b657f22c447494b2bfc563008b47900974b1e092e092cb1999a01",
+    strip_prefix = "rules_jest-0.14.4",
+    url = "https://github.com/aspect-build/rules_jest/archive/refs/tags/v0.14.4.tar.gz",
 )
 
 ####################
