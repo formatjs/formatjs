@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.13...@formatjs/cli-lib@6.0.0) (2023-01-31)
+
+* feat!(@formatjs/cli-lib): repurpose en-XB for bidi pseudo locale (#3978) ([32628df](https://github.com/formatjs/formatjs/commit/32628df8bdadc65c0417880fa923c2c0e9efe39e)), closes [#3978](https://github.com/formatjs/formatjs/issues/3978)
+
+### BREAKING CHANGES
+
+* `en-XA` is a pseudo locale for accented and lengthned English with markers, and `en-XB` is now a bidi pseudo locale.
+
 ## [5.1.13](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.12...@formatjs/cli-lib@5.1.13) (2023-01-30)
 
 **Note:** Version bump only for package @formatjs/cli-lib
