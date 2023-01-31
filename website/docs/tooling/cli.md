@@ -265,7 +265,8 @@ Given the English message `my name is {name}`
 | `xx-LS` | `my name is {name}SSSSSSSSSSSSSSSSSSSSSSSSS` |
 | `xx-AC` | `MY NAME IS {name}`                          |
 | `xx-HA` | `[javascript]my name is {name}`              |
-| `en-XA` | `ṁẏ ńâṁè íś {name}`                          |
+| `en-XA` | `[ḿẏ ƞȧȧḿḗḗ īş {name}]`                      |
+| `en-XB` | `‮ɯʎ uɐɯǝ ıs {name}‬`                        |
 
 ## Extraction and compilation with a single script
 

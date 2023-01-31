@@ -1,6 +1,141 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pseudo-locale: en-HA works with a message that starts with a literal element 1`] = `
+exports[`pseudo-locale en-AC works with a message that has a plural element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "FOO ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=1": Object {
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "1 BAR",
+          },
+        ],
+      },
+      "other": Object {
+        "value": Array [
+          Object {
+            "type": 7,
+          },
+          Object {
+            "type": 0,
+            "value": " BARS",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "bar",
+  },
+]
+`;
+
+exports[`pseudo-locale en-AC works with a message that starts with a literal element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "FOO ",
+  },
+  Object {
+    "type": 1,
+    "value": "bar",
+  },
+]
+`;
+
+exports[`pseudo-locale en-AC works with a string literal 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "FIND HELP ONLINE",
+  },
+]
+`;
+
+exports[`pseudo-locale en-AC works with message that does not contain a literal element 1`] = `
+Array [
+  Object {
+    "type": 1,
+    "value": "foo",
+  },
+]
+`;
+
+exports[`pseudo-locale en-AC works with message that does not start with a literal element 1`] = `
+Array [
+  Object {
+    "type": 1,
+    "value": "foo",
+  },
+  Object {
+    "type": 0,
+    "value": " BAR",
+  },
+]
+`;
+
+exports[`pseudo-locale en-AC works with messages that ends with a tag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "FOO ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "type": 0,
+        "value": "BAR",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+]
+`;
+
+exports[`pseudo-locale en-HA works with a message that has a plural element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[javascript]foo ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=1": Object {
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "1 bar",
+          },
+        ],
+      },
+      "other": Object {
+        "value": Array [
+          Object {
+            "type": 7,
+          },
+          Object {
+            "type": 0,
+            "value": " bars",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "bar",
+  },
+]
+`;
+
+exports[`pseudo-locale en-HA works with a message that starts with a literal element 1`] = `
 Array [
   Object {
     "type": 0,
@@ -13,7 +148,29 @@ Array [
 ]
 `;
 
-exports[`pseudo-locale: en-HA works with message that does not start with a literal element 1`] = `
+exports[`pseudo-locale en-HA works with a string literal 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[javascript]Find Help Online",
+  },
+]
+`;
+
+exports[`pseudo-locale en-HA works with message that does not contain a literal element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[javascript]",
+  },
+  Object {
+    "type": 1,
+    "value": "foo",
+  },
+]
+`;
+
+exports[`pseudo-locale en-HA works with message that does not start with a literal element 1`] = `
 Array [
   Object {
     "type": 0,
@@ -30,7 +187,105 @@ Array [
 ]
 `;
 
-exports[`pseudo-locale: xx-LS works with message that does not contain literal element 1`] = `
+exports[`pseudo-locale en-HA works with messages that ends with a tag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[javascript]Foo ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "type": 0,
+        "value": "bar",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with a message that has a plural element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "foo ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=1": Object {
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "1 bar",
+          },
+        ],
+      },
+      "other": Object {
+        "value": Array [
+          Object {
+            "type": 7,
+          },
+          Object {
+            "type": 0,
+            "value": " bars",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "bar",
+  },
+  Object {
+    "type": 0,
+    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with a message that starts with a literal element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "foo ",
+  },
+  Object {
+    "type": 1,
+    "value": "bar",
+  },
+  Object {
+    "type": 0,
+    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with a string literal 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Find Help OnlineSSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with message that does not contain a literal element 1`] = `
+Array [
+  Object {
+    "type": 1,
+    "value": "foo",
+  },
+  Object {
+    "type": 0,
+    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with message that does not start with a literal element 1`] = `
 Array [
   Object {
     "type": 1,
@@ -43,7 +298,7 @@ Array [
 ]
 `;
 
-exports[`pseudo-locale: xx-LS works with messages that ends with a tag 1`] = `
+exports[`pseudo-locale en-LS works with messages that ends with a tag 1`] = `
 Array [
   Object {
     "type": 0,
@@ -62,6 +317,300 @@ Array [
   Object {
     "type": 0,
     "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with a message that has a plural element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[",
+  },
+  Object {
+    "type": 0,
+    "value": "ƒǿǿǿǿ ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=1": Object {
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "1 ƀȧȧř",
+          },
+        ],
+      },
+      "other": Object {
+        "value": Array [
+          Object {
+            "type": 7,
+          },
+          Object {
+            "type": 0,
+            "value": " ƀȧȧřş",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "bar",
+  },
+  Object {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with a message that starts with a literal element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[",
+  },
+  Object {
+    "type": 0,
+    "value": "ƒǿǿǿǿ ",
+  },
+  Object {
+    "type": 1,
+    "value": "bar",
+  },
+  Object {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with a string literal 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[",
+  },
+  Object {
+    "type": 0,
+    "value": "Ƒīƞḓ Ħḗḗŀƥ Ǿƞŀīƞḗḗ",
+  },
+  Object {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with message that does not contain a literal element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[",
+  },
+  Object {
+    "type": 1,
+    "value": "foo",
+  },
+  Object {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with message that does not start with a literal element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[",
+  },
+  Object {
+    "type": 1,
+    "value": "foo",
+  },
+  Object {
+    "type": 0,
+    "value": " ƀȧȧř",
+  },
+  Object {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with messages that ends with a tag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "[",
+  },
+  Object {
+    "type": 0,
+    "value": "Ƒǿǿǿǿ ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "type": 0,
+        "value": "ƀȧȧř",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+  Object {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with a message that has a plural element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "‮",
+  },
+  Object {
+    "type": 0,
+    "value": "ɟoo ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=1": Object {
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "1 qɐɹ",
+          },
+        ],
+      },
+      "other": Object {
+        "value": Array [
+          Object {
+            "type": 7,
+          },
+          Object {
+            "type": 0,
+            "value": " qɐɹs",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "bar",
+  },
+  Object {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with a message that starts with a literal element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "‮",
+  },
+  Object {
+    "type": 0,
+    "value": "ɟoo ",
+  },
+  Object {
+    "type": 1,
+    "value": "bar",
+  },
+  Object {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with a string literal 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "‮",
+  },
+  Object {
+    "type": 0,
+    "value": "Ⅎıup Hǝʅd Ouʅıuǝ",
+  },
+  Object {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with message that does not contain a literal element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "‮",
+  },
+  Object {
+    "type": 1,
+    "value": "foo",
+  },
+  Object {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with message that does not start with a literal element 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "‮",
+  },
+  Object {
+    "type": 1,
+    "value": "foo",
+  },
+  Object {
+    "type": 0,
+    "value": " qɐɹ",
+  },
+  Object {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with messages that ends with a tag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "‮",
+  },
+  Object {
+    "type": 0,
+    "value": "Ⅎoo ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "type": 0,
+        "value": "qɐɹ",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+  Object {
+    "type": 0,
+    "value": "‬",
   },
 ]
 `;
