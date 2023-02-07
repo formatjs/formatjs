@@ -110,5 +110,23 @@ describe('react-intl', () => {
       // This test only need to pass the type checking.
       ;<Test />
     })
+
+    it('injectIntl works with union prop types', () => {
+      type TestProps = {intl: ReactIntl.IntlShape; base: string} & (
+        | {type: 'a'; text: string}
+        | {type: 'b'; value: number}
+      )
+
+      class _Test extends React.Component<TestProps> {
+        render() {
+          return null
+        }
+      }
+
+      const Test = ReactIntl.injectIntl(_Test)
+
+      // This test only need to pass the type checking.
+      ;<Test base="base" type="a" text="text" />
+    })
   })
 })
