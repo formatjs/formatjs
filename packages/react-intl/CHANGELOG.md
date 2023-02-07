@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.8](https://github.com/formatjs/formatjs/compare/react-intl@6.2.7...react-intl@6.2.8) (2023-02-07)
+
+### Bug Fixes
+
+* **react-intl:** support union component prop types in `injectIntl` ([#3983](https://github.com/formatjs/formatjs/issues/3983)) ([d970127](https://github.com/formatjs/formatjs/commit/d970127a124ff260c26561bd92a3864094a2b021))
+
 ## [6.2.7](https://github.com/formatjs/formatjs/compare/react-intl@6.2.6...react-intl@6.2.7) (2023-01-30)
 
 **Note:** Version bump only for package react-intl
