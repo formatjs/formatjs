@@ -58,7 +58,9 @@ function staticallyEvaluateStringConcat(
   return ['', false]
 }
 
-function isIntlFormatMessageCall(node: TSESTree.Node) {
+export function isIntlFormatMessageCall(
+  node: TSESTree.Node
+): node is TSESTree.CallExpression {
   return (
     node.type === 'CallExpression' &&
     node.callee.type === 'MemberExpression' &&
@@ -90,7 +92,7 @@ function isMultipleMessageDescriptorDeclaration(node: TSESTree.Node) {
   )
 }
 
-function extractMessageDescriptor(
+export function extractMessageDescriptor(
   node?: TSESTree.Expression
 ): MessageDescriptorNodeInfo | undefined {
   if (!node || node.type !== 'ObjectExpression') {
