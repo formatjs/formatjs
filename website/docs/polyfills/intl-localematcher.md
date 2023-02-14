@@ -50,13 +50,13 @@ import {match} from '@formatjs/intl-localematcher'
 
 match(
   ['fr-XX', 'en'],
-  ['fr', 'en']
+  ['fr', 'en'],
   'en'
 ) // 'fr'
 
 match(
   ['zh'],
-  ['fr', 'en']
+  ['fr', 'en'],
   'en'
 ) // 'en'
 ```
