@@ -1,8 +1,8 @@
 import {numberingSystemNames} from './numbering-systems.generated'
 
-function isSupportedNumberingSystem(system: string): boolean {
+function isSupportedNumberingSystem(system: string, locale: string = 'en'): boolean {
   try {
-    const numberFormat = new Intl.NumberFormat('en-u-nu-' + system)
+    const numberFormat = new Intl.NumberFormat(`${locale}-u-nu-${system}`)
     const options = numberFormat.resolvedOptions().numberingSystem
 
     if (
@@ -16,6 +16,6 @@ function isSupportedNumberingSystem(system: string): boolean {
   return false
 }
 
-export function getSupportedNumberingSystems(): string[] {
-  return numberingSystemNames.filter(isSupportedNumberingSystem)
+export function getSupportedNumberingSystems(locale?: string): string[] {
+  return numberingSystemNames.filter(numberingSystemName => isSupportedNumberingSystem(numberingSystemName, locale))
 }

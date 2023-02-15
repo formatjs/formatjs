@@ -329,10 +329,9 @@ function collationsOfLocale(loc: Locale): Array<string> {
   const locInternalSlots = getInternalSlots(loc)
 
   const restricted = locInternalSlots.collation
+  const locale = locInternalSlots.locale
 
-  // TODO - how to define the default collations?
-  // Not sure where that info can be found
-  const supportedCollations = supportedValuesOf('collation')
+  const supportedCollations = supportedValuesOf('collation', locale)
     .filter((co: string) => co !== 'standard' && co !== 'search')
   return createArrayFromListOrRestricted(supportedCollations, restricted)
 }
@@ -355,13 +354,10 @@ function hourCyclesOfLocale(loc: Locale): Array<string> {
 function numberingSystemsOfLocale(loc: Locale): Array<string> {
   const locInternalSlots = getInternalSlots(loc)
 
-  const restricted = locInternalSlots.hourCycle
+  const restricted = locInternalSlots.numberingSystem
 
-  // TODO - how to define the default numbering systems?
-  // As far as I can tell it's only defined in `cidr-numbers-(full|modern)/main/{locale}/numbers.json`, which should only
-  // be available dynamically -- is that acceptable?
-  const preferredNumberingSystems = [locInternalSlots.numberingSystem || 'latn']
-  return createArrayFromListOrRestricted(preferredNumberingSystems, restricted)
+  const supportedNumberingSystems = supportedValuesOf('numberingSystem', locale)
+  return createArrayFromListOrRestricted(supportedNumberingSystems, restricted)
 }
 
 function timeZonesOfLocale(loc: Locale): Array<string> | undefined {
