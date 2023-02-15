@@ -131,3 +131,14 @@ package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
 )
+
+# character orders
+generate_src_file(
+    name = "character-orders",
+    src = "character-orders.generated.ts",
+    data = [
+        "//:node_modules/cldr-localenames-full",
+        "//:node_modules/cldr-misc-full",
+    ],
+    entry_point = "scripts/character-orders.ts",
+)

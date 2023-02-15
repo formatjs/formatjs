@@ -26,8 +26,10 @@ import {
   getTimeZonePreferenceForRegion,
   getWeekDataForRegion,
 } from './preference-data'
+import {characterOrders} from './character-orders.generated'
 
-import type { WeekInfoInternal } from './preference-data'
+import type {WeekInfoInternal} from './preference-data'
+import type {CharacterOrder} from './character-orders.generated'
 
 export interface IntlLocaleOptions {
   language?: string
@@ -374,12 +376,19 @@ function timeZonesOfLocale(loc: Locale): Array<string> | undefined {
   return Array.from(preferredTimeZones)
 }
 
-//@ts-ignore
-function characterDirectionOfLocale(loc: Locale): string {
-  // TODO - how to define the default characterOrder?
-  // As far as I can tell it's only defined in `cidr-misc-(full|modern)/main/{locale}/layout.json`, which should only
-  // be available dynamically -- is that acceptable?
+function translateCharacterOrder(order: CharacterOrder | undefined): string {
+  if (order === 'right-to-left') {
+    return 'rtl'
+  }
+
   return 'ltr'
+}
+
+function characterDirectionOfLocale(loc: Locale): string {
+  const locInternalSlots = getInternalSlots(loc)
+
+  const locale = locInternalSlots.locale
+  return translateCharacterOrder(characterOrders[locale])
 }
 
 function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
