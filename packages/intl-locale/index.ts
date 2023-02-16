@@ -504,6 +504,7 @@ export class Locale {
   }
 
   static relevantExtensionKeys = RELEVANT_EXTENSION_KEYS
+  public static readonly polyfilled = true
 }
 
 try {

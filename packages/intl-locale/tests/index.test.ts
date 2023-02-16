@@ -15,4 +15,7 @@ describe('intl-locale', () => {
   it('und-x-private', function () {
     expect(new Locale('und-x-private').toString()).toBe('und-x-private')
   })
+  it('has static polyfilled property', function () {
+    expect(Locale.polyfilled).toBe(true)
+  })
 })
