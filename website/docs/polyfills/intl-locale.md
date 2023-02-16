@@ -66,6 +66,8 @@ async function polyfill() {
   if (shouldPolyfill()) {
     await import('@formatjs/intl-locale/polyfill')
   }
+  // Alternatively, force the polyfill regardless of support
+  await import('@formatjs/intl-locale/polyfill-force')
 }
 ```
 
