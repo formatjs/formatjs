@@ -336,6 +336,8 @@ function collationsOfLocale(loc: Locale): Array<string> {
 
   const supportedCollations = supportedValuesOf('collation', locale)
     .filter((co: string) => co !== 'standard' && co !== 'search')
+  supportedCollations.sort()
+
   return createArrayFromListOrRestricted(supportedCollations, restricted)
 }
 
@@ -382,6 +384,8 @@ function timeZonesOfLocale(loc: Locale): Array<string> | undefined {
   }
 
   const preferredTimeZones = getTimeZonePreferenceForRegion(region)
+  preferredTimeZones.sort()
+
   return Array.from(preferredTimeZones)
 }
 
