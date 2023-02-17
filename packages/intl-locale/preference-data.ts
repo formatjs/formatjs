@@ -9,8 +9,16 @@ export type WeekInfoInternal = {
   minimalDays: number
 }
 
+type Tz = typeof rawTimezones.keyword.u.tz & {_alias: never, _description: never}
+type TzEntry = {
+  _alias?: string
+  _description: string
+  _preferred?: string
+  _deprecated?: boolean
+}
+
 const {calendarPreferenceData} = rawCalendarPreferenceData.supplemental
-const {tz: {_description: _, _alias: __, ...tz}} = rawTimezones.keyword.u
+const tz = rawTimezones.keyword.u.tz as Tz
 const {timeData} = rawTimeData.supplemental
 const {weekData} = rawWeekData.supplemental
 
@@ -48,13 +56,13 @@ function resolveWeekDaySymbolTable(token: string): number {
   return 0
 }
 
-function getTimezoneAlias(timezone: typeof tz[keyof typeof tz]): string | null {
+function getTimezoneAlias(timezone: TzEntry): string | null {
   let val: string | null
 
-  if ('_preferred' in timezone) {
-    const preferredZone = timezone._preferred as keyof typeof tz
+  if (timezone._preferred) {
+    const preferredZone = timezone._preferred as keyof Tz
     val = getTimezoneAlias(tz[preferredZone])
-  } else if ('_alias' in timezone) {
+  } else if (timezone._alias) {
     val = timezone._alias.split(' ')[0]
   } else {
     val = null
