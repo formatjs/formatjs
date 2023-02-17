@@ -1,7 +1,10 @@
 import type {Currency} from './currencies.generated'
 import {currencies} from './currencies.generated'
 
-function isSupportedCurrency(currency: Currency, locale: string = 'en'): boolean {
+function isSupportedCurrency(
+  currency: Currency,
+  locale: string = 'en'
+): boolean {
   try {
     const numberFormat = new Intl.NumberFormat(locale, {
       style: 'currency',

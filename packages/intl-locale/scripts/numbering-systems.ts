@@ -14,7 +14,9 @@ type CldrNumbersNumbers = {
 
 function getNumberingSystems(numbers: CldrNumbersNumbers): string[] {
   const {defaultNumberingSystem, otherNumberingSystems} = numbers
-  const numberingSystems: string[] = defaultNumberingSystem ? [defaultNumberingSystem] : []
+  const numberingSystems: string[] = defaultNumberingSystem
+    ? [defaultNumberingSystem]
+    : []
 
   if (otherNumberingSystems) {
     for (const ns of Object.values(otherNumberingSystems)) {
@@ -30,11 +32,13 @@ function getNumberingSystems(numbers: CldrNumbersNumbers): string[] {
 async function main(args: Args) {
   const {out} = args
 
-  const result: { [locale: string]: string[] } = {}
+  const result: {[locale: string]: string[]} = {}
 
   const locales = await getAllLocales()
   for (const locale of locales) {
-    const numbersData = await import(`cldr-numbers-full/main/${locale}/numbers.json`)
+    const numbersData = await import(
+      `cldr-numbers-full/main/${locale}/numbers.json`
+    )
     result[locale] = getNumberingSystems(numbersData.main[locale].numbers)
   }
 

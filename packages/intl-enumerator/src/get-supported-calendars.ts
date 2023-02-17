@@ -13,5 +13,7 @@ function isSupportedCalendar(item: Calendar, locale: string = 'en'): boolean {
 }
 
 export function getSupportedCalendars(localePrefix?: string): Calendar[] {
-  return calendars.filter(calendar => isSupportedCalendar(calendar, localePrefix))
+  return calendars.filter(calendar =>
+    isSupportedCalendar(calendar, localePrefix)
+  )
 }

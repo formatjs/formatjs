@@ -1,6 +1,9 @@
 import {numberingSystemNames} from './numbering-systems.generated'
 
-function isSupportedNumberingSystem(system: string, locale: string = 'en'): boolean {
+function isSupportedNumberingSystem(
+  system: string,
+  locale: string = 'en'
+): boolean {
   try {
     const numberFormat = new Intl.NumberFormat(`${locale}-u-nu-${system}`)
     const options = numberFormat.resolvedOptions().numberingSystem
@@ -17,5 +20,7 @@ function isSupportedNumberingSystem(system: string, locale: string = 'en'): bool
 }
 
 export function getSupportedNumberingSystems(locale?: string): string[] {
-  return numberingSystemNames.filter(numberingSystemName => isSupportedNumberingSystem(numberingSystemName, locale))
+  return numberingSystemNames.filter(numberingSystemName =>
+    isSupportedNumberingSystem(numberingSystemName, locale)
+  )
 }

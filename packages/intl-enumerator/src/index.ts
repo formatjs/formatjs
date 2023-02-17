@@ -13,7 +13,10 @@ export type SupportedValuesOf =
   | 'timeZone'
   | 'unit'
 
-export function supportedValuesOf(key: SupportedValuesOf, locale?: string): string[] {
+export function supportedValuesOf(
+  key: SupportedValuesOf,
+  locale?: string
+): string[] {
   switch (key) {
     case 'calendar':
       return getSupportedCalendars(locale)

@@ -9,7 +9,10 @@ export type WeekInfoInternal = {
   minimalDays: number
 }
 
-type Tz = typeof rawTimezones.keyword.u.tz & {_alias: never, _description: never}
+type Tz = typeof rawTimezones.keyword.u.tz & {
+  _alias: never
+  _description: never
+}
 type TzEntry = {
   _alias?: string
   _description: string
@@ -73,12 +76,10 @@ function getTimezoneAlias(timezone: TzEntry): string | null {
 
 const processedHourCycles = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
-    all[k.replace('_', '-')] =
-      timeData[k as keyof typeof timeData]
-        ._allowed
-        .split(' ')
-        .map(resolveDateTimeSymbolTable)
-        .filter(Boolean)
+    all[k.replace('_', '-')] = timeData[k as keyof typeof timeData]._allowed
+      .split(' ')
+      .map(resolveDateTimeSymbolTable)
+      .filter(Boolean)
     return all
   },
   {}
@@ -108,21 +109,22 @@ const territoryToTimezonesMap = Object.keys(tz).reduce(
 
 for (const region of Object.keys(territoryToTimezonesMap)) {
   territoryToTimezonesMap[region] = territoryToTimezonesMap[region].reduce(
-  (all: string[], timezone: string) => {
-    if (!(timezone in all)) {
-      all.push(timezone)
-    }
+    (all: string[], timezone: string) => {
+      if (!(timezone in all)) {
+        all.push(timezone)
+      }
 
-    return all
-  },
-  []
+      return all
+    },
+    []
   )
 }
 
 export function getCalendarPreferenceDataForRegion(region?: string): string[] {
   return (
-    calendarPreferenceData[(region || '') as keyof typeof calendarPreferenceData] ||
-    calendarPreferenceData['001']
+    calendarPreferenceData[
+      (region || '') as keyof typeof calendarPreferenceData
+    ] || calendarPreferenceData['001']
   ).map(c => {
     //Resolve aliases per https://github.com/unicode-org/cldr/blob/master/common/bcp47/calendar.xml
     if (c === 'gregorian') {
@@ -138,7 +140,10 @@ export function getCalendarPreferenceDataForRegion(region?: string): string[] {
   })
 }
 
-export function getHourCyclesPreferenceDataForLocaleOrRegion(locale: string, region?: string): string[] {
+export function getHourCyclesPreferenceDataForLocaleOrRegion(
+  locale: string,
+  region?: string
+): string[] {
   return (
     processedHourCycles[locale] ||
     processedHourCycles[region || ''] ||
@@ -148,16 +153,28 @@ export function getHourCyclesPreferenceDataForLocaleOrRegion(locale: string, reg
 }
 
 export function getTimeZonePreferenceForRegion(region: string): string[] {
-  return territoryToTimezonesMap[region.toLowerCase() as keyof typeof territoryToTimezonesMap] || []
+  return (
+    territoryToTimezonesMap[
+      region.toLowerCase() as keyof typeof territoryToTimezonesMap
+    ] || []
+  )
 }
 
 export function getWeekDataForRegion(region?: string): WeekInfoInternal {
   const r = region || ''
 
-  const weekendStart = weekData.weekendStart[r as keyof typeof weekData.weekendStart] || weekData.weekendStart['001']
-  const weekendEnd = weekData.weekendEnd[r as keyof typeof weekData.weekendEnd] || weekData.weekendEnd['001']
-  const minDays = weekData.minDays[r as keyof typeof weekData.minDays] || weekData.minDays['001']
-  const firstDay = weekData.firstDay[r as keyof typeof weekData.firstDay] || weekData.firstDay['001']
+  const weekendStart =
+    weekData.weekendStart[r as keyof typeof weekData.weekendStart] ||
+    weekData.weekendStart['001']
+  const weekendEnd =
+    weekData.weekendEnd[r as keyof typeof weekData.weekendEnd] ||
+    weekData.weekendEnd['001']
+  const minDays =
+    weekData.minDays[r as keyof typeof weekData.minDays] ||
+    weekData.minDays['001']
+  const firstDay =
+    weekData.firstDay[r as keyof typeof weekData.firstDay] ||
+    weekData.firstDay['001']
 
   const weekend = [resolveWeekDaySymbolTable(weekendStart)]
   const weekendFinalDay = resolveWeekDaySymbolTable(weekendEnd)

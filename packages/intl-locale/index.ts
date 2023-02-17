@@ -304,7 +304,10 @@ function removeLikelySubtags(tag: string): string {
   return tag
 }
 
-function createArrayFromListOrRestricted(list: any[], restricted: any): Array<any> {
+function createArrayFromListOrRestricted(
+  list: any[],
+  restricted: any
+): Array<any> {
   let result = list
   if (restricted !== undefined) {
     result = [restricted]
@@ -334,8 +337,9 @@ function collationsOfLocale(loc: Locale): Array<string> {
   const restricted = locInternalSlots.collation
   const locale = locInternalSlots.locale
 
-  const supportedCollations = supportedValuesOf('collation', locale)
-    .filter((co: string) => co !== 'standard' && co !== 'search')
+  const supportedCollations = supportedValuesOf('collation', locale).filter(
+    (co: string) => co !== 'standard' && co !== 'search'
+  )
   supportedCollations.sort()
 
   return createArrayFromListOrRestricted(supportedCollations, restricted)
@@ -352,7 +356,10 @@ function hourCyclesOfLocale(loc: Locale): Array<string> {
     region = loc.maximize().region
   }
 
-  const preferredHourCycles = getHourCyclesPreferenceDataForLocaleOrRegion(locale, region)
+  const preferredHourCycles = getHourCyclesPreferenceDataForLocaleOrRegion(
+    locale,
+    region
+  )
   return createArrayFromListOrRestricted(preferredHourCycles, restricted)
 }
 
@@ -363,11 +370,15 @@ function numberingSystemsOfLocale(loc: Locale): Array<string> {
   const locale = locInternalSlots.locale
   const language = loc.language
 
-  const localeNumberingSystems = numberingSystems[locale as keyof typeof numberingSystems] ??
+  const localeNumberingSystems =
+    numberingSystems[locale as keyof typeof numberingSystems] ??
     numberingSystems[language as keyof typeof numberingSystems]
 
   if (localeNumberingSystems) {
-    return createArrayFromListOrRestricted([...localeNumberingSystems], restricted)
+    return createArrayFromListOrRestricted(
+      [...localeNumberingSystems],
+      restricted
+    )
   }
 
   return createArrayFromListOrRestricted([], restricted)
