@@ -4,7 +4,7 @@ load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
+load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile", "generate_src_file")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -139,6 +139,7 @@ generate_src_file(
     data = [
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-misc-full",
+        "//:node_modules/fast-glob",
     ],
     entry_point = "scripts/character-orders.ts",
 )
