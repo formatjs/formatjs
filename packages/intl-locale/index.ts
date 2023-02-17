@@ -27,6 +27,7 @@ import {
   getWeekDataForRegion,
 } from './preference-data'
 import {characterOrders} from './character-orders.generated'
+import {numberingSystems} from './numbering-systems.generated'
 
 import type {WeekInfoInternal} from './preference-data'
 import type {CharacterOrder} from './character-orders.generated'
@@ -358,9 +359,16 @@ function numberingSystemsOfLocale(loc: Locale): Array<string> {
 
   const restricted = locInternalSlots.numberingSystem
   const locale = locInternalSlots.locale
+  const language = loc.language
 
-  const supportedNumberingSystems = supportedValuesOf('numberingSystem', locale)
-  return createArrayFromListOrRestricted(supportedNumberingSystems, restricted)
+  const localeNumberingSystems = numberingSystems[locale as keyof typeof numberingSystems] ??
+    numberingSystems[language as keyof typeof numberingSystems]
+
+  if (localeNumberingSystems) {
+    return createArrayFromListOrRestricted([...localeNumberingSystems], restricted)
+  }
+
+  return createArrayFromListOrRestricted([], restricted)
 }
 
 function timeZonesOfLocale(loc: Locale): Array<string> | undefined {

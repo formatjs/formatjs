@@ -138,9 +138,23 @@ generate_src_file(
     name = "character-orders",
     src = "character-orders.generated.ts",
     data = [
+        "scripts/utils.ts",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-misc-full",
         "//:node_modules/fast-glob",
     ],
     entry_point = "scripts/character-orders.ts",
+)
+
+# numbering systems
+generate_src_file(
+    name = "numbering-systems",
+    src = "numbering-systems.generated.ts",
+    data = [
+        "scripts/utils.ts",
+        "//:node_modules/cldr-localenames-full",
+        "//:node_modules/cldr-numbers-full",
+        "//:node_modules/fast-glob",
+    ],
+    entry_point = "scripts/numbering-systems.ts",
 )
