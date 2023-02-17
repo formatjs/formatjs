@@ -124,6 +124,7 @@ check_format(
         ],
         exclude = [
             "CHANGELOG.md",
+            "*.generated.ts",
         ],
     ),
 )
@@ -138,6 +139,7 @@ generate_src_file(
     name = "character-orders",
     src = "character-orders.generated.ts",
     data = [
+        "scripts/common-types.ts",
         "scripts/utils.ts",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-misc-full",
@@ -151,10 +153,55 @@ generate_src_file(
     name = "numbering-systems",
     src = "numbering-systems.generated.ts",
     data = [
+        "scripts/common-types.ts",
         "scripts/utils.ts",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
     ],
     entry_point = "scripts/numbering-systems.ts",
+)
+
+# timezones
+generate_src_file(
+    name = "timezones",
+    src = "timezones.generated.ts",
+    data = [
+        "scripts/common-types.ts",
+        "//:node_modules/cldr-bcp47",
+    ],
+    entry_point = "scripts/timezones.ts",
+)
+
+# hour cycles
+generate_src_file(
+    name = "hour-cycles",
+    src = "hour-cycles.generated.ts",
+    data = [
+        "scripts/common-types.ts",
+        "//:node_modules/cldr-core",
+    ],
+    entry_point = "scripts/hour-cycles.ts",
+)
+
+# calendars
+generate_src_file(
+    name = "calendars",
+    src = "calendars.generated.ts",
+    data = [
+        "scripts/common-types.ts",
+        "//:node_modules/cldr-core",
+    ],
+    entry_point = "scripts/calendars.ts",
+)
+
+# week data
+generate_src_file(
+    name = "week-data",
+    src = "week-data.generated.ts",
+    data = [
+        "scripts/common-types.ts",
+        "//:node_modules/cldr-core",
+    ],
+    entry_point = "scripts/week-data.ts",
 )

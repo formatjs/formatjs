@@ -3,7 +3,7 @@ import {outputFileSync} from 'fs-extra'
 
 import {getAllLocales} from './utils'
 
-import type {Args} from './utils'
+import type {Args} from './common-types'
 
 type CharacterOrder = 'left-to-right' | 'right-to-left'
 
@@ -31,18 +31,18 @@ function getCharacterOrder(
 async function main(args: Args) {
   const {out} = args
 
-  const result: {[locale: string]: CharacterOrder} = {}
+  const characterOrders: {[locale: string]: CharacterOrder} = {}
 
   const locales = await getAllLocales()
   for (const locale of locales) {
     const layoutData = await import(`cldr-misc-full/main/${locale}/layout.json`)
     const characterOrder = getCharacterOrder(layoutData, locale)
     if (characterOrder) {
-      result[locale] = characterOrder
+      characterOrders[locale] = characterOrder
     }
   }
 
-  const possibleValues = Object.values(result).reduce((acc, val) => {
+  const possibleValues = Object.values(characterOrders).reduce((acc, val) => {
     if (!acc.includes(val)) {
       acc.push(val)
     }
@@ -54,7 +54,8 @@ async function main(args: Args) {
     out,
     `/* @generated */
 // prettier-ignore
-export const characterOrders = ${JSON.stringify(result)} as const
+export const characterOrders = ${JSON.stringify(characterOrders)} as const
+export type CharacterOrdersKey = keyof typeof characterOrders
 export type CharacterOrder = '${possibleValues.join("' | '")}'`
   )
 }

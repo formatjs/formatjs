@@ -1,12 +1,6 @@
 import glob from 'fast-glob'
 import {resolve, dirname} from 'path'
 
-import type {ParsedArgs} from 'minimist'
-
-export interface Args extends ParsedArgs {
-  zone: string[]
-}
-
 export async function getAllLocales(): Promise<string[]> {
   const fns = await glob('*/localeDisplayNames.json', {
     cwd: resolve(

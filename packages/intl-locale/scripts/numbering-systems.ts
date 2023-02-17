@@ -3,7 +3,7 @@ import {outputFileSync} from 'fs-extra'
 
 import {getAllLocales} from './utils'
 
-import type {Args} from './utils'
+import type {Args} from './common-types'
 
 type CldrNumbersNumbers = {
   defaultNumberingSystem: string
@@ -46,7 +46,8 @@ async function main(args: Args) {
     out,
     `/* @generated */
 // prettier-ignore
-export const numberingSystems = ${JSON.stringify(result)} as const`
+export const numberingSystems = ${JSON.stringify(result)} as const
+export type NumberingSystemsKey = keyof typeof numberingSystems`
   )
 }
 
