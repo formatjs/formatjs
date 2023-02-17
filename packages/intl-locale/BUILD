@@ -32,6 +32,7 @@ SRC_DEPS = [
     ":node_modules/@formatjs/intl-enumerator",
     ":node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/cldr-core",
+    "//:node_modules/cldr-bcp47",
 ]
 
 ts_compile(

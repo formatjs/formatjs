@@ -1,4 +1,4 @@
-import * as rawMetaZones from 'cldr-core/supplemental/metaZones.json'
+import * as rawTimezones from 'cldr-bcp47/bcp47/timezone.json'
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json'
 import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json'
 import * as rawWeekData from 'cldr-core/supplemental/weekData.json'
@@ -10,7 +10,7 @@ export type WeekInfoInternal = {
 }
 
 const {calendarPreferenceData} = rawCalendarPreferenceData.supplemental
-const {metaZones} = rawMetaZones.supplemental
+const {tz: {_description: _, _alias: __, ...tz}} = rawTimezones.keyword.u
 const {timeData} = rawTimeData.supplemental
 const {weekData} = rawWeekData.supplemental
 
@@ -48,6 +48,21 @@ function resolveWeekDaySymbolTable(token: string): number {
   return 0
 }
 
+function getTimezoneAlias(timezone: typeof tz[keyof typeof tz]): string | null {
+  let val: string | null
+
+  if ('_preferred' in timezone) {
+    const preferredZone = timezone._preferred as keyof typeof tz
+    val = getTimezoneAlias(tz[preferredZone])
+  } else if ('_alias' in timezone) {
+    val = timezone._alias.split(' ')[0]
+  } else {
+    val = null
+  }
+
+  return val
+}
+
 const processedHourCycles = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
     all[k.replace('_', '-')] =
@@ -61,17 +76,40 @@ const processedHourCycles = Object.keys(timeData).reduce(
   {}
 )
 
-const territoryToMapZonesMap = metaZones.metazones.reduce(
-  (all: Record<string, string[]>, z) => {
-    if (all[z.mapZone._territory]) {
-      all[z.mapZone._territory].push(z.mapZone._type)
-    } else {
-      all[z.mapZone._territory] = [z.mapZone._type]
+const territoryToTimezonesMap = Object.keys(tz).reduce(
+  (all: Record<string, string[]>, zone: string) => {
+    const region = zone.slice(0, 2) as string
+
+    const timezone = tz[zone as keyof typeof tz]
+    const val = getTimezoneAlias(timezone)
+
+    if (!val) {
+      return all
     }
+
+    if (all[region]) {
+      all[region].push(val)
+    } else {
+      all[region] = [val]
+    }
+
     return all
   },
   {}
 )
+
+for (const region of Object.keys(territoryToTimezonesMap)) {
+  territoryToTimezonesMap[region] = territoryToTimezonesMap[region].reduce(
+  (all: string[], timezone: string) => {
+    if (!(timezone in all)) {
+      all.push(timezone)
+    }
+
+    return all
+  },
+  []
+  )
+}
 
 export function getCalendarPreferenceDataForRegion(region?: string): string[] {
   return (
@@ -102,7 +140,7 @@ export function getHourCyclesPreferenceDataForLocaleOrRegion(locale: string, reg
 }
 
 export function getTimeZonePreferenceForRegion(region: string): string[] {
-  return territoryToMapZonesMap[region as keyof typeof territoryToMapZonesMap] || []
+  return territoryToTimezonesMap[region.toLowerCase() as keyof typeof territoryToTimezonesMap] || []
 }
 
 export function getWeekDataForRegion(region?: string): WeekInfoInternal {

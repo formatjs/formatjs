@@ -357,6 +357,7 @@ function numberingSystemsOfLocale(loc: Locale): Array<string> {
   const locInternalSlots = getInternalSlots(loc)
 
   const restricted = locInternalSlots.numberingSystem
+  const locale = locInternalSlots.locale
 
   const supportedNumberingSystems = supportedValuesOf('numberingSystem', locale)
   return createArrayFromListOrRestricted(supportedNumberingSystems, restricted)
@@ -387,7 +388,7 @@ function translateCharacterOrder(order: CharacterOrder | undefined): string {
 function characterDirectionOfLocale(loc: Locale): string {
   const locInternalSlots = getInternalSlots(loc)
 
-  const locale = locInternalSlots.locale
+  const locale = locInternalSlots.locale as keyof typeof characterOrders
   return translateCharacterOrder(characterOrders[locale])
 }
 
