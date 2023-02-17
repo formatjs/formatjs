@@ -57,12 +57,20 @@ async function main(args: Args) {
       }
   }
 
+  const possibleValues = Object.values(result).reduce((acc, val) => {
+    if (!acc.includes(val)) {
+      acc.push(val)
+    }
+
+    return acc
+  }, [] as string[])
+
   outputFileSync(
     out,
     `/* @generated */
 // prettier-ignore
 export const characterOrders = ${JSON.stringify(result)} as const
-export type CharacterOrder = typeof characterOrders['en']`
+export type CharacterOrder = '${possibleValues.join('\' | \'')}'`
   )
 }
 
