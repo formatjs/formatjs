@@ -37,7 +37,7 @@ export function getSupportedCurrencies(locale?: string): Currency[] {
 
       for (let i = start; i <= end; i++) {
         const currentCurrency = (currency.substring(0, 2) + ATOZ[i]) as Currency
-        if (isSupportedCurrency(currentCurrency, localePrefix)) {
+        if (isSupportedCurrency(currentCurrency, locale)) {
           supportedCurrencies.push(currentCurrency)
         }
       }
