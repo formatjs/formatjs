@@ -4,7 +4,7 @@ import {collations} from './collations.generated'
 function isSupported(collation: Collation, locale: string = 'en'): boolean {
   try {
     return (
-      Intl.Collator(`${locale}-u-co-${collation}`).resolvedOptions().locale === 'en'
+      Intl.Collator(`${locale}-u-co-${collation}`).resolvedOptions().collation === collation
     )
   } catch (_err) {}
 
