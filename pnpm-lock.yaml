@@ -73,11 +73,12 @@ importers:
       cldr-localenames-full: '40'
       cldr-misc-full: '40'
       cldr-numbers-full: '40'
+      cldr-segments-full: '40'
       cldr-units-full: '40'
       clsx: '1'
       commander: '8'
       core-js: ^3.6.5
-      emoji-regex: ^10.0.0
+      emoji-regex: ^10.2.1
       eslint: 7 || 8
       fast-glob: ^3.2.7
       fs-extra: '10'
@@ -103,6 +104,7 @@ importers:
       react: ^16.6.0 || 17 || 18
       react-dom: ^16.6.0 || 17 || 18
       regenerate: ^1.4.2
+      regexpu-core: ^5.2.2
       rimraf: ^3.0.2
       serialize-javascript: ^6.0.0
       test262-harness: '10'
@@ -112,6 +114,7 @@ importers:
       tsd: ^0.24.1
       tslib: ^2.4.0
       typescript: 4.9.3
+      unicode-emoji-utils: ^1.1.1
       unidiff: ^1.0.2
       vue: ^3.2.45
       vue-class-component: ^8.0.0-rc.1
@@ -178,11 +181,12 @@ importers:
       cldr-localenames-full: 40.0.0_cldr-core@40.0.0
       cldr-misc-full: 40.0.0_cldr-core@40.0.0
       cldr-numbers-full: 40.0.0_cldr-core@40.0.0
+      cldr-segments-full: 40.0.0_cldr-core@40.0.0
       cldr-units-full: 40.0.0_cldr-core@40.0.0
       clsx: 1.1.1
       commander: 8.3.0
       core-js: 3.23.2
-      emoji-regex: 10.1.0
+      emoji-regex: 10.2.1
       eslint: 8.18.0
       fast-glob: 3.2.11
       fs-extra: 10.1.0
@@ -208,6 +212,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       regenerate: 1.4.2
+      regexpu-core: 5.2.2
       rimraf: 3.0.2
       serialize-javascript: 6.0.0
       test262-harness: 10.0.0
@@ -217,6 +222,7 @@ importers:
       tsd: 0.24.1
       tslib: 2.4.0
       typescript: 4.9.3
+      unicode-emoji-utils: 1.1.1
       unidiff: 1.0.2
       vue: 3.2.45
       vue-class-component: 8.0.0-rc.1_vue@3.2.45
@@ -320,21 +326,23 @@ importers:
       '@formatjs/ts-transformer': workspace:*
       '@types/eslint': 7 || 8
       '@types/picomatch': ^2.3.0
-      '@typescript-eslint/typescript-estree': ^5.9.1
-      emoji-regex: ^10.0.0
+      '@typescript-eslint/typescript-estree': 5.45.0
+      emoji-regex: ^10.2.1
       picomatch: ^2.3.1
-      tslib: ^2.4.0
+      tslib: 2.4.0
       typescript: ^4.7
+      unicode-emoji-utils: ^1.1.1
     dependencies:
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
       '@formatjs/ts-transformer': link:../ts-transformer
       '@types/eslint': 8.4.3
       '@types/picomatch': 2.3.0
-      '@typescript-eslint/typescript-estree': 5.29.0_typescript@4.9.3
-      emoji-regex: 10.1.0
+      '@typescript-eslint/typescript-estree': 5.45.0_typescript@4.9.3
+      emoji-regex: 10.2.1
       picomatch: 2.3.1
       tslib: 2.4.0
       typescript: 4.9.3
+      unicode-emoji-utils: 1.1.1
 
   packages/fast-memoize:
     specifiers:
@@ -537,6 +545,16 @@ importers:
       '@formatjs/intl-getcanonicallocales': link:../intl-getcanonicallocales
       '@formatjs/intl-locale': link:../intl-locale
       '@formatjs/intl-pluralrules': link:../intl-pluralrules
+
+  packages/intl-segmenter:
+    specifiers:
+      '@formatjs/ecma402-abstract': workspace:*
+      '@formatjs/intl-localematcher': workspace:*
+      tslib: ^2.4.0
+    dependencies:
+      '@formatjs/ecma402-abstract': link:../ecma402-abstract
+      '@formatjs/intl-localematcher': link:../intl-localematcher
+      tslib: 2.4.0
 
   packages/react-intl:
     specifiers:
@@ -1073,7 +1091,7 @@ packages:
     dependencies:
       '@babel/core': 7.18.10
       '@babel/helper-annotate-as-pure': 7.16.7
-      regexpu-core: 5.0.1
+      regexpu-core: 5.2.2
     dev: true
 
   /@babel/helper-create-regexp-features-plugin/7.17.12_@babel+core@7.18.5:
@@ -1084,7 +1102,7 @@ packages:
     dependencies:
       '@babel/core': 7.18.5
       '@babel/helper-annotate-as-pure': 7.16.7
-      regexpu-core: 5.0.1
+      regexpu-core: 5.2.2
     dev: true
 
   /@babel/helper-create-regexp-features-plugin/7.18.6_@babel+core@7.18.10:
@@ -1095,7 +1113,7 @@ packages:
     dependencies:
       '@babel/core': 7.18.10
       '@babel/helper-annotate-as-pure': 7.18.6
-      regexpu-core: 5.1.0
+      regexpu-core: 5.2.2
     dev: true
 
   /@babel/helper-define-polyfill-provider/0.3.1_@babel+core@7.18.5:
@@ -3952,7 +3970,7 @@ packages:
       '@docusaurus/react-loadable': 5.5.2
       '@docusaurus/types': 2.0.1
       '@types/history': 4.7.11
-      '@types/react': 18.0.14
+      '@types/react': 18.0.25
       '@types/react-router-config': 5.0.6
       '@types/react-router-dom': 5.3.3
       react-helmet-async: 1.3.0
@@ -6446,7 +6464,7 @@ packages:
     resolution: {integrity: sha512-db1mx37a1EJDf1XeX8jJN7R3PZABmJQXR8r28yUjVMFSjkmnQo6X6pOEEmNl+Tp2gYQOGPdYbFIipBtdElZ3Yg==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.0.14
+      '@types/react': 18.0.25
       '@types/react-router': 5.1.18
     dev: true
 
@@ -6454,7 +6472,7 @@ packages:
     resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.0.14
+      '@types/react': 18.0.25
       '@types/react-router': 5.1.18
     dev: true
 
@@ -6462,7 +6480,7 @@ packages:
     resolution: {integrity: sha512-YYknwy0D0iOwKQgz9v8nOzt2J6l4gouBmDnWqUUznltOTaon+r8US8ky8HvN0tXvc38U9m6z/t2RsVsnd1zM0g==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.0.14
+      '@types/react': 18.0.25
     dev: true
 
   /@types/react/18.0.14:
@@ -6635,6 +6653,12 @@ packages:
   /@typescript-eslint/types/5.29.0:
     resolution: {integrity: sha512-X99VbqvAXOMdVyfFmksMy3u8p8yoRGITgU1joBJPzeYa0rhdf5ok9S56/itRoUSh99fiDoMtarSIJXo7H/SnOg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
+  /@typescript-eslint/types/5.45.0:
+    resolution: {integrity: sha512-QQij+u/vgskA66azc9dCmx+rev79PzX8uDHpsqSjEFtfF2gBUTRCpvYMh2gw2ghkJabNkPlSUCimsyBEQZd1DA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: false
 
   /@typescript-eslint/typescript-estree/5.29.0_typescript@4.9.3:
     resolution: {integrity: sha512-mQvSUJ/JjGBdvo+1LwC+GY2XmSYjK1nAaVw2emp/E61wEVYEyibRHCqm1I1vEKbXCpUKuW4G7u9ZCaZhJbLoNQ==}
@@ -6655,6 +6679,28 @@ packages:
       typescript: 4.9.3
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@typescript-eslint/typescript-estree/5.45.0_typescript@4.9.3:
+    resolution: {integrity: sha512-maRhLGSzqUpFcZgXxg1qc/+H0bT36lHK4APhp0AEUVrpSwXiRAomm/JGjSG+kNUio5kAa3uekCYu/47cnGn5EQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/types': 5.45.0
+      '@typescript-eslint/visitor-keys': 5.45.0
+      debug: 4.3.4
+      globby: 11.1.0
+      is-glob: 4.0.3
+      semver: 7.3.7
+      tsutils: 3.21.0_typescript@4.9.3
+      typescript: 4.9.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@typescript-eslint/visitor-keys/5.29.0:
     resolution: {integrity: sha512-Hpb/mCWsjILvikMQoZIE3voc9wtQcS0A9FUw3h8bhr9UxBdtI/tw1ZDZUOXHXLOVMedKCH5NxyzATwnU78bWCQ==}
@@ -6662,6 +6708,15 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.29.0
       eslint-visitor-keys: 3.3.0
+    dev: true
+
+  /@typescript-eslint/visitor-keys/5.45.0:
+    resolution: {integrity: sha512-jc6Eccbn2RtQPr1s7th6jJWQHBHI6GBVQkCHoJFQ5UreaKm59Vxw+ynQUPPY2u2Amquc+7tmEoC2G52ApsGNNg==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      '@typescript-eslint/types': 5.45.0
+      eslint-visitor-keys: 3.3.0
+    dev: false
 
   /@unicode/unicode-13.0.0/1.2.2:
     resolution: {integrity: sha512-bzMRA9J9eXJ0FnrE+ZYJsbCF9wn36VAH0o6dIWpQ2gYje240sK1Z4N2SPg2u75e+913wTD2jvyAqFmXNLSe5Sg==}
@@ -8276,6 +8331,14 @@ packages:
       cldr-core: 40.0.0
     dev: true
 
+  /cldr-segments-full/40.0.0_cldr-core@40.0.0:
+    resolution: {integrity: sha512-etpdMtOYG0z3X6I0vdD1Y3JBYXClVvFsqHmRbAWMcyQAKUTtpXin9etRuNb8skBcjCki+6orhlrjn2jz0v79XA==}
+    peerDependencies:
+      cldr-core: 40.0.0
+    dependencies:
+      cldr-core: 40.0.0
+    dev: true
+
   /cldr-units-full/40.0.0_cldr-core@40.0.0:
     resolution: {integrity: sha512-fw00RYjkckYIasIKgFwE1EKRtPVeWNkIiYQWoHUECCVeT8fvI/YUW+e25rgH+8xrN2k2ywSaixntGH/gurtUvQ==}
     peerDependencies:
@@ -9657,8 +9720,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /emoji-regex/10.1.0:
-    resolution: {integrity: sha512-xAEnNCT3w2Tg6MA7ly6QqYJvEoY1tm9iIjJ3yMKK9JPlWuRHAMoe5iETwQnx3M9TVbFMfsrBgWKR+IsmswwNjg==}
+  /emoji-regex/10.2.1:
+    resolution: {integrity: sha512-97g6QgOk8zlDRdgq1WxwgTMgEWGVAQvB5Fdpgc1MkNy56la5SKP9GsMXKDOdqwn90/41a8yPwIGk1Y6WVbeMQA==}
 
   /emoji-regex/7.0.3:
     resolution: {integrity: sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==}
@@ -15444,8 +15507,8 @@ packages:
       strip-indent: 3.0.0
     dev: true
 
-  /regenerate-unicode-properties/10.0.1:
-    resolution: {integrity: sha512-vn5DU6yg6h8hP/2OkQo3K7uVILvY4iu0oI4t3HFa81UPkhGJwkRwM10JEc3upjdhHjs/k8GJY1sRBhk5sr69Bw==}
+  /regenerate-unicode-properties/10.1.0:
+    resolution: {integrity: sha512-d1VudCLoIGitcU/hEg2QqvyGZQmdC0Lf8BqdOMXGFSvJP4bNV1+XqbPQeHHLD51Jh4QJJ225dlIFvY4Ly6MXmQ==}
     engines: {node: '>=4'}
     dependencies:
       regenerate: 1.4.2
@@ -15486,31 +15549,19 @@ packages:
       regjsgen: 0.5.2
       regjsparser: 0.7.0
       unicode-match-property-ecmascript: 2.0.0
-      unicode-match-property-value-ecmascript: 2.0.0
+      unicode-match-property-value-ecmascript: 2.1.0
     dev: true
 
-  /regexpu-core/5.0.1:
-    resolution: {integrity: sha512-CriEZlrKK9VJw/xQGJpQM5rY88BtuL8DM+AEwvcThHilbxiTAy8vq4iJnd2tqq8wLmjbGZzP7ZcKFjbGkmEFrw==}
+  /regexpu-core/5.2.2:
+    resolution: {integrity: sha512-T0+1Zp2wjF/juXMrMxHxidqGYn8U4R+zleSJhX9tQ1PUsS8a9UtYfbsF9LdiVgNX3kiX8RNaKM42nfSgvFJjmw==}
     engines: {node: '>=4'}
     dependencies:
       regenerate: 1.4.2
-      regenerate-unicode-properties: 10.0.1
-      regjsgen: 0.6.0
-      regjsparser: 0.8.4
+      regenerate-unicode-properties: 10.1.0
+      regjsgen: 0.7.1
+      regjsparser: 0.9.1
       unicode-match-property-ecmascript: 2.0.0
-      unicode-match-property-value-ecmascript: 2.0.0
-    dev: true
-
-  /regexpu-core/5.1.0:
-    resolution: {integrity: sha512-bb6hk+xWd2PEOkj5It46A16zFMs2mv86Iwpdu94la4S3sJ7C973h2dHpYKwIBGaWSO7cIRJ+UX0IeMaWcO4qwA==}
-    engines: {node: '>=4'}
-    dependencies:
-      regenerate: 1.4.2
-      regenerate-unicode-properties: 10.0.1
-      regjsgen: 0.6.0
-      regjsparser: 0.8.4
-      unicode-match-property-ecmascript: 2.0.0
-      unicode-match-property-value-ecmascript: 2.0.0
+      unicode-match-property-value-ecmascript: 2.1.0
     dev: true
 
   /registry-auth-token/4.2.2:
@@ -15531,8 +15582,8 @@ packages:
     resolution: {integrity: sha512-OFFT3MfrH90xIW8OOSyUrk6QHD5E9JOTeGodiJeBS3J6IwlgzJMNE/1bZklWz5oTg+9dCMyEetclvCVXOPoN3A==}
     dev: true
 
-  /regjsgen/0.6.0:
-    resolution: {integrity: sha512-ozE883Uigtqj3bx7OhL1KNbCzGyW2NQZPl6Hs09WTvCuZD5sTI4JY58bkbQWa/Y9hxIsvJ3M8Nbf7j54IqeZbA==}
+  /regjsgen/0.7.1:
+    resolution: {integrity: sha512-RAt+8H2ZEzHeYWxZ3H2z6tF18zyyOnlcdaafLrm21Bguj7uZy6ULibiAFdXEtKQY4Sy7wDTwDiOazasMLc4KPA==}
     dev: true
 
   /regjsparser/0.7.0:
@@ -15542,8 +15593,8 @@ packages:
       jsesc: 0.5.0
     dev: true
 
-  /regjsparser/0.8.4:
-    resolution: {integrity: sha512-J3LABycON/VNEu3abOviqGHuB/LOtOQj8SKmfP9anY5GfAVw/SPjwzSjxGjbZXIxbGfqTHtJw58C2Li/WkStmA==}
+  /regjsparser/0.9.1:
+    resolution: {integrity: sha512-dQUtn90WanSNl+7mQKcXAgZxvUe7Z0SqXlgzv0za4LwiUhyzBC58yQO3liFoUgu8GiJVInAhJjkj1N0EtQ5nkQ==}
     hasBin: true
     dependencies:
       jsesc: 0.5.0
@@ -17253,6 +17304,11 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /unicode-emoji-utils/1.1.1:
+    resolution: {integrity: sha512-QEg0BNool1kItuftJp79SbWYzgW8Rnf8I+Q5NIDSkUw8y+KS+mLBoOaxSO+nFFUyIHGEt24I2Fn1iJ74LpiDcA==}
+    dependencies:
+      emoji-regex: 10.2.1
+
   /unicode-match-property-ecmascript/2.0.0:
     resolution: {integrity: sha512-5kaZCrbp5mmbz5ulBkDkbY0SsPOjKqVS35VpL9ulMPfSl0J0Xsm+9Evphv9CoIZFwre7aJoa94AY6seMKGVN5Q==}
     engines: {node: '>=4'}
@@ -17261,8 +17317,8 @@ packages:
       unicode-property-aliases-ecmascript: 2.0.0
     dev: true
 
-  /unicode-match-property-value-ecmascript/2.0.0:
-    resolution: {integrity: sha512-7Yhkc0Ye+t4PNYzOGKedDhXbYIBe1XEQYQxOPyhcXNMJ0WCABqqj6ckydd6pWRZTHV4GuCPKdBAUiMc60tsKVw==}
+  /unicode-match-property-value-ecmascript/2.1.0:
+    resolution: {integrity: sha512-qxkjQt6qjg/mYscYMC0XKRn3Rh0wFPlfxB0xkt9CfyTvpX1Ra0+rAmdX2QyAobptSEvuy4RtpPRui6XkV+8wjA==}
     engines: {node: '>=4'}
     dev: true
 

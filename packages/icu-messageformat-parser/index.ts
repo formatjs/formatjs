@@ -54,6 +54,7 @@ export function parse(message: string, opts: ParserOptions = {}) {
   }
   return result.val
 }
+export {ParserOptions}
 export * from './types'
 // only for testing
 export const _Parser = Parser

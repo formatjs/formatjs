@@ -1,18 +1,14 @@
 import noMultiplePlurals from '../rules/no-multiple-plurals'
 import {ruleTester} from './util'
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
+import {
+  dynamicMessage,
+  noMatch,
+  spreadJsx,
+  emptyFnCall,
+  defineMessage,
+} from './fixtures'
 ruleTester.run('no-multiple-plurals', noMultiplePlurals, {
-  valid: [
-    `import {defineMessage} from 'react-intl'
-  defineMessage({
-      defaultMessage: 'a {placeholder}',
-      description: 'asd'
-  })`,
-    dynamicMessage,
-    noMatch,
-    spreadJsx,
-    emptyFnCall,
-  ],
+  valid: [defineMessage, dynamicMessage, noMatch, spreadJsx, emptyFnCall],
   invalid: [
     {
       code: `

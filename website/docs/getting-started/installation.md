@@ -53,7 +53,7 @@ import {createIntl, createIntlCache} from '@formatjs/intl'
 
 // Translated messages in French with matching IDs to what you declared
 const messagesInFrench = {
-  myMessage: "Aujourd'hui, c'est le {ts, date, ::yyyyMMdd}",
+  myMessage: "Aujourd'hui, nous sommes le {ts, date, ::yyyyMMdd}",
 }
 
 // This is optional but highly recommended
@@ -72,7 +72,7 @@ const intl = createIntl(
   cache
 )
 
-// Aujourd'hui, c'est le 23/07/2020
+// Aujourd'hui, nous sommes le 23/07/2020
 console.log(
   intl.formatMessage(
     {
@@ -99,7 +99,7 @@ import {IntlProvider, FormattedMessage, FormattedNumber} from 'react-intl'
 
 // Translated messages in French with matching IDs to what you declared
 const messagesInFrench = {
-  myMessage: "Aujourd'hui, c'est le {ts, date, ::yyyyMMdd}",
+  myMessage: "Aujourd'hui, nous sommes le {ts, date, ::yyyyMMdd}",
 }
 
 export default function App() {
@@ -123,7 +123,7 @@ Output
 
 ```html
 <p>
-  Aujourd'hui, c'est le 23/07/2020
+  Aujourd'hui, nous sommes le 23/07/2020
   <br />
   19,00 €
 </p>
@@ -142,7 +142,7 @@ app.use(VueIntl, {
   locale: 'fr',
   defaultLocale: 'en',
   messages: {
-    myMessage: "Aujourd'hui, c'est le {ts, date, ::yyyyMMdd}",
+    myMessage: "Aujourd'hui, nous sommes le {ts, date, ::yyyyMMdd}",
   },
 })
 ```
@@ -166,7 +166,7 @@ Output
 
 ```html
 <p>
-  Aujourd'hui, c'est le 23/07/2020
+  Aujourd'hui, nous sommes le 23/07/2020
   <br />
   19,00 €
 </p>

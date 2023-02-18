@@ -7,13 +7,13 @@ rust_library(
     name = "icu-messageformat-parser",
     srcs = glob(["src/**/*.rs"]),
     aliases = aliases(),
+    crate_features = ["utf16"],
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
     deps = all_crate_deps(
         normal = True,
     ),
-    crate_features = ["utf16"]
 )
 
 rust_test(

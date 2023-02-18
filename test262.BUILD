@@ -116,6 +116,20 @@ filegroup(
 )
 
 filegroup(
+    name = "test262-segmenter",
+    srcs = glob(
+        ["test/intl402/Segmenter/**/*.js"],
+        exclude = [
+            #"**/return-object.js",  # We need to fix default content support.
+            "**/options-undefined.js",  # TODO
+            "**/proto-from-ctor-realm.js",  # Bc of Realm support
+            #"**/options-type-invalid-throws.js",  # TODO
+        ],
+    ),
+    visibility = ["@//packages/intl-segmenter:__pkg__"],
+)
+
+filegroup(
     name = "test262-harness",
     srcs = glob(
         [
@@ -140,6 +154,12 @@ copy_to_bin(
     name = "test262-displaynames-copy",
     srcs = [":test262-displaynames"],
     visibility = ["@//packages/intl-displaynames:__pkg__"],
+)
+
+copy_to_bin(
+    name = "test262-segmenter-copy",
+    srcs = [":test262-segmenter"],
+    visibility = ["@//packages/intl-segmenter:__pkg__"],
 )
 
 copy_to_bin(

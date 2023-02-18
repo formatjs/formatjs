@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@1.2.7...@formatjs/fast-memoize@1.2.8) (2023-01-26)
+
+### Bug Fixes
+
+* **@formatjs/fast-memoize:** correct Cache.get return type ([#3964](https://github.com/formatjs/formatjs/issues/3964)) ([31b2d5d](https://github.com/formatjs/formatjs/commit/31b2d5dac8da76a7a050e71b019f28418e9139e4))
+
 ## [1.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@1.2.6...@formatjs/fast-memoize@1.2.7) (2022-12-02)
 
 **Note:** Version bump only for package @formatjs/fast-memoize

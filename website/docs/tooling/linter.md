@@ -354,7 +354,24 @@ const messages = defineMessages({
 
 ### `no-emoji`
 
-This prevents usage of emoji in message.
+This prevents usage of emojis (or above a certain Unicode version) in message
+
+```json
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/no-emoji": ["error"]
+  }
+}
+
+// OR
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/no-emoji": ["error", {"versionAbove": "12.0"}]
+  }
+}
+```
 
 #### Why
 
@@ -369,9 +386,17 @@ const messages = defineMessages({
   foo: {
     defaultMessage: 'Smileys & People',
   },
+  // WORKS with option {versionAbove: '12.0'}
+  foo_bar: {
+    defaultMessage: '😃 Smileys & People',
+  },
   // FAILS
   bar: {
     defaultMessage: '😃 Smileys & People',
+  },
+  // FAILS with option {versionAbove: '12.0'}
+  bar_foo: {
+    defaultMessage: '🥹 Smileys & People',
   },
 })
 ```
@@ -654,3 +679,11 @@ This validates the ICU syntax.
 #### Why
 
 This will make sure that the ICU message are valid and ready for translation.
+
+### `no-useless-message`
+
+This bans messages that do not require translation.
+
+#### Why
+
+Messages like `{test}` is not actionable by translators. The code should just directly reference `test`.

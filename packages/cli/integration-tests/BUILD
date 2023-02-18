@@ -1,5 +1,6 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:jest.bzl", "jest_test")
+load("@aspect_rules_jest//jest:defs.bzl", aspect_jest_test = "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -62,20 +63,24 @@ jest_test(
     ],
 )
 
-jest_test(
+aspect_jest_test(
     name = "integration-compile",
-    size = "large",
-    srcs = [
+    config = "//:jest-aspect.config",
+    data = [
         "formatter.js",
-    ] + glob(
-        [
-            "compile/**/*",
-        ],
-    ),
-    flaky = True,
-    deps = [
         ":node_modules/@formatjs/cli",
+        "//:node_modules/@jest/transform",
+        "//:node_modules/@types/jest",
         "//:node_modules/@types/rimraf",
         "//:node_modules/rimraf",
-    ],
+        "//:node_modules/ts-jest",
+        "//:node_modules/tslib",
+        "//:tsconfig",
+    ] + glob(
+        ["compile/**/*"],
+        exclude = ["compile/__snapshots__/**/*"],
+    ),
+    # To update snapshots run,
+    #    bazel run //packages/cli/integration-tests:integration-compile_update_snapshots
+    snapshots = glob(["compile/__snapshots__/*.snap"]),
 )

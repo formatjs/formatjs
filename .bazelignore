@@ -35,4 +35,5 @@ packages/swc-plugin/node_modules
 packages/ts-transformer/integration-tests/node_modules
 packages/ts-transformer/node_modules
 packages/vue-intl/node_modules
+packages/intl-segmenter/node_modules
 website/node_modules
