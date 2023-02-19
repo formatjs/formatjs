@@ -1,5 +1,6 @@
 import {Rule} from 'eslint'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
+import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
 export interface MessageDescriptor {
   id?: string
@@ -306,4 +307,37 @@ export function extractMessages(
     }
   }
   return []
+}
+
+/**
+ * Apply changes to the ICU message in code. The return value can be used in
+ * `fixer.replaceText(messageNode, <return value>)`. If the return value is null,
+ * it means that the patch cannot be applied.
+ */
+export function patchMessage(
+  messageNode: TSESTree.Node,
+  ast: MessageFormatElement[],
+  patcher: (messageContent: string, ast: MessageFormatElement[]) => string
+): string | null {
+  if (
+    messageNode.type === 'Literal' &&
+    messageNode.value &&
+    typeof messageNode.value === 'string'
+  ) {
+    return JSON.stringify(patcher(messageNode.value as string, ast))
+  } else if (
+    messageNode.type === 'TemplateLiteral' &&
+    messageNode.quasis.length === 1 &&
+    messageNode.expressions.length === 0
+  ) {
+    return (
+      '`' +
+      patcher(messageNode.quasis[0].value.cooked, ast)
+        .replace(/\\/g, '\\\\')
+        .replace(/`/g, '\\`') +
+      '`'
+    )
+  }
+
+  return null
 }

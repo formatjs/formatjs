@@ -687,3 +687,81 @@ This bans messages that do not require translation.
 #### Why
 
 Messages like `{test}` is not actionable by translators. The code should just directly reference `test`.
+
+### `prefer-formatted-message`
+
+Use `<FormattedMessage>` instead of the imperative `intl.formatMessage(...)` if applicable.
+
+```tsx
+// Bad
+<p>
+  {intl.formatMessage({defaultMessage: 'hello'})}
+</p>
+
+// Good
+<p>
+  <FormattedMessage defaultMessage="hello" />
+</p>
+```
+
+#### Why
+
+Consistent coding style in JSX and less syntax clutter.
+
+### `prefer-pound-in-plural`
+
+Use `#` in the plural argument to reference the count instead of repeating the argument.
+
+```
+// Bad
+I have {count} {
+  count, plural,
+    one {apple}
+    other {apples}
+  }
+}
+// Good
+I have {
+  count, plural,
+    one {# apple}
+    other {# apples}
+  }
+}
+
+// Bad
+I have {
+  count, plural,
+    one {{count} apple}
+    other {{count} apples}
+  }
+}
+// Good
+I have {
+  count, plural,
+    one {# apple}
+    other {# apples}
+  }
+}
+
+// Bad
+I won the {ranking}{
+  count, selectordinal,
+    one {st}
+    two {nd}
+    few {rd}
+    other {th}
+} place.
+// Good
+I won the {ranking}{
+  count, selectordinal,
+    one {#st}
+    two {#nd}
+    few {#rd}
+    other {#th}
+} place.
+```
+
+#### Why
+
+1. More concise message.
+2. Ensures that the count are correctly formatted as numbers.

@@ -82,9 +82,8 @@
     "cldr-localenames-full": "40",
     "cldr-misc-full": "40",
     "cldr-numbers-full": "40",
-    "cldr-units-full": "40",
     "cldr-segments-full": "40",
-    "regexpu-core": "^5.2.2",
+    "cldr-units-full": "40",
     "clsx": "1",
     "commander": "8",
     "core-js": "^3.6.5",
@@ -114,6 +113,7 @@
     "react": "^16.6.0 || 17 || 18",
     "react-dom": "^16.6.0 || 17 || 18",
     "regenerate": "^1.4.2",
+    "regexpu-core": "^5.2.2",
     "rimraf": "^3.0.2",
     "serialize-javascript": "^6.0.0",
     "test262-harness": "10",
@@ -123,8 +123,8 @@
     "tsd": "^0.24.1",
     "tslib": "^2.4.0",
     "typescript": "4.9.3",
-    "unidiff": "^1.0.2",
     "unicode-emoji-utils": "^1.1.1",
+    "unidiff": "^1.0.2",
     "vue": "^3.2.45",
     "vue-class-component": "^8.0.0-rc.1",
     "vue-eslint-parser": "^7.3.0",
@@ -167,5 +167,8 @@
       "@commitlint/rules@17.0.0": "patches/@commitlint__rules@17.0.0.patch"
     }
   },
-  "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
+  "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
+  "dependencies": {
+    "magic-string": "^0.29.0"
+  }
 }

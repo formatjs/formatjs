@@ -6,7 +6,7 @@ import {
 } from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {Rule} from 'eslint'
-import {extractMessages, getSettings} from '../util'
+import {extractMessages, getSettings, patchMessage} from '../util'
 
 function isAstValid(ast: MessageFormatElement[]): boolean {
   for (const element of ast) {
@@ -21,7 +21,6 @@ function isAstValid(ast: MessageFormatElement[]): boolean {
       case TYPE.literal:
       case TYPE.number:
       case TYPE.pound:
-      case TYPE.tag:
       case TYPE.time:
         break
       case TYPE.plural:
@@ -33,6 +32,8 @@ function isAstValid(ast: MessageFormatElement[]): boolean {
         }
         break
       }
+      case TYPE.tag:
+        return isAstValid(element.children)
     }
   }
   return true
@@ -55,7 +56,6 @@ function trimMultiWhitespaces(
         case TYPE.literal:
         case TYPE.number:
         case TYPE.pound:
-        case TYPE.tag:
         case TYPE.time:
           break
         case TYPE.plural:
@@ -65,6 +65,9 @@ function trimMultiWhitespaces(
           }
           break
         }
+        case TYPE.tag:
+          collectLiteralElements(element.children)
+          break
       }
     }
   }
@@ -118,42 +121,15 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     }
 
     if (!isAstValid(ast)) {
-      const reportObject: Parameters<typeof context['report']>[0] = {
+      const newMessage = patchMessage(messageNode, ast, trimMultiWhitespaces)
+      context.report({
         node: messageNode as any,
-        message: 'Multiple consecutive whitespaces are not allowed',
-      }
-
-      if (
-        messageNode.type === 'Literal' &&
-        messageNode.value &&
-        typeof messageNode.value === 'string'
-      ) {
-        reportObject.fix = function (fixer) {
-          return fixer.replaceText(
-            messageNode as any,
-            JSON.stringify(
-              trimMultiWhitespaces(messageNode.value as string, ast)
-            )
-          )
-        }
-      } else if (
-        messageNode.type === 'TemplateLiteral' &&
-        messageNode.quasis.length === 1 &&
-        messageNode.expressions.length === 0
-      ) {
-        reportObject.fix = function (fixer) {
-          return fixer.replaceText(
-            messageNode as any,
-            '`' +
-              trimMultiWhitespaces(messageNode.quasis[0].value.cooked, ast)
-                .replace(/\\/g, '\\\\')
-                .replace(/`/g, '\\`') +
-              '`'
-          )
-        }
-      }
-
-      context.report(reportObject)
+        messageId: 'noMultipleWhitespaces',
+        fix:
+          newMessage !== null
+            ? fixer => fixer.replaceText(messageNode as any, newMessage)
+            : null,
+      })
     }
   }
 }
@@ -167,6 +143,9 @@ const rule: Rule.RuleModule = {
       category: 'Errors',
       recommended: false,
       url: 'https://formatjs.io/docs/tooling/linter#no-multiple-whitespaces',
+    },
+    messages: {
+      noMultipleWhitespaces: 'Multiple consecutive whitespaces are not allowed',
     },
     fixable: 'code',
   },
