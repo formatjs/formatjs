@@ -324,7 +324,9 @@ export function patchMessage(
     messageNode.value &&
     typeof messageNode.value === 'string'
   ) {
-    return JSON.stringify(patcher(messageNode.value as string, ast))
+    return (
+      '"' + patcher(messageNode.value as string, ast).replace('"', '\\"') + '"'
+    )
   } else if (
     messageNode.type === 'TemplateLiteral' &&
     messageNode.quasis.length === 1 &&

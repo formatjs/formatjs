@@ -105,5 +105,11 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
       output:
         "import {defineMessage} from 'react-intl';defineMessage({defaultMessage: `<em>a b</em>`})",
     },
+    // Multi-line JSX attribute
+    {
+      code: `<FormattedMessage defaultMessage="a\n  b" />`,
+      errors: [{message: 'Multiple consecutive whitespaces are not allowed'}],
+      output: `<FormattedMessage defaultMessage="a b" />`,
+    },
   ],
 })
