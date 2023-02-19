@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.7.0...eslint-plugin-formatjs@4.7.1) (2023-02-19)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** handles multi-line JSX attribute ([f41f855](https://github.com/formatjs/formatjs/commit/f41f855f35088c21b038a0bf579b7e1374ff49f9))
+* **eslint-plugin-formatjs:** report the JSXExpressionContainer for `prefer-formatted-message` ([32b97d5](https://github.com/formatjs/formatjs/commit/32b97d5e519ff7dbd3e29492b16deff7c1a75324))
+
 # [4.7.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.6.0...eslint-plugin-formatjs@4.7.0) (2023-02-19)
 
 ### Features
