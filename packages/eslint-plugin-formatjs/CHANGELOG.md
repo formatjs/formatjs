@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.6.0...eslint-plugin-formatjs@4.7.0) (2023-02-19)
+
+### Features
+
+* **eslint-plugin-formatjs:** new linter rules `prefer-formatted-message`and`prefer-pound-in-plural` ([#3998](https://github.com/formatjs/formatjs/issues/3998)) ([768a73a](https://github.com/formatjs/formatjs/commit/768a73a55a1e3ac600d0e2c7aa484e6ba0b20355))
+
 # [4.6.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.5.0...eslint-plugin-formatjs@4.6.0) (2023-01-30)
 
 ### Features
