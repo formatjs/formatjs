@@ -28,7 +28,7 @@ const rule: Rule.RuleModule = {
             return
           }
           context.report({
-            node: node as any,
+            node: child as any,
             messageId: 'jsxChildren',
           })
         })
