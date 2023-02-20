@@ -14,6 +14,8 @@ import noMultipleWhitespaces from './rules/no-multiple-whitespaces'
 import noOffset from './rules/no-offset'
 import noLiteralStringInJsx from './rules/no-literal-string-in-jsx'
 import noUselessMessage from './rules/no-useless-message'
+import preferFormattedMessage from './rules/prefer-formatted-message'
+import preferPoundInPlural from './rules/prefer-pound-in-plural'
 
 const plugin = {
   rules: {
@@ -33,6 +35,8 @@ const plugin = {
     'no-multiple-whitespaces': noMultipleWhitespaces,
     'no-offset': noOffset,
     'no-useless-message': noUselessMessage,
+    'prefer-formatted-message': preferFormattedMessage,
+    'prefer-pound-in-plural': preferPoundInPlural,
   },
 }
 
