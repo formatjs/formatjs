@@ -5,6 +5,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "check_format", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -17,6 +18,8 @@ npm_package(
         "README.md",
         "package.json",
         ":dist",
+         # polyfill-library uses this
+        "polyfill.iife.js",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
@@ -132,4 +135,16 @@ generate_src_file(
         "//:node_modules/cldr-bcp47",
     ],
     entry_point = "scripts/units.ts",
+)
+
+esbuild(
+    name = "polyfill.iife",
+    config = {
+        "resolveExtensions": [".js"],
+    },
+    entry_point = "lib/polyfill.js",
+    deps = [
+        ":dist-esm",
+        "//:node_modules/tslib",
+    ],
 )

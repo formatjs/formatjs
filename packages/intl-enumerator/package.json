@@ -14,7 +14,7 @@
   "author": "Michele Riva <ciao@micheleriva.it>",
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "license": "MIT",
-  "main": "index.umd.js",
+  "main": "index.js",
   "types": "index.d.ts",
   "repository": {
     "type": "git",
