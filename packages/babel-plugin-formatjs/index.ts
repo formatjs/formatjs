@@ -24,6 +24,8 @@ export default declare<Options, PluginObj>((api, options) => {
   componentNames.add('FormattedMessage')
   const functionNames = new Set<string>(options.additionalFunctionNames)
   functionNames.add('formatMessage')
+  // Short hand
+  functionNames.add('$t')
   // Vue
   functionNames.add('$formatMessage')
   return {

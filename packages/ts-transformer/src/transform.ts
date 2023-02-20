@@ -211,6 +211,7 @@ function isSingularMessageDecl(
     'defineMessage',
     'formatMessage',
     '$formatMessage',
+    '$t',
     ...additionalComponentNames,
   ])
   let fnName = ''
