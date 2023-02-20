@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.1.10...@formatjs/intl-enumerator@1.2.0) (2023-02-20)
+
+### Features
+
+* **@formatjs/intl-locale:** implement new proposal features for Intl.Locale ([#3955](https://github.com/formatjs/formatjs/issues/3955)) ([984f923](https://github.com/formatjs/formatjs/commit/984f923f298c578d7c138ca5ad9f12965d73a7d0))
+
 ## [1.1.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.1.9...@formatjs/intl-enumerator@1.1.10) (2022-12-02)
 
 **Note:** Version bump only for package @formatjs/intl-enumerator

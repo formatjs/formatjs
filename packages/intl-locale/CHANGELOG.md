@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.0.11...@formatjs/intl-locale@3.1.0) (2023-02-20)
+
+### Features
+
+* **@formatjs/intl-locale:** add static read-only polyfilled property ([#3996](https://github.com/formatjs/formatjs/issues/3996)) ([a9b81c3](https://github.com/formatjs/formatjs/commit/a9b81c3cd012425d03810830f1eaf6709c76094a))
+* **@formatjs/intl-locale:** implement new proposal features for Intl.Locale ([#3955](https://github.com/formatjs/formatjs/issues/3955)) ([984f923](https://github.com/formatjs/formatjs/commit/984f923f298c578d7c138ca5ad9f12965d73a7d0))
+
 ## [3.0.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.0.10...@formatjs/intl-locale@3.0.11) (2022-12-02)
 
 **Note:** Version bump only for package @formatjs/intl-locale

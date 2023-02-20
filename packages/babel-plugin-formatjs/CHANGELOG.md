@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.4.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.36...babel-plugin-formatjs@10.4.0) (2023-02-20)
+
+### Features
+
+* **babel-plugin-formatjs:** support $t by default ([f55cd1d](https://github.com/formatjs/formatjs/commit/f55cd1dadc0f01aba7a461357b061abae86d1d41))
+
 ## [10.3.36](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.35...babel-plugin-formatjs@10.3.36) (2023-01-30)
 
 **Note:** Version bump only for package babel-plugin-formatjs

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@2.0.5...@formatjs/intl-getcanonicallocales@2.1.0) (2023-02-20)
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** expose polyfill-force variant ([#3997](https://github.com/formatjs/formatjs/issues/3997)) ([d513ce6](https://github.com/formatjs/formatjs/commit/d513ce6d662d4dda7fd00a02090b43b27af024f1))
+
 ## [2.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@2.0.4...@formatjs/intl-getcanonicallocales@2.0.5) (2022-12-02)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

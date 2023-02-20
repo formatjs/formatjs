@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.6...@formatjs/ts-transformer@3.12.0) (2023-02-20)
+
+### Features
+
+* **babel-plugin-formatjs:** support $t by default ([f55cd1d](https://github.com/formatjs/formatjs/commit/f55cd1dadc0f01aba7a461357b061abae86d1d41))
+
 ## [3.11.6](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.5...@formatjs/ts-transformer@3.11.6) (2023-01-30)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

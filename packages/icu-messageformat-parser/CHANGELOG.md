@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.2.0...@formatjs/icu-messageformat-parser@2.3.0) (2023-02-20)
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** throw err when trying to flatten a plural inside a tag ([dbd5f8f](https://github.com/formatjs/formatjs/commit/dbd5f8f9711e3da3b703e6ec7e98fdb9ba6def08))
+
 # [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.14...@formatjs/icu-messageformat-parser@2.2.0) (2023-01-30)
 
 ### Features

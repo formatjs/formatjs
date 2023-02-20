@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.4.3...@formatjs/intl-datetimeformat@6.5.0) (2023-02-20)
+
+### Features
+
+* **@formatjs/intl-locale:** implement new proposal features for Intl.Locale ([#3955](https://github.com/formatjs/formatjs/issues/3955)) ([984f923](https://github.com/formatjs/formatjs/commit/984f923f298c578d7c138ca5ad9f12965d73a7d0))
+
 ## [6.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.4.2...@formatjs/intl-datetimeformat@6.4.3) (2022-12-02)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat
