@@ -4,7 +4,7 @@ load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
+load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile", "generate_src_file")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -29,7 +29,10 @@ SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
+    ":node_modules/@formatjs/intl-enumerator",
     ":node_modules/@formatjs/intl-getcanonicallocales",
+    "//:node_modules/cldr-core",
+    "//:node_modules/cldr-bcp47",
 ]
 
 ts_compile(
@@ -121,6 +124,7 @@ check_format(
         ],
         exclude = [
             "CHANGELOG.md",
+            "*.generated.ts",
         ],
     ),
 )
@@ -128,4 +132,76 @@ check_format(
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
+)
+
+# character orders
+generate_src_file(
+    name = "character-orders",
+    src = "character-orders.generated.ts",
+    data = [
+        "scripts/common-types.ts",
+        "scripts/utils.ts",
+        "//:node_modules/cldr-localenames-full",
+        "//:node_modules/cldr-misc-full",
+        "//:node_modules/fast-glob",
+    ],
+    entry_point = "scripts/character-orders.ts",
+)
+
+# numbering systems
+generate_src_file(
+    name = "numbering-systems",
+    src = "numbering-systems.generated.ts",
+    data = [
+        "scripts/common-types.ts",
+        "scripts/utils.ts",
+        "//:node_modules/cldr-localenames-full",
+        "//:node_modules/cldr-numbers-full",
+        "//:node_modules/fast-glob",
+    ],
+    entry_point = "scripts/numbering-systems.ts",
+)
+
+# timezones
+generate_src_file(
+    name = "timezones",
+    src = "timezones.generated.ts",
+    data = [
+        "scripts/common-types.ts",
+        "//:node_modules/cldr-bcp47",
+    ],
+    entry_point = "scripts/timezones.ts",
+)
+
+# hour cycles
+generate_src_file(
+    name = "hour-cycles",
+    src = "hour-cycles.generated.ts",
+    data = [
+        "scripts/common-types.ts",
+        "//:node_modules/cldr-core",
+    ],
+    entry_point = "scripts/hour-cycles.ts",
+)
+
+# calendars
+generate_src_file(
+    name = "calendars",
+    src = "calendars.generated.ts",
+    data = [
+        "scripts/common-types.ts",
+        "//:node_modules/cldr-core",
+    ],
+    entry_point = "scripts/calendars.ts",
+)
+
+# week data
+generate_src_file(
+    name = "week-data",
+    src = "week-data.generated.ts",
+    data = [
+        "scripts/common-types.ts",
+        "//:node_modules/cldr-core",
+    ],
+    entry_point = "scripts/week-data.ts",
 )

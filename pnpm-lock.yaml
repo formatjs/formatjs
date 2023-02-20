@@ -475,10 +475,12 @@ importers:
   packages/intl-locale:
     specifiers:
       '@formatjs/ecma402-abstract': workspace:*
+      '@formatjs/intl-enumerator': workspace:*
       '@formatjs/intl-getcanonicallocales': workspace:*
       tslib: ^2.4.0
     dependencies:
       '@formatjs/ecma402-abstract': link:../ecma402-abstract
+      '@formatjs/intl-enumerator': link:../intl-enumerator
       '@formatjs/intl-getcanonicallocales': link:../intl-getcanonicallocales
       tslib: 2.4.0
 

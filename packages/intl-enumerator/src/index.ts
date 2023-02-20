@@ -13,20 +13,23 @@ export type SupportedValuesOf =
   | 'timeZone'
   | 'unit'
 
-export function supportedValuesOf(key: SupportedValuesOf): string[] {
+export function supportedValuesOf(
+  key: SupportedValuesOf,
+  locale?: string
+): string[] {
   switch (key) {
     case 'calendar':
-      return getSupportedCalendars()
+      return getSupportedCalendars(locale)
     case 'collation':
-      return getSupportedCollations()
+      return getSupportedCollations(locale)
     case 'currency':
-      return getSupportedCurrencies()
+      return getSupportedCurrencies(locale)
     case 'numberingSystem':
-      return getSupportedNumberingSystems()
+      return getSupportedNumberingSystems(locale)
     case 'timeZone':
-      return getSupportedTimeZones()
+      return getSupportedTimeZones(locale)
     case 'unit':
-      return getSupportedUnits()
+      return getSupportedUnits(locale)
     default:
       throw RangeError('Invalid key: ' + key)
   }

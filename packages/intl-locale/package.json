@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
+    "@formatjs/intl-enumerator": "workspace:*",
     "@formatjs/intl-getcanonicallocales": "workspace:*",
     "tslib": "^2.4.0"
   }
