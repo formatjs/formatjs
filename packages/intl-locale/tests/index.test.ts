@@ -102,7 +102,7 @@ describe('intl-locale', () => {
       )
     })
   })
-  
+
   it('has static polyfilled property', function () {
     expect(Locale.polyfilled).toBe(true)
   })
