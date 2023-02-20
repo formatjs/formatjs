@@ -10,6 +10,13 @@ test('should hoist 1 plural', function () {
       )
     )
   ).toBe('{count,plural,one{I have a dog} other{I have many dogs}}')
+  expect(() =>
+    hoistSelectors(
+      parse('I have <b>{count, plural, one{a dog} other{many dogs}}</b>')
+    )
+  ).toThrowError(
+    'Cannot hoist plural/select within a tag element. Please put the tag element inside each plural/select option'
+  )
 })
 
 test('hoist some random case 1', function () {
