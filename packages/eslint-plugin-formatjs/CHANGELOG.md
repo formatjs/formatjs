@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.8.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.7.2...eslint-plugin-formatjs@4.8.0) (2023-02-25)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** do not throw while hoisting during no-complex-selectors ([29ecbec](https://github.com/formatjs/formatjs/commit/29ecbec2be0b528d1a91d49042265e91cf43df9c))
+
+### Features
+
+* **eslint-plugin-formatjs:** report unused values in `enforce-placeholders` ([#4006](https://github.com/formatjs/formatjs/issues/4006)) ([dabd04c](https://github.com/formatjs/formatjs/commit/dabd04c2cce8282e1cbd6e2a5756d7422ebfbe8e))
+
 ## [4.7.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.7.1...eslint-plugin-formatjs@4.7.2) (2023-02-20)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.0.2...@formatjs/cli-lib@6.0.3) (2023-02-25)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** fix typos in the message compilation conflict error message ([2d7bd51](https://github.com/formatjs/formatjs/commit/2d7bd516d7e6fc85d3e208bac390d81396d43d17))
+
 ## [6.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.0.1...@formatjs/cli-lib@6.0.2) (2023-02-20)
 
 ### Bug Fixes
