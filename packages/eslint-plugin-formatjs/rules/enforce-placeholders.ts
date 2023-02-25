@@ -3,73 +3,36 @@ import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {extractMessages, getSettings} from '../util'
 import {
   parse,
-  isPluralElement,
   MessageFormatElement,
-  isLiteralElement,
-  isSelectElement,
-  isPoundElement,
-  isTagElement,
+  TYPE,
 } from '@formatjs/icu-messageformat-parser'
 
-class PlaceholderEnforcement extends Error {
-  public message: string
-  constructor(message: string) {
-    super()
-    this.message = message
-  }
-}
+function collectPlaceholderNames(ast: MessageFormatElement[]): Set<string> {
+  const placeholderNames = new Set<string>()
+  _traverse(ast)
+  return placeholderNames
 
-function keyExistsInExpression(
-  key: string,
-  values: TSESTree.Expression | undefined
-) {
-  if (!values) {
-    return false
-  }
-  if (values.type !== 'ObjectExpression') {
-    return true // True bc we cannot evaluate this
-  }
-  if (values.properties.find(prop => prop.type === 'SpreadElement')) {
-    return true // True bc there's a spread element
-  }
-  return !!values.properties.find(prop => {
-    if (prop.type !== 'Property') {
-      return false
-    }
-    switch (prop.key.type) {
-      case 'Identifier':
-        return prop.key.name === key
-      case 'Literal':
-        return prop.key.value === key
-    }
-    return false
-  })
-}
-
-function verifyAst(
-  ast: MessageFormatElement[],
-  values: TSESTree.Expression | undefined,
-  ignoreList: Set<string>
-) {
-  for (const el of ast) {
-    if (isLiteralElement(el) || isPoundElement(el)) {
-      continue
-    }
-    const key = el.value
-    if (!ignoreList.has(key) && !keyExistsInExpression(key, values)) {
-      throw new PlaceholderEnforcement(
-        `Missing value for placeholder "${el.value}"`
-      )
-    }
-
-    if (isPluralElement(el) || isSelectElement(el)) {
-      for (const selector of Object.keys(el.options)) {
-        verifyAst(el.options[selector].value, values, ignoreList)
+  function _traverse(ast: MessageFormatElement[]) {
+    for (const element of ast) {
+      switch (element.type) {
+        case TYPE.literal:
+        case TYPE.pound:
+          break
+        case TYPE.tag:
+          placeholderNames.add(element.value)
+          _traverse(element.children)
+          break
+        case TYPE.plural:
+        case TYPE.select:
+          placeholderNames.add(element.value)
+          for (const {value} of Object.values(element.options)) {
+            _traverse(value)
+          }
+          break
+        default:
+          placeholderNames.add(element.value)
+          break
       }
-    }
-
-    if (isTagElement(el)) {
-      verifyAst(el.children, values, ignoreList)
     }
   }
 }
@@ -94,20 +57,65 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     if (!defaultMessage || !messageNode) {
       continue
     }
-    try {
-      verifyAst(
-        parse(defaultMessage, {
-          ignoreTag: settings.ignoreTag,
-        }),
-        values,
-        ignoreList
-      )
-    } catch (e) {
+
+    if (values && values.type !== 'ObjectExpression') {
+      // cannot evaluate this
+      continue
+    }
+
+    if (values?.properties.find(prop => prop.type === 'SpreadElement')) {
+      // cannot evaluate the spread element
+      continue
+    }
+
+    const literalElementByLiteralKey = new Map<
+      string,
+      TSESTree.ObjectLiteralElement
+    >()
+
+    if (values) {
+      for (const prop of values.properties) {
+        if (
+          (prop.type === 'MethodDefinition' || prop.type === 'Property') &&
+          !prop.computed &&
+          prop.key.type !== 'PrivateIdentifier'
+        ) {
+          const name =
+            prop.key.type === 'Identifier'
+              ? prop.key.name
+              : String(prop.key.value)
+          literalElementByLiteralKey.set(name, prop)
+        }
+      }
+    }
+
+    const ast = parse(defaultMessage, {ignoreTag: settings.ignoreTag})
+    const placeholderNames = collectPlaceholderNames(ast)
+
+    const missingPlaceholders: string[] = []
+    placeholderNames.forEach(name => {
+      if (!ignoreList.has(name) && !literalElementByLiteralKey.has(name)) {
+        missingPlaceholders.push(name)
+      }
+    })
+
+    if (missingPlaceholders.length > 0) {
       context.report({
         node: messageNode as any,
-        message: e instanceof Error ? e.message : String(e),
+        message: `Missing value(s) for the following placeholder(s): ${missingPlaceholders.join(
+          ', '
+        )}.`,
       })
     }
+
+    literalElementByLiteralKey.forEach((element, key) => {
+      if (!ignoreList.has(key) && !placeholderNames.has(key)) {
+        context.report({
+          node: element as any,
+          message: 'Value not used by the message.',
+        })
+      }
+    })
   }
 }
 
@@ -121,7 +129,6 @@ const rule: Rule.RuleModule = {
       recommended: true,
       url: 'https://formatjs.io/docs/tooling/linter#enforce-placeholders',
     },
-    fixable: 'code',
     schema: [
       {
         type: 'object',
