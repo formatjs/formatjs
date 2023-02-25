@@ -12,12 +12,12 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
     description: 'asd'
   }, {'count': 1})`,
     `import {FormattedMessage} from 'react-intl'
-  const a = <FormattedMessage 
+  const a = <FormattedMessage
   defaultMessage="{count, plural, one {#} other {# more}}"
   values={{ count: 1}} />
         `,
     `import {FormattedMessage} from 'react-intl'
-  const a = <FormattedMessage 
+  const a = <FormattedMessage
   defaultMessage="{count, plural, one {#} other {# more}} {bar}"
   values={{ 'count': 1, bar: 2}} />
         `,
@@ -81,9 +81,7 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
           description: 'asd'
       })`,
       errors: [
-        {
-          message: 'Missing value for placeholder "count"',
-        },
+        {message: 'Missing value(s) for the following placeholder(s): count.'},
       ],
     },
     {
@@ -92,7 +90,9 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
           defaultMessage: '<b>foo</b>',
           description: 'asd'
       })`,
-      errors: [{message: 'Missing value for placeholder "b"'}],
+      errors: [
+        {message: 'Missing value(s) for the following placeholder(s): b.'},
+      ],
     },
     {
       code: `
@@ -102,33 +102,32 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
       }, {foo: 1})`,
       errors: [
         {
-          message: 'Missing value for placeholder "aDifferentKey"',
+          message:
+            'Missing value(s) for the following placeholder(s): aDifferentKey.',
         },
+        {message: 'Value not used by the message.'},
       ],
     },
     {
       code: `
         import {FormattedMessage} from 'react-intl'
-        const a = <FormattedMessage 
+        const a = <FormattedMessage
         defaultMessage="{count, plural, one {#} other {# more}}"
         />`,
       errors: [
-        {
-          message: 'Missing value for placeholder "count"',
-        },
+        {message: 'Missing value(s) for the following placeholder(s): count.'},
       ],
     },
     {
       code: `
         import {FormattedMessage} from 'react-intl'
-        const a = <FormattedMessage 
+        const a = <FormattedMessage
         defaultMessage="{count, plural, one {#} other {# more}}"
         values={{foo: 1}}
         />`,
       errors: [
-        {
-          message: 'Missing value for placeholder "count"',
-        },
+        {message: 'Missing value(s) for the following placeholder(s): count.'},
+        {message: 'Value not used by the message.'},
       ],
     },
     {
@@ -136,9 +135,8 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         import {FormattedMessage} from 'react-intl'
         const a = <FormattedMessage id="myMessage" defaultMessage="Hello {name}" values={{ notName: "Denis" }} />`,
       errors: [
-        {
-          message: 'Missing value for placeholder "name"',
-        },
+        {message: 'Missing value(s) for the following placeholder(s): name.'},
+        {message: 'Value not used by the message.'},
       ],
     },
     {
@@ -147,7 +145,7 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         const a = <FormattedMessage defaultMessage="Hello <bold>{name}</bold>" values={{ bold: (msg) => <strong>{msg}</strong> }} />`,
       errors: [
         {
-          message: 'Missing value for placeholder "name"',
+          message: 'Missing value(s) for the following placeholder(s): name.',
         },
       ],
     },
@@ -162,7 +160,7 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         `,
       errors: [
         {
-          message: 'Missing value for placeholder "a"',
+          message: 'Missing value(s) for the following placeholder(s): a.',
         },
       ],
     },
@@ -174,7 +172,32 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
       `,
       errors: [
         {
-          message: 'Missing value for placeholder "name"',
+          message: 'Missing value(s) for the following placeholder(s): name.',
+        },
+      ],
+    },
+    {
+      code: `
+        import {FormattedMessage} from 'react-intl'
+        const a = <FormattedMessage
+        defaultMessage="{count, plural, one {#} other {# more}}"
+        values={{foo: 0, count: 1, bar: 2}}
+        />`,
+      errors: [
+        {message: 'Value not used by the message.'},
+        {message: 'Value not used by the message.'},
+      ],
+    },
+    {
+      code: `
+        import {FormattedMessage} from 'react-intl'
+        const a = <FormattedMessage
+        defaultMessage="{foo} {bar}"
+        />`,
+      errors: [
+        {
+          message:
+            'Missing value(s) for the following placeholder(s): foo, bar.',
         },
       ],
     },
