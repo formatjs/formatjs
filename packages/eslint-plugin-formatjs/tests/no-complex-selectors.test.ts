@@ -123,5 +123,23 @@ ruleTester.run('no-complex-selectors', noComplexSelectors, {
         },
       ],
     },
+    {
+      code: `
+              import {defineMessage} from 'react-intl'
+              defineMessage({
+                  defaultMessage: '<b>{p1, plural, one{one} other{other}}</b>'
+              })`,
+      options: [
+        {
+          limit: 1,
+        },
+      ],
+      errors: [
+        {
+          message:
+            'Cannot hoist plural/select within a tag element. Please put the tag element inside each plural/select option',
+        },
+      ],
+    },
   ],
 })

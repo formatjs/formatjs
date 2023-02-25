@@ -60,8 +60,16 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
       return
     }
 
-    const hoistedAst = hoistSelectors(ast)
-    const complexity = calculateComplexity(hoistedAst)
+    let complexity = 0
+    try {
+      const hoistedAst = hoistSelectors(ast)
+      complexity = calculateComplexity(hoistedAst)
+    } catch (e) {
+      context.report({
+        node: messageNode as any,
+        message: e instanceof Error ? e.message : (e as string),
+      })
+    }
     if (complexity > config.limit) {
       context.report({
         node: messageNode as any,
