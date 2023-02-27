@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.9.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.8.0...eslint-plugin-formatjs@4.9.0) (2023-02-27)
+
+### Features
+
+* **eslint-plugin-formatjs:** more performant and versatile no-complex-selectors ([#4007](https://github.com/formatjs/formatjs/issues/4007)) ([4affca2](https://github.com/formatjs/formatjs/commit/4affca23beed7a0ec1bedc65e92bb0081a89b697))
+
 # [4.8.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.7.2...eslint-plugin-formatjs@4.8.0) (2023-02-25)
 
 ### Bug Fixes
