@@ -134,12 +134,7 @@ ruleTester.run('no-complex-selectors', noComplexSelectors, {
           limit: 1,
         },
       ],
-      errors: [
-        {
-          message:
-            'Cannot hoist plural/select within a tag element. Please put the tag element inside each plural/select option',
-        },
-      ],
+      errors: [{message: 'Message complexity is too high (2 vs limit at 1)'}],
     },
   ],
 })
