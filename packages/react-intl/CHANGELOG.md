@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/formatjs/formatjs/compare/react-intl@6.2.10...react-intl@6.3.0) (2023-03-15)
+
+### Features
+
+* **react-intl:** memoize Context into global ([e0dfde6](https://github.com/formatjs/formatjs/commit/e0dfde6af4210808f08aad32b54707f79f6f88fc))
+
 ## [6.2.10](https://github.com/formatjs/formatjs/compare/react-intl@6.2.9...react-intl@6.2.10) (2023-02-20)
 
 **Note:** Version bump only for package react-intl
