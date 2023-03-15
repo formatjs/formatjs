@@ -7,8 +7,21 @@ function getDisplayName(Component: React.ComponentType<any>): string {
   return Component.displayName || Component.name || 'Component'
 }
 
-// TODO: We should provide initial value here
-const IntlContext = React.createContext<IntlShape>(null as any)
+declare global {
+  interface Window {
+    __REACT_INTL_CONTEXT__: React.Context<IntlShape> | undefined
+  }
+}
+
+// This is primarily dealing with packaging systems where multiple copies of react-intl
+// might exist
+const IntlContext =
+  typeof window !== 'undefined'
+    ? window.__REACT_INTL_CONTEXT__ ||
+      (window.__REACT_INTL_CONTEXT__ = React.createContext<IntlShape>(
+        null as any
+      ))
+    : React.createContext<IntlShape>(null as any)
 const {Consumer: IntlConsumer, Provider: IntlProvider} = IntlContext
 
 export const Provider = IntlProvider
