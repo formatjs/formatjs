@@ -244,7 +244,7 @@ type CompileFn = <T = Record<string, MessageDescriptor>>(
 
 This is especially useful to convert from a TMS-specific format back to react-intl format.
 
-See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for examples.
+See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli-lib/src/formatters) for examples.
 
 ### `--out-file <output>`
 
