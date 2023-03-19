@@ -3,14 +3,21 @@
   "version": "independent",
   "command": {
     "version": {
+      "conventionalCommits": true,
       "message": "build: publish",
       "private": false,
       "exact": true,
-      "ignoreChanges": ["**/tests/**", "**/*.md"]
+      "createRelease": "github",
+      "ignoreChanges": [
+        "**/tests/**",
+        "**/*.md"
+      ]
     },
     "run": {
       "stream": true
     }
   },
-  "packages": ["packages/*"]
+  "packages": [
+    "packages/*"
+  ]
 }
