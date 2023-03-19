@@ -34,7 +34,7 @@ export interface MemoizeFunc<F extends Func> {
   (fn: F, options?: Options<F>): F
 }
 
-export default function memoize<F extends Func>(fn: F, options?: Options<F>) {
+export function memoize<F extends Func>(fn: F, options?: Options<F>) {
   const cache = options && options.cache ? options.cache : cacheDefault
 
   const serializer =

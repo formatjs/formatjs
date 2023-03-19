@@ -9,7 +9,7 @@ import {
   MessageFormatElement,
   ParserOptions,
 } from '@formatjs/icu-messageformat-parser'
-import memoize, {Cache, strategies} from '@formatjs/fast-memoize'
+import {memoize, Cache, strategies} from '@formatjs/fast-memoize'
 import {
   FormatterCache,
   Formatters,

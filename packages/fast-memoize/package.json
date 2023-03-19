@@ -4,8 +4,10 @@
   "description": "fork of fast-memoize and support esm",
   "main": "index.js",
   "module": "lib/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "exports": {
+    "import": "./lib/index.js",
+    "require": "./index.js",
+    "default": "./index.js"
   },
   "repository": {
     "type": "git",
