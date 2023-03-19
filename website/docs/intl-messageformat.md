@@ -277,7 +277,7 @@ For example:
 
 ```ts
 import IntlMessageFormat from 'intl-messageformat'
-import memoize from '@formatjs/fast-memoize'
+import {memoize} from '@formatjs/fast-memoize'
 const formatters = {
   getNumberFormat: memoize(
     (locale, opts) => new Intl.NumberFormat(locale, opts)
