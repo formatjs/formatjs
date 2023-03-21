@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@2.0.0...@formatjs/fast-memoize@2.0.1) (2023-03-21)
+
+### Bug Fixes
+
+* **@formatjs/fast-memoize:** remove exports field ([#4033](https://github.com/formatjs/formatjs/issues/4033)) ([88318f4](https://github.com/formatjs/formatjs/commit/88318f44619b27ded697b6994951e576928b8e3a))
+
 ## [1.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@1.2.7...@formatjs/fast-memoize@1.2.8) (2023-01-26)
 
 ### Bug Fixes
