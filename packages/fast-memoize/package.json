@@ -4,11 +4,6 @@
   "description": "fork of fast-memoize and support esm",
   "main": "index.js",
   "module": "lib/index.js",
-  "exports": {
-    "import": "./lib/index.js",
-    "require": "./index.js",
-    "default": "./index.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"
