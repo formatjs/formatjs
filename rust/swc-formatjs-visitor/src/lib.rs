@@ -14,10 +14,10 @@ use swc_core::{
     },
     ecma::{
         ast::{
-            CallExpr, Callee, Expr, ExprOrSpread, Ident, JSXAttr, JSXAttrName, JSXAttrOrSpread,
-            JSXAttrValue, JSXElementName, JSXExpr, JSXNamespacedName, JSXOpeningElement,
-            KeyValueProp, Lit, MemberProp, ModuleItem, ObjectLit, Prop, PropName, PropOrSpread,
-            Str,
+            ArrayLit, Bool, CallExpr, Callee, Expr, ExprOrSpread, Ident, JSXAttr, JSXAttrName,
+            JSXAttrOrSpread, JSXAttrValue, JSXElementName, JSXExpr, JSXNamespacedName,
+            JSXOpeningElement, KeyValueProp, Lit, MemberProp, ModuleItem, Number, ObjectLit, Prop,
+            PropName, PropOrSpread, Str,
         },
         visit::{noop_visit_mut_type, VisitMut, VisitMutWith},
     },
@@ -28,7 +28,7 @@ pub static WHITESPACE_REGEX: Lazy<Regexp> = Lazy::new(|| Regexp::new(r"\s+").unw
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", default)]
 pub struct FormatJSPluginOptions {
-    pub pragma: String,
+    pub pragma: Option<String>,
     pub remove_default_message: bool,
     pub id_interpolate_pattern: Option<String>,
     pub ast: bool,
@@ -841,23 +841,26 @@ impl<C: Clone + Comments, S: SourceMapper> FormatJSVisitor<C, S> {
         }
     }
     fn read_pragma(&mut self, span_lo: BytePos, span_hi: BytePos) {
-        let mut comments = self.comments.get_leading(span_lo).unwrap_or_default();
-        comments.append(&mut self.comments.get_leading(span_hi).unwrap_or_default());
+        if let Some(pragma) = &self.options.pragma {
+            let mut comments = self.comments.get_leading(span_lo).unwrap_or_default();
+            comments.append(&mut self.comments.get_leading(span_hi).unwrap_or_default());
 
-        let pragma = self.options.pragma.as_str();
+            let pragma = pragma.as_str();
 
-        for comment in comments {
-            let comment_text = &*comment.text;
-            if comment_text.contains(pragma) {
-                let value = comment_text.split(pragma).nth(1);
-                if let Some(value) = value {
-                    let value = WHITESPACE_REGEX.split(value.trim());
-                    for kv in value {
-                        let mut kv = kv.split(":");
-                        self.meta.insert(
-                            kv.next().unwrap().to_string(),
-                            kv.next().unwrap().to_string(),
-                        );
+            for comment in comments {
+                let comment_text = &*comment.text;
+                if comment_text.contains(pragma) {
+                    let value = comment_text.split(pragma).nth(1);
+                    if let Some(value) = value {
+                        let value = WHITESPACE_REGEX.split(value.trim());
+                        for kv in value {
+                            let mut kv = kv.split(":");
+                            if let Some(k) = kv.next() {
+                                if let Some(v) = kv.next() {
+                                    self.meta.insert(k.to_string(), v.to_string());
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -974,15 +977,9 @@ impl<C: Clone + Comments, S: SourceMapper> FormatJSVisitor<C, S> {
                                                             ),
                                                         );
                                                         if let Ok(parsed) = parser.parse() {
-                                                            let s = serde_json::to_string(&parsed)
+                                                            let v = serde_json::to_value(&parsed)
                                                                 .unwrap();
-                                                            keyvalue.value = Box::new(Expr::Lit(
-                                                                Lit::Str(Str {
-                                                                    span: DUMMY_SP,
-                                                                    value: s.into(),
-                                                                    raw: None,
-                                                                }),
-                                                            ));
+                                                            keyvalue.value = json_value_to_expr(&v);
                                                         }
                                                     } else {
                                                         keyvalue.value =
@@ -1237,6 +1234,56 @@ impl<C: Clone + Comments, S: SourceMapper> VisitMut for FormatJSVisitor<C, S> {
             );
         }
     }
+}
+
+fn json_value_to_expr(json_value: &serde_json::Value) -> Box<Expr> {
+    Box::new(match json_value {
+        serde_json::Value::Null => {
+            Expr::Lit(Lit::Null(swc_core::ecma::ast::Null { span: DUMMY_SP }))
+        }
+        serde_json::Value::Bool(v) => Expr::Lit(Lit::Bool(Bool {
+            span: DUMMY_SP,
+            value: *v,
+        })),
+        serde_json::Value::Number(v) => Expr::Lit(Lit::Num(Number {
+            span: DUMMY_SP,
+            raw: None,
+            value: v.as_f64().unwrap(),
+        })),
+        serde_json::Value::String(v) => Expr::Lit(Lit::Str(Str {
+            span: DUMMY_SP,
+            raw: None,
+            value: v.as_str().into(),
+        })),
+        serde_json::Value::Array(v) => Expr::Array(ArrayLit {
+            span: DUMMY_SP,
+            elems: v
+                .iter()
+                .map(|elem| {
+                    Some(ExprOrSpread {
+                        spread: None,
+                        expr: json_value_to_expr(elem),
+                    })
+                })
+                .collect(),
+        }),
+        serde_json::Value::Object(v) => Expr::Object(ObjectLit {
+            span: DUMMY_SP,
+            props: v
+                .iter()
+                .map(|(key, value)| {
+                    PropOrSpread::Prop(Box::new(Prop::KeyValue(KeyValueProp {
+                        key: PropName::Ident(Ident {
+                            span: DUMMY_SP,
+                            sym: key.to_string().into(),
+                            optional: false,
+                        }),
+                        value: json_value_to_expr(value),
+                    })))
+                })
+                .collect(),
+        }),
+    })
 }
 
 pub fn create_formatjs_visitor<C: Clone + Comments, S: SourceMapper>(
