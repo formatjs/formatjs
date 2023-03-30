@@ -84,12 +84,6 @@ export type NumberElement = SimpleFormatElement<TYPE.number, NumberSkeleton>
 export type DateElement = SimpleFormatElement<TYPE.date, DateTimeSkeleton>
 export type TimeElement = SimpleFormatElement<TYPE.time, DateTimeSkeleton>
 
-export interface SelectOption {
-  id: string
-  value: MessageFormatElement[]
-  location?: Location
-}
-
 export type ValidPluralRule =
   | 'zero'
   | 'one'
