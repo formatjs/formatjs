@@ -163,10 +163,6 @@ Additional component names to extract messages from, e.g: `['FormattedFooBarMess
 
 Additional function names to extract messages from, e.g: `['$t']`.
 
-### `--output-empty-json`
-
-Output file with empty [] if src has no messages. For build systems like [bazel](https://bazel.build/) that relies on specific output mapping, not writing out a file can cause issues. (default: `false`)
-
 ### `--ignore [files]`
 
 List of glob paths to **not** extract translations from.
