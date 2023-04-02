@@ -42,7 +42,7 @@ Add the following command to your `package.json` `scripts`:
 }
 ```
 
-We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
+We've built <https://www.npmjs.com/package/@formatjs/cli> that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
 import {defineMessages, defineMessage} from 'react-intl'
@@ -240,7 +240,7 @@ type CompileFn = <T = Record<string, MessageDescriptor>>(
 
 This is especially useful to convert from a TMS-specific format back to react-intl format.
 
-See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for examples.
+See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli-lib/src/formatters) for examples.
 
 ### `--out-file <output>`
 
@@ -436,7 +436,7 @@ export const compile: CompileFn<VendorJson> = () => {}
 export const compareMessages: Comparator = () => {}
 ```
 
-Take a look at our [builtin formatter code](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for some examples.
+Take a look at our [builtin formatter code](https://github.com/formatjs/formatjs/tree/main/packages/cli-lib/src/formatters) for some examples.
 
 ## Node API
 
