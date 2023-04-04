@@ -17,8 +17,8 @@
 /zic/Asia/Singapore  Sun Feb 15 16:30:00 1942 UT = Mon Feb 16 01:30:00 1942 +09 isdst=0 gmtoff=32400
 /zic/Asia/Singapore  Tue Sep 11 14:59:59 1945 UT = Tue Sep 11 23:59:59 1945 +09 isdst=0 gmtoff=32400
 /zic/Asia/Singapore  Tue Sep 11 15:00:00 1945 UT = Tue Sep 11 22:30:00 1945 +0730 isdst=0 gmtoff=27000
-/zic/Asia/Singapore  Thu Dec 31 16:29:59 1981 UT = Thu Dec 31 23:59:59 1981 +0730 isdst=0 gmtoff=27000
-/zic/Asia/Singapore  Thu Dec 31 16:30:00 1981 UT = Fri Jan  1 00:30:00 1982 +08 isdst=0 gmtoff=28800
+/zic/Asia/Singapore  Thu Dec 31 15:59:59 1981 UT = Thu Dec 31 23:29:59 1981 +0730 isdst=0 gmtoff=27000
+/zic/Asia/Singapore  Thu Dec 31 16:00:00 1981 UT = Fri Jan  1 00:00:00 1982 +08 isdst=0 gmtoff=28800
 /zic/Asia/Singapore  Wed Dec 31 15:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +08 isdst=0 gmtoff=28800
 /zic/Asia/Singapore  Wed Dec 31 16:00:00 2147485547 UT = 67768036191648000 (localtime failed)
 /zic/Asia/Singapore  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)

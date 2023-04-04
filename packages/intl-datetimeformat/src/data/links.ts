@@ -204,6 +204,7 @@ export default {
   "America/Fort_Wayne": "America/Indiana/Indianapolis",
   "America/Montreal": "America/Toronto",
   "America/Nipigon": "America/Toronto",
+  "America/Pangnirtung": "America/Iqaluit",
   "America/Porto_Acre": "America/Rio_Branco",
   "America/Rainy_River": "America/Winnipeg",
   "America/Rosario": "America/Argentina/Cordoba",

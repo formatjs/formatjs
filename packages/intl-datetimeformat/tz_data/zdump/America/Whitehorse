@@ -23,8 +23,8 @@
 /zic/America/Whitehorse  Sun Apr 25 09:00:00 1965 UT = Sun Apr 25 02:00:00 1965 YDDT isdst=1 gmtoff=-25200
 /zic/America/Whitehorse  Sun Oct 31 08:59:59 1965 UT = Sun Oct 31 01:59:59 1965 YDDT isdst=1 gmtoff=-25200
 /zic/America/Whitehorse  Sun Oct 31 09:00:00 1965 UT = Sun Oct 31 00:00:00 1965 YST isdst=0 gmtoff=-32400
-/zic/America/Whitehorse  Sun May 28 08:59:59 1967 UT = Sat May 27 23:59:59 1967 YST isdst=0 gmtoff=-32400
-/zic/America/Whitehorse  Sun May 28 09:00:00 1967 UT = Sun May 28 01:00:00 1967 PST isdst=0 gmtoff=-28800
+/zic/America/Whitehorse  Sun Feb 27 08:59:59 1966 UT = Sat Feb 26 23:59:59 1966 YST isdst=0 gmtoff=-32400
+/zic/America/Whitehorse  Sun Feb 27 09:00:00 1966 UT = Sun Feb 27 01:00:00 1966 PST isdst=0 gmtoff=-28800
 /zic/America/Whitehorse  Sun Apr 27 09:59:59 1980 UT = Sun Apr 27 01:59:59 1980 PST isdst=0 gmtoff=-28800
 /zic/America/Whitehorse  Sun Apr 27 10:00:00 1980 UT = Sun Apr 27 03:00:00 1980 PDT isdst=1 gmtoff=-25200
 /zic/America/Whitehorse  Sun Oct 26 08:59:59 1980 UT = Sun Oct 26 01:59:59 1980 PDT isdst=1 gmtoff=-25200
