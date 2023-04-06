@@ -62,7 +62,6 @@ export const transform = (
 
   const testPluginOptions = {
     ...pluginOptions,
-    pragma: '@react-intl',
     debugExtractedMessagesComment: true,
   }
 

@@ -89,7 +89,18 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
       }
     }
 
-    const ast = parse(defaultMessage, {ignoreTag: settings.ignoreTag})
+    let ast: MessageFormatElement[]
+
+    try {
+      ast = parse(defaultMessage, {ignoreTag: settings.ignoreTag})
+    } catch (e) {
+      context.report({
+        node: messageNode as any,
+        message: e instanceof Error ? e.message : String(e),
+      })
+      continue
+    }
+
     const placeholderNames = collectPlaceholderNames(ast)
 
     const missingPlaceholders: string[] = []

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.9.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.9.0...eslint-plugin-formatjs@4.9.1) (2023-03-28)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** gracefully handle invalid message in enforce-placeholders ([6b64a3e](https://github.com/formatjs/formatjs/commit/6b64a3e2dd911cafcff79dbf1f5e7a11144515fc))
+
 # [4.9.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.8.0...eslint-plugin-formatjs@4.9.0) (2023-02-27)
 
 ### Features

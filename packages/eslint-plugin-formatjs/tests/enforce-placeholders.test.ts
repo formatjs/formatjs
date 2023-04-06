@@ -201,5 +201,18 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         },
       ],
     },
+    // Does not crash when there are parser errors
+    {
+      code: `
+      {intl.formatMessage({ 
+        defaultMessage: "My name is {name" 
+      })}
+      `,
+      errors: [
+        {
+          message: 'EXPECT_ARGUMENT_CLOSING_BRACE',
+        },
+      ],
+    },
   ],
 })
