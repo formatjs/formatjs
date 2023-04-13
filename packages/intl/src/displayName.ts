@@ -5,7 +5,7 @@ import {
   DisplayNames as IntlDisplayNames,
 } from '@formatjs/intl-displaynames'
 import {FormatError, ErrorCode} from 'intl-messageformat'
-import {IntlErrorCode, IntlError} from './error'
+import {IntlFormatError} from './error'
 
 const DISPLAY_NAMES_OPTONS: Array<keyof DisplayNamesOptions> = [
   'style',
@@ -44,12 +44,6 @@ Try polyfilling it using "@formatjs/intl-displaynames"
   try {
     return getDisplayNames(locale, filteredOptions).of(value)
   } catch (e) {
-    onError(
-      new IntlError(
-        IntlErrorCode.FORMAT_ERROR,
-        'Error formatting display name.',
-        e
-      )
-    )
+    onError(new IntlFormatError('Error formatting display name.', locale, e))
   }
 }
