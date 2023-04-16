@@ -80,6 +80,7 @@ aspect_jest_test(
         ["compile/**/*"],
         exclude = ["compile/__snapshots__/**/*"],
     ),
+    node_modules="//:node_modules",
     # To update snapshots run,
     #    bazel run //packages/cli/integration-tests:integration-compile_update_snapshots
     snapshots = glob(["compile/__snapshots__/*.snap"]),

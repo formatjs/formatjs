@@ -45,5 +45,6 @@ aspect_jest_test(
     ) + glob(
         ["tests/fixtures/**/*"],
     ),
+    node_modules="//:node_modules",
     snapshots = glob(["tests/__snapshots__/*.snap"])
 )
