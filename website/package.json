@@ -29,6 +29,6 @@
     "prism-react-renderer": "1",
     "react-intl": "workspace:*",
     "react-live": "2",
-    "typescript": "^4.7"
+    "typescript": "^4.7 || 5"
   }
 }

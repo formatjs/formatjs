@@ -19,6 +19,7 @@
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "contributors": [
     "Aarni Koskela <akx@iki.fi>",
+    "Aleksander Vaskevich <vaskevic.an@gmail.com>",
     "Alexis Deveria <adeveria@gmail.com>",
     "Andrew McCloud <andrew.mccloud@formsdirect.net>",
     "Antoine <Ivraie@users.noreply.github.com>",
@@ -145,7 +146,7 @@
   },
   "peerDependencies": {
     "react": "^16.6.0 || 17 || 18",
-    "typescript": "^4.7"
+    "typescript": "^4.7 || 5"
   },
   "peerDependenciesMeta": {
     "typescript": {
