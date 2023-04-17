@@ -5,14 +5,14 @@ exports[`emit asserts for [special] extractSourceLocation 1`] = `
 import { FormattedMessage } from 'react-intl';
 export default class Foo extends Component {
     render() {
-        return <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World!\\"/>;
+        return <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>;
     }
 }
 "
 `;
 
 exports[`emit asserts for [special] extractSourceLocation 2`] = `
-Object {
+{
   "defaultMessage": "Hello World!",
   "end": 220,
   "file": StringContaining "extractSourceLocation.tsx",
@@ -22,38 +22,38 @@ Object {
 `;
 
 exports[`emit asserts for FormattedMessage 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 export default class Foo extends Component {
     render() {
         return (<p>
-        <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World! {foo, number}\\" values={{
+        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World! {foo, number}" values={{
                 foo: 1,
             }}/>
-        <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World! {foo, number}\\" values={{
+        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World! {foo, number}" values={{
                 foo: 1,
             }}/>
-        <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World! {foo, number}\\" values={{
+        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World! {foo, number}" values={{
                 foo: 1,
             }}/>
       </p>);
     }
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello World! {foo, number}",
       "description": "The default message.",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello World! {foo, number}",
       "description": "The default message.",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello World! {foo, number}",
       "description": "The default message.",
       "id": "foo.bar.baz",
@@ -63,21 +63,21 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for additionalComponentNames 1`] = `
-Object {
+{
   "code": "// @react-intl project:foo
 import React, { Component } from 'react';
 function CustomMessage() { }
 export default class Foo extends Component {
     render() {
-        return (<CustomMessage id=\\"greeting-world\\" defaultMessage=\\"Hello World!\\"/>);
+        return (<CustomMessage id="greeting-world" defaultMessage="Hello World!"/>);
     }
 }
 ",
-  "meta": Object {
+  "meta": {
     "project": "foo",
   },
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "Greeting to the world",
       "id": "greeting-world",
@@ -87,25 +87,25 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for additionalFunctionNames 1`] = `
-Object {
+{
   "code": "// @react-intl project:foo
 import React, { Component } from 'react';
 function CustomMessage() { }
 export default class Foo extends Component {
     render() {
-        return (<CustomMessage id={formatMessage({ id: \\"rL0Y20zC+F\\", defaultMessage: \\"foo\\" })} description={$formatMessage({ id: \\"rL0Y20zC+F\\", defaultMessage: \\"foo\\" })} defaultMessage=\\"Hello World!\\"/>);
+        return (<CustomMessage id={formatMessage({ id: "rL0Y20zC+F", defaultMessage: "foo" })} description={$formatMessage({ id: "rL0Y20zC+F", defaultMessage: "foo" })} defaultMessage="Hello World!"/>);
     }
 }
 ",
-  "meta": Object {
+  "meta": {
     "project": "foo",
   },
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "foo",
       "id": "rL0Y20zC+F",
     },
-    Object {
+    {
       "defaultMessage": "foo",
       "id": "rL0Y20zC+F",
     },
@@ -114,19 +114,19 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for ast 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { defineMessages, FormattedMessage, defineMessage } from 'react-intl';
-const msgs = defineMessages({ header: { id: \\"HELLO.foo.bar.baz.12.string\\", defaultMessage: [{ type: 0, value: \\"Hello World!\\" }] }, content: { id: \\"HELLO.foo.bar.biff.12.object\\", defaultMessage: [{ type: 0, value: \\"Hello Nurse!\\" }] } });
-defineMessage({ id: \\"HELLO..13.string\\", defaultMessage: [{ type: 0, value: \\"defineMessage\\" }] });
+const msgs = defineMessages({ header: { id: "HELLO.foo.bar.baz.12.string", defaultMessage: [{ type: 0, value: "Hello World!" }] }, content: { id: "HELLO.foo.bar.biff.12.object", defaultMessage: [{ type: 0, value: "Hello Nurse!" }] } });
+defineMessage({ id: "HELLO..13.string", defaultMessage: [{ type: 0, value: "defineMessage" }] });
 export default class Foo extends Component {
     render() {
         const { intl } = this.props;
         const { formatMessage } = intl;
-        this.props.intl.formatMessage({ id: \\"HELLO..5.string\\", defaultMessage: [{ type: 0, value: \\"no-id\\" }] });
-        intl.formatMessage({ id: \\"HELLO..18.string\\", defaultMessage: [{ type: 0, value: \\"intl.formatMessage\\" }] });
-        formatMessage({ id: \\"HELLO..13.string\\", defaultMessage: [{ type: 0, value: \\"formatMessage\\" }] });
-        formatMessage({ id: \\"HELLO..39.string\\", defaultMessage: [{ type: 6, value: \\"count\\", options: { \\"=0\\": { value: [{ type: 0, value: \\"zero\\" }] }, other: { value: [{ type: 0, value: \\"other\\" }] } }, offset: 0, pluralType: \\"cardinal\\" }] });
+        this.props.intl.formatMessage({ id: "HELLO..5.string", defaultMessage: [{ type: 0, value: "no-id" }] });
+        intl.formatMessage({ id: "HELLO..18.string", defaultMessage: [{ type: 0, value: "intl.formatMessage" }] });
+        formatMessage({ id: "HELLO..13.string", defaultMessage: [{ type: 0, value: "formatMessage" }] });
+        formatMessage({ id: "HELLO..39.string", defaultMessage: [{ type: 6, value: "count", options: { "=0": { value: [{ type: 0, value: "zero" }] }, other: { value: [{ type: 0, value: "other" }] } }, offset: 0, pluralType: "cardinal" }] });
         return (<div>
         <h1>
           <FormattedMessage {...msgs.header}/>
@@ -134,73 +134,73 @@ export default class Foo extends Component {
         <p>
           <FormattedMessage {...msgs.content}/>
         </p>
-        <FormattedMessage id=\\"HELLO.foo.bar.zoo.18.object\\" defaultMessage={[{ type: 0, value: \\"Hello World! \\" }, { type: 1, value: \\"abc\\" }]} values={{ abc: 2 }}/>
-        <FormattedMessage id=\\"HELLO..18.object\\" defaultMessage={[{ type: 0, value: \\"Hello World! \\" }, { type: 1, value: \\"abc\\" }]} values={{ abc: 2 }}/>
+        <FormattedMessage id="HELLO.foo.bar.zoo.18.object" defaultMessage={[{ type: 0, value: "Hello World! " }, { type: 1, value: "abc" }]} values={{ abc: 2 }}/>
+        <FormattedMessage id="HELLO..18.object" defaultMessage={[{ type: 0, value: "Hello World! " }, { type: 1, value: "abc" }]} values={{ abc: 2 }}/>
 
-        <FormattedMessage id=\\"HELLO..15.object\\" defaultMessage={[{ type: 2, value: \\"value\\", style: null }]} values={{ abc: 2 }}/>
+        <FormattedMessage id="HELLO..15.object" defaultMessage={[{ type: 2, value: "value", style: null }]} values={{ abc: 2 }}/>
       </div>);
     }
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "HELLO.foo.bar.baz.12.string",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator.",
       },
       "id": "HELLO.foo.bar.biff.12.object",
     },
-    Object {
+    {
       "defaultMessage": "defineMessage",
       "description": "foo",
       "id": "HELLO..13.string",
     },
-    Object {
+    {
       "defaultMessage": "no-id",
       "description": "no-id",
       "id": "HELLO..5.string",
     },
-    Object {
+    {
       "defaultMessage": "intl.formatMessage",
       "description": "no-id",
       "id": "HELLO..18.string",
     },
-    Object {
+    {
       "defaultMessage": "formatMessage",
       "description": "no-id",
       "id": "HELLO..13.string",
     },
-    Object {
+    {
       "defaultMessage": "{count, plural, =0 {zero} other{other}}",
       "description": "no-id",
       "id": "HELLO..39.string",
     },
-    Object {
+    {
       "defaultMessage": "Hello World! {abc}",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator. Another description",
       },
       "id": "HELLO.foo.bar.zoo.18.object",
     },
-    Object {
+    {
       "defaultMessage": "Hello World! {abc}",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator. Another description",
       },
       "id": "HELLO..18.object",
     },
-    Object {
+    {
       "defaultMessage": "{value, number}",
-      "description": Object {
+      "description": {
         "metadata": "number",
         "text": "number",
       },
@@ -211,11 +211,11 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for defineMessages 1`] = `
-Object {
+{
   "code": "// @react-intl project:foo file:bar
 import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-const msgs = defineMessages({ header: { id: \\"foo.bar.baz\\", defaultMessage: \\"Hello World!\\" }, content: { id: \\"foo.bar.biff\\", defaultMessage: \\"Hello Nurse!\\" }, kittens: { id: \\"app.home.kittens\\", defaultMessage: \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\" }, trailingWhitespace: { id: \\"trailing.ws\\", defaultMessage: \\"Some whitespace\\" }, escaped: { id: \\"escaped.apostrophe\\", defaultMessage: \\"A quoted value ''{value}'\\" }, quoted: { id: \\"escaped.apostrophe\\", defaultMessage: \\"What's going on\\" }, newline: { id: \\"newline\\", defaultMessage: \\"this is a message\\" } });
+const msgs = defineMessages({ header: { id: "foo.bar.baz", defaultMessage: "Hello World!" }, content: { id: "foo.bar.biff", defaultMessage: "Hello Nurse!" }, kittens: { id: "app.home.kittens", defaultMessage: "{count, plural, =0 {\\uD83D\\uDE2D} one {# kitten} other {# kittens}}" }, trailingWhitespace: { id: "trailing.ws", defaultMessage: "Some whitespace" }, escaped: { id: "escaped.apostrophe", defaultMessage: "A quoted value ''{value}'" }, quoted: { id: "escaped.apostrophe", defaultMessage: "What's going on" }, newline: { id: "newline", defaultMessage: "this is a message" } });
 export default class Foo extends Component {
     render() {
         return (<div>
@@ -227,53 +227,53 @@ export default class Foo extends Component {
         </p>
         <p>
           <FormattedMessage {...msgs.kittens}/>
-          <FormattedMessage id=\\"inline\\" defaultMessage=\\"formatted message\\"/>
+          <FormattedMessage id="inline" defaultMessage="formatted message"/>
         </p>
       </div>);
     }
 }
 ",
-  "meta": Object {
+  "meta": {
     "file": "bar",
     "project": "foo",
   },
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
       "description": "Another message",
       "id": "foo.bar.biff",
     },
-    Object {
+    {
       "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
       "description": "Counts kittens",
       "id": "app.home.kittens",
     },
-    Object {
+    {
       "defaultMessage": "Some whitespace",
       "description": "Whitespace",
       "id": "trailing.ws",
     },
-    Object {
+    {
       "defaultMessage": "A quoted value ''{value}'",
       "description": "Escaped apostrophe",
       "id": "escaped.apostrophe",
     },
-    Object {
+    {
       "defaultMessage": "What's going on",
       "description": "Escaped apostrophe",
       "id": "escaped.apostrophe",
     },
-    Object {
+    {
       "defaultMessage": "this is a message",
       "description": "this is     a     description",
       "id": "newline",
     },
-    Object {
+    {
       "defaultMessage": "formatted message",
       "description": "foo",
       "id": "inline",
@@ -283,11 +283,11 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for defineMessagesPreserveWhitespace 1`] = `
-Object {
+{
   "code": "// @react-intl project:foo file:bar
 import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-const msgs = defineMessages({ header: { id: \\"foo.bar.baz\\", defaultMessage: \\"Hello World!\\" }, content: { id: \\"foo.bar.biff\\", defaultMessage: \\"Hello Nurse!\\" }, kittens: { id: \\"app.home.kittens\\", defaultMessage: \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\" }, trailingWhitespace: { id: \\"trailing.ws\\", defaultMessage: \\"   Some whitespace   \\" }, escaped: { id: \\"escaped.apostrophe\\", defaultMessage: \\"A quoted value ''{value}'\\" }, quoted: { id: \\"escaped.apostrophe\\", defaultMessage: \\"What's going on\\" }, newline: { id: \\"newline\\", defaultMessage: \\"this is     a message\\" }, linebreak: { id: \\"linebreak\\", defaultMessage: \\"this is\\\\na message\\" }, templateLinebreak: { id: \\"templateLinebreak\\", defaultMessage: \\"this is\\\\n    a message\\" } });
+const msgs = defineMessages({ header: { id: "foo.bar.baz", defaultMessage: "Hello World!" }, content: { id: "foo.bar.biff", defaultMessage: "Hello Nurse!" }, kittens: { id: "app.home.kittens", defaultMessage: "{count, plural, =0 {\\uD83D\\uDE2D} one {# kitten} other {# kittens}}" }, trailingWhitespace: { id: "trailing.ws", defaultMessage: "   Some whitespace   " }, escaped: { id: "escaped.apostrophe", defaultMessage: "A quoted value ''{value}'" }, quoted: { id: "escaped.apostrophe", defaultMessage: "What's going on" }, newline: { id: "newline", defaultMessage: "this is     a message" }, linebreak: { id: "linebreak", defaultMessage: "this is\\na message" }, templateLinebreak: { id: "templateLinebreak", defaultMessage: "this is\\n    a message" } });
 export default class Foo extends Component {
     render() {
         return (<div>
@@ -299,54 +299,54 @@ export default class Foo extends Component {
         </p>
         <p>
           <FormattedMessage {...msgs.kittens}/>
-          <FormattedMessage id=\\"inline\\" defaultMessage=\\"formatted message\\"/>
-          <FormattedMessage id=\\"inline.linebreak\\" defaultMessage=\\"formatted message&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;with linebreak\\"/>
+          <FormattedMessage id="inline" defaultMessage="formatted message"/>
+          <FormattedMessage id="inline.linebreak" defaultMessage="formatted message&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;with linebreak"/>
         </p>
       </div>);
     }
 }
 ",
-  "meta": Object {
+  "meta": {
     "file": "bar",
     "project": "foo",
   },
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
       "description": "Another message",
       "id": "foo.bar.biff",
     },
-    Object {
+    {
       "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
       "description": "Counts kittens",
       "id": "app.home.kittens",
     },
-    Object {
+    {
       "defaultMessage": "   Some whitespace   ",
       "description": "Whitespace",
       "id": "trailing.ws",
     },
-    Object {
+    {
       "defaultMessage": "A quoted value ''{value}'",
       "description": "Escaped apostrophe",
       "id": "escaped.apostrophe",
     },
-    Object {
+    {
       "defaultMessage": "What's going on",
       "description": "Escaped apostrophe",
       "id": "escaped.apostrophe",
     },
-    Object {
+    {
       "defaultMessage": "this is     a message",
       "description": "this is     a     description",
       "id": "newline",
     },
-    Object {
+    {
       "defaultMessage": "this is
 a message",
       "description": "this is
@@ -354,7 +354,7 @@ a
 description",
       "id": "linebreak",
     },
-    Object {
+    {
       "defaultMessage": "this is
     a message",
       "description": "this is
@@ -362,12 +362,12 @@ description",
     description",
       "id": "templateLinebreak",
     },
-    Object {
+    {
       "defaultMessage": "formatted message",
       "description": "foo",
       "id": "inline",
     },
-    Object {
+    {
       "defaultMessage": "formatted message
 						with linebreak",
       "description": "foo
@@ -379,20 +379,20 @@ description",
 `;
 
 exports[`emit asserts for descriptionsAsObjects 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 export default class Foo extends Component {
     render() {
-        return (<FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World!\\"/>);
+        return (<FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>);
     }
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator.",
       },
@@ -403,7 +403,7 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for extractFromFormatMessage 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 const objectPointer = {
@@ -415,8 +415,8 @@ class Foo extends Component {
     render() {
         const { intl } = this.props;
         const msgs = {
-            baz: this.props.intl.formatMessage({ id: \\"foo.bar.baz\\", defaultMessage: \\"Hello World!\\" }),
-            biff: intl.formatMessage({ id: \\"foo.bar.biff\\", defaultMessage: \\"Hello Nurse!\\" }),
+            baz: this.props.intl.formatMessage({ id: "foo.bar.baz", defaultMessage: "Hello World!" }),
+            biff: intl.formatMessage({ id: "foo.bar.biff", defaultMessage: "Hello Nurse!" }),
             invalid: this.props.intl.formatMessage(objectPointer),
             invalid2: this.props.intl.formatMessage({
                 id,
@@ -427,32 +427,32 @@ class Foo extends Component {
         return (<div>
         <h1>{msgs.header}</h1>
         <p>{msgs.content}</p>
-        <input placeholder={intl.formatMessage({ id: \\"A/2tFVt1SI\\", defaultMessage: \\"inline\\" })}/>
+        <input placeholder={intl.formatMessage({ id: "A/2tFVt1SI", defaultMessage: "inline" })}/>
         <span>
-          <FormattedMessage id=\\"foo\\" defaultMessage=\\"bar\\"/>
+          <FormattedMessage id="foo" defaultMessage="bar"/>
         </span>
       </div>);
     }
 }
 export default injectIntl(Foo);
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
       "description": "Another message",
       "id": "foo.bar.biff",
     },
-    Object {
+    {
       "defaultMessage": "inline",
       "id": "A/2tFVt1SI",
     },
-    Object {
+    {
       "defaultMessage": "bar",
       "description": "baz",
       "id": "foo",
@@ -462,49 +462,49 @@ export default injectIntl(Foo);
 `;
 
 exports[`emit asserts for extractFromFormatMessageStateless 1`] = `
-Object {
+{
   "code": "import { FormattedMessage, injectIntl, useIntl } from 'react-intl';
 import React from 'react';
 function myFunction(param1, { formatMessage, formatDate }) {
-    return (formatMessage({ id: \\"inline1\\", defaultMessage: \\"Hello params!\\" }) + formatDate(new Date()));
+    return (formatMessage({ id: "inline1", defaultMessage: "Hello params!" }) + formatDate(new Date()));
 }
 const child = myFunction(filterable, intl);
 function SFC() {
     const { formatMessage } = useIntl();
-    return formatMessage({ id: \\"hook\\", defaultMessage: \\"hook\\" });
+    return formatMessage({ id: "hook", defaultMessage: "hook" });
 }
 const Foo = ({ intl: { formatMessage } }) => {
     const msgs = {
-        qux: formatMessage({ id: \\"foo.bar.quux\\", defaultMessage: \\"Hello Stateless!\\" }),
+        qux: formatMessage({ id: "foo.bar.quux", defaultMessage: "Hello Stateless!" }),
     };
     return (<div>
       <h1>{msgs.header}</h1>
       <p>{msgs.content}</p>
       <span>
-        <FormattedMessage id=\\"foo\\" defaultMessage=\\"bar\\"/>
+        <FormattedMessage id="foo" defaultMessage="bar"/>
       </span>
     </div>);
 };
 export default injectIntl(Foo);
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello params!",
       "description": "A stateless message",
       "id": "inline1",
     },
-    Object {
+    {
       "defaultMessage": "hook",
       "description": "hook",
       "id": "hook",
     },
-    Object {
+    {
       "defaultMessage": "Hello Stateless!",
       "description": "A stateless message",
       "id": "foo.bar.quux",
     },
-    Object {
+    {
       "defaultMessage": "bar",
       "description": "baz",
       "id": "foo",
@@ -514,7 +514,7 @@ export default injectIntl(Foo);
 `;
 
 exports[`emit asserts for formatMessageCall 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 const objectPointer = {
@@ -525,45 +525,45 @@ const objectPointer = {
 class Foo extends Component {
     render() {
         const msgs = {
-            baz: formatMessage({ id: \\"foo.bar.baz\\", defaultMessage: \\"Hello World!\\" }),
-            baz2: this.props.intl.$formatMessage({ id: \\"foo.bar.baz2\\", defaultMessage: \\"Hello World!\\" }),
-            biff: $formatMessage({ id: \\"foo.bar.biff\\", defaultMessage: \\"Hello Nurse!\\" }),
+            baz: formatMessage({ id: "foo.bar.baz", defaultMessage: "Hello World!" }),
+            baz2: this.props.intl.$formatMessage({ id: "foo.bar.baz2", defaultMessage: "Hello World!" }),
+            biff: $formatMessage({ id: "foo.bar.biff", defaultMessage: "Hello Nurse!" }),
             invalid: this.props.intl.formatMessage(objectPointer),
         };
         return (<div>
         <h1>{msgs.header}</h1>
         <p>{msgs.content}</p>
-        <input placeholder={intl.formatMessage({ id: \\"A/2tFVt1SI\\", defaultMessage: \\"inline\\" })}/>
+        <input placeholder={intl.formatMessage({ id: "A/2tFVt1SI", defaultMessage: "inline" })}/>
         <span>
-          <FormattedMessage id=\\"foo\\" defaultMessage=\\"bar\\"/>
+          <FormattedMessage id="foo" defaultMessage="bar"/>
         </span>
       </div>);
     }
 }
 export default injectIntl(Foo);
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message $$$",
       "id": "foo.bar.baz2",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
       "description": "Another message",
       "id": "foo.bar.biff",
     },
-    Object {
+    {
       "defaultMessage": "inline",
       "id": "A/2tFVt1SI",
     },
-    Object {
+    {
       "defaultMessage": "bar",
       "description": "baz",
       "id": "foo",
@@ -573,32 +573,32 @@ export default injectIntl(Foo);
 `;
 
 exports[`emit asserts for inline 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 export default class Foo extends Component {
     render() {
         return (<div>
-        <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World!\\"/>
-        {defineMessage({ id: \\"header\\", defaultMessage: \\"Hello World!\\" })}
-        {defineMessage({ id: \\"header2\\", defaultMessage: \\"Hello World!\\" })}
+        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>
+        {defineMessage({ id: "header", defaultMessage: "Hello World!" })}
+        {defineMessage({ id: "header2", defaultMessage: "Hello World!" })}
       </div>);
     }
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message.",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "header",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "header2",
@@ -608,18 +608,18 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for nested 1`] = `
-Object {
-  "code": "intl.formatMessage({ id: \\"HELLO..13.undefined\\", defaultMessage: \\"layer1 {name}\\" }, {
-    name: intl.formatMessage({ id: \\"HELLO..6.undefined\\", defaultMessage: \\"layer2\\" }),
+{
+  "code": "intl.formatMessage({ id: "HELLO..13.undefined", defaultMessage: "layer1 {name}" }, {
+    name: intl.formatMessage({ id: "HELLO..6.undefined", defaultMessage: "layer2" }),
 });
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "layer1 {name}",
       "id": "HELLO..13.undefined",
     },
-    Object {
+    {
       "defaultMessage": "layer2",
       "id": "HELLO..6.undefined",
     },
@@ -628,52 +628,52 @@ Object {
 `;
 
 exports[`emit asserts for noImport 1`] = `
-Object {
+{
   "code": "export function foo() {
-    props.intl.formatMessage({ id: \\"hYpBl\\", defaultMessage: \\"props {intl}\\" }, { bar: 'bar' });
-    this.props.intl.formatMessage({ id: \\"tBZlS\\", defaultMessage: \\"this props {intl}\\" }, { bar: 'bar' });
-    this.props.intl.formatMessage({ id: \\"T+ycr\\", defaultMessage: \\"this props {intl}\\" }, { bar: 'bar' });
-    this.props.intl.formatMessage({ id: \\"T+ycr\\", defaultMessage: \\"this props {intl}\\" }, { bar: 'bar' });
-    this.props.intl.formatMessage({ id: \\"WUKCt\\", defaultMessage: \\"this props {intl}\\" }, { bar: 'bar' });
-    return intl.formatMessage({ id: \\"ALfyd\\", defaultMessage: \\"foo {bar}\\" }, { bar: 'bar' });
+    props.intl.formatMessage({ id: "hYpBl", defaultMessage: "props {intl}" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: "tBZlS", defaultMessage: "this props {intl}" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: "T+ycr", defaultMessage: "this props {intl}" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: "T+ycr", defaultMessage: "this props {intl}" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: "WUKCt", defaultMessage: "this props {intl}" }, { bar: 'bar' });
+    return intl.formatMessage({ id: "ALfyd", defaultMessage: "foo {bar}" }, { bar: 'bar' });
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "props {intl}",
       "description": "bar",
       "id": "hYpBl",
     },
-    Object {
+    {
       "defaultMessage": "this props {intl}",
       "description": "bar",
       "id": "tBZlS",
     },
-    Object {
+    {
       "defaultMessage": "this props {intl}",
-      "description": Object {
+      "description": {
         "obj1": 1,
         "obj2": "123",
       },
       "id": "T+ycr",
     },
-    Object {
+    {
       "defaultMessage": "this props {intl}",
-      "description": Object {
+      "description": {
         "obj1": 1,
         "obj2": "123",
       },
       "id": "T+ycr",
     },
-    Object {
+    {
       "defaultMessage": "this props {intl}",
-      "description": Object {
+      "description": {
         "obj2": "123",
       },
       "id": "WUKCt",
     },
-    Object {
+    {
       "defaultMessage": "foo {bar}",
       "description": "bar",
       "id": "ALfyd",
@@ -683,18 +683,18 @@ Object {
 `;
 
 exports[`emit asserts for overrideIdFn 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { defineMessages, FormattedMessage, defineMessage } from 'react-intl';
-const msgs = defineMessages({ header: { id: \\"HELLO.foo.bar.baz.12.string\\", defaultMessage: \\"Hello World!\\" }, content: { id: \\"HELLO.foo.bar.biff.12.object\\", defaultMessage: \\"Hello Nurse!\\" } });
-defineMessage({ id: \\"HELLO..13.string\\", defaultMessage: \\"defineMessage\\" });
+const msgs = defineMessages({ header: { id: "HELLO.foo.bar.baz.12.string", defaultMessage: "Hello World!" }, content: { id: "HELLO.foo.bar.biff.12.object", defaultMessage: "Hello Nurse!" } });
+defineMessage({ id: "HELLO..13.string", defaultMessage: "defineMessage" });
 export default class Foo extends Component {
     render() {
         const { intl } = this.props;
         const { formatMessage } = intl;
-        this.props.intl.formatMessage({ id: \\"HELLO..5.string\\", defaultMessage: \\"no-id\\" });
-        intl.formatMessage({ id: \\"HELLO..18.string\\", defaultMessage: \\"intl.formatMessage\\" });
-        formatMessage({ id: \\"HELLO..13.string\\", defaultMessage: \\"formatMessage\\" });
+        this.props.intl.formatMessage({ id: "HELLO..5.string", defaultMessage: "no-id" });
+        intl.formatMessage({ id: "HELLO..18.string", defaultMessage: "intl.formatMessage" });
+        formatMessage({ id: "HELLO..13.string", defaultMessage: "formatMessage" });
         return (<div>
         <h1>
           <FormattedMessage {...msgs.header}/>
@@ -702,58 +702,58 @@ export default class Foo extends Component {
         <p>
           <FormattedMessage {...msgs.content}/>
         </p>
-        <FormattedMessage id=\\"HELLO.foo.bar.zoo.18.object\\" defaultMessage=\\"Hello World! {abc}\\" values={{ abc: 2 }}/>
-        <FormattedMessage id=\\"HELLO..18.object\\" defaultMessage=\\"Hello World! {abc}\\" values={{ abc: 2 }}/>
+        <FormattedMessage id="HELLO.foo.bar.zoo.18.object" defaultMessage="Hello World! {abc}" values={{ abc: 2 }}/>
+        <FormattedMessage id="HELLO..18.object" defaultMessage="Hello World! {abc}" values={{ abc: 2 }}/>
       </div>);
     }
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "HELLO.foo.bar.baz.12.string",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator.",
       },
       "id": "HELLO.foo.bar.biff.12.object",
     },
-    Object {
+    {
       "defaultMessage": "defineMessage",
       "description": "foo",
       "id": "HELLO..13.string",
     },
-    Object {
+    {
       "defaultMessage": "no-id",
       "description": "no-id",
       "id": "HELLO..5.string",
     },
-    Object {
+    {
       "defaultMessage": "intl.formatMessage",
       "description": "no-id",
       "id": "HELLO..18.string",
     },
-    Object {
+    {
       "defaultMessage": "formatMessage",
       "description": "no-id",
       "id": "HELLO..13.string",
     },
-    Object {
+    {
       "defaultMessage": "Hello World! {abc}",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator. Another description",
       },
       "id": "HELLO.foo.bar.zoo.18.object",
     },
-    Object {
+    {
       "defaultMessage": "Hello World! {abc}",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator. Another description",
       },
@@ -764,24 +764,24 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for removeDefaultMessage 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-const messages = defineMessages({ foo: { id: \\"greeting-user\\" } });
+const messages = defineMessages({ foo: { id: "greeting-user" } });
 export default class Foo extends Component {
     render() {
-        return (<FormattedMessage id=\\"greeting-world\\"/>);
+        return (<FormattedMessage id="greeting-world"/>);
     }
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello, {name}",
       "description": "Greeting the user",
       "id": "greeting-user",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "Greeting to the world",
       "id": "greeting-world",
@@ -791,24 +791,24 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for removeDescription 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-const messages = defineMessages({ foo: { id: \\"greeting-user\\", defaultMessage: \\"Hello, {name}\\" } });
+const messages = defineMessages({ foo: { id: "greeting-user", defaultMessage: "Hello, {name}" } });
 export default class Foo extends Component {
     render() {
-        return (<FormattedMessage id=\\"greeting-world\\" defaultMessage=\\"Hello World!\\"/>);
+        return (<FormattedMessage id="greeting-world" defaultMessage="Hello World!"/>);
     }
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello, {name}",
       "description": "Greeting the user",
       "id": "greeting-user",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "Greeting to the world",
       "id": "greeting-world",
@@ -818,26 +818,26 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for resourcePath 1`] = `
-Object {
+{
   "code": "export function foo() {
-    props.intl.formatMessage({ id: \\"resourcePath-hYpBl\\", defaultMessage: \\"props {intl}\\" }, { bar: 'bar' });
-    this.props.intl.formatMessage({ id: \\"resourcePath-tBZlS\\", defaultMessage: \\"this props {intl}\\" }, { bar: 'bar' });
-    return intl.formatMessage({ id: \\"resourcePath-ALfyd\\", defaultMessage: \\"foo {bar}\\" }, { bar: 'bar' });
+    props.intl.formatMessage({ id: "resourcePath-hYpBl", defaultMessage: "props {intl}" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: "resourcePath-tBZlS", defaultMessage: "this props {intl}" }, { bar: 'bar' });
+    return intl.formatMessage({ id: "resourcePath-ALfyd", defaultMessage: "foo {bar}" }, { bar: 'bar' });
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "props {intl}",
       "description": "bar",
       "id": "resourcePath-hYpBl",
     },
-    Object {
+    {
       "defaultMessage": "this props {intl}",
       "description": "bar",
       "id": "resourcePath-tBZlS",
     },
-    Object {
+    {
       "defaultMessage": "foo {bar}",
       "description": "bar",
       "id": "resourcePath-ALfyd",
@@ -847,32 +847,32 @@ Object {
 `;
 
 exports[`emit asserts for stringConcat 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 export default class Foo extends Component {
     render() {
         return (<div>
-        <FormattedMessage id=\\"foo.bar.bazid\\" defaultMessage=\\"Hello World!farbaz\\"/>
-        {intl.formatMessage({ id: \\"header\\", defaultMessage: \\"Hello World!foobar\\" })}
-        {defineMessage({ id: \\"header2\\", defaultMessage: \\"Hello World!\\" })}
+        <FormattedMessage id="foo.bar.bazid" defaultMessage="Hello World!farbaz"/>
+        {intl.formatMessage({ id: "header", defaultMessage: "Hello World!foobar" })}
+        {defineMessage({ id: "header2", defaultMessage: "Hello World!" })}
       </div>);
     }
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "Hello World!farbaz",
       "description": "The default message.",
       "id": "foo.bar.bazid",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!foobar",
       "description": "The default message",
       "id": "header",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message asd",
       "id": "header2",
@@ -882,23 +882,23 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for templateLiteral 1`] = `
-Object {
+{
   "code": "import React, { Component } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
-defineMessage({ id: \\"template\\", defaultMessage: \\"should remove newline and extra spaces\\" });
+defineMessage({ id: "template", defaultMessage: "should remove newline and extra spaces" });
 export default class Foo extends Component {
     render() {
-        return (<FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World!\\"/>);
+        return (<FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>);
     }
 }
 ",
-  "meta": Object {},
-  "msgs": Array [
-    Object {
+  "meta": {},
+  "msgs": [
+    {
       "defaultMessage": "should remove newline and extra spaces",
       "id": "template",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message.",
       "id": "foo.bar.baz",

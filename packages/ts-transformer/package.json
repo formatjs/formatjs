@@ -23,7 +23,7 @@
     "chalk": "^4.0.0",
     "json-stable-stringify": "^1.0.1",
     "tslib": "^2.4.0",
-    "typescript": "^4.7"
+    "typescript": "^5.0.4"
   },
   "peerDependencies": {
     "ts-jest": ">=27"

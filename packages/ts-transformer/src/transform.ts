@@ -468,10 +468,24 @@ function isMemberMethodFormatMessageCall(
 function extractMessageFromJsxComponent(
   ts: TypeScript,
   factory: typescript.NodeFactory,
+  node: typescript.JsxSelfClosingElement,
+  opts: Opts,
+  sf: typescript.SourceFile
+): typescript.VisitResult<typescript.JsxSelfClosingElement>
+function extractMessageFromJsxComponent(
+  ts: TypeScript,
+  factory: typescript.NodeFactory,
+  node: typescript.JsxOpeningElement,
+  opts: Opts,
+  sf: typescript.SourceFile
+): typescript.VisitResult<typescript.JsxOpeningElement>
+function extractMessageFromJsxComponent(
+  ts: TypeScript,
+  factory: typescript.NodeFactory,
   node: typescript.JsxOpeningElement | typescript.JsxSelfClosingElement,
   opts: Opts,
   sf: typescript.SourceFile
-): typeof node {
+): typescript.VisitResult<typeof node> {
   const {onMsgExtracted} = opts
   if (!isSingularMessageDecl(ts, node, opts.additionalComponentNames || [])) {
     return node
@@ -599,7 +613,7 @@ function extractMessagesFromCallExpression(
   node: typescript.CallExpression,
   opts: Opts,
   sf: typescript.SourceFile
-): typeof node {
+): typescript.VisitResult<typescript.CallExpression> {
   const {onMsgExtracted, additionalFunctionNames} = opts
   if (isMultipleMessageDecl(ts, node)) {
     const [arg, ...restArgs] = node.arguments
@@ -722,9 +736,15 @@ function getVisitor(
     const newNode = ts.isCallExpression(node)
       ? extractMessagesFromCallExpression(ts, ctx.factory, node, opts, sf)
       : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
-      ? extractMessageFromJsxComponent(ts, ctx.factory, node, opts, sf)
+      ? extractMessageFromJsxComponent(
+          ts,
+          ctx.factory,
+          node as typescript.JsxOpeningElement,
+          opts,
+          sf
+        )
       : node
-    return ts.visitEachChild(newNode, visitor, ctx)
+    return ts.visitEachChild(newNode as typescript.Node, visitor, ctx)
   }
   return visitor
 }
@@ -735,7 +755,7 @@ export function transformWithTs(ts: TypeScript, opts: Opts) {
   const transformFn: typescript.TransformerFactory<
     typescript.SourceFile
   > = ctx => {
-    return (sf: typescript.SourceFile) => {
+    return sf => {
       const pragmaResult = PRAGMA_REGEX.exec(sf.text)
       if (pragmaResult) {
         debug('Pragma found', pragmaResult)
@@ -753,7 +773,7 @@ export function transformWithTs(ts: TypeScript, opts: Opts) {
           }
         }
       }
-      return ts.visitNode(sf, getVisitor(ts, ctx, sf, opts))
+      return ts.visitEachChild(sf, getVisitor(ts, ctx, sf, opts), ctx)
     }
   }
 
