@@ -120,7 +120,7 @@
     "ts-jest": "29",
     "ts-loader": "^9.1.2",
     "ts-node": "^10.8.1",
-    "tsd": "^0.24.1",
+    "tsd": "^0.28.0",
     "tslib": "^2.4.0",
     "typescript": "5.0.4",
     "unicode-emoji-utils": "^1.1.1",
