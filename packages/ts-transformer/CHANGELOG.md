@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.12.0...@formatjs/ts-transformer@3.13.0) (2023-04-17)
+
+### Features
+
+* **@formatjs/ts-transformer:** support TS5 ([8932ba4](https://github.com/formatjs/formatjs/commit/8932ba4f5308ceddde370e46264080caa8100d6b))
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
 # [3.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.6...@formatjs/ts-transformer@3.12.0) (2023-02-20)
 
 ### Features

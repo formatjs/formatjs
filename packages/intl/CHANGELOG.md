@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.9...@formatjs/intl@2.7.0) (2023-04-17)
+
+### Features
+
+* **@formatjs/intl:** store locale as error property ([3d03554](https://github.com/formatjs/formatjs/commit/3d035547db9d47adbbd51bff4330a58c0ca0668e))
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
 ## [2.6.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.8...@formatjs/intl@2.6.9) (2023-03-21)
 
 **Note:** Version bump only for package @formatjs/intl

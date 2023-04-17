@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.5.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.4.0...babel-plugin-formatjs@10.5.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
 # [10.4.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.3.36...babel-plugin-formatjs@10.4.0) (2023-02-20)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.2.6...@formatjs/intl-displaynames@6.3.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
 ## [6.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.2.5...@formatjs/intl-displaynames@6.2.6) (2023-02-20)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

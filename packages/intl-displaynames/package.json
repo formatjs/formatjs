@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-displaynames",
-  "version": "6.2.6",
+  "version": "6.3.0",
   "description": "Polyfill for: https://tc39.es/proposal-intl-displaynames",
   "keywords": [
     "i18n",

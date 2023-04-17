@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.3.5...@formatjs/intl-numberformat@8.4.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
 ## [8.3.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.3.4...@formatjs/intl-numberformat@8.3.5) (2023-02-20)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

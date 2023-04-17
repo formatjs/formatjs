@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.1.9...@formatjs/intl-listformat@7.2.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
 ## [7.1.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.1.8...@formatjs/intl-listformat@7.1.9) (2023-02-20)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.3.0...@formatjs/icu-messageformat-parser@2.3.1) (2023-04-17)
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** remove unused `SelectOption` type ([#4037](https://github.com/formatjs/formatjs/issues/4037)) ([28d8a81](https://github.com/formatjs/formatjs/commit/28d8a81675bcc8ae5232562a4ac84e94a132022c))
+* **react-intl:** fix a typo in react-intl/no-parser ([ecf70f3](https://github.com/formatjs/formatjs/commit/ecf70f347241159aa785635e02d33d0f645d617f))
+
 # [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.2.0...@formatjs/icu-messageformat-parser@2.3.0) (2023-02-20)
 
 ### Features

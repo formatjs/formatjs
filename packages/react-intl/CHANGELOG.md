@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/formatjs/formatjs/compare/react-intl@6.3.2...react-intl@6.4.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
 ## [6.3.2](https://github.com/formatjs/formatjs/compare/react-intl@6.3.1...react-intl@6.3.2) (2023-03-21)
 
 **Note:** Version bump only for package react-intl
