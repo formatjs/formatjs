@@ -139,11 +139,13 @@ generate_src_file(
     name = "character-orders",
     src = "character-orders.generated.ts",
     data = [
-        "scripts/common-types.ts",
-        "scripts/utils.ts",
+        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-misc-full",
         "//:node_modules/fast-glob",
+        "//:node_modules/json-stable-stringify",
+        "scripts/common-types.ts",
+        "scripts/utils.ts",
     ],
     entry_point = "scripts/character-orders.ts",
 )
@@ -153,11 +155,13 @@ generate_src_file(
     name = "numbering-systems",
     src = "numbering-systems.generated.ts",
     data = [
-        "scripts/common-types.ts",
-        "scripts/utils.ts",
+        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
+        "//:node_modules/json-stable-stringify",
+        "scripts/common-types.ts",
+        "scripts/utils.ts",
     ],
     entry_point = "scripts/numbering-systems.ts",
 )

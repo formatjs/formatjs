@@ -1,5 +1,6 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra'
+import stringify from 'json-stable-stringify'
 
 import {getAllLocales} from './utils'
 
@@ -46,7 +47,7 @@ async function main(args: Args) {
     out,
     `/* @generated */
 // prettier-ignore
-export const numberingSystems = ${JSON.stringify(result)} as const
+export const numberingSystems = ${stringify(result, {space: 2})} as const
 export type NumberingSystemsKey = keyof typeof numberingSystems`
   )
 }

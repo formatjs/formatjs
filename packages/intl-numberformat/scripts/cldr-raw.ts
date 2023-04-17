@@ -2,7 +2,7 @@ import {generateDataForLocales as extractCurrencies} from './extract-currencies'
 import {generateDataForLocales as extractUnits} from './extract-units'
 import {generateDataForLocales as extractNumbers} from './extract-numbers'
 import {join} from 'path'
-import {writeFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra'
 import stringify from 'json-stable-stringify'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
 import minimist from 'minimist'
@@ -31,7 +31,7 @@ async function main(args: minimist.ParsedArgs) {
       numbers: numbersData[locale],
       nu: numbersData[locale].nu,
     }
-    writeFileSync(
+    outputFileSync(
       join(outDir, `${locale}.json`),
       stringify(
         {

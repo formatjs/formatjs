@@ -1,6 +1,6 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra'
-
+import stringify from 'json-stable-stringify'
 import {getAllLocales} from './utils'
 
 import type {Args} from './common-types'
@@ -54,7 +54,9 @@ async function main(args: Args) {
     out,
     `/* @generated */
 // prettier-ignore
-export const characterOrders = ${JSON.stringify(characterOrders)} as const
+export const characterOrders = ${stringify(characterOrders, {
+      space: 2,
+    })} as const
 export type CharacterOrdersKey = keyof typeof characterOrders
 export type CharacterOrder = '${possibleValues.join("' | '")}'`
   )

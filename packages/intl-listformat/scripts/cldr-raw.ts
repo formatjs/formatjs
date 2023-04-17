@@ -1,6 +1,6 @@
 import {extractLists, getAllLocales} from './extract-list'
 import {join} from 'path'
-import {writeFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra'
 import stringify from 'json-stable-stringify'
 
 import minimist from 'minimist'
@@ -10,7 +10,7 @@ async function main(args: minimist.ParsedArgs) {
   const locales = await getAllLocales()
   const data = await extractLists(locales)
   locales.forEach(locale =>
-    writeFileSync(
+    outputFileSync(
       join(outDir, `${locale}.json`),
       stringify(
         {
