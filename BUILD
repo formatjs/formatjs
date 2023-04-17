@@ -201,7 +201,7 @@ multirun(
         "//packages/intl-relativetimeformat:test262-main",
         "//packages/intl-relativetimeformat:generated-test-files",
         "//packages/intl-segmenter:test262-main",
-        "//packages/intl-segmenter:generated-file",
+        "//packages/intl-segmenter:generated-files",
         "//packages/intl-getcanonicallocales:aliases",
     ],
 )
@@ -216,7 +216,7 @@ multirun(
         "//packages/intl-numberformat:generated-files",
         "//packages/intl-pluralrules:generated-files",
         "//packages/intl-relativetimeformat:generated-files",
-        "//packages/intl-segmenter:generated-file",
+        "//packages/intl-segmenter:generated-files",
     ],
 )
 

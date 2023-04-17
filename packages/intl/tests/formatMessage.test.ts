@@ -309,7 +309,7 @@ describe('format API', () => {
 
         expect((config.onError as jest.Mock).mock.calls.map(c => c[0].code))
           .toMatchInlineSnapshot(`
-          Array [
+          [
             "MISSING_TRANSLATION",
           ]
         `)
@@ -332,7 +332,7 @@ describe('format API', () => {
 
         expect((config.onError as jest.Mock).mock.calls.map(c => c[0].code))
           .toMatchInlineSnapshot(`
-          Array [
+          [
             "MISSING_TRANSLATION",
           ]
         `)

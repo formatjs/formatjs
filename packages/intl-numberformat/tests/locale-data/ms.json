@@ -1,1 +1,2976 @@
-{"data":{"units":{"simple":{"degree":{"long":{"other":"{0} darjah"},"short":{"other":"{0} darjah"},"narrow":{"other":"{0}°"},"perUnit":{}},"hectare":{"long":{"other":"{0} hektar"},"short":{"other":"{0} ha"},"narrow":{"other":"{0} ha"},"perUnit":{}},"acre":{"long":{"other":"{0} ekar"},"short":{"other":"{0} ekar"},"narrow":{"other":"{0} ekar"},"perUnit":{}},"percent":{"long":{"other":"{0} peratus"},"short":{"other":"{0}%"},"narrow":{"other":"{0}%"},"perUnit":{}},"liter-per-kilometer":{"long":{"other":"{0} liter sekilometer"},"short":{"other":"{0} L/km"},"narrow":{"other":"{0} L/km"},"perUnit":{}},"mile-per-gallon":{"long":{"other":"{0} batu segelen"},"short":{"other":"{0} bpg"},"narrow":{"other":"{0} bpg"},"perUnit":{}},"petabyte":{"long":{"other":"{0} petabait"},"short":{"other":"{0} PB"},"narrow":{"other":"{0}PB"},"perUnit":{}},"terabyte":{"long":{"other":"{0} terabait"},"short":{"other":"{0} TB"},"narrow":{"other":"{0}TB"},"perUnit":{}},"terabit":{"long":{"other":"{0} terabit"},"short":{"other":"{0} Tb"},"narrow":{"other":"{0}Tb"},"perUnit":{}},"gigabyte":{"long":{"other":"{0} gigabait"},"short":{"other":"{0} GB"},"narrow":{"other":"{0}GB"},"perUnit":{}},"gigabit":{"long":{"other":"{0} gigabit"},"short":{"other":"{0} Gb"},"narrow":{"other":"{0}Gb"},"perUnit":{}},"megabyte":{"long":{"other":"{0} megabait"},"short":{"other":"{0} MB"},"narrow":{"other":"{0}MB"},"perUnit":{}},"megabit":{"long":{"other":"{0} megabit"},"short":{"other":"{0} Mb"},"narrow":{"other":"{0}Mb"},"perUnit":{}},"kilobyte":{"long":{"other":"{0} kilobait"},"short":{"other":"{0} kB"},"narrow":{"other":"{0}kB"},"perUnit":{}},"kilobit":{"long":{"other":"{0} kilobit"},"short":{"other":"{0} kb"},"narrow":{"other":"{0}kb"},"perUnit":{}},"byte":{"long":{"other":"{0} bait"},"short":{"other":"{0} bait"},"narrow":{"other":"{0}B"},"perUnit":{}},"bit":{"long":{"other":"{0} bit"},"short":{"other":"{0} bit"},"narrow":{"other":"{0}bit"},"perUnit":{}},"year":{"long":{"other":"{0} tahun"},"short":{"other":"{0} thn"},"narrow":{"other":"{0} thn"},"perUnit":{"long":"{0} setiap tahun","short":"{0}/thn","narrow":"{0}/thn"}},"month":{"long":{"other":"{0} bulan"},"short":{"other":"{0} bln"},"narrow":{"other":"{0} bln"},"perUnit":{"long":"{0} setiap bulan","short":"{0}/bln","narrow":"{0}/bln"}},"week":{"long":{"other":"{0} minggu"},"short":{"other":"{0} mgu"},"narrow":{"other":"{0} mgu"},"perUnit":{"long":"{0} setiap minggu","short":"{0}/mgu","narrow":"{0}/mgu"}},"day":{"long":{"other":"{0} hari"},"short":{"other":"{0} hari"},"narrow":{"other":"{0} h"},"perUnit":{"long":"{0} setiap hari","short":"{0}/h","narrow":"{0}/h"}},"hour":{"long":{"other":"{0} jam"},"short":{"other":"{0} j"},"narrow":{"other":"{0} j"},"perUnit":{"long":"{0} sejam","short":"{0}/j","narrow":"{0}/j"}},"minute":{"long":{"other":"{0} minit"},"short":{"other":"{0} min"},"narrow":{"other":"{0} min"},"perUnit":{"long":"{0} setiap minit","short":"{0}/min","narrow":"{0}/min"}},"second":{"long":{"other":"{0} saat"},"short":{"other":"{0} saat"},"narrow":{"other":"{0} s"},"perUnit":{"long":"{0} sesaat","short":"{0}/s","narrow":"{0}/s"}},"millisecond":{"long":{"other":"{0} milisaat"},"short":{"other":"{0} ms"},"narrow":{"other":"{0} ms"},"perUnit":{}},"kilometer":{"long":{"other":"{0} kilometer"},"short":{"other":"{0} km"},"narrow":{"other":"{0} km"},"perUnit":{"long":"{0} setiap kilometer","short":"{0}/km","narrow":"{0}/km"}},"meter":{"long":{"other":"{0} meter"},"short":{"other":"{0} m"},"narrow":{"other":"{0} m"},"perUnit":{"long":"{0} setiap meter","short":"{0}/m","narrow":"{0}/m"}},"centimeter":{"long":{"other":"{0} sentimeter"},"short":{"other":"{0} cm"},"narrow":{"other":"{0} cm"},"perUnit":{"long":"{0} setiap sentimeter","short":"{0}/cm","narrow":"{0}/cm"}},"millimeter":{"long":{"other":"{0} milimeter"},"short":{"other":"{0} mm"},"narrow":{"other":"{0} mm"},"perUnit":{}},"mile":{"long":{"other":"{0} batu"},"short":{"other":"{0} bt"},"narrow":{"other":"{0} bt"},"perUnit":{}},"yard":{"long":{"other":"{0} ela"},"short":{"other":"{0} ela"},"narrow":{"other":"{0} ela"},"perUnit":{}},"foot":{"long":{"other":"{0} kaki"},"short":{"other":"{0} ka"},"narrow":{"other":"{0}'"},"perUnit":{"long":"{0} sekaki","short":"{0}/ka","narrow":"{0}/ka"}},"inch":{"long":{"other":"{0} inci"},"short":{"other":"{0} in"},"narrow":{"other":"{0}\\\""},"perUnit":{"long":"{0} seinci","short":"{0}/in","narrow":"{0}/in"}},"mile-scandinavian":{"long":{"other":"{0} batu-skandinavia"},"short":{"other":"{0} smi"},"narrow":{"other":"{0} smi"},"perUnit":{}},"kilogram":{"long":{"other":"{0} kilogram"},"short":{"other":"{0} kg"},"narrow":{"other":"{0} kg"},"perUnit":{"long":"{0} setiap kilogram","short":"{0}/kg","narrow":"{0}/kg"}},"gram":{"long":{"other":"{0} gram"},"short":{"other":"{0} g"},"narrow":{"other":"{0} g"},"perUnit":{"long":"{0} setiap gram","short":"{0}/g","narrow":"{0}/g"}},"stone":{"long":{"other":"{0} stone"},"short":{"other":"{0} st"},"narrow":{"other":"{0} st"},"perUnit":{}},"pound":{"long":{"other":"{0} paun"},"short":{"other":"{0} lb"},"narrow":{"other":"{0} paun"},"perUnit":{"long":"{0} setiap paun","short":"{0}/lb","narrow":"{0}/lb"}},"ounce":{"long":{"other":"{0} auns"},"short":{"other":"{0} oz"},"narrow":{"other":"{0} auns"},"perUnit":{"long":"{0} setiap auns","short":"{0}/oz","narrow":"{0}/oz"}},"kilometer-per-hour":{"long":{"other":"{0} kilometer sejam"},"short":{"other":"{0} kmj"},"narrow":{"other":"{0} kmj"},"perUnit":{}},"meter-per-second":{"long":{"other":"{0} meter sesaat"},"short":{"other":"{0} m/s"},"narrow":{"other":"{0} m/s"},"perUnit":{}},"mile-per-hour":{"long":{"other":"{0} batu sejam"},"short":{"other":"{0} bsj"},"narrow":{"other":"{0} bsj"},"perUnit":{}},"celsius":{"long":{"other":"{0} darjah Celsius"},"short":{"other":"{0}°C"},"narrow":{"other":"{0}°C"},"perUnit":{}},"fahrenheit":{"long":{"other":"{0} darjah Fahrenheit"},"short":{"other":"{0}°F"},"narrow":{"other":"{0}°F"},"perUnit":{}},"liter":{"long":{"other":"{0} liter"},"short":{"other":"{0} l"},"narrow":{"other":"{0} l"},"perUnit":{"long":"{0} setiap liter","short":"{0}/l","narrow":"{0}/l"}},"milliliter":{"long":{"other":"{0} mililiter"},"short":{"other":"{0} mL"},"narrow":{"other":"{0} mL"},"perUnit":{}},"gallon":{"long":{"other":"{0} gelen"},"short":{"other":"{0} gal"},"narrow":{"other":"{0} gal"},"perUnit":{"long":"{0} segelen","short":"{0}/gal","narrow":"{0}/gal"}},"fluid-ounce":{"long":{"other":"{0} auns cecair"},"short":{"other":"{0} fl oz"},"narrow":{"other":"{0}fl oz"},"perUnit":{}}},"compound":{"per":{"long":"{0} per {1}","short":"{0}/{1}","narrow":"{0}/{1}"}}},"currencies":{"ADP":{"displayName":{"other":"ADP"},"symbol":"ADP","narrow":"ADP"},"AED":{"displayName":{"other":"Dirham UAE"},"symbol":"AED","narrow":"AED"},"AFA":{"displayName":{"other":"AFA"},"symbol":"AFA","narrow":"AFA"},"AFN":{"displayName":{"other":"Afghani Afghanistan"},"symbol":"AFN","narrow":"؋"},"ALK":{"displayName":{"other":"ALK"},"symbol":"ALK","narrow":"ALK"},"ALL":{"displayName":{"other":"Lek Albania"},"symbol":"ALL","narrow":"ALL"},"AMD":{"displayName":{"other":"Dram Armenia"},"symbol":"AMD","narrow":"֏"},"ANG":{"displayName":{"other":"Guilder Antillen Belanda"},"symbol":"ANG","narrow":"ANG"},"AOA":{"displayName":{"other":"Kwanza Angola"},"symbol":"AOA","narrow":"Kz"},"AOK":{"displayName":{"other":"AOK"},"symbol":"AOK","narrow":"AOK"},"AON":{"displayName":{"other":"AON"},"symbol":"AON","narrow":"AON"},"AOR":{"displayName":{"other":"AOR"},"symbol":"AOR","narrow":"AOR"},"ARA":{"displayName":{"other":"ARA"},"symbol":"ARA","narrow":"ARA"},"ARL":{"displayName":{"other":"ARL"},"symbol":"ARL","narrow":"ARL"},"ARM":{"displayName":{"other":"ARM"},"symbol":"ARM","narrow":"ARM"},"ARP":{"displayName":{"other":"ARP"},"symbol":"ARP","narrow":"ARP"},"ARS":{"displayName":{"other":"Peso Argentina"},"symbol":"ARS","narrow":"$"},"ATS":{"displayName":{"other":"ATS"},"symbol":"ATS","narrow":"ATS"},"AUD":{"displayName":{"other":"Dolar Australia"},"symbol":"A$","narrow":"$"},"AWG":{"displayName":{"other":"Florin Aruba"},"symbol":"AWG","narrow":"AWG"},"AZM":{"displayName":{"other":"AZM"},"symbol":"AZM","narrow":"AZM"},"AZN":{"displayName":{"other":"Manat Azerbaijan"},"symbol":"AZN","narrow":"₼"},"BAD":{"displayName":{"other":"BAD"},"symbol":"BAD","narrow":"BAD"},"BAM":{"displayName":{"other":"Mark Boleh Tukar Bosnia-Herzegovina"},"symbol":"BAM","narrow":"KM"},"BAN":{"displayName":{"other":"BAN"},"symbol":"BAN","narrow":"BAN"},"BBD":{"displayName":{"other":"Dolar Barbados"},"symbol":"BBD","narrow":"$"},"BDT":{"displayName":{"other":"Taka Bangladesh"},"symbol":"BDT","narrow":"৳"},"BEC":{"displayName":{"other":"BEC"},"symbol":"BEC","narrow":"BEC"},"BEF":{"displayName":{"other":"BEF"},"symbol":"BEF","narrow":"BEF"},"BEL":{"displayName":{"other":"BEL"},"symbol":"BEL","narrow":"BEL"},"BGL":{"displayName":{"other":"BGL"},"symbol":"BGL","narrow":"BGL"},"BGM":{"displayName":{"other":"BGM"},"symbol":"BGM","narrow":"BGM"},"BGN":{"displayName":{"other":"Lev Bulgaria"},"symbol":"BGN","narrow":"BGN"},"BGO":{"displayName":{"other":"BGO"},"symbol":"BGO","narrow":"BGO"},"BHD":{"displayName":{"other":"Dinar Bahrain"},"symbol":"BHD","narrow":"BHD"},"BIF":{"displayName":{"other":"Franc Burundi"},"symbol":"BIF","narrow":"BIF"},"BMD":{"displayName":{"other":"Dolar Bermuda"},"symbol":"BMD","narrow":"$"},"BND":{"displayName":{"other":"Dolar Brunei"},"symbol":"BND","narrow":"$"},"BOB":{"displayName":{"other":"Boliviano Bolivia"},"symbol":"BOB","narrow":"Bs"},"BOL":{"displayName":{"other":"BOL"},"symbol":"BOL","narrow":"BOL"},"BOP":{"displayName":{"other":"BOP"},"symbol":"BOP","narrow":"BOP"},"BOV":{"displayName":{"other":"BOV"},"symbol":"BOV","narrow":"BOV"},"BRB":{"displayName":{"other":"BRB"},"symbol":"BRB","narrow":"BRB"},"BRC":{"displayName":{"other":"BRC"},"symbol":"BRC","narrow":"BRC"},"BRE":{"displayName":{"other":"BRE"},"symbol":"BRE","narrow":"BRE"},"BRL":{"displayName":{"other":"Real Brazil"},"symbol":"R$","narrow":"R$"},"BRN":{"displayName":{"other":"BRN"},"symbol":"BRN","narrow":"BRN"},"BRR":{"displayName":{"other":"BRR"},"symbol":"BRR","narrow":"BRR"},"BRZ":{"displayName":{"other":"BRZ"},"symbol":"BRZ","narrow":"BRZ"},"BSD":{"displayName":{"other":"Dolar Bahamas"},"symbol":"BSD","narrow":"$"},"BTN":{"displayName":{"other":"Ngultrum Bhutan"},"symbol":"BTN","narrow":"BTN"},"BUK":{"displayName":{"other":"BUK"},"symbol":"BUK","narrow":"BUK"},"BWP":{"displayName":{"other":"Pula Botswana"},"symbol":"BWP","narrow":"P"},"BYB":{"displayName":{"other":"BYB"},"symbol":"BYB","narrow":"BYB"},"BYN":{"displayName":{"other":"rubel lama Belarus"},"symbol":"BYN","narrow":"р."},"BYR":{"displayName":{"other":"Rubel Belarus"},"symbol":"BYR","narrow":"BYR"},"BZD":{"displayName":{"other":"Dolar Belize"},"symbol":"BZD","narrow":"$"},"CAD":{"displayName":{"other":"Dolar Kanada"},"symbol":"CAD","narrow":"$"},"CDF":{"displayName":{"other":"Franc Congo"},"symbol":"CDF","narrow":"CDF"},"CHE":{"displayName":{"other":"CHE"},"symbol":"CHE","narrow":"CHE"},"CHF":{"displayName":{"other":"Franc Switzerland"},"symbol":"CHF","narrow":"CHF"},"CHW":{"displayName":{"other":"CHW"},"symbol":"CHW","narrow":"CHW"},"CLE":{"displayName":{"other":"CLE"},"symbol":"CLE","narrow":"CLE"},"CLF":{"displayName":{"other":"CLF"},"symbol":"CLF","narrow":"CLF"},"CLP":{"displayName":{"other":"Peso Chile"},"symbol":"CLP","narrow":"$"},"CNH":{"displayName":{"other":"Yuan China (luar pesisir)"},"symbol":"CNH","narrow":"CNH"},"CNX":{"displayName":{"other":"CNX"},"symbol":"CNX","narrow":"CNX"},"CNY":{"displayName":{"other":"Yuan Cina"},"symbol":"CN¥","narrow":"¥"},"COP":{"displayName":{"other":"Peso Colombia"},"symbol":"COP","narrow":"$"},"COU":{"displayName":{"other":"COU"},"symbol":"COU","narrow":"COU"},"CRC":{"displayName":{"other":"Colon Costa Rica"},"symbol":"CRC","narrow":"₡"},"CSD":{"displayName":{"other":"CSD"},"symbol":"CSD","narrow":"CSD"},"CSK":{"displayName":{"other":"CSK"},"symbol":"CSK","narrow":"CSK"},"CUC":{"displayName":{"other":"Peso Boleh Tukar Cuba"},"symbol":"CUC","narrow":"$"},"CUP":{"displayName":{"other":"Peso Cuba"},"symbol":"CUP","narrow":"$"},"CVE":{"displayName":{"other":"Escudo Tanjung Verde"},"symbol":"CVE","narrow":"CVE"},"CYP":{"displayName":{"other":"CYP"},"symbol":"CYP","narrow":"CYP"},"CZK":{"displayName":{"other":"Koruna Republik Czech"},"symbol":"CZK","narrow":"Kč"},"DDM":{"displayName":{"other":"DDM"},"symbol":"DDM","narrow":"DDM"},"DEM":{"displayName":{"other":"DEM"},"symbol":"DEM","narrow":"DEM"},"DJF":{"displayName":{"other":"Franc Djibouti"},"symbol":"DJF","narrow":"DJF"},"DKK":{"displayName":{"other":"Krone Denmark"},"symbol":"DKK","narrow":"kr"},"DOP":{"displayName":{"other":"Peso Dominican"},"symbol":"DOP","narrow":"$"},"DZD":{"displayName":{"other":"Dinar Algeria"},"symbol":"DZD","narrow":"DZD"},"ECS":{"displayName":{"other":"ECS"},"symbol":"ECS","narrow":"ECS"},"ECV":{"displayName":{"other":"ECV"},"symbol":"ECV","narrow":"ECV"},"EEK":{"displayName":{"other":"EEK"},"symbol":"EEK","narrow":"EEK"},"EGP":{"displayName":{"other":"Paun Mesir"},"symbol":"EGP","narrow":"E£"},"ERN":{"displayName":{"other":"Nakfa Eritrea"},"symbol":"ERN","narrow":"ERN"},"ESA":{"displayName":{"other":"ESA"},"symbol":"ESA","narrow":"ESA"},"ESB":{"displayName":{"other":"ESB"},"symbol":"ESB","narrow":"ESB"},"ESP":{"displayName":{"other":"ESP"},"symbol":"ESP","narrow":"₧"},"ETB":{"displayName":{"other":"Birr Ethiopia"},"symbol":"ETB","narrow":"ETB"},"EUR":{"displayName":{"other":"Euro"},"symbol":"€","narrow":"€"},"FIM":{"displayName":{"other":"FIM"},"symbol":"FIM","narrow":"FIM"},"FJD":{"displayName":{"other":"Dolar Fiji"},"symbol":"FJD","narrow":"$"},"FKP":{"displayName":{"other":"Paun Kepulauan Falkland"},"symbol":"FKP","narrow":"£"},"FRF":{"displayName":{"other":"FRF"},"symbol":"FRF","narrow":"FRF"},"GBP":{"displayName":{"other":"Paun British"},"symbol":"£","narrow":"£"},"GEK":{"displayName":{"other":"GEK"},"symbol":"GEK","narrow":"GEK"},"GEL":{"displayName":{"other":"Lari Georgia"},"symbol":"GEL","narrow":"₾"},"GHC":{"displayName":{"other":"GHC"},"symbol":"GHC","narrow":"GHC"},"GHS":{"displayName":{"other":"Cedi Ghana"},"symbol":"GHS","narrow":"GH₵"},"GIP":{"displayName":{"other":"Paun Gibraltar"},"symbol":"GIP","narrow":"£"},"GMD":{"displayName":{"other":"Dalasi Gambia"},"symbol":"GMD","narrow":"GMD"},"GNF":{"displayName":{"other":"Franc Guinea"},"symbol":"GNF","narrow":"FG"},"GNS":{"displayName":{"other":"GNS"},"symbol":"GNS","narrow":"GNS"},"GQE":{"displayName":{"other":"GQE"},"symbol":"GQE","narrow":"GQE"},"GRD":{"displayName":{"other":"GRD"},"symbol":"GRD","narrow":"GRD"},"GTQ":{"displayName":{"other":"Quetzal Guatemala"},"symbol":"GTQ","narrow":"Q"},"GWE":{"displayName":{"other":"GWE"},"symbol":"GWE","narrow":"GWE"},"GWP":{"displayName":{"other":"GWP"},"symbol":"GWP","narrow":"GWP"},"GYD":{"displayName":{"other":"Dolar Guyana"},"symbol":"GYD","narrow":"$"},"HKD":{"displayName":{"other":"Dolar Hong Kong"},"symbol":"HK$","narrow":"$"},"HNL":{"displayName":{"other":"Lempira Honduras"},"symbol":"HNL","narrow":"L"},"HRD":{"displayName":{"other":"HRD"},"symbol":"HRD","narrow":"HRD"},"HRK":{"displayName":{"other":"Kuna Croatia"},"symbol":"HRK","narrow":"kn"},"HTG":{"displayName":{"other":"Gourde Haiti"},"symbol":"HTG","narrow":"HTG"},"HUF":{"displayName":{"other":"Forint Hungary"},"symbol":"HUF","narrow":"Ft"},"IDR":{"displayName":{"other":"Rupiah Indonesia"},"symbol":"IDR","narrow":"Rp"},"IEP":{"displayName":{"other":"IEP"},"symbol":"IEP","narrow":"IEP"},"ILP":{"displayName":{"other":"ILP"},"symbol":"ILP","narrow":"ILP"},"ILR":{"displayName":{"other":"ILR"},"symbol":"ILR","narrow":"ILR"},"ILS":{"displayName":{"other":"Syekel baharu Israel"},"symbol":"₪","narrow":"₪"},"INR":{"displayName":{"other":"Rupee India"},"symbol":"₹","narrow":"₹"},"IQD":{"displayName":{"other":"Dinar Iraq"},"symbol":"IQD","narrow":"IQD"},"IRR":{"displayName":{"other":"Rial Iran"},"symbol":"IRR","narrow":"IRR"},"ISJ":{"displayName":{"other":"ISJ"},"symbol":"ISJ","narrow":"ISJ"},"ISK":{"displayName":{"other":"Krona Iceland"},"symbol":"ISK","narrow":"kr"},"ITL":{"displayName":{"other":"ITL"},"symbol":"ITL","narrow":"ITL"},"JMD":{"displayName":{"other":"Dolar Jamaica"},"symbol":"JMD","narrow":"$"},"JOD":{"displayName":{"other":"Dinar Jordan"},"symbol":"JOD","narrow":"JOD"},"JPY":{"displayName":{"other":"Yen Jepun"},"symbol":"JP¥","narrow":"¥"},"KES":{"displayName":{"other":"Syiling Kenya"},"symbol":"KES","narrow":"KES"},"KGS":{"displayName":{"other":"Som Kyrgystani"},"symbol":"KGS","narrow":"KGS"},"KHR":{"displayName":{"other":"Riel Kemboja"},"symbol":"KHR","narrow":"៛"},"KMF":{"displayName":{"other":"Franc Comoria"},"symbol":"KMF","narrow":"CF"},"KPW":{"displayName":{"other":"Won Korea Utara"},"symbol":"KPW","narrow":"₩"},"KRH":{"displayName":{"other":"KRH"},"symbol":"KRH","narrow":"KRH"},"KRO":{"displayName":{"other":"KRO"},"symbol":"KRO","narrow":"KRO"},"KRW":{"displayName":{"other":"Won Korea Selatan"},"symbol":"₩","narrow":"₩"},"KWD":{"displayName":{"other":"Dinar Kuwait"},"symbol":"KWD","narrow":"KWD"},"KYD":{"displayName":{"other":"Dolar Kepulauan Cayman"},"symbol":"KYD","narrow":"$"},"KZT":{"displayName":{"other":"Tenge Kazakhstan"},"symbol":"KZT","narrow":"₸"},"LAK":{"displayName":{"other":"Kip Laos"},"symbol":"LAK","narrow":"₭"},"LBP":{"displayName":{"other":"Paun Lubnan"},"symbol":"LBP","narrow":"L£"},"LKR":{"displayName":{"other":"Rupee Sri Lanka"},"symbol":"LKR","narrow":"Rs"},"LRD":{"displayName":{"other":"Dolar Liberia"},"symbol":"LRD","narrow":"$"},"LSL":{"displayName":{"other":"Loti Lesotho"},"symbol":"LSL","narrow":"LSL"},"LTL":{"displayName":{"other":"Litas Lithuania"},"symbol":"LTL","narrow":"Lt"},"LTT":{"displayName":{"other":"LTT"},"symbol":"LTT","narrow":"LTT"},"LUC":{"displayName":{"other":"LUC"},"symbol":"LUC","narrow":"LUC"},"LUF":{"displayName":{"other":"LUF"},"symbol":"LUF","narrow":"LUF"},"LUL":{"displayName":{"other":"LUL"},"symbol":"LUL","narrow":"LUL"},"LVL":{"displayName":{"other":"Lats Latvia"},"symbol":"LVL","narrow":"Ls"},"LVR":{"displayName":{"other":"LVR"},"symbol":"LVR","narrow":"LVR"},"LYD":{"displayName":{"other":"Dinar Libya"},"symbol":"LYD","narrow":"LYD"},"MAD":{"displayName":{"other":"Dirham Maghribi"},"symbol":"MAD","narrow":"MAD"},"MAF":{"displayName":{"other":"MAF"},"symbol":"MAF","narrow":"MAF"},"MCF":{"displayName":{"other":"MCF"},"symbol":"MCF","narrow":"MCF"},"MDC":{"displayName":{"other":"MDC"},"symbol":"MDC","narrow":"MDC"},"MDL":{"displayName":{"other":"Leu Moldova"},"symbol":"MDL","narrow":"MDL"},"MGA":{"displayName":{"other":"Ariary Malagasy"},"symbol":"MGA","narrow":"Ar"},"MGF":{"displayName":{"other":"Franc Malagasy"},"symbol":"MGF","narrow":"MGF"},"MKD":{"displayName":{"other":"Denar Macedonia"},"symbol":"MKD","narrow":"MKD"},"MKN":{"displayName":{"other":"MKN"},"symbol":"MKN","narrow":"MKN"},"MLF":{"displayName":{"other":"MLF"},"symbol":"MLF","narrow":"MLF"},"MMK":{"displayName":{"other":"Kyat Myanma"},"symbol":"MMK","narrow":"K"},"MNT":{"displayName":{"other":"Tugrik Mongolia"},"symbol":"MNT","narrow":"₮"},"MOP":{"displayName":{"other":"Pataca Macau"},"symbol":"MOP","narrow":"MOP"},"MRO":{"displayName":{"other":"Ouguiya Mauritania (1973–2017)"},"symbol":"MRO","narrow":"MRO"},"MRU":{"displayName":{"other":"Ouguiya Mauritania"},"symbol":"MRU","narrow":"MRU"},"MTL":{"displayName":{"other":"MTL"},"symbol":"MTL","narrow":"MTL"},"MTP":{"displayName":{"other":"MTP"},"symbol":"MTP","narrow":"MTP"},"MUR":{"displayName":{"other":"Rupee Mauritius"},"symbol":"MUR","narrow":"Rs"},"MVP":{"displayName":{"other":"MVP"},"symbol":"MVP","narrow":"MVP"},"MVR":{"displayName":{"other":"Rufiyaa Maldives"},"symbol":"MVR","narrow":"MVR"},"MWK":{"displayName":{"other":"Kwacha Malawi"},"symbol":"MWK","narrow":"MWK"},"MXN":{"displayName":{"other":"Peso Mexico"},"symbol":"MXN","narrow":"$"},"MXP":{"displayName":{"other":"MXP"},"symbol":"MXP","narrow":"MXP"},"MXV":{"displayName":{"other":"MXV"},"symbol":"MXV","narrow":"MXV"},"MYR":{"displayName":{"other":"Ringgit Malaysia"},"symbol":"RM","narrow":"RM"},"MZE":{"displayName":{"other":"Escudo Mozambique"},"symbol":"MZE","narrow":"MZE"},"MZM":{"displayName":{"other":"Metical Mozambique (1980–2006)"},"symbol":"MZM","narrow":"MZM"},"MZN":{"displayName":{"other":"Metikal Mozambique"},"symbol":"MZN","narrow":"MZN"},"NAD":{"displayName":{"other":"Dolar Namibia"},"symbol":"NAD","narrow":"$"},"NGN":{"displayName":{"other":"Naira Nigeria"},"symbol":"NGN","narrow":"₦"},"NIC":{"displayName":{"other":"NIC"},"symbol":"NIC","narrow":"NIC"},"NIO":{"displayName":{"other":"Cordoba Nicaragua"},"symbol":"NIO","narrow":"C$"},"NLG":{"displayName":{"other":"NLG"},"symbol":"NLG","narrow":"NLG"},"NOK":{"displayName":{"other":"Krone Norway"},"symbol":"NOK","narrow":"kr"},"NPR":{"displayName":{"other":"Rupee Nepal"},"symbol":"NPR","narrow":"Rs"},"NZD":{"displayName":{"other":"Dolar New Zealand"},"symbol":"NZ$","narrow":"$"},"OMR":{"displayName":{"other":"Rial Oman"},"symbol":"OMR","narrow":"OMR"},"PAB":{"displayName":{"other":"Balboa Panama"},"symbol":"PAB","narrow":"PAB"},"PEI":{"displayName":{"other":"PEI"},"symbol":"PEI","narrow":"PEI"},"PEN":{"displayName":{"other":"Sol Peru"},"symbol":"PEN","narrow":"PEN"},"PES":{"displayName":{"other":"PES"},"symbol":"PES","narrow":"PES"},"PGK":{"displayName":{"other":"Kina Papua New Guinea"},"symbol":"PGK","narrow":"PGK"},"PHP":{"displayName":{"other":"Peso Filipina"},"symbol":"PHP","narrow":"₱"},"PKR":{"displayName":{"other":"Rupee Pakistan"},"symbol":"PKR","narrow":"Rs"},"PLN":{"displayName":{"other":"Zloty Poland"},"symbol":"PLN","narrow":"zł"},"PLZ":{"displayName":{"other":"PLZ"},"symbol":"PLZ","narrow":"PLZ"},"PTE":{"displayName":{"other":"PTE"},"symbol":"PTE","narrow":"PTE"},"PYG":{"displayName":{"other":"Guarani Paraguay"},"symbol":"PYG","narrow":"₲"},"QAR":{"displayName":{"other":"Rial Qatar"},"symbol":"QAR","narrow":"QAR"},"RHD":{"displayName":{"other":"Dolar Rhodesia"},"symbol":"RHD","narrow":"RHD"},"ROL":{"displayName":{"other":"ROL"},"symbol":"ROL","narrow":"ROL"},"RON":{"displayName":{"other":"Leu Romania"},"symbol":"RON","narrow":"lei"},"RSD":{"displayName":{"other":"Dinar Serbia"},"symbol":"RSD","narrow":"RSD"},"RUB":{"displayName":{"other":"Rubel Rusia"},"symbol":"RUB","narrow":"₽"},"RUR":{"displayName":{"other":"RUR"},"symbol":"RUR","narrow":"RUR"},"RWF":{"displayName":{"other":"Franc Rwanda"},"symbol":"RWF","narrow":"RF"},"SAR":{"displayName":{"other":"Riyal Saudi"},"symbol":"SAR","narrow":"SAR"},"SBD":{"displayName":{"other":"Dolar Kepulauan Solomon"},"symbol":"SBD","narrow":"$"},"SCR":{"displayName":{"other":"Rupee Seychelles"},"symbol":"SCR","narrow":"SCR"},"SDD":{"displayName":{"other":"SDD"},"symbol":"SDD","narrow":"SDD"},"SDG":{"displayName":{"other":"Paun Sudan"},"symbol":"SDG","narrow":"SDG"},"SDP":{"displayName":{"other":"SDP"},"symbol":"SDP","narrow":"SDP"},"SEK":{"displayName":{"other":"Krona Sweden"},"symbol":"SEK","narrow":"kr"},"SGD":{"displayName":{"other":"Dolar Singapura"},"symbol":"SGD","narrow":"$"},"SHP":{"displayName":{"other":"Paun Saint Helena"},"symbol":"SHP","narrow":"£"},"SIT":{"displayName":{"other":"SIT"},"symbol":"SIT","narrow":"SIT"},"SKK":{"displayName":{"other":"SKK"},"symbol":"SKK","narrow":"SKK"},"SLL":{"displayName":{"other":"Leone Sierra Leone"},"symbol":"SLL","narrow":"SLL"},"SOS":{"displayName":{"other":"Syiling Somali"},"symbol":"SOS","narrow":"SOS"},"SRD":{"displayName":{"other":"Dolar Surinam"},"symbol":"SRD","narrow":"$"},"SRG":{"displayName":{"other":"SRG"},"symbol":"SRG","narrow":"SRG"},"SSP":{"displayName":{"other":"Paun Sudan selatan"},"symbol":"SSP","narrow":"£"},"STD":{"displayName":{"other":"Dobra Sao Tome dan Principe (1977–2017)"},"symbol":"STD","narrow":"STD"},"STN":{"displayName":{"other":"Dobra Sao Tome dan Principe"},"symbol":"STN","narrow":"Db"},"SUR":{"displayName":{"other":"SUR"},"symbol":"SUR","narrow":"SUR"},"SVC":{"displayName":{"other":"SVC"},"symbol":"SVC","narrow":"SVC"},"SYP":{"displayName":{"other":"Paun Syria"},"symbol":"SYP","narrow":"£"},"SZL":{"displayName":{"other":"Lilangeni Swazi"},"symbol":"SZL","narrow":"SZL"},"THB":{"displayName":{"other":"Baht Thai"},"symbol":"THB","narrow":"฿"},"TJR":{"displayName":{"other":"TJR"},"symbol":"TJR","narrow":"TJR"},"TJS":{"displayName":{"other":"Somoni Tajikistan"},"symbol":"TJS","narrow":"TJS"},"TMM":{"displayName":{"other":"TMM"},"symbol":"TMM","narrow":"TMM"},"TMT":{"displayName":{"other":"Manat Turkmenistan"},"symbol":"TMT","narrow":"TMT"},"TND":{"displayName":{"other":"Dinar Tunisia"},"symbol":"TND","narrow":"TND"},"TOP":{"displayName":{"other":"Pa’anga Tonga"},"symbol":"TOP","narrow":"T$"},"TPE":{"displayName":{"other":"TPE"},"symbol":"TPE","narrow":"TPE"},"TRL":{"displayName":{"other":"TRL"},"symbol":"TRL","narrow":"TRL"},"TRY":{"displayName":{"other":"Lira Turki"},"symbol":"TRY","narrow":"₺"},"TTD":{"displayName":{"other":"Dolar Trinidad dan Tobago"},"symbol":"TTD","narrow":"$"},"TWD":{"displayName":{"other":"Dolar Taiwan Baru"},"symbol":"NT$","narrow":"NT$"},"TZS":{"displayName":{"other":"Syiling Tanzania"},"symbol":"TZS","narrow":"TZS"},"UAH":{"displayName":{"other":"Hryvnia Ukraine"},"symbol":"UAH","narrow":"₴"},"UAK":{"displayName":{"other":"UAK"},"symbol":"UAK","narrow":"UAK"},"UGS":{"displayName":{"other":"Shilling Uganda (1966–1987)"},"symbol":"UGS","narrow":"UGS"},"UGX":{"displayName":{"other":"Syiling Uganda"},"symbol":"UGX","narrow":"UGX"},"USD":{"displayName":{"other":"Dolar AS"},"symbol":"USD","narrow":"$"},"USN":{"displayName":{"other":"USN"},"symbol":"USN","narrow":"USN"},"USS":{"displayName":{"other":"USS"},"symbol":"USS","narrow":"USS"},"UYI":{"displayName":{"other":"UYI"},"symbol":"UYI","narrow":"UYI"},"UYP":{"displayName":{"other":"UYP"},"symbol":"UYP","narrow":"UYP"},"UYU":{"displayName":{"other":"Peso Uruguay"},"symbol":"UYU","narrow":"$"},"UYW":{"displayName":{"other":"UYW"},"symbol":"UYW","narrow":"UYW"},"UZS":{"displayName":{"other":"Som Uzbekistan"},"symbol":"UZS","narrow":"UZS"},"VEB":{"displayName":{"other":"VEB"},"symbol":"VEB","narrow":"VEB"},"VEF":{"displayName":{"other":"Bolivar Venezuela (2008–2018)"},"symbol":"VEF","narrow":"Bs"},"VES":{"displayName":{"other":"Bolivar Venezuela"},"symbol":"VES","narrow":"VES"},"VND":{"displayName":{"other":"Dong Vietnam"},"symbol":"₫","narrow":"₫"},"VNN":{"displayName":{"other":"VNN"},"symbol":"VNN","narrow":"VNN"},"VUV":{"displayName":{"other":"Vatu Vanuatu"},"symbol":"VUV","narrow":"VUV"},"WST":{"displayName":{"other":"Tala Samoa"},"symbol":"WST","narrow":"WST"},"XAF":{"displayName":{"other":"Franc CFA BEAC"},"symbol":"FCFA","narrow":"FCFA"},"XAG":{"displayName":{"other":"XAG"},"symbol":"XAG","narrow":"XAG"},"XAU":{"displayName":{"other":"XAU"},"symbol":"XAU","narrow":"XAU"},"XBA":{"displayName":{"other":"XBA"},"symbol":"XBA","narrow":"XBA"},"XBB":{"displayName":{"other":"XBB"},"symbol":"XBB","narrow":"XBB"},"XBC":{"displayName":{"other":"XBC"},"symbol":"XBC","narrow":"XBC"},"XBD":{"displayName":{"other":"XBD"},"symbol":"XBD","narrow":"XBD"},"XCD":{"displayName":{"other":"Dolar Caribbean Timur"},"symbol":"EC$","narrow":"$"},"XDR":{"displayName":{"other":"XDR"},"symbol":"XDR","narrow":"XDR"},"XEU":{"displayName":{"other":"XEU"},"symbol":"XEU","narrow":"XEU"},"XFO":{"displayName":{"other":"XFO"},"symbol":"XFO","narrow":"XFO"},"XFU":{"displayName":{"other":"XFU"},"symbol":"XFU","narrow":"XFU"},"XOF":{"displayName":{"other":"Franc CFA BCEAO"},"symbol":"F CFA","narrow":"F CFA"},"XPD":{"displayName":{"other":"XPD"},"symbol":"XPD","narrow":"XPD"},"XPF":{"displayName":{"other":"Franc CFP"},"symbol":"CFPF","narrow":"CFPF"},"XPT":{"displayName":{"other":"XPT"},"symbol":"XPT","narrow":"XPT"},"XRE":{"displayName":{"other":"XRE"},"symbol":"XRE","narrow":"XRE"},"XSU":{"displayName":{"other":"XSU"},"symbol":"XSU","narrow":"XSU"},"XTS":{"displayName":{"other":"XTS"},"symbol":"XTS","narrow":"XTS"},"XUA":{"displayName":{"other":"XUA"},"symbol":"XUA","narrow":"XUA"},"XXX":{"displayName":{"other":"(mata wang tidak diketahui)"},"symbol":"¤","narrow":"¤"},"YDD":{"displayName":{"other":"YDD"},"symbol":"YDD","narrow":"YDD"},"YER":{"displayName":{"other":"Rial Yaman"},"symbol":"YER","narrow":"YER"},"YUD":{"displayName":{"other":"YUD"},"symbol":"YUD","narrow":"YUD"},"YUM":{"displayName":{"other":"YUM"},"symbol":"YUM","narrow":"YUM"},"YUN":{"displayName":{"other":"YUN"},"symbol":"YUN","narrow":"YUN"},"YUR":{"displayName":{"other":"YUR"},"symbol":"YUR","narrow":"YUR"},"ZAL":{"displayName":{"other":"ZAL"},"symbol":"ZAL","narrow":"ZAL"},"ZAR":{"displayName":{"other":"Rand Afrika Selatan"},"symbol":"ZAR","narrow":"R"},"ZMK":{"displayName":{"other":"Kwacha Zambia (1968–2012)"},"symbol":"ZMK","narrow":"ZMK"},"ZMW":{"displayName":{"other":"Kwacha Zambia"},"symbol":"ZMW","narrow":"ZK"},"ZRN":{"displayName":{"other":"ZRN"},"symbol":"ZRN","narrow":"ZRN"},"ZRZ":{"displayName":{"other":"ZRZ"},"symbol":"ZRZ","narrow":"ZRZ"},"ZWD":{"displayName":{"other":"Dolar Zimbabwe (1980–2008)"},"symbol":"ZWD","narrow":"ZWD"},"ZWL":{"displayName":{"other":"Dolar Zimbabwe (2009)"},"symbol":"ZWL","narrow":"ZWL"},"ZWR":{"displayName":{"other":"Dolar Zimbabwe (2008)"},"symbol":"ZWR","narrow":"ZWR"}},"numbers":{"nu":["latn"],"symbols":{"latn":{"decimal":".","group":",","list":";","percentSign":"%","plusSign":"+","minusSign":"-","approximatelySign":"~","exponential":"E","superscriptingExponent":"×","perMille":"‰","infinity":"∞","nan":"NaN","timeSeparator":":","rangeSign":"–"}},"percent":{"latn":"#,##0%"},"decimal":{"latn":{"standard":"#,##0.###","long":{"1000":{"other":"0 ribu"},"10000":{"other":"00 ribu"},"100000":{"other":"000 ribu"},"1000000":{"other":"0 juta"},"10000000":{"other":"00 juta"},"100000000":{"other":"000 juta"},"1000000000":{"other":"0 bilion"},"10000000000":{"other":"00 bilion"},"100000000000":{"other":"000 bilion"},"1000000000000":{"other":"0 trilion"},"10000000000000":{"other":"00 trilion"},"100000000000000":{"other":"000 trilion"}},"short":{"1000":{"other":"0K"},"10000":{"other":"00K"},"100000":{"other":"000K"},"1000000":{"other":"0J"},"10000000":{"other":"00J"},"100000000":{"other":"000J"},"1000000000":{"other":"0B"},"10000000000":{"other":"00B"},"100000000000":{"other":"000B"},"1000000000000":{"other":"0T"},"10000000000000":{"other":"00T"},"100000000000000":{"other":"000T"}}}},"currency":{"latn":{"currencySpacing":{"beforeInsertBetween":" ","afterInsertBetween":" "},"standard":"¤#,##0.00","accounting":"¤#,##0.00;(¤#,##0.00)","unitPattern":"{0} {1}","short":{"1000":{"other":"¤0K"},"10000":{"other":"¤00K"},"100000":{"other":"¤000K"},"1000000":{"other":"¤0J"},"10000000":{"other":"¤00J"},"100000000":{"other":"¤000J"},"1000000000":{"other":"¤0B"},"10000000000":{"other":"¤00B"},"100000000000":{"other":"¤000B"},"1000000000000":{"other":"¤0T"},"10000000000000":{"other":"¤00T"},"100000000000000":{"other":"¤000T"}}}}},"nu":["latn"]},"locale":"ms"}
+{
+  "data": {
+    "currencies": {
+      "ADP": {
+        "displayName": {
+          "other": "ADP"
+        },
+        "narrow": "ADP",
+        "symbol": "ADP"
+      },
+      "AED": {
+        "displayName": {
+          "other": "Dirham UAE"
+        },
+        "narrow": "AED",
+        "symbol": "AED"
+      },
+      "AFA": {
+        "displayName": {
+          "other": "AFA"
+        },
+        "narrow": "AFA",
+        "symbol": "AFA"
+      },
+      "AFN": {
+        "displayName": {
+          "other": "Afghani Afghanistan"
+        },
+        "narrow": "؋",
+        "symbol": "AFN"
+      },
+      "ALK": {
+        "displayName": {
+          "other": "ALK"
+        },
+        "narrow": "ALK",
+        "symbol": "ALK"
+      },
+      "ALL": {
+        "displayName": {
+          "other": "Lek Albania"
+        },
+        "narrow": "ALL",
+        "symbol": "ALL"
+      },
+      "AMD": {
+        "displayName": {
+          "other": "Dram Armenia"
+        },
+        "narrow": "֏",
+        "symbol": "AMD"
+      },
+      "ANG": {
+        "displayName": {
+          "other": "Guilder Antillen Belanda"
+        },
+        "narrow": "ANG",
+        "symbol": "ANG"
+      },
+      "AOA": {
+        "displayName": {
+          "other": "Kwanza Angola"
+        },
+        "narrow": "Kz",
+        "symbol": "AOA"
+      },
+      "AOK": {
+        "displayName": {
+          "other": "AOK"
+        },
+        "narrow": "AOK",
+        "symbol": "AOK"
+      },
+      "AON": {
+        "displayName": {
+          "other": "AON"
+        },
+        "narrow": "AON",
+        "symbol": "AON"
+      },
+      "AOR": {
+        "displayName": {
+          "other": "AOR"
+        },
+        "narrow": "AOR",
+        "symbol": "AOR"
+      },
+      "ARA": {
+        "displayName": {
+          "other": "ARA"
+        },
+        "narrow": "ARA",
+        "symbol": "ARA"
+      },
+      "ARL": {
+        "displayName": {
+          "other": "ARL"
+        },
+        "narrow": "ARL",
+        "symbol": "ARL"
+      },
+      "ARM": {
+        "displayName": {
+          "other": "ARM"
+        },
+        "narrow": "ARM",
+        "symbol": "ARM"
+      },
+      "ARP": {
+        "displayName": {
+          "other": "ARP"
+        },
+        "narrow": "ARP",
+        "symbol": "ARP"
+      },
+      "ARS": {
+        "displayName": {
+          "other": "Peso Argentina"
+        },
+        "narrow": "$",
+        "symbol": "ARS"
+      },
+      "ATS": {
+        "displayName": {
+          "other": "ATS"
+        },
+        "narrow": "ATS",
+        "symbol": "ATS"
+      },
+      "AUD": {
+        "displayName": {
+          "other": "Dolar Australia"
+        },
+        "narrow": "$",
+        "symbol": "A$"
+      },
+      "AWG": {
+        "displayName": {
+          "other": "Florin Aruba"
+        },
+        "narrow": "AWG",
+        "symbol": "AWG"
+      },
+      "AZM": {
+        "displayName": {
+          "other": "AZM"
+        },
+        "narrow": "AZM",
+        "symbol": "AZM"
+      },
+      "AZN": {
+        "displayName": {
+          "other": "Manat Azerbaijan"
+        },
+        "narrow": "₼",
+        "symbol": "AZN"
+      },
+      "BAD": {
+        "displayName": {
+          "other": "BAD"
+        },
+        "narrow": "BAD",
+        "symbol": "BAD"
+      },
+      "BAM": {
+        "displayName": {
+          "other": "Mark Boleh Tukar Bosnia-Herzegovina"
+        },
+        "narrow": "KM",
+        "symbol": "BAM"
+      },
+      "BAN": {
+        "displayName": {
+          "other": "BAN"
+        },
+        "narrow": "BAN",
+        "symbol": "BAN"
+      },
+      "BBD": {
+        "displayName": {
+          "other": "Dolar Barbados"
+        },
+        "narrow": "$",
+        "symbol": "BBD"
+      },
+      "BDT": {
+        "displayName": {
+          "other": "Taka Bangladesh"
+        },
+        "narrow": "৳",
+        "symbol": "BDT"
+      },
+      "BEC": {
+        "displayName": {
+          "other": "BEC"
+        },
+        "narrow": "BEC",
+        "symbol": "BEC"
+      },
+      "BEF": {
+        "displayName": {
+          "other": "BEF"
+        },
+        "narrow": "BEF",
+        "symbol": "BEF"
+      },
+      "BEL": {
+        "displayName": {
+          "other": "BEL"
+        },
+        "narrow": "BEL",
+        "symbol": "BEL"
+      },
+      "BGL": {
+        "displayName": {
+          "other": "BGL"
+        },
+        "narrow": "BGL",
+        "symbol": "BGL"
+      },
+      "BGM": {
+        "displayName": {
+          "other": "BGM"
+        },
+        "narrow": "BGM",
+        "symbol": "BGM"
+      },
+      "BGN": {
+        "displayName": {
+          "other": "Lev Bulgaria"
+        },
+        "narrow": "BGN",
+        "symbol": "BGN"
+      },
+      "BGO": {
+        "displayName": {
+          "other": "BGO"
+        },
+        "narrow": "BGO",
+        "symbol": "BGO"
+      },
+      "BHD": {
+        "displayName": {
+          "other": "Dinar Bahrain"
+        },
+        "narrow": "BHD",
+        "symbol": "BHD"
+      },
+      "BIF": {
+        "displayName": {
+          "other": "Franc Burundi"
+        },
+        "narrow": "BIF",
+        "symbol": "BIF"
+      },
+      "BMD": {
+        "displayName": {
+          "other": "Dolar Bermuda"
+        },
+        "narrow": "$",
+        "symbol": "BMD"
+      },
+      "BND": {
+        "displayName": {
+          "other": "Dolar Brunei"
+        },
+        "narrow": "$",
+        "symbol": "BND"
+      },
+      "BOB": {
+        "displayName": {
+          "other": "Boliviano Bolivia"
+        },
+        "narrow": "Bs",
+        "symbol": "BOB"
+      },
+      "BOL": {
+        "displayName": {
+          "other": "BOL"
+        },
+        "narrow": "BOL",
+        "symbol": "BOL"
+      },
+      "BOP": {
+        "displayName": {
+          "other": "BOP"
+        },
+        "narrow": "BOP",
+        "symbol": "BOP"
+      },
+      "BOV": {
+        "displayName": {
+          "other": "BOV"
+        },
+        "narrow": "BOV",
+        "symbol": "BOV"
+      },
+      "BRB": {
+        "displayName": {
+          "other": "BRB"
+        },
+        "narrow": "BRB",
+        "symbol": "BRB"
+      },
+      "BRC": {
+        "displayName": {
+          "other": "BRC"
+        },
+        "narrow": "BRC",
+        "symbol": "BRC"
+      },
+      "BRE": {
+        "displayName": {
+          "other": "BRE"
+        },
+        "narrow": "BRE",
+        "symbol": "BRE"
+      },
+      "BRL": {
+        "displayName": {
+          "other": "Real Brazil"
+        },
+        "narrow": "R$",
+        "symbol": "R$"
+      },
+      "BRN": {
+        "displayName": {
+          "other": "BRN"
+        },
+        "narrow": "BRN",
+        "symbol": "BRN"
+      },
+      "BRR": {
+        "displayName": {
+          "other": "BRR"
+        },
+        "narrow": "BRR",
+        "symbol": "BRR"
+      },
+      "BRZ": {
+        "displayName": {
+          "other": "BRZ"
+        },
+        "narrow": "BRZ",
+        "symbol": "BRZ"
+      },
+      "BSD": {
+        "displayName": {
+          "other": "Dolar Bahamas"
+        },
+        "narrow": "$",
+        "symbol": "BSD"
+      },
+      "BTN": {
+        "displayName": {
+          "other": "Ngultrum Bhutan"
+        },
+        "narrow": "BTN",
+        "symbol": "BTN"
+      },
+      "BUK": {
+        "displayName": {
+          "other": "BUK"
+        },
+        "narrow": "BUK",
+        "symbol": "BUK"
+      },
+      "BWP": {
+        "displayName": {
+          "other": "Pula Botswana"
+        },
+        "narrow": "P",
+        "symbol": "BWP"
+      },
+      "BYB": {
+        "displayName": {
+          "other": "BYB"
+        },
+        "narrow": "BYB",
+        "symbol": "BYB"
+      },
+      "BYN": {
+        "displayName": {
+          "other": "rubel lama Belarus"
+        },
+        "narrow": "р.",
+        "symbol": "BYN"
+      },
+      "BYR": {
+        "displayName": {
+          "other": "Rubel Belarus"
+        },
+        "narrow": "BYR",
+        "symbol": "BYR"
+      },
+      "BZD": {
+        "displayName": {
+          "other": "Dolar Belize"
+        },
+        "narrow": "$",
+        "symbol": "BZD"
+      },
+      "CAD": {
+        "displayName": {
+          "other": "Dolar Kanada"
+        },
+        "narrow": "$",
+        "symbol": "CAD"
+      },
+      "CDF": {
+        "displayName": {
+          "other": "Franc Congo"
+        },
+        "narrow": "CDF",
+        "symbol": "CDF"
+      },
+      "CHE": {
+        "displayName": {
+          "other": "CHE"
+        },
+        "narrow": "CHE",
+        "symbol": "CHE"
+      },
+      "CHF": {
+        "displayName": {
+          "other": "Franc Switzerland"
+        },
+        "narrow": "CHF",
+        "symbol": "CHF"
+      },
+      "CHW": {
+        "displayName": {
+          "other": "CHW"
+        },
+        "narrow": "CHW",
+        "symbol": "CHW"
+      },
+      "CLE": {
+        "displayName": {
+          "other": "CLE"
+        },
+        "narrow": "CLE",
+        "symbol": "CLE"
+      },
+      "CLF": {
+        "displayName": {
+          "other": "CLF"
+        },
+        "narrow": "CLF",
+        "symbol": "CLF"
+      },
+      "CLP": {
+        "displayName": {
+          "other": "Peso Chile"
+        },
+        "narrow": "$",
+        "symbol": "CLP"
+      },
+      "CNH": {
+        "displayName": {
+          "other": "Yuan China (luar pesisir)"
+        },
+        "narrow": "CNH",
+        "symbol": "CNH"
+      },
+      "CNX": {
+        "displayName": {
+          "other": "CNX"
+        },
+        "narrow": "CNX",
+        "symbol": "CNX"
+      },
+      "CNY": {
+        "displayName": {
+          "other": "Yuan Cina"
+        },
+        "narrow": "¥",
+        "symbol": "CN¥"
+      },
+      "COP": {
+        "displayName": {
+          "other": "Peso Colombia"
+        },
+        "narrow": "$",
+        "symbol": "COP"
+      },
+      "COU": {
+        "displayName": {
+          "other": "COU"
+        },
+        "narrow": "COU",
+        "symbol": "COU"
+      },
+      "CRC": {
+        "displayName": {
+          "other": "Colon Costa Rica"
+        },
+        "narrow": "₡",
+        "symbol": "CRC"
+      },
+      "CSD": {
+        "displayName": {
+          "other": "CSD"
+        },
+        "narrow": "CSD",
+        "symbol": "CSD"
+      },
+      "CSK": {
+        "displayName": {
+          "other": "CSK"
+        },
+        "narrow": "CSK",
+        "symbol": "CSK"
+      },
+      "CUC": {
+        "displayName": {
+          "other": "Peso Boleh Tukar Cuba"
+        },
+        "narrow": "$",
+        "symbol": "CUC"
+      },
+      "CUP": {
+        "displayName": {
+          "other": "Peso Cuba"
+        },
+        "narrow": "$",
+        "symbol": "CUP"
+      },
+      "CVE": {
+        "displayName": {
+          "other": "Escudo Tanjung Verde"
+        },
+        "narrow": "CVE",
+        "symbol": "CVE"
+      },
+      "CYP": {
+        "displayName": {
+          "other": "CYP"
+        },
+        "narrow": "CYP",
+        "symbol": "CYP"
+      },
+      "CZK": {
+        "displayName": {
+          "other": "Koruna Republik Czech"
+        },
+        "narrow": "Kč",
+        "symbol": "CZK"
+      },
+      "DDM": {
+        "displayName": {
+          "other": "DDM"
+        },
+        "narrow": "DDM",
+        "symbol": "DDM"
+      },
+      "DEM": {
+        "displayName": {
+          "other": "DEM"
+        },
+        "narrow": "DEM",
+        "symbol": "DEM"
+      },
+      "DJF": {
+        "displayName": {
+          "other": "Franc Djibouti"
+        },
+        "narrow": "DJF",
+        "symbol": "DJF"
+      },
+      "DKK": {
+        "displayName": {
+          "other": "Krone Denmark"
+        },
+        "narrow": "kr",
+        "symbol": "DKK"
+      },
+      "DOP": {
+        "displayName": {
+          "other": "Peso Dominican"
+        },
+        "narrow": "$",
+        "symbol": "DOP"
+      },
+      "DZD": {
+        "displayName": {
+          "other": "Dinar Algeria"
+        },
+        "narrow": "DZD",
+        "symbol": "DZD"
+      },
+      "ECS": {
+        "displayName": {
+          "other": "ECS"
+        },
+        "narrow": "ECS",
+        "symbol": "ECS"
+      },
+      "ECV": {
+        "displayName": {
+          "other": "ECV"
+        },
+        "narrow": "ECV",
+        "symbol": "ECV"
+      },
+      "EEK": {
+        "displayName": {
+          "other": "EEK"
+        },
+        "narrow": "EEK",
+        "symbol": "EEK"
+      },
+      "EGP": {
+        "displayName": {
+          "other": "Paun Mesir"
+        },
+        "narrow": "E£",
+        "symbol": "EGP"
+      },
+      "ERN": {
+        "displayName": {
+          "other": "Nakfa Eritrea"
+        },
+        "narrow": "ERN",
+        "symbol": "ERN"
+      },
+      "ESA": {
+        "displayName": {
+          "other": "ESA"
+        },
+        "narrow": "ESA",
+        "symbol": "ESA"
+      },
+      "ESB": {
+        "displayName": {
+          "other": "ESB"
+        },
+        "narrow": "ESB",
+        "symbol": "ESB"
+      },
+      "ESP": {
+        "displayName": {
+          "other": "ESP"
+        },
+        "narrow": "₧",
+        "symbol": "ESP"
+      },
+      "ETB": {
+        "displayName": {
+          "other": "Birr Ethiopia"
+        },
+        "narrow": "ETB",
+        "symbol": "ETB"
+      },
+      "EUR": {
+        "displayName": {
+          "other": "Euro"
+        },
+        "narrow": "€",
+        "symbol": "€"
+      },
+      "FIM": {
+        "displayName": {
+          "other": "FIM"
+        },
+        "narrow": "FIM",
+        "symbol": "FIM"
+      },
+      "FJD": {
+        "displayName": {
+          "other": "Dolar Fiji"
+        },
+        "narrow": "$",
+        "symbol": "FJD"
+      },
+      "FKP": {
+        "displayName": {
+          "other": "Paun Kepulauan Falkland"
+        },
+        "narrow": "£",
+        "symbol": "FKP"
+      },
+      "FRF": {
+        "displayName": {
+          "other": "FRF"
+        },
+        "narrow": "FRF",
+        "symbol": "FRF"
+      },
+      "GBP": {
+        "displayName": {
+          "other": "Paun British"
+        },
+        "narrow": "£",
+        "symbol": "£"
+      },
+      "GEK": {
+        "displayName": {
+          "other": "GEK"
+        },
+        "narrow": "GEK",
+        "symbol": "GEK"
+      },
+      "GEL": {
+        "displayName": {
+          "other": "Lari Georgia"
+        },
+        "narrow": "₾",
+        "symbol": "GEL"
+      },
+      "GHC": {
+        "displayName": {
+          "other": "GHC"
+        },
+        "narrow": "GHC",
+        "symbol": "GHC"
+      },
+      "GHS": {
+        "displayName": {
+          "other": "Cedi Ghana"
+        },
+        "narrow": "GH₵",
+        "symbol": "GHS"
+      },
+      "GIP": {
+        "displayName": {
+          "other": "Paun Gibraltar"
+        },
+        "narrow": "£",
+        "symbol": "GIP"
+      },
+      "GMD": {
+        "displayName": {
+          "other": "Dalasi Gambia"
+        },
+        "narrow": "GMD",
+        "symbol": "GMD"
+      },
+      "GNF": {
+        "displayName": {
+          "other": "Franc Guinea"
+        },
+        "narrow": "FG",
+        "symbol": "GNF"
+      },
+      "GNS": {
+        "displayName": {
+          "other": "GNS"
+        },
+        "narrow": "GNS",
+        "symbol": "GNS"
+      },
+      "GQE": {
+        "displayName": {
+          "other": "GQE"
+        },
+        "narrow": "GQE",
+        "symbol": "GQE"
+      },
+      "GRD": {
+        "displayName": {
+          "other": "GRD"
+        },
+        "narrow": "GRD",
+        "symbol": "GRD"
+      },
+      "GTQ": {
+        "displayName": {
+          "other": "Quetzal Guatemala"
+        },
+        "narrow": "Q",
+        "symbol": "GTQ"
+      },
+      "GWE": {
+        "displayName": {
+          "other": "GWE"
+        },
+        "narrow": "GWE",
+        "symbol": "GWE"
+      },
+      "GWP": {
+        "displayName": {
+          "other": "GWP"
+        },
+        "narrow": "GWP",
+        "symbol": "GWP"
+      },
+      "GYD": {
+        "displayName": {
+          "other": "Dolar Guyana"
+        },
+        "narrow": "$",
+        "symbol": "GYD"
+      },
+      "HKD": {
+        "displayName": {
+          "other": "Dolar Hong Kong"
+        },
+        "narrow": "$",
+        "symbol": "HK$"
+      },
+      "HNL": {
+        "displayName": {
+          "other": "Lempira Honduras"
+        },
+        "narrow": "L",
+        "symbol": "HNL"
+      },
+      "HRD": {
+        "displayName": {
+          "other": "HRD"
+        },
+        "narrow": "HRD",
+        "symbol": "HRD"
+      },
+      "HRK": {
+        "displayName": {
+          "other": "Kuna Croatia"
+        },
+        "narrow": "kn",
+        "symbol": "HRK"
+      },
+      "HTG": {
+        "displayName": {
+          "other": "Gourde Haiti"
+        },
+        "narrow": "HTG",
+        "symbol": "HTG"
+      },
+      "HUF": {
+        "displayName": {
+          "other": "Forint Hungary"
+        },
+        "narrow": "Ft",
+        "symbol": "HUF"
+      },
+      "IDR": {
+        "displayName": {
+          "other": "Rupiah Indonesia"
+        },
+        "narrow": "Rp",
+        "symbol": "IDR"
+      },
+      "IEP": {
+        "displayName": {
+          "other": "IEP"
+        },
+        "narrow": "IEP",
+        "symbol": "IEP"
+      },
+      "ILP": {
+        "displayName": {
+          "other": "ILP"
+        },
+        "narrow": "ILP",
+        "symbol": "ILP"
+      },
+      "ILR": {
+        "displayName": {
+          "other": "ILR"
+        },
+        "narrow": "ILR",
+        "symbol": "ILR"
+      },
+      "ILS": {
+        "displayName": {
+          "other": "Syekel baharu Israel"
+        },
+        "narrow": "₪",
+        "symbol": "₪"
+      },
+      "INR": {
+        "displayName": {
+          "other": "Rupee India"
+        },
+        "narrow": "₹",
+        "symbol": "₹"
+      },
+      "IQD": {
+        "displayName": {
+          "other": "Dinar Iraq"
+        },
+        "narrow": "IQD",
+        "symbol": "IQD"
+      },
+      "IRR": {
+        "displayName": {
+          "other": "Rial Iran"
+        },
+        "narrow": "IRR",
+        "symbol": "IRR"
+      },
+      "ISJ": {
+        "displayName": {
+          "other": "ISJ"
+        },
+        "narrow": "ISJ",
+        "symbol": "ISJ"
+      },
+      "ISK": {
+        "displayName": {
+          "other": "Krona Iceland"
+        },
+        "narrow": "kr",
+        "symbol": "ISK"
+      },
+      "ITL": {
+        "displayName": {
+          "other": "ITL"
+        },
+        "narrow": "ITL",
+        "symbol": "ITL"
+      },
+      "JMD": {
+        "displayName": {
+          "other": "Dolar Jamaica"
+        },
+        "narrow": "$",
+        "symbol": "JMD"
+      },
+      "JOD": {
+        "displayName": {
+          "other": "Dinar Jordan"
+        },
+        "narrow": "JOD",
+        "symbol": "JOD"
+      },
+      "JPY": {
+        "displayName": {
+          "other": "Yen Jepun"
+        },
+        "narrow": "¥",
+        "symbol": "JP¥"
+      },
+      "KES": {
+        "displayName": {
+          "other": "Syiling Kenya"
+        },
+        "narrow": "KES",
+        "symbol": "KES"
+      },
+      "KGS": {
+        "displayName": {
+          "other": "Som Kyrgystani"
+        },
+        "narrow": "KGS",
+        "symbol": "KGS"
+      },
+      "KHR": {
+        "displayName": {
+          "other": "Riel Kemboja"
+        },
+        "narrow": "៛",
+        "symbol": "KHR"
+      },
+      "KMF": {
+        "displayName": {
+          "other": "Franc Comoria"
+        },
+        "narrow": "CF",
+        "symbol": "KMF"
+      },
+      "KPW": {
+        "displayName": {
+          "other": "Won Korea Utara"
+        },
+        "narrow": "₩",
+        "symbol": "KPW"
+      },
+      "KRH": {
+        "displayName": {
+          "other": "KRH"
+        },
+        "narrow": "KRH",
+        "symbol": "KRH"
+      },
+      "KRO": {
+        "displayName": {
+          "other": "KRO"
+        },
+        "narrow": "KRO",
+        "symbol": "KRO"
+      },
+      "KRW": {
+        "displayName": {
+          "other": "Won Korea Selatan"
+        },
+        "narrow": "₩",
+        "symbol": "₩"
+      },
+      "KWD": {
+        "displayName": {
+          "other": "Dinar Kuwait"
+        },
+        "narrow": "KWD",
+        "symbol": "KWD"
+      },
+      "KYD": {
+        "displayName": {
+          "other": "Dolar Kepulauan Cayman"
+        },
+        "narrow": "$",
+        "symbol": "KYD"
+      },
+      "KZT": {
+        "displayName": {
+          "other": "Tenge Kazakhstan"
+        },
+        "narrow": "₸",
+        "symbol": "KZT"
+      },
+      "LAK": {
+        "displayName": {
+          "other": "Kip Laos"
+        },
+        "narrow": "₭",
+        "symbol": "LAK"
+      },
+      "LBP": {
+        "displayName": {
+          "other": "Paun Lubnan"
+        },
+        "narrow": "L£",
+        "symbol": "LBP"
+      },
+      "LKR": {
+        "displayName": {
+          "other": "Rupee Sri Lanka"
+        },
+        "narrow": "Rs",
+        "symbol": "LKR"
+      },
+      "LRD": {
+        "displayName": {
+          "other": "Dolar Liberia"
+        },
+        "narrow": "$",
+        "symbol": "LRD"
+      },
+      "LSL": {
+        "displayName": {
+          "other": "Loti Lesotho"
+        },
+        "narrow": "LSL",
+        "symbol": "LSL"
+      },
+      "LTL": {
+        "displayName": {
+          "other": "Litas Lithuania"
+        },
+        "narrow": "Lt",
+        "symbol": "LTL"
+      },
+      "LTT": {
+        "displayName": {
+          "other": "LTT"
+        },
+        "narrow": "LTT",
+        "symbol": "LTT"
+      },
+      "LUC": {
+        "displayName": {
+          "other": "LUC"
+        },
+        "narrow": "LUC",
+        "symbol": "LUC"
+      },
+      "LUF": {
+        "displayName": {
+          "other": "LUF"
+        },
+        "narrow": "LUF",
+        "symbol": "LUF"
+      },
+      "LUL": {
+        "displayName": {
+          "other": "LUL"
+        },
+        "narrow": "LUL",
+        "symbol": "LUL"
+      },
+      "LVL": {
+        "displayName": {
+          "other": "Lats Latvia"
+        },
+        "narrow": "Ls",
+        "symbol": "LVL"
+      },
+      "LVR": {
+        "displayName": {
+          "other": "LVR"
+        },
+        "narrow": "LVR",
+        "symbol": "LVR"
+      },
+      "LYD": {
+        "displayName": {
+          "other": "Dinar Libya"
+        },
+        "narrow": "LYD",
+        "symbol": "LYD"
+      },
+      "MAD": {
+        "displayName": {
+          "other": "Dirham Maghribi"
+        },
+        "narrow": "MAD",
+        "symbol": "MAD"
+      },
+      "MAF": {
+        "displayName": {
+          "other": "MAF"
+        },
+        "narrow": "MAF",
+        "symbol": "MAF"
+      },
+      "MCF": {
+        "displayName": {
+          "other": "MCF"
+        },
+        "narrow": "MCF",
+        "symbol": "MCF"
+      },
+      "MDC": {
+        "displayName": {
+          "other": "MDC"
+        },
+        "narrow": "MDC",
+        "symbol": "MDC"
+      },
+      "MDL": {
+        "displayName": {
+          "other": "Leu Moldova"
+        },
+        "narrow": "MDL",
+        "symbol": "MDL"
+      },
+      "MGA": {
+        "displayName": {
+          "other": "Ariary Malagasy"
+        },
+        "narrow": "Ar",
+        "symbol": "MGA"
+      },
+      "MGF": {
+        "displayName": {
+          "other": "Franc Malagasy"
+        },
+        "narrow": "MGF",
+        "symbol": "MGF"
+      },
+      "MKD": {
+        "displayName": {
+          "other": "Denar Macedonia"
+        },
+        "narrow": "MKD",
+        "symbol": "MKD"
+      },
+      "MKN": {
+        "displayName": {
+          "other": "MKN"
+        },
+        "narrow": "MKN",
+        "symbol": "MKN"
+      },
+      "MLF": {
+        "displayName": {
+          "other": "MLF"
+        },
+        "narrow": "MLF",
+        "symbol": "MLF"
+      },
+      "MMK": {
+        "displayName": {
+          "other": "Kyat Myanma"
+        },
+        "narrow": "K",
+        "symbol": "MMK"
+      },
+      "MNT": {
+        "displayName": {
+          "other": "Tugrik Mongolia"
+        },
+        "narrow": "₮",
+        "symbol": "MNT"
+      },
+      "MOP": {
+        "displayName": {
+          "other": "Pataca Macau"
+        },
+        "narrow": "MOP",
+        "symbol": "MOP"
+      },
+      "MRO": {
+        "displayName": {
+          "other": "Ouguiya Mauritania (1973–2017)"
+        },
+        "narrow": "MRO",
+        "symbol": "MRO"
+      },
+      "MRU": {
+        "displayName": {
+          "other": "Ouguiya Mauritania"
+        },
+        "narrow": "MRU",
+        "symbol": "MRU"
+      },
+      "MTL": {
+        "displayName": {
+          "other": "MTL"
+        },
+        "narrow": "MTL",
+        "symbol": "MTL"
+      },
+      "MTP": {
+        "displayName": {
+          "other": "MTP"
+        },
+        "narrow": "MTP",
+        "symbol": "MTP"
+      },
+      "MUR": {
+        "displayName": {
+          "other": "Rupee Mauritius"
+        },
+        "narrow": "Rs",
+        "symbol": "MUR"
+      },
+      "MVP": {
+        "displayName": {
+          "other": "MVP"
+        },
+        "narrow": "MVP",
+        "symbol": "MVP"
+      },
+      "MVR": {
+        "displayName": {
+          "other": "Rufiyaa Maldives"
+        },
+        "narrow": "MVR",
+        "symbol": "MVR"
+      },
+      "MWK": {
+        "displayName": {
+          "other": "Kwacha Malawi"
+        },
+        "narrow": "MWK",
+        "symbol": "MWK"
+      },
+      "MXN": {
+        "displayName": {
+          "other": "Peso Mexico"
+        },
+        "narrow": "$",
+        "symbol": "MXN"
+      },
+      "MXP": {
+        "displayName": {
+          "other": "MXP"
+        },
+        "narrow": "MXP",
+        "symbol": "MXP"
+      },
+      "MXV": {
+        "displayName": {
+          "other": "MXV"
+        },
+        "narrow": "MXV",
+        "symbol": "MXV"
+      },
+      "MYR": {
+        "displayName": {
+          "other": "Ringgit Malaysia"
+        },
+        "narrow": "RM",
+        "symbol": "RM"
+      },
+      "MZE": {
+        "displayName": {
+          "other": "Escudo Mozambique"
+        },
+        "narrow": "MZE",
+        "symbol": "MZE"
+      },
+      "MZM": {
+        "displayName": {
+          "other": "Metical Mozambique (1980–2006)"
+        },
+        "narrow": "MZM",
+        "symbol": "MZM"
+      },
+      "MZN": {
+        "displayName": {
+          "other": "Metikal Mozambique"
+        },
+        "narrow": "MZN",
+        "symbol": "MZN"
+      },
+      "NAD": {
+        "displayName": {
+          "other": "Dolar Namibia"
+        },
+        "narrow": "$",
+        "symbol": "NAD"
+      },
+      "NGN": {
+        "displayName": {
+          "other": "Naira Nigeria"
+        },
+        "narrow": "₦",
+        "symbol": "NGN"
+      },
+      "NIC": {
+        "displayName": {
+          "other": "NIC"
+        },
+        "narrow": "NIC",
+        "symbol": "NIC"
+      },
+      "NIO": {
+        "displayName": {
+          "other": "Cordoba Nicaragua"
+        },
+        "narrow": "C$",
+        "symbol": "NIO"
+      },
+      "NLG": {
+        "displayName": {
+          "other": "NLG"
+        },
+        "narrow": "NLG",
+        "symbol": "NLG"
+      },
+      "NOK": {
+        "displayName": {
+          "other": "Krone Norway"
+        },
+        "narrow": "kr",
+        "symbol": "NOK"
+      },
+      "NPR": {
+        "displayName": {
+          "other": "Rupee Nepal"
+        },
+        "narrow": "Rs",
+        "symbol": "NPR"
+      },
+      "NZD": {
+        "displayName": {
+          "other": "Dolar New Zealand"
+        },
+        "narrow": "$",
+        "symbol": "NZ$"
+      },
+      "OMR": {
+        "displayName": {
+          "other": "Rial Oman"
+        },
+        "narrow": "OMR",
+        "symbol": "OMR"
+      },
+      "PAB": {
+        "displayName": {
+          "other": "Balboa Panama"
+        },
+        "narrow": "PAB",
+        "symbol": "PAB"
+      },
+      "PEI": {
+        "displayName": {
+          "other": "PEI"
+        },
+        "narrow": "PEI",
+        "symbol": "PEI"
+      },
+      "PEN": {
+        "displayName": {
+          "other": "Sol Peru"
+        },
+        "narrow": "PEN",
+        "symbol": "PEN"
+      },
+      "PES": {
+        "displayName": {
+          "other": "PES"
+        },
+        "narrow": "PES",
+        "symbol": "PES"
+      },
+      "PGK": {
+        "displayName": {
+          "other": "Kina Papua New Guinea"
+        },
+        "narrow": "PGK",
+        "symbol": "PGK"
+      },
+      "PHP": {
+        "displayName": {
+          "other": "Peso Filipina"
+        },
+        "narrow": "₱",
+        "symbol": "PHP"
+      },
+      "PKR": {
+        "displayName": {
+          "other": "Rupee Pakistan"
+        },
+        "narrow": "Rs",
+        "symbol": "PKR"
+      },
+      "PLN": {
+        "displayName": {
+          "other": "Zloty Poland"
+        },
+        "narrow": "zł",
+        "symbol": "PLN"
+      },
+      "PLZ": {
+        "displayName": {
+          "other": "PLZ"
+        },
+        "narrow": "PLZ",
+        "symbol": "PLZ"
+      },
+      "PTE": {
+        "displayName": {
+          "other": "PTE"
+        },
+        "narrow": "PTE",
+        "symbol": "PTE"
+      },
+      "PYG": {
+        "displayName": {
+          "other": "Guarani Paraguay"
+        },
+        "narrow": "₲",
+        "symbol": "PYG"
+      },
+      "QAR": {
+        "displayName": {
+          "other": "Rial Qatar"
+        },
+        "narrow": "QAR",
+        "symbol": "QAR"
+      },
+      "RHD": {
+        "displayName": {
+          "other": "Dolar Rhodesia"
+        },
+        "narrow": "RHD",
+        "symbol": "RHD"
+      },
+      "ROL": {
+        "displayName": {
+          "other": "ROL"
+        },
+        "narrow": "ROL",
+        "symbol": "ROL"
+      },
+      "RON": {
+        "displayName": {
+          "other": "Leu Romania"
+        },
+        "narrow": "lei",
+        "symbol": "RON"
+      },
+      "RSD": {
+        "displayName": {
+          "other": "Dinar Serbia"
+        },
+        "narrow": "RSD",
+        "symbol": "RSD"
+      },
+      "RUB": {
+        "displayName": {
+          "other": "Rubel Rusia"
+        },
+        "narrow": "₽",
+        "symbol": "RUB"
+      },
+      "RUR": {
+        "displayName": {
+          "other": "RUR"
+        },
+        "narrow": "RUR",
+        "symbol": "RUR"
+      },
+      "RWF": {
+        "displayName": {
+          "other": "Franc Rwanda"
+        },
+        "narrow": "RF",
+        "symbol": "RWF"
+      },
+      "SAR": {
+        "displayName": {
+          "other": "Riyal Saudi"
+        },
+        "narrow": "SAR",
+        "symbol": "SAR"
+      },
+      "SBD": {
+        "displayName": {
+          "other": "Dolar Kepulauan Solomon"
+        },
+        "narrow": "$",
+        "symbol": "SBD"
+      },
+      "SCR": {
+        "displayName": {
+          "other": "Rupee Seychelles"
+        },
+        "narrow": "SCR",
+        "symbol": "SCR"
+      },
+      "SDD": {
+        "displayName": {
+          "other": "SDD"
+        },
+        "narrow": "SDD",
+        "symbol": "SDD"
+      },
+      "SDG": {
+        "displayName": {
+          "other": "Paun Sudan"
+        },
+        "narrow": "SDG",
+        "symbol": "SDG"
+      },
+      "SDP": {
+        "displayName": {
+          "other": "SDP"
+        },
+        "narrow": "SDP",
+        "symbol": "SDP"
+      },
+      "SEK": {
+        "displayName": {
+          "other": "Krona Sweden"
+        },
+        "narrow": "kr",
+        "symbol": "SEK"
+      },
+      "SGD": {
+        "displayName": {
+          "other": "Dolar Singapura"
+        },
+        "narrow": "$",
+        "symbol": "SGD"
+      },
+      "SHP": {
+        "displayName": {
+          "other": "Paun Saint Helena"
+        },
+        "narrow": "£",
+        "symbol": "SHP"
+      },
+      "SIT": {
+        "displayName": {
+          "other": "SIT"
+        },
+        "narrow": "SIT",
+        "symbol": "SIT"
+      },
+      "SKK": {
+        "displayName": {
+          "other": "SKK"
+        },
+        "narrow": "SKK",
+        "symbol": "SKK"
+      },
+      "SLL": {
+        "displayName": {
+          "other": "Leone Sierra Leone"
+        },
+        "narrow": "SLL",
+        "symbol": "SLL"
+      },
+      "SOS": {
+        "displayName": {
+          "other": "Syiling Somali"
+        },
+        "narrow": "SOS",
+        "symbol": "SOS"
+      },
+      "SRD": {
+        "displayName": {
+          "other": "Dolar Surinam"
+        },
+        "narrow": "$",
+        "symbol": "SRD"
+      },
+      "SRG": {
+        "displayName": {
+          "other": "SRG"
+        },
+        "narrow": "SRG",
+        "symbol": "SRG"
+      },
+      "SSP": {
+        "displayName": {
+          "other": "Paun Sudan selatan"
+        },
+        "narrow": "£",
+        "symbol": "SSP"
+      },
+      "STD": {
+        "displayName": {
+          "other": "Dobra Sao Tome dan Principe (1977–2017)"
+        },
+        "narrow": "STD",
+        "symbol": "STD"
+      },
+      "STN": {
+        "displayName": {
+          "other": "Dobra Sao Tome dan Principe"
+        },
+        "narrow": "Db",
+        "symbol": "STN"
+      },
+      "SUR": {
+        "displayName": {
+          "other": "SUR"
+        },
+        "narrow": "SUR",
+        "symbol": "SUR"
+      },
+      "SVC": {
+        "displayName": {
+          "other": "SVC"
+        },
+        "narrow": "SVC",
+        "symbol": "SVC"
+      },
+      "SYP": {
+        "displayName": {
+          "other": "Paun Syria"
+        },
+        "narrow": "£",
+        "symbol": "SYP"
+      },
+      "SZL": {
+        "displayName": {
+          "other": "Lilangeni Swazi"
+        },
+        "narrow": "SZL",
+        "symbol": "SZL"
+      },
+      "THB": {
+        "displayName": {
+          "other": "Baht Thai"
+        },
+        "narrow": "฿",
+        "symbol": "THB"
+      },
+      "TJR": {
+        "displayName": {
+          "other": "TJR"
+        },
+        "narrow": "TJR",
+        "symbol": "TJR"
+      },
+      "TJS": {
+        "displayName": {
+          "other": "Somoni Tajikistan"
+        },
+        "narrow": "TJS",
+        "symbol": "TJS"
+      },
+      "TMM": {
+        "displayName": {
+          "other": "TMM"
+        },
+        "narrow": "TMM",
+        "symbol": "TMM"
+      },
+      "TMT": {
+        "displayName": {
+          "other": "Manat Turkmenistan"
+        },
+        "narrow": "TMT",
+        "symbol": "TMT"
+      },
+      "TND": {
+        "displayName": {
+          "other": "Dinar Tunisia"
+        },
+        "narrow": "TND",
+        "symbol": "TND"
+      },
+      "TOP": {
+        "displayName": {
+          "other": "Pa’anga Tonga"
+        },
+        "narrow": "T$",
+        "symbol": "TOP"
+      },
+      "TPE": {
+        "displayName": {
+          "other": "TPE"
+        },
+        "narrow": "TPE",
+        "symbol": "TPE"
+      },
+      "TRL": {
+        "displayName": {
+          "other": "TRL"
+        },
+        "narrow": "TRL",
+        "symbol": "TRL"
+      },
+      "TRY": {
+        "displayName": {
+          "other": "Lira Turki"
+        },
+        "narrow": "₺",
+        "symbol": "TRY"
+      },
+      "TTD": {
+        "displayName": {
+          "other": "Dolar Trinidad dan Tobago"
+        },
+        "narrow": "$",
+        "symbol": "TTD"
+      },
+      "TWD": {
+        "displayName": {
+          "other": "Dolar Taiwan Baru"
+        },
+        "narrow": "NT$",
+        "symbol": "NT$"
+      },
+      "TZS": {
+        "displayName": {
+          "other": "Syiling Tanzania"
+        },
+        "narrow": "TZS",
+        "symbol": "TZS"
+      },
+      "UAH": {
+        "displayName": {
+          "other": "Hryvnia Ukraine"
+        },
+        "narrow": "₴",
+        "symbol": "UAH"
+      },
+      "UAK": {
+        "displayName": {
+          "other": "UAK"
+        },
+        "narrow": "UAK",
+        "symbol": "UAK"
+      },
+      "UGS": {
+        "displayName": {
+          "other": "Shilling Uganda (1966–1987)"
+        },
+        "narrow": "UGS",
+        "symbol": "UGS"
+      },
+      "UGX": {
+        "displayName": {
+          "other": "Syiling Uganda"
+        },
+        "narrow": "UGX",
+        "symbol": "UGX"
+      },
+      "USD": {
+        "displayName": {
+          "other": "Dolar AS"
+        },
+        "narrow": "$",
+        "symbol": "USD"
+      },
+      "USN": {
+        "displayName": {
+          "other": "USN"
+        },
+        "narrow": "USN",
+        "symbol": "USN"
+      },
+      "USS": {
+        "displayName": {
+          "other": "USS"
+        },
+        "narrow": "USS",
+        "symbol": "USS"
+      },
+      "UYI": {
+        "displayName": {
+          "other": "UYI"
+        },
+        "narrow": "UYI",
+        "symbol": "UYI"
+      },
+      "UYP": {
+        "displayName": {
+          "other": "UYP"
+        },
+        "narrow": "UYP",
+        "symbol": "UYP"
+      },
+      "UYU": {
+        "displayName": {
+          "other": "Peso Uruguay"
+        },
+        "narrow": "$",
+        "symbol": "UYU"
+      },
+      "UYW": {
+        "displayName": {
+          "other": "UYW"
+        },
+        "narrow": "UYW",
+        "symbol": "UYW"
+      },
+      "UZS": {
+        "displayName": {
+          "other": "Som Uzbekistan"
+        },
+        "narrow": "UZS",
+        "symbol": "UZS"
+      },
+      "VEB": {
+        "displayName": {
+          "other": "VEB"
+        },
+        "narrow": "VEB",
+        "symbol": "VEB"
+      },
+      "VEF": {
+        "displayName": {
+          "other": "Bolivar Venezuela (2008–2018)"
+        },
+        "narrow": "Bs",
+        "symbol": "VEF"
+      },
+      "VES": {
+        "displayName": {
+          "other": "Bolivar Venezuela"
+        },
+        "narrow": "VES",
+        "symbol": "VES"
+      },
+      "VND": {
+        "displayName": {
+          "other": "Dong Vietnam"
+        },
+        "narrow": "₫",
+        "symbol": "₫"
+      },
+      "VNN": {
+        "displayName": {
+          "other": "VNN"
+        },
+        "narrow": "VNN",
+        "symbol": "VNN"
+      },
+      "VUV": {
+        "displayName": {
+          "other": "Vatu Vanuatu"
+        },
+        "narrow": "VUV",
+        "symbol": "VUV"
+      },
+      "WST": {
+        "displayName": {
+          "other": "Tala Samoa"
+        },
+        "narrow": "WST",
+        "symbol": "WST"
+      },
+      "XAF": {
+        "displayName": {
+          "other": "Franc CFA BEAC"
+        },
+        "narrow": "FCFA",
+        "symbol": "FCFA"
+      },
+      "XAG": {
+        "displayName": {
+          "other": "XAG"
+        },
+        "narrow": "XAG",
+        "symbol": "XAG"
+      },
+      "XAU": {
+        "displayName": {
+          "other": "XAU"
+        },
+        "narrow": "XAU",
+        "symbol": "XAU"
+      },
+      "XBA": {
+        "displayName": {
+          "other": "XBA"
+        },
+        "narrow": "XBA",
+        "symbol": "XBA"
+      },
+      "XBB": {
+        "displayName": {
+          "other": "XBB"
+        },
+        "narrow": "XBB",
+        "symbol": "XBB"
+      },
+      "XBC": {
+        "displayName": {
+          "other": "XBC"
+        },
+        "narrow": "XBC",
+        "symbol": "XBC"
+      },
+      "XBD": {
+        "displayName": {
+          "other": "XBD"
+        },
+        "narrow": "XBD",
+        "symbol": "XBD"
+      },
+      "XCD": {
+        "displayName": {
+          "other": "Dolar Caribbean Timur"
+        },
+        "narrow": "$",
+        "symbol": "EC$"
+      },
+      "XDR": {
+        "displayName": {
+          "other": "XDR"
+        },
+        "narrow": "XDR",
+        "symbol": "XDR"
+      },
+      "XEU": {
+        "displayName": {
+          "other": "XEU"
+        },
+        "narrow": "XEU",
+        "symbol": "XEU"
+      },
+      "XFO": {
+        "displayName": {
+          "other": "XFO"
+        },
+        "narrow": "XFO",
+        "symbol": "XFO"
+      },
+      "XFU": {
+        "displayName": {
+          "other": "XFU"
+        },
+        "narrow": "XFU",
+        "symbol": "XFU"
+      },
+      "XOF": {
+        "displayName": {
+          "other": "Franc CFA BCEAO"
+        },
+        "narrow": "F CFA",
+        "symbol": "F CFA"
+      },
+      "XPD": {
+        "displayName": {
+          "other": "XPD"
+        },
+        "narrow": "XPD",
+        "symbol": "XPD"
+      },
+      "XPF": {
+        "displayName": {
+          "other": "Franc CFP"
+        },
+        "narrow": "CFPF",
+        "symbol": "CFPF"
+      },
+      "XPT": {
+        "displayName": {
+          "other": "XPT"
+        },
+        "narrow": "XPT",
+        "symbol": "XPT"
+      },
+      "XRE": {
+        "displayName": {
+          "other": "XRE"
+        },
+        "narrow": "XRE",
+        "symbol": "XRE"
+      },
+      "XSU": {
+        "displayName": {
+          "other": "XSU"
+        },
+        "narrow": "XSU",
+        "symbol": "XSU"
+      },
+      "XTS": {
+        "displayName": {
+          "other": "XTS"
+        },
+        "narrow": "XTS",
+        "symbol": "XTS"
+      },
+      "XUA": {
+        "displayName": {
+          "other": "XUA"
+        },
+        "narrow": "XUA",
+        "symbol": "XUA"
+      },
+      "XXX": {
+        "displayName": {
+          "other": "(mata wang tidak diketahui)"
+        },
+        "narrow": "¤",
+        "symbol": "¤"
+      },
+      "YDD": {
+        "displayName": {
+          "other": "YDD"
+        },
+        "narrow": "YDD",
+        "symbol": "YDD"
+      },
+      "YER": {
+        "displayName": {
+          "other": "Rial Yaman"
+        },
+        "narrow": "YER",
+        "symbol": "YER"
+      },
+      "YUD": {
+        "displayName": {
+          "other": "YUD"
+        },
+        "narrow": "YUD",
+        "symbol": "YUD"
+      },
+      "YUM": {
+        "displayName": {
+          "other": "YUM"
+        },
+        "narrow": "YUM",
+        "symbol": "YUM"
+      },
+      "YUN": {
+        "displayName": {
+          "other": "YUN"
+        },
+        "narrow": "YUN",
+        "symbol": "YUN"
+      },
+      "YUR": {
+        "displayName": {
+          "other": "YUR"
+        },
+        "narrow": "YUR",
+        "symbol": "YUR"
+      },
+      "ZAL": {
+        "displayName": {
+          "other": "ZAL"
+        },
+        "narrow": "ZAL",
+        "symbol": "ZAL"
+      },
+      "ZAR": {
+        "displayName": {
+          "other": "Rand Afrika Selatan"
+        },
+        "narrow": "R",
+        "symbol": "ZAR"
+      },
+      "ZMK": {
+        "displayName": {
+          "other": "Kwacha Zambia (1968–2012)"
+        },
+        "narrow": "ZMK",
+        "symbol": "ZMK"
+      },
+      "ZMW": {
+        "displayName": {
+          "other": "Kwacha Zambia"
+        },
+        "narrow": "ZK",
+        "symbol": "ZMW"
+      },
+      "ZRN": {
+        "displayName": {
+          "other": "ZRN"
+        },
+        "narrow": "ZRN",
+        "symbol": "ZRN"
+      },
+      "ZRZ": {
+        "displayName": {
+          "other": "ZRZ"
+        },
+        "narrow": "ZRZ",
+        "symbol": "ZRZ"
+      },
+      "ZWD": {
+        "displayName": {
+          "other": "Dolar Zimbabwe (1980–2008)"
+        },
+        "narrow": "ZWD",
+        "symbol": "ZWD"
+      },
+      "ZWL": {
+        "displayName": {
+          "other": "Dolar Zimbabwe (2009)"
+        },
+        "narrow": "ZWL",
+        "symbol": "ZWL"
+      },
+      "ZWR": {
+        "displayName": {
+          "other": "Dolar Zimbabwe (2008)"
+        },
+        "narrow": "ZWR",
+        "symbol": "ZWR"
+      }
+    },
+    "nu": [
+      "latn"
+    ],
+    "numbers": {
+      "currency": {
+        "latn": {
+          "accounting": "¤#,##0.00;(¤#,##0.00)",
+          "currencySpacing": {
+            "afterInsertBetween": " ",
+            "beforeInsertBetween": " "
+          },
+          "short": {
+            "1000": {
+              "other": "¤0K"
+            },
+            "10000": {
+              "other": "¤00K"
+            },
+            "100000": {
+              "other": "¤000K"
+            },
+            "1000000": {
+              "other": "¤0J"
+            },
+            "10000000": {
+              "other": "¤00J"
+            },
+            "100000000": {
+              "other": "¤000J"
+            },
+            "1000000000": {
+              "other": "¤0B"
+            },
+            "10000000000": {
+              "other": "¤00B"
+            },
+            "100000000000": {
+              "other": "¤000B"
+            },
+            "1000000000000": {
+              "other": "¤0T"
+            },
+            "10000000000000": {
+              "other": "¤00T"
+            },
+            "100000000000000": {
+              "other": "¤000T"
+            }
+          },
+          "standard": "¤#,##0.00",
+          "unitPattern": "{0} {1}"
+        }
+      },
+      "decimal": {
+        "latn": {
+          "long": {
+            "1000": {
+              "other": "0 ribu"
+            },
+            "10000": {
+              "other": "00 ribu"
+            },
+            "100000": {
+              "other": "000 ribu"
+            },
+            "1000000": {
+              "other": "0 juta"
+            },
+            "10000000": {
+              "other": "00 juta"
+            },
+            "100000000": {
+              "other": "000 juta"
+            },
+            "1000000000": {
+              "other": "0 bilion"
+            },
+            "10000000000": {
+              "other": "00 bilion"
+            },
+            "100000000000": {
+              "other": "000 bilion"
+            },
+            "1000000000000": {
+              "other": "0 trilion"
+            },
+            "10000000000000": {
+              "other": "00 trilion"
+            },
+            "100000000000000": {
+              "other": "000 trilion"
+            }
+          },
+          "short": {
+            "1000": {
+              "other": "0K"
+            },
+            "10000": {
+              "other": "00K"
+            },
+            "100000": {
+              "other": "000K"
+            },
+            "1000000": {
+              "other": "0J"
+            },
+            "10000000": {
+              "other": "00J"
+            },
+            "100000000": {
+              "other": "000J"
+            },
+            "1000000000": {
+              "other": "0B"
+            },
+            "10000000000": {
+              "other": "00B"
+            },
+            "100000000000": {
+              "other": "000B"
+            },
+            "1000000000000": {
+              "other": "0T"
+            },
+            "10000000000000": {
+              "other": "00T"
+            },
+            "100000000000000": {
+              "other": "000T"
+            }
+          },
+          "standard": "#,##0.###"
+        }
+      },
+      "nu": [
+        "latn"
+      ],
+      "percent": {
+        "latn": "#,##0%"
+      },
+      "symbols": {
+        "latn": {
+          "approximatelySign": "~",
+          "decimal": ".",
+          "exponential": "E",
+          "group": ",",
+          "infinity": "∞",
+          "list": ";",
+          "minusSign": "-",
+          "nan": "NaN",
+          "perMille": "‰",
+          "percentSign": "%",
+          "plusSign": "+",
+          "rangeSign": "–",
+          "superscriptingExponent": "×",
+          "timeSeparator": ":"
+        }
+      }
+    },
+    "units": {
+      "compound": {
+        "per": {
+          "long": "{0} per {1}",
+          "narrow": "{0}/{1}",
+          "short": "{0}/{1}"
+        }
+      },
+      "simple": {
+        "acre": {
+          "long": {
+            "other": "{0} ekar"
+          },
+          "narrow": {
+            "other": "{0} ekar"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} ekar"
+          }
+        },
+        "bit": {
+          "long": {
+            "other": "{0} bit"
+          },
+          "narrow": {
+            "other": "{0}bit"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} bit"
+          }
+        },
+        "byte": {
+          "long": {
+            "other": "{0} bait"
+          },
+          "narrow": {
+            "other": "{0}B"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} bait"
+          }
+        },
+        "celsius": {
+          "long": {
+            "other": "{0} darjah Celsius"
+          },
+          "narrow": {
+            "other": "{0}°C"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0}°C"
+          }
+        },
+        "centimeter": {
+          "long": {
+            "other": "{0} sentimeter"
+          },
+          "narrow": {
+            "other": "{0} cm"
+          },
+          "perUnit": {
+            "long": "{0} setiap sentimeter",
+            "narrow": "{0}/cm",
+            "short": "{0}/cm"
+          },
+          "short": {
+            "other": "{0} cm"
+          }
+        },
+        "day": {
+          "long": {
+            "other": "{0} hari"
+          },
+          "narrow": {
+            "other": "{0} h"
+          },
+          "perUnit": {
+            "long": "{0} setiap hari",
+            "narrow": "{0}/h",
+            "short": "{0}/h"
+          },
+          "short": {
+            "other": "{0} hari"
+          }
+        },
+        "degree": {
+          "long": {
+            "other": "{0} darjah"
+          },
+          "narrow": {
+            "other": "{0}°"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} darjah"
+          }
+        },
+        "fahrenheit": {
+          "long": {
+            "other": "{0} darjah Fahrenheit"
+          },
+          "narrow": {
+            "other": "{0}°F"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0}°F"
+          }
+        },
+        "fluid-ounce": {
+          "long": {
+            "other": "{0} auns cecair"
+          },
+          "narrow": {
+            "other": "{0}fl oz"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} fl oz"
+          }
+        },
+        "foot": {
+          "long": {
+            "other": "{0} kaki"
+          },
+          "narrow": {
+            "other": "{0}'"
+          },
+          "perUnit": {
+            "long": "{0} sekaki",
+            "narrow": "{0}/ka",
+            "short": "{0}/ka"
+          },
+          "short": {
+            "other": "{0} ka"
+          }
+        },
+        "gallon": {
+          "long": {
+            "other": "{0} gelen"
+          },
+          "narrow": {
+            "other": "{0} gal"
+          },
+          "perUnit": {
+            "long": "{0} segelen",
+            "narrow": "{0}/gal",
+            "short": "{0}/gal"
+          },
+          "short": {
+            "other": "{0} gal"
+          }
+        },
+        "gigabit": {
+          "long": {
+            "other": "{0} gigabit"
+          },
+          "narrow": {
+            "other": "{0}Gb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} Gb"
+          }
+        },
+        "gigabyte": {
+          "long": {
+            "other": "{0} gigabait"
+          },
+          "narrow": {
+            "other": "{0}GB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} GB"
+          }
+        },
+        "gram": {
+          "long": {
+            "other": "{0} gram"
+          },
+          "narrow": {
+            "other": "{0} g"
+          },
+          "perUnit": {
+            "long": "{0} setiap gram",
+            "narrow": "{0}/g",
+            "short": "{0}/g"
+          },
+          "short": {
+            "other": "{0} g"
+          }
+        },
+        "hectare": {
+          "long": {
+            "other": "{0} hektar"
+          },
+          "narrow": {
+            "other": "{0} ha"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} ha"
+          }
+        },
+        "hour": {
+          "long": {
+            "other": "{0} jam"
+          },
+          "narrow": {
+            "other": "{0} j"
+          },
+          "perUnit": {
+            "long": "{0} sejam",
+            "narrow": "{0}/j",
+            "short": "{0}/j"
+          },
+          "short": {
+            "other": "{0} j"
+          }
+        },
+        "inch": {
+          "long": {
+            "other": "{0} inci"
+          },
+          "narrow": {
+            "other": "{0}\\\""
+          },
+          "perUnit": {
+            "long": "{0} seinci",
+            "narrow": "{0}/in",
+            "short": "{0}/in"
+          },
+          "short": {
+            "other": "{0} in"
+          }
+        },
+        "kilobit": {
+          "long": {
+            "other": "{0} kilobit"
+          },
+          "narrow": {
+            "other": "{0}kb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} kb"
+          }
+        },
+        "kilobyte": {
+          "long": {
+            "other": "{0} kilobait"
+          },
+          "narrow": {
+            "other": "{0}kB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} kB"
+          }
+        },
+        "kilogram": {
+          "long": {
+            "other": "{0} kilogram"
+          },
+          "narrow": {
+            "other": "{0} kg"
+          },
+          "perUnit": {
+            "long": "{0} setiap kilogram",
+            "narrow": "{0}/kg",
+            "short": "{0}/kg"
+          },
+          "short": {
+            "other": "{0} kg"
+          }
+        },
+        "kilometer": {
+          "long": {
+            "other": "{0} kilometer"
+          },
+          "narrow": {
+            "other": "{0} km"
+          },
+          "perUnit": {
+            "long": "{0} setiap kilometer",
+            "narrow": "{0}/km",
+            "short": "{0}/km"
+          },
+          "short": {
+            "other": "{0} km"
+          }
+        },
+        "kilometer-per-hour": {
+          "long": {
+            "other": "{0} kilometer sejam"
+          },
+          "narrow": {
+            "other": "{0} kmj"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} kmj"
+          }
+        },
+        "liter": {
+          "long": {
+            "other": "{0} liter"
+          },
+          "narrow": {
+            "other": "{0} l"
+          },
+          "perUnit": {
+            "long": "{0} setiap liter",
+            "narrow": "{0}/l",
+            "short": "{0}/l"
+          },
+          "short": {
+            "other": "{0} l"
+          }
+        },
+        "liter-per-kilometer": {
+          "long": {
+            "other": "{0} liter sekilometer"
+          },
+          "narrow": {
+            "other": "{0} L/km"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} L/km"
+          }
+        },
+        "megabit": {
+          "long": {
+            "other": "{0} megabit"
+          },
+          "narrow": {
+            "other": "{0}Mb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} Mb"
+          }
+        },
+        "megabyte": {
+          "long": {
+            "other": "{0} megabait"
+          },
+          "narrow": {
+            "other": "{0}MB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} MB"
+          }
+        },
+        "meter": {
+          "long": {
+            "other": "{0} meter"
+          },
+          "narrow": {
+            "other": "{0} m"
+          },
+          "perUnit": {
+            "long": "{0} setiap meter",
+            "narrow": "{0}/m",
+            "short": "{0}/m"
+          },
+          "short": {
+            "other": "{0} m"
+          }
+        },
+        "meter-per-second": {
+          "long": {
+            "other": "{0} meter sesaat"
+          },
+          "narrow": {
+            "other": "{0} m/s"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} m/s"
+          }
+        },
+        "mile": {
+          "long": {
+            "other": "{0} batu"
+          },
+          "narrow": {
+            "other": "{0} bt"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} bt"
+          }
+        },
+        "mile-per-gallon": {
+          "long": {
+            "other": "{0} batu segelen"
+          },
+          "narrow": {
+            "other": "{0} bpg"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} bpg"
+          }
+        },
+        "mile-per-hour": {
+          "long": {
+            "other": "{0} batu sejam"
+          },
+          "narrow": {
+            "other": "{0} bsj"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} bsj"
+          }
+        },
+        "mile-scandinavian": {
+          "long": {
+            "other": "{0} batu-skandinavia"
+          },
+          "narrow": {
+            "other": "{0} smi"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} smi"
+          }
+        },
+        "milliliter": {
+          "long": {
+            "other": "{0} mililiter"
+          },
+          "narrow": {
+            "other": "{0} mL"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} mL"
+          }
+        },
+        "millimeter": {
+          "long": {
+            "other": "{0} milimeter"
+          },
+          "narrow": {
+            "other": "{0} mm"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} mm"
+          }
+        },
+        "millisecond": {
+          "long": {
+            "other": "{0} milisaat"
+          },
+          "narrow": {
+            "other": "{0} ms"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} ms"
+          }
+        },
+        "minute": {
+          "long": {
+            "other": "{0} minit"
+          },
+          "narrow": {
+            "other": "{0} min"
+          },
+          "perUnit": {
+            "long": "{0} setiap minit",
+            "narrow": "{0}/min",
+            "short": "{0}/min"
+          },
+          "short": {
+            "other": "{0} min"
+          }
+        },
+        "month": {
+          "long": {
+            "other": "{0} bulan"
+          },
+          "narrow": {
+            "other": "{0} bln"
+          },
+          "perUnit": {
+            "long": "{0} setiap bulan",
+            "narrow": "{0}/bln",
+            "short": "{0}/bln"
+          },
+          "short": {
+            "other": "{0} bln"
+          }
+        },
+        "ounce": {
+          "long": {
+            "other": "{0} auns"
+          },
+          "narrow": {
+            "other": "{0} auns"
+          },
+          "perUnit": {
+            "long": "{0} setiap auns",
+            "narrow": "{0}/oz",
+            "short": "{0}/oz"
+          },
+          "short": {
+            "other": "{0} oz"
+          }
+        },
+        "percent": {
+          "long": {
+            "other": "{0} peratus"
+          },
+          "narrow": {
+            "other": "{0}%"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0}%"
+          }
+        },
+        "petabyte": {
+          "long": {
+            "other": "{0} petabait"
+          },
+          "narrow": {
+            "other": "{0}PB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} PB"
+          }
+        },
+        "pound": {
+          "long": {
+            "other": "{0} paun"
+          },
+          "narrow": {
+            "other": "{0} paun"
+          },
+          "perUnit": {
+            "long": "{0} setiap paun",
+            "narrow": "{0}/lb",
+            "short": "{0}/lb"
+          },
+          "short": {
+            "other": "{0} lb"
+          }
+        },
+        "second": {
+          "long": {
+            "other": "{0} saat"
+          },
+          "narrow": {
+            "other": "{0} s"
+          },
+          "perUnit": {
+            "long": "{0} sesaat",
+            "narrow": "{0}/s",
+            "short": "{0}/s"
+          },
+          "short": {
+            "other": "{0} saat"
+          }
+        },
+        "stone": {
+          "long": {
+            "other": "{0} stone"
+          },
+          "narrow": {
+            "other": "{0} st"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} st"
+          }
+        },
+        "terabit": {
+          "long": {
+            "other": "{0} terabit"
+          },
+          "narrow": {
+            "other": "{0}Tb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} Tb"
+          }
+        },
+        "terabyte": {
+          "long": {
+            "other": "{0} terabait"
+          },
+          "narrow": {
+            "other": "{0}TB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} TB"
+          }
+        },
+        "week": {
+          "long": {
+            "other": "{0} minggu"
+          },
+          "narrow": {
+            "other": "{0} mgu"
+          },
+          "perUnit": {
+            "long": "{0} setiap minggu",
+            "narrow": "{0}/mgu",
+            "short": "{0}/mgu"
+          },
+          "short": {
+            "other": "{0} mgu"
+          }
+        },
+        "yard": {
+          "long": {
+            "other": "{0} ela"
+          },
+          "narrow": {
+            "other": "{0} ela"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} ela"
+          }
+        },
+        "year": {
+          "long": {
+            "other": "{0} tahun"
+          },
+          "narrow": {
+            "other": "{0} thn"
+          },
+          "perUnit": {
+            "long": "{0} setiap tahun",
+            "narrow": "{0}/thn",
+            "short": "{0}/thn"
+          },
+          "short": {
+            "other": "{0} thn"
+          }
+        }
+      }
+    }
+  },
+  "locale": "ms"
+}

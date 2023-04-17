@@ -298,8 +298,10 @@ ts_script(
     ],
     data = [
         ":node_modules/@formatjs/ecma402-abstract",
+        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/@types/serialize-javascript",
         "//:node_modules/cldr-core",
+        "//:node_modules/json-stable-stringify",
         "//:node_modules/make-plural-compiler",
         "//:node_modules/serialize-javascript",
     ],

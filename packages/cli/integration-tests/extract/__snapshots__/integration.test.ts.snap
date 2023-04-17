@@ -1,42 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`[glob] basic case: defineMessages -> stdout 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": {
-    \\"defaultMessage\\": \\"No ID\\",
-    \\"description\\": \\"no ID\\"
+  \"286VP8\": {
+    \"defaultMessage\": \"No ID\",
+    \"description\": \"no ID\"
   },
-  \\"OvR0NS\\": {
-    \\"defaultMessage\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\"
+  \"OvR0NS\": {
+    \"defaultMessage\": \"I have {count, plural, one{a dog} other{many dogs}}\"
   },
-  \\"app.home.kittens\\": {
-    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
-    \\"description\\": \\"Counts kittens\\"
+  \"app.home.kittens\": {
+    \"defaultMessage\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\",
+    \"description\": \"Counts kittens\"
   },
-  \\"escaped.apostrophe\\": {
-    \\"defaultMessage\\": \\"A quoted value ''{value}'\\",
-    \\"description\\": \\"Escaped apostrophe\\"
+  \"escaped.apostrophe\": {
+    \"defaultMessage\": \"A quoted value ''{value}'\",
+    \"description\": \"Escaped apostrophe\"
   },
-  \\"foo.bar.baz\\": {
-    \\"defaultMessage\\": \\"Hello World!\\",
-    \\"description\\": \\"The default message\\"
+  \"foo.bar.baz\": {
+    \"defaultMessage\": \"Hello World!\",
+    \"description\": \"The default message\"
   },
-  \\"foo.bar.biff\\": {
-    \\"defaultMessage\\": \\"Hello Nurse!\\",
-    \\"description\\": \\"Another message\\"
+  \"foo.bar.biff\": {
+    \"defaultMessage\": \"Hello Nurse!\",
+    \"description\": \"Another message\"
   },
-  \\"ignore\\": {
-    \\"defaultMessage\\": \\"ignore\\"
+  \"ignore\": {
+    \"defaultMessage\": \"ignore\"
   },
-  \\"inline-msg\\": {
-    \\"defaultMessage\\": \\"inline message\\",
-    \\"description\\": \\"inline description\\"
+  \"inline-msg\": {
+    \"defaultMessage\": \"inline message\",
+    \"description\": \"inline description\"
   },
-  \\"trailing.ws\\": {
-    \\"defaultMessage\\": \\"Some whitespace\\",
-    \\"description\\": \\"Whitespace\\"
+  \"trailing.ws\": {
+    \"defaultMessage\": \"Some whitespace\",
+    \"description\": \"Whitespace\"
   }
 }
 ",
@@ -44,51 +44,51 @@ Object {
 `;
 
 exports[`TypeScript 4.7 syntax 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`TypeScript 4.7 syntax 2`] = `Object {}`;
+exports[`TypeScript 4.7 syntax 2`] = `{}`;
 
 exports[`basic case: defineMessages -> out-file 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "",
 }
 `;
 
 exports[`basic case: defineMessages -> out-file 2`] = `
-Object {
-  "286VP8": Object {
+{
+  "286VP8": {
     "defaultMessage": "No ID",
     "description": "no ID",
   },
-  "OvR0NS": Object {
+  "OvR0NS": {
     "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
   },
-  "app.home.kittens": Object {
+  "app.home.kittens": {
     "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
     "description": "Counts kittens",
   },
-  "escaped.apostrophe": Object {
+  "escaped.apostrophe": {
     "defaultMessage": "A quoted value ''{value}'",
     "description": "Escaped apostrophe",
   },
-  "foo.bar.baz": Object {
+  "foo.bar.baz": {
     "defaultMessage": "Hello World!",
     "description": "The default message",
   },
-  "foo.bar.biff": Object {
+  "foo.bar.biff": {
     "defaultMessage": "Hello Nurse!",
     "description": "Another message",
   },
-  "inline-msg": Object {
+  "inline-msg": {
     "defaultMessage": "inline message",
     "description": "inline description",
   },
-  "trailing.ws": Object {
+  "trailing.ws": {
     "defaultMessage": "Some whitespace",
     "description": "Whitespace",
   },
@@ -96,15 +96,15 @@ Object {
 `;
 
 exports[`basic case: defineMessages -> out-file with location 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "",
 }
 `;
 
 exports[`basic case: defineMessages -> out-file with location 2`] = `
-Object {
-  "286VP8": Object {
+{
+  "286VP8": {
     "col": 18,
     "defaultMessage": "No ID",
     "description": "no ID",
@@ -113,7 +113,7 @@ Object {
     "line": 34,
     "start": 874,
   },
-  "OvR0NS": Object {
+  "OvR0NS": {
     "col": 10,
     "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
     "end": 1028,
@@ -121,7 +121,7 @@ Object {
     "line": 38,
     "start": 947,
   },
-  "app.home.kittens": Object {
+  "app.home.kittens": {
     "col": 10,
     "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
     "description": "Counts kittens",
@@ -130,7 +130,7 @@ Object {
     "line": 15,
     "start": 370,
   },
-  "escaped.apostrophe": Object {
+  "escaped.apostrophe": {
     "col": 10,
     "defaultMessage": "A quoted value ''{value}'",
     "description": "Escaped apostrophe",
@@ -139,7 +139,7 @@ Object {
     "line": 25,
     "start": 660,
   },
-  "foo.bar.baz": Object {
+  "foo.bar.baz": {
     "col": 9,
     "defaultMessage": "Hello World!",
     "description": "The default message",
@@ -148,7 +148,7 @@ Object {
     "line": 5,
     "start": 139,
   },
-  "foo.bar.biff": Object {
+  "foo.bar.biff": {
     "col": 10,
     "defaultMessage": "Hello Nurse!",
     "description": "Another message",
@@ -157,7 +157,7 @@ Object {
     "line": 10,
     "start": 256,
   },
-  "inline-msg": Object {
+  "inline-msg": {
     "col": 10,
     "defaultMessage": "inline message",
     "description": "inline description",
@@ -166,7 +166,7 @@ Object {
     "line": 56,
     "start": 1358,
   },
-  "trailing.ws": Object {
+  "trailing.ws": {
     "col": 21,
     "defaultMessage": "Some whitespace",
     "description": "Whitespace",
@@ -179,39 +179,39 @@ Object {
 `;
 
 exports[`basic case: defineMessages -> stdout 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": {
-    \\"defaultMessage\\": \\"No ID\\",
-    \\"description\\": \\"no ID\\"
+  \"286VP8\": {
+    \"defaultMessage\": \"No ID\",
+    \"description\": \"no ID\"
   },
-  \\"OvR0NS\\": {
-    \\"defaultMessage\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\"
+  \"OvR0NS\": {
+    \"defaultMessage\": \"I have {count, plural, one{a dog} other{many dogs}}\"
   },
-  \\"app.home.kittens\\": {
-    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
-    \\"description\\": \\"Counts kittens\\"
+  \"app.home.kittens\": {
+    \"defaultMessage\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\",
+    \"description\": \"Counts kittens\"
   },
-  \\"escaped.apostrophe\\": {
-    \\"defaultMessage\\": \\"A quoted value ''{value}'\\",
-    \\"description\\": \\"Escaped apostrophe\\"
+  \"escaped.apostrophe\": {
+    \"defaultMessage\": \"A quoted value ''{value}'\",
+    \"description\": \"Escaped apostrophe\"
   },
-  \\"foo.bar.baz\\": {
-    \\"defaultMessage\\": \\"Hello World!\\",
-    \\"description\\": \\"The default message\\"
+  \"foo.bar.baz\": {
+    \"defaultMessage\": \"Hello World!\",
+    \"description\": \"The default message\"
   },
-  \\"foo.bar.biff\\": {
-    \\"defaultMessage\\": \\"Hello Nurse!\\",
-    \\"description\\": \\"Another message\\"
+  \"foo.bar.biff\": {
+    \"defaultMessage\": \"Hello Nurse!\",
+    \"description\": \"Another message\"
   },
-  \\"inline-msg\\": {
-    \\"defaultMessage\\": \\"inline message\\",
-    \\"description\\": \\"inline description\\"
+  \"inline-msg\": {
+    \"defaultMessage\": \"inline message\",
+    \"description\": \"inline description\"
   },
-  \\"trailing.ws\\": {
-    \\"defaultMessage\\": \\"Some whitespace\\",
-    \\"description\\": \\"Whitespace\\"
+  \"trailing.ws\": {
+    \"defaultMessage\": \"Some whitespace\",
+    \"description\": \"Whitespace\"
   }
 }
 ",
@@ -219,7 +219,7 @@ Object {
 `;
 
 exports[`basic case: help 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "Usage: formatjs extract [options] [files...]
 
@@ -241,7 +241,7 @@ Options:
   --id-interpolation-pattern <pattern>                  If certain message descriptors don't have id, this \`pattern\` will be used to automatically
   generate IDs for them. Default to \`[sha512:contenthash:base64:6]\` where \`contenthash\` is the hash of
   \`defaultMessage\` and \`description\`.
-  See https://github.com/webpack/loader-utils#interpolatename for sample patterns (default: \\"[sha512:contenthash:base64:6]\\")
+  See https://github.com/webpack/loader-utils#interpolatename for sample patterns (default: \"[sha512:contenthash:base64:6]\")
   --extract-source-location                             Whether the metadata about the location of the message in the source file should be 
   extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each 
   extracted message descriptors. (default: false)
@@ -259,14 +259,14 @@ Options:
         // @intl-meta project:my-custom-project
         import {FormattedMessage} from 'react-intl';
   
-        <FormattedMessage defaultMessage=\\"foo\\" id=\\"bar\\" />;
+        <FormattedMessage defaultMessage=\"foo\" id=\"bar\" />;
         \`\`\`
   
-        and with option \`{pragma: \\"intl-meta\\"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.
+        and with option \`{pragma: \"intl-meta\"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.
   --preserve-whitespace                                 Whether to preserve whitespace and newlines.
   --flatten                                             Whether to hoist selectors & flatten sentences as much as possible. E.g:
-  \\"I have {count, plural, one{a dog} other{many dogs}}\\"
-  becomes \\"{count, plural, one{I have a dog} other{I have many dogs}}\\".
+  \"I have {count, plural, one{a dog} other{many dogs}}\"
+  becomes \"{count, plural, one{I have a dog} other{I have many dogs}}\".
   The goal is to provide as many full sentences as possible since fragmented
   sentences are not translator-friendly.
   -h, --help                                            display help for command
@@ -275,47 +275,47 @@ Options:
 `;
 
 exports[`duplicated descriptor ids shows warning 1`] = `
-Object {
-  "foo": Object {
+{
+  "foo": {
     "defaultMessage": "Bar",
   },
 }
 `;
 
 exports[`flatten defineMessages -> stdout 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": {
-    \\"defaultMessage\\": \\"No ID\\",
-    \\"description\\": \\"no ID\\"
+  \"286VP8\": {
+    \"defaultMessage\": \"No ID\",
+    \"description\": \"no ID\"
   },
-  \\"OvR0NS\\": {
-    \\"defaultMessage\\": \\"{count,plural,one{I have a dog} other{I have many dogs}}\\"
+  \"OvR0NS\": {
+    \"defaultMessage\": \"{count,plural,one{I have a dog} other{I have many dogs}}\"
   },
-  \\"app.home.kittens\\": {
-    \\"defaultMessage\\": \\"{count,plural,=0{😭} one{# kitten} other{# kittens}}\\",
-    \\"description\\": \\"Counts kittens\\"
+  \"app.home.kittens\": {
+    \"defaultMessage\": \"{count,plural,=0{😭} one{# kitten} other{# kittens}}\",
+    \"description\": \"Counts kittens\"
   },
-  \\"escaped.apostrophe\\": {
-    \\"defaultMessage\\": \\"A quoted value ''{value}''\\",
-    \\"description\\": \\"Escaped apostrophe\\"
+  \"escaped.apostrophe\": {
+    \"defaultMessage\": \"A quoted value ''{value}''\",
+    \"description\": \"Escaped apostrophe\"
   },
-  \\"foo.bar.baz\\": {
-    \\"defaultMessage\\": \\"Hello World!\\",
-    \\"description\\": \\"The default message\\"
+  \"foo.bar.baz\": {
+    \"defaultMessage\": \"Hello World!\",
+    \"description\": \"The default message\"
   },
-  \\"foo.bar.biff\\": {
-    \\"defaultMessage\\": \\"Hello Nurse!\\",
-    \\"description\\": \\"Another message\\"
+  \"foo.bar.biff\": {
+    \"defaultMessage\": \"Hello Nurse!\",
+    \"description\": \"Another message\"
   },
-  \\"inline-msg\\": {
-    \\"defaultMessage\\": \\"inline message\\",
-    \\"description\\": \\"inline description\\"
+  \"inline-msg\": {
+    \"defaultMessage\": \"inline message\",
+    \"description\": \"inline description\"
   },
-  \\"trailing.ws\\": {
-    \\"defaultMessage\\": \\"Some whitespace\\",
-    \\"description\\": \\"Whitespace\\"
+  \"trailing.ws\": {
+    \"defaultMessage\": \"Some whitespace\",
+    \"description\": \"Whitespace\"
   }
 }
 ",
@@ -323,38 +323,38 @@ Object {
 `;
 
 exports[`ignore -> stdout JS 1`] = `
-Object {
-  "286VP8": Object {
+{
+  "286VP8": {
     "defaultMessage": "No ID",
     "description": "no ID",
   },
-  "OvR0NS": Object {
+  "OvR0NS": {
     "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
   },
-  "app.home.kittens": Object {
+  "app.home.kittens": {
     "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
     "description": "Counts kittens",
   },
-  "escaped.apostrophe": Object {
+  "escaped.apostrophe": {
     "defaultMessage": "A quoted value ''{value}'",
     "description": "Escaped apostrophe",
   },
-  "foo.bar.baz": Object {
+  "foo.bar.baz": {
     "defaultMessage": "Hello World!",
     "description": "The default message",
   },
-  "foo.bar.biff": Object {
+  "foo.bar.biff": {
     "defaultMessage": "Hello Nurse!",
     "description": "Another message",
   },
-  "ignore": Object {
+  "ignore": {
     "defaultMessage": "ignore",
   },
-  "inline-msg": Object {
+  "inline-msg": {
     "defaultMessage": "inline message",
     "description": "inline description",
   },
-  "trailing.ws": Object {
+  "trailing.ws": {
     "defaultMessage": "Some whitespace",
     "description": "Whitespace",
   },
@@ -362,55 +362,55 @@ Object {
 `;
 
 exports[`ignore -> stdout TS 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": {
-    \\"defaultMessage\\": \\"No ID\\",
-    \\"description\\": \\"no ID\\"
+  \"286VP8\": {
+    \"defaultMessage\": \"No ID\",
+    \"description\": \"no ID\"
   },
-  \\"app.home.kittens\\": {
-    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
-    \\"description\\": \\"Counts kittens\\"
+  \"app.home.kittens\": {
+    \"defaultMessage\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\",
+    \"description\": \"Counts kittens\"
   },
-  \\"eCy8Eo\\": {
-    \\"defaultMessage\\": \\"No Desc\\"
+  \"eCy8Eo\": {
+    \"defaultMessage\": \"No Desc\"
   },
-  \\"escaped.apostrophe\\": {
-    \\"defaultMessage\\": \\"A quoted value ''{value}'\\",
-    \\"description\\": \\"Escaped apostrophe\\"
+  \"escaped.apostrophe\": {
+    \"defaultMessage\": \"A quoted value ''{value}'\",
+    \"description\": \"Escaped apostrophe\"
   },
-  \\"foo.bar.baz\\": {
-    \\"defaultMessage\\": \\"Hello World!\\",
-    \\"description\\": \\"The default message\\"
+  \"foo.bar.baz\": {
+    \"defaultMessage\": \"Hello World!\",
+    \"description\": \"The default message\"
   },
-  \\"foo.bar.biff\\": {
-    \\"defaultMessage\\": \\"Hello Nurse!\\",
-    \\"description\\": \\"Another message\\"
+  \"foo.bar.biff\": {
+    \"defaultMessage\": \"Hello Nurse!\",
+    \"description\": \"Another message\"
   },
-  \\"inline\\": {
-    \\"defaultMessage\\": \\"formatted message\\",
-    \\"description\\": \\"foo\\"
+  \"inline\": {
+    \"defaultMessage\": \"formatted message\",
+    \"description\": \"foo\"
   },
-  \\"inline.linebreak\\": {
-    \\"defaultMessage\\": \\"formatted message with linebreak\\",
-    \\"description\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\"
+  \"inline.linebreak\": {
+    \"defaultMessage\": \"formatted message with linebreak\",
+    \"description\": \"foo\\n\\t\\t\\t\\t\\t\\tbar\"
   },
-  \\"linebreak\\": {
-    \\"defaultMessage\\": \\"this is a message\\",
-    \\"description\\": \\"this is\\\\na\\\\ndescription\\"
+  \"linebreak\": {
+    \"defaultMessage\": \"this is a message\",
+    \"description\": \"this is\\na\\ndescription\"
   },
-  \\"newline\\": {
-    \\"defaultMessage\\": \\"this is a message\\",
-    \\"description\\": \\"this is     a     description\\"
+  \"newline\": {
+    \"defaultMessage\": \"this is a message\",
+    \"description\": \"this is     a     description\"
   },
-  \\"templateLinebreak\\": {
-    \\"defaultMessage\\": \\"this is a message\\",
-    \\"description\\": \\"this is\\\\n    a\\\\n    description\\"
+  \"templateLinebreak\": {
+    \"defaultMessage\": \"this is a message\",
+    \"description\": \"this is\\n    a\\n    description\"
   },
-  \\"trailing.ws\\": {
-    \\"defaultMessage\\": \\"Some whitespace\\",
-    \\"description\\": \\"Whitespace\\"
+  \"trailing.ws\": {
+    \"defaultMessage\": \"Some whitespace\",
+    \"description\": \"Whitespace\"
   }
 }
 ",
@@ -418,17 +418,17 @@ Object {
 `;
 
 exports[`non duplicated descriptors does not throw 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "",
 }
 `;
 
 exports[`non duplicated descriptors does not throw 2`] = `
-Object {
-  "foo": Object {
+{
+  "foo": {
     "defaultMessage": "Foo",
-    "description": Object {
+    "description": {
       "maxCharacterCount": 2,
       "text": "Bar",
     },
@@ -437,70 +437,70 @@ Object {
 `;
 
 exports[`pragma 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": {
-    \\"defaultMessage\\": \\"No ID\\",
-    \\"description\\": \\"no ID\\",
-    \\"meta\\": {
-      \\"baz\\": \\"1\\",
-      \\"foo\\": \\"bar\\"
+  \"286VP8\": {
+    \"defaultMessage\": \"No ID\",
+    \"description\": \"no ID\",
+    \"meta\": {
+      \"baz\": \"1\",
+      \"foo\": \"bar\"
     }
   },
-  \\"app.home.kittens\\": {
-    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
-    \\"description\\": \\"Counts kittens\\",
-    \\"meta\\": {
-      \\"baz\\": \\"1\\",
-      \\"foo\\": \\"bar\\"
+  \"app.home.kittens\": {
+    \"defaultMessage\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\",
+    \"description\": \"Counts kittens\",
+    \"meta\": {
+      \"baz\": \"1\",
+      \"foo\": \"bar\"
     }
   },
-  \\"eCy8Eo\\": {
-    \\"defaultMessage\\": \\"No Desc\\",
-    \\"meta\\": {
-      \\"baz\\": \\"1\\",
-      \\"foo\\": \\"bar\\"
+  \"eCy8Eo\": {
+    \"defaultMessage\": \"No Desc\",
+    \"meta\": {
+      \"baz\": \"1\",
+      \"foo\": \"bar\"
     }
   },
-  \\"escaped.apostrophe\\": {
-    \\"defaultMessage\\": \\"A quoted value ''{value}'\\",
-    \\"description\\": \\"Escaped apostrophe\\",
-    \\"meta\\": {
-      \\"baz\\": \\"1\\",
-      \\"foo\\": \\"bar\\"
+  \"escaped.apostrophe\": {
+    \"defaultMessage\": \"A quoted value ''{value}'\",
+    \"description\": \"Escaped apostrophe\",
+    \"meta\": {
+      \"baz\": \"1\",
+      \"foo\": \"bar\"
     }
   },
-  \\"foo.bar.baz\\": {
-    \\"defaultMessage\\": \\"Hello World!\\",
-    \\"description\\": \\"The default message\\",
-    \\"meta\\": {
-      \\"baz\\": \\"1\\",
-      \\"foo\\": \\"bar\\"
+  \"foo.bar.baz\": {
+    \"defaultMessage\": \"Hello World!\",
+    \"description\": \"The default message\",
+    \"meta\": {
+      \"baz\": \"1\",
+      \"foo\": \"bar\"
     }
   },
-  \\"foo.bar.biff\\": {
-    \\"defaultMessage\\": \\"Hello Nurse!\\",
-    \\"description\\": \\"Another message\\",
-    \\"meta\\": {
-      \\"baz\\": \\"1\\",
-      \\"foo\\": \\"bar\\"
+  \"foo.bar.biff\": {
+    \"defaultMessage\": \"Hello Nurse!\",
+    \"description\": \"Another message\",
+    \"meta\": {
+      \"baz\": \"1\",
+      \"foo\": \"bar\"
     }
   },
-  \\"inline\\": {
-    \\"defaultMessage\\": \\"formatted message\\",
-    \\"description\\": \\"foo\\",
-    \\"meta\\": {
-      \\"baz\\": \\"1\\",
-      \\"foo\\": \\"bar\\"
+  \"inline\": {
+    \"defaultMessage\": \"formatted message\",
+    \"description\": \"foo\",
+    \"meta\": {
+      \"baz\": \"1\",
+      \"foo\": \"bar\"
     }
   },
-  \\"trailing.ws\\": {
-    \\"defaultMessage\\": \\"Some whitespace\\",
-    \\"description\\": \\"Whitespace\\",
-    \\"meta\\": {
-      \\"baz\\": \\"1\\",
-      \\"foo\\": \\"bar\\"
+  \"trailing.ws\": {
+    \"defaultMessage\": \"Some whitespace\",
+    \"description\": \"Whitespace\",
+    \"meta\": {
+      \"baz\": \"1\",
+      \"foo\": \"bar\"
     }
   }
 }
@@ -509,55 +509,55 @@ Object {
 `;
 
 exports[`typescript -> stdout 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": {
-    \\"defaultMessage\\": \\"No ID\\",
-    \\"description\\": \\"no ID\\"
+  \"286VP8\": {
+    \"defaultMessage\": \"No ID\",
+    \"description\": \"no ID\"
   },
-  \\"app.home.kittens\\": {
-    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
-    \\"description\\": \\"Counts kittens\\"
+  \"app.home.kittens\": {
+    \"defaultMessage\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\",
+    \"description\": \"Counts kittens\"
   },
-  \\"eCy8Eo\\": {
-    \\"defaultMessage\\": \\"No Desc\\"
+  \"eCy8Eo\": {
+    \"defaultMessage\": \"No Desc\"
   },
-  \\"escaped.apostrophe\\": {
-    \\"defaultMessage\\": \\"A quoted value ''{value}'\\",
-    \\"description\\": \\"Escaped apostrophe\\"
+  \"escaped.apostrophe\": {
+    \"defaultMessage\": \"A quoted value ''{value}'\",
+    \"description\": \"Escaped apostrophe\"
   },
-  \\"foo.bar.baz\\": {
-    \\"defaultMessage\\": \\"Hello World!\\",
-    \\"description\\": \\"The default message\\"
+  \"foo.bar.baz\": {
+    \"defaultMessage\": \"Hello World!\",
+    \"description\": \"The default message\"
   },
-  \\"foo.bar.biff\\": {
-    \\"defaultMessage\\": \\"Hello Nurse!\\",
-    \\"description\\": \\"Another message\\"
+  \"foo.bar.biff\": {
+    \"defaultMessage\": \"Hello Nurse!\",
+    \"description\": \"Another message\"
   },
-  \\"inline\\": {
-    \\"defaultMessage\\": \\"formatted message\\",
-    \\"description\\": \\"foo\\"
+  \"inline\": {
+    \"defaultMessage\": \"formatted message\",
+    \"description\": \"foo\"
   },
-  \\"inline.linebreak\\": {
-    \\"defaultMessage\\": \\"formatted message with linebreak\\",
-    \\"description\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\"
+  \"inline.linebreak\": {
+    \"defaultMessage\": \"formatted message with linebreak\",
+    \"description\": \"foo\\n\\t\\t\\t\\t\\t\\tbar\"
   },
-  \\"linebreak\\": {
-    \\"defaultMessage\\": \\"this is a message\\",
-    \\"description\\": \\"this is\\\\na\\\\ndescription\\"
+  \"linebreak\": {
+    \"defaultMessage\": \"this is a message\",
+    \"description\": \"this is\\na\\ndescription\"
   },
-  \\"newline\\": {
-    \\"defaultMessage\\": \\"this is a message\\",
-    \\"description\\": \\"this is     a     description\\"
+  \"newline\": {
+    \"defaultMessage\": \"this is a message\",
+    \"description\": \"this is     a     description\"
   },
-  \\"templateLinebreak\\": {
-    \\"defaultMessage\\": \\"this is a message\\",
-    \\"description\\": \\"this is\\\\n    a\\\\n    description\\"
+  \"templateLinebreak\": {
+    \"defaultMessage\": \"this is a message\",
+    \"description\": \"this is\\n    a\\n    description\"
   },
-  \\"trailing.ws\\": {
-    \\"defaultMessage\\": \\"Some whitespace\\",
-    \\"description\\": \\"Whitespace\\"
+  \"trailing.ws\": {
+    \"defaultMessage\": \"Some whitespace\",
+    \"description\": \"Whitespace\"
   }
 }
 ",
@@ -565,55 +565,55 @@ Object {
 `;
 
 exports[`typescript -> stdout with crowdin 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": {
-    \\"description\\": \\"no ID\\",
-    \\"message\\": \\"No ID\\"
+  \"286VP8\": {
+    \"description\": \"no ID\",
+    \"message\": \"No ID\"
   },
-  \\"app.home.kittens\\": {
-    \\"description\\": \\"Counts kittens\\",
-    \\"message\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
+  \"app.home.kittens\": {
+    \"description\": \"Counts kittens\",
+    \"message\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\"
   },
-  \\"eCy8Eo\\": {
-    \\"message\\": \\"No Desc\\"
+  \"eCy8Eo\": {
+    \"message\": \"No Desc\"
   },
-  \\"escaped.apostrophe\\": {
-    \\"description\\": \\"Escaped apostrophe\\",
-    \\"message\\": \\"A quoted value ''{value}'\\"
+  \"escaped.apostrophe\": {
+    \"description\": \"Escaped apostrophe\",
+    \"message\": \"A quoted value ''{value}'\"
   },
-  \\"foo.bar.baz\\": {
-    \\"description\\": \\"The default message\\",
-    \\"message\\": \\"Hello World!\\"
+  \"foo.bar.baz\": {
+    \"description\": \"The default message\",
+    \"message\": \"Hello World!\"
   },
-  \\"foo.bar.biff\\": {
-    \\"description\\": \\"Another message\\",
-    \\"message\\": \\"Hello Nurse!\\"
+  \"foo.bar.biff\": {
+    \"description\": \"Another message\",
+    \"message\": \"Hello Nurse!\"
   },
-  \\"inline\\": {
-    \\"description\\": \\"foo\\",
-    \\"message\\": \\"formatted message\\"
+  \"inline\": {
+    \"description\": \"foo\",
+    \"message\": \"formatted message\"
   },
-  \\"inline.linebreak\\": {
-    \\"description\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\",
-    \\"message\\": \\"formatted message with linebreak\\"
+  \"inline.linebreak\": {
+    \"description\": \"foo\\n\\t\\t\\t\\t\\t\\tbar\",
+    \"message\": \"formatted message with linebreak\"
   },
-  \\"linebreak\\": {
-    \\"description\\": \\"this is\\\\na\\\\ndescription\\",
-    \\"message\\": \\"this is a message\\"
+  \"linebreak\": {
+    \"description\": \"this is\\na\\ndescription\",
+    \"message\": \"this is a message\"
   },
-  \\"newline\\": {
-    \\"description\\": \\"this is     a     description\\",
-    \\"message\\": \\"this is a message\\"
+  \"newline\": {
+    \"description\": \"this is     a     description\",
+    \"message\": \"this is a message\"
   },
-  \\"templateLinebreak\\": {
-    \\"description\\": \\"this is\\\\n    a\\\\n    description\\",
-    \\"message\\": \\"this is a message\\"
+  \"templateLinebreak\": {
+    \"description\": \"this is\\n    a\\n    description\",
+    \"message\": \"this is a message\"
   },
-  \\"trailing.ws\\": {
-    \\"description\\": \\"Whitespace\\",
-    \\"message\\": \\"Some whitespace\\"
+  \"trailing.ws\": {
+    \"description\": \"Whitespace\",
+    \"message\": \"Some whitespace\"
   }
 }
 ",
@@ -621,55 +621,55 @@ Object {
 `;
 
 exports[`typescript -> stdout with formatter 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": {
-    \\"comment\\": \\"no ID\\",
-    \\"string\\": \\"No ID\\"
+  \"286VP8\": {
+    \"comment\": \"no ID\",
+    \"string\": \"No ID\"
   },
-  \\"app.home.kittens\\": {
-    \\"comment\\": \\"Counts kittens\\",
-    \\"string\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
+  \"app.home.kittens\": {
+    \"comment\": \"Counts kittens\",
+    \"string\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\"
   },
-  \\"eCy8Eo\\": {
-    \\"string\\": \\"No Desc\\"
+  \"eCy8Eo\": {
+    \"string\": \"No Desc\"
   },
-  \\"escaped.apostrophe\\": {
-    \\"comment\\": \\"Escaped apostrophe\\",
-    \\"string\\": \\"A quoted value ''{value}'\\"
+  \"escaped.apostrophe\": {
+    \"comment\": \"Escaped apostrophe\",
+    \"string\": \"A quoted value ''{value}'\"
   },
-  \\"foo.bar.baz\\": {
-    \\"comment\\": \\"The default message\\",
-    \\"string\\": \\"Hello World!\\"
+  \"foo.bar.baz\": {
+    \"comment\": \"The default message\",
+    \"string\": \"Hello World!\"
   },
-  \\"foo.bar.biff\\": {
-    \\"comment\\": \\"Another message\\",
-    \\"string\\": \\"Hello Nurse!\\"
+  \"foo.bar.biff\": {
+    \"comment\": \"Another message\",
+    \"string\": \"Hello Nurse!\"
   },
-  \\"inline\\": {
-    \\"comment\\": \\"foo\\",
-    \\"string\\": \\"formatted message\\"
+  \"inline\": {
+    \"comment\": \"foo\",
+    \"string\": \"formatted message\"
   },
-  \\"inline.linebreak\\": {
-    \\"comment\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\",
-    \\"string\\": \\"formatted message with linebreak\\"
+  \"inline.linebreak\": {
+    \"comment\": \"foo\\n\\t\\t\\t\\t\\t\\tbar\",
+    \"string\": \"formatted message with linebreak\"
   },
-  \\"linebreak\\": {
-    \\"comment\\": \\"this is\\\\na\\\\ndescription\\",
-    \\"string\\": \\"this is a message\\"
+  \"linebreak\": {
+    \"comment\": \"this is\\na\\ndescription\",
+    \"string\": \"this is a message\"
   },
-  \\"newline\\": {
-    \\"comment\\": \\"this is     a     description\\",
-    \\"string\\": \\"this is a message\\"
+  \"newline\": {
+    \"comment\": \"this is     a     description\",
+    \"string\": \"this is a message\"
   },
-  \\"templateLinebreak\\": {
-    \\"comment\\": \\"this is\\\\n    a\\\\n    description\\",
-    \\"string\\": \\"this is a message\\"
+  \"templateLinebreak\": {
+    \"comment\": \"this is\\n    a\\n    description\",
+    \"string\": \"this is a message\"
   },
-  \\"trailing.ws\\": {
-    \\"comment\\": \\"Whitespace\\",
-    \\"string\\": \\"Some whitespace\\"
+  \"trailing.ws\": {
+    \"comment\": \"Whitespace\",
+    \"string\": \"Some whitespace\"
   }
 }
 ",
@@ -677,55 +677,55 @@ Object {
 `;
 
 exports[`typescript -> stdout with lokalise 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": {
-    \\"notes\\": \\"no ID\\",
-    \\"translation\\": \\"No ID\\"
+  \"286VP8\": {
+    \"notes\": \"no ID\",
+    \"translation\": \"No ID\"
   },
-  \\"app.home.kittens\\": {
-    \\"notes\\": \\"Counts kittens\\",
-    \\"translation\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
+  \"app.home.kittens\": {
+    \"notes\": \"Counts kittens\",
+    \"translation\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\"
   },
-  \\"eCy8Eo\\": {
-    \\"translation\\": \\"No Desc\\"
+  \"eCy8Eo\": {
+    \"translation\": \"No Desc\"
   },
-  \\"escaped.apostrophe\\": {
-    \\"notes\\": \\"Escaped apostrophe\\",
-    \\"translation\\": \\"A quoted value ''{value}'\\"
+  \"escaped.apostrophe\": {
+    \"notes\": \"Escaped apostrophe\",
+    \"translation\": \"A quoted value ''{value}'\"
   },
-  \\"foo.bar.baz\\": {
-    \\"notes\\": \\"The default message\\",
-    \\"translation\\": \\"Hello World!\\"
+  \"foo.bar.baz\": {
+    \"notes\": \"The default message\",
+    \"translation\": \"Hello World!\"
   },
-  \\"foo.bar.biff\\": {
-    \\"notes\\": \\"Another message\\",
-    \\"translation\\": \\"Hello Nurse!\\"
+  \"foo.bar.biff\": {
+    \"notes\": \"Another message\",
+    \"translation\": \"Hello Nurse!\"
   },
-  \\"inline\\": {
-    \\"notes\\": \\"foo\\",
-    \\"translation\\": \\"formatted message\\"
+  \"inline\": {
+    \"notes\": \"foo\",
+    \"translation\": \"formatted message\"
   },
-  \\"inline.linebreak\\": {
-    \\"notes\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\",
-    \\"translation\\": \\"formatted message with linebreak\\"
+  \"inline.linebreak\": {
+    \"notes\": \"foo\\n\\t\\t\\t\\t\\t\\tbar\",
+    \"translation\": \"formatted message with linebreak\"
   },
-  \\"linebreak\\": {
-    \\"notes\\": \\"this is\\\\na\\\\ndescription\\",
-    \\"translation\\": \\"this is a message\\"
+  \"linebreak\": {
+    \"notes\": \"this is\\na\\ndescription\",
+    \"translation\": \"this is a message\"
   },
-  \\"newline\\": {
-    \\"notes\\": \\"this is     a     description\\",
-    \\"translation\\": \\"this is a message\\"
+  \"newline\": {
+    \"notes\": \"this is     a     description\",
+    \"translation\": \"this is a message\"
   },
-  \\"templateLinebreak\\": {
-    \\"notes\\": \\"this is\\\\n    a\\\\n    description\\",
-    \\"translation\\": \\"this is a message\\"
+  \"templateLinebreak\": {
+    \"notes\": \"this is\\n    a\\n    description\",
+    \"translation\": \"this is a message\"
   },
-  \\"trailing.ws\\": {
-    \\"notes\\": \\"Whitespace\\",
-    \\"translation\\": \\"Some whitespace\\"
+  \"trailing.ws\": {
+    \"notes\": \"Whitespace\",
+    \"translation\": \"Some whitespace\"
   }
 }
 ",
@@ -733,87 +733,87 @@ Object {
 `;
 
 exports[`typescript -> stdout with simple 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": \\"No ID\\",
-  \\"app.home.kittens\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
-  \\"eCy8Eo\\": \\"No Desc\\",
-  \\"escaped.apostrophe\\": \\"A quoted value ''{value}'\\",
-  \\"foo.bar.baz\\": \\"Hello World!\\",
-  \\"foo.bar.biff\\": \\"Hello Nurse!\\",
-  \\"inline\\": \\"formatted message\\",
-  \\"inline.linebreak\\": \\"formatted message with linebreak\\",
-  \\"linebreak\\": \\"this is a message\\",
-  \\"newline\\": \\"this is a message\\",
-  \\"templateLinebreak\\": \\"this is a message\\",
-  \\"trailing.ws\\": \\"Some whitespace\\"
+  \"286VP8\": \"No ID\",
+  \"app.home.kittens\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\",
+  \"eCy8Eo\": \"No Desc\",
+  \"escaped.apostrophe\": \"A quoted value ''{value}'\",
+  \"foo.bar.baz\": \"Hello World!\",
+  \"foo.bar.biff\": \"Hello Nurse!\",
+  \"inline\": \"formatted message\",
+  \"inline.linebreak\": \"formatted message with linebreak\",
+  \"linebreak\": \"this is a message\",
+  \"newline\": \"this is a message\",
+  \"templateLinebreak\": \"this is a message\",
+  \"trailing.ws\": \"Some whitespace\"
 }
 ",
 }
 `;
 
 exports[`typescript -> stdout with smartling 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"smartling\\": {
-    \\"string_format\\": \\"icu\\",
-    \\"translate_paths\\": [
+  \"smartling\": {
+    \"string_format\": \"icu\",
+    \"translate_paths\": [
       {
-        \\"instruction\\": \\"*/description\\",
-        \\"key\\": \\"{*}/message\\",
-        \\"path\\": \\"*/message\\"
+        \"instruction\": \"*/description\",
+        \"key\": \"{*}/message\",
+        \"path\": \"*/message\"
       }
     ],
-    \\"variants_enabled\\": true
+    \"variants_enabled\": true
   },
-  \\"286VP8\\": {
-    \\"description\\": \\"no ID\\",
-    \\"message\\": \\"No ID\\"
+  \"286VP8\": {
+    \"description\": \"no ID\",
+    \"message\": \"No ID\"
   },
-  \\"app.home.kittens\\": {
-    \\"description\\": \\"Counts kittens\\",
-    \\"message\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
+  \"app.home.kittens\": {
+    \"description\": \"Counts kittens\",
+    \"message\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\"
   },
-  \\"eCy8Eo\\": {
-    \\"message\\": \\"No Desc\\"
+  \"eCy8Eo\": {
+    \"message\": \"No Desc\"
   },
-  \\"escaped.apostrophe\\": {
-    \\"description\\": \\"Escaped apostrophe\\",
-    \\"message\\": \\"A quoted value ''{value}'\\"
+  \"escaped.apostrophe\": {
+    \"description\": \"Escaped apostrophe\",
+    \"message\": \"A quoted value ''{value}'\"
   },
-  \\"foo.bar.baz\\": {
-    \\"description\\": \\"The default message\\",
-    \\"message\\": \\"Hello World!\\"
+  \"foo.bar.baz\": {
+    \"description\": \"The default message\",
+    \"message\": \"Hello World!\"
   },
-  \\"foo.bar.biff\\": {
-    \\"description\\": \\"Another message\\",
-    \\"message\\": \\"Hello Nurse!\\"
+  \"foo.bar.biff\": {
+    \"description\": \"Another message\",
+    \"message\": \"Hello Nurse!\"
   },
-  \\"inline\\": {
-    \\"description\\": \\"foo\\",
-    \\"message\\": \\"formatted message\\"
+  \"inline\": {
+    \"description\": \"foo\",
+    \"message\": \"formatted message\"
   },
-  \\"inline.linebreak\\": {
-    \\"description\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\",
-    \\"message\\": \\"formatted message with linebreak\\"
+  \"inline.linebreak\": {
+    \"description\": \"foo\\n\\t\\t\\t\\t\\t\\tbar\",
+    \"message\": \"formatted message with linebreak\"
   },
-  \\"linebreak\\": {
-    \\"description\\": \\"this is\\\\na\\\\ndescription\\",
-    \\"message\\": \\"this is a message\\"
+  \"linebreak\": {
+    \"description\": \"this is\\na\\ndescription\",
+    \"message\": \"this is a message\"
   },
-  \\"newline\\": {
-    \\"description\\": \\"this is     a     description\\",
-    \\"message\\": \\"this is a message\\"
+  \"newline\": {
+    \"description\": \"this is     a     description\",
+    \"message\": \"this is a message\"
   },
-  \\"templateLinebreak\\": {
-    \\"description\\": \\"this is\\\\n    a\\\\n    description\\",
-    \\"message\\": \\"this is a message\\"
+  \"templateLinebreak\": {
+    \"description\": \"this is\\n    a\\n    description\",
+    \"message\": \"this is a message\"
   },
-  \\"trailing.ws\\": {
-    \\"description\\": \\"Whitespace\\",
-    \\"message\\": \\"Some whitespace\\"
+  \"trailing.ws\": {
+    \"description\": \"Whitespace\",
+    \"message\": \"Some whitespace\"
   }
 }
 ",
@@ -821,55 +821,55 @@ Object {
 `;
 
 exports[`typescript -> stdout with transifex 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "{
-  \\"286VP8\\": {
-    \\"developer_comment\\": \\"no ID\\",
-    \\"string\\": \\"No ID\\"
+  \"286VP8\": {
+    \"developer_comment\": \"no ID\",
+    \"string\": \"No ID\"
   },
-  \\"app.home.kittens\\": {
-    \\"developer_comment\\": \\"Counts kittens\\",
-    \\"string\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
+  \"app.home.kittens\": {
+    \"developer_comment\": \"Counts kittens\",
+    \"string\": \"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\"
   },
-  \\"eCy8Eo\\": {
-    \\"string\\": \\"No Desc\\"
+  \"eCy8Eo\": {
+    \"string\": \"No Desc\"
   },
-  \\"escaped.apostrophe\\": {
-    \\"developer_comment\\": \\"Escaped apostrophe\\",
-    \\"string\\": \\"A quoted value ''{value}'\\"
+  \"escaped.apostrophe\": {
+    \"developer_comment\": \"Escaped apostrophe\",
+    \"string\": \"A quoted value ''{value}'\"
   },
-  \\"foo.bar.baz\\": {
-    \\"developer_comment\\": \\"The default message\\",
-    \\"string\\": \\"Hello World!\\"
+  \"foo.bar.baz\": {
+    \"developer_comment\": \"The default message\",
+    \"string\": \"Hello World!\"
   },
-  \\"foo.bar.biff\\": {
-    \\"developer_comment\\": \\"Another message\\",
-    \\"string\\": \\"Hello Nurse!\\"
+  \"foo.bar.biff\": {
+    \"developer_comment\": \"Another message\",
+    \"string\": \"Hello Nurse!\"
   },
-  \\"inline\\": {
-    \\"developer_comment\\": \\"foo\\",
-    \\"string\\": \\"formatted message\\"
+  \"inline\": {
+    \"developer_comment\": \"foo\",
+    \"string\": \"formatted message\"
   },
-  \\"inline.linebreak\\": {
-    \\"developer_comment\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\",
-    \\"string\\": \\"formatted message with linebreak\\"
+  \"inline.linebreak\": {
+    \"developer_comment\": \"foo\\n\\t\\t\\t\\t\\t\\tbar\",
+    \"string\": \"formatted message with linebreak\"
   },
-  \\"linebreak\\": {
-    \\"developer_comment\\": \\"this is\\\\na\\\\ndescription\\",
-    \\"string\\": \\"this is a message\\"
+  \"linebreak\": {
+    \"developer_comment\": \"this is\\na\\ndescription\",
+    \"string\": \"this is a message\"
   },
-  \\"newline\\": {
-    \\"developer_comment\\": \\"this is     a     description\\",
-    \\"string\\": \\"this is a message\\"
+  \"newline\": {
+    \"developer_comment\": \"this is     a     description\",
+    \"string\": \"this is a message\"
   },
-  \\"templateLinebreak\\": {
-    \\"developer_comment\\": \\"this is\\\\n    a\\\\n    description\\",
-    \\"string\\": \\"this is a message\\"
+  \"templateLinebreak\": {
+    \"developer_comment\": \"this is\\n    a\\n    description\",
+    \"string\": \"this is a message\"
   },
-  \\"trailing.ws\\": {
-    \\"developer_comment\\": \\"Whitespace\\",
-    \\"string\\": \\"Some whitespace\\"
+  \"trailing.ws\": {
+    \"developer_comment\": \"Whitespace\",
+    \"string\": \"Some whitespace\"
   }
 }
 ",
@@ -877,63 +877,63 @@ Object {
 `;
 
 exports[`whitespace and newlines should be preserved 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "",
 }
 `;
 
 exports[`whitespace and newlines should be preserved 2`] = `
-Object {
-  "286VP8": Object {
+{
+  "286VP8": {
     "defaultMessage": "No ID",
     "description": "no ID",
   },
-  "app.home.kittens": Object {
+  "app.home.kittens": {
     "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
     "description": "Counts kittens",
   },
-  "eCy8Eo": Object {
+  "eCy8Eo": {
     "defaultMessage": "No Desc",
   },
-  "escaped.apostrophe": Object {
+  "escaped.apostrophe": {
     "defaultMessage": "A quoted value ''{value}'",
     "description": "Escaped apostrophe",
   },
-  "foo.bar.baz": Object {
+  "foo.bar.baz": {
     "defaultMessage": "Hello World!",
     "description": "The default message",
   },
-  "foo.bar.biff": Object {
+  "foo.bar.biff": {
     "defaultMessage": "Hello Nurse!",
     "description": "Another message",
   },
-  "inline": Object {
+  "inline": {
     "defaultMessage": "formatted message",
     "description": "foo",
   },
-  "inline.linebreak": Object {
+  "inline.linebreak": {
     "defaultMessage": "formatted message with linebreak",
     "description": "foo
 						bar",
   },
-  "linebreak": Object {
+  "linebreak": {
     "defaultMessage": "this is a message",
     "description": "this is
 a
 description",
   },
-  "newline": Object {
+  "newline": {
     "defaultMessage": "this is a message",
     "description": "this is     a     description",
   },
-  "templateLinebreak": Object {
+  "templateLinebreak": {
     "defaultMessage": "this is a message",
     "description": "this is
     a
     description",
   },
-  "trailing.ws": Object {
+  "trailing.ws": {
     "defaultMessage": "Some whitespace",
     "description": "Whitespace",
   },

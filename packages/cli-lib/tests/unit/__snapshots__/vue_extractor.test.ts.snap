@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`vue_extractor 1`] = `
-Array [
-  Object {
+[
+  {
     "defaultMessage": "in template",
     "description": "in template desc",
     "id": "f6d14",
   },
-  Object {
+  {
     "defaultMessage": "in script",
     "description": "in script desc",
     "id": "1ebd4",
@@ -16,18 +16,18 @@ Array [
 `;
 
 exports[`vue_extractor for bind attr 1`] = `
-Array [
-  Object {
+[
+  {
     "defaultMessage": "Delete",
     "description": "delete button text",
     "id": "0705a",
   },
-  Object {
+  {
     "defaultMessage": "Send the item to the trash.",
     "description": "delete button title",
     "id": "5b09c",
   },
-  Object {
+  {
     "defaultMessage": "The item has been deleted.",
     "description": "delete result message",
     "id": "8fba7",

@@ -660,13 +660,15 @@ ts_script(
         package_name() + "/cldr-raw",
     ],
     data = [
-        "scripts/extract-list.ts",
         ":node_modules/@formatjs/ecma402-abstract",
+        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/@types/lodash",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-misc-full",
         "//:node_modules/fast-glob",
+        "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash",
+        "scripts/extract-list.ts",
     ],
     entry_point = "scripts/cldr-raw.ts",
 )

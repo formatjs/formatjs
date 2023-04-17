@@ -1,28 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pseudo-locale en-AC works with a message that has a plural element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "FOO ",
   },
-  Object {
+  {
     "offset": 0,
-    "options": Object {
-      "=1": Object {
-        "value": Array [
-          Object {
+    "options": {
+      "=1": {
+        "value": [
+          {
             "type": 0,
             "value": "1 BAR",
           },
         ],
       },
-      "other": Object {
-        "value": Array [
-          Object {
+      "other": {
+        "value": [
+          {
             "type": 7,
           },
-          Object {
+          {
             "type": 0,
             "value": " BARS",
           },
@@ -37,12 +37,12 @@ Array [
 `;
 
 exports[`pseudo-locale en-AC works with a message that starts with a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "FOO ",
   },
-  Object {
+  {
     "type": 1,
     "value": "bar",
   },
@@ -50,8 +50,8 @@ Array [
 `;
 
 exports[`pseudo-locale en-AC works with a string literal 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "FIND HELP ONLINE",
   },
@@ -59,8 +59,8 @@ Array [
 `;
 
 exports[`pseudo-locale en-AC works with message that does not contain a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 1,
     "value": "foo",
   },
@@ -68,12 +68,12 @@ Array [
 `;
 
 exports[`pseudo-locale en-AC works with message that does not start with a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 1,
     "value": "foo",
   },
-  Object {
+  {
     "type": 0,
     "value": " BAR",
   },
@@ -81,14 +81,14 @@ Array [
 `;
 
 exports[`pseudo-locale en-AC works with messages that ends with a tag 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "FOO ",
   },
-  Object {
-    "children": Array [
-      Object {
+  {
+    "children": [
+      {
         "type": 0,
         "value": "BAR",
       },
@@ -100,28 +100,28 @@ Array [
 `;
 
 exports[`pseudo-locale en-HA works with a message that has a plural element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[javascript]foo ",
   },
-  Object {
+  {
     "offset": 0,
-    "options": Object {
-      "=1": Object {
-        "value": Array [
-          Object {
+    "options": {
+      "=1": {
+        "value": [
+          {
             "type": 0,
             "value": "1 bar",
           },
         ],
       },
-      "other": Object {
-        "value": Array [
-          Object {
+      "other": {
+        "value": [
+          {
             "type": 7,
           },
-          Object {
+          {
             "type": 0,
             "value": " bars",
           },
@@ -136,12 +136,12 @@ Array [
 `;
 
 exports[`pseudo-locale en-HA works with a message that starts with a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[javascript]foo ",
   },
-  Object {
+  {
     "type": 1,
     "value": "bar",
   },
@@ -149,8 +149,8 @@ Array [
 `;
 
 exports[`pseudo-locale en-HA works with a string literal 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[javascript]Find Help Online",
   },
@@ -158,12 +158,12 @@ Array [
 `;
 
 exports[`pseudo-locale en-HA works with message that does not contain a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[javascript]",
   },
-  Object {
+  {
     "type": 1,
     "value": "foo",
   },
@@ -171,16 +171,16 @@ Array [
 `;
 
 exports[`pseudo-locale en-HA works with message that does not start with a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[javascript]",
   },
-  Object {
+  {
     "type": 1,
     "value": "foo",
   },
-  Object {
+  {
     "type": 0,
     "value": " bar",
   },
@@ -188,14 +188,14 @@ Array [
 `;
 
 exports[`pseudo-locale en-HA works with messages that ends with a tag 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[javascript]Foo ",
   },
-  Object {
-    "children": Array [
-      Object {
+  {
+    "children": [
+      {
         "type": 0,
         "value": "bar",
       },
@@ -207,28 +207,28 @@ Array [
 `;
 
 exports[`pseudo-locale en-LS works with a message that has a plural element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "foo ",
   },
-  Object {
+  {
     "offset": 0,
-    "options": Object {
-      "=1": Object {
-        "value": Array [
-          Object {
+    "options": {
+      "=1": {
+        "value": [
+          {
             "type": 0,
             "value": "1 bar",
           },
         ],
       },
-      "other": Object {
-        "value": Array [
-          Object {
+      "other": {
+        "value": [
+          {
             "type": 7,
           },
-          Object {
+          {
             "type": 0,
             "value": " bars",
           },
@@ -239,7 +239,7 @@ Array [
     "type": 6,
     "value": "bar",
   },
-  Object {
+  {
     "type": 0,
     "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
   },
@@ -247,16 +247,16 @@ Array [
 `;
 
 exports[`pseudo-locale en-LS works with a message that starts with a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "foo ",
   },
-  Object {
+  {
     "type": 1,
     "value": "bar",
   },
-  Object {
+  {
     "type": 0,
     "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
   },
@@ -264,8 +264,8 @@ Array [
 `;
 
 exports[`pseudo-locale en-LS works with a string literal 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "Find Help OnlineSSSSSSSSSSSSSSSSSSSSSSSSS",
   },
@@ -273,12 +273,12 @@ Array [
 `;
 
 exports[`pseudo-locale en-LS works with message that does not contain a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 1,
     "value": "foo",
   },
-  Object {
+  {
     "type": 0,
     "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
   },
@@ -286,12 +286,12 @@ Array [
 `;
 
 exports[`pseudo-locale en-LS works with message that does not start with a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 1,
     "value": "foo",
   },
-  Object {
+  {
     "type": 0,
     "value": " barSSSSSSSSSSSSSSSSSSSSSSSSS",
   },
@@ -299,14 +299,14 @@ Array [
 `;
 
 exports[`pseudo-locale en-LS works with messages that ends with a tag 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "Foo ",
   },
-  Object {
-    "children": Array [
-      Object {
+  {
+    "children": [
+      {
         "type": 0,
         "value": "bar",
       },
@@ -314,7 +314,7 @@ Array [
     "type": 8,
     "value": "a",
   },
-  Object {
+  {
     "type": 0,
     "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
   },
@@ -322,32 +322,32 @@ Array [
 `;
 
 exports[`pseudo-locale en-XA works with a message that has a plural element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[",
   },
-  Object {
+  {
     "type": 0,
     "value": "ƒǿǿǿǿ ",
   },
-  Object {
+  {
     "offset": 0,
-    "options": Object {
-      "=1": Object {
-        "value": Array [
-          Object {
+    "options": {
+      "=1": {
+        "value": [
+          {
             "type": 0,
             "value": "1 ƀȧȧř",
           },
         ],
       },
-      "other": Object {
-        "value": Array [
-          Object {
+      "other": {
+        "value": [
+          {
             "type": 7,
           },
-          Object {
+          {
             "type": 0,
             "value": " ƀȧȧřş",
           },
@@ -358,7 +358,7 @@ Array [
     "type": 6,
     "value": "bar",
   },
-  Object {
+  {
     "type": 0,
     "value": "]",
   },
@@ -366,20 +366,20 @@ Array [
 `;
 
 exports[`pseudo-locale en-XA works with a message that starts with a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[",
   },
-  Object {
+  {
     "type": 0,
     "value": "ƒǿǿǿǿ ",
   },
-  Object {
+  {
     "type": 1,
     "value": "bar",
   },
-  Object {
+  {
     "type": 0,
     "value": "]",
   },
@@ -387,16 +387,16 @@ Array [
 `;
 
 exports[`pseudo-locale en-XA works with a string literal 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[",
   },
-  Object {
+  {
     "type": 0,
     "value": "Ƒīƞḓ Ħḗḗŀƥ Ǿƞŀīƞḗḗ",
   },
-  Object {
+  {
     "type": 0,
     "value": "]",
   },
@@ -404,16 +404,16 @@ Array [
 `;
 
 exports[`pseudo-locale en-XA works with message that does not contain a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[",
   },
-  Object {
+  {
     "type": 1,
     "value": "foo",
   },
-  Object {
+  {
     "type": 0,
     "value": "]",
   },
@@ -421,20 +421,20 @@ Array [
 `;
 
 exports[`pseudo-locale en-XA works with message that does not start with a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[",
   },
-  Object {
+  {
     "type": 1,
     "value": "foo",
   },
-  Object {
+  {
     "type": 0,
     "value": " ƀȧȧř",
   },
-  Object {
+  {
     "type": 0,
     "value": "]",
   },
@@ -442,18 +442,18 @@ Array [
 `;
 
 exports[`pseudo-locale en-XA works with messages that ends with a tag 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "[",
   },
-  Object {
+  {
     "type": 0,
     "value": "Ƒǿǿǿǿ ",
   },
-  Object {
-    "children": Array [
-      Object {
+  {
+    "children": [
+      {
         "type": 0,
         "value": "ƀȧȧř",
       },
@@ -461,7 +461,7 @@ Array [
     "type": 8,
     "value": "a",
   },
-  Object {
+  {
     "type": 0,
     "value": "]",
   },
@@ -469,32 +469,32 @@ Array [
 `;
 
 exports[`pseudo-locale en-XB works with a message that has a plural element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "‮",
   },
-  Object {
+  {
     "type": 0,
     "value": "ɟoo ",
   },
-  Object {
+  {
     "offset": 0,
-    "options": Object {
-      "=1": Object {
-        "value": Array [
-          Object {
+    "options": {
+      "=1": {
+        "value": [
+          {
             "type": 0,
             "value": "1 qɐɹ",
           },
         ],
       },
-      "other": Object {
-        "value": Array [
-          Object {
+      "other": {
+        "value": [
+          {
             "type": 7,
           },
-          Object {
+          {
             "type": 0,
             "value": " qɐɹs",
           },
@@ -505,7 +505,7 @@ Array [
     "type": 6,
     "value": "bar",
   },
-  Object {
+  {
     "type": 0,
     "value": "‬",
   },
@@ -513,20 +513,20 @@ Array [
 `;
 
 exports[`pseudo-locale en-XB works with a message that starts with a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "‮",
   },
-  Object {
+  {
     "type": 0,
     "value": "ɟoo ",
   },
-  Object {
+  {
     "type": 1,
     "value": "bar",
   },
-  Object {
+  {
     "type": 0,
     "value": "‬",
   },
@@ -534,16 +534,16 @@ Array [
 `;
 
 exports[`pseudo-locale en-XB works with a string literal 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "‮",
   },
-  Object {
+  {
     "type": 0,
     "value": "Ⅎıup Hǝʅd Ouʅıuǝ",
   },
-  Object {
+  {
     "type": 0,
     "value": "‬",
   },
@@ -551,16 +551,16 @@ Array [
 `;
 
 exports[`pseudo-locale en-XB works with message that does not contain a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "‮",
   },
-  Object {
+  {
     "type": 1,
     "value": "foo",
   },
-  Object {
+  {
     "type": 0,
     "value": "‬",
   },
@@ -568,20 +568,20 @@ Array [
 `;
 
 exports[`pseudo-locale en-XB works with message that does not start with a literal element 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "‮",
   },
-  Object {
+  {
     "type": 1,
     "value": "foo",
   },
-  Object {
+  {
     "type": 0,
     "value": " qɐɹ",
   },
-  Object {
+  {
     "type": 0,
     "value": "‬",
   },
@@ -589,18 +589,18 @@ Array [
 `;
 
 exports[`pseudo-locale en-XB works with messages that ends with a tag 1`] = `
-Array [
-  Object {
+[
+  {
     "type": 0,
     "value": "‮",
   },
-  Object {
+  {
     "type": 0,
     "value": "Ⅎoo ",
   },
-  Object {
-    "children": Array [
-      Object {
+  {
+    "children": [
+      {
         "type": 0,
         "value": "qɐɹ",
       },
@@ -608,7 +608,7 @@ Array [
     "type": 8,
     "value": "a",
   },
-  Object {
+  {
     "type": 0,
     "value": "‬",
   },

@@ -654,13 +654,15 @@ ts_script(
         package_name() + "/cldr-raw",
     ],
     data = [
-        "scripts/extract-displaynames.ts",
         ":node_modules/@formatjs/ecma402-abstract",
+        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-dates-full",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
+        "//:node_modules/json-stable-stringify",
+        "scripts/extract-displaynames.ts",
     ],
     entry_point = "scripts/cldr-raw.ts",
 )

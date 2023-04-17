@@ -8,20 +8,20 @@ test.only('github issue #3362', async function () {
     },
   })
   expect(output.msgs).toMatchInlineSnapshot(`
-    Array [
-      Object {
+    [
+      {
         "defaultMessage": "test",
         "id": "HELLO.Krqghu.4.undefined",
       },
-      Object {
+      {
         "defaultMessage": "in call",
         "id": "HELLO..7.undefined",
       },
-      Object {
+      {
         "defaultMessage": "nesttt",
         "id": "HELLO.1.6.undefined",
       },
-      Object {
+      {
         "defaultMessage": "testsss",
         "id": "HELLO.Krqghus.7.undefined",
       },

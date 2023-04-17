@@ -12,18 +12,18 @@ test('GH issue #3371', async function () {
     },
   })
   expect(output.msgs).toMatchInlineSnapshot(`
-    Array [
-      Object {
+    [
+      {
         "defaultMessage": "props {intl}",
         "description": "bar",
         "id": "HELLO..12.string.resourcePath.tsx",
       },
-      Object {
+      {
         "defaultMessage": "this props {intl}",
         "description": "bar",
         "id": "HELLO..17.string.resourcePath.tsx",
       },
-      Object {
+      {
         "defaultMessage": "foo {bar}",
         "description": "bar",
         "id": "HELLO..9.string.resourcePath.tsx",

@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`GH issue #3775 1`] = `
-Object {
+{
   "code": "var msgs = defineMessages({
     message: {
-        id: \\"GCdcoTfS3U\\",
-        defaultMessage: \\"Hello World!\\"
+        id: "GCdcoTfS3U",
+        defaultMessage: "Hello World!"
     }
 });
 ",

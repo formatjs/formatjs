@@ -3,13 +3,13 @@
 exports[`emit asserts for [special] extractSourceLocation 1`] = `
 "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -19,8 +19,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -32,7 +32,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -45,13 +45,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -72,10 +72,10 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { FormattedMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { FormattedMessage } from "react-intl";
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -85,8 +85,8 @@ var Foo = /*#__PURE__*/ function(Component) {
     var _proto = Foo.prototype;
     _proto.render = function render() {
         return /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"foo.bar.baz\\",
-            defaultMessage: \\"Hello World!\\"
+            id: "foo.bar.baz",
+            defaultMessage: "Hello World!"
         });
     };
     return Foo;
@@ -96,7 +96,7 @@ export { Foo as default };
 `;
 
 exports[`emit asserts for [special] extractSourceLocation 2`] = `
-Object {
+{
   "defaultMessage": "Hello World!",
   "end": Any<Number>,
   "file": StringContaining "extractSourceLocation.tsx",
@@ -106,16 +106,16 @@ Object {
 `;
 
 exports[`emit asserts for FormattedMessage 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -125,8 +125,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -138,7 +138,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -151,13 +151,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -178,10 +178,10 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { FormattedMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { FormattedMessage } from "react-intl";
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -190,21 +190,21 @@ var Foo = /*#__PURE__*/ function(Component) {
     }
     var _proto = Foo.prototype;
     _proto.render = function render() {
-        return /*#__PURE__*/ React.createElement(\\"p\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"foo.bar.baz\\",
-            defaultMessage: \\"Hello World! {foo, number}\\",
+        return /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "foo.bar.baz",
+            defaultMessage: "Hello World! {foo, number}",
             values: {
                 foo: 1
             }
         }), /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"foo.bar.baz\\",
-            defaultMessage: \\"Hello World! {foo, number}\\",
+            id: "foo.bar.baz",
+            defaultMessage: "Hello World! {foo, number}",
             values: {
                 foo: 1
             }
         }), /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"foo.bar.baz\\",
-            defaultMessage: \\"Hello World! {foo, number}\\",
+            id: "foo.bar.baz",
+            defaultMessage: "Hello World! {foo, number}",
             values: {
                 foo: 1
             }
@@ -214,18 +214,18 @@ var Foo = /*#__PURE__*/ function(Component) {
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World! {foo, number}",
       "description": "The default message.",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello World! {foo, number}",
       "description": "The default message.",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello World! {foo, number}",
       "description": "The default message.",
       "id": "foo.bar.baz",
@@ -235,16 +235,16 @@ export { Foo as default };
 `;
 
 exports[`emit asserts for additionalComponentNames 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -254,8 +254,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -267,7 +267,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -280,13 +280,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -307,10 +307,10 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React, { Component } from "react";
 function CustomMessage() {}
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -320,16 +320,16 @@ var Foo = /*#__PURE__*/ function(Component) {
     var _proto = Foo.prototype;
     _proto.render = function render() {
         return /*#__PURE__*/ React.createElement(CustomMessage, {
-            id: \\"greeting-world\\",
-            defaultMessage: \\"Hello World!\\"
+            id: "greeting-world",
+            defaultMessage: "Hello World!"
         });
     };
     return Foo;
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "Greeting to the world",
       "id": "greeting-world",
@@ -339,16 +339,16 @@ export { Foo as default };
 `;
 
 exports[`emit asserts for additionalFunctionNames 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -358,8 +358,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -371,7 +371,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -384,13 +384,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -411,10 +411,10 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
+import React, { Component } from "react";
 function CustomMessage() {}
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -425,26 +425,26 @@ var Foo = /*#__PURE__*/ function(Component) {
     _proto.render = function render() {
         return /*#__PURE__*/ React.createElement(CustomMessage, {
             id: formatMessage({
-                id: \\"rL0Y20zC+F\\",
-                defaultMessage: \\"foo\\"
+                id: "rL0Y20zC+F",
+                defaultMessage: "foo"
             }),
             description: $formatMessage({
-                id: \\"rL0Y20zC+F\\",
-                defaultMessage: \\"foo\\"
+                id: "rL0Y20zC+F",
+                defaultMessage: "foo"
             }),
-            defaultMessage: \\"Hello World!\\"
+            defaultMessage: "Hello World!"
         });
     };
     return Foo;
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "foo",
       "id": "rL0Y20zC+F",
     },
-    Object {
+    {
       "defaultMessage": "foo",
       "id": "rL0Y20zC+F",
     },
@@ -453,16 +453,16 @@ export { Foo as default };
 `;
 
 exports[`emit asserts for defineMessages 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _extends() {
@@ -486,8 +486,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -499,7 +499,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -512,13 +512,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -539,40 +539,40 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { defineMessages, FormattedMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { defineMessages, FormattedMessage } from "react-intl";
 var msgs = defineMessages({
     header: {
-        id: \\"foo.bar.baz\\",
-        defaultMessage: \\"Hello World!\\"
+        id: "foo.bar.baz",
+        defaultMessage: "Hello World!"
     },
     content: {
-        id: \\"foo.bar.biff\\",
-        defaultMessage: \\"Hello Nurse!\\"
+        id: "foo.bar.biff",
+        defaultMessage: "Hello Nurse!"
     },
     kittens: {
-        id: \\"app.home.kittens\\",
-        defaultMessage: \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
+        id: "app.home.kittens",
+        defaultMessage: "{count, plural, =0 {\\uD83D\\uDE2D} one {# kitten} other {# kittens}}"
     },
     trailingWhitespace: {
-        id: \\"trailing.ws\\",
-        defaultMessage: \\"Some whitespace\\"
+        id: "trailing.ws",
+        defaultMessage: "Some whitespace"
     },
     escaped: {
-        id: \\"escaped.apostrophe\\",
-        defaultMessage: \\"A quoted value ''{value}'\\"
+        id: "escaped.apostrophe",
+        defaultMessage: "A quoted value ''{value}'"
     },
     quoted: {
-        id: \\"escaped.apostrophe\\",
-        defaultMessage: \\"What's going on\\"
+        id: "escaped.apostrophe",
+        defaultMessage: "What's going on"
     },
     newline: {
-        id: \\"newline\\",
-        defaultMessage: \\"this is a message\\"
+        id: "newline",
+        defaultMessage: "this is a message"
     }
 });
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -581,52 +581,52 @@ var Foo = /*#__PURE__*/ function(Component) {
     }
     var _proto = Foo.prototype;
     _proto.render = function render() {
-        return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement(\\"p\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement(\\"p\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.kittens)), /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"inline\\",
-            defaultMessage: \\"formatted message\\"
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.kittens)), /*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "inline",
+            defaultMessage: "formatted message"
         })));
     };
     return Foo;
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
       "description": "Another message",
       "id": "foo.bar.biff",
     },
-    Object {
+    {
       "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
       "description": "Counts kittens",
       "id": "app.home.kittens",
     },
-    Object {
+    {
       "defaultMessage": "Some whitespace",
       "description": "Whitespace",
       "id": "trailing.ws",
     },
-    Object {
+    {
       "defaultMessage": "A quoted value ''{value}'",
       "description": "Escaped apostrophe",
       "id": "escaped.apostrophe",
     },
-    Object {
+    {
       "defaultMessage": "What's going on",
       "description": "Escaped apostrophe",
       "id": "escaped.apostrophe",
     },
-    Object {
+    {
       "defaultMessage": "this is a message",
       "description": "this is     a     description",
       "id": "newline",
     },
-    Object {
+    {
       "defaultMessage": "formatted message",
       "description": "foo",
       "id": "inline",
@@ -636,16 +636,16 @@ export { Foo as default };
 `;
 
 exports[`emit asserts for defineMessagesPreserveWhitespace 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _extends() {
@@ -669,8 +669,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -682,7 +682,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -695,13 +695,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -722,48 +722,48 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { defineMessages, FormattedMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { defineMessages, FormattedMessage } from "react-intl";
 var msgs = defineMessages({
     header: {
-        id: \\"foo.bar.baz\\",
-        defaultMessage: \\"Hello World!\\"
+        id: "foo.bar.baz",
+        defaultMessage: "Hello World!"
     },
     content: {
-        id: \\"foo.bar.biff\\",
-        defaultMessage: \\"Hello Nurse!\\"
+        id: "foo.bar.biff",
+        defaultMessage: "Hello Nurse!"
     },
     kittens: {
-        id: \\"app.home.kittens\\",
-        defaultMessage: \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
+        id: "app.home.kittens",
+        defaultMessage: "{count, plural, =0 {\\uD83D\\uDE2D} one {# kitten} other {# kittens}}"
     },
     trailingWhitespace: {
-        id: \\"trailing.ws\\",
-        defaultMessage: \\"   Some whitespace   \\"
+        id: "trailing.ws",
+        defaultMessage: "   Some whitespace   "
     },
     escaped: {
-        id: \\"escaped.apostrophe\\",
-        defaultMessage: \\"A quoted value ''{value}'\\"
+        id: "escaped.apostrophe",
+        defaultMessage: "A quoted value ''{value}'"
     },
     quoted: {
-        id: \\"escaped.apostrophe\\",
-        defaultMessage: \\"What's going on\\"
+        id: "escaped.apostrophe",
+        defaultMessage: "What's going on"
     },
     newline: {
-        id: \\"newline\\",
-        defaultMessage: \\"this is     a message\\"
+        id: "newline",
+        defaultMessage: "this is     a message"
     },
     linebreak: {
-        id: \\"linebreak\\",
-        defaultMessage: \\"this is\\\\na message\\"
+        id: "linebreak",
+        defaultMessage: "this is\\na message"
     },
     templateLinebreak: {
-        id: \\"templateLinebreak\\",
-        defaultMessage: \\"this is\\\\n    a message\\"
+        id: "templateLinebreak",
+        defaultMessage: "this is\\n    a message"
     }
 });
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -772,55 +772,55 @@ var Foo = /*#__PURE__*/ function(Component) {
     }
     var _proto = Foo.prototype;
     _proto.render = function render() {
-        return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement(\\"p\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement(\\"p\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.kittens)), /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"inline\\",
-            defaultMessage: \\"formatted message\\"
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.kittens)), /*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "inline",
+            defaultMessage: "formatted message"
         }), /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"inline.linebreak\\",
-            defaultMessage: \\"formatted message with linebreak\\"
+            id: "inline.linebreak",
+            defaultMessage: "formatted message with linebreak"
         })));
     };
     return Foo;
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
       "description": "Another message",
       "id": "foo.bar.biff",
     },
-    Object {
+    {
       "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
       "description": "Counts kittens",
       "id": "app.home.kittens",
     },
-    Object {
+    {
       "defaultMessage": "   Some whitespace   ",
       "description": "Whitespace",
       "id": "trailing.ws",
     },
-    Object {
+    {
       "defaultMessage": "A quoted value ''{value}'",
       "description": "Escaped apostrophe",
       "id": "escaped.apostrophe",
     },
-    Object {
+    {
       "defaultMessage": "What's going on",
       "description": "Escaped apostrophe",
       "id": "escaped.apostrophe",
     },
-    Object {
+    {
       "defaultMessage": "this is     a message",
       "description": "this is     a     description",
       "id": "newline",
     },
-    Object {
+    {
       "defaultMessage": "this is
 a message",
       "description": "this is
@@ -828,7 +828,7 @@ a
 description",
       "id": "linebreak",
     },
-    Object {
+    {
       "defaultMessage": "this is
     a message",
       "description": "this is
@@ -836,12 +836,12 @@ description",
     description",
       "id": "templateLinebreak",
     },
-    Object {
+    {
       "defaultMessage": "formatted message",
       "description": "foo",
       "id": "inline",
     },
-    Object {
+    {
       "defaultMessage": "formatted message
 						with linebreak",
       "description": "foo
@@ -853,16 +853,16 @@ description",
 `;
 
 exports[`emit asserts for descriptionsAsObjects 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -872,8 +872,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -885,7 +885,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -898,13 +898,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -925,10 +925,10 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { FormattedMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { FormattedMessage } from "react-intl";
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -938,18 +938,18 @@ var Foo = /*#__PURE__*/ function(Component) {
     var _proto = Foo.prototype;
     _proto.render = function render() {
         return /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"foo.bar.baz\\",
-            defaultMessage: \\"Hello World!\\"
+            id: "foo.bar.baz",
+            defaultMessage: "Hello World!"
         });
     };
     return Foo;
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator.",
       },
@@ -960,16 +960,16 @@ export { Foo as default };
 `;
 
 exports[`emit asserts for extractFromFormatMessage 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -979,8 +979,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -992,7 +992,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -1005,13 +1005,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -1032,15 +1032,15 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { injectIntl, FormattedMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { injectIntl, FormattedMessage } from "react-intl";
 var objectPointer = {
-    id: \\"foo.bar.invalid\\",
-    defaultMessage: \\"This cannot be extracted\\",
-    description: \\"the plugin only supports inline objects\\"
+    id: "foo.bar.invalid",
+    defaultMessage: "This cannot be extracted",
+    description: "the plugin only supports inline objects"
 };
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -1052,50 +1052,50 @@ var Foo = /*#__PURE__*/ function(Component) {
         var intl = this.props.intl;
         var msgs = {
             baz: this.props.intl.formatMessage({
-                id: \\"foo.bar.baz\\",
-                defaultMessage: \\"Hello World!\\"
+                id: "foo.bar.baz",
+                defaultMessage: "Hello World!"
             }),
             biff: intl.formatMessage({
-                id: \\"foo.bar.biff\\",
-                defaultMessage: \\"Hello Nurse!\\"
+                id: "foo.bar.biff",
+                defaultMessage: "Hello Nurse!"
             }),
             invalid: this.props.intl.formatMessage(objectPointer),
             invalid2: this.props.intl.formatMessage({
                 id: id,
                 defaultMessage: defaultMessage,
-                description: \\"asd\\"
+                description: "asd"
             })
         };
-        return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/ React.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/ React.createElement(\\"input\\", {
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, msgs.header), /*#__PURE__*/ React.createElement("p", null, msgs.content), /*#__PURE__*/ React.createElement("input", {
             placeholder: intl.formatMessage({
-                id: \\"A/2tFVt1SI\\",
-                defaultMessage: \\"inline\\"
+                id: "A/2tFVt1SI",
+                defaultMessage: "inline"
             })
-        }), /*#__PURE__*/ React.createElement(\\"span\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"foo\\",
-            defaultMessage: \\"bar\\"
+        }), /*#__PURE__*/ React.createElement("span", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "foo",
+            defaultMessage: "bar"
         })));
     };
     return Foo;
 }(Component);
 export default injectIntl(Foo);
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
       "description": "Another message",
       "id": "foo.bar.biff",
     },
-    Object {
+    {
       "defaultMessage": "inline",
       "id": "A/2tFVt1SI",
     },
-    Object {
+    {
       "defaultMessage": "bar",
       "description": "baz",
       "id": "foo",
@@ -1105,56 +1105,56 @@ export default injectIntl(Foo);
 `;
 
 exports[`emit asserts for extractFromFormatMessageStateless 1`] = `
-Object {
-  "code": "import { FormattedMessage, injectIntl, useIntl } from \\"react-intl\\";
-import React from \\"react\\";
+{
+  "code": "import { FormattedMessage, injectIntl, useIntl } from "react-intl";
+import React from "react";
 function myFunction(param1, param) {
     var formatMessage = param.formatMessage, formatDate = param.formatDate;
     return formatMessage({
-        id: \\"inline1\\",
-        defaultMessage: \\"Hello params!\\"
+        id: "inline1",
+        defaultMessage: "Hello params!"
     }) + formatDate(new Date());
 }
 var child = myFunction(filterable, intl);
 function SFC() {
     var formatMessage = useIntl().formatMessage;
     return formatMessage({
-        id: \\"hook\\",
-        defaultMessage: \\"hook\\"
+        id: "hook",
+        defaultMessage: "hook"
     });
 }
 var Foo = function(param) {
     var formatMessage = param.intl.formatMessage;
     var msgs = {
         qux: formatMessage({
-            id: \\"foo.bar.quux\\",
-            defaultMessage: \\"Hello Stateless!\\"
+            id: "foo.bar.quux",
+            defaultMessage: "Hello Stateless!"
         })
     };
-    return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/ React.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/ React.createElement(\\"span\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
-        id: \\"foo\\",
-        defaultMessage: \\"bar\\"
+    return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, msgs.header), /*#__PURE__*/ React.createElement("p", null, msgs.content), /*#__PURE__*/ React.createElement("span", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+        id: "foo",
+        defaultMessage: "bar"
     })));
 };
 export default injectIntl(Foo);
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello params!",
       "description": "A stateless message",
       "id": "inline1",
     },
-    Object {
+    {
       "defaultMessage": "hook",
       "description": "hook",
       "id": "hook",
     },
-    Object {
+    {
       "defaultMessage": "Hello Stateless!",
       "description": "A stateless message",
       "id": "foo.bar.quux",
     },
-    Object {
+    {
       "defaultMessage": "bar",
       "description": "baz",
       "id": "foo",
@@ -1164,16 +1164,16 @@ export default injectIntl(Foo);
 `;
 
 exports[`emit asserts for formatMessageCall 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -1183,8 +1183,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -1196,7 +1196,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -1209,13 +1209,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -1236,15 +1236,15 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { injectIntl, FormattedMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { injectIntl, FormattedMessage } from "react-intl";
 var objectPointer = {
-    id: \\"foo.bar.invalid\\",
-    defaultMessage: \\"This cannot be extracted\\",
-    description: \\"the plugin only supports inline objects\\"
+    id: "foo.bar.invalid",
+    defaultMessage: "This cannot be extracted",
+    description: "the plugin only supports inline objects"
 };
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -1255,54 +1255,54 @@ var Foo = /*#__PURE__*/ function(Component) {
     _proto.render = function render() {
         var msgs = {
             baz: formatMessage({
-                id: \\"foo.bar.baz\\",
-                defaultMessage: \\"Hello World!\\"
+                id: "foo.bar.baz",
+                defaultMessage: "Hello World!"
             }),
             baz2: this.props.intl.$formatMessage({
-                id: \\"foo.bar.baz2\\",
-                defaultMessage: \\"Hello World!\\"
+                id: "foo.bar.baz2",
+                defaultMessage: "Hello World!"
             }),
             biff: $formatMessage({
-                id: \\"foo.bar.biff\\",
-                defaultMessage: \\"Hello Nurse!\\"
+                id: "foo.bar.biff",
+                defaultMessage: "Hello Nurse!"
             }),
             invalid: this.props.intl.formatMessage(objectPointer)
         };
-        return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/ React.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/ React.createElement(\\"input\\", {
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, msgs.header), /*#__PURE__*/ React.createElement("p", null, msgs.content), /*#__PURE__*/ React.createElement("input", {
             placeholder: intl.formatMessage({
-                id: \\"A/2tFVt1SI\\",
-                defaultMessage: \\"inline\\"
+                id: "A/2tFVt1SI",
+                defaultMessage: "inline"
             })
-        }), /*#__PURE__*/ React.createElement(\\"span\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"foo\\",
-            defaultMessage: \\"bar\\"
+        }), /*#__PURE__*/ React.createElement("span", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "foo",
+            defaultMessage: "bar"
         })));
     };
     return Foo;
 }(Component);
 export default injectIntl(Foo);
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message $$$",
       "id": "foo.bar.baz2",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
       "description": "Another message",
       "id": "foo.bar.biff",
     },
-    Object {
+    {
       "defaultMessage": "inline",
       "id": "A/2tFVt1SI",
     },
-    Object {
+    {
       "defaultMessage": "bar",
       "description": "baz",
       "id": "foo",
@@ -1312,16 +1312,16 @@ export default injectIntl(Foo);
 `;
 
 exports[`emit asserts for inline 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -1331,8 +1331,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -1344,7 +1344,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -1357,13 +1357,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -1384,10 +1384,10 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { FormattedMessage, defineMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { FormattedMessage, defineMessage } from "react-intl";
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -1396,33 +1396,33 @@ var Foo = /*#__PURE__*/ function(Component) {
     }
     var _proto = Foo.prototype;
     _proto.render = function render() {
-        return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"foo.bar.baz\\",
-            defaultMessage: \\"Hello World!\\"
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "foo.bar.baz",
+            defaultMessage: "Hello World!"
         }), defineMessage({
-            id: \\"header\\",
-            defaultMessage: \\"Hello World!\\"
+            id: "header",
+            defaultMessage: "Hello World!"
         }), defineMessage({
-            id: \\"header2\\",
-            defaultMessage: \\"Hello World!\\"
+            id: "header2",
+            defaultMessage: "Hello World!"
         }));
     };
     return Foo;
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message.",
       "id": "foo.bar.baz",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "header",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "header2",
@@ -1432,18 +1432,18 @@ export { Foo as default };
 `;
 
 exports[`emit asserts for nested 1`] = `
-Object {
+{
   "code": "intl.formatMessage({
-    id: \\"HELLO..13.undefined\\",
-    defaultMessage: \\"layer1 {name}\\"
+    id: "HELLO..13.undefined",
+    defaultMessage: "layer1 {name}"
 }, {
     name: intl.formatMessage({
-        defaultMessage: \\"layer2\\"
+        defaultMessage: "layer2"
     })
 });
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "layer1 {name}",
       "id": "HELLO..13.undefined",
     },
@@ -1452,40 +1452,40 @@ Object {
 `;
 
 exports[`emit asserts for noImport 1`] = `
-Object {
+{
   "code": "export function foo() {
     props.intl.formatMessage({
-        id: \\"hYpBl\\",
-        defaultMessage: \\"props {intl}\\"
+        id: "hYpBl",
+        defaultMessage: "props {intl}"
     }, {
-        bar: \\"bar\\"
+        bar: "bar"
     });
     this.props.intl.formatMessage({
-        id: \\"tBZlS\\",
-        defaultMessage: \\"this props {intl}\\"
+        id: "tBZlS",
+        defaultMessage: "this props {intl}"
     }, {
-        bar: \\"bar\\"
+        bar: "bar"
     });
     return intl.formatMessage({
-        id: \\"ALfyd\\",
-        defaultMessage: \\"foo {bar}\\"
+        id: "ALfyd",
+        defaultMessage: "foo {bar}"
     }, {
-        bar: \\"bar\\"
+        bar: "bar"
     });
 }
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "props {intl}",
       "description": "bar",
       "id": "hYpBl",
     },
-    Object {
+    {
       "defaultMessage": "this props {intl}",
       "description": "bar",
       "id": "tBZlS",
     },
-    Object {
+    {
       "defaultMessage": "foo {bar}",
       "description": "bar",
       "id": "ALfyd",
@@ -1495,16 +1495,16 @@ Object {
 `;
 
 exports[`emit asserts for overrideIdFn 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _extends() {
@@ -1528,8 +1528,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -1541,7 +1541,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -1554,13 +1554,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -1581,24 +1581,24 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { defineMessages, FormattedMessage, defineMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { defineMessages, FormattedMessage, defineMessage } from "react-intl";
 var msgs = defineMessages({
     header: {
-        id: \\"HELLO.foo.bar.baz.12.string\\",
-        defaultMessage: \\"Hello World!\\"
+        id: "HELLO.foo.bar.baz.12.string",
+        defaultMessage: "Hello World!"
     },
     content: {
-        id: \\"HELLO.foo.bar.biff.12.object\\",
-        defaultMessage: \\"Hello Nurse!\\"
+        id: "HELLO.foo.bar.biff.12.object",
+        defaultMessage: "Hello Nurse!"
     }
 });
 defineMessage({
-    id: \\"HELLO..13.string\\",
-    defaultMessage: \\"defineMessage\\"
+    id: "HELLO..13.string",
+    defaultMessage: "defineMessage"
 });
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -1610,26 +1610,26 @@ var Foo = /*#__PURE__*/ function(Component) {
         var intl = this.props.intl;
         var formatMessage = intl.formatMessage;
         this.props.intl.formatMessage({
-            id: \\"HELLO..5.string\\",
-            defaultMessage: \\"no-id\\"
+            id: "HELLO..5.string",
+            defaultMessage: "no-id"
         });
         intl.formatMessage({
-            id: \\"HELLO..18.string\\",
-            defaultMessage: \\"intl.formatMessage\\"
+            id: "HELLO..18.string",
+            defaultMessage: "intl.formatMessage"
         });
         formatMessage({
-            id: \\"HELLO..13.string\\",
-            defaultMessage: \\"formatMessage\\"
+            id: "HELLO..13.string",
+            defaultMessage: "formatMessage"
         });
-        return /*#__PURE__*/ React.createElement(\\"div\\", null, /*#__PURE__*/ React.createElement(\\"h1\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement(\\"p\\", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"HELLO.foo.bar.zoo.18.object\\",
-            defaultMessage: \\"Hello World! {abc}\\",
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "HELLO.foo.bar.zoo.18.object",
+            defaultMessage: "Hello World! {abc}",
             values: {
                 abc: 2
             }
         }), /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"HELLO..18.object\\",
-            defaultMessage: \\"Hello World! {abc}\\",
+            id: "HELLO..18.object",
+            defaultMessage: "Hello World! {abc}",
             values: {
                 abc: 2
             }
@@ -1639,51 +1639,51 @@ var Foo = /*#__PURE__*/ function(Component) {
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message",
       "id": "HELLO.foo.bar.baz.12.string",
     },
-    Object {
+    {
       "defaultMessage": "Hello Nurse!",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator.",
       },
       "id": "HELLO.foo.bar.biff.12.object",
     },
-    Object {
+    {
       "defaultMessage": "defineMessage",
       "description": "foo",
       "id": "HELLO..13.string",
     },
-    Object {
+    {
       "defaultMessage": "no-id",
       "description": "no-id",
       "id": "HELLO..5.string",
     },
-    Object {
+    {
       "defaultMessage": "intl.formatMessage",
       "description": "no-id",
       "id": "HELLO..18.string",
     },
-    Object {
+    {
       "defaultMessage": "formatMessage",
       "description": "no-id",
       "id": "HELLO..13.string",
     },
-    Object {
+    {
       "defaultMessage": "Hello World! {abc}",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator. Another description",
       },
       "id": "HELLO.foo.bar.zoo.18.object",
     },
-    Object {
+    {
       "defaultMessage": "Hello World! {abc}",
-      "description": Object {
+      "description": {
         "metadata": "Additional metadata content.",
         "text": "Something for the translator. Another description",
       },
@@ -1694,16 +1694,16 @@ export { Foo as default };
 `;
 
 exports[`emit asserts for removeDefaultMessage 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -1713,8 +1713,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -1726,7 +1726,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -1739,13 +1739,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -1766,15 +1766,15 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { defineMessages, FormattedMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { defineMessages, FormattedMessage } from "react-intl";
 var messages = defineMessages({
     foo: {
-        id: \\"greeting-user\\"
+        id: "greeting-user"
     }
 });
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -1784,20 +1784,20 @@ var Foo = /*#__PURE__*/ function(Component) {
     var _proto = Foo.prototype;
     _proto.render = function render() {
         return /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"greeting-world\\"
+            id: "greeting-world"
         });
     };
     return Foo;
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello, {name}",
       "description": "Greeting the user",
       "id": "greeting-user",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "Greeting to the world",
       "id": "greeting-world",
@@ -1807,16 +1807,16 @@ export { Foo as default };
 `;
 
 exports[`emit asserts for removeDescription 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -1826,8 +1826,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -1839,7 +1839,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -1852,13 +1852,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -1879,16 +1879,16 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { defineMessages, FormattedMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { defineMessages, FormattedMessage } from "react-intl";
 var messages = defineMessages({
     foo: {
-        id: \\"greeting-user\\",
-        defaultMessage: \\"Hello, {name}\\"
+        id: "greeting-user",
+        defaultMessage: "Hello, {name}"
     }
 });
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -1898,21 +1898,21 @@ var Foo = /*#__PURE__*/ function(Component) {
     var _proto = Foo.prototype;
     _proto.render = function render() {
         return /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"greeting-world\\",
-            defaultMessage: \\"Hello World!\\"
+            id: "greeting-world",
+            defaultMessage: "Hello World!"
         });
     };
     return Foo;
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "Hello, {name}",
       "description": "Greeting the user",
       "id": "greeting-user",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "Greeting to the world",
       "id": "greeting-world",
@@ -1922,16 +1922,16 @@ export { Foo as default };
 `;
 
 exports[`emit asserts for templateLiteral 1`] = `
-Object {
+{
   "code": "function _assertThisInitialized(self) {
     if (self === void 0) {
-        throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
     return self;
 }
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError(\\"Cannot call a class as a function\\");
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 function _getPrototypeOf(o) {
@@ -1941,8 +1941,8 @@ function _getPrototypeOf(o) {
     return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
-    if (typeof superClass !== \\"function\\" && superClass !== null) {
-        throw new TypeError(\\"Super expression must either be null or a function\\");
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -1954,7 +1954,7 @@ function _inherits(subClass, superClass) {
     if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _possibleConstructorReturn(self, call) {
-    if (call && (_typeof(call) === \\"object\\" || typeof call === \\"function\\")) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
     }
     return _assertThisInitialized(self);
@@ -1967,13 +1967,13 @@ function _setPrototypeOf(o, p) {
     return _setPrototypeOf(o, p);
 }
 var _typeof = function(obj) {
-    \\"@swc/helpers - typeof\\";
-    return obj && typeof Symbol !== \\"undefined\\" && obj.constructor === Symbol ? \\"symbol\\" : typeof obj;
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
 function _isNativeReflectConstruct() {
-    if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false;
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
-    if (typeof Proxy === \\"function\\") return true;
+    if (typeof Proxy === "function") return true;
     try {
         Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
         return true;
@@ -1994,14 +1994,14 @@ function _createSuper(Derived) {
         return _possibleConstructorReturn(this, result);
     };
 }
-import React, { Component } from \\"react\\";
-import { FormattedMessage, defineMessage } from \\"react-intl\\";
+import React, { Component } from "react";
+import { FormattedMessage, defineMessage } from "react-intl";
 defineMessage({
-    id: \\"template\\",
-    defaultMessage: \\"should remove newline and extra spaces\\"
+    id: "template",
+    defaultMessage: "should remove newline and extra spaces"
 });
 var Foo = /*#__PURE__*/ function(Component) {
-    \\"use strict\\";
+    "use strict";
     _inherits(Foo, Component);
     var _super = _createSuper(Foo);
     function Foo() {
@@ -2011,20 +2011,20 @@ var Foo = /*#__PURE__*/ function(Component) {
     var _proto = Foo.prototype;
     _proto.render = function render() {
         return /*#__PURE__*/ React.createElement(FormattedMessage, {
-            id: \\"foo.bar.baz\\",
-            defaultMessage: \\"Hello World!\\"
+            id: "foo.bar.baz",
+            defaultMessage: "Hello World!"
         });
     };
     return Foo;
 }(Component);
 export { Foo as default };
 ",
-  "msgs": Array [
-    Object {
+  "msgs": [
+    {
       "defaultMessage": "should remove newline and extra spaces",
       "id": "template",
     },
-    Object {
+    {
       "defaultMessage": "Hello World!",
       "description": "The default message.",
       "id": "foo.bar.baz",

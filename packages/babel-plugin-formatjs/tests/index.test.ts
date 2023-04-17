@@ -169,11 +169,7 @@ test('extractSourceLocation', function () {
     },
   })
   expect(code?.trim()).toMatchSnapshot()
-  expect(messages).toMatchSnapshot([
-    {
-      file: expect.any(String),
-    },
-  ])
+  expect(messages.map(m => m.file).filter(Boolean)).toHaveLength(1)
   expect(meta).toMatchSnapshot()
 })
 

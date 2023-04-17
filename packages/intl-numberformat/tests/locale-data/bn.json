@@ -1,1 +1,3131 @@
-{"data":{"units":{"simple":{"degree":{"long":{"other":"{0} ডিগ্রী"},"short":{"other":"{0}ডিগ্রী"},"narrow":{"other":"{0}ডিগ্রী"},"perUnit":{}},"hectare":{"long":{"other":"{0} হেক্টর"},"short":{"other":"{0} হেক্টর"},"narrow":{"other":"{0} হেক্টর"},"perUnit":{}},"acre":{"long":{"other":"{0} একর"},"short":{"other":"{0} একর"},"narrow":{"other":"{0} একর"},"perUnit":{}},"percent":{"long":{"other":"{0}শতাংশ"},"short":{"other":"{0}%"},"narrow":{"other":"{0}%"},"perUnit":{}},"liter-per-kilometer":{"long":{"other":"{0} লিটার, প্রতি কিলোমিটারে"},"short":{"other":"{0} L/km"},"narrow":{"other":"{0} L/km"},"perUnit":{}},"mile-per-gallon":{"long":{"other":"{0} মাইল, প্রতি গ্যালনে"},"short":{"other":"{0} mpg"},"narrow":{"other":"{0} mpg"},"perUnit":{}},"petabyte":{"long":{"other":"{0} পেটাবাইটস"},"short":{"other":"{0} PB"},"narrow":{"other":"{0} PB"},"perUnit":{}},"terabyte":{"long":{"other":"{0} টেরাবাইট"},"short":{"other":"{0} TB"},"narrow":{"other":"{0} TB"},"perUnit":{}},"terabit":{"long":{"other":"{0} টেরাবিট"},"short":{"other":"{0} Tb"},"narrow":{"other":"{0} Tb"},"perUnit":{}},"gigabyte":{"long":{"other":"{0} গিগাবাইট"},"short":{"other":"{0} GB"},"narrow":{"other":"{0} GB"},"perUnit":{}},"gigabit":{"long":{"other":"{0} গিগাবিট"},"short":{"other":"{0} Gb"},"narrow":{"other":"{0} Gb"},"perUnit":{}},"megabyte":{"long":{"other":"{0} মেগাবাইট"},"short":{"other":"{0} MB"},"narrow":{"other":"{0} MB"},"perUnit":{}},"megabit":{"long":{"other":"{0} মেগাবিট"},"short":{"other":"{0} Mb"},"narrow":{"other":"{0} Mb"},"perUnit":{}},"kilobyte":{"long":{"other":"{0} কিলোবাইট"},"short":{"other":"{0} kB"},"narrow":{"other":"{0} kB"},"perUnit":{}},"kilobit":{"long":{"other":"{0} কিলোবিট"},"short":{"other":"{0} kb"},"narrow":{"other":"{0} kb"},"perUnit":{}},"byte":{"long":{"other":"{0} বাইট"},"short":{"other":"{0} বাইট"},"narrow":{"other":"{0} বাইট"},"perUnit":{}},"bit":{"long":{"other":"{0} বিট"},"short":{"other":"{0} বিট"},"narrow":{"other":"{0} বিট"},"perUnit":{}},"year":{"long":{"other":"{0} বছর"},"short":{"other":"{0} বছর"},"narrow":{"other":"{0} বছর"},"perUnit":{"long":"{0} প্রতি বছর","short":"{0} প্রতি বছর","narrow":"{0}/বছর"}},"month":{"long":{"other":"{0} মাস"},"short":{"other":"{0} মাস"},"narrow":{"other":"{0} মাস"},"perUnit":{"long":"{0} প্রতি মাস","short":"{0} প্রতি মাস","narrow":"{0}/মাস"}},"week":{"long":{"other":"{0} সপ্তাহ"},"short":{"other":"{0} সপ্তাহ"},"narrow":{"other":"{0} সপ্তাহ"},"perUnit":{"long":"{0} প্রতি সপ্তাহ","short":"{0} প্রতি সপ্তাহ","narrow":"{0}/সপ্তাহ"}},"day":{"long":{"other":"{0} দিন"},"short":{"other":"{0} দিন"},"narrow":{"other":"{0} দিন"},"perUnit":{"long":"{0} প্রতি দিন","short":"{0} প্রতি দিন","narrow":"{0}/দিন"}},"hour":{"long":{"other":"{0} ঘন্টা"},"short":{"other":"{0} ঘন্টা"},"narrow":{"other":"{0} ঘঃ"},"perUnit":{"long":"{0} প্রতি ঘন্টা","short":"{0} প্রতি ঘন্টা","narrow":"{0}/ঘ:"}},"minute":{"long":{"other":"{0} মিনিট"},"short":{"other":"{0} মিনিট"},"narrow":{"other":"{0} মিঃ"},"perUnit":{"long":"{0} প্রতি মিনিট","short":"{0} প্রতি মিনিট","narrow":"{0}/মি:"}},"second":{"long":{"other":"{0} সেকেন্ড"},"short":{"other":"{0} সেকেন্ড"},"narrow":{"other":"{0} সেঃ"},"perUnit":{"long":"{0} প্রতি সেকেন্ড","short":"{0} প্রতি সেকেন্ড","narrow":"{0}/সে:"}},"millisecond":{"long":{"other":"{0} মিলিসেকেন্ড"},"short":{"other":"{0} ms"},"narrow":{"other":"{0} ms"},"perUnit":{}},"kilometer":{"long":{"other":"{0} কিলোমিটার"},"short":{"other":"{0} কিমি"},"narrow":{"other":"{0} কিমি"},"perUnit":{"long":"{0} প্রতি কিলোমিটার","short":"{0} প্রতি কিমি","narrow":"{0}/কিমি"}},"meter":{"long":{"other":"{0} মিটার"},"short":{"other":"{0} মি"},"narrow":{"other":"{0} মি"},"perUnit":{"long":"{0} প্রতি মিটার","short":"{0} প্রতি মি","narrow":"{0}/মি"}},"centimeter":{"long":{"other":"{0} সেন্টিমিটার"},"short":{"other":"{0} সেমি"},"narrow":{"other":"{0} সেমি"},"perUnit":{"long":"{0} প্রতি সেন্টিমিটার","short":"{0} প্রতি সেমি","narrow":"{0}/সেমি"}},"millimeter":{"long":{"other":"{0} মিলিমিটার"},"short":{"other":"{0} মিমি"},"narrow":{"other":"{0} মিমি"},"perUnit":{}},"mile":{"long":{"other":"{0} মাইল"},"short":{"other":"{0} মাইল"},"narrow":{"other":"{0} মাইল"},"perUnit":{}},"yard":{"long":{"other":"{0} গজ"},"short":{"other":"{0} গজ"},"narrow":{"other":"{0} গজ"},"perUnit":{}},"foot":{"long":{"other":"{0} ফুট"},"short":{"other":"{0} ফুট"},"narrow":{"other":"{0} ফুট"},"perUnit":{"long":"{0} প্রতি ফুট","short":"{0} প্রতি ফুট","narrow":"{0} প্রতি ফুট"}},"inch":{"long":{"other":"{0} ইঞ্চি"},"short":{"other":"{0} ইঞ্চি"},"narrow":{"other":"{0} ইঞ্চি"},"perUnit":{"long":"{0} প্রতি ইঞ্চি","short":"{0} প্রতি ইঞ্চি","narrow":"{0}/ইঞ্চি"}},"mile-scandinavian":{"long":{"other":"{0} মাইল-স্ক্যান্ডিনেভিয়ান"},"short":{"other":"{0} smi"},"narrow":{"other":"{0} smi"},"perUnit":{}},"kilogram":{"long":{"other":"{0} কিলোগ্রাম"},"short":{"other":"{0} কেজি"},"narrow":{"other":"{0} কেজি"},"perUnit":{"long":"{0} প্রতি কিলোগ্রাম","short":"{0} প্রতি কেজি","narrow":"{0}/কেজি"}},"gram":{"long":{"other":"{0} গ্রাম"},"short":{"other":"{0} গ্রাম","one":"{0}গ্রাম"},"narrow":{"other":"{0} গ্রাম"},"perUnit":{"long":"{0} প্রতি গ্রাম","short":"{0} প্রতি গ্রাম","narrow":"{0}/গ্রা:"}},"stone":{"long":{"other":"{0} st"},"short":{"other":"{0} st"},"narrow":{"other":"{0} st"},"perUnit":{}},"pound":{"long":{"other":"{0} পাউন্ড"},"short":{"other":"{0} lb","one":"{0} পাউন্ড"},"narrow":{"other":"{0} পাউন্ড"},"perUnit":{"long":"{0} প্রতি পাউন্ড","short":"{0}/lb","narrow":"{0}/পাউন্ড"}},"ounce":{"long":{"other":"{0} আউন্স"},"short":{"other":"{0} আউন্স"},"narrow":{"other":"{0} আউন্স"},"perUnit":{"long":"{0} প্রতি আউন্স","short":"{0} প্রতি আউন্স","narrow":"{0}/আউন্স"}},"kilometer-per-hour":{"long":{"other":"{0} ঘন্টা প্রতি কিলোমিটার"},"short":{"other":"{0} km/h","one":"{0} kph"},"narrow":{"other":"{0}kph"},"perUnit":{}},"meter-per-second":{"long":{"other":"{0} মিটার প্রতি সেকেন্ড"},"short":{"other":"{0} m/s"},"narrow":{"other":"{0}m/s"},"perUnit":{}},"mile-per-hour":{"long":{"other":"{0} ঘন্টা প্রতি মাইল"},"short":{"other":"{0} mph"},"narrow":{"other":"{0}mph"},"perUnit":{}},"celsius":{"long":{"other":"{0} ডিগ্রী সেলসিয়াস"},"short":{"other":"{0}°C"},"narrow":{"other":"{0}°C"},"perUnit":{}},"fahrenheit":{"long":{"other":"{0} ডিগ্রী ফারেনহাইট"},"short":{"other":"{0}°F"},"narrow":{"other":"{0}°F"},"perUnit":{}},"liter":{"long":{"other":"{0} লিটার"},"short":{"other":"{0} লিটার"},"narrow":{"other":"{0} লিটার"},"perUnit":{"long":"{0} প্রতি লিটার","short":"{0}/l","narrow":"{0}/l"}},"milliliter":{"long":{"other":"{0} মিলিলিটার"},"short":{"other":"{0} mL"},"narrow":{"other":"{0} mL"},"perUnit":{}},"gallon":{"long":{"other":"{0} গ্যালন"},"short":{"other":"{0} gal"},"narrow":{"other":"{0} gal"},"perUnit":{"long":"{0} প্রতি গ্যালন","short":"{0}/gal US","narrow":"{0}/gal"}},"fluid-ounce":{"long":{"other":"{0} ফ্লুইড আউন্স"},"short":{"other":"{0} fl oz"},"narrow":{"other":"{0} fl oz"},"perUnit":{}}},"compound":{"per":{"long":"{1} প্রতি {0}","short":"{0}/{1}","narrow":"{0}/{1}"}}},"currencies":{"ADP":{"displayName":{"other":"এ্যান্ডোরান পেসেতা"},"symbol":"ADP","narrow":"ADP"},"AED":{"displayName":{"other":"সংযুক্ত আরব আমিরাত দিরহাম"},"symbol":"AED","narrow":"AED"},"AFA":{"displayName":{"other":"আফগানি (১৯২৭–২০০২)"},"symbol":"AFA","narrow":"AFA"},"AFN":{"displayName":{"other":"আফগান আফগানি"},"symbol":"AFN","narrow":"؋"},"ALK":{"displayName":{"other":"ALK"},"symbol":"ALK","narrow":"ALK"},"ALL":{"displayName":{"other":"আলবেনিয়ান লেক"},"symbol":"ALL","narrow":"ALL"},"AMD":{"displayName":{"other":"আরমেনিয়ান দ্রাম"},"symbol":"AMD","narrow":"֏"},"ANG":{"displayName":{"other":"নেদারল্যান্ড এ্যান্টিলিয়ান গুল্ডের"},"symbol":"ANG","narrow":"ANG"},"AOA":{"displayName":{"other":"এ্যাঙ্গোলান কওয়ানজা"},"symbol":"AOA","narrow":"Kz"},"AOK":{"displayName":{"other":"এ্যাঙ্গোলান কওয়ানজা (১৯৭৭–১৯৯০)"},"symbol":"AOK","narrow":"AOK"},"AON":{"displayName":{"other":"এ্যাঙ্গোলান নতুন কওয়ানজা (১৯৯৫–২০০০)"},"symbol":"AON","narrow":"AON"},"AOR":{"displayName":{"other":"এ্যাঙ্গোলান কওয়ানজা (১৯৯৫–১৯৯৯)"},"symbol":"AOR","narrow":"AOR"},"ARA":{"displayName":{"other":"আর্জেন্টিনা অস্ট্রাল"},"symbol":"ARA","narrow":"ARA"},"ARL":{"displayName":{"other":"ARL"},"symbol":"ARL","narrow":"ARL"},"ARM":{"displayName":{"other":"ARM"},"symbol":"ARM","narrow":"ARM"},"ARP":{"displayName":{"other":"আর্জেন্টিনা পেসো (১৯৮৩–১৯৮৫)"},"symbol":"ARP","narrow":"ARP"},"ARS":{"displayName":{"other":"আর্জেন্টিনা পেসো"},"symbol":"ARS","narrow":"$"},"ATS":{"displayName":{"other":"অস্ট্রিয়ান শিলিং"},"symbol":"ATS","narrow":"ATS"},"AUD":{"displayName":{"other":"অস্ট্রেলিয়ান ডলার"},"symbol":"A$","narrow":"$"},"AWG":{"displayName":{"other":"আরুবা গিল্ডার"},"symbol":"AWG","narrow":"AWG"},"AZM":{"displayName":{"other":"আজারবাইজান মানাত (১৯৯৩–২০০৬)"},"symbol":"AZM","narrow":"AZM"},"AZN":{"displayName":{"other":"আজারবাইজান মানাত"},"symbol":"AZN","narrow":"₼"},"BAD":{"displayName":{"other":"বসনিয়া এবং হার্জেগোভিনা দিনার"},"symbol":"BAD","narrow":"BAD"},"BAM":{"displayName":{"other":"বসনিয়া এবং হার্জেগোভিনা বিনিমেয় মার্ক"},"symbol":"BAM","narrow":"KM"},"BAN":{"displayName":{"other":"BAN"},"symbol":"BAN","narrow":"BAN"},"BBD":{"displayName":{"other":"বার্বেডোজ ডলার"},"symbol":"BBD","narrow":"$"},"BDT":{"displayName":{"other":"বাংলাদেশী টাকা"},"symbol":"৳","narrow":"৳"},"BEC":{"displayName":{"other":"বেলজিয়ান ফ্রাঙ্ক (রূপান্তরযোগ্য)"},"symbol":"BEC","narrow":"BEC"},"BEF":{"displayName":{"other":"বেলজিয়ান ফ্রাঙ্ক"},"symbol":"BEF","narrow":"BEF"},"BEL":{"displayName":{"other":"বেলজিয়ান ফ্রাঙ্ক (আর্থিক)"},"symbol":"BEL","narrow":"BEL"},"BGL":{"displayName":{"other":"বুলগেরীয় হার্ড লেভ"},"symbol":"BGL","narrow":"BGL"},"BGM":{"displayName":{"other":"BGM"},"symbol":"BGM","narrow":"BGM"},"BGN":{"displayName":{"other":"বুলগেরীয় লেভা","one":"বুলগেরীয় লেভ"},"symbol":"BGN","narrow":"BGN"},"BGO":{"displayName":{"other":"BGO"},"symbol":"BGO","narrow":"BGO"},"BHD":{"displayName":{"other":"বাহরাইনি দিনার"},"symbol":"BHD","narrow":"BHD"},"BIF":{"displayName":{"other":"বুরুন্ডি ফ্রাঙ্ক"},"symbol":"BIF","narrow":"BIF"},"BMD":{"displayName":{"other":"বারমিউডান ডলার"},"symbol":"BMD","narrow":"$"},"BND":{"displayName":{"other":"ব্রুনেই ডলার"},"symbol":"BND","narrow":"$"},"BOB":{"displayName":{"other":"বলিভিয়ানো"},"symbol":"BOB","narrow":"Bs"},"BOL":{"displayName":{"other":"BOL"},"symbol":"BOL","narrow":"BOL"},"BOP":{"displayName":{"other":"বলিভিয়ান পেসো"},"symbol":"BOP","narrow":"BOP"},"BOV":{"displayName":{"other":"বলিভিয়ান মভডোল"},"symbol":"BOV","narrow":"BOV"},"BRB":{"displayName":{"other":"ব্রাজিলিয়ান ক্রুজেয়রোনোভো (১৯৬৭–১৯৮৬)"},"symbol":"BRB","narrow":"BRB"},"BRC":{"displayName":{"other":"ব্রাজিলিয়ান ক্রুজেইডাউ"},"symbol":"BRC","narrow":"BRC"},"BRE":{"displayName":{"other":"ব্রাজিলিয়ান ক্রুজেয়রো (১৯৯০–১৯৯৩)"},"symbol":"BRE","narrow":"BRE"},"BRL":{"displayName":{"other":"ব্রাজিলিয়ান রিয়েল"},"symbol":"R$","narrow":"R$"},"BRN":{"displayName":{"other":"ব্রাজিলিয়ান ক্রুজেইডো নোভো"},"symbol":"BRN","narrow":"BRN"},"BRR":{"displayName":{"other":"ব্রাজিলিয়ান ক্রুজেয়রো"},"symbol":"BRR","narrow":"BRR"},"BRZ":{"displayName":{"other":"BRZ"},"symbol":"BRZ","narrow":"BRZ"},"BSD":{"displayName":{"other":"বাহামিয়ান ডলার"},"symbol":"BSD","narrow":"$"},"BTN":{"displayName":{"other":"ভুটানি এনগুল্ট্রুম"},"symbol":"BTN","narrow":"BTN"},"BUK":{"displayName":{"other":"বর্মি কিয়াৎ"},"symbol":"BUK","narrow":"BUK"},"BWP":{"displayName":{"other":"বতসোয়ানা পুলা"},"symbol":"BWP","narrow":"P"},"BYB":{"displayName":{"other":"বেলারুশিয়ান নিউ রুবেল (১৯৯৪–১৯৯৯)"},"symbol":"BYB","narrow":"BYB"},"BYN":{"displayName":{"other":"বেলারুশিয়ান রুবেল"},"symbol":"BYN","narrow":"р."},"BYR":{"displayName":{"other":"বেলারুশিয়ান রুবেল (2000–2016)"},"symbol":"BYR","narrow":"BYR"},"BZD":{"displayName":{"other":"বেলিজ ডলার"},"symbol":"BZD","narrow":"$"},"CAD":{"displayName":{"other":"কানাডিয়ান ডলার"},"symbol":"CA$","narrow":"$"},"CDF":{"displayName":{"other":"কঙ্গোলিস ফ্র্যাঙ্ক"},"symbol":"CDF","narrow":"CDF"},"CHE":{"displayName":{"other":"সুইজারল্যান্ড ইউরো"},"symbol":"CHE","narrow":"CHE"},"CHF":{"displayName":{"other":"সুইস ফ্রাঁ"},"symbol":"CHF","narrow":"CHF"},"CHW":{"displayName":{"other":"সুইজারল্যান্ড ফ্রাঙ্ক"},"symbol":"CHW","narrow":"CHW"},"CLE":{"displayName":{"other":"CLE"},"symbol":"CLE","narrow":"CLE"},"CLF":{"displayName":{"other":"চিলিয়ান উনিদাদেস দি ফোমেন্তো"},"symbol":"CLF","narrow":"CLF"},"CLP":{"displayName":{"other":"চিলি পেসো"},"symbol":"CLP","narrow":"$"},"CNH":{"displayName":{"other":"চাইনিজ ইউয়ান (অফশোর)"},"symbol":"CNH","narrow":"CNH"},"CNX":{"displayName":{"other":"CNX"},"symbol":"CNX","narrow":"CNX"},"CNY":{"displayName":{"other":"চীনা য়ুয়ান"},"symbol":"CN¥","narrow":"¥"},"COP":{"displayName":{"other":"কলোম্বিয়ান পেসো"},"symbol":"COP","narrow":"$"},"COU":{"displayName":{"other":"উনিদাদ দি ভ্যালোর রিয়েল"},"symbol":"COU","narrow":"COU"},"CRC":{"displayName":{"other":"কোস্টা রিকা কোলোন"},"symbol":"CRC","narrow":"₡"},"CSD":{"displayName":{"other":"প্রাচীন সারবিয়ান দিনার"},"symbol":"CSD","narrow":"CSD"},"CSK":{"displayName":{"other":"চেকোস্লোভাক হার্ড কোরুনা"},"symbol":"CSK","narrow":"CSK"},"CUC":{"displayName":{"other":"কিউবান রূপান্তরযোগ্য পেসো"},"symbol":"CUC","narrow":"$"},"CUP":{"displayName":{"other":"কিউবান পেসো"},"symbol":"CUP","narrow":"$"},"CVE":{"displayName":{"other":"কেপ ভার্দে এসকুডো"},"symbol":"CVE","narrow":"CVE"},"CYP":{"displayName":{"other":"সাইপ্রাস পাউন্ড"},"symbol":"CYP","narrow":"CYP"},"CZK":{"displayName":{"other":"চেক প্রজাতন্ত্র কোরুনা"},"symbol":"CZK","narrow":"Kč"},"DDM":{"displayName":{"other":"পূর্ব জার্মান মার্ক"},"symbol":"DDM","narrow":"DDM"},"DEM":{"displayName":{"other":"ডয়চ্ মার্ক"},"symbol":"DEM","narrow":"DEM"},"DJF":{"displayName":{"other":"জিবুতি ফ্রাঙ্ক"},"symbol":"DJF","narrow":"DJF"},"DKK":{"displayName":{"other":"ড্যানিশ ক্রৌন","one":"ড্যানিশ ক্রোন"},"symbol":"DKK","narrow":"kr"},"DOP":{"displayName":{"other":"ডোমিনিকান পেসো"},"symbol":"DOP","narrow":"$"},"DZD":{"displayName":{"other":"আলজেরীয় দিনার"},"symbol":"DZD","narrow":"DZD"},"ECS":{"displayName":{"other":"ইকুয়াডোর সুক্রে"},"symbol":"ECS","narrow":"ECS"},"ECV":{"displayName":{"other":"ইকুয়াডোর উনিদাদেস দি ভেলর কনসতান্তে (ইউভিসি)"},"symbol":"ECV","narrow":"ECV"},"EEK":{"displayName":{"other":"এস্তোনিয়া ক্রুনি"},"symbol":"EEK","narrow":"EEK"},"EGP":{"displayName":{"other":"মিশরীয় পাউন্ড"},"symbol":"EGP","narrow":"E£"},"ERN":{"displayName":{"other":"এরিট্রিয়েন নাকফা"},"symbol":"ERN","narrow":"ERN"},"ESA":{"displayName":{"other":"স্প্যানিশ পেসেতা (একই হিসাব)"},"symbol":"ESA","narrow":"ESA"},"ESB":{"displayName":{"other":"স্প্যানিশ পেসেতা (রূপান্তরযোগ্য হিসাব)"},"symbol":"ESB","narrow":"ESB"},"ESP":{"displayName":{"other":"স্প্যানিশ পেসেতা"},"symbol":"ESP","narrow":"₧"},"ETB":{"displayName":{"other":"ইথিওপিয়ান বির"},"symbol":"ETB","narrow":"ETB"},"EUR":{"displayName":{"other":"ইউরো"},"symbol":"€","narrow":"€"},"FIM":{"displayName":{"other":"ফিনিস মার্কা"},"symbol":"FIM","narrow":"FIM"},"FJD":{"displayName":{"other":"ফিজি ডলার"},"symbol":"FJD","narrow":"$"},"FKP":{"displayName":{"other":"ফকল্যান্ড দ্বীপপুঞ্জ পাউন্ড"},"symbol":"FKP","narrow":"£"},"FRF":{"displayName":{"other":"ফরাসি ফ্রাঙ্ক"},"symbol":"FRF","narrow":"FRF"},"GBP":{"displayName":{"other":"ব্রিটিশ পাউন্ড"},"symbol":"£","narrow":"£"},"GEK":{"displayName":{"other":"জর্জিয়ান কুপন লারিট"},"symbol":"GEK","narrow":"GEK"},"GEL":{"displayName":{"other":"জর্জিয়ান লারি"},"symbol":"GEL","narrow":"₾"},"GHC":{"displayName":{"other":"ঘানা সেডি (১৯৭৯–২০০৭)"},"symbol":"GHC","narrow":"GHC"},"GHS":{"displayName":{"other":"ঘানা সেডি"},"symbol":"GHS","narrow":"GH₵"},"GIP":{"displayName":{"other":"জিব্রাল্টার পাউন্ড"},"symbol":"GIP","narrow":"£"},"GMD":{"displayName":{"other":"গাম্বিয়া ডালাসি"},"symbol":"GMD","narrow":"GMD"},"GNF":{"displayName":{"other":"গিনি ফ্রাঙ্ক"},"symbol":"GNF","narrow":"FG"},"GNS":{"displayName":{"other":"গিনি সাইলি"},"symbol":"GNS","narrow":"GNS"},"GQE":{"displayName":{"other":"ইকুয়েটোরিয়াল গিনি ইকুয়িলি"},"symbol":"GQE","narrow":"GQE"},"GRD":{"displayName":{"other":"গ্রীক দ্রাচমা"},"symbol":"GRD","narrow":"GRD"},"GTQ":{"displayName":{"other":"গুয়াতেমালা কুয়েৎজাল"},"symbol":"GTQ","narrow":"Q"},"GWE":{"displayName":{"other":"পর্তুগিজ গিনি এসকুডো"},"symbol":"GWE","narrow":"GWE"},"GWP":{"displayName":{"other":"গিনি বিসাউ পেসো"},"symbol":"GWP","narrow":"GWP"},"GYD":{"displayName":{"other":"গাইয়েনা ডলার"},"symbol":"GYD","narrow":"$"},"HKD":{"displayName":{"other":"হংকং ডলার"},"symbol":"HK$","narrow":"$"},"HNL":{"displayName":{"other":"হন্ডুরাস লেম্পিরা"},"symbol":"HNL","narrow":"L"},"HRD":{"displayName":{"other":"ক্রোয়েশিয়ান দিনার"},"symbol":"HRD","narrow":"HRD"},"HRK":{"displayName":{"other":"ক্রোয়েশিয়ান কুনা"},"symbol":"HRK","narrow":"kn"},"HTG":{"displayName":{"other":"হাইতি গৌর্দে"},"symbol":"HTG","narrow":"HTG"},"HUF":{"displayName":{"other":"হাঙ্গেরিয়ান ফোরিন্ট"},"symbol":"HUF","narrow":"Ft"},"IDR":{"displayName":{"other":"ইন্দোনেশিয়ান রুপিয়াহ"},"symbol":"IDR","narrow":"Rp"},"IEP":{"displayName":{"other":"ইরিশ পাউন্ড"},"symbol":"IEP","narrow":"IEP"},"ILP":{"displayName":{"other":"ইস্রাইলি পাউন্ড"},"symbol":"ILP","narrow":"ILP"},"ILR":{"displayName":{"other":"ILR"},"symbol":"ILR","narrow":"ILR"},"ILS":{"displayName":{"other":"ইস্রাইলি নতুন শেকেল"},"symbol":"₪","narrow":"₪"},"INR":{"displayName":{"other":"ভারতীয় রুপি"},"symbol":"₹","narrow":"₹"},"IQD":{"displayName":{"other":"ইরাকি দিনার"},"symbol":"IQD","narrow":"IQD"},"IRR":{"displayName":{"other":"ইরানিয়ান রিয়াল"},"symbol":"IRR","narrow":"IRR"},"ISJ":{"displayName":{"other":"ISJ"},"symbol":"ISJ","narrow":"ISJ"},"ISK":{"displayName":{"other":"আইসল্যান্ড ক্রৌন","one":"আইসল্যান্ডীয় ক্রোনা"},"symbol":"ISK","narrow":"kr"},"ITL":{"displayName":{"other":"ইতালীয় লিরা"},"symbol":"ITL","narrow":"ITL"},"JMD":{"displayName":{"other":"জামাইকান ডলার"},"symbol":"JMD","narrow":"$"},"JOD":{"displayName":{"other":"জর্ডানিয়ান দিনার"},"symbol":"JOD","narrow":"JOD"},"JPY":{"displayName":{"other":"জাপানি ইয়েন"},"symbol":"JP¥","narrow":"¥"},"KES":{"displayName":{"other":"কেনিয়ান শিলিং"},"symbol":"KES","narrow":"KES"},"KGS":{"displayName":{"other":"কিরগিজস্তান সোম"},"symbol":"KGS","narrow":"KGS"},"KHR":{"displayName":{"other":"কম্বোডিয়ান রিয়েল"},"symbol":"KHR","narrow":"៛"},"KMF":{"displayName":{"other":"কমোরিয়ান ফ্রাঙ্ক"},"symbol":"KMF","narrow":"CF"},"KPW":{"displayName":{"other":"উত্তর কোরিয়ার ওন"},"symbol":"KPW","narrow":"₩"},"KRH":{"displayName":{"other":"KRH"},"symbol":"KRH","narrow":"KRH"},"KRO":{"displayName":{"other":"KRO"},"symbol":"KRO","narrow":"KRO"},"KRW":{"displayName":{"other":"দক্ষিণ কোরিয়ান ওন"},"symbol":"₩","narrow":"₩"},"KWD":{"displayName":{"other":"কুয়েতি দিনার"},"symbol":"KWD","narrow":"KWD"},"KYD":{"displayName":{"other":"কেম্যান দ্বীপপুঞ্জের ডলার"},"symbol":"KYD","narrow":"$"},"KZT":{"displayName":{"other":"কাজাখাস্তানি টেঙ্গে"},"symbol":"KZT","narrow":"₸"},"LAK":{"displayName":{"other":"লেউশান কিপ"},"symbol":"LAK","narrow":"₭"},"LBP":{"displayName":{"other":"লেবানিজ পাউন্ড"},"symbol":"LBP","narrow":"L£"},"LKR":{"displayName":{"other":"শ্রীলঙ্কান রুপি"},"symbol":"LKR","narrow":"Rs"},"LRD":{"displayName":{"other":"লিবেরিয়ান ডলার"},"symbol":"LRD","narrow":"$"},"LSL":{"displayName":{"other":"লেসুটু লোটি"},"symbol":"LSL","narrow":"LSL"},"LTL":{"displayName":{"other":"লিথুইনিয়ান লিটা"},"symbol":"LTL","narrow":"Lt"},"LTT":{"displayName":{"other":"লিথুইনিয়ান টালোন্যাস"},"symbol":"LTT","narrow":"LTT"},"LUC":{"displayName":{"other":"লুক্সেমবার্গ রুপান্তযোগ্য ফ্রাঙ্ক"},"symbol":"LUC","narrow":"LUC"},"LUF":{"displayName":{"other":"লুক্সেমবার্গ ফ্রাঙ্ক"},"symbol":"LUF","narrow":"LUF"},"LUL":{"displayName":{"other":"লুক্সেমবার্গ ফাইনেনশিয়াল ফ্রাঙ্ক"},"symbol":"LUL","narrow":"LUL"},"LVL":{"displayName":{"other":"ল্যাটভিয়ান ল্যাট্‌স"},"symbol":"LVL","narrow":"Ls"},"LVR":{"displayName":{"other":"ল্যাটভিয়ান রুবল"},"symbol":"LVR","narrow":"LVR"},"LYD":{"displayName":{"other":"লিবিয়ান দিনার"},"symbol":"LYD","narrow":"LYD"},"MAD":{"displayName":{"other":"মোরোক্কান দিরহাম"},"symbol":"MAD","narrow":"MAD"},"MAF":{"displayName":{"other":"মোরোক্কান ফ্রাঙ্ক"},"symbol":"MAF","narrow":"MAF"},"MCF":{"displayName":{"other":"MCF"},"symbol":"MCF","narrow":"MCF"},"MDC":{"displayName":{"other":"MDC"},"symbol":"MDC","narrow":"MDC"},"MDL":{"displayName":{"other":"মোল্ডোভান লেয়ু"},"symbol":"MDL","narrow":"MDL"},"MGA":{"displayName":{"other":"মাদাগাস্কার আরিয়ারি"},"symbol":"MGA","narrow":"Ar"},"MGF":{"displayName":{"other":"মাদাগাস্কার ফ্রাঙ্ক"},"symbol":"MGF","narrow":"MGF"},"MKD":{"displayName":{"other":"ম্যাসেডোনিয়ান দিনার"},"symbol":"MKD","narrow":"MKD"},"MKN":{"displayName":{"other":"MKN"},"symbol":"MKN","narrow":"MKN"},"MLF":{"displayName":{"other":"মালি ফ্রাঙ্ক"},"symbol":"MLF","narrow":"MLF"},"MMK":{"displayName":{"other":"মায়ানমার কিয়াত"},"symbol":"MMK","narrow":"K"},"MNT":{"displayName":{"other":"মঙ্গোলিয়ান তুগরিক"},"symbol":"MNT","narrow":"₮"},"MOP":{"displayName":{"other":"ম্যাক্যাও পাটাকা"},"symbol":"MOP","narrow":"MOP"},"MRO":{"displayName":{"other":"মৌরিতানিয়ান ওউগুইয়া (১৯৭৩–২০১৭)"},"symbol":"MRO","narrow":"MRO"},"MRU":{"displayName":{"other":"মৌরিতানিয়ান ওউগুইয়া"},"symbol":"MRU","narrow":"MRU"},"MTL":{"displayName":{"other":"মাল্টা লিরা"},"symbol":"MTL","narrow":"MTL"},"MTP":{"displayName":{"other":"মাল্টা পাউন্ড"},"symbol":"MTP","narrow":"MTP"},"MUR":{"displayName":{"other":"মৌরিতানিয়ান রুপি"},"symbol":"MUR","narrow":"Rs"},"MVP":{"displayName":{"other":"MVP"},"symbol":"MVP","narrow":"MVP"},"MVR":{"displayName":{"other":"মালদিভিয়ান রুফিয়া"},"symbol":"MVR","narrow":"MVR"},"MWK":{"displayName":{"other":"মালাউইয়ান কওয়াচ"},"symbol":"MWK","narrow":"MWK"},"MXN":{"displayName":{"other":"ম্যাক্সিকান পেসো"},"symbol":"MX$","narrow":"$"},"MXP":{"displayName":{"other":"ম্যাক্সিকান সিলভার পেসো (১৮৬১–১৯৯২)"},"symbol":"MXP","narrow":"MXP"},"MXV":{"displayName":{"other":"মেক্সিকান উনিদাদ দি ইনভার্সান (UDI)"},"symbol":"MXV","narrow":"MXV"},"MYR":{"displayName":{"other":"মালয়েশিয়ান রিঙ্গিৎ"},"symbol":"MYR","narrow":"RM"},"MZE":{"displayName":{"other":"মোজাম্বিক এসকুডো"},"symbol":"MZE","narrow":"MZE"},"MZM":{"displayName":{"other":"প্রাচীন মোজাম্বিক মেটিকেল"},"symbol":"MZM","narrow":"MZM"},"MZN":{"displayName":{"other":"মোজাম্বিক মেটিকেল"},"symbol":"MZN","narrow":"MZN"},"NAD":{"displayName":{"other":"নামিবিয়া ডলার"},"symbol":"NAD","narrow":"$"},"NGN":{"displayName":{"other":"নাইজেরিয়ান নায়রা"},"symbol":"NGN","narrow":"₦"},"NIC":{"displayName":{"other":"নিকারাগুয়ান কর্ডোবা (১৯৮৮–১৯৯১)"},"symbol":"NIC","narrow":"NIC"},"NIO":{"displayName":{"other":"নিকারাগুয়ান কর্ডোবা"},"symbol":"NIO","narrow":"C$"},"NLG":{"displayName":{"other":"নেদারল্যান্ড গুল্ডের"},"symbol":"NLG","narrow":"NLG"},"NOK":{"displayName":{"other":"নরওয়েজিয়ান ক্রোনার","one":"নরওয়েজিয়ান ক্রোন"},"symbol":"NOK","narrow":"kr"},"NPR":{"displayName":{"other":"নেপালি রুপি"},"symbol":"NPR","narrow":"Rs"},"NZD":{"displayName":{"other":"নিউজিল্যান্ড ডলার"},"symbol":"NZ$","narrow":"$"},"OMR":{"displayName":{"other":"ওমানি রিয়াল"},"symbol":"OMR","narrow":"OMR"},"PAB":{"displayName":{"other":"পানামা বেলবোয়া"},"symbol":"PAB","narrow":"PAB"},"PEI":{"displayName":{"other":"পেরুভিয়ান ইন্তি"},"symbol":"PEI","narrow":"PEI"},"PEN":{"displayName":{"other":"পেরুভিয়ান সোল"},"symbol":"PEN","narrow":"PEN"},"PES":{"displayName":{"other":"পেরুভিয়ান সোল (1863–1965)"},"symbol":"PES","narrow":"PES"},"PGK":{"displayName":{"other":"পাপুয়া নিউ গিনিয়ান কিনা"},"symbol":"PGK","narrow":"PGK"},"PHP":{"displayName":{"other":"ফিলিপাইন পেসো"},"symbol":"PHP","narrow":"₱"},"PKR":{"displayName":{"other":"পাকিস্তানি রুপি"},"symbol":"PKR","narrow":"Rs"},"PLN":{"displayName":{"other":"পোলিশ জ্লোটি"},"symbol":"PLN","narrow":"zł"},"PLZ":{"displayName":{"other":"পোলিশ জ্লোটি (১৯৫০–১৯৯৫)"},"symbol":"PLZ","narrow":"PLZ"},"PTE":{"displayName":{"other":"পর্তুগিজ এসকুডো"},"symbol":"PTE","narrow":"PTE"},"PYG":{"displayName":{"other":"প্যারাগুয়ান গুয়ারানি"},"symbol":"PYG","narrow":"₲"},"QAR":{"displayName":{"other":"কাতার রিয়াল"},"symbol":"QAR","narrow":"QAR"},"RHD":{"displayName":{"other":"রোডেশিয়ান ডলার"},"symbol":"RHD","narrow":"RHD"},"ROL":{"displayName":{"other":"প্রাচীন রুমানিয়া লেয়ু"},"symbol":"ROL","narrow":"ROL"},"RON":{"displayName":{"other":"রুমানিয়া লেয়ু"},"symbol":"RON","narrow":"lei"},"RSD":{"displayName":{"other":"সারবিয়ান দিনার"},"symbol":"RSD","narrow":"RSD"},"RUB":{"displayName":{"other":"রাশিয়ান রুবেল"},"symbol":"RUB","narrow":"₽"},"RUR":{"displayName":{"other":"রাশিয়ান রুবল (১৯৯১–১৯৯৮)"},"symbol":"RUR","narrow":"RUR"},"RWF":{"displayName":{"other":"রুয়ান্ডান ফ্রাঙ্ক"},"symbol":"RWF","narrow":"RF"},"SAR":{"displayName":{"other":"সৌদি রিয়াল"},"symbol":"SAR","narrow":"SAR"},"SBD":{"displayName":{"other":"সলোমন দ্বীপপুঞ্জ ডলার"},"symbol":"SBD","narrow":"$"},"SCR":{"displayName":{"other":"সেয়চেল্লোইস রুপি"},"symbol":"SCR","narrow":"SCR"},"SDD":{"displayName":{"other":"প্রাচীন সুদানি দিনার"},"symbol":"SDD","narrow":"SDD"},"SDG":{"displayName":{"other":"সুদানি পাউন্ড"},"symbol":"SDG","narrow":"SDG"},"SDP":{"displayName":{"other":"প্রাচীন সুদানি পাউন্ড"},"symbol":"SDP","narrow":"SDP"},"SEK":{"displayName":{"other":"সুইডিশ ক্রোনা"},"symbol":"SEK","narrow":"kr"},"SGD":{"displayName":{"other":"সিঙ্গাপুর ডলার"},"symbol":"SGD","narrow":"$"},"SHP":{"displayName":{"other":"সেন্ট হেলেনা পাউন্ড"},"symbol":"SHP","narrow":"£"},"SIT":{"displayName":{"other":"স্লোভানিয়া টোলার"},"symbol":"SIT","narrow":"SIT"},"SKK":{"displayName":{"other":"স্লোভাক কোরুনা"},"symbol":"SKK","narrow":"SKK"},"SLL":{"displayName":{"other":"সিয়েরালিয়ন লিয়ন"},"symbol":"SLL","narrow":"SLL"},"SOS":{"displayName":{"other":"সোমালি শিলিং"},"symbol":"SOS","narrow":"SOS"},"SRD":{"displayName":{"other":"সুরিনাম ডলার"},"symbol":"SRD","narrow":"$"},"SRG":{"displayName":{"other":"সুরিনাম গিল্ডার"},"symbol":"SRG","narrow":"SRG"},"SSP":{"displayName":{"other":"দক্ষিণ সুদানি পাউন্ড"},"symbol":"SSP","narrow":"£"},"STD":{"displayName":{"other":"সাও টোমে এবং প্রিন্সিপে ডোবরা (১৯৭৭–২০১৭)"},"symbol":"STD","narrow":"STD"},"STN":{"displayName":{"other":"সাও টোমে এবং প্রিন্সিপে ডোবরা"},"symbol":"STN","narrow":"Db"},"SUR":{"displayName":{"other":"সোভিয়েত রুবল"},"symbol":"SUR","narrow":"SUR"},"SVC":{"displayName":{"other":"এল স্যালভোডোর কোলোন"},"symbol":"SVC","narrow":"SVC"},"SYP":{"displayName":{"other":"সিরিয়ান পাউন্ড"},"symbol":"SYP","narrow":"£"},"SZL":{"displayName":{"other":"সোয়াজিল্যান্ড লিলাঙ্গেনি"},"symbol":"SZL","narrow":"SZL"},"THB":{"displayName":{"other":"থাই বাত"},"symbol":"฿","narrow":"฿"},"TJR":{"displayName":{"other":"তাজিকিস্তান রুবল"},"symbol":"TJR","narrow":"TJR"},"TJS":{"displayName":{"other":"তাজিকিস্তান সোমোনি"},"symbol":"TJS","narrow":"TJS"},"TMM":{"displayName":{"other":"তুর্কমেনিস্টানি মানাত"},"symbol":"TMM","narrow":"TMM"},"TMT":{"displayName":{"other":"তুর্কমেনিস্তান মানত"},"symbol":"TMT","narrow":"TMT"},"TND":{"displayName":{"other":"তিউনেশিয়ান দিনার"},"symbol":"TND","narrow":"TND"},"TOP":{"displayName":{"other":"টোঙ্গা পা’আঙ্গা"},"symbol":"TOP","narrow":"T$"},"TPE":{"displayName":{"other":"তিমুর এসকুডো"},"symbol":"TPE","narrow":"TPE"},"TRL":{"displayName":{"other":"প্রাচীন তুর্কি লিরা"},"symbol":"TRL","narrow":"TRL"},"TRY":{"displayName":{"other":"তুর্কি লিরা"},"symbol":"TRY","narrow":"₺"},"TTD":{"displayName":{"other":"ত্রিনিদাদ এবং টোবাগো ডলার"},"symbol":"TTD","narrow":"$"},"TWD":{"displayName":{"other":"নতুন তাইওয়ান ডলার"},"symbol":"NT$","narrow":"NT$"},"TZS":{"displayName":{"other":"তাঞ্জনিয়া শিলিং"},"symbol":"TZS","narrow":"TZS"},"UAH":{"displayName":{"other":"ইউক্রেইন হৃভনিয়া"},"symbol":"UAH","narrow":"₴"},"UAK":{"displayName":{"other":"ইউক্রেইন কার্বোভ্যান্টস"},"symbol":"UAK","narrow":"UAK"},"UGS":{"displayName":{"other":"উগান্ডান শিলিং (১৯৬৬–১৯৮৭)"},"symbol":"UGS","narrow":"UGS"},"UGX":{"displayName":{"other":"উগান্ডান শিলিং"},"symbol":"UGX","narrow":"UGX"},"USD":{"displayName":{"other":"মার্কিন ডলার"},"symbol":"US$","narrow":"$"},"USN":{"displayName":{"other":"মার্কিন ডলার (পরবর্তী দিন)"},"symbol":"USN","narrow":"USN"},"USS":{"displayName":{"other":"মার্কিন ডলার (একই দিন)"},"symbol":"USS","narrow":"USS"},"UYI":{"displayName":{"other":"উরুগুয়ায়ান পেসো এন উনিদাদেস ইনডেক্সেডাস"},"symbol":"UYI","narrow":"UYI"},"UYP":{"displayName":{"other":"উরুগুয়ে পেসো (১৯৭৫–১৯৯৩)"},"symbol":"UYP","narrow":"UYP"},"UYU":{"displayName":{"other":"উরুগুয়ে পেসো"},"symbol":"UYU","narrow":"$"},"UYW":{"displayName":{"other":"UYW"},"symbol":"UYW","narrow":"UYW"},"UZS":{"displayName":{"other":"উজবেকিস্তানি সোম"},"symbol":"UZS","narrow":"UZS"},"VEB":{"displayName":{"other":"ভেনিজুয়েলান বলিভার (১৮৭১–২০০৮)"},"symbol":"VEB","narrow":"VEB"},"VEF":{"displayName":{"other":"ভেনিজুয়েলীয় বলিভার (২০০৮–২০১৮)"},"symbol":"VEF","narrow":"Bs"},"VES":{"displayName":{"other":"ভেনিজুয়েলীয় বলিভার"},"symbol":"VES","narrow":"VES"},"VND":{"displayName":{"other":"ভিয়েতনামি ডঙ্গ"},"symbol":"₫","narrow":"₫"},"VNN":{"displayName":{"other":"VNN"},"symbol":"VNN","narrow":"VNN"},"VUV":{"displayName":{"other":"ভানুয়াতু ভাতু"},"symbol":"VUV","narrow":"VUV"},"WST":{"displayName":{"other":"সামোয়ান টালা"},"symbol":"WST","narrow":"WST"},"XAF":{"displayName":{"other":"মধ্য আফ্রিকান [CFA] ফ্র্যাঙ্ক"},"symbol":"FCFA","narrow":"FCFA"},"XAG":{"displayName":{"other":"সিলভার"},"symbol":"XAG","narrow":"XAG"},"XAU":{"displayName":{"other":"গোল্ড"},"symbol":"XAU","narrow":"XAU"},"XBA":{"displayName":{"other":"XBA"},"symbol":"XBA","narrow":"XBA"},"XBB":{"displayName":{"other":"ইউরোপীয় আর্থিক একক"},"symbol":"XBB","narrow":"XBB"},"XBC":{"displayName":{"other":"XBC"},"symbol":"XBC","narrow":"XBC"},"XBD":{"displayName":{"other":"XBD"},"symbol":"XBD","narrow":"XBD"},"XCD":{"displayName":{"other":"পূর্ব ক্যারাবিয়ান ডলার"},"symbol":"EC$","narrow":"$"},"XDR":{"displayName":{"other":"XDR"},"symbol":"XDR","narrow":"XDR"},"XEU":{"displayName":{"other":"ইউরোপীয় মুদ্রা একক"},"symbol":"XEU","narrow":"XEU"},"XFO":{"displayName":{"other":"ফরাসি গোল্ড ফ্রাঙ্ক"},"symbol":"XFO","narrow":"XFO"},"XFU":{"displayName":{"other":"ফরাসি ইউআইসি - ফ্রাঙ্ক"},"symbol":"XFU","narrow":"XFU"},"XOF":{"displayName":{"other":"পশ্চিম আফ্রিকান [CFA] ফ্র্যাঙ্ক"},"symbol":"F CFA","narrow":"F CFA"},"XPD":{"displayName":{"other":"প্যালেডিয়াম"},"symbol":"XPD","narrow":"XPD"},"XPF":{"displayName":{"other":"সিএফপি ফ্র্যাঙ্ক"},"symbol":"CFPF","narrow":"CFPF"},"XPT":{"displayName":{"other":"প্লাটিনাম"},"symbol":"XPT","narrow":"XPT"},"XRE":{"displayName":{"other":"XRE"},"symbol":"XRE","narrow":"XRE"},"XSU":{"displayName":{"other":"XSU"},"symbol":"XSU","narrow":"XSU"},"XTS":{"displayName":{"other":"XTS"},"symbol":"XTS","narrow":"XTS"},"XUA":{"displayName":{"other":"XUA"},"symbol":"XUA","narrow":"XUA"},"XXX":{"displayName":{"other":"(অজানা মুদ্রা)","one":"(মুদ্রার অজানা একক)"},"symbol":"¤","narrow":"¤"},"YDD":{"displayName":{"other":"ইয়েমেনি দিনার"},"symbol":"YDD","narrow":"YDD"},"YER":{"displayName":{"other":"ইয়েমেনি রিয়াল"},"symbol":"YER","narrow":"YER"},"YUD":{"displayName":{"other":"যুগোশ্লাভিয় হার্ড দিনার"},"symbol":"YUD","narrow":"YUD"},"YUM":{"displayName":{"other":"যুগোশ্লাভিয় নোভি দিনার"},"symbol":"YUM","narrow":"YUM"},"YUN":{"displayName":{"other":"যুগোশ্লাভিয় রুপান্তরযোগ্য দিনার"},"symbol":"YUN","narrow":"YUN"},"YUR":{"displayName":{"other":"YUR"},"symbol":"YUR","narrow":"YUR"},"ZAL":{"displayName":{"other":"দক্ষিণ আফ্রিকান র‌্যান্ড"},"symbol":"ZAL","narrow":"ZAL"},"ZAR":{"displayName":{"other":"দক্ষিণ আফ্রিকান রেন্ড"},"symbol":"ZAR","narrow":"R"},"ZMK":{"displayName":{"other":"জাম্বিয়ান কওয়াচা (১৯৬৮–২০১২)"},"symbol":"ZMK","narrow":"ZMK"},"ZMW":{"displayName":{"other":"জাম্বিয়ান কওয়াচা"},"symbol":"ZMW","narrow":"ZK"},"ZRN":{"displayName":{"other":"জাইরিয়ান নিউ জাইরে"},"symbol":"ZRN","narrow":"ZRN"},"ZRZ":{"displayName":{"other":"জাইরিয়ান জাইরে"},"symbol":"ZRZ","narrow":"ZRZ"},"ZWD":{"displayName":{"other":"জিম্বাবুয়ে ডলার (১৯৮০–২০০৮)"},"symbol":"ZWD","narrow":"ZWD"},"ZWL":{"displayName":{"other":"জিম্বাবুয়ে ডলার (২০০৯)"},"symbol":"ZWL","narrow":"ZWL"},"ZWR":{"displayName":{"other":"জিম্বাবুয়ে ডলার (২০০৮)"},"symbol":"ZWR","narrow":"ZWR"}},"numbers":{"nu":["beng","latn"],"symbols":{"beng":{"decimal":".","group":",","list":";","percentSign":"%","plusSign":"+","minusSign":"-","approximatelySign":"~","exponential":"E","superscriptingExponent":"×","perMille":"‰","infinity":"∞","nan":"NaN","timeSeparator":":","rangeSign":"–"},"latn":{"decimal":".","group":",","list":";","percentSign":"%","plusSign":"+","minusSign":"-","approximatelySign":"~","exponential":"E","superscriptingExponent":"×","perMille":"‰","infinity":"∞","nan":"NaN","timeSeparator":":","rangeSign":"–"}},"percent":{"beng":"#,##0%","latn":"#,##,##0%"},"decimal":{"beng":{"standard":"#,##,##0.###","long":{"1000":{"other":"0 হাজার"},"10000":{"other":"00 হাজার"},"100000":{"other":"0 লাখ"},"1000000":{"other":"00 লাখ"},"10000000":{"other":"0 কোটি"},"100000000":{"other":"00 কোটি"},"1000000000":{"other":"000 কোটি"},"10000000000":{"other":"0000 কোটি"},"100000000000":{"other":"00000 কোটি"},"1000000000000":{"other":"0 লাখ কোটি"},"10000000000000":{"other":"00 লাখ কোটি"},"100000000000000":{"other":"000 লাখ কোটি"}},"short":{"1000":{"other":"0 হা"},"10000":{"other":"00 হা"},"100000":{"other":"0 লা"},"1000000":{"other":"00 লা"},"10000000":{"other":"0 কো"},"100000000":{"other":"00 কো"},"1000000000":{"other":"000 কো"},"10000000000":{"other":"00শত কো","one":"00 শত কো"},"100000000000":{"other":"000কো"},"1000000000000":{"other":"0 লা'.'কো'.'"},"10000000000000":{"other":"00 লা'.'কো'.'"},"100000000000000":{"other":"000 লা'.'কো'.'"}}},"latn":{"standard":"#,##,##0.###","long":{"1000":{"other":"0 হাজার"},"10000":{"other":"00 হাজার"},"100000":{"other":"0 লাখ"},"1000000":{"other":"00 লাখ"},"10000000":{"other":"0 কোটি"},"100000000":{"other":"00 কোটি"},"1000000000":{"other":"000 কোটি"},"10000000000":{"other":"0000 কোটি"},"100000000000":{"other":"00000 কোটি"},"1000000000000":{"other":"0 লাখ কোটি"},"10000000000000":{"other":"00 লাখ কোটি"},"100000000000000":{"other":"000 লাখ কোটি"}},"short":{"1000":{"other":"0 হা"},"10000":{"other":"00 হা"},"100000":{"other":"0 লা"},"1000000":{"other":"00 লা"},"10000000":{"other":"0 কো"},"100000000":{"other":"00 কো"},"1000000000":{"other":"000 কো"},"10000000000":{"other":"00শত কো","one":"00 শত কো"},"100000000000":{"other":"000কো"},"1000000000000":{"other":"0 লা'.'কো'.'"},"10000000000000":{"other":"00 লা'.'কো'.'"},"100000000000000":{"other":"000 লা'.'কো'.'"}}}},"currency":{"beng":{"currencySpacing":{"beforeInsertBetween":" ","afterInsertBetween":" "},"standard":"#,##,##0.00¤","accounting":"#,##,##0.00¤;(#,##,##0.00¤)","unitPattern":"{0} {1}","short":{"1000":{"other":"0 হা¤"},"10000":{"other":"00 হা¤"},"100000":{"other":"0 লা¤"},"1000000":{"other":"00 লা¤"},"10000000":{"other":"0 কো¤"},"100000000":{"other":"00 কো¤"},"1000000000":{"other":"000 কো¤"},"10000000000":{"other":"0000 কো¤"},"100000000000":{"other":"00000 কো¤"},"1000000000000":{"other":"0 লা'.'কো'.'¤"},"10000000000000":{"other":"00 লা'.'কো'.'¤"},"100000000000000":{"other":"000 লা'.'কো'.'¤"}}},"latn":{"currencySpacing":{"beforeInsertBetween":" ","afterInsertBetween":" "},"standard":"#,##,##0.00¤","accounting":"#,##,##0.00¤;(#,##,##0.00¤)","unitPattern":"{0} {1}","short":{"1000":{"other":"0 হা¤"},"10000":{"other":"00 হা¤"},"100000":{"other":"0 লা¤"},"1000000":{"other":"00 লা¤"},"10000000":{"other":"0 কো¤"},"100000000":{"other":"00 কো¤"},"1000000000":{"other":"000 কো¤"},"10000000000":{"other":"0000 কো¤"},"100000000000":{"other":"00000 কো¤"},"1000000000000":{"other":"0 লা'.'কো'.'¤"},"10000000000000":{"other":"00 লা'.'কো'.'¤"},"100000000000000":{"other":"000 লা'.'কো'.'¤"}}}}},"nu":["beng","latn"]},"locale":"bn"}
+{
+  "data": {
+    "currencies": {
+      "ADP": {
+        "displayName": {
+          "other": "এ্যান্ডোরান পেসেতা"
+        },
+        "narrow": "ADP",
+        "symbol": "ADP"
+      },
+      "AED": {
+        "displayName": {
+          "other": "সংযুক্ত আরব আমিরাত দিরহাম"
+        },
+        "narrow": "AED",
+        "symbol": "AED"
+      },
+      "AFA": {
+        "displayName": {
+          "other": "আফগানি (১৯২৭–২০০২)"
+        },
+        "narrow": "AFA",
+        "symbol": "AFA"
+      },
+      "AFN": {
+        "displayName": {
+          "other": "আফগান আফগানি"
+        },
+        "narrow": "؋",
+        "symbol": "AFN"
+      },
+      "ALK": {
+        "displayName": {
+          "other": "ALK"
+        },
+        "narrow": "ALK",
+        "symbol": "ALK"
+      },
+      "ALL": {
+        "displayName": {
+          "other": "আলবেনিয়ান লেক"
+        },
+        "narrow": "ALL",
+        "symbol": "ALL"
+      },
+      "AMD": {
+        "displayName": {
+          "other": "আরমেনিয়ান দ্রাম"
+        },
+        "narrow": "֏",
+        "symbol": "AMD"
+      },
+      "ANG": {
+        "displayName": {
+          "other": "নেদারল্যান্ড এ্যান্টিলিয়ান গুল্ডের"
+        },
+        "narrow": "ANG",
+        "symbol": "ANG"
+      },
+      "AOA": {
+        "displayName": {
+          "other": "এ্যাঙ্গোলান কওয়ানজা"
+        },
+        "narrow": "Kz",
+        "symbol": "AOA"
+      },
+      "AOK": {
+        "displayName": {
+          "other": "এ্যাঙ্গোলান কওয়ানজা (১৯৭৭–১৯৯০)"
+        },
+        "narrow": "AOK",
+        "symbol": "AOK"
+      },
+      "AON": {
+        "displayName": {
+          "other": "এ্যাঙ্গোলান নতুন কওয়ানজা (১৯৯৫–২০০০)"
+        },
+        "narrow": "AON",
+        "symbol": "AON"
+      },
+      "AOR": {
+        "displayName": {
+          "other": "এ্যাঙ্গোলান কওয়ানজা (১৯৯৫–১৯৯৯)"
+        },
+        "narrow": "AOR",
+        "symbol": "AOR"
+      },
+      "ARA": {
+        "displayName": {
+          "other": "আর্জেন্টিনা অস্ট্রাল"
+        },
+        "narrow": "ARA",
+        "symbol": "ARA"
+      },
+      "ARL": {
+        "displayName": {
+          "other": "ARL"
+        },
+        "narrow": "ARL",
+        "symbol": "ARL"
+      },
+      "ARM": {
+        "displayName": {
+          "other": "ARM"
+        },
+        "narrow": "ARM",
+        "symbol": "ARM"
+      },
+      "ARP": {
+        "displayName": {
+          "other": "আর্জেন্টিনা পেসো (১৯৮৩–১৯৮৫)"
+        },
+        "narrow": "ARP",
+        "symbol": "ARP"
+      },
+      "ARS": {
+        "displayName": {
+          "other": "আর্জেন্টিনা পেসো"
+        },
+        "narrow": "$",
+        "symbol": "ARS"
+      },
+      "ATS": {
+        "displayName": {
+          "other": "অস্ট্রিয়ান শিলিং"
+        },
+        "narrow": "ATS",
+        "symbol": "ATS"
+      },
+      "AUD": {
+        "displayName": {
+          "other": "অস্ট্রেলিয়ান ডলার"
+        },
+        "narrow": "$",
+        "symbol": "A$"
+      },
+      "AWG": {
+        "displayName": {
+          "other": "আরুবা গিল্ডার"
+        },
+        "narrow": "AWG",
+        "symbol": "AWG"
+      },
+      "AZM": {
+        "displayName": {
+          "other": "আজারবাইজান মানাত (১৯৯৩–২০০৬)"
+        },
+        "narrow": "AZM",
+        "symbol": "AZM"
+      },
+      "AZN": {
+        "displayName": {
+          "other": "আজারবাইজান মানাত"
+        },
+        "narrow": "₼",
+        "symbol": "AZN"
+      },
+      "BAD": {
+        "displayName": {
+          "other": "বসনিয়া এবং হার্জেগোভিনা দিনার"
+        },
+        "narrow": "BAD",
+        "symbol": "BAD"
+      },
+      "BAM": {
+        "displayName": {
+          "other": "বসনিয়া এবং হার্জেগোভিনা বিনিমেয় মার্ক"
+        },
+        "narrow": "KM",
+        "symbol": "BAM"
+      },
+      "BAN": {
+        "displayName": {
+          "other": "BAN"
+        },
+        "narrow": "BAN",
+        "symbol": "BAN"
+      },
+      "BBD": {
+        "displayName": {
+          "other": "বার্বেডোজ ডলার"
+        },
+        "narrow": "$",
+        "symbol": "BBD"
+      },
+      "BDT": {
+        "displayName": {
+          "other": "বাংলাদেশী টাকা"
+        },
+        "narrow": "৳",
+        "symbol": "৳"
+      },
+      "BEC": {
+        "displayName": {
+          "other": "বেলজিয়ান ফ্রাঙ্ক (রূপান্তরযোগ্য)"
+        },
+        "narrow": "BEC",
+        "symbol": "BEC"
+      },
+      "BEF": {
+        "displayName": {
+          "other": "বেলজিয়ান ফ্রাঙ্ক"
+        },
+        "narrow": "BEF",
+        "symbol": "BEF"
+      },
+      "BEL": {
+        "displayName": {
+          "other": "বেলজিয়ান ফ্রাঙ্ক (আর্থিক)"
+        },
+        "narrow": "BEL",
+        "symbol": "BEL"
+      },
+      "BGL": {
+        "displayName": {
+          "other": "বুলগেরীয় হার্ড লেভ"
+        },
+        "narrow": "BGL",
+        "symbol": "BGL"
+      },
+      "BGM": {
+        "displayName": {
+          "other": "BGM"
+        },
+        "narrow": "BGM",
+        "symbol": "BGM"
+      },
+      "BGN": {
+        "displayName": {
+          "one": "বুলগেরীয় লেভ",
+          "other": "বুলগেরীয় লেভা"
+        },
+        "narrow": "BGN",
+        "symbol": "BGN"
+      },
+      "BGO": {
+        "displayName": {
+          "other": "BGO"
+        },
+        "narrow": "BGO",
+        "symbol": "BGO"
+      },
+      "BHD": {
+        "displayName": {
+          "other": "বাহরাইনি দিনার"
+        },
+        "narrow": "BHD",
+        "symbol": "BHD"
+      },
+      "BIF": {
+        "displayName": {
+          "other": "বুরুন্ডি ফ্রাঙ্ক"
+        },
+        "narrow": "BIF",
+        "symbol": "BIF"
+      },
+      "BMD": {
+        "displayName": {
+          "other": "বারমিউডান ডলার"
+        },
+        "narrow": "$",
+        "symbol": "BMD"
+      },
+      "BND": {
+        "displayName": {
+          "other": "ব্রুনেই ডলার"
+        },
+        "narrow": "$",
+        "symbol": "BND"
+      },
+      "BOB": {
+        "displayName": {
+          "other": "বলিভিয়ানো"
+        },
+        "narrow": "Bs",
+        "symbol": "BOB"
+      },
+      "BOL": {
+        "displayName": {
+          "other": "BOL"
+        },
+        "narrow": "BOL",
+        "symbol": "BOL"
+      },
+      "BOP": {
+        "displayName": {
+          "other": "বলিভিয়ান পেসো"
+        },
+        "narrow": "BOP",
+        "symbol": "BOP"
+      },
+      "BOV": {
+        "displayName": {
+          "other": "বলিভিয়ান মভডোল"
+        },
+        "narrow": "BOV",
+        "symbol": "BOV"
+      },
+      "BRB": {
+        "displayName": {
+          "other": "ব্রাজিলিয়ান ক্রুজেয়রোনোভো (১৯৬৭–১৯৮৬)"
+        },
+        "narrow": "BRB",
+        "symbol": "BRB"
+      },
+      "BRC": {
+        "displayName": {
+          "other": "ব্রাজিলিয়ান ক্রুজেইডাউ"
+        },
+        "narrow": "BRC",
+        "symbol": "BRC"
+      },
+      "BRE": {
+        "displayName": {
+          "other": "ব্রাজিলিয়ান ক্রুজেয়রো (১৯৯০–১৯৯৩)"
+        },
+        "narrow": "BRE",
+        "symbol": "BRE"
+      },
+      "BRL": {
+        "displayName": {
+          "other": "ব্রাজিলিয়ান রিয়েল"
+        },
+        "narrow": "R$",
+        "symbol": "R$"
+      },
+      "BRN": {
+        "displayName": {
+          "other": "ব্রাজিলিয়ান ক্রুজেইডো নোভো"
+        },
+        "narrow": "BRN",
+        "symbol": "BRN"
+      },
+      "BRR": {
+        "displayName": {
+          "other": "ব্রাজিলিয়ান ক্রুজেয়রো"
+        },
+        "narrow": "BRR",
+        "symbol": "BRR"
+      },
+      "BRZ": {
+        "displayName": {
+          "other": "BRZ"
+        },
+        "narrow": "BRZ",
+        "symbol": "BRZ"
+      },
+      "BSD": {
+        "displayName": {
+          "other": "বাহামিয়ান ডলার"
+        },
+        "narrow": "$",
+        "symbol": "BSD"
+      },
+      "BTN": {
+        "displayName": {
+          "other": "ভুটানি এনগুল্ট্রুম"
+        },
+        "narrow": "BTN",
+        "symbol": "BTN"
+      },
+      "BUK": {
+        "displayName": {
+          "other": "বর্মি কিয়াৎ"
+        },
+        "narrow": "BUK",
+        "symbol": "BUK"
+      },
+      "BWP": {
+        "displayName": {
+          "other": "বতসোয়ানা পুলা"
+        },
+        "narrow": "P",
+        "symbol": "BWP"
+      },
+      "BYB": {
+        "displayName": {
+          "other": "বেলারুশিয়ান নিউ রুবেল (১৯৯৪–১৯৯৯)"
+        },
+        "narrow": "BYB",
+        "symbol": "BYB"
+      },
+      "BYN": {
+        "displayName": {
+          "other": "বেলারুশিয়ান রুবেল"
+        },
+        "narrow": "р.",
+        "symbol": "BYN"
+      },
+      "BYR": {
+        "displayName": {
+          "other": "বেলারুশিয়ান রুবেল (2000–2016)"
+        },
+        "narrow": "BYR",
+        "symbol": "BYR"
+      },
+      "BZD": {
+        "displayName": {
+          "other": "বেলিজ ডলার"
+        },
+        "narrow": "$",
+        "symbol": "BZD"
+      },
+      "CAD": {
+        "displayName": {
+          "other": "কানাডিয়ান ডলার"
+        },
+        "narrow": "$",
+        "symbol": "CA$"
+      },
+      "CDF": {
+        "displayName": {
+          "other": "কঙ্গোলিস ফ্র্যাঙ্ক"
+        },
+        "narrow": "CDF",
+        "symbol": "CDF"
+      },
+      "CHE": {
+        "displayName": {
+          "other": "সুইজারল্যান্ড ইউরো"
+        },
+        "narrow": "CHE",
+        "symbol": "CHE"
+      },
+      "CHF": {
+        "displayName": {
+          "other": "সুইস ফ্রাঁ"
+        },
+        "narrow": "CHF",
+        "symbol": "CHF"
+      },
+      "CHW": {
+        "displayName": {
+          "other": "সুইজারল্যান্ড ফ্রাঙ্ক"
+        },
+        "narrow": "CHW",
+        "symbol": "CHW"
+      },
+      "CLE": {
+        "displayName": {
+          "other": "CLE"
+        },
+        "narrow": "CLE",
+        "symbol": "CLE"
+      },
+      "CLF": {
+        "displayName": {
+          "other": "চিলিয়ান উনিদাদেস দি ফোমেন্তো"
+        },
+        "narrow": "CLF",
+        "symbol": "CLF"
+      },
+      "CLP": {
+        "displayName": {
+          "other": "চিলি পেসো"
+        },
+        "narrow": "$",
+        "symbol": "CLP"
+      },
+      "CNH": {
+        "displayName": {
+          "other": "চাইনিজ ইউয়ান (অফশোর)"
+        },
+        "narrow": "CNH",
+        "symbol": "CNH"
+      },
+      "CNX": {
+        "displayName": {
+          "other": "CNX"
+        },
+        "narrow": "CNX",
+        "symbol": "CNX"
+      },
+      "CNY": {
+        "displayName": {
+          "other": "চীনা য়ুয়ান"
+        },
+        "narrow": "¥",
+        "symbol": "CN¥"
+      },
+      "COP": {
+        "displayName": {
+          "other": "কলোম্বিয়ান পেসো"
+        },
+        "narrow": "$",
+        "symbol": "COP"
+      },
+      "COU": {
+        "displayName": {
+          "other": "উনিদাদ দি ভ্যালোর রিয়েল"
+        },
+        "narrow": "COU",
+        "symbol": "COU"
+      },
+      "CRC": {
+        "displayName": {
+          "other": "কোস্টা রিকা কোলোন"
+        },
+        "narrow": "₡",
+        "symbol": "CRC"
+      },
+      "CSD": {
+        "displayName": {
+          "other": "প্রাচীন সারবিয়ান দিনার"
+        },
+        "narrow": "CSD",
+        "symbol": "CSD"
+      },
+      "CSK": {
+        "displayName": {
+          "other": "চেকোস্লোভাক হার্ড কোরুনা"
+        },
+        "narrow": "CSK",
+        "symbol": "CSK"
+      },
+      "CUC": {
+        "displayName": {
+          "other": "কিউবান রূপান্তরযোগ্য পেসো"
+        },
+        "narrow": "$",
+        "symbol": "CUC"
+      },
+      "CUP": {
+        "displayName": {
+          "other": "কিউবান পেসো"
+        },
+        "narrow": "$",
+        "symbol": "CUP"
+      },
+      "CVE": {
+        "displayName": {
+          "other": "কেপ ভার্দে এসকুডো"
+        },
+        "narrow": "CVE",
+        "symbol": "CVE"
+      },
+      "CYP": {
+        "displayName": {
+          "other": "সাইপ্রাস পাউন্ড"
+        },
+        "narrow": "CYP",
+        "symbol": "CYP"
+      },
+      "CZK": {
+        "displayName": {
+          "other": "চেক প্রজাতন্ত্র কোরুনা"
+        },
+        "narrow": "Kč",
+        "symbol": "CZK"
+      },
+      "DDM": {
+        "displayName": {
+          "other": "পূর্ব জার্মান মার্ক"
+        },
+        "narrow": "DDM",
+        "symbol": "DDM"
+      },
+      "DEM": {
+        "displayName": {
+          "other": "ডয়চ্ মার্ক"
+        },
+        "narrow": "DEM",
+        "symbol": "DEM"
+      },
+      "DJF": {
+        "displayName": {
+          "other": "জিবুতি ফ্রাঙ্ক"
+        },
+        "narrow": "DJF",
+        "symbol": "DJF"
+      },
+      "DKK": {
+        "displayName": {
+          "one": "ড্যানিশ ক্রোন",
+          "other": "ড্যানিশ ক্রৌন"
+        },
+        "narrow": "kr",
+        "symbol": "DKK"
+      },
+      "DOP": {
+        "displayName": {
+          "other": "ডোমিনিকান পেসো"
+        },
+        "narrow": "$",
+        "symbol": "DOP"
+      },
+      "DZD": {
+        "displayName": {
+          "other": "আলজেরীয় দিনার"
+        },
+        "narrow": "DZD",
+        "symbol": "DZD"
+      },
+      "ECS": {
+        "displayName": {
+          "other": "ইকুয়াডোর সুক্রে"
+        },
+        "narrow": "ECS",
+        "symbol": "ECS"
+      },
+      "ECV": {
+        "displayName": {
+          "other": "ইকুয়াডোর উনিদাদেস দি ভেলর কনসতান্তে (ইউভিসি)"
+        },
+        "narrow": "ECV",
+        "symbol": "ECV"
+      },
+      "EEK": {
+        "displayName": {
+          "other": "এস্তোনিয়া ক্রুনি"
+        },
+        "narrow": "EEK",
+        "symbol": "EEK"
+      },
+      "EGP": {
+        "displayName": {
+          "other": "মিশরীয় পাউন্ড"
+        },
+        "narrow": "E£",
+        "symbol": "EGP"
+      },
+      "ERN": {
+        "displayName": {
+          "other": "এরিট্রিয়েন নাকফা"
+        },
+        "narrow": "ERN",
+        "symbol": "ERN"
+      },
+      "ESA": {
+        "displayName": {
+          "other": "স্প্যানিশ পেসেতা (একই হিসাব)"
+        },
+        "narrow": "ESA",
+        "symbol": "ESA"
+      },
+      "ESB": {
+        "displayName": {
+          "other": "স্প্যানিশ পেসেতা (রূপান্তরযোগ্য হিসাব)"
+        },
+        "narrow": "ESB",
+        "symbol": "ESB"
+      },
+      "ESP": {
+        "displayName": {
+          "other": "স্প্যানিশ পেসেতা"
+        },
+        "narrow": "₧",
+        "symbol": "ESP"
+      },
+      "ETB": {
+        "displayName": {
+          "other": "ইথিওপিয়ান বির"
+        },
+        "narrow": "ETB",
+        "symbol": "ETB"
+      },
+      "EUR": {
+        "displayName": {
+          "other": "ইউরো"
+        },
+        "narrow": "€",
+        "symbol": "€"
+      },
+      "FIM": {
+        "displayName": {
+          "other": "ফিনিস মার্কা"
+        },
+        "narrow": "FIM",
+        "symbol": "FIM"
+      },
+      "FJD": {
+        "displayName": {
+          "other": "ফিজি ডলার"
+        },
+        "narrow": "$",
+        "symbol": "FJD"
+      },
+      "FKP": {
+        "displayName": {
+          "other": "ফকল্যান্ড দ্বীপপুঞ্জ পাউন্ড"
+        },
+        "narrow": "£",
+        "symbol": "FKP"
+      },
+      "FRF": {
+        "displayName": {
+          "other": "ফরাসি ফ্রাঙ্ক"
+        },
+        "narrow": "FRF",
+        "symbol": "FRF"
+      },
+      "GBP": {
+        "displayName": {
+          "other": "ব্রিটিশ পাউন্ড"
+        },
+        "narrow": "£",
+        "symbol": "£"
+      },
+      "GEK": {
+        "displayName": {
+          "other": "জর্জিয়ান কুপন লারিট"
+        },
+        "narrow": "GEK",
+        "symbol": "GEK"
+      },
+      "GEL": {
+        "displayName": {
+          "other": "জর্জিয়ান লারি"
+        },
+        "narrow": "₾",
+        "symbol": "GEL"
+      },
+      "GHC": {
+        "displayName": {
+          "other": "ঘানা সেডি (১৯৭৯–২০০৭)"
+        },
+        "narrow": "GHC",
+        "symbol": "GHC"
+      },
+      "GHS": {
+        "displayName": {
+          "other": "ঘানা সেডি"
+        },
+        "narrow": "GH₵",
+        "symbol": "GHS"
+      },
+      "GIP": {
+        "displayName": {
+          "other": "জিব্রাল্টার পাউন্ড"
+        },
+        "narrow": "£",
+        "symbol": "GIP"
+      },
+      "GMD": {
+        "displayName": {
+          "other": "গাম্বিয়া ডালাসি"
+        },
+        "narrow": "GMD",
+        "symbol": "GMD"
+      },
+      "GNF": {
+        "displayName": {
+          "other": "গিনি ফ্রাঙ্ক"
+        },
+        "narrow": "FG",
+        "symbol": "GNF"
+      },
+      "GNS": {
+        "displayName": {
+          "other": "গিনি সাইলি"
+        },
+        "narrow": "GNS",
+        "symbol": "GNS"
+      },
+      "GQE": {
+        "displayName": {
+          "other": "ইকুয়েটোরিয়াল গিনি ইকুয়িলি"
+        },
+        "narrow": "GQE",
+        "symbol": "GQE"
+      },
+      "GRD": {
+        "displayName": {
+          "other": "গ্রীক দ্রাচমা"
+        },
+        "narrow": "GRD",
+        "symbol": "GRD"
+      },
+      "GTQ": {
+        "displayName": {
+          "other": "গুয়াতেমালা কুয়েৎজাল"
+        },
+        "narrow": "Q",
+        "symbol": "GTQ"
+      },
+      "GWE": {
+        "displayName": {
+          "other": "পর্তুগিজ গিনি এসকুডো"
+        },
+        "narrow": "GWE",
+        "symbol": "GWE"
+      },
+      "GWP": {
+        "displayName": {
+          "other": "গিনি বিসাউ পেসো"
+        },
+        "narrow": "GWP",
+        "symbol": "GWP"
+      },
+      "GYD": {
+        "displayName": {
+          "other": "গাইয়েনা ডলার"
+        },
+        "narrow": "$",
+        "symbol": "GYD"
+      },
+      "HKD": {
+        "displayName": {
+          "other": "হংকং ডলার"
+        },
+        "narrow": "$",
+        "symbol": "HK$"
+      },
+      "HNL": {
+        "displayName": {
+          "other": "হন্ডুরাস লেম্পিরা"
+        },
+        "narrow": "L",
+        "symbol": "HNL"
+      },
+      "HRD": {
+        "displayName": {
+          "other": "ক্রোয়েশিয়ান দিনার"
+        },
+        "narrow": "HRD",
+        "symbol": "HRD"
+      },
+      "HRK": {
+        "displayName": {
+          "other": "ক্রোয়েশিয়ান কুনা"
+        },
+        "narrow": "kn",
+        "symbol": "HRK"
+      },
+      "HTG": {
+        "displayName": {
+          "other": "হাইতি গৌর্দে"
+        },
+        "narrow": "HTG",
+        "symbol": "HTG"
+      },
+      "HUF": {
+        "displayName": {
+          "other": "হাঙ্গেরিয়ান ফোরিন্ট"
+        },
+        "narrow": "Ft",
+        "symbol": "HUF"
+      },
+      "IDR": {
+        "displayName": {
+          "other": "ইন্দোনেশিয়ান রুপিয়াহ"
+        },
+        "narrow": "Rp",
+        "symbol": "IDR"
+      },
+      "IEP": {
+        "displayName": {
+          "other": "ইরিশ পাউন্ড"
+        },
+        "narrow": "IEP",
+        "symbol": "IEP"
+      },
+      "ILP": {
+        "displayName": {
+          "other": "ইস্রাইলি পাউন্ড"
+        },
+        "narrow": "ILP",
+        "symbol": "ILP"
+      },
+      "ILR": {
+        "displayName": {
+          "other": "ILR"
+        },
+        "narrow": "ILR",
+        "symbol": "ILR"
+      },
+      "ILS": {
+        "displayName": {
+          "other": "ইস্রাইলি নতুন শেকেল"
+        },
+        "narrow": "₪",
+        "symbol": "₪"
+      },
+      "INR": {
+        "displayName": {
+          "other": "ভারতীয় রুপি"
+        },
+        "narrow": "₹",
+        "symbol": "₹"
+      },
+      "IQD": {
+        "displayName": {
+          "other": "ইরাকি দিনার"
+        },
+        "narrow": "IQD",
+        "symbol": "IQD"
+      },
+      "IRR": {
+        "displayName": {
+          "other": "ইরানিয়ান রিয়াল"
+        },
+        "narrow": "IRR",
+        "symbol": "IRR"
+      },
+      "ISJ": {
+        "displayName": {
+          "other": "ISJ"
+        },
+        "narrow": "ISJ",
+        "symbol": "ISJ"
+      },
+      "ISK": {
+        "displayName": {
+          "one": "আইসল্যান্ডীয় ক্রোনা",
+          "other": "আইসল্যান্ড ক্রৌন"
+        },
+        "narrow": "kr",
+        "symbol": "ISK"
+      },
+      "ITL": {
+        "displayName": {
+          "other": "ইতালীয় লিরা"
+        },
+        "narrow": "ITL",
+        "symbol": "ITL"
+      },
+      "JMD": {
+        "displayName": {
+          "other": "জামাইকান ডলার"
+        },
+        "narrow": "$",
+        "symbol": "JMD"
+      },
+      "JOD": {
+        "displayName": {
+          "other": "জর্ডানিয়ান দিনার"
+        },
+        "narrow": "JOD",
+        "symbol": "JOD"
+      },
+      "JPY": {
+        "displayName": {
+          "other": "জাপানি ইয়েন"
+        },
+        "narrow": "¥",
+        "symbol": "JP¥"
+      },
+      "KES": {
+        "displayName": {
+          "other": "কেনিয়ান শিলিং"
+        },
+        "narrow": "KES",
+        "symbol": "KES"
+      },
+      "KGS": {
+        "displayName": {
+          "other": "কিরগিজস্তান সোম"
+        },
+        "narrow": "KGS",
+        "symbol": "KGS"
+      },
+      "KHR": {
+        "displayName": {
+          "other": "কম্বোডিয়ান রিয়েল"
+        },
+        "narrow": "៛",
+        "symbol": "KHR"
+      },
+      "KMF": {
+        "displayName": {
+          "other": "কমোরিয়ান ফ্রাঙ্ক"
+        },
+        "narrow": "CF",
+        "symbol": "KMF"
+      },
+      "KPW": {
+        "displayName": {
+          "other": "উত্তর কোরিয়ার ওন"
+        },
+        "narrow": "₩",
+        "symbol": "KPW"
+      },
+      "KRH": {
+        "displayName": {
+          "other": "KRH"
+        },
+        "narrow": "KRH",
+        "symbol": "KRH"
+      },
+      "KRO": {
+        "displayName": {
+          "other": "KRO"
+        },
+        "narrow": "KRO",
+        "symbol": "KRO"
+      },
+      "KRW": {
+        "displayName": {
+          "other": "দক্ষিণ কোরিয়ান ওন"
+        },
+        "narrow": "₩",
+        "symbol": "₩"
+      },
+      "KWD": {
+        "displayName": {
+          "other": "কুয়েতি দিনার"
+        },
+        "narrow": "KWD",
+        "symbol": "KWD"
+      },
+      "KYD": {
+        "displayName": {
+          "other": "কেম্যান দ্বীপপুঞ্জের ডলার"
+        },
+        "narrow": "$",
+        "symbol": "KYD"
+      },
+      "KZT": {
+        "displayName": {
+          "other": "কাজাখাস্তানি টেঙ্গে"
+        },
+        "narrow": "₸",
+        "symbol": "KZT"
+      },
+      "LAK": {
+        "displayName": {
+          "other": "লেউশান কিপ"
+        },
+        "narrow": "₭",
+        "symbol": "LAK"
+      },
+      "LBP": {
+        "displayName": {
+          "other": "লেবানিজ পাউন্ড"
+        },
+        "narrow": "L£",
+        "symbol": "LBP"
+      },
+      "LKR": {
+        "displayName": {
+          "other": "শ্রীলঙ্কান রুপি"
+        },
+        "narrow": "Rs",
+        "symbol": "LKR"
+      },
+      "LRD": {
+        "displayName": {
+          "other": "লিবেরিয়ান ডলার"
+        },
+        "narrow": "$",
+        "symbol": "LRD"
+      },
+      "LSL": {
+        "displayName": {
+          "other": "লেসুটু লোটি"
+        },
+        "narrow": "LSL",
+        "symbol": "LSL"
+      },
+      "LTL": {
+        "displayName": {
+          "other": "লিথুইনিয়ান লিটা"
+        },
+        "narrow": "Lt",
+        "symbol": "LTL"
+      },
+      "LTT": {
+        "displayName": {
+          "other": "লিথুইনিয়ান টালোন্যাস"
+        },
+        "narrow": "LTT",
+        "symbol": "LTT"
+      },
+      "LUC": {
+        "displayName": {
+          "other": "লুক্সেমবার্গ রুপান্তযোগ্য ফ্রাঙ্ক"
+        },
+        "narrow": "LUC",
+        "symbol": "LUC"
+      },
+      "LUF": {
+        "displayName": {
+          "other": "লুক্সেমবার্গ ফ্রাঙ্ক"
+        },
+        "narrow": "LUF",
+        "symbol": "LUF"
+      },
+      "LUL": {
+        "displayName": {
+          "other": "লুক্সেমবার্গ ফাইনেনশিয়াল ফ্রাঙ্ক"
+        },
+        "narrow": "LUL",
+        "symbol": "LUL"
+      },
+      "LVL": {
+        "displayName": {
+          "other": "ল্যাটভিয়ান ল্যাট্‌স"
+        },
+        "narrow": "Ls",
+        "symbol": "LVL"
+      },
+      "LVR": {
+        "displayName": {
+          "other": "ল্যাটভিয়ান রুবল"
+        },
+        "narrow": "LVR",
+        "symbol": "LVR"
+      },
+      "LYD": {
+        "displayName": {
+          "other": "লিবিয়ান দিনার"
+        },
+        "narrow": "LYD",
+        "symbol": "LYD"
+      },
+      "MAD": {
+        "displayName": {
+          "other": "মোরোক্কান দিরহাম"
+        },
+        "narrow": "MAD",
+        "symbol": "MAD"
+      },
+      "MAF": {
+        "displayName": {
+          "other": "মোরোক্কান ফ্রাঙ্ক"
+        },
+        "narrow": "MAF",
+        "symbol": "MAF"
+      },
+      "MCF": {
+        "displayName": {
+          "other": "MCF"
+        },
+        "narrow": "MCF",
+        "symbol": "MCF"
+      },
+      "MDC": {
+        "displayName": {
+          "other": "MDC"
+        },
+        "narrow": "MDC",
+        "symbol": "MDC"
+      },
+      "MDL": {
+        "displayName": {
+          "other": "মোল্ডোভান লেয়ু"
+        },
+        "narrow": "MDL",
+        "symbol": "MDL"
+      },
+      "MGA": {
+        "displayName": {
+          "other": "মাদাগাস্কার আরিয়ারি"
+        },
+        "narrow": "Ar",
+        "symbol": "MGA"
+      },
+      "MGF": {
+        "displayName": {
+          "other": "মাদাগাস্কার ফ্রাঙ্ক"
+        },
+        "narrow": "MGF",
+        "symbol": "MGF"
+      },
+      "MKD": {
+        "displayName": {
+          "other": "ম্যাসেডোনিয়ান দিনার"
+        },
+        "narrow": "MKD",
+        "symbol": "MKD"
+      },
+      "MKN": {
+        "displayName": {
+          "other": "MKN"
+        },
+        "narrow": "MKN",
+        "symbol": "MKN"
+      },
+      "MLF": {
+        "displayName": {
+          "other": "মালি ফ্রাঙ্ক"
+        },
+        "narrow": "MLF",
+        "symbol": "MLF"
+      },
+      "MMK": {
+        "displayName": {
+          "other": "মায়ানমার কিয়াত"
+        },
+        "narrow": "K",
+        "symbol": "MMK"
+      },
+      "MNT": {
+        "displayName": {
+          "other": "মঙ্গোলিয়ান তুগরিক"
+        },
+        "narrow": "₮",
+        "symbol": "MNT"
+      },
+      "MOP": {
+        "displayName": {
+          "other": "ম্যাক্যাও পাটাকা"
+        },
+        "narrow": "MOP",
+        "symbol": "MOP"
+      },
+      "MRO": {
+        "displayName": {
+          "other": "মৌরিতানিয়ান ওউগুইয়া (১৯৭৩–২০১৭)"
+        },
+        "narrow": "MRO",
+        "symbol": "MRO"
+      },
+      "MRU": {
+        "displayName": {
+          "other": "মৌরিতানিয়ান ওউগুইয়া"
+        },
+        "narrow": "MRU",
+        "symbol": "MRU"
+      },
+      "MTL": {
+        "displayName": {
+          "other": "মাল্টা লিরা"
+        },
+        "narrow": "MTL",
+        "symbol": "MTL"
+      },
+      "MTP": {
+        "displayName": {
+          "other": "মাল্টা পাউন্ড"
+        },
+        "narrow": "MTP",
+        "symbol": "MTP"
+      },
+      "MUR": {
+        "displayName": {
+          "other": "মৌরিতানিয়ান রুপি"
+        },
+        "narrow": "Rs",
+        "symbol": "MUR"
+      },
+      "MVP": {
+        "displayName": {
+          "other": "MVP"
+        },
+        "narrow": "MVP",
+        "symbol": "MVP"
+      },
+      "MVR": {
+        "displayName": {
+          "other": "মালদিভিয়ান রুফিয়া"
+        },
+        "narrow": "MVR",
+        "symbol": "MVR"
+      },
+      "MWK": {
+        "displayName": {
+          "other": "মালাউইয়ান কওয়াচ"
+        },
+        "narrow": "MWK",
+        "symbol": "MWK"
+      },
+      "MXN": {
+        "displayName": {
+          "other": "ম্যাক্সিকান পেসো"
+        },
+        "narrow": "$",
+        "symbol": "MX$"
+      },
+      "MXP": {
+        "displayName": {
+          "other": "ম্যাক্সিকান সিলভার পেসো (১৮৬১–১৯৯২)"
+        },
+        "narrow": "MXP",
+        "symbol": "MXP"
+      },
+      "MXV": {
+        "displayName": {
+          "other": "মেক্সিকান উনিদাদ দি ইনভার্সান (UDI)"
+        },
+        "narrow": "MXV",
+        "symbol": "MXV"
+      },
+      "MYR": {
+        "displayName": {
+          "other": "মালয়েশিয়ান রিঙ্গিৎ"
+        },
+        "narrow": "RM",
+        "symbol": "MYR"
+      },
+      "MZE": {
+        "displayName": {
+          "other": "মোজাম্বিক এসকুডো"
+        },
+        "narrow": "MZE",
+        "symbol": "MZE"
+      },
+      "MZM": {
+        "displayName": {
+          "other": "প্রাচীন মোজাম্বিক মেটিকেল"
+        },
+        "narrow": "MZM",
+        "symbol": "MZM"
+      },
+      "MZN": {
+        "displayName": {
+          "other": "মোজাম্বিক মেটিকেল"
+        },
+        "narrow": "MZN",
+        "symbol": "MZN"
+      },
+      "NAD": {
+        "displayName": {
+          "other": "নামিবিয়া ডলার"
+        },
+        "narrow": "$",
+        "symbol": "NAD"
+      },
+      "NGN": {
+        "displayName": {
+          "other": "নাইজেরিয়ান নায়রা"
+        },
+        "narrow": "₦",
+        "symbol": "NGN"
+      },
+      "NIC": {
+        "displayName": {
+          "other": "নিকারাগুয়ান কর্ডোবা (১৯৮৮–১৯৯১)"
+        },
+        "narrow": "NIC",
+        "symbol": "NIC"
+      },
+      "NIO": {
+        "displayName": {
+          "other": "নিকারাগুয়ান কর্ডোবা"
+        },
+        "narrow": "C$",
+        "symbol": "NIO"
+      },
+      "NLG": {
+        "displayName": {
+          "other": "নেদারল্যান্ড গুল্ডের"
+        },
+        "narrow": "NLG",
+        "symbol": "NLG"
+      },
+      "NOK": {
+        "displayName": {
+          "one": "নরওয়েজিয়ান ক্রোন",
+          "other": "নরওয়েজিয়ান ক্রোনার"
+        },
+        "narrow": "kr",
+        "symbol": "NOK"
+      },
+      "NPR": {
+        "displayName": {
+          "other": "নেপালি রুপি"
+        },
+        "narrow": "Rs",
+        "symbol": "NPR"
+      },
+      "NZD": {
+        "displayName": {
+          "other": "নিউজিল্যান্ড ডলার"
+        },
+        "narrow": "$",
+        "symbol": "NZ$"
+      },
+      "OMR": {
+        "displayName": {
+          "other": "ওমানি রিয়াল"
+        },
+        "narrow": "OMR",
+        "symbol": "OMR"
+      },
+      "PAB": {
+        "displayName": {
+          "other": "পানামা বেলবোয়া"
+        },
+        "narrow": "PAB",
+        "symbol": "PAB"
+      },
+      "PEI": {
+        "displayName": {
+          "other": "পেরুভিয়ান ইন্তি"
+        },
+        "narrow": "PEI",
+        "symbol": "PEI"
+      },
+      "PEN": {
+        "displayName": {
+          "other": "পেরুভিয়ান সোল"
+        },
+        "narrow": "PEN",
+        "symbol": "PEN"
+      },
+      "PES": {
+        "displayName": {
+          "other": "পেরুভিয়ান সোল (1863–1965)"
+        },
+        "narrow": "PES",
+        "symbol": "PES"
+      },
+      "PGK": {
+        "displayName": {
+          "other": "পাপুয়া নিউ গিনিয়ান কিনা"
+        },
+        "narrow": "PGK",
+        "symbol": "PGK"
+      },
+      "PHP": {
+        "displayName": {
+          "other": "ফিলিপাইন পেসো"
+        },
+        "narrow": "₱",
+        "symbol": "PHP"
+      },
+      "PKR": {
+        "displayName": {
+          "other": "পাকিস্তানি রুপি"
+        },
+        "narrow": "Rs",
+        "symbol": "PKR"
+      },
+      "PLN": {
+        "displayName": {
+          "other": "পোলিশ জ্লোটি"
+        },
+        "narrow": "zł",
+        "symbol": "PLN"
+      },
+      "PLZ": {
+        "displayName": {
+          "other": "পোলিশ জ্লোটি (১৯৫০–১৯৯৫)"
+        },
+        "narrow": "PLZ",
+        "symbol": "PLZ"
+      },
+      "PTE": {
+        "displayName": {
+          "other": "পর্তুগিজ এসকুডো"
+        },
+        "narrow": "PTE",
+        "symbol": "PTE"
+      },
+      "PYG": {
+        "displayName": {
+          "other": "প্যারাগুয়ান গুয়ারানি"
+        },
+        "narrow": "₲",
+        "symbol": "PYG"
+      },
+      "QAR": {
+        "displayName": {
+          "other": "কাতার রিয়াল"
+        },
+        "narrow": "QAR",
+        "symbol": "QAR"
+      },
+      "RHD": {
+        "displayName": {
+          "other": "রোডেশিয়ান ডলার"
+        },
+        "narrow": "RHD",
+        "symbol": "RHD"
+      },
+      "ROL": {
+        "displayName": {
+          "other": "প্রাচীন রুমানিয়া লেয়ু"
+        },
+        "narrow": "ROL",
+        "symbol": "ROL"
+      },
+      "RON": {
+        "displayName": {
+          "other": "রুমানিয়া লেয়ু"
+        },
+        "narrow": "lei",
+        "symbol": "RON"
+      },
+      "RSD": {
+        "displayName": {
+          "other": "সারবিয়ান দিনার"
+        },
+        "narrow": "RSD",
+        "symbol": "RSD"
+      },
+      "RUB": {
+        "displayName": {
+          "other": "রাশিয়ান রুবেল"
+        },
+        "narrow": "₽",
+        "symbol": "RUB"
+      },
+      "RUR": {
+        "displayName": {
+          "other": "রাশিয়ান রুবল (১৯৯১–১৯৯৮)"
+        },
+        "narrow": "RUR",
+        "symbol": "RUR"
+      },
+      "RWF": {
+        "displayName": {
+          "other": "রুয়ান্ডান ফ্রাঙ্ক"
+        },
+        "narrow": "RF",
+        "symbol": "RWF"
+      },
+      "SAR": {
+        "displayName": {
+          "other": "সৌদি রিয়াল"
+        },
+        "narrow": "SAR",
+        "symbol": "SAR"
+      },
+      "SBD": {
+        "displayName": {
+          "other": "সলোমন দ্বীপপুঞ্জ ডলার"
+        },
+        "narrow": "$",
+        "symbol": "SBD"
+      },
+      "SCR": {
+        "displayName": {
+          "other": "সেয়চেল্লোইস রুপি"
+        },
+        "narrow": "SCR",
+        "symbol": "SCR"
+      },
+      "SDD": {
+        "displayName": {
+          "other": "প্রাচীন সুদানি দিনার"
+        },
+        "narrow": "SDD",
+        "symbol": "SDD"
+      },
+      "SDG": {
+        "displayName": {
+          "other": "সুদানি পাউন্ড"
+        },
+        "narrow": "SDG",
+        "symbol": "SDG"
+      },
+      "SDP": {
+        "displayName": {
+          "other": "প্রাচীন সুদানি পাউন্ড"
+        },
+        "narrow": "SDP",
+        "symbol": "SDP"
+      },
+      "SEK": {
+        "displayName": {
+          "other": "সুইডিশ ক্রোনা"
+        },
+        "narrow": "kr",
+        "symbol": "SEK"
+      },
+      "SGD": {
+        "displayName": {
+          "other": "সিঙ্গাপুর ডলার"
+        },
+        "narrow": "$",
+        "symbol": "SGD"
+      },
+      "SHP": {
+        "displayName": {
+          "other": "সেন্ট হেলেনা পাউন্ড"
+        },
+        "narrow": "£",
+        "symbol": "SHP"
+      },
+      "SIT": {
+        "displayName": {
+          "other": "স্লোভানিয়া টোলার"
+        },
+        "narrow": "SIT",
+        "symbol": "SIT"
+      },
+      "SKK": {
+        "displayName": {
+          "other": "স্লোভাক কোরুনা"
+        },
+        "narrow": "SKK",
+        "symbol": "SKK"
+      },
+      "SLL": {
+        "displayName": {
+          "other": "সিয়েরালিয়ন লিয়ন"
+        },
+        "narrow": "SLL",
+        "symbol": "SLL"
+      },
+      "SOS": {
+        "displayName": {
+          "other": "সোমালি শিলিং"
+        },
+        "narrow": "SOS",
+        "symbol": "SOS"
+      },
+      "SRD": {
+        "displayName": {
+          "other": "সুরিনাম ডলার"
+        },
+        "narrow": "$",
+        "symbol": "SRD"
+      },
+      "SRG": {
+        "displayName": {
+          "other": "সুরিনাম গিল্ডার"
+        },
+        "narrow": "SRG",
+        "symbol": "SRG"
+      },
+      "SSP": {
+        "displayName": {
+          "other": "দক্ষিণ সুদানি পাউন্ড"
+        },
+        "narrow": "£",
+        "symbol": "SSP"
+      },
+      "STD": {
+        "displayName": {
+          "other": "সাও টোমে এবং প্রিন্সিপে ডোবরা (১৯৭৭–২০১৭)"
+        },
+        "narrow": "STD",
+        "symbol": "STD"
+      },
+      "STN": {
+        "displayName": {
+          "other": "সাও টোমে এবং প্রিন্সিপে ডোবরা"
+        },
+        "narrow": "Db",
+        "symbol": "STN"
+      },
+      "SUR": {
+        "displayName": {
+          "other": "সোভিয়েত রুবল"
+        },
+        "narrow": "SUR",
+        "symbol": "SUR"
+      },
+      "SVC": {
+        "displayName": {
+          "other": "এল স্যালভোডোর কোলোন"
+        },
+        "narrow": "SVC",
+        "symbol": "SVC"
+      },
+      "SYP": {
+        "displayName": {
+          "other": "সিরিয়ান পাউন্ড"
+        },
+        "narrow": "£",
+        "symbol": "SYP"
+      },
+      "SZL": {
+        "displayName": {
+          "other": "সোয়াজিল্যান্ড লিলাঙ্গেনি"
+        },
+        "narrow": "SZL",
+        "symbol": "SZL"
+      },
+      "THB": {
+        "displayName": {
+          "other": "থাই বাত"
+        },
+        "narrow": "฿",
+        "symbol": "฿"
+      },
+      "TJR": {
+        "displayName": {
+          "other": "তাজিকিস্তান রুবল"
+        },
+        "narrow": "TJR",
+        "symbol": "TJR"
+      },
+      "TJS": {
+        "displayName": {
+          "other": "তাজিকিস্তান সোমোনি"
+        },
+        "narrow": "TJS",
+        "symbol": "TJS"
+      },
+      "TMM": {
+        "displayName": {
+          "other": "তুর্কমেনিস্টানি মানাত"
+        },
+        "narrow": "TMM",
+        "symbol": "TMM"
+      },
+      "TMT": {
+        "displayName": {
+          "other": "তুর্কমেনিস্তান মানত"
+        },
+        "narrow": "TMT",
+        "symbol": "TMT"
+      },
+      "TND": {
+        "displayName": {
+          "other": "তিউনেশিয়ান দিনার"
+        },
+        "narrow": "TND",
+        "symbol": "TND"
+      },
+      "TOP": {
+        "displayName": {
+          "other": "টোঙ্গা পা’আঙ্গা"
+        },
+        "narrow": "T$",
+        "symbol": "TOP"
+      },
+      "TPE": {
+        "displayName": {
+          "other": "তিমুর এসকুডো"
+        },
+        "narrow": "TPE",
+        "symbol": "TPE"
+      },
+      "TRL": {
+        "displayName": {
+          "other": "প্রাচীন তুর্কি লিরা"
+        },
+        "narrow": "TRL",
+        "symbol": "TRL"
+      },
+      "TRY": {
+        "displayName": {
+          "other": "তুর্কি লিরা"
+        },
+        "narrow": "₺",
+        "symbol": "TRY"
+      },
+      "TTD": {
+        "displayName": {
+          "other": "ত্রিনিদাদ এবং টোবাগো ডলার"
+        },
+        "narrow": "$",
+        "symbol": "TTD"
+      },
+      "TWD": {
+        "displayName": {
+          "other": "নতুন তাইওয়ান ডলার"
+        },
+        "narrow": "NT$",
+        "symbol": "NT$"
+      },
+      "TZS": {
+        "displayName": {
+          "other": "তাঞ্জনিয়া শিলিং"
+        },
+        "narrow": "TZS",
+        "symbol": "TZS"
+      },
+      "UAH": {
+        "displayName": {
+          "other": "ইউক্রেইন হৃভনিয়া"
+        },
+        "narrow": "₴",
+        "symbol": "UAH"
+      },
+      "UAK": {
+        "displayName": {
+          "other": "ইউক্রেইন কার্বোভ্যান্টস"
+        },
+        "narrow": "UAK",
+        "symbol": "UAK"
+      },
+      "UGS": {
+        "displayName": {
+          "other": "উগান্ডান শিলিং (১৯৬৬–১৯৮৭)"
+        },
+        "narrow": "UGS",
+        "symbol": "UGS"
+      },
+      "UGX": {
+        "displayName": {
+          "other": "উগান্ডান শিলিং"
+        },
+        "narrow": "UGX",
+        "symbol": "UGX"
+      },
+      "USD": {
+        "displayName": {
+          "other": "মার্কিন ডলার"
+        },
+        "narrow": "$",
+        "symbol": "US$"
+      },
+      "USN": {
+        "displayName": {
+          "other": "মার্কিন ডলার (পরবর্তী দিন)"
+        },
+        "narrow": "USN",
+        "symbol": "USN"
+      },
+      "USS": {
+        "displayName": {
+          "other": "মার্কিন ডলার (একই দিন)"
+        },
+        "narrow": "USS",
+        "symbol": "USS"
+      },
+      "UYI": {
+        "displayName": {
+          "other": "উরুগুয়ায়ান পেসো এন উনিদাদেস ইনডেক্সেডাস"
+        },
+        "narrow": "UYI",
+        "symbol": "UYI"
+      },
+      "UYP": {
+        "displayName": {
+          "other": "উরুগুয়ে পেসো (১৯৭৫–১৯৯৩)"
+        },
+        "narrow": "UYP",
+        "symbol": "UYP"
+      },
+      "UYU": {
+        "displayName": {
+          "other": "উরুগুয়ে পেসো"
+        },
+        "narrow": "$",
+        "symbol": "UYU"
+      },
+      "UYW": {
+        "displayName": {
+          "other": "UYW"
+        },
+        "narrow": "UYW",
+        "symbol": "UYW"
+      },
+      "UZS": {
+        "displayName": {
+          "other": "উজবেকিস্তানি সোম"
+        },
+        "narrow": "UZS",
+        "symbol": "UZS"
+      },
+      "VEB": {
+        "displayName": {
+          "other": "ভেনিজুয়েলান বলিভার (১৮৭১–২০০৮)"
+        },
+        "narrow": "VEB",
+        "symbol": "VEB"
+      },
+      "VEF": {
+        "displayName": {
+          "other": "ভেনিজুয়েলীয় বলিভার (২০০৮–২০১৮)"
+        },
+        "narrow": "Bs",
+        "symbol": "VEF"
+      },
+      "VES": {
+        "displayName": {
+          "other": "ভেনিজুয়েলীয় বলিভার"
+        },
+        "narrow": "VES",
+        "symbol": "VES"
+      },
+      "VND": {
+        "displayName": {
+          "other": "ভিয়েতনামি ডঙ্গ"
+        },
+        "narrow": "₫",
+        "symbol": "₫"
+      },
+      "VNN": {
+        "displayName": {
+          "other": "VNN"
+        },
+        "narrow": "VNN",
+        "symbol": "VNN"
+      },
+      "VUV": {
+        "displayName": {
+          "other": "ভানুয়াতু ভাতু"
+        },
+        "narrow": "VUV",
+        "symbol": "VUV"
+      },
+      "WST": {
+        "displayName": {
+          "other": "সামোয়ান টালা"
+        },
+        "narrow": "WST",
+        "symbol": "WST"
+      },
+      "XAF": {
+        "displayName": {
+          "other": "মধ্য আফ্রিকান [CFA] ফ্র্যাঙ্ক"
+        },
+        "narrow": "FCFA",
+        "symbol": "FCFA"
+      },
+      "XAG": {
+        "displayName": {
+          "other": "সিলভার"
+        },
+        "narrow": "XAG",
+        "symbol": "XAG"
+      },
+      "XAU": {
+        "displayName": {
+          "other": "গোল্ড"
+        },
+        "narrow": "XAU",
+        "symbol": "XAU"
+      },
+      "XBA": {
+        "displayName": {
+          "other": "XBA"
+        },
+        "narrow": "XBA",
+        "symbol": "XBA"
+      },
+      "XBB": {
+        "displayName": {
+          "other": "ইউরোপীয় আর্থিক একক"
+        },
+        "narrow": "XBB",
+        "symbol": "XBB"
+      },
+      "XBC": {
+        "displayName": {
+          "other": "XBC"
+        },
+        "narrow": "XBC",
+        "symbol": "XBC"
+      },
+      "XBD": {
+        "displayName": {
+          "other": "XBD"
+        },
+        "narrow": "XBD",
+        "symbol": "XBD"
+      },
+      "XCD": {
+        "displayName": {
+          "other": "পূর্ব ক্যারাবিয়ান ডলার"
+        },
+        "narrow": "$",
+        "symbol": "EC$"
+      },
+      "XDR": {
+        "displayName": {
+          "other": "XDR"
+        },
+        "narrow": "XDR",
+        "symbol": "XDR"
+      },
+      "XEU": {
+        "displayName": {
+          "other": "ইউরোপীয় মুদ্রা একক"
+        },
+        "narrow": "XEU",
+        "symbol": "XEU"
+      },
+      "XFO": {
+        "displayName": {
+          "other": "ফরাসি গোল্ড ফ্রাঙ্ক"
+        },
+        "narrow": "XFO",
+        "symbol": "XFO"
+      },
+      "XFU": {
+        "displayName": {
+          "other": "ফরাসি ইউআইসি - ফ্রাঙ্ক"
+        },
+        "narrow": "XFU",
+        "symbol": "XFU"
+      },
+      "XOF": {
+        "displayName": {
+          "other": "পশ্চিম আফ্রিকান [CFA] ফ্র্যাঙ্ক"
+        },
+        "narrow": "F CFA",
+        "symbol": "F CFA"
+      },
+      "XPD": {
+        "displayName": {
+          "other": "প্যালেডিয়াম"
+        },
+        "narrow": "XPD",
+        "symbol": "XPD"
+      },
+      "XPF": {
+        "displayName": {
+          "other": "সিএফপি ফ্র্যাঙ্ক"
+        },
+        "narrow": "CFPF",
+        "symbol": "CFPF"
+      },
+      "XPT": {
+        "displayName": {
+          "other": "প্লাটিনাম"
+        },
+        "narrow": "XPT",
+        "symbol": "XPT"
+      },
+      "XRE": {
+        "displayName": {
+          "other": "XRE"
+        },
+        "narrow": "XRE",
+        "symbol": "XRE"
+      },
+      "XSU": {
+        "displayName": {
+          "other": "XSU"
+        },
+        "narrow": "XSU",
+        "symbol": "XSU"
+      },
+      "XTS": {
+        "displayName": {
+          "other": "XTS"
+        },
+        "narrow": "XTS",
+        "symbol": "XTS"
+      },
+      "XUA": {
+        "displayName": {
+          "other": "XUA"
+        },
+        "narrow": "XUA",
+        "symbol": "XUA"
+      },
+      "XXX": {
+        "displayName": {
+          "one": "(মুদ্রার অজানা একক)",
+          "other": "(অজানা মুদ্রা)"
+        },
+        "narrow": "¤",
+        "symbol": "¤"
+      },
+      "YDD": {
+        "displayName": {
+          "other": "ইয়েমেনি দিনার"
+        },
+        "narrow": "YDD",
+        "symbol": "YDD"
+      },
+      "YER": {
+        "displayName": {
+          "other": "ইয়েমেনি রিয়াল"
+        },
+        "narrow": "YER",
+        "symbol": "YER"
+      },
+      "YUD": {
+        "displayName": {
+          "other": "যুগোশ্লাভিয় হার্ড দিনার"
+        },
+        "narrow": "YUD",
+        "symbol": "YUD"
+      },
+      "YUM": {
+        "displayName": {
+          "other": "যুগোশ্লাভিয় নোভি দিনার"
+        },
+        "narrow": "YUM",
+        "symbol": "YUM"
+      },
+      "YUN": {
+        "displayName": {
+          "other": "যুগোশ্লাভিয় রুপান্তরযোগ্য দিনার"
+        },
+        "narrow": "YUN",
+        "symbol": "YUN"
+      },
+      "YUR": {
+        "displayName": {
+          "other": "YUR"
+        },
+        "narrow": "YUR",
+        "symbol": "YUR"
+      },
+      "ZAL": {
+        "displayName": {
+          "other": "দক্ষিণ আফ্রিকান র‌্যান্ড"
+        },
+        "narrow": "ZAL",
+        "symbol": "ZAL"
+      },
+      "ZAR": {
+        "displayName": {
+          "other": "দক্ষিণ আফ্রিকান রেন্ড"
+        },
+        "narrow": "R",
+        "symbol": "ZAR"
+      },
+      "ZMK": {
+        "displayName": {
+          "other": "জাম্বিয়ান কওয়াচা (১৯৬৮–২০১২)"
+        },
+        "narrow": "ZMK",
+        "symbol": "ZMK"
+      },
+      "ZMW": {
+        "displayName": {
+          "other": "জাম্বিয়ান কওয়াচা"
+        },
+        "narrow": "ZK",
+        "symbol": "ZMW"
+      },
+      "ZRN": {
+        "displayName": {
+          "other": "জাইরিয়ান নিউ জাইরে"
+        },
+        "narrow": "ZRN",
+        "symbol": "ZRN"
+      },
+      "ZRZ": {
+        "displayName": {
+          "other": "জাইরিয়ান জাইরে"
+        },
+        "narrow": "ZRZ",
+        "symbol": "ZRZ"
+      },
+      "ZWD": {
+        "displayName": {
+          "other": "জিম্বাবুয়ে ডলার (১৯৮০–২০০৮)"
+        },
+        "narrow": "ZWD",
+        "symbol": "ZWD"
+      },
+      "ZWL": {
+        "displayName": {
+          "other": "জিম্বাবুয়ে ডলার (২০০৯)"
+        },
+        "narrow": "ZWL",
+        "symbol": "ZWL"
+      },
+      "ZWR": {
+        "displayName": {
+          "other": "জিম্বাবুয়ে ডলার (২০০৮)"
+        },
+        "narrow": "ZWR",
+        "symbol": "ZWR"
+      }
+    },
+    "nu": [
+      "beng",
+      "latn"
+    ],
+    "numbers": {
+      "currency": {
+        "beng": {
+          "accounting": "#,##,##0.00¤;(#,##,##0.00¤)",
+          "currencySpacing": {
+            "afterInsertBetween": " ",
+            "beforeInsertBetween": " "
+          },
+          "short": {
+            "1000": {
+              "other": "0 হা¤"
+            },
+            "10000": {
+              "other": "00 হা¤"
+            },
+            "100000": {
+              "other": "0 লা¤"
+            },
+            "1000000": {
+              "other": "00 লা¤"
+            },
+            "10000000": {
+              "other": "0 কো¤"
+            },
+            "100000000": {
+              "other": "00 কো¤"
+            },
+            "1000000000": {
+              "other": "000 কো¤"
+            },
+            "10000000000": {
+              "other": "0000 কো¤"
+            },
+            "100000000000": {
+              "other": "00000 কো¤"
+            },
+            "1000000000000": {
+              "other": "0 লা'.'কো'.'¤"
+            },
+            "10000000000000": {
+              "other": "00 লা'.'কো'.'¤"
+            },
+            "100000000000000": {
+              "other": "000 লা'.'কো'.'¤"
+            }
+          },
+          "standard": "#,##,##0.00¤",
+          "unitPattern": "{0} {1}"
+        },
+        "latn": {
+          "accounting": "#,##,##0.00¤;(#,##,##0.00¤)",
+          "currencySpacing": {
+            "afterInsertBetween": " ",
+            "beforeInsertBetween": " "
+          },
+          "short": {
+            "1000": {
+              "other": "0 হা¤"
+            },
+            "10000": {
+              "other": "00 হা¤"
+            },
+            "100000": {
+              "other": "0 লা¤"
+            },
+            "1000000": {
+              "other": "00 লা¤"
+            },
+            "10000000": {
+              "other": "0 কো¤"
+            },
+            "100000000": {
+              "other": "00 কো¤"
+            },
+            "1000000000": {
+              "other": "000 কো¤"
+            },
+            "10000000000": {
+              "other": "0000 কো¤"
+            },
+            "100000000000": {
+              "other": "00000 কো¤"
+            },
+            "1000000000000": {
+              "other": "0 লা'.'কো'.'¤"
+            },
+            "10000000000000": {
+              "other": "00 লা'.'কো'.'¤"
+            },
+            "100000000000000": {
+              "other": "000 লা'.'কো'.'¤"
+            }
+          },
+          "standard": "#,##,##0.00¤",
+          "unitPattern": "{0} {1}"
+        }
+      },
+      "decimal": {
+        "beng": {
+          "long": {
+            "1000": {
+              "other": "0 হাজার"
+            },
+            "10000": {
+              "other": "00 হাজার"
+            },
+            "100000": {
+              "other": "0 লাখ"
+            },
+            "1000000": {
+              "other": "00 লাখ"
+            },
+            "10000000": {
+              "other": "0 কোটি"
+            },
+            "100000000": {
+              "other": "00 কোটি"
+            },
+            "1000000000": {
+              "other": "000 কোটি"
+            },
+            "10000000000": {
+              "other": "0000 কোটি"
+            },
+            "100000000000": {
+              "other": "00000 কোটি"
+            },
+            "1000000000000": {
+              "other": "0 লাখ কোটি"
+            },
+            "10000000000000": {
+              "other": "00 লাখ কোটি"
+            },
+            "100000000000000": {
+              "other": "000 লাখ কোটি"
+            }
+          },
+          "short": {
+            "1000": {
+              "other": "0 হা"
+            },
+            "10000": {
+              "other": "00 হা"
+            },
+            "100000": {
+              "other": "0 লা"
+            },
+            "1000000": {
+              "other": "00 লা"
+            },
+            "10000000": {
+              "other": "0 কো"
+            },
+            "100000000": {
+              "other": "00 কো"
+            },
+            "1000000000": {
+              "other": "000 কো"
+            },
+            "10000000000": {
+              "one": "00 শত কো",
+              "other": "00শত কো"
+            },
+            "100000000000": {
+              "other": "000কো"
+            },
+            "1000000000000": {
+              "other": "0 লা'.'কো'.'"
+            },
+            "10000000000000": {
+              "other": "00 লা'.'কো'.'"
+            },
+            "100000000000000": {
+              "other": "000 লা'.'কো'.'"
+            }
+          },
+          "standard": "#,##,##0.###"
+        },
+        "latn": {
+          "long": {
+            "1000": {
+              "other": "0 হাজার"
+            },
+            "10000": {
+              "other": "00 হাজার"
+            },
+            "100000": {
+              "other": "0 লাখ"
+            },
+            "1000000": {
+              "other": "00 লাখ"
+            },
+            "10000000": {
+              "other": "0 কোটি"
+            },
+            "100000000": {
+              "other": "00 কোটি"
+            },
+            "1000000000": {
+              "other": "000 কোটি"
+            },
+            "10000000000": {
+              "other": "0000 কোটি"
+            },
+            "100000000000": {
+              "other": "00000 কোটি"
+            },
+            "1000000000000": {
+              "other": "0 লাখ কোটি"
+            },
+            "10000000000000": {
+              "other": "00 লাখ কোটি"
+            },
+            "100000000000000": {
+              "other": "000 লাখ কোটি"
+            }
+          },
+          "short": {
+            "1000": {
+              "other": "0 হা"
+            },
+            "10000": {
+              "other": "00 হা"
+            },
+            "100000": {
+              "other": "0 লা"
+            },
+            "1000000": {
+              "other": "00 লা"
+            },
+            "10000000": {
+              "other": "0 কো"
+            },
+            "100000000": {
+              "other": "00 কো"
+            },
+            "1000000000": {
+              "other": "000 কো"
+            },
+            "10000000000": {
+              "one": "00 শত কো",
+              "other": "00শত কো"
+            },
+            "100000000000": {
+              "other": "000কো"
+            },
+            "1000000000000": {
+              "other": "0 লা'.'কো'.'"
+            },
+            "10000000000000": {
+              "other": "00 লা'.'কো'.'"
+            },
+            "100000000000000": {
+              "other": "000 লা'.'কো'.'"
+            }
+          },
+          "standard": "#,##,##0.###"
+        }
+      },
+      "nu": [
+        "beng",
+        "latn"
+      ],
+      "percent": {
+        "beng": "#,##0%",
+        "latn": "#,##,##0%"
+      },
+      "symbols": {
+        "beng": {
+          "approximatelySign": "~",
+          "decimal": ".",
+          "exponential": "E",
+          "group": ",",
+          "infinity": "∞",
+          "list": ";",
+          "minusSign": "-",
+          "nan": "NaN",
+          "perMille": "‰",
+          "percentSign": "%",
+          "plusSign": "+",
+          "rangeSign": "–",
+          "superscriptingExponent": "×",
+          "timeSeparator": ":"
+        },
+        "latn": {
+          "approximatelySign": "~",
+          "decimal": ".",
+          "exponential": "E",
+          "group": ",",
+          "infinity": "∞",
+          "list": ";",
+          "minusSign": "-",
+          "nan": "NaN",
+          "perMille": "‰",
+          "percentSign": "%",
+          "plusSign": "+",
+          "rangeSign": "–",
+          "superscriptingExponent": "×",
+          "timeSeparator": ":"
+        }
+      }
+    },
+    "units": {
+      "compound": {
+        "per": {
+          "long": "{1} প্রতি {0}",
+          "narrow": "{0}/{1}",
+          "short": "{0}/{1}"
+        }
+      },
+      "simple": {
+        "acre": {
+          "long": {
+            "other": "{0} একর"
+          },
+          "narrow": {
+            "other": "{0} একর"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} একর"
+          }
+        },
+        "bit": {
+          "long": {
+            "other": "{0} বিট"
+          },
+          "narrow": {
+            "other": "{0} বিট"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} বিট"
+          }
+        },
+        "byte": {
+          "long": {
+            "other": "{0} বাইট"
+          },
+          "narrow": {
+            "other": "{0} বাইট"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} বাইট"
+          }
+        },
+        "celsius": {
+          "long": {
+            "other": "{0} ডিগ্রী সেলসিয়াস"
+          },
+          "narrow": {
+            "other": "{0}°C"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0}°C"
+          }
+        },
+        "centimeter": {
+          "long": {
+            "other": "{0} সেন্টিমিটার"
+          },
+          "narrow": {
+            "other": "{0} সেমি"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি সেন্টিমিটার",
+            "narrow": "{0}/সেমি",
+            "short": "{0} প্রতি সেমি"
+          },
+          "short": {
+            "other": "{0} সেমি"
+          }
+        },
+        "day": {
+          "long": {
+            "other": "{0} দিন"
+          },
+          "narrow": {
+            "other": "{0} দিন"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি দিন",
+            "narrow": "{0}/দিন",
+            "short": "{0} প্রতি দিন"
+          },
+          "short": {
+            "other": "{0} দিন"
+          }
+        },
+        "degree": {
+          "long": {
+            "other": "{0} ডিগ্রী"
+          },
+          "narrow": {
+            "other": "{0}ডিগ্রী"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0}ডিগ্রী"
+          }
+        },
+        "fahrenheit": {
+          "long": {
+            "other": "{0} ডিগ্রী ফারেনহাইট"
+          },
+          "narrow": {
+            "other": "{0}°F"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0}°F"
+          }
+        },
+        "fluid-ounce": {
+          "long": {
+            "other": "{0} ফ্লুইড আউন্স"
+          },
+          "narrow": {
+            "other": "{0} fl oz"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} fl oz"
+          }
+        },
+        "foot": {
+          "long": {
+            "other": "{0} ফুট"
+          },
+          "narrow": {
+            "other": "{0} ফুট"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি ফুট",
+            "narrow": "{0} প্রতি ফুট",
+            "short": "{0} প্রতি ফুট"
+          },
+          "short": {
+            "other": "{0} ফুট"
+          }
+        },
+        "gallon": {
+          "long": {
+            "other": "{0} গ্যালন"
+          },
+          "narrow": {
+            "other": "{0} gal"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি গ্যালন",
+            "narrow": "{0}/gal",
+            "short": "{0}/gal US"
+          },
+          "short": {
+            "other": "{0} gal"
+          }
+        },
+        "gigabit": {
+          "long": {
+            "other": "{0} গিগাবিট"
+          },
+          "narrow": {
+            "other": "{0} Gb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} Gb"
+          }
+        },
+        "gigabyte": {
+          "long": {
+            "other": "{0} গিগাবাইট"
+          },
+          "narrow": {
+            "other": "{0} GB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} GB"
+          }
+        },
+        "gram": {
+          "long": {
+            "other": "{0} গ্রাম"
+          },
+          "narrow": {
+            "other": "{0} গ্রাম"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি গ্রাম",
+            "narrow": "{0}/গ্রা:",
+            "short": "{0} প্রতি গ্রাম"
+          },
+          "short": {
+            "one": "{0}গ্রাম",
+            "other": "{0} গ্রাম"
+          }
+        },
+        "hectare": {
+          "long": {
+            "other": "{0} হেক্টর"
+          },
+          "narrow": {
+            "other": "{0} হেক্টর"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} হেক্টর"
+          }
+        },
+        "hour": {
+          "long": {
+            "other": "{0} ঘন্টা"
+          },
+          "narrow": {
+            "other": "{0} ঘঃ"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি ঘন্টা",
+            "narrow": "{0}/ঘ:",
+            "short": "{0} প্রতি ঘন্টা"
+          },
+          "short": {
+            "other": "{0} ঘন্টা"
+          }
+        },
+        "inch": {
+          "long": {
+            "other": "{0} ইঞ্চি"
+          },
+          "narrow": {
+            "other": "{0} ইঞ্চি"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি ইঞ্চি",
+            "narrow": "{0}/ইঞ্চি",
+            "short": "{0} প্রতি ইঞ্চি"
+          },
+          "short": {
+            "other": "{0} ইঞ্চি"
+          }
+        },
+        "kilobit": {
+          "long": {
+            "other": "{0} কিলোবিট"
+          },
+          "narrow": {
+            "other": "{0} kb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} kb"
+          }
+        },
+        "kilobyte": {
+          "long": {
+            "other": "{0} কিলোবাইট"
+          },
+          "narrow": {
+            "other": "{0} kB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} kB"
+          }
+        },
+        "kilogram": {
+          "long": {
+            "other": "{0} কিলোগ্রাম"
+          },
+          "narrow": {
+            "other": "{0} কেজি"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি কিলোগ্রাম",
+            "narrow": "{0}/কেজি",
+            "short": "{0} প্রতি কেজি"
+          },
+          "short": {
+            "other": "{0} কেজি"
+          }
+        },
+        "kilometer": {
+          "long": {
+            "other": "{0} কিলোমিটার"
+          },
+          "narrow": {
+            "other": "{0} কিমি"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি কিলোমিটার",
+            "narrow": "{0}/কিমি",
+            "short": "{0} প্রতি কিমি"
+          },
+          "short": {
+            "other": "{0} কিমি"
+          }
+        },
+        "kilometer-per-hour": {
+          "long": {
+            "other": "{0} ঘন্টা প্রতি কিলোমিটার"
+          },
+          "narrow": {
+            "other": "{0}kph"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "one": "{0} kph",
+            "other": "{0} km/h"
+          }
+        },
+        "liter": {
+          "long": {
+            "other": "{0} লিটার"
+          },
+          "narrow": {
+            "other": "{0} লিটার"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি লিটার",
+            "narrow": "{0}/l",
+            "short": "{0}/l"
+          },
+          "short": {
+            "other": "{0} লিটার"
+          }
+        },
+        "liter-per-kilometer": {
+          "long": {
+            "other": "{0} লিটার, প্রতি কিলোমিটারে"
+          },
+          "narrow": {
+            "other": "{0} L/km"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} L/km"
+          }
+        },
+        "megabit": {
+          "long": {
+            "other": "{0} মেগাবিট"
+          },
+          "narrow": {
+            "other": "{0} Mb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} Mb"
+          }
+        },
+        "megabyte": {
+          "long": {
+            "other": "{0} মেগাবাইট"
+          },
+          "narrow": {
+            "other": "{0} MB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} MB"
+          }
+        },
+        "meter": {
+          "long": {
+            "other": "{0} মিটার"
+          },
+          "narrow": {
+            "other": "{0} মি"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি মিটার",
+            "narrow": "{0}/মি",
+            "short": "{0} প্রতি মি"
+          },
+          "short": {
+            "other": "{0} মি"
+          }
+        },
+        "meter-per-second": {
+          "long": {
+            "other": "{0} মিটার প্রতি সেকেন্ড"
+          },
+          "narrow": {
+            "other": "{0}m/s"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} m/s"
+          }
+        },
+        "mile": {
+          "long": {
+            "other": "{0} মাইল"
+          },
+          "narrow": {
+            "other": "{0} মাইল"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} মাইল"
+          }
+        },
+        "mile-per-gallon": {
+          "long": {
+            "other": "{0} মাইল, প্রতি গ্যালনে"
+          },
+          "narrow": {
+            "other": "{0} mpg"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} mpg"
+          }
+        },
+        "mile-per-hour": {
+          "long": {
+            "other": "{0} ঘন্টা প্রতি মাইল"
+          },
+          "narrow": {
+            "other": "{0}mph"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} mph"
+          }
+        },
+        "mile-scandinavian": {
+          "long": {
+            "other": "{0} মাইল-স্ক্যান্ডিনেভিয়ান"
+          },
+          "narrow": {
+            "other": "{0} smi"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} smi"
+          }
+        },
+        "milliliter": {
+          "long": {
+            "other": "{0} মিলিলিটার"
+          },
+          "narrow": {
+            "other": "{0} mL"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} mL"
+          }
+        },
+        "millimeter": {
+          "long": {
+            "other": "{0} মিলিমিটার"
+          },
+          "narrow": {
+            "other": "{0} মিমি"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} মিমি"
+          }
+        },
+        "millisecond": {
+          "long": {
+            "other": "{0} মিলিসেকেন্ড"
+          },
+          "narrow": {
+            "other": "{0} ms"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} ms"
+          }
+        },
+        "minute": {
+          "long": {
+            "other": "{0} মিনিট"
+          },
+          "narrow": {
+            "other": "{0} মিঃ"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি মিনিট",
+            "narrow": "{0}/মি:",
+            "short": "{0} প্রতি মিনিট"
+          },
+          "short": {
+            "other": "{0} মিনিট"
+          }
+        },
+        "month": {
+          "long": {
+            "other": "{0} মাস"
+          },
+          "narrow": {
+            "other": "{0} মাস"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি মাস",
+            "narrow": "{0}/মাস",
+            "short": "{0} প্রতি মাস"
+          },
+          "short": {
+            "other": "{0} মাস"
+          }
+        },
+        "ounce": {
+          "long": {
+            "other": "{0} আউন্স"
+          },
+          "narrow": {
+            "other": "{0} আউন্স"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি আউন্স",
+            "narrow": "{0}/আউন্স",
+            "short": "{0} প্রতি আউন্স"
+          },
+          "short": {
+            "other": "{0} আউন্স"
+          }
+        },
+        "percent": {
+          "long": {
+            "other": "{0}শতাংশ"
+          },
+          "narrow": {
+            "other": "{0}%"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0}%"
+          }
+        },
+        "petabyte": {
+          "long": {
+            "other": "{0} পেটাবাইটস"
+          },
+          "narrow": {
+            "other": "{0} PB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} PB"
+          }
+        },
+        "pound": {
+          "long": {
+            "other": "{0} পাউন্ড"
+          },
+          "narrow": {
+            "other": "{0} পাউন্ড"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি পাউন্ড",
+            "narrow": "{0}/পাউন্ড",
+            "short": "{0}/lb"
+          },
+          "short": {
+            "one": "{0} পাউন্ড",
+            "other": "{0} lb"
+          }
+        },
+        "second": {
+          "long": {
+            "other": "{0} সেকেন্ড"
+          },
+          "narrow": {
+            "other": "{0} সেঃ"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি সেকেন্ড",
+            "narrow": "{0}/সে:",
+            "short": "{0} প্রতি সেকেন্ড"
+          },
+          "short": {
+            "other": "{0} সেকেন্ড"
+          }
+        },
+        "stone": {
+          "long": {
+            "other": "{0} st"
+          },
+          "narrow": {
+            "other": "{0} st"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} st"
+          }
+        },
+        "terabit": {
+          "long": {
+            "other": "{0} টেরাবিট"
+          },
+          "narrow": {
+            "other": "{0} Tb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} Tb"
+          }
+        },
+        "terabyte": {
+          "long": {
+            "other": "{0} টেরাবাইট"
+          },
+          "narrow": {
+            "other": "{0} TB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} TB"
+          }
+        },
+        "week": {
+          "long": {
+            "other": "{0} সপ্তাহ"
+          },
+          "narrow": {
+            "other": "{0} সপ্তাহ"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি সপ্তাহ",
+            "narrow": "{0}/সপ্তাহ",
+            "short": "{0} প্রতি সপ্তাহ"
+          },
+          "short": {
+            "other": "{0} সপ্তাহ"
+          }
+        },
+        "yard": {
+          "long": {
+            "other": "{0} গজ"
+          },
+          "narrow": {
+            "other": "{0} গজ"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} গজ"
+          }
+        },
+        "year": {
+          "long": {
+            "other": "{0} বছর"
+          },
+          "narrow": {
+            "other": "{0} বছর"
+          },
+          "perUnit": {
+            "long": "{0} প্রতি বছর",
+            "narrow": "{0}/বছর",
+            "short": "{0} প্রতি বছর"
+          },
+          "short": {
+            "other": "{0} বছর"
+          }
+        }
+      }
+    }
+  },
+  "locale": "bn"
+}

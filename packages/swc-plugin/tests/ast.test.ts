@@ -9,18 +9,18 @@ test('ast', async function () {
     },
   })
   expect(output.msgs).toMatchInlineSnapshot(`
-    Array [
-      Object {
+    [
+      {
         "defaultMessage": "props {intl}",
         "description": "bar",
         "id": "HELLO..12.string",
       },
-      Object {
+      {
         "defaultMessage": "this props {intl}",
         "description": "bar",
         "id": "HELLO..17.string",
       },
-      Object {
+      {
         "defaultMessage": "foo {bar}",
         "description": "bar",
         "id": "HELLO..9.string",

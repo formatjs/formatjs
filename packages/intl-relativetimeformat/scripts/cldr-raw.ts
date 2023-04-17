@@ -1,6 +1,7 @@
 import {extractRelativeFields, getAllLocales} from './extract-relative'
 import {join} from 'path'
-import {outputJSONSync} from 'fs-extra'
+import {writeFileSync} from 'fs-extra'
+import stringify from 'json-stable-stringify'
 
 import minimist from 'minimist'
 
@@ -9,10 +10,16 @@ async function main(args: minimist.ParsedArgs) {
   const locales = await getAllLocales()
   const data = await extractRelativeFields(locales)
   locales.forEach(locale =>
-    outputJSONSync(join(outDir, `${locale}.json`), {
-      data: data[locale],
-      locale,
-    })
+    writeFileSync(
+      join(outDir, `${locale}.json`),
+      stringify(
+        {
+          data: data[locale],
+          locale,
+        },
+        {space: 2}
+      )
+    )
   )
 }
 

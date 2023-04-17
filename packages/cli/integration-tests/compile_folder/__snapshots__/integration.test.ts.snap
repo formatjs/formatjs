@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`basic case 1`] = `
-Array [
-  Object {},
-  Object {
+[
+  {},
+  {
     "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
     "a1dd2": "my name is {name}",
     "ashd2": "a message",
   },
-  Object {
+  {
     "1": "another message",
     "2": "my name is {foo}",
     "3": "I have {count, plural, one{a cat} other{many cats}}",
@@ -17,7 +17,7 @@ Array [
 `;
 
 exports[`basic case: help 1`] = `
-Object {
+{
   "stderr": "",
   "stdout": "Usage: formatjs compile-folder [options] <folder> <outFolder>
 

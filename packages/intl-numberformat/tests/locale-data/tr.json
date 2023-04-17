@@ -1,1 +1,2980 @@
-{"data":{"units":{"simple":{"degree":{"long":{"other":"{0} derece"},"short":{"other":"{0}°"},"narrow":{"other":"{0}°"},"perUnit":{}},"hectare":{"long":{"other":"{0} hektar"},"short":{"other":"{0} ha"},"narrow":{"other":"{0} ha"},"perUnit":{}},"acre":{"long":{"other":"{0} akre"},"short":{"other":"{0} ac"},"narrow":{"other":"{0} ac"},"perUnit":{}},"percent":{"long":{"other":"yüzde {0}"},"short":{"other":"%{0}"},"narrow":{"other":"%{0}"},"perUnit":{}},"liter-per-kilometer":{"long":{"other":"{0} litre/kilometre"},"short":{"other":"{0} l/km"},"narrow":{"other":"{0} l/km"},"perUnit":{}},"mile-per-gallon":{"long":{"other":"{0} mil/galon"},"short":{"other":"{0} mpg"},"narrow":{"other":"{0} mpg"},"perUnit":{}},"petabyte":{"long":{"other":"{0} petabayt"},"short":{"other":"{0} PB"},"narrow":{"other":"{0} PB"},"perUnit":{}},"terabyte":{"long":{"other":"{0} terabayt"},"short":{"other":"{0} TB"},"narrow":{"other":"{0} TB"},"perUnit":{}},"terabit":{"long":{"other":"{0} terabit"},"short":{"other":"{0} Tb"},"narrow":{"other":"{0} Tb"},"perUnit":{}},"gigabyte":{"long":{"other":"{0} gigabayt"},"short":{"other":"{0} GB"},"narrow":{"other":"{0} GB"},"perUnit":{}},"gigabit":{"long":{"other":"{0} gigabit"},"short":{"other":"{0} Gb"},"narrow":{"other":"{0} Gb"},"perUnit":{}},"megabyte":{"long":{"other":"{0} megabayt"},"short":{"other":"{0} MB"},"narrow":{"other":"{0} MB"},"perUnit":{}},"megabit":{"long":{"other":"{0} megabit"},"short":{"other":"{0} Mb"},"narrow":{"other":"{0} Mb"},"perUnit":{}},"kilobyte":{"long":{"other":"{0} kilobayt"},"short":{"other":"{0} kB"},"narrow":{"other":"{0} kB"},"perUnit":{}},"kilobit":{"long":{"other":"{0} kilobit"},"short":{"other":"{0} kb"},"narrow":{"other":"{0} kb"},"perUnit":{}},"byte":{"long":{"other":"{0} bayt"},"short":{"other":"{0} bayt"},"narrow":{"other":"{0} bayt"},"perUnit":{}},"bit":{"long":{"other":"{0} bit"},"short":{"other":"{0} bit"},"narrow":{"other":"{0} bit"},"perUnit":{}},"year":{"long":{"other":"{0} yıl"},"short":{"other":"{0} yıl"},"narrow":{"other":"{0}y"},"perUnit":{"long":"{0}/yıl","short":"{0}/y","narrow":"{0}/y"}},"month":{"long":{"other":"{0} ay"},"short":{"other":"{0} ay"},"narrow":{"other":"{0}a"},"perUnit":{"long":"{0}/ay","short":"{0}/ay","narrow":"{0}/ay"}},"week":{"long":{"other":"{0} hafta"},"short":{"other":"{0} hf."},"narrow":{"other":"{0}h"},"perUnit":{"long":"{0}/hafta","short":"{0}/hf.","narrow":"{0}/hf."}},"day":{"long":{"other":"{0} gün"},"short":{"other":"{0} gün"},"narrow":{"other":"{0}g"},"perUnit":{"long":"{0}/gün","short":"{0}/gün","narrow":"{0}/g"}},"hour":{"long":{"other":"{0} saat"},"short":{"other":"{0} sa."},"narrow":{"other":"{0}s","one":"{0} sa"},"perUnit":{"long":"{0}/saat","short":"{0}/sa","narrow":"{0}/sa"}},"minute":{"long":{"other":"{0} dakika"},"short":{"other":"{0} dk."},"narrow":{"other":"{0}d"},"perUnit":{"long":"{0}/dakika","short":"{0}/dk.","narrow":"{0}/dk."}},"second":{"long":{"other":"{0} saniye"},"short":{"other":"{0} sn."},"narrow":{"other":"{0}sn"},"perUnit":{"long":"{0}/saniye","short":"{0}/sn","narrow":"{0}/sn"}},"millisecond":{"long":{"other":"{0} milisaniye"},"short":{"other":"{0} msn"},"narrow":{"other":"{0}msn"},"perUnit":{}},"kilometer":{"long":{"other":"{0} kilometre"},"short":{"other":"{0} km"},"narrow":{"other":"{0} km"},"perUnit":{"long":"{0}/kilometre","short":"{0}/km","narrow":"{0}/km"}},"meter":{"long":{"other":"{0} metre"},"short":{"other":"{0} m"},"narrow":{"other":"{0} m"},"perUnit":{"long":"{0}/metre","short":"{0}/m","narrow":"{0}/m"}},"centimeter":{"long":{"other":"{0} santimetre"},"short":{"other":"{0} cm"},"narrow":{"other":"{0} cm"},"perUnit":{"long":"{0}/santimetre","short":"{0}/cm","narrow":"{0}/cm"}},"millimeter":{"long":{"other":"{0} milimetre"},"short":{"other":"{0} mm"},"narrow":{"other":"{0} mm"},"perUnit":{}},"mile":{"long":{"other":"{0} mil"},"short":{"other":"{0} mil"},"narrow":{"other":"{0} mil"},"perUnit":{}},"yard":{"long":{"other":"{0} yarda"},"short":{"other":"{0} yd"},"narrow":{"other":"{0} yd"},"perUnit":{}},"foot":{"long":{"other":"{0} fit"},"short":{"other":"{0} fit"},"narrow":{"other":"{0}′"},"perUnit":{"long":"{0}/fit","short":"{0}/ft","narrow":"{0}/ft"}},"inch":{"long":{"other":"{0} inç"},"short":{"other":"{0} inç"},"narrow":{"other":"{0}″"},"perUnit":{"long":"{0}/inç","short":"{0}/in","narrow":"{0}/in"}},"mile-scandinavian":{"long":{"other":"{0} smi"},"short":{"other":"{0} smi"},"narrow":{"other":"{0} smi"},"perUnit":{}},"kilogram":{"long":{"other":"{0} kilogram"},"short":{"other":"{0} kg"},"narrow":{"other":"{0} kg"},"perUnit":{"long":"{0}/kg","short":"{0}/kg","narrow":"{0}/kg"}},"gram":{"long":{"other":"{0} gram"},"short":{"other":"{0} g"},"narrow":{"other":"{0} g"},"perUnit":{"long":"{0}/gram","short":"{0}/g","narrow":"{0}/g"}},"stone":{"long":{"other":"{0} stone"},"short":{"other":"{0} st"},"narrow":{"other":"{0} st"},"perUnit":{}},"pound":{"long":{"other":"{0} libre"},"short":{"other":"{0} lb"},"narrow":{"other":"{0} lb"},"perUnit":{"long":"{0}/libre","short":"{0}/lb","narrow":"{0}/lb"}},"ounce":{"long":{"other":"{0} ons"},"short":{"other":"{0} oz"},"narrow":{"other":"{0} oz"},"perUnit":{"long":"{0}/oz","short":"{0}/oz","narrow":"{0}/oz"}},"kilometer-per-hour":{"long":{"other":"{0} kilometre/saat"},"short":{"other":"{0} km/sa"},"narrow":{"other":"{0} km/sa"},"perUnit":{}},"meter-per-second":{"long":{"other":"{0} metre/saniye"},"short":{"other":"{0} m/sn"},"narrow":{"other":"{0} m/sn"},"perUnit":{}},"mile-per-hour":{"long":{"other":"{0} mil/saat"},"short":{"other":"{0} mil/sa"},"narrow":{"other":"{0} mil/sa"},"perUnit":{}},"celsius":{"long":{"other":"{0} santigrat derece"},"short":{"other":"{0}°C","one":"{0} °C"},"narrow":{"other":"{0} °C","one":"{0}°C"},"perUnit":{}},"fahrenheit":{"long":{"other":"{0} fahrenhayt derece"},"short":{"other":"{0}°F","one":"{0} °F"},"narrow":{"other":"{0} °F"},"perUnit":{}},"liter":{"long":{"other":"{0} litre"},"short":{"other":"{0} l"},"narrow":{"other":"{0} l"},"perUnit":{"long":"{0}/litre","short":"{0}/l","narrow":"{0}/l"}},"milliliter":{"long":{"other":"{0} mililitre"},"short":{"other":"{0} ml"},"narrow":{"other":"{0} ml"},"perUnit":{}},"gallon":{"long":{"other":"{0} galon"},"short":{"other":"{0} gal"},"narrow":{"other":"{0} galon"},"perUnit":{"long":"{0}/galon","short":"{0}/gal","narrow":"{0}/gal"}},"fluid-ounce":{"long":{"other":"{0} sıvı ons"},"short":{"other":"{0} sıvı ons"},"narrow":{"other":"{0} sıvı ons"},"perUnit":{}}},"compound":{"per":{"long":"{0}/{1}","short":"{0}/{1}","narrow":"{0}/{1}"}}},"currencies":{"ADP":{"displayName":{"other":"Andorra Pezetası"},"symbol":"ADP","narrow":"ADP"},"AED":{"displayName":{"other":"BAE dirhemi"},"symbol":"AED","narrow":"AED"},"AFA":{"displayName":{"other":"Afganistan Afganisi (1927–2002)"},"symbol":"AFA","narrow":"AFA"},"AFN":{"displayName":{"other":"Afganistan afganisi"},"symbol":"AFN","narrow":"؋"},"ALK":{"displayName":{"other":"Arnavutluk leki (1946–1965)"},"symbol":"ALK","narrow":"ALK"},"ALL":{"displayName":{"other":"Arnavutluk leki"},"symbol":"ALL","narrow":"ALL"},"AMD":{"displayName":{"other":"Ermenistan dramı"},"symbol":"AMD","narrow":"֏"},"ANG":{"displayName":{"other":"Hollanda Antilleri guldeni"},"symbol":"ANG","narrow":"ANG"},"AOA":{"displayName":{"other":"Angola kvanzası"},"symbol":"AOA","narrow":"Kz"},"AOK":{"displayName":{"other":"Angola Kvanzası (1977–1990)"},"symbol":"AOK","narrow":"AOK"},"AON":{"displayName":{"other":"Yeni Angola Kvanzası (1990–2000)"},"symbol":"AON","narrow":"AON"},"AOR":{"displayName":{"other":"Angola Kvanzası Reajustado (1995–1999)"},"symbol":"AOR","narrow":"AOR"},"ARA":{"displayName":{"other":"Arjantin Australi"},"symbol":"ARA","narrow":"ARA"},"ARL":{"displayName":{"other":"Arjantin peso leyi (1970–1983)"},"symbol":"ARL","narrow":"ARL"},"ARM":{"displayName":{"other":"Arjantin pesosu (1881–1970)"},"symbol":"ARM","narrow":"ARM"},"ARP":{"displayName":{"other":"Arjantin Pezosu (1983–1985)"},"symbol":"ARP","narrow":"ARP"},"ARS":{"displayName":{"other":"Arjantin pesosu"},"symbol":"ARS","narrow":"$"},"ATS":{"displayName":{"other":"Avusturya Şilini"},"symbol":"ATS","narrow":"ATS"},"AUD":{"displayName":{"other":"Avustralya doları"},"symbol":"AU$","narrow":"$"},"AWG":{"displayName":{"other":"Aruba florini"},"symbol":"AWG","narrow":"AWG"},"AZM":{"displayName":{"other":"Azerbaycan Manatı (1993–2006)"},"symbol":"AZM","narrow":"AZM"},"AZN":{"displayName":{"other":"Azerbaycan manatı"},"symbol":"AZN","narrow":"₼"},"BAD":{"displayName":{"other":"Bosna Hersek Dinarı"},"symbol":"BAD","narrow":"BAD"},"BAM":{"displayName":{"other":"Konvertibl Bosna Hersek markı"},"symbol":"BAM","narrow":"KM"},"BAN":{"displayName":{"other":"Yeni Bosna Hersek dinarı (1994–1997)"},"symbol":"BAN","narrow":"BAN"},"BBD":{"displayName":{"other":"Barbados doları"},"symbol":"BBD","narrow":"$"},"BDT":{"displayName":{"other":"Bangladeş takası"},"symbol":"BDT","narrow":"৳"},"BEC":{"displayName":{"other":"Belçika Frangı (konvertibl)"},"symbol":"BEC","narrow":"BEC"},"BEF":{"displayName":{"other":"Belçika Frangı"},"symbol":"BEF","narrow":"BEF"},"BEL":{"displayName":{"other":"Belçika Frangı (finansal)"},"symbol":"BEL","narrow":"BEL"},"BGL":{"displayName":{"other":"Bulgar Levası (Hard)"},"symbol":"BGL","narrow":"BGL"},"BGM":{"displayName":{"other":"Sosyalist Bulgaristan levası"},"symbol":"BGM","narrow":"BGM"},"BGN":{"displayName":{"other":"Bulgar levası"},"symbol":"BGN","narrow":"BGN"},"BGO":{"displayName":{"other":"Bulgar levası (1879–1952)"},"symbol":"BGO","narrow":"BGO"},"BHD":{"displayName":{"other":"Bahreyn dinarı"},"symbol":"BHD","narrow":"BHD"},"BIF":{"displayName":{"other":"Burundi frangı"},"symbol":"BIF","narrow":"BIF"},"BMD":{"displayName":{"other":"Bermuda doları"},"symbol":"BMD","narrow":"$"},"BND":{"displayName":{"other":"Brunei doları"},"symbol":"BND","narrow":"$"},"BOB":{"displayName":{"other":"Bolivya bolivyanosu"},"symbol":"BOB","narrow":"Bs"},"BOL":{"displayName":{"other":"Bolivya bolivyanosu (1863–1963)"},"symbol":"BOL","narrow":"BOL"},"BOP":{"displayName":{"other":"Bolivya Pezosu"},"symbol":"BOP","narrow":"BOP"},"BOV":{"displayName":{"other":"Bolivya Mvdolu"},"symbol":"BOV","narrow":"BOV"},"BRB":{"displayName":{"other":"Yeni Brezilya Kruzeirosu (1967–1986)"},"symbol":"BRB","narrow":"BRB"},"BRC":{"displayName":{"other":"Brezilya Kruzadosu"},"symbol":"BRC","narrow":"BRC"},"BRE":{"displayName":{"other":"Brezilya Kruzeirosu (1990–1993)"},"symbol":"BRE","narrow":"BRE"},"BRL":{"displayName":{"other":"Brezilya reali"},"symbol":"R$","narrow":"R$"},"BRN":{"displayName":{"other":"Yeni Brezilya Kruzadosu"},"symbol":"BRN","narrow":"BRN"},"BRR":{"displayName":{"other":"Brezilya Kruzeirosu"},"symbol":"BRR","narrow":"BRR"},"BRZ":{"displayName":{"other":"Brezilya kruzeirosu (1942–1967)"},"symbol":"BRZ","narrow":"BRZ"},"BSD":{"displayName":{"other":"Bahama doları"},"symbol":"BSD","narrow":"$"},"BTN":{"displayName":{"other":"Butan ngultrumu"},"symbol":"BTN","narrow":"BTN"},"BUK":{"displayName":{"other":"Burma Kyatı"},"symbol":"BUK","narrow":"BUK"},"BWP":{"displayName":{"other":"Botsvana pulası"},"symbol":"BWP","narrow":"P"},"BYB":{"displayName":{"other":"Yeni Beyaz Rusya Rublesi (1994–1999)"},"symbol":"BYB","narrow":"BYB"},"BYN":{"displayName":{"other":"Belarus rublesi"},"symbol":"BYN","narrow":"р."},"BYR":{"displayName":{"other":"Beyaz Rusya rublesi (2000–2016)"},"symbol":"BYR","narrow":"BYR"},"BZD":{"displayName":{"other":"Belize doları"},"symbol":"BZD","narrow":"$"},"CAD":{"displayName":{"other":"Kanada doları"},"symbol":"CA$","narrow":"$"},"CDF":{"displayName":{"other":"Kongo frangı"},"symbol":"CDF","narrow":"CDF"},"CHE":{"displayName":{"other":"WIR Avrosu"},"symbol":"CHE","narrow":"CHE"},"CHF":{"displayName":{"other":"İsviçre frangı"},"symbol":"CHF","narrow":"CHF"},"CHW":{"displayName":{"other":"WIR Frangı"},"symbol":"CHW","narrow":"CHW"},"CLE":{"displayName":{"other":"Şili esküdosu"},"symbol":"CLE","narrow":"CLE"},"CLF":{"displayName":{"other":"Şili Unidades de Fomento"},"symbol":"CLF","narrow":"CLF"},"CLP":{"displayName":{"other":"Şili pesosu"},"symbol":"CLP","narrow":"$"},"CNH":{"displayName":{"other":"Çin yuanı (offshore)"},"symbol":"CNH","narrow":"CNH"},"CNX":{"displayName":{"other":"Çin Halk Cumhuriyeti Merkez Bankası doları"},"symbol":"CNX","narrow":"CNX"},"CNY":{"displayName":{"other":"Çin yuanı"},"symbol":"CN¥","narrow":"¥"},"COP":{"displayName":{"other":"Kolombiya pesosu"},"symbol":"COP","narrow":"$"},"COU":{"displayName":{"other":"Unidad de Valor Real"},"symbol":"COU","narrow":"COU"},"CRC":{"displayName":{"other":"Kosta Rika kolonu"},"symbol":"CRC","narrow":"₡"},"CSD":{"displayName":{"other":"Eski Sırbistan Dinarı"},"symbol":"CSD","narrow":"CSD"},"CSK":{"displayName":{"other":"Çekoslavak Korunası (Hard)"},"symbol":"CSK","narrow":"CSK"},"CUC":{"displayName":{"other":"Konvertibl Küba pesosu"},"symbol":"CUC","narrow":"$"},"CUP":{"displayName":{"other":"Küba pesosu"},"symbol":"CUP","narrow":"$"},"CVE":{"displayName":{"other":"Cape Verde esküdosu"},"symbol":"CVE","narrow":"CVE"},"CYP":{"displayName":{"other":"Güney Kıbrıs Lirası"},"symbol":"CYP","narrow":"CYP"},"CZK":{"displayName":{"other":"Çek korunası"},"symbol":"CZK","narrow":"Kč"},"DDM":{"displayName":{"other":"Doğu Alman Markı"},"symbol":"DDM","narrow":"DDM"},"DEM":{"displayName":{"other":"Alman Markı"},"symbol":"DEM","narrow":"DEM"},"DJF":{"displayName":{"other":"Cibuti frangı"},"symbol":"DJF","narrow":"DJF"},"DKK":{"displayName":{"other":"Danimarka kronu"},"symbol":"DKK","narrow":"kr"},"DOP":{"displayName":{"other":"Dominik pesosu"},"symbol":"DOP","narrow":"$"},"DZD":{"displayName":{"other":"Cezayir dinarı"},"symbol":"DZD","narrow":"DZD"},"ECS":{"displayName":{"other":"Ekvador Sukresi"},"symbol":"ECS","narrow":"ECS"},"ECV":{"displayName":{"other":"Ekvador Unidad de Valor Constante (UVC)"},"symbol":"ECV","narrow":"ECV"},"EEK":{"displayName":{"other":"Estonya Krunu"},"symbol":"EEK","narrow":"EEK"},"EGP":{"displayName":{"other":"Mısır lirası"},"symbol":"EGP","narrow":"E£"},"ERN":{"displayName":{"other":"Eritre nakfası"},"symbol":"ERN","narrow":"ERN"},"ESA":{"displayName":{"other":"İspanyol Pezetası (A hesabı)"},"symbol":"ESA","narrow":"ESA"},"ESB":{"displayName":{"other":"İspanyol Pezetası (konvertibl hesap)"},"symbol":"ESB","narrow":"ESB"},"ESP":{"displayName":{"other":"İspanyol Pezetası"},"symbol":"ESP","narrow":"₧"},"ETB":{"displayName":{"other":"Etiyopya birri"},"symbol":"ETB","narrow":"ETB"},"EUR":{"displayName":{"other":"Euro"},"symbol":"€","narrow":"€"},"FIM":{"displayName":{"other":"Fin Markkası"},"symbol":"FIM","narrow":"FIM"},"FJD":{"displayName":{"other":"Fiji doları"},"symbol":"FJD","narrow":"$"},"FKP":{"displayName":{"other":"Falkland Adaları lirası"},"symbol":"FKP","narrow":"£"},"FRF":{"displayName":{"other":"Fransız Frangı"},"symbol":"FRF","narrow":"FRF"},"GBP":{"displayName":{"other":"İngiliz sterlini"},"symbol":"£","narrow":"£"},"GEK":{"displayName":{"other":"Gürcistan Kupon Larisi"},"symbol":"GEK","narrow":"GEK"},"GEL":{"displayName":{"other":"Gürcistan larisi"},"symbol":"GEL","narrow":"₾"},"GHC":{"displayName":{"other":"Gana Sedisi (1979–2007)"},"symbol":"GHC","narrow":"GHC"},"GHS":{"displayName":{"other":"Gana sedisi"},"symbol":"GHS","narrow":"GH₵"},"GIP":{"displayName":{"other":"Cebelitarık lirası"},"symbol":"GIP","narrow":"£"},"GMD":{"displayName":{"other":"Gambiya dalasisi"},"symbol":"GMD","narrow":"GMD"},"GNF":{"displayName":{"other":"Gine frangı"},"symbol":"GNF","narrow":"FG"},"GNS":{"displayName":{"other":"Gine Sylisi"},"symbol":"GNS","narrow":"GNS"},"GQE":{"displayName":{"other":"Ekvator Ginesi Ekuelesi"},"symbol":"GQE","narrow":"GQE"},"GRD":{"displayName":{"other":"Yunan Drahmisi"},"symbol":"GRD","narrow":"GRD"},"GTQ":{"displayName":{"other":"Guatemala quetzalı"},"symbol":"GTQ","narrow":"Q"},"GWE":{"displayName":{"other":"Portekiz Ginesi Esküdosu"},"symbol":"GWE","narrow":"GWE"},"GWP":{"displayName":{"other":"Gine-Bissau Pezosu"},"symbol":"GWP","narrow":"GWP"},"GYD":{"displayName":{"other":"Guyana doları"},"symbol":"GYD","narrow":"$"},"HKD":{"displayName":{"other":"Hong Kong doları"},"symbol":"HK$","narrow":"$"},"HNL":{"displayName":{"other":"Honduras lempirası"},"symbol":"HNL","narrow":"L"},"HRD":{"displayName":{"other":"Hırvatistan Dinarı"},"symbol":"HRD","narrow":"HRD"},"HRK":{"displayName":{"other":"Hırvatistan kunası"},"symbol":"HRK","narrow":"kn"},"HTG":{"displayName":{"other":"Haiti gurdu"},"symbol":"HTG","narrow":"HTG"},"HUF":{"displayName":{"other":"Macar forinti"},"symbol":"HUF","narrow":"Ft"},"IDR":{"displayName":{"other":"Endonezya rupisi"},"symbol":"IDR","narrow":"Rp"},"IEP":{"displayName":{"other":"İrlanda Lirası"},"symbol":"IEP","narrow":"IEP"},"ILP":{"displayName":{"other":"İsrail Lirası"},"symbol":"ILP","narrow":"ILP"},"ILR":{"displayName":{"other":"İsrail şekeli (1980–1985)"},"symbol":"ILR","narrow":"ILR"},"ILS":{"displayName":{"other":"Yeni İsrail şekeli"},"symbol":"₪","narrow":"₪"},"INR":{"displayName":{"other":"Hindistan rupisi"},"symbol":"₹","narrow":"₹"},"IQD":{"displayName":{"other":"Irak dinarı"},"symbol":"IQD","narrow":"IQD"},"IRR":{"displayName":{"other":"İran riyali"},"symbol":"IRR","narrow":"IRR"},"ISJ":{"displayName":{"other":"İzlanda kronu (1918–1981)"},"symbol":"ISJ","narrow":"ISJ"},"ISK":{"displayName":{"other":"İzlanda kronu"},"symbol":"ISK","narrow":"kr"},"ITL":{"displayName":{"other":"İtalyan Lireti"},"symbol":"ITL","narrow":"ITL"},"JMD":{"displayName":{"other":"Jamaika doları"},"symbol":"JMD","narrow":"$"},"JOD":{"displayName":{"other":"Ürdün dinarı"},"symbol":"JOD","narrow":"JOD"},"JPY":{"displayName":{"other":"Japon yeni"},"symbol":"¥","narrow":"¥"},"KES":{"displayName":{"other":"Kenya şilini"},"symbol":"KES","narrow":"KES"},"KGS":{"displayName":{"other":"Kırgızistan somu"},"symbol":"KGS","narrow":"KGS"},"KHR":{"displayName":{"other":"Kamboçya rieli"},"symbol":"KHR","narrow":"៛"},"KMF":{"displayName":{"other":"Komorlar frangı"},"symbol":"KMF","narrow":"CF"},"KPW":{"displayName":{"other":"Kuzey Kore wonu"},"symbol":"KPW","narrow":"₩"},"KRH":{"displayName":{"other":"Güney Kore hwanı (1953–1962)"},"symbol":"KRH","narrow":"KRH"},"KRO":{"displayName":{"other":"Güney Kore wonu (1945–1953)"},"symbol":"KRO","narrow":"KRO"},"KRW":{"displayName":{"other":"Güney Kore wonu"},"symbol":"₩","narrow":"₩"},"KWD":{"displayName":{"other":"Kuveyt dinarı"},"symbol":"KWD","narrow":"KWD"},"KYD":{"displayName":{"other":"Cayman Adaları doları"},"symbol":"KYD","narrow":"$"},"KZT":{"displayName":{"other":"Kazakistan tengesi"},"symbol":"KZT","narrow":"₸"},"LAK":{"displayName":{"other":"Laos kipi"},"symbol":"LAK","narrow":"₭"},"LBP":{"displayName":{"other":"Lübnan lirası"},"symbol":"LBP","narrow":"L£"},"LKR":{"displayName":{"other":"Sri Lanka rupisi"},"symbol":"LKR","narrow":"Rs"},"LRD":{"displayName":{"other":"Liberya doları"},"symbol":"LRD","narrow":"$"},"LSL":{"displayName":{"other":"Lesotho lotisi"},"symbol":"LSL","narrow":"LSL"},"LTL":{"displayName":{"other":"Litvanya litası"},"symbol":"LTL","narrow":"Lt"},"LTT":{"displayName":{"other":"Litvanya Talonu"},"symbol":"LTT","narrow":"LTT"},"LUC":{"displayName":{"other":"Konvertibl Lüksemburg Frangı"},"symbol":"LUC","narrow":"LUC"},"LUF":{"displayName":{"other":"Lüksemburg Frangı"},"symbol":"LUF","narrow":"LUF"},"LUL":{"displayName":{"other":"Finansal Lüksemburg Frangı"},"symbol":"LUL","narrow":"LUL"},"LVL":{"displayName":{"other":"Letonya latı"},"symbol":"LVL","narrow":"Ls"},"LVR":{"displayName":{"other":"Letonya Rublesi"},"symbol":"LVR","narrow":"LVR"},"LYD":{"displayName":{"other":"Libya dinarı"},"symbol":"LYD","narrow":"LYD"},"MAD":{"displayName":{"other":"Fas dirhemi"},"symbol":"MAD","narrow":"MAD"},"MAF":{"displayName":{"other":"Fas Frangı"},"symbol":"MAF","narrow":"MAF"},"MCF":{"displayName":{"other":"Monako frangı"},"symbol":"MCF","narrow":"MCF"},"MDC":{"displayName":{"other":"Moldova kuponu"},"symbol":"MDC","narrow":"MDC"},"MDL":{"displayName":{"other":"Moldova leyi"},"symbol":"MDL","narrow":"MDL"},"MGA":{"displayName":{"other":"Madagaskar ariarisi"},"symbol":"MGA","narrow":"Ar"},"MGF":{"displayName":{"other":"Madagaskar Frangı"},"symbol":"MGF","narrow":"MGF"},"MKD":{"displayName":{"other":"Makedonya dinarı"},"symbol":"MKD","narrow":"MKD"},"MKN":{"displayName":{"other":"Makedonya dinarı (1992–1993)"},"symbol":"MKN","narrow":"MKN"},"MLF":{"displayName":{"other":"Mali Frangı"},"symbol":"MLF","narrow":"MLF"},"MMK":{"displayName":{"other":"Myanmar kyatı"},"symbol":"MMK","narrow":"K"},"MNT":{"displayName":{"other":"Moğolistan tugriki"},"symbol":"MNT","narrow":"₮"},"MOP":{"displayName":{"other":"Makao patakası"},"symbol":"MOP","narrow":"MOP"},"MRO":{"displayName":{"other":"Moritanya ugiyası (1973–2017)"},"symbol":"MRO","narrow":"MRO"},"MRU":{"displayName":{"other":"Moritanya ugiyası"},"symbol":"MRU","narrow":"MRU"},"MTL":{"displayName":{"other":"Malta Lirası"},"symbol":"MTL","narrow":"MTL"},"MTP":{"displayName":{"other":"Malta Sterlini"},"symbol":"MTP","narrow":"MTP"},"MUR":{"displayName":{"other":"Mauritius rupisi"},"symbol":"MUR","narrow":"Rs"},"MVP":{"displayName":{"other":"Maldiv rupisi"},"symbol":"MVP","narrow":"MVP"},"MVR":{"displayName":{"other":"Maldiv rufiyaası"},"symbol":"MVR","narrow":"MVR"},"MWK":{"displayName":{"other":"Malavi kvaçası"},"symbol":"MWK","narrow":"MWK"},"MXN":{"displayName":{"other":"Meksika pesosu"},"symbol":"MX$","narrow":"$"},"MXP":{"displayName":{"other":"Gümüş Meksika Pezosu (1861–1992)"},"symbol":"MXP","narrow":"MXP"},"MXV":{"displayName":{"other":"Meksika Unidad de Inversion (UDI)"},"symbol":"MXV","narrow":"MXV"},"MYR":{"displayName":{"other":"Malezya ringgiti"},"symbol":"MYR","narrow":"RM"},"MZE":{"displayName":{"other":"Mozambik Esküdosu"},"symbol":"MZE","narrow":"MZE"},"MZM":{"displayName":{"other":"Eski Mozambik Metikali"},"symbol":"MZM","narrow":"MZM"},"MZN":{"displayName":{"other":"Mozambik metikali"},"symbol":"MZN","narrow":"MZN"},"NAD":{"displayName":{"other":"Namibya doları"},"symbol":"NAD","narrow":"$"},"NGN":{"displayName":{"other":"Nijerya nairası"},"symbol":"NGN","narrow":"₦"},"NIC":{"displayName":{"other":"Nikaragua Kordobası (1988–1991)"},"symbol":"NIC","narrow":"NIC"},"NIO":{"displayName":{"other":"Nikaragua kordobası"},"symbol":"NIO","narrow":"C$"},"NLG":{"displayName":{"other":"Hollanda Florini"},"symbol":"NLG","narrow":"NLG"},"NOK":{"displayName":{"other":"Norveç kronu"},"symbol":"NOK","narrow":"kr"},"NPR":{"displayName":{"other":"Nepal rupisi"},"symbol":"NPR","narrow":"Rs"},"NZD":{"displayName":{"other":"Yeni Zelanda doları"},"symbol":"NZ$","narrow":"$"},"OMR":{"displayName":{"other":"Umman riyali"},"symbol":"OMR","narrow":"OMR"},"PAB":{"displayName":{"other":"Panama balboası"},"symbol":"PAB","narrow":"PAB"},"PEI":{"displayName":{"other":"Peru İnti"},"symbol":"PEI","narrow":"PEI"},"PEN":{"displayName":{"other":"Peru solü"},"symbol":"PEN","narrow":"PEN"},"PES":{"displayName":{"other":"Peru Solü (1863–1965)"},"symbol":"PES","narrow":"PES"},"PGK":{"displayName":{"other":"Papua Yeni Gine kinası"},"symbol":"PGK","narrow":"PGK"},"PHP":{"displayName":{"other":"Filipinler pesosu"},"symbol":"PHP","narrow":"₱"},"PKR":{"displayName":{"other":"Pakistan rupisi"},"symbol":"PKR","narrow":"Rs"},"PLN":{"displayName":{"other":"Polonya zlotisi"},"symbol":"PLN","narrow":"zł"},"PLZ":{"displayName":{"other":"Polonya Zlotisi (1950–1995)"},"symbol":"PLZ","narrow":"PLZ"},"PTE":{"displayName":{"other":"Portekiz Esküdosu"},"symbol":"PTE","narrow":"PTE"},"PYG":{"displayName":{"other":"Paraguay guaranisi"},"symbol":"PYG","narrow":"₲"},"QAR":{"displayName":{"other":"Katar riyali"},"symbol":"QAR","narrow":"QAR"},"RHD":{"displayName":{"other":"Rodezya Doları"},"symbol":"RHD","narrow":"RHD"},"ROL":{"displayName":{"other":"Eski Romen Leyi"},"symbol":"ROL","narrow":"ROL"},"RON":{"displayName":{"other":"Romen leyi"},"symbol":"RON","narrow":"L"},"RSD":{"displayName":{"other":"Sırp dinarı"},"symbol":"RSD","narrow":"RSD"},"RUB":{"displayName":{"other":"Rus rublesi"},"symbol":"RUB","narrow":"₽"},"RUR":{"displayName":{"other":"Rus Rublesi (1991–1998)"},"symbol":"RUR","narrow":"р."},"RWF":{"displayName":{"other":"Ruanda frangı"},"symbol":"RWF","narrow":"RF"},"SAR":{"displayName":{"other":"Suudi Arabistan riyali"},"symbol":"SAR","narrow":"SAR"},"SBD":{"displayName":{"other":"Solomon Adaları doları"},"symbol":"SBD","narrow":"$"},"SCR":{"displayName":{"other":"Seyşeller rupisi"},"symbol":"SCR","narrow":"SCR"},"SDD":{"displayName":{"other":"Eski Sudan Dinarı"},"symbol":"SDD","narrow":"SDD"},"SDG":{"displayName":{"other":"Sudan lirası"},"symbol":"SDG","narrow":"SDG"},"SDP":{"displayName":{"other":"Eski Sudan Lirası"},"symbol":"SDP","narrow":"SDP"},"SEK":{"displayName":{"other":"İsveç kronu"},"symbol":"SEK","narrow":"kr"},"SGD":{"displayName":{"other":"Singapur doları"},"symbol":"SGD","narrow":"$"},"SHP":{"displayName":{"other":"Saint Helena lirası"},"symbol":"SHP","narrow":"£"},"SIT":{"displayName":{"other":"Slovenya Toları"},"symbol":"SIT","narrow":"SIT"},"SKK":{"displayName":{"other":"Slovak Korunası"},"symbol":"SKK","narrow":"SKK"},"SLL":{"displayName":{"other":"Sierra Leone leonesi"},"symbol":"SLL","narrow":"SLL"},"SOS":{"displayName":{"other":"Somali şilini"},"symbol":"SOS","narrow":"SOS"},"SRD":{"displayName":{"other":"Surinam doları"},"symbol":"SRD","narrow":"$"},"SRG":{"displayName":{"other":"Surinam Guldeni"},"symbol":"SRG","narrow":"SRG"},"SSP":{"displayName":{"other":"Güney Sudan lirası"},"symbol":"SSP","narrow":"£"},"STD":{"displayName":{"other":"São Tomé ve Príncipe dobrası (1977–2017)"},"symbol":"STD","narrow":"STD"},"STN":{"displayName":{"other":"Sao Tome ve Principe dobrası"},"symbol":"STN","narrow":"Db"},"SUR":{"displayName":{"other":"Sovyet Rublesi"},"symbol":"SUR","narrow":"SUR"},"SVC":{"displayName":{"other":"El Salvador Kolonu"},"symbol":"SVC","narrow":"SVC"},"SYP":{"displayName":{"other":"Suriye lirası"},"symbol":"SYP","narrow":"£"},"SZL":{"displayName":{"other":"Svaziland lilangenisi"},"symbol":"SZL","narrow":"SZL"},"THB":{"displayName":{"other":"Tayland bahtı"},"symbol":"฿","narrow":"฿"},"TJR":{"displayName":{"other":"Tacikistan Rublesi"},"symbol":"TJR","narrow":"TJR"},"TJS":{"displayName":{"other":"Tacikistan somonisi"},"symbol":"TJS","narrow":"TJS"},"TMM":{"displayName":{"other":"Türkmenistan Manatı (1993–2009)"},"symbol":"TMM","narrow":"TMM"},"TMT":{"displayName":{"other":"Türkmenistan manatı"},"symbol":"TMT","narrow":"TMT"},"TND":{"displayName":{"other":"Tunus dinarı"},"symbol":"TND","narrow":"TND"},"TOP":{"displayName":{"other":"Tonga paʻangası"},"symbol":"TOP","narrow":"T$"},"TPE":{"displayName":{"other":"Timor Esküdosu"},"symbol":"TPE","narrow":"TPE"},"TRL":{"displayName":{"other":"Eski Türk Lirası"},"symbol":"TRL","narrow":"TRL"},"TRY":{"displayName":{"other":"Türk lirası"},"symbol":"₺","narrow":"₺"},"TTD":{"displayName":{"other":"Trinidad ve Tobago doları"},"symbol":"TTD","narrow":"$"},"TWD":{"displayName":{"other":"Yeni Tayvan doları"},"symbol":"NT$","narrow":"NT$"},"TZS":{"displayName":{"other":"Tanzanya şilini"},"symbol":"TZS","narrow":"TZS"},"UAH":{"displayName":{"other":"Ukrayna grivnası"},"symbol":"UAH","narrow":"₴"},"UAK":{"displayName":{"other":"Ukrayna Karbovanetz"},"symbol":"UAK","narrow":"UAK"},"UGS":{"displayName":{"other":"Uganda Şilini (1966–1987)"},"symbol":"UGS","narrow":"UGS"},"UGX":{"displayName":{"other":"Uganda şilini"},"symbol":"UGX","narrow":"UGX"},"USD":{"displayName":{"other":"ABD doları"},"symbol":"$","narrow":"$"},"USN":{"displayName":{"other":"ABD Doları (Ertesi gün)"},"symbol":"USN","narrow":"USN"},"USS":{"displayName":{"other":"ABD Doları (Aynı gün)"},"symbol":"USS","narrow":"USS"},"UYI":{"displayName":{"other":"Uruguay Peso en Unidades Indexadas"},"symbol":"UYI","narrow":"UYI"},"UYP":{"displayName":{"other":"Uruguay Pezosu (1975–1993)"},"symbol":"UYP","narrow":"UYP"},"UYU":{"displayName":{"other":"Uruguay pesosu"},"symbol":"UYU","narrow":"$"},"UYW":{"displayName":{"other":"UYW"},"symbol":"UYW","narrow":"UYW"},"UZS":{"displayName":{"other":"Özbekistan somu"},"symbol":"UZS","narrow":"UZS"},"VEB":{"displayName":{"other":"Venezuela Bolivarı (1871–2008)"},"symbol":"VEB","narrow":"VEB"},"VEF":{"displayName":{"other":"Venezuela bolivarı (2008–2018)"},"symbol":"VEF","narrow":"Bs"},"VES":{"displayName":{"other":"Venezuela bolivarı"},"symbol":"VES","narrow":"VES"},"VND":{"displayName":{"other":"Vietnam dongu"},"symbol":"₫","narrow":"₫"},"VNN":{"displayName":{"other":"Vietnam dongu (1978–1985)"},"symbol":"VNN","narrow":"VNN"},"VUV":{"displayName":{"other":"Vanuatu vatusu"},"symbol":"VUV","narrow":"VUV"},"WST":{"displayName":{"other":"Samoa talası"},"symbol":"WST","narrow":"WST"},"XAF":{"displayName":{"other":"Orta Afrika CFA frangı"},"symbol":"FCFA","narrow":"FCFA"},"XAG":{"displayName":{"other":"Gümüş"},"symbol":"XAG","narrow":"XAG"},"XAU":{"displayName":{"other":"Altın"},"symbol":"XAU","narrow":"XAU"},"XBA":{"displayName":{"other":"Birleşik Avrupa Birimi"},"symbol":"XBA","narrow":"XBA"},"XBB":{"displayName":{"other":"Avrupa Para Birimi (EMU)"},"symbol":"XBB","narrow":"XBB"},"XBC":{"displayName":{"other":"Avrupa Hesap Birimi (XBC)"},"symbol":"XBC","narrow":"XBC"},"XBD":{"displayName":{"other":"Avrupa Hesap Birimi (XBD)"},"symbol":"XBD","narrow":"XBD"},"XCD":{"displayName":{"other":"Doğu Karayip doları"},"symbol":"EC$","narrow":"$"},"XDR":{"displayName":{"other":"Özel Çekme Hakkı (SDR)"},"symbol":"XDR","narrow":"XDR"},"XEU":{"displayName":{"other":"Avrupa Para Birimi"},"symbol":"XEU","narrow":"XEU"},"XFO":{"displayName":{"other":"Fransız Altın Frangı"},"symbol":"XFO","narrow":"XFO"},"XFU":{"displayName":{"other":"Fransız UIC-Frangı"},"symbol":"XFU","narrow":"XFU"},"XOF":{"displayName":{"other":"Batı Afrika CFA frangı"},"symbol":"F CFA","narrow":"F CFA"},"XPD":{"displayName":{"other":"Paladyum"},"symbol":"XPD","narrow":"XPD"},"XPF":{"displayName":{"other":"CFP frangı"},"symbol":"CFPF","narrow":"CFPF"},"XPT":{"displayName":{"other":"Platin"},"symbol":"XPT","narrow":"XPT"},"XRE":{"displayName":{"other":"RINET Fonları"},"symbol":"XRE","narrow":"XRE"},"XSU":{"displayName":{"other":"Sucre"},"symbol":"XSU","narrow":"XSU"},"XTS":{"displayName":{"other":"Test Para Birimi Kodu"},"symbol":"XTS","narrow":"XTS"},"XUA":{"displayName":{"other":"ADB hesap birimi"},"symbol":"XUA","narrow":"XUA"},"XXX":{"displayName":{"other":"(bilinmeyen para birimi)"},"symbol":"¤","narrow":"¤"},"YDD":{"displayName":{"other":"Yemen Dinarı"},"symbol":"YDD","narrow":"YDD"},"YER":{"displayName":{"other":"Yemen riyali"},"symbol":"YER","narrow":"YER"},"YUD":{"displayName":{"other":"Yugoslav Dinarı (Hard)"},"symbol":"YUD","narrow":"YUD"},"YUM":{"displayName":{"other":"Yeni Yugoslav Dinarı"},"symbol":"YUM","narrow":"YUM"},"YUN":{"displayName":{"other":"Konvertibl Yugoslav Dinarı"},"symbol":"YUN","narrow":"YUN"},"YUR":{"displayName":{"other":"İyileştirilmiş Yugoslav dinarı (1992–1993)"},"symbol":"YUR","narrow":"YUR"},"ZAL":{"displayName":{"other":"Güney Afrika Randı (finansal)"},"symbol":"ZAL","narrow":"ZAL"},"ZAR":{"displayName":{"other":"Güney Afrika randı"},"symbol":"ZAR","narrow":"R"},"ZMK":{"displayName":{"other":"Zambiya Kvaçası (1968–2012)"},"symbol":"ZMK","narrow":"ZMK"},"ZMW":{"displayName":{"other":"Zambiya kvaçası"},"symbol":"ZMW","narrow":"ZK"},"ZRN":{"displayName":{"other":"Yeni Zaire Zairesi"},"symbol":"ZRN","narrow":"ZRN"},"ZRZ":{"displayName":{"other":"Zaire Zairesi"},"symbol":"ZRZ","narrow":"ZRZ"},"ZWD":{"displayName":{"other":"Zimbabve Doları"},"symbol":"ZWD","narrow":"ZWD"},"ZWL":{"displayName":{"other":"Zimbabve Doları (2009)"},"symbol":"ZWL","narrow":"ZWL"},"ZWR":{"displayName":{"other":"Zimbabve doları (2008)"},"symbol":"ZWR","narrow":"ZWR"}},"numbers":{"nu":["latn"],"symbols":{"latn":{"decimal":",","group":".","list":";","percentSign":"%","plusSign":"+","minusSign":"-","approximatelySign":"~","exponential":"E","superscriptingExponent":"×","perMille":"‰","infinity":"∞","nan":"NaN","timeSeparator":":","rangeSign":"–"}},"percent":{"latn":"%#,##0"},"decimal":{"latn":{"standard":"#,##0.###","long":{"1000":{"other":"0 bin"},"10000":{"other":"00 bin"},"100000":{"other":"000 bin"},"1000000":{"other":"0 milyon"},"10000000":{"other":"00 milyon"},"100000000":{"other":"000 milyon"},"1000000000":{"other":"0 milyar"},"10000000000":{"other":"00 milyar"},"100000000000":{"other":"000 milyar"},"1000000000000":{"other":"0 trilyon"},"10000000000000":{"other":"00 trilyon"},"100000000000000":{"other":"000 trilyon"}},"short":{"1000":{"other":"0 B"},"10000":{"other":"00 B"},"100000":{"other":"000 B"},"1000000":{"other":"0 Mn"},"10000000":{"other":"00 Mn"},"100000000":{"other":"000 Mn"},"1000000000":{"other":"0 Mr"},"10000000000":{"other":"00 Mr"},"100000000000":{"other":"000 Mr"},"1000000000000":{"other":"0 Tn"},"10000000000000":{"other":"00 Tn"},"100000000000000":{"other":"000 Tn"}}}},"currency":{"latn":{"currencySpacing":{"beforeInsertBetween":" ","afterInsertBetween":" "},"standard":"¤#,##0.00","accounting":"¤#,##0.00;(¤#,##0.00)","unitPattern":"{0} {1}","short":{"1000":{"other":"0 B ¤"},"10000":{"other":"00 B ¤"},"100000":{"other":"000 B ¤"},"1000000":{"other":"0 Mn ¤"},"10000000":{"other":"00 Mn ¤"},"100000000":{"other":"000 Mn ¤"},"1000000000":{"other":"0 Mr ¤"},"10000000000":{"other":"00 Mr ¤"},"100000000000":{"other":"000 Mr ¤"},"1000000000000":{"other":"0 Tn ¤"},"10000000000000":{"other":"00 Tn ¤"},"100000000000000":{"other":"000 Tn ¤"}}}}},"nu":["latn"]},"locale":"tr"}
+{
+  "data": {
+    "currencies": {
+      "ADP": {
+        "displayName": {
+          "other": "Andorra Pezetası"
+        },
+        "narrow": "ADP",
+        "symbol": "ADP"
+      },
+      "AED": {
+        "displayName": {
+          "other": "BAE dirhemi"
+        },
+        "narrow": "AED",
+        "symbol": "AED"
+      },
+      "AFA": {
+        "displayName": {
+          "other": "Afganistan Afganisi (1927–2002)"
+        },
+        "narrow": "AFA",
+        "symbol": "AFA"
+      },
+      "AFN": {
+        "displayName": {
+          "other": "Afganistan afganisi"
+        },
+        "narrow": "؋",
+        "symbol": "AFN"
+      },
+      "ALK": {
+        "displayName": {
+          "other": "Arnavutluk leki (1946–1965)"
+        },
+        "narrow": "ALK",
+        "symbol": "ALK"
+      },
+      "ALL": {
+        "displayName": {
+          "other": "Arnavutluk leki"
+        },
+        "narrow": "ALL",
+        "symbol": "ALL"
+      },
+      "AMD": {
+        "displayName": {
+          "other": "Ermenistan dramı"
+        },
+        "narrow": "֏",
+        "symbol": "AMD"
+      },
+      "ANG": {
+        "displayName": {
+          "other": "Hollanda Antilleri guldeni"
+        },
+        "narrow": "ANG",
+        "symbol": "ANG"
+      },
+      "AOA": {
+        "displayName": {
+          "other": "Angola kvanzası"
+        },
+        "narrow": "Kz",
+        "symbol": "AOA"
+      },
+      "AOK": {
+        "displayName": {
+          "other": "Angola Kvanzası (1977–1990)"
+        },
+        "narrow": "AOK",
+        "symbol": "AOK"
+      },
+      "AON": {
+        "displayName": {
+          "other": "Yeni Angola Kvanzası (1990–2000)"
+        },
+        "narrow": "AON",
+        "symbol": "AON"
+      },
+      "AOR": {
+        "displayName": {
+          "other": "Angola Kvanzası Reajustado (1995–1999)"
+        },
+        "narrow": "AOR",
+        "symbol": "AOR"
+      },
+      "ARA": {
+        "displayName": {
+          "other": "Arjantin Australi"
+        },
+        "narrow": "ARA",
+        "symbol": "ARA"
+      },
+      "ARL": {
+        "displayName": {
+          "other": "Arjantin peso leyi (1970–1983)"
+        },
+        "narrow": "ARL",
+        "symbol": "ARL"
+      },
+      "ARM": {
+        "displayName": {
+          "other": "Arjantin pesosu (1881–1970)"
+        },
+        "narrow": "ARM",
+        "symbol": "ARM"
+      },
+      "ARP": {
+        "displayName": {
+          "other": "Arjantin Pezosu (1983–1985)"
+        },
+        "narrow": "ARP",
+        "symbol": "ARP"
+      },
+      "ARS": {
+        "displayName": {
+          "other": "Arjantin pesosu"
+        },
+        "narrow": "$",
+        "symbol": "ARS"
+      },
+      "ATS": {
+        "displayName": {
+          "other": "Avusturya Şilini"
+        },
+        "narrow": "ATS",
+        "symbol": "ATS"
+      },
+      "AUD": {
+        "displayName": {
+          "other": "Avustralya doları"
+        },
+        "narrow": "$",
+        "symbol": "AU$"
+      },
+      "AWG": {
+        "displayName": {
+          "other": "Aruba florini"
+        },
+        "narrow": "AWG",
+        "symbol": "AWG"
+      },
+      "AZM": {
+        "displayName": {
+          "other": "Azerbaycan Manatı (1993–2006)"
+        },
+        "narrow": "AZM",
+        "symbol": "AZM"
+      },
+      "AZN": {
+        "displayName": {
+          "other": "Azerbaycan manatı"
+        },
+        "narrow": "₼",
+        "symbol": "AZN"
+      },
+      "BAD": {
+        "displayName": {
+          "other": "Bosna Hersek Dinarı"
+        },
+        "narrow": "BAD",
+        "symbol": "BAD"
+      },
+      "BAM": {
+        "displayName": {
+          "other": "Konvertibl Bosna Hersek markı"
+        },
+        "narrow": "KM",
+        "symbol": "BAM"
+      },
+      "BAN": {
+        "displayName": {
+          "other": "Yeni Bosna Hersek dinarı (1994–1997)"
+        },
+        "narrow": "BAN",
+        "symbol": "BAN"
+      },
+      "BBD": {
+        "displayName": {
+          "other": "Barbados doları"
+        },
+        "narrow": "$",
+        "symbol": "BBD"
+      },
+      "BDT": {
+        "displayName": {
+          "other": "Bangladeş takası"
+        },
+        "narrow": "৳",
+        "symbol": "BDT"
+      },
+      "BEC": {
+        "displayName": {
+          "other": "Belçika Frangı (konvertibl)"
+        },
+        "narrow": "BEC",
+        "symbol": "BEC"
+      },
+      "BEF": {
+        "displayName": {
+          "other": "Belçika Frangı"
+        },
+        "narrow": "BEF",
+        "symbol": "BEF"
+      },
+      "BEL": {
+        "displayName": {
+          "other": "Belçika Frangı (finansal)"
+        },
+        "narrow": "BEL",
+        "symbol": "BEL"
+      },
+      "BGL": {
+        "displayName": {
+          "other": "Bulgar Levası (Hard)"
+        },
+        "narrow": "BGL",
+        "symbol": "BGL"
+      },
+      "BGM": {
+        "displayName": {
+          "other": "Sosyalist Bulgaristan levası"
+        },
+        "narrow": "BGM",
+        "symbol": "BGM"
+      },
+      "BGN": {
+        "displayName": {
+          "other": "Bulgar levası"
+        },
+        "narrow": "BGN",
+        "symbol": "BGN"
+      },
+      "BGO": {
+        "displayName": {
+          "other": "Bulgar levası (1879–1952)"
+        },
+        "narrow": "BGO",
+        "symbol": "BGO"
+      },
+      "BHD": {
+        "displayName": {
+          "other": "Bahreyn dinarı"
+        },
+        "narrow": "BHD",
+        "symbol": "BHD"
+      },
+      "BIF": {
+        "displayName": {
+          "other": "Burundi frangı"
+        },
+        "narrow": "BIF",
+        "symbol": "BIF"
+      },
+      "BMD": {
+        "displayName": {
+          "other": "Bermuda doları"
+        },
+        "narrow": "$",
+        "symbol": "BMD"
+      },
+      "BND": {
+        "displayName": {
+          "other": "Brunei doları"
+        },
+        "narrow": "$",
+        "symbol": "BND"
+      },
+      "BOB": {
+        "displayName": {
+          "other": "Bolivya bolivyanosu"
+        },
+        "narrow": "Bs",
+        "symbol": "BOB"
+      },
+      "BOL": {
+        "displayName": {
+          "other": "Bolivya bolivyanosu (1863–1963)"
+        },
+        "narrow": "BOL",
+        "symbol": "BOL"
+      },
+      "BOP": {
+        "displayName": {
+          "other": "Bolivya Pezosu"
+        },
+        "narrow": "BOP",
+        "symbol": "BOP"
+      },
+      "BOV": {
+        "displayName": {
+          "other": "Bolivya Mvdolu"
+        },
+        "narrow": "BOV",
+        "symbol": "BOV"
+      },
+      "BRB": {
+        "displayName": {
+          "other": "Yeni Brezilya Kruzeirosu (1967–1986)"
+        },
+        "narrow": "BRB",
+        "symbol": "BRB"
+      },
+      "BRC": {
+        "displayName": {
+          "other": "Brezilya Kruzadosu"
+        },
+        "narrow": "BRC",
+        "symbol": "BRC"
+      },
+      "BRE": {
+        "displayName": {
+          "other": "Brezilya Kruzeirosu (1990–1993)"
+        },
+        "narrow": "BRE",
+        "symbol": "BRE"
+      },
+      "BRL": {
+        "displayName": {
+          "other": "Brezilya reali"
+        },
+        "narrow": "R$",
+        "symbol": "R$"
+      },
+      "BRN": {
+        "displayName": {
+          "other": "Yeni Brezilya Kruzadosu"
+        },
+        "narrow": "BRN",
+        "symbol": "BRN"
+      },
+      "BRR": {
+        "displayName": {
+          "other": "Brezilya Kruzeirosu"
+        },
+        "narrow": "BRR",
+        "symbol": "BRR"
+      },
+      "BRZ": {
+        "displayName": {
+          "other": "Brezilya kruzeirosu (1942–1967)"
+        },
+        "narrow": "BRZ",
+        "symbol": "BRZ"
+      },
+      "BSD": {
+        "displayName": {
+          "other": "Bahama doları"
+        },
+        "narrow": "$",
+        "symbol": "BSD"
+      },
+      "BTN": {
+        "displayName": {
+          "other": "Butan ngultrumu"
+        },
+        "narrow": "BTN",
+        "symbol": "BTN"
+      },
+      "BUK": {
+        "displayName": {
+          "other": "Burma Kyatı"
+        },
+        "narrow": "BUK",
+        "symbol": "BUK"
+      },
+      "BWP": {
+        "displayName": {
+          "other": "Botsvana pulası"
+        },
+        "narrow": "P",
+        "symbol": "BWP"
+      },
+      "BYB": {
+        "displayName": {
+          "other": "Yeni Beyaz Rusya Rublesi (1994–1999)"
+        },
+        "narrow": "BYB",
+        "symbol": "BYB"
+      },
+      "BYN": {
+        "displayName": {
+          "other": "Belarus rublesi"
+        },
+        "narrow": "р.",
+        "symbol": "BYN"
+      },
+      "BYR": {
+        "displayName": {
+          "other": "Beyaz Rusya rublesi (2000–2016)"
+        },
+        "narrow": "BYR",
+        "symbol": "BYR"
+      },
+      "BZD": {
+        "displayName": {
+          "other": "Belize doları"
+        },
+        "narrow": "$",
+        "symbol": "BZD"
+      },
+      "CAD": {
+        "displayName": {
+          "other": "Kanada doları"
+        },
+        "narrow": "$",
+        "symbol": "CA$"
+      },
+      "CDF": {
+        "displayName": {
+          "other": "Kongo frangı"
+        },
+        "narrow": "CDF",
+        "symbol": "CDF"
+      },
+      "CHE": {
+        "displayName": {
+          "other": "WIR Avrosu"
+        },
+        "narrow": "CHE",
+        "symbol": "CHE"
+      },
+      "CHF": {
+        "displayName": {
+          "other": "İsviçre frangı"
+        },
+        "narrow": "CHF",
+        "symbol": "CHF"
+      },
+      "CHW": {
+        "displayName": {
+          "other": "WIR Frangı"
+        },
+        "narrow": "CHW",
+        "symbol": "CHW"
+      },
+      "CLE": {
+        "displayName": {
+          "other": "Şili esküdosu"
+        },
+        "narrow": "CLE",
+        "symbol": "CLE"
+      },
+      "CLF": {
+        "displayName": {
+          "other": "Şili Unidades de Fomento"
+        },
+        "narrow": "CLF",
+        "symbol": "CLF"
+      },
+      "CLP": {
+        "displayName": {
+          "other": "Şili pesosu"
+        },
+        "narrow": "$",
+        "symbol": "CLP"
+      },
+      "CNH": {
+        "displayName": {
+          "other": "Çin yuanı (offshore)"
+        },
+        "narrow": "CNH",
+        "symbol": "CNH"
+      },
+      "CNX": {
+        "displayName": {
+          "other": "Çin Halk Cumhuriyeti Merkez Bankası doları"
+        },
+        "narrow": "CNX",
+        "symbol": "CNX"
+      },
+      "CNY": {
+        "displayName": {
+          "other": "Çin yuanı"
+        },
+        "narrow": "¥",
+        "symbol": "CN¥"
+      },
+      "COP": {
+        "displayName": {
+          "other": "Kolombiya pesosu"
+        },
+        "narrow": "$",
+        "symbol": "COP"
+      },
+      "COU": {
+        "displayName": {
+          "other": "Unidad de Valor Real"
+        },
+        "narrow": "COU",
+        "symbol": "COU"
+      },
+      "CRC": {
+        "displayName": {
+          "other": "Kosta Rika kolonu"
+        },
+        "narrow": "₡",
+        "symbol": "CRC"
+      },
+      "CSD": {
+        "displayName": {
+          "other": "Eski Sırbistan Dinarı"
+        },
+        "narrow": "CSD",
+        "symbol": "CSD"
+      },
+      "CSK": {
+        "displayName": {
+          "other": "Çekoslavak Korunası (Hard)"
+        },
+        "narrow": "CSK",
+        "symbol": "CSK"
+      },
+      "CUC": {
+        "displayName": {
+          "other": "Konvertibl Küba pesosu"
+        },
+        "narrow": "$",
+        "symbol": "CUC"
+      },
+      "CUP": {
+        "displayName": {
+          "other": "Küba pesosu"
+        },
+        "narrow": "$",
+        "symbol": "CUP"
+      },
+      "CVE": {
+        "displayName": {
+          "other": "Cape Verde esküdosu"
+        },
+        "narrow": "CVE",
+        "symbol": "CVE"
+      },
+      "CYP": {
+        "displayName": {
+          "other": "Güney Kıbrıs Lirası"
+        },
+        "narrow": "CYP",
+        "symbol": "CYP"
+      },
+      "CZK": {
+        "displayName": {
+          "other": "Çek korunası"
+        },
+        "narrow": "Kč",
+        "symbol": "CZK"
+      },
+      "DDM": {
+        "displayName": {
+          "other": "Doğu Alman Markı"
+        },
+        "narrow": "DDM",
+        "symbol": "DDM"
+      },
+      "DEM": {
+        "displayName": {
+          "other": "Alman Markı"
+        },
+        "narrow": "DEM",
+        "symbol": "DEM"
+      },
+      "DJF": {
+        "displayName": {
+          "other": "Cibuti frangı"
+        },
+        "narrow": "DJF",
+        "symbol": "DJF"
+      },
+      "DKK": {
+        "displayName": {
+          "other": "Danimarka kronu"
+        },
+        "narrow": "kr",
+        "symbol": "DKK"
+      },
+      "DOP": {
+        "displayName": {
+          "other": "Dominik pesosu"
+        },
+        "narrow": "$",
+        "symbol": "DOP"
+      },
+      "DZD": {
+        "displayName": {
+          "other": "Cezayir dinarı"
+        },
+        "narrow": "DZD",
+        "symbol": "DZD"
+      },
+      "ECS": {
+        "displayName": {
+          "other": "Ekvador Sukresi"
+        },
+        "narrow": "ECS",
+        "symbol": "ECS"
+      },
+      "ECV": {
+        "displayName": {
+          "other": "Ekvador Unidad de Valor Constante (UVC)"
+        },
+        "narrow": "ECV",
+        "symbol": "ECV"
+      },
+      "EEK": {
+        "displayName": {
+          "other": "Estonya Krunu"
+        },
+        "narrow": "EEK",
+        "symbol": "EEK"
+      },
+      "EGP": {
+        "displayName": {
+          "other": "Mısır lirası"
+        },
+        "narrow": "E£",
+        "symbol": "EGP"
+      },
+      "ERN": {
+        "displayName": {
+          "other": "Eritre nakfası"
+        },
+        "narrow": "ERN",
+        "symbol": "ERN"
+      },
+      "ESA": {
+        "displayName": {
+          "other": "İspanyol Pezetası (A hesabı)"
+        },
+        "narrow": "ESA",
+        "symbol": "ESA"
+      },
+      "ESB": {
+        "displayName": {
+          "other": "İspanyol Pezetası (konvertibl hesap)"
+        },
+        "narrow": "ESB",
+        "symbol": "ESB"
+      },
+      "ESP": {
+        "displayName": {
+          "other": "İspanyol Pezetası"
+        },
+        "narrow": "₧",
+        "symbol": "ESP"
+      },
+      "ETB": {
+        "displayName": {
+          "other": "Etiyopya birri"
+        },
+        "narrow": "ETB",
+        "symbol": "ETB"
+      },
+      "EUR": {
+        "displayName": {
+          "other": "Euro"
+        },
+        "narrow": "€",
+        "symbol": "€"
+      },
+      "FIM": {
+        "displayName": {
+          "other": "Fin Markkası"
+        },
+        "narrow": "FIM",
+        "symbol": "FIM"
+      },
+      "FJD": {
+        "displayName": {
+          "other": "Fiji doları"
+        },
+        "narrow": "$",
+        "symbol": "FJD"
+      },
+      "FKP": {
+        "displayName": {
+          "other": "Falkland Adaları lirası"
+        },
+        "narrow": "£",
+        "symbol": "FKP"
+      },
+      "FRF": {
+        "displayName": {
+          "other": "Fransız Frangı"
+        },
+        "narrow": "FRF",
+        "symbol": "FRF"
+      },
+      "GBP": {
+        "displayName": {
+          "other": "İngiliz sterlini"
+        },
+        "narrow": "£",
+        "symbol": "£"
+      },
+      "GEK": {
+        "displayName": {
+          "other": "Gürcistan Kupon Larisi"
+        },
+        "narrow": "GEK",
+        "symbol": "GEK"
+      },
+      "GEL": {
+        "displayName": {
+          "other": "Gürcistan larisi"
+        },
+        "narrow": "₾",
+        "symbol": "GEL"
+      },
+      "GHC": {
+        "displayName": {
+          "other": "Gana Sedisi (1979–2007)"
+        },
+        "narrow": "GHC",
+        "symbol": "GHC"
+      },
+      "GHS": {
+        "displayName": {
+          "other": "Gana sedisi"
+        },
+        "narrow": "GH₵",
+        "symbol": "GHS"
+      },
+      "GIP": {
+        "displayName": {
+          "other": "Cebelitarık lirası"
+        },
+        "narrow": "£",
+        "symbol": "GIP"
+      },
+      "GMD": {
+        "displayName": {
+          "other": "Gambiya dalasisi"
+        },
+        "narrow": "GMD",
+        "symbol": "GMD"
+      },
+      "GNF": {
+        "displayName": {
+          "other": "Gine frangı"
+        },
+        "narrow": "FG",
+        "symbol": "GNF"
+      },
+      "GNS": {
+        "displayName": {
+          "other": "Gine Sylisi"
+        },
+        "narrow": "GNS",
+        "symbol": "GNS"
+      },
+      "GQE": {
+        "displayName": {
+          "other": "Ekvator Ginesi Ekuelesi"
+        },
+        "narrow": "GQE",
+        "symbol": "GQE"
+      },
+      "GRD": {
+        "displayName": {
+          "other": "Yunan Drahmisi"
+        },
+        "narrow": "GRD",
+        "symbol": "GRD"
+      },
+      "GTQ": {
+        "displayName": {
+          "other": "Guatemala quetzalı"
+        },
+        "narrow": "Q",
+        "symbol": "GTQ"
+      },
+      "GWE": {
+        "displayName": {
+          "other": "Portekiz Ginesi Esküdosu"
+        },
+        "narrow": "GWE",
+        "symbol": "GWE"
+      },
+      "GWP": {
+        "displayName": {
+          "other": "Gine-Bissau Pezosu"
+        },
+        "narrow": "GWP",
+        "symbol": "GWP"
+      },
+      "GYD": {
+        "displayName": {
+          "other": "Guyana doları"
+        },
+        "narrow": "$",
+        "symbol": "GYD"
+      },
+      "HKD": {
+        "displayName": {
+          "other": "Hong Kong doları"
+        },
+        "narrow": "$",
+        "symbol": "HK$"
+      },
+      "HNL": {
+        "displayName": {
+          "other": "Honduras lempirası"
+        },
+        "narrow": "L",
+        "symbol": "HNL"
+      },
+      "HRD": {
+        "displayName": {
+          "other": "Hırvatistan Dinarı"
+        },
+        "narrow": "HRD",
+        "symbol": "HRD"
+      },
+      "HRK": {
+        "displayName": {
+          "other": "Hırvatistan kunası"
+        },
+        "narrow": "kn",
+        "symbol": "HRK"
+      },
+      "HTG": {
+        "displayName": {
+          "other": "Haiti gurdu"
+        },
+        "narrow": "HTG",
+        "symbol": "HTG"
+      },
+      "HUF": {
+        "displayName": {
+          "other": "Macar forinti"
+        },
+        "narrow": "Ft",
+        "symbol": "HUF"
+      },
+      "IDR": {
+        "displayName": {
+          "other": "Endonezya rupisi"
+        },
+        "narrow": "Rp",
+        "symbol": "IDR"
+      },
+      "IEP": {
+        "displayName": {
+          "other": "İrlanda Lirası"
+        },
+        "narrow": "IEP",
+        "symbol": "IEP"
+      },
+      "ILP": {
+        "displayName": {
+          "other": "İsrail Lirası"
+        },
+        "narrow": "ILP",
+        "symbol": "ILP"
+      },
+      "ILR": {
+        "displayName": {
+          "other": "İsrail şekeli (1980–1985)"
+        },
+        "narrow": "ILR",
+        "symbol": "ILR"
+      },
+      "ILS": {
+        "displayName": {
+          "other": "Yeni İsrail şekeli"
+        },
+        "narrow": "₪",
+        "symbol": "₪"
+      },
+      "INR": {
+        "displayName": {
+          "other": "Hindistan rupisi"
+        },
+        "narrow": "₹",
+        "symbol": "₹"
+      },
+      "IQD": {
+        "displayName": {
+          "other": "Irak dinarı"
+        },
+        "narrow": "IQD",
+        "symbol": "IQD"
+      },
+      "IRR": {
+        "displayName": {
+          "other": "İran riyali"
+        },
+        "narrow": "IRR",
+        "symbol": "IRR"
+      },
+      "ISJ": {
+        "displayName": {
+          "other": "İzlanda kronu (1918–1981)"
+        },
+        "narrow": "ISJ",
+        "symbol": "ISJ"
+      },
+      "ISK": {
+        "displayName": {
+          "other": "İzlanda kronu"
+        },
+        "narrow": "kr",
+        "symbol": "ISK"
+      },
+      "ITL": {
+        "displayName": {
+          "other": "İtalyan Lireti"
+        },
+        "narrow": "ITL",
+        "symbol": "ITL"
+      },
+      "JMD": {
+        "displayName": {
+          "other": "Jamaika doları"
+        },
+        "narrow": "$",
+        "symbol": "JMD"
+      },
+      "JOD": {
+        "displayName": {
+          "other": "Ürdün dinarı"
+        },
+        "narrow": "JOD",
+        "symbol": "JOD"
+      },
+      "JPY": {
+        "displayName": {
+          "other": "Japon yeni"
+        },
+        "narrow": "¥",
+        "symbol": "¥"
+      },
+      "KES": {
+        "displayName": {
+          "other": "Kenya şilini"
+        },
+        "narrow": "KES",
+        "symbol": "KES"
+      },
+      "KGS": {
+        "displayName": {
+          "other": "Kırgızistan somu"
+        },
+        "narrow": "KGS",
+        "symbol": "KGS"
+      },
+      "KHR": {
+        "displayName": {
+          "other": "Kamboçya rieli"
+        },
+        "narrow": "៛",
+        "symbol": "KHR"
+      },
+      "KMF": {
+        "displayName": {
+          "other": "Komorlar frangı"
+        },
+        "narrow": "CF",
+        "symbol": "KMF"
+      },
+      "KPW": {
+        "displayName": {
+          "other": "Kuzey Kore wonu"
+        },
+        "narrow": "₩",
+        "symbol": "KPW"
+      },
+      "KRH": {
+        "displayName": {
+          "other": "Güney Kore hwanı (1953–1962)"
+        },
+        "narrow": "KRH",
+        "symbol": "KRH"
+      },
+      "KRO": {
+        "displayName": {
+          "other": "Güney Kore wonu (1945–1953)"
+        },
+        "narrow": "KRO",
+        "symbol": "KRO"
+      },
+      "KRW": {
+        "displayName": {
+          "other": "Güney Kore wonu"
+        },
+        "narrow": "₩",
+        "symbol": "₩"
+      },
+      "KWD": {
+        "displayName": {
+          "other": "Kuveyt dinarı"
+        },
+        "narrow": "KWD",
+        "symbol": "KWD"
+      },
+      "KYD": {
+        "displayName": {
+          "other": "Cayman Adaları doları"
+        },
+        "narrow": "$",
+        "symbol": "KYD"
+      },
+      "KZT": {
+        "displayName": {
+          "other": "Kazakistan tengesi"
+        },
+        "narrow": "₸",
+        "symbol": "KZT"
+      },
+      "LAK": {
+        "displayName": {
+          "other": "Laos kipi"
+        },
+        "narrow": "₭",
+        "symbol": "LAK"
+      },
+      "LBP": {
+        "displayName": {
+          "other": "Lübnan lirası"
+        },
+        "narrow": "L£",
+        "symbol": "LBP"
+      },
+      "LKR": {
+        "displayName": {
+          "other": "Sri Lanka rupisi"
+        },
+        "narrow": "Rs",
+        "symbol": "LKR"
+      },
+      "LRD": {
+        "displayName": {
+          "other": "Liberya doları"
+        },
+        "narrow": "$",
+        "symbol": "LRD"
+      },
+      "LSL": {
+        "displayName": {
+          "other": "Lesotho lotisi"
+        },
+        "narrow": "LSL",
+        "symbol": "LSL"
+      },
+      "LTL": {
+        "displayName": {
+          "other": "Litvanya litası"
+        },
+        "narrow": "Lt",
+        "symbol": "LTL"
+      },
+      "LTT": {
+        "displayName": {
+          "other": "Litvanya Talonu"
+        },
+        "narrow": "LTT",
+        "symbol": "LTT"
+      },
+      "LUC": {
+        "displayName": {
+          "other": "Konvertibl Lüksemburg Frangı"
+        },
+        "narrow": "LUC",
+        "symbol": "LUC"
+      },
+      "LUF": {
+        "displayName": {
+          "other": "Lüksemburg Frangı"
+        },
+        "narrow": "LUF",
+        "symbol": "LUF"
+      },
+      "LUL": {
+        "displayName": {
+          "other": "Finansal Lüksemburg Frangı"
+        },
+        "narrow": "LUL",
+        "symbol": "LUL"
+      },
+      "LVL": {
+        "displayName": {
+          "other": "Letonya latı"
+        },
+        "narrow": "Ls",
+        "symbol": "LVL"
+      },
+      "LVR": {
+        "displayName": {
+          "other": "Letonya Rublesi"
+        },
+        "narrow": "LVR",
+        "symbol": "LVR"
+      },
+      "LYD": {
+        "displayName": {
+          "other": "Libya dinarı"
+        },
+        "narrow": "LYD",
+        "symbol": "LYD"
+      },
+      "MAD": {
+        "displayName": {
+          "other": "Fas dirhemi"
+        },
+        "narrow": "MAD",
+        "symbol": "MAD"
+      },
+      "MAF": {
+        "displayName": {
+          "other": "Fas Frangı"
+        },
+        "narrow": "MAF",
+        "symbol": "MAF"
+      },
+      "MCF": {
+        "displayName": {
+          "other": "Monako frangı"
+        },
+        "narrow": "MCF",
+        "symbol": "MCF"
+      },
+      "MDC": {
+        "displayName": {
+          "other": "Moldova kuponu"
+        },
+        "narrow": "MDC",
+        "symbol": "MDC"
+      },
+      "MDL": {
+        "displayName": {
+          "other": "Moldova leyi"
+        },
+        "narrow": "MDL",
+        "symbol": "MDL"
+      },
+      "MGA": {
+        "displayName": {
+          "other": "Madagaskar ariarisi"
+        },
+        "narrow": "Ar",
+        "symbol": "MGA"
+      },
+      "MGF": {
+        "displayName": {
+          "other": "Madagaskar Frangı"
+        },
+        "narrow": "MGF",
+        "symbol": "MGF"
+      },
+      "MKD": {
+        "displayName": {
+          "other": "Makedonya dinarı"
+        },
+        "narrow": "MKD",
+        "symbol": "MKD"
+      },
+      "MKN": {
+        "displayName": {
+          "other": "Makedonya dinarı (1992–1993)"
+        },
+        "narrow": "MKN",
+        "symbol": "MKN"
+      },
+      "MLF": {
+        "displayName": {
+          "other": "Mali Frangı"
+        },
+        "narrow": "MLF",
+        "symbol": "MLF"
+      },
+      "MMK": {
+        "displayName": {
+          "other": "Myanmar kyatı"
+        },
+        "narrow": "K",
+        "symbol": "MMK"
+      },
+      "MNT": {
+        "displayName": {
+          "other": "Moğolistan tugriki"
+        },
+        "narrow": "₮",
+        "symbol": "MNT"
+      },
+      "MOP": {
+        "displayName": {
+          "other": "Makao patakası"
+        },
+        "narrow": "MOP",
+        "symbol": "MOP"
+      },
+      "MRO": {
+        "displayName": {
+          "other": "Moritanya ugiyası (1973–2017)"
+        },
+        "narrow": "MRO",
+        "symbol": "MRO"
+      },
+      "MRU": {
+        "displayName": {
+          "other": "Moritanya ugiyası"
+        },
+        "narrow": "MRU",
+        "symbol": "MRU"
+      },
+      "MTL": {
+        "displayName": {
+          "other": "Malta Lirası"
+        },
+        "narrow": "MTL",
+        "symbol": "MTL"
+      },
+      "MTP": {
+        "displayName": {
+          "other": "Malta Sterlini"
+        },
+        "narrow": "MTP",
+        "symbol": "MTP"
+      },
+      "MUR": {
+        "displayName": {
+          "other": "Mauritius rupisi"
+        },
+        "narrow": "Rs",
+        "symbol": "MUR"
+      },
+      "MVP": {
+        "displayName": {
+          "other": "Maldiv rupisi"
+        },
+        "narrow": "MVP",
+        "symbol": "MVP"
+      },
+      "MVR": {
+        "displayName": {
+          "other": "Maldiv rufiyaası"
+        },
+        "narrow": "MVR",
+        "symbol": "MVR"
+      },
+      "MWK": {
+        "displayName": {
+          "other": "Malavi kvaçası"
+        },
+        "narrow": "MWK",
+        "symbol": "MWK"
+      },
+      "MXN": {
+        "displayName": {
+          "other": "Meksika pesosu"
+        },
+        "narrow": "$",
+        "symbol": "MX$"
+      },
+      "MXP": {
+        "displayName": {
+          "other": "Gümüş Meksika Pezosu (1861–1992)"
+        },
+        "narrow": "MXP",
+        "symbol": "MXP"
+      },
+      "MXV": {
+        "displayName": {
+          "other": "Meksika Unidad de Inversion (UDI)"
+        },
+        "narrow": "MXV",
+        "symbol": "MXV"
+      },
+      "MYR": {
+        "displayName": {
+          "other": "Malezya ringgiti"
+        },
+        "narrow": "RM",
+        "symbol": "MYR"
+      },
+      "MZE": {
+        "displayName": {
+          "other": "Mozambik Esküdosu"
+        },
+        "narrow": "MZE",
+        "symbol": "MZE"
+      },
+      "MZM": {
+        "displayName": {
+          "other": "Eski Mozambik Metikali"
+        },
+        "narrow": "MZM",
+        "symbol": "MZM"
+      },
+      "MZN": {
+        "displayName": {
+          "other": "Mozambik metikali"
+        },
+        "narrow": "MZN",
+        "symbol": "MZN"
+      },
+      "NAD": {
+        "displayName": {
+          "other": "Namibya doları"
+        },
+        "narrow": "$",
+        "symbol": "NAD"
+      },
+      "NGN": {
+        "displayName": {
+          "other": "Nijerya nairası"
+        },
+        "narrow": "₦",
+        "symbol": "NGN"
+      },
+      "NIC": {
+        "displayName": {
+          "other": "Nikaragua Kordobası (1988–1991)"
+        },
+        "narrow": "NIC",
+        "symbol": "NIC"
+      },
+      "NIO": {
+        "displayName": {
+          "other": "Nikaragua kordobası"
+        },
+        "narrow": "C$",
+        "symbol": "NIO"
+      },
+      "NLG": {
+        "displayName": {
+          "other": "Hollanda Florini"
+        },
+        "narrow": "NLG",
+        "symbol": "NLG"
+      },
+      "NOK": {
+        "displayName": {
+          "other": "Norveç kronu"
+        },
+        "narrow": "kr",
+        "symbol": "NOK"
+      },
+      "NPR": {
+        "displayName": {
+          "other": "Nepal rupisi"
+        },
+        "narrow": "Rs",
+        "symbol": "NPR"
+      },
+      "NZD": {
+        "displayName": {
+          "other": "Yeni Zelanda doları"
+        },
+        "narrow": "$",
+        "symbol": "NZ$"
+      },
+      "OMR": {
+        "displayName": {
+          "other": "Umman riyali"
+        },
+        "narrow": "OMR",
+        "symbol": "OMR"
+      },
+      "PAB": {
+        "displayName": {
+          "other": "Panama balboası"
+        },
+        "narrow": "PAB",
+        "symbol": "PAB"
+      },
+      "PEI": {
+        "displayName": {
+          "other": "Peru İnti"
+        },
+        "narrow": "PEI",
+        "symbol": "PEI"
+      },
+      "PEN": {
+        "displayName": {
+          "other": "Peru solü"
+        },
+        "narrow": "PEN",
+        "symbol": "PEN"
+      },
+      "PES": {
+        "displayName": {
+          "other": "Peru Solü (1863–1965)"
+        },
+        "narrow": "PES",
+        "symbol": "PES"
+      },
+      "PGK": {
+        "displayName": {
+          "other": "Papua Yeni Gine kinası"
+        },
+        "narrow": "PGK",
+        "symbol": "PGK"
+      },
+      "PHP": {
+        "displayName": {
+          "other": "Filipinler pesosu"
+        },
+        "narrow": "₱",
+        "symbol": "PHP"
+      },
+      "PKR": {
+        "displayName": {
+          "other": "Pakistan rupisi"
+        },
+        "narrow": "Rs",
+        "symbol": "PKR"
+      },
+      "PLN": {
+        "displayName": {
+          "other": "Polonya zlotisi"
+        },
+        "narrow": "zł",
+        "symbol": "PLN"
+      },
+      "PLZ": {
+        "displayName": {
+          "other": "Polonya Zlotisi (1950–1995)"
+        },
+        "narrow": "PLZ",
+        "symbol": "PLZ"
+      },
+      "PTE": {
+        "displayName": {
+          "other": "Portekiz Esküdosu"
+        },
+        "narrow": "PTE",
+        "symbol": "PTE"
+      },
+      "PYG": {
+        "displayName": {
+          "other": "Paraguay guaranisi"
+        },
+        "narrow": "₲",
+        "symbol": "PYG"
+      },
+      "QAR": {
+        "displayName": {
+          "other": "Katar riyali"
+        },
+        "narrow": "QAR",
+        "symbol": "QAR"
+      },
+      "RHD": {
+        "displayName": {
+          "other": "Rodezya Doları"
+        },
+        "narrow": "RHD",
+        "symbol": "RHD"
+      },
+      "ROL": {
+        "displayName": {
+          "other": "Eski Romen Leyi"
+        },
+        "narrow": "ROL",
+        "symbol": "ROL"
+      },
+      "RON": {
+        "displayName": {
+          "other": "Romen leyi"
+        },
+        "narrow": "L",
+        "symbol": "RON"
+      },
+      "RSD": {
+        "displayName": {
+          "other": "Sırp dinarı"
+        },
+        "narrow": "RSD",
+        "symbol": "RSD"
+      },
+      "RUB": {
+        "displayName": {
+          "other": "Rus rublesi"
+        },
+        "narrow": "₽",
+        "symbol": "RUB"
+      },
+      "RUR": {
+        "displayName": {
+          "other": "Rus Rublesi (1991–1998)"
+        },
+        "narrow": "р.",
+        "symbol": "RUR"
+      },
+      "RWF": {
+        "displayName": {
+          "other": "Ruanda frangı"
+        },
+        "narrow": "RF",
+        "symbol": "RWF"
+      },
+      "SAR": {
+        "displayName": {
+          "other": "Suudi Arabistan riyali"
+        },
+        "narrow": "SAR",
+        "symbol": "SAR"
+      },
+      "SBD": {
+        "displayName": {
+          "other": "Solomon Adaları doları"
+        },
+        "narrow": "$",
+        "symbol": "SBD"
+      },
+      "SCR": {
+        "displayName": {
+          "other": "Seyşeller rupisi"
+        },
+        "narrow": "SCR",
+        "symbol": "SCR"
+      },
+      "SDD": {
+        "displayName": {
+          "other": "Eski Sudan Dinarı"
+        },
+        "narrow": "SDD",
+        "symbol": "SDD"
+      },
+      "SDG": {
+        "displayName": {
+          "other": "Sudan lirası"
+        },
+        "narrow": "SDG",
+        "symbol": "SDG"
+      },
+      "SDP": {
+        "displayName": {
+          "other": "Eski Sudan Lirası"
+        },
+        "narrow": "SDP",
+        "symbol": "SDP"
+      },
+      "SEK": {
+        "displayName": {
+          "other": "İsveç kronu"
+        },
+        "narrow": "kr",
+        "symbol": "SEK"
+      },
+      "SGD": {
+        "displayName": {
+          "other": "Singapur doları"
+        },
+        "narrow": "$",
+        "symbol": "SGD"
+      },
+      "SHP": {
+        "displayName": {
+          "other": "Saint Helena lirası"
+        },
+        "narrow": "£",
+        "symbol": "SHP"
+      },
+      "SIT": {
+        "displayName": {
+          "other": "Slovenya Toları"
+        },
+        "narrow": "SIT",
+        "symbol": "SIT"
+      },
+      "SKK": {
+        "displayName": {
+          "other": "Slovak Korunası"
+        },
+        "narrow": "SKK",
+        "symbol": "SKK"
+      },
+      "SLL": {
+        "displayName": {
+          "other": "Sierra Leone leonesi"
+        },
+        "narrow": "SLL",
+        "symbol": "SLL"
+      },
+      "SOS": {
+        "displayName": {
+          "other": "Somali şilini"
+        },
+        "narrow": "SOS",
+        "symbol": "SOS"
+      },
+      "SRD": {
+        "displayName": {
+          "other": "Surinam doları"
+        },
+        "narrow": "$",
+        "symbol": "SRD"
+      },
+      "SRG": {
+        "displayName": {
+          "other": "Surinam Guldeni"
+        },
+        "narrow": "SRG",
+        "symbol": "SRG"
+      },
+      "SSP": {
+        "displayName": {
+          "other": "Güney Sudan lirası"
+        },
+        "narrow": "£",
+        "symbol": "SSP"
+      },
+      "STD": {
+        "displayName": {
+          "other": "São Tomé ve Príncipe dobrası (1977–2017)"
+        },
+        "narrow": "STD",
+        "symbol": "STD"
+      },
+      "STN": {
+        "displayName": {
+          "other": "Sao Tome ve Principe dobrası"
+        },
+        "narrow": "Db",
+        "symbol": "STN"
+      },
+      "SUR": {
+        "displayName": {
+          "other": "Sovyet Rublesi"
+        },
+        "narrow": "SUR",
+        "symbol": "SUR"
+      },
+      "SVC": {
+        "displayName": {
+          "other": "El Salvador Kolonu"
+        },
+        "narrow": "SVC",
+        "symbol": "SVC"
+      },
+      "SYP": {
+        "displayName": {
+          "other": "Suriye lirası"
+        },
+        "narrow": "£",
+        "symbol": "SYP"
+      },
+      "SZL": {
+        "displayName": {
+          "other": "Svaziland lilangenisi"
+        },
+        "narrow": "SZL",
+        "symbol": "SZL"
+      },
+      "THB": {
+        "displayName": {
+          "other": "Tayland bahtı"
+        },
+        "narrow": "฿",
+        "symbol": "฿"
+      },
+      "TJR": {
+        "displayName": {
+          "other": "Tacikistan Rublesi"
+        },
+        "narrow": "TJR",
+        "symbol": "TJR"
+      },
+      "TJS": {
+        "displayName": {
+          "other": "Tacikistan somonisi"
+        },
+        "narrow": "TJS",
+        "symbol": "TJS"
+      },
+      "TMM": {
+        "displayName": {
+          "other": "Türkmenistan Manatı (1993–2009)"
+        },
+        "narrow": "TMM",
+        "symbol": "TMM"
+      },
+      "TMT": {
+        "displayName": {
+          "other": "Türkmenistan manatı"
+        },
+        "narrow": "TMT",
+        "symbol": "TMT"
+      },
+      "TND": {
+        "displayName": {
+          "other": "Tunus dinarı"
+        },
+        "narrow": "TND",
+        "symbol": "TND"
+      },
+      "TOP": {
+        "displayName": {
+          "other": "Tonga paʻangası"
+        },
+        "narrow": "T$",
+        "symbol": "TOP"
+      },
+      "TPE": {
+        "displayName": {
+          "other": "Timor Esküdosu"
+        },
+        "narrow": "TPE",
+        "symbol": "TPE"
+      },
+      "TRL": {
+        "displayName": {
+          "other": "Eski Türk Lirası"
+        },
+        "narrow": "TRL",
+        "symbol": "TRL"
+      },
+      "TRY": {
+        "displayName": {
+          "other": "Türk lirası"
+        },
+        "narrow": "₺",
+        "symbol": "₺"
+      },
+      "TTD": {
+        "displayName": {
+          "other": "Trinidad ve Tobago doları"
+        },
+        "narrow": "$",
+        "symbol": "TTD"
+      },
+      "TWD": {
+        "displayName": {
+          "other": "Yeni Tayvan doları"
+        },
+        "narrow": "NT$",
+        "symbol": "NT$"
+      },
+      "TZS": {
+        "displayName": {
+          "other": "Tanzanya şilini"
+        },
+        "narrow": "TZS",
+        "symbol": "TZS"
+      },
+      "UAH": {
+        "displayName": {
+          "other": "Ukrayna grivnası"
+        },
+        "narrow": "₴",
+        "symbol": "UAH"
+      },
+      "UAK": {
+        "displayName": {
+          "other": "Ukrayna Karbovanetz"
+        },
+        "narrow": "UAK",
+        "symbol": "UAK"
+      },
+      "UGS": {
+        "displayName": {
+          "other": "Uganda Şilini (1966–1987)"
+        },
+        "narrow": "UGS",
+        "symbol": "UGS"
+      },
+      "UGX": {
+        "displayName": {
+          "other": "Uganda şilini"
+        },
+        "narrow": "UGX",
+        "symbol": "UGX"
+      },
+      "USD": {
+        "displayName": {
+          "other": "ABD doları"
+        },
+        "narrow": "$",
+        "symbol": "$"
+      },
+      "USN": {
+        "displayName": {
+          "other": "ABD Doları (Ertesi gün)"
+        },
+        "narrow": "USN",
+        "symbol": "USN"
+      },
+      "USS": {
+        "displayName": {
+          "other": "ABD Doları (Aynı gün)"
+        },
+        "narrow": "USS",
+        "symbol": "USS"
+      },
+      "UYI": {
+        "displayName": {
+          "other": "Uruguay Peso en Unidades Indexadas"
+        },
+        "narrow": "UYI",
+        "symbol": "UYI"
+      },
+      "UYP": {
+        "displayName": {
+          "other": "Uruguay Pezosu (1975–1993)"
+        },
+        "narrow": "UYP",
+        "symbol": "UYP"
+      },
+      "UYU": {
+        "displayName": {
+          "other": "Uruguay pesosu"
+        },
+        "narrow": "$",
+        "symbol": "UYU"
+      },
+      "UYW": {
+        "displayName": {
+          "other": "UYW"
+        },
+        "narrow": "UYW",
+        "symbol": "UYW"
+      },
+      "UZS": {
+        "displayName": {
+          "other": "Özbekistan somu"
+        },
+        "narrow": "UZS",
+        "symbol": "UZS"
+      },
+      "VEB": {
+        "displayName": {
+          "other": "Venezuela Bolivarı (1871–2008)"
+        },
+        "narrow": "VEB",
+        "symbol": "VEB"
+      },
+      "VEF": {
+        "displayName": {
+          "other": "Venezuela bolivarı (2008–2018)"
+        },
+        "narrow": "Bs",
+        "symbol": "VEF"
+      },
+      "VES": {
+        "displayName": {
+          "other": "Venezuela bolivarı"
+        },
+        "narrow": "VES",
+        "symbol": "VES"
+      },
+      "VND": {
+        "displayName": {
+          "other": "Vietnam dongu"
+        },
+        "narrow": "₫",
+        "symbol": "₫"
+      },
+      "VNN": {
+        "displayName": {
+          "other": "Vietnam dongu (1978–1985)"
+        },
+        "narrow": "VNN",
+        "symbol": "VNN"
+      },
+      "VUV": {
+        "displayName": {
+          "other": "Vanuatu vatusu"
+        },
+        "narrow": "VUV",
+        "symbol": "VUV"
+      },
+      "WST": {
+        "displayName": {
+          "other": "Samoa talası"
+        },
+        "narrow": "WST",
+        "symbol": "WST"
+      },
+      "XAF": {
+        "displayName": {
+          "other": "Orta Afrika CFA frangı"
+        },
+        "narrow": "FCFA",
+        "symbol": "FCFA"
+      },
+      "XAG": {
+        "displayName": {
+          "other": "Gümüş"
+        },
+        "narrow": "XAG",
+        "symbol": "XAG"
+      },
+      "XAU": {
+        "displayName": {
+          "other": "Altın"
+        },
+        "narrow": "XAU",
+        "symbol": "XAU"
+      },
+      "XBA": {
+        "displayName": {
+          "other": "Birleşik Avrupa Birimi"
+        },
+        "narrow": "XBA",
+        "symbol": "XBA"
+      },
+      "XBB": {
+        "displayName": {
+          "other": "Avrupa Para Birimi (EMU)"
+        },
+        "narrow": "XBB",
+        "symbol": "XBB"
+      },
+      "XBC": {
+        "displayName": {
+          "other": "Avrupa Hesap Birimi (XBC)"
+        },
+        "narrow": "XBC",
+        "symbol": "XBC"
+      },
+      "XBD": {
+        "displayName": {
+          "other": "Avrupa Hesap Birimi (XBD)"
+        },
+        "narrow": "XBD",
+        "symbol": "XBD"
+      },
+      "XCD": {
+        "displayName": {
+          "other": "Doğu Karayip doları"
+        },
+        "narrow": "$",
+        "symbol": "EC$"
+      },
+      "XDR": {
+        "displayName": {
+          "other": "Özel Çekme Hakkı (SDR)"
+        },
+        "narrow": "XDR",
+        "symbol": "XDR"
+      },
+      "XEU": {
+        "displayName": {
+          "other": "Avrupa Para Birimi"
+        },
+        "narrow": "XEU",
+        "symbol": "XEU"
+      },
+      "XFO": {
+        "displayName": {
+          "other": "Fransız Altın Frangı"
+        },
+        "narrow": "XFO",
+        "symbol": "XFO"
+      },
+      "XFU": {
+        "displayName": {
+          "other": "Fransız UIC-Frangı"
+        },
+        "narrow": "XFU",
+        "symbol": "XFU"
+      },
+      "XOF": {
+        "displayName": {
+          "other": "Batı Afrika CFA frangı"
+        },
+        "narrow": "F CFA",
+        "symbol": "F CFA"
+      },
+      "XPD": {
+        "displayName": {
+          "other": "Paladyum"
+        },
+        "narrow": "XPD",
+        "symbol": "XPD"
+      },
+      "XPF": {
+        "displayName": {
+          "other": "CFP frangı"
+        },
+        "narrow": "CFPF",
+        "symbol": "CFPF"
+      },
+      "XPT": {
+        "displayName": {
+          "other": "Platin"
+        },
+        "narrow": "XPT",
+        "symbol": "XPT"
+      },
+      "XRE": {
+        "displayName": {
+          "other": "RINET Fonları"
+        },
+        "narrow": "XRE",
+        "symbol": "XRE"
+      },
+      "XSU": {
+        "displayName": {
+          "other": "Sucre"
+        },
+        "narrow": "XSU",
+        "symbol": "XSU"
+      },
+      "XTS": {
+        "displayName": {
+          "other": "Test Para Birimi Kodu"
+        },
+        "narrow": "XTS",
+        "symbol": "XTS"
+      },
+      "XUA": {
+        "displayName": {
+          "other": "ADB hesap birimi"
+        },
+        "narrow": "XUA",
+        "symbol": "XUA"
+      },
+      "XXX": {
+        "displayName": {
+          "other": "(bilinmeyen para birimi)"
+        },
+        "narrow": "¤",
+        "symbol": "¤"
+      },
+      "YDD": {
+        "displayName": {
+          "other": "Yemen Dinarı"
+        },
+        "narrow": "YDD",
+        "symbol": "YDD"
+      },
+      "YER": {
+        "displayName": {
+          "other": "Yemen riyali"
+        },
+        "narrow": "YER",
+        "symbol": "YER"
+      },
+      "YUD": {
+        "displayName": {
+          "other": "Yugoslav Dinarı (Hard)"
+        },
+        "narrow": "YUD",
+        "symbol": "YUD"
+      },
+      "YUM": {
+        "displayName": {
+          "other": "Yeni Yugoslav Dinarı"
+        },
+        "narrow": "YUM",
+        "symbol": "YUM"
+      },
+      "YUN": {
+        "displayName": {
+          "other": "Konvertibl Yugoslav Dinarı"
+        },
+        "narrow": "YUN",
+        "symbol": "YUN"
+      },
+      "YUR": {
+        "displayName": {
+          "other": "İyileştirilmiş Yugoslav dinarı (1992–1993)"
+        },
+        "narrow": "YUR",
+        "symbol": "YUR"
+      },
+      "ZAL": {
+        "displayName": {
+          "other": "Güney Afrika Randı (finansal)"
+        },
+        "narrow": "ZAL",
+        "symbol": "ZAL"
+      },
+      "ZAR": {
+        "displayName": {
+          "other": "Güney Afrika randı"
+        },
+        "narrow": "R",
+        "symbol": "ZAR"
+      },
+      "ZMK": {
+        "displayName": {
+          "other": "Zambiya Kvaçası (1968–2012)"
+        },
+        "narrow": "ZMK",
+        "symbol": "ZMK"
+      },
+      "ZMW": {
+        "displayName": {
+          "other": "Zambiya kvaçası"
+        },
+        "narrow": "ZK",
+        "symbol": "ZMW"
+      },
+      "ZRN": {
+        "displayName": {
+          "other": "Yeni Zaire Zairesi"
+        },
+        "narrow": "ZRN",
+        "symbol": "ZRN"
+      },
+      "ZRZ": {
+        "displayName": {
+          "other": "Zaire Zairesi"
+        },
+        "narrow": "ZRZ",
+        "symbol": "ZRZ"
+      },
+      "ZWD": {
+        "displayName": {
+          "other": "Zimbabve Doları"
+        },
+        "narrow": "ZWD",
+        "symbol": "ZWD"
+      },
+      "ZWL": {
+        "displayName": {
+          "other": "Zimbabve Doları (2009)"
+        },
+        "narrow": "ZWL",
+        "symbol": "ZWL"
+      },
+      "ZWR": {
+        "displayName": {
+          "other": "Zimbabve doları (2008)"
+        },
+        "narrow": "ZWR",
+        "symbol": "ZWR"
+      }
+    },
+    "nu": [
+      "latn"
+    ],
+    "numbers": {
+      "currency": {
+        "latn": {
+          "accounting": "¤#,##0.00;(¤#,##0.00)",
+          "currencySpacing": {
+            "afterInsertBetween": " ",
+            "beforeInsertBetween": " "
+          },
+          "short": {
+            "1000": {
+              "other": "0 B ¤"
+            },
+            "10000": {
+              "other": "00 B ¤"
+            },
+            "100000": {
+              "other": "000 B ¤"
+            },
+            "1000000": {
+              "other": "0 Mn ¤"
+            },
+            "10000000": {
+              "other": "00 Mn ¤"
+            },
+            "100000000": {
+              "other": "000 Mn ¤"
+            },
+            "1000000000": {
+              "other": "0 Mr ¤"
+            },
+            "10000000000": {
+              "other": "00 Mr ¤"
+            },
+            "100000000000": {
+              "other": "000 Mr ¤"
+            },
+            "1000000000000": {
+              "other": "0 Tn ¤"
+            },
+            "10000000000000": {
+              "other": "00 Tn ¤"
+            },
+            "100000000000000": {
+              "other": "000 Tn ¤"
+            }
+          },
+          "standard": "¤#,##0.00",
+          "unitPattern": "{0} {1}"
+        }
+      },
+      "decimal": {
+        "latn": {
+          "long": {
+            "1000": {
+              "other": "0 bin"
+            },
+            "10000": {
+              "other": "00 bin"
+            },
+            "100000": {
+              "other": "000 bin"
+            },
+            "1000000": {
+              "other": "0 milyon"
+            },
+            "10000000": {
+              "other": "00 milyon"
+            },
+            "100000000": {
+              "other": "000 milyon"
+            },
+            "1000000000": {
+              "other": "0 milyar"
+            },
+            "10000000000": {
+              "other": "00 milyar"
+            },
+            "100000000000": {
+              "other": "000 milyar"
+            },
+            "1000000000000": {
+              "other": "0 trilyon"
+            },
+            "10000000000000": {
+              "other": "00 trilyon"
+            },
+            "100000000000000": {
+              "other": "000 trilyon"
+            }
+          },
+          "short": {
+            "1000": {
+              "other": "0 B"
+            },
+            "10000": {
+              "other": "00 B"
+            },
+            "100000": {
+              "other": "000 B"
+            },
+            "1000000": {
+              "other": "0 Mn"
+            },
+            "10000000": {
+              "other": "00 Mn"
+            },
+            "100000000": {
+              "other": "000 Mn"
+            },
+            "1000000000": {
+              "other": "0 Mr"
+            },
+            "10000000000": {
+              "other": "00 Mr"
+            },
+            "100000000000": {
+              "other": "000 Mr"
+            },
+            "1000000000000": {
+              "other": "0 Tn"
+            },
+            "10000000000000": {
+              "other": "00 Tn"
+            },
+            "100000000000000": {
+              "other": "000 Tn"
+            }
+          },
+          "standard": "#,##0.###"
+        }
+      },
+      "nu": [
+        "latn"
+      ],
+      "percent": {
+        "latn": "%#,##0"
+      },
+      "symbols": {
+        "latn": {
+          "approximatelySign": "~",
+          "decimal": ",",
+          "exponential": "E",
+          "group": ".",
+          "infinity": "∞",
+          "list": ";",
+          "minusSign": "-",
+          "nan": "NaN",
+          "perMille": "‰",
+          "percentSign": "%",
+          "plusSign": "+",
+          "rangeSign": "–",
+          "superscriptingExponent": "×",
+          "timeSeparator": ":"
+        }
+      }
+    },
+    "units": {
+      "compound": {
+        "per": {
+          "long": "{0}/{1}",
+          "narrow": "{0}/{1}",
+          "short": "{0}/{1}"
+        }
+      },
+      "simple": {
+        "acre": {
+          "long": {
+            "other": "{0} akre"
+          },
+          "narrow": {
+            "other": "{0} ac"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} ac"
+          }
+        },
+        "bit": {
+          "long": {
+            "other": "{0} bit"
+          },
+          "narrow": {
+            "other": "{0} bit"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} bit"
+          }
+        },
+        "byte": {
+          "long": {
+            "other": "{0} bayt"
+          },
+          "narrow": {
+            "other": "{0} bayt"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} bayt"
+          }
+        },
+        "celsius": {
+          "long": {
+            "other": "{0} santigrat derece"
+          },
+          "narrow": {
+            "one": "{0}°C",
+            "other": "{0} °C"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "one": "{0} °C",
+            "other": "{0}°C"
+          }
+        },
+        "centimeter": {
+          "long": {
+            "other": "{0} santimetre"
+          },
+          "narrow": {
+            "other": "{0} cm"
+          },
+          "perUnit": {
+            "long": "{0}/santimetre",
+            "narrow": "{0}/cm",
+            "short": "{0}/cm"
+          },
+          "short": {
+            "other": "{0} cm"
+          }
+        },
+        "day": {
+          "long": {
+            "other": "{0} gün"
+          },
+          "narrow": {
+            "other": "{0}g"
+          },
+          "perUnit": {
+            "long": "{0}/gün",
+            "narrow": "{0}/g",
+            "short": "{0}/gün"
+          },
+          "short": {
+            "other": "{0} gün"
+          }
+        },
+        "degree": {
+          "long": {
+            "other": "{0} derece"
+          },
+          "narrow": {
+            "other": "{0}°"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0}°"
+          }
+        },
+        "fahrenheit": {
+          "long": {
+            "other": "{0} fahrenhayt derece"
+          },
+          "narrow": {
+            "other": "{0} °F"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "one": "{0} °F",
+            "other": "{0}°F"
+          }
+        },
+        "fluid-ounce": {
+          "long": {
+            "other": "{0} sıvı ons"
+          },
+          "narrow": {
+            "other": "{0} sıvı ons"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} sıvı ons"
+          }
+        },
+        "foot": {
+          "long": {
+            "other": "{0} fit"
+          },
+          "narrow": {
+            "other": "{0}′"
+          },
+          "perUnit": {
+            "long": "{0}/fit",
+            "narrow": "{0}/ft",
+            "short": "{0}/ft"
+          },
+          "short": {
+            "other": "{0} fit"
+          }
+        },
+        "gallon": {
+          "long": {
+            "other": "{0} galon"
+          },
+          "narrow": {
+            "other": "{0} galon"
+          },
+          "perUnit": {
+            "long": "{0}/galon",
+            "narrow": "{0}/gal",
+            "short": "{0}/gal"
+          },
+          "short": {
+            "other": "{0} gal"
+          }
+        },
+        "gigabit": {
+          "long": {
+            "other": "{0} gigabit"
+          },
+          "narrow": {
+            "other": "{0} Gb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} Gb"
+          }
+        },
+        "gigabyte": {
+          "long": {
+            "other": "{0} gigabayt"
+          },
+          "narrow": {
+            "other": "{0} GB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} GB"
+          }
+        },
+        "gram": {
+          "long": {
+            "other": "{0} gram"
+          },
+          "narrow": {
+            "other": "{0} g"
+          },
+          "perUnit": {
+            "long": "{0}/gram",
+            "narrow": "{0}/g",
+            "short": "{0}/g"
+          },
+          "short": {
+            "other": "{0} g"
+          }
+        },
+        "hectare": {
+          "long": {
+            "other": "{0} hektar"
+          },
+          "narrow": {
+            "other": "{0} ha"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} ha"
+          }
+        },
+        "hour": {
+          "long": {
+            "other": "{0} saat"
+          },
+          "narrow": {
+            "one": "{0} sa",
+            "other": "{0}s"
+          },
+          "perUnit": {
+            "long": "{0}/saat",
+            "narrow": "{0}/sa",
+            "short": "{0}/sa"
+          },
+          "short": {
+            "other": "{0} sa."
+          }
+        },
+        "inch": {
+          "long": {
+            "other": "{0} inç"
+          },
+          "narrow": {
+            "other": "{0}″"
+          },
+          "perUnit": {
+            "long": "{0}/inç",
+            "narrow": "{0}/in",
+            "short": "{0}/in"
+          },
+          "short": {
+            "other": "{0} inç"
+          }
+        },
+        "kilobit": {
+          "long": {
+            "other": "{0} kilobit"
+          },
+          "narrow": {
+            "other": "{0} kb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} kb"
+          }
+        },
+        "kilobyte": {
+          "long": {
+            "other": "{0} kilobayt"
+          },
+          "narrow": {
+            "other": "{0} kB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} kB"
+          }
+        },
+        "kilogram": {
+          "long": {
+            "other": "{0} kilogram"
+          },
+          "narrow": {
+            "other": "{0} kg"
+          },
+          "perUnit": {
+            "long": "{0}/kg",
+            "narrow": "{0}/kg",
+            "short": "{0}/kg"
+          },
+          "short": {
+            "other": "{0} kg"
+          }
+        },
+        "kilometer": {
+          "long": {
+            "other": "{0} kilometre"
+          },
+          "narrow": {
+            "other": "{0} km"
+          },
+          "perUnit": {
+            "long": "{0}/kilometre",
+            "narrow": "{0}/km",
+            "short": "{0}/km"
+          },
+          "short": {
+            "other": "{0} km"
+          }
+        },
+        "kilometer-per-hour": {
+          "long": {
+            "other": "{0} kilometre/saat"
+          },
+          "narrow": {
+            "other": "{0} km/sa"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} km/sa"
+          }
+        },
+        "liter": {
+          "long": {
+            "other": "{0} litre"
+          },
+          "narrow": {
+            "other": "{0} l"
+          },
+          "perUnit": {
+            "long": "{0}/litre",
+            "narrow": "{0}/l",
+            "short": "{0}/l"
+          },
+          "short": {
+            "other": "{0} l"
+          }
+        },
+        "liter-per-kilometer": {
+          "long": {
+            "other": "{0} litre/kilometre"
+          },
+          "narrow": {
+            "other": "{0} l/km"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} l/km"
+          }
+        },
+        "megabit": {
+          "long": {
+            "other": "{0} megabit"
+          },
+          "narrow": {
+            "other": "{0} Mb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} Mb"
+          }
+        },
+        "megabyte": {
+          "long": {
+            "other": "{0} megabayt"
+          },
+          "narrow": {
+            "other": "{0} MB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} MB"
+          }
+        },
+        "meter": {
+          "long": {
+            "other": "{0} metre"
+          },
+          "narrow": {
+            "other": "{0} m"
+          },
+          "perUnit": {
+            "long": "{0}/metre",
+            "narrow": "{0}/m",
+            "short": "{0}/m"
+          },
+          "short": {
+            "other": "{0} m"
+          }
+        },
+        "meter-per-second": {
+          "long": {
+            "other": "{0} metre/saniye"
+          },
+          "narrow": {
+            "other": "{0} m/sn"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} m/sn"
+          }
+        },
+        "mile": {
+          "long": {
+            "other": "{0} mil"
+          },
+          "narrow": {
+            "other": "{0} mil"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} mil"
+          }
+        },
+        "mile-per-gallon": {
+          "long": {
+            "other": "{0} mil/galon"
+          },
+          "narrow": {
+            "other": "{0} mpg"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} mpg"
+          }
+        },
+        "mile-per-hour": {
+          "long": {
+            "other": "{0} mil/saat"
+          },
+          "narrow": {
+            "other": "{0} mil/sa"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} mil/sa"
+          }
+        },
+        "mile-scandinavian": {
+          "long": {
+            "other": "{0} smi"
+          },
+          "narrow": {
+            "other": "{0} smi"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} smi"
+          }
+        },
+        "milliliter": {
+          "long": {
+            "other": "{0} mililitre"
+          },
+          "narrow": {
+            "other": "{0} ml"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} ml"
+          }
+        },
+        "millimeter": {
+          "long": {
+            "other": "{0} milimetre"
+          },
+          "narrow": {
+            "other": "{0} mm"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} mm"
+          }
+        },
+        "millisecond": {
+          "long": {
+            "other": "{0} milisaniye"
+          },
+          "narrow": {
+            "other": "{0}msn"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} msn"
+          }
+        },
+        "minute": {
+          "long": {
+            "other": "{0} dakika"
+          },
+          "narrow": {
+            "other": "{0}d"
+          },
+          "perUnit": {
+            "long": "{0}/dakika",
+            "narrow": "{0}/dk.",
+            "short": "{0}/dk."
+          },
+          "short": {
+            "other": "{0} dk."
+          }
+        },
+        "month": {
+          "long": {
+            "other": "{0} ay"
+          },
+          "narrow": {
+            "other": "{0}a"
+          },
+          "perUnit": {
+            "long": "{0}/ay",
+            "narrow": "{0}/ay",
+            "short": "{0}/ay"
+          },
+          "short": {
+            "other": "{0} ay"
+          }
+        },
+        "ounce": {
+          "long": {
+            "other": "{0} ons"
+          },
+          "narrow": {
+            "other": "{0} oz"
+          },
+          "perUnit": {
+            "long": "{0}/oz",
+            "narrow": "{0}/oz",
+            "short": "{0}/oz"
+          },
+          "short": {
+            "other": "{0} oz"
+          }
+        },
+        "percent": {
+          "long": {
+            "other": "yüzde {0}"
+          },
+          "narrow": {
+            "other": "%{0}"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "%{0}"
+          }
+        },
+        "petabyte": {
+          "long": {
+            "other": "{0} petabayt"
+          },
+          "narrow": {
+            "other": "{0} PB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} PB"
+          }
+        },
+        "pound": {
+          "long": {
+            "other": "{0} libre"
+          },
+          "narrow": {
+            "other": "{0} lb"
+          },
+          "perUnit": {
+            "long": "{0}/libre",
+            "narrow": "{0}/lb",
+            "short": "{0}/lb"
+          },
+          "short": {
+            "other": "{0} lb"
+          }
+        },
+        "second": {
+          "long": {
+            "other": "{0} saniye"
+          },
+          "narrow": {
+            "other": "{0}sn"
+          },
+          "perUnit": {
+            "long": "{0}/saniye",
+            "narrow": "{0}/sn",
+            "short": "{0}/sn"
+          },
+          "short": {
+            "other": "{0} sn."
+          }
+        },
+        "stone": {
+          "long": {
+            "other": "{0} stone"
+          },
+          "narrow": {
+            "other": "{0} st"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} st"
+          }
+        },
+        "terabit": {
+          "long": {
+            "other": "{0} terabit"
+          },
+          "narrow": {
+            "other": "{0} Tb"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} Tb"
+          }
+        },
+        "terabyte": {
+          "long": {
+            "other": "{0} terabayt"
+          },
+          "narrow": {
+            "other": "{0} TB"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} TB"
+          }
+        },
+        "week": {
+          "long": {
+            "other": "{0} hafta"
+          },
+          "narrow": {
+            "other": "{0}h"
+          },
+          "perUnit": {
+            "long": "{0}/hafta",
+            "narrow": "{0}/hf.",
+            "short": "{0}/hf."
+          },
+          "short": {
+            "other": "{0} hf."
+          }
+        },
+        "yard": {
+          "long": {
+            "other": "{0} yarda"
+          },
+          "narrow": {
+            "other": "{0} yd"
+          },
+          "perUnit": {
+          },
+          "short": {
+            "other": "{0} yd"
+          }
+        },
+        "year": {
+          "long": {
+            "other": "{0} yıl"
+          },
+          "narrow": {
+            "other": "{0}y"
+          },
+          "perUnit": {
+            "long": "{0}/yıl",
+            "narrow": "{0}/y",
+            "short": "{0}/y"
+          },
+          "short": {
+            "other": "{0} yıl"
+          }
+        }
+      }
+    }
+  },
+  "locale": "tr"
+}
