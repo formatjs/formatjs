@@ -65,11 +65,12 @@ npx pnpm -r publish
 
 1. Update the sha512 for tzdata & tzcode targets
 
-1. Potentially update tz data
+1. Update tz data
 
 ```
 bazel run //packages/intl-datetimeformat:generated_tz_data
 ```
+4. Test to make sure everything passes
 
 ### Generating CLDR data
 
