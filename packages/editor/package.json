@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@material-ui/core": "^4.11.3",
+    "@mui/material": "^5.0.0",
     "@material-ui/lab": "4.0.0-alpha.57",
     "@mui/icons-material": "^5.0.0",
     "@types/react": "17",
