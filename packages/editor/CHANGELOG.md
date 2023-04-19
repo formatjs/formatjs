@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.27](https://github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.26...@formatjs/editor@2.0.27) (2023-04-19)
+
+### Bug Fixes
+
+* **deps:** replace dependency @material-ui/icons with @mui/icons-material ^5.0.0 ([#4024](https://github.com/formatjs/formatjs/issues/4024)) ([81ff979](https://github.com/formatjs/formatjs/commit/81ff979b7c51d381f5045a2e9cd829bf38f7851c))
+
 ## [2.0.26](https://github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.25...@formatjs/editor@2.0.26) (2023-04-17)
 
 **Note:** Version bump only for package @formatjs/editor
