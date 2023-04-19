@@ -1,14 +1,44 @@
 /zic/America/Yellowknife  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
 /zic/America/Yellowknife  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
-/zic/America/Yellowknife  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 -00 isdst=0 gmtoff=0
-/zic/America/Yellowknife  Mon Dec 31 23:59:59 1934 UT = Mon Dec 31 23:59:59 1934 -00 isdst=0 gmtoff=0
-/zic/America/Yellowknife  Tue Jan  1 00:00:00 1935 UT = Mon Dec 31 17:00:00 1934 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Yellowknife  Thu Jan  1 07:33:51 -2147481748 UT = -67768040609713569 (localtime failed)
+/zic/America/Yellowknife  Thu Jan  1 07:33:52 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-27232
+/zic/America/Yellowknife  Sat Sep  1 07:33:51 1906 UT = Fri Aug 31 23:59:59 1906 LMT isdst=0 gmtoff=-27232
+/zic/America/Yellowknife  Sat Sep  1 07:33:52 1906 UT = Sat Sep  1 00:33:52 1906 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 14 08:59:59 1918 UT = Sun Apr 14 01:59:59 1918 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 14 09:00:00 1918 UT = Sun Apr 14 03:00:00 1918 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Oct 27 07:59:59 1918 UT = Sun Oct 27 01:59:59 1918 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Oct 27 08:00:00 1918 UT = Sun Oct 27 01:00:00 1918 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 13 08:59:59 1919 UT = Sun Apr 13 01:59:59 1919 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 13 09:00:00 1919 UT = Sun Apr 13 03:00:00 1919 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Tue May 27 07:59:59 1919 UT = Tue May 27 01:59:59 1919 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Tue May 27 08:00:00 1919 UT = Tue May 27 01:00:00 1919 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 25 08:59:59 1920 UT = Sun Apr 25 01:59:59 1920 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 25 09:00:00 1920 UT = Sun Apr 25 03:00:00 1920 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Oct 31 07:59:59 1920 UT = Sun Oct 31 01:59:59 1920 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Oct 31 08:00:00 1920 UT = Sun Oct 31 01:00:00 1920 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 24 08:59:59 1921 UT = Sun Apr 24 01:59:59 1921 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 24 09:00:00 1921 UT = Sun Apr 24 03:00:00 1921 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Sep 25 07:59:59 1921 UT = Sun Sep 25 01:59:59 1921 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Sep 25 08:00:00 1921 UT = Sun Sep 25 01:00:00 1921 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 30 08:59:59 1922 UT = Sun Apr 30 01:59:59 1922 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 30 09:00:00 1922 UT = Sun Apr 30 03:00:00 1922 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Sep 24 07:59:59 1922 UT = Sun Sep 24 01:59:59 1922 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Sep 24 08:00:00 1922 UT = Sun Sep 24 01:00:00 1922 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 29 08:59:59 1923 UT = Sun Apr 29 01:59:59 1923 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 29 09:00:00 1923 UT = Sun Apr 29 03:00:00 1923 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Sep 30 07:59:59 1923 UT = Sun Sep 30 01:59:59 1923 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Sep 30 08:00:00 1923 UT = Sun Sep 30 01:00:00 1923 MST isdst=0 gmtoff=-25200
 /zic/America/Yellowknife  Mon Feb  9 08:59:59 1942 UT = Mon Feb  9 01:59:59 1942 MST isdst=0 gmtoff=-25200
 /zic/America/Yellowknife  Mon Feb  9 09:00:00 1942 UT = Mon Feb  9 03:00:00 1942 MWT isdst=1 gmtoff=-21600
 /zic/America/Yellowknife  Tue Aug 14 22:59:59 1945 UT = Tue Aug 14 16:59:59 1945 MWT isdst=1 gmtoff=-21600
 /zic/America/Yellowknife  Tue Aug 14 23:00:00 1945 UT = Tue Aug 14 17:00:00 1945 MPT isdst=1 gmtoff=-21600
 /zic/America/Yellowknife  Sun Sep 30 07:59:59 1945 UT = Sun Sep 30 01:59:59 1945 MPT isdst=1 gmtoff=-21600
 /zic/America/Yellowknife  Sun Sep 30 08:00:00 1945 UT = Sun Sep 30 01:00:00 1945 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 27 08:59:59 1947 UT = Sun Apr 27 01:59:59 1947 MST isdst=0 gmtoff=-25200
+/zic/America/Yellowknife  Sun Apr 27 09:00:00 1947 UT = Sun Apr 27 03:00:00 1947 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Sep 28 07:59:59 1947 UT = Sun Sep 28 01:59:59 1947 MDT isdst=1 gmtoff=-21600
+/zic/America/Yellowknife  Sun Sep 28 08:00:00 1947 UT = Sun Sep 28 01:00:00 1947 MST isdst=0 gmtoff=-25200
 /zic/America/Yellowknife  Sun Apr 30 08:59:59 1972 UT = Sun Apr 30 01:59:59 1972 MST isdst=0 gmtoff=-25200
 /zic/America/Yellowknife  Sun Apr 30 09:00:00 1972 UT = Sun Apr 30 03:00:00 1972 MDT isdst=1 gmtoff=-21600
 /zic/America/Yellowknife  Sun Oct 29 07:59:59 1972 UT = Sun Oct 29 01:59:59 1972 MDT isdst=1 gmtoff=-21600
