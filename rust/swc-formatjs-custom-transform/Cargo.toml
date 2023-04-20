@@ -16,7 +16,7 @@ napi = { version = "2.9.1", default-features = false, features = [
   "napi3",
   "serde-json",
 ] }
-napi-derive = { version = "2.9.1", default-features = false, features = [
+napi-derive = { version = "2.12.3", default-features = false, features = [
   "type-def",
 ] }
 serde = { version = "1.0.144", features = ["derive"] }
