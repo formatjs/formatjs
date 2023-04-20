@@ -1,0 +1,11 @@
+actions:
+  - name: 'Test all targets'
+    triggers:
+      push:
+        branches:
+          - 'main'
+      pull_request:
+        branches:
+          - '*'
+    bazel_commands:
+      - 'test //...'
