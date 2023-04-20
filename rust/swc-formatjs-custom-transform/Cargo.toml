@@ -19,7 +19,7 @@ napi = { version = "2.9.1", default-features = false, features = [
 napi-derive = { version = "2.9.1", default-features = false, features = [
   "type-def",
 ] }
-serde = { version = "1.0.144", features = ["derive"] }
+serde = { version = "1.0.160", features = ["derive"] }
 serde_json = { version = "1.0.85", features = ["unbounded_depth"] }
 
 swc-formatjs-visitor = { path = "../swc-formatjs-visitor", features = [
