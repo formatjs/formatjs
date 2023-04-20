@@ -4,5 +4,11 @@
   "ignorePaths": [
     "**/node_modules/**",
     "packages/react-intl/example-sandboxes/**"
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["rust"],
+      "enabled": false
+    }
   ]
 }
