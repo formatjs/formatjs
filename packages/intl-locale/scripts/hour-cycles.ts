@@ -1,6 +1,6 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra'
-
+import stringify from 'json-stable-stringify'
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json'
 
 import type {Args} from './common-types'
@@ -39,7 +39,7 @@ async function main(args: Args) {
     out,
     `/* @generated */
 // prettier-ignore
-export const hourCycles = ${JSON.stringify(processedHourCycles)} as const
+export const hourCycles = ${stringify(processedHourCycles, {space: 2})} as const
 export type HourCyclesKey = keyof typeof hourCycles`
   )
 }

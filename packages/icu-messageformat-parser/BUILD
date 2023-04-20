@@ -108,6 +108,8 @@ generate_src_file(
     src = "time-data.generated.ts",
     data = [
         "//:node_modules/cldr-core",
+        "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/json-stable-stringify"
     ],
     entry_point = "scripts/time-data-gen.ts",
 )

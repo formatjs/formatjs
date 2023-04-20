@@ -1,0 +1,14 @@
+/zic/Pacific/Kanton  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Kanton  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Kanton  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 -00 isdst=0 gmtoff=0
+/zic/Pacific/Kanton  Mon Aug 30 23:59:59 1937 UT = Mon Aug 30 23:59:59 1937 -00 isdst=0 gmtoff=0
+/zic/Pacific/Kanton  Tue Aug 31 00:00:00 1937 UT = Mon Aug 30 12:00:00 1937 -12 isdst=0 gmtoff=-43200
+/zic/Pacific/Kanton  Mon Oct  1 11:59:59 1979 UT = Sun Sep 30 23:59:59 1979 -12 isdst=0 gmtoff=-43200
+/zic/Pacific/Kanton  Mon Oct  1 12:00:00 1979 UT = Mon Oct  1 01:00:00 1979 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Kanton  Sat Dec 31 10:59:59 1994 UT = Fri Dec 30 23:59:59 1994 -11 isdst=0 gmtoff=-39600
+/zic/Pacific/Kanton  Sat Dec 31 11:00:00 1994 UT = Sun Jan  1 00:00:00 1995 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Kanton  Wed Dec 31 10:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +13 isdst=0 gmtoff=46800
+/zic/Pacific/Kanton  Wed Dec 31 11:00:00 2147485547 UT = 67768036191630000 (localtime failed)
+/zic/Pacific/Kanton  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Pacific/Kanton  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Pacific/Kanton  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

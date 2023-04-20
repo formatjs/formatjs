@@ -7,6 +7,7 @@ import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra'
 import {readFileSync} from 'node:fs'
 import path from 'node:path'
+import stringify from 'json-stable-stringify'
 
 const SEGMENTATION_LOCALES = [
   'de',
@@ -513,11 +514,9 @@ async function main(args: minimist.ParsedArgs) {
     out,
     `/* @generated */
     // prettier-ignore
-    export const SegmentationRules = ${JSON.stringify(
-      remappedLocaleSegmentations,
-      null,
-      4
-    )}
+    export const SegmentationRules = ${stringify(remappedLocaleSegmentations, {
+      space: 2,
+    })}
 
     `
   )

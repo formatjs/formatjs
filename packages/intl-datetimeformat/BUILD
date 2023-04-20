@@ -776,6 +776,8 @@ generate_src_file(
     ],
     data = [
         ":tz_data/backward",
+        "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/link.ts",
 )

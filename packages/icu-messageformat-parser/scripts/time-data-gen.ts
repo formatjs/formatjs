@@ -1,6 +1,7 @@
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json'
 import {outputFileSync} from 'fs-extra'
 import minimist from 'minimist'
+import stringify from 'json-stable-stringify'
 
 function main(args: minimist.ParsedArgs) {
   const {timeData} = rawTimeData.supplemental
@@ -16,11 +17,9 @@ function main(args: minimist.ParsedArgs) {
     args.out,
     `// @generated from time-data-gen.ts
 // prettier-ignore  
-export const timeData: Record<string, string[]> = ${JSON.stringify(
-      data,
-      undefined,
-      2
-    )};
+export const timeData: Record<string, string[]> = ${stringify(data, {
+      space: 2,
+    })};
 `
   )
 }

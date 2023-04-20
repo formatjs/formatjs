@@ -59,6 +59,8 @@ generate_src_file(
     src = "src/aliases.generated.ts",
     data = [
         "//:node_modules/cldr-core",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/@types/json-stable-stringify",
     ],
     entry_point = "scripts/aliases.ts",
     visibility = ["//:__pkg__"],
@@ -69,6 +71,8 @@ generate_src_file(
     src = "src/likelySubtags.generated.ts",
     data = [
         "//:node_modules/cldr-core",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/@types/json-stable-stringify",
     ],
     entry_point = "scripts/likely-subtags.ts",
     visibility = ["//:__pkg__"],

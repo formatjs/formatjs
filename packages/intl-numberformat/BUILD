@@ -788,6 +788,8 @@ generate_src_file(
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
         "//:node_modules/lodash",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/@types/json-stable-stringify"
     ],
     entry_point = "scripts/currency-digits.ts",
 )

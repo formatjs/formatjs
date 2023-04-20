@@ -1,6 +1,6 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra'
-
+import stringify from 'json-stable-stringify'
 import * as rawTimezones from 'cldr-bcp47/bcp47/timezone.json'
 
 import type {Args} from './common-types'
@@ -76,7 +76,9 @@ async function main(args: Args) {
     out,
     `/* @generated */
 // prettier-ignore
-export const timezones = ${JSON.stringify(territoryToTimezonesMap)} as const
+export const timezones = ${stringify(territoryToTimezonesMap, {
+      space: 2,
+    })} as const
 export type TimezonesTerritory = keyof typeof timezones`
   )
 }

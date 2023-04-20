@@ -5,6 +5,7 @@ import * as rawWeekData from 'cldr-core/supplemental/weekData.json'
 import * as rawTerritoryInfo from 'cldr-core/supplemental/territoryInfo.json'
 
 import type {Args} from './common-types'
+import stringify from 'json-stable-stringify'
 
 type WeekInfoInternal = {
   firstDay: number
@@ -88,7 +89,9 @@ async function main(args: Args) {
     out,
     `/* @generated */
 // prettier-ignore
-export const weekData = ${JSON.stringify(weekDataForTerritories)} as const
+export const weekData = ${stringify(weekDataForTerritories, {
+      space: 2,
+    })} as const
 export type WeekDataKey = keyof typeof weekData
 export type WeekInfoInternal = typeof weekData[WeekDataKey]`
   )

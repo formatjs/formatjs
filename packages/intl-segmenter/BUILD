@@ -169,6 +169,8 @@ generate_src_file(
         "//:node_modules/@types/regenerate",
         "//:node_modules/cldr-segments-full",
         "//:node_modules/regexpu-core",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/@types/json-stable-stringify"
     ],
     entry_point = "scripts/generate-cldr-segmentation-rules.ts",
 )
