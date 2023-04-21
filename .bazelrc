@@ -81,6 +81,9 @@ run --incompatible_strict_action_env
 # Increase heap size
 build --define=NODE_OPTIONS=--max-old-space-size=4096
 
+# for rules_js RBE
+build --strategy=TsProject=worker
+
 # BuildBuddy GH Actions Config
 # https://www.buildbuddy.io/docs/rbe-github-actions
 build --bes_results_url=https://app.buildbuddy.io/invocation/
