@@ -5,12 +5,6 @@
 workspace(
     # How this workspace would be referenced with absolute labels from another workspace
     name = "formatjs",
-    # Map the @npm bazel workspace to the node_modules directory.
-    # This lets Bazel use the same node_modules as other local tooling.
-    managed_directories = {
-        "@npm": ["node_modules"],
-        # "@website_npm": ["website/node_modules"],
-    },
 )
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")

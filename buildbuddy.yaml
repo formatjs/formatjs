@@ -7,5 +7,7 @@ actions:
       pull_request:
         branches:
           - '*'
+    resource_requests:
+      memory: 10GB
     bazel_commands:
       - 'test //...'
