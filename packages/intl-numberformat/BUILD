@@ -693,6 +693,10 @@ ts_script(
         package_name() + "/cldr-raw",
     ],
     data = [
+        "scripts/extract-currencies.ts",
+        "scripts/extract-numbers.ts",
+        "scripts/extract-units.ts",
+        "scripts/utils.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/@types/lodash",
@@ -702,10 +706,6 @@ ts_script(
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash",
-        "scripts/extract-currencies.ts",
-        "scripts/extract-numbers.ts",
-        "scripts/extract-units.ts",
-        "scripts/utils.ts",
     ],
     entry_point = "scripts/cldr-raw.ts",
     visibility = [
@@ -783,13 +783,13 @@ generate_src_file(
         "scripts/extract-currencies.ts",
         "scripts/utils.ts",
         ":node_modules/@formatjs/ecma402-abstract",
+        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/@types/lodash",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
-        "//:node_modules/lodash",
         "//:node_modules/json-stable-stringify",
-        "//:node_modules/@types/json-stable-stringify"
+        "//:node_modules/lodash",
     ],
     entry_point = "scripts/currency-digits.ts",
 )
@@ -838,20 +838,15 @@ esbuild(
     entry_point = "test262/test262-main.js",
     target = "es6",
     deps = [
-        ":test262-main-bundle",
         ":node_modules/@formatjs/intl-getcanonicallocales",
         ":node_modules/@formatjs/intl-locale",
+        ":test262-main-bundle",
     ] + SRC_DEPS,
 )
 
 test262_harness_bin.test262_harness_test(
     name = "test262",
     size = "large",
-    data = [
-        "test262-polyfill.js",
-        "@com_github_tc39_test262//:test262-harness-copy",
-        "@com_github_tc39_test262//:test262-numberformat-copy",
-    ],
     args = [
         "--reporter-keys",
         "file,attrs,result",
@@ -862,6 +857,11 @@ test262_harness_bin.test262_harness_test(
         "--test262Dir",
         "../com_github_tc39_test262",
         "../com_github_tc39_test262/test/intl402/NumberFormat/**/*.js",
+    ],
+    data = [
+        "test262-polyfill.js",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-numberformat-copy",
     ],
 )
 

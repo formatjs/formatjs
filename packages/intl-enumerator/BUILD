@@ -1,11 +1,11 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "check_format", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
-load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -18,7 +18,7 @@ npm_package(
         "README.md",
         "package.json",
         ":dist",
-         # polyfill-library uses this
+        # polyfill-library uses this
         "polyfill.iife.js",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,

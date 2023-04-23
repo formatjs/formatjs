@@ -49,35 +49,25 @@ copy_to_bin(
 
 docusaurus_bin.docusaurus(
     name = "build",
+    srcs = DEPS + [
+        ":node_modules/@mdx-js/react",
+        ":node_modules/react-live",
+        "//:node_modules/clsx",
+        "//:node_modules/hoist-non-react-statics",
+        "//:node_modules/tslib",
+    ],
     args = [
         "build",
         "--out-dir",
         "$(@D)",
     ],
-    srcs = DEPS + [
-        "//:node_modules/tslib",
-        "//:node_modules/hoist-non-react-statics",
-        ":node_modules/react-live",
-        ":node_modules/@mdx-js/react",
-        "//:node_modules/clsx",
-    ],
+    chdir = package_name(),
     out_dirs = ["build"],
     tags = ["manual"],
-    chdir = package_name(),
 )
 
 docusaurus_bin.docusaurus_binary(
     name = "deploy",
-    # configuration_env_vars = [
-    #     "USE_SSH",
-    #     "GIT_USER",
-    #     "DEPLOYMENT_BRANCH",
-    #     "NO_UPDATE_NOTIFIER",
-    # ],
-    data = DEPS + [
-        ":build",
-        "docusaurus.config.js",
-    ],
     args = [
         "deploy",
         "--skip-build",
@@ -85,16 +75,26 @@ docusaurus_bin.docusaurus_binary(
         "$$(rlocation $(rootpath :build))",
         "website",
     ],
+    # configuration_env_vars = [
+    #     "USE_SSH",
+    #     "GIT_USER",
+    #     "DEPLOYMENT_BRANCH",
+    #     "NO_UPDATE_NOTIFIER",
+    # ],
+    data = DEPS + [
+        "docusaurus.config.js",
+        ":build",
+    ],
     tags = ["manual"],
 )
 
 http_server_bin.http_server_binary(
     name = "serve",
-    data = [
-        ":build",
-    ],
     args = [
         "$$(rlocation $(location :build))",
+    ],
+    data = [
+        ":build",
     ],
     tags = ["manual"],
 )

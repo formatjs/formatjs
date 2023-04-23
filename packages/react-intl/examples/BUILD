@@ -59,11 +59,11 @@ copy_to_bin(
 
 bin.http_server_binary(
     name = "examples",
+    args = [
+        "packages/react-intl/examples",
+    ],
     data = [
         ":index",
         ":main",
-    ],
-    args = [
-        "packages/react-intl/examples",
     ],
 )

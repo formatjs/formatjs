@@ -382,11 +382,6 @@ esbuild(
 test262_harness_bin.test262_harness_test(
     name = "test262",
     size = "large",
-    data = [
-        "test262-polyfill.js",
-        "@com_github_tc39_test262//:test262-harness-copy",
-        "@com_github_tc39_test262//:test262-pluralrules-copy",
-    ],
     args = [
         "--reporter-keys",
         "file,attrs,result",
@@ -398,6 +393,11 @@ test262_harness_bin.test262_harness_test(
         "--test262Dir",
         "../com_github_tc39_test262",
         "../com_github_tc39_test262/test/intl402/PluralRules/**/*.js",
+    ],
+    data = [
+        "test262-polyfill.js",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-pluralrules-copy",
     ],
 )
 

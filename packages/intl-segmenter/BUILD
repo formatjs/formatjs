@@ -166,11 +166,11 @@ generate_src_file(
         "unicodeFiles/IndicSyllabicCategory.txt",
         "unicodeFiles/SentenceBreakProperty.txt",
         "unicodeFiles/WordBreakProperty.txt",
+        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/@types/regenerate",
         "//:node_modules/cldr-segments-full",
-        "//:node_modules/regexpu-core",
         "//:node_modules/json-stable-stringify",
-        "//:node_modules/@types/json-stable-stringify"
+        "//:node_modules/regexpu-core",
     ],
     entry_point = "scripts/generate-cldr-segmentation-rules.ts",
 )

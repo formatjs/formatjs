@@ -42,9 +42,9 @@ ts_compile_node(
     name = "dist",
     srcs = SRCS,
     deps = SRC_DEPS + [
+        "//:node_modules/@jest/types",
         "//:node_modules/@types/jest",
         "//:node_modules/ts-jest",
-        "//:node_modules/@jest/types",
     ],
 )
 

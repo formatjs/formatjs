@@ -660,6 +660,7 @@ ts_script(
         package_name() + "/cldr-raw",
     ],
     data = [
+        "scripts/extract-list.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/@types/lodash",
@@ -668,7 +669,6 @@ ts_script(
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash",
-        "scripts/extract-list.ts",
     ],
     entry_point = "scripts/cldr-raw.ts",
 )
@@ -746,11 +746,6 @@ esbuild(
 test262_harness_bin.test262_harness_test(
     name = "test262",
     size = "large",
-    data = [
-        "test262-polyfill.js",
-        "@com_github_tc39_test262//:test262-harness-copy",
-        "@com_github_tc39_test262//:test262-listformat-copy",
-    ],
     args = [
         "--reporter-keys",
         "file,attrs,result",
@@ -762,6 +757,11 @@ test262_harness_bin.test262_harness_test(
         "--test262Dir",
         "../com_github_tc39_test262",
         "../com_github_tc39_test262/test/intl402/ListFormat/**/*.js",
+    ],
+    data = [
+        "test262-polyfill.js",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-listformat-copy",
     ],
     # TODO: fix
     tags = ["manual"],

@@ -57,9 +57,9 @@ jest_test(
 js_binary(
     name = "benchmark",
     data = [
+        "benchmark.js",
         ":dist",
         "//:node_modules/benchmark",
-        "benchmark.js",
     ] + SRC_DEPS,
     entry_point = "benchmark.js",
 )
@@ -107,9 +107,9 @@ generate_src_file(
     name = "time-data",
     src = "time-data.generated.ts",
     data = [
-        "//:node_modules/cldr-core",
         "//:node_modules/@types/json-stable-stringify",
-        "//:node_modules/json-stable-stringify"
+        "//:node_modules/cldr-core",
+        "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/time-data-gen.ts",
 )

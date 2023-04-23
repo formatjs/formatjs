@@ -1,6 +1,6 @@
+load("@aspect_rules_jest//jest:defs.bzl", aspect_jest_test = "jest_test")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:jest.bzl", "jest_test")
-load("@aspect_rules_jest//jest:defs.bzl", aspect_jest_test = "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -80,7 +80,7 @@ aspect_jest_test(
         ["compile/**/*"],
         exclude = ["compile/__snapshots__/**/*"],
     ),
-    node_modules="//:node_modules",
+    node_modules = "//:node_modules",
     # To update snapshots run,
     #    bazel run //packages/cli/integration-tests:integration-compile_update_snapshots
     snapshots = glob(["compile/__snapshots__/*.snap"]),

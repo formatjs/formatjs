@@ -66,9 +66,9 @@ jest_test(
     name = "unit",
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
     deps = SRC_DEPS + [
-        ":node_modules/@formatjs/intl-pluralrules",
         ":node_modules/@formatjs/intl-getcanonicallocales",
         ":node_modules/@formatjs/intl-locale",
+        ":node_modules/@formatjs/intl-pluralrules",
     ],
 )
 
@@ -657,6 +657,7 @@ ts_script(
         package_name() + "/cldr-raw",
     ],
     data = [
+        "scripts/extract-relative.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-core",
@@ -664,7 +665,6 @@ ts_script(
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
-        "scripts/extract-relative.ts",
     ],
     entry_point = "scripts/cldr-raw.ts",
 )
@@ -742,11 +742,6 @@ esbuild(
 test262_harness_bin.test262_harness_test(
     name = "test262",
     size = "large",
-    data = [
-        "test262-polyfill.js",
-        "@com_github_tc39_test262//:test262-harness-copy",
-        "@com_github_tc39_test262//:test262-relativetimeformat-copy",
-    ],
     args = [
         "--reporter-keys",
         "file,attrs,result",
@@ -758,6 +753,11 @@ test262_harness_bin.test262_harness_test(
         "--test262Dir",
         "../com_github_tc39_test262",
         "../com_github_tc39_test262/test/intl402/RelativeTimeFormat/**/*.js",
+    ],
+    data = [
+        "test262-polyfill.js",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-relativetimeformat-copy",
     ],
     tags = ["manual"],
 )

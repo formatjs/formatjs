@@ -1,7 +1,7 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@aspect_rules_jest//jest:defs.bzl", aspect_jest_test = "jest_test")
 load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@aspect_rules_jest//jest:defs.bzl", aspect_jest_test = "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -45,6 +45,6 @@ aspect_jest_test(
     ) + glob(
         ["tests/fixtures/**/*"],
     ),
-    node_modules="//:node_modules",
-    snapshots = glob(["tests/__snapshots__/*.snap"])
+    node_modules = "//:node_modules",
+    snapshots = glob(["tests/__snapshots__/*.snap"]),
 )

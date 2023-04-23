@@ -65,8 +65,8 @@ jest_test(
         "tests/unit/**/*",
     ]),
     deps = [
-        "//:node_modules/rimraf",
         "//:node_modules/@types/rimraf",
+        "//:node_modules/rimraf",
     ] + SRC_DEPS,
 )
 

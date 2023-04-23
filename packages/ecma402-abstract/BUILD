@@ -63,8 +63,10 @@ write_source_files(
 generate_src_file(
     name = "digit-mapping",
     src = "NumberFormat/digit-mapping.generated.ts",
-    data=["//:node_modules/json-stable-stringify",
-        "//:node_modules/@types/json-stable-stringify",],
+    data = [
+        "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/json-stable-stringify",
+    ],
     entry_point = "scripts/digit-mapping.ts",
 )
 

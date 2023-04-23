@@ -117,10 +117,10 @@ karma_bin.karma_test(
     # ],
     data = [
         "//:karma.conf.js",
-        "//:node_modules/karma-jasmine",
         "//:node_modules/karma-chrome-launcher",
-        "//:node_modules/karma-sauce-launcher",
+        "//:node_modules/karma-jasmine",
         "//:node_modules/karma-jasmine-matchers",
+        "//:node_modules/karma-sauce-launcher",
     ] + KARMA_TESTS,
     tags = ["manual"],
 )
@@ -141,10 +141,10 @@ karma_bin.karma_test(
     # ],
     data = [
         "//:karma.conf.js",
-        "//:node_modules/karma-jasmine",
         "//:node_modules/karma-chrome-launcher",
-        "//:node_modules/karma-sauce-launcher",
+        "//:node_modules/karma-jasmine",
         "//:node_modules/karma-jasmine-matchers",
+        "//:node_modules/karma-sauce-launcher",
     ] + KARMA_TESTS,
     tags = ["manual"],
 )

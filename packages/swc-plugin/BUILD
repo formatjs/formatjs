@@ -44,8 +44,8 @@ ts_compile(
     srcs = SRCS,
     package = "@formatjs/%s" % PACKAGE_NAME,
     deps = SRC_DEPS + [
-        "//:node_modules/ts-jest",
         "//:node_modules/@jest/types",
+        "//:node_modules/ts-jest",
     ],
 )
 

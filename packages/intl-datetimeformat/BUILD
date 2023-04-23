@@ -688,6 +688,9 @@ ts_script(
         package_name() + "/cldr-raw",
     ],
     data = [
+        "scripts/extract-dates.ts",
+        "src/abstract/skeleton.ts",
+        "src/types.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         ":node_modules/@formatjs/intl-locale",
         "//:node_modules/@types/json-stable-stringify",
@@ -697,9 +700,6 @@ ts_script(
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
-        "scripts/extract-dates.ts",
-        "src/abstract/skeleton.ts",
-        "src/types.ts",
     ],
     entry_point = "scripts/cldr-raw.ts",
 )

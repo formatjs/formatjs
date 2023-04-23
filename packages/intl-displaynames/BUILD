@@ -654,6 +654,7 @@ ts_script(
         package_name() + "/cldr-raw",
     ],
     data = [
+        "scripts/extract-displaynames.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-core",
@@ -662,7 +663,6 @@ ts_script(
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
-        "scripts/extract-displaynames.ts",
     ],
     entry_point = "scripts/cldr-raw.ts",
 )
@@ -752,11 +752,6 @@ esbuild(
 test262_harness_bin.test262_harness_test(
     name = "test262",
     size = "large",
-    data = [
-        "test262-polyfill.js",
-        "@com_github_tc39_test262//:test262-displaynames-copy",
-        "@com_github_tc39_test262//:test262-harness-copy",
-    ],
     args = [
         "--reporter-keys",
         "file,attrs,result",
@@ -768,6 +763,11 @@ test262_harness_bin.test262_harness_test(
         "--test262Dir",
         "../com_github_tc39_test262",
         "../com_github_tc39_test262/test/intl402/DisplayNames/**/*.js",
+    ],
+    data = [
+        "test262-polyfill.js",
+        "@com_github_tc39_test262//:test262-displaynames-copy",
+        "@com_github_tc39_test262//:test262-harness-copy",
     ],
     # TODO: fix
     tags = ["manual"],

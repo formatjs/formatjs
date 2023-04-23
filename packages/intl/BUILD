@@ -99,14 +99,14 @@ copy_to_directory(
 
 tsd_bin.tsd_test(
     name = "global_type_overrides_test",
-    data = [
-        "//:node_modules/tsd",
-        ":global_type_overrides_test_files",
-        "tsconfig.json",
-    ] + SRC_DEPS,
     args = [
         "--files",
         "tests/global_type_overrides.test-d.ts",
     ],
     chdir = "packages/%s/global_type_overrides_test_files" % PACKAGE_NAME,
+    data = [
+        "tsconfig.json",
+        ":global_type_overrides_test_files",
+        "//:node_modules/tsd",
+    ] + SRC_DEPS,
 )
