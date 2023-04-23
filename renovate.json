@@ -7,7 +7,7 @@
   ],
   "packageRules": [
     {
-      "matchManagers": ["rust"],
+      "matchManagers": ["cargo"],
       "enabled": false
     }
   ]
