@@ -1400,13 +1400,6 @@
         "narrow": "Rs",
         "symbol": "MUR"
       },
-      "MVP": {
-        "displayName": {
-          "other": "MVP"
-        },
-        "narrow": "MVP",
-        "symbol": "MVP"
-      },
       "MVR": {
         "displayName": {
           "one": "Rupia maldivana",
@@ -2063,13 +2056,6 @@
         "narrow": "$",
         "symbol": "UYU"
       },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
-      },
       "UZS": {
         "displayName": {
           "one": "Som uzbeque",
@@ -2267,13 +2253,6 @@
         "narrow": "XRE",
         "symbol": "XRE"
       },
-      "XSU": {
-        "displayName": {
-          "other": "XSU"
-        },
-        "narrow": "XSU",
-        "symbol": "XSU"
-      },
       "XTS": {
         "displayName": {
           "one": "Código de moeda de teste",
@@ -2281,13 +2260,6 @@
         },
         "narrow": "XTS",
         "symbol": "XTS"
-      },
-      "XUA": {
-        "displayName": {
-          "other": "XUA"
-        },
-        "narrow": "XUA",
-        "symbol": "XUA"
       },
       "XXX": {
         "displayName": {
@@ -2612,6 +2584,7 @@
         },
         "bit": {
           "long": {
+            "one": "{0} bit",
             "other": "{0} bits"
           },
           "narrow": {
@@ -2626,6 +2599,7 @@
         },
         "byte": {
           "long": {
+            "one": "{0} byte",
             "other": "{0} bytes"
           },
           "narrow": {
@@ -3229,11 +3203,11 @@
           },
           "perUnit": {
             "long": "{0} por segundo",
-            "narrow": "{0}/seg",
+            "narrow": "{0}/s",
             "short": "{0}/s"
           },
           "short": {
-            "other": "{0} seg"
+            "other": "{0} s"
           }
         },
         "stone": {

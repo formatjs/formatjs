@@ -32,13 +32,6 @@
         "narrow": "؋",
         "symbol": "AFN"
       },
-      "ALK": {
-        "displayName": {
-          "other": "ALK"
-        },
-        "narrow": "ALK",
-        "symbol": "ALK"
-      },
       "ALL": {
         "displayName": {
           "one": "lek",
@@ -99,20 +92,6 @@
         },
         "narrow": "ARA",
         "symbol": "ARA"
-      },
-      "ARL": {
-        "displayName": {
-          "other": "ARL"
-        },
-        "narrow": "ARL",
-        "symbol": "ARL"
-      },
-      "ARM": {
-        "displayName": {
-          "other": "ARM"
-        },
-        "narrow": "ARM",
-        "symbol": "ARM"
       },
       "ARP": {
         "displayName": {
@@ -185,13 +164,6 @@
         "narrow": "KM",
         "symbol": "BAM"
       },
-      "BAN": {
-        "displayName": {
-          "other": "BAN"
-        },
-        "narrow": "BAN",
-        "symbol": "BAN"
-      },
       "BBD": {
         "displayName": {
           "one": "dólar barbadense",
@@ -240,13 +212,6 @@
         "narrow": "BGL",
         "symbol": "BGL"
       },
-      "BGM": {
-        "displayName": {
-          "other": "BGM"
-        },
-        "narrow": "BGM",
-        "symbol": "BGM"
-      },
       "BGN": {
         "displayName": {
           "one": "leva búlgara",
@@ -254,13 +219,6 @@
         },
         "narrow": "BGN",
         "symbol": "BGN"
-      },
-      "BGO": {
-        "displayName": {
-          "other": "BGO"
-        },
-        "narrow": "BGO",
-        "symbol": "BGO"
       },
       "BHD": {
         "displayName": {
@@ -301,13 +259,6 @@
         },
         "narrow": "Bs",
         "symbol": "BOB"
-      },
-      "BOL": {
-        "displayName": {
-          "other": "BOL"
-        },
-        "narrow": "BOL",
-        "symbol": "BOL"
       },
       "BOP": {
         "displayName": {
@@ -372,13 +323,6 @@
         },
         "narrow": "BRR",
         "symbol": "BRR"
-      },
-      "BRZ": {
-        "displayName": {
-          "other": "BRZ"
-        },
-        "narrow": "BRZ",
-        "symbol": "BRZ"
       },
       "BSD": {
         "displayName": {
@@ -484,13 +428,6 @@
         "narrow": "CHW",
         "symbol": "CHW"
       },
-      "CLE": {
-        "displayName": {
-          "other": "CLE"
-        },
-        "narrow": "CLE",
-        "symbol": "CLE"
-      },
       "CLF": {
         "displayName": {
           "one": "unidad de fomento chilena",
@@ -514,13 +451,6 @@
         },
         "narrow": "CNH",
         "symbol": "CNH"
-      },
-      "CNX": {
-        "displayName": {
-          "other": "CNX"
-        },
-        "narrow": "CNX",
-        "symbol": "CNX"
       },
       "CNY": {
         "displayName": {
@@ -957,13 +887,6 @@
         "narrow": "ILP",
         "symbol": "ILP"
       },
-      "ILR": {
-        "displayName": {
-          "other": "ILR"
-        },
-        "narrow": "ILR",
-        "symbol": "ILR"
-      },
       "ILS": {
         "displayName": {
           "one": "nuevo séquel israelí",
@@ -995,13 +918,6 @@
         },
         "narrow": "IRR",
         "symbol": "IRR"
-      },
-      "ISJ": {
-        "displayName": {
-          "other": "ISJ"
-        },
-        "narrow": "ISJ",
-        "symbol": "ISJ"
       },
       "ISK": {
         "displayName": {
@@ -1082,20 +998,6 @@
         },
         "narrow": "₩",
         "symbol": "KPW"
-      },
-      "KRH": {
-        "displayName": {
-          "other": "KRH"
-        },
-        "narrow": "KRH",
-        "symbol": "KRH"
-      },
-      "KRO": {
-        "displayName": {
-          "other": "KRO"
-        },
-        "narrow": "KRO",
-        "symbol": "KRO"
       },
       "KRW": {
         "displayName": {
@@ -1249,20 +1151,6 @@
         "narrow": "MAF",
         "symbol": "MAF"
       },
-      "MCF": {
-        "displayName": {
-          "other": "MCF"
-        },
-        "narrow": "MCF",
-        "symbol": "MCF"
-      },
-      "MDC": {
-        "displayName": {
-          "other": "MDC"
-        },
-        "narrow": "MDC",
-        "symbol": "MDC"
-      },
       "MDL": {
         "displayName": {
           "one": "leu moldavo",
@@ -1293,13 +1181,6 @@
         },
         "narrow": "MKD",
         "symbol": "MKD"
-      },
-      "MKN": {
-        "displayName": {
-          "other": "MKN"
-        },
-        "narrow": "MKN",
-        "symbol": "MKN"
       },
       "MLF": {
         "displayName": {
@@ -1371,13 +1252,6 @@
         },
         "narrow": "Rs",
         "symbol": "MUR"
-      },
-      "MVP": {
-        "displayName": {
-          "other": "MVP"
-        },
-        "narrow": "MVP",
-        "symbol": "MVP"
       },
       "MVR": {
         "displayName": {
@@ -2077,13 +1951,6 @@
         "narrow": "₫",
         "symbol": "₫"
       },
-      "VNN": {
-        "displayName": {
-          "other": "VNN"
-        },
-        "narrow": "VNN",
-        "symbol": "VNN"
-      },
       "VUV": {
         "displayName": {
           "one": "vatu",
@@ -2230,26 +2097,12 @@
         "narrow": "XRE",
         "symbol": "XRE"
       },
-      "XSU": {
-        "displayName": {
-          "other": "XSU"
-        },
-        "narrow": "XSU",
-        "symbol": "XSU"
-      },
       "XTS": {
         "displayName": {
           "other": "código reservado para pruebas"
         },
         "narrow": "XTS",
         "symbol": "XTS"
-      },
-      "XUA": {
-        "displayName": {
-          "other": "XUA"
-        },
-        "narrow": "XUA",
-        "symbol": "XUA"
       },
       "XXX": {
         "displayName": {
@@ -2294,13 +2147,6 @@
         },
         "narrow": "YUN",
         "symbol": "YUN"
-      },
-      "YUR": {
-        "displayName": {
-          "other": "YUR"
-        },
-        "narrow": "YUR",
-        "symbol": "YUR"
       },
       "ZAL": {
         "displayName": {
@@ -2360,13 +2206,6 @@
         },
         "narrow": "ZWL",
         "symbol": "ZWL"
-      },
-      "ZWR": {
-        "displayName": {
-          "other": "ZWR"
-        },
-        "narrow": "ZWR",
-        "symbol": "ZWR"
       }
     },
     "nu": [

@@ -1711,7 +1711,7 @@
       },
       "TRY": {
         "displayName": {
-          "other": "新トルコリラ"
+          "other": "トルコリラ"
         },
         "narrow": "₺",
         "symbol": "TRY"
@@ -1806,13 +1806,6 @@
         },
         "narrow": "$",
         "symbol": "UYU"
-      },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
       },
       "UZS": {
         "displayName": {
@@ -2693,7 +2686,7 @@
             "other": "{0} マイル"
           },
           "narrow": {
-            "other": "{0}マイル"
+            "other": "{0}mi"
           },
           "perUnit": {
           },
@@ -2945,7 +2938,7 @@
             "other": "{0} ヤード"
           },
           "narrow": {
-            "other": "{0}ヤード"
+            "other": "{0}yd"
           },
           "perUnit": {
           },

@@ -29,13 +29,6 @@
         "narrow": "؋",
         "symbol": "AFN"
       },
-      "ALK": {
-        "displayName": {
-          "other": "ALK"
-        },
-        "narrow": "ALK",
-        "symbol": "ALK"
-      },
       "ALL": {
         "displayName": {
           "other": "เลกแอลเบเนีย"
@@ -463,13 +456,6 @@
         "narrow": "CNH",
         "symbol": "CNH"
       },
-      "CNX": {
-        "displayName": {
-          "other": "CNX"
-        },
-        "narrow": "CNX",
-        "symbol": "CNX"
-      },
       "CNY": {
         "displayName": {
           "other": "หยวนจีน"
@@ -855,13 +841,6 @@
         "narrow": "ILP",
         "symbol": "ILP"
       },
-      "ILR": {
-        "displayName": {
-          "other": "ILR"
-        },
-        "narrow": "ILR",
-        "symbol": "ILR"
-      },
       "ILS": {
         "displayName": {
           "other": "นิวเชเกลอิสราเอล"
@@ -889,13 +868,6 @@
         },
         "narrow": "IRR",
         "symbol": "IRR"
-      },
-      "ISJ": {
-        "displayName": {
-          "other": "ISJ"
-        },
-        "narrow": "ISJ",
-        "symbol": "ISJ"
       },
       "ISK": {
         "displayName": {
@@ -1225,13 +1197,6 @@
         },
         "narrow": "Rs",
         "symbol": "MUR"
-      },
-      "MVP": {
-        "displayName": {
-          "other": "MVP"
-        },
-        "narrow": "MVP",
-        "symbol": "MVP"
       },
       "MVR": {
         "displayName": {
@@ -1806,13 +1771,6 @@
         },
         "narrow": "$",
         "symbol": "UYU"
-      },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
       },
       "UZS": {
         "displayName": {

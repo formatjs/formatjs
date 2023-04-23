@@ -1,13 +1,6 @@
 {
   "data": {
     "currencies": {
-      "ADP": {
-        "displayName": {
-          "other": "ADP"
-        },
-        "narrow": "ADP",
-        "symbol": "ADP"
-      },
       "AED": {
         "displayName": {
           "other": "संयुक्त अरब अमीरात दिरहाम"
@@ -28,13 +21,6 @@
         },
         "narrow": "؋",
         "symbol": "AFN"
-      },
-      "ALK": {
-        "displayName": {
-          "other": "ALK"
-        },
-        "narrow": "ALK",
-        "symbol": "ALK"
       },
       "ALL": {
         "displayName": {
@@ -64,68 +50,12 @@
         "narrow": "Kz",
         "symbol": "AOA"
       },
-      "AOK": {
-        "displayName": {
-          "other": "AOK"
-        },
-        "narrow": "AOK",
-        "symbol": "AOK"
-      },
-      "AON": {
-        "displayName": {
-          "other": "AON"
-        },
-        "narrow": "AON",
-        "symbol": "AON"
-      },
-      "AOR": {
-        "displayName": {
-          "other": "AOR"
-        },
-        "narrow": "AOR",
-        "symbol": "AOR"
-      },
-      "ARA": {
-        "displayName": {
-          "other": "ARA"
-        },
-        "narrow": "ARA",
-        "symbol": "ARA"
-      },
-      "ARL": {
-        "displayName": {
-          "other": "ARL"
-        },
-        "narrow": "ARL",
-        "symbol": "ARL"
-      },
-      "ARM": {
-        "displayName": {
-          "other": "ARM"
-        },
-        "narrow": "ARM",
-        "symbol": "ARM"
-      },
-      "ARP": {
-        "displayName": {
-          "other": "ARP"
-        },
-        "narrow": "ARP",
-        "symbol": "ARP"
-      },
       "ARS": {
         "displayName": {
           "other": "अर्जेंटीनी पेसो"
         },
         "narrow": "$",
         "symbol": "ARS"
-      },
-      "ATS": {
-        "displayName": {
-          "other": "ATS"
-        },
-        "narrow": "ATS",
-        "symbol": "ATS"
       },
       "AUD": {
         "displayName": {
@@ -141,13 +71,6 @@
         "narrow": "AWG",
         "symbol": "AWG"
       },
-      "AZM": {
-        "displayName": {
-          "other": "AZM"
-        },
-        "narrow": "AZM",
-        "symbol": "AZM"
-      },
       "AZN": {
         "displayName": {
           "other": "अज़रबैजानी मैनेट"
@@ -155,26 +78,12 @@
         "narrow": "₼",
         "symbol": "AZN"
       },
-      "BAD": {
-        "displayName": {
-          "other": "BAD"
-        },
-        "narrow": "BAD",
-        "symbol": "BAD"
-      },
       "BAM": {
         "displayName": {
           "other": "बोस्निया हर्ज़ेगोविना परिवर्तनीय मार्क"
         },
         "narrow": "KM",
         "symbol": "BAM"
-      },
-      "BAN": {
-        "displayName": {
-          "other": "BAN"
-        },
-        "narrow": "BAN",
-        "symbol": "BAN"
       },
       "BBD": {
         "displayName": {
@@ -190,54 +99,12 @@
         "narrow": "৳",
         "symbol": "BDT"
       },
-      "BEC": {
-        "displayName": {
-          "other": "BEC"
-        },
-        "narrow": "BEC",
-        "symbol": "BEC"
-      },
-      "BEF": {
-        "displayName": {
-          "other": "BEF"
-        },
-        "narrow": "BEF",
-        "symbol": "BEF"
-      },
-      "BEL": {
-        "displayName": {
-          "other": "BEL"
-        },
-        "narrow": "BEL",
-        "symbol": "BEL"
-      },
-      "BGL": {
-        "displayName": {
-          "other": "BGL"
-        },
-        "narrow": "BGL",
-        "symbol": "BGL"
-      },
-      "BGM": {
-        "displayName": {
-          "other": "BGM"
-        },
-        "narrow": "BGM",
-        "symbol": "BGM"
-      },
       "BGN": {
         "displayName": {
           "other": "बुल्गारियाई लेव"
         },
         "narrow": "BGN",
         "symbol": "BGN"
-      },
-      "BGO": {
-        "displayName": {
-          "other": "BGO"
-        },
-        "narrow": "BGO",
-        "symbol": "BGO"
       },
       "BHD": {
         "displayName": {
@@ -274,75 +141,12 @@
         "narrow": "Bs",
         "symbol": "BOB"
       },
-      "BOL": {
-        "displayName": {
-          "other": "BOL"
-        },
-        "narrow": "BOL",
-        "symbol": "BOL"
-      },
-      "BOP": {
-        "displayName": {
-          "other": "BOP"
-        },
-        "narrow": "BOP",
-        "symbol": "BOP"
-      },
-      "BOV": {
-        "displayName": {
-          "other": "BOV"
-        },
-        "narrow": "BOV",
-        "symbol": "BOV"
-      },
-      "BRB": {
-        "displayName": {
-          "other": "BRB"
-        },
-        "narrow": "BRB",
-        "symbol": "BRB"
-      },
-      "BRC": {
-        "displayName": {
-          "other": "BRC"
-        },
-        "narrow": "BRC",
-        "symbol": "BRC"
-      },
-      "BRE": {
-        "displayName": {
-          "other": "BRE"
-        },
-        "narrow": "BRE",
-        "symbol": "BRE"
-      },
       "BRL": {
         "displayName": {
           "other": "ब्राज़ीली रियाल"
         },
         "narrow": "R$",
         "symbol": "R$"
-      },
-      "BRN": {
-        "displayName": {
-          "other": "BRN"
-        },
-        "narrow": "BRN",
-        "symbol": "BRN"
-      },
-      "BRR": {
-        "displayName": {
-          "other": "BRR"
-        },
-        "narrow": "BRR",
-        "symbol": "BRR"
-      },
-      "BRZ": {
-        "displayName": {
-          "other": "BRZ"
-        },
-        "narrow": "BRZ",
-        "symbol": "BRZ"
       },
       "BSD": {
         "displayName": {
@@ -371,13 +175,6 @@
         },
         "narrow": "P",
         "symbol": "BWP"
-      },
-      "BYB": {
-        "displayName": {
-          "other": "BYB"
-        },
-        "narrow": "BYB",
-        "symbol": "BYB"
       },
       "BYN": {
         "displayName": {
@@ -414,40 +211,12 @@
         "narrow": "CDF",
         "symbol": "CDF"
       },
-      "CHE": {
-        "displayName": {
-          "other": "CHE"
-        },
-        "narrow": "CHE",
-        "symbol": "CHE"
-      },
       "CHF": {
         "displayName": {
           "other": "स्विस फ़्रैंक"
         },
         "narrow": "CHF",
         "symbol": "CHF"
-      },
-      "CHW": {
-        "displayName": {
-          "other": "CHW"
-        },
-        "narrow": "CHW",
-        "symbol": "CHW"
-      },
-      "CLE": {
-        "displayName": {
-          "other": "CLE"
-        },
-        "narrow": "CLE",
-        "symbol": "CLE"
-      },
-      "CLF": {
-        "displayName": {
-          "other": "CLF"
-        },
-        "narrow": "CLF",
-        "symbol": "CLF"
       },
       "CLP": {
         "displayName": {
@@ -463,13 +232,6 @@
         "narrow": "CNH",
         "symbol": "CNH"
       },
-      "CNX": {
-        "displayName": {
-          "other": "CNX"
-        },
-        "narrow": "CNX",
-        "symbol": "CNX"
-      },
       "CNY": {
         "displayName": {
           "other": "चीनी युआन"
@@ -484,13 +246,6 @@
         "narrow": "$",
         "symbol": "COP"
       },
-      "COU": {
-        "displayName": {
-          "other": "COU"
-        },
-        "narrow": "COU",
-        "symbol": "COU"
-      },
       "CRC": {
         "displayName": {
           "other": "कोस्टा रिका कोलोन"
@@ -504,13 +259,6 @@
         },
         "narrow": "CSD",
         "symbol": "CSD"
-      },
-      "CSK": {
-        "displayName": {
-          "other": "CSK"
-        },
-        "narrow": "CSK",
-        "symbol": "CSK"
       },
       "CUC": {
         "displayName": {
@@ -547,13 +295,6 @@
         "narrow": "Kč",
         "symbol": "CZK"
       },
-      "DDM": {
-        "displayName": {
-          "other": "DDM"
-        },
-        "narrow": "DDM",
-        "symbol": "DDM"
-      },
       "DEM": {
         "displayName": {
           "other": "डच मार्क"
@@ -589,20 +330,6 @@
         "narrow": "DZD",
         "symbol": "DZD"
       },
-      "ECS": {
-        "displayName": {
-          "other": "ECS"
-        },
-        "narrow": "ECS",
-        "symbol": "ECS"
-      },
-      "ECV": {
-        "displayName": {
-          "other": "ECV"
-        },
-        "narrow": "ECV",
-        "symbol": "ECV"
-      },
       "EEK": {
         "displayName": {
           "other": "एस्टोनियाई क्रून्"
@@ -624,23 +351,8 @@
         "narrow": "ERN",
         "symbol": "ERN"
       },
-      "ESA": {
-        "displayName": {
-          "other": "ESA"
-        },
-        "narrow": "ESA",
-        "symbol": "ESA"
-      },
-      "ESB": {
-        "displayName": {
-          "other": "ESB"
-        },
-        "narrow": "ESB",
-        "symbol": "ESB"
-      },
       "ESP": {
         "displayName": {
-          "other": "ESP"
         },
         "narrow": "₧",
         "symbol": "ESP"
@@ -658,13 +370,6 @@
         },
         "narrow": "€",
         "symbol": "€"
-      },
-      "FIM": {
-        "displayName": {
-          "other": "FIM"
-        },
-        "narrow": "FIM",
-        "symbol": "FIM"
       },
       "FJD": {
         "displayName": {
@@ -694,26 +399,12 @@
         "narrow": "£",
         "symbol": "£"
       },
-      "GEK": {
-        "displayName": {
-          "other": "GEK"
-        },
-        "narrow": "GEK",
-        "symbol": "GEK"
-      },
       "GEL": {
         "displayName": {
           "other": "जॉर्जियन लारी"
         },
         "narrow": "₾",
         "symbol": "GEL"
-      },
-      "GHC": {
-        "displayName": {
-          "other": "GHC"
-        },
-        "narrow": "GHC",
-        "symbol": "GHC"
       },
       "GHS": {
         "displayName": {
@@ -743,47 +434,12 @@
         "narrow": "FG",
         "symbol": "GNF"
       },
-      "GNS": {
-        "displayName": {
-          "other": "GNS"
-        },
-        "narrow": "GNS",
-        "symbol": "GNS"
-      },
-      "GQE": {
-        "displayName": {
-          "other": "GQE"
-        },
-        "narrow": "GQE",
-        "symbol": "GQE"
-      },
-      "GRD": {
-        "displayName": {
-          "other": "GRD"
-        },
-        "narrow": "GRD",
-        "symbol": "GRD"
-      },
       "GTQ": {
         "displayName": {
           "other": "ग्वाटेमाला क्वेटज़ल"
         },
         "narrow": "Q",
         "symbol": "GTQ"
-      },
-      "GWE": {
-        "displayName": {
-          "other": "GWE"
-        },
-        "narrow": "GWE",
-        "symbol": "GWE"
-      },
-      "GWP": {
-        "displayName": {
-          "other": "GWP"
-        },
-        "narrow": "GWP",
-        "symbol": "GWP"
       },
       "GYD": {
         "displayName": {
@@ -842,27 +498,6 @@
         "narrow": "Rp",
         "symbol": "IDR"
       },
-      "IEP": {
-        "displayName": {
-          "other": "IEP"
-        },
-        "narrow": "IEP",
-        "symbol": "IEP"
-      },
-      "ILP": {
-        "displayName": {
-          "other": "ILP"
-        },
-        "narrow": "ILP",
-        "symbol": "ILP"
-      },
-      "ILR": {
-        "displayName": {
-          "other": "ILR"
-        },
-        "narrow": "ILR",
-        "symbol": "ILR"
-      },
       "ILS": {
         "displayName": {
           "other": "इज़राइली न्यू शेकेल"
@@ -891,13 +526,6 @@
         },
         "narrow": "IRR",
         "symbol": "IRR"
-      },
-      "ISJ": {
-        "displayName": {
-          "other": "ISJ"
-        },
-        "narrow": "ISJ",
-        "symbol": "ISJ"
       },
       "ISK": {
         "displayName": {
@@ -968,20 +596,6 @@
         },
         "narrow": "₩",
         "symbol": "KPW"
-      },
-      "KRH": {
-        "displayName": {
-          "other": "KRH"
-        },
-        "narrow": "KRH",
-        "symbol": "KRH"
-      },
-      "KRO": {
-        "displayName": {
-          "other": "KRO"
-        },
-        "narrow": "KRO",
-        "symbol": "KRO"
       },
       "KRW": {
         "displayName": {
@@ -1054,47 +668,12 @@
         "narrow": "Lt",
         "symbol": "LTL"
       },
-      "LTT": {
-        "displayName": {
-          "other": "LTT"
-        },
-        "narrow": "LTT",
-        "symbol": "LTT"
-      },
-      "LUC": {
-        "displayName": {
-          "other": "LUC"
-        },
-        "narrow": "LUC",
-        "symbol": "LUC"
-      },
-      "LUF": {
-        "displayName": {
-          "other": "LUF"
-        },
-        "narrow": "LUF",
-        "symbol": "LUF"
-      },
-      "LUL": {
-        "displayName": {
-          "other": "LUL"
-        },
-        "narrow": "LUL",
-        "symbol": "LUL"
-      },
       "LVL": {
         "displayName": {
           "other": "लात्वियन लैत्स"
         },
         "narrow": "Ls",
         "symbol": "LVL"
-      },
-      "LVR": {
-        "displayName": {
-          "other": "LVR"
-        },
-        "narrow": "LVR",
-        "symbol": "LVR"
       },
       "LYD": {
         "displayName": {
@@ -1117,20 +696,6 @@
         "narrow": "MAF",
         "symbol": "MAF"
       },
-      "MCF": {
-        "displayName": {
-          "other": "MCF"
-        },
-        "narrow": "MCF",
-        "symbol": "MCF"
-      },
-      "MDC": {
-        "displayName": {
-          "other": "MDC"
-        },
-        "narrow": "MDC",
-        "symbol": "MDC"
-      },
       "MDL": {
         "displayName": {
           "other": "मोल्डोवन लियू"
@@ -1145,33 +710,12 @@
         "narrow": "Ar",
         "symbol": "MGA"
       },
-      "MGF": {
-        "displayName": {
-          "other": "MGF"
-        },
-        "narrow": "MGF",
-        "symbol": "MGF"
-      },
       "MKD": {
         "displayName": {
           "other": "मैसीडोनियन दिनार"
         },
         "narrow": "MKD",
         "symbol": "MKD"
-      },
-      "MKN": {
-        "displayName": {
-          "other": "MKN"
-        },
-        "narrow": "MKN",
-        "symbol": "MKN"
-      },
-      "MLF": {
-        "displayName": {
-          "other": "MLF"
-        },
-        "narrow": "MLF",
-        "symbol": "MLF"
       },
       "MMK": {
         "displayName": {
@@ -1208,33 +752,12 @@
         "narrow": "MRU",
         "symbol": "MRU"
       },
-      "MTL": {
-        "displayName": {
-          "other": "MTL"
-        },
-        "narrow": "MTL",
-        "symbol": "MTL"
-      },
-      "MTP": {
-        "displayName": {
-          "other": "MTP"
-        },
-        "narrow": "MTP",
-        "symbol": "MTP"
-      },
       "MUR": {
         "displayName": {
           "other": "मॉरिशियन रुपया"
         },
         "narrow": "Rs",
         "symbol": "MUR"
-      },
-      "MVP": {
-        "displayName": {
-          "other": "MVP"
-        },
-        "narrow": "MVP",
-        "symbol": "MVP"
       },
       "MVR": {
         "displayName": {
@@ -1257,40 +780,12 @@
         "narrow": "$",
         "symbol": "MX$"
       },
-      "MXP": {
-        "displayName": {
-          "other": "MXP"
-        },
-        "narrow": "MXP",
-        "symbol": "MXP"
-      },
-      "MXV": {
-        "displayName": {
-          "other": "MXV"
-        },
-        "narrow": "MXV",
-        "symbol": "MXV"
-      },
       "MYR": {
         "displayName": {
           "other": "मलेशियाई रिंगित"
         },
         "narrow": "RM",
         "symbol": "MYR"
-      },
-      "MZE": {
-        "displayName": {
-          "other": "MZE"
-        },
-        "narrow": "MZE",
-        "symbol": "MZE"
-      },
-      "MZM": {
-        "displayName": {
-          "other": "MZM"
-        },
-        "narrow": "MZM",
-        "symbol": "MZM"
       },
       "MZN": {
         "displayName": {
@@ -1313,26 +808,12 @@
         "narrow": "₦",
         "symbol": "NGN"
       },
-      "NIC": {
-        "displayName": {
-          "other": "NIC"
-        },
-        "narrow": "NIC",
-        "symbol": "NIC"
-      },
       "NIO": {
         "displayName": {
           "other": "निकारागुअन कोरडोबा"
         },
         "narrow": "C$",
         "symbol": "NIO"
-      },
-      "NLG": {
-        "displayName": {
-          "other": "NLG"
-        },
-        "narrow": "NLG",
-        "symbol": "NLG"
       },
       "NOK": {
         "displayName": {
@@ -1370,26 +851,12 @@
         "narrow": "PAB",
         "symbol": "PAB"
       },
-      "PEI": {
-        "displayName": {
-          "other": "PEI"
-        },
-        "narrow": "PEI",
-        "symbol": "PEI"
-      },
       "PEN": {
         "displayName": {
           "other": "पेरूवियन सोल"
         },
         "narrow": "PEN",
         "symbol": "PEN"
-      },
-      "PES": {
-        "displayName": {
-          "other": "PES"
-        },
-        "narrow": "PES",
-        "symbol": "PES"
       },
       "PGK": {
         "displayName": {
@@ -1420,20 +887,6 @@
         "narrow": "zł",
         "symbol": "PLN"
       },
-      "PLZ": {
-        "displayName": {
-          "other": "PLZ"
-        },
-        "narrow": "PLZ",
-        "symbol": "PLZ"
-      },
-      "PTE": {
-        "displayName": {
-          "other": "PTE"
-        },
-        "narrow": "PTE",
-        "symbol": "PTE"
-      },
       "PYG": {
         "displayName": {
           "other": "पैराग्वियन गुआरानी"
@@ -1455,13 +908,6 @@
         "narrow": "RHD",
         "symbol": "RHD"
       },
-      "ROL": {
-        "displayName": {
-          "other": "ROL"
-        },
-        "narrow": "ROL",
-        "symbol": "ROL"
-      },
       "RON": {
         "displayName": {
           "other": "रोमानियाई ल्यू"
@@ -1482,13 +928,6 @@
         },
         "narrow": "₽",
         "symbol": "RUB"
-      },
-      "RUR": {
-        "displayName": {
-          "other": "RUR"
-        },
-        "narrow": "RUR",
-        "symbol": "RUR"
       },
       "RWF": {
         "displayName": {
@@ -1630,13 +1069,6 @@
         "narrow": "SUR",
         "symbol": "SUR"
       },
-      "SVC": {
-        "displayName": {
-          "other": "SVC"
-        },
-        "narrow": "SVC",
-        "symbol": "SVC"
-      },
       "SYP": {
         "displayName": {
           "other": "सीरियाई पाउंड"
@@ -1671,13 +1103,6 @@
         },
         "narrow": "TJS",
         "symbol": "TJS"
-      },
-      "TMM": {
-        "displayName": {
-          "other": "TMM"
-        },
-        "narrow": "TMM",
-        "symbol": "TMM"
       },
       "TMT": {
         "displayName": {
@@ -1749,20 +1174,6 @@
         "narrow": "₴",
         "symbol": "UAH"
       },
-      "UAK": {
-        "displayName": {
-          "other": "UAK"
-        },
-        "narrow": "UAK",
-        "symbol": "UAK"
-      },
-      "UGS": {
-        "displayName": {
-          "other": "UGS"
-        },
-        "narrow": "UGS",
-        "symbol": "UGS"
-      },
       "UGX": {
         "displayName": {
           "other": "युगांडाई शिलिंग"
@@ -1791,33 +1202,12 @@
         "narrow": "USS",
         "symbol": "USS"
       },
-      "UYI": {
-        "displayName": {
-          "other": "UYI"
-        },
-        "narrow": "UYI",
-        "symbol": "UYI"
-      },
-      "UYP": {
-        "displayName": {
-          "other": "UYP"
-        },
-        "narrow": "UYP",
-        "symbol": "UYP"
-      },
       "UYU": {
         "displayName": {
           "other": "उरुग्वियन पेसो"
         },
         "narrow": "$",
         "symbol": "UYU"
-      },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
       },
       "UZS": {
         "displayName": {
@@ -1882,61 +1272,12 @@
         "narrow": "FCFA",
         "symbol": "FCFA"
       },
-      "XAG": {
-        "displayName": {
-          "other": "XAG"
-        },
-        "narrow": "XAG",
-        "symbol": "XAG"
-      },
-      "XAU": {
-        "displayName": {
-          "other": "XAU"
-        },
-        "narrow": "XAU",
-        "symbol": "XAU"
-      },
-      "XBA": {
-        "displayName": {
-          "other": "XBA"
-        },
-        "narrow": "XBA",
-        "symbol": "XBA"
-      },
-      "XBB": {
-        "displayName": {
-          "other": "XBB"
-        },
-        "narrow": "XBB",
-        "symbol": "XBB"
-      },
-      "XBC": {
-        "displayName": {
-          "other": "XBC"
-        },
-        "narrow": "XBC",
-        "symbol": "XBC"
-      },
-      "XBD": {
-        "displayName": {
-          "other": "XBD"
-        },
-        "narrow": "XBD",
-        "symbol": "XBD"
-      },
       "XCD": {
         "displayName": {
           "other": "पूर्वी कैरिबियाई डॉलर"
         },
         "narrow": "$",
         "symbol": "EC$"
-      },
-      "XDR": {
-        "displayName": {
-          "other": "XDR"
-        },
-        "narrow": "XDR",
-        "symbol": "XDR"
       },
       "XEU": {
         "displayName": {
@@ -1945,20 +1286,6 @@
         "narrow": "XEU",
         "symbol": "XEU"
       },
-      "XFO": {
-        "displayName": {
-          "other": "XFO"
-        },
-        "narrow": "XFO",
-        "symbol": "XFO"
-      },
-      "XFU": {
-        "displayName": {
-          "other": "XFU"
-        },
-        "narrow": "XFU",
-        "symbol": "XFU"
-      },
       "XOF": {
         "displayName": {
           "other": "पश्चिमी अफ़्रीकी CFA फ़्रैंक"
@@ -1966,54 +1293,12 @@
         "narrow": "F CFA",
         "symbol": "F CFA"
       },
-      "XPD": {
-        "displayName": {
-          "other": "XPD"
-        },
-        "narrow": "XPD",
-        "symbol": "XPD"
-      },
       "XPF": {
         "displayName": {
           "other": "[CFP] फ़्रैंक"
         },
         "narrow": "CFPF",
         "symbol": "CFPF"
-      },
-      "XPT": {
-        "displayName": {
-          "other": "XPT"
-        },
-        "narrow": "XPT",
-        "symbol": "XPT"
-      },
-      "XRE": {
-        "displayName": {
-          "other": "XRE"
-        },
-        "narrow": "XRE",
-        "symbol": "XRE"
-      },
-      "XSU": {
-        "displayName": {
-          "other": "XSU"
-        },
-        "narrow": "XSU",
-        "symbol": "XSU"
-      },
-      "XTS": {
-        "displayName": {
-          "other": "XTS"
-        },
-        "narrow": "XTS",
-        "symbol": "XTS"
-      },
-      "XUA": {
-        "displayName": {
-          "other": "XUA"
-        },
-        "narrow": "XUA",
-        "symbol": "XUA"
       },
       "XXX": {
         "displayName": {
@@ -2023,54 +1308,12 @@
         "narrow": "¤",
         "symbol": "¤"
       },
-      "YDD": {
-        "displayName": {
-          "other": "YDD"
-        },
-        "narrow": "YDD",
-        "symbol": "YDD"
-      },
       "YER": {
         "displayName": {
           "other": "यमनी रियाल"
         },
         "narrow": "YER",
         "symbol": "YER"
-      },
-      "YUD": {
-        "displayName": {
-          "other": "YUD"
-        },
-        "narrow": "YUD",
-        "symbol": "YUD"
-      },
-      "YUM": {
-        "displayName": {
-          "other": "YUM"
-        },
-        "narrow": "YUM",
-        "symbol": "YUM"
-      },
-      "YUN": {
-        "displayName": {
-          "other": "YUN"
-        },
-        "narrow": "YUN",
-        "symbol": "YUN"
-      },
-      "YUR": {
-        "displayName": {
-          "other": "YUR"
-        },
-        "narrow": "YUR",
-        "symbol": "YUR"
-      },
-      "ZAL": {
-        "displayName": {
-          "other": "ZAL"
-        },
-        "narrow": "ZAL",
-        "symbol": "ZAL"
       },
       "ZAR": {
         "displayName": {
@@ -2092,41 +1335,6 @@
         },
         "narrow": "ZK",
         "symbol": "ZMW"
-      },
-      "ZRN": {
-        "displayName": {
-          "other": "ZRN"
-        },
-        "narrow": "ZRN",
-        "symbol": "ZRN"
-      },
-      "ZRZ": {
-        "displayName": {
-          "other": "ZRZ"
-        },
-        "narrow": "ZRZ",
-        "symbol": "ZRZ"
-      },
-      "ZWD": {
-        "displayName": {
-          "other": "ZWD"
-        },
-        "narrow": "ZWD",
-        "symbol": "ZWD"
-      },
-      "ZWL": {
-        "displayName": {
-          "other": "ZWL"
-        },
-        "narrow": "ZWL",
-        "symbol": "ZWL"
-      },
-      "ZWR": {
-        "displayName": {
-          "other": "ZWR"
-        },
-        "narrow": "ZWR",
-        "symbol": "ZWR"
       }
     },
     "nu": [
@@ -2302,7 +1510,7 @@
             "other": "{0} एकड़"
           },
           "narrow": {
-            "other": "{0}एकड़"
+            "other": "{0} एकड़"
           },
           "perUnit": {
           },
@@ -2370,7 +1578,7 @@
             "other": "{0} दिन"
           },
           "narrow": {
-            "other": "{0}दिन"
+            "other": "{0} दि"
           },
           "perUnit": {
             "long": "{0} प्रति दिन",
@@ -2500,7 +1708,7 @@
             "other": "{0} हेक्टेयर"
           },
           "narrow": {
-            "other": "{0}हे॰"
+            "other": "{0} हे॰"
           },
           "perUnit": {
           },
@@ -2514,7 +1722,8 @@
             "other": "{0} घंटे"
           },
           "narrow": {
-            "other": "{0}घं॰"
+            "one": "{0}घं॰",
+            "other": "{0} घं"
           },
           "perUnit": {
             "long": "{0} प्रति घंटा",
@@ -2572,8 +1781,7 @@
             "other": "{0} किलोग्राम"
           },
           "narrow": {
-            "one": "{0}कि॰ग्रा॰",
-            "other": "{0} कि॰ग्रा॰"
+            "other": "{0} किग्रा"
           },
           "perUnit": {
             "long": "{0}/किलोग्राम",
@@ -2589,7 +1797,7 @@
             "other": "{0} किलोमीटर"
           },
           "narrow": {
-            "other": "{0} कि॰मी॰"
+            "other": "{0} किमी"
           },
           "perUnit": {
             "long": "{0}/किलोमीटर",
@@ -2605,7 +1813,7 @@
             "other": "{0} किलोमीटर प्रति घंटा"
           },
           "narrow": {
-            "other": "{0}किमी/घं"
+            "other": "{0} किमी/घं"
           },
           "perUnit": {
           },
@@ -2618,7 +1826,7 @@
             "other": "{0} लीटर"
           },
           "narrow": {
-            "other": "{0}ली॰"
+            "other": "{0} ली"
           },
           "perUnit": {
             "long": "{0}/लीटर",
@@ -2673,7 +1881,7 @@
             "other": "{0} मीटर"
           },
           "narrow": {
-            "other": "{0}मी"
+            "other": "{0} मी"
           },
           "perUnit": {
             "long": "{0}/मीटर",
@@ -2689,6 +1897,7 @@
             "other": "{0} मीटर प्रति सेकंड"
           },
           "narrow": {
+            "one": "{0} मी/से",
             "other": "{0}मी॰/से॰"
           },
           "perUnit": {
@@ -2702,7 +1911,7 @@
             "other": "{0} मील"
           },
           "narrow": {
-            "other": "{0}मील"
+            "other": "{0} मील"
           },
           "perUnit": {
           },
@@ -2728,7 +1937,7 @@
             "other": "{0} मील प्रति घंटा"
           },
           "narrow": {
-            "other": "{0}mph"
+            "other": "{0} मीप्रघं"
           },
           "perUnit": {
           },
@@ -2767,7 +1976,7 @@
             "other": "{0} मिलीमीटर"
           },
           "narrow": {
-            "other": "{0} मि॰मी॰"
+            "other": "{0} मिमी"
           },
           "perUnit": {
           },
@@ -2793,7 +2002,7 @@
             "other": "{0} मिनट"
           },
           "narrow": {
-            "other": "{0}मि॰"
+            "other": "{0} मि"
           },
           "perUnit": {
             "long": "{0} प्रति मिनट",
@@ -2806,7 +2015,8 @@
         },
         "month": {
           "long": {
-            "other": "{0} महीना"
+            "one": "{0} महीना",
+            "other": "{0} महीने"
           },
           "narrow": {
             "other": "{0}माह"
@@ -2825,7 +2035,7 @@
             "other": "{0} औंस"
           },
           "narrow": {
-            "other": "{0}औं॰"
+            "other": "{0} औं॰"
           },
           "perUnit": {
             "long": "{0}/औंस",
@@ -2883,7 +2093,7 @@
             "other": "{0} सेकंड"
           },
           "narrow": {
-            "other": "{0}से॰"
+            "other": "{0} से"
           },
           "perUnit": {
             "long": "{0} प्रति सेकंड",
@@ -2955,7 +2165,7 @@
             "other": "{0} यार्ड"
           },
           "narrow": {
-            "other": "{0}गज"
+            "other": "{0} यार्ड"
           },
           "perUnit": {
           },

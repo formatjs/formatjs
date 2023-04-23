@@ -227,7 +227,7 @@
       },
       "BGN": {
         "displayName": {
-          "other": "保加利亚新列弗"
+          "other": "保加利亚列弗"
         },
         "narrow": "BGN",
         "symbol": "BGN"
@@ -549,7 +549,7 @@
       },
       "DDM": {
         "displayName": {
-          "other": "东德奥斯特马克"
+          "other": "东德马克"
         },
         "narrow": "DDM",
         "symbol": "DDM"
@@ -696,7 +696,7 @@
       },
       "GEK": {
         "displayName": {
-          "other": "乔治亚库蓬拉瑞特"
+          "other": "格鲁吉亚库蓬拉瑞特"
         },
         "narrow": "GEK",
         "symbol": "GEK"
@@ -1529,7 +1529,7 @@
       },
       "SDP": {
         "displayName": {
-          "other": "旧苏丹镑"
+          "other": "苏丹镑 (1957–1998)"
         },
         "narrow": "SDP",
         "symbol": "SDP"
@@ -1568,6 +1568,13 @@
         },
         "narrow": "SKK",
         "symbol": "SKK"
+      },
+      "SLE": {
+        "displayName": {
+          "other": "塞拉利昂新利昂"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
       },
       "SLL": {
         "displayName": {
@@ -1827,6 +1834,13 @@
         },
         "narrow": "VEB",
         "symbol": "VEB"
+      },
+      "VED": {
+        "displayName": {
+          "other": "委内瑞拉主权币"
+        },
+        "narrow": "VED",
+        "symbol": "VED"
       },
       "VEF": {
         "displayName": {
@@ -2352,7 +2366,7 @@
           },
           "perUnit": {
             "long": "{0}/厘米",
-            "narrow": "{0}/厘米",
+            "narrow": "{0}/cm",
             "short": "{0}/厘米"
           },
           "short": {
@@ -2406,7 +2420,7 @@
             "other": "{0}液盎司"
           },
           "narrow": {
-            "other": "{0}液盎司"
+            "other": "{0}fl oz"
           },
           "perUnit": {
           },
@@ -2423,7 +2437,7 @@
           },
           "perUnit": {
             "long": "{0}/英尺",
-            "narrow": "{0}/英尺",
+            "narrow": "{0}/ft",
             "short": "{0}/英尺"
           },
           "short": {
@@ -2435,11 +2449,11 @@
             "other": "{0}加仑"
           },
           "narrow": {
-            "other": "{0}加仑"
+            "other": "{0}gal"
           },
           "perUnit": {
             "long": "{0}/加仑",
-            "narrow": "{0}/加仑",
+            "narrow": "{0}/gal",
             "short": "{0}/加仑"
           },
           "short": {
@@ -2526,7 +2540,7 @@
           },
           "perUnit": {
             "long": "{0}/英寸",
-            "narrow": "{0}/英寸",
+            "narrow": "{0}/in",
             "short": "{0}/英寸"
           },
           "short": {
@@ -2584,7 +2598,7 @@
           },
           "perUnit": {
             "long": "{0}/公里",
-            "narrow": "{0}/公里",
+            "narrow": "{0}/km",
             "short": "{0}/公里"
           },
           "short": {
@@ -2613,7 +2627,7 @@
           },
           "perUnit": {
             "long": "{0}/升",
-            "narrow": "{0}/升",
+            "narrow": "{0}/L",
             "short": "{0}/升"
           },
           "short": {
@@ -2625,7 +2639,7 @@
             "other": "每公里{0}升"
           },
           "narrow": {
-            "other": "{0} L/km"
+            "other": "{0}L/km"
           },
           "perUnit": {
           },
@@ -2668,7 +2682,7 @@
           },
           "perUnit": {
             "long": "{0}/米",
-            "narrow": "{0}/米",
+            "narrow": "{0}/m",
             "short": "{0}/米"
           },
           "short": {
@@ -2706,7 +2720,7 @@
             "other": "每加仑{0}英里"
           },
           "narrow": {
-            "other": "{0} mpg US"
+            "other": "{0}mpg"
           },
           "perUnit": {
           },
@@ -2719,7 +2733,7 @@
             "other": "每小时{0}英里"
           },
           "narrow": {
-            "other": "{0}mi/h"
+            "other": "{0}mph"
           },
           "perUnit": {
           },
@@ -2745,7 +2759,7 @@
             "other": "{0}毫升"
           },
           "narrow": {
-            "other": "{0}毫升"
+            "other": "{0}mL"
           },
           "perUnit": {
           },
@@ -2771,7 +2785,7 @@
             "other": "{0}毫秒"
           },
           "narrow": {
-            "other": "{0}毫秒"
+            "other": "{0}ms"
           },
           "perUnit": {
           },
@@ -2816,7 +2830,7 @@
             "other": "{0}盎司"
           },
           "narrow": {
-            "other": "{0}盎司"
+            "other": "{0}oz"
           },
           "perUnit": {
             "long": "每盎司{0}",
@@ -2858,7 +2872,7 @@
             "other": "{0}磅"
           },
           "narrow": {
-            "other": "{0}磅"
+            "other": "{0}#"
           },
           "perUnit": {
             "long": "每磅{0}",
@@ -2890,7 +2904,7 @@
             "other": "{0}英石"
           },
           "narrow": {
-            "other": "{0}英石"
+            "other": "{0}st"
           },
           "perUnit": {
           },

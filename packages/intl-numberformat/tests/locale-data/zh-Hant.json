@@ -318,7 +318,7 @@
       },
       "BRL": {
         "displayName": {
-          "other": "巴西里拉"
+          "other": "巴西雷亞爾"
         },
         "narrow": "R$",
         "symbol": "R$"
@@ -465,7 +465,6 @@
       },
       "CNX": {
         "displayName": {
-          "other": "CNX"
         },
         "narrow": "CNX",
         "symbol": "CNX"
@@ -1704,14 +1703,14 @@
       },
       "TRL": {
         "displayName": {
-          "other": "土耳其里拉"
+          "other": "土耳其里拉 (1922–2005)"
         },
         "narrow": "TRL",
         "symbol": "TRL"
       },
       "TRY": {
         "displayName": {
-          "other": "新土耳其里拉"
+          "other": "土耳其里拉"
         },
         "narrow": "₺",
         "symbol": "TRY"
@@ -1806,13 +1805,6 @@
         },
         "narrow": "$",
         "symbol": "UYU"
-      },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
       },
       "UZS": {
         "displayName": {
@@ -2380,7 +2372,7 @@
             "other": "{0} 度"
           },
           "narrow": {
-            "other": "{0}度"
+            "other": "{0}°"
           },
           "perUnit": {
           },

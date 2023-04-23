@@ -29,13 +29,6 @@
         "narrow": "؋",
         "symbol": "AFN"
       },
-      "ALK": {
-        "displayName": {
-          "other": "ALK"
-        },
-        "narrow": "ALK",
-        "symbol": "ALK"
-      },
       "ALL": {
         "displayName": {
           "other": "আলবেনিয়ান লেক"
@@ -92,20 +85,6 @@
         "narrow": "ARA",
         "symbol": "ARA"
       },
-      "ARL": {
-        "displayName": {
-          "other": "ARL"
-        },
-        "narrow": "ARL",
-        "symbol": "ARL"
-      },
-      "ARM": {
-        "displayName": {
-          "other": "ARM"
-        },
-        "narrow": "ARM",
-        "symbol": "ARM"
-      },
       "ARP": {
         "displayName": {
           "other": "আর্জেন্টিনা পেসো (১৯৮৩–১৯৮৫)"
@@ -136,7 +115,7 @@
       },
       "AWG": {
         "displayName": {
-          "other": "আরুবা গিল্ডার"
+          "other": "আরুবা ফ্লোরিন"
         },
         "narrow": "AWG",
         "symbol": "AWG"
@@ -168,13 +147,6 @@
         },
         "narrow": "KM",
         "symbol": "BAM"
-      },
-      "BAN": {
-        "displayName": {
-          "other": "BAN"
-        },
-        "narrow": "BAN",
-        "symbol": "BAN"
       },
       "BBD": {
         "displayName": {
@@ -218,13 +190,6 @@
         "narrow": "BGL",
         "symbol": "BGL"
       },
-      "BGM": {
-        "displayName": {
-          "other": "BGM"
-        },
-        "narrow": "BGM",
-        "symbol": "BGM"
-      },
       "BGN": {
         "displayName": {
           "one": "বুলগেরীয় লেভ",
@@ -232,13 +197,6 @@
         },
         "narrow": "BGN",
         "symbol": "BGN"
-      },
-      "BGO": {
-        "displayName": {
-          "other": "BGO"
-        },
-        "narrow": "BGO",
-        "symbol": "BGO"
       },
       "BHD": {
         "displayName": {
@@ -270,17 +228,10 @@
       },
       "BOB": {
         "displayName": {
-          "other": "বলিভিয়ানো"
+          "other": "বলিভিয়ান বলিভিয়ানো"
         },
         "narrow": "Bs",
         "symbol": "BOB"
-      },
-      "BOL": {
-        "displayName": {
-          "other": "BOL"
-        },
-        "narrow": "BOL",
-        "symbol": "BOL"
       },
       "BOP": {
         "displayName": {
@@ -337,13 +288,6 @@
         },
         "narrow": "BRR",
         "symbol": "BRR"
-      },
-      "BRZ": {
-        "displayName": {
-          "other": "BRZ"
-        },
-        "narrow": "BRZ",
-        "symbol": "BRZ"
       },
       "BSD": {
         "displayName": {
@@ -436,13 +380,6 @@
         "narrow": "CHW",
         "symbol": "CHW"
       },
-      "CLE": {
-        "displayName": {
-          "other": "CLE"
-        },
-        "narrow": "CLE",
-        "symbol": "CLE"
-      },
       "CLF": {
         "displayName": {
           "other": "চিলিয়ান উনিদাদেস দি ফোমেন্তো"
@@ -463,13 +400,6 @@
         },
         "narrow": "CNH",
         "symbol": "CNH"
-      },
-      "CNX": {
-        "displayName": {
-          "other": "CNX"
-        },
-        "narrow": "CNX",
-        "symbol": "CNX"
       },
       "CNY": {
         "displayName": {
@@ -789,7 +719,7 @@
       },
       "GYD": {
         "displayName": {
-          "other": "গাইয়েনা ডলার"
+          "other": "গায়ানিজ ডলার"
         },
         "narrow": "$",
         "symbol": "GYD"
@@ -857,16 +787,9 @@
         "narrow": "ILP",
         "symbol": "ILP"
       },
-      "ILR": {
-        "displayName": {
-          "other": "ILR"
-        },
-        "narrow": "ILR",
-        "symbol": "ILR"
-      },
       "ILS": {
         "displayName": {
-          "other": "ইস্রাইলি নতুন শেকেল"
+          "other": "ইসরায়েলি নতুন শেকেল"
         },
         "narrow": "₪",
         "symbol": "₪"
@@ -891,13 +814,6 @@
         },
         "narrow": "IRR",
         "symbol": "IRR"
-      },
-      "ISJ": {
-        "displayName": {
-          "other": "ISJ"
-        },
-        "narrow": "ISJ",
-        "symbol": "ISJ"
       },
       "ISK": {
         "displayName": {
@@ -969,20 +885,6 @@
         },
         "narrow": "₩",
         "symbol": "KPW"
-      },
-      "KRH": {
-        "displayName": {
-          "other": "KRH"
-        },
-        "narrow": "KRH",
-        "symbol": "KRH"
-      },
-      "KRO": {
-        "displayName": {
-          "other": "KRO"
-        },
-        "narrow": "KRO",
-        "symbol": "KRO"
       },
       "KRW": {
         "displayName": {
@@ -1117,20 +1019,6 @@
         "narrow": "MAF",
         "symbol": "MAF"
       },
-      "MCF": {
-        "displayName": {
-          "other": "MCF"
-        },
-        "narrow": "MCF",
-        "symbol": "MCF"
-      },
-      "MDC": {
-        "displayName": {
-          "other": "MDC"
-        },
-        "narrow": "MDC",
-        "symbol": "MDC"
-      },
       "MDL": {
         "displayName": {
           "other": "মোল্ডোভান লেয়ু"
@@ -1158,13 +1046,6 @@
         },
         "narrow": "MKD",
         "symbol": "MKD"
-      },
-      "MKN": {
-        "displayName": {
-          "other": "MKN"
-        },
-        "narrow": "MKN",
-        "symbol": "MKN"
       },
       "MLF": {
         "displayName": {
@@ -1229,13 +1110,6 @@
         "narrow": "Rs",
         "symbol": "MUR"
       },
-      "MVP": {
-        "displayName": {
-          "other": "MVP"
-        },
-        "narrow": "MVP",
-        "symbol": "MVP"
-      },
       "MVR": {
         "displayName": {
           "other": "মালদিভিয়ান রুফিয়া"
@@ -1245,7 +1119,7 @@
       },
       "MWK": {
         "displayName": {
-          "other": "মালাউইয়ান কওয়াচ"
+          "other": "মালাউইয়ান কোয়াচা"
         },
         "narrow": "MWK",
         "symbol": "MWK"
@@ -1365,7 +1239,7 @@
       },
       "PAB": {
         "displayName": {
-          "other": "পানামা বেলবোয়া"
+          "other": "পানামানিয়ান বালবোয়া"
         },
         "narrow": "PAB",
         "symbol": "PAB"
@@ -1589,7 +1463,7 @@
       },
       "SRD": {
         "displayName": {
-          "other": "সুরিনাম ডলার"
+          "other": "সুরিনামিজ ডলার"
         },
         "narrow": "$",
         "symbol": "SRD"
@@ -1811,13 +1685,6 @@
         "narrow": "$",
         "symbol": "UYU"
       },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
-      },
       "UZS": {
         "displayName": {
           "other": "উজবেকিস্তানি সোম"
@@ -1852,13 +1719,6 @@
         },
         "narrow": "₫",
         "symbol": "₫"
-      },
-      "VNN": {
-        "displayName": {
-          "other": "VNN"
-        },
-        "narrow": "VNN",
-        "symbol": "VNN"
       },
       "VUV": {
         "displayName": {
@@ -1895,13 +1755,6 @@
         "narrow": "XAU",
         "symbol": "XAU"
       },
-      "XBA": {
-        "displayName": {
-          "other": "XBA"
-        },
-        "narrow": "XBA",
-        "symbol": "XBA"
-      },
       "XBB": {
         "displayName": {
           "other": "ইউরোপীয় আর্থিক একক"
@@ -1909,33 +1762,12 @@
         "narrow": "XBB",
         "symbol": "XBB"
       },
-      "XBC": {
-        "displayName": {
-          "other": "XBC"
-        },
-        "narrow": "XBC",
-        "symbol": "XBC"
-      },
-      "XBD": {
-        "displayName": {
-          "other": "XBD"
-        },
-        "narrow": "XBD",
-        "symbol": "XBD"
-      },
       "XCD": {
         "displayName": {
           "other": "পূর্ব ক্যারাবিয়ান ডলার"
         },
         "narrow": "$",
         "symbol": "EC$"
-      },
-      "XDR": {
-        "displayName": {
-          "other": "XDR"
-        },
-        "narrow": "XDR",
-        "symbol": "XDR"
       },
       "XEU": {
         "displayName": {
@@ -1986,34 +1818,6 @@
         "narrow": "XPT",
         "symbol": "XPT"
       },
-      "XRE": {
-        "displayName": {
-          "other": "XRE"
-        },
-        "narrow": "XRE",
-        "symbol": "XRE"
-      },
-      "XSU": {
-        "displayName": {
-          "other": "XSU"
-        },
-        "narrow": "XSU",
-        "symbol": "XSU"
-      },
-      "XTS": {
-        "displayName": {
-          "other": "XTS"
-        },
-        "narrow": "XTS",
-        "symbol": "XTS"
-      },
-      "XUA": {
-        "displayName": {
-          "other": "XUA"
-        },
-        "narrow": "XUA",
-        "symbol": "XUA"
-      },
       "XXX": {
         "displayName": {
           "one": "(মুদ্রার অজানা একক)",
@@ -2056,13 +1860,6 @@
         },
         "narrow": "YUN",
         "symbol": "YUN"
-      },
-      "YUR": {
-        "displayName": {
-          "other": "YUR"
-        },
-        "narrow": "YUR",
-        "symbol": "YUR"
       },
       "ZAL": {
         "displayName": {

@@ -200,7 +200,8 @@
       },
       "BBD": {
         "displayName": {
-          "other": "barbadisk dollar"
+          "one": "barbadisk dollar",
+          "other": "barbadiska dollar"
         },
         "narrow": "$",
         "symbol": "Bds$"
@@ -286,7 +287,8 @@
       },
       "BMD": {
         "displayName": {
-          "other": "bermudisk dollar"
+          "one": "bermudisk dollar",
+          "other": "bermudiska dollar"
         },
         "narrow": "$",
         "symbol": "BM$"
@@ -1032,7 +1034,7 @@
       "JMD": {
         "displayName": {
           "one": "Jamaica-dollar",
-          "other": "jamaicansk dollar"
+          "other": "jamaicanska dollar"
         },
         "narrow": "$",
         "symbol": "JM$"
@@ -1127,7 +1129,8 @@
       },
       "KYD": {
         "displayName": {
-          "other": "caymansk dollar"
+          "one": "caymansk dollar",
+          "other": "caymanska dollar"
         },
         "narrow": "$",
         "symbol": "KYD"
@@ -1757,7 +1760,8 @@
       },
       "SHP": {
         "displayName": {
-          "other": "sankthelenskt pund"
+          "one": "sankthelenskt pund",
+          "other": "sankthelenska pund"
         },
         "narrow": "£",
         "symbol": "SHP"
@@ -1955,7 +1959,8 @@
       },
       "TWD": {
         "displayName": {
-          "other": "taiwanesisk dollar"
+          "one": "taiwanesisk dollar",
+          "other": "taiwanesiska dollar"
         },
         "narrow": "NT$",
         "symbol": "TWD"
@@ -2002,7 +2007,8 @@
       },
       "USD": {
         "displayName": {
-          "other": "amerikansk dollar"
+          "one": "amerikansk dollar",
+          "other": "amerikanska dollar"
         },
         "narrow": "$",
         "symbol": "US$"
@@ -2578,7 +2584,7 @@
             "other": "{0} engelska tunnland"
           },
           "narrow": {
-            "other": "{0} ac"
+            "other": "{0}ac"
           },
           "perUnit": {
           },
@@ -2591,7 +2597,7 @@
             "other": "{0} bit"
           },
           "narrow": {
-            "other": "{0} b"
+            "other": "{0}b"
           },
           "perUnit": {
           },
@@ -2604,7 +2610,7 @@
             "other": "{0} byte"
           },
           "narrow": {
-            "other": "{0} B"
+            "other": "{0}B"
           },
           "perUnit": {
           },
@@ -2618,7 +2624,7 @@
             "other": "{0} grader Celsius"
           },
           "narrow": {
-            "other": "{0} °C"
+            "other": "{0}°C"
           },
           "perUnit": {
           },
@@ -2678,7 +2684,7 @@
             "other": "{0} grader Fahrenheit"
           },
           "narrow": {
-            "other": "{0} °F"
+            "other": "{0}°F"
           },
           "perUnit": {
           },
@@ -2688,11 +2694,11 @@
         },
         "fluid-ounce": {
           "long": {
-            "one": "{0} fluid ounce",
+            "one": "{0} flytande uns",
             "other": "{0} fluid ounces"
           },
           "narrow": {
-            "other": "{0} fl oz"
+            "other": "{0}fl oz"
           },
           "perUnit": {
           },
@@ -2705,7 +2711,7 @@
             "other": "{0} fot"
           },
           "narrow": {
-            "other": "{0} fot"
+            "other": "{0}fot"
           },
           "perUnit": {
             "long": "{0} per fot",
@@ -2721,12 +2727,12 @@
             "other": "{0} gallon"
           },
           "narrow": {
-            "other": "{0} gal"
+            "other": "{0}gal"
           },
           "perUnit": {
             "long": "{0} per gallon",
-            "narrow": "{0}/gal",
-            "short": "{0}/gal"
+            "narrow": "{0}/gal US",
+            "short": "{0}/gal US"
           },
           "short": {
             "other": "{0} gal"
@@ -2737,7 +2743,7 @@
             "other": "{0} gigabit"
           },
           "narrow": {
-            "other": "{0} Gb"
+            "other": "{0}Gb"
           },
           "perUnit": {
           },
@@ -2750,7 +2756,7 @@
             "other": "{0} gigabyte"
           },
           "narrow": {
-            "other": "{0} GB"
+            "other": "{0}GB"
           },
           "perUnit": {
           },
@@ -2763,7 +2769,7 @@
             "other": "{0} gram"
           },
           "narrow": {
-            "other": "{0} g"
+            "other": "{0}g"
           },
           "perUnit": {
             "long": "{0} per gram",
@@ -2779,7 +2785,7 @@
             "other": "{0} hektar"
           },
           "narrow": {
-            "other": "{0} ha"
+            "other": "{0}ha"
           },
           "perUnit": {
           },
@@ -2809,7 +2815,8 @@
             "other": "{0} tum"
           },
           "narrow": {
-            "other": "{0} tum"
+            "one": "{0} tum",
+            "other": "{0}\""
           },
           "perUnit": {
             "long": "{0} per tum",
@@ -2825,7 +2832,7 @@
             "other": "{0} kilobit"
           },
           "narrow": {
-            "other": "{0} kb"
+            "other": "{0}kb"
           },
           "perUnit": {
           },
@@ -2838,7 +2845,7 @@
             "other": "{0} kilobyte"
           },
           "narrow": {
-            "other": "{0} kB"
+            "other": "{0}kB"
           },
           "perUnit": {
           },
@@ -2896,7 +2903,7 @@
             "other": "{0} liter"
           },
           "narrow": {
-            "other": "{0} l"
+            "other": "{0}l"
           },
           "perUnit": {
             "long": "{0} per liter",
@@ -2912,7 +2919,7 @@
             "other": "{0} liter per kilometer"
           },
           "narrow": {
-            "other": "{0} l/km"
+            "other": "{0}l/km"
           },
           "perUnit": {
           },
@@ -2925,7 +2932,7 @@
             "other": "{0} megabit"
           },
           "narrow": {
-            "other": "{0} Mb"
+            "other": "{0}Mb"
           },
           "perUnit": {
           },
@@ -2938,7 +2945,7 @@
             "other": "{0} megabyte"
           },
           "narrow": {
-            "other": "{0} MB"
+            "other": "{0}MB"
           },
           "perUnit": {
           },
@@ -2967,7 +2974,7 @@
             "other": "{0} meter per sekund"
           },
           "narrow": {
-            "other": "{0} m/s"
+            "other": "{0}m/s"
           },
           "perUnit": {
           },
@@ -2977,16 +2984,15 @@
         },
         "mile": {
           "long": {
-            "one": "{0} engelsk mil",
-            "other": "{0} engelska mil"
+            "other": "{0} mile"
           },
           "narrow": {
-            "other": "{0} eng. mil"
+            "other": "{0}mi"
           },
           "perUnit": {
           },
           "short": {
-            "other": "{0} eng. mil"
+            "other": "{0} mi"
           }
         },
         "mile-per-gallon": {
@@ -2995,7 +3001,7 @@
             "other": "{0} miles per gallon"
           },
           "narrow": {
-            "other": "{0} mpg"
+            "other": "{0}mpg"
           },
           "perUnit": {
           },
@@ -3005,11 +3011,10 @@
         },
         "mile-per-hour": {
           "long": {
-            "one": "{0} engelsk mil per timme",
-            "other": "{0} engelska mil per timme"
+            "other": "{0} mile per timme"
           },
           "narrow": {
-            "other": "{0} mi/h"
+            "other": "{0}mi/h"
           },
           "perUnit": {
           },
@@ -3022,7 +3027,7 @@
             "other": "{0} mil"
           },
           "narrow": {
-            "other": "{0} mil"
+            "other": "{0}mil"
           },
           "perUnit": {
           },
@@ -3035,7 +3040,7 @@
             "other": "{0} milliliter"
           },
           "narrow": {
-            "other": "{0} ml"
+            "other": "{0}ml"
           },
           "perUnit": {
           },
@@ -3048,7 +3053,7 @@
             "other": "{0} millimeter"
           },
           "narrow": {
-            "other": "{0} mm"
+            "other": "{0}mm"
           },
           "perUnit": {
           },
@@ -3109,11 +3114,11 @@
             "other": "{0} uns"
           },
           "narrow": {
-            "other": "{0} uns"
+            "other": "{0}uns"
           },
           "perUnit": {
             "long": "{0} per uns",
-            "narrow": "{0}/uns·28g",
+            "narrow": "{0}/uns",
             "short": "{0}/uns"
           },
           "short": {
@@ -3125,7 +3130,7 @@
             "other": "{0} procent"
           },
           "narrow": {
-            "other": "{0} %"
+            "other": "{0}%"
           },
           "perUnit": {
           },
@@ -3138,7 +3143,7 @@
             "other": "{0} petabyte"
           },
           "narrow": {
-            "other": "{0} PB"
+            "other": "{0}PB"
           },
           "perUnit": {
           },
@@ -3151,7 +3156,7 @@
             "other": "{0} pund"
           },
           "narrow": {
-            "other": "{0} pund"
+            "other": "{0}lb"
           },
           "perUnit": {
             "long": "{0} per pund",
@@ -3211,7 +3216,7 @@
             "other": "{0} terabyte"
           },
           "narrow": {
-            "other": "{0} TB"
+            "other": "{0}TB"
           },
           "perUnit": {
           },
@@ -3238,16 +3243,16 @@
         },
         "yard": {
           "long": {
-            "one": "{0} engelsk yard",
-            "other": "{0} engelska yard"
+            "other": "{0} yard"
           },
           "narrow": {
-            "other": "{0} eng. yard"
+            "one": "{0} yd",
+            "other": "{0}yd"
           },
           "perUnit": {
           },
           "short": {
-            "other": "{0} eng. yard"
+            "other": "{0} yd"
           }
         },
         "year": {

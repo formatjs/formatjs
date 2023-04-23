@@ -67,14 +67,14 @@ importers:
       chalk: ^4.0.0
       chokidar: ^3.4.2
       cjs-module-lexer: ^1.2.2
-      cldr-bcp47: ^41.0.0
-      cldr-core: '40'
-      cldr-dates-full: '40'
-      cldr-localenames-full: '40'
-      cldr-misc-full: '40'
-      cldr-numbers-full: '40'
-      cldr-segments-full: '40'
-      cldr-units-full: '40'
+      cldr-bcp47: '43'
+      cldr-core: '43'
+      cldr-dates-full: '43'
+      cldr-localenames-full: '43'
+      cldr-misc-full: '43'
+      cldr-numbers-full: '43'
+      cldr-segments-full: '43'
+      cldr-units-full: '43'
       clsx: '1'
       commander: '8'
       core-js: ^3.6.5
@@ -182,14 +182,14 @@ importers:
       chalk: 4.1.2
       chokidar: 3.5.3
       cjs-module-lexer: 1.2.2
-      cldr-bcp47: 41.0.0
-      cldr-core: 40.0.0
-      cldr-dates-full: 40.0.0_cldr-numbers-full@40.0.0
-      cldr-localenames-full: 40.0.0_cldr-core@40.0.0
-      cldr-misc-full: 40.0.0_cldr-core@40.0.0
-      cldr-numbers-full: 40.0.0_cldr-core@40.0.0
-      cldr-segments-full: 40.0.0_cldr-core@40.0.0
-      cldr-units-full: 40.0.0_cldr-core@40.0.0
+      cldr-bcp47: 43.0.0
+      cldr-core: 43.0.0
+      cldr-dates-full: 43.0.0_cldr-numbers-full@43.0.0
+      cldr-localenames-full: 43.0.0_cldr-core@43.0.0
+      cldr-misc-full: 43.0.0_cldr-core@43.0.0
+      cldr-numbers-full: 43.0.0_cldr-core@43.0.0
+      cldr-segments-full: 43.0.0_cldr-core@43.0.0
+      cldr-units-full: 43.0.0_cldr-core@43.0.0
       clsx: 1.1.1
       commander: 8.3.0
       core-js: 3.23.2
@@ -8106,60 +8106,60 @@ packages:
     resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
     dev: true
 
-  /cldr-bcp47/41.0.0:
-    resolution: {integrity: sha512-OzGmCGmzuJdjdtr7EdyvCx9QUuxrSLEN3BBfO2Pl43hc1cwaeG+hqqyI3+UrXpK4FQCdYhcmK2s/bZYlZZQhPw==}
+  /cldr-bcp47/43.0.0:
+    resolution: {integrity: sha512-iND+KwV4Exrt/7gdvncPzLMTnDfWv3qxsFXkWjj6ZwEGWeB2R17x5aHhWdkvAsNOJmWp+L5j0dQLPyanm111EQ==}
     dev: true
 
-  /cldr-core/40.0.0:
-    resolution: {integrity: sha512-0nmiOR9I2ImfspRTvFhzF7uXYtVCnHMYULrIncArrsnICUxNnZVEJ6pHPRUtB3J8i4VkwQQMRcs9yl4+wxVP4g==}
+  /cldr-core/43.0.0:
+    resolution: {integrity: sha512-dPsV6/yTve1tvK2tyOEVkcugOX1MjIWWOlT/IYcHN33IesBykFR5pzUBpKnco7wZxwNGe3+d3tOVQcN+7i9/iA==}
     dev: true
 
-  /cldr-dates-full/40.0.0_cldr-numbers-full@40.0.0:
-    resolution: {integrity: sha512-AqsXdzaga/kN2+Gbtj72ztWjFG+JdnZd2Yu5SNZb7ZwWR6zESGXOdymPaR3phKosIpsNrDsye1RQC33pv+fOAw==}
+  /cldr-dates-full/43.0.0_cldr-numbers-full@43.0.0:
+    resolution: {integrity: sha512-PXFcMnUCjATym5U0KY+prASOxXEk9fIOeq7h/wAt7T9erPzGJU+i/9CHfWw91L5yK/Zcg/e8wE2tPylUylrlbw==}
     peerDependencies:
-      cldr-numbers-full: 40.0.0
+      cldr-numbers-full: 43.0.0
     dependencies:
-      cldr-numbers-full: 40.0.0_cldr-core@40.0.0
+      cldr-numbers-full: 43.0.0_cldr-core@43.0.0
     dev: true
 
-  /cldr-localenames-full/40.0.0_cldr-core@40.0.0:
-    resolution: {integrity: sha512-3P7MI2IYKRQMRztl5UQXiUzqTjg5otwvR9vCfLNrmWSusyVkpgv8xtL5EHxpvPm9Qub61fe6LNpNXINOXEO2Ow==}
+  /cldr-localenames-full/43.0.0_cldr-core@43.0.0:
+    resolution: {integrity: sha512-sTO3eShh8mUhoGf7SQAw/LPR/SSWVrK2jnolhkVr3zKaeBgXyLjAeXTjKdPq9uYXmnV9E5RXDdvfyz6Huf3tYA==}
     peerDependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.0.0
     dependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.0.0
     dev: true
 
-  /cldr-misc-full/40.0.0_cldr-core@40.0.0:
-    resolution: {integrity: sha512-uLr834LzY4LTTbW6wkRtWcvTnpHiLQZ2r/lZsAVYNZJbQOQCm2iN5hMFtpKmpViho6nvPViRqDfvKu//jDyOFQ==}
+  /cldr-misc-full/43.0.0_cldr-core@43.0.0:
+    resolution: {integrity: sha512-Q4jdQc6Q8vl6hFS9pdGD3tJf7+KhjA/p6imJDYoW2nkVV5tmLQSqMMlk7ALHOGB1Cm7Gmhin/j4nL4lPFEgVuQ==}
     peerDependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.0.0
     dependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.0.0
     dev: true
 
-  /cldr-numbers-full/40.0.0_cldr-core@40.0.0:
-    resolution: {integrity: sha512-NE5uKg0JDAcg5Pn6MKDg50cAKkUQtMd+mOxGPfDZVL+JRUHimQFvY/21KuzLBTI1i1IDbhEF9so/iXMmUJugPg==}
+  /cldr-numbers-full/43.0.0_cldr-core@43.0.0:
+    resolution: {integrity: sha512-7YawbyaXoTwK7642JUznRs7vLmB3yuxciggZSJoQa3bMVdPm9+G6XnMXTutS3JHvt6UwL2RrXHbzfL+PUhNUFQ==}
     peerDependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.0.0
     dependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.0.0
     dev: true
 
-  /cldr-segments-full/40.0.0_cldr-core@40.0.0:
-    resolution: {integrity: sha512-etpdMtOYG0z3X6I0vdD1Y3JBYXClVvFsqHmRbAWMcyQAKUTtpXin9etRuNb8skBcjCki+6orhlrjn2jz0v79XA==}
+  /cldr-segments-full/43.0.0_cldr-core@43.0.0:
+    resolution: {integrity: sha512-vZY5QrZ7F1Dn8Che7/A838N3di5SeT5dBosqXhoVeFZ0sGnLZwq/YcLzyNe8k4/qWIyW1v1Ik/p/Lf4ZERNO5A==}
     peerDependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.0.0
     dependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.0.0
     dev: true
 
-  /cldr-units-full/40.0.0_cldr-core@40.0.0:
-    resolution: {integrity: sha512-fw00RYjkckYIasIKgFwE1EKRtPVeWNkIiYQWoHUECCVeT8fvI/YUW+e25rgH+8xrN2k2ywSaixntGH/gurtUvQ==}
+  /cldr-units-full/43.0.0_cldr-core@43.0.0:
+    resolution: {integrity: sha512-FoL3XReb5ovQ+eIi/mz67TkzV/sQIEjRBmAaxf2oAkIC5VQzE1+eifK51l39Z6ZMgOD4mLzY7CqaGaNXqtkq5g==}
     peerDependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.0.0
     dependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.0.0
     dev: true
 
   /clean-css/5.3.0:

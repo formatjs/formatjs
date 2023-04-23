@@ -32,13 +32,6 @@
         "narrow": "؋",
         "symbol": "AFN"
       },
-      "ALK": {
-        "displayName": {
-          "other": "ALK"
-        },
-        "narrow": "ALK",
-        "symbol": "ALK"
-      },
       "ALL": {
         "displayName": {
           "one": "albansk lek",
@@ -101,20 +94,6 @@
         },
         "narrow": "ARA",
         "symbol": "ARA"
-      },
-      "ARL": {
-        "displayName": {
-          "other": "ARL"
-        },
-        "narrow": "ARL",
-        "symbol": "ARL"
-      },
-      "ARM": {
-        "displayName": {
-          "other": "ARM"
-        },
-        "narrow": "ARM",
-        "symbol": "ARM"
       },
       "ARP": {
         "displayName": {
@@ -188,13 +167,6 @@
         "narrow": "KM",
         "symbol": "BAM"
       },
-      "BAN": {
-        "displayName": {
-          "other": "BAN"
-        },
-        "narrow": "BAN",
-        "symbol": "BAN"
-      },
       "BBD": {
         "displayName": {
           "one": "barbadisk dollar",
@@ -243,13 +215,6 @@
         "narrow": "BGL",
         "symbol": "BGL"
       },
-      "BGM": {
-        "displayName": {
-          "other": "BGM"
-        },
-        "narrow": "BGM",
-        "symbol": "BGM"
-      },
       "BGN": {
         "displayName": {
           "one": "bulgarsk lev",
@@ -257,13 +222,6 @@
         },
         "narrow": "BGN",
         "symbol": "BGN"
-      },
-      "BGO": {
-        "displayName": {
-          "other": "BGO"
-        },
-        "narrow": "BGO",
-        "symbol": "BGO"
       },
       "BHD": {
         "displayName": {
@@ -304,13 +262,6 @@
         },
         "narrow": "Bs",
         "symbol": "BOB"
-      },
-      "BOL": {
-        "displayName": {
-          "other": "BOL"
-        },
-        "narrow": "BOL",
-        "symbol": "BOL"
       },
       "BOP": {
         "displayName": {
@@ -375,13 +326,6 @@
         },
         "narrow": "BRR",
         "symbol": "BRR"
-      },
-      "BRZ": {
-        "displayName": {
-          "other": "BRZ"
-        },
-        "narrow": "BRZ",
-        "symbol": "BRZ"
       },
       "BSD": {
         "displayName": {
@@ -484,20 +428,6 @@
         "narrow": "CHW",
         "symbol": "CHW"
       },
-      "CLE": {
-        "displayName": {
-          "other": "CLE"
-        },
-        "narrow": "CLE",
-        "symbol": "CLE"
-      },
-      "CLF": {
-        "displayName": {
-          "other": "CLF"
-        },
-        "narrow": "CLF",
-        "symbol": "CLF"
-      },
       "CLP": {
         "displayName": {
           "one": "chilensk peso",
@@ -512,13 +442,6 @@
         },
         "narrow": "CNH",
         "symbol": "CNH"
-      },
-      "CNX": {
-        "displayName": {
-          "other": "CNX"
-        },
-        "narrow": "CNX",
-        "symbol": "CNX"
       },
       "CNY": {
         "displayName": {
@@ -535,13 +458,6 @@
         },
         "narrow": "$",
         "symbol": "COP"
-      },
-      "COU": {
-        "displayName": {
-          "other": "COU"
-        },
-        "narrow": "COU",
-        "symbol": "COU"
       },
       "CRC": {
         "displayName": {
@@ -662,13 +578,6 @@
         },
         "narrow": "ECS",
         "symbol": "ECS"
-      },
-      "ECV": {
-        "displayName": {
-          "other": "ECV"
-        },
-        "narrow": "ECV",
-        "symbol": "ECV"
       },
       "EEK": {
         "displayName": {
@@ -955,13 +864,6 @@
         "narrow": "ILP",
         "symbol": "ILP"
       },
-      "ILR": {
-        "displayName": {
-          "other": "ILR"
-        },
-        "narrow": "ILR",
-        "symbol": "ILR"
-      },
       "ILS": {
         "displayName": {
           "one": "ny israelsk shekel",
@@ -993,13 +895,6 @@
         },
         "narrow": "IRR",
         "symbol": "IRR"
-      },
-      "ISJ": {
-        "displayName": {
-          "other": "ISJ"
-        },
-        "narrow": "ISJ",
-        "symbol": "ISJ"
       },
       "ISK": {
         "displayName": {
@@ -1080,20 +975,6 @@
         },
         "narrow": "₩",
         "symbol": "KPW"
-      },
-      "KRH": {
-        "displayName": {
-          "other": "KRH"
-        },
-        "narrow": "KRH",
-        "symbol": "KRH"
-      },
-      "KRO": {
-        "displayName": {
-          "other": "KRO"
-        },
-        "narrow": "KRO",
-        "symbol": "KRO"
       },
       "KRW": {
         "displayName": {
@@ -1245,20 +1126,6 @@
         "narrow": "MAF",
         "symbol": "MAF"
       },
-      "MCF": {
-        "displayName": {
-          "other": "MCF"
-        },
-        "narrow": "MCF",
-        "symbol": "MCF"
-      },
-      "MDC": {
-        "displayName": {
-          "other": "MDC"
-        },
-        "narrow": "MDC",
-        "symbol": "MDC"
-      },
       "MDL": {
         "displayName": {
           "one": "moldovisk leu",
@@ -1290,13 +1157,6 @@
         },
         "narrow": "MKD",
         "symbol": "MKD"
-      },
-      "MKN": {
-        "displayName": {
-          "other": "MKN"
-        },
-        "narrow": "MKN",
-        "symbol": "MKN"
       },
       "MLF": {
         "displayName": {
@@ -1370,13 +1230,6 @@
         "narrow": "Rs",
         "symbol": "MUR"
       },
-      "MVP": {
-        "displayName": {
-          "other": "MVP"
-        },
-        "narrow": "MVP",
-        "symbol": "MVP"
-      },
       "MVR": {
         "displayName": {
           "one": "maldivisk rufiyaa",
@@ -1408,13 +1261,6 @@
         },
         "narrow": "MXP",
         "symbol": "MXP"
-      },
-      "MXV": {
-        "displayName": {
-          "other": "MXV"
-        },
-        "narrow": "MXV",
-        "symbol": "MXV"
       },
       "MYR": {
         "displayName": {
@@ -1615,13 +1461,6 @@
         },
         "narrow": "QAR",
         "symbol": "QAR"
-      },
-      "RHD": {
-        "displayName": {
-          "other": "RHD"
-        },
-        "narrow": "RHD",
-        "symbol": "RHD"
       },
       "ROL": {
         "displayName": {
@@ -2002,13 +1841,6 @@
         "narrow": "USS",
         "symbol": "USS"
       },
-      "UYI": {
-        "displayName": {
-          "other": "UYI"
-        },
-        "narrow": "UYI",
-        "symbol": "UYI"
-      },
       "UYP": {
         "displayName": {
           "one": "Uruguayansk peso (1975–1993)",
@@ -2024,13 +1856,6 @@
         },
         "narrow": "$",
         "symbol": "UYU"
-      },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
       },
       "UZS": {
         "displayName": {
@@ -2071,13 +1896,6 @@
         },
         "narrow": "₫",
         "symbol": "₫"
-      },
-      "VNN": {
-        "displayName": {
-          "other": "VNN"
-        },
-        "narrow": "VNN",
-        "symbol": "VNN"
       },
       "VUV": {
         "displayName": {
@@ -2130,20 +1948,6 @@
         },
         "narrow": "XBB",
         "symbol": "XBB"
-      },
-      "XBC": {
-        "displayName": {
-          "other": "XBC"
-        },
-        "narrow": "XBC",
-        "symbol": "XBC"
-      },
-      "XBD": {
-        "displayName": {
-          "other": "XBD"
-        },
-        "narrow": "XBD",
-        "symbol": "XBD"
       },
       "XCD": {
         "displayName": {
@@ -2218,26 +2022,12 @@
         "narrow": "XRE",
         "symbol": "XRE"
       },
-      "XSU": {
-        "displayName": {
-          "other": "XSU"
-        },
-        "narrow": "XSU",
-        "symbol": "XSU"
-      },
       "XTS": {
         "displayName": {
           "other": "testvaluta"
         },
         "narrow": "XTS",
         "symbol": "XTS"
-      },
-      "XUA": {
-        "displayName": {
-          "other": "XUA"
-        },
-        "narrow": "XUA",
-        "symbol": "XUA"
       },
       "XXX": {
         "displayName": {
@@ -2285,13 +2075,6 @@
         },
         "narrow": "YUN",
         "symbol": "YUN"
-      },
-      "YUR": {
-        "displayName": {
-          "other": "YUR"
-        },
-        "narrow": "YUR",
-        "symbol": "YUR"
       },
       "ZAL": {
         "displayName": {
@@ -2780,7 +2563,7 @@
             "other": "{0} tommer"
           },
           "narrow": {
-            "other": "{0}\\\""
+            "other": "{0}\""
           },
           "perUnit": {
             "long": "{0} pr. tomme",
