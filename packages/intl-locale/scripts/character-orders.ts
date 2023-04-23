@@ -58,7 +58,8 @@ export const characterOrders = ${stringify(characterOrders, {
       space: 2,
     })} as const
 export type CharacterOrdersKey = keyof typeof characterOrders
-export type CharacterOrder = '${possibleValues.join("' | '")}'`
+export type CharacterOrder = '${possibleValues.join("' | '")}'
+`
   )
 }
 

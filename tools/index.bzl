@@ -56,7 +56,6 @@ def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_e
         visibility: visibility
     """
     deps = deps + ["//:node_modules/tslib"]
-    internal_deps = [d for d in deps if is_internal_dep(d)]
     ts_project(
         name = "%s-base" % name,
         srcs = srcs,

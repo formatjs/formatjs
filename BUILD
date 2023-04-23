@@ -2,9 +2,9 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
-load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
+load("@rules_multirun//:defs.bzl", "multirun")
 load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
 
 exports_files(

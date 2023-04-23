@@ -1,2 +1,34 @@
-#!/bin/sh
-. "$(dirname $0)/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+bazel run //:buildifier
+
+# bazel run //packages/babel-plugin-formatjs:prettier
+# bazel run //packages/cli-lib:prettier
+# bazel run //packages/ecma376:prettier
+# bazel run //packages/ecma402-abstract:prettier
+# bazel run //packages/editor:prettier
+# bazel run //packages/eslint-plugin-formatjs:prettier
+# bazel run //packages/fast-memoize:prettier
+# bazel run //packages/icu-messageformat-parser:prettier
+# bazel run //packages/icu-skeleton-parser:prettier
+# bazel run //packages/intl-datetimeformat:prettier
+# bazel run //packages/intl-displaynames:prettier
+# bazel run //packages/intl-durationformat:prettier
+# bazel run //packages/intl-enumerator:prettier
+# bazel run //packages/intl-getcanonicallocales:prettier
+# bazel run //packages/intl-listformat:prettier
+# bazel run //packages/intl-locale:prettier
+# bazel run //packages/intl-localematcher:prettier
+# bazel run //packages/intl-messageformat:prettier
+# bazel run //packages/intl-numberformat:prettier
+# bazel run //packages/intl-pluralrules:prettier
+# bazel run //packages/intl-relativetimeformat:prettier
+# bazel run //packages/intl-segmenter:prettier
+# bazel run //packages/intl:prettier
+# bazel run //packages/react-intl:prettier
+# bazel run //packages/swc-plugin:prettier
+# bazel run //packages/ts-transformer:prettier
+# bazel run //packages/vue-intl:prettier
+# bazel run //tools:prettier
+# bazel run //website:prettier

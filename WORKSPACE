@@ -7,7 +7,6 @@ workspace(
     name = "formatjs",
 )
 
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 
 # rules_js
@@ -166,16 +165,12 @@ go_rules_dependencies()
 
 go_register_toolchains(version = "1.18")
 
-git_repository(
-    name = "com_github_ash2k_bazel_tools",
-    commit = "cbe7710fca61d5cc585af4ea29b0e1423e1ac17d",
-    remote = "https://github.com/ash2k/bazel-tools.git",
-    shallow_since = "1615605582 +1100",
+http_archive(
+    name = "rules_multirun",
+    sha256 = "9ced12fb88f793c2f0a8c19f498485c4a95c22c91bb51fc4ec6812d41fc3331d",
+    strip_prefix = "rules_multirun-0.6.0",
+    url = "https://github.com/keith/rules_multirun/archive/refs/tags/0.6.0.tar.gz",
 )
-
-load("@com_github_ash2k_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
-
-multirun_dependencies()
 
 # buildifier
 
