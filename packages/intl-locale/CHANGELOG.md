@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.2.1...@formatjs/intl-locale@3.3.0) (2023-05-01)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** updated `tzdata` to `2023c` and fixed missing and changed TimeZone ([1b4856b](https://github.com/formatjs/formatjs/commit/1b4856b11c32c6ac99aa8795ee487c92b4d9d9c9))
+
 ## [3.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.2.0...@formatjs/intl-locale@3.2.1) (2023-04-19)
 
 **Note:** Version bump only for package @formatjs/intl-locale

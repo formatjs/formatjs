@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.3.18...@formatjs/icu-skeleton-parser@1.4.0) (2023-05-01)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
 ## [1.3.18](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.3.17...@formatjs/icu-skeleton-parser@1.3.18) (2022-12-02)
 
 **Note:** Version bump only for package @formatjs/icu-skeleton-parser

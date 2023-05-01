@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.10.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.10.0...eslint-plugin-formatjs@4.10.1) (2023-05-01)
+
+### Bug Fixes
+
+* **deps:** update dependency @typescript-eslint/typescript-estree to v5.59.0 ([#4055](https://github.com/formatjs/formatjs/issues/4055)) ([11206c8](https://github.com/formatjs/formatjs/commit/11206c83c8e48fe07591d9e5e6c4746a6cdd623c))
+* **deps:** update dependency magic-string to ^0.30.0 ([#4056](https://github.com/formatjs/formatjs/issues/4056)) ([8f46ca1](https://github.com/formatjs/formatjs/commit/8f46ca13bec5f5d19996cd0e7d12f67ca0523b99))
+* **deps:** update dependency tslib to v2.5.0 ([#4059](https://github.com/formatjs/formatjs/issues/4059)) ([b9ec209](https://github.com/formatjs/formatjs/commit/b9ec2099f00b58dfc512cc15f20da2da26167a12))
+
 # [4.10.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.9.1...eslint-plugin-formatjs@4.10.0) (2023-04-17)
 
 ### Features

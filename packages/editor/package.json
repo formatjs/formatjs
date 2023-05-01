@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/editor",
-  "version": "2.0.27",
+  "version": "2.0.28",
   "description": "A ICU MessageFormat Editor UI",
   "keywords": [
     "intl",
@@ -29,9 +29,9 @@
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@mui/material": "^5.0.0",
     "@material-ui/lab": "4.0.0-alpha.57",
     "@mui/icons-material": "^5.0.0",
+    "@mui/material": "^5.0.0",
     "@types/react": "17",
     "react": "17",
     "react-intl": "workspace:*"

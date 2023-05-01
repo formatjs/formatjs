@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin-experimental@0.3.5...@formatjs/swc-plugin-experimental@0.3.6) (2023-05-01)
+
+### Bug Fixes
+
+* **@formatjs/swc-plugin-experimental:** fix crash on next 13.3.2 and swc 1.3.56 ([#4090](https://github.com/formatjs/formatjs/issues/4090)) ([8a55c3d](https://github.com/formatjs/formatjs/commit/8a55c3dc97efb5a8d5eaa05cb0f5fc665eff2188))
+
 ## [0.3.5](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin-experimental@0.3.4...@formatjs/swc-plugin-experimental@0.3.5) (2023-04-17)
 
 **Note:** Version bump only for package @formatjs/swc-plugin-experimental

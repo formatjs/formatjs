@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.14.3...@formatjs/ecma402-abstract@1.15.0) (2023-05-01)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** updated `tzdata` to `2023c` and fixed missing and changed TimeZone ([1b4856b](https://github.com/formatjs/formatjs/commit/1b4856b11c32c6ac99aa8795ee487c92b4d9d9c9))
+
 ## [1.14.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.14.2...@formatjs/ecma402-abstract@1.14.3) (2022-12-02)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract
