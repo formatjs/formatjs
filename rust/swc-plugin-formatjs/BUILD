@@ -36,7 +36,6 @@ rust_wasm_library(
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
-    tags = ["manual"],
     visibility = ["@//packages/swc-plugin-experimental:__pkg__"],
     wasi = True,
     deps = ["//rust/swc-formatjs-visitor"] + all_crate_deps(

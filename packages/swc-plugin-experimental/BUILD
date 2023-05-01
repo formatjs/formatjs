@@ -5,8 +5,6 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 
 npm_link_all_packages(name = "node_modules")
 
-PACKAGE_NAME = "swc-plugin-experimental"
-
 copy_file(
     name = "wasm",
     src = "//rust/swc-plugin-formatjs:swc_plugin_formatjs.wasm",
@@ -14,24 +12,24 @@ copy_file(
 )
 
 npm_package(
-    name = PACKAGE_NAME,
+    name = "swc-plugin-experimental",
     srcs = [
         "LICENSE.md",
         "README.md",
-        "index.wasm",
         "package.json",
+        ":index.wasm",
     ],
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    package = "@formatjs/swc-plugin-experimental",
     visibility = ["//visibility:public"],
 )
 
 # NOTE: move this into its own Bazel rule and include common dependencies automatically.
 aspect_jest_test(
-    name = "test_plugin",
+    name = "plugin_test",
     config = "//:jest-aspect.config",
     data = [
-        "index.wasm",
         "tests/transform.ts",
+        ":index.wasm",
         "//:node_modules/@jest/transform",
         "//:node_modules/@swc/core",
         "//:node_modules/@swc/jest",
