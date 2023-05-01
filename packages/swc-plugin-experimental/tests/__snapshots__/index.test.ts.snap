@@ -41,7 +41,7 @@ exports[`explicit pragma GH #2663 1`] = `
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function _asyncToGenerator(fn) {
+function _async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -56,7 +56,7 @@ function _asyncToGenerator(fn) {
         });
     };
 }
-var __generator = this && this.__generator || function(thisArg, body) {
+function _ts_generator(thisArg, body) {
     var f, y, t, g, _ = {
         label: 0,
         sent: function() {
@@ -150,13 +150,13 @@ var __generator = this && this.__generator || function(thisArg, body) {
             done: true
         };
     }
-};
+}
 function error1() {
     return _error1.apply(this, arguments);
 }
 function _error1() {
-    _error1 = _asyncToGenerator(function() {
-        return __generator(this, function(_state) {
+    _error1 = _async_to_generator(function() {
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -401,20 +401,6 @@ export default class Foo extends Component {
 exports[`explicit pragma defineMessage 1`] = `
 {
   "code": "// @react-intl project:amazing
-function _extends() {
-    _extends = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source){
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
-    return _extends.apply(this, arguments);
-}
 import React, { Component } from 'react';
 import { defineMessage, FormattedMessage } from 'react-intl';
 const msgs = {
@@ -447,7 +433,7 @@ const msgs = {
 };
 export default class Foo extends Component {
     render() {
-        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.kittens))));
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.header)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.content)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.kittens)));
     }
 }",
   "data": {
@@ -493,20 +479,6 @@ export default class Foo extends Component {
 exports[`explicit pragma defineMessages 1`] = `
 {
   "code": "// @react-intl project:amazing
-function _extends() {
-    _extends = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source){
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
-    return _extends.apply(this, arguments);
-}
 import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 const msgs = defineMessages({
@@ -533,7 +505,7 @@ const msgs = defineMessages({
 });
 export default class Foo extends Component {
     render() {
-        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.kittens))));
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.header)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.content)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.kittens)));
     }
 }",
   "data": {
@@ -807,21 +779,7 @@ export default injectIntl(Foo)",
 
 exports[`explicit pragma idInterpolationPattern default 1`] = `
 {
-  "code": "function _extends() {
-    _extends = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source){
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
-    return _extends.apply(this, arguments);
-}
-import React, { Component } from 'react';
+  "code": "import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 const msgs = defineMessages({
     header: {
@@ -835,7 +793,7 @@ const msgs = defineMessages({
 });
 export default class Foo extends Component {
     render() {
-        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement(FormattedMessage, {
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.header)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.content)), /*#__PURE__*/ React.createElement(FormattedMessage, {
             id: "NqjIBK",
             defaultMessage: "Hello World!"
         }), /*#__PURE__*/ React.createElement(FormattedMessage, {
@@ -919,20 +877,6 @@ export default class Foo extends Component {
 exports[`explicit pragma preserveWhitespace 1`] = `
 {
   "code": "// @react-intl project:amazing
-function _extends() {
-    _extends = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source){
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
-    return _extends.apply(this, arguments);
-}
 import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 const msgs = defineMessages({
@@ -974,9 +918,9 @@ const msgs = defineMessages({
 });
 export default class Foo extends Component {
     render() {
-        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.kittens))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.header)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.content)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.kittens)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
             id: "inline.linebreak",
-            defaultMessage: "formatted message with linebreak"
+            defaultMessage: "formatted message       with linebreak"
         })));
     }
 }",
@@ -1197,7 +1141,7 @@ exports[`no pragma GH #2663 1`] = `
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function _asyncToGenerator(fn) {
+function _async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -1212,7 +1156,7 @@ function _asyncToGenerator(fn) {
         });
     };
 }
-var __generator = this && this.__generator || function(thisArg, body) {
+function _ts_generator(thisArg, body) {
     var f, y, t, g, _ = {
         label: 0,
         sent: function() {
@@ -1306,13 +1250,13 @@ var __generator = this && this.__generator || function(thisArg, body) {
             done: true
         };
     }
-};
+}
 function error1() {
     return _error1.apply(this, arguments);
 }
 function _error1() {
-    _error1 = _asyncToGenerator(function() {
-        return __generator(this, function(_state) {
+    _error1 = _async_to_generator(function() {
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -1555,20 +1499,6 @@ export default class Foo extends Component {
 exports[`no pragma defineMessage 1`] = `
 {
   "code": "// @react-intl project:amazing
-function _extends() {
-    _extends = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source){
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
-    return _extends.apply(this, arguments);
-}
 import React, { Component } from 'react';
 import { defineMessage, FormattedMessage } from 'react-intl';
 const msgs = {
@@ -1601,7 +1531,7 @@ const msgs = {
 };
 export default class Foo extends Component {
     render() {
-        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.kittens))));
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.header)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.content)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.kittens)));
     }
 }",
   "data": {
@@ -1645,20 +1575,6 @@ export default class Foo extends Component {
 exports[`no pragma defineMessages 1`] = `
 {
   "code": "// @react-intl project:amazing
-function _extends() {
-    _extends = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source){
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
-    return _extends.apply(this, arguments);
-}
 import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 const msgs = defineMessages({
@@ -1685,7 +1601,7 @@ const msgs = defineMessages({
 });
 export default class Foo extends Component {
     render() {
-        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.kittens))));
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.header)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.content)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.kittens)));
     }
 }",
   "data": {
@@ -1955,21 +1871,7 @@ export default injectIntl(Foo)",
 
 exports[`no pragma idInterpolationPattern default 1`] = `
 {
-  "code": "function _extends() {
-    _extends = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source){
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
-    return _extends.apply(this, arguments);
-}
-import React, { Component } from 'react';
+  "code": "import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 const msgs = defineMessages({
     header: {
@@ -1983,7 +1885,7 @@ const msgs = defineMessages({
 });
 export default class Foo extends Component {
     render() {
-        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement(FormattedMessage, {
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.header)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.content)), /*#__PURE__*/ React.createElement(FormattedMessage, {
             id: "NqjIBK",
             defaultMessage: "Hello World!"
         }), /*#__PURE__*/ React.createElement(FormattedMessage, {
@@ -2067,20 +1969,6 @@ export default class Foo extends Component {
 exports[`no pragma preserveWhitespace 1`] = `
 {
   "code": "// @react-intl project:amazing
-function _extends() {
-    _extends = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source){
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
-    return _extends.apply(this, arguments);
-}
 import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 const msgs = defineMessages({
@@ -2122,9 +2010,9 @@ const msgs = defineMessages({
 });
 export default class Foo extends Component {
     render() {
-        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.header))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.content))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, _extends({}, msgs.kittens))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+        return /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h1", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.header)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.content)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, msgs.kittens)), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
             id: "inline.linebreak",
-            defaultMessage: "formatted message with linebreak"
+            defaultMessage: "formatted message       with linebreak"
         })));
     }
 }",
