@@ -752,6 +752,70 @@ export default class Foo extends Component {
 }
 `;
 
+exports[`explicit pragma jsxNestedInCallExpr 1`] = `
+{
+  "code": "import { useMemo } from 'react';
+import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl';
+export default function IndexPage() {
+    const intl = useIntl();
+    const anotherMessage = useMemo(()=>/*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "A+bpLt",
+            defaultMessage: "Hello, World #1!"
+        }), []);
+    return /*#__PURE__*/ React.createElement("main", {
+        title: intl.formatMessage({
+            id: "lyiQWH",
+            defaultMessage: "Home"
+        }),
+        description: intl.formatMessage({
+            id: "9CBSZS",
+            defaultMessage: "An example app integrating React Intl with Next.js"
+        })
+    }, /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+        id: "wF8i0k",
+        defaultMessage: "Hello, World #2!"
+    })), /*#__PURE__*/ React.createElement("p", null, anotherMessage), /*#__PURE__*/ React.createElement("div", null, [
+        ...Array(10)
+    ].map((_, i)=>/*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "rpH0bU",
+            defaultMessage: "Hello, World #3!"
+        }))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedNumber, {
+        value: 1000
+    })));
+}",
+  "data": {
+    "messages": [
+      {
+        "defaultMessage": "Hello, World #1!",
+        "description": "Index Page: Content #1",
+        "id": "A+bpLt",
+      },
+      {
+        "defaultMessage": "Home",
+        "description": "Index Page: document title",
+        "id": "lyiQWH",
+      },
+      {
+        "defaultMessage": "An example app integrating React Intl with Next.js",
+        "description": "Index Page: Meta Description",
+        "id": "9CBSZS",
+      },
+      {
+        "defaultMessage": "Hello, World #2!",
+        "description": "Index Page: Content #2",
+        "id": "wF8i0k",
+      },
+      {
+        "defaultMessage": "Hello, World #3!",
+        "description": "Index Page: Content #3",
+        "id": "rpH0bU",
+      },
+    ],
+    "meta": {},
+  },
+}
+`;
+
 exports[`explicit pragma preserveWhitespace 1`] = `
 {
   "code": "// @react-intl project:amazing
@@ -1715,6 +1779,70 @@ export default class Foo extends Component {
         "defaultMessage": "Hello World!",
         "description": "The default message",
         "id": "header2",
+      },
+    ],
+    "meta": {},
+  },
+}
+`;
+
+exports[`no pragma jsxNestedInCallExpr 1`] = `
+{
+  "code": "import { useMemo } from 'react';
+import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl';
+export default function IndexPage() {
+    const intl = useIntl();
+    const anotherMessage = useMemo(()=>/*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "A+bpLt",
+            defaultMessage: "Hello, World #1!"
+        }), []);
+    return /*#__PURE__*/ React.createElement("main", {
+        title: intl.formatMessage({
+            id: "lyiQWH",
+            defaultMessage: "Home"
+        }),
+        description: intl.formatMessage({
+            id: "9CBSZS",
+            defaultMessage: "An example app integrating React Intl with Next.js"
+        })
+    }, /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedMessage, {
+        id: "wF8i0k",
+        defaultMessage: "Hello, World #2!"
+    })), /*#__PURE__*/ React.createElement("p", null, anotherMessage), /*#__PURE__*/ React.createElement("div", null, [
+        ...Array(10)
+    ].map((_, i)=>/*#__PURE__*/ React.createElement(FormattedMessage, {
+            id: "rpH0bU",
+            defaultMessage: "Hello, World #3!"
+        }))), /*#__PURE__*/ React.createElement("p", null, /*#__PURE__*/ React.createElement(FormattedNumber, {
+        value: 1000
+    })));
+}",
+  "data": {
+    "messages": [
+      {
+        "defaultMessage": "Hello, World #1!",
+        "description": "Index Page: Content #1",
+        "id": "A+bpLt",
+      },
+      {
+        "defaultMessage": "Home",
+        "description": "Index Page: document title",
+        "id": "lyiQWH",
+      },
+      {
+        "defaultMessage": "An example app integrating React Intl with Next.js",
+        "description": "Index Page: Meta Description",
+        "id": "9CBSZS",
+      },
+      {
+        "defaultMessage": "Hello, World #2!",
+        "description": "Index Page: Content #2",
+        "id": "wF8i0k",
+      },
+      {
+        "defaultMessage": "Hello, World #3!",
+        "description": "Index Page: Content #3",
+        "id": "rpH0bU",
       },
     ],
     "meta": {},

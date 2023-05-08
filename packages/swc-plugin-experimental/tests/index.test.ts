@@ -219,4 +219,11 @@ describe.each([
       transformAndCheck('skipExtractionFormattedMessage', pluginOptions)
     ).toMatchSnapshot()
   })
+
+  // See: https://github.com/formatjs/formatjs/issues/3589#issuecomment-1532461569
+  test('jsxNestedInCallExpr', () => {
+    expect(
+      transformAndCheck('jsxNestedInCallExpr', pluginOptions)
+    ).toMatchSnapshot()
+  })
 })

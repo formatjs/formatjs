@@ -183,6 +183,11 @@ test('skipExtractionFormattedMessage', function () {
   transformAndCheck('skipExtractionFormattedMessage')
 })
 
+// See: https://github.com/formatjs/formatjs/issues/3589#issuecomment-1532461569
+test('jsxNestedInCallExpr', () => {
+  transformAndCheck('jsxNestedInCallExpr')
+})
+
 let cacheBust = 1
 
 function transform(
