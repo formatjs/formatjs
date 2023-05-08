@@ -70,9 +70,8 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
-    deps = TEST_DEPS,
+    name = "unit_test",
+    data = SRCS + TESTS + TEST_LOCALE_DATA + TEST_DEPS,
 )
 
 # CLDR

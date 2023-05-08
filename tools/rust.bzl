@@ -74,7 +74,7 @@ def rust_wasm_library(name, tags = [], wasi = False, **kwargs):
         name = wasm_name,
         crate_type = "cdylib",
         out_binary = True,
-        tags = tags,
+        tags = ["manual"],
         **kwargs
     )
 
@@ -85,6 +85,6 @@ def rust_wasm_library(name, tags = [], wasi = False, **kwargs):
     bin_rule(
         name = name,
         library = ":" + wasm_name,
-        tags = tags,
+        tags = ["manual"] + tags,
         visibility = kwargs.get("visibility"),
     )

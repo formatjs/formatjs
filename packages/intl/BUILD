@@ -48,9 +48,8 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS,
-    deps = SRC_DEPS + [
+    name = "unit_test",
+    data = SRCS + TESTS + SRC_DEPS + [
         ":node_modules/@formatjs/intl-datetimeformat",
         ":node_modules/@formatjs/intl-numberformat",
         "//:node_modules/@types/node",

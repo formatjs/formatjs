@@ -19,12 +19,6 @@ check_format(
 )
 
 copy_to_bin(
-    name = "jest-reporter",
-    srcs = ["jest-reporter.js"],
-    visibility = ["//visibility:public"],
-)
-
-copy_to_bin(
     name = "check-package-json",
     srcs = ["check-package-json.ts"],
     visibility = ["//visibility:public"],

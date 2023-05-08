@@ -35,13 +35,12 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + glob([
+    name = "unit_test",
+    data = SRCS + SRC_DEPS + glob([
         "tests/**/*.ts",
         "tests/**/*.tsx",
-        "tests/**/*.snap",
     ]),
-    deps = SRC_DEPS,
+    snapshots = glob(["tests/**/*.snap"]),
 )
 
 write_source_files(

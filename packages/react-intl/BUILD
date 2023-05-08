@@ -85,22 +85,19 @@ genrule(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS + [
-        "tests/setup.js",
-    ],
+    name = "unit_test",
+    data = SRCS + TESTS + TEST_DEPS + ["tests/setup.js"],
     jest_config = "jest.config.js",
-    deps = TEST_DEPS,
 )
 
 jest_test(
-    name = "functional",
-    srcs = glob(["tests/functional/**/*.ts*"]) + [
+    name = "functional_test",
+    data = TEST_DEPS + glob(["tests/functional/**/*.ts*"]) + [
+        ":dist",
         "package.json",
         "tests/setup.js",
     ],
     jest_config = "jest.config.js",
-    deps = TEST_DEPS + [":dist"],
 )
 
 write_source_files(

@@ -43,9 +43,8 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS,
-    deps = [],
+    name = "unit_test",
+    data = SRCS + TESTS,
 )
 
 # Test262

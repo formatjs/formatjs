@@ -45,8 +45,8 @@ ts_compile_node(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + glob(
+    name = "unit_test",
+    data = SRCS + SRC_DEPS + glob(
         [
             "tests/**/*.ts",
             "tests/**/*.tsx",
@@ -54,15 +54,12 @@ jest_test(
             "tests/**/*.json",
         ],
         exclude = ["tests/vue/**/*"],
-    ),
-    snapshots = glob([
-        "tests/**/*.snap",
-    ]),
-    deps = [
+    ) + [
         "//:node_modules/@babel/preset-env",
         "//:node_modules/@babel/preset-react",
         "//:node_modules/@types/node",
-    ] + SRC_DEPS,
+    ],
+    snapshots = glob(["tests/**/*.snap"]),
 )
 
 package_json_test(

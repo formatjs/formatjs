@@ -277,9 +277,8 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
-    deps = SRC_DEPS + [
+    name = "unit_test",
+    data = SRCS + TESTS + TEST_LOCALE_DATA + SRC_DEPS + [
         ":node_modules/@formatjs/intl-getcanonicallocales",
         ":node_modules/@formatjs/intl-locale",
         "//:node_modules/@types/node",

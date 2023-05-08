@@ -100,13 +100,12 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-# Bc this is too big
-[jest_test(
-    name = "unit-%s" % f[f.rindex("/") + 1:f.rindex(".")],
+jest_test(
+    name = "unit_test",
     size = "large",
-    srcs = SRCS + [f] + TEST_LOCALE_DATA + glob(["tests/__snapshots__/%s.*" % f[f.rindex("/") + 1:f.rindex(".")]]),
-    deps = TEST_DEPS,
-) for f in TESTS]
+    data = SRCS + TEST_DEPS + TESTS + TEST_LOCALE_DATA,
+    snapshots = glob(["tests/__snapshots__/*.snap"]),
+)
 
 # CLDR
 ALL_LOCALES = [

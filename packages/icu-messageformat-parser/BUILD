@@ -41,17 +41,16 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + glob([
+    name = "unit_test",
+    data = SRCS + SRC_DEPS + glob([
         "tests/**/*.ts",
         "tests/**/*.tsx",
-        "tests/**/*.snap",
-    ]),
-    deps = [
+    ]) + [
         "//:node_modules/@types/lodash",
         "//:node_modules/fast-glob",
         "//:node_modules/lodash",
-    ] + SRC_DEPS,
+    ],
+    snapshots = glob(["tests/**/*.snap"]),
 )
 
 js_binary(

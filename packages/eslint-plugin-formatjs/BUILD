@@ -58,14 +58,13 @@ TEST_FILES = glob([
     "tests/*.test.ts",
 ])
 
-[jest_test(
-    name = "unit-%s" % f[6:f.index(".test.ts")],
-    srcs = TESTS_BASE_SRCS + [f],
-    deps = [
+jest_test(
+    name = "unit_test",
+    data = TESTS_BASE_SRCS + TEST_FILES + SRC_DEPS + [
         "//:node_modules/@typescript-eslint/parser",
         "//:node_modules/vue-eslint-parser",
-    ] + SRC_DEPS,
-) for f in TEST_FILES]
+    ]
+)
 
 write_source_files(
     name = "tsconfig_json",

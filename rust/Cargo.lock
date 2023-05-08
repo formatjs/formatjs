@@ -73,7 +73,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "swc_macros_common",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -86,7 +86,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "swc_macros_common",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -95,7 +95,7 @@ version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d9b39be18770d11421cdb1b9947a45dd3f37e93092cbf377614828a319d5fee8"
 dependencies = [
- "hermit-abi 0.1.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "hermit-abi 0.1.19",
  "libc",
  "winapi",
 ]
@@ -193,7 +193,7 @@ checksum = "e31225543cb46f81a7e224762764f4a6a0f097b1db0b175f69e8065efaa42de5"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -217,7 +217,7 @@ dependencies = [
  "encode_unicode",
  "lazy_static",
  "libc",
- "windows-sys 0.42.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows-sys 0.42.0",
 ]
 
 [[package]]
@@ -246,7 +246,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6d2301688392eb071b0bf1a37be05c469d3cc4dbbd95df672fe28ab021e6a096"
 dependencies = [
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -270,7 +270,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "strsim",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -281,7 +281,7 @@ checksum = "9c972679f83bdf9c42bd905396b6c3588a843a17f0f16dfcfa3e2c5d57441835"
 dependencies = [
  "darling_core",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -350,7 +350,7 @@ checksum = "355f93763ef7b0ae1c43c4d8eccc9d5848d84ad1a1d8ce61c421d1ac85a19d05"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -361,7 +361,7 @@ checksum = "4bcfec3a70f97c962c307b2d2c56e358cf1d00b558d74262b5f929ee8cc7e73a"
 dependencies = [
  "errno-dragonfly",
  "libc",
- "windows-sys 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows-sys 0.48.0",
 ]
 
 [[package]]
@@ -407,7 +407,7 @@ dependencies = [
  "pmutil",
  "proc-macro2",
  "swc_macros_common",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -440,7 +440,7 @@ dependencies = [
  "proc-macro-error",
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -505,7 +505,7 @@ dependencies = [
  "serde_json",
  "serde_repr",
  "similar-asserts",
- "testing 0.30.10 (registry+https://github.com/rust-lang/crates.io-index)",
+ "testing 0.30.10",
  "widestring",
 ]
 
@@ -556,9 +556,9 @@ version = "1.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9c66c74d2ae7e79a5a8f7ac924adbe38ee42a859c6539ad869eb51f0b52dc220"
 dependencies = [
- "hermit-abi 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "hermit-abi 0.3.1",
  "libc",
- "windows-sys 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows-sys 0.48.0",
 ]
 
 [[package]]
@@ -571,7 +571,7 @@ dependencies = [
  "pmutil",
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -745,7 +745,7 @@ checksum = "6b5bc45b761bcf1b5e6e6c4128cd93b84c218721a8d9b894aa0aff4ed180174c"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -810,7 +810,7 @@ version = "1.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0fac9e2da13b5eb447a6ce3d392f23a29d8694bff781bf03a16cd9ac8697593b"
 dependencies = [
- "hermit-abi 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "hermit-abi 0.2.6",
  "libc",
 ]
 
@@ -868,9 +868,9 @@ checksum = "9069cbb9f99e3a5083476ccb29ceb1de18b9118cafa53e90c9551235de2b9521"
 dependencies = [
  "cfg-if",
  "libc",
- "redox_syscall 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)",
+ "redox_syscall 0.2.16",
  "smallvec",
- "windows-sys 0.45.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows-sys 0.45.0",
 ]
 
 [[package]]
@@ -911,7 +911,7 @@ dependencies = [
  "proc-macro-hack",
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -937,7 +937,7 @@ checksum = "3894e5d549cccbe44afecf72922f277f603cd4bb0219c8342631ef18fffbe004"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -973,7 +973,7 @@ dependencies = [
  "proc-macro-error-attr",
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
  "version_check",
 ]
 
@@ -1029,7 +1029,7 @@ checksum = "16b845dbfca988fa33db069c0e230574d15a3088f147a87b64c7589eb662c9ac"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1077,7 +1077,7 @@ version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fb5a58c1855b4b6819d59012155603f0b22ad30cad752600aadfcb695265519a"
 dependencies = [
- "bitflags 1.3.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bitflags 1.3.2",
 ]
 
 [[package]]
@@ -1086,7 +1086,7 @@ version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "567664f262709473930a4bf9e51bf2ebf3348f2e748ccc50dea20646858f8f29"
 dependencies = [
- "bitflags 1.3.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bitflags 1.3.2",
 ]
 
 [[package]]
@@ -1097,7 +1097,7 @@ checksum = "af83e617f331cc6ae2da5443c602dfa5af81e517212d9d611a5b3ba1777b5370"
 dependencies = [
  "aho-corasick",
  "memchr",
- "regex-syntax 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "regex-syntax 0.7.1",
 ]
 
 [[package]]
@@ -1106,7 +1106,7 @@ version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6c230d73fb8d8c1b9c0b3135c5142a8acee3a0558fb8db5cf1cb65f8d7862132"
 dependencies = [
- "regex-syntax 0.6.29 (registry+https://github.com/rust-lang/crates.io-index)",
+ "regex-syntax 0.6.29",
 ]
 
 [[package]]
@@ -1158,7 +1158,7 @@ checksum = "ac1c672430eb41556291981f45ca900a0239ad007242d1cb4b4167af842db666"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1188,12 +1188,12 @@ version = "0.37.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8bbfc1d1c7c40c01715f47d71444744a81669ca84e8b63e25a55e169b1f86433"
 dependencies = [
- "bitflags 1.3.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bitflags 1.3.2",
  "errno",
  "io-lifetimes",
  "libc",
  "linux-raw-sys",
- "windows-sys 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows-sys 0.48.0",
 ]
 
 [[package]]
@@ -1258,7 +1258,7 @@ checksum = "291a097c63d8497e00160b166a967a4a79c64f3facdd01cbd7502231688d77df"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.15 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 2.0.15",
 ]
 
 [[package]]
@@ -1280,7 +1280,7 @@ checksum = "bcec881020c684085e55a25f7fd888954d56609ef363479dc5a1305eb0d40cab"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.15 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 2.0.15",
 ]
 
 [[package]]
@@ -1445,7 +1445,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "swc_macros_common",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1543,7 +1543,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3926afd43f50edea791744d97d5fa38bde997978531d36ed507b2b908f920695"
 dependencies = [
  "ahash",
- "ast_node 0.8.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ast_node 0.8.8",
  "atty",
  "better_scoped_tls",
  "cfg-if",
@@ -1557,7 +1557,7 @@ dependencies = [
  "serde",
  "siphasher",
  "string_cache",
- "swc_atoms 0.4.43 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_atoms 0.4.43",
  "swc_eq_ignore_macros",
  "swc_visit",
  "termcolor",
@@ -1574,7 +1574,7 @@ checksum = "6f876f826866e402da364d77aa97448fdf67cb4aeb6a5f1c0de39cacf35aa89a"
 dependencies = [
  "ahash",
  "anyhow",
- "ast_node 0.9.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ast_node 0.9.3",
  "atty",
  "better_scoped_tls",
  "cfg-if",
@@ -1590,7 +1590,7 @@ dependencies = [
  "siphasher",
  "sourcemap",
  "string_cache",
- "swc_atoms 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_atoms 0.5.3",
  "swc_eq_ignore_macros",
  "swc_visit",
  "termcolor",
@@ -1606,8 +1606,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4b211443a6a1972009935ad1d5fae68e5c7a3697b4a1121cb4e4aad8ca88ee4a"
 dependencies = [
  "once_cell",
- "swc_atoms 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_atoms 0.5.3",
+ "swc_common 0.31.5",
  "swc_ecma_ast",
  "swc_ecma_transforms_base",
  "swc_ecma_transforms_testing",
@@ -1624,15 +1624,15 @@ version = "0.103.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1087786027e9e938588c0a66d45d1044a5e2285922b0928e023303f03a60900f"
 dependencies = [
- "bitflags 2.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bitflags 2.2.1",
  "is-macro",
  "num-bigint",
  "rkyv",
  "scoped-tls",
  "serde",
  "string_enum",
- "swc_atoms 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_atoms 0.5.3",
+ "swc_common 0.31.5",
  "unicode-id",
 ]
 
@@ -1648,8 +1648,8 @@ dependencies = [
  "rustc-hash",
  "serde",
  "sourcemap",
- "swc_atoms 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_atoms 0.5.3",
+ "swc_common 0.31.5",
  "swc_ecma_ast",
  "swc_ecma_codegen_macros",
  "tracing",
@@ -1665,7 +1665,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "swc_macros_common",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1681,8 +1681,8 @@ dependencies = [
  "smallvec",
  "smartstring",
  "stacker",
- "swc_atoms 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_atoms 0.5.3",
+ "swc_common 0.31.5",
  "swc_ecma_ast",
  "tracing",
  "typed-arena",
@@ -1707,15 +1707,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "96b6521512d072b082071a569d1aaad638bab56b9a18c9d88edc436055fe13ca"
 dependencies = [
  "better_scoped_tls",
- "bitflags 2.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bitflags 2.2.1",
  "indexmap",
  "once_cell",
  "phf",
  "rustc-hash",
  "serde",
  "smallvec",
- "swc_atoms 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_atoms 0.5.3",
+ "swc_common 0.31.5",
  "swc_ecma_ast",
  "swc_ecma_parser",
  "swc_ecma_utils",
@@ -1737,7 +1737,7 @@ dependencies = [
  "serde_json",
  "sha-1",
  "sourcemap",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_common 0.31.5",
  "swc_ecma_ast",
  "swc_ecma_codegen",
  "swc_ecma_parser",
@@ -1746,7 +1746,7 @@ dependencies = [
  "swc_ecma_utils",
  "swc_ecma_visit",
  "tempfile",
- "testing 0.33.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "testing 0.33.6",
 ]
 
 [[package]]
@@ -1759,8 +1759,8 @@ dependencies = [
  "num_cpus",
  "once_cell",
  "rustc-hash",
- "swc_atoms 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_atoms 0.5.3",
+ "swc_common 0.31.5",
  "swc_ecma_ast",
  "swc_ecma_visit",
  "tracing",
@@ -1774,8 +1774,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4490a5ed042234d72986e1a0c8afb54291fcf82b42af78ea72507b52bcbe13dd"
 dependencies = [
  "num-bigint",
- "swc_atoms 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_atoms 0.5.3",
+ "swc_common 0.31.5",
  "swc_ecma_ast",
  "swc_visit",
  "tracing",
@@ -1790,7 +1790,7 @@ dependencies = [
  "pmutil",
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1803,7 +1803,7 @@ dependencies = [
  "miette",
  "once_cell",
  "parking_lot",
- "swc_common 0.28.10 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_common 0.28.10",
 ]
 
 [[package]]
@@ -1816,7 +1816,7 @@ dependencies = [
  "miette",
  "once_cell",
  "parking_lot",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_common 0.31.5",
 ]
 
 [[package]]
@@ -1828,7 +1828,7 @@ dependencies = [
  "pmutil",
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1848,7 +1848,7 @@ checksum = "ae095f51123037ae9a8d29ef06b221a273fe11b489a3caa9eeba6a965a8b4cc1"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1859,7 +1859,7 @@ checksum = "4cd5b2880508aedc964f4f52a4debc07c4b48212b45b44522d651c701b1a4d84"
 dependencies = [
  "better_scoped_tls",
  "rkyv",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_common 0.31.5",
  "swc_ecma_ast",
  "swc_trace_macro",
  "tracing",
@@ -1873,7 +1873,7 @@ checksum = "a4795c8d23e0de62eef9cac0a20ae52429ee2ffc719768e838490f195b7d7267"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1897,7 +1897,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "swc_macros_common",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1930,9 +1930,9 @@ checksum = "b9fbec84f381d5795b08656e4912bec604d162bff9291d6189a78f4c8ab87998"
 dependencies = [
  "cfg-if",
  "fastrand",
- "redox_syscall 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "redox_syscall 0.3.5",
  "rustix",
- "windows-sys 0.45.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows-sys 0.45.0",
 ]
 
 [[package]]
@@ -1966,8 +1966,8 @@ dependencies = [
  "pretty_assertions",
  "regex",
  "serde_json",
- "swc_common 0.28.10 (registry+https://github.com/rust-lang/crates.io-index)",
- "swc_error_reporters 0.12.10 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_common 0.28.10",
+ "swc_error_reporters 0.12.10",
  "testing_macros",
  "tracing",
  "tracing-subscriber",
@@ -1985,8 +1985,8 @@ dependencies = [
  "pretty_assertions",
  "regex",
  "serde_json",
- "swc_common 0.31.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "swc_error_reporters 0.15.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_common 0.31.5",
+ "swc_error_reporters 0.15.5",
  "testing_macros",
  "tracing",
  "tracing-subscriber",
@@ -2006,7 +2006,7 @@ dependencies = [
  "quote",
  "regex",
  "relative-path",
- "syn 1.0.109 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -2037,7 +2037,7 @@ checksum = "f9456a42c5b0d803c8cd86e73dd7cc9edd429499f37a3550d286d5e86720569f"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.15 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 2.0.15",
 ]
 
 [[package]]
@@ -2112,7 +2112,7 @@ checksum = "0f57e3ca2a01450b1a921183a9c9cbfda207fd822cef4ccb00a65402cbba7a74"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.15 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 2.0.15",
 ]
 
 [[package]]
@@ -2327,13 +2327,13 @@ version = "0.42.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5a3e1820f08b8513f676f7ab6c1f99ff312fb97b553d30ff4dd86f9f15728aa7"
 dependencies = [
- "windows_aarch64_gnullvm 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_aarch64_msvc 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_i686_gnu 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_i686_msvc 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_x86_64_gnu 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_x86_64_gnullvm 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_x86_64_msvc 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows_aarch64_gnullvm 0.42.2",
+ "windows_aarch64_msvc 0.42.2",
+ "windows_i686_gnu 0.42.2",
+ "windows_i686_msvc 0.42.2",
+ "windows_x86_64_gnu 0.42.2",
+ "windows_x86_64_gnullvm 0.42.2",
+ "windows_x86_64_msvc 0.42.2",
 ]
 
 [[package]]
@@ -2342,7 +2342,7 @@ version = "0.45.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "75283be5efb2831d37ea142365f009c02ec203cd29a3ebecbc093d52315b66d0"
 dependencies = [
- "windows-targets 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows-targets 0.42.2",
 ]
 
 [[package]]
@@ -2351,7 +2351,7 @@ version = "0.48.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "677d2418bec65e3338edb076e806bc1ec15693c5d0104683f2efe857f61056a9"
 dependencies = [
- "windows-targets 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows-targets 0.48.0",
 ]
 
 [[package]]
@@ -2360,13 +2360,13 @@ version = "0.42.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8e5180c00cd44c9b1c88adb3693291f1cd93605ded80c250a75d472756b4d071"
 dependencies = [
- "windows_aarch64_gnullvm 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_aarch64_msvc 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_i686_gnu 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_i686_msvc 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_x86_64_gnu 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_x86_64_gnullvm 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_x86_64_msvc 0.42.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows_aarch64_gnullvm 0.42.2",
+ "windows_aarch64_msvc 0.42.2",
+ "windows_i686_gnu 0.42.2",
+ "windows_i686_msvc 0.42.2",
+ "windows_x86_64_gnu 0.42.2",
+ "windows_x86_64_gnullvm 0.42.2",
+ "windows_x86_64_msvc 0.42.2",
 ]
 
 [[package]]
@@ -2375,13 +2375,13 @@ version = "0.48.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7b1eb6f0cd7c80c79759c929114ef071b87354ce476d9d94271031c0497adfd5"
 dependencies = [
- "windows_aarch64_gnullvm 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_aarch64_msvc 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_i686_gnu 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_i686_msvc 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_x86_64_gnu 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_x86_64_gnullvm 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "windows_x86_64_msvc 0.48.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "windows_aarch64_gnullvm 0.48.0",
+ "windows_aarch64_msvc 0.48.0",
+ "windows_i686_gnu 0.48.0",
+ "windows_i686_msvc 0.48.0",
+ "windows_x86_64_gnu 0.48.0",
+ "windows_x86_64_gnullvm 0.48.0",
+ "windows_x86_64_msvc 0.48.0",
 ]
 
 [[package]]

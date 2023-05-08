@@ -6,6 +6,5 @@ module.exports = {
       tsconfig: 'tsconfig.json',
     },
   },
-  reporters: ['default', './tools/jest-reporter'],
   verbose: true,
 }

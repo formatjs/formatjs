@@ -60,9 +60,8 @@ check_format(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS,
-    deps = SRC_DEPS,
+    name = "unit_test",
+    data = SRCS + TESTS + SRC_DEPS,
 )
 
 package_json_test(

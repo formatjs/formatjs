@@ -54,11 +54,8 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS,
-    deps = TEST_DEPS + [
-        "//:node_modules/@types/node",
-    ],
+    name = "unit_test",
+    data = SRCS + TESTS + TEST_DEPS + ["//:node_modules/@types/node"],
 )
 
 esbuild(

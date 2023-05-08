@@ -80,11 +80,10 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-[jest_test(
-    name = "unit-%s" % t[t.index("/") + 1:t.index(".test")],
-    srcs = SRCS + [t] + TEST_LOCALE_DATA,
-    deps = TEST_DEPS,
-) for t in TESTS]
+jest_test(
+    name = "unit_test",
+    data = SRCS + TESTS + TEST_LOCALE_DATA + TEST_DEPS,
+)
 
 # Expand zdump files
 genrule(

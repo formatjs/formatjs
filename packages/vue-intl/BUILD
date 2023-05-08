@@ -37,19 +37,13 @@ ts_compile_node(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + ["tests/index.test.ts"] + glob([
-        "tests/__snapshots__/*.snap",
-    ]),
-    additional_args = [
-        "--env",
-        "jsdom",
+    name = "unit_test",
+    data = SRCS + SRC_DEPS + [
+        "tests/index.test.ts",
+        "//:node_modules/@vue/test-utils",
+        "//:node_modules/jest-environment-jsdom",        
     ],
     jest_config = "jest.config.js",
-    deps = SRC_DEPS + [
-        "//:node_modules/@vue/test-utils",
-        "//:node_modules/jest-environment-jsdom",
-    ],
 )
 
 check_format(

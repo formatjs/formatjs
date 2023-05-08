@@ -4,12 +4,9 @@ load("//tools:jest.bzl", "jest_test")
 npm_link_all_packages(name = "node_modules")
 
 jest_test(
-    name = "integration-vue",
-    srcs = ["vue/integration.test.ts"] + glob([
-        "vue/fixtures/*",
-    ]),
-    # flaky = True,
-    deps = [
+    name = "vue_integration_test",
+    data = glob(["vue/fixtures/*"]) + [
+        "vue/integration.test.ts",
         ":node_modules/babel-plugin-formatjs",
         "//:node_modules/@types/node",
         "//:node_modules/@types/webpack",
@@ -18,4 +15,5 @@ jest_test(
         "//:node_modules/vue-loader",
         "//:node_modules/webpack",
     ],
+    # flaky = True,
 )

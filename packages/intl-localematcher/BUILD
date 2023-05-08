@@ -31,12 +31,12 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + glob([
+    name = "unit_test",
+    data = SRCS + glob([
         "tests/**/*.ts",
         "tests/**/*.tsx",
-        "tests/**/*.snap",
     ]),
+    snapshots = glob(["tests/**/*.snap"]),
 )
 
 # Test262

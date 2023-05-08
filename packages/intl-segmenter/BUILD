@@ -64,9 +64,8 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS,
-    deps = TEST_DEPS,
+    name = "unit_test",
+    data = SRCS + TESTS + TEST_DEPS,
 )
 
 generate_src_file(

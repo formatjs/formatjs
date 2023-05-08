@@ -60,14 +60,11 @@ ts_compile_node(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + glob([
-        "tests/unit/**/*",
-    ]),
-    deps = [
+    name = "unit_test",
+    data = SRCS + SRC_DEPS + [
         "//:node_modules/@types/rimraf",
         "//:node_modules/rimraf",
-    ] + SRC_DEPS,
+    ] + glob(["tests/unit/**/*"]),
 )
 
 write_source_files(
