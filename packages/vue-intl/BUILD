@@ -41,7 +41,7 @@ jest_test(
     data = SRCS + SRC_DEPS + [
         "tests/index.test.ts",
         "//:node_modules/@vue/test-utils",
-        "//:node_modules/jest-environment-jsdom",        
+        "//:node_modules/jest-environment-jsdom",
     ],
     jest_config = "jest.config.js",
 )

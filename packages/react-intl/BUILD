@@ -93,9 +93,9 @@ jest_test(
 jest_test(
     name = "functional_test",
     data = TEST_DEPS + glob(["tests/functional/**/*.ts*"]) + [
-        ":dist",
         "package.json",
         "tests/setup.js",
+        ":dist",
     ],
     jest_config = "jest.config.js",
 )

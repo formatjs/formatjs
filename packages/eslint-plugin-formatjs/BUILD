@@ -63,7 +63,7 @@ jest_test(
     data = TESTS_BASE_SRCS + TEST_FILES + SRC_DEPS + [
         "//:node_modules/@typescript-eslint/parser",
         "//:node_modules/vue-eslint-parser",
-    ]
+    ],
 )
 
 write_source_files(
