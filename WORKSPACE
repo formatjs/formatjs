@@ -12,9 +12,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file"
 # rules_js
 http_archive(
     name = "aspect_rules_js",
-    sha256 = "4722264788b92aeca47bf108c5909d94720114d73739e3cff9f48a10b18ef8cd",
-    strip_prefix = "rules_js-1.25.0",
-    url = "https://github.com/aspect-build/rules_js/releases/download/v1.25.0/rules_js-v1.25.0.tar.gz",
+    sha256 = "dcd1567d4a93a8634ec0b888b371a60b93c18d980f77dace02eb176531a71fcf",
+    strip_prefix = "rules_js-1.26.0",
+    url = "https://github.com/aspect-build/rules_js/releases/download/v1.26.0/rules_js-v1.26.0.tar.gz",
 )
 
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
@@ -88,9 +88,9 @@ esbuild_register_toolchains(
 # Typescript
 http_archive(
     name = "aspect_rules_ts",
-    sha256 = "8eb25d1fdafc0836f5778d33fb8eaac37c64176481d67872b54b0a05de5be5c0",
-    strip_prefix = "rules_ts-1.3.3",
-    url = "https://github.com/aspect-build/rules_ts/releases/download/v1.3.3/rules_ts-v1.3.3.tar.gz",
+    sha256 = "ace5b609603d9b5b875d56c9c07182357c4ee495030f40dcefb10d443ba8c208",
+    strip_prefix = "rules_ts-1.4.0",
+    url = "https://github.com/aspect-build/rules_ts/releases/download/v1.4.0/rules_ts-v1.4.0.tar.gz",
 )
 
 ##################
@@ -117,9 +117,9 @@ register_copy_to_directory_toolchains()
 # Jest
 http_archive(
     name = "aspect_rules_jest",
-    sha256 = "52dc08fd252add240124ef7ccc46df3a505121758dfb96578a3d5f2ebb4c2b40",
-    strip_prefix = "rules_jest-0.18.1",
-    url = "https://github.com/aspect-build/rules_jest/releases/download/v0.18.1/rules_jest-v0.18.1.tar.gz",
+    sha256 = "d3bb833f74b8ad054e6bff5e41606ff10a62880cc99e4d480f4bdfa70add1ba7",
+    strip_prefix = "rules_jest-0.18.4",
+    url = "https://github.com/aspect-build/rules_jest/releases/download/v0.18.4/rules_jest-v0.18.4.tar.gz",
 )
 
 ####################
@@ -134,22 +134,8 @@ load("@aspect_rules_jest//jest:dependencies.bzl", "rules_jest_dependencies")
 
 rules_jest_dependencies()
 
-# Setup skylib
-http_archive(
-    name = "bazel_skylib",
-    sha256 = "b8a1527901774180afc798aeb28c4634bdccf19c4d98e7bdd1ce79d1fe9aaad7",
-    urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.4.1/bazel-skylib-1.4.1.tar.gz",
-        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.1/bazel-skylib-1.4.1.tar.gz",
-    ],
-)
+# Multirun
 
-load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
-
-bazel_skylib_workspace()
-
-# multirun is written in Go and hence needs rules_go to be built.
-# See https://github.com/bazelbuild/rules_go for the up to date setup instructions.
 http_archive(
     name = "io_bazel_rules_go",
     sha256 = "099a9fb96a376ccbbb7d291ed4ecbdfd42f6bc822ab77ae6f1b5cb9e914e94fa",
@@ -172,42 +158,27 @@ http_archive(
     url = "https://github.com/keith/rules_multirun/archive/refs/tags/0.6.0.tar.gz",
 )
 
-# buildifier
-
+# Buildifier
 http_archive(
-    name = "bazel_gazelle",
-    sha256 = "727f3e4edd96ea20c29e8c2ca9e8d2af724d8c7778e7923a854b2c80952bc405",
+    name = "buildifier_prebuilt",
+    sha256 = "e46c16180bc49487bfd0f1ffa7345364718c57334fa0b5b67cb5f27eba10f309",
+    strip_prefix = "buildifier-prebuilt-6.1.0",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.30.0/bazel-gazelle-v0.30.0.tar.gz",
-        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.30.0/bazel-gazelle-v0.30.0.tar.gz",
+        "http://github.com/keith/buildifier-prebuilt/archive/6.1.0.tar.gz",
     ],
 )
 
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+load("@buildifier_prebuilt//:deps.bzl", "buildifier_prebuilt_deps")
 
-gazelle_dependencies()
+buildifier_prebuilt_deps()
 
-_PROTOBUF_VERSION = "3.15.3"
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
-http_archive(
-    name = "com_google_protobuf",
-    sha256 = "1c11b325e9fbb655895e8fe9843479337d50dd0be56a41737cbb9aede5e9ffa0",
-    strip_prefix = "protobuf-%s" % _PROTOBUF_VERSION,
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.zip" % _PROTOBUF_VERSION],
-)
+bazel_skylib_workspace()
 
-load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+load("@buildifier_prebuilt//:defs.bzl", "buildifier_prebuilt_register_toolchains")
 
-protobuf_deps()
-
-_BUILDIFIER_VERSION = "4.0.0"
-
-http_archive(
-    name = "bazelbuild_buildtools",
-    sha256 = "2adaafee16c53b80adff742b88bc90b2a5e99bf6889a5d82f22ef66655dc467b",
-    strip_prefix = "buildtools-%s" % _BUILDIFIER_VERSION,
-    url = "https://github.com/bazelbuild/buildtools/archive/%s.zip" % _BUILDIFIER_VERSION,
-)
+buildifier_prebuilt_register_toolchains()
 
 # Test262
 TEST262_COMMIT = "ade328d530525333751e8a3b58f02e18624da085"
