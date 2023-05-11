@@ -129,18 +129,6 @@ const intl = createIntl({
 <RawIntlProvider value={intl}>{foo}</RawIntlProvider>
 ```
 
-#### Dynamic Language Selection
-
-By default, changes to the `locale` at runtime may not trigger a re-render of child elements. To solve this, and enable dynamic locale modification, add a `key` property to the `<IntlProvider>` and set it to the locale, which persuades React that the component has been modified:
-
-```tsx
-<IntlProvider locale={localeProp} key={localeProp} messages={messagesProp}>
-  <App />
-</IntlProvider>
-```
-
-(See [Issue #243](https://github.com/formatjs/formatjs/issues/243).)
-
 ## FormattedDate
 
 This component uses the [`formatDate`](api.md#formatdate) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above.
