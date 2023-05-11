@@ -5,7 +5,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier_test")
+load("@buildifier_prebuilt//:rules.bzl", "buildifier_test")
 load("@npm//:prettier/package_json.bzl", prettier_bin = "bin")
 load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
 
