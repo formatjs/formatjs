@@ -1,0 +1,15 @@
+# Speed up all builds by not checking if external repository files have been modified.
+# Docs: https://github.com/bazelbuild/bazel/blob/1af61b21df99edc2fc66939cdf14449c2661f873/src/main/java/com/google/devtools/build/lib/bazel/repository/RepositoryOptions.java#L244
+build --noexperimental_check_external_repository_files
+fetch --noexperimental_check_external_repository_files
+query --noexperimental_check_external_repository_files
+
+# Directories used by sandboxed non-worker execution may be reused to avoid unnecessary setup costs.
+# Save time on Sandbox creation and deletion when many of the same kind of action run during the
+# build.
+# Docs: https://bazel.build/reference/command-line-reference#flag--reuse_sandbox_directories
+build --reuse_sandbox_directories
+
+# Avoid this flag being enabled by remote_download_minimal or remote_download_toplevel
+# See https://meroton.com/blog/bazel-6-errors-build-without-the-bytes/
+build --noexperimental_action_cache_store_output_metadata
