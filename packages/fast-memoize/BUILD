@@ -1,5 +1,5 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
 
 exports_files([

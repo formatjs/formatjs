@@ -1,4 +1,4 @@
-# load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+# load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 # load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 # # load("//tools:jest.bzl", "jest_test")

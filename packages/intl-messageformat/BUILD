@@ -1,6 +1,6 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
 load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
