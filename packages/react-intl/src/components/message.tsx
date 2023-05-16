@@ -67,7 +67,7 @@ function FormattedMessage(props: Props) {
 }
 FormattedMessage.displayName = 'FormattedMessage'
 
-const MemoizedFormattedMessage = React.memo<Props>(FormattedMessage, areEqual)
+const MemoizedFormattedMessage: React.ComponentType<Props> = React.memo<Props>(FormattedMessage, areEqual)
 MemoizedFormattedMessage.displayName = 'MemoizedFormattedMessage'
 
 export default MemoizedFormattedMessage
