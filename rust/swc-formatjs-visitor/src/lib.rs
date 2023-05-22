@@ -497,11 +497,11 @@ fn interpolate_name(resource_path: &str, name: &str, content: &str) -> Option<St
 
     let content = content;
 
-    let ext = "bin";
-    let basename = "file";
-    let directory = "";
-    let folder = "";
-    let query = "";
+    // let ext = "bin";
+    // let basename = "file";
+    // let directory = "";
+    // let folder = "";
+    // let query = "";
 
     /*
       if (resource_path) {
@@ -541,8 +541,8 @@ fn interpolate_name(resource_path: &str, name: &str, content: &str) -> Option<St
 
     url = r
         .replace(url.as_str(), |cap: &Captures| {
-            let hash_type = cap.get(1);
-            let digest_type = cap.get(2);
+            // let hash_type = cap.get(1);
+            // let digest_type = cap.get(2);
             let max_length = cap.get(3);
 
             // TODO: support hashtype
@@ -905,7 +905,7 @@ impl<C: Clone + Comments, S: SourceMapper> FormatJSVisitor<C, S> {
                     source_location,
                 );
 
-                let first_prop = properties.first().is_some();
+                // let first_prop = properties.first().is_some();
 
                 // Insert ID potentially 1st before removing nodes
                 let id_prop = obj.props.iter().find(|prop| {
@@ -1146,6 +1146,8 @@ impl<C: Clone + Comments, S: SourceMapper> VisitMut for FormatJSVisitor<C, S> {
     }
 
     fn visit_mut_call_expr(&mut self, call_expr: &mut CallExpr) {
+        call_expr.visit_mut_children_with(self);
+
         let callee = &call_expr.callee;
         let args = &mut call_expr.args;
 
