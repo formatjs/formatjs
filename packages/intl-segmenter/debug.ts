@@ -6,8 +6,6 @@
  */
 
 import {Segmenter} from './src/segmenter'
-
-import {__read} from 'tslib'
 import {segmentationTests} from './tests/test-utils'
 
 //parse argvs
@@ -117,7 +115,9 @@ const debugRun = (
   )
 }
 debugRun(granularity, range)
-const failingRulesArray = __read(failingRules.values())
+const failingRulesArray = Array.from(failingRules.values())
 if (failingRulesArray.length) {
-  console.log(`Mismatching rules: ${__read(failingRules.values()).join(', ')}`)
+  console.log(
+    `Mismatching rules: ${Array.from(failingRules.values()).join(', ')}`
+  )
 }

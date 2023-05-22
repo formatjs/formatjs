@@ -1,0 +1,30 @@
+// The default (lowest build target) transpilation settings.
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "sourceMaps": false,
+  "module": {
+    // To match the tsc output.
+    "strictMode": false,
+    "type": "commonjs",
+    "noInterop": false
+  },
+  "jsc": {
+    "externalHelpers": true,
+    "target": "es5",
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true,
+      "decorators": false,
+      "dynamicImport": true
+    },
+    "transform": {
+      "react": {
+        "throwIfNamespace": false,
+        "useBuiltins": false,
+        "pragma": "React.createElement",
+        "pragmaFrag": "React.Fragment"
+      }
+    },
+    "keepClassNames": false
+  }
+}

@@ -625,6 +625,7 @@ export class FormatJSTransformer extends Visitor {
   private opts: Opts
   // @ts-ignore
   constructor(opts: Opts = {}) {
+    super()
     // @ts-ignore
     this.opts = {...DEFAULT_OPTS, ...opts}
   }

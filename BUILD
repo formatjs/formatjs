@@ -245,6 +245,12 @@ CONFIG_FILES = [
     for f in CONFIG_FILES
 ]
 
+copy_to_bin(
+    name = "swcrc",
+    srcs = [".swcrc"],
+    visibility = ["//visibility:public"],
+)
+
 TSCONFIG_FILES = [
     "tsconfig.es6.json",
     "tsconfig.node.json",

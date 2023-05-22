@@ -169,6 +169,7 @@
   },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
   "dependencies": {
+    "@swc/helpers": "^0.5.1",
     "jest-cli": "^29.5.0",
     "jest-junit": "^16.0.0",
     "magic-string": "^0.30.0"

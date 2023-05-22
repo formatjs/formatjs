@@ -1,5 +1,4 @@
 import {Suite, Event} from 'benchmark'
-import {__read} from 'tslib'
 
 //@ts-ignore
 // const Segmenter = Intl.Segmenter
@@ -16,7 +15,7 @@ Etiam viverra dignissim pharetra. Praesent gravida finibus tellus eu tempus. Pra
 Etiam malesuada libero sem, sit amet consequat dolor blandit non. In ut venenatis ligula. Pellentesque mattis imperdiet turpis id efficitur. Nunc felis lorem, vulputate a porttitor laoreet, mattis ac quam. Etiam molestie mi ac erat tincidunt interdum. Vestibulum sed nulla sit amet justo auctor fermentum. Sed varius ipsum lectus, sit amet eleifend nisi mollis at. In ac libero quis purus blandit venenatis. Praesent hendrerit quam vel risus tempor vehicula id eu enim. `
 
 //multiply the input string to increase the size
-inputString = __read(Array(10).keys()).reduce(res => res + inputString, '')
+inputString = inputString.repeat(10)
 
 console.log(
   `Locale: ${locale}\nInput string size: ${Math.round(

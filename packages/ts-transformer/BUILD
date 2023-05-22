@@ -44,6 +44,7 @@ ts_compile_node(
     deps = SRC_DEPS + [
         "//:node_modules/@jest/types",
         "//:node_modules/@types/jest",
+        # TODO: move this into integration_tests target.
         "//:node_modules/ts-jest",
     ],
 )
