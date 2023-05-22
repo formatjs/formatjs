@@ -726,7 +726,6 @@ ts_project(
     name = "test262-main-bundle",
     srcs = SRCS + ["test262-main.ts"],
     declaration = True,
-    declaration_map = True,
     out_dir = "test262",
     resolve_json_module = True,
     tsconfig = "//:tsconfig.es6",
