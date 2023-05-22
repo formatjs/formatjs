@@ -19,11 +19,10 @@ def jest_test(name, data, size = "medium", jest_config = "//:jest.config", node_
         **kwargs: the rest
     """
     data = data + [
-        "//:node_modules/@jest/transform",
-        "//:node_modules/ts-jest",
+        "//:node_modules/@swc/jest",
         "//:node_modules/@types/jest",
-        "//:node_modules/tslib",
-        "//:tsconfig",
+        "//:node_modules/@swc/helpers",
+        "//:swcrc",
     ]
 
     tags = [

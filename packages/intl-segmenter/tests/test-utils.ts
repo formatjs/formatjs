@@ -4,14 +4,13 @@
  */
 import {readFileSync} from 'node:fs'
 import * as pathUtil from 'node:path'
-import {__read, __spreadArray} from 'tslib'
 
 function testDataFromLine(line: string) {
   const [test, comment] = line.split('#')
   const trimmedTest = test.trim()
   const trimmedComment = comment.trim()
 
-  const testMatches = __read(
+  const testMatches = Array.from(
     trimmedTest.matchAll(/\s?([÷×])\s?([0-9A-F]{4,})?\s?/g)
   )
 
@@ -28,7 +27,7 @@ function testDataFromLine(line: string) {
     throw new Error(`Error parsing test line: '${trimmedTest}'`)
   }
 
-  const commentMatches = __read(
+  const commentMatches = Array.from(
     trimmedComment.matchAll(/([×÷])\s(\[([0-9\.]+)\])?([^×÷]+)?/g)
   )
   totalMatchedLength = 0
@@ -61,13 +60,13 @@ function testDataFromLine(line: string) {
     ...testDetails
       //ignore eot entries
       .filter(({characterName}) => characterName !== 'EOT')
-      .map(({codePoint}) => codePoint)
+      .map(({codePoint}) => codePoint as number)
   )
 
   let segmentNr = 0
   const expected = Object.values(testDetails).reduce((result, testPart) => {
     if (!result.length) {
-      result[0] = String.fromCodePoint(testPart.codePoint)
+      result[0] = String.fromCodePoint(testPart.codePoint as number)
     } else if (testPart.codePoint) {
       if (testPart.breaks) {
         segmentNr++

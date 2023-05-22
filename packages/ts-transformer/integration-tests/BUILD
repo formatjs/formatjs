@@ -13,6 +13,10 @@ jest_test(
         "//:node_modules/@types/react-dom",
         "//:node_modules/react",
         "//:node_modules/react-dom",
+        # ts-jest deps
+        "//:node_modules/ts-jest",
+        "//:tsconfig",
+        "//:node_modules/tslib",
     ],
     jest_config = "integration/jest.config.js",
 )
@@ -29,6 +33,9 @@ jest_test(
         "//:node_modules/vue-class-component",
         "//:node_modules/vue-loader",
         "//:node_modules/webpack",
+        # ts-loader deps
+        "//:tsconfig",
+        "//:node_modules/tslib",
     ] + glob([
         "vue/fixtures/*",
     ]),

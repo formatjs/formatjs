@@ -1,4 +1,3 @@
-console.log(process.cwd())
 module.exports = {
   preset: 'ts-jest',
   globals: {

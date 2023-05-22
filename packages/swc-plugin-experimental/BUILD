@@ -29,7 +29,6 @@ jest_test(
         "tests/transform.ts",
         ":index.wasm",
         "//:node_modules/@swc/core",
-        "//:node_modules/@swc/jest",
         "//:node_modules/@types/node",
     ] + glob([
         "tests/**/*.test.ts",

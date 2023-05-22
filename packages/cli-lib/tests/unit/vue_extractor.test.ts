@@ -3,6 +3,7 @@ import {parseScript} from '../../src/parse_script'
 import {parseFile} from '../../src/vue_extractor'
 import {readFile} from 'fs-extra'
 import {join} from 'path'
+
 test('vue_extractor', async function () {
   let messages: MessageDescriptor[] = []
   const fixturePath = join(__dirname, './fixtures/comp.vue')
