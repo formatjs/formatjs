@@ -1,6 +1,8 @@
 import * as path from 'path'
 import {/* ExtractedMessageDescriptor, */ transform, Options} from './transform'
 
+// NOTE: the test fixtures are located in babel-plugin-formatjs package.
+// They are copied over by Bazel as one of the test dependencies.
 export function transformAndCheck(
   fn: string,
   opts: Options = {},
