@@ -24,7 +24,6 @@
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
-    "declarationMap": true,
     "importHelpers": true,
     "jsx": "react"
   },
