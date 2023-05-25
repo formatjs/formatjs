@@ -13,7 +13,7 @@ jobs:
       pull-requests: write  # for actions/stale to close stale PRs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v5
+      - uses: actions/stale@v8
         with:
           days-before-stale: 30
           exempt-issue-labels: 'pinned,security'
