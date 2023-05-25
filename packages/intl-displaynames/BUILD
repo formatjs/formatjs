@@ -647,12 +647,7 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 
 ts_script(
     name = "cldr-raw",
-    outs = CLDR_RAW_FILES,
-    args = [
-        "--outDir",
-        package_name() + "/cldr-raw",
-    ],
-    data = [
+    srcs = [
         "scripts/extract-displaynames.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/json-stable-stringify",
@@ -661,8 +656,16 @@ ts_script(
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
+        "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
     ],
+    outs = CLDR_RAW_FILES,
+    args = [
+        "--outDir",
+        "cldr-raw",
+    ],
+    chdir = package_name(),
     entry_point = "scripts/cldr-raw.ts",
 )
 
@@ -675,18 +678,19 @@ genrule(
 
 ts_script(
     name = "locale-data",
+    srcs = CLDR_RAW_FILES + [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
     outs = ["locale-data/%s.js" % locale for locale in ALL_LOCALES] + ["locale-data/%s.d.ts" % locale for locale in ALL_LOCALES],
     args = [
-        "--cldrFile %s/%s" % (
-            package_name(),
-            f,
-        )
+        "--cldrFile %s" % f
         for f in CLDR_RAW_FILES
     ] + [
         "--outDir",
-        package_name() + "/locale-data",
+        "locale-data",
     ],
-    data = CLDR_RAW_FILES,
+    chdir = package_name(),
     entry_point = "scripts/cldr.ts",
     visibility = ["//visibility:public"],
 )

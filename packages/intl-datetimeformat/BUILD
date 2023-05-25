@@ -10,7 +10,7 @@ load("@rules_multirun//:defs.bzl", "multirun")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
-load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -681,12 +681,7 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 
 ts_script(
     name = "cldr-raw",
-    outs = CLDR_RAW_FILES,
-    args = [
-        "--outDir",
-        package_name() + "/cldr-raw",
-    ],
-    data = [
+    srcs = [
         "scripts/extract-dates.ts",
         "src/abstract/skeleton.ts",
         "src/types.ts",
@@ -698,8 +693,16 @@ ts_script(
         "//:node_modules/cldr-dates-full",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
+        "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
     ],
+    outs = CLDR_RAW_FILES,
+    args = [
+        "--outDir",
+        "cldr-raw",
+    ],
+    chdir = package_name(),
     entry_point = "scripts/cldr-raw.ts",
 )
 
@@ -712,18 +715,19 @@ genrule(
 
 ts_script(
     name = "locale-data",
+    srcs = CLDR_RAW_FILES + [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
     outs = ["locale-data/%s.js" % locale for locale in ALL_LOCALES] + ["locale-data/%s.d.ts" % locale for locale in ALL_LOCALES],
     args = [
-        "--cldrFile %s/%s" % (
-            package_name(),
-            f,
-        )
+        "--cldrFile %s" % f
         for f in CLDR_RAW_FILES
     ] + [
         "--outDir",
-        package_name() + "/locale-data",
+        "locale-data",
     ],
-    data = CLDR_RAW_FILES,
+    chdir = package_name(),
     entry_point = "scripts/cldr.ts",
     visibility = ["//visibility:public"],
 )
@@ -803,18 +807,22 @@ generate_src_file(
 # add-all-tz
 ts_script(
     name = "add-all-tz",
-    outs = ["add-all-tz.js"],
-    args = [
-        "--polyfill",
-        "$(rootpaths :zdumps)",
-    ],
-    data = [
+    srcs = [
         "src/packer.ts",
         "src/types.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         ":zdumps",
         "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+    ],
+    outs = ["add-all-tz.js"],
+    args = [
+        "--polyfill",
+        "$(rootpaths :zdumps)",
+        "--out",
+        "$(rootpath add-all-tz.js)",
     ],
     entry_point = "scripts/process-zdump.ts",
     visibility = [
@@ -826,19 +834,23 @@ ts_script(
 # add-golden-tz
 ts_script(
     name = "add-golden-tz",
-    outs = ["add-golden-tz.js"],
-    args = [
-        "--golden",
-        "--polyfill",
-        "$(rootpaths :zdumps)",
-    ],
-    data = [
+    srcs = [
         "src/packer.ts",
         "src/types.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         ":zdumps",
         "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+    ],
+    outs = ["add-golden-tz.js"],
+    args = [
+        "--golden",
+        "--polyfill",
+        "$(rootpaths :zdumps)",
+        "--out",
+        "$(rootpath add-golden-tz.js)",
     ],
     entry_point = "scripts/process-zdump.ts",
 )
@@ -914,7 +926,7 @@ check_format(
 )
 
 # Use with `bazel run`.
-js_test(
+js_binary(
     name = "benchmark",
     data = SRCS + SRC_DEPS + [
         "tests/locale-data/en.json",
