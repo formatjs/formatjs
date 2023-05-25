@@ -6,11 +6,11 @@ load("@io_bazel_rules_docker//docker/package_managers:download_pkgs.bzl", "downl
 load("@io_bazel_rules_docker//docker/package_managers:install_pkgs.bzl", "install_pkgs")
 load("@io_bazel_rules_docker//docker/util:run.bzl", "container_run_and_extract")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
+load("@aspect_rules_js//js:defs.bzl", "js_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -913,18 +913,21 @@ check_format(
     ),
 )
 
-ts_node_bin.ts_node_binary(
+# Use with `bazel run`.
+js_test(
     name = "benchmark",
-    args = [
-        "--transpile-only",
-        "$(execpath tests/benchmark.ts)",
-    ],
     data = SRCS + SRC_DEPS + [
-        "tests/benchmark.ts",
         "tests/locale-data/en.json",
-        "//:node_modules/tslib",
-        "//:tsconfig.node",
+        "//:node_modules/@swc-node/register",
+        "//:node_modules/@swc/helpers",
+        "//:node_modules/benchmark",
     ],
+    entry_point = "tests/benchmark.ts",
+    node_options = [
+        "-r",
+        "@swc-node/register",
+    ],
+    tags = ["manual"],
 )
 
 package_json_test(

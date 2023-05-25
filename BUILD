@@ -6,6 +6,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
+load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 
 exports_files(
     [
@@ -267,3 +268,15 @@ TSCONFIG_FILES = [
     )
     for f in TSCONFIG_FILES
 ]
+
+# Symlink some workspaces to the root workspace, so scripts like benchmarks
+# can easily depend on the distributable package via target `//:node_modules/<package_name>`.
+npm_link_package(
+    name = "node_modules/@formatjs/intl-pluralrules",
+    src = "//packages/intl-pluralrules",
+)
+
+npm_link_package(
+    name = "node_modules/@formatjs/intl-localematcher",
+    src = "//packages/intl-localematcher",
+)
