@@ -3,11 +3,10 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@buildifier_prebuilt//:rules.bzl", "buildifier_test")
 load("@npm//:prettier/package_json.bzl", prettier_bin = "bin")
-load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
 
 BUILDIFIER_WARNINGS = [
     "attr-cfg",
@@ -132,41 +131,29 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
         visibility = visibility,
     )
 
-def ts_script(name, entry_point, args = [], chdir = None, data = [], outs = [], output_dir = False, out_dirs = [], visibility = None):
-    """Execute a TS script
-
-    Args:
-        name: name
-        entry_point: script entry file
-        args: arguments
-        data: runtime data
-        outs: output
-        output_dir: whether output is a dir
-        out_dirs: output directories
-        chdir: whether to chdir to a dir
-        visibility: visibility
-    """
-    ts_node_bin.ts_node(
-        name = name,
-        outs = outs,
+def ts_script(name, entry_point, args = [], chdir = None, srcs = [], outs = [], out_dirs = [], **kwargs):
+    js_binary(
+        name = "%s_tool" % name,
         chdir = chdir,
-        args = [
-            "$(location %s)" % entry_point,
-            "--project",
-            "$(location //:tsconfig.node)",
-        ] + (["--outDir", "$(@D)"] if output_dir or out_dirs else ["--out %s/%s" % (native.package_name(), outFile) for outFile in outs]) + args,
-        out_dirs = out_dirs if out_dirs else [],
-        srcs = data + [
-            entry_point,
-            "//:node_modules/@types/fs-extra",
-            "//:node_modules/@types/minimist",
-            "//:node_modules/fs-extra",
-            "//:node_modules/minimist",
-            "//:node_modules/tslib",
-            "//:tsconfig.node",
-            "//:tsconfig",
+        entry_point = entry_point,
+        data = [
+            "//:node_modules/@swc-node/register",
+            "//:node_modules/@swc/helpers",
         ],
-        visibility = visibility,
+        node_options = [
+            "-r",
+            "@swc-node/register",
+        ],
+    )
+    js_run_binary(
+        name = name,
+        tool = ":%s_tool" % name,
+        chdir = chdir,
+        srcs = srcs,
+        outs = outs,
+        out_dirs = out_dirs,
+        args = args,
+        **kwargs
     )
 
 def generate_src_file(name, entry_point, src, chdir = None, args = [], data = [], visibility = None):
@@ -186,9 +173,17 @@ def generate_src_file(name, entry_point, src, chdir = None, args = [], data = []
         name = tmp_filename[:tmp_filename.rindex(".")],
         outs = [tmp_filename],
         entry_point = entry_point,
-        args = args,
+        # NOTE: assumes that all scripts called here accept `--out` and
+        # also uses fs-extra + minimist.
+        args = args + [
+            "--out",
+            "$(rootpath %s)" % tmp_filename,
+        ],
         chdir = chdir,
-        data = data,
+        srcs = data + [
+            "//:node_modules/fs-extra",
+            "//:node_modules/minimist",
+        ],
     )
 
     files = {}
