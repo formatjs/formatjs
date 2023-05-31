@@ -65,7 +65,7 @@ defineMessage({
 
 ```tsx
 import {FormattedMessage} from 'react-intl'
-;<FormattedMessage defaultMessage="foo" description="bar" />
+<FormattedMessage defaultMessage="foo" description="bar" />
 ```
 
 ```tsx
