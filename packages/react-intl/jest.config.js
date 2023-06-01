@@ -1,10 +1,6 @@
 module.exports = {
-  preset: 'ts-jest',
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json',
-      diagnostics: false,
-    },
+  transform: {
+    '^.+\\.(t|j)sx?$': '@swc/jest',
   },
   testEnvironment: 'jsdom',
   testRegex: ['/tests/(functional|unit)/.*\\.(ts|tsx)'],

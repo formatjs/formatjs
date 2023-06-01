@@ -34,7 +34,6 @@ ts_project(
     name = "supported-locales-gen-transpiled",
     srcs = ["supported-locales-gen.ts"],
     declaration = True,
-    declaration_map = True,
     resolve_json_module = True,
     tsconfig = "//:tsconfig.node",
     deps = [

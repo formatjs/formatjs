@@ -4,6 +4,29 @@
   "main": "index.js",
   "module": "lib/index.js",
   "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./lib/index.js",
+      "default": "./index.js"
+    },
+    "./no-parser": {
+      "types": "./no-parser.d.ts",
+      "import": "./lib/no-parser.js",
+      "default": "./no-parser.js"
+    },
+    "./printer": {
+      "types": "./printer.d.ts",
+      "import": "./lib/printer.js",
+      "default": "./printer.js"
+    },
+    "./manipulator": {
+      "types": "./manipulator.d.ts",
+      "import": "./lib/manipulator.js",
+      "default": "./manipulator.js"
+    },
+    "./package.json": "./package.json"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",

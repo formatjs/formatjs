@@ -7,7 +7,14 @@ import type {
   CompoundExpressionNode,
   DirectiveNode,
 } from '@vue/compiler-core'
-import {NodeTypes} from '@vue/compiler-core'
+
+// Duplicate `NodeTypes` here because they are defined as
+// const enum, which does not work with swc transpilation: https://github.com/vuejs/core/issues/1228
+const ELEMENT = 1 as const
+const SIMPLE_EXPRESSION = 4 as const
+const INTERPOLATION = 5 as const
+const DIRECTIVE = 7 as const
+const COMPOUND_EXPRESSION = 8 as const
 
 export type ScriptParseFn = (source: string) => void
 
@@ -25,21 +32,19 @@ function walk(
     return
   }
   if (
-    node.type !== NodeTypes.ELEMENT &&
-    node.type !== NodeTypes.COMPOUND_EXPRESSION &&
-    node.type !== NodeTypes.INTERPOLATION
+    node.type !== ELEMENT &&
+    node.type !== COMPOUND_EXPRESSION &&
+    node.type !== INTERPOLATION
   ) {
     return
   }
   visitor(node)
-  if (node.type === NodeTypes.INTERPOLATION) {
+  if (node.type === INTERPOLATION) {
     visitor(node.content)
-  } else if (node.type === NodeTypes.ELEMENT) {
+  } else if (node.type === ELEMENT) {
     node.children.forEach(n => walk(n, visitor))
     node.props
-      .filter(
-        (prop): prop is DirectiveNode => prop.type === NodeTypes.DIRECTIVE
-      )
+      .filter((prop): prop is DirectiveNode => prop.type === DIRECTIVE)
       .filter(prop => !!prop.exp)
       .forEach(prop => visitor(prop.exp!))
   } else {
@@ -57,7 +62,7 @@ function templateSimpleExpressionNodeVisitor(parseScriptFn: ScriptParseFn) {
     if (typeof n !== 'object') {
       return
     }
-    if (n.type !== NodeTypes.SIMPLE_EXPRESSION) {
+    if (n.type !== SIMPLE_EXPRESSION) {
       return
     }
 

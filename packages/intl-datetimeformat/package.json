@@ -4,6 +4,42 @@
   "description": "Intl.DateTimeFormat polyfill",
   "main": "index.js",
   "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./lib/index.js",
+      "default": "./index.js"
+    },
+    "./polyfill": {
+      "types": "./polyfill.d.ts",
+      "import": "./lib/polyfill.js",
+      "default": "./polyfill.js"
+    },
+    "./polyfill-force": {
+      "types": "./polyfill-force.d.ts",
+      "import": "./lib/polyfill-force.js",
+      "default": "./polyfill-force.js"
+    },
+    "./should-polyfill": {
+      "types": "./should-polyfill.d.ts",
+      "import": "./lib/should-polyfill.js",
+      "default": "./should-polyfill.js"
+    },
+    "./locale-data/*": {
+      "types": "./locale-data/*.d.ts",
+      "default": "./locale-data/*.js"
+    },
+    "./add-all-tz": {
+      "types": "./add-all-tz.d.ts",
+      "default": "./add-all-tz.js"
+    },
+    "./add-golden-tz": {
+      "types": "./add-golden-tz.d.ts",
+      "default": "./add-golden-tz.js"
+    },
+    "./polyfill.iife.js": "./polyfill.iife.js",
+    "./package.json": "./package.json"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"

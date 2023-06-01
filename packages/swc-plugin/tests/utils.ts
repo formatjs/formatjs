@@ -12,6 +12,8 @@ export async function compile(filePath: string, options?: Opts) {
   const input = await readFile(filePath, 'utf8')
   const output = await transform(input, {
     filename: filePath,
+    // Prevent the root `.swcrc` from affecting the transform result.
+    root: __dirname,
     jsc: {
       parser: {
         syntax: 'typescript',

@@ -1,6 +1,8 @@
 import * as path from 'path'
 import {/* ExtractedMessageDescriptor, */ transform, Options} from './transform'
 
+// NOTE: the test fixtures are located in babel-plugin-formatjs package.
+// They are copied over by Bazel as one of the test dependencies.
 export function transformAndCheck(
   fn: string,
   opts: Options = {},
@@ -217,6 +219,13 @@ describe.each([
   test('skipExtractionFormattedMessage', function () {
     expect(
       transformAndCheck('skipExtractionFormattedMessage', pluginOptions)
+    ).toMatchSnapshot()
+  })
+
+  // See: https://github.com/formatjs/formatjs/issues/3589#issuecomment-1532461569
+  test('jsxNestedInCallExpr', () => {
+    expect(
+      transformAndCheck('jsxNestedInCallExpr', pluginOptions)
     ).toMatchSnapshot()
   })
 })
