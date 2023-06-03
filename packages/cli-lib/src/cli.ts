@@ -215,6 +215,10 @@ This is especially useful to convert from a TMS-specific format back to react-in
 `
     )
     .option(
+      '--skip-errors',
+      `Whether to continue compiling messages after encountering an error. Any keys with errors will not be included in the output file.`
+    )
+    .option(
       '--ast',
       `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
 for more information`
