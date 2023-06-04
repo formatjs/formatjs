@@ -9,6 +9,14 @@ workspace(
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 
+# some rules such as bazel-super-formatter depends on rules_python.
+http_archive(
+    name = "rules_python",
+    sha256 = "863ba0fa944319f7e3d695711427d9ad80ba92c6edd0b7c7443b84e904689539",
+    strip_prefix = "rules_python-0.22.0",
+    url = "https://github.com/bazelbuild/rules_python/releases/download/0.22.0/rules_python-0.22.0.tar.gz",
+)
+
 # rules_js
 http_archive(
     name = "aspect_rules_js",
@@ -239,8 +247,7 @@ load("@io_buildbuddy_buildbuddy_toolchain//:rules.bzl", "buildbuddy")
 
 buildbuddy(name = "buildbuddy_toolchain")
 
-# Rust
-# ----
+# Rust# ----
 
 # To find additional information on this release or newer ones visit:
 # https://github.com/bazelbuild/rules_rust/releases
@@ -283,3 +290,25 @@ crates_repository(
 load("@crate_index//:defs.bzl", "crate_repositories")
 
 crate_repositories()
+
+# Linter
+# ------------------------------------------------------------------------------
+
+http_archive(
+    name = "aspect_rules_format",
+    sha256 = "c8d04f68082c0eeac2777e15f65048ece2f17d632023bdcc511602f8c5faf177",
+    strip_prefix = "bazel-super-formatter-2.0.0",
+    url = "https://github.com/aspect-build/bazel-super-formatter/archive/refs/tags/v2.0.0.tar.gz",
+)
+
+load("@aspect_rules_format//format:repositories.bzl", "rules_format_dependencies")
+
+rules_format_dependencies()
+
+load("@aspect_rules_format//format:dependencies.bzl", "parse_dependencies")
+
+parse_dependencies()
+
+load("@aspect_rules_format//format:toolchains.bzl", "format_register_toolchains")
+
+format_register_toolchains()

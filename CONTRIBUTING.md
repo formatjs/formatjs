@@ -70,6 +70,7 @@ npx pnpm -r publish
 ```
 bazel run //packages/intl-datetimeformat:generated_tz_data
 ```
+
 4. Test to make sure everything passes
 
 5. New TimeZones or renames of TimeZones are not updated using the Bazel script. You need to manually update `index.bzl`.

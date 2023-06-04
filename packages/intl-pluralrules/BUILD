@@ -4,7 +4,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("//tools:index.bzl", "bundle_karma_tests", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -444,21 +444,6 @@ esbuild(
         ":dist-esm",
         "//:node_modules/tslib",
     ] + SRC_DEPS,
-)
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-            "tests/locale-data/*",
-            "test262-main.ts",
-            "supported-locales.generated.ts",
-        ],
-    ),
 )
 
 package_json_test(

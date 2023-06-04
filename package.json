@@ -8,12 +8,11 @@
     "url": "https://github.com/formatjs/formatjs"
   },
   "scripts": {
-    "bazel:lint": "bazel run //:buildifier",
     "build": "bazel build //...",
     "deploy": "NO_UPDATE_NOTIFIER=1 DEPLOYMENT_BRANCH=main USE_SSH=true bazel run //website:deploy",
     "docs": "NO_UPDATE_NOTIFIER=1 bazel run //website:serve",
     "examples": "bazel run //packages/react-intl/examples",
-    "format": "npm run bazel:lint && bazel run :prettier_all",
+    "format": "bazel run @aspect_rules_format//format",
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
     "postinstall": "husky install",
@@ -109,7 +108,7 @@
     "minimist": "^1.2.5",
     "picomatch": "^2.3.1",
     "pnpm": "^7.9.3",
-    "prettier": "^2.0.5",
+    "prettier": "^2.8.8",
     "react": "^16.6.0 || 17 || 18",
     "react-dom": "^16.6.0 || 17 || 18",
     "regenerate": "^1.4.2",

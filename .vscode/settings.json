@@ -12,7 +12,7 @@
     "**/.settings": true,
     "**/.factorypath": true,
     "dist": true,
-    ".swc": true,
+    ".swc": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -35,9 +35,7 @@
   },
   "json.schemas": [
     {
-      "fileMatch": [
-        "/lerna.json"
-      ],
+      "fileMatch": ["/lerna.json"],
       "url": "http://json.schemastore.org/lerna"
     }
   ],
@@ -46,9 +44,7 @@
   "eslint.packageManager": "yarn",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "rust-analyzer.linkedProjects": [
-    "rust/Cargo.toml"
-  ],
+  "rust-analyzer.linkedProjects": ["rust/Cargo.toml"],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

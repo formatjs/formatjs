@@ -5,7 +5,6 @@ load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
-load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 
 exports_files(
@@ -151,41 +150,6 @@ karma_bin.karma_test(
 )
 
 multirun(
-    name = "prettier_all",
-    commands = [
-        "//packages/babel-plugin-formatjs:prettier",
-        "//packages/cli-lib:prettier",
-        "//packages/ecma376:prettier",
-        "//packages/ecma402-abstract:prettier",
-        "//packages/editor:prettier",
-        "//packages/eslint-plugin-formatjs:prettier",
-        "//packages/fast-memoize:prettier",
-        "//packages/icu-messageformat-parser:prettier",
-        "//packages/icu-skeleton-parser:prettier",
-        "//packages/intl-datetimeformat:prettier",
-        "//packages/intl-displaynames:prettier",
-        "//packages/intl-durationformat:prettier",
-        "//packages/intl-enumerator:prettier",
-        "//packages/intl-getcanonicallocales:prettier",
-        "//packages/intl-listformat:prettier",
-        "//packages/intl-locale:prettier",
-        "//packages/intl-localematcher:prettier",
-        "//packages/intl-messageformat:prettier",
-        "//packages/intl-numberformat:prettier",
-        "//packages/intl-pluralrules:prettier",
-        "//packages/intl-relativetimeformat:prettier",
-        "//packages/intl-segmenter:prettier",
-        "//packages/intl:prettier",
-        "//packages/react-intl:prettier",
-        "//packages/swc-plugin:prettier",
-        "//packages/ts-transformer:prettier",
-        "//packages/vue-intl:prettier",
-        "//tools:prettier",
-        "//website:prettier",
-    ],
-)
-
-multirun(
     name = "generated-test-files",
     testonly = True,
     commands = [
@@ -225,16 +189,46 @@ buildifier(
     name = "buildifier",
     exclude_patterns = ["./node_modules/*"],
     lint_mode = "fix",
-    lint_warnings = BUILDIFIER_WARNINGS,
+    lint_warnings = [
+        "attr-cfg",
+        "attr-license",
+        "attr-non-empty",
+        "attr-output-default",
+        "attr-single-file",
+        "constant-glob",
+        "ctx-actions",
+        "ctx-args",
+        "depset-iteration",
+        "depset-union",
+        "dict-concatenation",
+        "duplicated-name",
+        "filetype",
+        "git-repository",
+        "http-archive",
+        "integer-division",
+        "load",
+        "load-on-top",
+        "native-build",
+        "native-package",
+        "out-of-order-load",
+        "output-group",
+        "package-name",
+        "package-on-top",
+        "positional-args",
+        "redefined-variable",
+        "repository-name",
+        "same-origin-load",
+        "string-iteration",
+        "unsorted-dict-items",
+        "unused-variable",
+    ],
     verbose = True,
 )
 
 CONFIG_FILES = [
-    ".prettierrc.json",
     "jest.config.js",
     "package.json",
     "tsconfig.json",
-    ".taplo.toml",
 ]
 
 [
