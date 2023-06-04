@@ -2,24 +2,8 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//website:@docusaurus/core/package_json.bzl", docusaurus_bin = "bin")
 load("@npm//website:http-server/package_json.bzl", http_server_bin = "bin")
-load("//tools:index.bzl", "check_format")
 
 npm_link_all_packages(name = "node_modules")
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "docs/**/*",
-            "lang/*",
-            "src/**/*",
-            "*.js*",
-        ],
-    ) + [
-        "BUILD",
-    ],
-    config = ".prettierrc.json",
-)
 
 DEPS = [
     ":copy",

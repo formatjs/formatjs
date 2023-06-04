@@ -8,7 +8,7 @@ load("@io_bazel_rules_docker//docker/util:run.bzl", "container_run_and_extract")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("//:index.bzl", "ZONES")
-load("//tools:index.bzl", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
+load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 
@@ -905,24 +905,6 @@ esbuild(
         ":dist-esm",
         "//:node_modules/tslib",
     ] + SRC_DEPS,
-)
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-            "tests/locale-data/*",
-            "src/data/*",
-            "test262-main.ts",
-            "supported-locales.generated.ts",
-            "tz_data/**/*",
-            "*.gz",
-        ],
-    ),
 )
 
 # Use with `bazel run`.

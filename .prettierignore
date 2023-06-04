@@ -16,3 +16,13 @@ website/.now
 website/build
 website/CHANGELOG.md
 packages/intl-segmenter/unicodeFiles/*
+# This file intentionally has a syntax error
+packages/cli/integration-tests/extract/typescript/err.tsx
+# Ignore generated files
+**/*.generated.*
+# Let Bazel manage this
+rust/cargo-bazel-lock.json
+# Snapshots managed by Jest
+**/__snapshots__/*
+# Changelog managed by Lerna 
+**/CHANGELOG.md
