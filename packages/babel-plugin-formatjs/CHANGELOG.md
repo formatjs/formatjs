@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.2](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.1...babel-plugin-formatjs@10.5.2) (2023-06-06)
+
+### Bug Fixes
+
+* **@formatjs/swc-plugin-experimental:** visit JSX nested within the call expression ([#4111](https://github.com/formatjs/formatjs/issues/4111)) ([0d73ea7](https://github.com/formatjs/formatjs/commit/0d73ea7bfd8a5af4116a6e275bf21f163128ddce))
+
 ## [10.5.1](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.0...babel-plugin-formatjs@10.5.1) (2023-05-01)
 
 **Note:** Version bump only for package babel-plugin-formatjs

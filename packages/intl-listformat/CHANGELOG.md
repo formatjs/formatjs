@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.2.2...@formatjs/intl-listformat@7.3.0) (2023-06-06)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** esm conditional exports ([#4109](https://github.com/formatjs/formatjs/issues/4109)) ([e0d593c](https://github.com/formatjs/formatjs/commit/e0d593cc3af3a317a6bd20c441191e5bbb136a93)), closes [#4013](https://github.com/formatjs/formatjs/issues/4013)
+
 ## [7.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.2.1...@formatjs/intl-listformat@7.2.2) (2023-05-01)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
