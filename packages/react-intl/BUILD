@@ -40,8 +40,7 @@ SRC_DEPS = [
 
 TESTS = glob([
     "tests/unit/**/*.ts*",
-    "tests/unit/**/*.snap",
-])
+],exclude=["tests/unit/components/__snapshots__/*"])
 
 TEST_DEPS = SRC_DEPS + [
     ":node_modules/@formatjs/intl-numberformat",
@@ -88,6 +87,7 @@ jest_test(
     name = "unit_test",
     data = SRCS + TESTS + TEST_DEPS + ["tests/setup.js"],
     jest_config = "jest.config.js",
+    snapshots = glob(["tests/unit/components/__snapshots__/*"]),
 )
 
 jest_test(
