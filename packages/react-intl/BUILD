@@ -38,9 +38,12 @@ SRC_DEPS = [
     "//:node_modules/react",
 ]
 
-TESTS = glob([
-    "tests/unit/**/*.ts*",
-],exclude=["tests/unit/components/__snapshots__/*"])
+TESTS = glob(
+    [
+        "tests/unit/**/*.ts*",
+    ],
+    exclude = ["tests/unit/components/__snapshots__/*"],
+)
 
 TEST_DEPS = SRC_DEPS + [
     ":node_modules/@formatjs/intl-numberformat",

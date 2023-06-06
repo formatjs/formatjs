@@ -75,6 +75,14 @@ bazel run //packages/intl-datetimeformat:generated_tz_data
 
 5. New TimeZones or renames of TimeZones are not updated using the Bazel script. You need to manually update `index.bzl`.
 
+### Updating test snapshots
+
+You can update the snapshot by running the test target + `_update_snapshots`, e.g
+
+```
+bazel run //packages/cli/integration-tests:compile_folder_integration_test_update_snapshots
+```
+
 ### Generating CLDR data
 
 1. Check out `./BUILD` file for generatable data — which are identifiable via `generate_src_file()` call
