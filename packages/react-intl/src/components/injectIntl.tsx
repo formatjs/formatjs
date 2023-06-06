@@ -9,6 +9,11 @@ function getDisplayName(Component: React.ComponentType<any>): string {
 
 declare global {
   interface Window {
+    /**
+     * Set this to `true` prior to mounting to bypass using a globally-exposed context.
+     */
+    __REACT_INTL_BYPASS_GLOBAL_CONTEXT__: boolean | undefined
+
     __REACT_INTL_CONTEXT__: React.Context<IntlShape> | undefined
   }
 }
@@ -16,7 +21,7 @@ declare global {
 // This is primarily dealing with packaging systems where multiple copies of react-intl
 // might exist
 const IntlContext =
-  typeof window !== 'undefined'
+  typeof window !== 'undefined' && !window.__REACT_INTL_BYPASS_GLOBAL_CONTEXT__
     ? window.__REACT_INTL_CONTEXT__ ||
       (window.__REACT_INTL_CONTEXT__ = React.createContext<IntlShape>(
         null as any
