@@ -747,7 +747,6 @@ esbuild(
 
 test262_harness_bin.test262_harness_test(
     name = "test262",
-    size = "large",
     args = [
         "--reporter-keys",
         "file,attrs,result",

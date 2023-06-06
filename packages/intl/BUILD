@@ -85,6 +85,7 @@ copy_to_directory(
 
 tsd_bin.tsd_test(
     name = "global_type_overrides_test",
+    size = "small",
     args = [
         "--files",
         "tests/global_type_overrides.test-d.ts",

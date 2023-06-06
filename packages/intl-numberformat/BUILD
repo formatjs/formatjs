@@ -102,7 +102,6 @@ ts_compile(
 
 jest_test(
     name = "unit_test",
-    size = "large",
     data = SRCS + TEST_DEPS + TESTS + TEST_LOCALE_DATA,
     snapshots = glob(["tests/__snapshots__/*.snap"]),
 )
@@ -848,7 +847,6 @@ esbuild(
 
 test262_harness_bin.test262_harness_test(
     name = "test262",
-    size = "large",
     args = [
         "--reporter-keys",
         "file,attrs,result",

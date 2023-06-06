@@ -383,7 +383,7 @@ esbuild(
 
 test262_harness_bin.test262_harness_test(
     name = "test262",
-    size = "large",
+    size = "small",
     args = [
         "--reporter-keys",
         "file,attrs,result",

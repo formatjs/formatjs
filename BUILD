@@ -127,7 +127,6 @@ karma_bin.karma_test(
 
 karma_bin.karma_test(
     name = "karma-ci",
-    size = "large",
     args = [
         "start",
         "$(rootpath //:karma.conf.js)",

@@ -16,6 +16,7 @@ rust_library(
 
 rust_test(
     name = "unit_test",
+    size = "small",
     aliases = aliases(
         normal_dev = True,
         proc_macro_dev = True,

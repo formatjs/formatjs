@@ -60,6 +60,7 @@ TEST_FILES = glob([
 
 jest_test(
     name = "unit_test",
+    size = "medium",
     data = TESTS_BASE_SRCS + TEST_FILES + SRC_DEPS + [
         "//:node_modules/@typescript-eslint/parser",
         "//:node_modules/vue-eslint-parser",
