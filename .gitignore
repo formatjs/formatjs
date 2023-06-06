@@ -7,3 +7,4 @@ node_modules
 .idea
 .swc
 rust/target
+.css

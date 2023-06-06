@@ -5,8 +5,10 @@ npm_link_all_packages(name = "node_modules")
 
 jest_test(
     name = "compile_folder_integration_test",
-    size = "large",
-    data = glob(["compile_folder/**/*"]) + [
+    data = glob(
+        ["compile_folder/**/*"],
+        exclude = ["compile_folder/__snapshots__/*"],
+    ) + [
         ":node_modules/@formatjs/cli",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/rimraf",
@@ -15,12 +17,15 @@ jest_test(
         "//:node_modules/rimraf",
     ],
     flaky = True,
+    snapshots = glob(["compile_folder/__snapshots__/*"]),
 )
 
 jest_test(
     name = "extract_integration_test",
-    size = "large",
-    data = glob(["extract/**/*"]) + [
+    data = glob(
+        ["extract/**/*"],
+        exclude = ["extract/__snapshots__/*"],
+    ) + [
         "formatter.js",
         ":node_modules/@formatjs/cli",
         "//:node_modules/@types/fs-extra",
@@ -30,12 +35,15 @@ jest_test(
         "//:node_modules/rimraf",
     ],
     flaky = True,
+    snapshots = glob(["extract/__snapshots__/*"]),
 )
 
 jest_test(
     name = "extract_vue_integration_test",
-    size = "large",
-    data = glob(["extract-vue/**/*"]) + [
+    data = glob(
+        ["extract-vue/**/*"],
+        exclude = ["extract-vue/__snapshots__/*"],
+    ) + [
         ":node_modules/@formatjs/cli",
         "//:node_modules/@babel/types",
         "//:node_modules/@types/node",
@@ -44,6 +52,7 @@ jest_test(
         "//:node_modules/fast-glob",
     ],
     flaky = True,
+    snapshots = glob(["extract-vue/__snapshots__/*"]),
 )
 
 jest_test(
