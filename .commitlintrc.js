@@ -1,11 +1,11 @@
-const {sync: globSync} = require('fast-glob');
-const types = require('@commitlint/config-angular-type-enum');
+const {sync: globSync} = require('fast-glob')
+const types = require('@commitlint/config-angular-type-enum')
 
 const packages = globSync('./packages/*/package.json').map(
   fn => require(fn).name
-);
+)
 // Website is not in `packages`.
-packages.push('website');
+packages.push('website')
 
 module.exports = {
   extends: ['@commitlint/config-angular'],
@@ -16,4 +16,4 @@ module.exports = {
     'header-max-length': [0, 'never', Infinity],
     'type-enum': [1, 'always', [...types.value(), 'chore']],
   },
-};
+}

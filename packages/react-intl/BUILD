@@ -2,7 +2,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
+load("//tools:index.bzl", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -102,21 +102,6 @@ jest_test(
 write_source_files(
     name = "tsconfig_json",
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
-)
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-            "tests/unit/components/__snapshots__/*",
-            "**/.env",
-            "**/.gitignore",
-        ],
-    ),
 )
 
 package_json_test(

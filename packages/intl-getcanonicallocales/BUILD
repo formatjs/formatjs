@@ -1,7 +1,7 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("//tools:index.bzl", "bundle_karma_tests", "check_format", "generate_src_file", "package_json_test", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 exports_files([
@@ -98,19 +98,6 @@ esbuild(
         ":dist-esm",
         "//:node_modules/tslib",
     ] + SRC_DEPS,
-)
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-            "**/*.generated.*",
-        ],
-    ),
 )
 
 package_json_test(

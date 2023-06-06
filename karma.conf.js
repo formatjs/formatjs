@@ -27,7 +27,7 @@ module.exports = function (config) {
       browserName: 'internet explorer',
       version: '11',
     },
-  };
+  }
 
   config.set({
     basePath: '',
@@ -59,5 +59,5 @@ module.exports = function (config) {
     captureTimeout: 120000,
     customLaunchers,
     singleRun: true,
-  });
-};
+  })
+}
