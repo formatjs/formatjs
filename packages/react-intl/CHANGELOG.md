@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.4](https://github.com/formatjs/formatjs/compare/react-intl@6.4.3...react-intl@6.4.4) (2023-06-12)
+
+**Note:** Version bump only for package react-intl
+
 ## [6.4.3](https://github.com/formatjs/formatjs/compare/react-intl@6.4.2...react-intl@6.4.3) (2023-06-06)
 
 ### Bug Fixes

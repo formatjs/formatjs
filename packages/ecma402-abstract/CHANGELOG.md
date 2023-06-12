@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.16.0...@formatjs/ecma402-abstract@1.17.0) (2023-06-12)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** Revert esm conditional exports ([#4129](https://github.com/formatjs/formatjs/issues/4129)) ([78edf46](https://github.com/formatjs/formatjs/commit/78edf460a466a7021e3753be53fd9c6af00f2d96)), closes [#4128](https://github.com/formatjs/formatjs/issues/4128) [#4127](https://github.com/formatjs/formatjs/issues/4127) [#4126](https://github.com/formatjs/formatjs/issues/4126)
+
 # [1.16.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.15.0...@formatjs/ecma402-abstract@1.16.0) (2023-06-06)
 
 ### Features
