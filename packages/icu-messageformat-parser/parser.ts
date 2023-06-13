@@ -79,7 +79,8 @@ function createLocation(start: Position, end: Position): Location {
 
 // #region Ponyfills
 // Consolidate these variables up top for easier toggling during debugging
-const hasNativeStartsWith = !!String.prototype.startsWith
+const hasNativeStartsWith =
+  !!String.prototype.startsWith && '_a'.startsWith('a', 1)
 const hasNativeFromCodePoint = !!String.fromCodePoint
 const hasNativeFromEntries = !!(Object as any).fromEntries
 const hasNativeCodePointAt = !!String.prototype.codePointAt
