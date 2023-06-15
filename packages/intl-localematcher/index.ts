@@ -11,7 +11,7 @@ export function match(
   defaultLocale: string,
   opts?: Opts
 ): string {
-  const locales = new Set<string>(availableLocales)
+  const locales = new Set(availableLocales)
 
   return ResolveLocale(
     locales,
