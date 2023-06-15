@@ -11,10 +11,7 @@ export function match(
   defaultLocale: string,
   opts?: Opts
 ): string {
-  const locales = availableLocales.reduce((all, l) => {
-    all.add(l)
-    return all
-  }, new Set<string>())
+  const locales = new Set<string>(availableLocales)
 
   return ResolveLocale(
     locales,
