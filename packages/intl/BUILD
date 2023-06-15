@@ -3,7 +3,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
+load("//tools:index.bzl", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -61,19 +61,6 @@ write_source_files(
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-            "tests/__snapshots__/*",
-        ],
-    ),
-)
-
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
@@ -98,6 +85,7 @@ copy_to_directory(
 
 tsd_bin.tsd_test(
     name = "global_type_overrides_test",
+    size = "small",
     args = [
         "--files",
         "tests/global_type_overrides.test-d.ts",

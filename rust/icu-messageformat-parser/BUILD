@@ -18,6 +18,7 @@ rust_library(
 
 rust_test(
     name = "unit_test",
+    size = "small",
     aliases = aliases(
         normal_dev = True,
         proc_macro_dev = True,
@@ -33,6 +34,7 @@ rust_test(
 
 rust_test_suite(
     name = "integrate_test",
+    size = "small",
     srcs = glob(["tests/**/*.rs"]),
     aliases = aliases(
         normal_dev = True,

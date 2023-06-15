@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin-experimental@0.3.6...@formatjs/swc-plugin-experimental@0.3.7) (2023-06-06)
+
+### Bug Fixes
+
+* **@formatjs/swc-plugin-experimental:** visit JSX nested within the call expression ([#4111](https://github.com/formatjs/formatjs/issues/4111)) ([0d73ea7](https://github.com/formatjs/formatjs/commit/0d73ea7bfd8a5af4116a6e275bf21f163128ddce))
+
 ## [0.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin-experimental@0.3.5...@formatjs/swc-plugin-experimental@0.3.6) (2023-05-01)
 
 ### Bug Fixes

@@ -9,9 +9,11 @@ assignees: ''
 <!-- If this is more of a question on how i18n should work or you have not narrowed down the issue to be 1 of our packages, please use Discussions instead -->
 
 ## Which package?
+
 Since this is a monorepo. Please specify which package this bug report is for.
 
 ## Describe the bug
+
 A clear and concise description of what the bug is.
 
 ## To Reproduce
@@ -30,9 +32,11 @@ Steps to reproduce the behavior:
 4. See error
 
 ## Expected behavior
+
 A clear and concise description of what you expected to happen.
 
 ## Screenshots
+
 If applicable, add screenshots to help explain your problem.
 
 ## Desktop (please complete the following information):
@@ -49,4 +53,5 @@ If applicable, add screenshots to help explain your problem.
 - Version [e.g. 22]
 
 ## Additional context
+
 Add any other context about the problem here.

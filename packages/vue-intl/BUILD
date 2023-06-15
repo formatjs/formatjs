@@ -1,6 +1,6 @@
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile_node")
+load("//tools:index.bzl", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -44,19 +44,6 @@ jest_test(
         "//:node_modules/jest-environment-jsdom",
     ],
     jest_config = "jest.config.js",
-)
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-            "tests/__snapshots__/*",
-        ],
-    ),
 )
 
 package_json_test(

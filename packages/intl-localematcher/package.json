@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-localematcher",
-  "version": "0.2.32",
+  "version": "0.4.0",
   "description": "Intl.LocaleMatcher ponyfill",
   "keywords": [
     "intl",
@@ -17,14 +17,6 @@
   "main": "index.js",
   "module": "lib/index.js",
   "types": "index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./lib/index.js",
-      "default": "./index.js"
-    },
-    "./package.json": "./package.json"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"

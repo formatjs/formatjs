@@ -1,22 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load(":index.bzl", "check_format")
 
 exports_files([
     "tsconfig.golden.json",
     "supported-locales-gen.ts",
 ])
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "*.*",
-        ],
-        exclude = ["tsconfig.golden.json"],
-    ),
-)
 
 copy_to_bin(
     name = "check-package-json",
