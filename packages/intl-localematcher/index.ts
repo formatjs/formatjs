@@ -6,8 +6,8 @@ export interface Opts {
 }
 
 export function match(
-  requestedLocales: string[],
-  availableLocales: string[],
+  requestedLocales: readonly string[],
+  availableLocales: readonly string[],
   defaultLocale: string,
   opts?: Opts
 ): string {
