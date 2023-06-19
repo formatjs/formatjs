@@ -696,9 +696,9 @@ export class Locale {
   }
 
   /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.weekInfo
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo
    */
-  public get weekInfo() {
+  public getWeekInfo() {
     try {
       const info = Object.create(Object.prototype)
       const wi = weekInfoOfLocale(this)
@@ -729,6 +729,14 @@ export class Locale {
     } catch (e) {
       throw new TypeError('Error retrieving weekInfo')
     }
+  }
+
+  /**
+   * @deprecated – use local.getWeekInfo() instead
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.weekInfo
+   */
+  public get weekInfo() {
+    return this.getWeekInfo()
   }
 
   static relevantExtensionKeys = RELEVANT_EXTENSION_KEYS
