@@ -76,7 +76,7 @@ When some native Intl APIs don't support certain locales, or missing `locale-dat
 
 ### `MISSING_TRANSLATION`
 
-This gets triggered whenever we try to look up a translated message in `messages` for a given `id` and it's not there, thus falling back to `defaultMessage`.
+This gets triggered whenever we try to look up a translated message in `messages` for a given `id` and it's not there and there is no fallback `defaultMessage` for the given `id`.
 
 :::caution verbosity
 This error will be triggered very often since it happens for every message that does not have a translation. Therefore if you do log it remotely there should be throttling in place.
