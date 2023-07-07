@@ -640,44 +640,90 @@ export class Locale {
   }
 
   /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.calendars
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCalendars
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCalendars
    */
-  public get calendars() {
+  public getCalendars() {
     return calendarsOfLocale(this)
   }
 
   /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.collations
+   * @deprecated – use local.getCalendars() instead
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.calendars
    */
-  public get collations() {
+  public get calendars() {
+    return this.getCalendars()
+  }
+
+  /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCollations
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCollations
+   */
+  public getCollations() {
     return collationsOfLocale(this)
   }
 
   /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.hourCycles
+   * @deprecated – use local.getCollations() instead
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.collations
    */
-  public get hourCycles() {
+  public get collations() {
+    return this.getCollations()
+  }
+
+  /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getHourCycles
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getHourCycles
+   */
+  public getHourCycles() {
     return hourCyclesOfLocale(this)
   }
 
   /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.numberingSystems
+   * @deprecated – use local.getHourCycles() instead
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.hourCycles
    */
-  public get numberingSystems() {
+  public get hourCycles() {
+    return this.getHourCycles()
+  }
+
+  /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getNumberingSystems
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getNumberingSystems
+   */
+  public getNumberingSystems() {
     return numberingSystemsOfLocale(this)
   }
 
   /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.timeZones
+   * @deprecated – use local.getNumberingSystems() instead
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.numberingSystems
    */
-  public get timeZones() {
+  public get numberingSystems() {
+    return this.getNumberingSystems()
+  }
+
+  /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTimeZones
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTimeZones
+   */
+  public getTimeZones() {
     return timeZonesOfLocale(this)
   }
 
   /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.textInfo
+   * @deprecated – use local.getTimeZones() instead
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.timeZones
    */
-  public get textInfo() {
+  public get timeZones() {
+    return this.getTimeZones()
+  }
+
+  /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTextInfo
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTextInfo
+   */
+  public getTextInfo() {
     try {
       const info = Object.create(Object.prototype)
       const dir = characterDirectionOfLocale(this)
@@ -695,8 +741,17 @@ export class Locale {
     }
   }
 
+   /**
+    * @deprecated – use local.getTextInfo() instead
+    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.textInfo
+    */
+   public get textInfo() {
+    return this.getTextInfo()
+   }
+
   /**
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getWeekInfo
    */
   public getWeekInfo() {
     try {
@@ -732,7 +787,7 @@ export class Locale {
   }
 
   /**
-   * @deprecated – use local.getWeekInfo() instead
+   * @deprecated – use local.getWeekInfo() instead
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.weekInfo
    */
   public get weekInfo() {
