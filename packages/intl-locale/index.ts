@@ -741,13 +741,13 @@ export class Locale {
     }
   }
 
-   /**
-    * @deprecated – use local.getTextInfo() instead
-    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.textInfo
-    */
-   public get textInfo() {
+  /**
+   * @deprecated – use local.getTextInfo() instead
+   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.textInfo
+   */
+  public get textInfo() {
     return this.getTextInfo()
-   }
+  }
 
   /**
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo
