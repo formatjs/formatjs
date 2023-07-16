@@ -279,7 +279,7 @@ importers:
     specifiers:
       '@formatjs/icu-messageformat-parser': workspace:*
       '@formatjs/ts-transformer': workspace:*
-      '@types/estree': ^0.0.50
+      '@types/estree': ^1.0.0
       '@types/fs-extra': ^9.0.1
       '@types/json-stable-stringify': ^1.0.32
       '@types/node': 14 || 16 || 17
@@ -294,7 +294,7 @@ importers:
     dependencies:
       '@formatjs/icu-messageformat-parser': link:../icu-messageformat-parser
       '@formatjs/ts-transformer': link:../ts-transformer
-      '@types/estree': 0.0.50
+      '@types/estree': 1.0.0
       '@types/fs-extra': 9.0.13
       '@types/json-stable-stringify': 1.0.34
       '@types/node': 17.0.45
@@ -6151,10 +6151,6 @@ packages:
     dependencies:
       '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
-
-  /@types/estree/0.0.50:
-    resolution: {integrity: sha512-C6N5s2ZFtuZRj54k2/zyRhNDjJwwcViAM3Nbm8zjBpbqAdZ00mr0CFxvSKeO8Y/e03WVFLpQMdHYVfUd6SB+Hw==}
-    dev: false
 
   /@types/estree/0.0.51:
     resolution: {integrity: sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==}
