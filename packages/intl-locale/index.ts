@@ -648,11 +648,10 @@ export class Locale {
   }
 
   /**
-   * @deprecated – use local.getCalendars() instead
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.calendars
    */
   public get calendars() {
-    return this.getCalendars()
+    return calendarsOfLocale(this)
   }
 
   /**
@@ -664,11 +663,10 @@ export class Locale {
   }
 
   /**
-   * @deprecated – use local.getCollations() instead
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.collations
    */
   public get collations() {
-    return this.getCollations()
+    return collationsOfLocale(this)
   }
 
   /**
@@ -680,11 +678,10 @@ export class Locale {
   }
 
   /**
-   * @deprecated – use local.getHourCycles() instead
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.hourCycles
    */
   public get hourCycles() {
-    return this.getHourCycles()
+    return hourCyclesOfLocale(this)
   }
 
   /**
@@ -696,11 +693,10 @@ export class Locale {
   }
 
   /**
-   * @deprecated – use local.getNumberingSystems() instead
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.numberingSystems
    */
   public get numberingSystems() {
-    return this.getNumberingSystems()
+    return numberingSystemsOfLocale(this)
   }
 
   /**
@@ -712,11 +708,10 @@ export class Locale {
   }
 
   /**
-   * @deprecated – use local.getTimeZones() instead
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.timeZones
    */
   public get timeZones() {
-    return this.getTimeZones()
+    return timeZonesOfLocale(this)
   }
 
   /**
@@ -742,11 +737,24 @@ export class Locale {
   }
 
   /**
-   * @deprecated – use local.getTextInfo() instead
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.textInfo
    */
   public get textInfo() {
-    return this.getTextInfo()
+    try {
+      const info = Object.create(Object.prototype)
+      const dir = characterDirectionOfLocale(this)
+
+      Object.defineProperty(info, 'direction', {
+        value: dir,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+
+      return info
+    } catch (e) {
+      throw new TypeError('Error retrieving textInfo')
+    }
   }
 
   /**
@@ -787,11 +795,39 @@ export class Locale {
   }
 
   /**
-   * @deprecated – use local.getWeekInfo() instead
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.weekInfo
    */
   public get weekInfo() {
-    return this.getWeekInfo()
+    try {
+      const info = Object.create(Object.prototype)
+      const wi = weekInfoOfLocale(this)
+      const we = wi.weekend
+
+      Object.defineProperty(info, 'firstDay', {
+        value: wi.firstDay,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+
+      Object.defineProperty(info, 'weekend', {
+        value: we,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+
+      Object.defineProperty(info, 'minimalDays', {
+        value: wi.minimalDays,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+
+      return info
+    } catch (e) {
+      throw new TypeError('Error retrieving weekInfo')
+    }
   }
 
   static relevantExtensionKeys = RELEVANT_EXTENSION_KEYS
