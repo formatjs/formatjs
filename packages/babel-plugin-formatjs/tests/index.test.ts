@@ -182,7 +182,9 @@ test('Properly throws parse errors', () => {
 test('skipExtractionFormattedMessage', function () {
   transformAndCheck('skipExtractionFormattedMessage')
 })
-
+test('skipExtractionExpressionFormattedMessage', function () {
+  transformAndCheck('skipExtractionExpressionFormattedMessage')
+})
 // See: https://github.com/formatjs/formatjs/issues/3589#issuecomment-1532461569
 test('jsxNestedInCallExpr', () => {
   transformAndCheck('jsxNestedInCallExpr')

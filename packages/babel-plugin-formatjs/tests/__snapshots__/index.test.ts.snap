@@ -1225,6 +1225,72 @@ export default class Foo extends Component {
 }
 `;
 
+exports[`skipExtractionCallFormattedMessage 1`] = `
+{
+  "code": "import React from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+function nonStaticId() {
+  return 'baz';
+}
+
+export default function IndexPage() {
+  var intl = useIntl();
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, intl.formatMessage({
+    id: "test"
+  })), /*#__PURE__*/React.createElement("h1", null, intl.formatMessage({
+    id: 'test.' + nonStaticId()
+  })), /*#__PURE__*/React.createElement("h1", null, intl.formatMessage({
+    id: "test.".concat(nonStaticId),
+    defaultMessage: 'testMassage'
+  })));
+}",
+  "data": {
+    "messages": [
+      {
+        "defaultMessage": undefined,
+        "description": undefined,
+        "id": "test",
+      },
+    ],
+    "meta": {},
+  },
+}
+`;
+
+exports[`skipExtractionExpressionFormattedMessage 1`] = `
+{
+  "code": "import React from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+function nonStaticId() {
+  return 'baz';
+}
+
+export default function IndexPage() {
+  var intl = useIntl();
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, intl.formatMessage({
+    id: "test"
+  })), /*#__PURE__*/React.createElement("h1", null, intl.formatMessage({
+    id: 'test.' + nonStaticId()
+  })), /*#__PURE__*/React.createElement("h1", null, intl.formatMessage({
+    id: "test.".concat(nonStaticId),
+    defaultMessage: 'testMassage'
+  })));
+}",
+  "data": {
+    "messages": [
+      {
+        "defaultMessage": undefined,
+        "description": undefined,
+        "id": "test",
+      },
+    ],
+    "meta": {},
+  },
+}
+`;
+
 exports[`skipExtractionFormattedMessage 1`] = `
 {
   "code": "import React, { Component } from 'react';

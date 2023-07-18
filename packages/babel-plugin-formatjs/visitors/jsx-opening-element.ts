@@ -57,6 +57,11 @@ export const visitor: VisitNodeFunction<
     ])
   )
 
+  // Filter non-static ids
+  if (descriptorPath.id && !descriptorPath.id?.evaluate()?.confident) {
+    return
+  }
+
   // In order for a default message to be extracted when
   // declaring a JSX element, it must be done with standard
   // `key=value` attributes. But it's completely valid to

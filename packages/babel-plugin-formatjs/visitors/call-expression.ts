@@ -100,6 +100,11 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
         )
       )
 
+      // Filter non-static ids
+      if (descriptorPath.id && !descriptorPath.id?.evaluate()?.confident) {
+        return
+      }
+
       // If the message is already compiled, don't re-compile it
       if (descriptorPath.defaultMessage?.isArrayExpression()) {
         return
