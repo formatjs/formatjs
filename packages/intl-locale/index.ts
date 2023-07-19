@@ -1,5 +1,6 @@
 import {supportedValuesOf} from '@formatjs/intl-enumerator'
 import {
+  defineProperty,
   GetOption,
   invariant,
   SameValue,
@@ -723,7 +724,7 @@ export class Locale {
       const info = Object.create(Object.prototype)
       const dir = characterDirectionOfLocale(this)
 
-      Object.defineProperty(info, 'direction', {
+      defineProperty(info, 'direction', {
         value: dir,
         writable: true,
         enumerable: true,
@@ -767,21 +768,21 @@ export class Locale {
       const wi = weekInfoOfLocale(this)
       const we = wi.weekend
 
-      Object.defineProperty(info, 'firstDay', {
+      defineProperty(info, 'firstDay', {
         value: wi.firstDay,
         writable: true,
         enumerable: true,
         configurable: true,
       })
 
-      Object.defineProperty(info, 'weekend', {
+      defineProperty(info, 'weekend', {
         value: we,
         writable: true,
         enumerable: true,
         configurable: true,
       })
 
-      Object.defineProperty(info, 'minimalDays', {
+      defineProperty(info, 'minimalDays', {
         value: wi.minimalDays,
         writable: true,
         enumerable: true,
