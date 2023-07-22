@@ -720,21 +720,17 @@ export class Locale {
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTextInfo
    */
   public getTextInfo() {
-    try {
-      const info = Object.create(Object.prototype)
-      const dir = characterDirectionOfLocale(this)
+    const info = Object.create(Object.prototype)
+    const dir = characterDirectionOfLocale(this)
 
-      defineProperty(info, 'direction', {
-        value: dir,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      })
+    defineProperty(info, 'direction', {
+      value: dir,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    })
 
-      return info
-    } catch (e) {
-      throw new TypeError('Error retrieving textInfo')
-    }
+    return info
   }
 
   /**
@@ -763,36 +759,32 @@ export class Locale {
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getWeekInfo
    */
   public getWeekInfo() {
-    try {
-      const info = Object.create(Object.prototype)
-      const wi = weekInfoOfLocale(this)
-      const we = wi.weekend
+    const info = Object.create(Object.prototype)
+    const wi = weekInfoOfLocale(this)
+    const we = wi.weekend
 
-      defineProperty(info, 'firstDay', {
-        value: wi.firstDay,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      })
+    defineProperty(info, 'firstDay', {
+      value: wi.firstDay,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    })
 
-      defineProperty(info, 'weekend', {
-        value: we,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      })
+    defineProperty(info, 'weekend', {
+      value: we,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    })
 
-      defineProperty(info, 'minimalDays', {
-        value: wi.minimalDays,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      })
+    defineProperty(info, 'minimalDays', {
+      value: wi.minimalDays,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    })
 
-      return info
-    } catch (e) {
-      throw new TypeError('Error retrieving weekInfo')
-    }
+    return info
   }
 
   /**
