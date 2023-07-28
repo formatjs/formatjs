@@ -730,9 +730,6 @@ export class Locale {
 
     defineProperty(info, 'direction', {
       value: dir,
-      writable: true,
-      enumerable: true,
-      configurable: true,
     })
 
     return info
@@ -775,23 +772,14 @@ export class Locale {
 
     defineProperty(info, 'firstDay', {
       value: wi.firstDay,
-      writable: true,
-      enumerable: true,
-      configurable: true,
     })
 
     defineProperty(info, 'weekend', {
       value: we,
-      writable: true,
-      enumerable: true,
-      configurable: true,
     })
 
     defineProperty(info, 'minimalDays', {
       value: wi.minimalDays,
-      writable: true,
-      enumerable: true,
-      configurable: true,
     })
 
     return info
