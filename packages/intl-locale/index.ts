@@ -675,6 +675,11 @@ export class Locale {
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getHourCycles
    */
   public getHourCycles() {
+    const locInternalSlots = getInternalSlots(this)
+    if (locInternalSlots.initializedLocale === undefined) {
+      throw new TypeError('Error uninitialized locale')
+    }
+
     return hourCyclesOfLocale(this)
   }
 
@@ -760,6 +765,11 @@ export class Locale {
    */
   public getWeekInfo() {
     const info = Object.create(Object.prototype)
+    const locInternalSlots = getInternalSlots(this)
+    if (locInternalSlots.initializedLocale === undefined) {
+      throw new TypeError('Error uninitialized locale')
+    }
+
     const wi = weekInfoOfLocale(this)
     const we = wi.weekend
 
