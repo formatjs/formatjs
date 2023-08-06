@@ -1,5 +1,6 @@
 import {supportedValuesOf} from '@formatjs/intl-enumerator'
 import {
+  defineProperty,
   GetOption,
   invariant,
   SameValue,
@@ -640,10 +641,26 @@ export class Locale {
   }
 
   /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCalendars
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCalendars
+   */
+  public getCalendars() {
+    return calendarsOfLocale(this)
+  }
+
+  /**
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.calendars
    */
   public get calendars() {
     return calendarsOfLocale(this)
+  }
+
+  /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCollations
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCollations
+   */
+  public getCollations() {
+    return collationsOfLocale(this)
   }
 
   /**
@@ -654,10 +671,31 @@ export class Locale {
   }
 
   /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getHourCycles
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getHourCycles
+   */
+  public getHourCycles() {
+    const locInternalSlots = getInternalSlots(this)
+    if (locInternalSlots.initializedLocale === undefined) {
+      throw new TypeError('Error uninitialized locale')
+    }
+
+    return hourCyclesOfLocale(this)
+  }
+
+  /**
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.hourCycles
    */
   public get hourCycles() {
     return hourCyclesOfLocale(this)
+  }
+
+  /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getNumberingSystems
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getNumberingSystems
+   */
+  public getNumberingSystems() {
+    return numberingSystemsOfLocale(this)
   }
 
   /**
@@ -668,10 +706,33 @@ export class Locale {
   }
 
   /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTimeZones
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTimeZones
+   */
+  public getTimeZones() {
+    return timeZonesOfLocale(this)
+  }
+
+  /**
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.timeZones
    */
   public get timeZones() {
     return timeZonesOfLocale(this)
+  }
+
+  /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTextInfo
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTextInfo
+   */
+  public getTextInfo() {
+    const info = Object.create(Object.prototype)
+    const dir = characterDirectionOfLocale(this)
+
+    defineProperty(info, 'direction', {
+      value: dir,
+    })
+
+    return info
   }
 
   /**
@@ -693,6 +754,35 @@ export class Locale {
     } catch (e) {
       throw new TypeError('Error retrieving textInfo')
     }
+  }
+
+  /**
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo
+   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getWeekInfo
+   */
+  public getWeekInfo() {
+    const info = Object.create(Object.prototype)
+    const locInternalSlots = getInternalSlots(this)
+    if (locInternalSlots.initializedLocale === undefined) {
+      throw new TypeError('Error uninitialized locale')
+    }
+
+    const wi = weekInfoOfLocale(this)
+    const we = wi.weekend
+
+    defineProperty(info, 'firstDay', {
+      value: wi.firstDay,
+    })
+
+    defineProperty(info, 'weekend', {
+      value: we,
+    })
+
+    defineProperty(info, 'minimalDays', {
+      value: wi.minimalDays,
+    })
+
+    return info
   }
 
   /**
