@@ -409,7 +409,7 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 | [Localize's Simple JSON](https://developers.localizejs.com/docs/simple-json-import-export) | `simple`    |
 | [locize](https://docs.locize.com/integration/supported-formats#json-nested)                | `simple`    |
 | [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json)  | `lokalise`  |
-| [Phrase](https://help.phrase.com/help/simple-json)                                         | `simple`    |
+| [Phrase](https://support.phrase.com/hc/en-us/articles/6111390065948--JSON-React-Intl-Simple-Strings-)                                         | `simple`    |
 | [POEditor Key-Value JSON](https://poeditor.com/localization/files/key-value-json)          | `simple`    |
 | [SimpleLocalize](https://simplelocalize.io/docs/integrations/format-js-cli/)               | `simple`    |
 | [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)       | `smartling` |
