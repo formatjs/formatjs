@@ -1,0 +1,52 @@
+<p>
+  {{format-message 'in template' 'in template desc'}}
+</p>
+
+<p>
+  {{format-message
+    '{connectorName, select,
+        none {Install Service}
+        other {Install {connectorName}}
+      }'
+    name=(or this.name 'none')
+  }}
+</p>
+
+<!-- prettier-ignore -->
+<p>
+  {{format-message
+    '{connectorName, select,
+			none {Install Service}
+			other {Install {connectorName}}
+	}'
+    name=(or this.name 'none')
+  }}
+</p>
+
+<p>
+  {{format-message
+    "Very long message with
+      multiple'' breaklines
+      and multiple spaces
+      '<a href={href}>' Link '</a>'"
+    'Nice description'
+    href='/whatever/link'
+    htmlSafe=true
+  }}
+</p>
+
+<!-- this is the same as above but is nested so it contains more whitespaces -->
+<div>
+  <p>
+    {{format-message
+      "Very long message with
+        multiple'' breaklines
+        and multiple spaces
+        '<a href={href}>' Link '</a>'"
+      'Nice
+        description'
+      href='/whatever/link'
+      htmlSafe=true
+    }}
+  </p>
+</div>
