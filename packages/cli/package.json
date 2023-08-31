@@ -1,5 +1,5 @@
 {
-  "name": "@formatjs/cli",
+  "name": "@soxhub/formatjs/cli",
   "version": "6.1.3",
   "description": "A CLI for formatjs.",
   "keywords": [
@@ -24,6 +24,9 @@
   "license": "MIT",
   "bin": {
     "formatjs": "bin/formatjs"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/soxhub"
   },
   "repository": {
     "type": "git",

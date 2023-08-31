@@ -1,11 +1,14 @@
 {
-  "name": "formatjs-repo",
+  "name": "@soxhub/formatjs-repo",
   "version": "1.0.0",
   "private": true,
   "description": "This repository is the home of FormatJS and related libraries.",
   "repository": {
     "type": "git",
     "url": "https://github.com/formatjs/formatjs"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/soxhub"
   },
   "scripts": {
     "build": "bazel build //...",
