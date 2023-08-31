@@ -1,7 +1,7 @@
 import {transform} from 'ember-template-recast'
 
 function extractText(node: any, fileName: any, options: any) {
-  if (node.path.original === 'format-message') {
+  if (['format-message', 'formatMessage'].includes(node.path.original)) {
     let message = node.params[0]?.original
     let desc = node.params[1]?.original?.trim().replace(/\s+/gm, ' ')
     let defaultMessage = message?.trim().replace(/\s+/gm, ' ')

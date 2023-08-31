@@ -1,5 +1,5 @@
 {
-  "name": "@soxhub/formatjs-repo",
+  "name": "@formatjs-repo",
   "version": "1.0.0",
   "private": true,
   "description": "This repository is the home of FormatJS and related libraries.",
@@ -94,6 +94,7 @@
     "commander": "8",
     "core-js": "^3.6.5",
     "ember-template-recast": "^6.1.4",
+    "ember-template-tag": "^2.3.8",
     "emoji-regex": "^10.2.1",
     "eslint": "7 || 8",
     "fast-glob": "^3.2.7",

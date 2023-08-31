@@ -34,8 +34,13 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@formatjs/icu-messageformat-parser": "2.6.0",
-    "@formatjs/ts-transformer": "3.13.3",
+    "@babel/parser": "^7.22.10",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "@formatjs/ts-transformer": "workspace:*",
+    "@glimmer/env": "^0.1.7",
+    "@glimmer/reference": "^0.84.3",
+    "@glimmer/syntax": "^0.84.3",
+    "@glimmer/validator": "^0.84.3",
     "@types/estree": "^1.0.0",
     "@types/fs-extra": "^9.0.1",
     "@types/json-stable-stringify": "^1.0.32",
@@ -43,6 +48,7 @@
     "chalk": "^4.0.0",
     "commander": "8",
     "ember-template-recast": "^6.1.4",
+    "ember-template-tag": "^2.3.8",
     "fast-glob": "^3.2.7",
     "fs-extra": "10",
     "json-stable-stringify": "^1.0.1",
