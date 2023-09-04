@@ -1,69 +1,102 @@
 # Common Bazel settings for JavaScript/NodeJS workspaces
+
 # This rc file is automatically discovered when Bazel is run in this workspace,
+
 # see https://docs.bazel.build/versions/master/guide.html#bazelrc
+
 #
+
 # The full list of Bazel options: https://docs.bazel.build/versions/master/command-line-reference.html
 
 # Import Aspect recommended Bazel settings for all projects
+
 import %workspace%/.aspect/bazelrc/bazel6.bazelrc
 import %workspace%/.aspect/bazelrc/convenience.bazelrc
 import %workspace%/.aspect/bazelrc/correctness.bazelrc
 import %workspace%/.aspect/bazelrc/debug.bazelrc
 import %workspace%/.aspect/bazelrc/performance.bazelrc
 
-### YOUR PROJECT SPECIFIC SETTINGS GO HERE ###
+### YOUR PROJECT SPECIFIC SETTINGS GO HERE
 
 build --java_runtime_version=remotejdk_11
 
 build --action_env=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
 
 # Give me dem stack traces
+
 build --verbose_failures
 
 build --experimental_remote_cache_compression
 common --bes_upload_mode=fully_async
 
 # Bazel will create symlinks from the workspace directory to output artifacts.
+
 # Build results will be placed in a directory called "dist/bin"
+
 # Other directories will be created like "dist/testlogs"
+
 # Be aware that this will still create a bazel-out symlink in
+
 # your project directory, which you must exclude from version control and your
+
 # editor's search path.
+
 build --symlink_prefix=dist/
+
 # To disable the symlinks altogether (including bazel-out) you can use
+
 # build --symlink_prefix=/
+
 # however this makes it harder to find outputs.
 
 # Support for debugging NodeJS tests
+
 # Add the Bazel option `--config=debug` to enable this
+
 # --compilation_mode=dbg
-#     Rules may change their build outputs if the compilation mode is set to dbg. For example,
-#     mininfiers such as terser may make their output more human readable when this is set. Rules will pass `COMPILATION_MODE`
-#     to `nodejs_binary` executables via the actions.run env attribute.
-#     See https://docs.bazel.build/versions/master/user-manual.html#flag--compilation_mode for more details.
+
+# Rules may change their build outputs if the compilation mode is set to dbg. For example,
+
+# mininfiers such as terser may make their output more human readable when this is set. Rules will pass `COMPILATION_MODE`
+
+# to `nodejs_binary` executables via the actions.run env attribute.
+
+# See https://docs.bazel.build/versions/master/user-manual.html#flag--compilation_mode for more details.
+
 test:debug --define=VERBOSE_LOGS=1
 run:debug --define=VERBOSE_LOGS=1
+
 # The following option will change the build output of certain rules such as terser and may not be desirable in all cases
+
 build:debug --compilation_mode=dbg
 
 run --incompatible_strict_action_env
 
 # Increase heap size
+
 build --define=NODE_OPTIONS=--max-old-space-size=4096
 
 # BuildBuddy GH Actions Config
+
 # https://www.buildbuddy.io/docs/rbe-github-actions
+
 build --bes_results_url=https://app.buildbuddy.io/invocation/
 build --bes_backend=grpcs://remote.buildbuddy.io
 build --remote_cache=grpcs://remote.buildbuddy.io
-build --remote_header=x-buildbuddy-api-key=aCq1wBKPstlE6hey9EHj
+build --remote_header=x-buildbuddy-api-key=DoFStAr5qm6Ffsf8UqNf
 
 # Load any settings specific to the current user.
-# .bazelrc.user should appear in .gitignore so that settings are not shared with team members
-# This needs to be last statement in this
-# config, as the user configuration should be able to overwrite flags from this file.
-# See https://docs.bazel.build/versions/master/best-practices.html#bazelrc
-# (Note that we use .bazelrc.user so the file appears next to .bazelrc in directory listing,
-# rather than user.bazelrc as suggested in the Bazel docs)
-try-import %workspace%/.bazelrc.user
 
+# .bazelrc.user should appear in .gitignore so that settings are not shared with team members
+
+# This needs to be last statement in this
+
+# config, as the user configuration should be able to overwrite flags from this file.
+
+# See https://docs.bazel.build/versions/master/best-practices.html#bazelrc
+
+# (Note that we use .bazelrc.user so the file appears next to .bazelrc in directory listing,
+
+# rather than user.bazelrc as suggested in the Bazel docs)
+
+try-import %workspace%/.bazelrc.user
