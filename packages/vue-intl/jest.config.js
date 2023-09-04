@@ -1,10 +1,7 @@
 module.exports = {
-  preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json',
-    },
+  transform: {
+    '^.+\\.(t|j)sx?$': '@swc/jest',
   },
   testEnvironmentOptions: {
     customExportConditions: ['node', 'node-addons'],

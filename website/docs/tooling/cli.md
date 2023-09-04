@@ -42,7 +42,7 @@ Add the following command to your `package.json` `scripts`:
 }
 ```
 
-We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
+We've built <https://www.npmjs.com/package/@formatjs/cli> that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
 import {defineMessages, defineMessage} from 'react-intl'
@@ -91,7 +91,7 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm run extract --help
+npm run extract -- --help
 # Usage: formatjs extract [options] [files...]
 
 # Extract string messages from React components that use react-intl.
@@ -101,7 +101,7 @@ npm run extract --help
 For example:
 
 ```sh
-npm run extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
+npm run extract -- "src/**/*.{ts,tsx,vue}" --out-file lang.json
 ```
 
 </TabItem>
@@ -141,7 +141,7 @@ type FormatFn = <T = Record<string, MessageDescriptor>>(
 
 This is especially useful to convert from our extracted format to a TMS-specific format.
 
-See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for examples.
+See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli-lib/src/formatters) for examples.
 
 ### `--out-file [path]`
 
@@ -162,10 +162,6 @@ Additional component names to extract messages from, e.g: `['FormattedFooBarMess
 ### `--additional-function-names [comma-separated-names]`
 
 Additional function names to extract messages from, e.g: `['$t']`.
-
-### `--output-empty-json`
-
-Output file with empty [] if src has no messages. For build systems like [bazel](https://bazel.build/) that relies on specific output mapping, not writing out a file can cause issues. (default: `false`)
 
 ### `--ignore [files]`
 
@@ -219,7 +215,7 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm run compile --help
+npm run compile -- --help
 ```
 
 </TabItem>
@@ -244,7 +240,7 @@ type CompileFn = <T = Record<string, MessageDescriptor>>(
 
 This is especially useful to convert from a TMS-specific format back to react-intl format.
 
-See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for examples.
+See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli-lib/src/formatters) for examples.
 
 ### `--out-file <output>`
 
@@ -265,7 +261,8 @@ Given the English message `my name is {name}`
 | `xx-LS` | `my name is {name}SSSSSSSSSSSSSSSSSSSSSSSSS` |
 | `xx-AC` | `MY NAME IS {name}`                          |
 | `xx-HA` | `[javascript]my name is {name}`              |
-| `en-XA` | `ṁẏ ńâṁè íś {name}`                          |
+| `en-XA` | `[ḿẏ ƞȧȧḿḗḗ īş {name}]`                      |
+| `en-XB` | `‮ɯʎ uɐɯǝ ıs {name}‬`                        |
 
 ## Extraction and compilation with a single script
 
@@ -406,6 +403,7 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 
 | TMS                                                                                        | `--format`  |
 | ------------------------------------------------------------------------------------------ | ----------- |
+| [BabelEdit](https://www.codeandweb.com/babeledit/format-js)                                | `simple`    |
 | [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)               | `crowdin`   |
 | [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)              | `simple`    |
 | [Localize's Simple JSON](https://developers.localizejs.com/docs/simple-json-import-export) | `simple`    |
@@ -438,7 +436,7 @@ export const compile: CompileFn<VendorJson> = () => {}
 export const compareMessages: Comparator = () => {}
 ```
 
-Take a look at our [builtin formatter code](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for some examples.
+Take a look at our [builtin formatter code](https://github.com/formatjs/formatjs/tree/main/packages/cli-lib/src/formatters) for some examples.
 
 ## Node API
 

@@ -3,6 +3,99 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.4](https://github.com/formatjs/formatjs/compare/react-intl@6.4.3...react-intl@6.4.4) (2023-06-12)
+
+**Note:** Version bump only for package react-intl
+
+## [6.4.3](https://github.com/formatjs/formatjs/compare/react-intl@6.4.2...react-intl@6.4.3) (2023-06-06)
+
+### Bug Fixes
+
+* **react-intl:** support opting out of global intl context ([#4118](https://github.com/formatjs/formatjs/issues/4118)) ([#4125](https://github.com/formatjs/formatjs/issues/4125)) ([357c861](https://github.com/formatjs/formatjs/commit/357c86139594b00f0754c71667028f05a1ca3b51))
+
+## [6.4.2](https://github.com/formatjs/formatjs/compare/react-intl@6.4.1...react-intl@6.4.2) (2023-05-01)
+
+**Note:** Version bump only for package react-intl
+
+## [6.4.1](https://github.com/formatjs/formatjs/compare/react-intl@6.4.0...react-intl@6.4.1) (2023-04-19)
+
+**Note:** Version bump only for package react-intl
+
+# [6.4.0](https://github.com/formatjs/formatjs/compare/react-intl@6.3.2...react-intl@6.4.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
+## [6.3.2](https://github.com/formatjs/formatjs/compare/react-intl@6.3.1...react-intl@6.3.2) (2023-03-21)
+
+**Note:** Version bump only for package react-intl
+
+# [6.3.0](https://github.com/formatjs/formatjs/compare/react-intl@6.2.10...react-intl@6.3.0) (2023-03-15)
+
+### Features
+
+* **react-intl:** memoize Context into global ([e0dfde6](https://github.com/formatjs/formatjs/commit/e0dfde6af4210808f08aad32b54707f79f6f88fc))
+
+## [6.2.10](https://github.com/formatjs/formatjs/compare/react-intl@6.2.9...react-intl@6.2.10) (2023-02-20)
+
+**Note:** Version bump only for package react-intl
+
+## [6.2.9](https://github.com/formatjs/formatjs/compare/react-intl@6.2.8...react-intl@6.2.9) (2023-02-20)
+
+**Note:** Version bump only for package react-intl
+
+## [6.2.8](https://github.com/formatjs/formatjs/compare/react-intl@6.2.7...react-intl@6.2.8) (2023-02-07)
+
+### Bug Fixes
+
+* **react-intl:** support union component prop types in `injectIntl` ([#3983](https://github.com/formatjs/formatjs/issues/3983)) ([d970127](https://github.com/formatjs/formatjs/commit/d970127a124ff260c26561bd92a3864094a2b021))
+
+## [6.2.7](https://github.com/formatjs/formatjs/compare/react-intl@6.2.6...react-intl@6.2.7) (2023-01-30)
+
+**Note:** Version bump only for package react-intl
+
+## [6.2.6](https://github.com/formatjs/formatjs/compare/react-intl@6.2.5...react-intl@6.2.6) (2023-01-26)
+
+**Note:** Version bump only for package react-intl
+
+## [6.2.5](https://github.com/formatjs/formatjs/compare/react-intl@6.2.4...react-intl@6.2.5) (2022-12-02)
+
+**Note:** Version bump only for package react-intl
+
+## [6.2.4](https://github.com/formatjs/formatjs/compare/react-intl@6.2.2...react-intl@6.2.4) (2022-12-01)
+
+**Note:** Version bump only for package react-intl
+
+## [6.2.3](https://github.com/formatjs/formatjs/compare/react-intl@6.2.2...react-intl@6.2.3) (2022-12-01)
+
+**Note:** Version bump only for package react-intl
+
+## [6.2.2](https://github.com/formatjs/formatjs/compare/react-intl@6.2.1...react-intl@6.2.2) (2022-11-29)
+
+**Note:** Version bump only for package react-intl
+
+## [6.2.1](https://github.com/formatjs/formatjs/compare/react-intl@6.2.0...react-intl@6.2.1) (2022-10-17)
+
+**Note:** Version bump only for package react-intl
+
+# [6.2.0](https://github.com/formatjs/formatjs/compare/react-intl@6.1.2...react-intl@6.2.0) (2022-10-13)
+
+### Bug Fixes
+
+* **react-intl:** fix type issue w/ ts4.7 ([c366cc8](https://github.com/formatjs/formatjs/commit/c366cc88ca77579c34825bf79941be499fbc5156))
+
+### Features
+
+* **@formatjs/intl,react-intl:** move IntlFormatter type parameters to methods ([#3858](https://github.com/formatjs/formatjs/issues/3858)) ([0d03bb6](https://github.com/formatjs/formatjs/commit/0d03bb66123cb49fbd1c7d27908979bc4521b41f))
+
+## [6.1.2](https://github.com/formatjs/formatjs/compare/react-intl@6.1.1...react-intl@6.1.2) (2022-09-28)
+
+### Bug Fixes
+
+* **react-intl:** re-export PrimitiveType from intl-messageformat ([c00ba91](https://github.com/formatjs/formatjs/commit/c00ba916271af310b04c2ec83512aa2a51f6f2a9))
+* **react-intl:** update typescript types for FormattedDate and FormattedTime explicitly add children ([#3852](https://github.com/formatjs/formatjs/issues/3852)) ([67bd664](https://github.com/formatjs/formatjs/commit/67bd664194f8f02d6da24d9f294675b69657e2fe))
+
 ## [6.1.1](https://github.com/formatjs/formatjs/compare/react-intl@6.1.0...react-intl@6.1.1) (2022-09-06)
 
 **Note:** Version bump only for package react-intl

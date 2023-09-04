@@ -3,6 +3,80 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.16](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.15...vue-intl@6.4.16) (2023-06-12)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.15](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.14...vue-intl@6.4.15) (2023-06-06)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.14](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.13...vue-intl@6.4.14) (2023-05-01)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.13](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.12...vue-intl@6.4.13) (2023-04-19)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.12](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.11...vue-intl@6.4.12) (2023-04-17)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.11](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.10...vue-intl@6.4.11) (2023-03-21)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.9](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.8...vue-intl@6.4.9) (2023-02-20)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.8](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.7...vue-intl@6.4.8) (2023-02-20)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.7](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.6...vue-intl@6.4.7) (2023-01-30)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.6](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.5...vue-intl@6.4.6) (2023-01-26)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.5](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.4...vue-intl@6.4.5) (2022-12-02)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.4](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.2...vue-intl@6.4.4) (2022-12-01)
+
+### Bug Fixes
+
+* **@formatjs/intl:** update monorepo to use TypeScript 4.9 and actually fix the type issue ([#3919](https://github.com/formatjs/formatjs/issues/3919)) ([051527b](https://github.com/formatjs/formatjs/commit/051527b6391c8f4548254ab20630173789d555cd))
+
+## [6.4.3](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.2...vue-intl@6.4.3) (2022-12-01)
+
+### Bug Fixes
+
+* **@formatjs/intl:** update monorepo to use TypeScript 4.9 and actually fix the type issue ([#3919](https://github.com/formatjs/formatjs/issues/3919)) ([051527b](https://github.com/formatjs/formatjs/commit/051527b6391c8f4548254ab20630173789d555cd))
+
+## [6.4.2](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.1...vue-intl@6.4.2) (2022-11-29)
+
+**Note:** Version bump only for package vue-intl
+
+## [6.4.1](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.0...vue-intl@6.4.1) (2022-10-17)
+
+**Note:** Version bump only for package vue-intl
+
+# [6.4.0](https://github.com/formatjs/formatjs/compare/vue-intl@6.3.2...vue-intl@6.4.0) (2022-10-13)
+
+### Features
+
+* **@formatjs/intl,react-intl:** move IntlFormatter type parameters to methods ([#3858](https://github.com/formatjs/formatjs/issues/3858)) ([0d03bb6](https://github.com/formatjs/formatjs/commit/0d03bb66123cb49fbd1c7d27908979bc4521b41f))
+
+## [6.3.2](https://github.com/formatjs/formatjs/compare/vue-intl@6.3.1...vue-intl@6.3.2) (2022-09-28)
+
+**Note:** Version bump only for package vue-intl
+
 ## [6.3.1](https://github.com/formatjs/formatjs/compare/vue-intl@6.3.0...vue-intl@6.3.1) (2022-09-06)
 
 **Note:** Version bump only for package vue-intl

@@ -3,6 +3,62 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.3](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.5.2...@formatjs/swc-plugin@1.5.3) (2023-06-12)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+## [1.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.5.1...@formatjs/swc-plugin@1.5.2) (2023-06-06)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+## [1.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.5.0...@formatjs/swc-plugin@1.5.1) (2023-05-01)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+# [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.20...@formatjs/swc-plugin@1.5.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
+## [1.4.20](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.19...@formatjs/swc-plugin@1.4.20) (2023-02-20)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+## [1.4.19](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.18...@formatjs/swc-plugin@1.4.19) (2023-01-30)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+## [1.4.18](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.17...@formatjs/swc-plugin@1.4.18) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+## [1.4.17](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.15...@formatjs/swc-plugin@1.4.17) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+## [1.4.16](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.15...@formatjs/swc-plugin@1.4.16) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+## [1.4.15](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.14...@formatjs/swc-plugin@1.4.15) (2022-11-29)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+## [1.4.14](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.13...@formatjs/swc-plugin@1.4.14) (2022-10-17)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+## [1.4.13](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.12...@formatjs/swc-plugin@1.4.13) (2022-10-13)
+
+**Note:** Version bump only for package @formatjs/swc-plugin
+
+## [1.4.12](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.11...@formatjs/swc-plugin@1.4.12) (2022-09-28)
+
+### Reverts
+
+* Revert "chore(deps): bump chalk from 4.1.2 to 5.0.1 (#3794)" ([f1af8b1](https://github.com/formatjs/formatjs/commit/f1af8b13433d1d98ed55addf5450dcafa4b8bdae)), closes [#3794](https://github.com/formatjs/formatjs/issues/3794)
+
 ## [1.4.11](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.4.10...@formatjs/swc-plugin@1.4.11) (2022-09-06)
 
 **Note:** Version bump only for package @formatjs/swc-plugin

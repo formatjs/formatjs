@@ -1,1 +1,2596 @@
-{"data":{"am":"ق.ظ.","pm":"ب.ظ.","weekday":{"narrow":["ی","د","س","چ","پ","ج","ش"],"short":["یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه","شنبه"],"long":["یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه","شنبه"]},"era":{"narrow":{"BC":"ق","AD":"م"},"short":{"BC":"ق.م.","AD":"م."},"long":{"BC":"قبل از میلاد","AD":"میلادی"}},"month":{"narrow":["ژ","ف","م","آ","م","ژ","ژ","ا","س","ا","ن","د"],"short":["ژانویه","فوریه","مارس","آوریل","مه","ژوئن","ژوئیه","اوت","سپتامبر","اکتبر","نوامبر","دسامبر"],"long":["ژانویهٔ","فوریهٔ","مارس","آوریل","مهٔ","ژوئن","ژوئیهٔ","اوت","سپتامبر","اکتبر","نوامبر","دسامبر"]},"timeZoneName":{"Asia/Kabul":{"long":["وقت افغانستان","وقت افغانستان"]},"Africa/Maputo":{"long":["وقت مرکز افریقا","وقت مرکز افریقا"]},"Africa/Bujumbura":{"long":["وقت مرکز افریقا","وقت مرکز افریقا"]},"Africa/Gaborone":{"long":["وقت مرکز افریقا","وقت مرکز افریقا"]},"Africa/Lubumbashi":{"long":["وقت مرکز افریقا","وقت مرکز افریقا"]},"Africa/Blantyre":{"long":["وقت مرکز افریقا","وقت مرکز افریقا"]},"Africa/Kigali":{"long":["وقت مرکز افریقا","وقت مرکز افریقا"]},"Africa/Lusaka":{"long":["وقت مرکز افریقا","وقت مرکز افریقا"]},"Africa/Harare":{"long":["وقت مرکز افریقا","وقت مرکز افریقا"]},"Africa/Nairobi":{"long":["وقت شرق افریقا","وقت شرق افریقا"]},"Africa/Djibouti":{"long":["وقت شرق افریقا","وقت شرق افریقا"]},"Africa/Asmera":{"long":["وقت شرق افریقا","وقت شرق افریقا"]},"Africa/Addis_Ababa":{"long":["وقت شرق افریقا","وقت شرق افریقا"]},"Indian/Comoro":{"long":["وقت شرق افریقا","وقت شرق افریقا"]},"Indian/Antananarivo":{"long":["وقت شرق افریقا","وقت شرق افریقا"]},"Africa/Mogadishu":{"long":["وقت شرق افریقا","وقت شرق افریقا"]},"Africa/Dar_es_Salaam":{"long":["وقت شرق افریقا","وقت شرق افریقا"]},"Africa/Kampala":{"long":["وقت شرق افریقا","وقت شرق افریقا"]},"Indian/Mayotte":{"long":["وقت شرق افریقا","وقت شرق افریقا"]},"Africa/Johannesburg":{"long":["وقت عادی جنوب افریقا","وقت عادی جنوب افریقا"]},"Africa/Maseru":{"long":["وقت عادی جنوب افریقا","وقت عادی جنوب افریقا"]},"Africa/Mbabane":{"long":["وقت عادی جنوب افریقا","وقت عادی جنوب افریقا"]},"Africa/Lagos":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Africa/Luanda":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Africa/Porto-Novo":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Africa/Kinshasa":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Africa/Bangui":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Africa/Brazzaville":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Africa/Douala":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Africa/Libreville":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Africa/Malabo":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Africa/Niamey":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Africa/Ndjamena":{"long":["وقت عادی غرب افریقا","وقت تابستانی غرب افریقا"]},"Asia/Aqtobe":{"long":["وقت غرب قزاقستان","وقت غرب قزاقستان"]},"America/Juneau":{"long":["وقت عادی آلاسکا","وقت تابستانی آلاسکا"]},"Asia/Almaty":{"long":["وقت شرق قزاقستان","وقت شرق قزاقستان"]},"America/Manaus":{"long":["وقت عادی آمازون","وقت تابستانی آمازون"]},"America/Chicago":{"long":["وقت عادی مرکز امریکا","وقت تابستانی مرکز امریکا"]},"America/Belize":{"long":["وقت عادی مرکز امریکا","وقت تابستانی مرکز امریکا"]},"America/Winnipeg":{"long":["وقت عادی مرکز امریکا","وقت تابستانی مرکز امریکا"]},"America/Costa_Rica":{"long":["وقت عادی مرکز امریکا","وقت تابستانی مرکز امریکا"]},"America/Guatemala":{"long":["وقت عادی مرکز امریکا","وقت تابستانی مرکز امریکا"]},"America/Tegucigalpa":{"long":["وقت عادی مرکز امریکا","وقت تابستانی مرکز امریکا"]},"America/Mexico_City":{"long":["وقت عادی مرکز امریکا","وقت تابستانی مرکز امریکا"]},"America/El_Salvador":{"long":["وقت عادی مرکز امریکا","وقت تابستانی مرکز امریکا"]},"America/New_York":{"long":["وقت عادی شرق امریکا","وقت تابستانی شرق امریکا"]},"America/Nassau":{"long":["وقت عادی شرق امریکا","وقت تابستانی شرق امریکا"]},"America/Toronto":{"long":["وقت عادی شرق امریکا","وقت تابستانی شرق امریکا"]},"America/Port-au-Prince":{"long":["وقت عادی شرق امریکا","وقت تابستانی شرق امریکا"]},"America/Jamaica":{"long":["وقت عادی شرق امریکا","وقت تابستانی شرق امریکا"]},"America/Cayman":{"long":["وقت عادی شرق امریکا","وقت تابستانی شرق امریکا"]},"America/Panama":{"long":["وقت عادی شرق امریکا","وقت تابستانی شرق امریکا"]},"America/Denver":{"long":["وقت عادی کوهستانی امریکا","وقت تابستانی کوهستانی امریکا"]},"America/Edmonton":{"long":["وقت عادی کوهستانی امریکا","وقت تابستانی کوهستانی امریکا"]},"America/Hermosillo":{"long":["وقت عادی کوهستانی امریکا","وقت تابستانی کوهستانی امریکا"]},"America/Los_Angeles":{"long":["وقت عادی غرب امریکا","وقت تابستانی غرب امریکا"]},"America/Vancouver":{"long":["وقت عادی غرب امریکا","وقت تابستانی غرب امریکا"]},"America/Tijuana":{"long":["وقت عادی غرب امریکا","وقت تابستانی غرب امریکا"]},"Asia/Anadyr":{"long":["وقت عادی آنادیر","وقت تابستانی آنادیر"]},"Pacific/Apia":{"long":["وقت عادی آپیا","وقت تابستانی آپیا"]},"Asia/Riyadh":{"long":["وقت عادی عربستان","وقت تابستانی عربستان"]},"Asia/Bahrain":{"long":["وقت عادی عربستان","وقت تابستانی عربستان"]},"Asia/Baghdad":{"long":["وقت عادی عربستان","وقت تابستانی عربستان"]},"Asia/Kuwait":{"long":["وقت عادی عربستان","وقت تابستانی عربستان"]},"Asia/Qatar":{"long":["وقت عادی عربستان","وقت تابستانی عربستان"]},"Asia/Aden":{"long":["وقت عادی عربستان","وقت تابستانی عربستان"]},"America/Buenos_Aires":{"long":["وقت عادی آرژانتین","وقت تابستانی آرژانتین"]},"America/Argentina/San_Luis":{"long":["وقت عادی غرب آرژانتین","وقت تابستانی غرب آرژانتین"]},"Asia/Ashgabat":{"long":["وقت عادی ترکمنستان","وقت تابستانی ترکمنستان"]},"America/Halifax":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Antigua":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Anguilla":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Aruba":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Barbados":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"Atlantic/Bermuda":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Kralendijk":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Curacao":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Dominica":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Grenada":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Thule":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Guadeloupe":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/St_Kitts":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/St_Lucia":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Marigot":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Martinique":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Montserrat":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Puerto_Rico":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Lower_Princes":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Port_of_Spain":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/St_Vincent":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/Tortola":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"America/St_Thomas":{"long":["وقت عادی آتلانتیک","وقت تابستانی آتلانتیک"]},"Australia/Adelaide":{"long":["وقت عادی مرکز استرالیا","وقت تابستانی مرکز استرالیا"]},"Australia/Eucla":{"long":["وقت عادی مرکز-غرب استرالیا","وقت تابستانی مرکز-غرب استرالیا"]},"Australia/Sydney":{"long":["وقت عادی شرق استرالیا","وقت تابستانی شرق استرالیا"]},"Australia/Perth":{"long":["وقت عادی غرب استرالیا","وقت تابستانی غرب استرالیا"]},"Atlantic/Azores":{"long":["وقت عادی آزور","وقت تابستانی آزور"]},"Asia/Thimphu":{"long":["وقت بوتان","وقت بوتان"]},"America/La_Paz":{"long":["وقت بولیوی","وقت بولیوی"]},"Asia/Kuching":{"long":["وقت مالزی","وقت مالزی"]},"America/Sao_Paulo":{"long":["وقت عادی برازیلیا","وقت تابستانی برازیلیا"]},"Europe/London":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Asia/Brunei":{"long":["وقت برونئی دارالسلام","وقت برونئی دارالسلام"]},"Atlantic/Cape_Verde":{"long":["وقت عادی کیپ‌ورد","وقت تابستانی کیپ‌ورد"]},"Pacific/Saipan":{"long":["وقت جزایر ماریانای شمالی","وقت جزایر ماریانای شمالی"]},"Pacific/Guam":{"long":["وقت عادی گوام","وقت عادی گوام"]},"Pacific/Chatham":{"long":["وقت عادی چت‌هام","وقت تابستانی چت‌هام"]},"America/Santiago":{"long":["وقت عادی شیلی","وقت تابستانی شیلی"]},"Asia/Shanghai":{"long":["وقت عادی چین","وقت تابستانی چین"]},"Asia/Choibalsan":{"long":["وقت عادی چویبالسان","وقت تابستانی چویبالسان"]},"Indian/Christmas":{"long":["وقت جزیرهٔ کریسمس","وقت جزیرهٔ کریسمس"]},"Indian/Cocos":{"long":["وقت جزایر کوکوس","وقت جزایر کوکوس"]},"America/Bogota":{"long":["وقت عادی کلمبیا","وقت تابستانی کلمبیا"]},"Pacific/Rarotonga":{"long":["وقت عادی جزایر کوک","وقت تابستانی جزایر کوک"]},"America/Havana":{"long":["وقت عادی کوبا","وقت تابستانی کوبا"]},"Antarctica/Davis":{"long":["وقت دیویس","وقت دیویس"]},"Antarctica/DumontDUrville":{"long":["وقت دومون دورویل","وقت دومون دورویل"]},"Asia/Dushanbe":{"long":["وقت تاجیکستان","وقت تاجیکستان"]},"America/Paramaribo":{"long":["وقت سورینام","وقت سورینام"]},"Asia/Dili":{"long":["وقت تیمور شرقی","وقت تیمور شرقی"]},"Pacific/Easter":{"long":["وقت عادی جزیرهٔ ایستر","وقت تابستانی جزیرهٔ ایستر"]},"America/Guayaquil":{"long":["وقت اکوادور","وقت اکوادور"]},"Europe/Paris":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Andorra":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Tirane":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Vienna":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Sarajevo":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Brussels":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Zurich":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Prague":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Berlin":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Copenhagen":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Madrid":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Gibraltar":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Zagreb":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Budapest":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Rome":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Vaduz":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Luxembourg":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Monaco":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Podgorica":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Skopje":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Malta":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Amsterdam":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Oslo":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Warsaw":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Belgrade":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Stockholm":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Ljubljana":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Arctic/Longyearbyen":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Bratislava":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/San_Marino":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Africa/Tunis":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Vatican":{"long":["وقت عادی مرکز اروپا","وقت تابستانی مرکز اروپا"]},"Europe/Bucharest":{"long":["وقت عادی شرق اروپا","وقت تابستانی شرق اروپا"]},"Europe/Mariehamn":{"long":["وقت عادی شرق اروپا","وقت تابستانی شرق اروپا"]},"Europe/Sofia":{"long":["وقت عادی شرق اروپا","وقت تابستانی شرق اروپا"]},"Asia/Nicosia":{"long":["وقت عادی شرق اروپا","وقت تابستانی شرق اروپا"]},"Africa/Cairo":{"long":["وقت عادی شرق اروپا","وقت تابستانی شرق اروپا"]},"Europe/Helsinki":{"long":["وقت عادی شرق اروپا","وقت تابستانی شرق اروپا"]},"Europe/Athens":{"long":["وقت عادی شرق اروپا","وقت تابستانی شرق اروپا"]},"Asia/Amman":{"long":["وقت عادی شرق اروپا","وقت تابستانی شرق اروپا"]},"Asia/Beirut":{"long":["وقت عادی شرق اروپا","وقت تابستانی شرق اروپا"]},"Asia/Damascus":{"long":["وقت عادی شرق اروپا","وقت تابستانی شرق اروپا"]},"Europe/Minsk":{"long":["وقت تابستانی مکان‌های دیگر شرق اروپا","وقت تابستانی مکان‌های دیگر شرق اروپا"]},"Europe/Kaliningrad":{"long":["وقت تابستانی مکان‌های دیگر شرق اروپا","وقت تابستانی مکان‌های دیگر شرق اروپا"]},"Atlantic/Canary":{"long":["وقت عادی غرب اروپا","وقت تابستانی غرب اروپا"]},"Atlantic/Faeroe":{"long":["وقت عادی غرب اروپا","وقت تابستانی غرب اروپا"]},"Atlantic/Stanley":{"long":["وقت عادی جزایر فالکلند","وقت تابستانی جزایر فالکلند"]},"Pacific/Fiji":{"long":["وقت عادی فیجی","وقت تابستانی فیجی"]},"America/Cayenne":{"long":["وقت گویان فرانسه","وقت گویان فرانسه"]},"Indian/Kerguelen":{"long":["وقت سرزمین‌های جنوبی و جنوبگان فرانسه","وقت سرزمین‌های جنوبی و جنوبگان فرانسه"]},"Asia/Bishkek":{"long":["وقت قرقیزستان","وقت قرقیزستان"]},"Pacific/Galapagos":{"long":["وقت گالاپاگوس","وقت گالاپاگوس"]},"Pacific/Gambier":{"long":["وقت گامبیه","وقت گامبیه"]},"Pacific/Tarawa":{"long":["وقت جزایر گیلبرت","وقت جزایر گیلبرت"]},"Atlantic/Reykjavik":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Africa/Ouagadougou":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Africa/Abidjan":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Africa/Accra":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Africa/Banjul":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Africa/Conakry":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Africa/Bamako":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Africa/Nouakchott":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Atlantic/St_Helena":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Africa/Freetown":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Africa/Dakar":{"long":["وقت گرینویچ","وقت گرینویچ"]},"Africa/Lome":{"long":["وقت گرینویچ","وقت گرینویچ"]},"America/Scoresbysund":{"long":["وقت عادی شرق گرینلند","وقت تابستانی شرق گرینلند"]},"America/Godthab":{"long":["وقت عادی غرب گرینلند","وقت تابستانی غرب گرینلند"]},"Asia/Dubai":{"long":["وقت عادی خلیج فارس","وقت عادی خلیج فارس"]},"Asia/Muscat":{"long":["وقت عادی خلیج فارس","وقت عادی خلیج فارس"]},"America/Guyana":{"long":["وقت گویان","وقت گویان"]},"Pacific/Honolulu":{"long":["وقت عادی هاوایی‐الوشن","وقت تابستانی هاوایی‐الوشن"]},"Asia/Hong_Kong":{"long":["وقت عادی هنگ‌کنگ","وقت تابستانی هنگ‌کنگ"]},"Asia/Hovd":{"long":["وقت عادی خوود","وقت تابستانی خوود"]},"Asia/Calcutta":{"long":["وقت هند","وقت هند"]},"Asia/Colombo":{"long":["وقت لانکا","وقت لانکا"]},"Indian/Chagos":{"long":["وقت اقیانوس هند","وقت اقیانوس هند"]},"Asia/Bangkok":{"long":["وقت هندوچین","وقت هندوچین"]},"Asia/Phnom_Penh":{"long":["وقت هندوچین","وقت هندوچین"]},"Asia/Vientiane":{"long":["وقت هندوچین","وقت هندوچین"]},"Asia/Makassar":{"long":["وقت مرکز اندونزی","وقت مرکز اندونزی"]},"Asia/Jayapura":{"long":["وقت شرق اندونزی","وقت شرق اندونزی"]},"Asia/Jakarta":{"long":["وقت غرب اندونزی","وقت غرب اندونزی"]},"Asia/Tehran":{"long":["وقت عادی ایران","وقت تابستانی ایران"]},"Asia/Irkutsk":{"long":["وقت عادی ایرکوتسک","وقت تابستانی ایرکوتسک"]},"Asia/Jerusalem":{"long":["وقت عادی اسرائیل","وقت تابستانی اسرائیل"]},"Asia/Tokyo":{"long":["وقت عادی ژاپن","وقت تابستانی ژاپن"]},"Asia/Kamchatka":{"long":["وقت عادی پتروپاولوسک‐کامچاتسکی","وقت تابستانی پتروپاولوسک‐کامچاتسکی"]},"Asia/Karachi":{"long":["وقت عادی پاکستان","وقت تابستانی پاکستان"]},"Asia/Qyzylorda":{"long":["وقت عادی قیزیل‌اوردا","وقت تابستانی قیزیل‌اوردا"]},"Asia/Seoul":{"long":["وقت عادی کره","وقت تابستانی کره"]},"Pacific/Kosrae":{"long":["وقت کوسرای","وقت کوسرای"]},"Asia/Krasnoyarsk":{"long":["وقت عادی کراسنویارسک","وقت تابستانی کراسنویارسک"]},"Europe/Samara":{"long":["وقت عادی سامارا","وقت تابستانی سامارا"]},"Pacific/Kiritimati":{"long":["وقت جزایر لاین","وقت جزایر لاین"]},"Australia/Lord_Howe":{"long":["وقت عادی لردهو","وقت تابستانی لردهو"]},"Asia/Macau":{"long":["وقت عادی ماکائو","وقت تابستانی ماکائو"]},"Antarctica/Macquarie":{"long":["وقت جزیرهٔ مکواری","وقت جزیرهٔ مکواری"]},"Asia/Magadan":{"long":["وقت عادی ماگادان","وقت تابستانی ماگادان"]},"Indian/Maldives":{"long":["وقت مالدیو","وقت مالدیو"]},"Pacific/Marquesas":{"long":["وقت مارکوئز","وقت مارکوئز"]},"Pacific/Majuro":{"long":["وقت جزایر مارشال","وقت جزایر مارشال"]},"Indian/Mauritius":{"long":["وقت عادی موریس","وقت تابستانی موریس"]},"Antarctica/Mawson":{"long":["وقت ماوسون","وقت ماوسون"]},"America/Santa_Isabel":{"long":["وقت عادی شمال غرب مکزیک","وقت تابستانی شمال غرب مکزیک"]},"America/Mazatlan":{"long":["وقت عادی شرق مکزیک","وقت تابستانی شرق مکزیک"]},"Asia/Ulaanbaatar":{"long":["وقت عادی اولان‌باتور","وقت تابستانی اولان‌باتور"]},"Europe/Moscow":{"long":["وقت عادی مسکو","وقت تابستانی مسکو"]},"Asia/Rangoon":{"long":["وقت میانمار","وقت میانمار"]},"Pacific/Nauru":{"long":["وقت نائورو","وقت نائورو"]},"Asia/Katmandu":{"long":["وقت نپال","وقت نپال"]},"Pacific/Noumea":{"long":["وقت عادی کالدونیای جدید","وقت تابستانی کالدونیای جدید"]},"Pacific/Auckland":{"long":["وقت عادی نیوزیلند","وقت تابستانی نیوزیلند"]},"Antarctica/McMurdo":{"long":["وقت عادی نیوزیلند","وقت تابستانی نیوزیلند"]},"America/St_Johns":{"long":["وقت عادی نیوفاندلند","وقت تابستانی نیوفاندلند"]},"Pacific/Niue":{"long":["وقت نیوئه","وقت نیوئه"]},"Pacific/Norfolk":{"long":["وقت عادی جزیرهٔ نورفولک","وقت تابستانی جزیرهٔ نورفولک"]},"America/Noronha":{"long":["وقت عادی فرناندو دی نورونیا","وقت تابستانی فرناندو دی نورونیا"]},"Asia/Novosibirsk":{"long":["وقت عادی نووسیبیرسک","وقت تابستانی نووسیبیرسک"]},"Asia/Omsk":{"long":["وقت عادی اومسک","وقت تابستانی اومسک"]},"Pacific/Palau":{"long":["وقت پالائو","وقت پالائو"]},"Pacific/Port_Moresby":{"long":["وقت پاپوا گینهٔ نو","وقت پاپوا گینهٔ نو"]},"America/Asuncion":{"long":["وقت عادی پاراگوئه","وقت تابستانی پاراگوئه"]},"America/Lima":{"long":["وقت عادی پرو","وقت تابستانی پرو"]},"Asia/Manila":{"long":["وقت عادی فیلیپین","وقت تابستانی فیلیپین"]},"Pacific/Enderbury":{"long":["وقت جزایر فونیکس","وقت جزایر فونیکس"]},"America/Miquelon":{"long":["وقت عادی سنت‌پیر و میکلون","وقت تابستانی سنت‌پیر و میکلون"]},"Pacific/Pitcairn":{"long":["وقت پیتکایرن","وقت پیتکایرن"]},"Pacific/Ponape":{"long":["وقت پوناپه","وقت پوناپه"]},"Asia/Pyongyang":{"long":["وقت پیونگ‌یانگ","وقت پیونگ‌یانگ"]},"Indian/Reunion":{"long":["وقت رئونیون","وقت رئونیون"]},"Antarctica/Rothera":{"long":["وقت روترا","وقت روترا"]},"Asia/Sakhalin":{"long":["وقت عادی ساخالین","وقت تابستانی ساخالین"]},"Pacific/Pago_Pago":{"long":["وقت عادی ساموا","وقت تابستانی ساموا"]},"Indian/Mahe":{"long":["وقت سیشل","وقت سیشل"]},"Asia/Singapore":{"long":["وقت سنگاپور","وقت سنگاپور"]},"Pacific/Guadalcanal":{"long":["وقت جزایر سلیمان","وقت جزایر سلیمان"]},"Atlantic/South_Georgia":{"long":["وقت جورجیای جنوبی","وقت جورجیای جنوبی"]},"Asia/Yekaterinburg":{"long":["وقت عادی یکاترینبورگ","وقت تابستانی یکاترینبورگ"]},"Antarctica/Syowa":{"long":["وقت شووا","وقت شووا"]},"Pacific/Tahiti":{"long":["وقت تاهیتی","وقت تاهیتی"]},"Asia/Taipei":{"long":["وقت عادی تایپه","وقت تابستانی تایپه"]},"Asia/Tashkent":{"long":["وقت عادی ازبکستان","وقت تابستانی ازبکستان"]},"Pacific/Fakaofo":{"long":["وقت توکلائو","وقت توکلائو"]},"Pacific/Tongatapu":{"long":["وقت عادی تونگا","وقت تابستانی تونگا"]},"Pacific/Truk":{"long":["وقت چوئوک","وقت چوئوک"]},"Pacific/Funafuti":{"long":["وقت تووالو","وقت تووالو"]},"America/Montevideo":{"long":["وقت عادی اروگوئه","وقت تابستانی اروگوئه"]},"Pacific/Efate":{"long":["وقت عادی واناتو","وقت تابستانی واناتو"]},"America/Caracas":{"long":["وقت ونزوئلا","وقت ونزوئلا"]},"Asia/Vladivostok":{"long":["وقت عادی ولادی‌وستوک","وقت تابستانی ولادی‌وستوک"]},"Europe/Volgograd":{"long":["وقت عادی ولگاگراد","وقت تابستانی ولگاگراد"]},"Antarctica/Vostok":{"long":["وقت وستوک","وقت وستوک"]},"Pacific/Wake":{"long":["وقت جزیرهٔ ویک","وقت جزیرهٔ ویک"]},"Pacific/Wallis":{"long":["وقت والیس و فوتونا","وقت والیس و فوتونا"]},"Asia/Yakutsk":{"long":["وقت عادی یاکوتسک","وقت تابستانی یاکوتسک"]},"America/Whitehorse":{"long":["وقت یوکان","وقت یوکان"]},"UTC":{"long":["زمان هماهنگ جهانی","زمان هماهنگ جهانی"],"short":["UTC","UTC"]}},"gmtFormat":"{0} گرینویچ","hourFormat":"‎+HH:mm;‎−HH:mm","dateFormat":{"full":"EEEE d MMMM y","long":"d MMMM y","medium":"d MMM y","short":"y/M/d"},"timeFormat":{"full":"H:mm:ss (zzzz)","long":"H:mm:ss (z)","medium":"H:mm:ss","short":"H:mm"},"dateTimeFormat":{"full":"{1}، ساعت {0}","long":"{1}، ساعت {0}","medium":"{1}،‏ {0}","short":"{1}،‏ {0}"},"formats":{"gregory":{"Bh":"h B","Bhm":"h:mm B","Bhms":"h:mm:ss B","d":"d","E":"ccc","EBhm":"E h:mm B","EBhms":"E h:mm:ss B","Ed":"E d","Ehm":"E h:mm a","EHm":"E H:mm","Ehms":"E h:mm:ss a","EHms":"E H:mm:ss","Gy":"y G","GyMd":"y/M/d GGGGG","GyMMM":"MMM y G","GyMMMd":"d MMM y G","GyMMMEd":"E d MMM y G","h":"h a","H":"H","HHmmZ":"HH:mm (Z)","hm":"h:mm a","Hm":"H:mm","hms":"h:mm:ss a","Hms":"H:mm:ss","hmsv":"h:mm:ss a v","Hmsv":"H:mm:ss v","hmv":"h:mm a v","Hmv":"H:mm v","M":"L","Md":"M/d","MEd":"E M/d","MMM":"LLL","MMMd":"d LLL","MMMEd":"E d LLL","MMMMd":"d LLLL","MMMMEd":"E d LLLL","mmss":"mm:ss","ms":"m:ss","y":"y","yM":"y/M","yMd":"y/M/d","yMEd":"E y/M/d","yMMM":"MMM y","yMMMd":"d MMM y","yMMMEd":"E d MMM y","yMMMM":"MMMM y","yMMMMEEEEd":"EEEE d MMMM y","EEEE d MMMM y":"EEEE d MMMM y","d MMMM y":"d MMMM y","d MMM y":"d MMM y","y/M/d":"y/M/d","H:mm:ss (zzzz)":"H:mm:ss (zzzz)","H:mm:ss (z)":"H:mm:ss (z)","H:mm:ss":"H:mm:ss","H:mm":"H:mm","EEEE d MMMM y، ساعت H:mm:ss (zzzz)":"EEEE d MMMM y، ساعت H:mm:ss (zzzz)","d MMMM y، ساعت H:mm:ss (zzzz)":"d MMMM y، ساعت H:mm:ss (zzzz)","d MMM y،‏ H:mm:ss (zzzz)":"d MMM y،‏ H:mm:ss (zzzz)","y/M/d،‏ H:mm:ss (zzzz)":"y/M/d،‏ H:mm:ss (zzzz)","d،‏ H:mm:ss (zzzz)":"d،‏ H:mm:ss (zzzz)","E،‏ H:mm:ss (zzzz)":"ccc،‏ H:mm:ss (zzzz)","Ed،‏ H:mm:ss (zzzz)":"E d،‏ H:mm:ss (zzzz)","Gy،‏ H:mm:ss (zzzz)":"y G،‏ H:mm:ss (zzzz)","GyMd،‏ H:mm:ss (zzzz)":"y/M/d GGGGG،‏ H:mm:ss (zzzz)","GyMMM،‏ H:mm:ss (zzzz)":"MMM y G،‏ H:mm:ss (zzzz)","GyMMMd،‏ H:mm:ss (zzzz)":"d MMM y G،‏ H:mm:ss (zzzz)","GyMMMEd،‏ H:mm:ss (zzzz)":"E d MMM y G،‏ H:mm:ss (zzzz)","M،‏ H:mm:ss (zzzz)":"L،‏ H:mm:ss (zzzz)","Md،‏ H:mm:ss (zzzz)":"M/d،‏ H:mm:ss (zzzz)","MEd،‏ H:mm:ss (zzzz)":"E M/d،‏ H:mm:ss (zzzz)","MMM،‏ H:mm:ss (zzzz)":"LLL،‏ H:mm:ss (zzzz)","MMMd،‏ H:mm:ss (zzzz)":"d LLL،‏ H:mm:ss (zzzz)","MMMEd،‏ H:mm:ss (zzzz)":"E d LLL،‏ H:mm:ss (zzzz)","MMMMd، ساعت H:mm:ss (zzzz)":"d LLLL، ساعت H:mm:ss (zzzz)","MMMMEd، ساعت H:mm:ss (zzzz)":"E d LLLL، ساعت H:mm:ss (zzzz)","y،‏ H:mm:ss (zzzz)":"y،‏ H:mm:ss (zzzz)","yM،‏ H:mm:ss (zzzz)":"y/M،‏ H:mm:ss (zzzz)","yMd،‏ H:mm:ss (zzzz)":"y/M/d،‏ H:mm:ss (zzzz)","yMEd،‏ H:mm:ss (zzzz)":"E y/M/d،‏ H:mm:ss (zzzz)","yMMM،‏ H:mm:ss (zzzz)":"MMM y،‏ H:mm:ss (zzzz)","yMMMd،‏ H:mm:ss (zzzz)":"d MMM y،‏ H:mm:ss (zzzz)","yMMMEd،‏ H:mm:ss (zzzz)":"E d MMM y،‏ H:mm:ss (zzzz)","yMMMM، ساعت H:mm:ss (zzzz)":"MMMM y، ساعت H:mm:ss (zzzz)","yMMMMEEEEd، ساعت H:mm:ss (zzzz)":"EEEE d MMMM y، ساعت H:mm:ss (zzzz)","EEEE d MMMM y، ساعت H:mm:ss (z)":"EEEE d MMMM y، ساعت H:mm:ss (z)","d MMMM y، ساعت H:mm:ss (z)":"d MMMM y، ساعت H:mm:ss (z)","d MMM y،‏ H:mm:ss (z)":"d MMM y،‏ H:mm:ss (z)","y/M/d،‏ H:mm:ss (z)":"y/M/d،‏ H:mm:ss (z)","d،‏ H:mm:ss (z)":"d،‏ H:mm:ss (z)","E،‏ H:mm:ss (z)":"ccc،‏ H:mm:ss (z)","Ed،‏ H:mm:ss (z)":"E d،‏ H:mm:ss (z)","Gy،‏ H:mm:ss (z)":"y G،‏ H:mm:ss (z)","GyMd،‏ H:mm:ss (z)":"y/M/d GGGGG،‏ H:mm:ss (z)","GyMMM،‏ H:mm:ss (z)":"MMM y G،‏ H:mm:ss (z)","GyMMMd،‏ H:mm:ss (z)":"d MMM y G،‏ H:mm:ss (z)","GyMMMEd،‏ H:mm:ss (z)":"E d MMM y G،‏ H:mm:ss (z)","M،‏ H:mm:ss (z)":"L،‏ H:mm:ss (z)","Md،‏ H:mm:ss (z)":"M/d،‏ H:mm:ss (z)","MEd،‏ H:mm:ss (z)":"E M/d،‏ H:mm:ss (z)","MMM،‏ H:mm:ss (z)":"LLL،‏ H:mm:ss (z)","MMMd،‏ H:mm:ss (z)":"d LLL،‏ H:mm:ss (z)","MMMEd،‏ H:mm:ss (z)":"E d LLL،‏ H:mm:ss (z)","MMMMd، ساعت H:mm:ss (z)":"d LLLL، ساعت H:mm:ss (z)","MMMMEd، ساعت H:mm:ss (z)":"E d LLLL، ساعت H:mm:ss (z)","y،‏ H:mm:ss (z)":"y،‏ H:mm:ss (z)","yM،‏ H:mm:ss (z)":"y/M،‏ H:mm:ss (z)","yMd،‏ H:mm:ss (z)":"y/M/d،‏ H:mm:ss (z)","yMEd،‏ H:mm:ss (z)":"E y/M/d،‏ H:mm:ss (z)","yMMM،‏ H:mm:ss (z)":"MMM y،‏ H:mm:ss (z)","yMMMd،‏ H:mm:ss (z)":"d MMM y،‏ H:mm:ss (z)","yMMMEd،‏ H:mm:ss (z)":"E d MMM y،‏ H:mm:ss (z)","yMMMM، ساعت H:mm:ss (z)":"MMMM y، ساعت H:mm:ss (z)","yMMMMEEEEd، ساعت H:mm:ss (z)":"EEEE d MMMM y، ساعت H:mm:ss (z)","EEEE d MMMM y، ساعت H:mm:ss":"EEEE d MMMM y، ساعت H:mm:ss","d MMMM y، ساعت H:mm:ss":"d MMMM y، ساعت H:mm:ss","d MMM y،‏ H:mm:ss":"d MMM y،‏ H:mm:ss","y/M/d،‏ H:mm:ss":"y/M/d،‏ H:mm:ss","d،‏ H:mm:ss":"d،‏ H:mm:ss","E،‏ H:mm:ss":"ccc،‏ H:mm:ss","Ed،‏ H:mm:ss":"E d،‏ H:mm:ss","Gy،‏ H:mm:ss":"y G،‏ H:mm:ss","GyMd،‏ H:mm:ss":"y/M/d GGGGG،‏ H:mm:ss","GyMMM،‏ H:mm:ss":"MMM y G،‏ H:mm:ss","GyMMMd،‏ H:mm:ss":"d MMM y G،‏ H:mm:ss","GyMMMEd،‏ H:mm:ss":"E d MMM y G،‏ H:mm:ss","M،‏ H:mm:ss":"L،‏ H:mm:ss","Md،‏ H:mm:ss":"M/d،‏ H:mm:ss","MEd،‏ H:mm:ss":"E M/d،‏ H:mm:ss","MMM،‏ H:mm:ss":"LLL،‏ H:mm:ss","MMMd،‏ H:mm:ss":"d LLL،‏ H:mm:ss","MMMEd،‏ H:mm:ss":"E d LLL،‏ H:mm:ss","MMMMd، ساعت H:mm:ss":"d LLLL، ساعت H:mm:ss","MMMMEd، ساعت H:mm:ss":"E d LLLL، ساعت H:mm:ss","y،‏ H:mm:ss":"y،‏ H:mm:ss","yM،‏ H:mm:ss":"y/M،‏ H:mm:ss","yMd،‏ H:mm:ss":"y/M/d،‏ H:mm:ss","yMEd،‏ H:mm:ss":"E y/M/d،‏ H:mm:ss","yMMM،‏ H:mm:ss":"MMM y،‏ H:mm:ss","yMMMd،‏ H:mm:ss":"d MMM y،‏ H:mm:ss","yMMMEd،‏ H:mm:ss":"E d MMM y،‏ H:mm:ss","yMMMM، ساعت H:mm:ss":"MMMM y، ساعت H:mm:ss","yMMMMEEEEd، ساعت H:mm:ss":"EEEE d MMMM y، ساعت H:mm:ss","EEEE d MMMM y، ساعت H:mm":"EEEE d MMMM y، ساعت H:mm","d MMMM y، ساعت H:mm":"d MMMM y، ساعت H:mm","d MMM y،‏ H:mm":"d MMM y،‏ H:mm","y/M/d،‏ H:mm":"y/M/d،‏ H:mm","d،‏ H:mm":"d،‏ H:mm","E،‏ H:mm":"ccc،‏ H:mm","Ed،‏ H:mm":"E d،‏ H:mm","Gy،‏ H:mm":"y G،‏ H:mm","GyMd،‏ H:mm":"y/M/d GGGGG،‏ H:mm","GyMMM،‏ H:mm":"MMM y G،‏ H:mm","GyMMMd،‏ H:mm":"d MMM y G،‏ H:mm","GyMMMEd،‏ H:mm":"E d MMM y G،‏ H:mm","M،‏ H:mm":"L،‏ H:mm","Md،‏ H:mm":"M/d،‏ H:mm","MEd،‏ H:mm":"E M/d،‏ H:mm","MMM،‏ H:mm":"LLL،‏ H:mm","MMMd،‏ H:mm":"d LLL،‏ H:mm","MMMEd،‏ H:mm":"E d LLL،‏ H:mm","MMMMd، ساعت H:mm":"d LLLL، ساعت H:mm","MMMMEd، ساعت H:mm":"E d LLLL، ساعت H:mm","y،‏ H:mm":"y،‏ H:mm","yM،‏ H:mm":"y/M،‏ H:mm","yMd،‏ H:mm":"y/M/d،‏ H:mm","yMEd،‏ H:mm":"E y/M/d،‏ H:mm","yMMM،‏ H:mm":"MMM y،‏ H:mm","yMMMd،‏ H:mm":"d MMM y،‏ H:mm","yMMMEd،‏ H:mm":"E d MMM y،‏ H:mm","yMMMM، ساعت H:mm":"MMMM y، ساعت H:mm","yMMMMEEEEd، ساعت H:mm":"EEEE d MMMM y، ساعت H:mm","EEEE d MMMM y، ساعت Bh":"EEEE d MMMM y، ساعت h B","d MMMM y، ساعت Bh":"d MMMM y، ساعت h B","d MMM y،‏ Bh":"d MMM y،‏ h B","y/M/d،‏ Bh":"y/M/d،‏ h B","d،‏ Bh":"d،‏ h B","E،‏ Bh":"ccc،‏ h B","Ed،‏ Bh":"E d،‏ h B","Gy،‏ Bh":"y G،‏ h B","GyMd،‏ Bh":"y/M/d GGGGG،‏ h B","GyMMM،‏ Bh":"MMM y G،‏ h B","GyMMMd،‏ Bh":"d MMM y G،‏ h B","GyMMMEd،‏ Bh":"E d MMM y G،‏ h B","M،‏ Bh":"L،‏ h B","Md،‏ Bh":"M/d،‏ h B","MEd،‏ Bh":"E M/d،‏ h B","MMM،‏ Bh":"LLL،‏ h B","MMMd،‏ Bh":"d LLL،‏ h B","MMMEd،‏ Bh":"E d LLL،‏ h B","MMMMd، ساعت Bh":"d LLLL، ساعت h B","MMMMEd، ساعت Bh":"E d LLLL، ساعت h B","y،‏ Bh":"y،‏ h B","yM،‏ Bh":"y/M،‏ h B","yMd،‏ Bh":"y/M/d،‏ h B","yMEd،‏ Bh":"E y/M/d،‏ h B","yMMM،‏ Bh":"MMM y،‏ h B","yMMMd،‏ Bh":"d MMM y،‏ h B","yMMMEd،‏ Bh":"E d MMM y،‏ h B","yMMMM، ساعت Bh":"MMMM y، ساعت h B","yMMMMEEEEd، ساعت Bh":"EEEE d MMMM y، ساعت h B","EEEE d MMMM y، ساعت Bhm":"EEEE d MMMM y، ساعت h:mm B","d MMMM y، ساعت Bhm":"d MMMM y، ساعت h:mm B","d MMM y،‏ Bhm":"d MMM y،‏ h:mm B","y/M/d،‏ Bhm":"y/M/d،‏ h:mm B","d،‏ Bhm":"d،‏ h:mm B","E،‏ Bhm":"ccc،‏ h:mm B","Ed،‏ Bhm":"E d،‏ h:mm B","Gy،‏ Bhm":"y G،‏ h:mm B","GyMd،‏ Bhm":"y/M/d GGGGG،‏ h:mm B","GyMMM،‏ Bhm":"MMM y G،‏ h:mm B","GyMMMd،‏ Bhm":"d MMM y G،‏ h:mm B","GyMMMEd،‏ Bhm":"E d MMM y G،‏ h:mm B","M،‏ Bhm":"L،‏ h:mm B","Md،‏ Bhm":"M/d،‏ h:mm B","MEd،‏ Bhm":"E M/d،‏ h:mm B","MMM،‏ Bhm":"LLL،‏ h:mm B","MMMd،‏ Bhm":"d LLL،‏ h:mm B","MMMEd،‏ Bhm":"E d LLL،‏ h:mm B","MMMMd، ساعت Bhm":"d LLLL، ساعت h:mm B","MMMMEd، ساعت Bhm":"E d LLLL، ساعت h:mm B","y،‏ Bhm":"y،‏ h:mm B","yM،‏ Bhm":"y/M،‏ h:mm B","yMd،‏ Bhm":"y/M/d،‏ h:mm B","yMEd،‏ Bhm":"E y/M/d،‏ h:mm B","yMMM،‏ Bhm":"MMM y،‏ h:mm B","yMMMd،‏ Bhm":"d MMM y،‏ h:mm B","yMMMEd،‏ Bhm":"E d MMM y،‏ h:mm B","yMMMM، ساعت Bhm":"MMMM y، ساعت h:mm B","yMMMMEEEEd، ساعت Bhm":"EEEE d MMMM y، ساعت h:mm B","EEEE d MMMM y، ساعت Bhms":"EEEE d MMMM y، ساعت h:mm:ss B","d MMMM y، ساعت Bhms":"d MMMM y، ساعت h:mm:ss B","d MMM y،‏ Bhms":"d MMM y،‏ h:mm:ss B","y/M/d،‏ Bhms":"y/M/d،‏ h:mm:ss B","d،‏ Bhms":"d،‏ h:mm:ss B","E،‏ Bhms":"ccc،‏ h:mm:ss B","Ed،‏ Bhms":"E d،‏ h:mm:ss B","Gy،‏ Bhms":"y G،‏ h:mm:ss B","GyMd،‏ Bhms":"y/M/d GGGGG،‏ h:mm:ss B","GyMMM،‏ Bhms":"MMM y G،‏ h:mm:ss B","GyMMMd،‏ Bhms":"d MMM y G،‏ h:mm:ss B","GyMMMEd،‏ Bhms":"E d MMM y G،‏ h:mm:ss B","M،‏ Bhms":"L،‏ h:mm:ss B","Md،‏ Bhms":"M/d،‏ h:mm:ss B","MEd،‏ Bhms":"E M/d،‏ h:mm:ss B","MMM،‏ Bhms":"LLL،‏ h:mm:ss B","MMMd،‏ Bhms":"d LLL،‏ h:mm:ss B","MMMEd،‏ Bhms":"E d LLL،‏ h:mm:ss B","MMMMd، ساعت Bhms":"d LLLL، ساعت h:mm:ss B","MMMMEd، ساعت Bhms":"E d LLLL، ساعت h:mm:ss B","y،‏ Bhms":"y،‏ h:mm:ss B","yM،‏ Bhms":"y/M،‏ h:mm:ss B","yMd،‏ Bhms":"y/M/d،‏ h:mm:ss B","yMEd،‏ Bhms":"E y/M/d،‏ h:mm:ss B","yMMM،‏ Bhms":"MMM y،‏ h:mm:ss B","yMMMd،‏ Bhms":"d MMM y،‏ h:mm:ss B","yMMMEd،‏ Bhms":"E d MMM y،‏ h:mm:ss B","yMMMM، ساعت Bhms":"MMMM y، ساعت h:mm:ss B","yMMMMEEEEd، ساعت Bhms":"EEEE d MMMM y، ساعت h:mm:ss B","EEEE d MMMM y، ساعت h":"EEEE d MMMM y، ساعت h a","d MMMM y، ساعت h":"d MMMM y، ساعت h a","d MMM y،‏ h":"d MMM y،‏ h a","y/M/d،‏ h":"y/M/d،‏ h a","d،‏ h":"d،‏ h a","E،‏ h":"ccc،‏ h a","Ed،‏ h":"E d،‏ h a","Gy،‏ h":"y G،‏ h a","GyMd،‏ h":"y/M/d GGGGG،‏ h a","GyMMM،‏ h":"MMM y G،‏ h a","GyMMMd،‏ h":"d MMM y G،‏ h a","GyMMMEd،‏ h":"E d MMM y G،‏ h a","M،‏ h":"L،‏ h a","Md،‏ h":"M/d،‏ h a","MEd،‏ h":"E M/d،‏ h a","MMM،‏ h":"LLL،‏ h a","MMMd،‏ h":"d LLL،‏ h a","MMMEd،‏ h":"E d LLL،‏ h a","MMMMd، ساعت h":"d LLLL، ساعت h a","MMMMEd، ساعت h":"E d LLLL، ساعت h a","y،‏ h":"y،‏ h a","yM،‏ h":"y/M،‏ h a","yMd،‏ h":"y/M/d،‏ h a","yMEd،‏ h":"E y/M/d،‏ h a","yMMM،‏ h":"MMM y،‏ h a","yMMMd،‏ h":"d MMM y،‏ h a","yMMMEd،‏ h":"E d MMM y،‏ h a","yMMMM، ساعت h":"MMMM y، ساعت h a","yMMMMEEEEd، ساعت h":"EEEE d MMMM y، ساعت h a","EEEE d MMMM y، ساعت H":"EEEE d MMMM y، ساعت H","d MMMM y، ساعت H":"d MMMM y، ساعت H","d MMM y،‏ H":"d MMM y،‏ H","y/M/d،‏ H":"y/M/d،‏ H","d،‏ H":"d،‏ H","E،‏ H":"ccc،‏ H","Ed،‏ H":"E d،‏ H","Gy،‏ H":"y G،‏ H","GyMd،‏ H":"y/M/d GGGGG،‏ H","GyMMM،‏ H":"MMM y G،‏ H","GyMMMd،‏ H":"d MMM y G،‏ H","GyMMMEd،‏ H":"E d MMM y G،‏ H","M،‏ H":"L،‏ H","Md،‏ H":"M/d،‏ H","MEd،‏ H":"E M/d،‏ H","MMM،‏ H":"LLL،‏ H","MMMd،‏ H":"d LLL،‏ H","MMMEd،‏ H":"E d LLL،‏ H","MMMMd، ساعت H":"d LLLL، ساعت H","MMMMEd، ساعت H":"E d LLLL، ساعت H","y،‏ H":"y،‏ H","yM،‏ H":"y/M،‏ H","yMd،‏ H":"y/M/d،‏ H","yMEd،‏ H":"E y/M/d،‏ H","yMMM،‏ H":"MMM y،‏ H","yMMMd،‏ H":"d MMM y،‏ H","yMMMEd،‏ H":"E d MMM y،‏ H","yMMMM، ساعت H":"MMMM y، ساعت H","yMMMMEEEEd، ساعت H":"EEEE d MMMM y، ساعت H","EEEE d MMMM y، ساعت HHmmZ":"EEEE d MMMM y، ساعت HH:mm (Z)","d MMMM y، ساعت HHmmZ":"d MMMM y، ساعت HH:mm (Z)","d MMM y،‏ HHmmZ":"d MMM y،‏ HH:mm (Z)","y/M/d،‏ HHmmZ":"y/M/d،‏ HH:mm (Z)","d،‏ HHmmZ":"d،‏ HH:mm (Z)","E،‏ HHmmZ":"ccc،‏ HH:mm (Z)","Ed،‏ HHmmZ":"E d،‏ HH:mm (Z)","Gy،‏ HHmmZ":"y G،‏ HH:mm (Z)","GyMd،‏ HHmmZ":"y/M/d GGGGG،‏ HH:mm (Z)","GyMMM،‏ HHmmZ":"MMM y G،‏ HH:mm (Z)","GyMMMd،‏ HHmmZ":"d MMM y G،‏ HH:mm (Z)","GyMMMEd،‏ HHmmZ":"E d MMM y G،‏ HH:mm (Z)","M،‏ HHmmZ":"L،‏ HH:mm (Z)","Md،‏ HHmmZ":"M/d،‏ HH:mm (Z)","MEd،‏ HHmmZ":"E M/d،‏ HH:mm (Z)","MMM،‏ HHmmZ":"LLL،‏ HH:mm (Z)","MMMd،‏ HHmmZ":"d LLL،‏ HH:mm (Z)","MMMEd،‏ HHmmZ":"E d LLL،‏ HH:mm (Z)","MMMMd، ساعت HHmmZ":"d LLLL، ساعت HH:mm (Z)","MMMMEd، ساعت HHmmZ":"E d LLLL، ساعت HH:mm (Z)","y،‏ HHmmZ":"y،‏ HH:mm (Z)","yM،‏ HHmmZ":"y/M،‏ HH:mm (Z)","yMd،‏ HHmmZ":"y/M/d،‏ HH:mm (Z)","yMEd،‏ HHmmZ":"E y/M/d،‏ HH:mm (Z)","yMMM،‏ HHmmZ":"MMM y،‏ HH:mm (Z)","yMMMd،‏ HHmmZ":"d MMM y،‏ HH:mm (Z)","yMMMEd،‏ HHmmZ":"E d MMM y،‏ HH:mm (Z)","yMMMM، ساعت HHmmZ":"MMMM y، ساعت HH:mm (Z)","yMMMMEEEEd، ساعت HHmmZ":"EEEE d MMMM y، ساعت HH:mm (Z)","EEEE d MMMM y، ساعت hm":"EEEE d MMMM y، ساعت h:mm a","d MMMM y، ساعت hm":"d MMMM y، ساعت h:mm a","d MMM y،‏ hm":"d MMM y،‏ h:mm a","y/M/d،‏ hm":"y/M/d،‏ h:mm a","d،‏ hm":"d،‏ h:mm a","E،‏ hm":"ccc،‏ h:mm a","Ed،‏ hm":"E d،‏ h:mm a","Gy،‏ hm":"y G،‏ h:mm a","GyMd،‏ hm":"y/M/d GGGGG،‏ h:mm a","GyMMM،‏ hm":"MMM y G،‏ h:mm a","GyMMMd،‏ hm":"d MMM y G،‏ h:mm a","GyMMMEd،‏ hm":"E d MMM y G،‏ h:mm a","M،‏ hm":"L،‏ h:mm a","Md،‏ hm":"M/d،‏ h:mm a","MEd،‏ hm":"E M/d،‏ h:mm a","MMM،‏ hm":"LLL،‏ h:mm a","MMMd،‏ hm":"d LLL،‏ h:mm a","MMMEd،‏ hm":"E d LLL،‏ h:mm a","MMMMd، ساعت hm":"d LLLL، ساعت h:mm a","MMMMEd، ساعت hm":"E d LLLL، ساعت h:mm a","y،‏ hm":"y،‏ h:mm a","yM،‏ hm":"y/M،‏ h:mm a","yMd،‏ hm":"y/M/d،‏ h:mm a","yMEd،‏ hm":"E y/M/d،‏ h:mm a","yMMM،‏ hm":"MMM y،‏ h:mm a","yMMMd،‏ hm":"d MMM y،‏ h:mm a","yMMMEd،‏ hm":"E d MMM y،‏ h:mm a","yMMMM، ساعت hm":"MMMM y، ساعت h:mm a","yMMMMEEEEd، ساعت hm":"EEEE d MMMM y، ساعت h:mm a","EEEE d MMMM y، ساعت Hm":"EEEE d MMMM y، ساعت H:mm","d MMMM y، ساعت Hm":"d MMMM y، ساعت H:mm","d MMM y،‏ Hm":"d MMM y،‏ H:mm","y/M/d،‏ Hm":"y/M/d،‏ H:mm","d،‏ Hm":"d،‏ H:mm","E،‏ Hm":"ccc،‏ H:mm","Ed،‏ Hm":"E d،‏ H:mm","Gy،‏ Hm":"y G،‏ H:mm","GyMd،‏ Hm":"y/M/d GGGGG،‏ H:mm","GyMMM،‏ Hm":"MMM y G،‏ H:mm","GyMMMd،‏ Hm":"d MMM y G،‏ H:mm","GyMMMEd،‏ Hm":"E d MMM y G،‏ H:mm","M،‏ Hm":"L،‏ H:mm","Md،‏ Hm":"M/d،‏ H:mm","MEd،‏ Hm":"E M/d،‏ H:mm","MMM،‏ Hm":"LLL،‏ H:mm","MMMd،‏ Hm":"d LLL،‏ H:mm","MMMEd،‏ Hm":"E d LLL،‏ H:mm","MMMMd، ساعت Hm":"d LLLL، ساعت H:mm","MMMMEd، ساعت Hm":"E d LLLL، ساعت H:mm","y،‏ Hm":"y،‏ H:mm","yM،‏ Hm":"y/M،‏ H:mm","yMd،‏ Hm":"y/M/d،‏ H:mm","yMEd،‏ Hm":"E y/M/d،‏ H:mm","yMMM،‏ Hm":"MMM y،‏ H:mm","yMMMd،‏ Hm":"d MMM y،‏ H:mm","yMMMEd،‏ Hm":"E d MMM y،‏ H:mm","yMMMM، ساعت Hm":"MMMM y، ساعت H:mm","yMMMMEEEEd، ساعت Hm":"EEEE d MMMM y، ساعت H:mm","EEEE d MMMM y، ساعت hms":"EEEE d MMMM y، ساعت h:mm:ss a","d MMMM y، ساعت hms":"d MMMM y، ساعت h:mm:ss a","d MMM y،‏ hms":"d MMM y،‏ h:mm:ss a","y/M/d،‏ hms":"y/M/d،‏ h:mm:ss a","d،‏ hms":"d،‏ h:mm:ss a","E،‏ hms":"ccc،‏ h:mm:ss a","Ed،‏ hms":"E d،‏ h:mm:ss a","Gy،‏ hms":"y G،‏ h:mm:ss a","GyMd،‏ hms":"y/M/d GGGGG،‏ h:mm:ss a","GyMMM،‏ hms":"MMM y G،‏ h:mm:ss a","GyMMMd،‏ hms":"d MMM y G،‏ h:mm:ss a","GyMMMEd،‏ hms":"E d MMM y G،‏ h:mm:ss a","M،‏ hms":"L،‏ h:mm:ss a","Md،‏ hms":"M/d،‏ h:mm:ss a","MEd،‏ hms":"E M/d،‏ h:mm:ss a","MMM،‏ hms":"LLL،‏ h:mm:ss a","MMMd،‏ hms":"d LLL،‏ h:mm:ss a","MMMEd،‏ hms":"E d LLL،‏ h:mm:ss a","MMMMd، ساعت hms":"d LLLL، ساعت h:mm:ss a","MMMMEd، ساعت hms":"E d LLLL، ساعت h:mm:ss a","y،‏ hms":"y،‏ h:mm:ss a","yM،‏ hms":"y/M،‏ h:mm:ss a","yMd،‏ hms":"y/M/d،‏ h:mm:ss a","yMEd،‏ hms":"E y/M/d،‏ h:mm:ss a","yMMM،‏ hms":"MMM y،‏ h:mm:ss a","yMMMd،‏ hms":"d MMM y،‏ h:mm:ss a","yMMMEd،‏ hms":"E d MMM y،‏ h:mm:ss a","yMMMM، ساعت hms":"MMMM y، ساعت h:mm:ss a","yMMMMEEEEd، ساعت hms":"EEEE d MMMM y، ساعت h:mm:ss a","EEEE d MMMM y، ساعت Hms":"EEEE d MMMM y، ساعت H:mm:ss","d MMMM y، ساعت Hms":"d MMMM y، ساعت H:mm:ss","d MMM y،‏ Hms":"d MMM y،‏ H:mm:ss","y/M/d،‏ Hms":"y/M/d،‏ H:mm:ss","d،‏ Hms":"d،‏ H:mm:ss","E،‏ Hms":"ccc،‏ H:mm:ss","Ed،‏ Hms":"E d،‏ H:mm:ss","Gy،‏ Hms":"y G،‏ H:mm:ss","GyMd،‏ Hms":"y/M/d GGGGG،‏ H:mm:ss","GyMMM،‏ Hms":"MMM y G،‏ H:mm:ss","GyMMMd،‏ Hms":"d MMM y G،‏ H:mm:ss","GyMMMEd،‏ Hms":"E d MMM y G،‏ H:mm:ss","M،‏ Hms":"L،‏ H:mm:ss","Md،‏ Hms":"M/d،‏ H:mm:ss","MEd،‏ Hms":"E M/d،‏ H:mm:ss","MMM،‏ Hms":"LLL،‏ H:mm:ss","MMMd،‏ Hms":"d LLL،‏ H:mm:ss","MMMEd،‏ Hms":"E d LLL،‏ H:mm:ss","MMMMd، ساعت Hms":"d LLLL، ساعت H:mm:ss","MMMMEd، ساعت Hms":"E d LLLL، ساعت H:mm:ss","y،‏ Hms":"y،‏ H:mm:ss","yM،‏ Hms":"y/M،‏ H:mm:ss","yMd،‏ Hms":"y/M/d،‏ H:mm:ss","yMEd،‏ Hms":"E y/M/d،‏ H:mm:ss","yMMM،‏ Hms":"MMM y،‏ H:mm:ss","yMMMd،‏ Hms":"d MMM y،‏ H:mm:ss","yMMMEd،‏ Hms":"E d MMM y،‏ H:mm:ss","yMMMM، ساعت Hms":"MMMM y، ساعت H:mm:ss","yMMMMEEEEd، ساعت Hms":"EEEE d MMMM y، ساعت H:mm:ss","EEEE d MMMM y، ساعت hmsv":"EEEE d MMMM y، ساعت h:mm:ss a v","d MMMM y، ساعت hmsv":"d MMMM y، ساعت h:mm:ss a v","d MMM y،‏ hmsv":"d MMM y،‏ h:mm:ss a v","y/M/d،‏ hmsv":"y/M/d،‏ h:mm:ss a v","d،‏ hmsv":"d،‏ h:mm:ss a v","E،‏ hmsv":"ccc،‏ h:mm:ss a v","Ed،‏ hmsv":"E d،‏ h:mm:ss a v","Gy،‏ hmsv":"y G،‏ h:mm:ss a v","GyMd،‏ hmsv":"y/M/d GGGGG،‏ h:mm:ss a v","GyMMM،‏ hmsv":"MMM y G،‏ h:mm:ss a v","GyMMMd،‏ hmsv":"d MMM y G،‏ h:mm:ss a v","GyMMMEd،‏ hmsv":"E d MMM y G،‏ h:mm:ss a v","M،‏ hmsv":"L،‏ h:mm:ss a v","Md،‏ hmsv":"M/d،‏ h:mm:ss a v","MEd،‏ hmsv":"E M/d،‏ h:mm:ss a v","MMM،‏ hmsv":"LLL،‏ h:mm:ss a v","MMMd،‏ hmsv":"d LLL،‏ h:mm:ss a v","MMMEd،‏ hmsv":"E d LLL،‏ h:mm:ss a v","MMMMd، ساعت hmsv":"d LLLL، ساعت h:mm:ss a v","MMMMEd، ساعت hmsv":"E d LLLL، ساعت h:mm:ss a v","y،‏ hmsv":"y،‏ h:mm:ss a v","yM،‏ hmsv":"y/M،‏ h:mm:ss a v","yMd،‏ hmsv":"y/M/d،‏ h:mm:ss a v","yMEd،‏ hmsv":"E y/M/d،‏ h:mm:ss a v","yMMM،‏ hmsv":"MMM y،‏ h:mm:ss a v","yMMMd،‏ hmsv":"d MMM y،‏ h:mm:ss a v","yMMMEd،‏ hmsv":"E d MMM y،‏ h:mm:ss a v","yMMMM، ساعت hmsv":"MMMM y، ساعت h:mm:ss a v","yMMMMEEEEd، ساعت hmsv":"EEEE d MMMM y، ساعت h:mm:ss a v","EEEE d MMMM y، ساعت Hmsv":"EEEE d MMMM y، ساعت H:mm:ss v","d MMMM y، ساعت Hmsv":"d MMMM y، ساعت H:mm:ss v","d MMM y،‏ Hmsv":"d MMM y،‏ H:mm:ss v","y/M/d،‏ Hmsv":"y/M/d،‏ H:mm:ss v","d،‏ Hmsv":"d،‏ H:mm:ss v","E،‏ Hmsv":"ccc،‏ H:mm:ss v","Ed،‏ Hmsv":"E d،‏ H:mm:ss v","Gy،‏ Hmsv":"y G،‏ H:mm:ss v","GyMd،‏ Hmsv":"y/M/d GGGGG،‏ H:mm:ss v","GyMMM،‏ Hmsv":"MMM y G،‏ H:mm:ss v","GyMMMd،‏ Hmsv":"d MMM y G،‏ H:mm:ss v","GyMMMEd،‏ Hmsv":"E d MMM y G،‏ H:mm:ss v","M،‏ Hmsv":"L،‏ H:mm:ss v","Md،‏ Hmsv":"M/d،‏ H:mm:ss v","MEd،‏ Hmsv":"E M/d،‏ H:mm:ss v","MMM،‏ Hmsv":"LLL،‏ H:mm:ss v","MMMd،‏ Hmsv":"d LLL،‏ H:mm:ss v","MMMEd،‏ Hmsv":"E d LLL،‏ H:mm:ss v","MMMMd، ساعت Hmsv":"d LLLL، ساعت H:mm:ss v","MMMMEd، ساعت Hmsv":"E d LLLL، ساعت H:mm:ss v","y،‏ Hmsv":"y،‏ H:mm:ss v","yM،‏ Hmsv":"y/M،‏ H:mm:ss v","yMd،‏ Hmsv":"y/M/d،‏ H:mm:ss v","yMEd،‏ Hmsv":"E y/M/d،‏ H:mm:ss v","yMMM،‏ Hmsv":"MMM y،‏ H:mm:ss v","yMMMd،‏ Hmsv":"d MMM y،‏ H:mm:ss v","yMMMEd،‏ Hmsv":"E d MMM y،‏ H:mm:ss v","yMMMM، ساعت Hmsv":"MMMM y، ساعت H:mm:ss v","yMMMMEEEEd، ساعت Hmsv":"EEEE d MMMM y، ساعت H:mm:ss v","EEEE d MMMM y، ساعت hmv":"EEEE d MMMM y، ساعت h:mm a v","d MMMM y، ساعت hmv":"d MMMM y، ساعت h:mm a v","d MMM y،‏ hmv":"d MMM y،‏ h:mm a v","y/M/d،‏ hmv":"y/M/d،‏ h:mm a v","d،‏ hmv":"d،‏ h:mm a v","E،‏ hmv":"ccc،‏ h:mm a v","Ed،‏ hmv":"E d،‏ h:mm a v","Gy،‏ hmv":"y G،‏ h:mm a v","GyMd،‏ hmv":"y/M/d GGGGG،‏ h:mm a v","GyMMM،‏ hmv":"MMM y G،‏ h:mm a v","GyMMMd،‏ hmv":"d MMM y G،‏ h:mm a v","GyMMMEd،‏ hmv":"E d MMM y G،‏ h:mm a v","M،‏ hmv":"L،‏ h:mm a v","Md،‏ hmv":"M/d،‏ h:mm a v","MEd،‏ hmv":"E M/d،‏ h:mm a v","MMM،‏ hmv":"LLL،‏ h:mm a v","MMMd،‏ hmv":"d LLL،‏ h:mm a v","MMMEd،‏ hmv":"E d LLL،‏ h:mm a v","MMMMd، ساعت hmv":"d LLLL، ساعت h:mm a v","MMMMEd، ساعت hmv":"E d LLLL، ساعت h:mm a v","y،‏ hmv":"y،‏ h:mm a v","yM،‏ hmv":"y/M،‏ h:mm a v","yMd،‏ hmv":"y/M/d،‏ h:mm a v","yMEd،‏ hmv":"E y/M/d،‏ h:mm a v","yMMM،‏ hmv":"MMM y،‏ h:mm a v","yMMMd،‏ hmv":"d MMM y،‏ h:mm a v","yMMMEd،‏ hmv":"E d MMM y،‏ h:mm a v","yMMMM، ساعت hmv":"MMMM y، ساعت h:mm a v","yMMMMEEEEd، ساعت hmv":"EEEE d MMMM y، ساعت h:mm a v","EEEE d MMMM y، ساعت Hmv":"EEEE d MMMM y، ساعت H:mm v","d MMMM y، ساعت Hmv":"d MMMM y، ساعت H:mm v","d MMM y،‏ Hmv":"d MMM y،‏ H:mm v","y/M/d،‏ Hmv":"y/M/d،‏ H:mm v","d،‏ Hmv":"d،‏ H:mm v","E،‏ Hmv":"ccc،‏ H:mm v","Ed،‏ Hmv":"E d،‏ H:mm v","Gy،‏ Hmv":"y G،‏ H:mm v","GyMd،‏ Hmv":"y/M/d GGGGG،‏ H:mm v","GyMMM،‏ Hmv":"MMM y G،‏ H:mm v","GyMMMd،‏ Hmv":"d MMM y G،‏ H:mm v","GyMMMEd،‏ Hmv":"E d MMM y G،‏ H:mm v","M،‏ Hmv":"L،‏ H:mm v","Md،‏ Hmv":"M/d،‏ H:mm v","MEd،‏ Hmv":"E M/d،‏ H:mm v","MMM،‏ Hmv":"LLL،‏ H:mm v","MMMd،‏ Hmv":"d LLL،‏ H:mm v","MMMEd،‏ Hmv":"E d LLL،‏ H:mm v","MMMMd، ساعت Hmv":"d LLLL، ساعت H:mm v","MMMMEd، ساعت Hmv":"E d LLLL، ساعت H:mm v","y،‏ Hmv":"y،‏ H:mm v","yM،‏ Hmv":"y/M،‏ H:mm v","yMd،‏ Hmv":"y/M/d،‏ H:mm v","yMEd،‏ Hmv":"E y/M/d،‏ H:mm v","yMMM،‏ Hmv":"MMM y،‏ H:mm v","yMMMd،‏ Hmv":"d MMM y،‏ H:mm v","yMMMEd،‏ Hmv":"E d MMM y،‏ H:mm v","yMMMM، ساعت Hmv":"MMMM y، ساعت H:mm v","yMMMMEEEEd، ساعت Hmv":"EEEE d MMMM y، ساعت H:mm v","EEEE d MMMM y، ساعت mmss":"EEEE d MMMM y، ساعت mm:ss","d MMMM y، ساعت mmss":"d MMMM y، ساعت mm:ss","d MMM y،‏ mmss":"d MMM y،‏ mm:ss","y/M/d،‏ mmss":"y/M/d،‏ mm:ss","d،‏ mmss":"d،‏ mm:ss","E،‏ mmss":"ccc،‏ mm:ss","Ed،‏ mmss":"E d،‏ mm:ss","Gy،‏ mmss":"y G،‏ mm:ss","GyMd،‏ mmss":"y/M/d GGGGG،‏ mm:ss","GyMMM،‏ mmss":"MMM y G،‏ mm:ss","GyMMMd،‏ mmss":"d MMM y G،‏ mm:ss","GyMMMEd،‏ mmss":"E d MMM y G،‏ mm:ss","M،‏ mmss":"L،‏ mm:ss","Md،‏ mmss":"M/d،‏ mm:ss","MEd،‏ mmss":"E M/d،‏ mm:ss","MMM،‏ mmss":"LLL،‏ mm:ss","MMMd،‏ mmss":"d LLL،‏ mm:ss","MMMEd،‏ mmss":"E d LLL،‏ mm:ss","MMMMd، ساعت mmss":"d LLLL، ساعت mm:ss","MMMMEd، ساعت mmss":"E d LLLL، ساعت mm:ss","y،‏ mmss":"y،‏ mm:ss","yM،‏ mmss":"y/M،‏ mm:ss","yMd،‏ mmss":"y/M/d،‏ mm:ss","yMEd،‏ mmss":"E y/M/d،‏ mm:ss","yMMM،‏ mmss":"MMM y،‏ mm:ss","yMMMd،‏ mmss":"d MMM y،‏ mm:ss","yMMMEd،‏ mmss":"E d MMM y،‏ mm:ss","yMMMM، ساعت mmss":"MMMM y، ساعت mm:ss","yMMMMEEEEd، ساعت mmss":"EEEE d MMMM y، ساعت mm:ss","EEEE d MMMM y، ساعت ms":"EEEE d MMMM y، ساعت m:ss","d MMMM y، ساعت ms":"d MMMM y، ساعت m:ss","d MMM y،‏ ms":"d MMM y،‏ m:ss","y/M/d،‏ ms":"y/M/d،‏ m:ss","d،‏ ms":"d،‏ m:ss","E،‏ ms":"ccc،‏ m:ss","Ed،‏ ms":"E d،‏ m:ss","Gy،‏ ms":"y G،‏ m:ss","GyMd،‏ ms":"y/M/d GGGGG،‏ m:ss","GyMMM،‏ ms":"MMM y G،‏ m:ss","GyMMMd،‏ ms":"d MMM y G،‏ m:ss","GyMMMEd،‏ ms":"E d MMM y G،‏ m:ss","M،‏ ms":"L،‏ m:ss","Md،‏ ms":"M/d،‏ m:ss","MEd،‏ ms":"E M/d،‏ m:ss","MMM،‏ ms":"LLL،‏ m:ss","MMMd،‏ ms":"d LLL،‏ m:ss","MMMEd،‏ ms":"E d LLL،‏ m:ss","MMMMd، ساعت ms":"d LLLL، ساعت m:ss","MMMMEd، ساعت ms":"E d LLLL، ساعت m:ss","y،‏ ms":"y،‏ m:ss","yM،‏ ms":"y/M،‏ m:ss","yMd،‏ ms":"y/M/d،‏ m:ss","yMEd،‏ ms":"E y/M/d،‏ m:ss","yMMM،‏ ms":"MMM y،‏ m:ss","yMMMd،‏ ms":"d MMM y،‏ m:ss","yMMMEd،‏ ms":"E d MMM y،‏ m:ss","yMMMM، ساعت ms":"MMMM y، ساعت m:ss","yMMMMEEEEd، ساعت ms":"EEEE d MMMM y، ساعت m:ss"}},"intervalFormats":{"intervalFormatFallback":"{0} تا {1}","Bh":{"B":"h B تا h B","h":"h تا h B"},"Bhm":{"B":"h:mm B تا h:mm B","h":"h:mm تا h:mm B","m":"h:mm تا h:mm B"},"d":{"d":"d تا d"},"Gy":{"G":"y G تا y G","y":"y تا y G"},"GyM":{"G":"y/M GGGGG تا y/M GGGGG","M":"y/M تا y/M GGGGG","y":"y/M تا y/M GGGGG"},"GyMd":{"d":"y/M/d تا y/M/d GGGGG","G":"y/M/d GGGGG تا y/M/d GGGGG","M":"y/M/d تا y/M/d GGGGG","y":"y/M/d تا y/M/d GGGGG"},"GyMEd":{"d":"E y/M/d تا E y/M/d GGGGG","G":"E y/M/d GGGGG تا E y/M/d GGGGG","M":"E y/M/d تا E y/M/d GGGGG","y":"E y/M/d تا E y/M/d GGGGG"},"GyMMM":{"G":"MMM y G تا MMM y G","M":"LLL تا MMM y G","y":"MMM y تا MMM y G"},"GyMMMd":{"d":"d تا d MMM y G","G":"d MMM y G تا d MMM y G","M":"d LLL تا d MMM y G","y":"d MMM y تا d MMM y G"},"GyMMMEd":{"d":"E d LLL تا E d MMM y G","G":"E d MMM y G تا E d MMM y G","M":"E d LLL تا E d MMM y G","y":"E d MMM y تا E d MMM y G"},"h":{"a":"h a تا h a","h":"h تا h a"},"H":{"H":"H تا H"},"hm":{"a":"h:mm a تا h:mm a","h":"h:mm تا h:mm a","m":"h:mm تا h:mm a"},"Hm":{"H":"H:mm تا H:mm","m":"H:mm تا H:mm"},"hmv":{"a":"h:mm a تا h:mm a v","h":"h:mm تا h:mm a v","m":"h:mm تا h:mm a v"},"Hmv":{"H":"H:mm تا H:mm v","m":"H:mm تا H:mm v"},"hv":{"a":"h a تا h a v","h":"h تا h a v"},"Hv":{"H":"H تا H v"},"M":{"M":"M تا M"},"Md":{"d":"M/d تا M/d","M":"M/d تا M/d"},"MEd":{"d":"E M/d تا E M/d","M":"E M/d تا E M/d"},"MMM":{"M":"LLL تا LLL"},"MMMd":{"d":"d تا d LLL","M":"d LLL تا d LLL"},"MMMEd":{"d":"E d LLL تا E d LLL","M":"E d LLL تا E d LLL"},"y":{"y":"y تا y"},"yM":{"M":"y/M تا y/M","y":"y/M تا y/M"},"yMd":{"d":"y/M/d تا y/M/d","M":"y/M/d تا y/M/d","y":"y/M/d تا y/M/d"},"yMEd":{"d":"E y/M/d تا E y/M/d","M":"E y/M/d تا E y/M/d","y":"E y/M/d تا E y/M/d"},"yMMM":{"M":"LLL تا MMM y","y":"MMM y تا MMM y"},"yMMMd":{"d":"d تا d MMM y","M":"d LLL تا d MMM y","y":"d MMM y تا d MMM y"},"yMMMEd":{"d":"E d LLL تا E d MMM y","M":"E d LLL تا E d MMM y","y":"E d MMM y تا E d MMM y"},"yMMMM":{"M":"LLLL تا MMMM y","y":"MMMM y تا MMMM y"}},"hourCycle":"","nu":["arabext"],"ca":["persian","gregory","islamic","islamicc","islamic-tbla"],"hc":["","h23"]},"locale":"fa"}
+{
+  "data": {
+    "am": "ق.ظ.",
+    "pm": "ب.ظ.",
+    "weekday": {
+      "narrow": [
+        "ی",
+        "د",
+        "س",
+        "چ",
+        "پ",
+        "ج",
+        "ش"
+      ],
+      "short": [
+        "یکشنبه",
+        "دوشنبه",
+        "سه‌شنبه",
+        "چهارشنبه",
+        "پنجشنبه",
+        "جمعه",
+        "شنبه"
+      ],
+      "long": [
+        "یکشنبه",
+        "دوشنبه",
+        "سه‌شنبه",
+        "چهارشنبه",
+        "پنجشنبه",
+        "جمعه",
+        "شنبه"
+      ]
+    },
+    "era": {
+      "narrow": {
+        "BC": "ق",
+        "AD": "م"
+      },
+      "short": {
+        "BC": "ق.م.",
+        "AD": "م."
+      },
+      "long": {
+        "BC": "قبل از میلاد",
+        "AD": "میلادی"
+      }
+    },
+    "month": {
+      "narrow": [
+        "ژ",
+        "ف",
+        "م",
+        "آ",
+        "م",
+        "ژ",
+        "ژ",
+        "ا",
+        "س",
+        "ا",
+        "ن",
+        "د"
+      ],
+      "short": [
+        "ژانویه",
+        "فوریه",
+        "مارس",
+        "آوریل",
+        "مه",
+        "ژوئن",
+        "ژوئیه",
+        "اوت",
+        "سپتامبر",
+        "اکتبر",
+        "نوامبر",
+        "دسامبر"
+      ],
+      "long": [
+        "ژانویهٔ",
+        "فوریهٔ",
+        "مارس",
+        "آوریل",
+        "مهٔ",
+        "ژوئن",
+        "ژوئیهٔ",
+        "اوت",
+        "سپتامبر",
+        "اکتبر",
+        "نوامبر",
+        "دسامبر"
+      ]
+    },
+    "timeZoneName": {
+      "Asia/Kabul": {
+        "long": [
+          "وقت افغانستان",
+          "وقت افغانستان"
+        ]
+      },
+      "Africa/Maputo": {
+        "long": [
+          "وقت مرکز افریقا",
+          "وقت مرکز افریقا"
+        ]
+      },
+      "Africa/Bujumbura": {
+        "long": [
+          "وقت مرکز افریقا",
+          "وقت مرکز افریقا"
+        ]
+      },
+      "Africa/Gaborone": {
+        "long": [
+          "وقت مرکز افریقا",
+          "وقت مرکز افریقا"
+        ]
+      },
+      "Africa/Lubumbashi": {
+        "long": [
+          "وقت مرکز افریقا",
+          "وقت مرکز افریقا"
+        ]
+      },
+      "Africa/Blantyre": {
+        "long": [
+          "وقت مرکز افریقا",
+          "وقت مرکز افریقا"
+        ]
+      },
+      "Africa/Kigali": {
+        "long": [
+          "وقت مرکز افریقا",
+          "وقت مرکز افریقا"
+        ]
+      },
+      "Africa/Lusaka": {
+        "long": [
+          "وقت مرکز افریقا",
+          "وقت مرکز افریقا"
+        ]
+      },
+      "Africa/Harare": {
+        "long": [
+          "وقت مرکز افریقا",
+          "وقت مرکز افریقا"
+        ]
+      },
+      "Africa/Nairobi": {
+        "long": [
+          "وقت شرق افریقا",
+          "وقت شرق افریقا"
+        ]
+      },
+      "Africa/Djibouti": {
+        "long": [
+          "وقت شرق افریقا",
+          "وقت شرق افریقا"
+        ]
+      },
+      "Africa/Asmera": {
+        "long": [
+          "وقت شرق افریقا",
+          "وقت شرق افریقا"
+        ]
+      },
+      "Africa/Addis_Ababa": {
+        "long": [
+          "وقت شرق افریقا",
+          "وقت شرق افریقا"
+        ]
+      },
+      "Indian/Comoro": {
+        "long": [
+          "وقت شرق افریقا",
+          "وقت شرق افریقا"
+        ]
+      },
+      "Indian/Antananarivo": {
+        "long": [
+          "وقت شرق افریقا",
+          "وقت شرق افریقا"
+        ]
+      },
+      "Africa/Mogadishu": {
+        "long": [
+          "وقت شرق افریقا",
+          "وقت شرق افریقا"
+        ]
+      },
+      "Africa/Dar_es_Salaam": {
+        "long": [
+          "وقت شرق افریقا",
+          "وقت شرق افریقا"
+        ]
+      },
+      "Africa/Kampala": {
+        "long": [
+          "وقت شرق افریقا",
+          "وقت شرق افریقا"
+        ]
+      },
+      "Indian/Mayotte": {
+        "long": [
+          "وقت شرق افریقا",
+          "وقت شرق افریقا"
+        ]
+      },
+      "Africa/Johannesburg": {
+        "long": [
+          "وقت عادی جنوب افریقا",
+          "وقت عادی جنوب افریقا"
+        ]
+      },
+      "Africa/Maseru": {
+        "long": [
+          "وقت عادی جنوب افریقا",
+          "وقت عادی جنوب افریقا"
+        ]
+      },
+      "Africa/Mbabane": {
+        "long": [
+          "وقت عادی جنوب افریقا",
+          "وقت عادی جنوب افریقا"
+        ]
+      },
+      "Africa/Lagos": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Africa/Luanda": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Africa/Porto-Novo": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Africa/Kinshasa": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Africa/Bangui": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Africa/Brazzaville": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Africa/Douala": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Africa/Libreville": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Africa/Malabo": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Africa/Niamey": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Africa/Ndjamena": {
+        "long": [
+          "وقت عادی غرب افریقا",
+          "وقت تابستانی غرب افریقا"
+        ]
+      },
+      "Asia/Aqtobe": {
+        "long": [
+          "وقت غرب قزاقستان",
+          "وقت غرب قزاقستان"
+        ]
+      },
+      "America/Juneau": {
+        "long": [
+          "وقت عادی آلاسکا",
+          "وقت تابستانی آلاسکا"
+        ]
+      },
+      "Asia/Almaty": {
+        "long": [
+          "وقت شرق قزاقستان",
+          "وقت شرق قزاقستان"
+        ]
+      },
+      "America/Manaus": {
+        "long": [
+          "وقت عادی آمازون",
+          "وقت تابستانی آمازون"
+        ]
+      },
+      "America/Chicago": {
+        "long": [
+          "وقت عادی مرکز امریکا",
+          "وقت تابستانی مرکز امریکا"
+        ]
+      },
+      "America/Belize": {
+        "long": [
+          "وقت عادی مرکز امریکا",
+          "وقت تابستانی مرکز امریکا"
+        ]
+      },
+      "America/Winnipeg": {
+        "long": [
+          "وقت عادی مرکز امریکا",
+          "وقت تابستانی مرکز امریکا"
+        ]
+      },
+      "America/Costa_Rica": {
+        "long": [
+          "وقت عادی مرکز امریکا",
+          "وقت تابستانی مرکز امریکا"
+        ]
+      },
+      "America/Guatemala": {
+        "long": [
+          "وقت عادی مرکز امریکا",
+          "وقت تابستانی مرکز امریکا"
+        ]
+      },
+      "America/Tegucigalpa": {
+        "long": [
+          "وقت عادی مرکز امریکا",
+          "وقت تابستانی مرکز امریکا"
+        ]
+      },
+      "America/Mexico_City": {
+        "long": [
+          "وقت عادی مرکز امریکا",
+          "وقت تابستانی مرکز امریکا"
+        ]
+      },
+      "America/El_Salvador": {
+        "long": [
+          "وقت عادی مرکز امریکا",
+          "وقت تابستانی مرکز امریکا"
+        ]
+      },
+      "America/New_York": {
+        "long": [
+          "وقت عادی شرق امریکا",
+          "وقت تابستانی شرق امریکا"
+        ]
+      },
+      "America/Nassau": {
+        "long": [
+          "وقت عادی شرق امریکا",
+          "وقت تابستانی شرق امریکا"
+        ]
+      },
+      "America/Toronto": {
+        "long": [
+          "وقت عادی شرق امریکا",
+          "وقت تابستانی شرق امریکا"
+        ]
+      },
+      "America/Port-au-Prince": {
+        "long": [
+          "وقت عادی شرق امریکا",
+          "وقت تابستانی شرق امریکا"
+        ]
+      },
+      "America/Jamaica": {
+        "long": [
+          "وقت عادی شرق امریکا",
+          "وقت تابستانی شرق امریکا"
+        ]
+      },
+      "America/Cayman": {
+        "long": [
+          "وقت عادی شرق امریکا",
+          "وقت تابستانی شرق امریکا"
+        ]
+      },
+      "America/Panama": {
+        "long": [
+          "وقت عادی شرق امریکا",
+          "وقت تابستانی شرق امریکا"
+        ]
+      },
+      "America/Denver": {
+        "long": [
+          "وقت عادی کوهستانی امریکا",
+          "وقت تابستانی کوهستانی امریکا"
+        ]
+      },
+      "America/Edmonton": {
+        "long": [
+          "وقت عادی کوهستانی امریکا",
+          "وقت تابستانی کوهستانی امریکا"
+        ]
+      },
+      "America/Hermosillo": {
+        "long": [
+          "وقت عادی کوهستانی امریکا",
+          "وقت تابستانی کوهستانی امریکا"
+        ]
+      },
+      "America/Los_Angeles": {
+        "long": [
+          "وقت عادی غرب امریکا",
+          "وقت تابستانی غرب امریکا"
+        ]
+      },
+      "America/Vancouver": {
+        "long": [
+          "وقت عادی غرب امریکا",
+          "وقت تابستانی غرب امریکا"
+        ]
+      },
+      "America/Tijuana": {
+        "long": [
+          "وقت عادی غرب امریکا",
+          "وقت تابستانی غرب امریکا"
+        ]
+      },
+      "Asia/Anadyr": {
+        "long": [
+          "وقت عادی آنادیر",
+          "وقت تابستانی آنادیر"
+        ]
+      },
+      "Pacific/Apia": {
+        "long": [
+          "وقت عادی آپیا",
+          "وقت تابستانی آپیا"
+        ]
+      },
+      "Asia/Riyadh": {
+        "long": [
+          "وقت عادی عربستان",
+          "وقت تابستانی عربستان"
+        ]
+      },
+      "Asia/Bahrain": {
+        "long": [
+          "وقت عادی عربستان",
+          "وقت تابستانی عربستان"
+        ]
+      },
+      "Asia/Baghdad": {
+        "long": [
+          "وقت عادی عربستان",
+          "وقت تابستانی عربستان"
+        ]
+      },
+      "Asia/Kuwait": {
+        "long": [
+          "وقت عادی عربستان",
+          "وقت تابستانی عربستان"
+        ]
+      },
+      "Asia/Qatar": {
+        "long": [
+          "وقت عادی عربستان",
+          "وقت تابستانی عربستان"
+        ]
+      },
+      "Asia/Aden": {
+        "long": [
+          "وقت عادی عربستان",
+          "وقت تابستانی عربستان"
+        ]
+      },
+      "America/Buenos_Aires": {
+        "long": [
+          "وقت عادی آرژانتین",
+          "وقت تابستانی آرژانتین"
+        ]
+      },
+      "America/Argentina/San_Luis": {
+        "long": [
+          "وقت عادی غرب آرژانتین",
+          "وقت تابستانی غرب آرژانتین"
+        ]
+      },
+      "Asia/Ashgabat": {
+        "long": [
+          "وقت عادی ترکمنستان",
+          "وقت تابستانی ترکمنستان"
+        ]
+      },
+      "America/Halifax": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Antigua": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Anguilla": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Aruba": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Barbados": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "Atlantic/Bermuda": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Kralendijk": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Curacao": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Dominica": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Grenada": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Thule": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Guadeloupe": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/St_Kitts": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/St_Lucia": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Marigot": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Martinique": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Montserrat": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Puerto_Rico": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Lower_Princes": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Port_of_Spain": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/St_Vincent": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/Tortola": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "America/St_Thomas": {
+        "long": [
+          "وقت عادی آتلانتیک",
+          "وقت تابستانی آتلانتیک"
+        ]
+      },
+      "Australia/Adelaide": {
+        "long": [
+          "وقت عادی مرکز استرالیا",
+          "وقت تابستانی مرکز استرالیا"
+        ]
+      },
+      "Australia/Eucla": {
+        "long": [
+          "وقت عادی مرکز-غرب استرالیا",
+          "وقت تابستانی مرکز-غرب استرالیا"
+        ]
+      },
+      "Australia/Sydney": {
+        "long": [
+          "وقت عادی شرق استرالیا",
+          "وقت تابستانی شرق استرالیا"
+        ]
+      },
+      "Australia/Perth": {
+        "long": [
+          "وقت عادی غرب استرالیا",
+          "وقت تابستانی غرب استرالیا"
+        ]
+      },
+      "Atlantic/Azores": {
+        "long": [
+          "وقت عادی آزور",
+          "وقت تابستانی آزور"
+        ]
+      },
+      "Asia/Thimphu": {
+        "long": [
+          "وقت بوتان",
+          "وقت بوتان"
+        ]
+      },
+      "America/La_Paz": {
+        "long": [
+          "وقت بولیوی",
+          "وقت بولیوی"
+        ]
+      },
+      "Asia/Kuching": {
+        "long": [
+          "وقت مالزی",
+          "وقت مالزی"
+        ]
+      },
+      "America/Sao_Paulo": {
+        "long": [
+          "وقت عادی برازیلیا",
+          "وقت تابستانی برازیلیا"
+        ]
+      },
+      "Europe/London": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Asia/Brunei": {
+        "long": [
+          "وقت برونئی دارالسلام",
+          "وقت برونئی دارالسلام"
+        ]
+      },
+      "Atlantic/Cape_Verde": {
+        "long": [
+          "وقت عادی کیپ‌ورد",
+          "وقت تابستانی کیپ‌ورد"
+        ]
+      },
+      "Pacific/Saipan": {
+        "long": [
+          "وقت جزایر ماریانای شمالی",
+          "وقت جزایر ماریانای شمالی"
+        ]
+      },
+      "Pacific/Guam": {
+        "long": [
+          "وقت عادی گوام",
+          "وقت عادی گوام"
+        ]
+      },
+      "Pacific/Chatham": {
+        "long": [
+          "وقت عادی چت‌هام",
+          "وقت تابستانی چت‌هام"
+        ]
+      },
+      "America/Santiago": {
+        "long": [
+          "وقت عادی شیلی",
+          "وقت تابستانی شیلی"
+        ]
+      },
+      "Asia/Shanghai": {
+        "long": [
+          "وقت عادی چین",
+          "وقت تابستانی چین"
+        ]
+      },
+      "Asia/Choibalsan": {
+        "long": [
+          "وقت عادی چویبالسان",
+          "وقت تابستانی چویبالسان"
+        ]
+      },
+      "Indian/Christmas": {
+        "long": [
+          "وقت جزیرهٔ کریسمس",
+          "وقت جزیرهٔ کریسمس"
+        ]
+      },
+      "Indian/Cocos": {
+        "long": [
+          "وقت جزایر کوکوس",
+          "وقت جزایر کوکوس"
+        ]
+      },
+      "America/Bogota": {
+        "long": [
+          "وقت عادی کلمبیا",
+          "وقت تابستانی کلمبیا"
+        ]
+      },
+      "Pacific/Rarotonga": {
+        "long": [
+          "وقت عادی جزایر کوک",
+          "وقت تابستانی جزایر کوک"
+        ]
+      },
+      "America/Havana": {
+        "long": [
+          "وقت عادی کوبا",
+          "وقت تابستانی کوبا"
+        ]
+      },
+      "Antarctica/Davis": {
+        "long": [
+          "وقت دیویس",
+          "وقت دیویس"
+        ]
+      },
+      "Antarctica/DumontDUrville": {
+        "long": [
+          "وقت دومون دورویل",
+          "وقت دومون دورویل"
+        ]
+      },
+      "Asia/Dushanbe": {
+        "long": [
+          "وقت تاجیکستان",
+          "وقت تاجیکستان"
+        ]
+      },
+      "America/Paramaribo": {
+        "long": [
+          "وقت سورینام",
+          "وقت سورینام"
+        ]
+      },
+      "Asia/Dili": {
+        "long": [
+          "وقت تیمور شرقی",
+          "وقت تیمور شرقی"
+        ]
+      },
+      "Pacific/Easter": {
+        "long": [
+          "وقت عادی جزیرهٔ ایستر",
+          "وقت تابستانی جزیرهٔ ایستر"
+        ]
+      },
+      "America/Guayaquil": {
+        "long": [
+          "وقت اکوادور",
+          "وقت اکوادور"
+        ]
+      },
+      "Europe/Paris": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Andorra": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Tirane": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Vienna": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Sarajevo": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Brussels": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Zurich": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Prague": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Berlin": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Copenhagen": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Madrid": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Gibraltar": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Zagreb": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Budapest": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Rome": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Vaduz": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Luxembourg": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Monaco": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Podgorica": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Skopje": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Malta": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Amsterdam": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Oslo": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Warsaw": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Belgrade": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Stockholm": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Ljubljana": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Arctic/Longyearbyen": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Bratislava": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/San_Marino": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Africa/Tunis": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Vatican": {
+        "long": [
+          "وقت عادی مرکز اروپا",
+          "وقت تابستانی مرکز اروپا"
+        ]
+      },
+      "Europe/Bucharest": {
+        "long": [
+          "وقت عادی شرق اروپا",
+          "وقت تابستانی شرق اروپا"
+        ]
+      },
+      "Europe/Mariehamn": {
+        "long": [
+          "وقت عادی شرق اروپا",
+          "وقت تابستانی شرق اروپا"
+        ]
+      },
+      "Europe/Sofia": {
+        "long": [
+          "وقت عادی شرق اروپا",
+          "وقت تابستانی شرق اروپا"
+        ]
+      },
+      "Asia/Nicosia": {
+        "long": [
+          "وقت عادی شرق اروپا",
+          "وقت تابستانی شرق اروپا"
+        ]
+      },
+      "Africa/Cairo": {
+        "long": [
+          "وقت عادی شرق اروپا",
+          "وقت تابستانی شرق اروپا"
+        ]
+      },
+      "Europe/Helsinki": {
+        "long": [
+          "وقت عادی شرق اروپا",
+          "وقت تابستانی شرق اروپا"
+        ]
+      },
+      "Europe/Athens": {
+        "long": [
+          "وقت عادی شرق اروپا",
+          "وقت تابستانی شرق اروپا"
+        ]
+      },
+      "Asia/Amman": {
+        "long": [
+          "وقت عادی شرق اروپا",
+          "وقت تابستانی شرق اروپا"
+        ]
+      },
+      "Asia/Beirut": {
+        "long": [
+          "وقت عادی شرق اروپا",
+          "وقت تابستانی شرق اروپا"
+        ]
+      },
+      "Asia/Damascus": {
+        "long": [
+          "وقت عادی شرق اروپا",
+          "وقت تابستانی شرق اروپا"
+        ]
+      },
+      "Europe/Minsk": {
+        "long": [
+          "وقت تابستانی مکان‌های دیگر شرق اروپا",
+          "وقت تابستانی مکان‌های دیگر شرق اروپا"
+        ]
+      },
+      "Europe/Kaliningrad": {
+        "long": [
+          "وقت تابستانی مکان‌های دیگر شرق اروپا",
+          "وقت تابستانی مکان‌های دیگر شرق اروپا"
+        ]
+      },
+      "Atlantic/Canary": {
+        "long": [
+          "وقت عادی غرب اروپا",
+          "وقت تابستانی غرب اروپا"
+        ]
+      },
+      "Atlantic/Faeroe": {
+        "long": [
+          "وقت عادی غرب اروپا",
+          "وقت تابستانی غرب اروپا"
+        ]
+      },
+      "Atlantic/Stanley": {
+        "long": [
+          "وقت عادی جزایر فالکلند",
+          "وقت تابستانی جزایر فالکلند"
+        ]
+      },
+      "Pacific/Fiji": {
+        "long": [
+          "وقت عادی فیجی",
+          "وقت تابستانی فیجی"
+        ]
+      },
+      "America/Cayenne": {
+        "long": [
+          "وقت گویان فرانسه",
+          "وقت گویان فرانسه"
+        ]
+      },
+      "Indian/Kerguelen": {
+        "long": [
+          "وقت سرزمین‌های جنوبی و جنوبگان فرانسه",
+          "وقت سرزمین‌های جنوبی و جنوبگان فرانسه"
+        ]
+      },
+      "Asia/Bishkek": {
+        "long": [
+          "وقت قرقیزستان",
+          "وقت قرقیزستان"
+        ]
+      },
+      "Pacific/Galapagos": {
+        "long": [
+          "وقت گالاپاگوس",
+          "وقت گالاپاگوس"
+        ]
+      },
+      "Pacific/Gambier": {
+        "long": [
+          "وقت گامبیه",
+          "وقت گامبیه"
+        ]
+      },
+      "Pacific/Tarawa": {
+        "long": [
+          "وقت جزایر گیلبرت",
+          "وقت جزایر گیلبرت"
+        ]
+      },
+      "Atlantic/Reykjavik": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Africa/Ouagadougou": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Africa/Abidjan": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Africa/Accra": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Africa/Banjul": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Africa/Conakry": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Africa/Bamako": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Africa/Nouakchott": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Atlantic/St_Helena": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Africa/Freetown": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Africa/Dakar": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "Africa/Lome": {
+        "long": [
+          "وقت گرینویچ",
+          "وقت گرینویچ"
+        ]
+      },
+      "America/Scoresbysund": {
+        "long": [
+          "وقت عادی شرق گرینلند",
+          "وقت تابستانی شرق گرینلند"
+        ]
+      },
+      "America/Godthab": {
+        "long": [
+          "وقت عادی غرب گرینلند",
+          "وقت تابستانی غرب گرینلند"
+        ]
+      },
+      "Asia/Dubai": {
+        "long": [
+          "وقت عادی خلیج فارس",
+          "وقت عادی خلیج فارس"
+        ]
+      },
+      "Asia/Muscat": {
+        "long": [
+          "وقت عادی خلیج فارس",
+          "وقت عادی خلیج فارس"
+        ]
+      },
+      "America/Guyana": {
+        "long": [
+          "وقت گویان",
+          "وقت گویان"
+        ]
+      },
+      "Pacific/Honolulu": {
+        "long": [
+          "وقت عادی هاوایی‐الوشن",
+          "وقت تابستانی هاوایی‐الوشن"
+        ]
+      },
+      "Asia/Hong_Kong": {
+        "long": [
+          "وقت عادی هنگ‌کنگ",
+          "وقت تابستانی هنگ‌کنگ"
+        ]
+      },
+      "Asia/Hovd": {
+        "long": [
+          "وقت عادی خوود",
+          "وقت تابستانی خوود"
+        ]
+      },
+      "Asia/Calcutta": {
+        "long": [
+          "وقت هند",
+          "وقت هند"
+        ]
+      },
+      "Asia/Colombo": {
+        "long": [
+          "وقت لانکا",
+          "وقت لانکا"
+        ]
+      },
+      "Indian/Chagos": {
+        "long": [
+          "وقت اقیانوس هند",
+          "وقت اقیانوس هند"
+        ]
+      },
+      "Asia/Bangkok": {
+        "long": [
+          "وقت هندوچین",
+          "وقت هندوچین"
+        ]
+      },
+      "Asia/Phnom_Penh": {
+        "long": [
+          "وقت هندوچین",
+          "وقت هندوچین"
+        ]
+      },
+      "Asia/Vientiane": {
+        "long": [
+          "وقت هندوچین",
+          "وقت هندوچین"
+        ]
+      },
+      "Asia/Makassar": {
+        "long": [
+          "وقت مرکز اندونزی",
+          "وقت مرکز اندونزی"
+        ]
+      },
+      "Asia/Jayapura": {
+        "long": [
+          "وقت شرق اندونزی",
+          "وقت شرق اندونزی"
+        ]
+      },
+      "Asia/Jakarta": {
+        "long": [
+          "وقت غرب اندونزی",
+          "وقت غرب اندونزی"
+        ]
+      },
+      "Asia/Tehran": {
+        "long": [
+          "وقت عادی ایران",
+          "وقت تابستانی ایران"
+        ]
+      },
+      "Asia/Irkutsk": {
+        "long": [
+          "وقت عادی ایرکوتسک",
+          "وقت تابستانی ایرکوتسک"
+        ]
+      },
+      "Asia/Jerusalem": {
+        "long": [
+          "وقت عادی اسرائیل",
+          "وقت تابستانی اسرائیل"
+        ]
+      },
+      "Asia/Tokyo": {
+        "long": [
+          "وقت عادی ژاپن",
+          "وقت تابستانی ژاپن"
+        ]
+      },
+      "Asia/Kamchatka": {
+        "long": [
+          "وقت عادی پتروپاولوسک‐کامچاتسکی",
+          "وقت تابستانی پتروپاولوسک‐کامچاتسکی"
+        ]
+      },
+      "Asia/Karachi": {
+        "long": [
+          "وقت عادی پاکستان",
+          "وقت تابستانی پاکستان"
+        ]
+      },
+      "Asia/Qyzylorda": {
+        "long": [
+          "وقت عادی قیزیل‌اوردا",
+          "وقت تابستانی قیزیل‌اوردا"
+        ]
+      },
+      "Asia/Seoul": {
+        "long": [
+          "وقت عادی کره",
+          "وقت تابستانی کره"
+        ]
+      },
+      "Pacific/Kosrae": {
+        "long": [
+          "وقت کوسرای",
+          "وقت کوسرای"
+        ]
+      },
+      "Asia/Krasnoyarsk": {
+        "long": [
+          "وقت عادی کراسنویارسک",
+          "وقت تابستانی کراسنویارسک"
+        ]
+      },
+      "Europe/Samara": {
+        "long": [
+          "وقت عادی سامارا",
+          "وقت تابستانی سامارا"
+        ]
+      },
+      "Pacific/Kiritimati": {
+        "long": [
+          "وقت جزایر لاین",
+          "وقت جزایر لاین"
+        ]
+      },
+      "Australia/Lord_Howe": {
+        "long": [
+          "وقت عادی لردهو",
+          "وقت تابستانی لردهو"
+        ]
+      },
+      "Asia/Macau": {
+        "long": [
+          "وقت عادی ماکائو",
+          "وقت تابستانی ماکائو"
+        ]
+      },
+      "Antarctica/Macquarie": {
+        "long": [
+          "وقت جزیرهٔ مکواری",
+          "وقت جزیرهٔ مکواری"
+        ]
+      },
+      "Asia/Magadan": {
+        "long": [
+          "وقت عادی ماگادان",
+          "وقت تابستانی ماگادان"
+        ]
+      },
+      "Indian/Maldives": {
+        "long": [
+          "وقت مالدیو",
+          "وقت مالدیو"
+        ]
+      },
+      "Pacific/Marquesas": {
+        "long": [
+          "وقت مارکوئز",
+          "وقت مارکوئز"
+        ]
+      },
+      "Pacific/Majuro": {
+        "long": [
+          "وقت جزایر مارشال",
+          "وقت جزایر مارشال"
+        ]
+      },
+      "Indian/Mauritius": {
+        "long": [
+          "وقت عادی موریس",
+          "وقت تابستانی موریس"
+        ]
+      },
+      "Antarctica/Mawson": {
+        "long": [
+          "وقت ماوسون",
+          "وقت ماوسون"
+        ]
+      },
+      "America/Santa_Isabel": {
+        "long": [
+          "وقت عادی شمال غرب مکزیک",
+          "وقت تابستانی شمال غرب مکزیک"
+        ]
+      },
+      "America/Mazatlan": {
+        "long": [
+          "وقت عادی شرق مکزیک",
+          "وقت تابستانی شرق مکزیک"
+        ]
+      },
+      "Asia/Ulaanbaatar": {
+        "long": [
+          "وقت عادی اولان‌باتور",
+          "وقت تابستانی اولان‌باتور"
+        ]
+      },
+      "Europe/Moscow": {
+        "long": [
+          "وقت عادی مسکو",
+          "وقت تابستانی مسکو"
+        ]
+      },
+      "Asia/Rangoon": {
+        "long": [
+          "وقت میانمار",
+          "وقت میانمار"
+        ]
+      },
+      "Pacific/Nauru": {
+        "long": [
+          "وقت نائورو",
+          "وقت نائورو"
+        ]
+      },
+      "Asia/Katmandu": {
+        "long": [
+          "وقت نپال",
+          "وقت نپال"
+        ]
+      },
+      "Pacific/Noumea": {
+        "long": [
+          "وقت عادی کالدونیای جدید",
+          "وقت تابستانی کالدونیای جدید"
+        ]
+      },
+      "Pacific/Auckland": {
+        "long": [
+          "وقت عادی نیوزیلند",
+          "وقت تابستانی نیوزیلند"
+        ]
+      },
+      "Antarctica/McMurdo": {
+        "long": [
+          "وقت عادی نیوزیلند",
+          "وقت تابستانی نیوزیلند"
+        ]
+      },
+      "America/St_Johns": {
+        "long": [
+          "وقت عادی نیوفاندلند",
+          "وقت تابستانی نیوفاندلند"
+        ]
+      },
+      "Pacific/Niue": {
+        "long": [
+          "وقت نیوئه",
+          "وقت نیوئه"
+        ]
+      },
+      "Pacific/Norfolk": {
+        "long": [
+          "وقت عادی جزیرهٔ نورفولک",
+          "وقت تابستانی جزیرهٔ نورفولک"
+        ]
+      },
+      "America/Noronha": {
+        "long": [
+          "وقت عادی فرناندو دی نورونیا",
+          "وقت تابستانی فرناندو دی نورونیا"
+        ]
+      },
+      "Asia/Novosibirsk": {
+        "long": [
+          "وقت عادی نووسیبیرسک",
+          "وقت تابستانی نووسیبیرسک"
+        ]
+      },
+      "Asia/Omsk": {
+        "long": [
+          "وقت عادی اومسک",
+          "وقت تابستانی اومسک"
+        ]
+      },
+      "Pacific/Palau": {
+        "long": [
+          "وقت پالائو",
+          "وقت پالائو"
+        ]
+      },
+      "Pacific/Port_Moresby": {
+        "long": [
+          "وقت پاپوا گینهٔ نو",
+          "وقت پاپوا گینهٔ نو"
+        ]
+      },
+      "America/Asuncion": {
+        "long": [
+          "وقت عادی پاراگوئه",
+          "وقت تابستانی پاراگوئه"
+        ]
+      },
+      "America/Lima": {
+        "long": [
+          "وقت عادی پرو",
+          "وقت تابستانی پرو"
+        ]
+      },
+      "Asia/Manila": {
+        "long": [
+          "وقت عادی فیلیپین",
+          "وقت تابستانی فیلیپین"
+        ]
+      },
+      "Pacific/Enderbury": {
+        "long": [
+          "وقت جزایر فونیکس",
+          "وقت جزایر فونیکس"
+        ]
+      },
+      "America/Miquelon": {
+        "long": [
+          "وقت عادی سنت‌پیر و میکلون",
+          "وقت تابستانی سنت‌پیر و میکلون"
+        ]
+      },
+      "Pacific/Pitcairn": {
+        "long": [
+          "وقت پیتکایرن",
+          "وقت پیتکایرن"
+        ]
+      },
+      "Pacific/Ponape": {
+        "long": [
+          "وقت پوناپه",
+          "وقت پوناپه"
+        ]
+      },
+      "Asia/Pyongyang": {
+        "long": [
+          "وقت پیونگ‌یانگ",
+          "وقت پیونگ‌یانگ"
+        ]
+      },
+      "Indian/Reunion": {
+        "long": [
+          "وقت رئونیون",
+          "وقت رئونیون"
+        ]
+      },
+      "Antarctica/Rothera": {
+        "long": [
+          "وقت روترا",
+          "وقت روترا"
+        ]
+      },
+      "Asia/Sakhalin": {
+        "long": [
+          "وقت عادی ساخالین",
+          "وقت تابستانی ساخالین"
+        ]
+      },
+      "Pacific/Pago_Pago": {
+        "long": [
+          "وقت عادی ساموا",
+          "وقت تابستانی ساموا"
+        ]
+      },
+      "Indian/Mahe": {
+        "long": [
+          "وقت سیشل",
+          "وقت سیشل"
+        ]
+      },
+      "Asia/Singapore": {
+        "long": [
+          "وقت سنگاپور",
+          "وقت سنگاپور"
+        ]
+      },
+      "Pacific/Guadalcanal": {
+        "long": [
+          "وقت جزایر سلیمان",
+          "وقت جزایر سلیمان"
+        ]
+      },
+      "Atlantic/South_Georgia": {
+        "long": [
+          "وقت جورجیای جنوبی",
+          "وقت جورجیای جنوبی"
+        ]
+      },
+      "Asia/Yekaterinburg": {
+        "long": [
+          "وقت عادی یکاترینبورگ",
+          "وقت تابستانی یکاترینبورگ"
+        ]
+      },
+      "Antarctica/Syowa": {
+        "long": [
+          "وقت شووا",
+          "وقت شووا"
+        ]
+      },
+      "Pacific/Tahiti": {
+        "long": [
+          "وقت تاهیتی",
+          "وقت تاهیتی"
+        ]
+      },
+      "Asia/Taipei": {
+        "long": [
+          "وقت عادی تایپه",
+          "وقت تابستانی تایپه"
+        ]
+      },
+      "Asia/Tashkent": {
+        "long": [
+          "وقت عادی ازبکستان",
+          "وقت تابستانی ازبکستان"
+        ]
+      },
+      "Pacific/Fakaofo": {
+        "long": [
+          "وقت توکلائو",
+          "وقت توکلائو"
+        ]
+      },
+      "Pacific/Tongatapu": {
+        "long": [
+          "وقت عادی تونگا",
+          "وقت تابستانی تونگا"
+        ]
+      },
+      "Pacific/Truk": {
+        "long": [
+          "وقت چوئوک",
+          "وقت چوئوک"
+        ]
+      },
+      "Pacific/Funafuti": {
+        "long": [
+          "وقت تووالو",
+          "وقت تووالو"
+        ]
+      },
+      "America/Montevideo": {
+        "long": [
+          "وقت عادی اروگوئه",
+          "وقت تابستانی اروگوئه"
+        ]
+      },
+      "Pacific/Efate": {
+        "long": [
+          "وقت عادی واناتو",
+          "وقت تابستانی واناتو"
+        ]
+      },
+      "America/Caracas": {
+        "long": [
+          "وقت ونزوئلا",
+          "وقت ونزوئلا"
+        ]
+      },
+      "Asia/Vladivostok": {
+        "long": [
+          "وقت عادی ولادی‌وستوک",
+          "وقت تابستانی ولادی‌وستوک"
+        ]
+      },
+      "Europe/Volgograd": {
+        "long": [
+          "وقت عادی ولگاگراد",
+          "وقت تابستانی ولگاگراد"
+        ]
+      },
+      "Antarctica/Vostok": {
+        "long": [
+          "وقت وستوک",
+          "وقت وستوک"
+        ]
+      },
+      "Pacific/Wake": {
+        "long": [
+          "وقت جزیرهٔ ویک",
+          "وقت جزیرهٔ ویک"
+        ]
+      },
+      "Pacific/Wallis": {
+        "long": [
+          "وقت والیس و فوتونا",
+          "وقت والیس و فوتونا"
+        ]
+      },
+      "Asia/Yakutsk": {
+        "long": [
+          "وقت عادی یاکوتسک",
+          "وقت تابستانی یاکوتسک"
+        ]
+      },
+      "America/Whitehorse": {
+        "long": [
+          "وقت یوکان",
+          "وقت یوکان"
+        ]
+      },
+      "UTC": {
+        "long": [
+          "زمان هماهنگ جهانی",
+          "زمان هماهنگ جهانی"
+        ],
+        "short": [
+          "UTC",
+          "UTC"
+        ]
+      }
+    },
+    "gmtFormat": "{0} گرینویچ",
+    "hourFormat": "‎+HH:mm;‎−HH:mm",
+    "dateFormat": {
+      "full": "EEEE d MMMM y",
+      "long": "d MMMM y",
+      "medium": "d MMM y",
+      "short": "y/M/d"
+    },
+    "timeFormat": {
+      "full": "H:mm:ss (zzzz)",
+      "long": "H:mm:ss (z)",
+      "medium": "H:mm:ss",
+      "short": "H:mm"
+    },
+    "dateTimeFormat": {
+      "full": "{1}، ساعت {0}",
+      "long": "{1}، ساعت {0}",
+      "medium": "{1}،‏ {0}",
+      "short": "{1}،‏ {0}"
+    },
+    "formats": {
+      "gregory": {
+        "Bh": "h B",
+        "Bhm": "h:mm B",
+        "Bhms": "h:mm:ss B",
+        "d": "d",
+        "E": "ccc",
+        "EBhm": "E h:mm B",
+        "EBhms": "E h:mm:ss B",
+        "Ed": "E d",
+        "Ehm": "E h:mm a",
+        "EHm": "E H:mm",
+        "Ehms": "E h:mm:ss a",
+        "EHms": "E H:mm:ss",
+        "Gy": "y G",
+        "GyMd": "y/M/d GGGGG",
+        "GyMMM": "MMM y G",
+        "GyMMMd": "d MMM y G",
+        "GyMMMEd": "E d MMM y G",
+        "h": "h a",
+        "H": "H",
+        "HHmmZ": "HH:mm (Z)",
+        "hm": "h:mm a",
+        "Hm": "H:mm",
+        "hms": "h:mm:ss a",
+        "Hms": "H:mm:ss",
+        "hmsv": "h:mm:ss a v",
+        "Hmsv": "H:mm:ss v",
+        "hmv": "h:mm a v",
+        "Hmv": "H:mm v",
+        "M": "L",
+        "Md": "M/d",
+        "MEd": "E M/d",
+        "MMM": "LLL",
+        "MMMd": "d LLL",
+        "MMMEd": "E d LLL",
+        "MMMMd": "d LLLL",
+        "MMMMEd": "E d LLLL",
+        "mmss": "mm:ss",
+        "ms": "m:ss",
+        "y": "y",
+        "yM": "y/M",
+        "yMd": "y/M/d",
+        "yMEd": "E y/M/d",
+        "yMMM": "MMM y",
+        "yMMMd": "d MMM y",
+        "yMMMEd": "E d MMM y",
+        "yMMMM": "MMMM y",
+        "yMMMMEEEEd": "EEEE d MMMM y",
+        "EEEE d MMMM y": "EEEE d MMMM y",
+        "d MMMM y": "d MMMM y",
+        "d MMM y": "d MMM y",
+        "y/M/d": "y/M/d",
+        "H:mm:ss (zzzz)": "H:mm:ss (zzzz)",
+        "H:mm:ss (z)": "H:mm:ss (z)",
+        "H:mm:ss": "H:mm:ss",
+        "H:mm": "H:mm",
+        "EEEE d MMMM y، ساعت H:mm:ss (zzzz)": "EEEE d MMMM y، ساعت H:mm:ss (zzzz)",
+        "d MMMM y، ساعت H:mm:ss (zzzz)": "d MMMM y، ساعت H:mm:ss (zzzz)",
+        "d MMM y،‏ H:mm:ss (zzzz)": "d MMM y،‏ H:mm:ss (zzzz)",
+        "y/M/d،‏ H:mm:ss (zzzz)": "y/M/d،‏ H:mm:ss (zzzz)",
+        "d،‏ H:mm:ss (zzzz)": "d،‏ H:mm:ss (zzzz)",
+        "E،‏ H:mm:ss (zzzz)": "ccc،‏ H:mm:ss (zzzz)",
+        "Ed،‏ H:mm:ss (zzzz)": "E d،‏ H:mm:ss (zzzz)",
+        "Gy،‏ H:mm:ss (zzzz)": "y G،‏ H:mm:ss (zzzz)",
+        "GyMd،‏ H:mm:ss (zzzz)": "y/M/d GGGGG،‏ H:mm:ss (zzzz)",
+        "GyMMM،‏ H:mm:ss (zzzz)": "MMM y G،‏ H:mm:ss (zzzz)",
+        "GyMMMd،‏ H:mm:ss (zzzz)": "d MMM y G،‏ H:mm:ss (zzzz)",
+        "GyMMMEd،‏ H:mm:ss (zzzz)": "E d MMM y G،‏ H:mm:ss (zzzz)",
+        "M،‏ H:mm:ss (zzzz)": "L،‏ H:mm:ss (zzzz)",
+        "Md،‏ H:mm:ss (zzzz)": "M/d،‏ H:mm:ss (zzzz)",
+        "MEd،‏ H:mm:ss (zzzz)": "E M/d،‏ H:mm:ss (zzzz)",
+        "MMM،‏ H:mm:ss (zzzz)": "LLL،‏ H:mm:ss (zzzz)",
+        "MMMd،‏ H:mm:ss (zzzz)": "d LLL،‏ H:mm:ss (zzzz)",
+        "MMMEd،‏ H:mm:ss (zzzz)": "E d LLL،‏ H:mm:ss (zzzz)",
+        "MMMMd، ساعت H:mm:ss (zzzz)": "d LLLL، ساعت H:mm:ss (zzzz)",
+        "MMMMEd، ساعت H:mm:ss (zzzz)": "E d LLLL، ساعت H:mm:ss (zzzz)",
+        "y،‏ H:mm:ss (zzzz)": "y،‏ H:mm:ss (zzzz)",
+        "yM،‏ H:mm:ss (zzzz)": "y/M،‏ H:mm:ss (zzzz)",
+        "yMd،‏ H:mm:ss (zzzz)": "y/M/d،‏ H:mm:ss (zzzz)",
+        "yMEd،‏ H:mm:ss (zzzz)": "E y/M/d،‏ H:mm:ss (zzzz)",
+        "yMMM،‏ H:mm:ss (zzzz)": "MMM y،‏ H:mm:ss (zzzz)",
+        "yMMMd،‏ H:mm:ss (zzzz)": "d MMM y،‏ H:mm:ss (zzzz)",
+        "yMMMEd،‏ H:mm:ss (zzzz)": "E d MMM y،‏ H:mm:ss (zzzz)",
+        "yMMMM، ساعت H:mm:ss (zzzz)": "MMMM y، ساعت H:mm:ss (zzzz)",
+        "yMMMMEEEEd، ساعت H:mm:ss (zzzz)": "EEEE d MMMM y، ساعت H:mm:ss (zzzz)",
+        "EEEE d MMMM y، ساعت H:mm:ss (z)": "EEEE d MMMM y، ساعت H:mm:ss (z)",
+        "d MMMM y، ساعت H:mm:ss (z)": "d MMMM y، ساعت H:mm:ss (z)",
+        "d MMM y،‏ H:mm:ss (z)": "d MMM y،‏ H:mm:ss (z)",
+        "y/M/d،‏ H:mm:ss (z)": "y/M/d،‏ H:mm:ss (z)",
+        "d،‏ H:mm:ss (z)": "d،‏ H:mm:ss (z)",
+        "E،‏ H:mm:ss (z)": "ccc،‏ H:mm:ss (z)",
+        "Ed،‏ H:mm:ss (z)": "E d،‏ H:mm:ss (z)",
+        "Gy،‏ H:mm:ss (z)": "y G،‏ H:mm:ss (z)",
+        "GyMd،‏ H:mm:ss (z)": "y/M/d GGGGG،‏ H:mm:ss (z)",
+        "GyMMM،‏ H:mm:ss (z)": "MMM y G،‏ H:mm:ss (z)",
+        "GyMMMd،‏ H:mm:ss (z)": "d MMM y G،‏ H:mm:ss (z)",
+        "GyMMMEd،‏ H:mm:ss (z)": "E d MMM y G،‏ H:mm:ss (z)",
+        "M،‏ H:mm:ss (z)": "L،‏ H:mm:ss (z)",
+        "Md،‏ H:mm:ss (z)": "M/d،‏ H:mm:ss (z)",
+        "MEd،‏ H:mm:ss (z)": "E M/d،‏ H:mm:ss (z)",
+        "MMM،‏ H:mm:ss (z)": "LLL،‏ H:mm:ss (z)",
+        "MMMd،‏ H:mm:ss (z)": "d LLL،‏ H:mm:ss (z)",
+        "MMMEd،‏ H:mm:ss (z)": "E d LLL،‏ H:mm:ss (z)",
+        "MMMMd، ساعت H:mm:ss (z)": "d LLLL، ساعت H:mm:ss (z)",
+        "MMMMEd، ساعت H:mm:ss (z)": "E d LLLL، ساعت H:mm:ss (z)",
+        "y،‏ H:mm:ss (z)": "y،‏ H:mm:ss (z)",
+        "yM،‏ H:mm:ss (z)": "y/M،‏ H:mm:ss (z)",
+        "yMd،‏ H:mm:ss (z)": "y/M/d،‏ H:mm:ss (z)",
+        "yMEd،‏ H:mm:ss (z)": "E y/M/d،‏ H:mm:ss (z)",
+        "yMMM،‏ H:mm:ss (z)": "MMM y،‏ H:mm:ss (z)",
+        "yMMMd،‏ H:mm:ss (z)": "d MMM y،‏ H:mm:ss (z)",
+        "yMMMEd،‏ H:mm:ss (z)": "E d MMM y،‏ H:mm:ss (z)",
+        "yMMMM، ساعت H:mm:ss (z)": "MMMM y، ساعت H:mm:ss (z)",
+        "yMMMMEEEEd، ساعت H:mm:ss (z)": "EEEE d MMMM y، ساعت H:mm:ss (z)",
+        "EEEE d MMMM y، ساعت H:mm:ss": "EEEE d MMMM y، ساعت H:mm:ss",
+        "d MMMM y، ساعت H:mm:ss": "d MMMM y، ساعت H:mm:ss",
+        "d MMM y،‏ H:mm:ss": "d MMM y،‏ H:mm:ss",
+        "y/M/d،‏ H:mm:ss": "y/M/d،‏ H:mm:ss",
+        "d،‏ H:mm:ss": "d،‏ H:mm:ss",
+        "E،‏ H:mm:ss": "ccc،‏ H:mm:ss",
+        "Ed،‏ H:mm:ss": "E d،‏ H:mm:ss",
+        "Gy،‏ H:mm:ss": "y G،‏ H:mm:ss",
+        "GyMd،‏ H:mm:ss": "y/M/d GGGGG،‏ H:mm:ss",
+        "GyMMM،‏ H:mm:ss": "MMM y G،‏ H:mm:ss",
+        "GyMMMd،‏ H:mm:ss": "d MMM y G،‏ H:mm:ss",
+        "GyMMMEd،‏ H:mm:ss": "E d MMM y G،‏ H:mm:ss",
+        "M،‏ H:mm:ss": "L،‏ H:mm:ss",
+        "Md،‏ H:mm:ss": "M/d،‏ H:mm:ss",
+        "MEd،‏ H:mm:ss": "E M/d،‏ H:mm:ss",
+        "MMM،‏ H:mm:ss": "LLL،‏ H:mm:ss",
+        "MMMd،‏ H:mm:ss": "d LLL،‏ H:mm:ss",
+        "MMMEd،‏ H:mm:ss": "E d LLL،‏ H:mm:ss",
+        "MMMMd، ساعت H:mm:ss": "d LLLL، ساعت H:mm:ss",
+        "MMMMEd، ساعت H:mm:ss": "E d LLLL، ساعت H:mm:ss",
+        "y،‏ H:mm:ss": "y،‏ H:mm:ss",
+        "yM،‏ H:mm:ss": "y/M،‏ H:mm:ss",
+        "yMd،‏ H:mm:ss": "y/M/d،‏ H:mm:ss",
+        "yMEd،‏ H:mm:ss": "E y/M/d،‏ H:mm:ss",
+        "yMMM،‏ H:mm:ss": "MMM y،‏ H:mm:ss",
+        "yMMMd،‏ H:mm:ss": "d MMM y،‏ H:mm:ss",
+        "yMMMEd،‏ H:mm:ss": "E d MMM y،‏ H:mm:ss",
+        "yMMMM، ساعت H:mm:ss": "MMMM y، ساعت H:mm:ss",
+        "yMMMMEEEEd، ساعت H:mm:ss": "EEEE d MMMM y، ساعت H:mm:ss",
+        "EEEE d MMMM y، ساعت H:mm": "EEEE d MMMM y، ساعت H:mm",
+        "d MMMM y، ساعت H:mm": "d MMMM y، ساعت H:mm",
+        "d MMM y،‏ H:mm": "d MMM y،‏ H:mm",
+        "y/M/d،‏ H:mm": "y/M/d،‏ H:mm",
+        "d،‏ H:mm": "d،‏ H:mm",
+        "E،‏ H:mm": "ccc،‏ H:mm",
+        "Ed،‏ H:mm": "E d،‏ H:mm",
+        "Gy،‏ H:mm": "y G،‏ H:mm",
+        "GyMd،‏ H:mm": "y/M/d GGGGG،‏ H:mm",
+        "GyMMM،‏ H:mm": "MMM y G،‏ H:mm",
+        "GyMMMd،‏ H:mm": "d MMM y G،‏ H:mm",
+        "GyMMMEd،‏ H:mm": "E d MMM y G،‏ H:mm",
+        "M،‏ H:mm": "L،‏ H:mm",
+        "Md،‏ H:mm": "M/d،‏ H:mm",
+        "MEd،‏ H:mm": "E M/d،‏ H:mm",
+        "MMM،‏ H:mm": "LLL،‏ H:mm",
+        "MMMd،‏ H:mm": "d LLL،‏ H:mm",
+        "MMMEd،‏ H:mm": "E d LLL،‏ H:mm",
+        "MMMMd، ساعت H:mm": "d LLLL، ساعت H:mm",
+        "MMMMEd، ساعت H:mm": "E d LLLL، ساعت H:mm",
+        "y،‏ H:mm": "y،‏ H:mm",
+        "yM،‏ H:mm": "y/M،‏ H:mm",
+        "yMd،‏ H:mm": "y/M/d،‏ H:mm",
+        "yMEd،‏ H:mm": "E y/M/d،‏ H:mm",
+        "yMMM،‏ H:mm": "MMM y،‏ H:mm",
+        "yMMMd،‏ H:mm": "d MMM y،‏ H:mm",
+        "yMMMEd،‏ H:mm": "E d MMM y،‏ H:mm",
+        "yMMMM، ساعت H:mm": "MMMM y، ساعت H:mm",
+        "yMMMMEEEEd، ساعت H:mm": "EEEE d MMMM y، ساعت H:mm",
+        "EEEE d MMMM y، ساعت Bh": "EEEE d MMMM y، ساعت h B",
+        "d MMMM y، ساعت Bh": "d MMMM y، ساعت h B",
+        "d MMM y،‏ Bh": "d MMM y،‏ h B",
+        "y/M/d،‏ Bh": "y/M/d،‏ h B",
+        "d،‏ Bh": "d،‏ h B",
+        "E،‏ Bh": "ccc،‏ h B",
+        "Ed،‏ Bh": "E d،‏ h B",
+        "Gy،‏ Bh": "y G،‏ h B",
+        "GyMd،‏ Bh": "y/M/d GGGGG،‏ h B",
+        "GyMMM،‏ Bh": "MMM y G،‏ h B",
+        "GyMMMd،‏ Bh": "d MMM y G،‏ h B",
+        "GyMMMEd،‏ Bh": "E d MMM y G،‏ h B",
+        "M،‏ Bh": "L،‏ h B",
+        "Md،‏ Bh": "M/d،‏ h B",
+        "MEd،‏ Bh": "E M/d،‏ h B",
+        "MMM،‏ Bh": "LLL،‏ h B",
+        "MMMd،‏ Bh": "d LLL،‏ h B",
+        "MMMEd،‏ Bh": "E d LLL،‏ h B",
+        "MMMMd، ساعت Bh": "d LLLL، ساعت h B",
+        "MMMMEd، ساعت Bh": "E d LLLL، ساعت h B",
+        "y،‏ Bh": "y،‏ h B",
+        "yM،‏ Bh": "y/M،‏ h B",
+        "yMd،‏ Bh": "y/M/d،‏ h B",
+        "yMEd،‏ Bh": "E y/M/d،‏ h B",
+        "yMMM،‏ Bh": "MMM y،‏ h B",
+        "yMMMd،‏ Bh": "d MMM y،‏ h B",
+        "yMMMEd،‏ Bh": "E d MMM y،‏ h B",
+        "yMMMM، ساعت Bh": "MMMM y، ساعت h B",
+        "yMMMMEEEEd، ساعت Bh": "EEEE d MMMM y، ساعت h B",
+        "EEEE d MMMM y، ساعت Bhm": "EEEE d MMMM y، ساعت h:mm B",
+        "d MMMM y، ساعت Bhm": "d MMMM y، ساعت h:mm B",
+        "d MMM y،‏ Bhm": "d MMM y،‏ h:mm B",
+        "y/M/d،‏ Bhm": "y/M/d،‏ h:mm B",
+        "d،‏ Bhm": "d،‏ h:mm B",
+        "E،‏ Bhm": "ccc،‏ h:mm B",
+        "Ed،‏ Bhm": "E d،‏ h:mm B",
+        "Gy،‏ Bhm": "y G،‏ h:mm B",
+        "GyMd،‏ Bhm": "y/M/d GGGGG،‏ h:mm B",
+        "GyMMM،‏ Bhm": "MMM y G،‏ h:mm B",
+        "GyMMMd،‏ Bhm": "d MMM y G،‏ h:mm B",
+        "GyMMMEd،‏ Bhm": "E d MMM y G،‏ h:mm B",
+        "M،‏ Bhm": "L،‏ h:mm B",
+        "Md،‏ Bhm": "M/d،‏ h:mm B",
+        "MEd،‏ Bhm": "E M/d،‏ h:mm B",
+        "MMM،‏ Bhm": "LLL،‏ h:mm B",
+        "MMMd،‏ Bhm": "d LLL،‏ h:mm B",
+        "MMMEd،‏ Bhm": "E d LLL،‏ h:mm B",
+        "MMMMd، ساعت Bhm": "d LLLL، ساعت h:mm B",
+        "MMMMEd، ساعت Bhm": "E d LLLL، ساعت h:mm B",
+        "y،‏ Bhm": "y،‏ h:mm B",
+        "yM،‏ Bhm": "y/M،‏ h:mm B",
+        "yMd،‏ Bhm": "y/M/d،‏ h:mm B",
+        "yMEd،‏ Bhm": "E y/M/d،‏ h:mm B",
+        "yMMM،‏ Bhm": "MMM y،‏ h:mm B",
+        "yMMMd،‏ Bhm": "d MMM y،‏ h:mm B",
+        "yMMMEd،‏ Bhm": "E d MMM y،‏ h:mm B",
+        "yMMMM، ساعت Bhm": "MMMM y، ساعت h:mm B",
+        "yMMMMEEEEd، ساعت Bhm": "EEEE d MMMM y، ساعت h:mm B",
+        "EEEE d MMMM y، ساعت Bhms": "EEEE d MMMM y، ساعت h:mm:ss B",
+        "d MMMM y، ساعت Bhms": "d MMMM y، ساعت h:mm:ss B",
+        "d MMM y،‏ Bhms": "d MMM y،‏ h:mm:ss B",
+        "y/M/d،‏ Bhms": "y/M/d،‏ h:mm:ss B",
+        "d،‏ Bhms": "d،‏ h:mm:ss B",
+        "E،‏ Bhms": "ccc،‏ h:mm:ss B",
+        "Ed،‏ Bhms": "E d،‏ h:mm:ss B",
+        "Gy،‏ Bhms": "y G،‏ h:mm:ss B",
+        "GyMd،‏ Bhms": "y/M/d GGGGG،‏ h:mm:ss B",
+        "GyMMM،‏ Bhms": "MMM y G،‏ h:mm:ss B",
+        "GyMMMd،‏ Bhms": "d MMM y G،‏ h:mm:ss B",
+        "GyMMMEd،‏ Bhms": "E d MMM y G،‏ h:mm:ss B",
+        "M،‏ Bhms": "L،‏ h:mm:ss B",
+        "Md،‏ Bhms": "M/d،‏ h:mm:ss B",
+        "MEd،‏ Bhms": "E M/d،‏ h:mm:ss B",
+        "MMM،‏ Bhms": "LLL،‏ h:mm:ss B",
+        "MMMd،‏ Bhms": "d LLL،‏ h:mm:ss B",
+        "MMMEd،‏ Bhms": "E d LLL،‏ h:mm:ss B",
+        "MMMMd، ساعت Bhms": "d LLLL، ساعت h:mm:ss B",
+        "MMMMEd، ساعت Bhms": "E d LLLL، ساعت h:mm:ss B",
+        "y،‏ Bhms": "y،‏ h:mm:ss B",
+        "yM،‏ Bhms": "y/M،‏ h:mm:ss B",
+        "yMd،‏ Bhms": "y/M/d،‏ h:mm:ss B",
+        "yMEd،‏ Bhms": "E y/M/d،‏ h:mm:ss B",
+        "yMMM،‏ Bhms": "MMM y،‏ h:mm:ss B",
+        "yMMMd،‏ Bhms": "d MMM y،‏ h:mm:ss B",
+        "yMMMEd،‏ Bhms": "E d MMM y،‏ h:mm:ss B",
+        "yMMMM، ساعت Bhms": "MMMM y، ساعت h:mm:ss B",
+        "yMMMMEEEEd، ساعت Bhms": "EEEE d MMMM y، ساعت h:mm:ss B",
+        "EEEE d MMMM y، ساعت h": "EEEE d MMMM y، ساعت h a",
+        "d MMMM y، ساعت h": "d MMMM y، ساعت h a",
+        "d MMM y،‏ h": "d MMM y،‏ h a",
+        "y/M/d،‏ h": "y/M/d،‏ h a",
+        "d،‏ h": "d،‏ h a",
+        "E،‏ h": "ccc،‏ h a",
+        "Ed،‏ h": "E d،‏ h a",
+        "Gy،‏ h": "y G،‏ h a",
+        "GyMd،‏ h": "y/M/d GGGGG،‏ h a",
+        "GyMMM،‏ h": "MMM y G،‏ h a",
+        "GyMMMd،‏ h": "d MMM y G،‏ h a",
+        "GyMMMEd،‏ h": "E d MMM y G،‏ h a",
+        "M،‏ h": "L،‏ h a",
+        "Md،‏ h": "M/d،‏ h a",
+        "MEd،‏ h": "E M/d،‏ h a",
+        "MMM،‏ h": "LLL،‏ h a",
+        "MMMd،‏ h": "d LLL،‏ h a",
+        "MMMEd،‏ h": "E d LLL،‏ h a",
+        "MMMMd، ساعت h": "d LLLL، ساعت h a",
+        "MMMMEd، ساعت h": "E d LLLL، ساعت h a",
+        "y،‏ h": "y،‏ h a",
+        "yM،‏ h": "y/M،‏ h a",
+        "yMd،‏ h": "y/M/d،‏ h a",
+        "yMEd،‏ h": "E y/M/d،‏ h a",
+        "yMMM،‏ h": "MMM y،‏ h a",
+        "yMMMd،‏ h": "d MMM y،‏ h a",
+        "yMMMEd،‏ h": "E d MMM y،‏ h a",
+        "yMMMM، ساعت h": "MMMM y، ساعت h a",
+        "yMMMMEEEEd، ساعت h": "EEEE d MMMM y، ساعت h a",
+        "EEEE d MMMM y، ساعت H": "EEEE d MMMM y، ساعت H",
+        "d MMMM y، ساعت H": "d MMMM y، ساعت H",
+        "d MMM y،‏ H": "d MMM y،‏ H",
+        "y/M/d،‏ H": "y/M/d،‏ H",
+        "d،‏ H": "d،‏ H",
+        "E،‏ H": "ccc،‏ H",
+        "Ed،‏ H": "E d،‏ H",
+        "Gy،‏ H": "y G،‏ H",
+        "GyMd،‏ H": "y/M/d GGGGG،‏ H",
+        "GyMMM،‏ H": "MMM y G،‏ H",
+        "GyMMMd،‏ H": "d MMM y G،‏ H",
+        "GyMMMEd،‏ H": "E d MMM y G،‏ H",
+        "M،‏ H": "L،‏ H",
+        "Md،‏ H": "M/d،‏ H",
+        "MEd،‏ H": "E M/d،‏ H",
+        "MMM،‏ H": "LLL،‏ H",
+        "MMMd،‏ H": "d LLL،‏ H",
+        "MMMEd،‏ H": "E d LLL،‏ H",
+        "MMMMd، ساعت H": "d LLLL، ساعت H",
+        "MMMMEd، ساعت H": "E d LLLL، ساعت H",
+        "y،‏ H": "y،‏ H",
+        "yM،‏ H": "y/M،‏ H",
+        "yMd،‏ H": "y/M/d،‏ H",
+        "yMEd،‏ H": "E y/M/d،‏ H",
+        "yMMM،‏ H": "MMM y،‏ H",
+        "yMMMd،‏ H": "d MMM y،‏ H",
+        "yMMMEd،‏ H": "E d MMM y،‏ H",
+        "yMMMM، ساعت H": "MMMM y، ساعت H",
+        "yMMMMEEEEd، ساعت H": "EEEE d MMMM y، ساعت H",
+        "EEEE d MMMM y، ساعت HHmmZ": "EEEE d MMMM y، ساعت HH:mm (Z)",
+        "d MMMM y، ساعت HHmmZ": "d MMMM y، ساعت HH:mm (Z)",
+        "d MMM y،‏ HHmmZ": "d MMM y،‏ HH:mm (Z)",
+        "y/M/d،‏ HHmmZ": "y/M/d،‏ HH:mm (Z)",
+        "d،‏ HHmmZ": "d،‏ HH:mm (Z)",
+        "E،‏ HHmmZ": "ccc،‏ HH:mm (Z)",
+        "Ed،‏ HHmmZ": "E d،‏ HH:mm (Z)",
+        "Gy،‏ HHmmZ": "y G،‏ HH:mm (Z)",
+        "GyMd،‏ HHmmZ": "y/M/d GGGGG،‏ HH:mm (Z)",
+        "GyMMM،‏ HHmmZ": "MMM y G،‏ HH:mm (Z)",
+        "GyMMMd،‏ HHmmZ": "d MMM y G،‏ HH:mm (Z)",
+        "GyMMMEd،‏ HHmmZ": "E d MMM y G،‏ HH:mm (Z)",
+        "M،‏ HHmmZ": "L،‏ HH:mm (Z)",
+        "Md،‏ HHmmZ": "M/d،‏ HH:mm (Z)",
+        "MEd،‏ HHmmZ": "E M/d،‏ HH:mm (Z)",
+        "MMM،‏ HHmmZ": "LLL،‏ HH:mm (Z)",
+        "MMMd،‏ HHmmZ": "d LLL،‏ HH:mm (Z)",
+        "MMMEd،‏ HHmmZ": "E d LLL،‏ HH:mm (Z)",
+        "MMMMd، ساعت HHmmZ": "d LLLL، ساعت HH:mm (Z)",
+        "MMMMEd، ساعت HHmmZ": "E d LLLL، ساعت HH:mm (Z)",
+        "y،‏ HHmmZ": "y،‏ HH:mm (Z)",
+        "yM،‏ HHmmZ": "y/M،‏ HH:mm (Z)",
+        "yMd،‏ HHmmZ": "y/M/d،‏ HH:mm (Z)",
+        "yMEd،‏ HHmmZ": "E y/M/d،‏ HH:mm (Z)",
+        "yMMM،‏ HHmmZ": "MMM y،‏ HH:mm (Z)",
+        "yMMMd،‏ HHmmZ": "d MMM y،‏ HH:mm (Z)",
+        "yMMMEd،‏ HHmmZ": "E d MMM y،‏ HH:mm (Z)",
+        "yMMMM، ساعت HHmmZ": "MMMM y، ساعت HH:mm (Z)",
+        "yMMMMEEEEd، ساعت HHmmZ": "EEEE d MMMM y، ساعت HH:mm (Z)",
+        "EEEE d MMMM y، ساعت hm": "EEEE d MMMM y، ساعت h:mm a",
+        "d MMMM y، ساعت hm": "d MMMM y، ساعت h:mm a",
+        "d MMM y،‏ hm": "d MMM y،‏ h:mm a",
+        "y/M/d،‏ hm": "y/M/d،‏ h:mm a",
+        "d،‏ hm": "d،‏ h:mm a",
+        "E،‏ hm": "ccc،‏ h:mm a",
+        "Ed،‏ hm": "E d،‏ h:mm a",
+        "Gy،‏ hm": "y G،‏ h:mm a",
+        "GyMd،‏ hm": "y/M/d GGGGG،‏ h:mm a",
+        "GyMMM،‏ hm": "MMM y G،‏ h:mm a",
+        "GyMMMd،‏ hm": "d MMM y G،‏ h:mm a",
+        "GyMMMEd،‏ hm": "E d MMM y G،‏ h:mm a",
+        "M،‏ hm": "L،‏ h:mm a",
+        "Md،‏ hm": "M/d،‏ h:mm a",
+        "MEd،‏ hm": "E M/d،‏ h:mm a",
+        "MMM،‏ hm": "LLL،‏ h:mm a",
+        "MMMd،‏ hm": "d LLL،‏ h:mm a",
+        "MMMEd،‏ hm": "E d LLL،‏ h:mm a",
+        "MMMMd، ساعت hm": "d LLLL، ساعت h:mm a",
+        "MMMMEd، ساعت hm": "E d LLLL، ساعت h:mm a",
+        "y،‏ hm": "y،‏ h:mm a",
+        "yM،‏ hm": "y/M،‏ h:mm a",
+        "yMd،‏ hm": "y/M/d،‏ h:mm a",
+        "yMEd،‏ hm": "E y/M/d،‏ h:mm a",
+        "yMMM،‏ hm": "MMM y،‏ h:mm a",
+        "yMMMd،‏ hm": "d MMM y،‏ h:mm a",
+        "yMMMEd،‏ hm": "E d MMM y،‏ h:mm a",
+        "yMMMM، ساعت hm": "MMMM y، ساعت h:mm a",
+        "yMMMMEEEEd، ساعت hm": "EEEE d MMMM y، ساعت h:mm a",
+        "EEEE d MMMM y، ساعت Hm": "EEEE d MMMM y، ساعت H:mm",
+        "d MMMM y، ساعت Hm": "d MMMM y، ساعت H:mm",
+        "d MMM y،‏ Hm": "d MMM y،‏ H:mm",
+        "y/M/d،‏ Hm": "y/M/d،‏ H:mm",
+        "d،‏ Hm": "d،‏ H:mm",
+        "E،‏ Hm": "ccc،‏ H:mm",
+        "Ed،‏ Hm": "E d،‏ H:mm",
+        "Gy،‏ Hm": "y G،‏ H:mm",
+        "GyMd،‏ Hm": "y/M/d GGGGG،‏ H:mm",
+        "GyMMM،‏ Hm": "MMM y G،‏ H:mm",
+        "GyMMMd،‏ Hm": "d MMM y G،‏ H:mm",
+        "GyMMMEd،‏ Hm": "E d MMM y G،‏ H:mm",
+        "M،‏ Hm": "L،‏ H:mm",
+        "Md،‏ Hm": "M/d،‏ H:mm",
+        "MEd،‏ Hm": "E M/d،‏ H:mm",
+        "MMM،‏ Hm": "LLL،‏ H:mm",
+        "MMMd،‏ Hm": "d LLL،‏ H:mm",
+        "MMMEd،‏ Hm": "E d LLL،‏ H:mm",
+        "MMMMd، ساعت Hm": "d LLLL، ساعت H:mm",
+        "MMMMEd، ساعت Hm": "E d LLLL، ساعت H:mm",
+        "y،‏ Hm": "y،‏ H:mm",
+        "yM،‏ Hm": "y/M،‏ H:mm",
+        "yMd،‏ Hm": "y/M/d،‏ H:mm",
+        "yMEd،‏ Hm": "E y/M/d،‏ H:mm",
+        "yMMM،‏ Hm": "MMM y،‏ H:mm",
+        "yMMMd،‏ Hm": "d MMM y،‏ H:mm",
+        "yMMMEd،‏ Hm": "E d MMM y،‏ H:mm",
+        "yMMMM، ساعت Hm": "MMMM y، ساعت H:mm",
+        "yMMMMEEEEd، ساعت Hm": "EEEE d MMMM y، ساعت H:mm",
+        "EEEE d MMMM y، ساعت hms": "EEEE d MMMM y، ساعت h:mm:ss a",
+        "d MMMM y، ساعت hms": "d MMMM y، ساعت h:mm:ss a",
+        "d MMM y،‏ hms": "d MMM y،‏ h:mm:ss a",
+        "y/M/d،‏ hms": "y/M/d،‏ h:mm:ss a",
+        "d،‏ hms": "d،‏ h:mm:ss a",
+        "E،‏ hms": "ccc،‏ h:mm:ss a",
+        "Ed،‏ hms": "E d،‏ h:mm:ss a",
+        "Gy،‏ hms": "y G،‏ h:mm:ss a",
+        "GyMd،‏ hms": "y/M/d GGGGG،‏ h:mm:ss a",
+        "GyMMM،‏ hms": "MMM y G،‏ h:mm:ss a",
+        "GyMMMd،‏ hms": "d MMM y G،‏ h:mm:ss a",
+        "GyMMMEd،‏ hms": "E d MMM y G،‏ h:mm:ss a",
+        "M،‏ hms": "L،‏ h:mm:ss a",
+        "Md،‏ hms": "M/d،‏ h:mm:ss a",
+        "MEd،‏ hms": "E M/d،‏ h:mm:ss a",
+        "MMM،‏ hms": "LLL،‏ h:mm:ss a",
+        "MMMd،‏ hms": "d LLL،‏ h:mm:ss a",
+        "MMMEd،‏ hms": "E d LLL،‏ h:mm:ss a",
+        "MMMMd، ساعت hms": "d LLLL، ساعت h:mm:ss a",
+        "MMMMEd، ساعت hms": "E d LLLL، ساعت h:mm:ss a",
+        "y،‏ hms": "y،‏ h:mm:ss a",
+        "yM،‏ hms": "y/M،‏ h:mm:ss a",
+        "yMd،‏ hms": "y/M/d،‏ h:mm:ss a",
+        "yMEd،‏ hms": "E y/M/d،‏ h:mm:ss a",
+        "yMMM،‏ hms": "MMM y،‏ h:mm:ss a",
+        "yMMMd،‏ hms": "d MMM y،‏ h:mm:ss a",
+        "yMMMEd،‏ hms": "E d MMM y،‏ h:mm:ss a",
+        "yMMMM، ساعت hms": "MMMM y، ساعت h:mm:ss a",
+        "yMMMMEEEEd، ساعت hms": "EEEE d MMMM y، ساعت h:mm:ss a",
+        "EEEE d MMMM y، ساعت Hms": "EEEE d MMMM y، ساعت H:mm:ss",
+        "d MMMM y، ساعت Hms": "d MMMM y، ساعت H:mm:ss",
+        "d MMM y،‏ Hms": "d MMM y،‏ H:mm:ss",
+        "y/M/d،‏ Hms": "y/M/d،‏ H:mm:ss",
+        "d،‏ Hms": "d،‏ H:mm:ss",
+        "E،‏ Hms": "ccc،‏ H:mm:ss",
+        "Ed،‏ Hms": "E d،‏ H:mm:ss",
+        "Gy،‏ Hms": "y G،‏ H:mm:ss",
+        "GyMd،‏ Hms": "y/M/d GGGGG،‏ H:mm:ss",
+        "GyMMM،‏ Hms": "MMM y G،‏ H:mm:ss",
+        "GyMMMd،‏ Hms": "d MMM y G،‏ H:mm:ss",
+        "GyMMMEd،‏ Hms": "E d MMM y G،‏ H:mm:ss",
+        "M،‏ Hms": "L،‏ H:mm:ss",
+        "Md،‏ Hms": "M/d،‏ H:mm:ss",
+        "MEd،‏ Hms": "E M/d،‏ H:mm:ss",
+        "MMM،‏ Hms": "LLL،‏ H:mm:ss",
+        "MMMd،‏ Hms": "d LLL،‏ H:mm:ss",
+        "MMMEd،‏ Hms": "E d LLL،‏ H:mm:ss",
+        "MMMMd، ساعت Hms": "d LLLL، ساعت H:mm:ss",
+        "MMMMEd، ساعت Hms": "E d LLLL، ساعت H:mm:ss",
+        "y،‏ Hms": "y،‏ H:mm:ss",
+        "yM،‏ Hms": "y/M،‏ H:mm:ss",
+        "yMd،‏ Hms": "y/M/d،‏ H:mm:ss",
+        "yMEd،‏ Hms": "E y/M/d،‏ H:mm:ss",
+        "yMMM،‏ Hms": "MMM y،‏ H:mm:ss",
+        "yMMMd،‏ Hms": "d MMM y،‏ H:mm:ss",
+        "yMMMEd،‏ Hms": "E d MMM y،‏ H:mm:ss",
+        "yMMMM، ساعت Hms": "MMMM y، ساعت H:mm:ss",
+        "yMMMMEEEEd، ساعت Hms": "EEEE d MMMM y، ساعت H:mm:ss",
+        "EEEE d MMMM y، ساعت hmsv": "EEEE d MMMM y، ساعت h:mm:ss a v",
+        "d MMMM y، ساعت hmsv": "d MMMM y، ساعت h:mm:ss a v",
+        "d MMM y،‏ hmsv": "d MMM y،‏ h:mm:ss a v",
+        "y/M/d،‏ hmsv": "y/M/d،‏ h:mm:ss a v",
+        "d،‏ hmsv": "d،‏ h:mm:ss a v",
+        "E،‏ hmsv": "ccc،‏ h:mm:ss a v",
+        "Ed،‏ hmsv": "E d،‏ h:mm:ss a v",
+        "Gy،‏ hmsv": "y G،‏ h:mm:ss a v",
+        "GyMd،‏ hmsv": "y/M/d GGGGG،‏ h:mm:ss a v",
+        "GyMMM،‏ hmsv": "MMM y G،‏ h:mm:ss a v",
+        "GyMMMd،‏ hmsv": "d MMM y G،‏ h:mm:ss a v",
+        "GyMMMEd،‏ hmsv": "E d MMM y G،‏ h:mm:ss a v",
+        "M،‏ hmsv": "L،‏ h:mm:ss a v",
+        "Md،‏ hmsv": "M/d،‏ h:mm:ss a v",
+        "MEd،‏ hmsv": "E M/d،‏ h:mm:ss a v",
+        "MMM،‏ hmsv": "LLL،‏ h:mm:ss a v",
+        "MMMd،‏ hmsv": "d LLL،‏ h:mm:ss a v",
+        "MMMEd،‏ hmsv": "E d LLL،‏ h:mm:ss a v",
+        "MMMMd، ساعت hmsv": "d LLLL، ساعت h:mm:ss a v",
+        "MMMMEd، ساعت hmsv": "E d LLLL، ساعت h:mm:ss a v",
+        "y،‏ hmsv": "y،‏ h:mm:ss a v",
+        "yM،‏ hmsv": "y/M،‏ h:mm:ss a v",
+        "yMd،‏ hmsv": "y/M/d،‏ h:mm:ss a v",
+        "yMEd،‏ hmsv": "E y/M/d،‏ h:mm:ss a v",
+        "yMMM،‏ hmsv": "MMM y،‏ h:mm:ss a v",
+        "yMMMd،‏ hmsv": "d MMM y،‏ h:mm:ss a v",
+        "yMMMEd،‏ hmsv": "E d MMM y،‏ h:mm:ss a v",
+        "yMMMM، ساعت hmsv": "MMMM y، ساعت h:mm:ss a v",
+        "yMMMMEEEEd، ساعت hmsv": "EEEE d MMMM y، ساعت h:mm:ss a v",
+        "EEEE d MMMM y، ساعت Hmsv": "EEEE d MMMM y، ساعت H:mm:ss v",
+        "d MMMM y، ساعت Hmsv": "d MMMM y، ساعت H:mm:ss v",
+        "d MMM y،‏ Hmsv": "d MMM y،‏ H:mm:ss v",
+        "y/M/d،‏ Hmsv": "y/M/d،‏ H:mm:ss v",
+        "d،‏ Hmsv": "d،‏ H:mm:ss v",
+        "E،‏ Hmsv": "ccc،‏ H:mm:ss v",
+        "Ed،‏ Hmsv": "E d،‏ H:mm:ss v",
+        "Gy،‏ Hmsv": "y G،‏ H:mm:ss v",
+        "GyMd،‏ Hmsv": "y/M/d GGGGG،‏ H:mm:ss v",
+        "GyMMM،‏ Hmsv": "MMM y G،‏ H:mm:ss v",
+        "GyMMMd،‏ Hmsv": "d MMM y G،‏ H:mm:ss v",
+        "GyMMMEd،‏ Hmsv": "E d MMM y G،‏ H:mm:ss v",
+        "M،‏ Hmsv": "L،‏ H:mm:ss v",
+        "Md،‏ Hmsv": "M/d،‏ H:mm:ss v",
+        "MEd،‏ Hmsv": "E M/d،‏ H:mm:ss v",
+        "MMM،‏ Hmsv": "LLL،‏ H:mm:ss v",
+        "MMMd،‏ Hmsv": "d LLL،‏ H:mm:ss v",
+        "MMMEd،‏ Hmsv": "E d LLL،‏ H:mm:ss v",
+        "MMMMd، ساعت Hmsv": "d LLLL، ساعت H:mm:ss v",
+        "MMMMEd، ساعت Hmsv": "E d LLLL، ساعت H:mm:ss v",
+        "y،‏ Hmsv": "y،‏ H:mm:ss v",
+        "yM،‏ Hmsv": "y/M،‏ H:mm:ss v",
+        "yMd،‏ Hmsv": "y/M/d،‏ H:mm:ss v",
+        "yMEd،‏ Hmsv": "E y/M/d،‏ H:mm:ss v",
+        "yMMM،‏ Hmsv": "MMM y،‏ H:mm:ss v",
+        "yMMMd،‏ Hmsv": "d MMM y،‏ H:mm:ss v",
+        "yMMMEd،‏ Hmsv": "E d MMM y،‏ H:mm:ss v",
+        "yMMMM، ساعت Hmsv": "MMMM y، ساعت H:mm:ss v",
+        "yMMMMEEEEd، ساعت Hmsv": "EEEE d MMMM y، ساعت H:mm:ss v",
+        "EEEE d MMMM y، ساعت hmv": "EEEE d MMMM y، ساعت h:mm a v",
+        "d MMMM y، ساعت hmv": "d MMMM y، ساعت h:mm a v",
+        "d MMM y،‏ hmv": "d MMM y،‏ h:mm a v",
+        "y/M/d،‏ hmv": "y/M/d،‏ h:mm a v",
+        "d،‏ hmv": "d،‏ h:mm a v",
+        "E،‏ hmv": "ccc،‏ h:mm a v",
+        "Ed،‏ hmv": "E d،‏ h:mm a v",
+        "Gy،‏ hmv": "y G،‏ h:mm a v",
+        "GyMd،‏ hmv": "y/M/d GGGGG،‏ h:mm a v",
+        "GyMMM،‏ hmv": "MMM y G،‏ h:mm a v",
+        "GyMMMd،‏ hmv": "d MMM y G،‏ h:mm a v",
+        "GyMMMEd،‏ hmv": "E d MMM y G،‏ h:mm a v",
+        "M،‏ hmv": "L،‏ h:mm a v",
+        "Md،‏ hmv": "M/d،‏ h:mm a v",
+        "MEd،‏ hmv": "E M/d،‏ h:mm a v",
+        "MMM،‏ hmv": "LLL،‏ h:mm a v",
+        "MMMd،‏ hmv": "d LLL،‏ h:mm a v",
+        "MMMEd،‏ hmv": "E d LLL،‏ h:mm a v",
+        "MMMMd، ساعت hmv": "d LLLL، ساعت h:mm a v",
+        "MMMMEd، ساعت hmv": "E d LLLL، ساعت h:mm a v",
+        "y،‏ hmv": "y،‏ h:mm a v",
+        "yM،‏ hmv": "y/M،‏ h:mm a v",
+        "yMd،‏ hmv": "y/M/d،‏ h:mm a v",
+        "yMEd،‏ hmv": "E y/M/d،‏ h:mm a v",
+        "yMMM،‏ hmv": "MMM y،‏ h:mm a v",
+        "yMMMd،‏ hmv": "d MMM y،‏ h:mm a v",
+        "yMMMEd،‏ hmv": "E d MMM y،‏ h:mm a v",
+        "yMMMM، ساعت hmv": "MMMM y، ساعت h:mm a v",
+        "yMMMMEEEEd، ساعت hmv": "EEEE d MMMM y، ساعت h:mm a v",
+        "EEEE d MMMM y، ساعت Hmv": "EEEE d MMMM y، ساعت H:mm v",
+        "d MMMM y، ساعت Hmv": "d MMMM y، ساعت H:mm v",
+        "d MMM y،‏ Hmv": "d MMM y،‏ H:mm v",
+        "y/M/d،‏ Hmv": "y/M/d،‏ H:mm v",
+        "d،‏ Hmv": "d،‏ H:mm v",
+        "E،‏ Hmv": "ccc،‏ H:mm v",
+        "Ed،‏ Hmv": "E d،‏ H:mm v",
+        "Gy،‏ Hmv": "y G،‏ H:mm v",
+        "GyMd،‏ Hmv": "y/M/d GGGGG،‏ H:mm v",
+        "GyMMM،‏ Hmv": "MMM y G،‏ H:mm v",
+        "GyMMMd،‏ Hmv": "d MMM y G،‏ H:mm v",
+        "GyMMMEd،‏ Hmv": "E d MMM y G،‏ H:mm v",
+        "M،‏ Hmv": "L،‏ H:mm v",
+        "Md،‏ Hmv": "M/d،‏ H:mm v",
+        "MEd،‏ Hmv": "E M/d،‏ H:mm v",
+        "MMM،‏ Hmv": "LLL،‏ H:mm v",
+        "MMMd،‏ Hmv": "d LLL،‏ H:mm v",
+        "MMMEd،‏ Hmv": "E d LLL،‏ H:mm v",
+        "MMMMd، ساعت Hmv": "d LLLL، ساعت H:mm v",
+        "MMMMEd، ساعت Hmv": "E d LLLL، ساعت H:mm v",
+        "y،‏ Hmv": "y،‏ H:mm v",
+        "yM،‏ Hmv": "y/M،‏ H:mm v",
+        "yMd،‏ Hmv": "y/M/d،‏ H:mm v",
+        "yMEd،‏ Hmv": "E y/M/d،‏ H:mm v",
+        "yMMM،‏ Hmv": "MMM y،‏ H:mm v",
+        "yMMMd،‏ Hmv": "d MMM y،‏ H:mm v",
+        "yMMMEd،‏ Hmv": "E d MMM y،‏ H:mm v",
+        "yMMMM، ساعت Hmv": "MMMM y، ساعت H:mm v",
+        "yMMMMEEEEd، ساعت Hmv": "EEEE d MMMM y، ساعت H:mm v",
+        "EEEE d MMMM y، ساعت mmss": "EEEE d MMMM y، ساعت mm:ss",
+        "d MMMM y، ساعت mmss": "d MMMM y، ساعت mm:ss",
+        "d MMM y،‏ mmss": "d MMM y،‏ mm:ss",
+        "y/M/d،‏ mmss": "y/M/d،‏ mm:ss",
+        "d،‏ mmss": "d،‏ mm:ss",
+        "E،‏ mmss": "ccc،‏ mm:ss",
+        "Ed،‏ mmss": "E d،‏ mm:ss",
+        "Gy،‏ mmss": "y G،‏ mm:ss",
+        "GyMd،‏ mmss": "y/M/d GGGGG،‏ mm:ss",
+        "GyMMM،‏ mmss": "MMM y G،‏ mm:ss",
+        "GyMMMd،‏ mmss": "d MMM y G،‏ mm:ss",
+        "GyMMMEd،‏ mmss": "E d MMM y G،‏ mm:ss",
+        "M،‏ mmss": "L،‏ mm:ss",
+        "Md،‏ mmss": "M/d،‏ mm:ss",
+        "MEd،‏ mmss": "E M/d،‏ mm:ss",
+        "MMM،‏ mmss": "LLL،‏ mm:ss",
+        "MMMd،‏ mmss": "d LLL،‏ mm:ss",
+        "MMMEd،‏ mmss": "E d LLL،‏ mm:ss",
+        "MMMMd، ساعت mmss": "d LLLL، ساعت mm:ss",
+        "MMMMEd، ساعت mmss": "E d LLLL، ساعت mm:ss",
+        "y،‏ mmss": "y،‏ mm:ss",
+        "yM،‏ mmss": "y/M،‏ mm:ss",
+        "yMd،‏ mmss": "y/M/d،‏ mm:ss",
+        "yMEd،‏ mmss": "E y/M/d،‏ mm:ss",
+        "yMMM،‏ mmss": "MMM y،‏ mm:ss",
+        "yMMMd،‏ mmss": "d MMM y،‏ mm:ss",
+        "yMMMEd،‏ mmss": "E d MMM y،‏ mm:ss",
+        "yMMMM، ساعت mmss": "MMMM y، ساعت mm:ss",
+        "yMMMMEEEEd، ساعت mmss": "EEEE d MMMM y، ساعت mm:ss",
+        "EEEE d MMMM y، ساعت ms": "EEEE d MMMM y، ساعت m:ss",
+        "d MMMM y، ساعت ms": "d MMMM y، ساعت m:ss",
+        "d MMM y،‏ ms": "d MMM y،‏ m:ss",
+        "y/M/d،‏ ms": "y/M/d،‏ m:ss",
+        "d،‏ ms": "d،‏ m:ss",
+        "E،‏ ms": "ccc،‏ m:ss",
+        "Ed،‏ ms": "E d،‏ m:ss",
+        "Gy،‏ ms": "y G،‏ m:ss",
+        "GyMd،‏ ms": "y/M/d GGGGG،‏ m:ss",
+        "GyMMM،‏ ms": "MMM y G،‏ m:ss",
+        "GyMMMd،‏ ms": "d MMM y G،‏ m:ss",
+        "GyMMMEd،‏ ms": "E d MMM y G،‏ m:ss",
+        "M،‏ ms": "L،‏ m:ss",
+        "Md،‏ ms": "M/d،‏ m:ss",
+        "MEd،‏ ms": "E M/d،‏ m:ss",
+        "MMM،‏ ms": "LLL،‏ m:ss",
+        "MMMd،‏ ms": "d LLL،‏ m:ss",
+        "MMMEd،‏ ms": "E d LLL،‏ m:ss",
+        "MMMMd، ساعت ms": "d LLLL، ساعت m:ss",
+        "MMMMEd، ساعت ms": "E d LLLL، ساعت m:ss",
+        "y،‏ ms": "y،‏ m:ss",
+        "yM،‏ ms": "y/M،‏ m:ss",
+        "yMd،‏ ms": "y/M/d،‏ m:ss",
+        "yMEd،‏ ms": "E y/M/d،‏ m:ss",
+        "yMMM،‏ ms": "MMM y،‏ m:ss",
+        "yMMMd،‏ ms": "d MMM y،‏ m:ss",
+        "yMMMEd،‏ ms": "E d MMM y،‏ m:ss",
+        "yMMMM، ساعت ms": "MMMM y، ساعت m:ss",
+        "yMMMMEEEEd، ساعت ms": "EEEE d MMMM y، ساعت m:ss"
+      }
+    },
+    "intervalFormats": {
+      "intervalFormatFallback": "{0} تا {1}",
+      "Bh": {
+        "B": "h B تا h B",
+        "h": "h تا h B"
+      },
+      "Bhm": {
+        "B": "h:mm B تا h:mm B",
+        "h": "h:mm تا h:mm B",
+        "m": "h:mm تا h:mm B"
+      },
+      "d": {
+        "d": "d تا d"
+      },
+      "Gy": {
+        "G": "y G تا y G",
+        "y": "y تا y G"
+      },
+      "GyM": {
+        "G": "y/M GGGGG تا y/M GGGGG",
+        "M": "y/M تا y/M GGGGG",
+        "y": "y/M تا y/M GGGGG"
+      },
+      "GyMd": {
+        "d": "y/M/d تا y/M/d GGGGG",
+        "G": "y/M/d GGGGG تا y/M/d GGGGG",
+        "M": "y/M/d تا y/M/d GGGGG",
+        "y": "y/M/d تا y/M/d GGGGG"
+      },
+      "GyMEd": {
+        "d": "E y/M/d تا E y/M/d GGGGG",
+        "G": "E y/M/d GGGGG تا E y/M/d GGGGG",
+        "M": "E y/M/d تا E y/M/d GGGGG",
+        "y": "E y/M/d تا E y/M/d GGGGG"
+      },
+      "GyMMM": {
+        "G": "MMM y G تا MMM y G",
+        "M": "LLL تا MMM y G",
+        "y": "MMM y تا MMM y G"
+      },
+      "GyMMMd": {
+        "d": "d تا d MMM y G",
+        "G": "d MMM y G تا d MMM y G",
+        "M": "d LLL تا d MMM y G",
+        "y": "d MMM y تا d MMM y G"
+      },
+      "GyMMMEd": {
+        "d": "E d LLL تا E d MMM y G",
+        "G": "E d MMM y G تا E d MMM y G",
+        "M": "E d LLL تا E d MMM y G",
+        "y": "E d MMM y تا E d MMM y G"
+      },
+      "h": {
+        "a": "h a تا h a",
+        "h": "h تا h a"
+      },
+      "H": {
+        "H": "H تا H"
+      },
+      "hm": {
+        "a": "h:mm a تا h:mm a",
+        "h": "h:mm تا h:mm a",
+        "m": "h:mm تا h:mm a"
+      },
+      "Hm": {
+        "H": "H:mm تا H:mm",
+        "m": "H:mm تا H:mm"
+      },
+      "hmv": {
+        "a": "h:mm a تا h:mm a v",
+        "h": "h:mm تا h:mm a v",
+        "m": "h:mm تا h:mm a v"
+      },
+      "Hmv": {
+        "H": "H:mm تا H:mm v",
+        "m": "H:mm تا H:mm v"
+      },
+      "hv": {
+        "a": "h a تا h a v",
+        "h": "h تا h a v"
+      },
+      "Hv": {
+        "H": "H تا H v"
+      },
+      "M": {
+        "M": "M تا M"
+      },
+      "Md": {
+        "d": "M/d تا M/d",
+        "M": "M/d تا M/d"
+      },
+      "MEd": {
+        "d": "E M/d تا E M/d",
+        "M": "E M/d تا E M/d"
+      },
+      "MMM": {
+        "M": "LLL تا LLL"
+      },
+      "MMMd": {
+        "d": "d تا d LLL",
+        "M": "d LLL تا d LLL"
+      },
+      "MMMEd": {
+        "d": "E d LLL تا E d LLL",
+        "M": "E d LLL تا E d LLL"
+      },
+      "y": {
+        "y": "y تا y"
+      },
+      "yM": {
+        "M": "y/M تا y/M",
+        "y": "y/M تا y/M"
+      },
+      "yMd": {
+        "d": "y/M/d تا y/M/d",
+        "M": "y/M/d تا y/M/d",
+        "y": "y/M/d تا y/M/d"
+      },
+      "yMEd": {
+        "d": "E y/M/d تا E y/M/d",
+        "M": "E y/M/d تا E y/M/d",
+        "y": "E y/M/d تا E y/M/d"
+      },
+      "yMMM": {
+        "M": "LLL تا MMM y",
+        "y": "MMM y تا MMM y"
+      },
+      "yMMMd": {
+        "d": "d تا d MMM y",
+        "M": "d LLL تا d MMM y",
+        "y": "d MMM y تا d MMM y"
+      },
+      "yMMMEd": {
+        "d": "E d LLL تا E d MMM y",
+        "M": "E d LLL تا E d MMM y",
+        "y": "E d MMM y تا E d MMM y"
+      },
+      "yMMMM": {
+        "M": "LLLL تا MMMM y",
+        "y": "MMMM y تا MMMM y"
+      }
+    },
+    "hourCycle": "",
+    "nu": [
+      "arabext"
+    ],
+    "ca": [
+      "persian",
+      "gregory",
+      "islamic",
+      "islamicc",
+      "islamic-tbla"
+    ],
+    "hc": [
+      "",
+      "h23"
+    ]
+  },
+  "locale": "fa"
+}

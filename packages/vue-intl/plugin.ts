@@ -7,7 +7,7 @@ import {
 import Vue from 'vue'
 import {intlKey} from './injection-key'
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   interface ComponentCustomProperties {
     $intl: IntlShape
     $formatMessage: IntlFormatters['formatMessage']

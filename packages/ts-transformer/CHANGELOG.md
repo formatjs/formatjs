@@ -3,6 +3,73 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.13.2...@formatjs/ts-transformer@3.13.3) (2023-06-12)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+## [3.13.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.13.1...@formatjs/ts-transformer@3.13.2) (2023-06-06)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+## [3.13.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.13.0...@formatjs/ts-transformer@3.13.1) (2023-05-01)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+# [3.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.12.0...@formatjs/ts-transformer@3.13.0) (2023-04-17)
+
+### Features
+
+* **@formatjs/ts-transformer:** support TS5 ([8932ba4](https://github.com/formatjs/formatjs/commit/8932ba4f5308ceddde370e46264080caa8100d6b))
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
+# [3.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.6...@formatjs/ts-transformer@3.12.0) (2023-02-20)
+
+### Features
+
+* **babel-plugin-formatjs:** support $t by default ([f55cd1d](https://github.com/formatjs/formatjs/commit/f55cd1dadc0f01aba7a461357b061abae86d1d41))
+
+## [3.11.6](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.5...@formatjs/ts-transformer@3.11.6) (2023-01-30)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+## [3.11.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.4...@formatjs/ts-transformer@3.11.5) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+## [3.11.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.2...@formatjs/ts-transformer@3.11.4) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+## [3.11.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.2...@formatjs/ts-transformer@3.11.3) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+## [3.11.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.1...@formatjs/ts-transformer@3.11.2) (2022-11-29)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+## [3.11.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.11.0...@formatjs/ts-transformer@3.11.1) (2022-10-17)
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** change ts-jest peer dependencies to be >= 27 ([#3862](https://github.com/formatjs/formatjs/issues/3862)) ([c2154eb](https://github.com/formatjs/formatjs/commit/c2154eb11af2926c76ec08acc87d2802bbc07668))
+
+# [3.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.10.1...@formatjs/ts-transformer@3.11.0) (2022-10-13)
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** regex to support base64url ([7b7e689](https://github.com/formatjs/formatjs/commit/7b7e689e584f4e8777ffca58df2658b37bc8eaa1))
+
+### Features
+
+* **@formatjs/intl,react-intl:** move IntlFormatter type parameters to methods ([#3858](https://github.com/formatjs/formatjs/issues/3858)) ([0d03bb6](https://github.com/formatjs/formatjs/commit/0d03bb66123cb49fbd1c7d27908979bc4521b41f))
+
+## [3.10.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.10.0...@formatjs/ts-transformer@3.10.1) (2022-09-28)
+
+### Reverts
+
+* Revert "chore(deps): bump chalk from 4.1.2 to 5.0.1 (#3794)" ([f1af8b1](https://github.com/formatjs/formatjs/commit/f1af8b13433d1d98ed55addf5450dcafa4b8bdae)), closes [#3794](https://github.com/formatjs/formatjs/issues/3794)
+
 # [3.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.9.11...@formatjs/ts-transformer@3.10.0) (2022-08-27)
 
 ### Features

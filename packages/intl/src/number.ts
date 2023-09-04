@@ -1,6 +1,6 @@
 import {Formatters, IntlFormatters, CustomFormats, OnErrorFn} from './types'
 import {getNamedFormat, filterProps} from './utils'
-import {IntlError, IntlErrorCode} from './error'
+import {IntlFormatError} from './error'
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
@@ -70,7 +70,7 @@ export function formatNumber(
     return getFormatter(config, getNumberFormat, options).format(value)
   } catch (e) {
     config.onError(
-      new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting number.', e)
+      new IntlFormatError('Error formatting number.', config.locale, e)
     )
   }
 
@@ -93,7 +93,7 @@ export function formatNumberToParts(
     )
   } catch (e) {
     config.onError(
-      new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting number.', e)
+      new IntlFormatError('Error formatting number.', config.locale, e)
     )
   }
 

@@ -1,0 +1,12 @@
+/zic/Africa/Bissau  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Bissau  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Africa/Bissau  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Africa/Bissau  Thu Jan  1 01:02:19 -2147481748 UT = -67768040609737061 (localtime failed)
+/zic/Africa/Bissau  Thu Jan  1 01:02:20 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-3740
+/zic/Africa/Bissau  Mon Jan  1 00:59:59 1912 UT = Sun Dec 31 23:57:39 1911 LMT isdst=0 gmtoff=-3740
+/zic/Africa/Bissau  Mon Jan  1 01:00:00 1912 UT = Mon Jan  1 00:00:00 1912 -01 isdst=0 gmtoff=-3600
+/zic/Africa/Bissau  Wed Jan  1 00:59:59 1975 UT = Tue Dec 31 23:59:59 1974 -01 isdst=0 gmtoff=-3600
+/zic/Africa/Bissau  Wed Jan  1 01:00:00 1975 UT = Wed Jan  1 01:00:00 1975 GMT isdst=0 gmtoff=0
+/zic/Africa/Bissau  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 GMT isdst=0 gmtoff=0
+/zic/Africa/Bissau  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Bissau  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

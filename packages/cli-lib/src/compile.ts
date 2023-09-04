@@ -72,7 +72,7 @@ export async function compile(inputFiles: string[], opts: Opts = {}) {
         throw new Error(`Conflicting ID "${id}" with different translation found in these 2 files:
 ID: ${id}
 Message from ${idsWithFileName[id]}: ${messages[id]}
-Message from ${compiled[id]}: ${inputFile}
+Message from ${inputFile}: ${compiled[id]}
 `)
       }
       try {

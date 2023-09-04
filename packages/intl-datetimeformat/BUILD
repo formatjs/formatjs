@@ -1,16 +1,16 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
-load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_layer")
 load("@io_bazel_rules_docker//docker/package_managers:download_pkgs.bzl", "download_pkgs")
 load("@io_bazel_rules_docker//docker/package_managers:install_pkgs.bzl", "install_pkgs")
 load("@io_bazel_rules_docker//docker/util:run.bzl", "container_run_and_extract")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
+load("@rules_multirun//:defs.bzl", "multirun")
 load("//:index.bzl", "ZONES")
-load("//tools:index.bzl", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
+load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -80,26 +80,26 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-[jest_test(
-    name = "unit-%s" % t[t.index("/") + 1:t.index(".test")],
-    srcs = SRCS + [t] + TEST_LOCALE_DATA,
-    deps = TEST_DEPS,
-) for t in TESTS]
+jest_test(
+    name = "unit_test",
+    data = SRCS + TESTS + TEST_LOCALE_DATA + TEST_DEPS,
+)
 
 # Expand zdump files
 genrule(
     name = "tz_data_extract",
     srcs = [
+        ":tz_install/tz_data.tar.gz",
     ],
-    outs = ["tz_data/zdump/%s" % zone for zone in ZONES] + ["tz_data/backward"],
-    cmd = "tar -xzvf $(location :tz_install/tz_data.tar.gz) -C $(@D)",
+    outs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES] + ["tz_data_generated/backward"],
+    cmd = "tar -xzvf $< -C $(@D)",
     message = "Extracting zdump data files",
-    tools = [":tz_install/tz_data.tar.gz"],
+    tags = ["manual"],
 )
 
 filegroup(
     name = "zdumps",
-    srcs = [":tz_data/zdump/%s" % zone for zone in ZONES],
+    srcs = ["tz_data/zdump/%s" % zone for zone in ZONES],
 )
 
 # CLDR
@@ -681,22 +681,28 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 
 ts_script(
     name = "cldr-raw",
-    outs = CLDR_RAW_FILES,
-    args = [
-        "--outDir",
-        package_name() + "/cldr-raw",
-    ],
-    data = [
+    srcs = [
         "scripts/extract-dates.ts",
         "src/abstract/skeleton.ts",
         "src/types.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         ":node_modules/@formatjs/intl-locale",
+        "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/cldr-bcp47",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-dates-full",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
     ],
+    outs = CLDR_RAW_FILES,
+    args = [
+        "--outDir",
+        "cldr-raw",
+    ],
+    chdir = package_name(),
     entry_point = "scripts/cldr-raw.ts",
 )
 
@@ -709,18 +715,19 @@ genrule(
 
 ts_script(
     name = "locale-data",
+    srcs = CLDR_RAW_FILES + [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
     outs = ["locale-data/%s.js" % locale for locale in ALL_LOCALES] + ["locale-data/%s.d.ts" % locale for locale in ALL_LOCALES],
     args = [
-        "--cldrFile %s/%s" % (
-            package_name(),
-            f,
-        )
+        "--cldrFile %s" % f
         for f in CLDR_RAW_FILES
     ] + [
         "--outDir",
-        package_name() + "/locale-data",
+        "locale-data",
     ],
-    data = CLDR_RAW_FILES,
+    chdir = package_name(),
     entry_point = "scripts/cldr.ts",
     visibility = ["//visibility:public"],
 )
@@ -772,6 +779,8 @@ generate_src_file(
     ],
     data = [
         ":tz_data/backward",
+        "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/link.ts",
 )
@@ -798,18 +807,22 @@ generate_src_file(
 # add-all-tz
 ts_script(
     name = "add-all-tz",
-    outs = ["add-all-tz.js"],
-    args = [
-        "--polyfill",
-        "$(rootpaths :zdumps)",
-    ],
-    data = [
+    srcs = [
         "src/packer.ts",
         "src/types.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         ":zdumps",
         "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+    ],
+    outs = ["add-all-tz.js"],
+    args = [
+        "--polyfill",
+        "$(rootpaths :zdumps)",
+        "--out",
+        "$(rootpath add-all-tz.js)",
     ],
     entry_point = "scripts/process-zdump.ts",
     visibility = [
@@ -821,19 +834,23 @@ ts_script(
 # add-golden-tz
 ts_script(
     name = "add-golden-tz",
-    outs = ["add-golden-tz.js"],
-    args = [
-        "--golden",
-        "--polyfill",
-        "$(rootpaths :zdumps)",
-    ],
-    data = [
+    srcs = [
         "src/packer.ts",
         "src/types.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         ":zdumps",
         "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+    ],
+    outs = ["add-golden-tz.js"],
+    args = [
+        "--golden",
+        "--polyfill",
+        "$(rootpaths :zdumps)",
+        "--out",
+        "$(rootpath add-golden-tz.js)",
     ],
     entry_point = "scripts/process-zdump.ts",
 )
@@ -868,6 +885,17 @@ write_source_files(
     visibility = ["//:__pkg__"],
 )
 
+TZ_DATA_FILES = [":tz_data_generated/zdump/%s" % zone for zone in ZONES] + [":tz_data_generated/backward"]
+
+TZ_DATA_SRC_FILES = [k.replace(":tz_data_generated", "tz_data") for k in TZ_DATA_FILES]
+
+write_source_files(
+    name = "generated_tz_data",
+    files = {k: v for k, v in zip(TZ_DATA_SRC_FILES, TZ_DATA_FILES)},
+    tags = ["manual"],
+    visibility = ["//:__pkg__"],
+)
+
 esbuild(
     name = "polyfill.iife",
     entry_point = "lib/polyfill.js",
@@ -879,35 +907,21 @@ esbuild(
     ] + SRC_DEPS,
 )
 
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-            "tests/locale-data/*",
-            "src/data/*",
-            "test262-main.ts",
-            "supported-locales.generated.ts",
-            "*.gz",
-        ],
-    ),
-)
-
-ts_node_bin.ts_node_binary(
+# Use with `bazel run`.
+js_binary(
     name = "benchmark",
-    args = [
-        "--transpile-only",
-        "$(execpath tests/benchmark.ts)",
-    ],
     data = SRCS + SRC_DEPS + [
-        "tests/benchmark.ts",
         "tests/locale-data/en.json",
-        "//:node_modules/tslib",
-        "//:tsconfig.node",
+        "//:node_modules/@swc-node/register",
+        "//:node_modules/@swc/helpers",
+        "//:node_modules/benchmark",
     ],
+    entry_point = "tests/benchmark.ts",
+    node_options = [
+        "-r",
+        "@swc-node/register",
+    ],
+    tags = ["manual"],
 )
 
 package_json_test(
@@ -928,23 +942,26 @@ multirun(
 # First thing, apt install build-essential
 download_pkgs(
     name = "build_essential_pkgs",
-    image_tar = "@ubuntu2204//image",
+    image_tar = "@ubuntu22//image",
     packages = [
         "build-essential",
     ],
+    tags = ["manual"],
 )
 
 install_pkgs(
     name = "ubuntu_build_essential_image",
-    image_tar = "@ubuntu2204//image",
+    image_tar = "@ubuntu22//image",
     installables_tar = ":build_essential_pkgs.tar",
     output_image_name = "ubuntu_build_essential_image",
+    tags = ["manual"],
 )
 
 # Package tzcode + tzdata into a single Docker layer
 container_layer(
     name = "tz",
     directory = "tz",
+    tags = ["manual"],
     tars = [
         "@tzcode//file",
         "@tzdata//file",
@@ -956,6 +973,7 @@ container_image(
     name = "build_essential_bazel_wrapper",
     base = ":ubuntu_build_essential_image.tar",
     layers = [":tz"],
+    tags = ["manual"],
 )
 
 # Pre-compile tzdata
@@ -980,19 +998,20 @@ container_run_and_extract(
                    "echo 'Compiling zic data'",
                    "/tzdir/usr/sbin/zic -d /zic %s" % " ".join(["/tz/%s" % f for f in ZIC_FILES]),
                    # Make a folder to house all the data we need to extract
-                   "mkdir /tz_data",
+                   "mkdir /tz_data_generated",
                    # Copy backward file
-                   "cp /tz/backward /tz_data",
+                   "cp /tz/backward /tz_data_generated",
                    # Compile zdump into it
                    "echo 'Compiling zdump data'",
                ] + [
-                   "mkdir -p /tz_data/zdump/%s" %
+                   "mkdir -p /tz_data_generated/zdump/%s" %
                    zone.rsplit("/", 1)[0]
                    for zone in ZONES
                ] +
-               ["/tzdir/usr/bin/zdump -c 2100 -v /zic/%s > /tz_data/zdump/%s" % (zone, zone) for zone in ZONES] + [
-        "tar -czvf /tz_data.tar.gz /tz_data",
+               ["/tzdir/usr/bin/zdump -c 2100 -v /zic/%s > /tz_data_generated/zdump/%s" % (zone, zone) for zone in ZONES] + [
+        "tar -czvf /tz_data.tar.gz /tz_data_generated",
     ],
     extract_file = "/tz_data.tar.gz",
     image = ":build_essential_bazel_wrapper.tar",
+    tags = ["manual"],
 )

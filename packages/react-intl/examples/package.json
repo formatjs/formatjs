@@ -15,6 +15,6 @@
     "hoist-non-react-statics": "^3.3.2",
     "intl-messageformat": "workspace:*",
     "react-intl": "workspace:*",
-    "tslib": "2.4.0"
+    "tslib": "^2.4.0"
   }
 }

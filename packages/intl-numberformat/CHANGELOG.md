@@ -3,6 +3,66 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.6.0...@formatjs/intl-numberformat@8.7.0) (2023-06-12)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** Revert esm conditional exports ([#4129](https://github.com/formatjs/formatjs/issues/4129)) ([78edf46](https://github.com/formatjs/formatjs/commit/78edf460a466a7021e3753be53fd9c6af00f2d96)), closes [#4128](https://github.com/formatjs/formatjs/issues/4128) [#4127](https://github.com/formatjs/formatjs/issues/4127) [#4126](https://github.com/formatjs/formatjs/issues/4126)
+
+# [8.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.5.0...@formatjs/intl-numberformat@8.6.0) (2023-06-06)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** esm conditional exports ([#4109](https://github.com/formatjs/formatjs/issues/4109)) ([e0d593c](https://github.com/formatjs/formatjs/commit/e0d593cc3af3a317a6bd20c441191e5bbb136a93)), closes [#4013](https://github.com/formatjs/formatjs/issues/4013)
+
+# [8.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.4.1...@formatjs/intl-numberformat@8.5.0) (2023-05-01)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** updated `tzdata` to `2023c` and fixed missing and changed TimeZone ([1b4856b](https://github.com/formatjs/formatjs/commit/1b4856b11c32c6ac99aa8795ee487c92b4d9d9c9))
+
+## [8.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.4.0...@formatjs/intl-numberformat@8.4.1) (2023-04-19)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+# [8.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.3.5...@formatjs/intl-numberformat@8.4.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
+## [8.3.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.3.4...@formatjs/intl-numberformat@8.3.5) (2023-02-20)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+## [8.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.3.3...@formatjs/intl-numberformat@8.3.4) (2023-02-20)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+## [8.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.3.2...@formatjs/intl-numberformat@8.3.3) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+## [8.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.3.0...@formatjs/intl-numberformat@8.3.2) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+## [8.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.3.0...@formatjs/intl-numberformat@8.3.1) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+# [8.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.2.0...@formatjs/intl-numberformat@8.3.0) (2022-11-29)
+
+### Features
+
+* **@formatjs/intl-numberformat:** implemented formatNumericRange and formatNumericRangeToParts ([#3860](https://github.com/formatjs/formatjs/issues/3860)) ([113a169](https://github.com/formatjs/formatjs/commit/113a169e41830ff4ddb6ae0c797292b2297bdf1d))
+
+# [8.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.1.3...@formatjs/intl-numberformat@8.2.0) (2022-10-13)
+
+### Features
+
+* **@formatjs/intl-numberformat:** initial NumberFormat v3 implementation ([#3853](https://github.com/formatjs/formatjs/issues/3853)) ([6cc06ec](https://github.com/formatjs/formatjs/commit/6cc06ece7f433dc8d586ac0f969e1d8b47790f1c))
+
 ## [8.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.1.2...@formatjs/intl-numberformat@8.1.3) (2022-08-27)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

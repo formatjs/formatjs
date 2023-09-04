@@ -1,0 +1,30 @@
+/zic/America/Costa_Rica  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Costa_Rica  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Costa_Rica  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Costa_Rica  Thu Jan  1 05:36:12 -2147481748 UT = -67768040609720628 (localtime failed)
+/zic/America/Costa_Rica  Thu Jan  1 05:36:13 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-20173
+/zic/America/Costa_Rica  Wed Jan  1 05:36:12 1890 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=-20173
+/zic/America/Costa_Rica  Wed Jan  1 05:36:13 1890 UT = Wed Jan  1 00:00:00 1890 SJMT isdst=0 gmtoff=-20173
+/zic/America/Costa_Rica  Sat Jan 15 05:36:12 1921 UT = Fri Jan 14 23:59:59 1921 SJMT isdst=0 gmtoff=-20173
+/zic/America/Costa_Rica  Sat Jan 15 05:36:13 1921 UT = Fri Jan 14 23:36:13 1921 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  Sun Feb 25 05:59:59 1979 UT = Sat Feb 24 23:59:59 1979 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  Sun Feb 25 06:00:00 1979 UT = Sun Feb 25 01:00:00 1979 CDT isdst=1 gmtoff=-18000
+/zic/America/Costa_Rica  Sun Jun  3 04:59:59 1979 UT = Sat Jun  2 23:59:59 1979 CDT isdst=1 gmtoff=-18000
+/zic/America/Costa_Rica  Sun Jun  3 05:00:00 1979 UT = Sat Jun  2 23:00:00 1979 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  Sun Feb 24 05:59:59 1980 UT = Sat Feb 23 23:59:59 1980 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  Sun Feb 24 06:00:00 1980 UT = Sun Feb 24 01:00:00 1980 CDT isdst=1 gmtoff=-18000
+/zic/America/Costa_Rica  Sun Jun  1 04:59:59 1980 UT = Sat May 31 23:59:59 1980 CDT isdst=1 gmtoff=-18000
+/zic/America/Costa_Rica  Sun Jun  1 05:00:00 1980 UT = Sat May 31 23:00:00 1980 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  Sat Jan 19 05:59:59 1991 UT = Fri Jan 18 23:59:59 1991 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  Sat Jan 19 06:00:00 1991 UT = Sat Jan 19 01:00:00 1991 CDT isdst=1 gmtoff=-18000
+/zic/America/Costa_Rica  Mon Jul  1 04:59:59 1991 UT = Sun Jun 30 23:59:59 1991 CDT isdst=1 gmtoff=-18000
+/zic/America/Costa_Rica  Mon Jul  1 05:00:00 1991 UT = Sun Jun 30 23:00:00 1991 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  Sat Jan 18 05:59:59 1992 UT = Fri Jan 17 23:59:59 1992 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  Sat Jan 18 06:00:00 1992 UT = Sat Jan 18 01:00:00 1992 CDT isdst=1 gmtoff=-18000
+/zic/America/Costa_Rica  Sun Mar 15 04:59:59 1992 UT = Sat Mar 14 23:59:59 1992 CDT isdst=1 gmtoff=-18000
+/zic/America/Costa_Rica  Sun Mar 15 05:00:00 1992 UT = Sat Mar 14 23:00:00 1992 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 17:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  67768036191676800 (gmtime failed) = Wed Dec 31 18:00:00 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  67768036191698399 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 CST isdst=0 gmtoff=-21600
+/zic/America/Costa_Rica  67768036191698400 (gmtime failed) = 67768036191698400 (localtime failed)
+/zic/America/Costa_Rica  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

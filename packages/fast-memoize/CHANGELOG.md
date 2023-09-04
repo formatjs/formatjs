@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@2.1.0...@formatjs/fast-memoize@2.2.0) (2023-06-12)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** Revert esm conditional exports ([#4129](https://github.com/formatjs/formatjs/issues/4129)) ([78edf46](https://github.com/formatjs/formatjs/commit/78edf460a466a7021e3753be53fd9c6af00f2d96)), closes [#4128](https://github.com/formatjs/formatjs/issues/4128) [#4127](https://github.com/formatjs/formatjs/issues/4127) [#4126](https://github.com/formatjs/formatjs/issues/4126)
+
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@2.0.1...@formatjs/fast-memoize@2.1.0) (2023-06-06)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** esm conditional exports ([#4109](https://github.com/formatjs/formatjs/issues/4109)) ([e0d593c](https://github.com/formatjs/formatjs/commit/e0d593cc3af3a317a6bd20c441191e5bbb136a93)), closes [#4013](https://github.com/formatjs/formatjs/issues/4013)
+
+## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@2.0.0...@formatjs/fast-memoize@2.0.1) (2023-03-21)
+
+### Bug Fixes
+
+* **@formatjs/fast-memoize:** remove exports field ([#4033](https://github.com/formatjs/formatjs/issues/4033)) ([88318f4](https://github.com/formatjs/formatjs/commit/88318f44619b27ded697b6994951e576928b8e3a))
+
+## [1.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@1.2.7...@formatjs/fast-memoize@1.2.8) (2023-01-26)
+
+### Bug Fixes
+
+* **@formatjs/fast-memoize:** correct Cache.get return type ([#3964](https://github.com/formatjs/formatjs/issues/3964)) ([31b2d5d](https://github.com/formatjs/formatjs/commit/31b2d5dac8da76a7a050e71b019f28418e9139e4))
+
+## [1.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@1.2.6...@formatjs/fast-memoize@1.2.7) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/fast-memoize
+
 ## [1.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@1.2.5...@formatjs/fast-memoize@1.2.6) (2022-08-21)
 
 **Note:** Version bump only for package @formatjs/fast-memoize

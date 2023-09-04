@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.3.1...@formatjs/intl-enumerator@1.3.2) (2023-06-12)
+
+**Note:** Version bump only for package @formatjs/intl-enumerator
+
+## [1.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.3.0...@formatjs/intl-enumerator@1.3.1) (2023-06-06)
+
+**Note:** Version bump only for package @formatjs/intl-enumerator
+
+# [1.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.2.1...@formatjs/intl-enumerator@1.3.0) (2023-05-01)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** updated `tzdata` to `2023c` and fixed missing and changed TimeZone ([1b4856b](https://github.com/formatjs/formatjs/commit/1b4856b11c32c6ac99aa8795ee487c92b4d9d9c9))
+
+## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.2.0...@formatjs/intl-enumerator@1.2.1) (2023-02-20)
+
+### Bug Fixes
+
+* **@formatjs/intl-enumerator:** fix package.json ([67180d1](https://github.com/formatjs/formatjs/commit/67180d11f09c62005b1fd1f6b3d59f3af005a785))
+
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.1.10...@formatjs/intl-enumerator@1.2.0) (2023-02-20)
+
+### Features
+
+* **@formatjs/intl-locale:** implement new proposal features for Intl.Locale ([#3955](https://github.com/formatjs/formatjs/issues/3955)) ([984f923](https://github.com/formatjs/formatjs/commit/984f923f298c578d7c138ca5ad9f12965d73a7d0))
+
+## [1.1.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.1.9...@formatjs/intl-enumerator@1.1.10) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/intl-enumerator
+
+## [1.1.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.1.7...@formatjs/intl-enumerator@1.1.9) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/intl-enumerator
+
+## [1.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.1.7...@formatjs/intl-enumerator@1.1.8) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/intl-enumerator
+
+## [1.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.1.6...@formatjs/intl-enumerator@1.1.7) (2022-11-29)
+
+**Note:** Version bump only for package @formatjs/intl-enumerator
+
+## [1.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.1.5...@formatjs/intl-enumerator@1.1.6) (2022-10-13)
+
+**Note:** Version bump only for package @formatjs/intl-enumerator
+
 ## [1.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.1.4...@formatjs/intl-enumerator@1.1.5) (2022-08-27)
 
 **Note:** Version bump only for package @formatjs/intl-enumerator

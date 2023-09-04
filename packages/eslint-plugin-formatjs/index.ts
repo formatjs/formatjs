@@ -13,6 +13,10 @@ import noMultiplePlurals from './rules/no-multiple-plurals'
 import noMultipleWhitespaces from './rules/no-multiple-whitespaces'
 import noOffset from './rules/no-offset'
 import noLiteralStringInJsx from './rules/no-literal-string-in-jsx'
+import noUselessMessage from './rules/no-useless-message'
+import preferFormattedMessage from './rules/prefer-formatted-message'
+import preferPoundInPlural from './rules/prefer-pound-in-plural'
+
 const plugin = {
   rules: {
     'blocklist-elements': blocklistElements,
@@ -25,11 +29,14 @@ const plugin = {
     'no-complex-selectors': noComplexSelectors,
     'no-emoji': noEmoji,
     'no-id': noId,
+    'no-invalid-icu': noInvalidICU,
     'no-literal-string-in-jsx': noLiteralStringInJsx,
     'no-multiple-plurals': noMultiplePlurals,
     'no-multiple-whitespaces': noMultipleWhitespaces,
-    'no-invalid-icu': noInvalidICU,
     'no-offset': noOffset,
+    'no-useless-message': noUselessMessage,
+    'prefer-formatted-message': preferFormattedMessage,
+    'prefer-pound-in-plural': preferPoundInPlural,
   },
 }
 

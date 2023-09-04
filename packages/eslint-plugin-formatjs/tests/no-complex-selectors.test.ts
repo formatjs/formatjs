@@ -1,13 +1,15 @@
 import noComplexSelectors from '../rules/no-complex-selectors'
 import {ruleTester} from './util'
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
+import {
+  dynamicMessage,
+  noMatch,
+  spreadJsx,
+  emptyFnCall,
+  defineMessage,
+} from './fixtures'
 ruleTester.run('no-complex-selectors', noComplexSelectors, {
   valid: [
-    `import {defineMessage} from 'react-intl'
-  defineMessage({
-      defaultMessage: 'a {placeholder}',
-      description: 'asd'
-  })`,
+    defineMessage,
     dynamicMessage,
     noMatch,
     spreadJsx,
@@ -120,6 +122,19 @@ ruleTester.run('no-complex-selectors', noComplexSelectors, {
           message: 'Message complexity is too high (4 vs limit at 1)',
         },
       ],
+    },
+    {
+      code: `
+              import {defineMessage} from 'react-intl'
+              defineMessage({
+                  defaultMessage: '<b>{p1, plural, one{one} other{other}}</b>'
+              })`,
+      options: [
+        {
+          limit: 1,
+        },
+      ],
+      errors: [{message: 'Message complexity is too high (2 vs limit at 1)'}],
     },
   ],
 })

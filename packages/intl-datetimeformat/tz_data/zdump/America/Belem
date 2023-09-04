@@ -1,0 +1,68 @@
+/zic/America/Belem  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Belem  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Belem  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Belem  Thu Jan  1 03:13:55 -2147481748 UT = -67768040609729165 (localtime failed)
+/zic/America/Belem  Thu Jan  1 03:13:56 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-11636
+/zic/America/Belem  Thu Jan  1 03:13:55 1914 UT = Wed Dec 31 23:59:59 1913 LMT isdst=0 gmtoff=-11636
+/zic/America/Belem  Thu Jan  1 03:13:56 1914 UT = Thu Jan  1 00:13:56 1914 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sat Oct  3 13:59:59 1931 UT = Sat Oct  3 10:59:59 1931 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sat Oct  3 14:00:00 1931 UT = Sat Oct  3 12:00:00 1931 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Fri Apr  1 01:59:59 1932 UT = Thu Mar 31 23:59:59 1932 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Fri Apr  1 02:00:00 1932 UT = Thu Mar 31 23:00:00 1932 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Mon Oct  3 02:59:59 1932 UT = Sun Oct  2 23:59:59 1932 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Mon Oct  3 03:00:00 1932 UT = Mon Oct  3 01:00:00 1932 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sat Apr  1 01:59:59 1933 UT = Fri Mar 31 23:59:59 1933 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sat Apr  1 02:00:00 1933 UT = Fri Mar 31 23:00:00 1933 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Thu Dec  1 02:59:59 1949 UT = Wed Nov 30 23:59:59 1949 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Thu Dec  1 03:00:00 1949 UT = Thu Dec  1 01:00:00 1949 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sun Apr 16 02:59:59 1950 UT = Sun Apr 16 00:59:59 1950 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sun Apr 16 03:00:00 1950 UT = Sun Apr 16 00:00:00 1950 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Fri Dec  1 02:59:59 1950 UT = Thu Nov 30 23:59:59 1950 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Fri Dec  1 03:00:00 1950 UT = Fri Dec  1 01:00:00 1950 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sun Apr  1 01:59:59 1951 UT = Sat Mar 31 23:59:59 1951 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sun Apr  1 02:00:00 1951 UT = Sat Mar 31 23:00:00 1951 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sat Dec  1 02:59:59 1951 UT = Fri Nov 30 23:59:59 1951 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sat Dec  1 03:00:00 1951 UT = Sat Dec  1 01:00:00 1951 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Tue Apr  1 01:59:59 1952 UT = Mon Mar 31 23:59:59 1952 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Tue Apr  1 02:00:00 1952 UT = Mon Mar 31 23:00:00 1952 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Mon Dec  1 02:59:59 1952 UT = Sun Nov 30 23:59:59 1952 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Mon Dec  1 03:00:00 1952 UT = Mon Dec  1 01:00:00 1952 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sun Mar  1 01:59:59 1953 UT = Sat Feb 28 23:59:59 1953 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sun Mar  1 02:00:00 1953 UT = Sat Feb 28 23:00:00 1953 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Mon Dec  9 02:59:59 1963 UT = Sun Dec  8 23:59:59 1963 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Mon Dec  9 03:00:00 1963 UT = Mon Dec  9 01:00:00 1963 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sun Mar  1 01:59:59 1964 UT = Sat Feb 29 23:59:59 1964 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sun Mar  1 02:00:00 1964 UT = Sat Feb 29 23:00:00 1964 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sun Jan 31 02:59:59 1965 UT = Sat Jan 30 23:59:59 1965 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sun Jan 31 03:00:00 1965 UT = Sun Jan 31 01:00:00 1965 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Wed Mar 31 01:59:59 1965 UT = Tue Mar 30 23:59:59 1965 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Wed Mar 31 02:00:00 1965 UT = Tue Mar 30 23:00:00 1965 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Wed Dec  1 02:59:59 1965 UT = Tue Nov 30 23:59:59 1965 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Wed Dec  1 03:00:00 1965 UT = Wed Dec  1 01:00:00 1965 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Tue Mar  1 01:59:59 1966 UT = Mon Feb 28 23:59:59 1966 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Tue Mar  1 02:00:00 1966 UT = Mon Feb 28 23:00:00 1966 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Tue Nov  1 02:59:59 1966 UT = Mon Oct 31 23:59:59 1966 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Tue Nov  1 03:00:00 1966 UT = Tue Nov  1 01:00:00 1966 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Wed Mar  1 01:59:59 1967 UT = Tue Feb 28 23:59:59 1967 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Wed Mar  1 02:00:00 1967 UT = Tue Feb 28 23:00:00 1967 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Wed Nov  1 02:59:59 1967 UT = Tue Oct 31 23:59:59 1967 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Wed Nov  1 03:00:00 1967 UT = Wed Nov  1 01:00:00 1967 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Fri Mar  1 01:59:59 1968 UT = Thu Feb 29 23:59:59 1968 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Fri Mar  1 02:00:00 1968 UT = Thu Feb 29 23:00:00 1968 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sat Nov  2 02:59:59 1985 UT = Fri Nov  1 23:59:59 1985 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sat Nov  2 03:00:00 1985 UT = Sat Nov  2 01:00:00 1985 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sat Mar 15 01:59:59 1986 UT = Fri Mar 14 23:59:59 1986 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sat Mar 15 02:00:00 1986 UT = Fri Mar 14 23:00:00 1986 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sat Oct 25 02:59:59 1986 UT = Fri Oct 24 23:59:59 1986 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sat Oct 25 03:00:00 1986 UT = Sat Oct 25 01:00:00 1986 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sat Feb 14 01:59:59 1987 UT = Fri Feb 13 23:59:59 1987 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sat Feb 14 02:00:00 1987 UT = Fri Feb 13 23:00:00 1987 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sun Oct 25 02:59:59 1987 UT = Sat Oct 24 23:59:59 1987 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Sun Oct 25 03:00:00 1987 UT = Sun Oct 25 01:00:00 1987 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sun Feb  7 01:59:59 1988 UT = Sat Feb  6 23:59:59 1988 -02 isdst=1 gmtoff=-7200
+/zic/America/Belem  Sun Feb  7 02:00:00 1988 UT = Sat Feb  6 23:00:00 1988 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 20:59:59 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  67768036191676800 (gmtime failed) = Wed Dec 31 21:00:00 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  67768036191687599 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -03 isdst=0 gmtoff=-10800
+/zic/America/Belem  67768036191687600 (gmtime failed) = 67768036191687600 (localtime failed)
+/zic/America/Belem  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

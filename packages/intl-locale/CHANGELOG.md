@@ -3,6 +3,61 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.3.1...@formatjs/intl-locale@3.3.2) (2023-06-12)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+## [3.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.3.0...@formatjs/intl-locale@3.3.1) (2023-06-06)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+# [3.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.2.1...@formatjs/intl-locale@3.3.0) (2023-05-01)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** updated `tzdata` to `2023c` and fixed missing and changed TimeZone ([1b4856b](https://github.com/formatjs/formatjs/commit/1b4856b11c32c6ac99aa8795ee487c92b4d9d9c9))
+
+## [3.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.2.0...@formatjs/intl-locale@3.2.1) (2023-04-19)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+# [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.1.1...@formatjs/intl-locale@3.2.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
+## [3.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.1.0...@formatjs/intl-locale@3.1.1) (2023-02-20)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+# [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.0.11...@formatjs/intl-locale@3.1.0) (2023-02-20)
+
+### Features
+
+* **@formatjs/intl-locale:** add static read-only polyfilled property ([#3996](https://github.com/formatjs/formatjs/issues/3996)) ([a9b81c3](https://github.com/formatjs/formatjs/commit/a9b81c3cd012425d03810830f1eaf6709c76094a))
+* **@formatjs/intl-locale:** implement new proposal features for Intl.Locale ([#3955](https://github.com/formatjs/formatjs/issues/3955)) ([984f923](https://github.com/formatjs/formatjs/commit/984f923f298c578d7c138ca5ad9f12965d73a7d0))
+
+## [3.0.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.0.10...@formatjs/intl-locale@3.0.11) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+## [3.0.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.0.8...@formatjs/intl-locale@3.0.10) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+## [3.0.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.0.8...@formatjs/intl-locale@3.0.9) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+## [3.0.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.0.7...@formatjs/intl-locale@3.0.8) (2022-11-29)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+## [3.0.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.0.6...@formatjs/intl-locale@3.0.7) (2022-10-13)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
 ## [3.0.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.0.5...@formatjs/intl-locale@3.0.6) (2022-08-27)
 
 **Note:** Version bump only for package @formatjs/intl-locale

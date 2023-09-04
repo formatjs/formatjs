@@ -1,0 +1,616 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pseudo-locale en-AC works with a message that has a plural element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "FOO ",
+  },
+  {
+    "offset": 0,
+    "options": {
+      "=1": {
+        "value": [
+          {
+            "type": 0,
+            "value": "1 BAR",
+          },
+        ],
+      },
+      "other": {
+        "value": [
+          {
+            "type": 7,
+          },
+          {
+            "type": 0,
+            "value": " BARS",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "bar",
+  },
+]
+`;
+
+exports[`pseudo-locale en-AC works with a message that starts with a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "FOO ",
+  },
+  {
+    "type": 1,
+    "value": "bar",
+  },
+]
+`;
+
+exports[`pseudo-locale en-AC works with a string literal 1`] = `
+[
+  {
+    "type": 0,
+    "value": "FIND HELP ONLINE",
+  },
+]
+`;
+
+exports[`pseudo-locale en-AC works with message that does not contain a literal element 1`] = `
+[
+  {
+    "type": 1,
+    "value": "foo",
+  },
+]
+`;
+
+exports[`pseudo-locale en-AC works with message that does not start with a literal element 1`] = `
+[
+  {
+    "type": 1,
+    "value": "foo",
+  },
+  {
+    "type": 0,
+    "value": " BAR",
+  },
+]
+`;
+
+exports[`pseudo-locale en-AC works with messages that ends with a tag 1`] = `
+[
+  {
+    "type": 0,
+    "value": "FOO ",
+  },
+  {
+    "children": [
+      {
+        "type": 0,
+        "value": "BAR",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+]
+`;
+
+exports[`pseudo-locale en-HA works with a message that has a plural element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[javascript]foo ",
+  },
+  {
+    "offset": 0,
+    "options": {
+      "=1": {
+        "value": [
+          {
+            "type": 0,
+            "value": "1 bar",
+          },
+        ],
+      },
+      "other": {
+        "value": [
+          {
+            "type": 7,
+          },
+          {
+            "type": 0,
+            "value": " bars",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "bar",
+  },
+]
+`;
+
+exports[`pseudo-locale en-HA works with a message that starts with a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[javascript]foo ",
+  },
+  {
+    "type": 1,
+    "value": "bar",
+  },
+]
+`;
+
+exports[`pseudo-locale en-HA works with a string literal 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[javascript]Find Help Online",
+  },
+]
+`;
+
+exports[`pseudo-locale en-HA works with message that does not contain a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[javascript]",
+  },
+  {
+    "type": 1,
+    "value": "foo",
+  },
+]
+`;
+
+exports[`pseudo-locale en-HA works with message that does not start with a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[javascript]",
+  },
+  {
+    "type": 1,
+    "value": "foo",
+  },
+  {
+    "type": 0,
+    "value": " bar",
+  },
+]
+`;
+
+exports[`pseudo-locale en-HA works with messages that ends with a tag 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[javascript]Foo ",
+  },
+  {
+    "children": [
+      {
+        "type": 0,
+        "value": "bar",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with a message that has a plural element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "foo ",
+  },
+  {
+    "offset": 0,
+    "options": {
+      "=1": {
+        "value": [
+          {
+            "type": 0,
+            "value": "1 bar",
+          },
+        ],
+      },
+      "other": {
+        "value": [
+          {
+            "type": 7,
+          },
+          {
+            "type": 0,
+            "value": " bars",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "bar",
+  },
+  {
+    "type": 0,
+    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with a message that starts with a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "foo ",
+  },
+  {
+    "type": 1,
+    "value": "bar",
+  },
+  {
+    "type": 0,
+    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with a string literal 1`] = `
+[
+  {
+    "type": 0,
+    "value": "Find Help OnlineSSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with message that does not contain a literal element 1`] = `
+[
+  {
+    "type": 1,
+    "value": "foo",
+  },
+  {
+    "type": 0,
+    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with message that does not start with a literal element 1`] = `
+[
+  {
+    "type": 1,
+    "value": "foo",
+  },
+  {
+    "type": 0,
+    "value": " barSSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-LS works with messages that ends with a tag 1`] = `
+[
+  {
+    "type": 0,
+    "value": "Foo ",
+  },
+  {
+    "children": [
+      {
+        "type": 0,
+        "value": "bar",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+  {
+    "type": 0,
+    "value": "SSSSSSSSSSSSSSSSSSSSSSSSS",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with a message that has a plural element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[",
+  },
+  {
+    "type": 0,
+    "value": "ƒǿǿǿǿ ",
+  },
+  {
+    "offset": 0,
+    "options": {
+      "=1": {
+        "value": [
+          {
+            "type": 0,
+            "value": "1 ƀȧȧř",
+          },
+        ],
+      },
+      "other": {
+        "value": [
+          {
+            "type": 7,
+          },
+          {
+            "type": 0,
+            "value": " ƀȧȧřş",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "bar",
+  },
+  {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with a message that starts with a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[",
+  },
+  {
+    "type": 0,
+    "value": "ƒǿǿǿǿ ",
+  },
+  {
+    "type": 1,
+    "value": "bar",
+  },
+  {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with a string literal 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[",
+  },
+  {
+    "type": 0,
+    "value": "Ƒīƞḓ Ħḗḗŀƥ Ǿƞŀīƞḗḗ",
+  },
+  {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with message that does not contain a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[",
+  },
+  {
+    "type": 1,
+    "value": "foo",
+  },
+  {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with message that does not start with a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[",
+  },
+  {
+    "type": 1,
+    "value": "foo",
+  },
+  {
+    "type": 0,
+    "value": " ƀȧȧř",
+  },
+  {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XA works with messages that ends with a tag 1`] = `
+[
+  {
+    "type": 0,
+    "value": "[",
+  },
+  {
+    "type": 0,
+    "value": "Ƒǿǿǿǿ ",
+  },
+  {
+    "children": [
+      {
+        "type": 0,
+        "value": "ƀȧȧř",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+  {
+    "type": 0,
+    "value": "]",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with a message that has a plural element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "‮",
+  },
+  {
+    "type": 0,
+    "value": "ɟoo ",
+  },
+  {
+    "offset": 0,
+    "options": {
+      "=1": {
+        "value": [
+          {
+            "type": 0,
+            "value": "1 qɐɹ",
+          },
+        ],
+      },
+      "other": {
+        "value": [
+          {
+            "type": 7,
+          },
+          {
+            "type": 0,
+            "value": " qɐɹs",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "bar",
+  },
+  {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with a message that starts with a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "‮",
+  },
+  {
+    "type": 0,
+    "value": "ɟoo ",
+  },
+  {
+    "type": 1,
+    "value": "bar",
+  },
+  {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with a string literal 1`] = `
+[
+  {
+    "type": 0,
+    "value": "‮",
+  },
+  {
+    "type": 0,
+    "value": "Ⅎıup Hǝʅd Ouʅıuǝ",
+  },
+  {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with message that does not contain a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "‮",
+  },
+  {
+    "type": 1,
+    "value": "foo",
+  },
+  {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with message that does not start with a literal element 1`] = `
+[
+  {
+    "type": 0,
+    "value": "‮",
+  },
+  {
+    "type": 1,
+    "value": "foo",
+  },
+  {
+    "type": 0,
+    "value": " qɐɹ",
+  },
+  {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;
+
+exports[`pseudo-locale en-XB works with messages that ends with a tag 1`] = `
+[
+  {
+    "type": 0,
+    "value": "‮",
+  },
+  {
+    "type": 0,
+    "value": "Ⅎoo ",
+  },
+  {
+    "children": [
+      {
+        "type": 0,
+        "value": "qɐɹ",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+  {
+    "type": 0,
+    "value": "‬",
+  },
+]
+`;

@@ -1,6 +1,7 @@
 import {join, basename} from 'path'
 import {outputFileSync} from 'fs-extra'
 import minimist from 'minimist'
+import stringify from 'json-stable-stringify'
 import {sync as globSync} from 'fast-glob'
 
 interface Args extends minimist.ParsedArgs {
@@ -21,7 +22,7 @@ function main(args: Args) {
   outputFileSync(
     out,
     `// This file is generated from supported-locales-gen.ts
-export const supportedLocales: string[] = ${JSON.stringify(locales)}`
+export const supportedLocales: string[] = ${stringify(locales, {space: 2})}`
   )
 }
 if (require.main === module) {

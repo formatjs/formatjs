@@ -3,6 +3,93 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.8.0...@formatjs/intl@2.9.0) (2023-06-12)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** Revert esm conditional exports ([#4129](https://github.com/formatjs/formatjs/issues/4129)) ([78edf46](https://github.com/formatjs/formatjs/commit/78edf460a466a7021e3753be53fd9c6af00f2d96)), closes [#4128](https://github.com/formatjs/formatjs/issues/4128) [#4127](https://github.com/formatjs/formatjs/issues/4127) [#4126](https://github.com/formatjs/formatjs/issues/4126)
+
+# [2.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.7.2...@formatjs/intl@2.8.0) (2023-06-06)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** esm conditional exports ([#4109](https://github.com/formatjs/formatjs/issues/4109)) ([e0d593c](https://github.com/formatjs/formatjs/commit/e0d593cc3af3a317a6bd20c441191e5bbb136a93)), closes [#4013](https://github.com/formatjs/formatjs/issues/4013)
+
+## [2.7.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.7.1...@formatjs/intl@2.7.2) (2023-05-01)
+
+**Note:** Version bump only for package @formatjs/intl
+
+## [2.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.7.0...@formatjs/intl@2.7.1) (2023-04-19)
+
+**Note:** Version bump only for package @formatjs/intl
+
+# [2.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.9...@formatjs/intl@2.7.0) (2023-04-17)
+
+### Features
+
+* **@formatjs/intl:** store locale as error property ([3d03554](https://github.com/formatjs/formatjs/commit/3d035547db9d47adbbd51bff4330a58c0ca0668e))
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
+## [2.6.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.8...@formatjs/intl@2.6.9) (2023-03-21)
+
+**Note:** Version bump only for package @formatjs/intl
+
+## [2.6.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.6...@formatjs/intl@2.6.7) (2023-02-20)
+
+**Note:** Version bump only for package @formatjs/intl
+
+## [2.6.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.5...@formatjs/intl@2.6.6) (2023-02-20)
+
+**Note:** Version bump only for package @formatjs/intl
+
+## [2.6.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.4...@formatjs/intl@2.6.5) (2023-01-30)
+
+**Note:** Version bump only for package @formatjs/intl
+
+## [2.6.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.3...@formatjs/intl@2.6.4) (2023-01-26)
+
+**Note:** Version bump only for package @formatjs/intl
+
+## [2.6.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.2...@formatjs/intl@2.6.3) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/intl
+
+## [2.6.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.0...@formatjs/intl@2.6.2) (2022-12-01)
+
+### Bug Fixes
+
+* **@formatjs/intl:** update monorepo to use TypeScript 4.9 and actually fix the type issue ([#3919](https://github.com/formatjs/formatjs/issues/3919)) ([051527b](https://github.com/formatjs/formatjs/commit/051527b6391c8f4548254ab20630173789d555cd))
+
+## [2.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.6.0...@formatjs/intl@2.6.1) (2022-12-01)
+
+### Bug Fixes
+
+* **@formatjs/intl:** update monorepo to use TypeScript 4.9 and actually fix the type issue ([#3919](https://github.com/formatjs/formatjs/issues/3919)) ([051527b](https://github.com/formatjs/formatjs/commit/051527b6391c8f4548254ab20630173789d555cd))
+
+# [2.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.5.1...@formatjs/intl@2.6.0) (2022-11-29)
+
+### Bug Fixes
+
+* **@formatjs/intl:** fix type checker errors with TypeScript 4.9 ([#3916](https://github.com/formatjs/formatjs/issues/3916)) ([36d0437](https://github.com/formatjs/formatjs/commit/36d04373cb6c3a768265792fe808bbe036bb0804)), closes [#3912](https://github.com/formatjs/formatjs/issues/3912) [#3905](https://github.com/formatjs/formatjs/issues/3905) [#3910](https://github.com/formatjs/formatjs/issues/3910)
+
+### Features
+
+* **@formatjs/intl-displaynames:** Intl DisplayNames API V2 (Stage 3) implementation ([#3890](https://github.com/formatjs/formatjs/issues/3890)) ([e39a89e](https://github.com/formatjs/formatjs/commit/e39a89ecee56a0c234e661e3860b61aa3a34f65e))
+
+## [2.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.5.0...@formatjs/intl@2.5.1) (2022-10-17)
+
+**Note:** Version bump only for package @formatjs/intl
+
+# [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.4.2...@formatjs/intl@2.5.0) (2022-10-13)
+
+### Features
+
+* **@formatjs/intl,react-intl:** move IntlFormatter type parameters to methods ([#3858](https://github.com/formatjs/formatjs/issues/3858)) ([0d03bb6](https://github.com/formatjs/formatjs/commit/0d03bb66123cb49fbd1c7d27908979bc4521b41f))
+
+## [2.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.4.1...@formatjs/intl@2.4.2) (2022-09-28)
+
+**Note:** Version bump only for package @formatjs/intl
+
 ## [2.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.4.0...@formatjs/intl@2.4.1) (2022-09-06)
 
 ### Bug Fixes

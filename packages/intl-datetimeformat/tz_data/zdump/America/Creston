@@ -1,0 +1,32 @@
+/zic/America/Creston  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Creston  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Creston  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Creston  Thu Jan  1 07:28:17 -2147481748 UT = -67768040609713903 (localtime failed)
+/zic/America/Creston  Thu Jan  1 07:28:18 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-26898
+/zic/America/Creston  Sun Nov 18 18:59:59 1883 UT = Sun Nov 18 11:31:41 1883 LMT isdst=0 gmtoff=-26898
+/zic/America/Creston  Sun Nov 18 19:00:00 1883 UT = Sun Nov 18 12:00:00 1883 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Sun Mar 31 08:59:59 1918 UT = Sun Mar 31 01:59:59 1918 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Sun Mar 31 09:00:00 1918 UT = Sun Mar 31 03:00:00 1918 MDT isdst=1 gmtoff=-21600
+/zic/America/Creston  Sun Oct 27 07:59:59 1918 UT = Sun Oct 27 01:59:59 1918 MDT isdst=1 gmtoff=-21600
+/zic/America/Creston  Sun Oct 27 08:00:00 1918 UT = Sun Oct 27 01:00:00 1918 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Sun Mar 30 08:59:59 1919 UT = Sun Mar 30 01:59:59 1919 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Sun Mar 30 09:00:00 1919 UT = Sun Mar 30 03:00:00 1919 MDT isdst=1 gmtoff=-21600
+/zic/America/Creston  Sun Oct 26 07:59:59 1919 UT = Sun Oct 26 01:59:59 1919 MDT isdst=1 gmtoff=-21600
+/zic/America/Creston  Sun Oct 26 08:00:00 1919 UT = Sun Oct 26 01:00:00 1919 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Mon Feb  9 08:59:59 1942 UT = Mon Feb  9 01:59:59 1942 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Mon Feb  9 09:00:00 1942 UT = Mon Feb  9 03:00:00 1942 MWT isdst=1 gmtoff=-21600
+/zic/America/Creston  Sat Jan  1 06:00:59 1944 UT = Sat Jan  1 00:00:59 1944 MWT isdst=1 gmtoff=-21600
+/zic/America/Creston  Sat Jan  1 06:01:00 1944 UT = Fri Dec 31 23:01:00 1943 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Sat Apr  1 07:00:59 1944 UT = Sat Apr  1 00:00:59 1944 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Sat Apr  1 07:01:00 1944 UT = Sat Apr  1 01:01:00 1944 MWT isdst=1 gmtoff=-21600
+/zic/America/Creston  Sun Oct  1 06:00:59 1944 UT = Sun Oct  1 00:00:59 1944 MWT isdst=1 gmtoff=-21600
+/zic/America/Creston  Sun Oct  1 06:01:00 1944 UT = Sat Sep 30 23:01:00 1944 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Sun Apr 30 08:59:59 1967 UT = Sun Apr 30 01:59:59 1967 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Sun Apr 30 09:00:00 1967 UT = Sun Apr 30 03:00:00 1967 MDT isdst=1 gmtoff=-21600
+/zic/America/Creston  Sun Oct 29 07:59:59 1967 UT = Sun Oct 29 01:59:59 1967 MDT isdst=1 gmtoff=-21600
+/zic/America/Creston  Sun Oct 29 08:00:00 1967 UT = Sun Oct 29 01:00:00 1967 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 16:59:59 2147485547 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  67768036191676800 (gmtime failed) = Wed Dec 31 17:00:00 2147485547 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  67768036191701999 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 MST isdst=0 gmtoff=-25200
+/zic/America/Creston  67768036191702000 (gmtime failed) = 67768036191702000 (localtime failed)
+/zic/America/Creston  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

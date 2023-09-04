@@ -1,7 +1,7 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile_node")
+load("//tools:index.bzl", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -31,10 +31,11 @@ SRC_DEPS = [
     "//:node_modules/@types/node",
     "//:node_modules/@types/picomatch",
     "//:node_modules/@typescript-eslint/typescript-estree",
-    "//:node_modules/emoji-regex",
     "//:node_modules/eslint",
+    "//:node_modules/magic-string",
     "//:node_modules/picomatch",
     "//:node_modules/typescript",
+    "//:node_modules/unicode-emoji-utils",
     ":node_modules/@formatjs/icu-messageformat-parser",
     ":node_modules/@formatjs/ts-transformer",
 ]
@@ -57,30 +58,17 @@ TEST_FILES = glob([
     "tests/*.test.ts",
 ])
 
-[jest_test(
-    name = "unit-%s" % f[6:f.index(".test.ts")],
-    srcs = TESTS_BASE_SRCS + [f],
-    deps = [
+jest_test(
+    name = "unit_test",
+    data = TESTS_BASE_SRCS + TEST_FILES + SRC_DEPS + [
         "//:node_modules/@typescript-eslint/parser",
         "//:node_modules/vue-eslint-parser",
-    ] + SRC_DEPS,
-) for f in TEST_FILES]
+    ],
+)
 
 write_source_files(
     name = "tsconfig_json",
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
-)
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-        ],
-    ),
 )
 
 package_json_test(

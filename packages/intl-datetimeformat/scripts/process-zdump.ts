@@ -405,7 +405,7 @@ async function main(args: minimist.ParsedArgs) {
       `// @generated
 // prettier-ignore
 if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
-  Intl.DateTimeFormat.__addTZData(${JSON.stringify(pack(data))}) 
+  Intl.DateTimeFormat.__addTZData(${stringify(pack(data), {space: 2})}) 
 }`
     )
   } else {

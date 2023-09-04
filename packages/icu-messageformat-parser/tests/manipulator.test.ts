@@ -10,6 +10,13 @@ test('should hoist 1 plural', function () {
       )
     )
   ).toBe('{count,plural,one{I have a dog} other{I have many dogs}}')
+  expect(() =>
+    hoistSelectors(
+      parse('I have <b>{count, plural, one{a dog} other{many dogs}}</b>')
+    )
+  ).toThrowError(
+    'Cannot hoist plural/select within a tag element. Please put the tag element inside each plural/select option'
+  )
 })
 
 test('hoist some random case 1', function () {
@@ -48,4 +55,16 @@ test('should hoist plural & select and tag', function () {
       )
     )
   ).toMatchSnapshot()
+})
+
+test('should hoist 1 plural with number', function () {
+  expect(
+    printAST(
+      hoistSelectors(
+        parse(
+          '{count, plural, one {{count, number} cat} other {{count, number} cats}}'
+        )
+      )
+    )
+  ).toBe('{count,plural,one{{count, number} cat} other{{count, number} cats}}')
 })

@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.5.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.4.0...intl-messageformat@10.5.0) (2023-06-12)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** Revert esm conditional exports ([#4129](https://github.com/formatjs/formatjs/issues/4129)) ([78edf46](https://github.com/formatjs/formatjs/commit/78edf460a466a7021e3753be53fd9c6af00f2d96)), closes [#4128](https://github.com/formatjs/formatjs/issues/4128) [#4127](https://github.com/formatjs/formatjs/issues/4127) [#4126](https://github.com/formatjs/formatjs/issues/4126)
+
+# [10.4.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.3.5...intl-messageformat@10.4.0) (2023-06-06)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** esm conditional exports ([#4109](https://github.com/formatjs/formatjs/issues/4109)) ([e0d593c](https://github.com/formatjs/formatjs/commit/e0d593cc3af3a317a6bd20c441191e5bbb136a93)), closes [#4013](https://github.com/formatjs/formatjs/issues/4013)
+
+## [10.3.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.3.4...intl-messageformat@10.3.5) (2023-05-01)
+
+**Note:** Version bump only for package intl-messageformat
+
+## [10.3.4](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.3.3...intl-messageformat@10.3.4) (2023-04-17)
+
+**Note:** Version bump only for package intl-messageformat
+
+## [10.3.3](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.3.2...intl-messageformat@10.3.3) (2023-03-21)
+
+**Note:** Version bump only for package intl-messageformat
+
+## [10.3.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.3.0...intl-messageformat@10.3.1) (2023-02-20)
+
+**Note:** Version bump only for package intl-messageformat
+
+# [10.3.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.2.6...intl-messageformat@10.3.0) (2023-01-30)
+
+### Features
+
+* **intl-messageformat:** support more parse options in constructor ([e6b43dc](https://github.com/formatjs/formatjs/commit/e6b43dcc244c53dbfae2a877e1e07546678741db))
+
+## [10.2.6](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.2.5...intl-messageformat@10.2.6) (2023-01-26)
+
+**Note:** Version bump only for package intl-messageformat
+
+## [10.2.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.2.4...intl-messageformat@10.2.5) (2022-12-02)
+
+**Note:** Version bump only for package intl-messageformat
+
+## [10.2.4](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.2.2...intl-messageformat@10.2.4) (2022-12-01)
+
+**Note:** Version bump only for package intl-messageformat
+
+## [10.2.3](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.2.2...intl-messageformat@10.2.3) (2022-12-01)
+
+**Note:** Version bump only for package intl-messageformat
+
+## [10.2.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.2.1...intl-messageformat@10.2.2) (2022-11-29)
+
+**Note:** Version bump only for package intl-messageformat
+
+## [10.2.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.2.0...intl-messageformat@10.2.1) (2022-10-17)
+
+**Note:** Version bump only for package intl-messageformat
+
+# [10.2.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.1.5...intl-messageformat@10.2.0) (2022-10-13)
+
+### Features
+
+* **@formatjs/intl,react-intl:** move IntlFormatter type parameters to methods ([#3858](https://github.com/formatjs/formatjs/issues/3858)) ([0d03bb6](https://github.com/formatjs/formatjs/commit/0d03bb66123cb49fbd1c7d27908979bc4521b41f))
+
+## [10.1.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.1.4...intl-messageformat@10.1.5) (2022-09-28)
+
+**Note:** Version bump only for package intl-messageformat
+
 ## [10.1.4](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.1.3...intl-messageformat@10.1.4) (2022-08-27)
 
 **Note:** Version bump only for package intl-messageformat

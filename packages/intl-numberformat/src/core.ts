@@ -9,6 +9,8 @@ import {
   ToNumber,
   CanonicalizeLocaleList,
   OrdinaryHasInstance,
+  FormatNumericRange,
+  FormatNumericRangeToParts,
 } from '@formatjs/ecma402-abstract'
 import {currencyDigitsData} from './currency-digits.generated'
 import {numberingSystemNames} from './numbering-systems.generated'
@@ -88,6 +90,19 @@ function formatToParts(this: Intl.NumberFormat, x: number) {
     getInternalSlots,
   })
 }
+
+function formatRange(this: Intl.NumberFormat, start: number, end: number) {
+  return FormatNumericRange(this, start, end, {getInternalSlots})
+}
+
+function formatRangeToParts(
+  this: Intl.NumberFormat,
+  start: number,
+  end: number
+) {
+  return FormatNumericRangeToParts(this, start, end, {getInternalSlots})
+}
+
 try {
   Object.defineProperty(formatToParts, 'name', {
     value: 'formatToParts',
@@ -104,6 +119,14 @@ defineProperty(NumberFormat.prototype, 'formatToParts', {
   value: formatToParts,
 })
 
+defineProperty(NumberFormat.prototype, 'formatRange', {
+  value: formatRange,
+})
+
+defineProperty(NumberFormat.prototype, 'formatRangeToParts', {
+  value: formatRangeToParts,
+})
+
 defineProperty(NumberFormat.prototype, 'resolvedOptions', {
   value: function resolvedOptions() {
     if (typeof this !== 'object' || !OrdinaryHasInstance(NumberFormat, this)) {
@@ -118,6 +141,13 @@ defineProperty(NumberFormat.prototype, 'resolvedOptions', {
       if (value !== undefined) {
         ro[key] = value
       }
+    }
+    if (internalSlots.roundingType === 'morePrecision') {
+      ro.roundingPriority = 'morePrecision'
+    } else if (internalSlots.roundingType === 'lessPrecision') {
+      ro.roundingPriority = 'lessPrecision'
+    } else {
+      ro.roundingPriority = 'auto'
     }
     return ro as any
   },

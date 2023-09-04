@@ -1,9 +1,10 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//:index.bzl", "ZONES")
-load("//tools:index.bzl", "check_format", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -17,6 +18,8 @@ npm_package(
         "README.md",
         "package.json",
         ":dist",
+        # polyfill-library uses this
+        "polyfill.iife.js",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
@@ -40,9 +43,8 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS,
-    deps = [],
+    name = "unit_test",
+    data = SRCS + TESTS,
 )
 
 # Test262
@@ -50,7 +52,6 @@ ts_project(
     name = "test262-main-bundle",
     srcs = SRCS,
     declaration = True,
-    declaration_map = True,
     out_dir = "test262",
     resolve_json_module = True,
     tsconfig = "//:tsconfig.es6",
@@ -60,19 +61,6 @@ ts_project(
 write_source_files(
     name = "tsconfig_json",
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
-)
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-            "src/*.generated.*",
-        ],
-    ),
 )
 
 # calendars
@@ -132,4 +120,16 @@ generate_src_file(
         "//:node_modules/cldr-bcp47",
     ],
     entry_point = "scripts/units.ts",
+)
+
+esbuild(
+    name = "polyfill.iife",
+    config = {
+        "resolveExtensions": [".js"],
+    },
+    entry_point = "lib/polyfill.js",
+    deps = [
+        ":dist-esm",
+        "//:node_modules/tslib",
+    ],
 )

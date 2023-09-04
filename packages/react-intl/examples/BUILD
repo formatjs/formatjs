@@ -35,7 +35,6 @@ ts_project(
         exclude = ["package.json"],
     ),
     declaration = True,
-    declaration_map = True,
     out_dir = "examples-lib",
     resolve_json_module = True,
     tsconfig = "//:tsconfig.esm",
@@ -59,11 +58,11 @@ copy_to_bin(
 
 bin.http_server_binary(
     name = "examples",
+    args = [
+        "packages/react-intl/examples",
+    ],
     data = [
         ":index",
         ":main",
-    ],
-    args = [
-        "packages/react-intl/examples",
     ],
 )

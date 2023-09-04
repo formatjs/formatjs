@@ -211,6 +211,28 @@ it('chose compact pattern with rounded number', () => {
   expect(nf.format(999995000)).toEqual('1.00B')
 })
 
+describe('For wrong options NumberFormat correctly throws exception', () => {
+  it('uses an invalid value for rounding incremenet', () => {
+    const createInstance = () => new NumberFormat('en', {roundingIncrement: 3})
+
+    expect(createInstance).toThrowError(
+      new RangeError(
+        'Invalid rounding increment value: 3.\nValid values are 1,2,5,10,20,25,50,100,200,250,500,1000,2000.'
+      )
+    )
+  })
+
+  it('roundingIncrement > 1 with undefined fraction digits', () => {
+    const createInstance = () => new NumberFormat('en', {roundingIncrement: 2})
+
+    expect(createInstance).toThrowError(
+      new RangeError(
+        'With roundingIncrement > 1, maximumFractionDigits and minimumFractionDigits must be equal.'
+      )
+    )
+  })
+})
+
 // https://github.com/formatjs/formatjs/issues/1692
 it('correctly rounds UP the number in the compact notation', () => {
   const nf = new NumberFormat('en', {
@@ -275,4 +297,20 @@ it('GH#2887', function () {
       notation: 'compact',
     }).format(30.0)
   ).toBe('€30')
+})
+
+it('correctly set default options', () => {
+  const nf = new NumberFormat('en', {minimumFractionDigits: 1})
+  expect(nf.resolvedOptions()).toEqual({
+    locale: 'en',
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 1,
+    minimumIntegerDigits: 1,
+    notation: 'standard',
+    numberingSystem: 'latn',
+    roundingPriority: 'auto',
+    signDisplay: 'auto',
+    style: 'decimal',
+    useGrouping: 'auto',
+  })
 })

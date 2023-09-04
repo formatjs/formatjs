@@ -1,0 +1,28 @@
+/zic/Asia/Ho_Chi_Minh  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Ho_Chi_Minh  -67768040609766391 (gmtime failed) = -67768040609766391 (localtime failed)
+/zic/Asia/Ho_Chi_Minh  -67768040609766390 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=25590
+/zic/Asia/Ho_Chi_Minh  -67768040609740801 (gmtime failed) = Thu Jan  1 07:06:29 -2147481748 LMT isdst=0 gmtoff=25590
+/zic/Asia/Ho_Chi_Minh  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 07:06:30 -2147481748 LMT isdst=0 gmtoff=25590
+/zic/Asia/Ho_Chi_Minh  Sat Jun 30 16:53:29 1906 UT = Sat Jun 30 23:59:59 1906 LMT isdst=0 gmtoff=25590
+/zic/Asia/Ho_Chi_Minh  Sat Jun 30 16:53:30 1906 UT = Sun Jul  1 00:00:00 1906 PLMT isdst=0 gmtoff=25590
+/zic/Asia/Ho_Chi_Minh  Sun Apr 30 16:53:29 1911 UT = Sun Apr 30 23:59:59 1911 PLMT isdst=0 gmtoff=25590
+/zic/Asia/Ho_Chi_Minh  Sun Apr 30 16:53:30 1911 UT = Sun Apr 30 23:53:30 1911 +07 isdst=0 gmtoff=25200
+/zic/Asia/Ho_Chi_Minh  Thu Dec 31 15:59:59 1942 UT = Thu Dec 31 22:59:59 1942 +07 isdst=0 gmtoff=25200
+/zic/Asia/Ho_Chi_Minh  Thu Dec 31 16:00:00 1942 UT = Fri Jan  1 00:00:00 1943 +08 isdst=0 gmtoff=28800
+/zic/Asia/Ho_Chi_Minh  Wed Mar 14 14:59:59 1945 UT = Wed Mar 14 22:59:59 1945 +08 isdst=0 gmtoff=28800
+/zic/Asia/Ho_Chi_Minh  Wed Mar 14 15:00:00 1945 UT = Thu Mar 15 00:00:00 1945 +09 isdst=0 gmtoff=32400
+/zic/Asia/Ho_Chi_Minh  Sat Sep  1 14:59:59 1945 UT = Sat Sep  1 23:59:59 1945 +09 isdst=0 gmtoff=32400
+/zic/Asia/Ho_Chi_Minh  Sat Sep  1 15:00:00 1945 UT = Sat Sep  1 22:00:00 1945 +07 isdst=0 gmtoff=25200
+/zic/Asia/Ho_Chi_Minh  Mon Mar 31 16:59:59 1947 UT = Mon Mar 31 23:59:59 1947 +07 isdst=0 gmtoff=25200
+/zic/Asia/Ho_Chi_Minh  Mon Mar 31 17:00:00 1947 UT = Tue Apr  1 01:00:00 1947 +08 isdst=0 gmtoff=28800
+/zic/Asia/Ho_Chi_Minh  Thu Jun 30 15:59:59 1955 UT = Thu Jun 30 23:59:59 1955 +08 isdst=0 gmtoff=28800
+/zic/Asia/Ho_Chi_Minh  Thu Jun 30 16:00:00 1955 UT = Thu Jun 30 23:00:00 1955 +07 isdst=0 gmtoff=25200
+/zic/Asia/Ho_Chi_Minh  Thu Dec 31 15:59:59 1959 UT = Thu Dec 31 22:59:59 1959 +07 isdst=0 gmtoff=25200
+/zic/Asia/Ho_Chi_Minh  Thu Dec 31 16:00:00 1959 UT = Fri Jan  1 00:00:00 1960 +08 isdst=0 gmtoff=28800
+/zic/Asia/Ho_Chi_Minh  Thu Jun 12 15:59:59 1975 UT = Thu Jun 12 23:59:59 1975 +08 isdst=0 gmtoff=28800
+/zic/Asia/Ho_Chi_Minh  Thu Jun 12 16:00:00 1975 UT = Thu Jun 12 23:00:00 1975 +07 isdst=0 gmtoff=25200
+/zic/Asia/Ho_Chi_Minh  Wed Dec 31 16:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +07 isdst=0 gmtoff=25200
+/zic/Asia/Ho_Chi_Minh  Wed Dec 31 17:00:00 2147485547 UT = 67768036191651600 (localtime failed)
+/zic/Asia/Ho_Chi_Minh  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Ho_Chi_Minh  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Ho_Chi_Minh  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

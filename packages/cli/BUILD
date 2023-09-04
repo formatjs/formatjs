@@ -1,4 +1,4 @@
-load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 
 PACKAGE_NAME = "cli"
 

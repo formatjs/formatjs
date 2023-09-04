@@ -3,22 +3,22 @@
 exports[`resourcePath 2`] = `
 "export function foo() {
     props.intl.formatMessage({
-        id: \\"resourcePath-hYpBl\\",
-        defaultMessage: \\"props {intl}\\"
+        id: "resourcePath-hYpBl",
+        defaultMessage: "props {intl}"
     }, {
-        bar: \\"bar\\"
+        bar: "bar"
     });
     this.props.intl.formatMessage({
-        id: \\"resourcePath-tBZlS\\",
-        defaultMessage: \\"this props {intl}\\"
+        id: "resourcePath-tBZlS",
+        defaultMessage: "this props {intl}"
     }, {
-        bar: \\"bar\\"
+        bar: "bar"
     });
     return intl.formatMessage({
-        id: \\"resourcePath-ALfyd\\",
-        defaultMessage: \\"foo {bar}\\"
+        id: "resourcePath-ALfyd",
+        defaultMessage: "foo {bar}"
     }, {
-        bar: \\"bar\\"
+        bar: "bar"
     });
 }
 "

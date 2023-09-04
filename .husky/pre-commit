@@ -1,2 +1,9 @@
-#!/bin/sh
-. "$(dirname $0)/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+bazel run //:buildifier
+
+files=$(git diff --diff-filter=d --cached --name-only)
+if [ -n "$files" ]; then
+    echo "$files" | tr \\n \\0 | xargs -0 bazel run @aspect_rules_format//format --
+fi

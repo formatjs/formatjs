@@ -9,7 +9,9 @@
       "ES2018.Intl",
       "ES2020.Intl",
       "es2021.intl",
+      "ES2022.Intl",
       "ESNext.Intl",
+      "ES2021.String",
       "ES2015"
     ],
     "baseUrl": ".",
@@ -22,11 +24,13 @@
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
-    "declarationMap": true,
     "importHelpers": true,
     "jsx": "react"
   },
   "exclude": [
-    "packages/react-intl/example-sandboxes"
+    "packages/react-intl/example-sandboxes",
+    // Exclude any tsd tests because they can mess with normal
+    // type checking in editors.
+    "**/*.test-d.ts"
   ]
 }

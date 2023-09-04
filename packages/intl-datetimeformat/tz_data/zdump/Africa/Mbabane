@@ -1,0 +1,22 @@
+/zic/Africa/Mbabane  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Mbabane  -67768040609747521 (gmtime failed) = -67768040609747521 (localtime failed)
+/zic/Africa/Mbabane  -67768040609747520 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=6720
+/zic/Africa/Mbabane  -67768040609740801 (gmtime failed) = Thu Jan  1 01:51:59 -2147481748 LMT isdst=0 gmtoff=6720
+/zic/Africa/Mbabane  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 01:52:00 -2147481748 LMT isdst=0 gmtoff=6720
+/zic/Africa/Mbabane  Sun Feb  7 22:07:59 1892 UT = Sun Feb  7 23:59:59 1892 LMT isdst=0 gmtoff=6720
+/zic/Africa/Mbabane  Sun Feb  7 22:08:00 1892 UT = Sun Feb  7 23:38:00 1892 SAST isdst=0 gmtoff=5400
+/zic/Africa/Mbabane  Sat Feb 28 22:29:59 1903 UT = Sat Feb 28 23:59:59 1903 SAST isdst=0 gmtoff=5400
+/zic/Africa/Mbabane  Sat Feb 28 22:30:00 1903 UT = Sun Mar  1 00:30:00 1903 SAST isdst=0 gmtoff=7200
+/zic/Africa/Mbabane  Sat Sep 19 23:59:59 1942 UT = Sun Sep 20 01:59:59 1942 SAST isdst=0 gmtoff=7200
+/zic/Africa/Mbabane  Sun Sep 20 00:00:00 1942 UT = Sun Sep 20 03:00:00 1942 SAST isdst=1 gmtoff=10800
+/zic/Africa/Mbabane  Sat Mar 20 22:59:59 1943 UT = Sun Mar 21 01:59:59 1943 SAST isdst=1 gmtoff=10800
+/zic/Africa/Mbabane  Sat Mar 20 23:00:00 1943 UT = Sun Mar 21 01:00:00 1943 SAST isdst=0 gmtoff=7200
+/zic/Africa/Mbabane  Sat Sep 18 23:59:59 1943 UT = Sun Sep 19 01:59:59 1943 SAST isdst=0 gmtoff=7200
+/zic/Africa/Mbabane  Sun Sep 19 00:00:00 1943 UT = Sun Sep 19 03:00:00 1943 SAST isdst=1 gmtoff=10800
+/zic/Africa/Mbabane  Sat Mar 18 22:59:59 1944 UT = Sun Mar 19 01:59:59 1944 SAST isdst=1 gmtoff=10800
+/zic/Africa/Mbabane  Sat Mar 18 23:00:00 1944 UT = Sun Mar 19 01:00:00 1944 SAST isdst=0 gmtoff=7200
+/zic/Africa/Mbabane  Wed Dec 31 21:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 SAST isdst=0 gmtoff=7200
+/zic/Africa/Mbabane  Wed Dec 31 22:00:00 2147485547 UT = 67768036191669600 (localtime failed)
+/zic/Africa/Mbabane  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Africa/Mbabane  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Mbabane  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

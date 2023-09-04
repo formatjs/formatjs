@@ -1,0 +1,18 @@
+/zic/Atlantic/Cape_Verde  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Atlantic/Cape_Verde  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Atlantic/Cape_Verde  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Atlantic/Cape_Verde  Thu Jan  1 01:34:03 -2147481748 UT = -67768040609735157 (localtime failed)
+/zic/Atlantic/Cape_Verde  Thu Jan  1 01:34:04 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-5644
+/zic/Atlantic/Cape_Verde  Mon Jan  1 01:59:59 1912 UT = Mon Jan  1 00:25:55 1912 LMT isdst=0 gmtoff=-5644
+/zic/Atlantic/Cape_Verde  Mon Jan  1 02:00:00 1912 UT = Mon Jan  1 00:00:00 1912 -02 isdst=0 gmtoff=-7200
+/zic/Atlantic/Cape_Verde  Tue Sep  1 01:59:59 1942 UT = Mon Aug 31 23:59:59 1942 -02 isdst=0 gmtoff=-7200
+/zic/Atlantic/Cape_Verde  Tue Sep  1 02:00:00 1942 UT = Tue Sep  1 01:00:00 1942 -01 isdst=1 gmtoff=-3600
+/zic/Atlantic/Cape_Verde  Mon Oct 15 00:59:59 1945 UT = Sun Oct 14 23:59:59 1945 -01 isdst=1 gmtoff=-3600
+/zic/Atlantic/Cape_Verde  Mon Oct 15 01:00:00 1945 UT = Sun Oct 14 23:00:00 1945 -02 isdst=0 gmtoff=-7200
+/zic/Atlantic/Cape_Verde  Tue Nov 25 03:59:59 1975 UT = Tue Nov 25 01:59:59 1975 -02 isdst=0 gmtoff=-7200
+/zic/Atlantic/Cape_Verde  Tue Nov 25 04:00:00 1975 UT = Tue Nov 25 03:00:00 1975 -01 isdst=0 gmtoff=-3600
+/zic/Atlantic/Cape_Verde  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 22:59:59 2147485547 -01 isdst=0 gmtoff=-3600
+/zic/Atlantic/Cape_Verde  67768036191676800 (gmtime failed) = Wed Dec 31 23:00:00 2147485547 -01 isdst=0 gmtoff=-3600
+/zic/Atlantic/Cape_Verde  67768036191680399 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -01 isdst=0 gmtoff=-3600
+/zic/Atlantic/Cape_Verde  67768036191680400 (gmtime failed) = 67768036191680400 (localtime failed)
+/zic/Atlantic/Cape_Verde  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

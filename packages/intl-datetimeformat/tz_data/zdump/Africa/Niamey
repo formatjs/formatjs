@@ -1,0 +1,18 @@
+/zic/Africa/Niamey  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Africa/Niamey  -67768040609741616 (gmtime failed) = -67768040609741616 (localtime failed)
+/zic/Africa/Niamey  -67768040609741615 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=815
+/zic/Africa/Niamey  -67768040609740801 (gmtime failed) = Thu Jan  1 00:13:34 -2147481748 LMT isdst=0 gmtoff=815
+/zic/Africa/Niamey  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 00:13:35 -2147481748 LMT isdst=0 gmtoff=815
+/zic/Africa/Niamey  Fri Jun 30 23:46:24 1905 UT = Fri Jun 30 23:59:59 1905 LMT isdst=0 gmtoff=815
+/zic/Africa/Niamey  Fri Jun 30 23:46:25 1905 UT = Fri Jun 30 23:46:25 1905 GMT isdst=0 gmtoff=0
+/zic/Africa/Niamey  Tue Jun 30 23:59:59 1908 UT = Tue Jun 30 23:59:59 1908 GMT isdst=0 gmtoff=0
+/zic/Africa/Niamey  Wed Jul  1 00:00:00 1908 UT = Wed Jul  1 00:13:35 1908 LMT isdst=0 gmtoff=815
+/zic/Africa/Niamey  Wed Dec 31 23:46:24 1913 UT = Wed Dec 31 23:59:59 1913 LMT isdst=0 gmtoff=815
+/zic/Africa/Niamey  Wed Dec 31 23:46:25 1913 UT = Thu Jan  1 00:16:25 1914 +0030 isdst=0 gmtoff=1800
+/zic/Africa/Niamey  Sun Aug 31 23:29:59 1919 UT = Sun Aug 31 23:59:59 1919 +0030 isdst=0 gmtoff=1800
+/zic/Africa/Niamey  Sun Aug 31 23:30:00 1919 UT = Mon Sep  1 00:30:00 1919 WAT isdst=0 gmtoff=3600
+/zic/Africa/Niamey  Wed Dec 31 22:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 WAT isdst=0 gmtoff=3600
+/zic/Africa/Niamey  Wed Dec 31 23:00:00 2147485547 UT = 67768036191673200 (localtime failed)
+/zic/Africa/Niamey  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Africa/Niamey  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Africa/Niamey  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

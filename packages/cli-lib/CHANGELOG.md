@@ -3,6 +3,104 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.1.2...@formatjs/cli-lib@6.1.3) (2023-06-12)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [6.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.1.1...@formatjs/cli-lib@6.1.2) (2023-06-06)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [6.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.1.0...@formatjs/cli-lib@6.1.1) (2023-05-01)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+# [6.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.0.3...@formatjs/cli-lib@6.1.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
+## [6.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.0.2...@formatjs/cli-lib@6.0.3) (2023-02-25)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** fix typos in the message compilation conflict error message ([2d7bd51](https://github.com/formatjs/formatjs/commit/2d7bd516d7e6fc85d3e208bac390d81396d43d17))
+
+## [6.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.0.1...@formatjs/cli-lib@6.0.2) (2023-02-20)
+
+### Bug Fixes
+
+* **@formatjs/cli:** drop node requirement to 16 ([447dee8](https://github.com/formatjs/formatjs/commit/447dee816f343634b7573e91ddf94d17206fec1e))
+
+## [6.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.0.0...@formatjs/cli-lib@6.0.1) (2023-02-20)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+# [6.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.13...@formatjs/cli-lib@6.0.0) (2023-01-31)
+
+* feat!(@formatjs/cli-lib): repurpose en-XB for bidi pseudo locale (#3978) ([32628df](https://github.com/formatjs/formatjs/commit/32628df8bdadc65c0417880fa923c2c0e9efe39e)), closes [#3978](https://github.com/formatjs/formatjs/issues/3978)
+
+### BREAKING CHANGES
+
+* `en-XA` is a pseudo locale for accented and lengthned English with markers, and `en-XB` is now a bidi pseudo locale.
+
+## [5.1.13](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.12...@formatjs/cli-lib@5.1.13) (2023-01-30)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.12](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.11...@formatjs/cli-lib@5.1.12) (2022-12-20)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** actually fix incorrect xx-HA generation ([#3945](https://github.com/formatjs/formatjs/issues/3945)) ([10f4799](https://github.com/formatjs/formatjs/commit/10f4799c913444651687cc7b6d16aec9f7d5a1ad))
+
+## [5.1.11](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.10...@formatjs/cli-lib@5.1.11) (2022-12-19)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** fix incorrect xx-HA generation ([#3944](https://github.com/formatjs/formatjs/issues/3944)) ([884bf45](https://github.com/formatjs/formatjs/commit/884bf45cece7d7fd4c6141267dfb07775f1fbe24))
+
+## [5.1.10](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.8...@formatjs/cli-lib@5.1.10) (2022-12-15)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.7...@formatjs/cli-lib@5.1.8) (2022-12-15)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** fix incorrect en-LS generation that may drop the last chunk ([#3935](https://github.com/formatjs/formatjs/issues/3935)) ([ba78f91](https://github.com/formatjs/formatjs/commit/ba78f91bdaa84da7863b4b9169b11ca276e85d64))
+
+## [5.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.6...@formatjs/cli-lib@5.1.7) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.4...@formatjs/cli-lib@5.1.6) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.4...@formatjs/cli-lib@5.1.5) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.3...@formatjs/cli-lib@5.1.4) (2022-11-29)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.2...@formatjs/cli-lib@5.1.3) (2022-10-17)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.1...@formatjs/cli-lib@5.1.2) (2022-10-13)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [5.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.1.0...@formatjs/cli-lib@5.1.1) (2022-09-28)
+
+### Reverts
+
+* Revert "chore(deps): bump chalk from 4.1.2 to 5.0.1 (#3794)" ([f1af8b1](https://github.com/formatjs/formatjs/commit/f1af8b13433d1d98ed55addf5450dcafa4b8bdae)), closes [#3794](https://github.com/formatjs/formatjs/issues/3794)
+
 # [5.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@5.0.8...@formatjs/cli-lib@5.1.0) (2022-08-27)
 
 ### Features

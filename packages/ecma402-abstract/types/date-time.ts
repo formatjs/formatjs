@@ -5,12 +5,13 @@ export type Formats = Pick<
   | 'year'
   | 'month'
   | 'day'
+  | 'dayPeriod'
   | 'hour'
   | 'minute'
   | 'second'
   | 'timeZoneName'
 > & {
-  fractionalSecondDigits?: 0 | 1 | 2
+  fractionalSecondDigits?: 1 | 2 | 3
   hour12?: boolean
   pattern: string
   pattern12: string
@@ -35,7 +36,13 @@ export interface IntlDateTimeFormatInternal {
   hour: '2-digit' | 'numeric'
   minute: '2-digit' | 'numeric'
   second: '2-digit' | 'numeric'
-  timeZoneName: 'short' | 'long'
+  timeZoneName:
+    | 'short'
+    | 'long'
+    | 'shortOffset'
+    | 'longOffset'
+    | 'shortGeneric'
+    | 'longGeneric'
   fractionalSecondDigits?: 1 | 2 | 3
   hourCycle: string
   numberingSystem: string
@@ -81,6 +88,7 @@ export type TABLE_6 =
   | 'year'
   | 'month'
   | 'day'
+  | 'dayPeriod'
   | 'hour'
   | 'minute'
   | 'second'

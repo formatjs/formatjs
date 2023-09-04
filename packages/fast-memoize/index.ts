@@ -13,8 +13,8 @@ interface CacheCreateFunc<K, V> {
 }
 
 interface DefaultCache<K, V> {
-  get(key: K): V
-  set(key: K, value: V): void
+  get(key: K): V | undefined
+  set(key: K, value: V | undefined): void
 }
 
 export type Serializer = (args: any[]) => string
@@ -34,7 +34,7 @@ export interface MemoizeFunc<F extends Func> {
   (fn: F, options?: Options<F>): F
 }
 
-export default function memoize<F extends Func>(fn: F, options?: Options<F>) {
+export function memoize<F extends Func>(fn: F, options?: Options<F>) {
   const cache = options && options.cache ? options.cache : cacheDefault
 
   const serializer =

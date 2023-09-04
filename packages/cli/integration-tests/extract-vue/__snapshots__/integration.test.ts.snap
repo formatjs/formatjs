@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`vue 1`] = `
-Object {
-  "3mGZ30": Object {
+{
+  "3mGZ30": {
     "defaultMessage": "in script",
     "description": "in script desc",
   },
-  "7MCO2v": Object {
+  "7MCO2v": {
     "defaultMessage": "in template",
     "description": "in template desc",
   },
-  "S3wEt4": Object {
+  "S3wEt4": {
     "defaultMessage": "script setup",
   },
 }

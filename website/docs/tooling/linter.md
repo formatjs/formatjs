@@ -354,7 +354,24 @@ const messages = defineMessages({
 
 ### `no-emoji`
 
-This prevents usage of emoji in message.
+This prevents usage of emojis (or above a certain Unicode version) in message
+
+```json
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/no-emoji": ["error"]
+  }
+}
+
+// OR
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/no-emoji": ["error", {"versionAbove": "12.0"}]
+  }
+}
+```
 
 #### Why
 
@@ -369,9 +386,17 @@ const messages = defineMessages({
   foo: {
     defaultMessage: 'Smileys & People',
   },
+  // WORKS with option {versionAbove: '12.0'}
+  foo_bar: {
+    defaultMessage: '😃 Smileys & People',
+  },
   // FAILS
   bar: {
     defaultMessage: '😃 Smileys & People',
+  },
+  // FAILS with option {versionAbove: '12.0'}
+  bar_foo: {
+    defaultMessage: '🥹 Smileys & People',
   },
 })
 ```
@@ -646,3 +671,97 @@ Default complexity limit is 20 (using [Smartling as a reference](https://help.sm
   }
 }
 ```
+
+### `no-invalid-icu`
+
+This validates the ICU syntax.
+
+#### Why
+
+This will make sure that the ICU message are valid and ready for translation.
+
+### `no-useless-message`
+
+This bans messages that do not require translation.
+
+#### Why
+
+Messages like `{test}` is not actionable by translators. The code should just directly reference `test`.
+
+### `prefer-formatted-message`
+
+Use `<FormattedMessage>` instead of the imperative `intl.formatMessage(...)` if applicable.
+
+```tsx
+// Bad
+<p>
+  {intl.formatMessage({defaultMessage: 'hello'})}
+</p>
+
+// Good
+<p>
+  <FormattedMessage defaultMessage="hello" />
+</p>
+```
+
+#### Why
+
+Consistent coding style in JSX and less syntax clutter.
+
+### `prefer-pound-in-plural`
+
+Use `#` in the plural argument to reference the count instead of repeating the argument.
+
+```
+// Bad
+I have {count} {
+  count, plural,
+    one {apple}
+    other {apples}
+  }
+}
+// Good
+I have {
+  count, plural,
+    one {# apple}
+    other {# apples}
+  }
+}
+
+// Bad
+I have {
+  count, plural,
+    one {{count} apple}
+    other {{count} apples}
+  }
+}
+// Good
+I have {
+  count, plural,
+    one {# apple}
+    other {# apples}
+  }
+}
+
+// Bad
+I won the {ranking}{
+  count, selectordinal,
+    one {st}
+    two {nd}
+    few {rd}
+    other {th}
+} place.
+// Good
+I won the {ranking}{
+  count, selectordinal,
+    one {#st}
+    two {#nd}
+    few {#rd}
+    other {#th}
+} place.
+```
+
+#### Why
+
+1. More concise message.
+2. Ensures that the count are correctly formatted as numbers.

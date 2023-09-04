@@ -169,11 +169,7 @@ test('extractSourceLocation', function () {
     },
   })
   expect(code?.trim()).toMatchSnapshot()
-  expect(messages).toMatchSnapshot([
-    {
-      file: expect.any(String),
-    },
-  ])
+  expect(messages.map(m => m.file).filter(Boolean)).toHaveLength(1)
   expect(meta).toMatchSnapshot()
 })
 
@@ -185,6 +181,11 @@ test('Properly throws parse errors', () => {
 
 test('skipExtractionFormattedMessage', function () {
   transformAndCheck('skipExtractionFormattedMessage')
+})
+
+// See: https://github.com/formatjs/formatjs/issues/3589#issuecomment-1532461569
+test('jsxNestedInCallExpr', () => {
+  transformAndCheck('jsxNestedInCallExpr')
 })
 
 let cacheBust = 1

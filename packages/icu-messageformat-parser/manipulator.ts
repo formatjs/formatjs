@@ -1,8 +1,11 @@
 import {
   isPluralElement,
   isSelectElement,
+  isTagElement,
   MessageFormatElement,
+  PluralElement,
   PluralOrSelectOption,
+  SelectElement,
 } from './types'
 
 function cloneDeep<T>(obj: T): T {
@@ -10,7 +13,7 @@ function cloneDeep<T>(obj: T): T {
     // @ts-expect-error meh
     return [...obj.map(cloneDeep)]
   }
-  if (typeof obj === 'object') {
+  if (obj !== null && typeof obj === 'object') {
     // @ts-expect-error meh
     return Object.keys(obj).reduce((cloned, k) => {
       // @ts-expect-error meh
@@ -19,6 +22,49 @@ function cloneDeep<T>(obj: T): T {
     }, {})
   }
   return obj
+}
+
+function hoistPluralOrSelectElement(
+  ast: MessageFormatElement[],
+  el: PluralElement | SelectElement,
+  positionToInject: number
+) {
+  // pull this out of the ast and move it to the top
+  const cloned = cloneDeep(el)
+  const {options} = cloned
+  cloned.options = Object.keys(options).reduce(
+    (all: Record<string, PluralOrSelectOption>, k) => {
+      const newValue = hoistSelectors([
+        ...ast.slice(0, positionToInject),
+        ...options[k].value,
+        ...ast.slice(positionToInject + 1),
+      ])
+      all[k] = {
+        value: newValue,
+      }
+      return all
+    },
+    {}
+  )
+  return cloned
+}
+
+function isPluralOrSelectElement(
+  el: MessageFormatElement
+): el is PluralElement | SelectElement {
+  return isPluralElement(el) || isSelectElement(el)
+}
+
+function findPluralOrSelectElement(ast: MessageFormatElement[]): boolean {
+  return !!ast.find(el => {
+    if (isPluralOrSelectElement(el)) {
+      return true
+    }
+    if (isTagElement(el)) {
+      return findPluralOrSelectElement(el.children)
+    }
+    return false
+  })
 }
 
 /**
@@ -37,25 +83,13 @@ export function hoistSelectors(
 ): MessageFormatElement[] {
   for (let i = 0; i < ast.length; i++) {
     const el = ast[i]
-    if (isPluralElement(el) || isSelectElement(el)) {
-      // pull this out of the ast and move it to the top
-      const cloned = cloneDeep(el)
-      const {options} = cloned
-      cloned.options = Object.keys(options).reduce(
-        (all: Record<string, PluralOrSelectOption>, k) => {
-          const newValue = hoistSelectors([
-            ...ast.slice(0, i),
-            ...options[k].value,
-            ...ast.slice(i + 1),
-          ])
-          all[k] = {
-            value: newValue,
-          }
-          return all
-        },
-        {}
+    if (isPluralOrSelectElement(el)) {
+      return [hoistPluralOrSelectElement(ast, el, i)]
+    }
+    if (isTagElement(el) && findPluralOrSelectElement([el])) {
+      throw new Error(
+        'Cannot hoist plural/select within a tag element. Please put the tag element inside each plural/select option'
       )
-      return [cloned]
     }
   }
   return ast

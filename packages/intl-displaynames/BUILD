@@ -1,10 +1,10 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("//tools:index.bzl", "bundle_karma_tests", "check_format", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -64,9 +64,8 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
-    deps = TEST_DEPS,
+    name = "unit_test",
+    data = SRCS + TESTS + TEST_LOCALE_DATA + TEST_DEPS,
 )
 
 # CLDR
@@ -648,19 +647,25 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 
 ts_script(
     name = "cldr-raw",
-    outs = CLDR_RAW_FILES,
-    args = [
-        "--outDir",
-        package_name() + "/cldr-raw",
-    ],
-    data = [
+    srcs = [
         "scripts/extract-displaynames.ts",
         ":node_modules/@formatjs/ecma402-abstract",
+        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-core",
+        "//:node_modules/cldr-dates-full",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
     ],
+    outs = CLDR_RAW_FILES,
+    args = [
+        "--outDir",
+        "cldr-raw",
+    ],
+    chdir = package_name(),
     entry_point = "scripts/cldr-raw.ts",
 )
 
@@ -673,18 +678,19 @@ genrule(
 
 ts_script(
     name = "locale-data",
+    srcs = CLDR_RAW_FILES + [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
     outs = ["locale-data/%s.js" % locale for locale in ALL_LOCALES] + ["locale-data/%s.d.ts" % locale for locale in ALL_LOCALES],
     args = [
-        "--cldrFile %s/%s" % (
-            package_name(),
-            f,
-        )
+        "--cldrFile %s" % f
         for f in CLDR_RAW_FILES
     ] + [
         "--outDir",
-        package_name() + "/locale-data",
+        "locale-data",
     ],
-    data = CLDR_RAW_FILES,
+    chdir = package_name(),
     entry_point = "scripts/cldr.ts",
     visibility = ["//visibility:public"],
 )
@@ -730,7 +736,6 @@ ts_project(
     name = "test262-main-bundle",
     srcs = SRCS + ["test262-main.ts"],
     declaration = True,
-    declaration_map = True,
     out_dir = "test262",
     resolve_json_module = True,
     tsconfig = "//:tsconfig.es6",
@@ -748,12 +753,6 @@ esbuild(
 
 test262_harness_bin.test262_harness_test(
     name = "test262",
-    size = "large",
-    data = [
-        "test262-polyfill.js",
-        "@com_github_tc39_test262//:test262-displaynames-copy",
-        "@com_github_tc39_test262//:test262-harness-copy",
-    ],
     args = [
         "--reporter-keys",
         "file,attrs,result",
@@ -765,6 +764,11 @@ test262_harness_bin.test262_harness_test(
         "--test262Dir",
         "../com_github_tc39_test262",
         "../com_github_tc39_test262/test/intl402/DisplayNames/**/*.js",
+    ],
+    data = [
+        "test262-polyfill.js",
+        "@com_github_tc39_test262//:test262-displaynames-copy",
+        "@com_github_tc39_test262//:test262-harness-copy",
     ],
     # TODO: fix
     tags = ["manual"],
@@ -808,21 +812,6 @@ esbuild(
         ":dist-esm",
         "//:node_modules/tslib",
     ] + SRC_DEPS,
-)
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-            "tests/locale-data/*",
-            "test262-main.ts",
-            "supported-locales.generated.ts",
-        ],
-    ),
 )
 
 package_json_test(

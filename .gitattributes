@@ -2,6 +2,7 @@ packages/*/src/data/* linguist-generated
 packages/*/test262-main.ts linguist-generated
 packages/*/supported-locales.ts linguist-generated
 packages/*/tests/locale-data/* linguist-generated
+packages/intl-datetimeformat/tz_data/* linguist-generated
 website/* linguist-documentation
 **/CHANGELOG.md linguist-documentation
 *.gz filter=lfs diff=lfs merge=lfs -text

@@ -9,10 +9,14 @@ async function main(args: minimist.ParsedArgs) {
   const locales = getAllLocales()
   const data = await extractDatesFields(locales)
   getAllLocales().forEach(locale =>
-    outputJSONSync(join(outDir, `${locale}.json`), {
-      data: data[locale],
-      locale,
-    })
+    outputJSONSync(
+      join(outDir, `${locale}.json`),
+      {
+        data: data[locale],
+        locale,
+      },
+      {spaces: 2}
+    )
   )
 }
 if (require.main === module) {

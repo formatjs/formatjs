@@ -52,6 +52,7 @@ export class MissingDataError extends IntlError<IntlErrorCode.MISSING_DATA> {
 
 export class IntlFormatError extends IntlError<IntlErrorCode.FORMAT_ERROR> {
   public readonly descriptor?: MessageDescriptor
+  public readonly locale: string
   constructor(message: string, locale: string, exception?: Error | unknown) {
     super(
       IntlErrorCode.FORMAT_ERROR,
@@ -60,11 +61,13 @@ Locale: ${locale}
 `,
       exception
     )
+    this.locale = locale
   }
 }
 
 export class MessageFormatError extends IntlFormatError {
   public readonly descriptor?: MessageDescriptor
+  public readonly locale: string
   constructor(
     message: string,
     locale: string,
@@ -81,6 +84,7 @@ Description: ${descriptor?.description}
       exception
     )
     this.descriptor = descriptor
+    this.locale = locale
   }
 }
 

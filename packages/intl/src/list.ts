@@ -4,7 +4,7 @@ import type IntlListFormat from '@formatjs/intl-listformat'
 import type {Part} from '@formatjs/intl-listformat'
 import type {IntlListFormatOptions} from '@formatjs/intl-listformat'
 import {FormatError, ErrorCode} from 'intl-messageformat'
-import {IntlError, IntlErrorCode} from './error'
+import {IntlFormatError} from './error'
 
 const LIST_FORMAT_OPTIONS: Array<keyof IntlListFormatOptions> = [
   'type',
@@ -32,7 +32,7 @@ export function formatList<T>(
     onError: OnErrorFn
   },
   getListFormat: Formatters['getListFormat'],
-  values: Parameters<IntlFormatters['formatList']>[0],
+  values: ReadonlyArray<string | T>,
   options: Parameters<IntlFormatters['formatList']>[1] = {}
 ): Array<T | string> | T | string {
   const results = formatListToParts(
@@ -60,7 +60,7 @@ export function formatListToParts<T>(
     onError: OnErrorFn
   },
   getListFormat: Formatters['getListFormat'],
-  values: ReadonlyArray<string>,
+  values: ReadonlyArray<string | T>,
   options: Parameters<IntlFormatters['formatList']>[1]
 ): Part[]
 export function formatListToParts<T>(
@@ -109,9 +109,7 @@ Try polyfilling it using "@formatjs/intl-listformat"
           : {...part, value: richValues[part.value] || part.value}
       )
   } catch (e) {
-    onError(
-      new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting list.', e)
-    )
+    onError(new IntlFormatError('Error formatting list.', locale, e))
   }
 
   // @ts-ignore

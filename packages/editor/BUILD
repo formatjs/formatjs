@@ -1,9 +1,8 @@
-# load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+# load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 # load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 # # load("//tools:jest.bzl", "jest_test")
 # load("@npm//:http-server/package_json.bzl", "http_server")
-load("//tools:index.bzl", "check_format")
 
 # exports_files(["package.json", "tsconfig.json"])
 
@@ -57,18 +56,6 @@ load("//tools:index.bzl", "check_format")
 # #         "//:node_modules/@types/rimraf",
 # #     ] + SRC_DEPS,
 # # )
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-        ],
-    ),
-)
 
 # esbuild(
 #     name = "app",

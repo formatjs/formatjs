@@ -1,8 +1,8 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile_node")
+load("//tools:index.bzl", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -19,7 +19,7 @@ npm_package(
         "package.json",
         ":dist",
     ],
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    package = "@soxhub/formatjs-%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
 )
 
@@ -40,8 +40,13 @@ SRC_DEPS = [
     "//:node_modules/@types/fs-extra",
     "//:node_modules/@types/json-stable-stringify",
     "//:node_modules/@types/node",
+    "//:node_modules/@glimmer/env",
+    "//:node_modules/@glimmer/reference",
+    "//:node_modules/@glimmer/syntax",
+    "//:node_modules/@glimmer/validator",
     "//:node_modules/chalk",
     "//:node_modules/commander",
+    "//:node_modules/ember-template-recast",
     "//:node_modules/fast-glob",
     "//:node_modules/fs-extra",
     "//:node_modules/json-stable-stringify",
@@ -54,40 +59,22 @@ SRC_DEPS = [
 ts_compile_node(
     name = "dist",
     srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    package = "@soxhub/formatjs-%s" % PACKAGE_NAME,
     skip_esm_esnext = False,
     deps = SRC_DEPS,
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + glob([
-        "tests/unit/**/*",
-    ]),
-    deps = [
-        "//:node_modules/rimraf",
+    name = "unit_test",
+    data = SRCS + SRC_DEPS + [
         "//:node_modules/@types/rimraf",
-    ] + SRC_DEPS,
+        "//:node_modules/rimraf",
+    ] + glob(["tests/unit/**/*"]),
 )
 
 write_source_files(
     name = "tsconfig_json",
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
-)
-
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-            # Intentional err
-            "tests/integration/extract/typescript/err.tsx",
-            "tests/**/__snapshots__/*",
-        ],
-    ),
 )
 
 genrule(

@@ -1,0 +1,18 @@
+/zic/Asia/Dili  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Dili  -67768040609770941 (gmtime failed) = -67768040609770941 (localtime failed)
+/zic/Asia/Dili  -67768040609770940 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=30140
+/zic/Asia/Dili  -67768040609740801 (gmtime failed) = Thu Jan  1 08:22:19 -2147481748 LMT isdst=0 gmtoff=30140
+/zic/Asia/Dili  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 08:22:20 -2147481748 LMT isdst=0 gmtoff=30140
+/zic/Asia/Dili  Sun Dec 31 15:37:39 1911 UT = Sun Dec 31 23:59:59 1911 LMT isdst=0 gmtoff=30140
+/zic/Asia/Dili  Sun Dec 31 15:37:40 1911 UT = Sun Dec 31 23:37:40 1911 +08 isdst=0 gmtoff=28800
+/zic/Asia/Dili  Sat Feb 21 14:59:59 1942 UT = Sat Feb 21 22:59:59 1942 +08 isdst=0 gmtoff=28800
+/zic/Asia/Dili  Sat Feb 21 15:00:00 1942 UT = Sun Feb 22 00:00:00 1942 +09 isdst=0 gmtoff=32400
+/zic/Asia/Dili  Sun May  2 14:59:59 1976 UT = Sun May  2 23:59:59 1976 +09 isdst=0 gmtoff=32400
+/zic/Asia/Dili  Sun May  2 15:00:00 1976 UT = Sun May  2 23:00:00 1976 +08 isdst=0 gmtoff=28800
+/zic/Asia/Dili  Sat Sep 16 15:59:59 2000 UT = Sat Sep 16 23:59:59 2000 +08 isdst=0 gmtoff=28800
+/zic/Asia/Dili  Sat Sep 16 16:00:00 2000 UT = Sun Sep 17 01:00:00 2000 +09 isdst=0 gmtoff=32400
+/zic/Asia/Dili  Wed Dec 31 14:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +09 isdst=0 gmtoff=32400
+/zic/Asia/Dili  Wed Dec 31 15:00:00 2147485547 UT = 67768036191644400 (localtime failed)
+/zic/Asia/Dili  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Dili  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Dili  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

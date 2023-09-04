@@ -1,9 +1,9 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//npm/private:npm_package.bzl", "npm_package")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@npm//:ts-node/package_json.bzl", ts_node_bin = "bin")
-load("//tools:index.bzl", "check_format", "package_json_test", "ts_compile")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("//tools:index.bzl", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -54,11 +54,8 @@ ts_compile(
 )
 
 jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS,
-    deps = TEST_DEPS + [
-        "//:node_modules/@types/node",
-    ],
+    name = "unit_test",
+    data = SRCS + TESTS + TEST_DEPS + ["//:node_modules/@types/node"],
 )
 
 esbuild(
@@ -92,31 +89,22 @@ write_source_files(
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
-check_format(
-    name = "prettier",
-    srcs = glob(
-        [
-            "**/*",
-        ],
-        exclude = [
-            "CHANGELOG.md",
-        ],
-    ),
-)
-
-ts_node_bin.ts_node_binary(
+# Use with `bazel run`.
+js_binary(
     name = "benchmark",
-    args = [
-        "--transpile-only",
-        "$(execpath tests/benchmark.ts)",
-    ],
     data = SRCS + SRC_DEPS + [
-        "tests/benchmark.ts",
-        "//:node_modules/tslib",
-        "//packages/intl-pluralrules",
-        "//packages/intl-pluralrules:locale-data",
-        "//:tsconfig.node",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@swc-node/register",
+        "//:node_modules/@swc/helpers",
+        "//:node_modules/benchmark",
     ],
+    entry_point = "tests/benchmark.ts",
+    node_options = [
+        "-r",
+        "@swc-node/register",
+    ],
+    tags = ["manual"],
 )
 
 package_json_test(

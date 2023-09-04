@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.2.3...@formatjs/intl-pluralrules@5.2.4) (2023-06-12)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+## [5.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.2.2...@formatjs/intl-pluralrules@5.2.3) (2023-06-06)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+## [5.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.2.1...@formatjs/intl-pluralrules@5.2.2) (2023-05-01)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+## [5.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.2.0...@formatjs/intl-pluralrules@5.2.1) (2023-04-19)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+# [5.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.1.10...@formatjs/intl-pluralrules@5.2.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
+## [5.1.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.1.9...@formatjs/intl-pluralrules@5.1.10) (2023-02-20)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+## [5.1.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.1.8...@formatjs/intl-pluralrules@5.1.9) (2023-02-20)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+## [5.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.1.7...@formatjs/intl-pluralrules@5.1.8) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+## [5.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.1.5...@formatjs/intl-pluralrules@5.1.7) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+## [5.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.1.5...@formatjs/intl-pluralrules@5.1.6) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+## [5.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.1.4...@formatjs/intl-pluralrules@5.1.5) (2022-11-29)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+## [5.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.1.3...@formatjs/intl-pluralrules@5.1.4) (2022-10-13)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
 ## [5.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.1.2...@formatjs/intl-pluralrules@5.1.3) (2022-08-27)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

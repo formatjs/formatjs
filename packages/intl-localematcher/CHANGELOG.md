@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.3.0...@formatjs/intl-localematcher@0.4.0) (2023-06-12)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** Revert esm conditional exports ([#4129](https://github.com/formatjs/formatjs/issues/4129)) ([78edf46](https://github.com/formatjs/formatjs/commit/78edf460a466a7021e3753be53fd9c6af00f2d96)), closes [#4128](https://github.com/formatjs/formatjs/issues/4128) [#4127](https://github.com/formatjs/formatjs/issues/4127) [#4126](https://github.com/formatjs/formatjs/issues/4126)
+
+# [0.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.32...@formatjs/intl-localematcher@0.3.0) (2023-06-06)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** esm conditional exports ([#4109](https://github.com/formatjs/formatjs/issues/4109)) ([e0d593c](https://github.com/formatjs/formatjs/commit/e0d593cc3af3a317a6bd20c441191e5bbb136a93)), closes [#4013](https://github.com/formatjs/formatjs/issues/4013)
+
+## [0.2.32](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.31...@formatjs/intl-localematcher@0.2.32) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/intl-localematcher
+
 ## [0.2.31](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.2.30...@formatjs/intl-localematcher@0.2.31) (2022-08-27)
 
 **Note:** Version bump only for package @formatjs/intl-localematcher

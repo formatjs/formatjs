@@ -1,0 +1,14 @@
+/zic/Asia/Kabul  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Asia/Kabul  -67768040609757409 (gmtime failed) = -67768040609757409 (localtime failed)
+/zic/Asia/Kabul  -67768040609757408 (gmtime failed) = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=16608
+/zic/Asia/Kabul  -67768040609740801 (gmtime failed) = Thu Jan  1 04:36:47 -2147481748 LMT isdst=0 gmtoff=16608
+/zic/Asia/Kabul  Thu Jan  1 00:00:00 -2147481748 UT = Thu Jan  1 04:36:48 -2147481748 LMT isdst=0 gmtoff=16608
+/zic/Asia/Kabul  Tue Dec 31 19:23:11 1889 UT = Tue Dec 31 23:59:59 1889 LMT isdst=0 gmtoff=16608
+/zic/Asia/Kabul  Tue Dec 31 19:23:12 1889 UT = Tue Dec 31 23:23:12 1889 +04 isdst=0 gmtoff=14400
+/zic/Asia/Kabul  Sun Dec 31 19:59:59 1944 UT = Sun Dec 31 23:59:59 1944 +04 isdst=0 gmtoff=14400
+/zic/Asia/Kabul  Sun Dec 31 20:00:00 1944 UT = Mon Jan  1 00:30:00 1945 +0430 isdst=0 gmtoff=16200
+/zic/Asia/Kabul  Wed Dec 31 19:29:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +0430 isdst=0 gmtoff=16200
+/zic/Asia/Kabul  Wed Dec 31 19:30:00 2147485547 UT = 67768036191660600 (localtime failed)
+/zic/Asia/Kabul  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
+/zic/Asia/Kabul  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
+/zic/Asia/Kabul  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

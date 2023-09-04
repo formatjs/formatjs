@@ -1,9 +1,12 @@
 import type {Currency} from './currencies.generated'
 import {currencies} from './currencies.generated'
 
-function isSupportedCurrency(currency: Currency): boolean {
+function isSupportedCurrency(
+  currency: Currency,
+  locale: string = 'en'
+): boolean {
   try {
-    const numberFormat = new Intl.NumberFormat('en', {
+    const numberFormat = new Intl.NumberFormat(locale, {
       style: 'currency',
       currencyDisplay: 'name',
       currency,
@@ -22,13 +25,13 @@ function isSupportedCurrency(currency: Currency): boolean {
   return false
 }
 
-export function getSupportedCurrencies(): Currency[] {
+export function getSupportedCurrencies(locale?: string): Currency[] {
   const ATOZ = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   const supportedCurrencies: Currency[] = []
 
   for (const currency of currencies) {
     if (currency.length === 3) {
-      if (isSupportedCurrency(currency)) {
+      if (isSupportedCurrency(currency, locale)) {
         supportedCurrencies.push(currency)
       }
     } else if (currency.length === 5 && currency[3] === '~') {
@@ -37,7 +40,7 @@ export function getSupportedCurrencies(): Currency[] {
 
       for (let i = start; i <= end; i++) {
         const currentCurrency = (currency.substring(0, 2) + ATOZ[i]) as Currency
-        if (isSupportedCurrency(currentCurrency)) {
+        if (isSupportedCurrency(currentCurrency, locale)) {
           supportedCurrencies.push(currentCurrency)
         }
       }

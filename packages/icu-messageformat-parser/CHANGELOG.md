@@ -3,6 +3,75 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.5.0...@formatjs/icu-messageformat-parser@2.6.0) (2023-06-12)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** Revert esm conditional exports ([#4129](https://github.com/formatjs/formatjs/issues/4129)) ([78edf46](https://github.com/formatjs/formatjs/commit/78edf460a466a7021e3753be53fd9c6af00f2d96)), closes [#4128](https://github.com/formatjs/formatjs/issues/4128) [#4127](https://github.com/formatjs/formatjs/issues/4127) [#4126](https://github.com/formatjs/formatjs/issues/4126)
+
+# [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.4.0...@formatjs/icu-messageformat-parser@2.5.0) (2023-06-06)
+
+### Features
+
+* **@formatjs/intl,@formatjs/fast-memoize,@formatjs/icu-messageformat-parser,@formatjs/intl-displaynames,@formatjs/intl-listformat,intl-messageformat,@formatjs/ecma402-abstract,@formatjs/intl-numberformat,@formatjs/icu-skeleton-parser:** esm conditional exports ([#4109](https://github.com/formatjs/formatjs/issues/4109)) ([e0d593c](https://github.com/formatjs/formatjs/commit/e0d593cc3af3a317a6bd20c441191e5bbb136a93)), closes [#4013](https://github.com/formatjs/formatjs/issues/4013)
+
+# [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.3.1...@formatjs/icu-messageformat-parser@2.4.0) (2023-05-01)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** updated `tzdata` to `2023c` and fixed missing and changed TimeZone ([1b4856b](https://github.com/formatjs/formatjs/commit/1b4856b11c32c6ac99aa8795ee487c92b4d9d9c9))
+
+## [2.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.3.0...@formatjs/icu-messageformat-parser@2.3.1) (2023-04-17)
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** remove unused `SelectOption` type ([#4037](https://github.com/formatjs/formatjs/issues/4037)) ([28d8a81](https://github.com/formatjs/formatjs/commit/28d8a81675bcc8ae5232562a4ac84e94a132022c))
+* **react-intl:** fix a typo in react-intl/no-parser ([ecf70f3](https://github.com/formatjs/formatjs/commit/ecf70f347241159aa785635e02d33d0f645d617f))
+
+# [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.2.0...@formatjs/icu-messageformat-parser@2.3.0) (2023-02-20)
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** throw err when trying to flatten a plural inside a tag ([dbd5f8f](https://github.com/formatjs/formatjs/commit/dbd5f8f9711e3da3b703e6ec7e98fdb9ba6def08))
+
+# [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.14...@formatjs/icu-messageformat-parser@2.2.0) (2023-01-30)
+
+### Features
+
+* **intl-messageformat:** support more parse options in constructor ([e6b43dc](https://github.com/formatjs/formatjs/commit/e6b43dcc244c53dbfae2a877e1e07546678741db))
+
+## [2.1.14](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.13...@formatjs/icu-messageformat-parser@2.1.14) (2022-12-02)
+
+**Note:** Version bump only for package @formatjs/icu-messageformat-parser
+
+## [2.1.13](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.11...@formatjs/icu-messageformat-parser@2.1.13) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/icu-messageformat-parser
+
+## [2.1.12](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.11...@formatjs/icu-messageformat-parser@2.1.12) (2022-12-01)
+
+**Note:** Version bump only for package @formatjs/icu-messageformat-parser
+
+## [2.1.11](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.10...@formatjs/icu-messageformat-parser@2.1.11) (2022-11-29)
+
+**Note:** Version bump only for package @formatjs/icu-messageformat-parser
+
+## [2.1.10](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.9...@formatjs/icu-messageformat-parser@2.1.10) (2022-10-17)
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** fix unescaping in parser printer, fix [#3870](https://github.com/formatjs/formatjs/issues/3870) ([3887aa4](https://github.com/formatjs/formatjs/commit/3887aa4f4db5cc352a9ce49760dc42ca34ad9b4c))
+
+## [2.1.9](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.8...@formatjs/icu-messageformat-parser@2.1.9) (2022-10-13)
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** fix object null check ([#3849](https://github.com/formatjs/formatjs/issues/3849)) ([#3850](https://github.com/formatjs/formatjs/issues/3850)) ([d1c78e9](https://github.com/formatjs/formatjs/commit/d1c78e9076bf8499b89a5870dfa3bdb5ead4a741))
+
+## [2.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.7...@formatjs/icu-messageformat-parser@2.1.8) (2022-09-28)
+
+**Note:** Version bump only for package @formatjs/icu-messageformat-parser
+
 ## [2.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.1.6...@formatjs/icu-messageformat-parser@2.1.7) (2022-08-27)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

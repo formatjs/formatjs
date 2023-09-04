@@ -2,7 +2,7 @@ import {Suite, Event} from 'benchmark'
 import IntlMessageFormat, {Formatters} from '..'
 import '@formatjs/intl-pluralrules/polyfill'
 import '@formatjs/intl-pluralrules/locale-data/en'
-import memoize from '@formatjs/fast-memoize'
+import {memoize} from '@formatjs/fast-memoize'
 
 const msg =
   '' +

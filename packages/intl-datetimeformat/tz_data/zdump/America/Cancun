@@ -1,0 +1,94 @@
+/zic/America/Cancun  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/America/Cancun  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/America/Cancun  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/America/Cancun  Thu Jan  1 05:47:03 -2147481748 UT = -67768040609719977 (localtime failed)
+/zic/America/Cancun  Thu Jan  1 05:47:04 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-20824
+/zic/America/Cancun  Sun Jan  1 05:59:59 1922 UT = Sun Jan  1 00:12:55 1922 LMT isdst=0 gmtoff=-20824
+/zic/America/Cancun  Sun Jan  1 06:00:00 1922 UT = Sun Jan  1 00:00:00 1922 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Wed Dec 23 05:59:59 1981 UT = Tue Dec 22 23:59:59 1981 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Wed Dec 23 06:00:00 1981 UT = Wed Dec 23 01:00:00 1981 EST isdst=0 gmtoff=-18000
+/zic/America/Cancun  Sun Apr  7 06:59:59 1996 UT = Sun Apr  7 01:59:59 1996 EST isdst=0 gmtoff=-18000
+/zic/America/Cancun  Sun Apr  7 07:00:00 1996 UT = Sun Apr  7 03:00:00 1996 EDT isdst=1 gmtoff=-14400
+/zic/America/Cancun  Sun Oct 27 05:59:59 1996 UT = Sun Oct 27 01:59:59 1996 EDT isdst=1 gmtoff=-14400
+/zic/America/Cancun  Sun Oct 27 06:00:00 1996 UT = Sun Oct 27 01:00:00 1996 EST isdst=0 gmtoff=-18000
+/zic/America/Cancun  Sun Apr  6 06:59:59 1997 UT = Sun Apr  6 01:59:59 1997 EST isdst=0 gmtoff=-18000
+/zic/America/Cancun  Sun Apr  6 07:00:00 1997 UT = Sun Apr  6 03:00:00 1997 EDT isdst=1 gmtoff=-14400
+/zic/America/Cancun  Sun Oct 26 05:59:59 1997 UT = Sun Oct 26 01:59:59 1997 EDT isdst=1 gmtoff=-14400
+/zic/America/Cancun  Sun Oct 26 06:00:00 1997 UT = Sun Oct 26 01:00:00 1997 EST isdst=0 gmtoff=-18000
+/zic/America/Cancun  Sun Apr  5 06:59:59 1998 UT = Sun Apr  5 01:59:59 1998 EST isdst=0 gmtoff=-18000
+/zic/America/Cancun  Sun Apr  5 07:00:00 1998 UT = Sun Apr  5 03:00:00 1998 EDT isdst=1 gmtoff=-14400
+/zic/America/Cancun  Sun Aug  2 05:59:59 1998 UT = Sun Aug  2 01:59:59 1998 EDT isdst=1 gmtoff=-14400
+/zic/America/Cancun  Sun Aug  2 06:00:00 1998 UT = Sun Aug  2 01:00:00 1998 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 25 06:59:59 1998 UT = Sun Oct 25 01:59:59 1998 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 25 07:00:00 1998 UT = Sun Oct 25 01:00:00 1998 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  4 07:59:59 1999 UT = Sun Apr  4 01:59:59 1999 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  4 08:00:00 1999 UT = Sun Apr  4 03:00:00 1999 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 31 06:59:59 1999 UT = Sun Oct 31 01:59:59 1999 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 31 07:00:00 1999 UT = Sun Oct 31 01:00:00 1999 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  2 07:59:59 2000 UT = Sun Apr  2 01:59:59 2000 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  2 08:00:00 2000 UT = Sun Apr  2 03:00:00 2000 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 29 06:59:59 2000 UT = Sun Oct 29 01:59:59 2000 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 29 07:00:00 2000 UT = Sun Oct 29 01:00:00 2000 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun May  6 07:59:59 2001 UT = Sun May  6 01:59:59 2001 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun May  6 08:00:00 2001 UT = Sun May  6 03:00:00 2001 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Sep 30 06:59:59 2001 UT = Sun Sep 30 01:59:59 2001 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Sep 30 07:00:00 2001 UT = Sun Sep 30 01:00:00 2001 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  7 07:59:59 2002 UT = Sun Apr  7 01:59:59 2002 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  7 08:00:00 2002 UT = Sun Apr  7 03:00:00 2002 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 27 06:59:59 2002 UT = Sun Oct 27 01:59:59 2002 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 27 07:00:00 2002 UT = Sun Oct 27 01:00:00 2002 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  6 07:59:59 2003 UT = Sun Apr  6 01:59:59 2003 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  6 08:00:00 2003 UT = Sun Apr  6 03:00:00 2003 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 26 06:59:59 2003 UT = Sun Oct 26 01:59:59 2003 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 26 07:00:00 2003 UT = Sun Oct 26 01:00:00 2003 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  4 07:59:59 2004 UT = Sun Apr  4 01:59:59 2004 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  4 08:00:00 2004 UT = Sun Apr  4 03:00:00 2004 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 31 06:59:59 2004 UT = Sun Oct 31 01:59:59 2004 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 31 07:00:00 2004 UT = Sun Oct 31 01:00:00 2004 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  3 07:59:59 2005 UT = Sun Apr  3 01:59:59 2005 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  3 08:00:00 2005 UT = Sun Apr  3 03:00:00 2005 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 30 06:59:59 2005 UT = Sun Oct 30 01:59:59 2005 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 30 07:00:00 2005 UT = Sun Oct 30 01:00:00 2005 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  2 07:59:59 2006 UT = Sun Apr  2 01:59:59 2006 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  2 08:00:00 2006 UT = Sun Apr  2 03:00:00 2006 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 29 06:59:59 2006 UT = Sun Oct 29 01:59:59 2006 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 29 07:00:00 2006 UT = Sun Oct 29 01:00:00 2006 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  1 07:59:59 2007 UT = Sun Apr  1 01:59:59 2007 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  1 08:00:00 2007 UT = Sun Apr  1 03:00:00 2007 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 28 06:59:59 2007 UT = Sun Oct 28 01:59:59 2007 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 28 07:00:00 2007 UT = Sun Oct 28 01:00:00 2007 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  6 07:59:59 2008 UT = Sun Apr  6 01:59:59 2008 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  6 08:00:00 2008 UT = Sun Apr  6 03:00:00 2008 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 26 06:59:59 2008 UT = Sun Oct 26 01:59:59 2008 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 26 07:00:00 2008 UT = Sun Oct 26 01:00:00 2008 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  5 07:59:59 2009 UT = Sun Apr  5 01:59:59 2009 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  5 08:00:00 2009 UT = Sun Apr  5 03:00:00 2009 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 25 06:59:59 2009 UT = Sun Oct 25 01:59:59 2009 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 25 07:00:00 2009 UT = Sun Oct 25 01:00:00 2009 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  4 07:59:59 2010 UT = Sun Apr  4 01:59:59 2010 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  4 08:00:00 2010 UT = Sun Apr  4 03:00:00 2010 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 31 06:59:59 2010 UT = Sun Oct 31 01:59:59 2010 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 31 07:00:00 2010 UT = Sun Oct 31 01:00:00 2010 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  3 07:59:59 2011 UT = Sun Apr  3 01:59:59 2011 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  3 08:00:00 2011 UT = Sun Apr  3 03:00:00 2011 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 30 06:59:59 2011 UT = Sun Oct 30 01:59:59 2011 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 30 07:00:00 2011 UT = Sun Oct 30 01:00:00 2011 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  1 07:59:59 2012 UT = Sun Apr  1 01:59:59 2012 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  1 08:00:00 2012 UT = Sun Apr  1 03:00:00 2012 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 28 06:59:59 2012 UT = Sun Oct 28 01:59:59 2012 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 28 07:00:00 2012 UT = Sun Oct 28 01:00:00 2012 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  7 07:59:59 2013 UT = Sun Apr  7 01:59:59 2013 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  7 08:00:00 2013 UT = Sun Apr  7 03:00:00 2013 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 27 06:59:59 2013 UT = Sun Oct 27 01:59:59 2013 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 27 07:00:00 2013 UT = Sun Oct 27 01:00:00 2013 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  6 07:59:59 2014 UT = Sun Apr  6 01:59:59 2014 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Apr  6 08:00:00 2014 UT = Sun Apr  6 03:00:00 2014 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 26 06:59:59 2014 UT = Sun Oct 26 01:59:59 2014 CDT isdst=1 gmtoff=-18000
+/zic/America/Cancun  Sun Oct 26 07:00:00 2014 UT = Sun Oct 26 01:00:00 2014 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Feb  1 07:59:59 2015 UT = Sun Feb  1 01:59:59 2015 CST isdst=0 gmtoff=-21600
+/zic/America/Cancun  Sun Feb  1 08:00:00 2015 UT = Sun Feb  1 03:00:00 2015 EST isdst=0 gmtoff=-18000
+/zic/America/Cancun  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 18:59:59 2147485547 EST isdst=0 gmtoff=-18000
+/zic/America/Cancun  67768036191676800 (gmtime failed) = Wed Dec 31 19:00:00 2147485547 EST isdst=0 gmtoff=-18000
+/zic/America/Cancun  67768036191694799 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 EST isdst=0 gmtoff=-18000
+/zic/America/Cancun  67768036191694800 (gmtime failed) = 67768036191694800 (localtime failed)
+/zic/America/Cancun  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

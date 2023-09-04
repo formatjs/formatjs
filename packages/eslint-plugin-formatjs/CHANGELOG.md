@@ -3,6 +3,122 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.10.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.10.2...eslint-plugin-formatjs@4.10.3) (2023-06-12)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.10.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.10.1...eslint-plugin-formatjs@4.10.2) (2023-06-06)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.10.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.10.0...eslint-plugin-formatjs@4.10.1) (2023-05-01)
+
+### Bug Fixes
+
+* **deps:** update dependency @typescript-eslint/typescript-estree to v5.59.0 ([#4055](https://github.com/formatjs/formatjs/issues/4055)) ([11206c8](https://github.com/formatjs/formatjs/commit/11206c83c8e48fe07591d9e5e6c4746a6cdd623c))
+* **deps:** update dependency magic-string to ^0.30.0 ([#4056](https://github.com/formatjs/formatjs/issues/4056)) ([8f46ca1](https://github.com/formatjs/formatjs/commit/8f46ca13bec5f5d19996cd0e7d12f67ca0523b99))
+* **deps:** update dependency tslib to v2.5.0 ([#4059](https://github.com/formatjs/formatjs/issues/4059)) ([b9ec209](https://github.com/formatjs/formatjs/commit/b9ec2099f00b58dfc512cc15f20da2da26167a12))
+
+# [4.10.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.9.1...eslint-plugin-formatjs@4.10.0) (2023-04-17)
+
+### Features
+
+* upgrade TS support to v5 ([2c43dc1](https://github.com/formatjs/formatjs/commit/2c43dc1275d7ca940fae80419e3d6e4143bfbfef))
+
+## [4.9.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.9.0...eslint-plugin-formatjs@4.9.1) (2023-03-28)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** gracefully handle invalid message in enforce-placeholders ([6b64a3e](https://github.com/formatjs/formatjs/commit/6b64a3e2dd911cafcff79dbf1f5e7a11144515fc))
+
+# [4.9.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.8.0...eslint-plugin-formatjs@4.9.0) (2023-02-27)
+
+### Features
+
+* **eslint-plugin-formatjs:** more performant and versatile no-complex-selectors ([#4007](https://github.com/formatjs/formatjs/issues/4007)) ([4affca2](https://github.com/formatjs/formatjs/commit/4affca23beed7a0ec1bedc65e92bb0081a89b697))
+
+# [4.8.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.7.2...eslint-plugin-formatjs@4.8.0) (2023-02-25)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** do not throw while hoisting during no-complex-selectors ([29ecbec](https://github.com/formatjs/formatjs/commit/29ecbec2be0b528d1a91d49042265e91cf43df9c))
+
+### Features
+
+* **eslint-plugin-formatjs:** report unused values in `enforce-placeholders` ([#4006](https://github.com/formatjs/formatjs/issues/4006)) ([dabd04c](https://github.com/formatjs/formatjs/commit/dabd04c2cce8282e1cbd6e2a5756d7422ebfbe8e))
+
+## [4.7.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.7.1...eslint-plugin-formatjs@4.7.2) (2023-02-20)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.7.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.7.0...eslint-plugin-formatjs@4.7.1) (2023-02-19)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** handles multi-line JSX attribute ([f41f855](https://github.com/formatjs/formatjs/commit/f41f855f35088c21b038a0bf579b7e1374ff49f9))
+* **eslint-plugin-formatjs:** report the JSXExpressionContainer for `prefer-formatted-message` ([32b97d5](https://github.com/formatjs/formatjs/commit/32b97d5e519ff7dbd3e29492b16deff7c1a75324))
+
+# [4.7.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.6.0...eslint-plugin-formatjs@4.7.0) (2023-02-19)
+
+### Features
+
+* **eslint-plugin-formatjs:** new linter rules `prefer-formatted-message`and`prefer-pound-in-plural` ([#3998](https://github.com/formatjs/formatjs/issues/3998)) ([768a73a](https://github.com/formatjs/formatjs/commit/768a73a55a1e3ac600d0e2c7aa484e6ba0b20355))
+
+# [4.6.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.5.0...eslint-plugin-formatjs@4.6.0) (2023-01-30)
+
+### Features
+
+* **eslint-plugin-formatjs:** emoji version above config ([fd7776a](https://github.com/formatjs/formatjs/commit/fd7776a0f8c5e07da019a4c6e3158b734ed40169))
+
+# [4.5.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.4.0...eslint-plugin-formatjs@4.5.0) (2023-01-27)
+
+### Features
+
+* **eslint-plugin-formatjs:** capture literals in the logical expression ([#3975](https://github.com/formatjs/formatjs/issues/3975)) ([1cc638c](https://github.com/formatjs/formatjs/commit/1cc638c0a56cc19949327e55580e3a3e82a4116a))
+
+# [4.4.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.9...eslint-plugin-formatjs@4.4.0) (2023-01-26)
+
+### Features
+
+* **eslint-plugin-formatjs:** capture literals in the conditional expression ([#3974](https://github.com/formatjs/formatjs/issues/3974)) ([1deed4d](https://github.com/formatjs/formatjs/commit/1deed4d6978d1a48f4cf789920e8af8db29e7758))
+* **eslint-plugin-formatjs:** introduce no-useless-message linter rule ([#3973](https://github.com/formatjs/formatjs/issues/3973)) ([9ec4491](https://github.com/formatjs/formatjs/commit/9ec44911bc4b71616f4d5db3a7d7dbf4144a5a6a))
+
+## [4.3.9](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.8...eslint-plugin-formatjs@4.3.9) (2022-12-27)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** adding $t, an alternative to formatMessage ([#3943](https://github.com/formatjs/formatjs/issues/3943)) ([6d9623f](https://github.com/formatjs/formatjs/commit/6d9623f7fb3eb3bf68acfacdb5e0d88939e70156))
+
+## [4.3.8](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.7...eslint-plugin-formatjs@4.3.8) (2022-12-02)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.3.7](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.5...eslint-plugin-formatjs@4.3.7) (2022-12-01)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.3.6](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.5...eslint-plugin-formatjs@4.3.6) (2022-12-01)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.3.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.4...eslint-plugin-formatjs@4.3.5) (2022-11-29)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.3.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.3...eslint-plugin-formatjs@4.3.4) (2022-10-17)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [4.3.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.2...eslint-plugin-formatjs@4.3.3) (2022-10-13)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** no-literal-string-in-jsx now ignores empty string ([#3871](https://github.com/formatjs/formatjs/issues/3871)) ([3a7ae3b](https://github.com/formatjs/formatjs/commit/3a7ae3b72dee6550c16c0655f1caf7bebdc4f4b3))
+
+## [4.3.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.1...eslint-plugin-formatjs@4.3.2) (2022-09-28)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
 ## [4.3.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.3.0...eslint-plugin-formatjs@4.3.1) (2022-09-06)
 
 ### Bug Fixes

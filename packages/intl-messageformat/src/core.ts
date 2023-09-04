@@ -4,8 +4,12 @@ Copyrights licensed under the New BSD License.
 See the accompanying LICENSE file for terms.
 */
 
-import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
-import memoize, {Cache, strategies} from '@formatjs/fast-memoize'
+import {
+  parse,
+  MessageFormatElement,
+  ParserOptions,
+} from '@formatjs/icu-messageformat-parser'
+import {memoize, Cache, strategies} from '@formatjs/fast-memoize'
 import {
   FormatterCache,
   Formatters,
@@ -53,18 +57,13 @@ function mergeConfigs(
   )
 }
 
-export interface Options {
+export interface Options extends Omit<ParserOptions, 'locale'> {
   formatters?: Formatters
-  /**
-   * Whether to treat HTML/XML tags as string literal
-   * instead of parsing them as tag token.
-   * When this is false we only allow simple tags without
-   * any attributes
-   */
-  ignoreTag?: boolean
 }
 
-function createFastMemoizeCache<V>(store: Record<string, V>): Cache<string, V> {
+function createFastMemoizeCache<V>(
+  store: Record<string, V | undefined>
+): Cache<string, V> {
   return {
     create() {
       return {
@@ -131,9 +130,10 @@ export class IntlMessageFormat {
           'IntlMessageFormat.__parse must be set to process `message` of type `string`'
         )
       }
+      const {formatters, ...parseOpts} = opts || {}
       // Parse string messages into an AST.
       this.ast = IntlMessageFormat.__parse(message, {
-        ignoreTag: opts?.ignoreTag,
+        ...parseOpts,
         locale: this.resolvedLocale,
       })
     } else {

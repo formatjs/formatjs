@@ -1,0 +1,12 @@
+/zic/Pacific/Tahiti  -9223372036854775808 (gmtime failed) = -9223372036854775808 (localtime failed)
+/zic/Pacific/Tahiti  -67768040609740801 (gmtime failed) = -67768040609740801 (localtime failed)
+/zic/Pacific/Tahiti  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
+/zic/Pacific/Tahiti  Thu Jan  1 09:58:15 -2147481748 UT = -67768040609704905 (localtime failed)
+/zic/Pacific/Tahiti  Thu Jan  1 09:58:16 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-35896
+/zic/Pacific/Tahiti  Tue Oct  1 09:58:15 1912 UT = Mon Sep 30 23:59:59 1912 LMT isdst=0 gmtoff=-35896
+/zic/Pacific/Tahiti  Tue Oct  1 09:58:16 1912 UT = Mon Sep 30 23:58:16 1912 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Tahiti  Wed Dec 31 23:59:59 2147485547 UT = Wed Dec 31 13:59:59 2147485547 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Tahiti  67768036191676800 (gmtime failed) = Wed Dec 31 14:00:00 2147485547 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Tahiti  67768036191712799 (gmtime failed) = Wed Dec 31 23:59:59 2147485547 -10 isdst=0 gmtoff=-36000
+/zic/Pacific/Tahiti  67768036191712800 (gmtime failed) = 67768036191712800 (localtime failed)
+/zic/Pacific/Tahiti  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

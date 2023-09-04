@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`unit it passes camelCase-converted arguments to typescript API 1`] = `
-Array [
-  Array [
+[
+  [
     ";",
-    Object {
-      "compilerOptions": Object {
+    {
+      "compilerOptions": {
         "allowJs": true,
         "experimentalDecorators": true,
         "noEmit": true,
@@ -13,17 +13,17 @@ Array [
       },
       "fileName": "file1.js",
       "reportDiagnostics": true,
-      "transformers": Object {
-        "before": Array [
+      "transformers": {
+        "before": [
           [Function],
         ],
       },
     },
   ],
-  Array [
+  [
     ";",
-    Object {
-      "compilerOptions": Object {
+    {
+      "compilerOptions": {
         "allowJs": true,
         "experimentalDecorators": true,
         "noEmit": true,
@@ -31,8 +31,8 @@ Array [
       },
       "fileName": "file2.tsx",
       "reportDiagnostics": true,
-      "transformers": Object {
-        "before": Array [
+      "transformers": {
+        "before": [
           [Function],
         ],
       },

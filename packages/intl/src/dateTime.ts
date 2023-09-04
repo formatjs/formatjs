@@ -1,7 +1,7 @@
 import {Formatters, IntlFormatters, CustomFormats, OnErrorFn} from './types'
 
 import {filterProps, getNamedFormat} from './utils'
-import {IntlError, IntlErrorCode} from './error'
+import {IntlFormatError} from './error'
 import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
@@ -86,7 +86,7 @@ export function formatDate(
     return getFormatter(config, 'date', getDateTimeFormat, options).format(date)
   } catch (e) {
     config.onError(
-      new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting date.', e)
+      new IntlFormatError('Error formatting date.', config.locale, e)
     )
   }
 
@@ -109,7 +109,7 @@ export function formatTime(
     return getFormatter(config, 'time', getDateTimeFormat, options).format(date)
   } catch (e) {
     config.onError(
-      new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting time.', e)
+      new IntlFormatError('Error formatting time.', config.locale, e)
     )
   }
 
@@ -137,11 +137,7 @@ export function formatDateTimeRange(
     return getDateTimeFormat(locale, filteredOptions).formatRange(from, to)
   } catch (e) {
     onError(
-      new IntlError(
-        IntlErrorCode.FORMAT_ERROR,
-        'Error formatting date time range.',
-        e
-      )
+      new IntlFormatError('Error formatting date time range.', config.locale, e)
     )
   }
 
@@ -168,7 +164,7 @@ export function formatDateToParts(
     ).formatToParts(date) as Intl.DateTimeFormatPart[] // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
   } catch (e) {
     config.onError(
-      new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting date.', e)
+      new IntlFormatError('Error formatting date.', config.locale, e)
     )
   }
 
@@ -196,7 +192,7 @@ export function formatTimeToParts(
     ).formatToParts(date) as Intl.DateTimeFormatPart[] // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
   } catch (e) {
     config.onError(
-      new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting time.', e)
+      new IntlFormatError('Error formatting time.', config.locale, e)
     )
   }
 

@@ -7,7 +7,7 @@ import {
   ResolvedIntlConfig,
 } from './types'
 import {IntlMessageFormat} from 'intl-messageformat'
-import memoize, {Cache, strategies} from '@formatjs/fast-memoize'
+import {memoize, Cache, strategies} from '@formatjs/fast-memoize'
 import {UnsupportedFormatterError} from './error'
 import {DateTimeFormat, NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
@@ -77,7 +77,9 @@ export function createIntlCache(): IntlCache {
   }
 }
 
-function createFastMemoizeCache<V>(store: Record<string, V>): Cache<string, V> {
+function createFastMemoizeCache<V>(
+  store: Record<string, V | undefined>
+): Cache<string, V> {
   return {
     create() {
       return {

@@ -1,11 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
-load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
-load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
+load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
-load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
+load("@rules_multirun//:defs.bzl", "multirun")
+load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 
 exports_files(
     [
@@ -56,8 +56,10 @@ PACKAGES_TO_DIST = [
     "//packages/intl-numberformat",
     "//packages/intl-pluralrules",
     "//packages/intl-relativetimeformat",
+    "//packages/intl-segmenter",
     "//packages/react-intl",
     "//packages/swc-plugin",
+    "//packages/swc-plugin-experimental",
     "//packages/ts-transformer",
     "//packages/vue-intl",
 ]
@@ -69,7 +71,7 @@ PACKAGE_DIRNAMES = [p.split("packages/")[1] for p in PACKAGES_TO_DIST]
 #    srcs=[":dist"],
 #    out_dirs=["deploy_result"],
 #    chdir="$(rootpath :dist)",
-#    args=["deploy", "--filter", "@formatjs/cli-lib", "../$(@D)"]
+#    args=["deploy", "--filter", "@soxhub/formatjs-cli-lib", "../$(@D)"]
 # )
 
 copy_to_directory(
@@ -104,28 +106,33 @@ KARMA_TESTS = [
 
 karma_bin.karma_test(
     name = "karma",
+    args = [
+        "start",
+        "$(rootpath //:karma.conf.js)",
+        "--no-single-run",
+    ],
     # configuration_env_vars = [
     #     "SAUCE_USERNAME",
     #     "SAUCE_ACCESS_KEY",
     # ],
     data = [
         "//:karma.conf.js",
-        "//:node_modules/karma-jasmine",
         "//:node_modules/karma-chrome-launcher",
-        "//:node_modules/karma-sauce-launcher",
+        "//:node_modules/karma-jasmine",
         "//:node_modules/karma-jasmine-matchers",
+        "//:node_modules/karma-sauce-launcher",
     ] + KARMA_TESTS,
     tags = ["manual"],
-    args = [
-        "start",
-        "$(rootpath //:karma.conf.js)",
-        "--no-single-run",
-    ],
 )
 
 karma_bin.karma_test(
     name = "karma-ci",
-    size = "large",
+    args = [
+        "start",
+        "$(rootpath //:karma.conf.js)",
+        "--browsers",
+        "sl_edge,sl_chrome,sl_firefox,sl_ie_11,sl_safari",
+    ],
     # configuration_env_vars = [
     #     "SAUCE_USERNAME",
     #     "SAUCE_ACCESS_KEY",
@@ -133,52 +140,12 @@ karma_bin.karma_test(
     # ],
     data = [
         "//:karma.conf.js",
-        "//:node_modules/karma-jasmine",
         "//:node_modules/karma-chrome-launcher",
-        "//:node_modules/karma-sauce-launcher",
+        "//:node_modules/karma-jasmine",
         "//:node_modules/karma-jasmine-matchers",
+        "//:node_modules/karma-sauce-launcher",
     ] + KARMA_TESTS,
     tags = ["manual"],
-    args = [
-        "start",
-        "$(rootpath //:karma.conf.js)",
-        "--browsers",
-        "sl_edge,sl_chrome,sl_firefox,sl_ie_11,sl_safari",
-    ],
-)
-
-multirun(
-    name = "prettier_all",
-    commands = [
-        "//packages/babel-plugin-formatjs:prettier",
-        "//packages/cli-lib:prettier",
-        "//packages/ecma376:prettier",
-        "//packages/ecma402-abstract:prettier",
-        "//packages/editor:prettier",
-        "//packages/eslint-plugin-formatjs:prettier",
-        "//packages/fast-memoize:prettier",
-        "//packages/icu-messageformat-parser:prettier",
-        "//packages/icu-skeleton-parser:prettier",
-        "//packages/intl-datetimeformat:prettier",
-        "//packages/intl-displaynames:prettier",
-        "//packages/intl-durationformat:prettier",
-        "//packages/intl-enumerator:prettier",
-        "//packages/intl-getcanonicallocales:prettier",
-        "//packages/intl-listformat:prettier",
-        "//packages/intl-locale:prettier",
-        "//packages/intl-localematcher:prettier",
-        "//packages/intl-messageformat:prettier",
-        "//packages/intl-numberformat:prettier",
-        "//packages/intl-pluralrules:prettier",
-        "//packages/intl-relativetimeformat:prettier",
-        "//packages/intl:prettier",
-        "//packages/react-intl:prettier",
-        "//packages/swc-plugin:prettier",
-        "//packages/ts-transformer:prettier",
-        "//packages/vue-intl:prettier",
-        "//tools:prettier",
-        "//website:prettier",
-    ],
 )
 
 multirun(
@@ -197,6 +164,8 @@ multirun(
         "//packages/intl-pluralrules:generated-test-files",
         "//packages/intl-relativetimeformat:test262-main",
         "//packages/intl-relativetimeformat:generated-test-files",
+        "//packages/intl-segmenter:test262-main",
+        "//packages/intl-segmenter:generated-files",
         "//packages/intl-getcanonicallocales:aliases",
     ],
 )
@@ -211,6 +180,7 @@ multirun(
         "//packages/intl-numberformat:generated-files",
         "//packages/intl-pluralrules:generated-files",
         "//packages/intl-relativetimeformat:generated-files",
+        "//packages/intl-segmenter:generated-files",
     ],
 )
 
@@ -218,12 +188,43 @@ buildifier(
     name = "buildifier",
     exclude_patterns = ["./node_modules/*"],
     lint_mode = "fix",
-    lint_warnings = BUILDIFIER_WARNINGS,
+    lint_warnings = [
+        "attr-cfg",
+        "attr-license",
+        "attr-non-empty",
+        "attr-output-default",
+        "attr-single-file",
+        "constant-glob",
+        "ctx-actions",
+        "ctx-args",
+        "depset-iteration",
+        "depset-union",
+        "dict-concatenation",
+        "duplicated-name",
+        "filetype",
+        "git-repository",
+        "http-archive",
+        "integer-division",
+        "load",
+        "load-on-top",
+        "native-build",
+        "native-package",
+        "out-of-order-load",
+        "output-group",
+        "package-name",
+        "package-on-top",
+        "positional-args",
+        "redefined-variable",
+        "repository-name",
+        "same-origin-load",
+        "string-iteration",
+        "unsorted-dict-items",
+        "unused-variable",
+    ],
     verbose = True,
 )
 
 CONFIG_FILES = [
-    ".prettierrc.json",
     "jest.config.js",
     "package.json",
     "tsconfig.json",
@@ -232,10 +233,17 @@ CONFIG_FILES = [
 [
     copy_to_bin(
         name = f.rsplit(".", 1)[0],
-        srcs=[f],
-        visibility=["//visibility:public"]
-    ) for f in CONFIG_FILES
+        srcs = [f],
+        visibility = ["//visibility:public"],
+    )
+    for f in CONFIG_FILES
 ]
+
+copy_to_bin(
+    name = "swcrc",
+    srcs = [".swcrc"],
+    visibility = ["//visibility:public"],
+)
 
 TSCONFIG_FILES = [
     "tsconfig.es6.json",
@@ -253,3 +261,15 @@ TSCONFIG_FILES = [
     )
     for f in TSCONFIG_FILES
 ]
+
+# Symlink some workspaces to the root workspace, so scripts like benchmarks
+# can easily depend on the distributable package via target `//:node_modules/<package_name>`.
+npm_link_package(
+    name = "node_modules/@formatjs/intl-pluralrules",
+    src = "//packages/intl-pluralrules",
+)
+
+npm_link_package(
+    name = "node_modules/@formatjs/intl-localematcher",
+    src = "//packages/intl-localematcher",
+)

@@ -1,0 +1,28 @@
+# Aspect recommended Bazel flags when using Aspect's JavaScript rules: https://github.com/aspect-build/rules_js
+# Docs for Node.js flags: https://nodejs.org/en/docs/guides/debugging-getting-started/#command-line-options
+
+# Support for debugging Node.js tests. Use bazel run with `--config=debug` to turn on the NodeJS
+# inspector agent. The node process will break before user code starts and wait for the debugger to
+# connect. Pass the --inspect-brk option to all tests which enables the node inspector agent. See
+# https://nodejs.org/de/docs/guides/debugging-getting-started/#command-line-options for more
+# details.
+# Docs: https://nodejs.org/en/docs/guides/debugging-getting-started/#command-line-options
+run:debug -- --node_options=--inspect-brk
+
+# Enable runfiles on all platforms. Runfiles are on by default on Linux and MacOS but off on
+# Windows.
+#
+# In general, rules_js and derivate rule sets assume that runfiles are enabled and do not support no
+# runfiles case because it does not scale to teach all Node.js tools to use the runfiles manifest.
+#
+# If you are developing on Windows, you must either run bazel with administrator privileges or
+# enable developer mode. If you do not you may hit this error on Windows:
+#
+#   Bazel needs to create symlinks to build the runfiles tree.
+#   Creating symlinks on Windows requires one of the following:
+#       1. Bazel is run with administrator privileges.
+#       2. The system version is Windows 10 Creators Update (1703) or later
+#          and developer mode is enabled.
+#
+# Docs: https://bazel.build/reference/command-line-reference#flag--enable_runfiles
+build --enable_runfiles
