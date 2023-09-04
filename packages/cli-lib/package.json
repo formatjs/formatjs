@@ -1,6 +1,6 @@
 {
-  "name": "@formatjs/cli-lib",
-  "version": "6.1.3",
+  "name": "@soxhub/formatjs-cli-lib",
+  "version": "6.1.5",
   "description": "Lib for CLI for formatjs.",
   "keywords": [
     "intl",
@@ -27,12 +27,15 @@
     "type": "git",
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/soxhub"
+  },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@formatjs/ts-transformer": "workspace:*",
+    "@formatjs/icu-messageformat-parser": "2.6.0",
+    "@formatjs/ts-transformer": "3.13.3",
     "@types/estree": "^1.0.0",
     "@types/fs-extra": "^9.0.1",
     "@types/json-stable-stringify": "^1.0.32",

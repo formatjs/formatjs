@@ -71,7 +71,7 @@ PACKAGE_DIRNAMES = [p.split("packages/")[1] for p in PACKAGES_TO_DIST]
 #    srcs=[":dist"],
 #    out_dirs=["deploy_result"],
 #    chdir="$(rootpath :dist)",
-#    args=["deploy", "--filter", "@formatjs/cli-lib", "../$(@D)"]
+#    args=["deploy", "--filter", "@soxhub/formatjs-cli-lib", "../$(@D)"]
 # )
 
 copy_to_directory(

@@ -42,13 +42,13 @@ The formatter file must export a function called \`format\` with the signature
 type FormatFn = <T = Record<string, MessageDescriptor>>(
   msgs: Record<string, MessageDescriptor>
 ) => T
-\`\`\` 
+\`\`\`
 This is especially useful to convert from our extracted format to a TMS-specific format.
 `
     )
     .option(
       '--out-file <path>',
-      `The target file path where the plugin will output an aggregated 
+      `The target file path where the plugin will output an aggregated
 \`.json\` file of all the translations from the \`files\` supplied.`
     )
     .option(
@@ -61,8 +61,8 @@ See https://github.com/webpack/loader-utils#interpolatename for sample patterns`
     )
     .option(
       '--extract-source-location',
-      `Whether the metadata about the location of the message in the source file should be 
-extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each 
+      `Whether the metadata about the location of the message in the source file should be
+extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each
 extracted message descriptors.`,
       false
     )
@@ -73,9 +73,9 @@ extracted message descriptors.`,
     )
     .option(
       '--additional-component-names <comma-separated-names>',
-      `Additional component names to extract messages from, e.g: \`'FormattedFooBarMessage'\`. 
-**NOTE**: By default we check for the fact that \`FormattedMessage\` 
-is imported from \`moduleSourceName\` to make sure variable alias 
+      `Additional component names to extract messages from, e.g: \`'FormattedFooBarMessage'\`.
+**NOTE**: By default we check for the fact that \`FormattedMessage\`
+is imported from \`moduleSourceName\` to make sure variable alias
 works. This option does not do that so it's less safe.`,
       (val: string) => val.split(',')
     )
@@ -150,7 +150,7 @@ sentences are not translator-friendly.`
     .command('compile [translation_files...]')
     .description(
       `Compile extracted translation file into react-intl consumable JSON
-We also verify that the messages are valid ICU and not malformed. 
+We also verify that the messages are valid ICU and not malformed.
 <translation_files> can be a glob like "foo/**/en.json"`
     )
     .option(
@@ -181,7 +181,7 @@ for more information`
     )
     .option(
       '--pseudo-locale <pseudoLocale>',
-      `Whether to generate pseudo-locale files. See https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. 
+      `Whether to generate pseudo-locale files. See https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values.
 "--ast" is required for this to work.`
     )
     .action(async (filePatterns: string[], opts: CompileCLIOpts) => {
@@ -199,7 +199,7 @@ for more information`
     .command('compile-folder <folder> <outFolder>')
     .description(
       `Batch compile all extracted translation JSON files in <folder> to <outFolder> containing
-react-intl consumable JSON. We also verify that the messages are 
+react-intl consumable JSON. We also verify that the messages are
 valid ICU and not malformed.`
     )
     .option(

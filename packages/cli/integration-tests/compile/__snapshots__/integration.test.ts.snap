@@ -152,7 +152,7 @@ exports[`basic case: help 1`] = `
   "stdout": "Usage: formatjs compile [options] [translation_files...]
 
 Compile extracted translation file into react-intl consumable JSON
-We also verify that the messages are valid ICU and not malformed. 
+We also verify that the messages are valid ICU and not malformed.
 <translation_files> can be a glob like "foo/**/en.json"
 
 Options:

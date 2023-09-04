@@ -409,17 +409,17 @@ importers:
         specifier: ^3.2.34
         version: 3.2.45
     devDependencies:
-      '@formatjs/cli-lib':
+      '@soxhub/formatjs-cli-lib':
         specifier: workspace:*
         version: link:../cli-lib
 
   packages/cli-lib:
     dependencies:
       '@formatjs/icu-messageformat-parser':
-        specifier: workspace:*
+        specifier: 2.6.0
         version: link:../icu-messageformat-parser
       '@formatjs/ts-transformer':
-        specifier: workspace:*
+        specifier: 3.13.3
         version: link:../ts-transformer
       '@types/estree':
         specifier: ^1.0.0

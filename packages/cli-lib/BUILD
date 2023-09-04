@@ -19,7 +19,7 @@ npm_package(
         "package.json",
         ":dist",
     ],
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    package = "@soxhub/formatjs-%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
 )
 
@@ -59,7 +59,7 @@ SRC_DEPS = [
 ts_compile_node(
     name = "dist",
     srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    package = "@soxhub/formatjs-%s" % PACKAGE_NAME,
     skip_esm_esnext = False,
     deps = SRC_DEPS,
 )

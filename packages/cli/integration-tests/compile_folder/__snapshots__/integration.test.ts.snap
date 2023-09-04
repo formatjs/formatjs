@@ -22,7 +22,7 @@ exports[`basic case: help 1`] = `
   "stdout": "Usage: formatjs compile-folder [options] <folder> <outFolder>
 
 Batch compile all extracted translation JSON files in <folder> to <outFolder> containing
-react-intl consumable JSON. We also verify that the messages are 
+react-intl consumable JSON. We also verify that the messages are
 valid ICU and not malformed.
 
 Options:
