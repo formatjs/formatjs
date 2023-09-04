@@ -1,3 +1,11 @@
+# Soxhub Formatjs
+
+AuditBoard forked formatjs to add hanblebars files as an extraction target.
+
+`cli-lib` is where we have made changes.
+
+More details in the [cli-lib readme](https://github.com/soxhub/formatjs/blob/main/packages/cli-lib/README.md)
+
 # FormatJS
 
 [![Unit Tests](https://github.com/formatjs/formatjs/actions/workflows/tests.yml/badge.svg)](https://github.com/formatjs/formatjs/actions/workflows/tests.yml)
