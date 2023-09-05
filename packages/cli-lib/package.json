@@ -48,7 +48,7 @@
     "chalk": "^4.0.0",
     "commander": "8",
     "ember-template-recast": "^6.1.4",
-    "ember-template-tag": "^2.3.8",
+    "ember-template-tag": "^2.3.10",
     "fast-glob": "^3.2.7",
     "fs-extra": "10",
     "json-stable-stringify": "^1.0.1",
