@@ -9,6 +9,10 @@ ruleTester.run('enforce-id', enforceId, {
       options,
     },
     {
+      code: `intl.$t({ id: 'j9qhn+', defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
+      options,
+    },
+    {
       code: `<FormattedMessage id="/e77jM" defaultMessage="{count, plural, one {#} other {# more}}" values={{foo: 1}} />`,
       options,
     },
@@ -31,6 +35,20 @@ Actual: foo`,
       options,
       output: `
 intl.formatMessage({ id: 'j9qhn+', defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
+    },
+    {
+      code: `
+intl.$t({ id: 'foo', defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
+      errors: [
+        {
+          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
+Expected: j9qhn+
+Actual: foo`,
+        },
+      ],
+      options,
+      output: `
+intl.$t({ id: 'j9qhn+', defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
     },
     {
       code: `
