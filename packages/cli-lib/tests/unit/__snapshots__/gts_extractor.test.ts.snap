@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`gts_extractor 1`] = `
+[
+  {
+    "defaultMessage": "in template",
+    "description": "in template desc",
+    "id": "7MCO2v",
+  },
+  {
+    "defaultMessage": "{connectorName, select, none {Install Service} other {Install {connectorName}} }",
+    "description": undefined,
+    "id": "lMXYqa",
+  },
+  {
+    "defaultMessage": "{connectorName, select, none {Install Service} other {Install {connectorName}} }",
+    "description": undefined,
+    "id": "lMXYqa",
+  },
+  {
+    "defaultMessage": "Very long message with multiple'' breaklines and multiple spaces '<a href={href}>' Link '</a>'",
+    "description": "Nice description",
+    "id": "mkhWoT",
+  },
+  {
+    "defaultMessage": "Very long message with multiple'' breaklines and multiple spaces '<a href={href}>' Link '</a>'",
+    "description": "Nice description",
+    "id": "mkhWoT",
+  },
+]
+`;
