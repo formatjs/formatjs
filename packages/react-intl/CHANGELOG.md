@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.5](https://github.com/formatjs/formatjs/compare/react-intl@6.4.4...react-intl@6.4.5) (2023-09-07)
+
+### Bug Fixes
+
+* **react-intl:** explicitly set type of MemoizedFormattedMessage ([#4104](https://github.com/formatjs/formatjs/issues/4104)) ([8dd659a](https://github.com/formatjs/formatjs/commit/8dd659a0d8f6c6d1a1118f857705987418f0ccf2))
+
 ## [6.4.4](https://github.com/formatjs/formatjs/compare/react-intl@6.4.3...react-intl@6.4.4) (2023-06-12)
 
 **Note:** Version bump only for package react-intl

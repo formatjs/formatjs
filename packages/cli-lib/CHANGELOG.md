@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.1.3...@formatjs/cli-lib@6.1.4) (2023-09-07)
+
+### Bug Fixes
+
+* **deps:** update dependency @types/estree to v1 ([#4091](https://github.com/formatjs/formatjs/issues/4091)) ([d5efee4](https://github.com/formatjs/formatjs/commit/d5efee4c23df51daa0db47b6f6ee624550d9f8d5))
+
 ## [6.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.1.2...@formatjs/cli-lib@6.1.3) (2023-06-12)
 
 **Note:** Version bump only for package @formatjs/cli-lib

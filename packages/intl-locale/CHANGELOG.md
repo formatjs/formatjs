@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.3.2...@formatjs/intl-locale@3.3.3) (2023-09-07)
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** migrate locale info getters to get methods ([#4135](https://github.com/formatjs/formatjs/issues/4135)) ([d63e778](https://github.com/formatjs/formatjs/commit/d63e778d4900728d4b2f6710f11af683ed5c4bc7))
+
 ## [3.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.3.1...@formatjs/intl-locale@3.3.2) (2023-06-12)
 
 **Note:** Version bump only for package @formatjs/intl-locale
