@@ -13,6 +13,10 @@ defineMessage({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
 })`,
+    `intl.$t({
+    defaultMessage: '{count, plural, one {#} other {# more}}',
+    description: 'asd'
+})`,
     `intl.formatMessage({
   defaultMessage: '{count, plural, one {#} other {# more}}',
   description: 'asd' + 'aaz'
@@ -57,6 +61,17 @@ description={'asd' + 'azz'}
     {
       code: `
             intl.formatMessage({
+                defaultMessage: '{count, plural, one {#} other {# more}}'
+            })`,
+      errors: [
+        {
+          message: '`description` has to be specified in message descriptor',
+        },
+      ],
+    },
+    {
+      code: `
+            intl.$t({
                 defaultMessage: '{count, plural, one {#} other {# more}}'
             })`,
       errors: [

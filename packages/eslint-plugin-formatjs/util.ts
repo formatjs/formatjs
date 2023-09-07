@@ -68,7 +68,8 @@ export function isIntlFormatMessageCall(
     node.callee.object.type === 'Identifier' &&
     node.callee.object.name === 'intl' &&
     node.callee.property.type === 'Identifier' &&
-    node.callee.property.name === 'formatMessage' &&
+    (node.callee.property.name === 'formatMessage' ||
+      node.callee.property.name === '$t') &&
     node.arguments.length >= 1 &&
     node.arguments[0].type === 'ObjectExpression'
   )
