@@ -21,3 +21,12 @@ test('BestFitMatcher en', function () {
     locale: 'en',
   })
 })
+
+test('BestFitMatcher extension', function () {
+  expect(
+    BestFitMatcher(new Set(['th']), ['th-u-ca-gregory'], () => 'en')
+  ).toEqual({
+    locale: 'th',
+    extension: '-u-ca-gregory',
+  })
+})

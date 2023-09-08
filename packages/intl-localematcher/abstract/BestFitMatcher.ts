@@ -34,11 +34,16 @@ export function BestFitMatcher(
   })
 
   let foundLocale: string | undefined
+  let extension: string | undefined
   for (const l of requestedLocales) {
     if (foundLocale) {
       break
     }
     const noExtensionLocale = l.replace(UNICODE_EXTENSION_SEQUENCE_REGEX, '')
+
+    if (l !== noExtensionLocale) {
+      extension = l.slice(noExtensionLocale.length, l.length)
+    }
 
     if (availableLocales.has(noExtensionLocale)) {
       foundLocale = noExtensionLocale
@@ -76,5 +81,6 @@ export function BestFitMatcher(
       canonicalizedLocaleMap[foundLocale] ||
       minimizedAvailableLocaleMap[foundLocale] ||
       foundLocale,
+    extension,
   }
 }
