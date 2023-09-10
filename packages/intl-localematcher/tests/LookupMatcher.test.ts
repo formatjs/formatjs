@@ -15,3 +15,12 @@ test('LookupMatcher', function () {
     locale: 'zh',
   })
 })
+
+test('LookupMatcher', function () {
+  expect(
+    LookupMatcher(new Set(['th']), ['th-u-ca-gregory'], () => 'en')
+  ).toEqual({
+    locale: 'th',
+    extension: '-u-ca-gregory',
+  })
+})

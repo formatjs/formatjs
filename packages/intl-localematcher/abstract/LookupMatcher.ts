@@ -26,10 +26,7 @@ export function LookupMatcher(
     if (availableLocale) {
       result.locale = availableLocale
       if (locale !== noExtensionLocale) {
-        result.extension = locale.slice(
-          noExtensionLocale.length + 1,
-          locale.length
-        )
+        result.extension = locale.slice(noExtensionLocale.length, locale.length)
       }
       return result
     }

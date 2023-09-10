@@ -28,6 +28,29 @@ test('ResolveLocale', function () {
     dataLocale: 'zh-Hant-TW',
     locale: 'zh-Hant-TW',
   })
+
+  expect(
+    ResolveLocale(
+      new Set(['th', 'en']),
+      ['th-u-ca-gregory'],
+      {localeMatcher: 'best fit'},
+      ['ca', 'nu', 'hc'],
+      {
+        th: {
+          nu: ['latn'],
+          ca: ['buddhist', 'gregory'],
+          hc: ['h23', 'h12'],
+        },
+      },
+      () => 'en'
+    )
+  ).toEqual({
+    dataLocale: 'th',
+    locale: 'th-u-ca-gregory',
+    nu: 'latn',
+    ca: 'gregory',
+    hc: 'h23',
+  })
 })
 
 test('empty requested', function () {
