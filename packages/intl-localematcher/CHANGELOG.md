@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.4.1...@formatjs/intl-localematcher@0.4.2) (2023-09-10)
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** return unicode locale extension field in BestFitMatcher ([#4187](https://github.com/formatjs/formatjs/issues/4187)) ([5c40698](https://github.com/formatjs/formatjs/commit/5c40698e059b6a391ca265fcc3110cb6cffcc009))
+
 ## [0.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.4.0...@formatjs/intl-localematcher@0.4.1) (2023-09-07)
 
 ### Bug Fixes
