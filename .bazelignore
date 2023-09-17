@@ -27,6 +27,7 @@ packages/intl-messageformat/node_modules
 packages/intl-numberformat/node_modules
 packages/intl-pluralrules/node_modules
 packages/intl-relativetimeformat/node_modules
+packages/intl-segmenter/node_modules
 packages/intl/node_modules
 packages/react-intl/examples/node_modules
 packages/react-intl/node_modules
@@ -35,5 +36,4 @@ packages/swc-plugin/node_modules
 packages/ts-transformer/integration-tests/node_modules
 packages/ts-transformer/node_modules
 packages/vue-intl/node_modules
-packages/intl-segmenter/node_modules
 website/node_modules

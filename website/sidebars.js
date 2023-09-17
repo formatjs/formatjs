@@ -47,6 +47,7 @@ module.exports = {
       'polyfills/intl-numberformat',
       'polyfills/intl-pluralrules',
       'polyfills/intl-relativetimeformat',
+      'polyfills/intl-segmenter',
     ],
   },
   tooling: {
