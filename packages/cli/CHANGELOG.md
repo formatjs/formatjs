@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.1.5...@formatjs/cli@6.2.0) (2023-09-18)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** try catch vue script parsing, fix [#4136](https://github.com/formatjs/formatjs/issues/4136) ([7a8fc8d](https://github.com/formatjs/formatjs/commit/7a8fc8d3808e727094f0333172a2c7c7161921cb))
+* **@formatjs/cli:** upgrade vue deps ([166d7ba](https://github.com/formatjs/formatjs/commit/166d7baf62d494bd879293e0cb8ce94d8cc0c90f))
+
+### Features
+
+* **@formatjs/cli:** allow formatter to provide custom serialization fn, fix [#4149](https://github.com/formatjs/formatjs/issues/4149) ([6331408](https://github.com/formatjs/formatjs/commit/6331408bae53d09245b9bc91824aa5bb8bccfe44))
+
 ## [6.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.1.4...@formatjs/cli@6.1.5) (2023-09-10)
 
 **Note:** Version bump only for package @formatjs/cli
