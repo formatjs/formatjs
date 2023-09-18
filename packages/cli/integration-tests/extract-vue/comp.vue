@@ -7,6 +7,9 @@
       })
     }}
   </p>
+  <div class="message" v-for="message in messages">
+    {{ message.content }}
+  </div>
 </template>
 
 <script>
@@ -17,6 +20,16 @@ intl.formatMessage({
 </script>
 
 <script lang="ts" setup>
+const messages = ref([
+  {
+    id: 1,
+    content: 'Hey, check out this adorable video, bro!!',
+  },
+  {
+    id: 2,
+    content: 'https://youtu.be/dQw4w9WgXcQ',
+  },
+]);
 const intl = useIntl()
 console.log(intl.formatMessage({defaultMessage: 'script setup'}))
 </script>

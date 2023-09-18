@@ -1,4 +1,4 @@
-import {parse} from '@vue/compiler-sfc'
+import {parse} from 'vue/compiler-sfc'
 import type {
   TemplateChildNode,
   SimpleExpressionNode,

@@ -32,7 +32,7 @@ SRCS = glob(["src/**/*.ts"]) + [
 VUE_DEPS = [
     "//:node_modules/@vue/compiler-core",
     "//:node_modules/@babel/types",
-    "//:node_modules/@vue/compiler-sfc",
+    "//:node_modules/vue",
 ]
 
 SRC_DEPS = [
@@ -84,7 +84,7 @@ esbuild(
     srcs = [":dist-esm-esnext"],
     entry_point = "lib_esnext/main.js",
     external = [
-        "@vue/compiler-sfc",
+        "vue",
     ],
     platform = "node",
     target = "node16",

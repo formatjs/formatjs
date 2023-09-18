@@ -48,7 +48,7 @@ jest_test(
         "//:node_modules/@babel/types",
         "//:node_modules/@types/node",
         "//:node_modules/@vue/compiler-core",
-        "//:node_modules/@vue/compiler-sfc",
+        "//:node_modules/vue",
         "//:node_modules/fast-glob",
     ],
     flaky = True,

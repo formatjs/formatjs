@@ -36,10 +36,10 @@
     "@formatjs/cli-lib": "workspace:*"
   },
   "peerDependencies": {
-    "@vue/compiler-sfc": "^3.2.34"
+    "vue": "^3.3.4"
   },
   "peerDependenciesMeta": {
-    "@vue/compiler-sfc": {
+    "vue": {
       "optional": true
     }
   },
