@@ -35,7 +35,7 @@
     "@commitlint/config-angular": "17",
     "@jest/transform": "29",
     "@jest/types": "29",
-    "@lerna-lite/cli": "^1.10.0",
+    "@lerna-lite/cli": "^2.0.0",
     "@lerna-lite/list": "^1.10.0",
     "@napi-rs/cli": "^2.11.0",
     "@swc-node/register": "^1.5.4",
