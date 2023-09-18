@@ -1,5 +1,6 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_layer")
 load("@io_bazel_rules_docker//docker/package_managers:download_pkgs.bzl", "download_pkgs")
@@ -10,7 +11,6 @@ load("@rules_multirun//:defs.bzl", "multirun")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
 
 npm_link_all_packages(name = "node_modules")
 

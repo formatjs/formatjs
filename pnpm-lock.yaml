@@ -172,8 +172,8 @@ importers:
         specifier: '2'
         version: 2.0.2(vue@3.2.45)
       babel-loader:
-        specifier: ^8.2.2
-        version: 8.2.5(@babel/core@7.18.5)(webpack@5.73.0)
+        specifier: '9'
+        version: 9.0.0(@babel/core@7.18.5)(webpack@5.73.0)
       benchmark:
         specifier: ^2.1.4
         version: 2.1.4
@@ -7149,18 +7149,16 @@ packages:
       webpack: 5.73.0(@swc/core@1.3.56)
     dev: true
 
-  /babel-loader@8.2.5(@babel/core@7.18.5)(webpack@5.73.0):
-    resolution: {integrity: sha512-OSiFfH89LrEMiWd4pLNqGz4CwJDtbs2ZVc+iGu2HrkRfPxId9F2anQj38IxWpmRfsUY0aBZYi1EFcd3mhtRMLQ==}
-    engines: {node: '>= 8.9'}
+  /babel-loader@9.0.0(@babel/core@7.18.5)(webpack@5.73.0):
+    resolution: {integrity: sha512-qVGQb0PNw/B1sGhPf0/KKsHZAPfa2Bk+JbjkW7yGjAHZyvjAULXYq0et0+/+7DL/rGYU+y8UoGPzA32NP29pVQ==}
+    engines: {node: '>= 14.15.0'}
     peerDependencies:
-      '@babel/core': ^7.0.0
-      webpack: '>=2'
+      '@babel/core': ^7.12.0
+      webpack: '>=5'
     dependencies:
       '@babel/core': 7.18.5
       find-cache-dir: 3.3.2
-      loader-utils: 2.0.2
-      make-dir: 3.1.0
-      schema-utils: 2.7.1
+      schema-utils: 4.0.0
       webpack: 5.73.0(@swc/core@1.3.56)
     dev: true
 
