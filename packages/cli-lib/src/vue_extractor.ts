@@ -70,7 +70,14 @@ function templateSimpleExpressionNodeVisitor(parseScriptFn: ScriptParseFn) {
     // Wrap this in () since a vue comp node attribute can just be
     // an object literal which, by itself is invalid TS
     // but with () it becomes an ExpressionStatement
-    parseScriptFn(`(${content})`)
+    try {
+      parseScriptFn(`(${content})`)
+    } catch (e) {
+      console.warn(
+        `Failed to parse "${content}". Ignore this if content has no extractable message`,
+        e
+      )
+    }
   }
 }
 
