@@ -70,7 +70,7 @@
     "@vue/compiler-core": "^3.2.45",
     "@vue/compiler-sfc": "^3.2.45",
     "@vue/test-utils": "2",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^9.0.0",
     "benchmark": "^2.1.4",
     "chalk": "^4.0.0",
     "chokidar": "^3.4.2",
