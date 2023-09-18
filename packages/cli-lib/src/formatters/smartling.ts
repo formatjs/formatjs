@@ -1,4 +1,4 @@
-import {Comparator} from 'json-stable-stringify'
+import type {Comparator} from 'json-stable-stringify'
 import {CompileFn, FormatFn} from './default'
 
 export interface SmartlingDirectives {

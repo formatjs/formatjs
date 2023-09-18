@@ -198,7 +198,7 @@ export async function extract(
     )
   }
 
-  const formatter = await resolveBuiltinFormatter(opts.format)
+  const formatter: Formatter = await resolveBuiltinFormatter(opts.format)
   const extractionResults = rawResults.filter((r): r is ExtractionResult => !!r)
 
   const extractedMessages = new Map<string, MessageDescriptor>()
@@ -247,7 +247,10 @@ ${JSON.stringify(message, undefined, 2)}`
     }
     results[id] = msg
   }
-  return stringify(formatter.format(results), {
+  if (typeof formatter.serialize === 'function') {
+    return formatter.serialize(formatter.format(results as any))
+  }
+  return stringify(formatter.format(results as any), {
     space: 2,
     cmp: formatter.compareMessages || undefined,
   })
