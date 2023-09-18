@@ -5,4 +5,3 @@ packages/*/tests/locale-data/* linguist-generated
 packages/intl-datetimeformat/tz_data/* linguist-generated
 website/* linguist-documentation
 **/CHANGELOG.md linguist-documentation
-*.gz filter=lfs diff=lfs merge=lfs -text
