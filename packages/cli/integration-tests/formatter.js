@@ -18,5 +18,7 @@ exports.compile = function (msgs) {
 }
 
 exports.serialize = function (msgs) {
-  return Object.entries(msgs).map(([id, msg]) => `${id}=${msg.string}`).join('\n');
+  return Object.entries(msgs)
+    .map(([id, msg]) => `${id}=${msg.string}`)
+    .join('\n')
 }
