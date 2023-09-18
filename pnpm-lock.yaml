@@ -1,9 +1,13 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   terser: 4.8.1
 
-packageExtensionsChecksum: 3703c4d559c7e552e53cc74d61cf5682
+packageExtensionsChecksum: 76b703b906c4715da3c7dad71f1ddd63
 
 patchedDependencies:
   '@commitlint/rules@17.0.0':
@@ -284,7 +288,7 @@ importers:
         version: 2.3.1
       pnpm:
         specifier: '8'
-        version: 8.0.0
+        version: 8.6.8
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -14201,8 +14205,8 @@ packages:
       irregular-plurals: 3.3.0
     dev: true
 
-  /pnpm@8.0.0:
-    resolution: {integrity: sha512-Crsvd8LKb+SoEB/bQxRZrtSt5Ri8g9jmPg6MKyexMTI1pdLd44gPwVV6cZLq2jYYPv5q+gADPkYTbYr8SeFCeA==}
+  /pnpm@8.6.8:
+    resolution: {integrity: sha512-OtrCRUE7VqRyKly9E3gfExZHOAHtFDpmulyVFKrnl3v/n2xJckdueVumWJqUA5FHxcRP/T42r8P8CDr9duPP9w==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
