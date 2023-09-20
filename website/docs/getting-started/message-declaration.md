@@ -29,9 +29,11 @@ intl.formatMessage(
 
 ## Using React API `<FormattedMessage/>`
 
+<!-- prettier-ignore-start -->
 ```tsx
 import {FormattedMessage} from 'react-intl'
-;<FormattedMessage
+
+<FormattedMessage
   description="A message" // Description should be a string literal
   defaultMessage="My name is {name}" // Message should be a string literal
   values={
@@ -41,6 +43,7 @@ import {FormattedMessage} from 'react-intl'
   }
 />
 ```
+<!-- prettier-ignore-end -->
 
 ## Using Vue API & template methods such as `$formatMessage`
 
@@ -54,6 +57,7 @@ import {FormattedMessage} from 'react-intl'
 
 ```tsx
 import {defineMessage} from 'react-intl'
+
 const message = defineMessage({
   description: 'A message', // Description should be a string literal
   defaultMessage: 'My name is {name}', // Message should be a string literal
