@@ -129,7 +129,7 @@ interface Props {
 
 function MyFeature(props: Props) {
   return (
-    <RawIntlProvider value={intl}>
+    <RawIntlProvider value={props.intl}>
       <MyButton />
       <MyForm />
     </RawIntlProvider>
