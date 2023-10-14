@@ -22,7 +22,7 @@
     "@docusaurus/theme-common": "2",
     "@docusaurus/theme-live-codeblock": "2",
     "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@mdx-js/react": "1",
+    "@mdx-js/react": "2",
     "classnames": "2",
     "http-server": "14",
     "intl-messageformat": "workspace:*",
