@@ -4,6 +4,7 @@ actions:
       push:
         branches:
           - 'main'
+          - 'gh-readonly-queue/*'
       pull_request:
         branches:
           - '*'
