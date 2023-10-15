@@ -23,6 +23,9 @@ build --verbose_failures
 build --experimental_remote_cache_compression
 build --legacy_important_outputs
 build --experimental_remote_build_event_upload=minimal
+build --noslim_profile 
+build --experimental_profile_include_target_label 
+build --experimental_profile_include_primary_output 
 common --bes_upload_mode=fully_async
 
 # Bazel will create symlinks from the workspace directory to output artifacts.
