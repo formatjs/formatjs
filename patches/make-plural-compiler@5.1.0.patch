@@ -1,19 +1,8 @@
-diff --git a/node_modules/make-plural-compiler/lib/parser.js b/node_modules/make-plural-compiler/lib/parser.js
-index 63be531..b4d4bf6 100644
+diff --git a/lib/parser.js b/lib/parser.js
+index 63be53159041bbb3f3335aab47fc9a2c8ce7c406..86254cfca668bc5caeb6f463e65b068f94fab6ab 100644
 --- a/lib/parser.js
 +++ b/lib/parser.js
-@@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", {
- exports.default = void 0;
- 
- class Parser {
-+  /**
-+   * plural condition
-+   * @param {String} cond
-+   */
-   parse(cond) {
-     if (cond === 'i = 0 or n = 1') return 'n >= 0 && n <= 1';
-     if (cond === 'i = 0,1') return 'n >= 0 && n < 2';
-@@ -15,7 +19,10 @@ class Parser {
+@@ -15,7 +15,10 @@ class Parser {
        return 'n == 1 && v0';
      }
  
@@ -25,24 +14,22 @@ index 63be531..b4d4bf6 100644
        const sn = sym + '0';
        this[sn] = 1;
        return noteq ? '!' + sn : sn;
-@@ -67,7 +74,14 @@ class Parser {
+@@ -67,7 +70,12 @@ class Parser {
      }
  
      if (!vars.length) return '';
 -    return 'var ' + ["s = String(n).split('.')", ...vars].join(', ');
-+
 +    if (this.c) {
 +      vars.unshift('_n = String(n)', 'se = _n.split(/[ce]/)', 'e = se[1] || 0', 'c = e', 's = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split(".")');
 +    } else {
 +      vars.unshift("s = String(n).split('.')");
 +    }
-+
 +    return 'var ' + vars.join(', ');
    }
  
  }
-diff --git a/node_modules/make-plural-compiler/lib/tests.js b/node_modules/make-plural-compiler/lib/tests.js
-index 967ffb2..768636c 100644
+diff --git a/lib/tests.js b/lib/tests.js
+index 967ffb2d6ed1f5703c5b898561dca50f99fc1351..8c7abfdb5e2681c236b2b51ca0a5e0c099b722a9 100644
 --- a/lib/tests.js
 +++ b/lib/tests.js
 @@ -19,10 +19,11 @@ class Tests {
@@ -54,8 +41,8 @@ index 967ffb2..768636c 100644
      const lc = JSON.stringify(this.lc);
      const val = JSON.stringify(n);
 -    return new Error(`Locale ${lc} ${type} rule self-test failed for ${val} (${msg})`);
-+    return new Error(`Locale ${lc} ${type} rule self-test failed for ${val} (${msg}). Function:
-+${fn}`);
++    return new Error(`Locale ${lc} ${type} rule self-test failed for ${val} (${msg}). Function: 
++    ${fn}`);
    }
  
    testCond(n, type, expResult, fn) {

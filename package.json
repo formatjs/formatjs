@@ -162,7 +162,8 @@
       }
     },
     "patchedDependencies": {
-      "@commitlint/rules@17.0.0": "patches/@commitlint__rules@17.0.0.patch"
+      "@commitlint/rules@17.0.0": "patches/@commitlint__rules@17.0.0.patch",
+      "make-plural-compiler@5.1.0": "patches/make-plural-compiler@5.1.0.patch"
     }
   },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>",

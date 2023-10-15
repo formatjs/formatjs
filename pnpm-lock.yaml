@@ -1,18 +1,17 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 overrides:
   terser: 4.8.1
 
-packageExtensionsChecksum: 76b703b906c4715da3c7dad71f1ddd63
+packageExtensionsChecksum: 3703c4d559c7e552e53cc74d61cf5682
 
 patchedDependencies:
   '@commitlint/rules@17.0.0':
     hash: 4fdrifxuyvetgqnxt54kx2v36y
     path: patches/@commitlint__rules@17.0.0.patch
+  make-plural-compiler@5.1.0:
+    hash: qdcdtqeknhxqnjirmx4dcdabaq
+    path: patches/make-plural-compiler@5.1.0.patch
 
 importers:
 
@@ -279,7 +278,7 @@ importers:
         version: 2.2.0
       make-plural-compiler:
         specifier: 5.1.0
-        version: 5.1.0
+        version: 5.1.0(patch_hash=qdcdtqeknhxqnjirmx4dcdabaq)
       minimist:
         specifier: ^1.2.5
         version: 1.2.6
@@ -13091,9 +13090,10 @@ packages:
       - supports-color
     dev: true
 
-  /make-plural-compiler@5.1.0:
+  /make-plural-compiler@5.1.0(patch_hash=qdcdtqeknhxqnjirmx4dcdabaq):
     resolution: {integrity: sha512-xOaWUIcU9K9ptuz1rjFKeLTvktddv7H/kCr4LpQYaO2TLkDjgSUj8soh4PX3CFVLziajY4wxepiZqVPyvXBrnA==}
     dev: true
+    patched: true
 
   /makeerror@1.0.12:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
@@ -18495,3 +18495,7 @@ packages:
   /zwitch@1.0.5:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
