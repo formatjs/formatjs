@@ -130,7 +130,7 @@
     "webpack": "5"
   },
   "devEngines": {
-    "node": ">= 10.x",
+    "node": ">= 18.x",
     "npm": "6.x"
   },
   "resolutions": {

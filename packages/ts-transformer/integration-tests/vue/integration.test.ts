@@ -1,8 +1,8 @@
-import webpack from 'webpack'
-import {VueLoaderPlugin} from 'vue-loader'
+import {transform} from '@formatjs/ts-transformer'
 import {readFileSync} from 'fs'
 import {join} from 'path'
-import {transform} from '@formatjs/ts-transformer'
+import {VueLoaderPlugin} from 'vue-loader'
+import webpack from 'webpack'
 test('tranpilation', function (done) {
   webpack(
     {
@@ -34,6 +34,10 @@ test('tranpilation', function (done) {
                     }
                   },
                   transpileOnly: true,
+                  compilerOptions: {
+                    module: 'NodeNext',
+                    moduleResolution: 'NodeNext',
+                  },
                 },
               },
             ],
