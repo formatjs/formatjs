@@ -1,17 +1,17 @@
-import {warn, getStdinAsString, debug, writeStdout} from './console_utils'
-import {readFile, outputFile} from 'fs-extra'
 import {
-  interpolateName,
-  Opts,
   MessageDescriptor,
+  Opts,
+  interpolateName,
 } from '@formatjs/ts-transformer'
+import {outputFile, readFile} from 'fs-extra'
+import {debug, getStdinAsString, warn, writeStdout} from './console_utils'
 
-import {resolveBuiltinFormatter, Formatter} from './formatters'
-import stringify from 'json-stable-stringify'
-import {parseScript} from './parse_script'
-import {printAST} from '@formatjs/icu-messageformat-parser/printer'
-import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator'
 import {parse} from '@formatjs/icu-messageformat-parser'
+import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator'
+import {printAST} from '@formatjs/icu-messageformat-parser/printer'
+import stringify from 'json-stable-stringify'
+import {Formatter, resolveBuiltinFormatter} from './formatters'
+import {parseScript} from './parse_script'
 export interface ExtractionResult<M = Record<string, string>> {
   /**
    * List of extracted messages
@@ -145,7 +145,7 @@ async function processFile(
   const scriptParseFn = parseScript(opts, fn)
   if (fn.endsWith('.vue')) {
     debug('Processing %s using vue extractor', fn)
-    const {parseFile} = await import('./vue_extractor')
+    const {parseFile} = await import('./vue_extractor.js')
     parseFile(source, fn, scriptParseFn)
   } else {
     debug('Processing %s using typescript extractor', fn)

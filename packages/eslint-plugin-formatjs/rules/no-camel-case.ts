@@ -1,11 +1,11 @@
-import {Rule} from 'eslint'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {
-  parse,
-  isPluralElement,
   MessageFormatElement,
   isArgumentElement,
+  isPluralElement,
+  parse,
 } from '@formatjs/icu-messageformat-parser'
+import {TSESTree} from '@typescript-eslint/utils'
+import {Rule} from 'eslint'
 import {extractMessages, getSettings} from '../util'
 
 const CAMEL_CASE_REGEX = /[A-Z]/

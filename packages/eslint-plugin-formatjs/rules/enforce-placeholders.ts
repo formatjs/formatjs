@@ -1,11 +1,11 @@
-import {Rule} from 'eslint'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
-import {extractMessages, getSettings} from '../util'
 import {
-  parse,
   MessageFormatElement,
   TYPE,
+  parse,
 } from '@formatjs/icu-messageformat-parser'
+import {TSESTree} from '@typescript-eslint/utils'
+import {Rule} from 'eslint'
+import {extractMessages, getSettings} from '../util'
 
 function collectPlaceholderNames(ast: MessageFormatElement[]): Set<string> {
   const placeholderNames = new Set<string>()
@@ -75,11 +75,7 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
 
     if (values) {
       for (const prop of values.properties) {
-        if (
-          (prop.type === 'MethodDefinition' || prop.type === 'Property') &&
-          !prop.computed &&
-          prop.key.type !== 'PrivateIdentifier'
-        ) {
+        if (prop.type === 'Property' && !prop.computed) {
           const name =
             prop.key.type === 'Identifier'
               ? prop.key.name

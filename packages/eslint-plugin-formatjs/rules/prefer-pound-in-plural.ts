@@ -4,10 +4,10 @@ import {
   PluralElement,
   TYPE,
 } from '@formatjs/icu-messageformat-parser'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
+import {TSESTree} from '@typescript-eslint/utils'
 import type {Rule} from 'eslint'
-import {extractMessages, getSettings, patchMessage} from '../util'
 import MagicString from 'magic-string'
+import {extractMessages, getSettings, patchMessage} from '../util'
 
 function verifyAst(
   context: Rule.RuleContext,

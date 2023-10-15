@@ -3,7 +3,7 @@ import {
   parse,
   TYPE,
 } from '@formatjs/icu-messageformat-parser'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
+import {TSESTree} from '@typescript-eslint/utils'
 import {Rule} from 'eslint'
 import {extractMessages, getSettings} from '../util'
 

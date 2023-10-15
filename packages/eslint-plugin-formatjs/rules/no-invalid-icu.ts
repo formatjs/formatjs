@@ -1,6 +1,6 @@
-import {Rule} from 'eslint'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {parse} from '@formatjs/icu-messageformat-parser'
+import {TSESTree} from '@typescript-eslint/utils'
+import {Rule} from 'eslint'
 import {extractMessages, getSettings} from '../util'
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {

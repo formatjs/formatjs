@@ -1,11 +1,11 @@
-import {Rule} from 'eslint'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
-import {extractMessages, getSettings} from '../util'
 import {
-  parse,
-  isPluralElement,
   MessageFormatElement,
+  isPluralElement,
+  parse,
 } from '@formatjs/icu-messageformat-parser'
+import {TSESTree} from '@typescript-eslint/utils'
+import {Rule} from 'eslint'
+import {extractMessages, getSettings} from '../util'
 
 class PluralRulesEnforcement extends Error {
   public message: string

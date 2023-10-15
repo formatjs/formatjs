@@ -1,7 +1,7 @@
+import {interpolateName} from '@formatjs/ts-transformer'
+import {TSESTree} from '@typescript-eslint/utils'
 import {Rule} from 'eslint'
 import {extractMessages, getSettings} from '../util'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
-import {interpolateName} from '@formatjs/ts-transformer'
 
 interface Opts {
   idInterpolationPattern: string

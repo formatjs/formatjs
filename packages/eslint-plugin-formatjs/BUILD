@@ -30,7 +30,7 @@ SRC_DEPS = [
     "//:node_modules/@types/estree",
     "//:node_modules/@types/node",
     "//:node_modules/@types/picomatch",
-    "//:node_modules/@typescript-eslint/typescript-estree",
+    "//:node_modules/@typescript-eslint/utils",
     "//:node_modules/eslint",
     "//:node_modules/magic-string",
     "//:node_modules/picomatch",

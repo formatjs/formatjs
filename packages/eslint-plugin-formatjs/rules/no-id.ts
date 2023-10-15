@@ -1,7 +1,7 @@
+import {TSESTree} from '@typescript-eslint/utils'
 import {Rule, SourceCode} from 'eslint'
-import {extractMessages, getSettings} from '../util'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
 import * as ESTree from 'estree'
+import {extractMessages, getSettings} from '../util'
 
 function isComment(
   token: ReturnType<SourceCode['getTokenAfter']>

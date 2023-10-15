@@ -1,18 +1,18 @@
-import {Rule} from 'eslint'
-import {extractMessages, getSettings} from '../util'
 import {
-  parse,
-  isPluralElement,
   MessageFormatElement,
-  isLiteralElement,
   isArgumentElement,
-  isNumberElement,
   isDateElement,
-  isTimeElement,
+  isLiteralElement,
+  isNumberElement,
+  isPluralElement,
   isSelectElement,
   isTagElement,
+  isTimeElement,
+  parse,
 } from '@formatjs/icu-messageformat-parser'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
+import {TSESTree} from '@typescript-eslint/utils'
+import {Rule} from 'eslint'
+import {extractMessages, getSettings} from '../util'
 
 class BlacklistElement extends Error {
   public message: string

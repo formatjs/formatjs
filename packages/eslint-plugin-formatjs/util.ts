@@ -1,6 +1,6 @@
-import {Rule} from 'eslint'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+import {TSESTree} from '@typescript-eslint/utils'
+import {Rule} from 'eslint'
 
 export interface MessageDescriptor {
   id?: string

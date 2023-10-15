@@ -1,6 +1,5 @@
+import {TSESTree} from '@typescript-eslint/utils'
 import {Rule} from 'eslint'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
-import {extractMessages, getSettings} from '../util'
 import {
   extractEmojis,
   filterEmojis,
@@ -9,6 +8,7 @@ import {
   isValidEmojiVersion,
   type EmojiVersion,
 } from 'unicode-emoji-utils'
+import {extractMessages, getSettings} from '../util'
 
 function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
   const msgs = extractMessages(node, getSettings(context))

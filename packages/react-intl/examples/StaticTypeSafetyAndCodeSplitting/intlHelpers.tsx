@@ -1,6 +1,6 @@
-import * as React from 'react'
-import {useIntl, IntlProvider as IntlProvider_} from 'react-intl'
 import type {PrimitiveType} from 'intl-messageformat'
+import * as React from 'react'
+import {IntlProvider as IntlProvider_, useIntl} from 'react-intl'
 
 // "import type" ensures en messages aren't bundled by default
 import * as sourceOfTruth from './en.json'
@@ -26,9 +26,9 @@ export function importMessages(
 ): Promise<LocaleMessages> {
   switch (locale) {
     case 'en':
-      return import('./en.json')
+      return import('./en.json').then(p => p.default)
     case 'it':
-      return import('./it.json')
+      return import('./it.json').then(p => p.default)
   }
 }
 

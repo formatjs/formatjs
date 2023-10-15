@@ -1,11 +1,11 @@
-import {Rule} from 'eslint'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
-import {extractMessages, getSettings} from '../util'
 import {
-  parse,
   MessageFormatElement,
   TYPE,
+  parse,
 } from '@formatjs/icu-messageformat-parser'
+import {TSESTree} from '@typescript-eslint/utils'
+import {Rule} from 'eslint'
+import {extractMessages, getSettings} from '../util'
 
 interface Config {
   limit: number

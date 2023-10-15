@@ -1,5 +1,5 @@
+import {TSESTree} from '@typescript-eslint/utils'
 import type {Rule} from 'eslint'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
 import {isIntlFormatMessageCall} from '../util'
 
 const rule: Rule.RuleModule = {

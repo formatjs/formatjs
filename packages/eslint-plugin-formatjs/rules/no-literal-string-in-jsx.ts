@@ -1,6 +1,6 @@
-import picomatch from 'picomatch'
+import {TSESTree} from '@typescript-eslint/utils'
 import type {Rule} from 'eslint'
-import {TSESTree} from '@typescript-eslint/typescript-estree'
+import picomatch from 'picomatch'
 
 type PropMatcher = readonly [TagNamePattern: string, PropNamePattern: string][]
 
