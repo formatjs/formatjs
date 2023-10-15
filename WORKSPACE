@@ -40,12 +40,12 @@ load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")
 
 npm_translate_lock(
     name = "npm",
-    pnpm_lock = "//:pnpm-lock.yaml",
-    patch_args = {"*":["-p1"]},
     data = [
+        "//:patches/@commitlint__rules@17.0.0.patch",
         "//:patches/make-plural-compiler@5.1.0.patch",
-        "//:patches/@commitlint__rules@17.0.0.patch"
     ],
+    patch_args = {"*": ["-p1"]},
+    pnpm_lock = "//:pnpm-lock.yaml",
     verify_node_modules_ignored = "//:.bazelignore",
 )
 
