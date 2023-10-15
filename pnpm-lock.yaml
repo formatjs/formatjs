@@ -194,8 +194,8 @@ importers:
         specifier: ^1.2.2
         version: 1.2.2
       cldr-bcp47:
-        specifier: ^41.0.0
-        version: 41.0.0
+        specifier: ^43.0.0
+        version: 43.1.0
       cldr-core:
         specifier: '40'
         version: 40.0.0
@@ -8171,8 +8171,8 @@ packages:
     resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
     dev: true
 
-  /cldr-bcp47@41.0.0:
-    resolution: {integrity: sha512-OzGmCGmzuJdjdtr7EdyvCx9QUuxrSLEN3BBfO2Pl43hc1cwaeG+hqqyI3+UrXpK4FQCdYhcmK2s/bZYlZZQhPw==}
+  /cldr-bcp47@43.1.0:
+    resolution: {integrity: sha512-XwgjUTVaaIg8kyf9Zj9cGl210/TzQHshJ/YCYuVC9oNErL1c6GpmDqdunQHZ27zs+Ce11sbuY2XhcSjwLDFdcA==}
     dev: true
 
   /cldr-core@40.0.0:

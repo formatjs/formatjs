@@ -75,7 +75,7 @@
     "chalk": "^4.0.0",
     "chokidar": "^3.4.2",
     "cjs-module-lexer": "^1.2.2",
-    "cldr-bcp47": "^41.0.0",
+    "cldr-bcp47": "^43.0.0",
     "cldr-core": "40",
     "cldr-dates-full": "40",
     "cldr-localenames-full": "40",
