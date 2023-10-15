@@ -120,7 +120,7 @@
     "ts-loader": "^9.1.2",
     "tsd": "^0.29.0",
     "tslib": "^2.4.0",
-    "typescript": "5.0.4",
+    "typescript": "5.2.2",
     "unicode-emoji-utils": "^1.1.1",
     "unidiff": "^1.0.2",
     "vue": "^3.3.4",
