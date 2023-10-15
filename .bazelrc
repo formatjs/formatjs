@@ -21,6 +21,8 @@ build --action_env=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/
 build --verbose_failures
 
 build --experimental_remote_cache_compression
+build --legacy_important_outputs
+build --experimental_remote_build_event_upload=minimal
 common --bes_upload_mode=fully_async
 
 # Bazel will create symlinks from the workspace directory to output artifacts.
