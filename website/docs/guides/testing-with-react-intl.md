@@ -314,7 +314,7 @@ export {render}
 
 ```jsx
 import React from 'react'
-import '@testing-library/jest-dom/extend-expect'
+import '@​testing-library/jest-dom/jest-globals'
 // We're importing from our own created test-utils and not RTL's
 import {render, screen} from '../test-utils.js'
 import {FormattedDate} from 'react-intl'
