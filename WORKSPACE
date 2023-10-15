@@ -96,9 +96,9 @@ esbuild_register_toolchains(
 # Typescript
 http_archive(
     name = "aspect_rules_ts",
-    sha256 = "4c3f34fff9f96ffc9c26635d8235a32a23a6797324486c7d23c1dfa477e8b451",
-    strip_prefix = "rules_ts-1.4.5",
-    url = "https://github.com/aspect-build/rules_ts/releases/download/v1.4.5/rules_ts-v1.4.5.tar.gz",
+    sha256 = "8aabb2055629a7becae2e77ae828950d3581d7fc3602fe0276e6e039b65092cb",
+    strip_prefix = "rules_ts-2.0.0",
+    url = "https://github.com/aspect-build/rules_ts/releases/download/v2.0.0/rules_ts-v2.0.0.tar.gz",
 )
 
 ##################
