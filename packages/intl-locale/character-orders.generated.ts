@@ -574,4 +574,4 @@ export const characterOrders = {
   "zu": "left-to-right"
 } as const
 export type CharacterOrdersKey = keyof typeof characterOrders
-export type CharacterOrder = 'right-to-left' | 'left-to-right'
+export type CharacterOrder = 'left-to-right' | 'right-to-left'
