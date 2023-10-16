@@ -63,10 +63,11 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-jest_test(
-    name = "unit_test",
-    data = SRCS + TESTS + TEST_DEPS,
-)
+[jest_test(
+    name = "unit_test_%s" % fn.split("/")[-1].split(".")[0],
+    data = SRCS + [fn] + TEST_DEPS,
+) for fn in TESTS if fn.endswith(".test.ts")]
+
 
 generate_src_file(
     name = "test262-main",
