@@ -17441,7 +17441,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "day-narrow": {
       "-1": "учора",
       "-2": "пазаўчора",
-      "0": "сёння",
+      "0": "сёньня",
       "1": "заўтра",
       "2": "паслязаўтра",
       "future": {
@@ -17460,7 +17460,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "day-short": {
       "-1": "учора",
       "-2": "пазаўчора",
-      "0": "сёння",
+      "0": "сёньня",
       "1": "заўтра",
       "2": "паслязаўтра",
       "future": {
@@ -17492,7 +17492,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "у гэту гадзіну",
+      "0": "у гэтую гадзіну",
       "future": {
         "few": "праз {0} гадз",
         "many": "праз {0} гадз",
@@ -17507,7 +17507,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "у гэту гадзіну",
+      "0": "у гэтую гадзіну",
       "future": {
         "few": "праз {0} гадз",
         "many": "праз {0} гадз",
@@ -17537,7 +17537,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "у гэту хвіліну",
+      "0": "у гэтую хвіліну",
       "future": {
         "few": "праз {0} хв",
         "many": "праз {0} хв",
@@ -17552,7 +17552,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "у гэту хвіліну",
+      "0": "у гэтую хвіліну",
       "future": {
         "few": "праз {0} хв",
         "many": "праз {0} хв",
@@ -20887,10 +20887,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "दिनै",
       "1": "गाबोन",
       "future": {
-        "other": "+{0} d"
+        "one": "{0} सानाव",
+        "other": "{0} सानाव"
       },
       "past": {
-        "other": "-{0} d"
+        "one": "{0} सान सिगां",
+        "other": "{0} सान सिगां"
       }
     },
     "day-narrow": {
@@ -20898,10 +20900,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "दिनै",
       "1": "गाबोन",
       "future": {
-        "other": "+{0} d"
+        "one": "{0} सानाव",
+        "other": "{0} सानाव"
       },
       "past": {
-        "other": "-{0} d"
+        "one": "{0} सान सिगां",
+        "other": "{0} सान सिगां"
       }
     },
     "day-short": {
@@ -20909,226 +20913,270 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "दिनै",
       "1": "गाबोन",
       "future": {
-        "other": "+{0} d"
+        "one": "{0} सानाव",
+        "other": "{0} सानाव"
       },
       "past": {
-        "other": "-{0} d"
+        "one": "{0} सान सिगां",
+        "other": "{0} सान सिगां"
       }
     },
     "hour": {
-      "0": "this hour",
+      "0": "बे घन्टा",
       "future": {
-        "other": "+{0} h"
+        "one": "{0} घन्टायाव",
+        "other": "{0} घन्टायाव"
       },
       "past": {
-        "other": "-{0} h"
+        "one": "{0} घन्टा सिगां",
+        "other": "{0} घन्टा सिगां"
       }
     },
     "hour-narrow": {
-      "0": "this hour",
+      "0": "बे घन्टा",
       "future": {
-        "other": "+{0} h"
+        "one": "{0} घन्टायाव",
+        "other": "{0} घन्टायाव"
       },
       "past": {
-        "other": "-{0} h"
+        "one": "{0} घन्टा सिगां",
+        "other": "{0} घन्टा सिगां"
       }
     },
     "hour-short": {
-      "0": "this hour",
+      "0": "बे घन्टा",
       "future": {
-        "other": "+{0} h"
+        "one": "{0} घन्टायाव",
+        "other": "{0} घन्टायाव"
       },
       "past": {
-        "other": "-{0} h"
+        "one": "{0} घन्टा सिगां",
+        "other": "{0} घन्टा सिगां"
       }
     },
     "minute": {
-      "0": "this minute",
+      "0": "बे मिनिट",
       "future": {
-        "other": "+{0} min"
+        "one": "{0} मिनिटआव",
+        "other": "{0} मिनिटआव"
       },
       "past": {
-        "other": "-{0} min"
+        "one": "{0} मिनिट सिगां",
+        "other": "{0} मिनिट सिगां"
       }
     },
     "minute-narrow": {
-      "0": "this minute",
+      "0": "बे मिनिट",
       "future": {
-        "other": "+{0} min"
+        "one": "{0} मिनिटआव",
+        "other": "{0} मिनिटआव"
       },
       "past": {
-        "other": "-{0} min"
+        "one": "{0} मिनिट सिगां",
+        "other": "{0} मिनिट सिगां"
       }
     },
     "minute-short": {
-      "0": "this minute",
+      "0": "बे मिनिट",
       "future": {
-        "other": "+{0} min"
+        "one": "{0} मिनिटआव",
+        "other": "{0} मिनिटआव"
       },
       "past": {
-        "other": "-{0} min"
+        "one": "{0} मिनिट सिगां",
+        "other": "{0} मिनिट सिगां"
       }
     },
     "month": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "थांनाय दान",
+      "0": "बे दान",
+      "1": "फैगौ दान",
       "future": {
-        "other": "+{0} m"
+        "one": "{0} दानाव",
+        "other": "{0} दानाव"
       },
       "past": {
-        "other": "-{0} m"
+        "one": "{0} दान सिगां",
+        "other": "{0} दान सिगां"
       }
     },
     "month-narrow": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "थांनाय दान",
+      "0": "बे दान",
+      "1": "फैगौ दान",
       "future": {
-        "other": "+{0} m"
+        "one": "{0} दानाव",
+        "other": "{0} दानाव"
       },
       "past": {
-        "other": "-{0} m"
+        "one": "{0} दान सिगां",
+        "other": "{0} दान सिगां"
       }
     },
     "month-short": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "थांनाय दान",
+      "0": "बे दान",
+      "1": "फैगौ दान",
       "future": {
-        "other": "+{0} m"
+        "one": "{0} दानाव",
+        "other": "{0} दानाव"
       },
       "past": {
-        "other": "-{0} m"
+        "one": "{0} दान सिगां",
+        "other": "{0} दान सिगां"
       }
     },
     "nu": [
       "latn"
     ],
     "quarter": {
-      "-1": "last quarter",
-      "0": "this quarter",
-      "1": "next quarter",
+      "-1": "थांनाय खोन्दोसे",
+      "0": "बे खोन्दोसे",
+      "1": "फैगौ खोन्दोसे",
       "future": {
-        "other": "+{0} Q"
+        "one": "{0} खोन्दोसेआव",
+        "other": "{0} खोन्दोसेआव"
       },
       "past": {
-        "other": "-{0} Q"
+        "one": "{0} खोन्दोसे सिगां",
+        "other": "{0} खोन्दोसे सिगां"
       }
     },
     "quarter-narrow": {
-      "-1": "last quarter",
-      "0": "this quarter",
-      "1": "next quarter",
+      "-1": "थांनाय खोन्दोसे",
+      "0": "बे खोन्दोसे",
+      "1": "फैगौ खोन्दोसे",
       "future": {
-        "other": "+{0} Q"
+        "one": "{0} खोन्दोसेआव",
+        "other": "{0} खोन्दोसेआव"
       },
       "past": {
-        "other": "-{0} Q"
+        "one": "{0} खोन्दोसे सिगां",
+        "other": "{0} खोन्दोसे सिगां"
       }
     },
     "quarter-short": {
-      "-1": "last quarter",
-      "0": "this quarter",
-      "1": "next quarter",
+      "-1": "थांनाय खोन्दोसे",
+      "0": "बे खोन्दोसे",
+      "1": "फैगौ खोन्दोसे",
       "future": {
-        "other": "+{0} Q"
+        "one": "{0} खोन्दोसेआव",
+        "other": "{0} खोन्दोसेआव"
       },
       "past": {
-        "other": "-{0} Q"
+        "one": "{0} खोन्दोसे सिगां",
+        "other": "{0} खोन्दोसे सिगां"
       }
     },
     "second": {
-      "0": "now",
+      "0": "दा",
       "future": {
-        "other": "+{0} s"
+        "one": "{0} सेकेण्डआव",
+        "other": "{0} सेकेण्डआव"
       },
       "past": {
-        "other": "-{0} s"
+        "one": "{0} सेकेण्ड सिगां",
+        "other": "{0} सेकेण्ड सिगां"
       }
     },
     "second-narrow": {
-      "0": "now",
+      "0": "दा",
       "future": {
-        "other": "+{0} s"
+        "one": "{0} सेकेण्डआव",
+        "other": "{0} सेकेण्डआव"
       },
       "past": {
-        "other": "-{0} s"
+        "one": "{0} सेकेण्ड सिगां",
+        "other": "{0} सेकेण्ड सिगां"
       }
     },
     "second-short": {
-      "0": "now",
+      "0": "दा",
       "future": {
-        "other": "+{0} s"
+        "one": "{0} सेकेण्डआव",
+        "other": "{0} सेकेण्डआव"
       },
       "past": {
-        "other": "-{0} s"
+        "one": "{0} सेकेण्ड सिगां",
+        "other": "{0} सेकेण्ड सिगां"
       }
     },
     "week": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "थांनाय सप्थाह",
+      "0": "बे सप्थाह",
+      "1": "फैगौ सप्थाह",
       "future": {
-        "other": "+{0} w"
+        "one": "{0} सप्थाहयाव",
+        "other": "{0} सप्थाहयाव"
       },
       "past": {
-        "other": "-{0} w"
+        "one": "{0} सप्थाह सिगां",
+        "other": "{0} सप्थाह सिगां"
       }
     },
     "week-narrow": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "थांनाय सप्थाह",
+      "0": "बे सप्थाह",
+      "1": "फैगौ सप्थाह",
       "future": {
-        "other": "+{0} w"
+        "one": "{0} सप्थाहयाव",
+        "other": "{0} सप्थाहयाव"
       },
       "past": {
-        "other": "-{0} w"
+        "one": "{0} सप्थाह सिगां",
+        "other": "{0} सप्थाह सिगां"
       }
     },
     "week-short": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "थांनाय सप्थाह",
+      "0": "बे सप्थाह",
+      "1": "फैगौ सप्थाह",
       "future": {
-        "other": "+{0} w"
+        "one": "{0} सप्थाहयाव",
+        "other": "{0} सप्थाहयाव"
       },
       "past": {
-        "other": "-{0} w"
+        "one": "{0} सप्थाह सिगां",
+        "other": "{0} सप्थाह सिगां"
       }
     },
     "year": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "थांनाय बोसोर",
+      "0": "बे बोसोर",
+      "1": "फैगौ बोसोर",
       "future": {
-        "other": "+{0} y"
+        "one": "{0} बोसोरआव",
+        "other": "{0} बोसोरआव"
       },
       "past": {
-        "other": "-{0} y"
+        "one": "{0} बोसोर सिगां",
+        "other": "{0} बोसोर सिगां"
       }
     },
     "year-narrow": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "थांनाय बोसोर",
+      "0": "बे बोसोर",
+      "1": "फैगौ बोसोर",
       "future": {
-        "other": "+{0} y"
+        "one": "{0} बोसोरआव",
+        "other": "{0} बोसोरआव"
       },
       "past": {
-        "other": "-{0} y"
+        "one": "{0} बोसोर सिगां",
+        "other": "{0} बोसोर सिगां"
       }
     },
     "year-short": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "थांनाय बोसोर",
+      "0": "बे बोसोर",
+      "1": "फैगौ बोसोर",
       "future": {
-        "other": "+{0} y"
+        "one": "{0} बोसोरआव",
+        "other": "{0} बोसोरआव"
       },
       "past": {
-        "other": "-{0} y"
+        "one": "{0} बोसोर सिगां",
+        "other": "{0} बोसोर सिगां"
       }
     }
   },
@@ -21318,9 +21366,13 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "ово тромјесечје",
       "1": "сљедеће тромјесечје",
       "future": {
+        "few": "+{0} Q",
+        "one": "+{0} Q",
         "other": "+{0} Q"
       },
       "past": {
+        "few": "-{0} Q",
+        "one": "-{0} Q",
         "other": "-{0} Q"
       }
     },
@@ -21329,9 +21381,13 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "ово тромјесечје",
       "1": "сљедеће тромјесечје",
       "future": {
+        "few": "+{0} Q",
+        "one": "+{0} Q",
         "other": "+{0} Q"
       },
       "past": {
+        "few": "-{0} Q",
+        "one": "-{0} Q",
         "other": "-{0} Q"
       }
     },
@@ -21340,9 +21396,13 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "ово тромјесечје",
       "1": "сљедеће тромјесечје",
       "future": {
+        "few": "+{0} Q",
+        "one": "+{0} Q",
         "other": "+{0} Q"
       },
       "past": {
+        "few": "-{0} Q",
+        "one": "-{0} Q",
         "other": "-{0} Q"
       }
     },
@@ -30548,7 +30608,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month": {
-      "-1": "slědny mjasec",
+      "-1": "zajźony mjasec",
       "0": "ten mjasec",
       "1": "pśiducy mjasec",
       "future": {
@@ -30565,7 +30625,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month-narrow": {
-      "-1": "slě. mjasec",
+      "-1": "zajź. mjasec",
       "0": "te. mjasec",
       "1": "pśid. mjasec",
       "future": {
@@ -30582,7 +30642,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month-short": {
-      "-1": "slěd. mjasec",
+      "-1": "zajź. mjasec",
       "0": "tot. mjasec",
       "1": "pśiduc. mjasec",
       "future": {
@@ -30698,7 +30758,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week": {
-      "-1": "slědny tyźeń",
+      "-1": "zajźony tyźeń",
       "0": "ten tyźeń",
       "1": "pśiducy tyźeń",
       "future": {
@@ -30715,7 +30775,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week-narrow": {
-      "-1": "slě. tyźeń",
+      "-1": "zajź. tyźeń",
       "0": "te. tyźeń",
       "1": "pśid. tyźeń",
       "future": {
@@ -30732,7 +30792,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week-short": {
-      "-1": "slěd. tyźeń",
+      "-1": "zajź. tyźeń",
       "0": "tot. tyźeń",
       "1": "pśiduc. tyźeń",
       "future": {
@@ -33680,12 +33740,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -33715,12 +33775,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -33748,12 +33808,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -33785,12 +33845,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -33827,12 +33887,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -33862,12 +33922,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -33899,12 +33959,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -33938,12 +33998,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -34586,12 +34646,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -34621,12 +34681,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -34654,12 +34714,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -34691,12 +34751,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -34733,12 +34793,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -34768,12 +34828,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -34805,12 +34865,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -34844,12 +34904,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -35341,7 +35401,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
         "other": "in {0} qtrs"
       },
       "past": {
-        "one": "in {0} qtr ago",
+        "one": "{0} qtr ago",
         "other": "{0} qtrs ago"
       }
     },
@@ -36096,12 +36156,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -36131,12 +36191,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -36164,12 +36224,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -36201,12 +36261,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -36243,12 +36303,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -36278,12 +36338,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -36315,12 +36375,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -36354,12 +36414,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -37606,12 +37666,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -44250,12 +44310,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -44285,12 +44345,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -44318,12 +44378,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -44355,12 +44415,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -44397,12 +44457,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -44432,12 +44492,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -44469,12 +44529,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -44508,12 +44568,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -49686,12 +49746,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -49721,12 +49781,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -49754,12 +49814,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -49791,12 +49851,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -49833,12 +49893,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -49868,12 +49928,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -49905,12 +49965,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -49944,12 +50004,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -50290,12 +50350,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -50325,12 +50385,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -50358,12 +50418,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -50395,12 +50455,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -50437,12 +50497,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -50472,12 +50532,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -50509,12 +50569,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -50548,12 +50608,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -54518,12 +54578,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -54553,12 +54613,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -54586,12 +54646,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -54623,12 +54683,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -54665,12 +54725,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -54700,12 +54760,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -54737,12 +54797,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -54776,12 +54836,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -55424,12 +55484,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -55459,12 +55519,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -55492,12 +55552,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -55529,12 +55589,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -55571,12 +55631,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -55606,12 +55666,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -55643,12 +55703,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -55682,12 +55742,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -61766,12 +61826,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -61801,12 +61861,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -61834,12 +61894,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -61871,12 +61931,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -61913,12 +61973,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -61948,12 +62008,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -61985,12 +62045,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -62024,12 +62084,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -62672,12 +62732,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -62707,12 +62767,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -62740,12 +62800,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -62777,12 +62837,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -62819,12 +62879,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -62854,12 +62914,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -62891,12 +62951,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -62930,12 +62990,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -64484,12 +64544,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "today",
       "1": "tomorrow",
       "future": {
-        "one": "in {0} day",
-        "other": "in {0} days"
+        "one": "in {0}d",
+        "other": "in {0}d"
       },
       "past": {
-        "one": "{0} day ago",
-        "other": "{0} days ago"
+        "one": "{0}d ago",
+        "other": "{0}d ago"
       }
     },
     "day-short": {
@@ -64519,12 +64579,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "hour-narrow": {
       "0": "this hour",
       "future": {
-        "one": "in {0} hr.",
-        "other": "in {0} hr."
+        "one": "in {0}h",
+        "other": "in {0}h"
       },
       "past": {
-        "one": "{0} hr. ago",
-        "other": "{0} hr. ago"
+        "one": "{0}h ago",
+        "other": "{0}h ago"
       }
     },
     "hour-short": {
@@ -64552,12 +64612,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "minute-narrow": {
       "0": "this minute",
       "future": {
-        "one": "in {0} min.",
-        "other": "in {0} min."
+        "one": "in {0}m",
+        "other": "in {0}m"
       },
       "past": {
-        "one": "{0} min. ago",
-        "other": "{0} min. ago"
+        "one": "{0}m ago",
+        "other": "{0}m ago"
       }
     },
     "minute-short": {
@@ -64589,12 +64649,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this mo.",
       "1": "next mo.",
       "future": {
-        "one": "in {0} mo.",
-        "other": "in {0} mo."
+        "one": "in {0}mo",
+        "other": "in {0}mo"
       },
       "past": {
-        "one": "{0} mo. ago",
-        "other": "{0} mo. ago"
+        "one": "{0}mo ago",
+        "other": "{0}mo ago"
       }
     },
     "month-short": {
@@ -64631,12 +64691,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this qtr.",
       "1": "next qtr.",
       "future": {
-        "one": "in {0} qtr.",
-        "other": "in {0} qtrs."
+        "one": "in {0}q",
+        "other": "in {0}q"
       },
       "past": {
-        "one": "{0} qtr. ago",
-        "other": "{0} qtrs. ago"
+        "one": "{0}q ago",
+        "other": "{0}q ago"
       }
     },
     "quarter-short": {
@@ -64666,12 +64726,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     "second-narrow": {
       "0": "now",
       "future": {
-        "one": "in {0} sec.",
-        "other": "in {0} sec."
+        "one": "in {0}s",
+        "other": "in {0}s"
       },
       "past": {
-        "one": "{0} sec. ago",
-        "other": "{0} sec. ago"
+        "one": "{0}s ago",
+        "other": "{0}s ago"
       }
     },
     "second-short": {
@@ -64703,12 +64763,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this wk.",
       "1": "next wk.",
       "future": {
-        "one": "in {0} wk.",
-        "other": "in {0} wk."
+        "one": "in {0}w",
+        "other": "in {0}w"
       },
       "past": {
-        "one": "{0} wk. ago",
-        "other": "{0} wk. ago"
+        "one": "{0}w ago",
+        "other": "{0}w ago"
       }
     },
     "week-short": {
@@ -64742,12 +64802,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "this yr.",
       "1": "next yr.",
       "future": {
-        "one": "in {0} yr.",
-        "other": "in {0} yr."
+        "one": "in {0}y",
+        "other": "in {0}y"
       },
       "past": {
-        "one": "{0} yr. ago",
-        "other": "{0} yr. ago"
+        "one": "{0}y ago",
+        "other": "{0}y ago"
       }
     },
     "year-short": {
@@ -74523,8 +74583,8 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "فردا",
       "2": "پس‌فردا",
       "future": {
-        "one": "{0} روز بعد",
-        "other": "{0} روز بعد"
+        "one": "{0} روز دیگر",
+        "other": "{0} روز دیگر"
       },
       "past": {
         "one": "{0} روز پیش",
@@ -74553,8 +74613,8 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "فردا",
       "2": "پس‌فردا",
       "future": {
-        "one": "{0} روز بعد",
-        "other": "{0} روز بعد"
+        "one": "{0} روز دیگر",
+        "other": "{0} روز دیگر"
       },
       "past": {
         "one": "{0} روز پیش",
@@ -74831,8 +74891,8 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "فردا",
       "2": "پس‌فردا",
       "future": {
-        "one": "{0} روز بعد",
-        "other": "{0} روز بعد"
+        "one": "{0} روز دیگر",
+        "other": "{0} روز دیگر"
       },
       "past": {
         "one": "{0} روز پیش",
@@ -74861,8 +74921,8 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "فردا",
       "2": "پس‌فردا",
       "future": {
-        "one": "{0} روز بعد",
-        "other": "{0} روز بعد"
+        "one": "{0} روز دیگر",
+        "other": "{0} روز دیگر"
       },
       "past": {
         "one": "{0} روز پیش",
@@ -75183,7 +75243,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -75194,7 +75254,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -75216,7 +75276,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -75227,7 +75287,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -75485,7 +75545,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -75496,7 +75556,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -75518,7 +75578,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -75529,7 +75589,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -75787,7 +75847,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -75798,7 +75858,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -75820,7 +75880,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -75831,7 +75891,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -76089,7 +76149,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -76100,7 +76160,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -76122,7 +76182,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -76133,7 +76193,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -76391,7 +76451,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -76402,7 +76462,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -76424,7 +76484,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -76435,7 +76495,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -76693,7 +76753,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -76704,7 +76764,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -76726,7 +76786,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -76737,7 +76797,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -76995,7 +77055,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -77006,7 +77066,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -77028,7 +77088,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -77039,7 +77099,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -77297,7 +77357,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -77308,7 +77368,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -77330,7 +77390,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -77341,7 +77401,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -77599,7 +77659,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -77610,7 +77670,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -77632,7 +77692,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -77643,7 +77703,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -77901,7 +77961,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -77912,7 +77972,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -77934,7 +77994,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -77945,7 +78005,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -78203,7 +78263,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -78214,7 +78274,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -78236,7 +78296,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -78247,7 +78307,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -78505,7 +78565,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -78516,7 +78576,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-short": {
-      "0": "𞤲𞥋𞤣𞤭𞥅 𞤯𞤮𞤮 𞤲𞥋𞤶𞤢𞤥𞤲𞥋𞤣𞤭",
+      "0": "𞤐𞤣𞤭𞥅 𞤲𞤶𞤢𞤥𞤲𞤣𞤭",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤶𞤢."
@@ -78538,7 +78598,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-narrow": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤐𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -78549,7 +78609,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "minute-short": {
-      "0": "𞤲𞥋𞤣𞤫𞥅 𞤯𞤮𞤮 𞤸𞤮𞤶𞤮𞤥𞤪𞤫",
+      "0": "𞤲𞤣𞤫𞥅 𞤸𞤮𞤶𞤮𞤥𞤢𞥄𞤪𞤫",
       "future": {
         "one": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶.",
         "other": "𞤲𞥋𞤣𞤫𞤪 {0} 𞤸𞤮𞤶."
@@ -82374,11 +82434,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "2": "Samakalawa",
       "future": {
         "one": "sa {0} araw",
-        "other": "sa {0} (na) araw"
+        "other": "sa {0} araw"
       },
       "past": {
         "one": "{0} araw ang nakalipas",
-        "other": "{0} (na) araw ang nakalipas"
+        "other": "{0} araw ang nakalipas"
       }
     },
     "day-narrow": {
@@ -82389,11 +82449,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "2": "Samakalawa",
       "future": {
         "one": "sa {0} araw",
-        "other": "sa {0} (na) araw"
+        "other": "sa {0} araw"
       },
       "past": {
         "one": "{0} araw ang nakalipas",
-        "other": "{0} (na) araw ang nakalipas"
+        "other": "{0} araw ang nakalipas"
       }
     },
     "day-short": {
@@ -82404,10 +82464,10 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "2": "Samakalawa",
       "future": {
         "one": "sa {0} (na) araw",
-        "other": "sa {0} (na) araw"
+        "other": "sa {0} araw"
       },
       "past": {
-        "one": "{0} (na) araw ang nakalipas",
+        "one": "{0} araw ang nakalipas",
         "other": "{0} (na) araw ang nakalipas"
       }
     },
@@ -82415,22 +82475,22 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "ngayong oras",
       "future": {
         "one": "sa {0} oras",
-        "other": "sa {0} (na) oras"
+        "other": "sa {0} oras"
       },
       "past": {
         "one": "{0} oras ang nakalipas",
-        "other": "{0} (na) oras ang nakalipas"
+        "other": "{0} oras ang nakalipas"
       }
     },
     "hour-narrow": {
       "0": "ngayong oras",
       "future": {
         "one": "sa {0} oras",
-        "other": "sa {0} (na) oras"
+        "other": "sa {0} oras"
       },
       "past": {
         "one": "{0} oras ang nakalipas",
-        "other": "{0} (na) oras nakalipas"
+        "other": "{0} oras ang nakalipas"
       }
     },
     "hour-short": {
@@ -82441,40 +82501,40 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       },
       "past": {
         "one": "{0} oras ang nakalipas",
-        "other": "{0} (na) oras ang nakalipas"
+        "other": "{0} oras ang nakalipas"
       }
     },
     "minute": {
       "0": "sa minutong ito",
       "future": {
         "one": "sa {0} minuto",
-        "other": "sa {0} (na) minuto"
+        "other": "sa {0} minuto"
       },
       "past": {
         "one": "{0} minuto ang nakalipas",
-        "other": "{0} (na) minuto ang nakalipas"
+        "other": "{0} minuto ang nakalipas"
       }
     },
     "minute-narrow": {
       "0": "sa minutong ito",
       "future": {
         "one": "sa {0} min.",
-        "other": "sa {0} (na) min."
+        "other": "sa {0} min."
       },
       "past": {
         "one": "{0} min. ang nakalipas",
-        "other": "{0} (na) min. ang nakalipas"
+        "other": "{0} min. ang nakalipas"
       }
     },
     "minute-short": {
       "0": "sa minutong ito",
       "future": {
         "one": "sa {0} min.",
-        "other": "sa {0} (na) min."
+        "other": "sa {0} min."
       },
       "past": {
         "one": "{0} min. ang nakalipas",
-        "other": "{0} (na) min. ang nakalipas"
+        "other": "{0} min. ang nakalipas"
       }
     },
     "month": {
@@ -82483,11 +82543,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na buwan",
       "future": {
         "one": "sa {0} buwan",
-        "other": "sa {0} (na) buwan"
+        "other": "sa {0} buwan"
       },
       "past": {
         "one": "{0} buwan ang nakalipas",
-        "other": "{0} (na) buwan ang nakalipas"
+        "other": "{0} buwan ang nakalipas"
       }
     },
     "month-narrow": {
@@ -82496,11 +82556,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na buwan",
       "future": {
         "one": "sa {0} buwan",
-        "other": "sa {0} (na) buwan"
+        "other": "sa {0} buwan"
       },
       "past": {
         "one": "{0} buwan ang nakalipas",
-        "other": "{0} (na) buwan ang nakalipas"
+        "other": "{0} buwan ang nakalipas"
       }
     },
     "month-short": {
@@ -82509,11 +82569,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na buwan",
       "future": {
         "one": "sa {0} buwan",
-        "other": "sa {0} (na) buwan"
+        "other": "sa {0} buwan"
       },
       "past": {
         "one": "{0} buwan ang nakalipas",
-        "other": "{0} (na) buwan ang nakalipas"
+        "other": "{0} buwan ang nakalipas"
       }
     },
     "nu": [
@@ -82525,11 +82585,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na quarter",
       "future": {
         "one": "sa {0} quarter",
-        "other": "sa {0} (na) quarter"
+        "other": "sa {0} quarter"
       },
       "past": {
         "one": "{0} quarter ang nakalipas",
-        "other": "{0} (na) quarter ang nakalipas"
+        "other": "{0} quarter ang nakalipas"
       }
     },
     "quarter-narrow": {
@@ -82538,11 +82598,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na quarter",
       "future": {
         "one": "sa {0} quarter",
-        "other": "sa {0} (na) quarter"
+        "other": "sa {0} quarter"
       },
       "past": {
         "one": "{0} quarter ang nakalipas",
-        "other": "{0} (na) quarter ang nakalipas"
+        "other": "{0} quarter ang nakalipas"
       }
     },
     "quarter-short": {
@@ -82550,45 +82610,45 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "ngayong quarter",
       "1": "susunod na quarter",
       "future": {
-        "one": "sa {0} (na) quarter",
-        "other": "sa {0} (na) quarter"
+        "one": "sa {0} quarter",
+        "other": "sa {0} quarter"
       },
       "past": {
         "one": "{0} quarter ang nakalipas",
-        "other": "{0} (na) quarter ang nakalipas"
+        "other": "{0} quarter ang nakalipas"
       }
     },
     "second": {
       "0": "ngayon",
       "future": {
         "one": "sa {0} segundo",
-        "other": "sa {0} (na) segundo"
+        "other": "sa {0} segundo"
       },
       "past": {
         "one": "{0} segundo ang nakalipas",
-        "other": "{0} (na) segundo ang nakalipas"
+        "other": "{0} segundo ang nakalipas"
       }
     },
     "second-narrow": {
       "0": "ngayon",
       "future": {
         "one": "sa {0} seg.",
-        "other": "sa {0} (na) seg."
+        "other": "sa {0} seg."
       },
       "past": {
         "one": "{0} seg. ang nakalipas",
-        "other": "{0} (na) seg. nakalipas"
+        "other": "{0} seg. ang nakalipas"
       }
     },
     "second-short": {
       "0": "ngayon",
       "future": {
         "one": "sa {0} seg.",
-        "other": "sa {0} (na) seg."
+        "other": "sa {0} seg."
       },
       "past": {
         "one": "{0} seg. ang nakalipas",
-        "other": "{0} (na) seg. nakalipas"
+        "other": "{0} seg. ang nakalipas"
       }
     },
     "week": {
@@ -82597,11 +82657,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na linggo",
       "future": {
         "one": "sa {0} linggo",
-        "other": "sa {0} (na) linggo"
+        "other": "sa {0} linggo"
       },
       "past": {
         "one": "{0} linggo ang nakalipas",
-        "other": "{0} (na) linggo ang nakalipas"
+        "other": "{0} linggo ang nakalipas"
       }
     },
     "week-narrow": {
@@ -82610,11 +82670,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na linggo",
       "future": {
         "one": "sa {0} linggo",
-        "other": "sa {0} (na) linggo"
+        "other": "sa {0} linggo"
       },
       "past": {
         "one": "{0} linggo ang nakalipas",
-        "other": "{0} (na) linggo ang nakalipas"
+        "other": "{0} linggo ang nakalipas"
       }
     },
     "week-short": {
@@ -82623,7 +82683,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na linggo",
       "future": {
         "one": "sa {0} linggo",
-        "other": "sa {0} (na) linggo"
+        "other": "sa {0} linggo"
       },
       "past": {
         "one": "{0} linggo ang nakalipas",
@@ -82636,11 +82696,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na taon",
       "future": {
         "one": "sa {0} taon",
-        "other": "sa {0} (na) taon"
+        "other": "sa {0} taon"
       },
       "past": {
         "one": "{0} taon ang nakalipas",
-        "other": "{0} (na) taon ang nakalipas"
+        "other": "{0} taon ang nakalipas"
       }
     },
     "year-narrow": {
@@ -82649,11 +82709,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na taon",
       "future": {
         "one": "sa {0} taon",
-        "other": "sa {0} (na) taon"
+        "other": "sa {0} taon"
       },
       "past": {
         "one": "{0} taon ang nakalipas",
-        "other": "{0} (na) taon ang nakalipas"
+        "other": "{0} taon ang nakalipas"
       }
     },
     "year-short": {
@@ -82662,11 +82722,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "susunod na taon",
       "future": {
         "one": "sa {0} taon",
-        "other": "sa {0} (na) taon"
+        "other": "sa {0} taon"
       },
       "past": {
         "one": "{0} taon ang nakalipas",
-        "other": "{0} (na) taon ang nakalipas"
+        "other": "{0} taon ang nakalipas"
       }
     }
   },
@@ -98129,14 +98189,14 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "an uair seo",
       "future": {
         "few": "i gceann {0} uair an chloig",
-        "many": "i gceann {0} n-uaire an chloig",
+        "many": "i gceann {0} n-uair an chloig",
         "one": "i gceann {0} uair an chloig",
         "other": "i gceann {0} uair an chloig",
         "two": "i gceann {0} uair an chloig"
       },
       "past": {
         "few": "{0} uair an chloig ó shin",
-        "many": "{0} n-uaire an chloig ó shin",
+        "many": "{0} n-uair an chloig ó shin",
         "one": "{0} uair an chloig ó shin",
         "other": "{0} uair an chloig ó shin",
         "two": "{0} uair an chloig ó shin"
@@ -98272,7 +98332,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "future": {
         "few": "i gceann {0} mhí",
         "many": "i gceann {0} mí",
-        "one": "i gceann {0} mhí",
+        "one": "i gceann {0} míosa",
         "other": "i gceann {0} mí",
         "two": "i gceann {0} mhí"
       },
@@ -98402,7 +98462,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "future": {
         "few": "i gceann {0} seachtaine",
         "many": "i gceann {0} seachtaine",
-        "one": "i gceann {0} seachtain",
+        "one": "i gceann {0} seachtaine",
         "other": "i gceann {0} seachtain",
         "two": "i gceann {0} sheachtain"
       },
@@ -98419,18 +98479,18 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "an tscht. seo",
       "1": "an tscht. seo chugainn",
       "future": {
-        "few": "+{0} scht.",
+        "few": "i gceann {0} shcht.",
         "many": "+{0} scht.",
         "one": "+{0} scht.",
         "other": "+{0} scht.",
-        "two": "+{0} scht."
+        "two": "i gceann {0} shcht."
       },
       "past": {
-        "few": "-{0} scht.",
+        "few": "{0} shcht. ó shin",
         "many": "-{0} scht.",
         "one": "-{0} scht.",
         "other": "-{0} scht.",
-        "two": "-{0} scht."
+        "two": "{0} shcht. ó shin"
       }
     },
     "week-short": {
@@ -98438,18 +98498,18 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "an tscht. seo",
       "1": "an tscht. seo chugainn",
       "future": {
-        "few": "i gceann {0} scht.",
+        "few": "i gceann {0} shcht.",
         "many": "i gceann {0} scht.",
         "one": "i gceann {0} scht.",
         "other": "i gceann {0} scht.",
         "two": "i gceann {0} shcht."
       },
       "past": {
-        "few": "{0} scht. ó shin",
+        "few": "{0} shcht. ó shin",
         "many": "{0} scht. ó shin",
         "one": "{0} scht. ó shin",
         "other": "{0} scht. ó shin",
-        "two": "{0} scht. ó shin"
+        "two": "{0} shcht. ó shin"
       }
     },
     "year": {
@@ -98459,7 +98519,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "future": {
         "few": "i gceann {0} bliana",
         "many": "i gceann {0} mbliana",
-        "one": "i gceann {0} bhliain",
+        "one": "i gceann {0} bliana",
         "other": "i gceann {0} bliain",
         "two": "i gceann {0} bhliain"
       },
@@ -98581,14 +98641,14 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "an uair seo",
       "future": {
         "few": "i gceann {0} uair an chloig",
-        "many": "i gceann {0} n-uaire an chloig",
+        "many": "i gceann {0} n-uair an chloig",
         "one": "i gceann {0} uair an chloig",
         "other": "i gceann {0} uair an chloig",
         "two": "i gceann {0} uair an chloig"
       },
       "past": {
         "few": "{0} uair an chloig ó shin",
-        "many": "{0} n-uaire an chloig ó shin",
+        "many": "{0} n-uair an chloig ó shin",
         "one": "{0} uair an chloig ó shin",
         "other": "{0} uair an chloig ó shin",
         "two": "{0} uair an chloig ó shin"
@@ -98724,7 +98784,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "future": {
         "few": "i gceann {0} mhí",
         "many": "i gceann {0} mí",
-        "one": "i gceann {0} mhí",
+        "one": "i gceann {0} míosa",
         "other": "i gceann {0} mí",
         "two": "i gceann {0} mhí"
       },
@@ -98854,7 +98914,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "future": {
         "few": "i gceann {0} seachtaine",
         "many": "i gceann {0} seachtaine",
-        "one": "i gceann {0} seachtain",
+        "one": "i gceann {0} seachtaine",
         "other": "i gceann {0} seachtain",
         "two": "i gceann {0} sheachtain"
       },
@@ -98871,18 +98931,18 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "an tscht. seo",
       "1": "an tscht. seo chugainn",
       "future": {
-        "few": "+{0} scht.",
+        "few": "i gceann {0} shcht.",
         "many": "+{0} scht.",
         "one": "+{0} scht.",
         "other": "+{0} scht.",
-        "two": "+{0} scht."
+        "two": "i gceann {0} shcht."
       },
       "past": {
-        "few": "-{0} scht.",
+        "few": "{0} shcht. ó shin",
         "many": "-{0} scht.",
         "one": "-{0} scht.",
         "other": "-{0} scht.",
-        "two": "-{0} scht."
+        "two": "{0} shcht. ó shin"
       }
     },
     "week-short": {
@@ -98890,18 +98950,18 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "an tscht. seo",
       "1": "an tscht. seo chugainn",
       "future": {
-        "few": "i gceann {0} scht.",
+        "few": "i gceann {0} shcht.",
         "many": "i gceann {0} scht.",
         "one": "i gceann {0} scht.",
         "other": "i gceann {0} scht.",
         "two": "i gceann {0} shcht."
       },
       "past": {
-        "few": "{0} scht. ó shin",
+        "few": "{0} shcht. ó shin",
         "many": "{0} scht. ó shin",
         "one": "{0} scht. ó shin",
         "other": "{0} scht. ó shin",
-        "two": "{0} scht. ó shin"
+        "two": "{0} shcht. ó shin"
       }
     },
     "year": {
@@ -98911,7 +98971,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "future": {
         "few": "i gceann {0} bliana",
         "many": "i gceann {0} mbliana",
-        "one": "i gceann {0} bhliain",
+        "one": "i gceann {0} bliana",
         "other": "i gceann {0} bliain",
         "two": "i gceann {0} bhliain"
       },
@@ -104325,8 +104385,8 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
         "other": "{0} óra múlva"
       },
       "past": {
-        "one": "{0} órával ezelőtt",
-        "other": "{0} órával ezelőtt"
+        "one": "{0} órája",
+        "other": "{0} órája"
       }
     },
     "hour-short": {
@@ -104358,8 +104418,8 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
         "other": "{0} perc múlva"
       },
       "past": {
-        "one": "{0} perccel ezelőtt",
-        "other": "{0} perccel ezelőtt"
+        "one": "{0} perce",
+        "other": "{0} perce"
       }
     },
     "minute-short": {
@@ -104395,8 +104455,8 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
         "other": "{0} hónap múlva"
       },
       "past": {
-        "one": "{0} hónappal ezelőtt",
-        "other": "{0} hónappal ezelőtt"
+        "one": "{0} hónapja",
+        "other": "{0} hónapja"
       }
     },
     "month-short": {
@@ -104472,8 +104532,8 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
         "other": "{0} másodperc múlva"
       },
       "past": {
-        "one": "{0} másodperccel ezelőtt",
-        "other": "{0} másodperccel ezelőtt"
+        "one": "{0} m.perce",
+        "other": "{0} m.perce"
       }
     },
     "second-short": {
@@ -104509,8 +104569,8 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
         "other": "{0} hét múlva"
       },
       "past": {
-        "one": "{0} héttel ezelőtt",
-        "other": "{0} héttel ezelőtt"
+        "one": "{0} hete",
+        "other": "{0} hete"
       }
     },
     "week-short": {
@@ -104548,8 +104608,8 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
         "other": "{0} év múlva"
       },
       "past": {
-        "one": "{0} évvel ezelőtt",
-        "other": "{0} évvel ezelőtt"
+        "one": "{0} éve",
+        "other": "{0} éve"
       }
     },
     "year-short": {
@@ -113234,9 +113294,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "پٔتِم ریتھۍ",
+      "0": "یٕہ ریتھۍ",
+      "1": "نو ریتھۍ",
       "future": {
         "other": "+{0} m"
       },
@@ -113245,9 +113305,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month-narrow": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "پٔتِم ریتھۍ",
+      "0": "یٕہ ریتھۍ",
+      "1": "نو ریتھۍ",
       "future": {
         "other": "+{0} m"
       },
@@ -113256,9 +113316,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month-short": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "پٔتِم ریتھۍ",
+      "0": "یٕہ ریتھۍ",
+      "1": "نو ریتھۍ",
       "future": {
         "other": "+{0} m"
       },
@@ -113330,9 +113390,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "پٔتِم ہفتہ",
+      "0": "یٕہ ہفتہ",
+      "1": "نو ہفتہ",
       "future": {
         "other": "+{0} w"
       },
@@ -113341,9 +113401,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week-narrow": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "پٔتِم ہفتہ",
+      "0": "یٕہ ہفتہ",
+      "1": "نو ہفتہ",
       "future": {
         "other": "+{0} w"
       },
@@ -113352,9 +113412,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week-short": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "پٔتِم ہفتہ",
+      "0": "یٕہ ہفتہ",
+      "1": "نو ہفتہ",
       "future": {
         "other": "+{0} w"
       },
@@ -113363,9 +113423,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "پٔتِم ؤری",
+      "0": "یٕہ ؤری",
+      "1": "نو ؤری",
       "future": {
         "other": "+{0} y"
       },
@@ -113374,9 +113434,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year-narrow": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "پٔتِم ؤری",
+      "0": "یٕہ ؤری",
+      "1": "نو ؤری",
       "future": {
         "other": "+{0} y"
       },
@@ -113385,9 +113445,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year-short": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "پٔتِم ؤری",
+      "0": "یٕہ ؤری",
+      "1": "نو ؤری",
       "future": {
         "other": "+{0} y"
       },
@@ -113488,9 +113548,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "پٔتِم ریتھۍ",
+      "0": "یٕہ ریتھۍ",
+      "1": "نو ریتھۍ",
       "future": {
         "other": "+{0} m"
       },
@@ -113499,9 +113559,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month-narrow": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "پٔتِم ریتھۍ",
+      "0": "یٕہ ریتھۍ",
+      "1": "نو ریتھۍ",
       "future": {
         "other": "+{0} m"
       },
@@ -113510,9 +113570,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month-short": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "پٔتِم ریتھۍ",
+      "0": "یٕہ ریتھۍ",
+      "1": "نو ریتھۍ",
       "future": {
         "other": "+{0} m"
       },
@@ -113584,9 +113644,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "پٔتِم ہفتہ",
+      "0": "یٕہ ہفتہ",
+      "1": "نو ہفتہ",
       "future": {
         "other": "+{0} w"
       },
@@ -113595,9 +113655,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week-narrow": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "پٔتِم ہفتہ",
+      "0": "یٕہ ہفتہ",
+      "1": "نو ہفتہ",
       "future": {
         "other": "+{0} w"
       },
@@ -113606,9 +113666,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week-short": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "پٔتِم ہفتہ",
+      "0": "یٕہ ہفتہ",
+      "1": "نو ہفتہ",
       "future": {
         "other": "+{0} w"
       },
@@ -113617,9 +113677,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "پٔتِم ؤری",
+      "0": "یٕہ ؤری",
+      "1": "نو ؤری",
       "future": {
         "other": "+{0} y"
       },
@@ -113628,9 +113688,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year-narrow": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "پٔتِم ؤری",
+      "0": "یٕہ ؤری",
+      "1": "نو ؤری",
       "future": {
         "other": "+{0} y"
       },
@@ -113639,9 +113699,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year-short": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "پٔتِم ؤری",
+      "0": "یٕہ ؤری",
+      "1": "نو ؤری",
       "future": {
         "other": "+{0} y"
       },
@@ -114537,9 +114597,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "vê mehê",
       "1": "meha bê",
       "future": {
+        "one": "+{0} m",
         "other": "+{0} m"
       },
       "past": {
+        "one": "-{0} m",
         "other": "-{0} m"
       }
     },
@@ -114548,9 +114610,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "vê mehê",
       "1": "meha bê",
       "future": {
+        "one": "+{0} m",
         "other": "+{0} m"
       },
       "past": {
+        "one": "-{0} m",
         "other": "-{0} m"
       }
     },
@@ -119631,10 +119695,10 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "आजुक दिन",
       "1": "काल्हिक दिन",
       "future": {
-        "other": "+{0} d"
+        "other": "{0} दिन मे"
       },
       "past": {
-        "other": "-{0} d"
+        "other": "{0} दिन मे"
       }
     },
     "day-narrow": {
@@ -119642,10 +119706,10 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "आजुक दिन",
       "1": "आबय वला काल्हि",
       "future": {
-        "other": "+{0} d"
+        "other": "{0} दिन मे"
       },
       "past": {
-        "other": "-{0} d"
+        "other": "{0}दिन पहिले"
       }
     },
     "day-short": {
@@ -119653,226 +119717,226 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "आजुक दिन",
       "1": "आबय वला काल्हि",
       "future": {
-        "other": "+{0} d"
+        "other": "{0} दिन मे"
       },
       "past": {
-        "other": "-{0} d"
+        "other": "{0}दिन पहिले"
       }
     },
     "hour": {
-      "0": "this hour",
+      "0": "एहि घंटा",
       "future": {
-        "other": "+{0} h"
+        "other": "{0} घंटा मे"
       },
       "past": {
-        "other": "-{0} h"
+        "other": "{0} घंटा पहिले"
       }
     },
     "hour-narrow": {
-      "0": "this hour",
+      "0": "एहि घंटा",
       "future": {
-        "other": "+{0} h"
+        "other": "{0} घंटा मे"
       },
       "past": {
-        "other": "-{0} h"
+        "other": "{0} घंटा पहिले"
       }
     },
     "hour-short": {
-      "0": "this hour",
+      "0": "एहि घंटा",
       "future": {
-        "other": "+{0} h"
+        "other": "{0} घंटा मे"
       },
       "past": {
-        "other": "-{0} h"
+        "other": "{0} घंटा पहिले"
       }
     },
     "minute": {
-      "0": "this minute",
+      "0": "एहि मिनट",
       "future": {
-        "other": "+{0} min"
+        "other": "{0} मिनट मे"
       },
       "past": {
-        "other": "-{0} min"
+        "other": "{0} मिनट पहिले"
       }
     },
     "minute-narrow": {
-      "0": "this minute",
+      "0": "एहि मिनट",
       "future": {
-        "other": "+{0} min"
+        "other": "{0} मिनट मे"
       },
       "past": {
-        "other": "-{0} min"
+        "other": "{0} मिनट पहिले"
       }
     },
     "minute-short": {
-      "0": "this minute",
+      "0": "एहि मिनट",
       "future": {
-        "other": "+{0} min"
+        "other": "{0} मिनट मे"
       },
       "past": {
-        "other": "-{0} min"
+        "other": "{0} मिनट पहिले"
       }
     },
     "month": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "बीतल माह",
+      "0": "एहि माह",
+      "1": "अगिला माह",
       "future": {
-        "other": "+{0} m"
+        "other": "{0} माह मे"
       },
       "past": {
-        "other": "-{0} m"
+        "other": "{0} माह पहिले"
       }
     },
     "month-narrow": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "बीतल माह",
+      "0": "एहि माह",
+      "1": "अगिला माह",
       "future": {
-        "other": "+{0} m"
+        "other": "{0}माह मे"
       },
       "past": {
-        "other": "-{0} m"
+        "other": "{0}माह पहिले"
       }
     },
     "month-short": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "बीतल माह",
+      "0": "एहि माह",
+      "1": "अगिला माह",
       "future": {
-        "other": "+{0} m"
+        "other": "{0} माह मे"
       },
       "past": {
-        "other": "-{0} m"
+        "other": "{0} माह पहिले"
       }
     },
     "nu": [
       "latn"
     ],
     "quarter": {
-      "-1": "last quarter",
-      "0": "this quarter",
-      "1": "next quarter",
+      "-1": "बीतल तिमाही",
+      "0": "एहि तिमाही",
+      "1": "अगिला तिमाही",
       "future": {
-        "other": "+{0} Q"
+        "other": "{0} तिमाही मे"
       },
       "past": {
-        "other": "-{0} Q"
+        "other": "{0} तिमाही पहिले"
       }
     },
     "quarter-narrow": {
-      "-1": "last quarter",
-      "0": "this quarter",
-      "1": "next quarter",
+      "-1": "बीतल तिमाही",
+      "0": "एहि तिमाही",
+      "1": "अगिला तिमाही",
       "future": {
-        "other": "+{0} Q"
+        "other": "{0} तिमाही मे"
       },
       "past": {
-        "other": "-{0} Q"
+        "other": "{0} तिमाही पहिले"
       }
     },
     "quarter-short": {
-      "-1": "last quarter",
-      "0": "this quarter",
-      "1": "next quarter",
+      "-1": "बीतल तिमाही",
+      "0": "एहि तिमाही",
+      "1": "अगिला तिमाही",
       "future": {
-        "other": "+{0} Q"
+        "other": "{0} तिमाही मे"
       },
       "past": {
-        "other": "-{0} Q"
+        "other": "{0} तिमाही पहिले"
       }
     },
     "second": {
-      "0": "now",
+      "0": "एहि समय",
       "future": {
-        "other": "+{0} s"
+        "other": "{0} सेकेंड मे"
       },
       "past": {
-        "other": "-{0} s"
+        "other": "{0} सेकेंड पहिले"
       }
     },
     "second-narrow": {
-      "0": "now",
+      "0": "एहि समय",
       "future": {
-        "other": "+{0} s"
+        "other": "{0} सेकेंड मे"
       },
       "past": {
-        "other": "-{0} s"
+        "other": "{0} सेकेंड पहिले"
       }
     },
     "second-short": {
-      "0": "now",
+      "0": "एहि समय",
       "future": {
-        "other": "+{0} s"
+        "other": "{0} सेकेंड मे"
       },
       "past": {
-        "other": "-{0} s"
+        "other": "{0} सेकेंड पहिले"
       }
     },
     "week": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "बीतल सप्ताह",
+      "0": "एहि सप्ताह",
+      "1": "अगिला सप्ताह",
       "future": {
-        "other": "+{0} w"
+        "other": "{0} सप्ताह मे"
       },
       "past": {
-        "other": "-{0} w"
+        "other": "{0} सप्ताह पहिले"
       }
     },
     "week-narrow": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "बीतल सप्ताह",
+      "0": "एहि सप्ताह",
+      "1": "अगिला सप्ताह",
       "future": {
-        "other": "+{0} w"
+        "other": "{0} सप्ताह मे"
       },
       "past": {
-        "other": "-{0} w"
+        "other": "{0} सप्ताह पहिले"
       }
     },
     "week-short": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "बीतल सप्ताह",
+      "0": "एहि सप्ताह",
+      "1": "अगिला सप्ताह",
       "future": {
-        "other": "+{0} w"
+        "other": "{0} सप्ताह मे"
       },
       "past": {
-        "other": "-{0} w"
+        "other": "{0} सप्ताह पहिले"
       }
     },
     "year": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "बीतल बरख",
+      "0": "एहि बरख",
+      "1": "अगिला बरख",
       "future": {
-        "other": "+{0} y"
+        "other": "{0} बरख मे"
       },
       "past": {
-        "other": "-{0} y"
+        "other": "{0} बरख पहिले"
       }
     },
     "year-narrow": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "बीतल बरख",
+      "0": "एहि बरख",
+      "1": "अगिला बरख",
       "future": {
-        "other": "+{0} y"
+        "other": "{0}बरख मे"
       },
       "past": {
-        "other": "-{0} y"
+        "other": "{0}बरख पहिले"
       }
     },
     "year-short": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "बीतल बरख",
+      "0": "एहि बरख",
+      "1": "अगिला बरख",
       "future": {
-        "other": "+{0} y"
+        "other": "{0} बरख मे"
       },
       "past": {
-        "other": "-{0} y"
+        "other": "{0} बरख पहिले"
       }
     }
   },
@@ -121693,39 +121757,39 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
   "data": {
     "day": {
       "-1": "inanahi",
-      "0": "āianei",
+      "0": "i tēnei rā",
       "1": "āpōpō",
       "future": {
-        "other": "+{0} d"
+        "other": "+{0} r."
       },
       "past": {
-        "other": "-{0} d"
+        "other": "-{0} r."
       }
     },
     "day-narrow": {
       "-1": "inanahi",
-      "0": "āianei",
+      "0": "i tēnei rā",
       "1": "āpōpō",
       "future": {
-        "other": "+{0} d"
+        "other": "+{0} r"
       },
       "past": {
-        "other": "-{0} d"
+        "other": "-{0} r"
       }
     },
     "day-short": {
       "-1": "inanahi",
-      "0": "āianei",
+      "0": "i tēnei rā",
       "1": "āpōpō",
       "future": {
-        "other": "+{0} d"
+        "other": "+{0} r"
       },
       "past": {
-        "other": "-{0} d"
+        "other": "-{0} r."
       }
     },
     "hour": {
-      "0": "this hour",
+      "0": "i tēnei hāora",
       "future": {
         "other": "+{0} h"
       },
@@ -121734,54 +121798,54 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "hour-narrow": {
-      "0": "this hour",
+      "0": "i tēnei hāora",
       "future": {
-        "other": "+{0} h"
+        "other": "+{0} h."
       },
       "past": {
-        "other": "-{0} h"
+        "other": "-{0} h."
       }
     },
     "hour-short": {
-      "0": "this hour",
+      "0": "i tēnei hāora",
       "future": {
-        "other": "+{0} h"
+        "other": "+{0} h."
       },
       "past": {
-        "other": "-{0} h"
+        "other": "-{0} h."
       }
     },
     "minute": {
-      "0": "this minute",
+      "0": "i tēnei meneti",
       "future": {
-        "other": "+{0} min"
+        "other": "+{0} men"
       },
       "past": {
-        "other": "-{0} min"
+        "other": "-{0} men"
       }
     },
     "minute-narrow": {
-      "0": "this minute",
+      "0": "i tēnei meneti",
       "future": {
-        "other": "+{0} min"
+        "other": "+{0} men"
       },
       "past": {
-        "other": "-{0} min"
+        "other": "-{0} men"
       }
     },
     "minute-short": {
-      "0": "this minute",
+      "0": "i tēnei meneti",
       "future": {
-        "other": "+{0} min"
+        "other": "+{0} men."
       },
       "past": {
-        "other": "-{0} min"
+        "other": "-{0} men."
       }
     },
     "month": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "i tērā marama",
+      "0": "i tēnei marama",
+      "1": "ā tērā marama",
       "future": {
         "other": "+{0} m"
       },
@@ -121790,94 +121854,94 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month-narrow": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "i tērā m.",
+      "0": "i tēnei m.",
+      "1": "ā tērā m.",
       "future": {
-        "other": "+{0} m"
+        "other": "+{0} m."
       },
       "past": {
-        "other": "-{0} m"
+        "other": "-{0} m."
       }
     },
     "month-short": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "i tērā m.",
+      "0": "i tēnei m.",
+      "1": "ā tērā m.",
       "future": {
-        "other": "+{0} m"
+        "other": "+{0} m."
       },
       "past": {
-        "other": "-{0} m"
+        "other": "-{0} m."
       }
     },
     "nu": [
       "latn"
     ],
     "quarter": {
-      "-1": "last quarter",
-      "0": "this quarter",
-      "1": "next quarter",
+      "-1": "hauwhā whakamutunga",
+      "0": "tēnei hauwhā",
+      "1": "tērā hauwhā",
       "future": {
-        "other": "+{0} Q"
+        "other": "+{0} hwh"
       },
       "past": {
-        "other": "-{0} Q"
+        "other": "-{0} hwh"
       }
     },
     "quarter-narrow": {
-      "-1": "last quarter",
-      "0": "this quarter",
-      "1": "next quarter",
+      "-1": "hauwhā whakamutunga",
+      "0": "tēnei hauwhā",
+      "1": "tērā hauwhā",
       "future": {
-        "other": "+{0} Q"
+        "other": "+{0} Hwh"
       },
       "past": {
-        "other": "-{0} Q"
+        "other": "-{0} hwh"
       }
     },
     "quarter-short": {
-      "-1": "last quarter",
-      "0": "this quarter",
-      "1": "next quarter",
+      "-1": "hauwhā whakamutunga",
+      "0": "tēnei hauwhā",
+      "1": "tērā hauwhā",
       "future": {
-        "other": "+{0} Q"
+        "other": "+{0} hwh"
       },
       "past": {
-        "other": "-{0} Q"
+        "other": "-{0} hwh"
       }
     },
     "second": {
-      "0": "now",
+      "0": "ināianei",
       "future": {
-        "other": "+{0} s"
+        "other": "+{0} h"
       },
       "past": {
-        "other": "-{0} s"
+        "other": "-{0} h"
       }
     },
     "second-narrow": {
-      "0": "now",
+      "0": "ināianei",
       "future": {
-        "other": "+{0} s"
+        "other": "+{0} h"
       },
       "past": {
-        "other": "-{0} s"
+        "other": "-{0} h"
       }
     },
     "second-short": {
-      "0": "now",
+      "0": "ināianei",
       "future": {
-        "other": "+{0} s"
+        "other": "+{0} h."
       },
       "past": {
-        "other": "-{0} s"
+        "other": "-{0} h."
       }
     },
     "week": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "i tērā wiki",
+      "0": "i tēnei wiki",
+      "1": "ā tērā wiki",
       "future": {
         "other": "+{0} w"
       },
@@ -121886,9 +121950,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week-narrow": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "i tērā w.",
+      "0": "i tēnei w.",
+      "1": "ā tērā w.",
       "future": {
         "other": "+{0} w"
       },
@@ -121897,9 +121961,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week-short": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "i tērā w.",
+      "0": "i tēnei w.",
+      "1": "ā tērā w.",
       "future": {
         "other": "+{0} w"
       },
@@ -121908,36 +121972,36 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "i tērā tau",
+      "0": "i tēnei tau",
+      "1": "ā tērā tau",
       "future": {
-        "other": "+{0} y"
+        "other": "ā te {0} tau"
       },
       "past": {
-        "other": "-{0} y"
+        "other": "i te {0} tau"
       }
     },
     "year-narrow": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "i tērā tau",
+      "0": "i tēnei tau",
+      "1": "ā tērā tau",
       "future": {
-        "other": "+{0} y"
+        "other": "ā te {0} tau"
       },
       "past": {
-        "other": "-{0} y"
+        "other": "i te {0} tau"
       }
     },
     "year-short": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "i tērā tau",
+      "0": "i tēnei tau",
+      "1": "ā tērā tau",
       "future": {
-        "other": "+{0} y"
+        "other": "ā te {0} tau"
       },
       "past": {
-        "other": "-{0} y"
+        "other": "i te {0} tau"
       }
     }
   },
@@ -122210,9 +122274,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year": {
-      "-1": "минатата година",
+      "-1": "лани",
       "0": "оваа година",
-      "1": "следната година",
+      "1": "догодина",
       "future": {
         "one": "за {0} година",
         "other": "за {0} години"
@@ -124724,16 +124788,18 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "illum",
       "1": "għada",
       "future": {
-        "few": "fi żmien {0} ġurnata oħra",
-        "many": "fi żmien {0} ġurnata oħra",
+        "few": "fi żmien {0} ġranet oħra",
+        "many": "fi żmien {0}-il ġurnata oħra",
         "one": "fi żmien ġurnata",
-        "other": "fi żmien {0} ġurnata oħra"
+        "other": "fi żmien {0} ġurnata oħra",
+        "two": "fi żmien jumejn oħra"
       },
       "past": {
         "few": "{0} ġranet ilu",
         "many": "{0}-il ġurnata ilu",
         "one": "ġurnata ilu",
-        "other": "{0}-il ġurnata ilu"
+        "other": "{0} ġurnata ilu",
+        "two": "jumejn ilu"
       }
     },
     "day-narrow": {
@@ -124742,15 +124808,17 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "għada",
       "future": {
         "few": "fi żmien {0} ġurnata oħra",
-        "many": "fi żmien {0} ġurnata oħra",
+        "many": "fi żmien {0}-il ġurnata oħra",
         "one": "fi żmien ġurnata",
-        "other": "fi żmien {0} ġurnata oħra"
+        "other": "fi żmien {0} ġurnata oħra",
+        "two": "fi żmien jumejn oħra"
       },
       "past": {
         "few": "{0} ġranet ilu",
         "many": "{0}-il ġurnata ilu",
         "one": "ġurnata ilu",
-        "other": "{0}-il ġurnata ilu"
+        "other": "{0} ġurnata ilu",
+        "two": "jumejn ilu"
       }
     },
     "day-short": {
@@ -124758,157 +124826,177 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "illum",
       "1": "għada",
       "future": {
-        "few": "fi żmien {0} ġurnata oħra",
-        "many": "fi żmien {0} ġurnata oħra",
+        "few": "fi żmien {0} ġranet oħra",
+        "many": "fi żmien {0}-il ġurnata oħra",
         "one": "fi żmien ġurnata",
-        "other": "fi żmien {0} ġurnata oħra"
+        "other": "fi żmien {0} ġurnata oħra",
+        "two": "fi żmien jumejn oħra"
       },
       "past": {
         "few": "{0} ġranet ilu",
         "many": "{0}-il ġurnata ilu",
         "one": "ġurnata ilu",
-        "other": "{0}-il ġurnata ilu"
+        "other": "{0} ġurnata ilu",
+        "two": "jumejn ilu"
       }
     },
     "hour": {
       "0": "din is-siegħa",
       "future": {
         "few": "fi żmien {0} sigħat",
-        "many": "fi żmien{0} sigħat",
+        "many": "fi żmien {0}-il siegħa",
         "one": "fi żmien siegħa oħra",
-        "other": "fi żmien {0} sigħat"
+        "other": "fi żmien {0} siegħa",
+        "two": "fi żmien sagħtejn"
       },
       "past": {
         "few": "{0} sigħat ilu",
-        "many": "{0} sigħat ilu",
+        "many": "{0}-il siegħa ilu",
         "one": "siegħa ilu",
-        "other": "{0} sigħat ilu"
+        "other": "{0} siegħa ilu",
+        "two": "sagħtejn ilu"
       }
     },
     "hour-narrow": {
       "0": "din is-siegħa",
       "future": {
         "few": "fi żmien {0} sigħat",
-        "many": "fi żmien {0} sigħat",
+        "many": "fi żmien {0}-il siegħa",
         "one": "fi żmien siegħa oħra",
-        "other": "fi żmien {0} sigħat"
+        "other": "fi żmien {0} siegħa",
+        "two": "fi żmien sagħtejn"
       },
       "past": {
         "few": "{0} sigħat ilu",
-        "many": "{0} sigħat ilu",
+        "many": "{0}-il siegħa ilu",
         "one": "siegħa ilu",
-        "other": "{0} sigħat ilu"
+        "other": "{0} siegħa ilu",
+        "two": "sagħtejn ilu"
       }
     },
     "hour-short": {
       "0": "din is-siegħa",
       "future": {
         "few": "fi żmien {0} sigħat",
-        "many": "+{0} h",
+        "many": "fi żmien {0}-il siegħa",
         "one": "fi żmien siegħa oħra",
-        "other": "fi żmien {0} sigħat"
+        "other": "fi żmien {0} siegħa",
+        "two": "fi żmien sagħtejn"
       },
       "past": {
         "few": "{0} sigħat ilu",
-        "many": "{0} sigħat ilu",
+        "many": "{0}-il siegħa ilu",
         "one": "siegħa ilu",
-        "other": "{0} sigħat ilu"
+        "other": "{0} siegħa ilu",
+        "two": "sagħtejn ilu"
       }
     },
     "minute": {
       "0": "din il-minuta",
       "future": {
         "few": "sa {0} minuti oħra",
-        "many": "sa {0} minuti oħra",
+        "many": "sa {0}-il minuta oħra",
         "one": "sa minuta oħra",
-        "other": "sa {0} minuti oħra"
+        "other": "sa {0} minuta oħra",
+        "two": "sa {0} minuti oħra"
       },
       "past": {
         "few": "{0} minuti ilu",
-        "many": "{0} minuti ilu",
+        "many": "{0}-il minuta ilu",
         "one": "minuta ilu",
-        "other": "{0} minuti ilu"
+        "other": "{0} minuta ilu",
+        "two": "{0} minuti ilu"
       }
     },
     "minute-narrow": {
       "0": "din il-minuta",
       "future": {
         "few": "sa {0} min. oħra",
-        "many": "+{0} min",
+        "many": "sa {0}-il min",
         "one": "sa min. oħra",
-        "other": "sa {0} min. oħra"
+        "other": "sa {0} min. oħra",
+        "two": "sa {0} min. oħra"
       },
       "past": {
         "few": "{0} min. ilu",
-        "many": "{0} min. ilu",
+        "many": "{0}-il min. ilu",
         "one": "min. ilu",
-        "other": "{0} min. ilu"
+        "other": "{0} min. ilu",
+        "two": "{0} min. ilu"
       }
     },
     "minute-short": {
       "0": "din il-minuta",
       "future": {
         "few": "sa {0} min. oħra",
-        "many": "sa {0} min. oħra",
+        "many": "sa {0}-il min. oħra",
         "one": "sa min. oħra",
-        "other": "sa {0} min. oħra"
+        "other": "sa {0} min. oħra",
+        "two": "sa {0} min. oħra"
       },
       "past": {
         "few": "{0} min. ilu",
-        "many": "{0} minuti ilu",
+        "many": "{0}-il min. ilu",
         "one": "min. ilu",
-        "other": "{0} min. ilu"
+        "other": "{0} min. ilu",
+        "two": "{0} min. ilu"
       }
     },
     "month": {
-      "-1": "Ix-xahar li għadda",
-      "0": "Dan ix-xahar",
-      "1": "Ix-xahar id-dieħel",
+      "-1": "ix-xahar li għadda",
+      "0": "dan ix-xahar",
+      "1": "ix-xahar id-dieħel",
       "future": {
         "few": "fi {0} xhur oħra",
-        "many": "fi {0} xhur oħra",
+        "many": "fi {0}-xahar oħra",
         "one": "sa xahar ieħor",
-        "other": "fi {0} xhur oħra"
+        "other": "fi {0} xahar oħra",
+        "two": "fi xahrejn oħra"
       },
       "past": {
         "few": "{0} xhur ilu",
-        "many": "{0} xhur ilu",
+        "many": "{0}-il xahar ilu",
         "one": "xahar ilu",
-        "other": "{0} xhur ilu"
+        "other": "{0} xahar ilu",
+        "two": "xahrejn ilu"
       }
     },
     "month-narrow": {
-      "-1": "Ix-xahar li għadda",
-      "0": "Dan ix-xahar",
-      "1": "Ix-xahar id-dieħel",
+      "-1": "ix-xahar li għadda",
+      "0": "dan ix-xahar",
+      "1": "ix-xahar id-dieħel",
       "future": {
         "few": "sa {0} xhur oħra",
-        "many": "sa {0} xhur oħra",
+        "many": "sa {0}-il xahar oħra",
         "one": "sa xahar ieħor",
-        "other": "sa {0} xhur oħra"
+        "other": "sa {0} xahar oħra",
+        "two": "sa xahrejn oħra"
       },
       "past": {
         "few": "{0} xhur ilu",
-        "many": "{0} xhur ilu",
+        "many": "{0}-il xahar ilu",
         "one": "xahar ilu",
-        "other": "{0} xhur ilu"
+        "other": "{0} xahar ilu",
+        "two": "xahrejn ilu"
       }
     },
     "month-short": {
-      "-1": "Ix-xahar li għadda",
-      "0": "Dan ix-xahar",
-      "1": "Ix-xahar id-dieħel",
+      "-1": "ix-xahar li għadda",
+      "0": "dan ix-xahar",
+      "1": "ix-xahar id-dieħel",
       "future": {
         "few": "sa {0} xhur oħra",
-        "many": "sa {0} xhur oħra",
+        "many": "sa {0}-il xahar oħra",
         "one": "sa xahar ieħor",
-        "other": "sa {0} xhur oħra"
+        "other": "sa {0} xahar oħra",
+        "two": "sa xahrejn oħra"
       },
       "past": {
         "few": "{0} xhur ilu",
-        "many": "{0} xhur ilu",
+        "many": "{0}-il xahar ilu",
         "one": "{0} xahar ilu",
-        "other": "{0} xhur ilu"
+        "other": "{0} xahar ilu",
+        "two": "xahrejn ilu"
       }
     },
     "nu": [
@@ -124920,15 +125008,17 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "il-kwart li jmiss tas-sena",
       "future": {
         "few": "f’{0} kwarti ta’ sena oħrajn",
-        "many": "f’{0} kwarti ta’ sena oħrajn",
-        "one": "f’{0} kwarti ta’ sena oħrajn",
-        "other": "f’{0} kwarti ta’ sena oħrajn"
+        "many": "f’{0}-il kwart ta’ sena oħrajn",
+        "one": "f’{0} kwart ta’ sena oħrajn",
+        "other": "f’{0} kwart ta’ sena oħrajn",
+        "two": "f’{0} kwarti ta’ sena oħrajn"
       },
       "past": {
         "few": "{0} kwarti ta’ sena li għaddew",
-        "many": "{0} kwarti ta’ sena li għaddew",
+        "many": "{0}-il kwart ta’ sena li għaddew",
         "one": "il-kwart ta’ sena li għadda",
-        "other": "{0} kwarti ta’ sena li għaddew"
+        "other": "{0} kwart ta’ sena li għaddew",
+        "two": "{0} kwarti ta’ sena li għaddew"
       }
     },
     "quarter-narrow": {
@@ -124937,15 +125027,17 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "il-kwart li jmiss tas-sena",
       "future": {
         "few": "f’{0} kwarti ta’ sena oħrajn",
-        "many": "f’{0} kwarti ta’ sena oħrajn",
+        "many": "f’{0}-il kwart ta’ sena oħrajn",
         "one": "fi kwart ta’ sena ieħor",
-        "other": "f’{0} kwarti ta’ sena oħrajn"
+        "other": "f’{0} kwart ta’ sena oħrajn",
+        "two": "f’{0} kwarti ta’ sena oħrajn"
       },
       "past": {
         "few": "{0} kwarti ta’ sena ilu",
-        "many": "{0} kwarti ta’ sena ilu",
+        "many": "{0}-il kwart ta’ sena ilu",
         "one": "fil-kwart tas-sena li għadda",
-        "other": "{0} kwarti ta’ sena ilu"
+        "other": "{0} kwart ta’ sena ilu",
+        "two": "{0} kwarti ta’ sena ilu"
       }
     },
     "quarter-short": {
@@ -124954,60 +125046,68 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "il-kwart li jmiss tas-sena",
       "future": {
         "few": "f’{0} kwarti ta’ sena oħrajn",
-        "many": "f’{0} kwarti ta’ sena oħrajn",
+        "many": "f’{0}-il kwart ta’ sena oħrajn",
         "one": "fil-kwart tas-sena li ġej",
-        "other": "f’{0} kwarti ta’ sena oħrajn"
+        "other": "f’{0} kwart ta’ sena oħrajn",
+        "two": "f’{0} kwarti ta’ sena oħrajn"
       },
       "past": {
         "few": "{0} kwarti ta’ sena ilu",
-        "many": "{0} kwarti ta’ sena ilu",
+        "many": "{0}-il kwart ta’ sena ilu",
         "one": "fil-kwart tas-sena li għadda",
-        "other": "{0} kwarti ta’ sena ilu"
+        "other": "{0} kwart ta’ sena ilu",
+        "two": "{0} kwarti ta’ sena ilu"
       }
     },
     "second": {
       "0": "issa",
       "future": {
         "few": "sa {0} sekondi oħra",
-        "many": "sa {0} sekondi oħra",
-        "one": "sa {0} sekondi oħra",
-        "other": "sa {0} sekondi oħra"
+        "many": "sa {0}-il sekonda oħra",
+        "one": "sa sekonda oħra",
+        "other": "sa {0} sekonda oħra",
+        "two": "sa {0} sekondi oħra"
       },
       "past": {
         "few": "{0} sekondi ilu",
-        "many": "{0} sekondi ilu",
+        "many": "{0}-il sekonda ilu",
         "one": "sekonda ilu",
-        "other": "{0} sekondi ilu"
+        "other": "{0} sekonda ilu",
+        "two": "{0} sekondi ilu"
       }
     },
     "second-narrow": {
       "0": "issa",
       "future": {
         "few": "sa {0} sek. oħra",
-        "many": "sa {0} sek. oħra",
+        "many": "sa {0}-il sek. oħra",
         "one": "sa sek. oħra",
-        "other": "sa {0} sek. oħra"
+        "other": "sa {0} sek. oħra",
+        "two": "sa {0} sek. oħra"
       },
       "past": {
         "few": "{0} sek. ilu",
-        "many": "{0} sek. ilu",
+        "many": "{0}-il sek. ilu",
         "one": "sek. ilu",
-        "other": "{0} sek. ilu"
+        "other": "{0} sek. ilu",
+        "two": "{0} sek. ilu"
       }
     },
     "second-short": {
       "0": "issa",
       "future": {
         "few": "sa {0} sek. oħra",
-        "many": "sa {0} sek. oħra",
-        "one": "sa {0} sekondi oħra",
-        "other": "sa {0} sekondi oħra"
+        "many": "sa {0}-il sek. oħra",
+        "one": "sa sek. oħra",
+        "other": "sa {0} sek. oħra",
+        "two": "sa {0} sek. oħra"
       },
       "past": {
         "few": "{0} sek. ilu",
-        "many": "{0} sek. ilu",
+        "many": "{0}-il sek. ilu",
         "one": "sek. ilu",
-        "other": "{0} sek. ilu"
+        "other": "{0} sek. ilu",
+        "two": "{0} sek. ilu"
       }
     },
     "week": {
@@ -125016,15 +125116,17 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "il-ġimgħa d-dieħla",
       "future": {
         "few": "sa {0} ġimgħat oħra",
-        "many": "sa {0} ġimgħat oħra",
+        "many": "sa {0}-il ġimgħa oħra",
         "one": "sa ġimgħa oħra",
-        "other": "sa {0} ġimgħat oħra"
+        "other": "sa {0} ġimgħa oħra",
+        "two": "sa ġimagħtejn oħra"
       },
       "past": {
         "few": "{0} ġimgħat ilu",
-        "many": "{0} ġimgħat ilu",
+        "many": "{0}-il ġimgħa ilu",
         "one": "ġimgħa ilu",
-        "other": "{0} ġimgħat ilu"
+        "other": "{0} ġimgħa ilu",
+        "two": "ġimagħtejn ilu"
       }
     },
     "week-narrow": {
@@ -125033,15 +125135,17 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "il-ġimgħa d-dieħla",
       "future": {
         "few": "sa {0} ġimgħat oħra",
-        "many": "sa {0} ġimgħat oħra",
+        "many": "sa {0}-il ġimgħa oħra",
         "one": "sa ġimgħa oħra",
-        "other": "sa {0} ġimgħat oħra"
+        "other": "sa {0} ġimgħa oħra",
+        "two": "sa ġimagħtejn oħra"
       },
       "past": {
         "few": "{0} ġimgħat ilu",
-        "many": "{0} ġimgħat ilu",
+        "many": "{0}-il ġimgħa ilu",
         "one": "ġimgħa ilu",
-        "other": "{0} ġimgħat ilu"
+        "other": "{0} ġimgħa ilu",
+        "two": "ġimagħtejn ilu"
       }
     },
     "week-short": {
@@ -125050,15 +125154,17 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "il-ġimgħa d-dieħla",
       "future": {
         "few": "sa {0} ġimgħat oħra",
-        "many": "sa {0} ġimgħat oħra",
+        "many": "sa {0}-il ġimgħa oħra",
         "one": "sa ġimgħa oħra",
-        "other": "+{0} w"
+        "other": "sa {0} ġimgħa oħra",
+        "two": "sa ġimagħtejn oħra"
       },
       "past": {
         "few": "{0} ġimgħat ilu",
-        "many": "{0} ġimgħat ilu",
+        "many": "{0}-il ġimgħa ilu",
         "one": "ġimgħa ilu",
-        "other": "{0} ġimgħat ilu"
+        "other": "{0} ġimgħa ilu",
+        "two": "ġimagħtejn ilu"
       }
     },
     "year": {
@@ -125067,15 +125173,17 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "is-sena d-dieħla",
       "future": {
         "few": "fi żmien {0} snin oħra",
-        "many": "fi żmien {0} snin oħra",
+        "many": "fi żmien {0}-il sena oħra",
         "one": "fi żmien sena",
-        "other": "fi żmien {0} snin oħra"
+        "other": "fi żmien {0} sena oħra",
+        "two": "fi żmien sentejn oħra"
       },
       "past": {
         "few": "{0} snin ilu",
-        "many": "{0} snin ilu",
+        "many": "{0}-il sena ilu",
         "one": "sena ilu",
-        "other": "{0} snin ilu"
+        "other": "{0} sena ilu",
+        "two": "sentejn ilu"
       }
     },
     "year-narrow": {
@@ -125084,15 +125192,17 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "is-sena d-dieħla",
       "future": {
         "few": "fi żmien {0} snin oħra",
-        "many": "fi żmien {0} snin oħra",
+        "many": "fi żmien {0}-il sena oħra",
         "one": "fi żmien sena",
-        "other": "fi żmien {0} snin oħra"
+        "other": "fi żmien {0} sena oħra",
+        "two": "fi żmien sentejn oħra"
       },
       "past": {
         "few": "{0} snin ilu",
-        "many": "{0} snin ilu",
+        "many": "{0}-il sena ilu",
         "one": "sena ilu",
-        "other": "{0} snin ilu"
+        "other": "{0} sena ilu",
+        "two": "sentejn ilu"
       }
     },
     "year-short": {
@@ -125101,15 +125211,17 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "is-sena d-dieħla",
       "future": {
         "few": "fi żmien {0} snin oħra",
-        "many": "fi żmien {0} snin oħra",
+        "many": "fi żmien {0}-il sena oħra",
         "one": "fi żmien sena",
-        "other": "fi żmien {0} snin oħra"
+        "other": "fi żmien {0} sena oħra",
+        "two": "fi żmien sentejn oħra"
       },
       "past": {
         "few": "{0} snin ilu",
-        "many": "{0} snin ilu",
+        "many": "{0}-il sena ilu",
         "one": "sa sena ilu",
-        "other": "{0} snin ilu"
+        "other": "{0} sena ilu",
+        "two": "sentejn ilu"
       }
     }
   },
@@ -128305,11 +128417,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "volgend kwartaal",
       "future": {
         "one": "over {0} kw.",
-        "other": "over {0} kwartalen"
+        "other": "over {0} kw."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kw. geleden",
+        "other": "{0} kw. geleden"
       }
     },
     "quarter-short": {
@@ -128317,12 +128429,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "dit kwartaal",
       "1": "volgend kwartaal",
       "future": {
-        "one": "over {0} kwartaal",
-        "other": "over {0} kwartalen"
+        "one": "over {0} kwart.",
+        "other": "over {0} kwart."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kwart. geleden",
+        "other": "{0} kwart. geleden"
       }
     },
     "second": {
@@ -128613,11 +128725,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "volgend kwartaal",
       "future": {
         "one": "over {0} kw.",
-        "other": "over {0} kwartalen"
+        "other": "over {0} kw."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kw. geleden",
+        "other": "{0} kw. geleden"
       }
     },
     "quarter-short": {
@@ -128625,12 +128737,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "dit kwartaal",
       "1": "volgend kwartaal",
       "future": {
-        "one": "over {0} kwartaal",
-        "other": "over {0} kwartalen"
+        "one": "over {0} kwart.",
+        "other": "over {0} kwart."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kwart. geleden",
+        "other": "{0} kwart. geleden"
       }
     },
     "second": {
@@ -128921,11 +129033,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "volgend kwartaal",
       "future": {
         "one": "over {0} kw.",
-        "other": "over {0} kwartalen"
+        "other": "over {0} kw."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kw. geleden",
+        "other": "{0} kw. geleden"
       }
     },
     "quarter-short": {
@@ -128933,12 +129045,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "dit kwartaal",
       "1": "volgend kwartaal",
       "future": {
-        "one": "over {0} kwartaal",
-        "other": "over {0} kwartalen"
+        "one": "over {0} kwart.",
+        "other": "over {0} kwart."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kwart. geleden",
+        "other": "{0} kwart. geleden"
       }
     },
     "second": {
@@ -129229,11 +129341,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "volgend kwartaal",
       "future": {
         "one": "over {0} kw.",
-        "other": "over {0} kwartalen"
+        "other": "over {0} kw."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kw. geleden",
+        "other": "{0} kw. geleden"
       }
     },
     "quarter-short": {
@@ -129241,12 +129353,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "dit kwartaal",
       "1": "volgend kwartaal",
       "future": {
-        "one": "over {0} kwartaal",
-        "other": "over {0} kwartalen"
+        "one": "over {0} kwart.",
+        "other": "over {0} kwart."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kwart. geleden",
+        "other": "{0} kwart. geleden"
       }
     },
     "second": {
@@ -129537,11 +129649,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "volgend kwartaal",
       "future": {
         "one": "over {0} kw.",
-        "other": "over {0} kwartalen"
+        "other": "over {0} kw."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kw. geleden",
+        "other": "{0} kw. geleden"
       }
     },
     "quarter-short": {
@@ -129549,12 +129661,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "dit kwartaal",
       "1": "volgend kwartaal",
       "future": {
-        "one": "over {0} kwartaal",
-        "other": "over {0} kwartalen"
+        "one": "over {0} kwart.",
+        "other": "over {0} kwart."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kwart. geleden",
+        "other": "{0} kwart. geleden"
       }
     },
     "second": {
@@ -129845,11 +129957,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "volgend kwartaal",
       "future": {
         "one": "over {0} kw.",
-        "other": "over {0} kwartalen"
+        "other": "over {0} kw."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kw. geleden",
+        "other": "{0} kw. geleden"
       }
     },
     "quarter-short": {
@@ -129857,12 +129969,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "dit kwartaal",
       "1": "volgend kwartaal",
       "future": {
-        "one": "over {0} kwartaal",
-        "other": "over {0} kwartalen"
+        "one": "over {0} kwart.",
+        "other": "over {0} kwart."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kwart. geleden",
+        "other": "{0} kwart. geleden"
       }
     },
     "second": {
@@ -130153,11 +130265,11 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "1": "volgend kwartaal",
       "future": {
         "one": "over {0} kw.",
-        "other": "over {0} kwartalen"
+        "other": "over {0} kw."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kw. geleden",
+        "other": "{0} kw. geleden"
       }
     },
     "quarter-short": {
@@ -130165,12 +130277,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       "0": "dit kwartaal",
       "1": "volgend kwartaal",
       "future": {
-        "one": "over {0} kwartaal",
-        "other": "over {0} kwartalen"
+        "one": "over {0} kwart.",
+        "other": "over {0} kwart."
       },
       "past": {
-        "one": "{0} kwartaal geleden",
-        "other": "{0} kwartalen geleden"
+        "one": "{0} kwart. geleden",
+        "other": "{0} kwart. geleden"
       }
     },
     "second": {
@@ -132657,7 +132769,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
         "other": "{0} ସପ୍ତାହରେ"
       },
       "past": {
-        "one": "{0} ସପ୍ତାହରେ",
+        "one": "{0} ସପ୍ତାହ ପୂର୍ବେ",
         "other": "{0} ସପ୍ତାହ ପୂର୍ବେ"
       }
     },
@@ -153571,48 +153683,48 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week": {
-      "-1": "претходне недеље",
-      "0": "ове недјеље",
-      "1": "наредне недеље",
+      "-1": "прошле седмице",
+      "0": "ове седмице",
+      "1": "сљедеће седмице",
       "future": {
-        "few": "за {0} недјеље",
-        "one": "за {0} недјељу",
-        "other": "за {0} недјеља"
+        "few": "за {0} седмице",
+        "one": "за {0} седмицу",
+        "other": "за {0} седмица"
       },
       "past": {
-        "few": "прије {0} недјеље",
-        "one": "прије {0} недјеље",
-        "other": "прије {0} недјеља"
+        "few": "прије {0} седмице",
+        "one": "прије {0} седмице",
+        "other": "прије {0} седмица"
       }
     },
     "week-narrow": {
-      "-1": "прошле н.",
-      "0": "ове н.",
-      "1": "сљедеће н.",
+      "-1": "прошле с.",
+      "0": "ове с.",
+      "1": "сљедеће с.",
       "future": {
-        "few": "за {0} н.",
-        "one": "за {0} н.",
-        "other": "за {0} н."
+        "few": "за {0} с.",
+        "one": "за {0} с.",
+        "other": "за {0} с."
       },
       "past": {
-        "few": "прије {0} н.",
-        "one": "прије {0} н.",
-        "other": "прије {0} н."
+        "few": "прије {0} с.",
+        "one": "прије {0} с.",
+        "other": "прије {0} с."
       }
     },
     "week-short": {
-      "-1": "прошле нед.",
-      "0": "ове нед.",
-      "1": "следеће нед.",
+      "-1": "прошле седм.",
+      "0": "ове седм.",
+      "1": "сљедеће седм.",
       "future": {
-        "few": "за {0} нед.",
-        "one": "за {0} нед.",
-        "other": "за {0} нед."
+        "few": "за {0} седм.",
+        "one": "за {0} седм.",
+        "other": "за {0} седм."
       },
       "past": {
-        "few": "прије {0} нед.",
-        "one": "прије {0} нед.",
-        "other": "прије {0} нед."
+        "few": "прије {0} седм.",
+        "one": "прије {0} седм.",
+        "other": "прије {0} седм."
       }
     },
     "year": {
@@ -154995,48 +155107,48 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week": {
-      "-1": "prethodne nedelje",
-      "0": "ove nedjelje",
-      "1": "naredne nedelje",
+      "-1": "prošle sedmice",
+      "0": "ove sedmice",
+      "1": "sljedeće sedmice",
       "future": {
-        "few": "za {0} nedjelje",
-        "one": "za {0} nedjelju",
-        "other": "za {0} nedjelja"
+        "few": "za {0} sedmice",
+        "one": "za {0} sedmicu",
+        "other": "za {0} sedmica"
       },
       "past": {
-        "few": "prije {0} nedjelje",
-        "one": "prije {0} nedjelje",
-        "other": "prije {0} nedjelja"
+        "few": "prije {0} sedmice",
+        "one": "prije {0} sedmice",
+        "other": "prije {0} sedmica"
       }
     },
     "week-narrow": {
-      "-1": "prošle n.",
-      "0": "ove n.",
-      "1": "sljedeće n.",
+      "-1": "prošle s.",
+      "0": "ove s.",
+      "1": "sljedeće s.",
       "future": {
-        "few": "za {0} n.",
-        "one": "za {0} n.",
-        "other": "za {0} n."
+        "few": "za {0} s.",
+        "one": "za {0} s.",
+        "other": "za {0} s."
       },
       "past": {
-        "few": "prije {0} n.",
-        "one": "prije {0} n.",
-        "other": "prije {0} n."
+        "few": "prije {0} s.",
+        "one": "prije {0} s.",
+        "other": "prije {0} s."
       }
     },
     "week-short": {
-      "-1": "prošle ned.",
-      "0": "ove ned.",
-      "1": "sledeće ned.",
+      "-1": "prošle sedm.",
+      "0": "ove sedm.",
+      "1": "sljedeće sedm.",
       "future": {
-        "few": "za {0} ned.",
-        "one": "za {0} ned.",
-        "other": "za {0} ned."
+        "few": "za {0} sedm.",
+        "one": "za {0} sedm.",
+        "other": "za {0} sedm."
       },
       "past": {
-        "few": "prije {0} ned.",
-        "one": "prije {0} ned.",
-        "other": "prije {0} ned."
+        "few": "prije {0} sedm.",
+        "one": "prije {0} sedm.",
+        "other": "prije {0} sedm."
       }
     },
     "year": {
@@ -164611,10 +164723,10 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
         "other": "за {0} д."
       },
       "past": {
-        "few": "-{0} дн.",
-        "many": "-{0} дн.",
-        "one": "{0} д. тому",
-        "other": "-{0} дн."
+        "few": "{0} дн. тому",
+        "many": "{0} дн. тому",
+        "one": "{0} дн. тому",
+        "other": "{0} дн. тому"
       }
     },
     "day-short": {
@@ -168840,9 +168952,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
 {
   "data": {
     "day": {
-      "-1": "yesterday",
-      "0": "today",
-      "1": "tomorrow",
+      "-1": "izolo",
+      "0": "namhlanje",
+      "1": "ngomso",
       "future": {
         "other": "+{0} d"
       },
@@ -168851,9 +168963,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "day-narrow": {
-      "-1": "yesterday",
-      "0": "today",
-      "1": "tomorrow",
+      "-1": "izolo",
+      "0": "namhlanje",
+      "1": "ngomso",
       "future": {
         "other": "+{0} d"
       },
@@ -168862,9 +168974,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "day-short": {
-      "-1": "yesterday",
-      "0": "today",
-      "1": "tomorrow",
+      "-1": "izolo",
+      "0": "namhlanje",
+      "1": "ngomso",
       "future": {
         "other": "+{0} d"
       },
@@ -168927,9 +169039,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "inyanga ephelileyo",
+      "0": "kule nyanga",
+      "1": "kwinyanga ezayo",
       "future": {
         "other": "+{0} m"
       },
@@ -168938,9 +169050,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month-narrow": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "inya ephel.",
+      "0": "kule nya.",
+      "1": "kwinya eza.",
       "future": {
         "other": "+{0} m"
       },
@@ -168949,9 +169061,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "month-short": {
-      "-1": "last month",
-      "0": "this month",
-      "1": "next month",
+      "-1": "inyanga ephel.",
+      "0": "kule nya.",
+      "1": "kwinyanga eza.",
       "future": {
         "other": "+{0} m"
       },
@@ -169023,9 +169135,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "kwiveki ephelileyo",
+      "0": "ku;e veki",
+      "1": "kwiveki ezayo",
       "future": {
         "other": "+{0} w"
       },
@@ -169034,9 +169146,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week-narrow": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "veki ephel.",
+      "0": "kule vek.",
+      "1": "veki eza.",
       "future": {
         "other": "+{0} w"
       },
@@ -169045,9 +169157,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "week-short": {
-      "-1": "last week",
-      "0": "this week",
-      "1": "next week",
+      "-1": "vek ephel.",
+      "0": "kule vek.",
+      "1": "vek eza.",
       "future": {
         "other": "+{0} w"
       },
@@ -169056,9 +169168,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "unyaka ophelileyo",
+      "0": "kulo nyaka",
+      "1": "kunyaka ozayo",
       "future": {
         "other": "+{0} y"
       },
@@ -169067,9 +169179,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year-narrow": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "unyaka ophel.",
+      "0": "kulo nyak.",
+      "1": "unyak oza.",
       "future": {
         "other": "+{0} y"
       },
@@ -169078,9 +169190,9 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
       }
     },
     "year-short": {
-      "-1": "last year",
-      "0": "this year",
-      "1": "next year",
+      "-1": "unyaka ophel.",
+      "0": "kulo nyak.",
+      "1": "kunyak oza.",
       "future": {
         "other": "+{0} y"
       },
