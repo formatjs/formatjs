@@ -200,8 +200,8 @@ importers:
         specifier: '40'
         version: 40.0.0
       cldr-dates-full:
-        specifier: '40'
-        version: 40.0.0(cldr-numbers-full@40.0.0)
+        specifier: '43'
+        version: 43.1.0(cldr-numbers-full@40.0.0)
       cldr-localenames-full:
         specifier: '40'
         version: 40.0.0(cldr-core@40.0.0)
@@ -8179,10 +8179,10 @@ packages:
     resolution: {integrity: sha512-0nmiOR9I2ImfspRTvFhzF7uXYtVCnHMYULrIncArrsnICUxNnZVEJ6pHPRUtB3J8i4VkwQQMRcs9yl4+wxVP4g==}
     dev: true
 
-  /cldr-dates-full@40.0.0(cldr-numbers-full@40.0.0):
-    resolution: {integrity: sha512-AqsXdzaga/kN2+Gbtj72ztWjFG+JdnZd2Yu5SNZb7ZwWR6zESGXOdymPaR3phKosIpsNrDsye1RQC33pv+fOAw==}
+  /cldr-dates-full@43.1.0(cldr-numbers-full@40.0.0):
+    resolution: {integrity: sha512-KJgVDc08AWF1DqKbg2Yew3aomktLI/CnbnJgXDDpstWOi7yAzLKhG4xSeWMcx54RGmS4s+mZNSK7cZLfqBQRzA==}
     peerDependencies:
-      cldr-numbers-full: 40.0.0
+      cldr-numbers-full: 43.1.0
     dependencies:
       cldr-numbers-full: 40.0.0(cldr-core@40.0.0)
     dev: true
