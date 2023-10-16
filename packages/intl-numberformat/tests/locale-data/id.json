@@ -29,13 +29,6 @@
         "narrow": "؋",
         "symbol": "AFN"
       },
-      "ALK": {
-        "displayName": {
-          "other": "ALK"
-        },
-        "narrow": "ALK",
-        "symbol": "ALK"
-      },
       "ALL": {
         "displayName": {
           "other": "Lek Albania"
@@ -462,13 +455,6 @@
         },
         "narrow": "CNH",
         "symbol": "CNH"
-      },
-      "CNX": {
-        "displayName": {
-          "other": "CNX"
-        },
-        "narrow": "CNX",
-        "symbol": "CNX"
       },
       "CNY": {
         "displayName": {
@@ -1807,13 +1793,6 @@
         "narrow": "$",
         "symbol": "UYU"
       },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
-      },
       "UZS": {
         "displayName": {
           "other": "Som Uzbekistan"
@@ -1989,26 +1968,12 @@
         "narrow": "XRE",
         "symbol": "XRE"
       },
-      "XSU": {
-        "displayName": {
-          "other": "XSU"
-        },
-        "narrow": "XSU",
-        "symbol": "XSU"
-      },
       "XTS": {
         "displayName": {
           "other": "Kode Mata Uang Pengujian"
         },
         "narrow": "XTS",
         "symbol": "XTS"
-      },
-      "XUA": {
-        "displayName": {
-          "other": "XUA"
-        },
-        "narrow": "XUA",
-        "symbol": "XUA"
       },
       "XXX": {
         "displayName": {

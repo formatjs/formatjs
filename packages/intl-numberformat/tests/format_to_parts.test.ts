@@ -90,9 +90,13 @@ it('formats currency where the number precedes the symbol', () => {
   const data = require('./locale-data/ar-SS.json').data
   const pl = new Intl.PluralRules('ar-SS')
   const n = {...baseNumberResult, formattedString: '12', roundedNumber: 12}
-  expect(format(n, data, pl, options)).toEqual('١٢\xa0US$')
-  expect(format({...n, sign: -1}, data, pl, options)).toEqual('؜-١٢\xa0US$')
-  expect(format({...n, sign: 1}, data, pl, options)).toEqual('؜+١٢\xa0US$')
+  expect(format(n, data, pl, options)).toEqual('\u200F١٢\xa0US$')
+  expect(format({...n, sign: -1}, data, pl, options)).toEqual(
+    '\u061C-\u200F١٢\xa0US$'
+  )
+  expect(format({...n, sign: 1}, data, pl, options)).toEqual(
+    '\u061C+\u200F١٢\xa0US$'
+  )
 })
 
 // For ja locale, there is a non-breaking whitespace between currency's non-symbol character

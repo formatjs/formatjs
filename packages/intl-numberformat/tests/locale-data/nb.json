@@ -2056,13 +2056,6 @@
         "narrow": "$",
         "symbol": "UYU"
       },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
-      },
       "UZS": {
         "displayName": {
           "one": "usbekisk som",
@@ -2601,6 +2594,7 @@
             "other": "{0} bit"
           },
           "narrow": {
+            "one": "{0}bit",
             "other": "{0} bit"
           },
           "perUnit": {
@@ -2614,6 +2608,7 @@
             "other": "{0} byte"
           },
           "narrow": {
+            "one": "{0}B",
             "other": "{0} B"
           },
           "perUnit": {
@@ -2747,6 +2742,7 @@
             "other": "{0} gigabit"
           },
           "narrow": {
+            "one": "{0}Gb",
             "other": "{0} Gb"
           },
           "perUnit": {
@@ -2760,6 +2756,7 @@
             "other": "{0} gigabyte"
           },
           "narrow": {
+            "one": "{0}GB",
             "other": "{0} GB"
           },
           "perUnit": {
@@ -2837,6 +2834,7 @@
             "other": "{0} kilobit"
           },
           "narrow": {
+            "one": "{0}kb",
             "other": "{0} kb"
           },
           "perUnit": {
@@ -2850,6 +2848,7 @@
             "other": "{0} kilobyte"
           },
           "narrow": {
+            "one": "{0}kB",
             "other": "{0} kB"
           },
           "perUnit": {
@@ -2937,6 +2936,7 @@
             "other": "{0} megabit"
           },
           "narrow": {
+            "one": "{0}Mb",
             "other": "{0} Mb"
           },
           "perUnit": {
@@ -2950,6 +2950,7 @@
             "other": "{0} megabyte"
           },
           "narrow": {
+            "one": "{0}MB",
             "other": "{0} MB"
           },
           "perUnit": {
@@ -3049,6 +3050,7 @@
             "other": "{0} milliliter"
           },
           "narrow": {
+            "one": "{0}ml",
             "other": "{0} ml"
           },
           "perUnit": {
@@ -3124,8 +3126,7 @@
             "other": "{0} unser"
           },
           "narrow": {
-            "one": "{0} unse",
-            "other": "{0} unser"
+            "other": "{0}oz"
           },
           "perUnit": {
             "long": "{0} per unse",
@@ -3155,7 +3156,7 @@
             "other": "{0} petabyte"
           },
           "narrow": {
-            "other": "{0} PB"
+            "other": "{0}PB"
           },
           "perUnit": {
           },
@@ -3214,6 +3215,7 @@
             "other": "{0} terabit"
           },
           "narrow": {
+            "one": "{0}Tb",
             "other": "{0} Tb"
           },
           "perUnit": {
@@ -3227,6 +3229,7 @@
             "other": "{0} terabyte"
           },
           "narrow": {
+            "one": "{0}TB",
             "other": "{0} TB"
           },
           "perUnit": {

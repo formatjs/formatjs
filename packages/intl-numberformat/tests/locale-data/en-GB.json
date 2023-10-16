@@ -1628,8 +1628,8 @@
       },
       "QAR": {
         "displayName": {
-          "one": "Qatari rial",
-          "other": "Qatari rials"
+          "one": "Qatari riyal",
+          "other": "Qatari riyals"
         },
         "narrow": "QAR",
         "symbol": "QAR"
@@ -1778,10 +1778,18 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "one": "Sierra Leonean leone",
           "other": "Sierra Leonean leones"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "one": "Sierra Leonean leone (1964—2022)",
+          "other": "Sierra Leonean leones (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -2068,6 +2076,14 @@
         },
         "narrow": "VEB",
         "symbol": "VEB"
+      },
+      "VED": {
+        "displayName": {
+          "one": "Bolívar Soberano",
+          "other": "Bolívar Soberanos"
+        },
+        "narrow": "VED",
+        "symbol": "VED"
       },
       "VEF": {
         "displayName": {
@@ -2693,7 +2709,7 @@
             "other": "{0} US fluid ounces"
           },
           "narrow": {
-            "other": "{0}fl oz"
+            "other": "{0}US fl oz"
           },
           "perUnit": {
           },

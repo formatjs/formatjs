@@ -692,7 +692,7 @@
       },
       "GBP": {
         "displayName": {
-          "other": "Brits pond"
+          "other": "Britse pond"
         },
         "narrow": "£",
         "symbol": "£"
@@ -1576,9 +1576,16 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
+      "SLE": {
+        "displayName": {
+          "other": "Sierra Leoonse leone"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
       "SLL": {
         "displayName": {
-          "other": "Sierraleoonse leone"
+          "other": "Sierraleoonse leone (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1834,6 +1841,14 @@
         },
         "narrow": "VEB",
         "symbol": "VEB"
+      },
+      "VED": {
+        "displayName": {
+          "one": "Bolívar Soberano",
+          "other": "Bolívar Soberanos"
+        },
+        "narrow": "VED",
+        "symbol": "VED"
       },
       "VEF": {
         "displayName": {
@@ -2546,7 +2561,7 @@
             "other": "{0} inches"
           },
           "narrow": {
-            "other": "{0}\\\""
+            "other": "{0}″"
           },
           "perUnit": {
             "long": "{0} per inch",

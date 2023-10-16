@@ -29,13 +29,6 @@
         "narrow": "؋",
         "symbol": "AFN"
       },
-      "ALK": {
-        "displayName": {
-          "other": "ALK"
-        },
-        "narrow": "ALK",
-        "symbol": "ALK"
-      },
       "ALL": {
         "displayName": {
           "other": "알바니아 레크"
@@ -269,7 +262,7 @@
       },
       "BOB": {
         "displayName": {
-          "other": "볼리비아노"
+          "other": "볼리비아 볼리비아노"
         },
         "narrow": "Bs",
         "symbol": "BOB"
@@ -367,7 +360,7 @@
       },
       "BWP": {
         "displayName": {
-          "other": "보츠와나 폴라"
+          "other": "보츠와나 풀라"
         },
         "narrow": "P",
         "symbol": "BWP"
@@ -409,7 +402,7 @@
       },
       "CDF": {
         "displayName": {
-          "other": "콩고 프랑 콩골라스"
+          "other": "콩고 프랑"
         },
         "narrow": "CDF",
         "symbol": "CDF"
@@ -462,13 +455,6 @@
         },
         "narrow": "CNH",
         "symbol": "CNH"
-      },
-      "CNX": {
-        "displayName": {
-          "other": "CNX"
-        },
-        "narrow": "CNX",
-        "symbol": "CNX"
       },
       "CNY": {
         "displayName": {
@@ -542,7 +528,7 @@
       },
       "CZK": {
         "displayName": {
-          "other": "체코 공화국 코루나"
+          "other": "체코 코루나"
         },
         "narrow": "Kč",
         "symbol": "CZK"
@@ -717,7 +703,7 @@
       },
       "GHS": {
         "displayName": {
-          "other": "가나 시디"
+          "other": "가나 세디"
         },
         "narrow": "GH₵",
         "symbol": "GHS"
@@ -822,7 +808,7 @@
       },
       "HTG": {
         "displayName": {
-          "other": "하이티 구르드"
+          "other": "아이티 구르드"
         },
         "narrow": "HTG",
         "symbol": "HTG"
@@ -855,13 +841,6 @@
         "narrow": "ILP",
         "symbol": "ILP"
       },
-      "ILR": {
-        "displayName": {
-          "other": "ILR"
-        },
-        "narrow": "ILR",
-        "symbol": "ILR"
-      },
       "ILS": {
         "displayName": {
           "other": "이스라엘 신권 세켈"
@@ -889,13 +868,6 @@
         },
         "narrow": "IRR",
         "symbol": "IRR"
-      },
-      "ISJ": {
-        "displayName": {
-          "other": "ISJ"
-        },
-        "narrow": "ISJ",
-        "symbol": "ISJ"
       },
       "ISK": {
         "displayName": {
@@ -948,7 +920,7 @@
       },
       "KHR": {
         "displayName": {
-          "other": "캄보디아 리얄"
+          "other": "캄보디아 리엘"
         },
         "narrow": "៛",
         "symbol": "KHR"
@@ -974,13 +946,6 @@
         "narrow": "KRH",
         "symbol": "KRH"
       },
-      "KRO": {
-        "displayName": {
-          "other": "KRO"
-        },
-        "narrow": "KRO",
-        "symbol": "KRO"
-      },
       "KRW": {
         "displayName": {
           "other": "대한민국 원"
@@ -1004,7 +969,7 @@
       },
       "KZT": {
         "displayName": {
-          "other": "카자흐스탄 텐게"
+          "other": "카자흐스탄 텡게"
         },
         "narrow": "₸",
         "symbol": "KZT"
@@ -1102,7 +1067,7 @@
       },
       "MAD": {
         "displayName": {
-          "other": "모로코 디렘"
+          "other": "모로코 디르함"
         },
         "narrow": "MAD",
         "symbol": "MAD"
@@ -1155,13 +1120,6 @@
         },
         "narrow": "MKD",
         "symbol": "MKD"
-      },
-      "MKN": {
-        "displayName": {
-          "other": "MKN"
-        },
-        "narrow": "MKN",
-        "symbol": "MKN"
       },
       "MLF": {
         "displayName": {
@@ -1226,13 +1184,6 @@
         "narrow": "Rs",
         "symbol": "MUR"
       },
-      "MVP": {
-        "displayName": {
-          "other": "MVP"
-        },
-        "narrow": "MVP",
-        "symbol": "MVP"
-      },
       "MVR": {
         "displayName": {
           "other": "몰디브 제도 루피아"
@@ -1242,7 +1193,7 @@
       },
       "MWK": {
         "displayName": {
-          "other": "말라위 콰쳐"
+          "other": "말라위 콰차"
         },
         "narrow": "MWK",
         "symbol": "MWK"
@@ -1305,21 +1256,21 @@
       },
       "NGN": {
         "displayName": {
-          "other": "니제르 나이라"
+          "other": "나이지리아 나이라"
         },
         "narrow": "₦",
         "symbol": "NGN"
       },
       "NIC": {
         "displayName": {
-          "other": "니카라과 코르도바"
+          "other": "니카라과 코르도바 오로(1988~1991)"
         },
         "narrow": "NIC",
         "symbol": "NIC"
       },
       "NIO": {
         "displayName": {
-          "other": "니카라과 코르도바 오로"
+          "other": "니카라과 코르도바"
         },
         "narrow": "C$",
         "symbol": "NIO"
@@ -1354,7 +1305,7 @@
       },
       "OMR": {
         "displayName": {
-          "other": "오만 리얄"
+          "other": "오만 리알"
         },
         "narrow": "OMR",
         "symbol": "OMR"
@@ -1410,7 +1361,7 @@
       },
       "PLN": {
         "displayName": {
-          "other": "폴란드 즐로티"
+          "other": "폴란드 즈워티"
         },
         "narrow": "zł",
         "symbol": "PLN"
@@ -1543,7 +1494,7 @@
       },
       "SGD": {
         "displayName": {
-          "other": "싱가폴 달러"
+          "other": "싱가포르 달러"
         },
         "narrow": "$",
         "symbol": "SGD"
@@ -1704,14 +1655,14 @@
       },
       "TRL": {
         "displayName": {
-          "other": "터키 리라"
+          "other": "터키 리라(1922~2005)"
         },
         "narrow": "TRL",
         "symbol": "TRL"
       },
       "TRY": {
         "displayName": {
-          "other": "신 터키 리라"
+          "other": "터키 리라"
         },
         "narrow": "₺",
         "symbol": "TRY"
@@ -1802,17 +1753,10 @@
       },
       "UYU": {
         "displayName": {
-          "other": "우루과이 페소 우루과요"
+          "other": "우루과이 페소"
         },
         "narrow": "$",
         "symbol": "UYU"
-      },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
       },
       "UZS": {
         "displayName": {
@@ -1989,26 +1933,12 @@
         "narrow": "XRE",
         "symbol": "XRE"
       },
-      "XSU": {
-        "displayName": {
-          "other": "XSU"
-        },
-        "narrow": "XSU",
-        "symbol": "XSU"
-      },
       "XTS": {
         "displayName": {
           "other": "테스트 통화 코드"
         },
         "narrow": "XTS",
         "symbol": "XTS"
-      },
-      "XUA": {
-        "displayName": {
-          "other": "XUA"
-        },
-        "narrow": "XUA",
-        "symbol": "XUA"
       },
       "XXX": {
         "displayName": {
@@ -2052,13 +1982,6 @@
         "narrow": "YUN",
         "symbol": "YUN"
       },
-      "YUR": {
-        "displayName": {
-          "other": "YUR"
-        },
-        "narrow": "YUR",
-        "symbol": "YUR"
-      },
       "ZAL": {
         "displayName": {
           "other": "남아프리카 랜드 (금융)"
@@ -2082,7 +2005,7 @@
       },
       "ZMW": {
         "displayName": {
-          "other": "잠비아 콰쳐"
+          "other": "잠비아 콰차"
         },
         "narrow": "ZK",
         "symbol": "ZMW"

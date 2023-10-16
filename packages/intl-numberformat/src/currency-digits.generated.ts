@@ -49,6 +49,7 @@ export const currencyDigitsData: Record<string, number> = {
   "RSD": 0,
   "RWF": 0,
   "SEK": 2,
+  "SLE": 2,
   "SLL": 0,
   "SOS": 0,
   "STD": 0,

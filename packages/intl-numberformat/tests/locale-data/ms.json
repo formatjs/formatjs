@@ -1,13 +1,6 @@
 {
   "data": {
     "currencies": {
-      "ADP": {
-        "displayName": {
-          "other": "ADP"
-        },
-        "narrow": "ADP",
-        "symbol": "ADP"
-      },
       "AED": {
         "displayName": {
           "other": "Dirham UAE"
@@ -15,26 +8,12 @@
         "narrow": "AED",
         "symbol": "AED"
       },
-      "AFA": {
-        "displayName": {
-          "other": "AFA"
-        },
-        "narrow": "AFA",
-        "symbol": "AFA"
-      },
       "AFN": {
         "displayName": {
           "other": "Afghani Afghanistan"
         },
         "narrow": "؋",
         "symbol": "AFN"
-      },
-      "ALK": {
-        "displayName": {
-          "other": "ALK"
-        },
-        "narrow": "ALK",
-        "symbol": "ALK"
       },
       "ALL": {
         "displayName": {
@@ -64,68 +43,12 @@
         "narrow": "Kz",
         "symbol": "AOA"
       },
-      "AOK": {
-        "displayName": {
-          "other": "AOK"
-        },
-        "narrow": "AOK",
-        "symbol": "AOK"
-      },
-      "AON": {
-        "displayName": {
-          "other": "AON"
-        },
-        "narrow": "AON",
-        "symbol": "AON"
-      },
-      "AOR": {
-        "displayName": {
-          "other": "AOR"
-        },
-        "narrow": "AOR",
-        "symbol": "AOR"
-      },
-      "ARA": {
-        "displayName": {
-          "other": "ARA"
-        },
-        "narrow": "ARA",
-        "symbol": "ARA"
-      },
-      "ARL": {
-        "displayName": {
-          "other": "ARL"
-        },
-        "narrow": "ARL",
-        "symbol": "ARL"
-      },
-      "ARM": {
-        "displayName": {
-          "other": "ARM"
-        },
-        "narrow": "ARM",
-        "symbol": "ARM"
-      },
-      "ARP": {
-        "displayName": {
-          "other": "ARP"
-        },
-        "narrow": "ARP",
-        "symbol": "ARP"
-      },
       "ARS": {
         "displayName": {
           "other": "Peso Argentina"
         },
         "narrow": "$",
         "symbol": "ARS"
-      },
-      "ATS": {
-        "displayName": {
-          "other": "ATS"
-        },
-        "narrow": "ATS",
-        "symbol": "ATS"
       },
       "AUD": {
         "displayName": {
@@ -141,13 +64,6 @@
         "narrow": "AWG",
         "symbol": "AWG"
       },
-      "AZM": {
-        "displayName": {
-          "other": "AZM"
-        },
-        "narrow": "AZM",
-        "symbol": "AZM"
-      },
       "AZN": {
         "displayName": {
           "other": "Manat Azerbaijan"
@@ -155,26 +71,12 @@
         "narrow": "₼",
         "symbol": "AZN"
       },
-      "BAD": {
-        "displayName": {
-          "other": "BAD"
-        },
-        "narrow": "BAD",
-        "symbol": "BAD"
-      },
       "BAM": {
         "displayName": {
           "other": "Mark Boleh Tukar Bosnia-Herzegovina"
         },
         "narrow": "KM",
         "symbol": "BAM"
-      },
-      "BAN": {
-        "displayName": {
-          "other": "BAN"
-        },
-        "narrow": "BAN",
-        "symbol": "BAN"
       },
       "BBD": {
         "displayName": {
@@ -190,54 +92,12 @@
         "narrow": "৳",
         "symbol": "BDT"
       },
-      "BEC": {
-        "displayName": {
-          "other": "BEC"
-        },
-        "narrow": "BEC",
-        "symbol": "BEC"
-      },
-      "BEF": {
-        "displayName": {
-          "other": "BEF"
-        },
-        "narrow": "BEF",
-        "symbol": "BEF"
-      },
-      "BEL": {
-        "displayName": {
-          "other": "BEL"
-        },
-        "narrow": "BEL",
-        "symbol": "BEL"
-      },
-      "BGL": {
-        "displayName": {
-          "other": "BGL"
-        },
-        "narrow": "BGL",
-        "symbol": "BGL"
-      },
-      "BGM": {
-        "displayName": {
-          "other": "BGM"
-        },
-        "narrow": "BGM",
-        "symbol": "BGM"
-      },
       "BGN": {
         "displayName": {
           "other": "Lev Bulgaria"
         },
         "narrow": "BGN",
         "symbol": "BGN"
-      },
-      "BGO": {
-        "displayName": {
-          "other": "BGO"
-        },
-        "narrow": "BGO",
-        "symbol": "BGO"
       },
       "BHD": {
         "displayName": {
@@ -274,75 +134,12 @@
         "narrow": "Bs",
         "symbol": "BOB"
       },
-      "BOL": {
-        "displayName": {
-          "other": "BOL"
-        },
-        "narrow": "BOL",
-        "symbol": "BOL"
-      },
-      "BOP": {
-        "displayName": {
-          "other": "BOP"
-        },
-        "narrow": "BOP",
-        "symbol": "BOP"
-      },
-      "BOV": {
-        "displayName": {
-          "other": "BOV"
-        },
-        "narrow": "BOV",
-        "symbol": "BOV"
-      },
-      "BRB": {
-        "displayName": {
-          "other": "BRB"
-        },
-        "narrow": "BRB",
-        "symbol": "BRB"
-      },
-      "BRC": {
-        "displayName": {
-          "other": "BRC"
-        },
-        "narrow": "BRC",
-        "symbol": "BRC"
-      },
-      "BRE": {
-        "displayName": {
-          "other": "BRE"
-        },
-        "narrow": "BRE",
-        "symbol": "BRE"
-      },
       "BRL": {
         "displayName": {
           "other": "Real Brazil"
         },
         "narrow": "R$",
         "symbol": "R$"
-      },
-      "BRN": {
-        "displayName": {
-          "other": "BRN"
-        },
-        "narrow": "BRN",
-        "symbol": "BRN"
-      },
-      "BRR": {
-        "displayName": {
-          "other": "BRR"
-        },
-        "narrow": "BRR",
-        "symbol": "BRR"
-      },
-      "BRZ": {
-        "displayName": {
-          "other": "BRZ"
-        },
-        "narrow": "BRZ",
-        "symbol": "BRZ"
       },
       "BSD": {
         "displayName": {
@@ -358,13 +155,6 @@
         "narrow": "BTN",
         "symbol": "BTN"
       },
-      "BUK": {
-        "displayName": {
-          "other": "BUK"
-        },
-        "narrow": "BUK",
-        "symbol": "BUK"
-      },
       "BWP": {
         "displayName": {
           "other": "Pula Botswana"
@@ -372,23 +162,16 @@
         "narrow": "P",
         "symbol": "BWP"
       },
-      "BYB": {
-        "displayName": {
-          "other": "BYB"
-        },
-        "narrow": "BYB",
-        "symbol": "BYB"
-      },
       "BYN": {
         "displayName": {
-          "other": "rubel lama Belarus"
+          "other": "Rubel Belarus"
         },
         "narrow": "р.",
         "symbol": "BYN"
       },
       "BYR": {
         "displayName": {
-          "other": "Rubel Belarus"
+          "other": "Rubel Belarus (2000–2016)"
         },
         "narrow": "BYR",
         "symbol": "BYR"
@@ -414,40 +197,12 @@
         "narrow": "CDF",
         "symbol": "CDF"
       },
-      "CHE": {
-        "displayName": {
-          "other": "CHE"
-        },
-        "narrow": "CHE",
-        "symbol": "CHE"
-      },
       "CHF": {
         "displayName": {
           "other": "Franc Switzerland"
         },
         "narrow": "CHF",
         "symbol": "CHF"
-      },
-      "CHW": {
-        "displayName": {
-          "other": "CHW"
-        },
-        "narrow": "CHW",
-        "symbol": "CHW"
-      },
-      "CLE": {
-        "displayName": {
-          "other": "CLE"
-        },
-        "narrow": "CLE",
-        "symbol": "CLE"
-      },
-      "CLF": {
-        "displayName": {
-          "other": "CLF"
-        },
-        "narrow": "CLF",
-        "symbol": "CLF"
       },
       "CLP": {
         "displayName": {
@@ -463,13 +218,6 @@
         "narrow": "CNH",
         "symbol": "CNH"
       },
-      "CNX": {
-        "displayName": {
-          "other": "CNX"
-        },
-        "narrow": "CNX",
-        "symbol": "CNX"
-      },
       "CNY": {
         "displayName": {
           "other": "Yuan Cina"
@@ -484,33 +232,12 @@
         "narrow": "$",
         "symbol": "COP"
       },
-      "COU": {
-        "displayName": {
-          "other": "COU"
-        },
-        "narrow": "COU",
-        "symbol": "COU"
-      },
       "CRC": {
         "displayName": {
           "other": "Colon Costa Rica"
         },
         "narrow": "₡",
         "symbol": "CRC"
-      },
-      "CSD": {
-        "displayName": {
-          "other": "CSD"
-        },
-        "narrow": "CSD",
-        "symbol": "CSD"
-      },
-      "CSK": {
-        "displayName": {
-          "other": "CSK"
-        },
-        "narrow": "CSK",
-        "symbol": "CSK"
       },
       "CUC": {
         "displayName": {
@@ -533,33 +260,12 @@
         "narrow": "CVE",
         "symbol": "CVE"
       },
-      "CYP": {
-        "displayName": {
-          "other": "CYP"
-        },
-        "narrow": "CYP",
-        "symbol": "CYP"
-      },
       "CZK": {
         "displayName": {
           "other": "Koruna Republik Czech"
         },
         "narrow": "Kč",
         "symbol": "CZK"
-      },
-      "DDM": {
-        "displayName": {
-          "other": "DDM"
-        },
-        "narrow": "DDM",
-        "symbol": "DDM"
-      },
-      "DEM": {
-        "displayName": {
-          "other": "DEM"
-        },
-        "narrow": "DEM",
-        "symbol": "DEM"
       },
       "DJF": {
         "displayName": {
@@ -589,27 +295,6 @@
         "narrow": "DZD",
         "symbol": "DZD"
       },
-      "ECS": {
-        "displayName": {
-          "other": "ECS"
-        },
-        "narrow": "ECS",
-        "symbol": "ECS"
-      },
-      "ECV": {
-        "displayName": {
-          "other": "ECV"
-        },
-        "narrow": "ECV",
-        "symbol": "ECV"
-      },
-      "EEK": {
-        "displayName": {
-          "other": "EEK"
-        },
-        "narrow": "EEK",
-        "symbol": "EEK"
-      },
       "EGP": {
         "displayName": {
           "other": "Paun Mesir"
@@ -624,23 +309,8 @@
         "narrow": "ERN",
         "symbol": "ERN"
       },
-      "ESA": {
-        "displayName": {
-          "other": "ESA"
-        },
-        "narrow": "ESA",
-        "symbol": "ESA"
-      },
-      "ESB": {
-        "displayName": {
-          "other": "ESB"
-        },
-        "narrow": "ESB",
-        "symbol": "ESB"
-      },
       "ESP": {
         "displayName": {
-          "other": "ESP"
         },
         "narrow": "₧",
         "symbol": "ESP"
@@ -659,13 +329,6 @@
         "narrow": "€",
         "symbol": "€"
       },
-      "FIM": {
-        "displayName": {
-          "other": "FIM"
-        },
-        "narrow": "FIM",
-        "symbol": "FIM"
-      },
       "FJD": {
         "displayName": {
           "other": "Dolar Fiji"
@@ -680,13 +343,6 @@
         "narrow": "£",
         "symbol": "FKP"
       },
-      "FRF": {
-        "displayName": {
-          "other": "FRF"
-        },
-        "narrow": "FRF",
-        "symbol": "FRF"
-      },
       "GBP": {
         "displayName": {
           "other": "Paun British"
@@ -694,26 +350,12 @@
         "narrow": "£",
         "symbol": "£"
       },
-      "GEK": {
-        "displayName": {
-          "other": "GEK"
-        },
-        "narrow": "GEK",
-        "symbol": "GEK"
-      },
       "GEL": {
         "displayName": {
           "other": "Lari Georgia"
         },
         "narrow": "₾",
         "symbol": "GEL"
-      },
-      "GHC": {
-        "displayName": {
-          "other": "GHC"
-        },
-        "narrow": "GHC",
-        "symbol": "GHC"
       },
       "GHS": {
         "displayName": {
@@ -743,47 +385,12 @@
         "narrow": "FG",
         "symbol": "GNF"
       },
-      "GNS": {
-        "displayName": {
-          "other": "GNS"
-        },
-        "narrow": "GNS",
-        "symbol": "GNS"
-      },
-      "GQE": {
-        "displayName": {
-          "other": "GQE"
-        },
-        "narrow": "GQE",
-        "symbol": "GQE"
-      },
-      "GRD": {
-        "displayName": {
-          "other": "GRD"
-        },
-        "narrow": "GRD",
-        "symbol": "GRD"
-      },
       "GTQ": {
         "displayName": {
           "other": "Quetzal Guatemala"
         },
         "narrow": "Q",
         "symbol": "GTQ"
-      },
-      "GWE": {
-        "displayName": {
-          "other": "GWE"
-        },
-        "narrow": "GWE",
-        "symbol": "GWE"
-      },
-      "GWP": {
-        "displayName": {
-          "other": "GWP"
-        },
-        "narrow": "GWP",
-        "symbol": "GWP"
       },
       "GYD": {
         "displayName": {
@@ -805,13 +412,6 @@
         },
         "narrow": "L",
         "symbol": "HNL"
-      },
-      "HRD": {
-        "displayName": {
-          "other": "HRD"
-        },
-        "narrow": "HRD",
-        "symbol": "HRD"
       },
       "HRK": {
         "displayName": {
@@ -841,27 +441,6 @@
         "narrow": "Rp",
         "symbol": "IDR"
       },
-      "IEP": {
-        "displayName": {
-          "other": "IEP"
-        },
-        "narrow": "IEP",
-        "symbol": "IEP"
-      },
-      "ILP": {
-        "displayName": {
-          "other": "ILP"
-        },
-        "narrow": "ILP",
-        "symbol": "ILP"
-      },
-      "ILR": {
-        "displayName": {
-          "other": "ILR"
-        },
-        "narrow": "ILR",
-        "symbol": "ILR"
-      },
       "ILS": {
         "displayName": {
           "other": "Syekel baharu Israel"
@@ -890,26 +469,12 @@
         "narrow": "IRR",
         "symbol": "IRR"
       },
-      "ISJ": {
-        "displayName": {
-          "other": "ISJ"
-        },
-        "narrow": "ISJ",
-        "symbol": "ISJ"
-      },
       "ISK": {
         "displayName": {
           "other": "Krona Iceland"
         },
         "narrow": "kr",
         "symbol": "ISK"
-      },
-      "ITL": {
-        "displayName": {
-          "other": "ITL"
-        },
-        "narrow": "ITL",
-        "symbol": "ITL"
       },
       "JMD": {
         "displayName": {
@@ -966,20 +531,6 @@
         },
         "narrow": "₩",
         "symbol": "KPW"
-      },
-      "KRH": {
-        "displayName": {
-          "other": "KRH"
-        },
-        "narrow": "KRH",
-        "symbol": "KRH"
-      },
-      "KRO": {
-        "displayName": {
-          "other": "KRO"
-        },
-        "narrow": "KRO",
-        "symbol": "KRO"
       },
       "KRW": {
         "displayName": {
@@ -1051,47 +602,12 @@
         "narrow": "Lt",
         "symbol": "LTL"
       },
-      "LTT": {
-        "displayName": {
-          "other": "LTT"
-        },
-        "narrow": "LTT",
-        "symbol": "LTT"
-      },
-      "LUC": {
-        "displayName": {
-          "other": "LUC"
-        },
-        "narrow": "LUC",
-        "symbol": "LUC"
-      },
-      "LUF": {
-        "displayName": {
-          "other": "LUF"
-        },
-        "narrow": "LUF",
-        "symbol": "LUF"
-      },
-      "LUL": {
-        "displayName": {
-          "other": "LUL"
-        },
-        "narrow": "LUL",
-        "symbol": "LUL"
-      },
       "LVL": {
         "displayName": {
           "other": "Lats Latvia"
         },
         "narrow": "Ls",
         "symbol": "LVL"
-      },
-      "LVR": {
-        "displayName": {
-          "other": "LVR"
-        },
-        "narrow": "LVR",
-        "symbol": "LVR"
       },
       "LYD": {
         "displayName": {
@@ -1106,27 +622,6 @@
         },
         "narrow": "MAD",
         "symbol": "MAD"
-      },
-      "MAF": {
-        "displayName": {
-          "other": "MAF"
-        },
-        "narrow": "MAF",
-        "symbol": "MAF"
-      },
-      "MCF": {
-        "displayName": {
-          "other": "MCF"
-        },
-        "narrow": "MCF",
-        "symbol": "MCF"
-      },
-      "MDC": {
-        "displayName": {
-          "other": "MDC"
-        },
-        "narrow": "MDC",
-        "symbol": "MDC"
       },
       "MDL": {
         "displayName": {
@@ -1155,20 +650,6 @@
         },
         "narrow": "MKD",
         "symbol": "MKD"
-      },
-      "MKN": {
-        "displayName": {
-          "other": "MKN"
-        },
-        "narrow": "MKN",
-        "symbol": "MKN"
-      },
-      "MLF": {
-        "displayName": {
-          "other": "MLF"
-        },
-        "narrow": "MLF",
-        "symbol": "MLF"
       },
       "MMK": {
         "displayName": {
@@ -1205,33 +686,12 @@
         "narrow": "MRU",
         "symbol": "MRU"
       },
-      "MTL": {
-        "displayName": {
-          "other": "MTL"
-        },
-        "narrow": "MTL",
-        "symbol": "MTL"
-      },
-      "MTP": {
-        "displayName": {
-          "other": "MTP"
-        },
-        "narrow": "MTP",
-        "symbol": "MTP"
-      },
       "MUR": {
         "displayName": {
           "other": "Rupee Mauritius"
         },
         "narrow": "Rs",
         "symbol": "MUR"
-      },
-      "MVP": {
-        "displayName": {
-          "other": "MVP"
-        },
-        "narrow": "MVP",
-        "symbol": "MVP"
       },
       "MVR": {
         "displayName": {
@@ -1253,20 +713,6 @@
         },
         "narrow": "$",
         "symbol": "MXN"
-      },
-      "MXP": {
-        "displayName": {
-          "other": "MXP"
-        },
-        "narrow": "MXP",
-        "symbol": "MXP"
-      },
-      "MXV": {
-        "displayName": {
-          "other": "MXV"
-        },
-        "narrow": "MXV",
-        "symbol": "MXV"
       },
       "MYR": {
         "displayName": {
@@ -1310,26 +756,12 @@
         "narrow": "₦",
         "symbol": "NGN"
       },
-      "NIC": {
-        "displayName": {
-          "other": "NIC"
-        },
-        "narrow": "NIC",
-        "symbol": "NIC"
-      },
       "NIO": {
         "displayName": {
           "other": "Cordoba Nicaragua"
         },
         "narrow": "C$",
         "symbol": "NIO"
-      },
-      "NLG": {
-        "displayName": {
-          "other": "NLG"
-        },
-        "narrow": "NLG",
-        "symbol": "NLG"
       },
       "NOK": {
         "displayName": {
@@ -1366,26 +798,12 @@
         "narrow": "PAB",
         "symbol": "PAB"
       },
-      "PEI": {
-        "displayName": {
-          "other": "PEI"
-        },
-        "narrow": "PEI",
-        "symbol": "PEI"
-      },
       "PEN": {
         "displayName": {
           "other": "Sol Peru"
         },
         "narrow": "PEN",
         "symbol": "PEN"
-      },
-      "PES": {
-        "displayName": {
-          "other": "PES"
-        },
-        "narrow": "PES",
-        "symbol": "PES"
       },
       "PGK": {
         "displayName": {
@@ -1415,20 +833,6 @@
         "narrow": "zł",
         "symbol": "PLN"
       },
-      "PLZ": {
-        "displayName": {
-          "other": "PLZ"
-        },
-        "narrow": "PLZ",
-        "symbol": "PLZ"
-      },
-      "PTE": {
-        "displayName": {
-          "other": "PTE"
-        },
-        "narrow": "PTE",
-        "symbol": "PTE"
-      },
       "PYG": {
         "displayName": {
           "other": "Guarani Paraguay"
@@ -1449,13 +853,6 @@
         },
         "narrow": "RHD",
         "symbol": "RHD"
-      },
-      "ROL": {
-        "displayName": {
-          "other": "ROL"
-        },
-        "narrow": "ROL",
-        "symbol": "ROL"
       },
       "RON": {
         "displayName": {
@@ -1480,7 +877,6 @@
       },
       "RUR": {
         "displayName": {
-          "other": "RUR"
         },
         "narrow": "RUR",
         "symbol": "RUR"
@@ -1513,26 +909,12 @@
         "narrow": "SCR",
         "symbol": "SCR"
       },
-      "SDD": {
-        "displayName": {
-          "other": "SDD"
-        },
-        "narrow": "SDD",
-        "symbol": "SDD"
-      },
       "SDG": {
         "displayName": {
           "other": "Paun Sudan"
         },
         "narrow": "SDG",
         "symbol": "SDG"
-      },
-      "SDP": {
-        "displayName": {
-          "other": "SDP"
-        },
-        "narrow": "SDP",
-        "symbol": "SDP"
       },
       "SEK": {
         "displayName": {
@@ -1555,20 +937,6 @@
         "narrow": "£",
         "symbol": "SHP"
       },
-      "SIT": {
-        "displayName": {
-          "other": "SIT"
-        },
-        "narrow": "SIT",
-        "symbol": "SIT"
-      },
-      "SKK": {
-        "displayName": {
-          "other": "SKK"
-        },
-        "narrow": "SKK",
-        "symbol": "SKK"
-      },
       "SLL": {
         "displayName": {
           "other": "Leone Sierra Leone"
@@ -1589,13 +957,6 @@
         },
         "narrow": "$",
         "symbol": "SRD"
-      },
-      "SRG": {
-        "displayName": {
-          "other": "SRG"
-        },
-        "narrow": "SRG",
-        "symbol": "SRG"
       },
       "SSP": {
         "displayName": {
@@ -1618,20 +979,6 @@
         "narrow": "Db",
         "symbol": "STN"
       },
-      "SUR": {
-        "displayName": {
-          "other": "SUR"
-        },
-        "narrow": "SUR",
-        "symbol": "SUR"
-      },
-      "SVC": {
-        "displayName": {
-          "other": "SVC"
-        },
-        "narrow": "SVC",
-        "symbol": "SVC"
-      },
       "SYP": {
         "displayName": {
           "other": "Paun Syria"
@@ -1653,26 +1000,12 @@
         "narrow": "฿",
         "symbol": "THB"
       },
-      "TJR": {
-        "displayName": {
-          "other": "TJR"
-        },
-        "narrow": "TJR",
-        "symbol": "TJR"
-      },
       "TJS": {
         "displayName": {
           "other": "Somoni Tajikistan"
         },
         "narrow": "TJS",
         "symbol": "TJS"
-      },
-      "TMM": {
-        "displayName": {
-          "other": "TMM"
-        },
-        "narrow": "TMM",
-        "symbol": "TMM"
       },
       "TMT": {
         "displayName": {
@@ -1694,20 +1027,6 @@
         },
         "narrow": "T$",
         "symbol": "TOP"
-      },
-      "TPE": {
-        "displayName": {
-          "other": "TPE"
-        },
-        "narrow": "TPE",
-        "symbol": "TPE"
-      },
-      "TRL": {
-        "displayName": {
-          "other": "TRL"
-        },
-        "narrow": "TRL",
-        "symbol": "TRL"
       },
       "TRY": {
         "displayName": {
@@ -1744,13 +1063,6 @@
         "narrow": "₴",
         "symbol": "UAH"
       },
-      "UAK": {
-        "displayName": {
-          "other": "UAK"
-        },
-        "narrow": "UAK",
-        "symbol": "UAK"
-      },
       "UGS": {
         "displayName": {
           "other": "Shilling Uganda (1966–1987)"
@@ -1772,34 +1084,6 @@
         "narrow": "$",
         "symbol": "USD"
       },
-      "USN": {
-        "displayName": {
-          "other": "USN"
-        },
-        "narrow": "USN",
-        "symbol": "USN"
-      },
-      "USS": {
-        "displayName": {
-          "other": "USS"
-        },
-        "narrow": "USS",
-        "symbol": "USS"
-      },
-      "UYI": {
-        "displayName": {
-          "other": "UYI"
-        },
-        "narrow": "UYI",
-        "symbol": "UYI"
-      },
-      "UYP": {
-        "displayName": {
-          "other": "UYP"
-        },
-        "narrow": "UYP",
-        "symbol": "UYP"
-      },
       "UYU": {
         "displayName": {
           "other": "Peso Uruguay"
@@ -1807,26 +1091,12 @@
         "narrow": "$",
         "symbol": "UYU"
       },
-      "UYW": {
-        "displayName": {
-          "other": "UYW"
-        },
-        "narrow": "UYW",
-        "symbol": "UYW"
-      },
       "UZS": {
         "displayName": {
           "other": "Som Uzbekistan"
         },
         "narrow": "UZS",
         "symbol": "UZS"
-      },
-      "VEB": {
-        "displayName": {
-          "other": "VEB"
-        },
-        "narrow": "VEB",
-        "symbol": "VEB"
       },
       "VEF": {
         "displayName": {
@@ -1849,13 +1119,6 @@
         "narrow": "₫",
         "symbol": "₫"
       },
-      "VNN": {
-        "displayName": {
-          "other": "VNN"
-        },
-        "narrow": "VNN",
-        "symbol": "VNN"
-      },
       "VUV": {
         "displayName": {
           "other": "Vatu Vanuatu"
@@ -1877,82 +1140,12 @@
         "narrow": "FCFA",
         "symbol": "FCFA"
       },
-      "XAG": {
-        "displayName": {
-          "other": "XAG"
-        },
-        "narrow": "XAG",
-        "symbol": "XAG"
-      },
-      "XAU": {
-        "displayName": {
-          "other": "XAU"
-        },
-        "narrow": "XAU",
-        "symbol": "XAU"
-      },
-      "XBA": {
-        "displayName": {
-          "other": "XBA"
-        },
-        "narrow": "XBA",
-        "symbol": "XBA"
-      },
-      "XBB": {
-        "displayName": {
-          "other": "XBB"
-        },
-        "narrow": "XBB",
-        "symbol": "XBB"
-      },
-      "XBC": {
-        "displayName": {
-          "other": "XBC"
-        },
-        "narrow": "XBC",
-        "symbol": "XBC"
-      },
-      "XBD": {
-        "displayName": {
-          "other": "XBD"
-        },
-        "narrow": "XBD",
-        "symbol": "XBD"
-      },
       "XCD": {
         "displayName": {
           "other": "Dolar Caribbean Timur"
         },
         "narrow": "$",
         "symbol": "EC$"
-      },
-      "XDR": {
-        "displayName": {
-          "other": "XDR"
-        },
-        "narrow": "XDR",
-        "symbol": "XDR"
-      },
-      "XEU": {
-        "displayName": {
-          "other": "XEU"
-        },
-        "narrow": "XEU",
-        "symbol": "XEU"
-      },
-      "XFO": {
-        "displayName": {
-          "other": "XFO"
-        },
-        "narrow": "XFO",
-        "symbol": "XFO"
-      },
-      "XFU": {
-        "displayName": {
-          "other": "XFU"
-        },
-        "narrow": "XFU",
-        "symbol": "XFU"
       },
       "XOF": {
         "displayName": {
@@ -1961,54 +1154,12 @@
         "narrow": "F CFA",
         "symbol": "F CFA"
       },
-      "XPD": {
-        "displayName": {
-          "other": "XPD"
-        },
-        "narrow": "XPD",
-        "symbol": "XPD"
-      },
       "XPF": {
         "displayName": {
           "other": "Franc CFP"
         },
         "narrow": "CFPF",
         "symbol": "CFPF"
-      },
-      "XPT": {
-        "displayName": {
-          "other": "XPT"
-        },
-        "narrow": "XPT",
-        "symbol": "XPT"
-      },
-      "XRE": {
-        "displayName": {
-          "other": "XRE"
-        },
-        "narrow": "XRE",
-        "symbol": "XRE"
-      },
-      "XSU": {
-        "displayName": {
-          "other": "XSU"
-        },
-        "narrow": "XSU",
-        "symbol": "XSU"
-      },
-      "XTS": {
-        "displayName": {
-          "other": "XTS"
-        },
-        "narrow": "XTS",
-        "symbol": "XTS"
-      },
-      "XUA": {
-        "displayName": {
-          "other": "XUA"
-        },
-        "narrow": "XUA",
-        "symbol": "XUA"
       },
       "XXX": {
         "displayName": {
@@ -2017,54 +1168,12 @@
         "narrow": "¤",
         "symbol": "¤"
       },
-      "YDD": {
-        "displayName": {
-          "other": "YDD"
-        },
-        "narrow": "YDD",
-        "symbol": "YDD"
-      },
       "YER": {
         "displayName": {
           "other": "Rial Yaman"
         },
         "narrow": "YER",
         "symbol": "YER"
-      },
-      "YUD": {
-        "displayName": {
-          "other": "YUD"
-        },
-        "narrow": "YUD",
-        "symbol": "YUD"
-      },
-      "YUM": {
-        "displayName": {
-          "other": "YUM"
-        },
-        "narrow": "YUM",
-        "symbol": "YUM"
-      },
-      "YUN": {
-        "displayName": {
-          "other": "YUN"
-        },
-        "narrow": "YUN",
-        "symbol": "YUN"
-      },
-      "YUR": {
-        "displayName": {
-          "other": "YUR"
-        },
-        "narrow": "YUR",
-        "symbol": "YUR"
-      },
-      "ZAL": {
-        "displayName": {
-          "other": "ZAL"
-        },
-        "narrow": "ZAL",
-        "symbol": "ZAL"
       },
       "ZAR": {
         "displayName": {
@@ -2086,20 +1195,6 @@
         },
         "narrow": "ZK",
         "symbol": "ZMW"
-      },
-      "ZRN": {
-        "displayName": {
-          "other": "ZRN"
-        },
-        "narrow": "ZRN",
-        "symbol": "ZRN"
-      },
-      "ZRZ": {
-        "displayName": {
-          "other": "ZRZ"
-        },
-        "narrow": "ZRZ",
-        "symbol": "ZRZ"
       },
       "ZWD": {
         "displayName": {
@@ -2522,7 +1617,7 @@
             "other": "{0} inci"
           },
           "narrow": {
-            "other": "{0}\\\""
+            "other": "{0}\""
           },
           "perUnit": {
             "long": "{0} seinci",
