@@ -164,7 +164,7 @@ export const timezones = {
     "America/Halifax",
     "America/Iqaluit",
     "America/Moncton",
-    "America/Montreal",
+    "America/Toronto",
     "America/Nipigon",
     "America/Pangnirtung",
     "America/Resolute",
@@ -575,6 +575,7 @@ export const timezones = {
   ],
   "mx": [
     "America/Chihuahua",
+    "America/Ciudad_Juarez",
     "America/Cancun",
     "America/Hermosillo",
     "America/Matamoros",
