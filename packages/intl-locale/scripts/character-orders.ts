@@ -1,6 +1,6 @@
-import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra'
 import stringify from 'json-stable-stringify'
+import minimist from 'minimist'
 import {getAllLocales} from './utils'
 
 import type {Args} from './common-types'
@@ -42,13 +42,15 @@ async function main(args: Args) {
     }
   }
 
-  const possibleValues = Object.values(characterOrders).reduce((acc, val) => {
-    if (!acc.includes(val)) {
-      acc.push(val)
-    }
+  const possibleValues = Object.values(characterOrders)
+    .reduce((acc, val) => {
+      if (!acc.includes(val)) {
+        acc.push(val)
+      }
 
-    return acc
-  }, [] as string[])
+      return acc
+    }, [] as string[])
+    .sort()
 
   outputFileSync(
     out,
@@ -56,6 +58,7 @@ async function main(args: Args) {
 // prettier-ignore
 export const characterOrders = ${stringify(characterOrders, {
       space: 2,
+      cmp: (a, b) => a.key.localeCompare(b.key),
     })} as const
 export type CharacterOrdersKey = keyof typeof characterOrders
 export type CharacterOrder = '${possibleValues.join("' | '")}'

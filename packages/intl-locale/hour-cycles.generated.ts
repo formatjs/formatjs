@@ -89,6 +89,10 @@ export const hourCycles = {
     "h12",
     "h23"
   ],
+  "BI": [
+    "h23",
+    "h12"
+  ],
   "BJ": [
     "h23"
   ],
@@ -122,6 +126,10 @@ export const hourCycles = {
     "h23"
   ],
   "BW": [
+    "h23",
+    "h12"
+  ],
+  "BY": [
     "h23",
     "h12"
   ],
@@ -186,6 +194,9 @@ export const hourCycles = {
     "h12"
   ],
   "CV": [
+    "h23"
+  ],
+  "CW": [
     "h23"
   ],
   "CX": [
@@ -271,6 +282,10 @@ export const hourCycles = {
     "h12",
     "h23"
   ],
+  "FO": [
+    "h23",
+    "h12"
+  ],
   "FR": [
     "h23"
   ],
@@ -301,6 +316,10 @@ export const hourCycles = {
     "h23"
   ],
   "GI": [
+    "h23",
+    "h12"
+  ],
+  "GL": [
     "h23",
     "h12"
   ],
@@ -347,6 +366,10 @@ export const hourCycles = {
   ],
   "HR": [
     "h23"
+  ],
+  "HU": [
+    "h23",
+    "h12"
   ],
   "IC": [
     "h23",
@@ -401,8 +424,8 @@ export const hourCycles = {
   ],
   "JP": [
     "h23",
-    "h12",
-    "h11"
+    "h11",
+    "h12"
   ],
   "KE": [
     "h23",
@@ -508,6 +531,10 @@ export const hourCycles = {
   "MF": [
     "h23"
   ],
+  "MG": [
+    "h23",
+    "h12"
+  ],
   "MH": [
     "h12",
     "h23"
@@ -543,6 +570,18 @@ export const hourCycles = {
     "h23"
   ],
   "MS": [
+    "h23",
+    "h12"
+  ],
+  "MT": [
+    "h23",
+    "h12"
+  ],
+  "MU": [
+    "h23",
+    "h12"
+  ],
+  "MV": [
     "h23",
     "h12"
   ],
@@ -585,6 +624,10 @@ export const hourCycles = {
   ],
   "NL": [
     "h23"
+  ],
+  "NO": [
+    "h23",
+    "h12"
   ],
   "NP": [
     "h23",
@@ -630,6 +673,10 @@ export const hourCycles = {
     "h12",
     "h23"
   ],
+  "PL": [
+    "h23",
+    "h12"
+  ],
   "PM": [
     "h23"
   ],
@@ -672,6 +719,10 @@ export const hourCycles = {
   ],
   "RU": [
     "h23"
+  ],
+  "RW": [
+    "h23",
+    "h12"
   ],
   "SA": [
     "h12",
@@ -770,7 +821,19 @@ export const hourCycles = {
   "TG": [
     "h23"
   ],
+  "TH": [
+    "h23",
+    "h12"
+  ],
+  "TJ": [
+    "h23",
+    "h12"
+  ],
   "TL": [
+    "h23",
+    "h12"
+  ],
+  "TM": [
     "h23",
     "h12"
   ],
@@ -841,6 +904,10 @@ export const hourCycles = {
     "h12",
     "h23"
   ],
+  "VN": [
+    "h23",
+    "h12"
+  ],
   "VU": [
     "h12",
     "h23"
@@ -870,6 +937,10 @@ export const hourCycles = {
   "ZM": [
     "h12",
     "h23"
+  ],
+  "ZW": [
+    "h23",
+    "h12"
   ],
   "af-ZA": [
     "h23",

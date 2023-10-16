@@ -69,7 +69,7 @@ describe('intl-locale', () => {
       const locale = new Locale('ja')
       expect(locale.calendars).toEqual(['gregory', 'japanese'])
       expect(locale.collations).toEqual(['emoji', 'eor', 'unihan'])
-      expect(locale.hourCycles).toEqual(['h23', 'h12', 'h11'])
+      expect(locale.hourCycles).toEqual(['h23', 'h11', 'h12'])
       expect(locale.numberingSystems).toEqual(['latn', 'jpan', 'jpanfin'])
       expect(locale.timeZones).toBe(undefined)
     })

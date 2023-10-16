@@ -29,8 +29,8 @@ export const weekData = {
     "firstDay": 6,
     "minimalDays": 1,
     "weekend": [
-      5,
-      6
+      6,
+      7
     ]
   },
   "AF": {
@@ -394,7 +394,7 @@ export const weekData = {
     ]
   },
   "CN": {
-    "firstDay": 7,
+    "firstDay": 1,
     "minimalDays": 1,
     "weekend": [
       6,
@@ -410,6 +410,14 @@ export const weekData = {
     ]
   },
   "CP": {
+    "firstDay": 1,
+    "minimalDays": 1,
+    "weekend": [
+      6,
+      7
+    ]
+  },
+  "CQ": {
     "firstDay": 1,
     "minimalDays": 1,
     "weekend": [

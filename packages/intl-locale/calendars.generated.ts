@@ -18,6 +18,22 @@ export const calendars = {
     "islamic-civil",
     "islamic-tbla"
   ],
+  "AL": [
+    "gregorian",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
+  "AZ": [
+    "gregorian",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
+  "BD": [
+    "gregorian",
+    "islamic",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
   "BH": [
     "gregorian",
     "islamic-umalqura",
@@ -71,6 +87,12 @@ export const calendars = {
   "HK": [
     "gregorian",
     "chinese"
+  ],
+  "ID": [
+    "gregorian",
+    "islamic",
+    "islamic-civil",
+    "islamic-tbla"
   ],
   "IL": [
     "gregorian",
@@ -151,7 +173,30 @@ export const calendars = {
     "islamic-civil",
     "islamic-tbla"
   ],
+  "MV": [
+    "gregorian",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
+  "MY": [
+    "gregorian",
+    "islamic",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
+  "NE": [
+    "gregorian",
+    "islamic",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
   "OM": [
+    "gregorian",
+    "islamic",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
+  "PK": [
     "gregorian",
     "islamic",
     "islamic-civil",
@@ -202,9 +247,24 @@ export const calendars = {
     "buddhist",
     "gregorian"
   ],
+  "TJ": [
+    "gregorian",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
+  "TM": [
+    "gregorian",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
   "TN": [
     "gregorian",
     "islamic",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
+  "TR": [
+    "gregorian",
     "islamic-civil",
     "islamic-tbla"
   ],
@@ -212,6 +272,16 @@ export const calendars = {
     "gregorian",
     "roc",
     "chinese"
+  ],
+  "UZ": [
+    "gregorian",
+    "islamic-civil",
+    "islamic-tbla"
+  ],
+  "XK": [
+    "gregorian",
+    "islamic-civil",
+    "islamic-tbla"
   ],
   "YE": [
     "gregorian",
