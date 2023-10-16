@@ -1,7 +1,7 @@
-import glob from 'fast-glob'
-import {resolve, dirname} from 'path'
 import {DisplayNamesData, invariant} from '@formatjs/ecma402-abstract'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
+import glob from 'fast-glob'
+import {dirname, resolve} from 'path'
 
 // CLDR JSON types
 type LanguageRawData =
@@ -194,64 +194,73 @@ function extractLanguageStyleData(
   }
 }
 
-async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
-  const [
-    languages,
-    territories,
-    scripts,
-    localeDisplayNames,
-    currencies,
-    dateFields,
-  ] = await Promise.all([
-    import(`cldr-localenames-full/main/${locale}/languages.json`),
-    import(`cldr-localenames-full/main/${locale}/territories.json`),
-    import(`cldr-localenames-full/main/${locale}/scripts.json`),
-    import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`),
-    import(`cldr-numbers-full/main/${locale}/currencies.json`),
-    import(`cldr-dates-full/main/${locale}/dateFields.json`),
-  ])
-  const langData: LanguageRawData =
-    languages.main[locale].localeDisplayNames.languages
-  const regionData: RegionRawData =
-    territories.main[locale].localeDisplayNames.territories
-  const scriptData: ScriptRawData =
-    scripts.main[locale].localeDisplayNames.scripts
-  const localePatternData: LocalePatternRawData =
-    localeDisplayNames.main[locale].localeDisplayNames.localeDisplayPattern
-      .localePattern
-  const currencyData: CurrencyRawData =
-    currencies.main[locale].numbers.currencies
-  const calendarData: CalendarRawData =
-    localeDisplayNames.main[locale].localeDisplayNames.types.calendar
-  const dateTimeFieldData: DateTimeFieldRawData =
-    dateFields.main[locale].dates.fields
+async function loadDisplayNames(
+  locale: string
+): Promise<DisplayNamesData | undefined> {
+  try {
+    const [
+      languages,
+      territories,
+      scripts,
+      localeDisplayNames,
+      currencies,
+      dateFields,
+    ] = await Promise.all([
+      import(`cldr-localenames-full/main/${locale}/languages.json`),
+      import(`cldr-localenames-full/main/${locale}/territories.json`),
+      import(`cldr-localenames-full/main/${locale}/scripts.json`),
+      import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`),
+      import(`cldr-numbers-full/main/${locale}/currencies.json`),
+      import(`cldr-dates-full/main/${locale}/dateFields.json`),
+    ])
+    const langData: LanguageRawData =
+      languages.main[locale].localeDisplayNames.languages
+    const regionData: RegionRawData =
+      territories.main[locale].localeDisplayNames.territories
+    const scriptData: ScriptRawData =
+      scripts.main[locale].localeDisplayNames.scripts
+    const localePatternData: LocalePatternRawData =
+      localeDisplayNames.main[locale].localeDisplayNames.localeDisplayPattern
+        .localePattern
+    const currencyData: CurrencyRawData =
+      currencies.main[locale].numbers.currencies
+    const calendarData: CalendarRawData =
+      localeDisplayNames.main[locale].localeDisplayNames.types.calendar
+    const dateTimeFieldData: DateTimeFieldRawData =
+      dateFields.main[locale].dates.fields
 
-  return {
-    types: {
-      language: extractLanguageStyleData(
-        langData,
-        regionData,
-        localePatternData
-      ),
-      region: extractStyleData(regionData),
-      script: extractStyleData(scriptData),
-      currency: extractCurrencyStyleData(locale, currencyData),
-      calendar: extractStyleData(calendarData),
-      dateTimeField: extractDateTimeFieldStyleData(dateTimeFieldData),
-    },
-    patterns: {
-      // No support for alt variants
-      locale: localePatternData,
-    },
+    return {
+      types: {
+        language: extractLanguageStyleData(
+          langData,
+          regionData,
+          localePatternData
+        ),
+        region: extractStyleData(regionData),
+        script: extractStyleData(scriptData),
+        currency: extractCurrencyStyleData(locale, currencyData),
+        calendar: extractStyleData(calendarData),
+        dateTimeField: extractDateTimeFieldStyleData(dateTimeFieldData),
+      },
+      patterns: {
+        // No support for alt variants
+        locale: localePatternData,
+      },
+    }
+  } catch (e) {
+    console.error(`Failed to load ${locale}`)
   }
 }
 
 export async function extractDisplayNames(
-  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.modern
 ): Promise<Record<string, DisplayNamesData>> {
   const data = await Promise.all(locales.map(loadDisplayNames))
   return locales.reduce((all: Record<string, DisplayNamesData>, locale, i) => {
-    all[locale] = data[i]
+    const datum = data[i]
+    if (datum) {
+      all[locale] = datum
+    }
     return all
   }, {})
 }
