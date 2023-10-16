@@ -82,7 +82,7 @@
     "cldr-misc-full": "43",
     "cldr-numbers-full": "40",
     "cldr-segments-full": "40",
-    "cldr-units-full": "40",
+    "cldr-units-full": "43",
     "clsx": "1",
     "commander": "8",
     "core-js": "^3.6.5",

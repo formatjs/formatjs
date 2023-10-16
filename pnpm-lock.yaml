@@ -215,8 +215,8 @@ importers:
         specifier: '40'
         version: 40.0.0(cldr-core@40.0.0)
       cldr-units-full:
-        specifier: '40'
-        version: 40.0.0(cldr-core@40.0.0)
+        specifier: '43'
+        version: 43.1.0(cldr-core@40.0.0)
       clsx:
         specifier: '1'
         version: 1.1.1
@@ -8219,10 +8219,10 @@ packages:
       cldr-core: 40.0.0
     dev: true
 
-  /cldr-units-full@40.0.0(cldr-core@40.0.0):
-    resolution: {integrity: sha512-fw00RYjkckYIasIKgFwE1EKRtPVeWNkIiYQWoHUECCVeT8fvI/YUW+e25rgH+8xrN2k2ywSaixntGH/gurtUvQ==}
+  /cldr-units-full@43.1.0(cldr-core@40.0.0):
+    resolution: {integrity: sha512-UvQt8ESjPvsibo0jfkfze2j8GtH54DtsYRDFq+tVJf2ROTH3TVXmTdvpl7UfMj3ZROrb0ks1DN9oexgSuZ+HlA==}
     peerDependencies:
-      cldr-core: 40.0.0
+      cldr-core: 43.1.0
     dependencies:
       cldr-core: 40.0.0
     dev: true
