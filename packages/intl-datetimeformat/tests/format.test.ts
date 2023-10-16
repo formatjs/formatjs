@@ -1,12 +1,12 @@
-import * as ko from './locale-data/ko.json'
-import * as en from './locale-data/en.json'
+import {DateTimeFormat} from '../src/core'
 import allData from '../src/data/all-tz'
 import {
-  toLocaleString,
   toLocaleDateString,
+  toLocaleString,
   toLocaleTimeString,
 } from '../src/to_locale_string'
-import {DateTimeFormat} from '../src/core'
+import * as en from './locale-data/en.json'
+import * as ko from './locale-data/ko.json'
 
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, ko)
@@ -32,7 +32,7 @@ const tests: Array<{
       timeZoneName: 'long',
     },
     ko: '서기 2020년 6 16일 화요일 AM 4시 48분 20초 협정 세계시',
-    en: 'Tuesday, 6 16, 2020 Anno Domini, 4:48:20 AM Coordinated Universal Time',
+    en: 'Tuesday, 6 16, 2020 Anno Domini, 4:48:20 AM Coordinated Universal Time',
   },
   {
     options: {
@@ -49,7 +49,7 @@ const tests: Array<{
       timeZoneName: 'short',
     },
     ko: '서기 2020년 6 16일 화요일 AM 12시 48분 20초 GMT-4',
-    en: 'Tuesday, 6 16, 2020 Anno Domini, 12:48:20 AM EDT',
+    en: 'Tuesday, 6 16, 2020 Anno Domini, 12:48:20 AM EDT',
   },
   {
     options: {
@@ -66,7 +66,7 @@ const tests: Array<{
       timeZoneName: 'short',
     },
     ko: '서기 2020년 6 16일 화요일 AM 12시 48분 20초 GMT-4',
-    en: 'Tuesday, 6 16, 2020 Anno Domini, 12:48:20 AM EDT',
+    en: 'Tuesday, 6 16, 2020 Anno Domini, 12:48:20 AM EDT',
   },
   {
     options: {
@@ -82,7 +82,7 @@ const tests: Array<{
       timeZoneName: 'short',
     },
     ko: '서기 2020년 6 16일 화요일 AM 12시 48분 20초 GMT-4',
-    en: 'Tuesday, 6 16, 2020 Anno Domini, 12:48:20 AM EDT',
+    en: 'Tuesday, 6 16, 2020 Anno Domini, 12:48:20 AM EDT',
   },
   {
     options: {
@@ -98,7 +98,7 @@ const tests: Array<{
       timeZoneName: 'short',
     },
     ko: '서기 2020년 6 15일 월요일 PM 09시 48분 20초 GMT-7',
-    en: 'Monday, 6 15, 2020 Anno Domini, 09:48:20 PM PDT',
+    en: 'Monday, 6 15, 2020 Anno Domini, 09:48:20 PM PDT',
   },
   {
     options: {
@@ -114,7 +114,7 @@ const tests: Array<{
       timeZoneName: 'short',
     },
     ko: '서기 20년 6월 15일 월요일 PM 09시 48분 20초 GMT-7',
-    en: 'Monday, June 15, 20 Anno Domini, 09:48:20 PM PDT',
+    en: 'Monday, June 15, 20 Anno Domini, 09:48:20 PM PDT',
   },
   {
     options: {
@@ -130,7 +130,7 @@ const tests: Array<{
       timeZoneName: 'short',
     },
     ko: '서기 20년 6월 15일 월요일 PM 09시 48분 20초 GMT-7',
-    en: 'Monday, Jun 15, 20 Anno Domini, 09:48:20 PM PDT',
+    en: 'Monday, Jun 15, 20 Anno Domini, 09:48:20 PM PDT',
   },
   {
     options: {
@@ -146,7 +146,7 @@ const tests: Array<{
       timeZoneName: 'short',
     },
     ko: '서기 20년 6월 15일 월요일 PM 09시 48분 20초 GMT-7',
-    en: 'Monday, J 15, 20 Anno Domini, 09:48:20 PM PDT',
+    en: 'Monday, J 15, 20 Anno Domini, 09:48:20 PM PDT',
   },
   {
     options: {
@@ -162,7 +162,7 @@ const tests: Array<{
       timeZoneName: 'short',
     },
     ko: 'AD 20년 6월 15일 월요일 PM 09시 48분 20초 GMT-7',
-    en: 'Monday, J 15, 20 AD, 09:48:20 PM PDT',
+    en: 'Monday, J 15, 20 AD, 09:48:20 PM PDT',
   },
   {
     options: {
@@ -178,7 +178,7 @@ const tests: Array<{
       timeZoneName: 'short',
     },
     ko: 'AD 20년 6월 15일 (월) PM 09시 48분 20초 GMT-7',
-    en: 'M, J 15, 20 AD, 09:48:20 PM PDT',
+    en: 'M, J 15, 20 AD, 09:48:20 PM PDT',
   },
   {
     options: {
@@ -194,7 +194,7 @@ const tests: Array<{
       timeZoneName: 'short',
     },
     ko: 'AD 20년 6월 15일 (월) PM 09시 48분 20초 GMT-7',
-    en: 'Mon, J 15, 20 AD, 09:48:20 PM PDT',
+    en: 'Mon, J 15, 20 AD, 09:48:20 PM PDT',
   },
   {
     options: {dateStyle: 'full', timeZone: 'America/Los_Angeles'},
@@ -219,22 +219,22 @@ const tests: Array<{
   {
     options: {timeStyle: 'full', timeZone: 'America/Los_Angeles'},
     ko: 'PM 9시 48분 20초 미 태평양 하계 표준시',
-    en: '9:48:20 PM Pacific Daylight Time',
+    en: '9:48:20 PM Pacific Daylight Time',
   },
   {
     options: {timeStyle: 'long', timeZone: 'America/Los_Angeles'},
     ko: 'PM 9시 48분 20초 GMT-7',
-    en: '9:48:20 PM PDT',
+    en: '9:48:20 PM PDT',
   },
   {
     options: {timeStyle: 'medium', timeZone: 'America/Los_Angeles'},
     ko: 'PM 9:48:20',
-    en: '9:48:20 PM',
+    en: '9:48:20 PM',
   },
   {
     options: {timeStyle: 'short', timeZone: 'America/Los_Angeles'},
     ko: 'PM 9:48',
-    en: '9:48 PM',
+    en: '9:48 PM',
   },
   {
     options: {
@@ -243,7 +243,7 @@ const tests: Array<{
       timeZone: 'America/Los_Angeles',
     },
     ko: '2020년 6월 15일 PM 9시 48분 20초 미 태평양 하계 표준시',
-    en: 'June 15, 2020 at 9:48:20 PM Pacific Daylight Time',
+    en: 'June 15, 2020, 9:48:20 PM Pacific Daylight Time',
   },
   {
     options: {
@@ -252,7 +252,7 @@ const tests: Array<{
       timeZone: 'America/Los_Angeles',
     },
     ko: '2020. 6. 15. PM 9시 48분 20초 GMT-7',
-    en: 'Jun 15, 2020, 9:48:20 PM PDT',
+    en: 'Jun 15, 2020, 9:48:20 PM PDT',
   },
   {
     options: {
@@ -261,7 +261,7 @@ const tests: Array<{
       timeZone: 'America/Los_Angeles',
     },
     ko: '20. 6. 15. PM 9:48:20',
-    en: '6/15/20, 9:48:20 PM',
+    en: '6/15/20, 9:48:20 PM',
   },
   {
     options: {
@@ -270,7 +270,7 @@ const tests: Array<{
       timeZone: 'America/Los_Angeles',
     },
     ko: '2020년 6월 15일 월요일 PM 9:48',
-    en: 'Monday, June 15, 2020 at 9:48 PM',
+    en: 'Monday, June 15, 2020, 9:48 PM',
   },
 ]
 

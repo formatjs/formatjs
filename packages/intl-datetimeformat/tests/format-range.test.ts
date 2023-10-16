@@ -1,11 +1,11 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill'
 import {DateTimeFormat} from '../src/core'
-import * as en from './locale-data/en.json'
-import * as enGB from './locale-data/en-GB.json'
-import * as zhHans from './locale-data/zh-Hans.json'
-import * as fa from './locale-data/fa.json'
 import allData from '../src/data/all-tz'
+import * as enGB from './locale-data/en-GB.json'
+import * as en from './locale-data/en.json'
+import * as fa from './locale-data/fa.json'
+import * as zhHans from './locale-data/zh-Hans.json'
 
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa)
@@ -18,7 +18,7 @@ describe('DateTimeFormat range format', function () {
       month: 'short',
       day: 'numeric',
     })
-    expect(dtf.formatRange(d1, d2)).toBe('Feb 1 – 15')
+    expect(dtf.formatRange(d1, d2)).toBe('Feb 1 – 15')
   })
   it('basic parts', function () {
     const d1 = new Date(2020, 1, 1)
@@ -48,7 +48,7 @@ describe('DateTimeFormat range format', function () {
       {
         source: 'startRange',
         type: 'literal',
-        value: ' – ',
+        value: ' – ',
       },
       {
         source: 'endRange',
@@ -108,12 +108,12 @@ test('v8 test/intl/date-format/format-range', function () {
   const date4 = new Date('2020-3-4')
   var dtf = new DateTimeFormat(['en'])
 
-  expect(dtf.formatRange(date1, date2)).toBe('1/3/2019 – 1/5/2019')
-  expect(dtf.formatRange(date1, date3)).toBe('1/3/2019 – 3/4/2019')
-  expect(dtf.formatRange(date1, date4)).toBe('1/3/2019 – 3/4/2020')
-  expect(dtf.formatRange(date2, date3)).toBe('1/5/2019 – 3/4/2019')
-  expect(dtf.formatRange(date2, date4)).toBe('1/5/2019 – 3/4/2020')
-  expect(dtf.formatRange(date3, date4)).toBe('3/4/2019 – 3/4/2020')
+  expect(dtf.formatRange(date1, date2)).toBe('1/3/2019 – 1/5/2019')
+  expect(dtf.formatRange(date1, date3)).toBe('1/3/2019 – 3/4/2019')
+  expect(dtf.formatRange(date1, date4)).toBe('1/3/2019 – 3/4/2020')
+  expect(dtf.formatRange(date2, date3)).toBe('1/5/2019 – 3/4/2019')
+  expect(dtf.formatRange(date2, date4)).toBe('1/5/2019 – 3/4/2020')
+  expect(dtf.formatRange(date3, date4)).toBe('3/4/2019 – 3/4/2020')
 })
 
 test('v8 test/intl/date-format/format-range 2', function () {
@@ -126,12 +126,12 @@ test('v8 test/intl/date-format/format-range 2', function () {
     month: 'short',
     day: 'numeric',
   })
-  expect(dtf.formatRange(date1, date2)).toBe('Jan 3 – 5, 2019')
-  expect(dtf.formatRange(date1, date3)).toBe('Jan 3 – Mar 4, 2019')
-  expect(dtf.formatRange(date1, date4)).toBe('Jan 3, 2019 – Mar 4, 2020')
-  expect(dtf.formatRange(date2, date3)).toBe('Jan 5 – Mar 4, 2019')
-  expect(dtf.formatRange(date2, date4)).toBe('Jan 5, 2019 – Mar 4, 2020')
-  expect(dtf.formatRange(date3, date4)).toBe('Mar 4, 2019 – Mar 4, 2020')
+  expect(dtf.formatRange(date1, date2)).toBe('Jan 3 – 5, 2019')
+  expect(dtf.formatRange(date1, date3)).toBe('Jan 3 – Mar 4, 2019')
+  expect(dtf.formatRange(date1, date4)).toBe('Jan 3, 2019 – Mar 4, 2020')
+  expect(dtf.formatRange(date2, date3)).toBe('Jan 5 – Mar 4, 2019')
+  expect(dtf.formatRange(date2, date4)).toBe('Jan 5, 2019 – Mar 4, 2020')
+  expect(dtf.formatRange(date3, date4)).toBe('Mar 4, 2019 – Mar 4, 2020')
 })
 
 test('v8 test/intl/date-format/format-range TimeClip', function () {
@@ -386,7 +386,7 @@ test('default formatRange pattern (short), #2474', function () {
   let date1 = new Date(Date.UTC(2021, 0, 10)) // "Jan 10, 2021"
   let date2 = new Date(Date.UTC(2021, 0, 20)) // "Jan 20, 2021"
   expect(dtf.formatRange(date1, date2)).toBe(
-    'Jan 10, 2021, 12:00 AM – Jan 20, 2021, 12:00 AM'
+    'Jan 10, 2021, 12:00 AM – Jan 20, 2021, 12:00 AM'
   )
 })
 
@@ -399,5 +399,5 @@ test.skip('default formatRange pattern (long), #2474', function () {
   })
   let date1 = new Date(Date.UTC(2021, 0, 10)) // "Jan 10, 2021"
   let date2 = new Date(Date.UTC(2021, 0, 20)) // "Jan 20, 2021"
-  expect(dtf.formatRange(date1, date2)).toBe('January 10 – 20, 2021')
+  expect(dtf.formatRange(date1, date2)).toBe('January 10 – 20, 2021')
 })

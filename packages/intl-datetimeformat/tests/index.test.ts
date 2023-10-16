@@ -1,12 +1,12 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill'
 import {DateTimeFormat} from '../src/core'
-import * as en from './locale-data/en.json'
-import * as enGB from './locale-data/en-GB.json'
-import * as enCA from './locale-data/en-CA.json'
-import * as zhHans from './locale-data/zh-Hans.json'
-import * as fa from './locale-data/fa.json'
 import allData from '../src/data/all-tz'
+import * as enCA from './locale-data/en-CA.json'
+import * as enGB from './locale-data/en-GB.json'
+import * as en from './locale-data/en.json'
+import * as fa from './locale-data/fa.json'
+import * as zhHans from './locale-data/zh-Hans.json'
 
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, enCA, zhHans, fa)
@@ -24,7 +24,7 @@ describe('Intl.DateTimeFormat', function () {
         timeZoneName: 'long',
         timeZone: 'America/New_York',
       }).format(new Date(0))
-    ).toBe('12/31/1969, 7:00:00 PM Eastern Standard Time')
+    ).toBe('12/31/1969, 7:00:00 PM Eastern Standard Time')
   })
   it('en-GB default resolvedOptions, GH #1951', function () {
     expect(
@@ -56,7 +56,7 @@ describe('Intl.DateTimeFormat', function () {
         timeZoneName: 'long',
         timeZone: 'Asia/Shanghai',
       }).format(new Date(0))
-    ).toBe('1/1/1970, 8:00:00 AM China Standard Time')
+    ).toBe('1/1/1970, 8:00:00 AM China Standard Time')
   })
   it('CST w/ undefined TZ', function () {
     const {TZ} = process.env
@@ -72,7 +72,7 @@ describe('Intl.DateTimeFormat', function () {
         timeZoneName: 'long',
         timeZone: 'Asia/Shanghai',
       }).format(new Date(0))
-    ).toBe('1/1/1970, 8:00:00 AM China Standard Time')
+    ).toBe('1/1/1970, 8:00:00 AM China Standard Time')
     process.env.TZ = TZ
   })
   it('smoke test for #1915', function () {
@@ -146,7 +146,7 @@ describe('Intl.DateTimeFormat', function () {
         minute: '2-digit',
         timeZone: 'Europe/Amsterdam',
       }).format(new Date('2020-09-16T11:55:32.491+02:00'))
-    ).toBe('11:55 AM')
+    ).toBe('11:55 AM')
   })
   it.skip('test #2145', function () {
     expect(
@@ -212,7 +212,7 @@ describe('Intl.DateTimeFormat', function () {
       timeZoneName: 'short',
       timeZone: 'Europe/Amsterdam',
     })
-    expect(formatter.format(date)).toBe('11:55 AM GMT+2')
+    expect(formatter.format(date)).toBe('11:55 AM GMT+2')
   })
   it('test #2291', function () {
     const date = new Date(2020, 1, 1, 10, 10, 10, 0)
@@ -240,42 +240,42 @@ describe('Intl.DateTimeFormat', function () {
         {
           timeZoneName: 'long',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
+            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
             'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
           },
         },
         {
           timeZoneName: 'short',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM GMT+8',
+            en: 'Feb 1, 2020, 6:10:10 PM GMT+8',
             'zh-Hans': '2020年2月月1日 GMT+8 06:10:10',
           },
         },
         {
           timeZoneName: 'longGeneric',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
+            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
             'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
           },
         },
         {
           timeZoneName: 'shortGeneric',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
+            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
             'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
           },
         },
         {
           timeZoneName: 'longOffset',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
+            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
             'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
           },
         },
         {
           timeZoneName: 'shortOffset',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
+            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
             'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
           },
         },
@@ -346,8 +346,8 @@ describe('Intl.DateTimeFormat', function () {
     expect(dtf.format(date)).toContain(' GMT+14:00 ')
   })
   it('range with ymdhM', function () {
-    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
-    const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
+    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
+    const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
     const dtf = new DateTimeFormat('en', {
       year: 'numeric',
       month: 'numeric',
@@ -357,12 +357,12 @@ describe('Intl.DateTimeFormat', function () {
       timeZone: 'America/New_York',
     })
     expect(dtf.formatRange(date1, date2)).toBe(
-      '5/19/2021, 5:00 AM – 6/19/2021, 1:00 PM'
+      '5/19/2021, 5:00 AM – 6/19/2021, 1:00 PM'
     )
   })
   it('GH issue #2909', function () {
-    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
-    const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
+    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
+    const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
     const dtf = new DateTimeFormat('en', {
       hour: 'numeric',
       minute: 'numeric',
@@ -371,7 +371,7 @@ describe('Intl.DateTimeFormat', function () {
     expect(() => dtf.formatRange(date1, date2)).not.toThrow()
   })
   it('GH issue #2951', function () {
-    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
+    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
     const dtf = new DateTimeFormat('en', {
       hour: 'numeric',
       minute: 'numeric',
@@ -380,15 +380,15 @@ describe('Intl.DateTimeFormat', function () {
     expect(() => dtf.format(date1)).not.toThrow()
   })
   it.skip('GH issue #2915', function () {
-    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
-    const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
+    const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
+    const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
     const dtf = new DateTimeFormat('en', {
       hour: 'numeric',
       minute: 'numeric',
       timeZone: 'America/New_York',
     })
     expect(dtf.formatRange(date1, date2)).toBe(
-      '5/19/2021, 5:00 AM – 6/19/2021, 1:00 PM'
+      '5/19/2021, 5:00 AM – 6/19/2021, 1:00 PM'
     )
   })
   it('toLocaleString returns "Invalid Date", GH #3508', function () {
