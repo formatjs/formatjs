@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.7.2...@formatjs/intl-numberformat@8.8.0) (2023-10-16)
+
+### Features
+
+* **@formatjs/intl-numberformat:** update CLDR to v43 ([cb8d062](https://github.com/formatjs/formatjs/commit/cb8d062738b40173e801877570b8e565c97a0c1b))
+* **eslint-plugin-formatjs:** upgrade typescript-eslint packages ([a3c7310](https://github.com/formatjs/formatjs/commit/a3c7310fa4e7a37c9a482b9060fb1937d37d8d96))
+
 ## [8.7.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.7.1...@formatjs/intl-numberformat@8.7.2) (2023-09-10)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

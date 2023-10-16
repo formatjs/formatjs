@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.3.4...@formatjs/intl-enumerator@1.4.0) (2023-10-16)
+
+### Features
+
+* **@formatjs/intl-enumerator:** update CLDR to v43 ([ee6d972](https://github.com/formatjs/formatjs/commit/ee6d972365b73b6fbfc312defb05a853eb51e5f0))
+
 ## [1.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.3.3...@formatjs/intl-enumerator@1.3.4) (2023-09-10)
 
 **Note:** Version bump only for package @formatjs/intl-enumerator

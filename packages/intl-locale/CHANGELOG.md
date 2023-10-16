@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.3.4...@formatjs/intl-locale@3.4.0) (2023-10-16)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** upgrade cldr to v43 ([fdca75f](https://github.com/formatjs/formatjs/commit/fdca75f5501817e171badf26dca809386bcfb19c))
+* **@formatjs/intl-listformat:** upgrade cldr to v43 ([1208d64](https://github.com/formatjs/formatjs/commit/1208d64face37cc52abfce715ac4cfe7828da7ed))
+* **@formatjs/intl-locale:** update CLDR to v43 ([afcdc55](https://github.com/formatjs/formatjs/commit/afcdc55d81fe55ba357176cf2a50541ff2cb4723))
+
 ## [3.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.3.3...@formatjs/intl-locale@3.3.4) (2023-09-10)
 
 **Note:** Version bump only for package @formatjs/intl-locale

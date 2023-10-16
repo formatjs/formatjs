@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/icu-messageformat-parser",
-  "version": "2.6.2",
+  "version": "2.7.0",
   "main": "index.js",
   "module": "lib/index.js",
   "types": "index.d.ts",

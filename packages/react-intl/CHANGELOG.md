@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.5.0](https://github.com/formatjs/formatjs/compare/react-intl@6.4.7...react-intl@6.5.0) (2023-10-16)
+
+### Features
+
+* **eslint-plugin-formatjs:** upgrade typescript-eslint packages ([a3c7310](https://github.com/formatjs/formatjs/commit/a3c7310fa4e7a37c9a482b9060fb1937d37d8d96))
+
 ## [6.4.7](https://github.com/formatjs/formatjs/compare/react-intl@6.4.6...react-intl@6.4.7) (2023-09-18)
 
 **Note:** Version bump only for package react-intl

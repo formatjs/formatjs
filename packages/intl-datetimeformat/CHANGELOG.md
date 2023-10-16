@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.10.3...@formatjs/intl-datetimeformat@6.11.0) (2023-10-16)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** update CLDR to v43 ([55863a8](https://github.com/formatjs/formatjs/commit/55863a83b42365e8c2005c92fbf88ac8c4fab39f))
+
 ## [6.10.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.10.2...@formatjs/intl-datetimeformat@6.10.3) (2023-09-18)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

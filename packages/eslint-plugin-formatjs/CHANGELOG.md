@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.11.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.10.5...eslint-plugin-formatjs@4.11.0) (2023-10-16)
+
+### Bug Fixes
+
+* **deps:** update dependency tslib to v2.6.2 ([#4196](https://github.com/formatjs/formatjs/issues/4196)) ([b541fb2](https://github.com/formatjs/formatjs/commit/b541fb261ce66ea88690e23ca9626f58daa62f35))
+
+### Features
+
+* **eslint-plugin-formatjs:** upgrade typescript-eslint packages ([a3c7310](https://github.com/formatjs/formatjs/commit/a3c7310fa4e7a37c9a482b9060fb1937d37d8d96))
+
 ## [4.10.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.10.4...eslint-plugin-formatjs@4.10.5) (2023-09-10)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

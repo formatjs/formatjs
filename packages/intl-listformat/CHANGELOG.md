@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.4.2...@formatjs/intl-listformat@7.5.0) (2023-10-16)
+
+### Features
+
+* **@formatjs/intl-listformat:** upgrade cldr to v43 ([1208d64](https://github.com/formatjs/formatjs/commit/1208d64face37cc52abfce715ac4cfe7828da7ed))
+
 ## [7.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.4.1...@formatjs/intl-listformat@7.4.2) (2023-09-10)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
