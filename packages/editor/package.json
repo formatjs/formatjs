@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/editor",
-  "version": "2.0.34",
+  "version": "2.0.35",
   "description": "A ICU MessageFormat Editor UI",
   "keywords": [
     "intl",

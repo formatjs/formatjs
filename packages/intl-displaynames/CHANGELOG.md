@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.6.0...@formatjs/intl-displaynames@6.6.1) (2023-10-23)
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** make display names CLDR processor more lenient to missing data, fix [#4238](https://github.com/formatjs/formatjs/issues/4238) ([e975961](https://github.com/formatjs/formatjs/commit/e9759618125dd49bd3d9fc8981ab0ab7827882d2))
+
 # [6.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.5.2...@formatjs/intl-displaynames@6.6.0) (2023-10-16)
 
 ### Features
