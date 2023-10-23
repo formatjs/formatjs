@@ -5,10 +5,11 @@ import allData from '../src/data/all-tz'
 import * as enGB from './locale-data/en-GB.json'
 import * as en from './locale-data/en.json'
 import * as fa from './locale-data/fa.json'
+import * as nl from './locale-data/nl.json'
 import * as zhHans from './locale-data/zh-Hans.json'
 
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa)
+DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa, nl)
 DateTimeFormat.__addTZData(allData)
 describe('DateTimeFormat range format', function () {
   it('basic', function () {
@@ -400,4 +401,22 @@ test.skip('default formatRange pattern (long), #2474', function () {
   let date1 = new Date(Date.UTC(2021, 0, 10)) // "Jan 10, 2021"
   let date2 = new Date(Date.UTC(2021, 0, 20)) // "Jan 20, 2021"
   expect(dtf.formatRange(date1, date2)).toBe('January 10 – 20, 2021')
+})
+
+test('GH issue #4168', function () {
+  const dtf = new DateTimeFormat('nl', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  })
+
+  expect(
+    dtf.formatRange(
+      new Date('2023-10-16T10:00:00'),
+      new Date('2023-10-16T14:00:00')
+    )
+  ).toBe('16 okt 2023 10:00:00 – 16 okt 2023 14:00:00')
 })
