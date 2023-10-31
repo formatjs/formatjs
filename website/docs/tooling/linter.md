@@ -64,8 +64,8 @@ defineMessage({
 ```
 
 ```tsx
-import {FormattedMessage} from 'react-intl'
-;<FormattedMessage defaultMessage="foo" description="bar" />
+import {FormattedMessage} from 'react-intl';
+<FormattedMessage defaultMessage="foo" description="bar" />
 ```
 
 ```tsx
