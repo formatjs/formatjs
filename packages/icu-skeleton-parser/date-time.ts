@@ -60,7 +60,7 @@ export function parseDateTimeSkeleton(
         )
       // Weekday
       case 'E':
-        result.weekday = len === 4 ? 'short' : len === 5 ? 'narrow' : 'short'
+        result.weekday = len === 4 ? 'long' : len === 5 ? 'narrow' : 'short'
         break
       case 'e':
         if (len < 4) {
