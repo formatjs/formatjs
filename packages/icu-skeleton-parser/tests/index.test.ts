@@ -4,6 +4,7 @@ import {parseNumberSkeletonFromString} from '../number'
 test.each([
   `yyyy.MM.dd G 'at' HH:mm:ss zzzz`,
   `EEE, MMM d, ''yy`,
+  `EEEE, d MMMM yyyy`,
   `h:mm a`,
   ``,
 ])('case: %p', skeleton => {

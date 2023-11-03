@@ -365,6 +365,15 @@ exports[`case: "EEE, MMM d, ''yy" 1`] = `
 }
 `;
 
+exports[`case: "EEEE, d MMMM yyyy" 1`] = `
+{
+  "day": "numeric",
+  "month": "long",
+  "weekday": "long",
+  "year": "numeric",
+}
+`;
+
 exports[`case: "h:mm a" 1`] = `
 {
   "hour": "numeric",
