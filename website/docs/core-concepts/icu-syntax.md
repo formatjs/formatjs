@@ -189,7 +189,7 @@ You have {itemCount, plural,
 
 ### `{selectordinal}` Format
 
-The `{key, selectordinal, matches}` is used to choose output based on the ordinal pluralization rules (1st, 2nd, 3rd, etc.) of the current locale. It is very similar to the {plural} format above except that the value is mapped to an ordinal plural category.
+The `{key, selectordinal, matches}` is used to choose output based on the ordinal pluralization rules (1st, 2nd, 3rd, etc.) of the current locale. It is very similar to the \{plural\} format above except that the value is mapped to an ordinal plural category.
 
 The match is a literal value and is matched to one of these plural categories. Not all languages use all plural categories.
 
