@@ -28,7 +28,7 @@
     "intl-messageformat": "workspace:*",
     "prism-react-renderer": "1",
     "react-intl": "workspace:*",
-    "react-live": "2",
+    "react-live": "4",
     "typescript": "5"
   }
 }
