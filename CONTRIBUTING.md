@@ -104,3 +104,19 @@ bazel run //packages/cli/integration-tests:compile_folder_integration_test_updat
    ```shell
    bazel run //packages/icu-messageformat-parser:regex
    ```
+
+### Working on `formatjs.io` website
+
+We use [docusaurus](https://docusaurus.io/) for documentation. To run the website locally:
+
+```sh
+cd website
+npx docusaurus start
+```
+
+To deploy:
+
+```sh
+cd website
+GIT_PASS="<your_personal_token>" GIT_USER="your_username" DEPLOYMENT_BRANCH=main npx docusaurus deploy
+```
