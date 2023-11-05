@@ -1,4 +1,6 @@
-module.exports = {
+import type * as Preset from '@docusaurus/preset-classic'
+import type {Config} from '@docusaurus/types'
+export default {
   title: 'Format.JS',
   tagline: 'Internationalize your web apps on the client & server.',
   url: 'https://formatjs.github.io/',
@@ -105,7 +107,7 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} FormatJS. Built with Docusaurus.`,
     },
-  },
+  } satisfies Preset.ThemeConfig,
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -124,7 +126,7 @@ module.exports = {
           // Optional fields.
           anonymizeIP: true, // Should IPs be anonymized?
         },
-      },
+      } satisfies Preset.Options,
     ],
   ],
-}
+} satisfies Config

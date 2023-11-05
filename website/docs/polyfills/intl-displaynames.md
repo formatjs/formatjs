@@ -43,7 +43,7 @@ yarn add @formatjs/intl-displaynames
 
 ## Features
 
-Everything in <https://github.com/tc39/proposal-intl-displaynames>.
+Everything in [intl-displaynames proposal](https://github.com/tc39/proposal-intl-displaynames).
 
 ## Usage
 

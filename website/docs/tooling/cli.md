@@ -42,7 +42,7 @@ Add the following command to your `package.json` `scripts`:
 }
 ```
 
-We've built <https://www.npmjs.com/package/@formatjs/cli> that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
+We've built this [CLI](https://www.npmjs.com/package/@formatjs/cli) that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
 import {defineMessages, defineMessage} from 'react-intl'

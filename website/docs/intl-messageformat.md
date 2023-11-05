@@ -114,13 +114,13 @@ const IntlMessageFormat = require('intl-messageformat').default
 
 To create a message to format, use the `IntlMessageFormat` constructor. The constructor takes three parameters:
 
-- **message** - _{String | AST}_ - String message (or pre-parsed AST) that serves as formatting pattern.
+- **`message: string | AST`** - String message (or pre-parsed AST) that serves as formatting pattern.
 
-- **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used. When an array of locales is provided, each item and its ancestor locales are checked and the first one with registered locale data is returned. **See: [Locale Resolution](#locale-resolution) for more details.**
+- **`locales: string | string[]`** - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used. When an array of locales is provided, each item and its ancestor locales are checked and the first one with registered locale data is returned. **See: [Locale Resolution](#locale-resolution) for more details.**
 
-- **[formats]** - _{Object}_ - Optional object with user defined options for format styles.
+- **`formats?: object`** - Optional object with user defined options for format styles.
 
-- **[opts]** - `{ formatters?: Formatters, ignoreTag?: boolean }`: Optional options.
+- **`opts?: { formatters?: Formatters, ignoreTag?: boolean }`** - Optional options.
   - `formatters`: Map containing memoized formatters for performance.
   - `ignoreTag`: Whether to treat HTML/XML tags as string literal instead of parsing them as tag token. When this is `false` we only allow simple tags without any attributes
 

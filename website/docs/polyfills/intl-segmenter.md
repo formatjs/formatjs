@@ -38,7 +38,7 @@ yarn add @formatjs/intl-segmenter
 
 ## Features
 
-Everything in <https://tc39.es/proposal-intl-segmenter>.
+Everything in [intl-segmenter proposal](https://tc39.es/proposal-intl-segmenter)
 
 ## Usage
 
