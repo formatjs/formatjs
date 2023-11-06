@@ -21,7 +21,7 @@ npm_package(
 SRCS = glob(
     ["**/*.ts"],
     exclude = ["tests/*"],
-)
+) + ['abstract/languageMatching.json']
 
 ts_compile(
     name = "dist",
