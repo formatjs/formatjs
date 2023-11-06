@@ -1,5 +1,5 @@
-import {UNICODE_EXTENSION_SEQUENCE_REGEX} from './utils'
 import {BestAvailableLocale} from './BestAvailableLocale'
+import {UNICODE_EXTENSION_SEQUENCE_REGEX} from './utils'
 
 /**
  * https://tc39.es/ecma402/#sec-lookupsupportedlocales
@@ -7,7 +7,7 @@ import {BestAvailableLocale} from './BestAvailableLocale'
  * @param requestedLocales
  */
 export function LookupSupportedLocales(
-  availableLocales: Set<string>,
+  availableLocales: string[],
   requestedLocales: string[]
 ) {
   const subset: string[] = []

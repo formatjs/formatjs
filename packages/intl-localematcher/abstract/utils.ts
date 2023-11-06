@@ -1,4 +1,5 @@
 import jsonData from './languageMatching.json'
+import {regions} from './regions.generated'
 export const UNICODE_EXTENSION_SEQUENCE_REGEX = /-u(?:-[0-9a-z]{2,8})+/gi
 
 export function invariant(
@@ -10,6 +11,9 @@ export function invariant(
     throw new Err(message)
   }
 }
+
+// This is effectively 2 languages in 2 different regions not even in the same cluster
+const DEFAULT_MATCHING_THRESHOLD = 840
 
 interface LSR {
   language: string
@@ -90,24 +94,19 @@ function isMatched(
     const matchRegions = shouldInclude
       ? matchVariables[region.slice(1)]
       : matchVariables[region.slice(2)]
-    matches ||= matchRegions.includes(locale.region || '') != shouldInclude
-  } else if (region === '*' || region === locale.region) {
-    matches ||= true
+    const expandedMatchedRegions = matchRegions.flatMap(r => regions[r] || r)
+    matches &&= !(
+      expandedMatchedRegions.includes(locale.region || '') != shouldInclude
+    )
   } else {
-    return false
+    matches &&= locale.region
+      ? region === '*' || region === locale.region
+      : true
   }
-
-  if (script === '*' || script === locale.script) {
-    matches ||= true
-  } else {
-    return false
-  }
-
-  if (language === '*' || language === locale.language) {
-    matches ||= true
-  } else {
-    return false
-  }
+  matches &&= locale.script ? script === '*' || script === locale.script : true
+  matches &&= locale.language
+    ? language === '*' || language === locale.language
+    : true
   return matches
 }
 
@@ -130,13 +129,11 @@ function findMatchingDistanceForLSR(
         isMatched(supported, d.desired, data.matchVariables)
     }
     if (matches) {
-      console.log('matched', desired, supported, d)
       const distance = d.distance * 10
       if (
         data.paradigmLocales.includes(serializeLSR(desired)) !=
         data.paradigmLocales.includes(serializeLSR(supported))
       ) {
-        console.log('matched paradigm locale', desired, supported, d)
         return distance - 1
       }
       return distance
@@ -161,29 +158,40 @@ export function findMatchingDistance(desired: string, supported: string) {
   let matchingDistance = 0
 
   const data = processData()
-  if (desiredLSR.region !== supportedLSR.region) {
+
+  if (desiredLSR.language !== supportedLSR.language) {
     matchingDistance += findMatchingDistanceForLSR(
-      desiredLSR,
-      supportedLSR,
+      {
+        language: desiredLocale.language,
+        script: '',
+        region: '',
+      },
+      {
+        language: supportedLocale.language,
+        script: '',
+        region: '',
+      },
       data
     )
   }
-
-  desiredLSR.region = ''
-  supportedLSR.region = ''
 
   if (desiredLSR.script !== supportedLSR.script) {
     matchingDistance += findMatchingDistanceForLSR(
-      desiredLSR,
-      supportedLSR,
+      {
+        language: desiredLocale.language,
+        script: desiredLSR.script,
+        region: '',
+      },
+      {
+        language: supportedLocale.language,
+        script: desiredLSR.script,
+        region: '',
+      },
       data
     )
   }
 
-  desiredLSR.script = ''
-  supportedLSR.script = ''
-
-  if (desiredLSR.language !== supportedLSR.language) {
+  if (desiredLSR.region !== supportedLSR.region) {
     matchingDistance += findMatchingDistanceForLSR(
       desiredLSR,
       supportedLSR,
@@ -196,17 +204,23 @@ export function findMatchingDistance(desired: string, supported: string) {
 
 export function findBestMatch(
   desired: string,
-  supportedLocales: string[]
+  supportedLocales: readonly string[],
+  threshold = DEFAULT_MATCHING_THRESHOLD
 ): string | undefined {
   let bestMatch = undefined
   let lowestDistance = Infinity
-  supportedLocales.forEach(supported => {
-    const distance = findMatchingDistance(desired, supported)
+  supportedLocales.forEach((supported, i) => {
+    // Add some weight to the distance based on the order of the supported locales
+    const distance = findMatchingDistance(desired, supported) + i
     if (distance < lowestDistance) {
       lowestDistance = distance
       bestMatch = supported
     }
   })
+
+  if (lowestDistance >= threshold) {
+    return
+  }
 
   return bestMatch
 }

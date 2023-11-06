@@ -1,8 +1,8 @@
-import {LookupMatcherResult} from './types'
-import {LookupMatcher} from './LookupMatcher'
 import {BestFitMatcher} from './BestFitMatcher'
-import {invariant} from './utils'
+import {LookupMatcher} from './LookupMatcher'
 import {UnicodeExtensionValue} from './UnicodeExtensionValue'
+import {LookupMatcherResult} from './types'
+import {invariant} from './utils'
 
 export interface ResolveLocaleResult {
   locale: string
@@ -14,8 +14,8 @@ export interface ResolveLocaleResult {
  * https://tc39.es/ecma402/#sec-resolvelocale
  */
 export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
-  availableLocales: Set<string>,
-  requestedLocales: string[],
+  availableLocales: readonly string[],
+  requestedLocales: readonly string[],
   options: {localeMatcher: string; [k: string]: string},
   relevantExtensionKeys: K[],
   localeData: Record<string, D | undefined>,

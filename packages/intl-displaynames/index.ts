@@ -1,16 +1,16 @@
 import {
-  getInternalSlot,
-  setInternalSlot,
-  GetOption,
-  invariant,
-  SupportedLocales,
-  IsWellFormedCurrencyCode,
-  getMultiInternalSlots,
-  DisplayNamesLocaleData,
-  DisplayNamesData,
-  ToString,
   CanonicalizeLocaleList,
+  DisplayNamesData,
+  DisplayNamesLocaleData,
+  GetOption,
   GetOptionsObject,
+  IsWellFormedCurrencyCode,
+  SupportedLocales,
+  ToString,
+  getInternalSlot,
+  getMultiInternalSlots,
+  invariant,
+  setInternalSlot,
 } from '@formatjs/ecma402-abstract'
 import {CanonicalCodeForDisplayNames} from './abstract/CanonicalCodeForDisplayNames'
 import {IsValidDateTimeFieldCode} from './abstract/IsValidDateTimeFieldCode'
@@ -62,7 +62,7 @@ export class DisplayNames {
     opt.localeMatcher = matcher
 
     const r = ResolveLocale(
-      DisplayNames.availableLocales,
+      Array.from(DisplayNames.availableLocales),
       requestedLocales,
       opt,
       [], // there is no relevantExtensionKeys

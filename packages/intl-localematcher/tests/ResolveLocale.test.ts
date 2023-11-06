@@ -3,7 +3,7 @@ import {ResolveLocale} from '../abstract/ResolveLocale'
 test('ResolveLocale', function () {
   expect(
     ResolveLocale(
-      new Set(['fr', 'en']),
+      ['fr', 'en'],
       ['fr-XX', 'en'],
       {localeMatcher: 'best fit'},
       [],
@@ -17,7 +17,7 @@ test('ResolveLocale', function () {
 
   expect(
     ResolveLocale(
-      new Set(['zh-Hant-TW', 'en']),
+      ['zh-Hant-TW', 'en'],
       ['zh-TW', 'en'],
       {localeMatcher: 'best fit'},
       [],
@@ -31,7 +31,7 @@ test('ResolveLocale', function () {
 
   expect(
     ResolveLocale(
-      new Set(['th', 'en']),
+      ['th', 'en'],
       ['th-u-ca-gregory'],
       {localeMatcher: 'best fit'},
       ['ca', 'nu', 'hc'],
@@ -56,7 +56,7 @@ test('ResolveLocale', function () {
 test('empty requested', function () {
   expect(
     ResolveLocale(
-      new Set(['zh-Hant-TW', 'en']),
+      ['zh-Hant-TW', 'en'],
       [],
       {localeMatcher: 'best fit'},
       [],

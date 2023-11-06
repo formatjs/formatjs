@@ -1,9 +1,8 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("//tools:index.bzl", "package_json_test", "ts_compile")
+load("//tools:index.bzl", "package_json_test", "ts_compile", "generate_src_file")
 load("//tools:jest.bzl", "jest_test")
-
 PACKAGE_NAME = "intl-localematcher"
 
 npm_package(
@@ -56,4 +55,16 @@ write_source_files(
 
 package_json_test(
     name = "package_json_test",
+)
+
+
+generate_src_file(
+    name = "regions",
+    src = "abstract/regions.generated.ts",
+    data = [
+        "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/cldr-core",
+        "//:node_modules/json-stable-stringify",
+    ],
+    entry_point = "scripts/regions-gen.ts",
 )

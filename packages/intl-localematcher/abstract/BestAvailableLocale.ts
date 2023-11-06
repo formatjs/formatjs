@@ -4,12 +4,12 @@
  * @param locale
  */
 export function BestAvailableLocale(
-  availableLocales: Set<String>,
+  availableLocales: readonly string[],
   locale: string
 ) {
   let candidate = locale
   while (true) {
-    if (availableLocales.has(candidate)) {
+    if (availableLocales.indexOf(candidate) > -1) {
       return candidate
     }
     let pos = candidate.lastIndexOf('-')

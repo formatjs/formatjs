@@ -11,13 +11,8 @@ export function match(
   defaultLocale: string,
   opts?: Opts
 ): string {
-  const locales = availableLocales.reduce((all, l) => {
-    all.add(l)
-    return all
-  }, new Set<string>())
-
   return ResolveLocale(
-    locales,
+    availableLocales,
     CanonicalizeLocaleList(requestedLocales),
     {
       localeMatcher: opts?.algorithm || 'best fit',

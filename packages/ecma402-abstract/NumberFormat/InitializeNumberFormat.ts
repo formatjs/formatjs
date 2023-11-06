@@ -1,19 +1,19 @@
-import {
-  NumberFormatInternal,
-  NumberFormatOptions,
-  NumberFormatLocaleInternalData,
-  UseGroupingType,
-} from '../types/number'
-import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
-import {GetOption} from '../GetOption'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
-import {SetNumberFormatUnitOptions} from './SetNumberFormatUnitOptions'
-import {CurrencyDigits} from './CurrencyDigits'
-import {SetNumberFormatDigitOptions} from './SetNumberFormatDigitOptions'
-import {invariant} from '../utils'
+import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
 import {CoerceOptionsToObject} from '../CoerceOptionsToObject'
 import {GetNumberOption} from '../GetNumberOption'
+import {GetOption} from '../GetOption'
 import {GetStringOrBooleanOption} from '../GetStringOrBooleanOption'
+import {
+  NumberFormatInternal,
+  NumberFormatLocaleInternalData,
+  NumberFormatOptions,
+  UseGroupingType,
+} from '../types/number'
+import {invariant} from '../utils'
+import {CurrencyDigits} from './CurrencyDigits'
+import {SetNumberFormatDigitOptions} from './SetNumberFormatDigitOptions'
+import {SetNumberFormatUnitOptions} from './SetNumberFormatUnitOptions'
 
 const VALID_ROUND_INCREMENT_VALUES = [
   1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000,
@@ -73,7 +73,7 @@ export function InitializeNumberFormat(
   opt.nu = numberingSystem
 
   const r = ResolveLocale(
-    availableLocales,
+    Array.from(availableLocales),
     requestedLocales,
     opt,
     // [[RelevantExtensionKeys]] slot, which is a constant
