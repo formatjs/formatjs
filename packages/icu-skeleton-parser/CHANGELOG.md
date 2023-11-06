@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.3](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.6.2...@formatjs/icu-skeleton-parser@1.6.3) (2023-11-06)
+
+### Bug Fixes
+
+* **@formatjs/icu-skeleton-parser:** parse 'EEEE' as long weekday ([d01d112](https://github.com/formatjs/formatjs/commit/d01d1120cfa39e884cd224b9f84b8310f6073927))
+
 ## [1.6.2](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.6.1...@formatjs/icu-skeleton-parser@1.6.2) (2023-09-10)
 
 **Note:** Version bump only for package @formatjs/icu-skeleton-parser

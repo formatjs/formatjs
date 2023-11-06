@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.4.0...@formatjs/intl-enumerator@1.4.1) (2023-11-06)
+
+**Note:** Version bump only for package @formatjs/intl-enumerator
+
 # [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.3.4...@formatjs/intl-enumerator@1.4.0) (2023-10-16)
 
 ### Features

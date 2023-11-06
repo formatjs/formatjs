@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.17.2...@formatjs/ecma402-abstract@1.17.3) (2023-11-06)
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** fix distance algorithm ([fafbc09](https://github.com/formatjs/formatjs/commit/fafbc091a174addc076b9a088d09f37c36b2e3e1))
+
 ## [1.17.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.17.1...@formatjs/ecma402-abstract@1.17.2) (2023-09-10)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract

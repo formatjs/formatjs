@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.4.2...@formatjs/intl-localematcher@0.5.0) (2023-11-06)
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** fix distance algorithm ([fafbc09](https://github.com/formatjs/formatjs/commit/fafbc091a174addc076b9a088d09f37c36b2e3e1))
+
+### Features
+
+* **@formatjs/intl-localematcher:** implement distance-based locale matching using languageMatching algo ([d95d21f](https://github.com/formatjs/formatjs/commit/d95d21f1ea10a190f45968e909323e9af6992921))
+
 ## [0.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.4.1...@formatjs/intl-localematcher@0.4.2) (2023-09-10)
 
 ### Bug Fixes
