@@ -1,4 +1,4 @@
-import jsonData from './languageMatching.json'
+import {data as jsonData} from './languageMatching'
 import {regions} from './regions.generated'
 export const UNICODE_EXTENSION_SEQUENCE_REGEX = /-u(?:-[0-9a-z]{2,8})+/gi
 
@@ -94,9 +94,12 @@ function isMatched(
     const matchRegions = shouldInclude
       ? matchVariables[region.slice(1)]
       : matchVariables[region.slice(2)]
-    const expandedMatchedRegions = matchRegions.flatMap(r => regions[r] || r)
+    const expandedMatchedRegions = matchRegions
+      .map(r => regions[r] || [r])
+      .reduce((all, list) => [...all, ...list], [])
     matches &&= !(
-      expandedMatchedRegions.includes(locale.region || '') != shouldInclude
+      expandedMatchedRegions.indexOf(locale.region || '') > 1 !=
+      shouldInclude
     )
   } else {
     matches &&= locale.region
@@ -131,8 +134,8 @@ function findMatchingDistanceForLSR(
     if (matches) {
       const distance = d.distance * 10
       if (
-        data.paradigmLocales.includes(serializeLSR(desired)) !=
-        data.paradigmLocales.includes(serializeLSR(supported))
+        data.paradigmLocales.indexOf(serializeLSR(desired)) > -1 !=
+        data.paradigmLocales.indexOf(serializeLSR(supported)) > -1
       ) {
         return distance - 1
       }

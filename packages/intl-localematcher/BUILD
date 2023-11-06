@@ -18,9 +18,9 @@ npm_package(
 )
 
 SRCS = glob(
-    ["**/*.ts"],
+    ["abstract/*"],
     exclude = ["tests/*"],
-) + ['abstract/languageMatching.json']
+) + ["index.ts"]
 
 ts_compile(
     name = "dist",
@@ -56,7 +56,6 @@ write_source_files(
 package_json_test(
     name = "package_json_test",
 )
-
 
 generate_src_file(
     name = "regions",

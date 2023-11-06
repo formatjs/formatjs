@@ -37,7 +37,7 @@ ts_project(
     declaration = True,
     out_dir = "examples-lib",
     resolve_json_module = True,
-    tsconfig = "//:tsconfig.esm",
+    tsconfig = "//:tsconfig",
     deps = EXAMPLES_SRC_DEPS,
 )
 

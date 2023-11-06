@@ -14,7 +14,7 @@ export interface ResolveLocaleResult {
  * https://tc39.es/ecma402/#sec-resolvelocale
  */
 export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
-  availableLocales: readonly string[],
+  availableLocales: Set<string> | readonly string[],
   requestedLocales: readonly string[],
   options: {localeMatcher: string; [k: string]: string},
   relevantExtensionKeys: K[],
@@ -24,9 +24,17 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
   const matcher = options.localeMatcher
   let r: LookupMatcherResult
   if (matcher === 'lookup') {
-    r = LookupMatcher(availableLocales, requestedLocales, getDefaultLocale)
+    r = LookupMatcher(
+      Array.from(availableLocales),
+      requestedLocales,
+      getDefaultLocale
+    )
   } else {
-    r = BestFitMatcher(availableLocales, requestedLocales, getDefaultLocale)
+    r = BestFitMatcher(
+      Array.from(availableLocales),
+      requestedLocales,
+      getDefaultLocale
+    )
   }
   let foundLocale = r.locale
   const result: ResolveLocaleResult = {locale: '', dataLocale: foundLocale}

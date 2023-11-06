@@ -4,27 +4,27 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import * as React from 'react'
-import {Provider} from './injectIntl'
 import {
-  DEFAULT_INTL_CONFIG,
-  invariantIntlContext,
-  assignUniqueKeysToParts,
-  shallowEqual,
-} from '../utils'
-import type {IntlConfig, IntlShape, ResolvedIntlConfig} from '../types'
-import {
-  formatMessage as coreFormatMessage,
+  CreateIntlFn,
+  FormatMessageFn,
   IntlCache,
   createIntl as coreCreateIntl,
-  CreateIntlFn,
+  formatMessage as coreFormatMessage,
   createIntlCache,
-  FormatMessageFn,
 } from '@formatjs/intl'
+import * as React from 'react'
+import type {IntlConfig, IntlShape, ResolvedIntlConfig} from '../types'
+import {
+  DEFAULT_INTL_CONFIG,
+  assignUniqueKeysToParts,
+  invariantIntlContext,
+  shallowEqual,
+} from '../utils'
+import {Provider} from './injectIntl'
 
 import {
-  PrimitiveType,
   FormatXMLElementFn,
+  PrimitiveType,
   isFormatXMLElementFn,
 } from 'intl-messageformat'
 
@@ -75,7 +75,7 @@ function assignUniqueKeysToFormatXMLElementFnArgument<
     | PrimitiveType
     | React.ReactNode
     | FormatXMLElementFn<React.ReactNode, React.ReactNode>
-  >
+  >,
 >(values?: T): T | undefined {
   if (!values) {
     return values
@@ -149,10 +149,10 @@ export const createIntl: CreateIntlFn<
 
   return {
     ...coreIntl,
-    // @ts-expect-error fix this
     formatMessage: formatMessage.bind(
       null,
       resolvedConfig,
+      // @ts-expect-error fix this
       coreIntl.formatters
     ),
     // @ts-expect-error fix this

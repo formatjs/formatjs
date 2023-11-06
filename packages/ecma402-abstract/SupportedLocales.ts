@@ -1,6 +1,6 @@
+import {LookupSupportedLocales} from '@formatjs/intl-localematcher'
 import {ToObject} from './262'
 import {GetOption} from './GetOption'
-import {LookupSupportedLocales} from '@formatjs/intl-localematcher'
 
 /**
  * https://tc39.es/ecma402/#sec-supportedlocales
@@ -25,7 +25,10 @@ export function SupportedLocales(
     ) as 'best fit'
   }
   if (matcher === 'best fit') {
-    return LookupSupportedLocales(availableLocales, requestedLocales)
+    return LookupSupportedLocales(
+      Array.from(availableLocales),
+      requestedLocales
+    )
   }
-  return LookupSupportedLocales(availableLocales, requestedLocales)
+  return LookupSupportedLocales(Array.from(availableLocales), requestedLocales)
 }
