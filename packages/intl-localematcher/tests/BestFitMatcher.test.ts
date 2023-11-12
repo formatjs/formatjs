@@ -32,3 +32,15 @@ test('GH #4258', function () {
     locale: 'fr-FR',
   })
 })
+
+test('GH #4237', function () {
+  expect(
+    BestFitMatcher(
+      ['en-US', 'nl-NL', 'nl'],
+      ['en-GB', 'en-US', 'en'],
+      () => 'en-US'
+    )
+  ).toEqual({
+    locale: 'en-US',
+  })
+})
