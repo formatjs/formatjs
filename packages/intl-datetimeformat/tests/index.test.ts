@@ -11,7 +11,11 @@ import * as zhHans from './locale-data/zh-Hans.json'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, enCA, zhHans, fa)
 DateTimeFormat.__addTZData(allData)
+const DEFAULT_TIMEZONE = DateTimeFormat.getDefaultTimeZone()
 describe('Intl.DateTimeFormat', function () {
+  afterEach(() => {
+    DateTimeFormat.__setDefaultTimeZone(DEFAULT_TIMEZONE)
+  })
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {
@@ -97,7 +101,6 @@ describe('Intl.DateTimeFormat', function () {
     ).toBe('8:00 AM')
   })
   it('setDefaultTimeZone should work', function () {
-    const defaultTimeZone = DateTimeFormat.getDefaultTimeZone()
     DateTimeFormat.__setDefaultTimeZone('Asia/Shanghai')
     expect(
       new DateTimeFormat('en', {
@@ -105,7 +108,16 @@ describe('Intl.DateTimeFormat', function () {
         minute: 'numeric',
       }).format(new Date(0))
     ).toBe('8:00 AM')
-    DateTimeFormat.__setDefaultTimeZone(defaultTimeZone)
+  })
+
+  it('America/Indiana/Indianapolis, GH #4254', function () {
+    DateTimeFormat.__setDefaultTimeZone('America/Indiana/Indianapolis')
+    expect(
+      new DateTimeFormat('en', {
+        hour: 'numeric',
+        minute: 'numeric',
+      }).format(new Date(0))
+    ).toBe('7:00 PM')
   })
   it('diff tz should yield different result', function () {
     const {TZ} = process.env
