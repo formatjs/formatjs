@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.2.8...@formatjs/intl-pluralrules@5.2.9) (2023-11-12)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
 ## [5.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.2.7...@formatjs/intl-pluralrules@5.2.8) (2023-11-06)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules
