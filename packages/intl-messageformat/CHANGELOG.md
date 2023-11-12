@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.7](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.5.6...intl-messageformat@10.5.7) (2023-11-12)
+
+### Bug Fixes
+
+* **intl-messageformat:** export {IntlMessageFormat} for backwards compat ([fdd2d78](https://github.com/formatjs/formatjs/commit/fdd2d78d7ed4c43c22de207c99f57b7084700474)), closes [#4255](https://github.com/formatjs/formatjs/issues/4255)
+
 ## [10.5.6](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.5.5...intl-messageformat@10.5.6) (2023-11-12)
 
 **Note:** Version bump only for package intl-messageformat
