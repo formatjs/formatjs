@@ -3,15 +3,19 @@
   "version": "independent",
   "command": {
     "version": {
+      "changelogIncludeCommitsClientLogin": " - by @%l",
       "conventionalCommits": true,
-      "message": "build: publish",
-      "private": false,
-      "exact": true,
       "createRelease": "github",
-      "ignoreChanges": ["**/tests/**", "**/*.md"]
+      "exact": true,
+      "ignoreChanges": ["**/tests/**", "**/*.md"],
+      "message": "build: publish",
+      "private": false
     },
     "run": {
       "stream": true
+    },
+    "publish": {
+      "removePackageFields": ["devDependencies", "scripts"]
     }
   },
   "packages": ["packages/*"]
