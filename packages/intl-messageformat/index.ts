@@ -5,7 +5,8 @@ See the accompanying LICENSE file for terms.
 */
 
 import {IntlMessageFormat} from './src/core'
-export * from './src/formatters'
 export * from './src/core'
 export * from './src/error'
+export * from './src/formatters'
+export {IntlMessageFormat}
 export default IntlMessageFormat

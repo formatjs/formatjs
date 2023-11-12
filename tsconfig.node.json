@@ -2,7 +2,5 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "target": "ES2021",
-    "moduleResolution": "NodeNext",
-    "module": "nodenext"
   }
 }
