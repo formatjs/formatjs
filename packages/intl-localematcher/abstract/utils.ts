@@ -205,25 +205,44 @@ export function findMatchingDistance(desired: string, supported: string) {
   return matchingDistance
 }
 
+interface LocaleMatchingResult {
+  distances: Record<string, Record<string, number>>
+  matchedSupportedLocale?: string
+  matchedDesiredLocale?: string
+}
+
 export function findBestMatch(
-  desired: string,
+  requestedLocales: readonly string[],
   supportedLocales: readonly string[],
   threshold = DEFAULT_MATCHING_THRESHOLD
-): string | undefined {
-  let bestMatch = undefined
+): LocaleMatchingResult {
   let lowestDistance = Infinity
-  supportedLocales.forEach((supported, i) => {
-    // Add some weight to the distance based on the order of the supported locales
-    const distance = findMatchingDistance(desired, supported) + i
-    if (distance < lowestDistance) {
-      lowestDistance = distance
-      bestMatch = supported
+  let result: LocaleMatchingResult = {
+    matchedDesiredLocale: '',
+    distances: {},
+  }
+  requestedLocales.forEach((desired, i) => {
+    if (!result.distances[desired]) {
+      result.distances[desired] = {}
     }
+    supportedLocales.forEach((supported, j) => {
+      // Add some weight to the distance based on the order of the supported locales
+      // Add penalty for the order of the requested locales
+      const distance = findMatchingDistance(desired, supported) + j + i * 40
+
+      result.distances[desired][supported] = distance
+      if (distance < lowestDistance) {
+        lowestDistance = distance
+        result.matchedDesiredLocale = desired
+        result.matchedSupportedLocale = supported
+      }
+    })
   })
 
   if (lowestDistance >= threshold) {
-    return
+    result.matchedDesiredLocale = undefined
+    result.matchedSupportedLocale = undefined
   }
 
-  return bestMatch
+  return result
 }

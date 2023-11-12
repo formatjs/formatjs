@@ -14,18 +14,26 @@ export function BestFitMatcher(
 ): LookupMatcherResult {
   let foundLocale: string | undefined
   let extension: string | undefined
-  for (const l of requestedLocales) {
-    const matchedLocale = findBestMatch(
-      l.replace(UNICODE_EXTENSION_SEQUENCE_REGEX, ''),
-      availableLocales
-    )
-    if (matchedLocale) {
-      foundLocale = matchedLocale
+  const noExtensionLocales: string[] = []
+  const noExtensionLocaleMap = requestedLocales.reduce<Record<string, string>>(
+    (all, l) => {
       const noExtensionLocale = l.replace(UNICODE_EXTENSION_SEQUENCE_REGEX, '')
-      extension = l.slice(noExtensionLocale.length, l.length) || undefined
-      break
-    }
+      noExtensionLocales.push(noExtensionLocale)
+      all[noExtensionLocale] = l
+      return all
+    },
+    {}
+  )
+
+  const result = findBestMatch(noExtensionLocales, availableLocales)
+  if (result.matchedSupportedLocale && result.matchedDesiredLocale) {
+    foundLocale = result.matchedSupportedLocale
+    extension =
+      noExtensionLocaleMap[result.matchedDesiredLocale].slice(
+        result.matchedDesiredLocale.length
+      ) || undefined
   }
+
   if (!foundLocale) {
     return {locale: getDefaultLocale()}
   }

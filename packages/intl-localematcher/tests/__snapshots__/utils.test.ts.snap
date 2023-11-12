@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`findBestMatch 1`] = `
+{
+  "distances": {
+    "en-US": {
+      "en-US": 0,
+    },
+  },
+  "matchedDesiredLocale": "en-US",
+  "matchedSupportedLocale": "en-US",
+}
+`;
+
+exports[`findBestMatch 2`] = `
+{
+  "distances": {
+    "sr-Latn-BA": {
+      "bs": 800,
+      "sh": 41,
+    },
+  },
+  "matchedDesiredLocale": "sr-Latn-BA",
+  "matchedSupportedLocale": "sh",
+}
+`;
+
+exports[`findBestMatch 3`] = `
+{
+  "distances": {
+    "fr-XX": {
+      "en": 839,
+      "fr": 40,
+    },
+  },
+  "matchedDesiredLocale": "fr-XX",
+  "matchedSupportedLocale": "fr",
+}
+`;
+
+exports[`findBestMatch 4`] = `
+{
+  "distances": {
+    "zh-TW": {
+      "zh": 540,
+      "zh-Hant": 1,
+    },
+  },
+  "matchedDesiredLocale": "zh-TW",
+  "matchedSupportedLocale": "zh-Hant",
+}
+`;
+
+exports[`findBestMatch 5`] = `
+{
+  "distances": {
+    "th-u-ca-gregory": {
+      "th": 0,
+    },
+  },
+  "matchedDesiredLocale": "th-u-ca-gregory",
+  "matchedSupportedLocale": "th",
+}
+`;
+
+exports[`findBestMatch 6`] = `
+{
+  "distances": {
+    "es-co": {
+      "en": 839,
+      "es-419": 40,
+    },
+  },
+  "matchedDesiredLocale": "es-co",
+  "matchedSupportedLocale": "es-419",
+}
+`;
+
+exports[`findBestMatch 7`] = `
+{
+  "distances": {
+    "es-co": {
+      "en": 839,
+      "es": 50,
+      "es-419": 41,
+    },
+  },
+  "matchedDesiredLocale": "es-co",
+  "matchedSupportedLocale": "es-419",
+}
+`;
+
+exports[`findBestMatch 8`] = `
+{
+  "distances": {
+    "pt-mz": {
+      "pt-BR": 50,
+      "pt-PT": 39,
+    },
+  },
+  "matchedDesiredLocale": "pt-mz",
+  "matchedSupportedLocale": "pt-PT",
+}
+`;
+
+exports[`findBestMatch 9`] = `
+{
+  "distances": {
+    "de-DE": {
+      "en": 838,
+      "en-US": 839,
+      "fr-FR": 842,
+    },
+    "fr-FR": {
+      "en": 878,
+      "en-US": 879,
+      "fr-FR": 42,
+    },
+  },
+  "matchedDesiredLocale": "fr-FR",
+  "matchedSupportedLocale": "fr-FR",
+}
+`;

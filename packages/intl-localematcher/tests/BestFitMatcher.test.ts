@@ -24,3 +24,11 @@ test('BestFitMatcher extension', function () {
     extension: '-u-ca-gregory',
   })
 })
+
+test('GH #4258', function () {
+  expect(
+    BestFitMatcher(['en', 'en-US', 'fr-FR'], ['de-DE', 'fr'], () => 'en-US')
+  ).toEqual({
+    locale: 'fr-FR',
+  })
+})
