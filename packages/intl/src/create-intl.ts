@@ -19,7 +19,7 @@ import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 export interface CreateIntlFn<
   T = string,
   C extends IntlConfig<T> = IntlConfig<T>,
-  S extends IntlShape<T> = IntlShape<T>
+  S extends IntlShape<T> = IntlShape<T>,
 > {
   (config: C, cache?: IntlCache): S
 }

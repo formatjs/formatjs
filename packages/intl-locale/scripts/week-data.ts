@@ -17,7 +17,7 @@ const {territoryInfo} = rawTerritoryInfo.supplemental
 const allTerritories = Object.keys(territoryInfo)
 
 type WeekDataForTerritories = {
-  [key: typeof allTerritories[number]]: WeekInfoInternal
+  [key: (typeof allTerritories)[number]]: WeekInfoInternal
 }
 
 const {weekData} = rawWeekData.supplemental

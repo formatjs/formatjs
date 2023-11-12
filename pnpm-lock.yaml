@@ -289,7 +289,7 @@ importers:
         specifier: '8'
         version: 8.0.0
       prettier:
-        specifier: ^3.0.0
+        specifier: ^3.0.3
         version: 3.0.3
       react:
         specifier: ^16.6.0 || 17 || 18

@@ -13,7 +13,7 @@ import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils'
 
 export type Currencies =
-  typeof CurrenciesData['main']['en']['numbers']['currencies']
+  (typeof CurrenciesData)['main']['en']['numbers']['currencies']
 
 function extractCurrencyPattern(d: Currencies['USD']) {
   if (!d['displayName-count-other']) {

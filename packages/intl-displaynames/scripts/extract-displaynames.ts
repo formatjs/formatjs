@@ -5,19 +5,19 @@ import {dirname, resolve} from 'path'
 
 // CLDR JSON types
 type LanguageRawData =
-  typeof import('cldr-localenames-full/main/en/languages.json')['main']['en']['localeDisplayNames']['languages']
+  (typeof import('cldr-localenames-full/main/en/languages.json'))['main']['en']['localeDisplayNames']['languages']
 type RegionRawData =
-  typeof import('cldr-localenames-full/main/en/territories.json')['main']['en']['localeDisplayNames']['territories']
+  (typeof import('cldr-localenames-full/main/en/territories.json'))['main']['en']['localeDisplayNames']['territories']
 type ScriptRawData =
-  typeof import('cldr-localenames-full/main/en/scripts.json')['main']['en']['localeDisplayNames']['scripts']
+  (typeof import('cldr-localenames-full/main/en/scripts.json'))['main']['en']['localeDisplayNames']['scripts']
 type LocalePatternRawData =
-  typeof import('cldr-localenames-full/main/en/localeDisplayNames.json')['main']['en']['localeDisplayNames']['localeDisplayPattern']['localePattern']
+  (typeof import('cldr-localenames-full/main/en/localeDisplayNames.json'))['main']['en']['localeDisplayNames']['localeDisplayPattern']['localePattern']
 type CurrencyRawData =
-  typeof import('cldr-numbers-full/main/en/currencies.json')['main']['en']['numbers']['currencies']
+  (typeof import('cldr-numbers-full/main/en/currencies.json'))['main']['en']['numbers']['currencies']
 type CalendarRawData =
-  typeof import('cldr-localenames-full/main/en/localeDisplayNames.json')['main']['en']['localeDisplayNames']['types']['calendar']
+  (typeof import('cldr-localenames-full/main/en/localeDisplayNames.json'))['main']['en']['localeDisplayNames']['types']['calendar']
 type DateTimeFieldRawData =
-  typeof import('cldr-dates-full/main/en/dateFields.json')['main']['en']['dates']['fields']
+  (typeof import('cldr-dates-full/main/en/dateFields.json'))['main']['en']['dates']['fields']
 // -------------------------------------------------------------------------------------------------
 
 export async function getAllLocales(): Promise<string[]> {

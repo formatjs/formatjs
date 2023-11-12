@@ -62,7 +62,7 @@ function getMessageDescriptorValue(
 export function createMessageDescriptor(
   propPaths: [
     NodePath<t.JSXIdentifier> | NodePath<t.Identifier>,
-    NodePath<t.StringLiteral> | NodePath<t.JSXExpressionContainer>
+    NodePath<t.StringLiteral> | NodePath<t.JSXExpressionContainer>,
   ][]
 ): MessageDescriptorPath {
   return propPaths.reduce(

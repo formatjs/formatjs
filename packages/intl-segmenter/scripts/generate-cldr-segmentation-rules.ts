@@ -46,7 +46,7 @@ const SEGMENTATION_TYPE_NAME_TO_GRANULARITY = {
 } as const
 
 type Granularity =
-  typeof SEGMENTATION_TYPE_NAME_TO_GRANULARITY[keyof typeof SEGMENTATION_TYPE_NAME_TO_GRANULARITY]
+  (typeof SEGMENTATION_TYPE_NAME_TO_GRANULARITY)[keyof typeof SEGMENTATION_TYPE_NAME_TO_GRANULARITY]
 
 type SegmentationsJsonBreakType =
   | keyof typeof SEGMENTATION_TYPE_NAME_TO_GRANULARITY
@@ -109,7 +109,7 @@ const cldrSegmentationRules = async () => {
   }
 
   return rules as {
-    [K in typeof SEGMENTATION_LOCALES[number]]: SegmentationsJson
+    [K in (typeof SEGMENTATION_LOCALES)[number]]: SegmentationsJson
   }
 }
 

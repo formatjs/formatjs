@@ -75,7 +75,7 @@ function assignUniqueKeysToFormatXMLElementFnArgument<
     | PrimitiveType
     | React.ReactNode
     | FormatXMLElementFn<React.ReactNode, React.ReactNode>
-  >
+  >,
 >(values?: T): T | undefined {
   if (!values) {
     return values

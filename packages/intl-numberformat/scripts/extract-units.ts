@@ -16,7 +16,7 @@ import * as UnitsData from 'cldr-units-full/main/en/units.json'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils'
 
-export type Units = typeof UnitsData['main']['en']['units']
+export type Units = (typeof UnitsData)['main']['en']['units']
 
 function extractUnitPattern(d: Units['long']['volume-gallon']) {
   return collapseSingleValuePluralRule(

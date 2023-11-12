@@ -35,10 +35,12 @@ const msgs = defineMessages({
   },
   newline: {
     id: 'newline',
-    description: 'this is \
+    description:
+      'this is \
     a \
     description',
-    defaultMessage: 'this is \
+    defaultMessage:
+      'this is \
     a message',
   },
   linebreak: {

@@ -6,7 +6,7 @@ type PropMatcher = readonly [TagNamePattern: string, PropNamePattern: string][]
 
 type CompiledPropMatcher = readonly [
   TagNamePattern: RegExp,
-  PropNamePattern: RegExp
+  PropNamePattern: RegExp,
 ][]
 
 type Config = {

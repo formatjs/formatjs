@@ -44,7 +44,7 @@ export function assignUniqueKeysToParts(
 }
 
 export function shallowEqual<
-  T extends Record<string, unknown> = Record<string, unknown>
+  T extends Record<string, unknown> = Record<string, unknown>,
 >(objA?: T, objB?: T) {
   if (objA === objB) {
     return true

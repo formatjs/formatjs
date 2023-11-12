@@ -9,7 +9,7 @@ export enum IntlErrorCode {
 }
 
 export class IntlError<
-  T extends IntlErrorCode = IntlErrorCode.FORMAT_ERROR
+  T extends IntlErrorCode = IntlErrorCode.FORMAT_ERROR,
 > extends Error {
   public readonly code: T
 

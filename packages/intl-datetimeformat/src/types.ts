@@ -27,7 +27,7 @@ export type ZoneData = [
   // Index of offsets in seconds
   number,
   // Whether it's daylight, 0|1
-  number
+  number,
 ]
 
 export type RawDateTimeLocaleData = LocaleData<RawDateTimeLocaleInternalData>

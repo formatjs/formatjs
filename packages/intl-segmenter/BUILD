@@ -68,7 +68,6 @@ ts_compile(
     data = SRCS + [fn] + TEST_DEPS,
 ) for fn in TESTS if fn.endswith(".test.ts")]
 
-
 generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",

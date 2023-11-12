@@ -40,7 +40,7 @@ const FIELD_NAMES = [
   'second-narrow',
 ]
 
-type Fields = typeof DateFields['main']['en']['dates']['fields']
+type Fields = (typeof DateFields)['main']['en']['dates']['fields']
 
 export async function getAllLocales(): Promise<string[]> {
   const fns = await glob('*/dateFields.json', {

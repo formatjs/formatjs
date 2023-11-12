@@ -36,7 +36,7 @@ export type IntlFormatters = CoreIntlFormatters<VNode>
 export function defineMessages<
   K extends keyof any,
   T = MessageDescriptor,
-  U extends Record<K, T> = Record<K, T>
+  U extends Record<K, T> = Record<K, T>,
 >(msgs: U): U {
   return msgs
 }

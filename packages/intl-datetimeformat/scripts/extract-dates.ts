@@ -156,7 +156,7 @@ async function loadDatesFields(
           const metazone = tzToMetaZoneMap[tz]
           const metazoneInfo =
             timeZoneNames.metazone[
-              metazone as keyof typeof timeZoneNames['metazone']
+              metazone as keyof (typeof timeZoneNames)['metazone']
             ]
           if (metazoneInfo) {
             all[tz] = {}
@@ -359,7 +359,7 @@ export async function extractDatesFields(
  * @param formatObject
  */
 function extractStyleFormatFields<
-  T extends {full: string; long: string; medium: string; short: string}
+  T extends {full: string; long: string; medium: string; short: string},
 >(
   formatObject: T
 ): {full: string; long: string; medium: string; short: string} {

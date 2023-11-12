@@ -102,10 +102,10 @@ ts_compile(
 )
 
 [jest_test(
-    name = "unit_test_%s" % t.split('/')[-1].removesuffix(".test.ts"),
+    name = "unit_test_%s" % t.split("/")[-1].removesuffix(".test.ts"),
     size = "large" if "currency.test" in t else None,
     data = SRCS + TEST_DEPS + [t] + TEST_LOCALE_DATA,
-    snapshots = glob(["tests/__snapshots__/%s.*" % t.split('/')[-1]]),
+    snapshots = glob(["tests/__snapshots__/%s.*" % t.split("/")[-1]]),
 ) for t in TESTS]
 
 # CLDR

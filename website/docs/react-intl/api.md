@@ -62,7 +62,7 @@ type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
 
 function injectIntl<
   IntlPropName extends string = 'intl',
-  P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>
+  P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>,
 >(
   WrappedComponent: React.ComponentType<P>,
   options?: Opts<IntlPropName>

@@ -160,18 +160,21 @@ export class IntlMessageFormat {
     if (parts.length === 1) {
       return parts[0].value
     }
-    const result = parts.reduce((all, part) => {
-      if (
-        !all.length ||
-        part.type !== PART_TYPE.literal ||
-        typeof all[all.length - 1] !== 'string'
-      ) {
-        all.push(part.value)
-      } else {
-        all[all.length - 1] += part.value
-      }
-      return all
-    }, [] as Array<string | T>)
+    const result = parts.reduce(
+      (all, part) => {
+        if (
+          !all.length ||
+          part.type !== PART_TYPE.literal ||
+          typeof all[all.length - 1] !== 'string'
+        ) {
+          all.push(part.value)
+        } else {
+          all[all.length - 1] += part.value
+        }
+        return all
+      },
+      [] as Array<string | T>
+    )
 
     if (result.length <= 1) {
       return result[0] || ''

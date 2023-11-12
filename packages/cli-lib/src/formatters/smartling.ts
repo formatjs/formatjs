@@ -7,7 +7,7 @@ export interface SmartlingDirectives {
       path: string
       key: string
       instruction: string
-    }
+    },
   ]
   variants_enabled: boolean
   string_format: string

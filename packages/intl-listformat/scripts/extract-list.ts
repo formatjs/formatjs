@@ -9,7 +9,7 @@ import glob from 'fast-glob'
 import {resolve, dirname} from 'path'
 import {ListPatternFieldsData, ListPattern} from '@formatjs/ecma402-abstract'
 
-export type ListTypes = typeof ListPatterns['main']['en']['listPatterns']
+export type ListTypes = (typeof ListPatterns)['main']['en']['listPatterns']
 
 export async function getAllLocales(): Promise<string[]> {
   const fns = await glob('*/listPatterns.json', {

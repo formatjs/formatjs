@@ -12,5 +12,5 @@ actions:
       memory: 10GB
     bazel_commands:
       # Check if all files are properly formatted.
-      - 'run @aspect_rules_format//format -- --mode check'
+      - 'run //:format -- --mode check'
       - 'test //...'

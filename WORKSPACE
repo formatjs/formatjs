@@ -298,20 +298,8 @@ crate_repositories()
 # ------------------------------------------------------------------------------
 
 http_archive(
-    name = "aspect_rules_format",
-    sha256 = "c8d04f68082c0eeac2777e15f65048ece2f17d632023bdcc511602f8c5faf177",
-    strip_prefix = "bazel-super-formatter-2.0.0",
-    url = "https://github.com/aspect-build/bazel-super-formatter/archive/refs/tags/v2.0.0.tar.gz",
+    name = "aspect_rules_lint",
+    sha256 = "ddc21b1399c03708f82e5a46d6c747bf23d55484bad1efdaa92a22d5fee20ea1",
+    strip_prefix = "rules_lint-0.5.0",
+    url = "https://github.com/aspect-build/rules_lint/releases/download/v0.5.0/rules_lint-v0.5.0.tar.gz",
 )
-
-load("@aspect_rules_format//format:repositories.bzl", "rules_format_dependencies")
-
-rules_format_dependencies()
-
-load("@aspect_rules_format//format:dependencies.bzl", "parse_dependencies")
-
-parse_dependencies()
-
-load("@aspect_rules_format//format:toolchains.bzl", "format_register_toolchains")
-
-format_register_toolchains()

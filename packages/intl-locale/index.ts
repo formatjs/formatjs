@@ -46,7 +46,7 @@ export interface IntlLocaleOptions {
 }
 
 const RELEVANT_EXTENSION_KEYS = ['ca', 'co', 'hc', 'kf', 'kn', 'nu'] as const
-type RELEVANT_EXTENSION_KEY = typeof RELEVANT_EXTENSION_KEYS[number]
+type RELEVANT_EXTENSION_KEY = (typeof RELEVANT_EXTENSION_KEYS)[number]
 type ExtensionOpts = Record<RELEVANT_EXTENSION_KEY, string>
 
 export interface IntlLocaleInternal extends IntlLocaleOptions {

@@ -22,7 +22,7 @@ export function repeat(s: string, times: number): string {
 export function setInternalSlot<
   Instance extends object,
   Internal extends object,
-  Field extends keyof Internal
+  Field extends keyof Internal,
 >(
   map: WeakMap<Instance, Internal>,
   pl: Instance,
@@ -39,7 +39,7 @@ export function setInternalSlot<
 export function setMultiInternalSlots<
   Instance extends object,
   Internal extends object,
-  K extends keyof Internal
+  K extends keyof Internal,
 >(
   map: WeakMap<Instance, Internal>,
   pl: Instance,
@@ -53,7 +53,7 @@ export function setMultiInternalSlots<
 export function getInternalSlot<
   Instance extends object,
   Internal extends object,
-  Field extends keyof Internal
+  Field extends keyof Internal,
 >(
   map: WeakMap<Instance, Internal>,
   pl: Instance,
@@ -65,7 +65,7 @@ export function getInternalSlot<
 export function getMultiInternalSlots<
   Instance extends object,
   Internal extends object,
-  Field extends keyof Internal
+  Field extends keyof Internal,
 >(
   map: WeakMap<Instance, Internal>,
   pl: Instance,
@@ -75,10 +75,13 @@ export function getMultiInternalSlots<
   if (!slots) {
     throw new TypeError(`${pl} InternalSlot has not been initialized`)
   }
-  return fields.reduce((all, f) => {
-    all[f] = slots[f]
-    return all
-  }, Object.create(null) as Pick<Internal, Field>)
+  return fields.reduce(
+    (all, f) => {
+      all[f] = slots[f]
+      return all
+    },
+    Object.create(null) as Pick<Internal, Field>
+  )
 }
 
 export interface LiteralPart {

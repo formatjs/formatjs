@@ -95,7 +95,7 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
           prop =>
             [prop.get('key'), prop.get('value')] as [
               NodePath<t.Identifier>,
-              NodePath<t.StringLiteral>
+              NodePath<t.StringLiteral>,
             ]
         )
       )

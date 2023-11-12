@@ -2,7 +2,6 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
-load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
@@ -184,46 +183,6 @@ multirun(
     ],
 )
 
-buildifier(
-    name = "buildifier",
-    exclude_patterns = ["./node_modules/*"],
-    lint_mode = "fix",
-    lint_warnings = [
-        "attr-cfg",
-        "attr-license",
-        "attr-non-empty",
-        "attr-output-default",
-        "attr-single-file",
-        "constant-glob",
-        "ctx-actions",
-        "ctx-args",
-        "depset-iteration",
-        "depset-union",
-        "dict-concatenation",
-        "duplicated-name",
-        "filetype",
-        "git-repository",
-        "http-archive",
-        "integer-division",
-        "load",
-        "load-on-top",
-        "native-build",
-        "native-package",
-        "out-of-order-load",
-        "output-group",
-        "package-name",
-        "package-on-top",
-        "positional-args",
-        "redefined-variable",
-        "repository-name",
-        "same-origin-load",
-        "string-iteration",
-        "unsorted-dict-items",
-        "unused-variable",
-    ],
-    verbose = True,
-)
-
 CONFIG_FILES = [
     "jest.config.js",
     "package.json",
@@ -272,4 +231,9 @@ npm_link_package(
 npm_link_package(
     name = "node_modules/@formatjs/intl-localematcher",
     src = "//packages/intl-localematcher",
+)
+
+alias(
+    name = "format",
+    actual = "//tools:format",
 )

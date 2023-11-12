@@ -21,7 +21,7 @@ export interface Props<
     | React.ReactNode
     | PrimitiveType
     | FormatXMLElementFn<React.ReactNode, React.ReactNode>
-  >
+  >,
 > extends MessageDescriptor {
   values?: V
   tagName?: React.ElementType<any>

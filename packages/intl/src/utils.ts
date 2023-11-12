@@ -16,15 +16,18 @@ export function filterProps<T extends Record<string, any>, K extends string>(
   allowlist: Array<K>,
   defaults: Partial<T> = {}
 ): Pick<T, K> {
-  return allowlist.reduce((filtered, name) => {
-    if (name in props) {
-      filtered[name] = props[name]
-    } else if (name in defaults) {
-      filtered[name] = defaults[name]!
-    }
+  return allowlist.reduce(
+    (filtered, name) => {
+      if (name in props) {
+        filtered[name] = props[name]
+      } else if (name in defaults) {
+        filtered[name] = defaults[name]!
+      }
 
-    return filtered
-  }, {} as Pick<T, K>)
+      return filtered
+    },
+    {} as Pick<T, K>
+  )
 }
 
 const defaultErrorHandler: OnErrorFn = error => {

@@ -54,7 +54,7 @@ export interface IntlDateTimeFormatInternal {
 }
 
 export interface RangePatternPart<
-  T extends RangePatternType = RangePatternType
+  T extends RangePatternType = RangePatternType,
 > {
   source: T
   pattern: string
@@ -190,7 +190,7 @@ export type UnpackedZoneData = [
   // offsets in seconds
   number,
   // Whether it's daylight, 0|1
-  boolean
+  boolean,
 ]
 
 export type IntlDateTimeFormatPartType =

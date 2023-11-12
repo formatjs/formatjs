@@ -34,7 +34,7 @@ export const Context = IntlContext
 
 export interface Opts<
   IntlPropName extends string = 'intl',
-  ForwardRef extends boolean = false
+  ForwardRef extends boolean = false,
 > {
   intlPropName?: IntlPropName
   forwardRef?: ForwardRef
@@ -68,7 +68,7 @@ export type WithIntlProps<P> = DistributedOmit<
 // Non ref forwarding overload
 export default function injectIntl<
   IntlPropName extends string = 'intl',
-  P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>
+  P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>,
 >(
   WrappedComponent: React.ComponentType<P>,
   options?: Opts<IntlPropName, false>
@@ -79,7 +79,7 @@ export default function injectIntl<
 export default function injectIntl<
   IntlPropName extends string = 'intl',
   P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>,
-  T extends React.ComponentType<P> = any
+  T extends React.ComponentType<P> = any,
 >(
   WrappedComponent: React.ComponentType<P>,
   options?: Opts<IntlPropName, true>
@@ -93,7 +93,7 @@ export default function injectIntl<
   IntlPropName extends string = 'intl',
   P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>,
   ForwardRef extends boolean = false,
-  T extends React.ComponentType<P> = any
+  T extends React.ComponentType<P> = any,
 >(
   WrappedComponent: React.ComponentType<P>,
   options?: Opts<IntlPropName, ForwardRef>
