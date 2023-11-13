@@ -83,7 +83,7 @@
     "cldr-numbers-full": "43.1.0",
     "cldr-segments-full": "43.1.0",
     "cldr-units-full": "43.1.0",
-    "clsx": "1",
+    "clsx": "2",
     "commander": "8",
     "core-js": "^3.6.5",
     "emoji-regex": "^10.2.1",
