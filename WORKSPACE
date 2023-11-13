@@ -9,14 +9,6 @@ workspace(
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 
-# some rules such as bazel-super-formatter depends on rules_python.
-http_archive(
-    name = "rules_python",
-    sha256 = "863ba0fa944319f7e3d695711427d9ad80ba92c6edd0b7c7443b84e904689539",
-    strip_prefix = "rules_python-0.22.0",
-    url = "https://github.com/bazelbuild/rules_python/releases/download/0.22.0/rules_python-0.22.0.tar.gz",
-)
-
 # rules_js
 http_archive(
     name = "aspect_rules_js",
