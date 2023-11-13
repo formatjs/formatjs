@@ -14,7 +14,10 @@ exports_files(
     [
         "src/numbering-systems.generated.ts",
     ],
-    visibility = ["//packages/intl-enumerator:__pkg__"],
+    visibility = [
+        "//packages/intl-durationformat:__pkg__",
+        "//packages/intl-enumerator:__pkg__",
+    ],
 )
 
 PACKAGE_NAME = "intl-numberformat"
@@ -916,5 +919,7 @@ copy_to_bin(
 copy_to_bin(
     name = "numbering-systems-scripts",
     srcs = ["scripts/numbering-systems.ts"],
-    visibility = ["//packages/intl-enumerator:__subpackages__"],
+    visibility = [
+        "//packages/intl-enumerator:__subpackages__",
+    ],
 )

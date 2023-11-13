@@ -1,21 +1,21 @@
 import {
-  Formats,
-  IntlDateTimeFormatInternal,
-  DateTimeFormatLocaleInternalData,
   CanonicalizeLocaleList,
-  invariant,
-  GetOption,
-  IsValidTimeZoneName,
   CanonicalizeTimeZoneName,
+  DateTimeFormat,
+  DateTimeFormatLocaleInternalData,
+  Formats,
   GetNumberOption,
-  DateTimeFormat as DateTimeFormat,
+  GetOption,
+  IntlDateTimeFormatInternal,
+  IsValidTimeZoneName,
+  invariant,
 } from '@formatjs/ecma402-abstract'
+import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {BasicFormatMatcher} from './BasicFormatMatcher'
 import {BestFitFormatMatcher} from './BestFitFormatMatcher'
-import {DATE_TIME_PROPS} from './utils'
 import {DateTimeStyleFormat} from './DateTimeStyleFormat'
 import {ToDateTimeOptions} from './ToDateTimeOptions'
-import {ResolveLocale} from '@formatjs/intl-localematcher'
+import {DATE_TIME_PROPS} from './utils'
 
 function isTimeRelated(opt: Opt) {
   for (const prop of ['hour', 'minute', 'second'] as Array<
@@ -236,7 +236,6 @@ export function InitializeDateTimeFormat(
     'fractionalSecondDigits',
     1,
     3,
-    // @ts-expect-error
     undefined
   ) as 1
 

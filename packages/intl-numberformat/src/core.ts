@@ -1,16 +1,16 @@
 import {
-  defineProperty,
-  invariant,
-  RawNumberLocaleData,
-  SupportedLocales,
-  InitializeNumberFormat,
-  FormatNumericToParts,
-  NumberFormatOptions,
-  ToNumber,
   CanonicalizeLocaleList,
-  OrdinaryHasInstance,
   FormatNumericRange,
   FormatNumericRangeToParts,
+  FormatNumericToParts,
+  InitializeNumberFormat,
+  NumberFormatOptions,
+  OrdinaryHasInstance,
+  RawNumberLocaleData,
+  SupportedLocales,
+  ToNumber,
+  defineProperty,
+  invariant,
 } from '@formatjs/ecma402-abstract'
 import {currencyDigitsData} from './currency-digits.generated'
 import {numberingSystemNames} from './numbering-systems.generated'

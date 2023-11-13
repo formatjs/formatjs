@@ -21,11 +21,15 @@ npm_package(
     visibility = ["//visibility:public"],
 )
 
-SRCS = glob(["*.ts"])
+SRCS = glob([
+    "*.ts",
+    "src/**/*",
+])
 
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
+    ":node_modules/tslib",
 ]
 
 ts_compile(
@@ -59,6 +63,14 @@ ts_project(
 write_source_files(
     name = "tsconfig_json",
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
+)
+
+# numbering-systems
+write_source_files(
+    name = "numbering-systems",
+    files = {
+        "src/numbering-systems.generated.ts": "//packages/intl-numberformat:src/numbering-systems.generated.ts",
+    },
 )
 
 # package_json_test(

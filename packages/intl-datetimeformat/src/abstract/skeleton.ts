@@ -151,7 +151,7 @@ function matchSkeletonPattern(
     // Zone
     case 'z': // 1..3, 4: specific non-location format
     case 'Z': // 1..3, 4, 5: The ISO8601 varios formats
-    case 'O': // 1, 4: miliseconds in day short, long
+    case 'O': // 1, 4: milliseconds in day short, long
     case 'v': // 1, 4: generic non-location format
     case 'V': // 1, 2, 3, 4: time zone ID or city
     case 'X': // 1, 2, 3, 4: The ISO8601 varios formats

@@ -12,7 +12,7 @@
     "deploy": "NO_UPDATE_NOTIFIER=1 DEPLOYMENT_BRANCH=main USE_SSH=true bazel run //website:deploy",
     "docs": "NO_UPDATE_NOTIFIER=1 bazel run //website:serve",
     "examples": "bazel run //packages/react-intl/examples",
-    "format": "bazel run //:format",
+    "format": "bazel run //:format && bazel run //tools:buildifier",
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
     "postinstall": "husky install",

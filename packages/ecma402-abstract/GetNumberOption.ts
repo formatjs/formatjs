@@ -9,20 +9,17 @@
 
 import {DefaultNumberOption} from './DefaultNumberOption'
 
-export function GetNumberOption<T extends object, K extends keyof T>(
+export function GetNumberOption<
+  T extends object,
+  K extends keyof T,
+  F extends number | undefined,
+>(
   options: T,
   property: K,
   minimum: number,
   maximum: number,
-  fallback: number
-): number
-export function GetNumberOption<T extends object, K extends keyof T>(
-  options: T,
-  property: K,
-  minimum: number,
-  maximum: number,
-  fallback: number | undefined
-): number | undefined {
+  fallback: F
+): F extends number ? number : number | undefined {
   const val = options[property]
   // @ts-expect-error
   return DefaultNumberOption(val, minimum, maximum, fallback)

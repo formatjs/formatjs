@@ -12,7 +12,7 @@ export function GetOption<T extends object, K extends keyof T, F>(
   opts: T,
   prop: K,
   type: 'string' | 'boolean',
-  values: T[K][] | undefined,
+  values: readonly T[K][] | undefined,
   fallback: F
 ): Exclude<T[K], undefined> | F {
   if (typeof opts !== 'object') {
