@@ -27,7 +27,7 @@
     "classnames": "2",
     "http-server": "14",
     "intl-messageformat": "workspace:*",
-    "prism-react-renderer": "1",
+    "prism-react-renderer": "2",
     "react-intl": "workspace:*",
     "react-live": "4",
     "typescript": "5"
