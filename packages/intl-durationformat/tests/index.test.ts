@@ -8,6 +8,83 @@ DurationFormat.__addLocaleData({
   },
   locale: 'en',
 })
-test.skip('Intl.DurationFormat', function () {
-  expect(new DurationFormat('en').format({years: 1})).toBe('1 year')
+test('Intl.DurationFormat resolvedOptions', function () {
+  expect(new DurationFormat('en').resolvedOptions()).toMatchSnapshot()
+})
+
+test('Intl.DurationFormat format', function () {
+  expect(new DurationFormat('en').format({years: 1})).toBe('1 yr')
+  expect(new DurationFormat('en').format({years: 1, months: 2})).toBe(
+    '1 yr, 2 mths'
+  )
+  expect(new DurationFormat('en').format({years: 1, months: 2, days: 3})).toBe(
+    '1 yr, 2 mths, 3 days'
+  )
+  expect(
+    new DurationFormat('en').format({years: 1, months: 2, days: 3, hours: 4})
+  ).toBe('1 yr, 2 mths, 3 days, 4 hr')
+  expect(
+    new DurationFormat('en').format({
+      years: 1,
+      months: 2,
+      days: 3,
+      hours: 4,
+      minutes: 5,
+    })
+  ).toBe('1 yr, 2 mths, 3 days, 4 hr, 5 min')
+  expect(
+    new DurationFormat('en').format({
+      years: 1,
+      months: 2,
+      days: 3,
+      hours: 4,
+      minutes: 5,
+      seconds: 6,
+    })
+  ).toBe('1 yr, 2 mths, 3 days, 4 hr, 5 min, 6 sec')
+  expect(
+    new DurationFormat('en').format({
+      years: 1,
+      months: 2,
+      days: 3,
+      hours: 4,
+      minutes: 5,
+      seconds: 6,
+      milliseconds: 7,
+    })
+  ).toBe('1 yr, 2 mths, 3 days, 4 hr, 5 min, 6 sec, 7 ms')
+})
+
+test('Intl.DurationFormat format digital', function () {
+  expect(new DurationFormat('en', {style: 'digital'}).format({years: 1})).toBe(
+    '1 yr, 0:00:00'
+  )
+})
+
+test.skip('Intl.DurationFormat format with NumberFormatV3', function () {
+  expect(
+    new DurationFormat('en').format({
+      years: 1,
+      months: 2,
+      days: 3,
+      hours: 4,
+      minutes: 5,
+      seconds: 6,
+      milliseconds: 7,
+      microseconds: 8,
+    })
+  ).toBe('1 yr, 2 mths, 3 days, 4 hr, 5 min, 6 sec, 7 ms, 8 μs')
+  expect(
+    new DurationFormat('en').format({
+      years: 1,
+      months: 2,
+      days: 3,
+      hours: 4,
+      minutes: 5,
+      seconds: 6,
+      milliseconds: 7,
+      microseconds: 8,
+      nanoseconds: 9,
+    })
+  ).toBe('1 yr, 2 mths, 3 days, 4 hr, 5 min, 6 sec, 7 ms, 8 μs, 9 ns')
 })

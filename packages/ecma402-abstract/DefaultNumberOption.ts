@@ -5,24 +5,19 @@
  * @param max
  * @param fallback
  */
-export function DefaultNumberOption(
-  val: any,
+export function DefaultNumberOption<F extends number | undefined>(
+  inputVal: unknown,
   min: number,
   max: number,
-  fallback: number
-): number
-export function DefaultNumberOption(
-  val: any,
-  min: number,
-  max: number,
-  fallback: number | undefined
-): number | undefined {
-  if (val !== undefined) {
-    val = Number(val)
-    if (isNaN(val) || val < min || val > max) {
-      throw new RangeError(`${val} is outside of range [${min}, ${max}]`)
-    }
-    return Math.floor(val)
+  fallback: F
+): F extends number ? number : number | undefined {
+  if (inputVal === undefined) {
+    // @ts-expect-error
+    return fallback
   }
-  return fallback
+  const val = Number(inputVal)
+  if (isNaN(val) || val < min || val > max) {
+    throw new RangeError(`${val} is outside of range [${min}, ${max}]`)
+  }
+  return Math.floor(val)
 }

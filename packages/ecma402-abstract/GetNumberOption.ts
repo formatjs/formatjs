@@ -21,6 +21,5 @@ export function GetNumberOption<
   fallback: F
 ): F extends number ? number : number | undefined {
   const val = options[property]
-  // @ts-expect-error
   return DefaultNumberOption(val, minimum, maximum, fallback)
 }

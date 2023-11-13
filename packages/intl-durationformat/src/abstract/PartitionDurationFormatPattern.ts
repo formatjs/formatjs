@@ -1,4 +1,4 @@
-import {invariant} from '@formatjs/ecma402-abstract'
+import {NumberFormatOptions, invariant} from '@formatjs/ecma402-abstract'
 import {TABLE_2} from '../constants'
 import {DurationFormat} from '../core'
 import {getInternalSlots} from '../get_internal_slots'
@@ -19,90 +19,93 @@ export function PartitionDurationFormatPattern(
   }
   const numberingSystem = internalSlots.numberingSystem
   const separator = dataLocaleData.digitalFormat[numberingSystem]
-  while (!done) {
-    let nextStyle
-    for (const row of TABLE_2) {
-      let value = duration[row.valueField]
-      const style = internalSlots[row.styleSlot]
-      const display = internalSlots[row.displaySlot]
-      const {unit, numberFormatUnit} = row
-      const nfOpts = Object.create(null)
-      if (
-        unit === 'seconds' ||
-        unit === 'milliseconds' ||
-        unit === 'microseconds'
-      ) {
-        if (unit === 'seconds') {
-          nextStyle = internalSlots.milliseconds
-        } else if (unit === 'milliseconds') {
-          nextStyle = internalSlots.microseconds
-        } else {
-          nextStyle = internalSlots.nanoseconds
-        }
-        if (nextStyle === 'numeric') {
-          if (unit === 'seconds') {
-            value = value +=
-              duration.milliseconds / 1e3 +
-              duration.microseconds / 1e6 +
-              duration.nanoseconds / 1e9
-          } else if (unit === 'milliseconds') {
-            value = value +=
-              duration.microseconds / 1e3 + duration.nanoseconds / 1e6
-          } else {
-            value = value += duration.nanoseconds / 1e3
-          }
-          if (internalSlots.fractionalDigits === undefined) {
-            nfOpts.minimumFractionDigits = 0
-            nfOpts.maximumFractionDigits = 9
-          } else {
-            nfOpts.minimumFractionDigits = internalSlots.fractionalDigits
-            nfOpts.maximumFractionDigits = internalSlots.fractionalDigits
-          }
-          nfOpts.roundingMode = 'trunc'
-          done = true
-        }
-      }
-      if (value !== 0 || display !== 'auto') {
-        nfOpts.numberingSystem = internalSlots.numberingSystem
-        if (style === '2-digit') {
-          nfOpts.minimumIntegerDigits = 2
-        }
-        if (style !== '2-digit' && style !== 'numeric') {
-          nfOpts.style = 'unit'
-          nfOpts.unit = numberFormatUnit
-          nfOpts.unitDisplay = style
-        }
-        const nf = new Intl.NumberFormat(internalSlots.locale, nfOpts)
-        let list: DurationFormatPart[]
-        if (!separated) {
-          list = []
-        } else {
-          list = result[result.length - 1]
-          list.push({
-            type: 'literal',
-            value: separator,
-          })
-        }
-        let parts = nf.formatToParts(value)
-        parts.forEach(part => {
-          list.push({
-            type: part.type,
-            value: part.value,
-            unit: numberFormatUnit,
-          })
-        })
-        if (!separated) {
-          if (style === '2-digit' || style === 'numeric') {
-            separated = true
-          }
-          result.push(list)
-        }
+
+  for (let i = 0; i < TABLE_2.length && !done; i++) {
+    const row = TABLE_2[i]
+    let value = duration[row.valueField]
+    const style = internalSlots[row.styleSlot]
+    const display = internalSlots[row.displaySlot]
+    const {unit, numberFormatUnit} = row
+
+    const nfOpts: NumberFormatOptions = Object.create(null)
+    if (
+      unit === 'seconds' ||
+      unit === 'milliseconds' ||
+      unit === 'microseconds'
+    ) {
+      let nextStyle
+      if (unit === 'seconds') {
+        nextStyle = internalSlots.milliseconds
+      } else if (unit === 'milliseconds') {
+        nextStyle = internalSlots.microseconds
       } else {
-        separated = false
+        nextStyle = internalSlots.nanoseconds
+      }
+      if (nextStyle === 'numeric') {
+        if (unit === 'seconds') {
+          value +=
+            duration.milliseconds / 1e3 +
+            duration.microseconds / 1e6 +
+            duration.nanoseconds / 1e9
+        } else if (unit === 'milliseconds') {
+          value += duration.microseconds / 1e3 + duration.nanoseconds / 1e6
+        } else {
+          value += duration.nanoseconds / 1e3
+        }
+        if (internalSlots.fractionalDigits === undefined) {
+          nfOpts.maximumFractionDigits = 9
+          nfOpts.minimumFractionDigits = 0
+        } else {
+          nfOpts.maximumFractionDigits = internalSlots.fractionalDigits
+          nfOpts.minimumFractionDigits = internalSlots.fractionalDigits
+        }
+        nfOpts.roundingMode = 'trunc'
+        done = true
       }
     }
+    if (value !== 0 || display !== 'auto') {
+      nfOpts.numberingSystem = internalSlots.numberingSystem
+      if (style === '2-digit') {
+        nfOpts.minimumIntegerDigits = 2
+      }
+      if (style !== '2-digit' && style !== 'numeric') {
+        nfOpts.style = 'unit'
+        nfOpts.unit = numberFormatUnit
+        nfOpts.unitDisplay = style
+      }
+      const nf = new Intl.NumberFormat(
+        internalSlots.locale,
+        nfOpts as Intl.NumberFormatOptions
+      )
+      let list: DurationFormatPart[]
+      if (!separated) {
+        list = []
+      } else {
+        list = result[result.length - 1]
+        list.push({
+          type: 'literal',
+          value: separator,
+        })
+      }
+      let parts = nf.formatToParts(value)
+      parts.forEach(({type, value}) => {
+        list.push({
+          type,
+          value,
+          unit: numberFormatUnit,
+        })
+      })
+      if (!separated) {
+        if (style === '2-digit' || style === 'numeric') {
+          separated = true
+        }
+        result.push(list)
+      }
+    } else {
+      separated = false
+    }
   }
-  const lfOpts = Object.create(null)
+  const lfOpts: Intl.ListFormatOptions = Object.create(null)
   lfOpts.type = 'unit'
   let listStyle = internalSlots.style
   if (listStyle === 'digital') {

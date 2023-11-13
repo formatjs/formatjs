@@ -1,11 +1,11 @@
+import {DefaultNumberOption} from '../DefaultNumberOption'
+import {GetNumberOption} from '../GetNumberOption'
+import {GetOption} from '../GetOption'
 import {
+  NumberFormatDigitInternalSlots,
   NumberFormatDigitOptions,
   NumberFormatNotation,
-  NumberFormatDigitInternalSlots,
 } from '../types/number'
-import {GetNumberOption} from '../GetNumberOption'
-import {DefaultNumberOption} from '../DefaultNumberOption'
-import {GetOption} from '../GetOption'
 
 /**
  * https://tc39.es/ecma402/#sec-setnfdigitoptions
@@ -55,11 +55,10 @@ export function SetNumberFormatDigitOptions(
   }
   if (needFd) {
     if (hasFd) {
-      // @ts-expect-error
       mnfd = DefaultNumberOption(mnfd, 0, 20, undefined)
-      // @ts-expect-error
       mxfd = DefaultNumberOption(mxfd, 0, 20, undefined)
       if (mnfd === undefined) {
+        // @ts-expect-error
         mnfd = Math.min(mnfdDefault, mxfd)
       } else if (mxfd === undefined) {
         mxfd = Math.max(mxfdDefault, mnfd)
