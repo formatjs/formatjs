@@ -1,29 +1,29 @@
 import {
-  invariant,
-  defineProperty,
-  SupportedLocales,
-  IsValidTimeZoneName,
-  CanonicalizeTimeZoneName,
-  TABLE_6,
-  DateTimeFormat as IDateTimeFormat,
   CanonicalizeLocaleList,
+  CanonicalizeTimeZoneName,
   DateTimeFormatLocaleInternalData,
-  UnpackedZoneData,
-  ToNumber,
+  DateTimeFormat as IDateTimeFormat,
   IntlDateTimeFormatInternal,
+  IsValidTimeZoneName,
   OrdinaryHasInstance,
+  SupportedLocales,
+  TABLE_6,
+  ToNumber,
+  UnpackedZoneData,
+  defineProperty,
+  invariant,
 } from '@formatjs/ecma402-abstract'
-import getInternalSlots from './get_internal_slots'
-import links from './data/links'
-import {PackedData, RawDateTimeLocaleData} from './types'
-import {unpack} from './packer'
 import {FormatDateTime} from './abstract/FormatDateTime'
-import {InitializeDateTimeFormat} from './abstract/InitializeDateTimeFormat'
-import {DATE_TIME_PROPS} from './abstract/utils'
-import {FormatDateTimeToParts} from './abstract/FormatDateTimeToParts'
-import {FormatDateTimeRangeToParts} from './abstract/FormatDateTimeRangeToParts'
 import {FormatDateTimeRange} from './abstract/FormatDateTimeRange'
+import {FormatDateTimeRangeToParts} from './abstract/FormatDateTimeRangeToParts'
+import {FormatDateTimeToParts} from './abstract/FormatDateTimeToParts'
+import {InitializeDateTimeFormat} from './abstract/InitializeDateTimeFormat'
 import {parseDateTimeSkeleton} from './abstract/skeleton'
+import {DATE_TIME_PROPS} from './abstract/utils'
+import links from './data/links'
+import getInternalSlots from './get_internal_slots'
+import {unpack} from './packer'
+import {PackedData, RawDateTimeLocaleData} from './types'
 
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
@@ -302,14 +302,14 @@ DateTimeFormat.__setDefaultTimeZone = (timeZone: string) => {
     timeZone = String(timeZone)
     if (
       !IsValidTimeZoneName(timeZone, {
-        tzData: DateTimeFormat.tzData,
+        zoneNamesFromData: Object.keys(DateTimeFormat.tzData),
         uppercaseLinks: UPPERCASED_LINKS,
       })
     ) {
       throw new RangeError('Invalid timeZoneName')
     }
     timeZone = CanonicalizeTimeZoneName(timeZone, {
-      tzData: DateTimeFormat.tzData,
+      zoneNames: Object.keys(DateTimeFormat.tzData),
       uppercaseLinks: UPPERCASED_LINKS,
     })
   } else {

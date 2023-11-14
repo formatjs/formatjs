@@ -5,21 +5,18 @@
 export function CanonicalizeTimeZoneName(
   tz: string,
   {
-    tzData,
+    zoneNames,
     uppercaseLinks,
   }: {
-    tzData: Record<string, unknown>
+    zoneNames: readonly string[]
     uppercaseLinks: Record<string, string>
   }
 ) {
   const uppercasedTz = tz.toUpperCase()
-  const uppercasedZones = Object.keys(tzData).reduce(
-    (all: Record<string, string>, z) => {
-      all[z.toUpperCase()] = z
-      return all
-    },
-    {}
-  )
+  const uppercasedZones = zoneNames.reduce((all: Record<string, string>, z) => {
+    all[z.toUpperCase()] = z
+    return all
+  }, {})
   const ianaTimeZone =
     uppercaseLinks[uppercasedTz] || uppercasedZones[uppercasedTz]
   if (ianaTimeZone === 'Etc/UTC' || ianaTimeZone === 'Etc/GMT') {

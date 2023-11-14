@@ -151,10 +151,18 @@ export function InitializeDateTimeFormat(
   let {timeZone} = options
   if (timeZone !== undefined) {
     timeZone = String(timeZone)
-    if (!IsValidTimeZoneName(timeZone, {tzData, uppercaseLinks})) {
+    if (
+      !IsValidTimeZoneName(timeZone, {
+        zoneNamesFromData: Object.keys(tzData),
+        uppercaseLinks,
+      })
+    ) {
       throw new RangeError('Invalid timeZoneName')
     }
-    timeZone = CanonicalizeTimeZoneName(timeZone, {tzData, uppercaseLinks})
+    timeZone = CanonicalizeTimeZoneName(timeZone, {
+      zoneNames: Object.keys(tzData),
+      uppercaseLinks,
+    })
   } else {
     timeZone = getDefaultTimeZone()
   }
