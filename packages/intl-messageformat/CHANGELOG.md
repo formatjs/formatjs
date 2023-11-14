@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.8](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.5.7...intl-messageformat@10.5.8) (2023-11-14)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** add polyfill detector + docs ([d6d237a](https://github.com/formatjs/formatjs/commit/d6d237a2ffca73d5e3824df17bf5ebf7e7b135a8)) - by @
+
 ## [10.5.7](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.5.6...intl-messageformat@10.5.7) (2023-11-12)
 
 ### Bug Fixes

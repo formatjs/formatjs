@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.10](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.9...babel-plugin-formatjs@10.5.10) (2023-11-14)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** add polyfill detector + docs ([d6d237a](https://github.com/formatjs/formatjs/commit/d6d237a2ffca73d5e3824df17bf5ebf7e7b135a8)) - by @
+
 ## [10.5.9](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.8...babel-plugin-formatjs@10.5.9) (2023-11-12)
 
 **Note:** Version bump only for package babel-plugin-formatjs

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.39](https://github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.38...@formatjs/editor@2.0.39) (2023-11-14)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** add polyfill detector + docs ([d6d237a](https://github.com/formatjs/formatjs/commit/d6d237a2ffca73d5e3824df17bf5ebf7e7b135a8)) - by @
+
 ## [2.0.38](https://github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.37...@formatjs/editor@2.0.38) (2023-11-12)
 
 **Note:** Version bump only for package @formatjs/editor

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.25](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.24...vue-intl@6.4.25) (2023-11-14)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** add polyfill detector + docs ([d6d237a](https://github.com/formatjs/formatjs/commit/d6d237a2ffca73d5e3824df17bf5ebf7e7b135a8)) - by @
+
 ## [6.4.24](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.23...vue-intl@6.4.24) (2023-11-12)
 
 **Note:** Version bump only for package vue-intl

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.11.3...@formatjs/intl-datetimeformat@6.12.0) (2023-11-14)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** add polyfill detector + docs ([d6d237a](https://github.com/formatjs/formatjs/commit/d6d237a2ffca73d5e3824df17bf5ebf7e7b135a8)) - by @
+
+### Features
+
+* **@formatjs/intl-durationformat:** implement stage-3 spec ([01bcfc7](https://github.com/formatjs/formatjs/commit/01bcfc7ac759ccd18fa8dd380e4bd33c34fa274f)), closes [#4257](https://github.com/formatjs/formatjs/issues/4257) - by @
+
 ## [6.11.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.11.2...@formatjs/intl-datetimeformat@6.11.3) (2023-11-12)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

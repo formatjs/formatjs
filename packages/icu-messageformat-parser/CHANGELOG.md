@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.3](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.7.2...@formatjs/icu-messageformat-parser@2.7.3) (2023-11-14)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** add polyfill detector + docs ([d6d237a](https://github.com/formatjs/formatjs/commit/d6d237a2ffca73d5e3824df17bf5ebf7e7b135a8)) - by @
+
 ## [2.7.2](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.7.1...@formatjs/icu-messageformat-parser@2.7.2) (2023-11-12)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser
