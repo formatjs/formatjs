@@ -104,7 +104,7 @@
     "karma-sauce-launcher": "4.3.6",
     "lodash": "^4.17.15",
     "loud-rejection": "^2.2.0",
-    "make-plural-compiler": "5.1.0",
+    "make-plural-compiler": "6.0.0",
     "minimist": "^1.2.5",
     "picomatch": "^2.3.1",
     "pnpm": "8",
