@@ -13,7 +13,6 @@
     "tc39"
   ],
   "author": "Long Ho <holevietlong@gmail.com>",
-  "private": true,
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "license": "MIT",
   "main": "index.umd.js",

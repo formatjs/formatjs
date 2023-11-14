@@ -40,6 +40,7 @@ module.exports = {
       'polyfills',
       'polyfills/intl-datetimeformat',
       'polyfills/intl-displaynames',
+      'polyfills/intl-durationformat',
       'polyfills/intl-getcanonicallocales',
       'polyfills/intl-listformat',
       'polyfills/intl-locale',
@@ -48,6 +49,7 @@ module.exports = {
       'polyfills/intl-pluralrules',
       'polyfills/intl-relativetimeformat',
       'polyfills/intl-segmenter',
+      'polyfills/intl-supportedvaluesof',
     ],
   },
   tooling: {
