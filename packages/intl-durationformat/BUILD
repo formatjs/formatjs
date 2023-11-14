@@ -2,7 +2,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "ts_compile")
+load("//tools:index.bzl", "ts_compile", "generate_src_file")
 load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -71,6 +71,25 @@ write_source_files(
     files = {
         "src/numbering-systems.generated.ts": "//packages/intl-numberformat:src/numbering-systems.generated.ts",
     },
+)
+
+generate_src_file(
+    name = "time-separators",
+    src = "src/time-separators.generated.ts",
+    data = [
+        "scripts/time-separators.ts",
+        "scripts/utils.ts",
+        ":node_modules/@formatjs/ecma402-abstract",
+        "//:node_modules/@types/lodash",
+        "//:node_modules/cldr-core",
+        "//:node_modules/cldr-numbers-full",
+        "//:node_modules/cldr-localenames-full",
+        "//:node_modules/lodash",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/@types/json-stable-stringify",
+        "//:node_modules/fast-glob"
+    ],
+    entry_point = "scripts/time-separators.ts",
 )
 
 # package_json_test(

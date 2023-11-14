@@ -5,7 +5,6 @@ import {
   OrdinaryHasInstance,
   SupportedLocales,
   ToObject,
-  defineProperty,
   invariant,
 } from '@formatjs/ecma402-abstract'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
@@ -14,17 +13,16 @@ import {PartitionDurationFormatPattern} from './abstract/PartitionDurationFormat
 import {ToDurationRecord} from './abstract/ToDurationRecord'
 import {getInternalSlots} from './get_internal_slots'
 import {numberingSystemNames} from './numbering-systems.generated'
+import {TIME_SEPARATORS} from './time-separators.generated'
 import type {
+  DurationFormatLocaleInternalData,
   DurationFormatPart,
   DurationFormat as DurationFormatType,
   DurationInput,
   IntlDurationFormatInternal,
   ResolvedDurationFormatOptions,
 } from './types'
-import {DurationFormatConstructor, DurationFormatOptions} from './types'
-
-// Merge declaration with the constructor defined below.
-export type DurationFormat = DurationFormatType
+import {DurationFormatOptions} from './types'
 
 const RESOLVED_OPTIONS_KEYS: Array<
   keyof Omit<IntlDurationFormatInternal, 'pattern' | 'boundFormat'>
@@ -128,125 +126,104 @@ const TABLE_3 = [
   },
 ] as const
 
-export const DurationFormat = function (
-  this: DurationFormat,
-  locales?: string | string[],
-  options?: DurationFormatOptions
-) {
-  // test262/test/intl402/ListFormat/constructor/constructor/newtarget-undefined.js
-  // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
-  const newTarget =
-    this && this instanceof DurationFormat ? this.constructor : void 0
-  if (!newTarget) {
-    throw new TypeError("Intl.DurationFormat must be called with 'new'")
-  }
-  const requestedLocales = CanonicalizeLocaleList(locales)
-  const opt: any = Object.create(null)
-  const opts = options === undefined ? Object.create(null) : ToObject(options)
-  const matcher = GetOption(
-    opts,
-    'localeMatcher',
-    'string',
-    ['best fit', 'lookup'],
-    'best fit'
-  )
-  const numberingSystem = GetOption(
-    opts,
-    'numberingSystem',
-    'string',
-    undefined,
-    undefined
-  )
-  if (
-    numberingSystem !== undefined &&
-    numberingSystemNames.indexOf(numberingSystem) < 0
-  ) {
-    // 8.a. If numberingSystem does not match the Unicode Locale Identifier type nonterminal,
-    // throw a RangeError exception.
-    throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
-  }
-  opt.nu = numberingSystem
-  opt.localeMatcher = matcher
-  const {localeData, availableLocales} = DurationFormat
-  const r = ResolveLocale(
-    availableLocales,
-    requestedLocales,
-    opt,
-    // [[RelevantExtensionKeys]] slot, which is a constant
-    ['nu'],
-    localeData,
-    DurationFormat.getDefaultLocale
-  )
-  const locale = r.locale
-  const internalSlots = getInternalSlots(this)
-  internalSlots.initializedDurationFormat = true
-  internalSlots.locale = locale
-  internalSlots.numberingSystem = r.nu
-  const style = GetOption(
-    opts,
-    'style',
-    'string',
-    ['long', 'short', 'narrow', 'digital'],
-    'short'
-  )
-  internalSlots.style = style
-  internalSlots.dataLocale = r.dataLocale
-  let prevStyle = ''
-  TABLE_3.forEach(row => {
-    const {
-      styleSlot,
-      displaySlot,
-      unit,
-      values: valueList,
-      digitalDefault: digitalBase,
-    } = row
-    const unitOptions = GetDurationUnitOptions(
-      unit,
-      opts,
-      style,
-      valueList,
-      digitalBase,
-      prevStyle
-    )
-    internalSlots[styleSlot] = unitOptions.style
-    internalSlots[displaySlot] = unitOptions.display
-    if (
-      unit === 'hours' ||
-      unit === 'minutes' ||
-      unit === 'seconds' ||
-      unit === 'milliseconds' ||
-      unit === 'microseconds'
-    ) {
-      prevStyle = unitOptions.style
+export class DurationFormat implements DurationFormatType {
+  constructor(locales?: string | string[], options?: DurationFormatOptions) {
+    // test262/test/intl402/ListFormat/constructor/constructor/newtarget-undefined.js
+    // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
+    const newTarget =
+      this && this instanceof DurationFormat ? this.constructor : void 0
+    if (!newTarget) {
+      throw new TypeError("Intl.DurationFormat must be called with 'new'")
     }
-  })
-  internalSlots.fractionalDigits = GetNumberOption(
-    opts,
-    'fractionalDigits',
-    0,
-    9,
-    undefined
-  )
-} as DurationFormatConstructor
-
-// Static properties
-defineProperty(DurationFormat, 'supportedLocalesOf', {
-  value: function supportedLocalesOf(
-    locales: string | string[],
-    options?: Pick<DurationFormatOptions, 'localeMatcher'>
-  ) {
-    return SupportedLocales(
-      DurationFormat.availableLocales,
-      CanonicalizeLocaleList(locales),
-      options as any
+    const requestedLocales = CanonicalizeLocaleList(locales)
+    const opt: any = Object.create(null)
+    const opts = options === undefined ? Object.create(null) : ToObject(options)
+    const matcher = GetOption(
+      opts,
+      'localeMatcher',
+      'string',
+      ['best fit', 'lookup'],
+      'best fit'
     )
-  },
-})
-
-defineProperty(DurationFormat.prototype, 'resolvedOptions', {
-  value: function resolvedOptions(
-    this: DurationFormat
-  ): ResolvedDurationFormatOptions {
+    const numberingSystem = GetOption(
+      opts,
+      'numberingSystem',
+      'string',
+      undefined,
+      undefined
+    )
+    if (
+      numberingSystem !== undefined &&
+      numberingSystemNames.indexOf(numberingSystem) < 0
+    ) {
+      // 8.a. If numberingSystem does not match the Unicode Locale Identifier type nonterminal,
+      // throw a RangeError exception.
+      throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
+    }
+    opt.nu = numberingSystem
+    opt.localeMatcher = matcher
+    const {localeData, availableLocales} = DurationFormat
+    const r = ResolveLocale(
+      availableLocales,
+      requestedLocales,
+      opt,
+      // [[RelevantExtensionKeys]] slot, which is a constant
+      ['nu'],
+      localeData,
+      DurationFormat.getDefaultLocale
+    )
+    const locale = r.locale
+    const internalSlots = getInternalSlots(this)
+    internalSlots.initializedDurationFormat = true
+    internalSlots.locale = locale
+    internalSlots.numberingSystem = r.nu
+    const style = GetOption(
+      opts,
+      'style',
+      'string',
+      ['long', 'short', 'narrow', 'digital'],
+      'short'
+    )
+    internalSlots.style = style
+    internalSlots.dataLocale = r.dataLocale
+    let prevStyle = ''
+    TABLE_3.forEach(row => {
+      const {
+        styleSlot,
+        displaySlot,
+        unit,
+        values: valueList,
+        digitalDefault: digitalBase,
+      } = row
+      const unitOptions = GetDurationUnitOptions(
+        unit,
+        opts,
+        style,
+        valueList,
+        digitalBase,
+        prevStyle
+      )
+      internalSlots[styleSlot] = unitOptions.style
+      internalSlots[displaySlot] = unitOptions.display
+      if (
+        unit === 'hours' ||
+        unit === 'minutes' ||
+        unit === 'seconds' ||
+        unit === 'milliseconds' ||
+        unit === 'microseconds'
+      ) {
+        prevStyle = unitOptions.style
+      }
+    })
+    internalSlots.fractionalDigits = GetNumberOption(
+      opts,
+      'fractionalDigits',
+      0,
+      9,
+      undefined
+    )
+  }
+  resolvedOptions(): ResolvedDurationFormatOptions {
     if (
       typeof this !== 'object' ||
       !OrdinaryHasInstance(DurationFormat, this)
@@ -269,28 +246,8 @@ defineProperty(DurationFormat.prototype, 'resolvedOptions', {
       ro[key] = v
     }
     return ro as any
-  },
-})
-
-defineProperty(DurationFormat.prototype, 'format', {
-  value: function format(this: DurationFormat, duration: DurationInput) {
-    const df = this
-    const locInternalSlots = getInternalSlots(this)
-    if (locInternalSlots.initializedDurationFormat === undefined) {
-      throw new TypeError('Error uninitialized locale')
-    }
-    const record = ToDurationRecord(duration)
-    const parts = PartitionDurationFormatPattern(df, record)
-    let result = ''
-    for (const {value} of parts) {
-      result += value
-    }
-    return result
-  },
-})
-
-defineProperty(DurationFormat.prototype, 'formatToParts', {
-  value: function formatToParts(this: DurationFormat, duration: DurationInput) {
+  }
+  formatToParts(duration: DurationInput): DurationFormatPart[] {
     const df = this
     const locInternalSlots = getInternalSlots(this)
     if (locInternalSlots.initializedDurationFormat === undefined) {
@@ -307,29 +264,58 @@ defineProperty(DurationFormat.prototype, 'formatToParts', {
       result.push(obj)
     }
     return result
-  },
-})
-
-DurationFormat.__addLocaleData = function __addLocaleData(...data) {
-  for (const {data: d, locale} of data) {
-    const minimizedLocale = new (Intl as any).Locale(locale)
-      .minimize()
-      .toString()
-    DurationFormat.localeData[locale] = DurationFormat.localeData[
-      minimizedLocale
-    ] = d
-    DurationFormat.availableLocales.add(locale)
-    DurationFormat.availableLocales.add(minimizedLocale)
-    if (!DurationFormat.__defaultLocale) {
-      DurationFormat.__defaultLocale = minimizedLocale
-    }
   }
-}
+  format(duration: DurationInput): string {
+    const df = this
+    const locInternalSlots = getInternalSlots(this)
+    if (locInternalSlots.initializedDurationFormat === undefined) {
+      throw new TypeError('Error uninitialized locale')
+    }
+    const record = ToDurationRecord(duration)
+    const parts = PartitionDurationFormatPattern(df, record)
+    let result = ''
+    for (const {value} of parts) {
+      result += value
+    }
+    return result
+  }
 
-DurationFormat.__defaultLocale = ''
-DurationFormat.localeData = {}
-DurationFormat.availableLocales = new Set()
-DurationFormat.getDefaultLocale = () => {
-  return DurationFormat.__defaultLocale
+  static supportedLocalesOf(
+    locales: string | string[],
+    options?: Pick<DurationFormatOptions, 'localeMatcher'>
+  ) {
+    return SupportedLocales(
+      DurationFormat.availableLocales,
+      CanonicalizeLocaleList(locales),
+      options as any
+    )
+  }
+
+  static __defaultLocale = 'en'
+  static availableLocales = new Set<string>()
+  static localeData = (
+    Object.keys(TIME_SEPARATORS.localeData) as Array<
+      keyof (typeof TIME_SEPARATORS)['localeData']
+    >
+  ).reduce<Record<string, DurationFormatLocaleInternalData | undefined>>(
+    (all, locale) => {
+      DurationFormat.availableLocales.add(locale)
+      const nu: readonly string[] = TIME_SEPARATORS.localeData[locale].nu
+      all[locale] = {
+        nu,
+        digitalFormat:
+          TIME_SEPARATORS.localeData[locale as 'da'].separator ||
+          nu.reduce<Record<string, string>>((separators, n) => {
+            separators[n] = TIME_SEPARATORS.default
+            return separators
+          }, {}),
+      }
+      return all
+    },
+    {}
+  )
+  static getDefaultLocale = () => {
+    return DurationFormat.__defaultLocale
+  }
+  static polyfilled = true
 }
-DurationFormat.polyfilled = true

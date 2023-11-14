@@ -43,7 +43,7 @@ export interface RawDurationLocaleData {
 
 export interface DurationFormatLocaleInternalData {
   // Bc of relevantExtensionKeys in the spec
-  nu: string[]
+  nu: readonly string[]
   digitalFormat: Record<string, string>
 }
 
@@ -115,7 +115,6 @@ export interface DurationFormatConstructor {
   ): DurationFormat
   (locales?: string | string[], options?: DurationFormatOptions): DurationFormat
 
-  __addLocaleData(...data: RawDurationLocaleData[]): void
   supportedLocalesOf(
     locales: string | string[],
     options?: Pick<DurationFormatOptions, 'localeMatcher'>

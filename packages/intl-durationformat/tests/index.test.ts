@@ -1,13 +1,4 @@
 import {DurationFormat} from '../src/core'
-DurationFormat.__addLocaleData({
-  data: {
-    digitalFormat: {
-      latn: ':',
-    },
-    nu: ['latn'],
-  },
-  locale: 'en',
-})
 test('Intl.DurationFormat resolvedOptions', function () {
   expect(new DurationFormat('en').resolvedOptions()).toMatchSnapshot()
 })
@@ -61,6 +52,7 @@ test('Intl.DurationFormat format digital', function () {
   )
 })
 
+// TODO: even Node 18 doesn't have NFv3 yet
 test.skip('Intl.DurationFormat format with NumberFormatV3', function () {
   expect(
     new DurationFormat('en').format({
