@@ -112,7 +112,7 @@
     "react": "^16.6.0 || 17 || 18",
     "react-dom": "^16.6.0 || 17 || 18",
     "regenerate": "^1.4.2",
-    "regexpu-core": "^5.2.2",
+    "regexpu-core": "^6.0.0",
     "rimraf": "^3.0.2",
     "serialize-javascript": "^6.0.0",
     "test262-harness": "10",
