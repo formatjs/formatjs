@@ -37,5 +37,4 @@ const App: React.FC<Props> = ({currentTime = Date.now()}) => {
   )
 }
 
-
 export default App

@@ -19,7 +19,6 @@ const Comp2: React.FC<{intl: IntlShape}> = ({
 
 const Comp2WithIntl = injectIntl(Comp2)
 
-
 const App: React.FC = () => {
   return (
     <IntlProvider locale="en" timeZone="Asia/Tokyo">
@@ -30,6 +29,5 @@ const App: React.FC = () => {
     </IntlProvider>
   )
 }
-
 
 export default App
