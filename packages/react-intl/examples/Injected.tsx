@@ -19,11 +19,8 @@ const Comp2: React.FC<{intl: IntlShape}> = ({
 
 const Comp2WithIntl = injectIntl(Comp2)
 
-interface Props {
-  currentTime?: Date | number
-}
 
-const App: React.FC<Props> = _ => {
+const App: React.FC = () => {
   return (
     <IntlProvider locale="en" timeZone="Asia/Tokyo">
       <div>
@@ -34,8 +31,5 @@ const App: React.FC<Props> = _ => {
   )
 }
 
-App.defaultProps = {
-  currentTime: new Date(),
-}
 
 export default App
