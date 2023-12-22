@@ -573,7 +573,7 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0
       typescript:
-        specifier: '5'
+        specifier: ^4.7 || 5
         version: 5.2.2
     devDependencies:
       '@formatjs/intl-datetimeformat':
@@ -815,7 +815,7 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0
       typescript:
-        specifier: '5'
+        specifier: ^4.7 || 5
         version: 5.2.2
     devDependencies:
       '@formatjs/intl-numberformat':
