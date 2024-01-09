@@ -31,12 +31,12 @@ function checkNode(
     if (!description) {
       if (type === 'literal' && descriptionNode) {
         context.report({
-          node: descriptionNode as any,
+          node: descriptionNode,
           messageId: 'enforceDescriptionLiteral',
         })
       } else if (!descriptionNode) {
         context.report({
-          node: node as any,
+          node: node,
           messageId: 'enforceDescription',
         })
       }

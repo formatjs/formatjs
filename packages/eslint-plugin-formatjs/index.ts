@@ -10,7 +10,7 @@ import {
   rule as enforceDescription,
   name as enforceDescriptionName,
 } from './rules/enforce-description'
-import enforceId from './rules/enforce-id'
+import {rule as enforceId, name as enforceIdName} from './rules/enforce-id'
 import enforcePlaceholders from './rules/enforce-placeholders'
 import noInvalidICU from './rules/no-invalid-icu'
 import enforcePluralRules from './rules/enforce-plural-rules'
@@ -32,7 +32,7 @@ const plugin: Plugin = {
     [blocklistElementRuleName]: blocklistElements,
     [enforceDefaultMessageName]: enforceDefaultMessage,
     [enforceDescriptionName]: enforceDescription,
-    'enforce-id': enforceId,
+    [enforceIdName]: enforceId,
     'enforce-placeholders': enforcePlaceholders,
     'enforce-plural-rules': enforcePluralRules,
     'no-camel-case': noCamelCase,

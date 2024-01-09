@@ -1,17 +1,43 @@
 import {interpolateName} from '@formatjs/ts-transformer'
 import {TSESTree} from '@typescript-eslint/utils'
-import {Rule} from 'eslint'
+import {
+  RuleContext,
+  RuleModule,
+  RuleListener,
+} from '@typescript-eslint/utils/ts-eslint'
 import {extractMessages, getSettings} from '../util'
 
-interface Opts {
+export type Option = {
   idInterpolationPattern: string
-  idWhitelistRegexps?: RegExp[]
+  idWhitelist?: string[]
 }
 
+type MessageIds =
+  | 'enforceId'
+  | 'enforceIdDefaultMessage'
+  | 'enforceIdDescription'
+  | 'enforceIdMatching'
+  | 'enforceIdMatchingAllowlisted'
+
+type MatchingMessageData = {
+  idInterpolationPattern: string
+  expected: string
+  actual: string | undefined
+  idWhitelist?: string
+}
+
+type Options = [Option]
+
 function checkNode(
-  context: Rule.RuleContext,
+  context: RuleContext<MessageIds, Options>,
   node: TSESTree.Node,
-  {idInterpolationPattern, idWhitelistRegexps}: Opts
+  {
+    idInterpolationPattern,
+    idWhitelistRegexps,
+  }: {
+    idInterpolationPattern: string
+    idWhitelistRegexps?: RegExp[]
+  }
 ) {
   const msgs = extractMessages(node, getSettings(context))
   for (const [
@@ -24,19 +50,19 @@ function checkNode(
   ] of msgs) {
     if (!idInterpolationPattern && !idPropNode) {
       context.report({
-        node: node as any,
-        message: `id must be specified`,
+        node,
+        messageId: 'enforceId',
       })
     } else if (idInterpolationPattern) {
       if (!defaultMessage) {
         context.report({
-          node: node as any,
-          message: `defaultMessage must be a string literal to calculate generated IDs`,
+          node,
+          messageId: 'enforceIdDefaultMessage',
         })
       } else if (!description && descriptionNode) {
         context.report({
-          node: node as any,
-          message: `description must be a string literal to calculate generated IDs`,
+          node,
+          messageId: 'enforceIdDescription',
         })
       } else {
         if (
@@ -51,7 +77,7 @@ function checkNode(
         const correctId = interpolateName(
           {
             resourcePath: context.getFilename(),
-          } as any,
+          },
           idInterpolationPattern,
           {
             content: description
@@ -60,18 +86,26 @@ function checkNode(
           }
         )
         if (id !== correctId) {
-          let message = `"id" does not match with hash pattern ${idInterpolationPattern}`
+          let messageId: MessageIds = 'enforceIdMatching'
+          let messageData: MatchingMessageData = {
+            idInterpolationPattern,
+            expected: correctId,
+            actual: id,
+          }
           if (idWhitelistRegexps) {
-            message += ` or allowlisted patterns ["${idWhitelistRegexps
-              .map(r => r.toString())
-              .join('", "')}"]`
+            messageId = 'enforceIdMatchingAllowlisted'
+            messageData = {
+              ...messageData,
+              idWhitelist: idWhitelistRegexps
+                .map(r => `"${r.toString()}"`)
+                .join(', '),
+            }
           }
 
           context.report({
-            node: node as any,
-            message: `${message}.
-Expected: ${correctId}
-Actual: ${id}`,
+            node,
+            messageId,
+            data: messageData,
             fix(fixer) {
               if (idPropNode) {
                 if (idPropNode.type === 'JSXAttribute') {
@@ -104,13 +138,13 @@ Actual: ${id}`,
   }
 }
 
-export default {
+export const name = 'enforce-id'
+
+export const rule: RuleModule<MessageIds, Options, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
       description: 'Enforce (generated) ID in message descriptor',
-      category: 'Errors',
-      recommended: false,
       url: 'https://formatjs.io/docs/tooling/linter#enforce-id',
     },
     fixable: 'code',
@@ -136,12 +170,31 @@ export default {
         additionalProperties: false,
       },
     ],
+    messages: {
+      enforceId: `id must be specified`,
+      enforceIdDefaultMessage: `defaultMessage must be a string literal to calculate generated IDs`,
+      enforceIdDescription: `description must be a string literal to calculate generated IDs`,
+      enforceIdMatching: `"id" does not match with hash pattern {{idInterpolationPattern}}.
+Expected: {{expected}}
+Actual: {{actual}}`,
+      enforceIdMatchingAllowlisted: `"id" does not match with hash pattern {{idInterpolationPattern}} or allowlisted patterns {{idWhitelist}}.
+Expected: {{expected}}
+Actual: {{actual}}`,
+    },
   },
+  defaultOptions: [
+    {
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+    },
+  ],
   create(context) {
-    const tmp = context?.options?.[0]
-    const opts = {
+    const tmp = context.options[0]
+    let opts: {
+      idInterpolationPattern: string
+      idWhitelistRegexps?: RegExp[]
+    } = {
       idInterpolationPattern: tmp?.idInterpolationPattern,
-    } as Opts
+    }
     if (Array.isArray(tmp?.idWhitelist)) {
       const {idWhitelist} = tmp
       opts.idWhitelistRegexps = idWhitelist.map(
@@ -152,7 +205,9 @@ export default {
     const callExpressionVisitor = (node: TSESTree.Node) =>
       checkNode(context, node, opts)
 
+    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
     if (context.parserServices.defineTemplateBodyVisitor) {
+      //@ts-expect-error
       return context.parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -168,4 +223,4 @@ export default {
       CallExpression: callExpressionVisitor,
     }
   },
-} as Rule.RuleModule
+}
