@@ -54,7 +54,7 @@ function checkNode(
         for (const emoji of extractEmojis(defaultMessage)) {
           if (!allowedEmojis.includes(emoji)) {
             context.report({
-              node: messageNode as any,
+              node: messageNode,
               messageId: 'notAllowedAboveVersion',
               data: {
                 versionAbove,
@@ -65,7 +65,7 @@ function checkNode(
         }
       } else {
         context.report({
-          node: messageNode as any,
+          node: messageNode,
           messageId: 'notAllowed',
         })
       }
