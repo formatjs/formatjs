@@ -28,7 +28,7 @@ import {
   rule as noComplexSelectors,
   name as noComplexSelectorsName,
 } from './rules/no-complex-selectors'
-import noEmoji from './rules/no-emoji'
+import {rule as noEmoji, name as noEmojiName} from './rules/no-emoji'
 import noId from './rules/no-id'
 import noMultiplePlurals from './rules/no-multiple-plurals'
 import noMultipleWhitespaces from './rules/no-multiple-whitespaces'
@@ -49,7 +49,7 @@ const plugin: Plugin = {
     [enforcePluralRulesName]: enforcePluralRules,
     [noCamelCaseName]: noCamelCase,
     [noComplexSelectorsName]: noComplexSelectors,
-    'no-emoji': noEmoji,
+    [noEmojiName]: noEmoji,
     'no-id': noId,
     'no-invalid-icu': noInvalidICU,
     'no-literal-string-in-jsx': noLiteralStringInJsx,

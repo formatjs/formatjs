@@ -1,7 +1,7 @@
 import {ruleTester} from './util'
-import noEmoji from '../rules/no-emoji'
+import {rule, name} from '../rules/no-emoji'
 
-ruleTester.run('no-emoji', noEmoji, {
+ruleTester.run(name, rule, {
   valid: [
     {
       code: `import {defineMessage} from 'react-intl'
