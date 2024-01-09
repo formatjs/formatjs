@@ -50,7 +50,10 @@ import {
   rule as noUselessMessage,
   name as noUselessMessageName,
 } from './rules/no-useless-message'
-import preferFormattedMessage from './rules/prefer-formatted-message'
+import {
+  rule as preferFormattedMessage,
+  name as preferFormattedMessageName,
+} from './rules/prefer-formatted-message'
 import preferPoundInPlural from './rules/prefer-pound-in-plural'
 import {RuleModule} from '@typescript-eslint/utils/ts-eslint'
 
@@ -72,7 +75,7 @@ const plugin: Plugin = {
     [noMultipleWhitespacesName]: noMultipleWhitespaces,
     [noOffsetName]: noOffset,
     [noUselessMessageName]: noUselessMessage,
-    'prefer-formatted-message': preferFormattedMessage,
+    [preferFormattedMessageName]: preferFormattedMessage,
     'prefer-pound-in-plural': preferPoundInPlural,
   },
 }
