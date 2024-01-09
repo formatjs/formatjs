@@ -29,7 +29,7 @@ import {
   name as noComplexSelectorsName,
 } from './rules/no-complex-selectors'
 import {rule as noEmoji, name as noEmojiName} from './rules/no-emoji'
-import noId from './rules/no-id'
+import {rule as noId, name as noIdName} from './rules/no-id'
 import noMultiplePlurals from './rules/no-multiple-plurals'
 import noMultipleWhitespaces from './rules/no-multiple-whitespaces'
 import noOffset from './rules/no-offset'
@@ -50,7 +50,7 @@ const plugin: Plugin = {
     [noCamelCaseName]: noCamelCase,
     [noComplexSelectorsName]: noComplexSelectors,
     [noEmojiName]: noEmoji,
-    'no-id': noId,
+    [noIdName]: noId,
     'no-invalid-icu': noInvalidICU,
     'no-literal-string-in-jsx': noLiteralStringInJsx,
     'no-multiple-plurals': noMultiplePlurals,
