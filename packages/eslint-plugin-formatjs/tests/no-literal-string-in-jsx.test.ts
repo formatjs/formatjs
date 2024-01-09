@@ -1,7 +1,7 @@
-import noLiteralStringInJsx from '../rules/no-literal-string-in-jsx'
+import {rule, name} from '../rules/no-literal-string-in-jsx'
 import {ruleTester} from './util'
 
-ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
+ruleTester.run(name, rule, {
   valid: [
     {
       code: '<FormattedMessage defaultMessage="Test" />',
@@ -121,55 +121,55 @@ ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
   invalid: [
     {
       code: '<h1>Test</h1>',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: '<img src="/example.png" alt="Example" />',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: '<img src="/example.png" alt={"Example"} />',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: '<img src="/example.png" alt={"Exa" + `mple`} />',
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
     {
       code: '<img src="/example.png" alt={`Example`} />',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: '<div title="title" />',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: '<div title="title">text</div>',
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
     {
       code: '<div aria-label="test">test</div>',
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
     {
       code: '<div aria-description="test">test</div>',
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
     {
       code: '<div>{"foo"}</div>',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: `
@@ -180,10 +180,10 @@ ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
         </div>
       `,
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
     {
@@ -196,8 +196,8 @@ ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
         </div>
       `,
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
     // Inclusion works
@@ -210,7 +210,7 @@ ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
           },
         },
       ],
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: '<UI.Button<T> name="test" />',
@@ -223,65 +223,65 @@ ruleTester.run('no-literal-string-in-jsx', noLiteralStringInJsx, {
           },
         },
       ],
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     // Multiple
     {
       code: '<UI.Button<T> aria-label={`label`} aria-description="description">Child</UI.Button>',
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
     {
       code: '<input type="text" placeholder="foo" aria-label="bar" />',
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
     // Conditional expression
     {
       code: '<div>{a ? "b" : "c"}</div>',
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
     {
       code: '<div aria-label={a ? "b" : "c"} />',
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
     {
       code: '<div aria-label={a ? b ? "c" : d : e} />',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     // Logical expression
     {
       code: '<div>{a && "a"}</div>',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: '<div>{"a" && a}</div>',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: '<div>{a || "a"}</div>',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: '<div>{a ?? "a"}</div>',
-      errors: [{message: 'Cannot have untranslated text in JSX'}],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
       code: '<div>{a && "b" ?? "c"}</div>',
       errors: [
-        {message: 'Cannot have untranslated text in JSX'},
-        {message: 'Cannot have untranslated text in JSX'},
+        {messageId: 'noLiteralStringInJsx'},
+        {messageId: 'noLiteralStringInJsx'},
       ],
     },
   ],

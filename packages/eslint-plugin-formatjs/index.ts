@@ -36,7 +36,10 @@ import {rule as noId, name as noIdName} from './rules/no-id'
 import noMultiplePlurals from './rules/no-multiple-plurals'
 import noMultipleWhitespaces from './rules/no-multiple-whitespaces'
 import noOffset from './rules/no-offset'
-import noLiteralStringInJsx from './rules/no-literal-string-in-jsx'
+import {
+  rule as noLiteralStringInJsx,
+  name as noLiteralStringInJsxName,
+} from './rules/no-literal-string-in-jsx'
 import noUselessMessage from './rules/no-useless-message'
 import preferFormattedMessage from './rules/prefer-formatted-message'
 import preferPoundInPlural from './rules/prefer-pound-in-plural'
@@ -55,7 +58,7 @@ const plugin: Plugin = {
     [noEmojiName]: noEmoji,
     [noIdName]: noId,
     [noInvalidICUName]: noInvalidICU,
-    'no-literal-string-in-jsx': noLiteralStringInJsx,
+    [noLiteralStringInJsxName]: noLiteralStringInJsx,
     'no-multiple-plurals': noMultiplePlurals,
     'no-multiple-whitespaces': noMultipleWhitespaces,
     'no-offset': noOffset,

@@ -1,5 +1,6 @@
 import {TSESTree} from '@typescript-eslint/utils'
-import type {Rule} from 'eslint'
+import {JSONSchema4ArraySchema} from '@typescript-eslint/utils/json-schema'
+import {RuleModule, RuleListener} from '@typescript-eslint/utils/ts-eslint'
 import picomatch from 'picomatch'
 
 type PropMatcher = readonly [TagNamePattern: string, PropNamePattern: string][]
@@ -16,13 +17,16 @@ type Config = {
   }
 }
 
-const propMatcherSchema = {
+type MessageIds = 'noLiteralStringInJsx'
+type Options = [Config?]
+
+const propMatcherSchema: JSONSchema4ArraySchema = {
   type: 'array',
   items: {
     type: 'array',
     items: [{type: 'string'}, {type: 'string'}],
   },
-} as const
+}
 
 const defaultPropIncludePattern: PropMatcher = [
   ['*', 'aria-{label,description,details,errormessage}'],
@@ -52,13 +56,13 @@ function compilePropMatcher(propMatcher: PropMatcher): CompiledPropMatcher {
   })
 }
 
-const rule: Rule.RuleModule = {
+export const name = 'no-literal-string-in-jsx'
+
+export const rule: RuleModule<MessageIds, Options, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow untranslated literal strings without translation.',
-      category: 'Errors',
-      recommended: false,
       url: 'https://formatjs.io/docs/tooling/linter#no-literal-string-in-jsx',
     },
     schema: [
@@ -79,7 +83,11 @@ const rule: Rule.RuleModule = {
         },
       },
     ],
+    messages: {
+      noLiteralStringInJsx: 'Cannot have untranslated text in JSX',
+    },
   },
+  defaultOptions: [],
   // TODO: Vue support
   create(context) {
     const userConfig: Config = context.options[0] || {}
@@ -144,8 +152,8 @@ const rule: Rule.RuleModule = {
           (node.quasis.length > 1 || node.quasis[0].value.raw.length > 0))
       ) {
         context.report({
-          node: node as any,
-          message: 'Cannot have untranslated text in JSX',
+          node: node,
+          messageId: 'noLiteralStringInJsx',
         })
       } else if (node.type === 'BinaryExpression' && node.operator === '+') {
         checkJSXExpression(node.left)
@@ -189,8 +197,8 @@ const rule: Rule.RuleModule = {
           node.value.value.length > 0
         ) {
           context.report({
-            node: node as any,
-            message: 'Cannot have untranslated text in JSX',
+            node: node,
+            messageId: 'noLiteralStringInJsx',
           })
         } else if (
           node.value.type === 'JSXExpressionContainer' &&
@@ -207,8 +215,8 @@ const rule: Rule.RuleModule = {
         }
 
         context.report({
-          node: node as any,
-          message: 'Cannot have untranslated text in JSX',
+          node: node,
+          messageId: 'noLiteralStringInJsx',
         })
       },
 
@@ -220,8 +228,6 @@ const rule: Rule.RuleModule = {
           checkJSXExpression(node.expression)
         }
       },
-    } as any
+    }
   },
 }
-
-export default rule
