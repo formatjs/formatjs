@@ -1,4 +1,4 @@
-import preferPoundInPlural from '../rules/prefer-pound-in-plural'
+import {rule, name} from '../rules/prefer-pound-in-plural'
 import {ruleTester} from './util'
 import {
   dynamicMessage,
@@ -8,7 +8,7 @@ import {
   defineMessage,
 } from './fixtures'
 
-ruleTester.run('no-multiple-whitespaces', preferPoundInPlural, {
+ruleTester.run(name, rule, {
   valid: [
     defineMessage,
     dynamicMessage,
