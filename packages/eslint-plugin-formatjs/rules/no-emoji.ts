@@ -88,7 +88,6 @@ const versionAboveEnums: EmojiVersion[] = [
   '13.1',
   '14.0',
   '15.0',
-  '15.1',
 ]
 
 export const rule: RuleModule<MessageIds, Options, RuleListener> = {

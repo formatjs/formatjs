@@ -109,27 +109,25 @@ function checkNode(
             fix(fixer) {
               if (idPropNode) {
                 if (idPropNode.type === 'JSXAttribute') {
-                  return fixer.replaceText(
-                    idPropNode as any,
-                    `id="${correctId}"`
+                  return fixer.replaceText(idPropNode, `id="${correctId}"`)
+                }
+                return fixer.replaceText(idPropNode, `id: '${correctId}'`)
+              }
+
+              if (messagePropNode) {
+                // Insert after default message node
+                if (messagePropNode.type === 'JSXAttribute') {
+                  return fixer.insertTextAfter(
+                    messagePropNode,
+                    ` id="${correctId}"`
                   )
                 }
-                return fixer.replaceText(
-                  idPropNode as any,
-                  `id: '${correctId}'`
-                )
-              }
-              // Insert after default message node
-              if (messagePropNode!.type === 'JSXAttribute') {
                 return fixer.insertTextAfter(
-                  messagePropNode as any,
-                  ` id="${correctId}"`
+                  messagePropNode,
+                  `, id: '${correctId}'`
                 )
               }
-              return fixer.insertTextAfter(
-                messagePropNode as any,
-                `, id: '${correctId}'`
-              )
+              return null
             },
           })
         }

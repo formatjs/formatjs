@@ -34,7 +34,7 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
             return
           }
           context.report({
-            node: child as any,
+            node: child,
             messageId: 'jsxChildren',
           })
         })
