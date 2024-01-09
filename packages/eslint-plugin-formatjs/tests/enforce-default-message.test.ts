@@ -1,4 +1,4 @@
-import {rule, name} from '../rules/enforce-default-message'
+import {rule, name, Option} from '../rules/enforce-default-message'
 import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures'
 import {ruleTester, vueRuleTester} from './util'
 
@@ -67,7 +67,7 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
           messageId: 'defaultMessageLiteral',
         },
       ],
-      options: ['literal'],
+      options: [Option.literal],
     },
     {
       code: `
@@ -80,7 +80,7 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
           messageId: 'defaultMessageLiteral',
         },
       ],
-      options: ['literal'],
+      options: [Option.literal],
     },
     {
       code: `
@@ -93,7 +93,7 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
           messageId: 'defaultMessageLiteral',
         },
       ],
-      options: ['literal'],
+      options: [Option.literal],
     },
     {
       code: `
@@ -159,7 +159,7 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
           messageId: 'defaultMessageLiteral',
         },
       ],
-      options: ['literal'],
+      options: [Option.literal],
     },
     {
       code: `
@@ -170,7 +170,7 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
           messageId: 'defaultMessageLiteral',
         },
       ],
-      options: ['literal'],
+      options: [Option.literal],
     },
     {
       code: `
@@ -181,7 +181,7 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
           messageId: 'defaultMessageLiteral',
         },
       ],
-      options: ['literal'],
+      options: [Option.literal],
     },
     {
       code: `
@@ -192,7 +192,7 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
           messageId: 'defaultMessageLiteral',
         },
       ],
-      options: ['literal'],
+      options: [Option.literal],
     },
   ],
 })
@@ -238,7 +238,7 @@ vueRuleTester.run(`vue/${name}`, rule, {
           messageId: 'defaultMessageLiteral',
         },
       ],
-      options: ['literal'],
+      options: [Option.literal],
     },
   ],
 })
