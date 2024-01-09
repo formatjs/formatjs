@@ -1,5 +1,11 @@
-import blocklistElements from './rules/blocklist-elements'
-import enforceDefaultMessage from './rules/enforce-default-message'
+import {
+  rule as blocklistElements,
+  name as blocklistElementRuleName,
+} from './rules/blocklist-elements'
+import {
+  rule as enforceDefaultMessage,
+  name as enforceDefaultMessageName,
+} from './rules/enforce-default-message'
 import enforceDescription from './rules/enforce-description'
 import enforceId from './rules/enforce-id'
 import enforcePlaceholders from './rules/enforce-placeholders'
@@ -16,11 +22,12 @@ import noLiteralStringInJsx from './rules/no-literal-string-in-jsx'
 import noUselessMessage from './rules/no-useless-message'
 import preferFormattedMessage from './rules/prefer-formatted-message'
 import preferPoundInPlural from './rules/prefer-pound-in-plural'
+import {RuleModule} from '@typescript-eslint/utils/ts-eslint'
 
-const plugin = {
+const plugin: Plugin = {
   rules: {
-    'blocklist-elements': blocklistElements,
-    'enforce-default-message': enforceDefaultMessage,
+    [blocklistElementRuleName]: blocklistElements,
+    [enforceDefaultMessageName]: enforceDefaultMessage,
     'enforce-description': enforceDescription,
     'enforce-id': enforceId,
     'enforce-placeholders': enforcePlaceholders,
@@ -40,6 +47,8 @@ const plugin = {
   },
 }
 
-export type Plugin = typeof plugin
+export type Plugin = {
+  rules: Record<string, RuleModule<string, readonly unknown[]>>
+}
 
 module.exports = plugin
