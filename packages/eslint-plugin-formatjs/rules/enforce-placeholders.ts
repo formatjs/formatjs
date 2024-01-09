@@ -4,8 +4,15 @@ import {
   parse,
 } from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/utils'
-import {Rule} from 'eslint'
+import {
+  RuleContext,
+  RuleModule,
+  RuleListener,
+} from '@typescript-eslint/utils/ts-eslint'
 import {extractMessages, getSettings} from '../util'
+
+type MessageIds = 'parserError' | 'missingValue' | 'unusedValue'
+type Options = [{ignoreList: string[]}?]
 
 function collectPlaceholderNames(ast: MessageFormatElement[]): Set<string> {
   const placeholderNames = new Set<string>()
@@ -37,7 +44,10 @@ function collectPlaceholderNames(ast: MessageFormatElement[]): Set<string> {
   }
 }
 
-function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
+function checkNode(
+  context: RuleContext<MessageIds, Options>,
+  node: TSESTree.Node
+) {
   const settings = getSettings(context)
   const msgs = extractMessages(node, {
     excludeMessageDeclCalls: true,
@@ -91,8 +101,9 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
       ast = parse(defaultMessage, {ignoreTag: settings.ignoreTag})
     } catch (e) {
       context.report({
-        node: messageNode as any,
-        message: e instanceof Error ? e.message : String(e),
+        node: messageNode,
+        messageId: 'parserError',
+        data: {message: e instanceof Error ? e.message : String(e)},
       })
       continue
     }
@@ -108,32 +119,33 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
 
     if (missingPlaceholders.length > 0) {
       context.report({
-        node: messageNode as any,
-        message: `Missing value(s) for the following placeholder(s): ${missingPlaceholders.join(
-          ', '
-        )}.`,
+        node: messageNode,
+        messageId: 'missingValue',
+        data: {
+          list: missingPlaceholders.join(', '),
+        },
       })
     }
 
     literalElementByLiteralKey.forEach((element, key) => {
       if (!ignoreList.has(key) && !placeholderNames.has(key)) {
         context.report({
-          node: element as any,
-          message: 'Value not used by the message.',
+          node: element,
+          messageId: 'unusedValue',
         })
       }
     })
   }
 }
 
-const rule: Rule.RuleModule = {
+export const name = 'enforce-placeholders'
+
+export const rule: RuleModule<MessageIds, Options, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
       description:
         'Enforce that all messages with placeholders have enough passed-in values',
-      category: 'Errors',
-      recommended: true,
       url: 'https://formatjs.io/docs/tooling/linter#enforce-placeholders',
     },
     schema: [
@@ -150,12 +162,21 @@ const rule: Rule.RuleModule = {
         additionalProperties: false,
       },
     ],
+    messages: {
+      parserError: '{{message}}',
+      missingValue:
+        'Missing value(s) for the following placeholder(s): {{list}}.',
+      unusedValue: 'Value not used by the message.',
+    },
   },
+  defaultOptions: [],
   create(context) {
     const callExpressionVisitor = (node: TSESTree.Node) =>
       checkNode(context, node)
 
+    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
     if (context.parserServices.defineTemplateBodyVisitor) {
+      //@ts-expect-error
       return context.parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -171,5 +192,3 @@ const rule: Rule.RuleModule = {
     }
   },
 }
-
-export default rule
