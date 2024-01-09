@@ -15,7 +15,10 @@ import {
   rule as enforcePlaceholders,
   name as enforcePlaceholdersName,
 } from './rules/enforce-placeholders'
-import noInvalidICU from './rules/no-invalid-icu'
+import {
+  rule as noInvalidICU,
+  name as noInvalidICUName,
+} from './rules/no-invalid-icu'
 import {
   rule as enforcePluralRules,
   name as enforcePluralRulesName,
@@ -51,7 +54,7 @@ const plugin: Plugin = {
     [noComplexSelectorsName]: noComplexSelectors,
     [noEmojiName]: noEmoji,
     [noIdName]: noId,
-    'no-invalid-icu': noInvalidICU,
+    [noInvalidICUName]: noInvalidICU,
     'no-literal-string-in-jsx': noLiteralStringInJsx,
     'no-multiple-plurals': noMultiplePlurals,
     'no-multiple-whitespaces': noMultipleWhitespaces,
