@@ -41,7 +41,7 @@ import {
   rule as noMultipleWhitespaces,
   name as noMultipleWhitespacesName,
 } from './rules/no-multiple-whitespaces'
-import noOffset from './rules/no-offset'
+import {rule as noOffset, name as noOffsetName} from './rules/no-offset'
 import {
   rule as noLiteralStringInJsx,
   name as noLiteralStringInJsxName,
@@ -67,7 +67,7 @@ const plugin: Plugin = {
     [noLiteralStringInJsxName]: noLiteralStringInJsx,
     [noMultiplePluralsName]: noMultiplePlurals,
     [noMultipleWhitespacesName]: noMultipleWhitespaces,
-    'no-offset': noOffset,
+    [noOffsetName]: noOffset,
     'no-useless-message': noUselessMessage,
     'prefer-formatted-message': preferFormattedMessage,
     'prefer-pound-in-plural': preferPoundInPlural,
