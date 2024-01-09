@@ -16,7 +16,10 @@ import {
   name as enforcePlaceholdersName,
 } from './rules/enforce-placeholders'
 import noInvalidICU from './rules/no-invalid-icu'
-import enforcePluralRules from './rules/enforce-plural-rules'
+import {
+  rule as enforcePluralRules,
+  name as enforcePluralRulesName,
+} from './rules/enforce-plural-rules'
 import noCamelCase from './rules/no-camel-case'
 import noComplexSelectors from './rules/no-complex-selectors'
 import noEmoji from './rules/no-emoji'
@@ -37,7 +40,7 @@ const plugin: Plugin = {
     [enforceDescriptionName]: enforceDescription,
     [enforceIdName]: enforceId,
     [enforcePlaceholdersName]: enforcePlaceholders,
-    'enforce-plural-rules': enforcePluralRules,
+    [enforcePluralRulesName]: enforcePluralRules,
     'no-camel-case': noCamelCase,
     'no-complex-selectors': noComplexSelectors,
     'no-emoji': noEmoji,

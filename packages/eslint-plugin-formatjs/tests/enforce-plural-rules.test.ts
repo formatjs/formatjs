@@ -1,7 +1,7 @@
-import enforcePluralRules from '../rules/enforce-plural-rules'
+import {name, rule} from '../rules/enforce-plural-rules'
 import {ruleTester} from './util'
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
-ruleTester.run('enforce-plural-rules', enforcePluralRules, {
+ruleTester.run(name, rule, {
   valid: [
     {
       code: `import {defineMessage} from 'react-intl'
@@ -60,7 +60,8 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
       ],
       errors: [
         {
-          message: 'Plural rule "one" is forbidden',
+          messageId: 'forbidden',
+          data: {rule: 'one'},
         },
       ],
     },
@@ -78,7 +79,8 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
       ],
       errors: [
         {
-          message: 'Missing plural rule "two"',
+          messageId: 'missingPlural',
+          data: {rule: 'two'},
         },
       ],
     },
