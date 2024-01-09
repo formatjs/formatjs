@@ -33,7 +33,10 @@ import {
 } from './rules/no-complex-selectors'
 import {rule as noEmoji, name as noEmojiName} from './rules/no-emoji'
 import {rule as noId, name as noIdName} from './rules/no-id'
-import noMultiplePlurals from './rules/no-multiple-plurals'
+import {
+  rule as noMultiplePlurals,
+  name as noMultiplePluralsName,
+} from './rules/no-multiple-plurals'
 import noMultipleWhitespaces from './rules/no-multiple-whitespaces'
 import noOffset from './rules/no-offset'
 import {
@@ -59,7 +62,7 @@ const plugin: Plugin = {
     [noIdName]: noId,
     [noInvalidICUName]: noInvalidICU,
     [noLiteralStringInJsxName]: noLiteralStringInJsx,
-    'no-multiple-plurals': noMultiplePlurals,
+    [noMultiplePluralsName]: noMultiplePlurals,
     'no-multiple-whitespaces': noMultipleWhitespaces,
     'no-offset': noOffset,
     'no-useless-message': noUselessMessage,
