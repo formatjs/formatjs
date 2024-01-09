@@ -37,7 +37,10 @@ import {
   rule as noMultiplePlurals,
   name as noMultiplePluralsName,
 } from './rules/no-multiple-plurals'
-import noMultipleWhitespaces from './rules/no-multiple-whitespaces'
+import {
+  rule as noMultipleWhitespaces,
+  name as noMultipleWhitespacesName,
+} from './rules/no-multiple-whitespaces'
 import noOffset from './rules/no-offset'
 import {
   rule as noLiteralStringInJsx,
@@ -63,7 +66,7 @@ const plugin: Plugin = {
     [noInvalidICUName]: noInvalidICU,
     [noLiteralStringInJsxName]: noLiteralStringInJsx,
     [noMultiplePluralsName]: noMultiplePlurals,
-    'no-multiple-whitespaces': noMultipleWhitespaces,
+    [noMultipleWhitespacesName]: noMultipleWhitespaces,
     'no-offset': noOffset,
     'no-useless-message': noUselessMessage,
     'prefer-formatted-message': preferFormattedMessage,

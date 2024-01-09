@@ -5,8 +5,15 @@ import {
   TYPE,
 } from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/utils'
-import {Rule} from 'eslint'
+import {
+  RuleContext,
+  RuleModule,
+  RuleListener,
+} from '@typescript-eslint/utils/ts-eslint'
 import {extractMessages, getSettings, patchMessage} from '../util'
+
+type MessageIds = 'noMultipleWhitespaces' | 'parserError'
+type Options = []
 
 function isAstValid(ast: MessageFormatElement[]): boolean {
   for (const element of ast) {
@@ -96,7 +103,10 @@ function trimMultiWhitespaces(
   return trimmedFragments.join('')
 }
 
-function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
+function checkNode(
+  context: RuleContext<MessageIds, Options>,
+  node: TSESTree.Node
+) {
   const msgs = extractMessages(node, getSettings(context))
 
   for (const [
@@ -114,8 +124,9 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
       ast = parse(defaultMessage, {captureLocation: true})
     } catch (e) {
       context.report({
-        node: messageNode as any,
-        message: e instanceof Error ? e.message : String(e),
+        node: messageNode,
+        messageId: 'parserError',
+        data: {message: e instanceof Error ? e.message : String(e)},
       })
       return
     }
@@ -123,37 +134,42 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     if (!isAstValid(ast)) {
       const newMessage = patchMessage(messageNode, ast, trimMultiWhitespaces)
       context.report({
-        node: messageNode as any,
+        node: messageNode,
         messageId: 'noMultipleWhitespaces',
         fix:
           newMessage !== null
-            ? fixer => fixer.replaceText(messageNode as any, newMessage)
+            ? fixer => fixer.replaceText(messageNode, newMessage)
             : null,
       })
     }
   }
 }
 
-const rule: Rule.RuleModule = {
+export const name = 'no-multiple-whitespaces'
+
+export const rule: RuleModule<MessageIds, Options, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
       description:
         'Prevents usage of multiple consecutive whitespaces in message',
-      category: 'Errors',
-      recommended: false,
       url: 'https://formatjs.io/docs/tooling/linter#no-multiple-whitespaces',
     },
     messages: {
       noMultipleWhitespaces: 'Multiple consecutive whitespaces are not allowed',
+      parserError: '{{message}}',
     },
     fixable: 'code',
+    schema: [],
   },
+  defaultOptions: [],
   create(context) {
     const callExpressionVisitor = (node: TSESTree.Node) =>
       checkNode(context, node)
 
+    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
     if (context.parserServices.defineTemplateBodyVisitor) {
+      //@ts-expect-error
       return context.parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -169,5 +185,3 @@ const rule: Rule.RuleModule = {
     }
   },
 }
-
-export default rule
