@@ -36,10 +36,6 @@ const FormattedPlural: React.FC<Props> = props => {
   return formattedPlural as any
 }
 
-FormattedPlural.defaultProps = {
-  type: 'cardinal',
-}
-
 FormattedPlural.displayName = 'FormattedPlural'
 
 export default FormattedPlural

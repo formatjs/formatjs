@@ -111,10 +111,6 @@ const Hooks: React.FC<Props> = () => {
   )
 }
 
-Hooks.defaultProps = {
-  currentTime: new Date(),
-}
-
 const App: React.FC<Props> = props => {
   return (
     <IntlProvider locale="en" messages={messages}>

@@ -99,8 +99,8 @@ const SimpleFormattedRelativeTime: React.FC<
 }
 
 const FormattedRelativeTime: React.FC<Props> = ({
-  value,
-  unit,
+  value = 0,
+  unit = 'second',
   updateIntervalInSeconds,
   ...otherProps
 }) => {
@@ -184,9 +184,5 @@ const FormattedRelativeTime: React.FC<Props> = ({
 }
 
 FormattedRelativeTime.displayName = 'FormattedRelativeTime'
-FormattedRelativeTime.defaultProps = {
-  value: 0,
-  unit: 'second',
-}
 
 export default FormattedRelativeTime
