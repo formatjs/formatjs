@@ -134,7 +134,7 @@
     "npm": "6.x"
   },
   "resolutions": {
-    "terser": "5.24.0"
+    "terser": "5.26.0"
   },
   "pnpm": {
     "packageExtensions": {
