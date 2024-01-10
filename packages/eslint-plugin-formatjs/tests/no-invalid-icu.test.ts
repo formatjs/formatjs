@@ -1,8 +1,8 @@
-import noMalformedICU from '../rules/no-invalid-icu'
+import {name, rule} from '../rules/no-invalid-icu'
 import {ruleTester} from './util'
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 
-ruleTester.run('no-invalid-icu', noMalformedICU, {
+ruleTester.run(name, rule, {
   valid: [
     `intl.formatMessage({
       defaultMessage: '{count, plural, one {#} other {# more}}',
@@ -63,7 +63,7 @@ ruleTester.run('no-invalid-icu', noMalformedICU, {
           defaultMessage: '{count, plural, one {#} other {# more}}',
           description: 'asd'
       })`,
-      options: [{ignoreList: ['count']}],
+      options: [],
     },
     {
       code: `
@@ -71,7 +71,7 @@ ruleTester.run('no-invalid-icu', noMalformedICU, {
           defaultMessage: '<b>foo</b>',
           description: 'asd'
       })`,
-      options: [{ignoreList: ['b']}],
+      options: [],
     },
   ],
   invalid: [
@@ -85,7 +85,11 @@ ruleTester.run('no-invalid-icu', noMalformedICU, {
         })`,
       errors: [
         {
-          message: 'Error parsing ICU string: EXPECT_PLURAL_ARGUMENT_SELECTOR',
+          messageId: 'icuError',
+          data: {
+            message:
+              'Error parsing ICU string: EXPECT_PLURAL_ARGUMENT_SELECTOR',
+          },
         },
       ],
     },
@@ -98,7 +102,8 @@ ruleTester.run('no-invalid-icu', noMalformedICU, {
         )`,
       errors: [
         {
-          message: 'Error parsing ICU string: INVALID_ARGUMENT_TYPE',
+          messageId: 'icuError',
+          data: {message: 'Error parsing ICU string: INVALID_ARGUMENT_TYPE'},
         },
       ],
     },

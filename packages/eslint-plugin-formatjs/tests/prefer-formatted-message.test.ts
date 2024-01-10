@@ -1,4 +1,4 @@
-import preferFormattedMessage from '../rules/prefer-formatted-message'
+import {rule, name} from '../rules/prefer-formatted-message'
 import {ruleTester} from './util'
 import {
   dynamicMessage,
@@ -8,7 +8,7 @@ import {
   defineMessage,
 } from './fixtures'
 
-ruleTester.run('prefer-formatted-message', preferFormattedMessage, {
+ruleTester.run(name, rule, {
   valid: [
     defineMessage,
     dynamicMessage,
@@ -37,8 +37,7 @@ ruleTester.run('prefer-formatted-message', preferFormattedMessage, {
       `,
       errors: [
         {
-          message:
-            'Prefer `FormattedMessage` over `intl.formatMessage` in the JSX children expression.',
+          messageId: 'jsxChildren',
         },
       ],
     },
@@ -56,12 +55,10 @@ ruleTester.run('prefer-formatted-message', preferFormattedMessage, {
       `,
       errors: [
         {
-          message:
-            'Prefer `FormattedMessage` over `intl.formatMessage` in the JSX children expression.',
+          messageId: 'jsxChildren',
         },
         {
-          message:
-            'Prefer `FormattedMessage` over `intl.formatMessage` in the JSX children expression.',
+          messageId: 'jsxChildren',
         },
       ],
     },

@@ -11,18 +11,29 @@ import {
   parse,
 } from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/utils'
-import {Rule} from 'eslint'
+import {
+  RuleContext,
+  RuleModule,
+  RuleListener,
+} from '@typescript-eslint/utils/ts-eslint'
 import {extractMessages, getSettings} from '../util'
 
-class BlacklistElement extends Error {
-  public message: string
-  constructor(type: Element) {
-    super()
-    this.message = `${type} element is blocklisted`
+type MessageIds = 'blocklist'
+type Options = [Element[]?]
+
+export const name = 'blocklist-elements'
+
+function getMessage(type: Element): {
+  messageId: MessageIds
+  data: Record<string, Element>
+} {
+  return {
+    messageId: 'blocklist',
+    data: {type},
   }
 }
 
-enum Element {
+export enum Element {
   literal = 'literal',
   argument = 'argument',
   number = 'number',
@@ -35,37 +46,38 @@ enum Element {
 }
 
 function verifyAst(blocklist: Element[], ast: MessageFormatElement[]) {
+  const errors: ReturnType<typeof getMessage>[] = []
   for (const el of ast) {
     if (isLiteralElement(el) && blocklist.includes(Element.literal)) {
-      throw new BlacklistElement(Element.literal)
+      errors.push(getMessage(Element.literal))
     }
     if (isArgumentElement(el) && blocklist.includes(Element.argument)) {
-      throw new BlacklistElement(Element.argument)
+      errors.push(getMessage(Element.argument))
     }
     if (isNumberElement(el) && blocklist.includes(Element.number)) {
-      throw new BlacklistElement(Element.number)
+      errors.push(getMessage(Element.number))
     }
     if (isDateElement(el) && blocklist.includes(Element.date)) {
-      throw new BlacklistElement(Element.date)
+      errors.push(getMessage(Element.date))
     }
     if (isTimeElement(el) && blocklist.includes(Element.time)) {
-      throw new BlacklistElement(Element.time)
+      errors.push(getMessage(Element.time))
     }
     if (isSelectElement(el) && blocklist.includes(Element.select)) {
-      throw new BlacklistElement(Element.select)
+      errors.push(getMessage(Element.select))
     }
     if (isTagElement(el) && blocklist.includes(Element.tag)) {
-      throw new BlacklistElement(Element.tag)
+      errors.push(getMessage(Element.tag))
     }
     if (isPluralElement(el)) {
       if (blocklist.includes(Element.plural)) {
-        throw new BlacklistElement(Element.argument)
+        errors.push(getMessage(Element.argument))
       }
       if (
         el.pluralType === 'ordinal' &&
         blocklist.includes(Element.selectordinal)
       ) {
-        throw new BlacklistElement(Element.selectordinal)
+        errors.push(getMessage(Element.selectordinal))
       }
     }
     if (isSelectElement(el) || isPluralElement(el)) {
@@ -75,9 +87,14 @@ function verifyAst(blocklist: Element[], ast: MessageFormatElement[]) {
       }
     }
   }
+
+  return errors
 }
 
-function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
+function checkNode(
+  context: RuleContext<MessageIds, Options>,
+  node: TSESTree.Node
+) {
   const settings = getSettings(context)
   const msgs = extractMessages(node, settings)
   if (!msgs.length) {
@@ -97,63 +114,64 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
     if (!defaultMessage || !messageNode) {
       continue
     }
-    try {
-      verifyAst(
-        context.options[0],
-        parse(defaultMessage, {
-          ignoreTag: settings.ignoreTag,
-        })
-      )
-    } catch (e) {
+    const errors = verifyAst(
+      blocklist,
+      parse(defaultMessage, {
+        ignoreTag: settings.ignoreTag,
+      })
+    )
+    for (const error of errors) {
       context.report({
-        node: messageNode as any,
-        message: e instanceof Error ? e.message : String(e),
+        node,
+        ...error,
       })
     }
   }
 }
 
-const rule: Rule.RuleModule = {
+const create = (context: RuleContext<MessageIds, Options>): RuleListener => {
+  const callExpressionVisitor = (node: TSESTree.Node) =>
+    checkNode(context, node)
+
+  //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+  if (context.parserServices?.defineTemplateBodyVisitor) {
+    //@ts-expect-error
+    return context.parserServices.defineTemplateBodyVisitor(
+      {
+        CallExpression: callExpressionVisitor,
+      },
+      {
+        CallExpression: callExpressionVisitor,
+      }
+    )
+  }
+  return {
+    JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
+    CallExpression: callExpressionVisitor,
+  }
+}
+
+export const rule: RuleModule<MessageIds, Options, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow specific elements in ICU message format',
-      category: 'Errors',
-      recommended: false,
       url: 'https://formatjs.io/docs/tooling/linter#blocklist-elements',
     },
     fixable: 'code',
     schema: [
       {
         type: 'array',
-        properties: {
-          items: {
-            type: 'string',
-            enum: Object.keys(Element),
-          },
+        items: {
+          type: 'string',
+          enum: Object.keys(Element),
         },
       },
     ],
+    messages: {
+      blocklist: `{{type}} element is blocklisted`,
+    },
   },
-  create(context) {
-    const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node)
-
-    if (context.parserServices.defineTemplateBodyVisitor) {
-      return context.parserServices.defineTemplateBodyVisitor(
-        {
-          CallExpression: callExpressionVisitor,
-        },
-        {
-          CallExpression: callExpressionVisitor,
-        }
-      )
-    }
-    return {
-      JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
-      CallExpression: callExpressionVisitor,
-    }
-  },
+  defaultOptions: [],
+  create,
 }
-
-export default rule

@@ -1,6 +1,6 @@
 import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/utils'
-import {Rule} from 'eslint'
+import {RuleContext} from '@typescript-eslint/utils/ts-eslint'
 
 export interface MessageDescriptor {
   id?: string
@@ -27,7 +27,10 @@ export interface MessageDescriptorNodeInfo {
   idPropNode?: TSESTree.Property | TSESTree.JSXAttribute
 }
 
-export function getSettings({settings}: Rule.RuleContext): Settings {
+export function getSettings<
+  TMessageIds extends string,
+  TOptions extends readonly unknown[],
+>({settings}: RuleContext<TMessageIds, TOptions>): Settings {
   return settings.formatjs ?? settings
 }
 

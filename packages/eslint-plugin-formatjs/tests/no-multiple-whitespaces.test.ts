@@ -1,4 +1,4 @@
-import noMultipleWhitespaces from '../rules/no-multiple-whitespaces'
+import {name, rule} from '../rules/no-multiple-whitespaces'
 import {ruleTester} from './util'
 import {
   dynamicMessage,
@@ -8,7 +8,7 @@ import {
   defineMessage,
 } from './fixtures'
 
-ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
+ruleTester.run(name, rule, {
   valid: [
     defineMessage,
     dynamicMessage,
@@ -32,7 +32,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
                   {placeHolder}'})",
       errors: [
         {
-          message: 'Multiple consecutive whitespaces are not allowed',
+          messageId: 'noMultipleWhitespaces',
         },
       ],
       output: `import {defineMessage} from 'react-intl';defineMessage({defaultMessage: "a {placeHolder}"})`,
@@ -41,7 +41,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
       code: "<FormattedMessage defaultMessage='a   thing'/>",
       errors: [
         {
-          message: 'Multiple consecutive whitespaces are not allowed',
+          messageId: 'noMultipleWhitespaces',
         },
       ],
       output: `<FormattedMessage defaultMessage="a thing"/>`,
@@ -54,7 +54,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
               })`,
       errors: [
         {
-          message: 'Multiple consecutive whitespaces are not allowed',
+          messageId: 'noMultipleWhitespaces',
         },
       ],
       output: `
@@ -75,7 +75,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
       `,
       errors: [
         {
-          message: 'Multiple consecutive whitespaces are not allowed',
+          messageId: 'noMultipleWhitespaces',
         },
       ],
       output: `
@@ -93,7 +93,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
       code: "import {defineMessage} from 'react-intl';defineMessage({defaultMessage: `a\\\\  \\`  {placeHolder}`})",
       errors: [
         {
-          message: 'Multiple consecutive whitespaces are not allowed',
+          messageId: 'noMultipleWhitespaces',
         },
       ],
       output:
@@ -101,14 +101,14 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
     },
     {
       code: "import {defineMessage} from 'react-intl';defineMessage({defaultMessage: `<em>a  b</em>`})",
-      errors: [{message: 'Multiple consecutive whitespaces are not allowed'}],
+      errors: [{messageId: 'noMultipleWhitespaces'}],
       output:
         "import {defineMessage} from 'react-intl';defineMessage({defaultMessage: `<em>a b</em>`})",
     },
     // Multi-line JSX attribute
     {
       code: `<FormattedMessage defaultMessage="a\n  b" />`,
-      errors: [{message: 'Multiple consecutive whitespaces are not allowed'}],
+      errors: [{messageId: 'noMultipleWhitespaces'}],
       output: `<FormattedMessage defaultMessage="a b" />`,
     },
   ],

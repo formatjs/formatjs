@@ -1,8 +1,10 @@
-import enforceId from '../rules/enforce-id'
+import {name, rule, Option} from '../rules/enforce-id'
 import {ruleTester} from './util'
 import {noMatch, spreadJsx, emptyFnCall} from './fixtures'
-const options = [{idInterpolationPattern: '[sha512:contenthash:base64:6]'}]
-ruleTester.run('enforce-id', enforceId, {
+const options: [Option] = [
+  {idInterpolationPattern: '[sha512:contenthash:base64:6]'},
+]
+ruleTester.run(name, rule, {
   valid: [
     {
       code: `intl.formatMessage({ id: 'j9qhn+', defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
@@ -27,9 +29,12 @@ ruleTester.run('enforce-id', enforceId, {
 intl.formatMessage({ id: 'foo', defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
-Expected: j9qhn+
-Actual: foo`,
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'j9qhn+',
+            actual: 'foo',
+          },
         },
       ],
       options,
@@ -41,9 +46,12 @@ intl.formatMessage({ id: 'j9qhn+', defaultMessage: '{count, plural, one {#} othe
 intl.$t({ id: 'foo', defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
-Expected: j9qhn+
-Actual: foo`,
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'j9qhn+',
+            actual: 'foo',
+          },
         },
       ],
       options,
@@ -55,7 +63,7 @@ intl.$t({ id: 'j9qhn+', defaultMessage: '{count, plural, one {#} other {# more}}
 intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
       errors: [
         {
-          message: `id must be specified`,
+          messageId: 'enforceId',
         },
       ],
     },
@@ -64,9 +72,12 @@ intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', d
 intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
-Expected: j9qhn+
-Actual: undefined`,
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'j9qhn+',
+            actual: 'undefined',
+          },
         },
       ],
       options,
@@ -79,9 +90,12 @@ intl.formatMessage({ id: 'bar', defaultMessage: '{aDifferentKey, plural, one {#}
 }, {foo: 1})`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
-Expected: 73owpx
-Actual: bar`,
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: '73owpx',
+            actual: 'bar',
+          },
         },
       ],
       options,
@@ -98,9 +112,12 @@ defaultMessage="{count, plural, one {#} other {# more}}"
 />`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
-Expected: /e77jM
-Actual: undefined`,
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: '/e77jM',
+            actual: 'undefined',
+          },
         },
       ],
       options,
@@ -119,9 +136,12 @@ const a = (
 )`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
-Expected: /e77jM
-Actual: bas`,
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: '/e77jM',
+            actual: 'bas',
+          },
         },
       ],
       options,
@@ -139,9 +159,12 @@ const a = (
 )`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
-Expected: /e77jM
-Actual: undefined`,
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: '/e77jM',
+            actual: 'undefined',
+          },
         },
       ],
       options,
@@ -159,9 +182,12 @@ intl.formatMessage({ id, defaultMessage: '{count, plural, one {<a>#</a>} other {
 })`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
-Expected: UoHSIG
-Actual: undefined`,
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'UoHSIG',
+            actual: 'undefined',
+          },
         },
       ],
       options,
@@ -178,9 +204,12 @@ import { defineMessages } from 'react-intl'
 defineMessages({ example: { defaultMessage: 'example' } })`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
-Expected: O7Eu2j
-Actual: undefined`,
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'O7Eu2j',
+            actual: 'undefined',
+          },
         },
       ],
       options,
@@ -192,13 +221,13 @@ defineMessages({ example: { defaultMessage: 'example', id: 'O7Eu2j' } })`,
   ],
 })
 
-const optionsWithWhitelist = [
+const optionsWithWhitelist: [Option] = [
   {
     idInterpolationPattern: '[sha512:contenthash:base64:6]',
     idWhitelist: ['\\.', '^payment_.*'],
   },
 ]
-ruleTester.run('enforce-id', enforceId, {
+ruleTester.run(name, rule, {
   valid: [
     {
       options: optionsWithWhitelist,
@@ -214,9 +243,13 @@ defineMessages({ example: { defaultMessage: 'example2', id: 'payment_string' } }
 intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6] or allowlisted patterns ["/\\./i", "/^payment_.*/i"].
-Expected: j9qhn+
-Actual: undefined`,
+          messageId: 'enforceIdMatchingAllowlisted',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'j9qhn+',
+            actual: 'undefined',
+            idWhitelist: '"/\\./i", "/^payment_.*/i"',
+          },
         },
       ],
       options: optionsWithWhitelist,
@@ -228,9 +261,13 @@ intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', i
 intl.formatMessage({defaultMessage: "{count, plural, one {#} other {# more}}", description: "asd"})`,
       errors: [
         {
-          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6] or allowlisted patterns ["/\\./i", "/^payment_.*/i"].
-Expected: j9qhn+
-Actual: undefined`,
+          messageId: 'enforceIdMatchingAllowlisted',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'j9qhn+',
+            actual: 'undefined',
+            idWhitelist: '"/\\./i", "/^payment_.*/i"',
+          },
         },
       ],
       options: optionsWithWhitelist,

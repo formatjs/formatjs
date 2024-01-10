@@ -1,5 +1,5 @@
 import {ruleTester} from './util'
-import noCamelCase from '../rules/no-camel-case'
+import {rule, name} from '../rules/no-camel-case'
 import {
   dynamicMessage,
   noMatch,
@@ -8,7 +8,7 @@ import {
   defineMessage,
 } from './fixtures'
 
-ruleTester.run('no-camel-case', noCamelCase, {
+ruleTester.run(name, rule, {
   valid: [defineMessage, dynamicMessage, noMatch, spreadJsx, emptyFnCall],
   invalid: [
     {
@@ -17,11 +17,7 @@ ruleTester.run('no-camel-case', noCamelCase, {
               defineMessage({
                   defaultMessage: 'a {placeHolder}'
               })`,
-      errors: [
-        {
-          message: 'Camel case arguments are not allowed',
-        },
-      ],
+      errors: [{messageId: 'camelcase'}],
     },
   ],
 })

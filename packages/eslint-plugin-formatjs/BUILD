@@ -27,7 +27,6 @@ SRCS = glob(["rules/*.ts"]) + [
 
 SRC_DEPS = [
     "//:node_modules/@types/eslint",
-    "//:node_modules/@types/estree",
     "//:node_modules/@types/node",
     "//:node_modules/@types/picomatch",
     "//:node_modules/@typescript-eslint/utils",

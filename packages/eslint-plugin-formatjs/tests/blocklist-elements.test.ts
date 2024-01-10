@@ -1,22 +1,22 @@
-import blocklistElements from '../rules/blocklist-elements'
+import {rule, Element, name} from '../rules/blocklist-elements'
 import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester, vueRuleTester} from './util'
 
-ruleTester.run('blocklist-elements', blocklistElements, {
+ruleTester.run(name, rule, {
   valid: [
     {
       code: `import {defineMessage} from 'react-intl'
   defineMessage({
       defaultMessage: '{count, plural, one {#} other {# more}}'
   })`,
-      options: [['selectordinal']],
+      options: [[Element.selectordinal]],
     },
     {
       code: `import {defineMessage} from 'react-intl'
   defineMessage({
       defaultMessage: '{count, plural, one {#} other {# more}} <a href="asd"></a>'
   })`,
-      options: [['selectordinal']],
+      options: [[Element.selectordinal]],
       settings: {
         formatjs: {
           ignoreTag: true,
@@ -28,7 +28,7 @@ ruleTester.run('blocklist-elements', blocklistElements, {
   $t({
       defaultMessage: '{count, plural, one {#} other {# more}}'
   })`,
-      options: [['selectordinal']],
+      options: [[Element.selectordinal]],
       settings: {
         formatjs: {
           additionalFunctionNames: ['$t'],
@@ -47,10 +47,11 @@ ruleTester.run('blocklist-elements', blocklistElements, {
               defineMessage({
                   defaultMessage: '{count, selectordinal, offset:1 one {#} other {# more}}'
               })`,
-      options: [['selectordinal']],
+      options: [[Element.selectordinal]],
       errors: [
         {
-          message: 'selectordinal element is blocklisted',
+          messageId: 'blocklist',
+          data: {type: 'selectordinal'},
         },
       ],
     },
@@ -59,7 +60,7 @@ ruleTester.run('blocklist-elements', blocklistElements, {
               $t({
                   defaultMessage: '{count, selectordinal, offset:1 one {#} other {# more}}'
               })`,
-      options: [['selectordinal']],
+      options: [[Element.selectordinal]],
       settings: {
         formatjs: {
           additionalFunctionNames: ['$t'],
@@ -67,14 +68,15 @@ ruleTester.run('blocklist-elements', blocklistElements, {
       },
       errors: [
         {
-          message: 'selectordinal element is blocklisted',
+          messageId: 'blocklist',
+          data: {type: 'selectordinal'},
         },
       ],
     },
   ],
 })
 
-vueRuleTester.run('vue/blocklist-elements', blocklistElements, {
+vueRuleTester.run('vue/blocklist-elements', rule, {
   valid: [
     {
       code: `<template>
@@ -82,7 +84,7 @@ vueRuleTester.run('vue/blocklist-elements', blocklistElements, {
         defaultMessage: '{count, plural, offset:1 one {#} other {# more} }'
       }) }} World!</p>
     </template>`,
-      options: [['selectordinal']],
+      options: [[Element.selectordinal]],
     },
     `<script>${dynamicMessage}</script>`,
     `<script>${noMatch}</script>`,
@@ -95,10 +97,11 @@ vueRuleTester.run('vue/blocklist-elements', blocklistElements, {
               intl.formatMessage({
                   defaultMessage: '{count, selectordinal, offset:1 one {#} other {# more}}'
               })</script>`,
-      options: [['selectordinal']],
+      options: [[Element.selectordinal]],
       errors: [
         {
-          message: 'selectordinal element is blocklisted',
+          messageId: 'blocklist',
+          data: {type: 'selectordinal'},
         },
       ],
     },
@@ -109,10 +112,11 @@ vueRuleTester.run('vue/blocklist-elements', blocklistElements, {
     defaultMessage: '{count, selectordinal, offset:1 one {#} other {# more} }'
   }) }} World!</p>
 </template>`,
-      options: [['selectordinal']],
+      options: [[Element.selectordinal]],
       errors: [
         {
-          message: 'selectordinal element is blocklisted',
+          messageId: 'blocklist',
+          data: {type: 'selectordinal'},
         },
       ],
     },

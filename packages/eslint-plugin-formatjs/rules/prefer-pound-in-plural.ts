@@ -5,12 +5,19 @@ import {
   TYPE,
 } from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/utils'
-import type {Rule} from 'eslint'
+import {
+  RuleContext,
+  RuleModule,
+  RuleListener,
+} from '@typescript-eslint/utils/ts-eslint'
 import MagicString from 'magic-string'
 import {extractMessages, getSettings, patchMessage} from '../util'
 
+type MessageIds = 'preferPoundInPlurals' | 'parseError'
+type Options = []
+
 function verifyAst(
-  context: Rule.RuleContext,
+  context: RuleContext<MessageIds, Options>,
   messageNode: TSESTree.Node,
   ast: MessageFormatElement[]
 ): void {
@@ -40,11 +47,11 @@ function verifyAst(
     })
 
     context.report({
-      node: messageNode as any,
+      node: messageNode,
       messageId: 'preferPoundInPlurals',
       fix:
         patchedMessage !== null
-          ? fixer => fixer.replaceText(messageNode as any, patchedMessage)
+          ? fixer => fixer.replaceText(messageNode, patchedMessage)
           : null,
     })
   }
@@ -182,7 +189,10 @@ function verifyAst(
   }
 }
 
-function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
+function checkNode(
+  context: RuleContext<MessageIds, Options>,
+  node: TSESTree.Node
+) {
   const msgs = extractMessages(node, getSettings(context))
 
   for (const [
@@ -200,8 +210,9 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
       ast = parse(defaultMessage, {captureLocation: true})
     } catch (e) {
       context.report({
-        node: messageNode as any,
-        message: e instanceof Error ? e.message : String(e),
+        node: messageNode,
+        messageId: 'parseError',
+        data: {message: e instanceof Error ? e.message : String(e)},
       })
       return
     }
@@ -210,27 +221,33 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
   }
 }
 
-const rule: Rule.RuleModule = {
+export const name = 'prefer-pound-in-plural'
+
+export const rule: RuleModule<MessageIds, Options, RuleListener> = {
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Prefer using # to reference the count in the plural argument.',
-      recommended: false,
       url: 'https://formatjs.io/docs/tooling/linter#prefer-pound-in-plurals',
     },
     messages: {
       preferPoundInPlurals:
         'Prefer using # to reference the count in the plural argument instead of repeating the argument.',
+      parseError: '{{message}}',
     },
     fixable: 'code',
+    schema: [],
   },
+  defaultOptions: [],
   // TODO: Vue support
   create(context) {
     const callExpressionVisitor = (node: TSESTree.Node) =>
       checkNode(context, node)
 
+    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
     if (context.parserServices.defineTemplateBodyVisitor) {
+      //@ts-expect-error
       return context.parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -246,5 +263,3 @@ const rule: Rule.RuleModule = {
     }
   },
 }
-
-export default rule

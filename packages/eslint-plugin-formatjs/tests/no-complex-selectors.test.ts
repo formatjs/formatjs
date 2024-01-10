@@ -1,4 +1,4 @@
-import noComplexSelectors from '../rules/no-complex-selectors'
+import {rule, name} from '../rules/no-complex-selectors'
 import {ruleTester} from './util'
 import {
   dynamicMessage,
@@ -7,7 +7,7 @@ import {
   emptyFnCall,
   defineMessage,
 } from './fixtures'
-ruleTester.run('no-complex-selectors', noComplexSelectors, {
+ruleTester.run(name, rule, {
   valid: [
     defineMessage,
     dynamicMessage,
@@ -37,7 +37,12 @@ ruleTester.run('no-complex-selectors', noComplexSelectors, {
         })
       `,
       options: [{limit: 1}],
-      errors: [{message: 'EXPECT_ARGUMENT_CLOSING_BRACE'}],
+      errors: [
+        {
+          messageId: 'parserError',
+          data: {message: 'EXPECT_ARGUMENT_CLOSING_BRACE'},
+        },
+      ],
     },
     {
       code: `
@@ -50,11 +55,7 @@ ruleTester.run('no-complex-selectors', noComplexSelectors, {
           limit: 1,
         },
       ],
-      errors: [
-        {
-          message: 'Message complexity is too high (4 vs limit at 1)',
-        },
-      ],
+      errors: [{messageId: 'tooComplex', data: {complexity: 4, limit: 1}}],
     },
     {
       code: `
@@ -83,11 +84,7 @@ ruleTester.run('no-complex-selectors', noComplexSelectors, {
           limit: 3,
         },
       ],
-      errors: [
-        {
-          message: 'Message complexity is too high (16 vs limit at 3)',
-        },
-      ],
+      errors: [{messageId: 'tooComplex', data: {complexity: 16, limit: 3}}],
     },
     {
       code: `
@@ -102,7 +99,11 @@ ruleTester.run('no-complex-selectors', noComplexSelectors, {
       ],
       errors: [
         {
-          message: 'Message complexity is too high (3 vs limit at 1)',
+          messageId: 'tooComplex',
+          data: {
+            complexity: 3,
+            limit: 1,
+          },
         },
       ],
     },
@@ -119,7 +120,11 @@ ruleTester.run('no-complex-selectors', noComplexSelectors, {
       ],
       errors: [
         {
-          message: 'Message complexity is too high (4 vs limit at 1)',
+          messageId: 'tooComplex',
+          data: {
+            complexity: 4,
+            limit: 1,
+          },
         },
       ],
     },
@@ -134,7 +139,15 @@ ruleTester.run('no-complex-selectors', noComplexSelectors, {
           limit: 1,
         },
       ],
-      errors: [{message: 'Message complexity is too high (2 vs limit at 1)'}],
+      errors: [
+        {
+          messageId: 'tooComplex',
+          data: {
+            complexity: 2,
+            limit: 1,
+          },
+        },
+      ],
     },
   ],
 })

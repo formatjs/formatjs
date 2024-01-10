@@ -1,4 +1,4 @@
-import noMultiplePlurals from '../rules/no-multiple-plurals'
+import {name, rule} from '../rules/no-multiple-plurals'
 import {ruleTester} from './util'
 import {
   dynamicMessage,
@@ -7,7 +7,7 @@ import {
   emptyFnCall,
   defineMessage,
 } from './fixtures'
-ruleTester.run('no-multiple-plurals', noMultiplePlurals, {
+ruleTester.run(name, rule, {
   valid: [defineMessage, dynamicMessage, noMatch, spreadJsx, emptyFnCall],
   invalid: [
     {
@@ -18,7 +18,7 @@ ruleTester.run('no-multiple-plurals', noMultiplePlurals, {
               })`,
       errors: [
         {
-          message: 'Cannot specify more than 1 plural rules',
+          messageId: 'noMultiplePlurals',
         },
       ],
     },
@@ -30,7 +30,7 @@ ruleTester.run('no-multiple-plurals', noMultiplePlurals, {
               })`,
       errors: [
         {
-          message: 'Cannot specify more than 1 plural rules',
+          messageId: 'noMultiplePlurals',
         },
       ],
     },

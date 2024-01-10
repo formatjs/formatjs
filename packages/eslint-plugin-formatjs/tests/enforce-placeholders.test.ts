@@ -1,7 +1,7 @@
-import enforcePlaceholders from '../rules/enforce-placeholders'
+import {rule, name} from '../rules/enforce-placeholders'
 import {ruleTester} from './util'
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
-ruleTester.run('enforce-placeholders', enforcePlaceholders, {
+ruleTester.run(name, rule, {
   valid: [
     `intl.formatMessage({
       defaultMessage: '{count, plural, one {#} other {# more}}',
@@ -80,9 +80,7 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
           defaultMessage: '{count, plural, one {#} other {# more}}',
           description: 'asd'
       })`,
-      errors: [
-        {message: 'Missing value(s) for the following placeholder(s): count.'},
-      ],
+      errors: [{messageId: 'missingValue', data: {list: 'count'}}],
     },
     {
       code: `
@@ -90,9 +88,7 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
           defaultMessage: '<b>foo</b>',
           description: 'asd'
       })`,
-      errors: [
-        {message: 'Missing value(s) for the following placeholder(s): b.'},
-      ],
+      errors: [{messageId: 'missingValue', data: {list: 'b'}}],
     },
     {
       code: `
@@ -101,11 +97,8 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
           description: 'asd'
       }, {foo: 1})`,
       errors: [
-        {
-          message:
-            'Missing value(s) for the following placeholder(s): aDifferentKey.',
-        },
-        {message: 'Value not used by the message.'},
+        {messageId: 'missingValue', data: {list: 'aDifferentKey'}},
+        {messageId: 'unusedValue'},
       ],
     },
     {
@@ -114,9 +107,7 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         const a = <FormattedMessage
         defaultMessage="{count, plural, one {#} other {# more}}"
         />`,
-      errors: [
-        {message: 'Missing value(s) for the following placeholder(s): count.'},
-      ],
+      errors: [{messageId: 'missingValue', data: {list: 'count'}}],
     },
     {
       code: `
@@ -126,8 +117,8 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         values={{foo: 1}}
         />`,
       errors: [
-        {message: 'Missing value(s) for the following placeholder(s): count.'},
-        {message: 'Value not used by the message.'},
+        {messageId: 'missingValue', data: {list: 'count'}},
+        {messageId: 'unusedValue'},
       ],
     },
     {
@@ -135,8 +126,8 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         import {FormattedMessage} from 'react-intl'
         const a = <FormattedMessage id="myMessage" defaultMessage="Hello {name}" values={{ notName: "Denis" }} />`,
       errors: [
-        {message: 'Missing value(s) for the following placeholder(s): name.'},
-        {message: 'Value not used by the message.'},
+        {messageId: 'missingValue', data: {list: 'name'}},
+        {messageId: 'unusedValue'},
       ],
     },
     {
@@ -145,7 +136,8 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         const a = <FormattedMessage defaultMessage="Hello <bold>{name}</bold>" values={{ bold: (msg) => <strong>{msg}</strong> }} />`,
       errors: [
         {
-          message: 'Missing value(s) for the following placeholder(s): name.',
+          messageId: 'missingValue',
+          data: {list: 'name'},
         },
       ],
     },
@@ -160,7 +152,8 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         `,
       errors: [
         {
-          message: 'Missing value(s) for the following placeholder(s): a.',
+          messageId: 'missingValue',
+          data: {list: 'a'},
         },
       ],
     },
@@ -172,7 +165,8 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
       `,
       errors: [
         {
-          message: 'Missing value(s) for the following placeholder(s): name.',
+          messageId: 'missingValue',
+          data: {list: 'name'},
         },
       ],
     },
@@ -183,10 +177,7 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         defaultMessage="{count, plural, one {#} other {# more}}"
         values={{foo: 0, count: 1, bar: 2}}
         />`,
-      errors: [
-        {message: 'Value not used by the message.'},
-        {message: 'Value not used by the message.'},
-      ],
+      errors: [{messageId: 'unusedValue'}, {messageId: 'unusedValue'}],
     },
     {
       code: `
@@ -194,12 +185,7 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
         const a = <FormattedMessage
         defaultMessage="{foo} {bar}"
         />`,
-      errors: [
-        {
-          message:
-            'Missing value(s) for the following placeholder(s): foo, bar.',
-        },
-      ],
+      errors: [{messageId: 'missingValue', data: {list: 'foo, bar'}}],
     },
     // Does not crash when there are parser errors
     {
@@ -210,7 +196,10 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
       `,
       errors: [
         {
-          message: 'EXPECT_ARGUMENT_CLOSING_BRACE',
+          messageId: 'parserError',
+          data: {
+            message: 'EXPECT_ARGUMENT_CLOSING_BRACE',
+          },
         },
       ],
     },

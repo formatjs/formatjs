@@ -1,4 +1,4 @@
-import noUselessMessage from '../rules/no-useless-message'
+import {name, rule} from '../rules/no-useless-message'
 import {ruleTester} from './util'
 import {
   dynamicMessage,
@@ -8,7 +8,7 @@ import {
   defineMessage,
 } from './fixtures'
 
-ruleTester.run('no-useless-message', noUselessMessage, {
+ruleTester.run(name, rule, {
   valid: [defineMessage, dynamicMessage, noMatch, spreadJsx, emptyFnCall],
   invalid: [
     {
@@ -16,7 +16,7 @@ ruleTester.run('no-useless-message', noUselessMessage, {
       import {FormattedMessage} from 'react-intl';
       <FormattedMessage defaultMessage="{test}" />
       `,
-      errors: [{message: 'Unnecessary formatted message.'}],
+      errors: [{messageId: 'unnecessaryFormat'}],
     },
     {
       code: `
@@ -25,8 +25,7 @@ ruleTester.run('no-useless-message', noUselessMessage, {
       `,
       errors: [
         {
-          message:
-            'Unnecessary formatted message: just use FormattedNumber or intl.formatNumber.',
+          messageId: 'unnecessaryFormatNumber',
         },
       ],
     },
@@ -35,24 +34,14 @@ ruleTester.run('no-useless-message', noUselessMessage, {
       import {FormattedMessage} from 'react-intl';
       <FormattedMessage defaultMessage="{test, date}" />
       `,
-      errors: [
-        {
-          message:
-            'Unnecessary formatted message: just use FormattedDate or intl.formatDate.',
-        },
-      ],
+      errors: [{messageId: 'unnecessaryFormatDate'}],
     },
     {
       code: `
       import {FormattedMessage} from 'react-intl';
       <FormattedMessage defaultMessage="{test, time}" />
       `,
-      errors: [
-        {
-          message:
-            'Unnecessary formatted message: just use FormattedTime or intl.formatTime.',
-        },
-      ],
+      errors: [{messageId: 'unnecessaryFormatTime'}],
     },
   ],
 })

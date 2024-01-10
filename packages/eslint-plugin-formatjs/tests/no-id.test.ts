@@ -1,7 +1,7 @@
-import noId from '../rules/no-id'
+import {rule, name} from '../rules/no-id'
 import {ruleTester} from './util'
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
-ruleTester.run('no-id', noId, {
+ruleTester.run(name, rule, {
   valid: [
     `intl.formatMessage({
       defaultMessage: '{count, plural, one {#} other {# more}}',
@@ -59,11 +59,7 @@ ruleTester.run('no-id', noId, {
   invalid: [
     {
       code: dynamicMessage,
-      errors: [
-        {
-          message: 'Manual `id` are not allowed in message descriptor',
-        },
-      ],
+      errors: [{messageId: 'noId'}],
       output: `
 import {defineMessage} from 'react-intl'
 defineMessage({ defaultMessage, description})`,
@@ -72,11 +68,7 @@ defineMessage({ defaultMessage, description})`,
       code: `
 intl.formatMessage({ id: 'foo', defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'
 })`,
-      errors: [
-        {
-          message: 'Manual `id` are not allowed in message descriptor',
-        },
-      ],
+      errors: [{messageId: 'noId'}],
       output: `
 intl.formatMessage({  defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'
 })`,
@@ -85,11 +77,7 @@ intl.formatMessage({  defaultMessage: '{count, plural, one {#} other {# more}}',
       code: `
 intl.formatMessage({ id: 'bar', defaultMessage: '{aDifferentKey, plural, one {#} other {# more}}', description: 'asd'
 }, {foo: 1})`,
-      errors: [
-        {
-          message: 'Manual `id` are not allowed in message descriptor',
-        },
-      ],
+      errors: [{messageId: 'noId'}],
       output: `
 intl.formatMessage({  defaultMessage: '{aDifferentKey, plural, one {#} other {# more}}', description: 'asd'
 }, {foo: 1})`,
@@ -101,11 +89,7 @@ const a = <FormattedMessage
 id={id}
 defaultMessage="{count, plural, one {#} other {# more}}"
 />`,
-      errors: [
-        {
-          message: 'Manual `id` are not allowed in message descriptor',
-        },
-      ],
+      errors: [{messageId: 'noId'}],
       output: `
 import {FormattedMessage} from 'react-intl'
 const a = <FormattedMessage
@@ -119,11 +103,7 @@ import {FormattedMessage} from 'react-intl'
 const a = (
   <FormattedMessage id="bas" defaultMessage="{count, plural, one {#} other {# more}}" values={{foo: 1}} />
 )`,
-      errors: [
-        {
-          message: 'Manual `id` are not allowed in message descriptor',
-        },
-      ],
+      errors: [{messageId: 'noId'}],
       output: `
 import {FormattedMessage} from 'react-intl'
 const a = (
@@ -136,11 +116,7 @@ intl.formatMessage({ id, defaultMessage: '{count, plural, one {<a>#</a>} other {
 }, {
   count: 1,
 })`,
-      errors: [
-        {
-          message: 'Manual `id` are not allowed in message descriptor',
-        },
-      ],
+      errors: [{messageId: 'noId'}],
       output: `
 intl.formatMessage({  defaultMessage: '{count, plural, one {<a>#</a>} other {# more}}', description: 'asd'
 }, {

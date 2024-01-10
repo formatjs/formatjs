@@ -1,21 +1,27 @@
 import {TSESTree} from '@typescript-eslint/utils'
-import type {Rule} from 'eslint'
+import {RuleModule, RuleListener} from '@typescript-eslint/utils/ts-eslint'
 import {isIntlFormatMessageCall} from '../util'
 
-const rule: Rule.RuleModule = {
+type MessageIds = 'jsxChildren'
+type Options = []
+
+export const name = 'prefer-formatted-message'
+
+export const rule: RuleModule<MessageIds, Options, RuleListener> = {
   meta: {
     type: 'suggestion',
     docs: {
       description:
         'Prefer `FormattedMessage` component over `intl.formatMessage` if applicable.',
-      recommended: false,
       url: 'https://formatjs.io/docs/tooling/linter#prefer-formatted-message',
     },
     messages: {
       jsxChildren:
         'Prefer `FormattedMessage` over `intl.formatMessage` in the JSX children expression.',
     },
+    schema: [],
   },
+  defaultOptions: [],
   // TODO: Vue support
   create(context) {
     return {
@@ -28,13 +34,11 @@ const rule: Rule.RuleModule = {
             return
           }
           context.report({
-            node: child as any,
+            node: child,
             messageId: 'jsxChildren',
           })
         })
       },
-    } as any
+    }
   },
 }
-
-export default rule

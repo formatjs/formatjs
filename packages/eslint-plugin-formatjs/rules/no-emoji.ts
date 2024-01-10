@@ -1,5 +1,9 @@
 import {TSESTree} from '@typescript-eslint/utils'
-import {Rule} from 'eslint'
+import {
+  RuleContext,
+  RuleModule,
+  RuleListener,
+} from '@typescript-eslint/utils/ts-eslint'
 import {
   extractEmojis,
   filterEmojis,
@@ -10,7 +14,16 @@ import {
 } from 'unicode-emoji-utils'
 import {extractMessages, getSettings} from '../util'
 
-function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
+export const name = 'no-emoji'
+type MessageIds = 'notAllowed' | 'notAllowedAboveVersion'
+
+type NoEmojiConfig = {versionAbove: string}
+export type Options = [NoEmojiConfig?]
+
+function checkNode(
+  context: RuleContext<MessageIds, Options>,
+  node: TSESTree.Node
+) {
   const msgs = extractMessages(node, getSettings(context))
 
   let allowedEmojis: string[] = []
@@ -41,7 +54,7 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
         for (const emoji of extractEmojis(defaultMessage)) {
           if (!allowedEmojis.includes(emoji)) {
             context.report({
-              node: messageNode as any,
+              node: messageNode,
               messageId: 'notAllowedAboveVersion',
               data: {
                 versionAbove,
@@ -52,7 +65,7 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
         }
       } else {
         context.report({
-          node: messageNode as any,
+          node: messageNode,
           messageId: 'notAllowed',
         })
       }
@@ -77,13 +90,11 @@ const versionAboveEnums: EmojiVersion[] = [
   '15.0',
 ]
 
-const rule: Rule.RuleModule = {
+export const rule: RuleModule<MessageIds, Options, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow emojis in message',
-      category: 'Errors',
-      recommended: false,
       url: 'https://formatjs.io/docs/tooling/linter#no-emoji',
     },
     fixable: 'code',
@@ -100,11 +111,14 @@ const rule: Rule.RuleModule = {
         'Emojis above version {{versionAbove}} are not allowed - Emoji: {{emoji}}',
     },
   },
+  defaultOptions: [],
   create(context) {
     const callExpressionVisitor = (node: TSESTree.Node) =>
       checkNode(context, node)
 
+    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
     if (context.parserServices.defineTemplateBodyVisitor) {
+      //@ts-expect-error
       return context.parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -120,5 +134,3 @@ const rule: Rule.RuleModule = {
     }
   },
 }
-
-export default rule

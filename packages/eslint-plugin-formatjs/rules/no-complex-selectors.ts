@@ -4,12 +4,19 @@ import {
   parse,
 } from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/utils'
-import {Rule} from 'eslint'
+import {
+  RuleContext,
+  RuleModule,
+  RuleListener,
+} from '@typescript-eslint/utils/ts-eslint'
 import {extractMessages, getSettings} from '../util'
 
 interface Config {
   limit: number
 }
+
+type MessageIds = 'tooComplex' | 'parserError'
+type Options = [Config?]
 
 function calculateComplexity(ast: MessageFormatElement[]): number {
   // Dynamic programming: define a complexity function f, where:
@@ -57,7 +64,10 @@ function calculateComplexity(ast: MessageFormatElement[]): number {
   }
 }
 
-function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
+function checkNode(
+  context: RuleContext<MessageIds, Options>,
+  node: TSESTree.Node
+) {
   const settings = getSettings(context)
   const msgs = extractMessages(node, settings)
   if (!msgs.length) {
@@ -86,31 +96,31 @@ function checkNode(context: Rule.RuleContext, node: TSESTree.Node) {
       })
     } catch (e) {
       context.report({
-        node: messageNode as any,
-        message: e instanceof Error ? e.message : String(e),
+        node: messageNode,
+        messageId: 'parserError',
+        data: {message: e instanceof Error ? e.message : String(e)},
       })
       return
     }
 
-    let complexity = 0
-    try {
-      complexity = calculateComplexity(ast)
-    } catch (e) {
-      context.report({
-        node: messageNode as any,
-        message: e instanceof Error ? e.message : (e as string),
-      })
-    }
+    const complexity = calculateComplexity(ast)
+
     if (complexity > config.limit) {
       context.report({
-        node: messageNode as any,
-        message: `Message complexity is too high (${complexity} vs limit at ${config.limit})`,
+        node: messageNode,
+        messageId: 'tooComplex',
+        data: {
+          complexity,
+          limit: config.limit,
+        },
       })
     }
   }
 }
 
-const rule: Rule.RuleModule = {
+export const name = 'no-complex-selectors'
+
+export const rule: RuleModule<MessageIds, Options, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
@@ -123,8 +133,6 @@ results in 2 sentences: "I have a dog" & "I have many dogs".
 Default complexity limit is 20 
 (using Smartling as a reference: https://help.smartling.com/hc/en-us/articles/360008030994-ICU-MessageFormat)
 `,
-      category: 'Errors',
-      recommended: false,
       url: 'https://formatjs.io/docs/tooling/linter#no-complex-selectors',
     },
     schema: [
@@ -139,12 +147,19 @@ Default complexity limit is 20
       },
     ],
     fixable: 'code',
+    messages: {
+      tooComplex: `Message complexity is too high ({{complexity}} vs limit at {{limit}})`,
+      parserError: '{{meesage}}',
+    },
   },
+  defaultOptions: [{limit: 20}],
   create(context) {
     const callExpressionVisitor = (node: TSESTree.Node) =>
       checkNode(context, node)
 
+    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
     if (context.parserServices.defineTemplateBodyVisitor) {
+      //@ts-expect-error
       return context.parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -160,5 +175,3 @@ Default complexity limit is 20
     }
   },
 }
-
-export default rule
