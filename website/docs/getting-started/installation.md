@@ -177,7 +177,7 @@ Output
 
 ## Adding our babel-plugin/TypeScript Transformer for compilation
 
-Our tooling supports `babel`, `ts-loader`, `ts-jest`, `rollup-plugin-typescript2` & `ttypescript` for message compilation:
+Our tooling supports `babel`, `ts-loader`, `ts-jest`, `rollup-plugin-typescript2` & `ts-patch` for message compilation:
 
 ### Babel
 
@@ -305,7 +305,7 @@ yarn add -D @formatjs/ts-transformer
 
 Take a look at [`ts-jest` guide](https://kulshekhar.github.io/ts-jest/docs/getting-started/options/astTransformers) on how to incorporate custom AST Transformers.
 
-### `ttypescript`
+### `ts-patch`
 
 <Tabs
 groupId="npm"

@@ -106,7 +106,7 @@ module.exports = {
 }
 ```
 
-### Via `ttypescript`
+### Via `ts-patch`
 
 ```json
 {
