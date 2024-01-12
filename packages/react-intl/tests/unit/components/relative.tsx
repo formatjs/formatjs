@@ -1,7 +1,7 @@
 import '@formatjs/intl-relativetimeformat/polyfill'
 import * as React from 'react'
 import FormattedRelativeTime from '../../../src/components/relative'
-import {createIntl} from '../../../src/components/provider'
+import {createIntl} from '../../../src/components/createIntl'
 import {IntlShape} from '../../../src/types'
 import {mountFormattedComponentWithProvider} from '../testUtils'
 import type {IntlConfig} from '../../../src/types'

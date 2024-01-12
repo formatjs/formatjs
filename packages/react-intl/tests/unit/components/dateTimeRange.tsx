@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {FormattedDateTimeRange} from '../../../'
 import {mountFormattedComponentWithProvider} from '../testUtils'
-import {createIntl} from '../../../src/components/provider'
+import {createIntl} from '../../../src/components/createIntl'
 import {IntlShape} from '../../../'
 import {render} from '@testing-library/react'
 const mountWithProvider = mountFormattedComponentWithProvider(

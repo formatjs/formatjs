@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {FormattedDate, FormattedDateParts} from '../../../'
 import {mountFormattedComponentWithProvider} from '../testUtils'
-import {createIntl} from '../../../src/components/provider'
+import {createIntl} from '../../../src/components/createIntl'
 import {IntlShape} from '../../../'
 import {render} from '@testing-library/react'
 
