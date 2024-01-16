@@ -25,6 +25,16 @@ test('BestFitMatcher extension', function () {
   })
 })
 
+test('GH #4272', function () {
+  expect(BestFitMatcher(['fr', 'en'], ['es'], () => 'en')).toEqual({
+    locale: 'en',
+  })
+
+  expect(BestFitMatcher(['en', 'fr', 'en'], ['es'], () => 'fr')).toEqual({
+    locale: 'fr',
+  })
+})
+
 test('GH #4258', function () {
   expect(
     BestFitMatcher(['en', 'en-US', 'fr-FR'], ['de-DE', 'fr'], () => 'en-US')

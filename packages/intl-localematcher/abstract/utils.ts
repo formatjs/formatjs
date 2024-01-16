@@ -12,8 +12,8 @@ export function invariant(
   }
 }
 
-// This is effectively 2 languages in 2 different regions not even in the same cluster
-const DEFAULT_MATCHING_THRESHOLD = 840
+// This is effectively 2 languages in 2 different regions in the same cluster
+const DEFAULT_MATCHING_THRESHOLD = 838
 
 interface LSR {
   language: string

@@ -7,6 +7,8 @@ test('findMatchingDistance', () => {
   expect(findMatchingDistance('zh-HK', 'zh-NO')).toBe(540)
   expect(findMatchingDistance('zh-HK', 'zh-Hant')).toBe(40)
   expect(findMatchingDistance('vi', 'fr')).toBe(840)
+  expect(findMatchingDistance('es', 'fr')).toBe(838)
+  expect(findMatchingDistance('es', 'en')).toBe(840)
   expect(findMatchingDistance('sr-Latn-BA', 'sr-Latn-RS')).toBe(40)
   expect(findMatchingDistance('sr-Latn-BA', 'bs-Latn-BA')).toBe(800)
 })
