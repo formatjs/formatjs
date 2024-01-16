@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.6.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.6.5...@formatjs/intl-displaynames@6.6.6) (2024-01-16)
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** remove penalty for supported locales order, fix [#4267](https://github.com/formatjs/formatjs/issues/4267) ([e6f0198](https://github.com/formatjs/formatjs/commit/e6f019857e41dab91271b5457628f1a022df39d1)) - by @longlho
+
 ## [6.6.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.6.4...@formatjs/intl-displaynames@6.6.5) (2024-01-16)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

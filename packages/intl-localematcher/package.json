@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-localematcher",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Intl.LocaleMatcher ponyfill",
   "keywords": [
     "intl",
