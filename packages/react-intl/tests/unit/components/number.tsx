@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {FormattedNumber, FormattedNumberParts} from '../../../'
-import {createIntl} from '../../../src/components/provider'
+import {createIntl} from '../../../src/components/createIntl'
 import {mountFormattedComponentWithProvider} from '../testUtils'
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {render} from '@testing-library/react'

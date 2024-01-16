@@ -1,6 +1,7 @@
 import * as React from 'react'
 import FormattedMessage from '../../../src/components/message'
-import IntlProvider, {createIntl} from '../../../src/components/provider'
+import IntlProvider from '../../../src/components/provider'
+import {createIntl} from '../../../src/components/createIntl'
 import {mountFormattedComponentWithProvider} from '../testUtils'
 import {IntlShape} from '../../../'
 import {render} from '@testing-library/react'

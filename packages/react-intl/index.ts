@@ -23,7 +23,8 @@ import injectIntl, {
   WrappedComponentProps,
 } from './src/components/injectIntl'
 import useIntl from './src/components/useIntl'
-import IntlProvider, {createIntl} from './src/components/provider'
+import IntlProvider from './src/components/provider'
+import {createIntl} from './src/components/createIntl'
 import FormattedRelativeTime from './src/components/relative'
 import FormattedPlural from './src/components/plural'
 import FormattedMessage from './src/components/message'
