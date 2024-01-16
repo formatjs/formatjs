@@ -1,16 +1,16 @@
-import * as defaultFormatter from './default'
-import {FormatFn, SerializeFn, CompileFn} from './default'
-import * as transifex from './transifex'
-import * as smartling from './smartling'
-import * as simple from './simple'
-import * as lokalise from './lokalise'
-import * as crowdin from './crowdin'
 import type {Comparator} from 'json-stable-stringify'
 import {resolve} from 'path'
 import {pathToFileURL} from 'url'
+import * as crowdin from './crowdin'
+import * as defaultFormatter from './default'
+import {CompileFn, FormatFn, SerializeFn} from './default'
+import * as lokalise from './lokalise'
+import * as simple from './simple'
+import * as smartling from './smartling'
+import * as transifex from './transifex'
 
 export interface Formatter {
-  serialize: SerializeFn
+  serialize?: SerializeFn
   format: FormatFn
   compile: CompileFn
   compareMessages?: Comparator
