@@ -1,0 +1,21 @@
+.label {
+  font-weight: bold;
+}
+
+.textarea {
+  width: 100%;
+  padding: 2px;
+  resize: none;
+  overflow-y: hidden;
+}
+
+.wFull {
+  width: 100%;
+}
+
+.form {
+  margin: 1rem 0;
+  padding: 0.4rem;
+  border: 1px solid #000;
+  border-radius: 0.4rem;
+}
