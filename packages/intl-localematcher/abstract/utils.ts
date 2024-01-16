@@ -225,10 +225,11 @@ export function findBestMatch(
     if (!result.distances[desired]) {
       result.distances[desired] = {}
     }
-    supportedLocales.forEach((supported, j) => {
+    supportedLocales.forEach(supported => {
       // Add some weight to the distance based on the order of the supported locales
-      // Add penalty for the order of the requested locales
-      const distance = findMatchingDistance(desired, supported) + j + i * 40
+      // Add penalty for the order of the requested locales, which currently is 0 since ECMA-402
+      // doesn't really have room for weighted locales like `en; q=0.1`
+      const distance = findMatchingDistance(desired, supported) + 0 + i * 40
 
       result.distances[desired][supported] = distance
       if (distance < lowestDistance) {

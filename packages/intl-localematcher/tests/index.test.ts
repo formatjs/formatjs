@@ -240,3 +240,7 @@ test('empty requested', function () {
 test('extension', function () {
   expect(match(['fr-CA-x-foo'], ['zh-Hant-TW', 'fr', 'en'], 'en')).toEqual('fr')
 })
+
+test('GH #4267', function () {
+  expect(match(['fr'], ['br', 'fr'], 'en')).toEqual('fr')
+})

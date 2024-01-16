@@ -1,5 +1,5 @@
 import {DisplayNames} from '..'
-import {_shouldPolyfillWithoutLocale} from '../should-polyfill'
+import {_shouldPolyfillWithoutLocale, shouldPolyfill} from '../should-polyfill'
 
 describe('before polyfill', function () {
   it('should-polyfill should be true', function () {
@@ -20,4 +20,8 @@ describe('after polyfill', function () {
   it('should fix the bug', function () {
     expect(_shouldPolyfillWithoutLocale()).toBeFalsy()
   })
+})
+
+test('GH #4267', function () {
+  expect(shouldPolyfill('fr')).toBe('fr')
 })
