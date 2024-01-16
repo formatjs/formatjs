@@ -1,0 +1,25 @@
+You have '{count} {thing}
+---
+{}
+---
+{
+  "val": [
+    {
+      "type": 0,
+      "value": "You have {count} {thing}",
+      "location": {
+        "start": {
+          "offset": 0,
+          "line": 1,
+          "column": 1
+        },
+        "end": {
+          "offset": 25,
+          "line": 1,
+          "column": 26
+        }
+      }
+    }
+  ],
+  "err": null
+}

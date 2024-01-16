@@ -267,9 +267,7 @@ with <link>{pct, number, ::percent} discount</link>`}
 
 ## Quoting / Escaping
 
-The ASCII apostrophe `'` (U+0027) can be used to escape syntax characters in the text portion of the message. A single
-apostrophe escapes one syntax character immediately following it; a pair of apostrophes escape every syntax characters
-wrapped between them:
+The ASCII apostrophe `'` (U+0027) can be used to escape syntax characters in the text portion of the message, which mimics the [behavior of ICU's quoting/escaping](https://unicode-org.github.io/icu/userguide/format_parse/messages/#quotingescaping).
 
 <IcuEditor defaultMessage="This is not an interpolation: '{word}" />
 
