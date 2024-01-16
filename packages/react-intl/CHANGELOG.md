@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/formatjs/formatjs/compare/react-intl@6.5.5...react-intl@6.6.0) (2024-01-16)
+
+### Features
+
+* **react-intl:** move createIntl function to a separate file to support react server components ([#4316](https://github.com/formatjs/formatjs/issues/4316)) ([f4fb8c9](https://github.com/formatjs/formatjs/commit/f4fb8c95b9c648b8189758f100244e83425a431c)) - by @am1rb
+
 ## [6.5.5](https://github.com/formatjs/formatjs/compare/react-intl@6.5.4...react-intl@6.5.5) (2023-11-14)
 
 **Note:** Version bump only for package react-intl

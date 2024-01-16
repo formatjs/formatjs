@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.3.3...@formatjs/cli-lib@6.3.4) (2024-01-16)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** make `serialize` optional in Formatter ([4f10339](https://github.com/formatjs/formatjs/commit/4f103395cd2d7225840b3844169a0cc65b1a7c3a)) - by @longlho
+
 ## [6.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.3.2...@formatjs/cli-lib@6.3.3) (2023-11-14)
 
 ### Bug Fixes
