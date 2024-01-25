@@ -265,6 +265,10 @@ with <link>{pct, number, ::percent} discount</link>`}
   defaultValues='{"price": 2, "pct": 0.2}'
 />
 
+:::info Custom Behavior
+It is expected that the system using embedded rich text formatting will have methods to handle these placeholders external to this library. The tags will be part of the generated output and can either be **post-processed** by your own tooling or use the [defaultRichTextElements](/docs/intl/#defaultRichTextElements) configuration.
+:::
+
 ## Quoting / Escaping
 
 The ASCII apostrophe `'` (U+0027) can be used to escape syntax characters in the text portion of the message, which mimics the [behavior of ICU's quoting/escaping](https://unicode-org.github.io/icu/userguide/format_parse/messages/#quotingescaping).
