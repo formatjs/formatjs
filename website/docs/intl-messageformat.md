@@ -40,10 +40,10 @@ A very common example is formatting messages that have numbers with plural label
 
 ```tsx live
 new IntlMessageFormat(
-  `You have {numPhotos, plural,
-      =0 {no photos.}
-      =1 {one photo.}
-      other {# photos.}
+  `{numPhotos, plural,
+      =0 {You have no photos.}
+      =1 {You have one photo.}
+      other {You have # photos.}
     }`,
   'en-US'
 ).format({numPhotos: 1000})
@@ -51,10 +51,10 @@ new IntlMessageFormat(
 
 ```tsx live
 new IntlMessageFormat(
-  `Usted {numPhotos, plural,
-      =0 {no tiene fotos.}
-      =1 {tiene una foto.}
-      other {tiene # fotos.}
+  `{numPhotos, plural,
+      =0 {Usted no tiene fotos.}
+      =1 {Usted tiene una foto.}
+      other {Usted tiene # fotos.}
     }`,
   'es-ES'
 ).format({numPhotos: 1000})
