@@ -171,11 +171,11 @@ The `other` match is special and is used if nothing else matches. (This is simil
 Here's an example of nested arguments.
 
 <IcuEditor
-  defaultMessage={`{0, select,
-    yes {An additional {1, number, percent} tax will be collected.}
+  defaultMessage={`{isTaxed, select,
+    yes {An additional {tax, number, percent} tax will be collected.}
     other {No taxes apply.}
 }`}
-  defaultValues='{"0": "yes", "1": 0.4}'
+  defaultValues='{"isTaxed": "yes", "tax": 0.4}'
 />
 
 ### `{plural}` Format
