@@ -53,6 +53,7 @@ function supportsES2023() {
       maximumSignificantDigits: 3,
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
+      // @ts-ignore TS types are old
       roundingPriority: 'morePrecision',
     }).format(1e8)
     return s === '100.00M'

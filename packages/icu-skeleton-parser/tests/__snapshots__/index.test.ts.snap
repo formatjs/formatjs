@@ -99,6 +99,14 @@ exports[`[parseNumberSkeleton] case: ".00/w currency/CAD" 1`] = `
 }
 `;
 
+exports[`[parseNumberSkeleton] case: "@ rounding-mode-floor" 1`] = `
+{
+  "maximumSignificantDigits": 1,
+  "minimumSignificantDigits": 1,
+  "roundingMode": "floor",
+}
+`;
+
 exports[`[parseNumberSkeleton] case: "000" 1`] = `
 {
   "minimumIntegerDigits": 3,

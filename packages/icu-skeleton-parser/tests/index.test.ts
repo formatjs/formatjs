@@ -19,6 +19,7 @@ test.each([
   '% .##',
   '.##/@##r',
   '.##/@##s',
+  '@ rounding-mode-floor',
   'percent .000*',
   'percent .0###',
   'percent .00/@##',

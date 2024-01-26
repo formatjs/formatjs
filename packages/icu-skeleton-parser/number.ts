@@ -252,6 +252,27 @@ export function parseNumberSkeleton(
       case 'scale':
         result.scale = parseFloat(token.options[0])
         continue
+      case 'rounding-mode-floor':
+        result.roundingMode = 'floor'
+        continue
+      case 'rounding-mode-ceiling':
+        result.roundingMode = 'ceil'
+        continue
+      case 'rounding-mode-down':
+        result.roundingMode = 'trunc'
+        continue
+      case 'rounding-mode-up':
+        result.roundingMode = 'expand'
+        continue
+      case 'rounding-mode-half-even':
+        result.roundingMode = 'halfEven'
+        continue
+      case 'rounding-mode-half-down':
+        result.roundingMode = 'halfTrunc'
+        continue
+      case 'rounding-mode-half-up':
+        result.roundingMode = 'halfExpand'
+        continue
       // https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#integer-width
       case 'integer-width':
         if (token.options.length > 1) {
