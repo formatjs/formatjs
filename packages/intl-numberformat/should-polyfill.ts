@@ -38,6 +38,29 @@ function supportsES2020() {
   return true
 }
 
+/**
+ * Check if Intl.NumberFormat is ES2020 compatible.
+ * Caveat: we are not checking `toLocaleString`.
+ *
+ * @public
+ * @param unit unit to check
+ */
+function supportsES2023() {
+  try {
+    const s = new Intl.NumberFormat('en', {
+      notation: 'compact',
+      minimumSignificantDigits: 3,
+      maximumSignificantDigits: 3,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      roundingPriority: 'morePrecision',
+    }).format(1e8)
+    return s === '100.00M'
+  } catch (e) {
+    return false
+  }
+}
+
 function supportedLocalesOf(locale?: string | string[]) {
   if (!locale) {
     return true
@@ -51,6 +74,7 @@ export function shouldPolyfill(locale = 'en') {
     typeof Intl === 'undefined' ||
     !('NumberFormat' in Intl) ||
     !supportsES2020() ||
+    !supportsES2023() ||
     onlySupportsEn() ||
     !supportedLocalesOf(locale)
   ) {
