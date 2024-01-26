@@ -161,21 +161,21 @@ The `other` match is special and is used if nothing else matches. (This is simil
 
 <IcuEditor
   defaultMessage={`{gender, select,
-    male {He}
-    female {She}
-    other {They}
-} will respond shortly.`}
+    male {He will respond shortly.}
+    female {She will respond shortly.}
+    other {They will respond shortly.}
+}`}
   defaultValues='{"gender": "male"}'
 />
 
 Here's an example of nested arguments.
 
 <IcuEditor
-  defaultMessage={`{0, select,
-    yes {An additional {1, number, percent} tax will be collected.}
+  defaultMessage={`{isTaxed, select,
+    yes {An additional {tax, number, percent} tax will be collected.}
     other {No taxes apply.}
 }`}
-  defaultValues='{"0": "yes", "1": 0.4}'
+  defaultValues='{"isTaxed": "yes", "tax": 0.4}'
 />
 
 ### `{plural}` Format
@@ -197,30 +197,30 @@ The match is a literal value and is matched to one of these plural categories. N
 :::
 
 <IcuEditor
-  defaultMessage={`Cart: {itemCount} {itemCount, plural,
-    one {item}
-    other {items}
+  defaultMessage={`{itemCount, plural,
+    one {Cart: {itemCount, number} item}
+    other {Cart: {itemCount, number} items}
 }`}
   defaultValues='{"itemCount": 123}'
 />
 
 <IcuEditor
-  defaultMessage={`You have {itemCount, plural,
-    =0 {no items}
-    one {{0} item}
-    other {{0} items}
-}.`}
+  defaultMessage={`{itemCount, plural,
+    =0 {You have no items.}
+    one {You have {itemCount, number} item.}
+    other {You have {itemCount, number} items.}
+}`}
   defaultValues='{"itemCount": 123}'
 />
 
 In the `output` of the match, you can use the `#` special token as a placeholder for the numeric value and it'll be formatted as if it were `{key, number}`. This is the style we prefer to use.
 
 <IcuEditor
-  defaultMessage={`You have {itemCount, plural,
-    =0 {no items}
-    one {# item}
-    other {# items}
-}.`}
+  defaultMessage={`{itemCount, plural,
+    =0 {You have no items.}
+    one {You have # item.}
+    other {You have # items.}
+}`}
   defaultValues='{"itemCount": 123}'
 />
 
