@@ -1,12 +1,11 @@
-import {Formatters, IntlFormatters, CustomFormats, OnErrorFn} from './types'
-import {getNamedFormat, filterProps} from './utils'
-import {IntlFormatError} from './error'
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {IntlFormatError} from './error'
+import {CustomFormats, Formatters, IntlFormatters, OnErrorFn} from './types'
+import {filterProps, getNamedFormat} from './utils'
 
 const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
   'style',
   'currency',
-  'currencyDisplay',
   'unit',
   'unitDisplay',
   'useGrouping',
@@ -26,6 +25,12 @@ const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
   'unit',
   'unitDisplay',
   'numberingSystem',
+
+  // ES2023 NumberFormat
+  'trailingZeroDisplay',
+  'roundingPriority',
+  'roundingIncrement',
+  'roundingMode',
 ]
 
 export function getFormatter(
