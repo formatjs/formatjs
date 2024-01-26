@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.9.11...@formatjs/intl@2.10.0) (2024-01-26)
+
+### Features
+
+* **@formatjs/intl:** allow ES2023 attributes in number component ([9adc475](https://github.com/formatjs/formatjs/commit/9adc475729dd2b30053b75ba52be33c9ca0f5cd7)), closes [#3458](https://github.com/formatjs/formatjs/issues/3458) - by @longlho
+
 ## [2.9.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.9.10...@formatjs/intl@2.9.11) (2024-01-16)
 
 **Note:** Version bump only for package @formatjs/intl

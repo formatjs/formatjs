@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.9.2...@formatjs/intl-numberformat@8.10.0) (2024-01-26)
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** add polyfill check for ES2023, fix [#4327](https://github.com/formatjs/formatjs/issues/4327) ([9ea1e94](https://github.com/formatjs/formatjs/commit/9ea1e94b715cf5ce15a42b939a47fcf05b523a05)) - by @longlho
+
+### Features
+
+* **@formatjs/icu-skeleton-parser:** add support for rounding-mode, fix [#3716](https://github.com/formatjs/formatjs/issues/3716) ([fc5050f](https://github.com/formatjs/formatjs/commit/fc5050f279e36adebb80ca8e75460276c066afa4)) - by @longlho
+
 ## [8.9.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.9.1...@formatjs/intl-numberformat@8.9.2) (2024-01-16)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

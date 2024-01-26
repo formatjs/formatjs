@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.7.2...@formatjs/icu-skeleton-parser@1.8.0) (2024-01-26)
+
+### Features
+
+* **@formatjs/icu-skeleton-parser:** add support for rounding-mode, fix [#3716](https://github.com/formatjs/formatjs/issues/3716) ([fc5050f](https://github.com/formatjs/formatjs/commit/fc5050f279e36adebb80ca8e75460276c066afa4)) - by @longlho
+
 ## [1.7.2](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.7.1...@formatjs/icu-skeleton-parser@1.7.2) (2024-01-16)
 
 **Note:** Version bump only for package @formatjs/icu-skeleton-parser
