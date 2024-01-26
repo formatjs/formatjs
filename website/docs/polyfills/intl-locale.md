@@ -44,7 +44,7 @@ yarn add @formatjs/intl-locale
 
 ### Via polyfill.io
 
-You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.Locale`. For example:
+You can use [polyfill.io URL Builder](https://polyfill.io/) to create a polyfill script tag for `Intl.Locale`. For example:
 
 ```html
 <!-- Polyfill Intl.Locale & its dependencies -->

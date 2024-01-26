@@ -44,15 +44,6 @@ yarn add @formatjs/intl-enumerator
 
 ## Usage
 
-### Via polyfill.io
-
-You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.supportedValuesOf`. For example:
-
-```html
-<!-- Polyfill Intl.supportedValuesOf & its dependencies -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.supportedValuesOf"></script>
-```
-
 ### Simple
 
 ```tsx

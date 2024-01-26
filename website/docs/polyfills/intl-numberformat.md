@@ -55,7 +55,7 @@ Everything in the ES2020 Internationalization API spec (https://tc39.es/ecma402)
 
 ### Via polyfill.io
 
-You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.NumberFormat`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.NumberFormat.~locale.<locale>`, as well as locale data for any required polyfills, to your list of features. For example:
+You can use [polyfill.io URL Builder](https://polyfill.io/) to create a polyfill script tag for `Intl.NumberFormat`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.NumberFormat.~locale.<locale>`, as well as locale data for any required polyfills, to your list of features. For example:
 
 ```html
 <!-- Polyfill Intl.NumberFormat, its dependencies & `en` locale data -->

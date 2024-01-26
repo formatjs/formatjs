@@ -45,7 +45,7 @@ yarn add @formatjs/intl-pluralrules
 
 ### Via polyfill.io
 
-You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.PluralRules`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.PluralRules.~locale.<locale>` to your list of features. For example:
+You can use [polyfill.io URL Builder](https://polyfill.io/) to create a polyfill script tag for `Intl.PluralRules`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.PluralRules.~locale.<locale>` to your list of features. For example:
 
 ```html
 <!-- Polyfill Intl.PluralRules, its dependencies & `en` locale data -->

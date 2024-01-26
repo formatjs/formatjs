@@ -44,7 +44,7 @@ Everything in [intl-segmenter proposal](https://tc39.es/proposal-intl-segmenter)
 
 ### Via polyfill.io
 
-You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.Segmenter`.
+You can use [polyfill.io URL Builder](https://polyfill.io/) to create a polyfill script tag for `Intl.Segmenter`.
 For example:
 
 ```html
