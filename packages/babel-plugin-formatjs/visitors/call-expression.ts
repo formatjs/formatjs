@@ -201,7 +201,7 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
     // Check that this is `intl.formatMessage` call
     if (isFormatMessageCall(callee, functionNames)) {
       const messageDescriptor = args[0]
-      if (messageDescriptor.isObjectExpression()) {
+      if (messageDescriptor && messageDescriptor.isObjectExpression()) {
         processMessageObject(messageDescriptor)
       }
     }
