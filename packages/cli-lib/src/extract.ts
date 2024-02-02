@@ -98,6 +98,7 @@ async function processFile(
   let meta: Record<string, string> | undefined
 
   const onMsgExtracted = opts.onMsgExtracted
+  const onMetaExtracted = opts.onMetaExtracted
 
   opts = {
     ...opts,
@@ -118,8 +119,12 @@ async function processFile(
         onMsgExtracted(filePath, msgs)
       }
     },
-    onMetaExtracted(_, m) {
+    onMetaExtracted(filePath, m) {
       meta = m
+
+      if (onMetaExtracted) {
+        onMetaExtracted(filePath, m)
+      }
     },
   }
 
