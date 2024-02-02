@@ -97,13 +97,15 @@ async function processFile(
   let messages: ExtractedMessageDescriptor[] = []
   let meta: Record<string, string> | undefined
 
+  const onMsgExtracted = opts.onMsgExtracted
+
   opts = {
     ...opts,
     additionalComponentNames: [
       '$formatMessage',
       ...(opts.additionalComponentNames || []),
     ],
-    onMsgExtracted(_, msgs) {
+    onMsgExtracted(filePath, msgs) {
       if (opts.extractSourceLocation) {
         msgs = msgs.map(msg => ({
           ...msg,
@@ -111,6 +113,10 @@ async function processFile(
         }))
       }
       messages = messages.concat(msgs)
+
+      if (onMsgExtracted) {
+        onMsgExtracted(filePath, msgs)
+      }
     },
     onMetaExtracted(_, m) {
       meta = m
