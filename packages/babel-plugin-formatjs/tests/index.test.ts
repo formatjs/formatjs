@@ -220,3 +220,7 @@ function transform(
       : [getPluginConfig()],
   })!
 }
+
+test('$t with no arguments', () => {
+  transformAndCheck('shorthandT')
+})

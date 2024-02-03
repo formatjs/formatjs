@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`$t with no arguments 1`] = `
+{
+  "code": "$t();",
+  "data": {
+    "messages": [],
+    "meta": {},
+  },
+}
+`;
+
 exports[`FormattedMessage 1`] = `
 {
   "code": "import React, { Component } from 'react';
