@@ -59,6 +59,7 @@ function mergeConfigs(
 
 export interface Options extends Omit<ParserOptions, 'locale'> {
   formatters?: Formatters
+  resolvedLocale?: Intl.Locale
 }
 
 function createFastMemoizeCache<V>(
@@ -121,7 +122,8 @@ export class IntlMessageFormat {
   ) {
     // Defined first because it's used to build the format pattern.
     this.locales = locales
-    this.resolvedLocale = IntlMessageFormat.resolveLocale(locales)
+    this.resolvedLocale =
+      opts?.resolvedLocale || IntlMessageFormat.resolveLocale(locales)
 
     if (typeof message === 'string') {
       this.message = message
