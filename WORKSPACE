@@ -45,19 +45,19 @@ load("@npm//:repositories.bzl", "npm_repositories")
 
 npm_repositories()
 
-IANA_TZ_VERSION = "2023c"
+IANA_TZ_VERSION = "2024a"
 
 http_file(
     name = "tzdata",
     downloaded_file_path = "tzdata.tar.gz",
-    sha256 = "3f510b5d1b4ae9bb38e485aa302a776b317fb3637bdb6404c4adf7b6cadd965c",
+    sha256 = "0d0434459acbd2059a7a8da1f3304a84a86591f6ed69c6248fffa502b6edffe3",
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
 http_file(
     name = "tzcode",
     downloaded_file_path = "tzcode.tar.gz",
-    sha256 = "46d17f2bb19ad73290f03a203006152e0fa0d7b11e5b71467c4a823811b214e7",
+    sha256 = "80072894adff5a458f1d143e16e4ca1d8b2a122c9c5399da482cb68cba6a1ff8",
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
