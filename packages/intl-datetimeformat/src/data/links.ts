@@ -88,7 +88,6 @@ export default {
   "Antarctica/McMurdo": "Pacific/Auckland",
   "Antarctica/South_Pole": "Pacific/Auckland",
   "Antarctica/Syowa": "Asia/Riyadh",
-  "Antarctica/Vostok": "Asia/Urumqi",
   "Arctic/Longyearbyen": "Europe/Berlin",
   "Asia/Aden": "Asia/Riyadh",
   "Asia/Ashkhabad": "Asia/Ashgabat",
