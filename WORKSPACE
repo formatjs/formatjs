@@ -185,6 +185,7 @@ buildifier_prebuilt_register_toolchains()
 
 # Test262
 TEST262_COMMIT = "ade328d530525333751e8a3b58f02e18624da085"
+DOCKER_RULES_COMMIT = "b6231a43e19b7d2a32c7a7487ce9f4f40d85e992"
 
 http_archive(
     name = "com_github_tc39_test262",
@@ -198,8 +199,10 @@ http_archive(
 # Docker
 http_archive(
     name = "io_bazel_rules_docker",
-    sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
-    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
+    sha256 = "d429279fa3f1ccd2a44c5db8cd995a06564fa9a349e6fd48dded19fc66d131b6",
+    type = "tar.gz",
+    strip_prefix = "rules_docker-%s" % DOCKER_RULES_COMMIT,
+    urls = ["https://github.com/bassco/rules_docker/archive/%s.tar.gz" % DOCKER_RULES_COMMIT],
 )
 
 load(
@@ -219,12 +222,12 @@ load(
 )
 
 container_pull(
-    name = "ubuntu22",
+    name = "ubuntu23",
     architecture = "amd64",
-    digest = "sha256:e322f4808315c387868a9135beeb11435b5b83130a8599fd7d0014452c34f489",
+    digest = "sha256:496a9a44971eb4ac7aa9a218867b7eec98bdef452246c037aa206c841b653e08",
     registry = "index.docker.io",
     repository = "library/ubuntu",
-    tag = "22.10",
+    tag = "23.10",
 )
 
 http_archive(

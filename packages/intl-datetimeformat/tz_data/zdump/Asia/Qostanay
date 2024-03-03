@@ -105,8 +105,10 @@
 /zic/Asia/Qostanay  Sat Mar 27 21:00:00 2004 UT = Sun Mar 28 03:00:00 2004 +06 isdst=1 gmtoff=21600
 /zic/Asia/Qostanay  Sat Oct 30 20:59:59 2004 UT = Sun Oct 31 02:59:59 2004 +06 isdst=1 gmtoff=21600
 /zic/Asia/Qostanay  Sat Oct 30 21:00:00 2004 UT = Sun Oct 31 03:00:00 2004 +06 isdst=0 gmtoff=21600
-/zic/Asia/Qostanay  Wed Dec 31 17:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +06 isdst=0 gmtoff=21600
-/zic/Asia/Qostanay  Wed Dec 31 18:00:00 2147485547 UT = 67768036191655200 (localtime failed)
+/zic/Asia/Qostanay  Thu Feb 29 17:59:59 2024 UT = Thu Feb 29 23:59:59 2024 +06 isdst=0 gmtoff=21600
+/zic/Asia/Qostanay  Thu Feb 29 18:00:00 2024 UT = Thu Feb 29 23:00:00 2024 +05 isdst=0 gmtoff=18000
+/zic/Asia/Qostanay  Wed Dec 31 18:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +05 isdst=0 gmtoff=18000
+/zic/Asia/Qostanay  Wed Dec 31 19:00:00 2147485547 UT = 67768036191658800 (localtime failed)
 /zic/Asia/Qostanay  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
 /zic/Asia/Qostanay  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
 /zic/Asia/Qostanay  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)

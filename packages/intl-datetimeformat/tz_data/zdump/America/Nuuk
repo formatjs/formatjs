@@ -178,9 +178,7 @@
 /zic/America/Nuuk  Sun Oct 30 00:59:59 2022 UT = Sat Oct 29 22:59:59 2022 -02 isdst=1 gmtoff=-7200
 /zic/America/Nuuk  Sun Oct 30 01:00:00 2022 UT = Sat Oct 29 22:00:00 2022 -03 isdst=0 gmtoff=-10800
 /zic/America/Nuuk  Sun Mar 26 00:59:59 2023 UT = Sat Mar 25 21:59:59 2023 -03 isdst=0 gmtoff=-10800
-/zic/America/Nuuk  Sun Mar 26 01:00:00 2023 UT = Sat Mar 25 23:00:00 2023 -02 isdst=1 gmtoff=-7200
-/zic/America/Nuuk  Sun Oct 29 00:59:59 2023 UT = Sat Oct 28 22:59:59 2023 -02 isdst=1 gmtoff=-7200
-/zic/America/Nuuk  Sun Oct 29 01:00:00 2023 UT = Sat Oct 28 23:00:00 2023 -02 isdst=0 gmtoff=-7200
+/zic/America/Nuuk  Sun Mar 26 01:00:00 2023 UT = Sat Mar 25 23:00:00 2023 -02 isdst=0 gmtoff=-7200
 /zic/America/Nuuk  Sun Mar 31 00:59:59 2024 UT = Sat Mar 30 22:59:59 2024 -02 isdst=0 gmtoff=-7200
 /zic/America/Nuuk  Sun Mar 31 01:00:00 2024 UT = Sun Mar 31 00:00:00 2024 -01 isdst=1 gmtoff=-3600
 /zic/America/Nuuk  Sun Oct 27 00:59:59 2024 UT = Sat Oct 26 23:59:59 2024 -01 isdst=1 gmtoff=-3600
