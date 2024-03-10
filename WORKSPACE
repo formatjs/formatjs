@@ -185,6 +185,7 @@ buildifier_prebuilt_register_toolchains()
 
 # Test262
 TEST262_COMMIT = "ade328d530525333751e8a3b58f02e18624da085"
+
 DOCKER_RULES_COMMIT = "b6231a43e19b7d2a32c7a7487ce9f4f40d85e992"
 
 http_archive(
@@ -200,8 +201,8 @@ http_archive(
 http_archive(
     name = "io_bazel_rules_docker",
     sha256 = "d429279fa3f1ccd2a44c5db8cd995a06564fa9a349e6fd48dded19fc66d131b6",
-    type = "tar.gz",
     strip_prefix = "rules_docker-%s" % DOCKER_RULES_COMMIT,
+    type = "tar.gz",
     urls = ["https://github.com/bassco/rules_docker/archive/%s.tar.gz" % DOCKER_RULES_COMMIT],
 )
 
