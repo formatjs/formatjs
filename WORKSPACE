@@ -45,19 +45,19 @@ load("@npm//:repositories.bzl", "npm_repositories")
 
 npm_repositories()
 
-IANA_TZ_VERSION = "2023c"
+IANA_TZ_VERSION = "2024a"
 
 http_file(
     name = "tzdata",
     downloaded_file_path = "tzdata.tar.gz",
-    sha256 = "3f510b5d1b4ae9bb38e485aa302a776b317fb3637bdb6404c4adf7b6cadd965c",
+    sha256 = "0d0434459acbd2059a7a8da1f3304a84a86591f6ed69c6248fffa502b6edffe3",
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
 http_file(
     name = "tzcode",
     downloaded_file_path = "tzcode.tar.gz",
-    sha256 = "46d17f2bb19ad73290f03a203006152e0fa0d7b11e5b71467c4a823811b214e7",
+    sha256 = "80072894adff5a458f1d143e16e4ca1d8b2a122c9c5399da482cb68cba6a1ff8",
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
@@ -185,6 +185,7 @@ buildifier_prebuilt_register_toolchains()
 
 # Test262
 TEST262_COMMIT = "ade328d530525333751e8a3b58f02e18624da085"
+DOCKER_RULES_COMMIT = "b6231a43e19b7d2a32c7a7487ce9f4f40d85e992"
 
 http_archive(
     name = "com_github_tc39_test262",
@@ -198,8 +199,10 @@ http_archive(
 # Docker
 http_archive(
     name = "io_bazel_rules_docker",
-    sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
-    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
+    sha256 = "d429279fa3f1ccd2a44c5db8cd995a06564fa9a349e6fd48dded19fc66d131b6",
+    type = "tar.gz",
+    strip_prefix = "rules_docker-%s" % DOCKER_RULES_COMMIT,
+    urls = ["https://github.com/bassco/rules_docker/archive/%s.tar.gz" % DOCKER_RULES_COMMIT],
 )
 
 load(
@@ -219,12 +222,12 @@ load(
 )
 
 container_pull(
-    name = "ubuntu22",
+    name = "ubuntu23",
     architecture = "amd64",
-    digest = "sha256:e322f4808315c387868a9135beeb11435b5b83130a8599fd7d0014452c34f489",
+    digest = "sha256:496a9a44971eb4ac7aa9a218867b7eec98bdef452246c037aa206c841b653e08",
     registry = "index.docker.io",
     repository = "library/ubuntu",
-    tag = "22.10",
+    tag = "23.10",
 )
 
 http_archive(

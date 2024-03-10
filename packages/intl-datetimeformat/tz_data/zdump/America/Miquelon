@@ -3,8 +3,8 @@
 /zic/America/Miquelon  Thu Jan  1 00:00:00 -2147481748 UT = -67768040609740800 (localtime failed)
 /zic/America/Miquelon  Thu Jan  1 03:44:39 -2147481748 UT = -67768040609727321 (localtime failed)
 /zic/America/Miquelon  Thu Jan  1 03:44:40 -2147481748 UT = Thu Jan  1 00:00:00 -2147481748 LMT isdst=0 gmtoff=-13480
-/zic/America/Miquelon  Mon May 15 03:44:39 1911 UT = Sun May 14 23:59:59 1911 LMT isdst=0 gmtoff=-13480
-/zic/America/Miquelon  Mon May 15 03:44:40 1911 UT = Sun May 14 23:44:40 1911 AST isdst=0 gmtoff=-14400
+/zic/America/Miquelon  Thu Jun 15 03:44:39 1911 UT = Wed Jun 14 23:59:59 1911 LMT isdst=0 gmtoff=-13480
+/zic/America/Miquelon  Thu Jun 15 03:44:40 1911 UT = Wed Jun 14 23:44:40 1911 AST isdst=0 gmtoff=-14400
 /zic/America/Miquelon  Thu May  1 03:59:59 1980 UT = Wed Apr 30 23:59:59 1980 AST isdst=0 gmtoff=-14400
 /zic/America/Miquelon  Thu May  1 04:00:00 1980 UT = Thu May  1 01:00:00 1980 -03 isdst=0 gmtoff=-10800
 /zic/America/Miquelon  Sun Apr  5 04:59:59 1987 UT = Sun Apr  5 01:59:59 1987 -03 isdst=0 gmtoff=-10800

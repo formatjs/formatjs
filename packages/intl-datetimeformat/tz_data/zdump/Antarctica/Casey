@@ -25,8 +25,18 @@
 /zic/Antarctica/Casey  Sat Mar  7 16:00:00 2020 UT = Sun Mar  8 00:00:00 2020 +08 isdst=0 gmtoff=28800
 /zic/Antarctica/Casey  Sat Oct  3 16:00:59 2020 UT = Sun Oct  4 00:00:59 2020 +08 isdst=0 gmtoff=28800
 /zic/Antarctica/Casey  Sat Oct  3 16:01:00 2020 UT = Sun Oct  4 03:01:00 2020 +11 isdst=0 gmtoff=39600
-/zic/Antarctica/Casey  Wed Dec 31 12:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +11 isdst=0 gmtoff=39600
-/zic/Antarctica/Casey  Wed Dec 31 13:00:00 2147485547 UT = 67768036191637200 (localtime failed)
+/zic/Antarctica/Casey  Sat Mar 13 12:59:59 2021 UT = Sat Mar 13 23:59:59 2021 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Sat Mar 13 13:00:00 2021 UT = Sat Mar 13 21:00:00 2021 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Sat Oct  2 16:00:59 2021 UT = Sun Oct  3 00:00:59 2021 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Sat Oct  2 16:01:00 2021 UT = Sun Oct  3 03:01:00 2021 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Sat Mar 12 12:59:59 2022 UT = Sat Mar 12 23:59:59 2022 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Sat Mar 12 13:00:00 2022 UT = Sat Mar 12 21:00:00 2022 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Sat Oct  1 16:00:59 2022 UT = Sun Oct  2 00:00:59 2022 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Sat Oct  1 16:01:00 2022 UT = Sun Oct  2 03:01:00 2022 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Wed Mar  8 15:59:59 2023 UT = Thu Mar  9 02:59:59 2023 +11 isdst=0 gmtoff=39600
+/zic/Antarctica/Casey  Wed Mar  8 16:00:00 2023 UT = Thu Mar  9 00:00:00 2023 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Wed Dec 31 15:59:59 2147485547 UT = Wed Dec 31 23:59:59 2147485547 +08 isdst=0 gmtoff=28800
+/zic/Antarctica/Casey  Wed Dec 31 16:00:00 2147485547 UT = 67768036191648000 (localtime failed)
 /zic/Antarctica/Casey  Wed Dec 31 23:59:59 2147485547 UT = 67768036191676799 (localtime failed)
 /zic/Antarctica/Casey  67768036191676800 (gmtime failed) = 67768036191676800 (localtime failed)
 /zic/Antarctica/Casey  9223372036854775807 (gmtime failed) = 9223372036854775807 (localtime failed)
