@@ -42,13 +42,13 @@ yarn add @formatjs/intl-locale
 
 ## Usage
 
-### Via polyfill.io
+### Via polyfill-fastly.io
 
-You can use [polyfill.io URL Builder](https://polyfill.io/) to create a polyfill script tag for `Intl.Locale`. For example:
+You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to create a polyfill script tag for `Intl.Locale`. For example:
 
 ```html
 <!-- Polyfill Intl.Locale & its dependencies -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.Locale"></script>
+<script src="https://polyfill-fastly.io/v3/polyfill.min.js?features=Intl.Locale"></script>
 ```
 
 ### Simple

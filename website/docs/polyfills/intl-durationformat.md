@@ -43,13 +43,13 @@ yarn add @formatjs/intl-durationformat
 
 ## Usage
 
-### Via polyfill.io
+### Via polyfill-fastly.io
 
-You can use [polyfill.io URL Builder](https://polyfill.io/) to create a polyfill script tag for `Intl.DurationFormat`.
+You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to create a polyfill script tag for `Intl.DurationFormat`.
 
 ```html
 <!-- Polyfill Intl.DurationFormat, its dependencies & `en` locale data -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.DurationFormat"></script>
+<script src="https://polyfill-fastly.io/v3/polyfill.min.js?features=Intl.DurationFormat"></script>
 ```
 
 ### Simple

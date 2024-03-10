@@ -22,6 +22,6 @@ Our current list of polyfills includes:
 
 ![Polyfill Hierarchy](/img/polyfills.svg)
 
-# polyfill.io Integration
+# polyfill-fastly.io Integration
 
-For basic use cases, we recommend using [polyfill.io](https://polyfill.io/) or [polyfill-library](https://github.com/Financial-Times/polyfill-library) to generate polyfill bundle since it automatically resolves the dependencies above for you.
+For basic use cases, we recommend using [polyfill-fastly.io](https://polyfill-fastly.io/) or [polyfill-library](https://github.com/Financial-Times/polyfill-library) to generate polyfill bundle since it automatically resolves the dependencies above for you.

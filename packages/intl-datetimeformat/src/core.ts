@@ -95,7 +95,7 @@ const formatDescriptor = {
           value: '',
         })
       } catch (e) {
-        // In older browser (e.g Chrome 36 like polyfill.io)
+        // In older browser (e.g Chrome 36 like polyfill-fastly.io)
         // TypeError: Cannot redefine property: name
       }
       internalSlots.boundFormat = boundFormat
@@ -112,7 +112,7 @@ try {
     value: 'get format',
   })
 } catch (e) {
-  // In older browser (e.g Chrome 36 like polyfill.io)
+  // In older browser (e.g Chrome 36 like polyfill-fastly.io)
   // TypeError: Cannot redefine property: name
 }
 

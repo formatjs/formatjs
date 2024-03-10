@@ -47,13 +47,13 @@ This package requires the following capabilities:
 
 ## Usage
 
-### Via polyfill.io
+### Via polyfill-fastly.io
 
-You can use [polyfill.io URL Builder](https://polyfill.io/) to create a polyfill script tag for `Intl.RelativeTimeFormat`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.RelativeTimeFormat.~locale.<locale>` to your list of features. For example:
+You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to create a polyfill script tag for `Intl.RelativeTimeFormat`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.RelativeTimeFormat.~locale.<locale>` to your list of features. For example:
 
 ```html
 <!-- Polyfill Intl.RelativeTimeFormat, its dependencies & `en` locale data -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en"></script>
+<script src="https://polyfill-fastly.io/v3/polyfill.min.js?features=Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en"></script>
 ```
 
 ### Simple
