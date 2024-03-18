@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index 1a843c3a3f93a0807bc3d056fbdf9aeb45052d6a..387469fb528742f832c05a71e974d5a83d4fee39 100644
+--- a/package.json
++++ b/package.json
+@@ -3,7 +3,6 @@
+   "version": "0.91.2",
+   "license": "MIT",
+   "repository": "https://github.com/glimmerjs/glimmer-vm/tree/main/packages/@glimmer/interfaces",
+-  "type": "module",
+   "types": "index.d.ts",
+   "exports": {
+     "types": "./index.d.ts"

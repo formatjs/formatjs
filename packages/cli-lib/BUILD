@@ -35,6 +35,16 @@ VUE_DEPS = [
     "//:node_modules/vue",
 ]
 
+GLIMMER_HBS_DEPS = [
+    "//:node_modules/@glimmer/env",
+    "//:node_modules/@glimmer/reference",
+    "//:node_modules/@glimmer/syntax",
+    "//:node_modules/@glimmer/validator",
+    "//:node_modules/content-tag",
+    "//:node_modules/ember-template-recast",
+    ":node_modules/@babel/parser",
+]
+
 SRC_DEPS = [
     "//:node_modules/@types/estree",
     "//:node_modules/@types/fs-extra",
@@ -49,7 +59,7 @@ SRC_DEPS = [
     "//:node_modules/typescript",
     ":node_modules/@formatjs/icu-messageformat-parser",
     ":node_modules/@formatjs/ts-transformer",
-] + VUE_DEPS
+] + VUE_DEPS + GLIMMER_HBS_DEPS
 
 ts_compile_node(
     name = "dist",

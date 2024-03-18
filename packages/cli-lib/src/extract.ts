@@ -158,6 +158,20 @@ async function processFile(
     debug('Processing %s using vue extractor', fn)
     const {parseFile} = await import('./vue_extractor.js')
     parseFile(source, fn, scriptParseFn)
+  } else if (fn.endsWith('.hbs')) {
+    debug('Processing %s using hbs extractor', fn)
+    // SAFETY: The TS config does not understand that this is a
+    //         safe way to import a module in a cjs project
+    // @ts-ignore
+    const {parseFile} = await import('./hbs_extractor.js')
+    parseFile(source, fn, opts)
+  } else if (fn.endsWith('.gts') || fn.endsWith('.gjs')) {
+    debug('Processing %s as gts/gjs file', fn)
+    // SAFETY: The TS config does not understand that this is a
+    //         safe way to import a module in a cjs project
+    // @ts-ignore
+    const {parseFile} = await import('./gts_extractor.js')
+    parseFile(source, fn, opts)
   } else {
     debug('Processing %s using typescript extractor', fn)
     scriptParseFn(source)
@@ -219,7 +233,7 @@ export async function extract(
       const {id, description, defaultMessage} = message
       if (!id) {
         const error = new Error(
-          `[FormatJS CLI] Missing message id for message: 
+          `[FormatJS CLI] Missing message id for message:
 ${JSON.stringify(message, undefined, 2)}`
         )
         if (throws) {

@@ -33,6 +33,10 @@
     "@bazel/ibazel": "0.24",
     "@commitlint/cli": "17",
     "@commitlint/config-angular": "17",
+    "@glimmer/env": "^0.1.7",
+    "@glimmer/reference": "^0.91.1",
+    "@glimmer/syntax": "^0.91.1",
+    "@glimmer/validator": "^0.91.1",
     "@jest/transform": "29",
     "@jest/types": "29",
     "@lerna-lite/cli": "2",
@@ -88,6 +92,7 @@
     "clsx": "2",
     "commander": "8",
     "core-js": "^3.6.5",
+    "ember-template-recast": "^6.1.4",
     "emoji-regex": "^10.2.1",
     "eslint": "7 || 8",
     "fast-glob": "^3.2.7",
@@ -137,10 +142,22 @@
   },
   "resolutions": {
     "terser": "5.27.0",
-    "source-map-js": "1.0.2"
+    "source-map-js": "1.0.2",
+    "@glimmer/syntax": "0.91.1",
+    "@glimmer/interfaces": "0.91.2"
   },
   "pnpm": {
     "packageExtensions": {
+      "css-tree": {
+        "dependencies": {
+          "source-map-js": "*"
+        }
+      },
+      "postcss": {
+        "dependencies": {
+          "source-map-js": "*"
+        }
+      },
       "ts-jest": {
         "dependencies": {
           "@jest/transform": "*",
@@ -166,12 +183,16 @@
     },
     "patchedDependencies": {
       "@commitlint/rules@17.0.0": "patches/@commitlint__rules@17.0.0.patch",
-      "make-plural-compiler@5.1.0": "patches/make-plural-compiler@5.1.0.patch"
+      "make-plural-compiler@5.1.0": "patches/make-plural-compiler@5.1.0.patch",
+      "content-tag@2.0.1": "patches/content-tag@2.0.1.patch",
+      "@glimmer/syntax@0.91.1": "patches/@glimmer__syntax@0.91.1.patch",
+      "@glimmer/interfaces@0.91.2": "patches/@glimmer__interfaces@0.91.2.patch"
     }
   },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
   "dependencies": {
     "@swc/helpers": "^0.5.1",
+    "content-tag": "^2.0.1",
     "jest-cli": "^29.5.0",
     "jest-junit": "^16.0.0",
     "magic-string": "^0.30.0"

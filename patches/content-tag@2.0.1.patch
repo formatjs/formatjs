@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index ee445437f66fdc4b40fab70f2a058262c08bf508..5f9c6359d499c300266524c3189eca1548a01b58 100644
+--- a/package.json
++++ b/package.json
+@@ -7,7 +7,6 @@
+     "url": "git+ssh://git@github.com/embroider-build/content-tag.git"
+   },
+   "license": "MIT",
+-  "type": "module",
+   "exports": {
+     ".": {
+       "import": {
