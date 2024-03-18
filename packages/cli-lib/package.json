@@ -34,8 +34,6 @@
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
     "@babel/parser": "^7.22.10",
-    "@formatjs/icu-messageformat-parser": "2.6.0",
-    "@formatjs/ts-transformer": "3.13.3",
     "@glimmer/env": "^0.1.7",
     "@glimmer/reference": "^0.89.0",
     "@glimmer/syntax": "^0.89.0",
