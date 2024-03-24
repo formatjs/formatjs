@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.14](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.13...babel-plugin-formatjs@10.5.14) (2024-03-24)
+
+### Bug Fixes
+
+* **babel-plugin-formatjs:** fix crash on arg-less $t ([#4342](https://github.com/formatjs/formatjs/issues/4342)) ([4362708](https://github.com/formatjs/formatjs/commit/4362708bea89178dbb9700ed39c8515080dd2b89)) - by @alexzherdev
+
 ## [10.5.13](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.12...babel-plugin-formatjs@10.5.13) (2024-01-26)
 
 **Note:** Version bump only for package babel-plugin-formatjs

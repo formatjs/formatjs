@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.3.6...@formatjs/cli-lib@6.3.7) (2024-03-24)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** onMsgExtracted / onMetaExtracted not getting called ([#4345](https://github.com/formatjs/formatjs/issues/4345)) ([837b2d3](https://github.com/formatjs/formatjs/commit/837b2d37cfee01e404f565376a41c442b60f5b98)) - by @adbl
+
 ## [6.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.3.5...@formatjs/cli-lib@6.3.6) (2024-01-26)
 
 **Note:** Version bump only for package @formatjs/cli-lib
