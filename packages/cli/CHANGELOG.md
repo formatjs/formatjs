@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.2.8...@formatjs/cli@6.2.9) (2024-03-27)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** fix issue with vue 3.4 ([56dd02c](https://github.com/formatjs/formatjs/commit/56dd02c0d52b3869386bc23a1a31b4c629ae327c)), closes [#4379](https://github.com/formatjs/formatjs/issues/4379) - by @longlho
+
 ## [6.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.2.7...@formatjs/cli@6.2.8) (2024-03-24)
 
 **Note:** Version bump only for package @formatjs/cli
