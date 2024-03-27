@@ -1,25 +1,29 @@
-import {parse} from 'vue/compiler-sfc'
-import type {
-  TemplateChildNode,
-  SimpleExpressionNode,
-  ElementNode,
-  InterpolationNode,
-  CompoundExpressionNode,
-  DirectiveNode,
+import {
+  NodeTypes,
+  TextNode,
+  type CompoundExpressionNode,
+  type DirectiveNode,
+  type ElementNode,
+  type InterpolationNode,
+  type RootNode,
+  type SimpleExpressionNode,
+  type TemplateChildNode,
 } from '@vue/compiler-core'
-
-// Duplicate `NodeTypes` here because they are defined as
-// const enum, which does not work with swc transpilation: https://github.com/vuejs/core/issues/1228
-const ELEMENT = 1 as const
-const SIMPLE_EXPRESSION = 4 as const
-const INTERPOLATION = 5 as const
-const DIRECTIVE = 7 as const
-const COMPOUND_EXPRESSION = 8 as const
+import {parse} from 'vue/compiler-sfc'
 
 export type ScriptParseFn = (source: string) => void
 
 function walk(
-  node: TemplateChildNode | CompoundExpressionNode['children'][0],
+  node:
+    | RootNode
+    | TemplateChildNode
+    | SimpleExpressionNode
+    | CompoundExpressionNode
+    | InterpolationNode
+    | TextNode
+    | string
+    | symbol
+    | undefined,
   visitor: (
     node:
       | ElementNode
@@ -28,23 +32,29 @@ function walk(
       | SimpleExpressionNode
   ) => void
 ) {
-  if (typeof node !== 'object') {
+  if (typeof node !== 'object' || node == null) {
+    return
+  }
+  if (node.type === NodeTypes.ROOT) {
+    node.children.forEach(n => walk(n, visitor))
     return
   }
   if (
-    node.type !== ELEMENT &&
-    node.type !== COMPOUND_EXPRESSION &&
-    node.type !== INTERPOLATION
+    node.type !== NodeTypes.ELEMENT &&
+    node.type !== NodeTypes.COMPOUND_EXPRESSION &&
+    node.type !== NodeTypes.INTERPOLATION
   ) {
     return
   }
   visitor(node)
-  if (node.type === INTERPOLATION) {
+  if (node.type === NodeTypes.INTERPOLATION) {
     visitor(node.content)
-  } else if (node.type === ELEMENT) {
+  } else if (node.type === NodeTypes.ELEMENT) {
     node.children.forEach(n => walk(n, visitor))
     node.props
-      .filter((prop): prop is DirectiveNode => prop.type === DIRECTIVE)
+      .filter(
+        (prop): prop is DirectiveNode => prop.type === NodeTypes.DIRECTIVE
+      )
       .filter(prop => !!prop.exp)
       .forEach(prop => visitor(prop.exp!))
   } else {
@@ -62,7 +72,7 @@ function templateSimpleExpressionNodeVisitor(parseScriptFn: ScriptParseFn) {
     if (typeof n !== 'object') {
       return
     }
-    if (n.type !== SIMPLE_EXPRESSION) {
+    if (n.type !== NodeTypes.SIMPLE_EXPRESSION) {
       return
     }
 

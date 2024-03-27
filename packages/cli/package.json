@@ -36,7 +36,7 @@
     "@formatjs/cli-lib": "workspace:*"
   },
   "peerDependencies": {
-    "vue": "^3.3.4"
+    "vue": "^3.4.0"
   },
   "peerDependenciesMeta": {
     "vue": {

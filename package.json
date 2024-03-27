@@ -68,8 +68,10 @@
     "@typescript-eslint/parser": "^6.7.5",
     "@typescript-eslint/utils": "^6.7.5",
     "@unicode/unicode-13.0.0": "^1.0.6",
-    "@vue/compiler-core": "^3.3.4",
-    "@vue/test-utils": "2",
+    "@vue/compiler-core": "^3.4.0",
+    "@vue/compiler-dom": "^3.4.0",
+    "@vue/server-renderer": "^3.4.0",
+    "@vue/test-utils": "^2.4.0",
     "babel-loader": "9",
     "benchmark": "^2.1.4",
     "chalk": "^4.0.0",
@@ -123,9 +125,9 @@
     "typescript": "5.2.2",
     "unicode-emoji-utils": "^1.1.1",
     "unidiff": "^1.0.2",
-    "vue": "^3.3.4",
+    "vue": "^3.4.0",
     "vue-class-component": "^8.0.0-rc.1",
-    "vue-eslint-parser": "^7.3.0",
+    "vue-eslint-parser": "^9.4.0",
     "vue-loader": "17",
     "webpack": "5"
   },
@@ -134,7 +136,8 @@
     "npm": "6.x"
   },
   "resolutions": {
-    "terser": "5.27.0"
+    "terser": "5.27.0",
+    "source-map-js": "1.0.2"
   },
   "pnpm": {
     "packageExtensions": {

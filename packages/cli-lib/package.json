@@ -47,8 +47,8 @@
     "typescript": "5"
   },
   "peerDependencies": {
-    "@vue/compiler-core": "^3.3.4",
-    "vue": "^3.3.4"
+    "@vue/compiler-core": "^3.4.0",
+    "vue": "^3.4.0"
   },
   "peerDependenciesMeta": {
     "vue": {
