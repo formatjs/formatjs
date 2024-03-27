@@ -1,10 +1,14 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   terser: 5.27.0
   source-map-js: 1.0.2
 
-packageExtensionsChecksum: 3703c4d559c7e552e53cc74d61cf5682
+packageExtensionsChecksum: 76b703b906c4715da3c7dad71f1ddd63
 
 patchedDependencies:
   '@commitlint/rules@17.0.0':
@@ -203,8 +207,8 @@ importers:
         specifier: 43.1.0
         version: 43.1.0
       cldr-dates-full:
-        specifier: 43.1.0
-        version: 43.1.0(cldr-numbers-full@43.1.0)
+        specifier: 44.1.0
+        version: 44.1.0(cldr-numbers-full@43.1.0)
       cldr-localenames-full:
         specifier: 43.1.0
         version: 43.1.0(cldr-core@43.1.0)
@@ -8737,10 +8741,10 @@ packages:
     resolution: {integrity: sha512-8Q/Zh/eCzV4SxggzZhPnw5WDWH9OnhbPfwzthfG8uXsCn7F5UeBCiAOTxsstxuxtXPKlvPJqqMSQjiYcqJPJsA==}
     dev: true
 
-  /cldr-dates-full@43.1.0(cldr-numbers-full@43.1.0):
-    resolution: {integrity: sha512-KJgVDc08AWF1DqKbg2Yew3aomktLI/CnbnJgXDDpstWOi7yAzLKhG4xSeWMcx54RGmS4s+mZNSK7cZLfqBQRzA==}
+  /cldr-dates-full@44.1.0(cldr-numbers-full@43.1.0):
+    resolution: {integrity: sha512-RPSdIBspxf8vnoJ83ldP77IT5HvHMIzPC98dM1D0i64pASlMmdJeAr8qSEV0zE5K5tofW9Iugw6XYZvkwyXT/Q==}
     peerDependencies:
-      cldr-numbers-full: 43.1.0
+      cldr-numbers-full: 44.1.0
     dependencies:
       cldr-numbers-full: 43.1.0(cldr-core@43.1.0)
     dev: true
@@ -20105,7 +20109,3 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
