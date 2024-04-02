@@ -70,10 +70,10 @@ export function isIntlFormatMessageCall(
     node.callee.type === 'MemberExpression' &&
     ((node.callee.object.type === 'Identifier' &&
       node.callee.object.name === 'intl') ||
-     (node.callee.object.type === 'MemberExpression' &&
-      node.callee.object.object.type === 'ThisExpression' &&
-      node.callee.object.property.type === 'Identifier' &&
-      node.callee.object.property.name === 'intl')) &&
+      (node.callee.object.type === 'MemberExpression' &&
+        node.callee.object.object.type === 'ThisExpression' &&
+        node.callee.object.property.type === 'Identifier' &&
+        node.callee.object.property.name === 'intl')) &&
     node.callee.property.type === 'Identifier' &&
     (node.callee.property.name === 'formatMessage' ||
       node.callee.property.name === '$t') &&
