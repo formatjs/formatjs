@@ -8,6 +8,10 @@ ruleTester.run(name, rule, {
       defaultMessage: '{count, plural, one {#} other {# more}}',
       description: 'asd'
   }, {count: 1})`,
+    `this.intl.formatMessage({
+      defaultMessage: '{count, plural, one {#} other {# more}}',
+      description: 'asd'
+  }, {count: 1})`,
     `intl.formatMessage({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
@@ -97,6 +101,20 @@ ruleTester.run(name, rule, {
     {
       code: `
         intl.formatMessage({
+          defaultMessage: "{aDifferentKey, plur {#} other {# more}}" },
+          { count: 1 }
+        )`,
+      errors: [
+        {
+          messageId: 'icuError',
+          data: {message: 'Error parsing ICU string: INVALID_ARGUMENT_TYPE'},
+        },
+      ],
+    },
+
+    {
+      code: `
+        this.intl.formatMessage({
           defaultMessage: "{aDifferentKey, plur {#} other {# more}}" },
           { count: 1 }
         )`,
