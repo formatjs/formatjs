@@ -1,45 +1,48 @@
-import { transform } from 'ember-template-recast'
-import type { AST } from '@glimmer/syntax';
-import { Opts } from '@formatjs/ts-transformer'
+import {transform} from 'ember-template-recast'
+import type {AST} from '@glimmer/syntax'
+import {Opts} from '@formatjs/ts-transformer'
 
 function extractText(
   node: AST.MustacheStatement | AST.SubExpression,
   fileName: string,
   options: Opts
 ) {
-  if (!options.onMsgExtracted) return;
-  if (!options.overrideIdFn) return;
+  if (!options.onMsgExtracted) return
+  if (!options.overrideIdFn) return
 
-  if (node.path.type !== 'PathExpression') return;
+  if (node.path.type !== 'PathExpression') return
 
   if (['format-message', 'formatMessage'].includes(node.path.original)) {
     let [first, second] = node.params
 
-    if (first.type !== 'StringLiteral') return;
+    if (first.type !== 'StringLiteral') return
 
-    let message = first?.value;
+    let message = first?.value
 
-    let desc: string | undefined;
+    let desc: string | undefined
     if (second?.type === 'StringLiteral') {
       desc = second.value?.trim().replace(/\s+/gm, ' ')
     }
 
     let defaultMessage = message?.trim().replace(/\s+/gm, ' ')
 
-    let id = typeof options.overrideIdFn === 'string'
-      ? options.overrideIdFn
-      : options.overrideIdFn(undefined, defaultMessage, desc, fileName);
+    let id =
+      typeof options.overrideIdFn === 'string'
+        ? options.overrideIdFn
+        : options.overrideIdFn(undefined, defaultMessage, desc, fileName)
 
-    options.onMsgExtracted(fileName, [{
-      id: id,
-      defaultMessage: defaultMessage,
-      description: desc,
-    }])
+    options.onMsgExtracted(fileName, [
+      {
+        id: id,
+        defaultMessage: defaultMessage,
+        description: desc,
+      },
+    ])
   }
 }
 
 export function parseFile(source: string, fileName: string, options: any) {
-  let visitor = function() {
+  let visitor = function () {
     return {
       MustacheStatement(node: AST.MustacheStatement) {
         extractText(node, fileName, options)
@@ -50,7 +53,7 @@ export function parseFile(source: string, fileName: string, options: any) {
     }
   }
 
-  // SAFETY: ember-template-recast's types are out of date, 
+  // SAFETY: ember-template-recast's types are out of date,
   // but it does not affect runtime
   transform(source, visitor as any)
 }
