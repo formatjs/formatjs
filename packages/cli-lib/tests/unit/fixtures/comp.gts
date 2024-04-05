@@ -3,6 +3,10 @@ import or from 'ember-truth-helpers/helpers/or';
 import Component from '@glimmer/component';
 import {service} from '@ember/service';
 
+const Header = <template>
+  <header>{{formatMessage 'hello'}}</header>
+</template>;
+
 export default class Comp extends Component {
   @service intl;
 
@@ -13,6 +17,7 @@ export default class Comp extends Component {
   }
 
   <template>
+      <Header />
       <p>
         {{formatMessage 'in template' 'in template desc'}}
       </p>

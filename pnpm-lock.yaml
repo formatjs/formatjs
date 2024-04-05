@@ -21,6 +21,9 @@ importers:
       '@swc/helpers':
         specifier: ^0.5.1
         version: 0.5.1
+      content-tag:
+        specifier: ^2.0.1
+        version: 2.0.1
       jest-cli:
         specifier: ^29.5.0
         version: 29.5.0(@types/node@18.11.9)
@@ -244,9 +247,6 @@ importers:
       ember-template-recast:
         specifier: ^6.1.4
         version: 6.1.4
-      ember-template-tag:
-        specifier: ^2.3.16
-        version: 2.3.16
       emoji-regex:
         specifier: ^10.2.1
         version: 10.2.1
@@ -473,9 +473,6 @@ importers:
       ember-template-recast:
         specifier: ^6.1.4
         version: 6.1.4
-      ember-template-tag:
-        specifier: ^2.3.16
-        version: 2.3.16
       fast-glob:
         specifier: ^3.2.7
         version: 3.2.11
@@ -5335,11 +5332,6 @@ packages:
     dependencies:
       '@simple-dom/interface': 1.4.0
 
-  /@glimmer/interfaces@0.88.1:
-    resolution: {integrity: sha512-BOcN8xFNX/eppGxwS9Rm1+PlQaFX+tK91cuQLHj2sRwB+qVbL/WeutIa3AUQYr0VVEzMm2S6bYCLvG6p0a8v9A==}
-    dependencies:
-      '@simple-dom/interface': 1.4.0
-
   /@glimmer/interfaces@0.89.0:
     resolution: {integrity: sha512-D3Y4QaYlldvukP8Xrue7CNNSYShMvIL6/8lIohLWYZ14eN17+WfhxA/yF9+jRGCUCoyobqhMvft+LlDhqH+NBw==}
     dependencies:
@@ -5371,15 +5363,6 @@ packages:
       '@handlebars/parser': 2.0.0
       simple-html-tokenizer: 0.5.11
 
-  /@glimmer/syntax@0.88.1:
-    resolution: {integrity: sha512-tucexG0j5SSbk3d4ayCOnvjg5FldvWyrZbzxukZOBhDgAYhGWUnGFAqdoXjpr3w6FkD4xIVliVD9GFrH4lI8DA==}
-    dependencies:
-      '@glimmer/interfaces': 0.88.1
-      '@glimmer/util': 0.88.1
-      '@glimmer/wire-format': 0.88.1
-      '@handlebars/parser': 2.0.0
-      simple-html-tokenizer: 0.5.11
-
   /@glimmer/syntax@0.89.0:
     resolution: {integrity: sha512-pzj/z3WEGeBC5FP7XIAwcCQfz8mKXHUR1K/cIh0tRXtURpVb7p91y3lwz7wCjnZ9tDzLVI21swQHY/sTpFODTA==}
     dependencies:
@@ -5395,12 +5378,6 @@ packages:
       '@glimmer/env': 0.1.7
       '@glimmer/interfaces': 0.84.3
       '@simple-dom/interface': 1.4.0
-
-  /@glimmer/util@0.88.1:
-    resolution: {integrity: sha512-PV/24+vBmsReR78UQXJlEHDblU6QBAeIJa8MwKhQoxSD6WgvQHP4KmX23rvlCz11GxApTwyPm/2qyp/SwVvX2A==}
-    dependencies:
-      '@glimmer/env': 0.1.7
-      '@glimmer/interfaces': 0.88.1
 
   /@glimmer/util@0.89.0:
     resolution: {integrity: sha512-hxdObRAqd4LGfoNLkXxsRbaQJuTs7+HbL5hwPkH48xGNBlFAUH8bjUCiFsVhfOwZ8r2WHThj05EgGUAOkuVkAw==}
@@ -5421,12 +5398,6 @@ packages:
       '@glimmer/global-context': 0.89.0
       '@glimmer/interfaces': 0.89.0
       '@glimmer/util': 0.89.0
-
-  /@glimmer/wire-format@0.88.1:
-    resolution: {integrity: sha512-DPM2UiYRNzcWdOUrSa8/IFbWKovH+c2JPnbvtk04DpfQapU7+hteBj34coEN/pW3FJiP3WMvx/EuPfWROkeDsg==}
-    dependencies:
-      '@glimmer/interfaces': 0.88.1
-      '@glimmer/util': 0.88.1
 
   /@glimmer/wire-format@0.89.0:
     resolution: {integrity: sha512-pbexstQ92jCcFYf1PGXusKklhWwKrxU7Ornj8HeENxTctdyVLff9ynOdpJ1Yq7buiru3E8NhGjFOnNwfPIvbKg==}
@@ -9720,6 +9691,10 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
+  /content-tag@2.0.1:
+    resolution: {integrity: sha512-jxsETSDs5NbNwyiDuIp672fUMhUyu8Qxc5MOBOJOcgW/fQESI6o5K1LBDrnEE7Bh810a685lWEZHTF4jQYGEEw==}
+    dev: false
+
   /content-type@1.0.4:
     resolution: {integrity: sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==}
     engines: {node: '>= 0.6'}
@@ -10860,16 +10835,6 @@ packages:
       slash: 3.0.0
       tmp: 0.2.1
       workerpool: 6.5.1
-    transitivePeerDependencies:
-      - supports-color
-
-  /ember-template-tag@2.3.16:
-    resolution: {integrity: sha512-G6bIBcT4VnLlBUogkXxEXIzVvdYXhmLe+Io2yJzRYYZeHrdxKa6u2ZHXF4qII298grgqnqGo6tNqqgtD4AAS5g==}
-    dependencies:
-      '@babel/generator': 7.23.6
-      '@babel/traverse': 7.23.9
-      '@babel/types': 7.23.0
-      '@glimmer/syntax': 0.88.1
     transitivePeerDependencies:
       - supports-color
 
@@ -12321,6 +12286,7 @@ packages:
 
   /graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
+    requiresBuild: true
 
   /grapheme-splitter@1.0.4:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}

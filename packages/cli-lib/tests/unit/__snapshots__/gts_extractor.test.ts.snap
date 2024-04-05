@@ -7,6 +7,11 @@ exports[`gts_extractor 1`] = `
     "id": "YCDlzq",
   },
   {
+    "defaultMessage": "hello",
+    "description": undefined,
+    "id": "m3HSJL",
+  },
+  {
     "defaultMessage": "in template",
     "description": "in template desc",
     "id": "7MCO2v",
