@@ -3,8 +3,14 @@ import or from 'ember-truth-helpers/helpers/or';
 import Component from '@glimmer/component';
 import {service} from '@ember/service';
 
+/*
+ * We don't want to support ids passed to formatMessage in templates,
+ * because the accidental risk of collision is too high.
+ *
+ * They are supported in JS because it's an API that we don't control.
+ */
 const Header = <template>
-  <header>{{formatMessage 'hello'}}</header>
+  <header>{{formatMessage 'hello from a secondary component in the same file'}}</header>
 </template>;
 
 export default class Comp extends Component {
@@ -12,7 +18,14 @@ export default class Comp extends Component {
 
   get message() {
       return this.intl.formatMessage({
-          defaultMessage: 'in gjs file'
+          defaultMessage: 'js getter with an id',
+          id: 'getter-message',
+      });
+  }
+
+  get message2() {
+      return this.intl.formatMessage({
+          defaultMessage: 'js getter with no id',
       });
   }
 

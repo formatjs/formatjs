@@ -3,13 +3,17 @@
 exports[`gts_extractor 1`] = `
 [
   {
-    "defaultMessage": "in gjs file",
-    "id": "YCDlzq",
+    "defaultMessage": "js getter with an id",
+    "id": "getter-message",
   },
   {
-    "defaultMessage": "hello",
+    "defaultMessage": "js getter with no id",
+    "id": "hdXT/o",
+  },
+  {
+    "defaultMessage": "hello from a secondary component in the same file",
     "description": undefined,
-    "id": "m3HSJL",
+    "id": "o1wtct",
   },
   {
     "defaultMessage": "in template",
