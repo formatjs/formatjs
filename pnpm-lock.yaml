@@ -1,10 +1,14 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   terser: 5.27.0
   source-map-js: 1.0.2
 
-packageExtensionsChecksum: 3703c4d559c7e552e53cc74d61cf5682
+packageExtensionsChecksum: 76b703b906c4715da3c7dad71f1ddd63
 
 patchedDependencies:
   '@commitlint/rules@17.0.0':
@@ -430,7 +434,7 @@ importers:
     dependencies:
       '@babel/parser':
         specifier: ^7.22.10
-        version: 7.23.0
+        version: 7.24.1
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:../icu-messageformat-parser
@@ -1254,13 +1258,6 @@ packages:
       '@babel/highlight': 7.22.20
       chalk: 2.4.2
 
-  /@babel/code-frame@7.23.5:
-    resolution: {integrity: sha512-CgH3s1a96LipHCmSUmYFPwY7MNx8C3avkq7i4Wl3cfa662ldtUe4VM1TPXX70pfmrlWTb6jLqTYrZyT2ZTJBgA==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/highlight': 7.23.4
-      chalk: 2.4.2
-
   /@babel/compat-data@7.18.5:
     resolution: {integrity: sha512-BxhE40PVCBxVEJsSBhB6UWyAuqJRxGsAw8BdHMJ3AKGydcwuWW4kOO3HmqBQAdcq/OP+/DlTVxLvsCzRTnZuGg==}
     engines: {node: '>=6.9.0'}
@@ -1281,14 +1278,14 @@ packages:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@babel/code-frame': 7.18.6
-      '@babel/generator': 7.23.6
+      '@babel/generator': 7.18.12
       '@babel/helper-compilation-targets': 7.18.9(@babel/core@7.18.10)
       '@babel/helper-module-transforms': 7.18.9
       '@babel/helpers': 7.18.9
-      '@babel/parser': 7.23.0
+      '@babel/parser': 7.24.1
       '@babel/template': 7.18.10
-      '@babel/traverse': 7.23.9
-      '@babel/types': 7.24.0
+      '@babel/traverse': 7.18.11
+      '@babel/types': 7.20.5
       convert-source-map: 1.8.0
       debug: 4.3.4
       gensync: 1.0.0-beta.2
@@ -1325,14 +1322,14 @@ packages:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@babel/code-frame': 7.22.13
-      '@babel/generator': 7.23.6
+      '@babel/generator': 7.23.0
       '@babel/helper-compilation-targets': 7.22.15
       '@babel/helper-module-transforms': 7.23.0(@babel/core@7.23.2)
       '@babel/helpers': 7.23.2
       '@babel/parser': 7.24.1
       '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.9
-      '@babel/types': 7.24.0
+      '@babel/traverse': 7.23.2
+      '@babel/types': 7.23.0
       convert-source-map: 2.0.0
       debug: 4.3.4
       gensync: 1.0.0-beta.2
@@ -1342,7 +1339,6 @@ packages:
       - supports-color
     dev: true
 
-<<<<<<< HEAD
   /@babel/generator@7.18.12:
     resolution: {integrity: sha512-dfQ8ebCN98SvyL7IxNMCUtZQSq5R7kxgN+r8qYTGDmmSion1hX2C0zq2yo1bsCDhXixokv1SAWTZUMYbO/V5zg==}
     engines: {node: '>=6.9.0'}
@@ -1351,17 +1347,6 @@ packages:
       '@jridgewell/gen-mapping': 0.3.2
       jsesc: 2.5.2
 
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-  /@babel/generator@7.18.12:
-    resolution: {integrity: sha512-dfQ8ebCN98SvyL7IxNMCUtZQSq5R7kxgN+r8qYTGDmmSion1hX2C0zq2yo1bsCDhXixokv1SAWTZUMYbO/V5zg==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/types': 7.20.5
-      '@jridgewell/gen-mapping': 0.3.2
-      jsesc: 2.5.2
-
-=======
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
   /@babel/generator@7.18.2:
     resolution: {integrity: sha512-W1lG5vUwFvfMd8HVXqdfbuG7RuaSrTCCD8cl8fP8wOivdbtbIg2Db3IWUcgvfxKbbn6ZBGYRW/Zk1MIwK49mgw==}
     engines: {node: '>=6.9.0'}
@@ -1374,39 +1359,24 @@ packages:
     resolution: {integrity: sha512-lN85QRR+5IbYrMWM6Y4pE/noaQtg4pNiqeNGX60eqOfo6gtEj6uw/JagelB8vVztSd7R6M5n1+PQkDbHbBRU4g==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
       '@jridgewell/gen-mapping': 0.3.2
       '@jridgewell/trace-mapping': 0.3.18
       jsesc: 2.5.2
     dev: true
 
-  /@babel/generator@7.23.6:
-    resolution: {integrity: sha512-qrSfCYxYQB5owCmGLbl8XRpX1ytXlpueOb0N0UmQwA073KZxejgQTzAmJezxvpwQD9uGtK2shHdi55QT+MbjIw==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/types': 7.24.0
-      '@jridgewell/gen-mapping': 0.3.2
-      '@jridgewell/trace-mapping': 0.3.18
-      jsesc: 2.5.2
-
   /@babel/helper-annotate-as-pure@7.16.7:
     resolution: {integrity: sha512-s6t2w/IPQVTAET1HitoowRGXooX8mCgtuP5195wD/QJPV6wYjpujCGF7JuMODVX2ZAJOf1GT6DT9MHEZvLOFSw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     dev: true
 
   /@babel/helper-annotate-as-pure@7.22.5:
     resolution: {integrity: sha512-LvBTxu8bQSQkcyKOU+a1btnNFQ1dMAd0R6PyW3arXes06F6QLWLIrd681bxRPIXlrMGR3XYnW9JyML7dP3qgxg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
     dev: true
 
   /@babel/helper-builder-binary-assignment-operator-visitor@7.16.7:
@@ -1414,20 +1384,14 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/helper-explode-assignable-expression': 7.16.7
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     dev: true
 
   /@babel/helper-builder-binary-assignment-operator-visitor@7.22.15:
     resolution: {integrity: sha512-QkBXwGgaoC2GtGZRoma6kv7Szfv06khvhFav67ZExau2RaXzy8MpHSMO2PNoP2XtmQphJQRHFfg77Bq731Yizw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
     dev: true
 
   /@babel/helper-compilation-targets@7.18.2(@babel/core@7.18.5):
@@ -1557,7 +1521,7 @@ packages:
       '@babel/helper-compilation-targets': 7.18.9(@babel/core@7.18.5)
       '@babel/helper-module-imports': 7.18.6
       '@babel/helper-plugin-utils': 7.18.9
-      '@babel/traverse': 7.23.9
+      '@babel/traverse': 7.18.11
       debug: 4.3.4
       lodash.debounce: 4.0.8
       resolve: 1.22.1
@@ -1592,18 +1556,13 @@ packages:
   /@babel/helper-environment-visitor@7.22.20:
     resolution: {integrity: sha512-zfedSIzFhat/gFhWfHtgWvlec0nqB9YEIVrpuwjruLlXfUSnA8cJB0miHKwqDnQ7d32aKo2xt88/xZptwxbfhA==}
     engines: {node: '>=6.9.0'}
+    dev: true
 
   /@babel/helper-explode-assignable-expression@7.16.7:
     resolution: {integrity: sha512-KyUenhWMC8VrxzkGP0Jizjo4/Zx+1nNZhgocs+gLzyZyB8SHidhoq9KK/8Ato4anhwsivfkBLftky7gvzbZMtQ==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     dev: true
 
   /@babel/helper-function-name@7.17.9:
@@ -1611,102 +1570,74 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.18.10
-      '@babel/types': 7.24.0
+      '@babel/types': 7.20.5
 
   /@babel/helper-function-name@7.18.9:
     resolution: {integrity: sha512-fJgWlZt7nxGksJS9a0XdSaI4XvpExnNIgRP+rVefWh5U7BL8pPuir6SJUmFKRfjWQ51OtWSzwOxhaH/EBWWc0A==}
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.18.10
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
 
   /@babel/helper-function-name@7.23.0:
     resolution: {integrity: sha512-OErEqsrxjZTJciZ4Oo+eoZqeW9UIiOcuYKRJA4ZAgV9myA+pOXhhmpfNCKjEH/auVfEYVFJ6y1Tc4r0eIApqiw==}
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.22.15
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
+    dev: true
 
   /@babel/helper-hoist-variables@7.16.7:
     resolution: {integrity: sha512-m04d/0Op34H5v7pbZw6pSKP7weA6lsMvfiIAMeIvkY/R4xQtBSMFEigu9QTZ2qB/9l22vsxtM8a+Q8CzD255fg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.20.5
 
   /@babel/helper-hoist-variables@7.18.6:
     resolution: {integrity: sha512-UlJQPkFqFULIcyW5sbzgbkxn2FKRgwWiRexcuaR8RNJRy8+LLveqPjwZV/bwrLZCN0eUHD/x8D0heK1ozuoo6Q==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
 
   /@babel/helper-hoist-variables@7.22.5:
     resolution: {integrity: sha512-wGjk9QZVzvknA6yKIUURb8zY3grXCcOZt+/7Wcy8O2uctxhplmUPkOdlgoNhmdVee2c92JXbf1xpMtVNbfoxRw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
+    dev: true
 
   /@babel/helper-member-expression-to-functions@7.17.7:
     resolution: {integrity: sha512-thxXgnQ8qQ11W2wVUObIqDL4p148VMxkt5T/qpN5k2fboRyzFGFmKsTGViquyM5QHKUy48OZoca8kw4ajaDPyw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     dev: true
 
   /@babel/helper-member-expression-to-functions@7.23.0:
     resolution: {integrity: sha512-6gfrPwh7OuT6gZyJZvd6WbTfrqAo7vm4xCzAXOusKqq/vWdKXphTpj5klHKNmRUU6/QRGlBsyU9mAIPaWHlqJA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
     dev: true
 
   /@babel/helper-module-imports@7.16.7:
     resolution: {integrity: sha512-LVtS6TqjJHFc+nYeITRo6VLXve70xmq7wPhWTqDJusJEgGmkAACWwMiTNrvfoQo6hEhFwAIixNkvB0jPXDL8Wg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     dev: true
 
   /@babel/helper-module-imports@7.18.6:
     resolution: {integrity: sha512-0NFvs3VkuSYbFi1x2Vd6tKrywq+z/cLeYC/RJNFrIX/30Bf5aiGYbtvGXolEktzJH8o5E5KJ3tT+nkxuuZFVlA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
 
   /@babel/helper-module-imports@7.22.15:
     resolution: {integrity: sha512-0pYVBnDKZO2fnSPCrgM/6WMc7eS20Fbok+0r88fp+YtWVLZrp4CkafFGIp+W0VKw4a22sgebPT99y+FDNMdP4w==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
     dev: true
 
   /@babel/helper-module-transforms@7.18.0:
@@ -1734,16 +1665,8 @@ packages:
       '@babel/helper-split-export-declaration': 7.18.6
       '@babel/helper-validator-identifier': 7.22.20
       '@babel/template': 7.18.10
-<<<<<<< HEAD
       '@babel/traverse': 7.18.11
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/traverse': 7.18.11
-      '@babel/types': 7.20.5
-=======
-      '@babel/traverse': 7.23.9
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     transitivePeerDependencies:
       - supports-color
 
@@ -1765,20 +1688,14 @@ packages:
     resolution: {integrity: sha512-EtgBhg7rd/JcnpZFXpBy0ze1YRfdm7BnBX4uKMBd3ixa3RGAE002JZB66FJyNH7g0F38U05pXmA5P8cBh7z+1w==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     dev: true
 
   /@babel/helper-optimise-call-expression@7.22.5:
     resolution: {integrity: sha512-HBwaojN0xFRx4yIvpwGqxiV2tUfl7401jlok564NgB9EHS1y6QT17FmKWm4ztqjeVdXLuC4fSvHc5ePpQjoTbw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
     dev: true
 
   /@babel/helper-plugin-utils@7.17.12:
@@ -1800,13 +1717,7 @@ packages:
     dependencies:
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-wrap-function': 7.16.8
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1830,16 +1741,8 @@ packages:
       '@babel/helper-environment-visitor': 7.18.9
       '@babel/helper-member-expression-to-functions': 7.17.7
       '@babel/helper-optimise-call-expression': 7.16.7
-<<<<<<< HEAD
       '@babel/traverse': 7.18.11
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/traverse': 7.18.11
-      '@babel/types': 7.20.5
-=======
-      '@babel/traverse': 7.23.9
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1860,83 +1763,50 @@ packages:
     resolution: {integrity: sha512-iNpIgTgyAvDQpDj76POqg+YEt8fPxx3yaNBg3S30dxNKm2SWfYhD0TGrK/Eu9wHpUW63VQU894TsTg+GLbUa1g==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
 
   /@babel/helper-simple-access@7.22.5:
     resolution: {integrity: sha512-n0H99E/K+Bika3++WNL17POvo4rKWZ7lZEp1Q+fStVbUi8nxPQEBOlTmCOxW/0JsS56SKKQ+ojAe2pHKJHN35w==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
     dev: true
 
   /@babel/helper-skip-transparent-expression-wrappers@7.16.0:
     resolution: {integrity: sha512-+il1gTy0oHwUsBQZyJvukbB4vPMdcYBrFHa0Uc4AizLxbq6BOYC51Rv4tWocX9BLBDLZ4kc6qUFpQ6HRgL+3zw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     dev: true
 
   /@babel/helper-skip-transparent-expression-wrappers@7.22.5:
     resolution: {integrity: sha512-tK14r66JZKiC43p8Ki33yLBVJKlQDFoA8GYN67lWCDCqoL6EMMSuM9b+Iff2jHaM/RRFYl7K+iiru7hbRqNx8Q==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
     dev: true
 
   /@babel/helper-split-export-declaration@7.16.7:
     resolution: {integrity: sha512-xbWoy/PFoxSWazIToT9Sif+jJTlrMcndIsaOKvTA6u7QEo7ilkRZpjew18/W3c7nm8fXdUDXh02VXTbZ0pGDNw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.20.5
 
   /@babel/helper-split-export-declaration@7.18.6:
     resolution: {integrity: sha512-bde1etTx6ZyTmobl9LLMMQsaizFVZrquTEHOqKeQESMKo4PlObf+8+JA25ZsIpZhT/WEd39+vOdLXAFG/nELpA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
 
   /@babel/helper-split-export-declaration@7.22.6:
     resolution: {integrity: sha512-AsUnxuLhRYsisFiaJwvp1QF+I3KjD5FOxut14q/GzovUe6orHLesW2C7d754kRm53h5gqrz6sFl6sxc4BVtE/g==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.24.0
-
-<<<<<<< HEAD
-  /@babel/helper-string-parser@7.22.5:
-    resolution: {integrity: sha512-mM4COjgZox8U+JcXQwPijIZLElkgEpO5rsERVDJTc2qfCDfERyob6k5WegS14SX18IIjv+XD+GrqNumY5JRCDw==}
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-  /@babel/helper-string-parser@7.19.4:
-    resolution: {integrity: sha512-nHtDoQcuqFmwYNYPz3Rah5ph2p8PFeFCsZk9A/48dPc/rGocJ5J3hAAZ7pb76VWX3fZKu+uEr/FhH5jLx7umrw==}
-    engines: {node: '>=6.9.0'}
+      '@babel/types': 7.23.0
+    dev: true
 
   /@babel/helper-string-parser@7.22.5:
     resolution: {integrity: sha512-mM4COjgZox8U+JcXQwPijIZLElkgEpO5rsERVDJTc2qfCDfERyob6k5WegS14SX18IIjv+XD+GrqNumY5JRCDw==}
-=======
-  /@babel/helper-string-parser@7.19.4:
-    resolution: {integrity: sha512-nHtDoQcuqFmwYNYPz3Rah5ph2p8PFeFCsZk9A/48dPc/rGocJ5J3hAAZ7pb76VWX3fZKu+uEr/FhH5jLx7umrw==}
-    engines: {node: '>=6.9.0'}
-
-  /@babel/helper-string-parser@7.23.4:
-    resolution: {integrity: sha512-803gmbQdqwdf4olxrX4AJyFBV/RTr3rSmOj0rKwesmzlfhYNDEs+/iOcznzpNWlJlIlTJC2QfPFcHB6DlzdVLQ==}
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     engines: {node: '>=6.9.0'}
 
   /@babel/helper-validator-identifier@7.16.7:
@@ -1969,18 +1839,10 @@ packages:
     resolution: {integrity: sha512-8RpyRVIAW1RcDDGTA+GpPAwV22wXCfKOoM9bet6TLkGIFTkRQSkH1nMQ5Yet4MpoXe1ZwHPVtNasc2w0uZMqnw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-function-name': 7.18.9
       '@babel/template': 7.18.10
-<<<<<<< HEAD
       '@babel/traverse': 7.18.11
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/traverse': 7.18.11
-      '@babel/types': 7.20.5
-=======
-      '@babel/traverse': 7.23.9
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1991,7 +1853,7 @@ packages:
     dependencies:
       '@babel/helper-function-name': 7.23.0
       '@babel/template': 7.22.15
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
     dev: true
 
   /@babel/helpers@7.18.2:
@@ -2009,16 +1871,8 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.18.10
-<<<<<<< HEAD
       '@babel/traverse': 7.18.11
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/traverse': 7.18.11
-      '@babel/types': 7.20.5
-=======
-      '@babel/traverse': 7.23.9
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
     transitivePeerDependencies:
       - supports-color
 
@@ -2027,8 +1881,8 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.9
-      '@babel/types': 7.24.0
+      '@babel/traverse': 7.23.2
+      '@babel/types': 7.23.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2049,14 +1903,6 @@ packages:
       chalk: 2.4.2
       js-tokens: 4.0.0
 
-  /@babel/highlight@7.23.4:
-    resolution: {integrity: sha512-acGdbYSfp2WheJoJm/EBBBLh/ID8KDc64ISZ9DYtBmC8/Q204PZJLHyzeB5qMzJ5trcOkybd78M4x2KWsUq++A==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/helper-validator-identifier': 7.22.20
-      chalk: 2.4.2
-      js-tokens: 4.0.0
-
   /@babel/parser@7.18.5:
     resolution: {integrity: sha512-YZWVaglMiplo7v8f1oMQ5ZPQr0vn7HPeZXxXWsxXJRjGVrzUFn9OxFQl1sb5wzfootjA/yChhW84BV+383FSOw==}
     engines: {node: '>=6.0.0'}
@@ -2064,37 +1910,12 @@ packages:
     dependencies:
       '@babel/types': 7.20.5
 
-  /@babel/parser@7.22.16:
-    resolution: {integrity: sha512-+gPfKv8UWeKKeJTUxe59+OobVcrYHETCsORl61EmSkmgymguYk/X5bp7GuUIXaFsc6y++v8ZxPsLSSuujqDphA==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-    dependencies:
-<<<<<<< HEAD
-      '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/types': 7.20.5
-=======
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
-
   /@babel/parser@7.24.1:
     resolution: {integrity: sha512-Zo9c7N3xdOIQrNip7Lc9wvRPzlRtovHVE4lkz8WEDr7uYh/GMQhSiIgFxGIArRHYdJE5kxtZjAf8rT0xhdLCzg==}
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
       '@babel/types': 7.23.0
-<<<<<<< HEAD
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-    dev: true
-=======
-
-  /@babel/parser@7.24.0:
-    resolution: {integrity: sha512-QuP/FxEAzMSjXygs8v4N9dvdXzEHN4W1oF3PxuWAtPo08UdM17u89RDMgjLn/mlc56iM0HlLmVkO/wgR+rDgHg==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-    dependencies:
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
 
   /@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@7.17.12(@babel/core@7.18.5):
     resolution: {integrity: sha512-xCJQXl4EeQ3J9C4yOmpTrtVGmzpm2iSzyxbkZHw7UCnZBftHpF/hpII80uWVyVrc40ytIClHjgWGTG1g/yB+aw==}
@@ -3531,7 +3352,7 @@ packages:
       '@babel/helper-module-imports': 7.16.7
       '@babel/helper-plugin-utils': 7.18.9
       '@babel/plugin-syntax-jsx': 7.17.12(@babel/core@7.18.5)
-      '@babel/types': 7.24.0
+      '@babel/types': 7.20.5
     dev: true
 
   /@babel/plugin-transform-react-jsx@7.22.15(@babel/core@7.23.2):
@@ -3545,7 +3366,7 @@ packages:
       '@babel/helper-module-imports': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-jsx': 7.22.5(@babel/core@7.23.2)
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
     dev: true
 
   /@babel/plugin-transform-react-pure-annotations@7.18.0(@babel/core@7.18.5):
@@ -3975,7 +3796,7 @@ packages:
       '@babel/plugin-transform-unicode-regex': 7.22.5(@babel/core@7.23.2)
       '@babel/plugin-transform-unicode-sets-regex': 7.22.5(@babel/core@7.23.2)
       '@babel/preset-modules': 0.1.6-no-external-plugins(@babel/core@7.23.2)
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
       babel-plugin-polyfill-corejs2: 0.4.6(@babel/core@7.23.2)
       babel-plugin-polyfill-corejs3: 0.8.6(@babel/core@7.23.2)
       babel-plugin-polyfill-regenerator: 0.5.3(@babel/core@7.23.2)
@@ -3994,7 +3815,7 @@ packages:
       '@babel/helper-plugin-utils': 7.18.9
       '@babel/plugin-proposal-unicode-property-regex': 7.17.12(@babel/core@7.18.5)
       '@babel/plugin-transform-dotall-regex': 7.16.7(@babel/core@7.18.5)
-      '@babel/types': 7.24.0
+      '@babel/types': 7.20.5
       esutils: 2.0.3
     dev: true
 
@@ -4005,7 +3826,7 @@ packages:
     dependencies:
       '@babel/core': 7.23.2
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
       esutils: 2.0.3
     dev: true
 
@@ -4084,75 +3905,38 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.18.6
-      '@babel/parser': 7.23.0
+      '@babel/parser': 7.24.1
       '@babel/types': 7.20.5
 
   /@babel/template@7.18.10:
     resolution: {integrity: sha512-TI+rCtooWHr3QJ27kJxfjutghu44DLnasDMwpDqCXVTal9RLp3RSYNh4NdBrRP2cQAoG9A8juOQl6P6oZG4JxA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/code-frame': 7.22.13
       '@babel/parser': 7.24.1
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/code-frame': 7.18.6
-      '@babel/parser': 7.22.16
-      '@babel/types': 7.20.5
-=======
-      '@babel/code-frame': 7.18.6
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
 
   /@babel/template@7.22.15:
     resolution: {integrity: sha512-QPErUVm4uyJa60rkI73qneDacvdvzxshT3kksGqlGWYdOTIUOwJ7RDUL8sGqslY1uXWSL6xMFKEXDS3ox2uF0w==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/code-frame': 7.22.13
       '@babel/parser': 7.24.1
       '@babel/types': 7.23.0
     dev: true
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/code-frame': 7.22.13
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.23.0
-    dev: true
-=======
-      '@babel/code-frame': 7.23.5
-      '@babel/parser': 7.24.0
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
 
   /@babel/traverse@7.18.11:
     resolution: {integrity: sha512-TG9PiM2R/cWCAy6BPJKeHzNbu4lPzOSZpeMfeNErskGpTJx6trEvFaVCbDvpcxwy49BKWmEPwiW8mrysNiDvIQ==}
     engines: {node: '>=6.9.0'}
     dependencies:
-<<<<<<< HEAD
       '@babel/code-frame': 7.22.13
       '@babel/generator': 7.18.12
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/code-frame': 7.18.6
-      '@babel/generator': 7.18.12
-=======
-      '@babel/code-frame': 7.18.6
-      '@babel/generator': 7.23.6
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       '@babel/helper-environment-visitor': 7.18.9
       '@babel/helper-function-name': 7.18.9
       '@babel/helper-hoist-variables': 7.18.6
       '@babel/helper-split-export-declaration': 7.18.6
-<<<<<<< HEAD
       '@babel/parser': 7.24.1
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/parser': 7.22.16
-      '@babel/types': 7.20.5
-=======
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       debug: 4.3.4
       globals: 11.12.0
     transitivePeerDependencies:
@@ -4180,43 +3964,18 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.22.13
-      '@babel/generator': 7.23.6
+      '@babel/generator': 7.23.0
       '@babel/helper-environment-visitor': 7.22.20
       '@babel/helper-function-name': 7.23.0
       '@babel/helper-hoist-variables': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
-<<<<<<< HEAD
       '@babel/parser': 7.24.1
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.23.0
-=======
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       debug: 4.3.4
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /@babel/traverse@7.23.9:
-    resolution: {integrity: sha512-I/4UJ9vs90OkBtY6iiiTORVMyIhJ4kAVmsKo9KFc8UOxMeUfi2hvtIBsET5u9GizXE6/GFSuKCTNfgCswuEjRg==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/code-frame': 7.23.5
-      '@babel/generator': 7.23.6
-      '@babel/helper-environment-visitor': 7.22.20
-      '@babel/helper-function-name': 7.23.0
-      '@babel/helper-hoist-variables': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.24.0
-      '@babel/types': 7.24.0
-      debug: 4.3.4
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
 
   /@babel/types@7.18.4:
     resolution: {integrity: sha512-ThN1mBcMq5pG/Vm2IcBmPPfyPXbd8S02rS+OBIDENdufvqC7Z/jHPCv9IcP01277aKtDI8g/2XysBN4hA8niiw==}
@@ -4237,15 +3996,7 @@ packages:
     resolution: {integrity: sha512-0oIyUfKoI3mSqMvsxBdclDwxXKXAUA8v/apZbc+iSyARYou1o8ZGDxbUYyLFoW2arqS2jDGqJuZvv1d/io1axg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/helper-string-parser': 7.23.4
-      '@babel/helper-validator-identifier': 7.22.20
-      to-fast-properties: 2.0.0
-
-  /@babel/types@7.24.0:
-    resolution: {integrity: sha512-+j7a5c253RfKh8iABBhywc8NSfP5LURe7Uh4qpsh6jc+aLJguvmIUBdjSdEMQv2bENrCR5MfRdjGo7vzS/ob7w==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/helper-string-parser': 7.23.4
+      '@babel/helper-string-parser': 7.22.5
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
@@ -4602,16 +4353,8 @@ packages:
       react: ^18.0.0
       react-dom: ^18.0.0
     dependencies:
-<<<<<<< HEAD
       '@babel/parser': 7.24.1
       '@babel/traverse': 7.23.2
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/parser': 7.23.0
-      '@babel/traverse': 7.23.2
-=======
-      '@babel/parser': 7.23.0
-      '@babel/traverse': 7.23.9
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       '@docusaurus/logger': 3.0.0
       '@docusaurus/utils': 3.0.0(@docusaurus/types@3.0.0)(@swc/core@1.3.56)
       '@docusaurus/utils-validation': 3.0.0(@docusaurus/types@3.0.0)(@swc/core@1.3.56)
@@ -6362,7 +6105,7 @@ packages:
     resolution: {integrity: sha512-1hnUxxjd83EAxbL4a0JDJoD3Dao3hmjvyvyEV8PzWmLK3B9m9NPlW7GKjFyoWE8nM7HnXzPcmmSyOW8yOddSXw==}
     engines: {node: '>=10'}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.23.0
       entities: 4.5.0
     dev: true
 
@@ -6865,7 +6608,7 @@ packages:
   /@types/babel__generator@7.6.4:
     resolution: {integrity: sha512-tFkciB9j2K755yrTALxD44McOrk+gfpIpvC3sxHjRawj6PfnQxrse4Clq5y/Rq+G3mrBurMax/lG8Qn2t9mSsg==}
     dependencies:
-      '@babel/types': 7.24.0
+      '@babel/types': 7.20.5
 
   /@types/babel__helper-plugin-utils@7.10.0:
     resolution: {integrity: sha512-60YtHzhQ9HAkToHVV+TB4VLzBn9lrfgrsOjiJMtbv/c1jPdekBxaByd6DMsGBzROXWoIL6U3lEFvvbu69RkUoA==}
@@ -6875,8 +6618,8 @@ packages:
   /@types/babel__template@7.4.1:
     resolution: {integrity: sha512-azBFKemX6kMg5Io+/rdGT0dkGreboUVR0Cdm3fz9QJWpaQGJRQXl7C+6hOTCZcMll7KFyEQpgbYI2lHdsS4U7g==}
     dependencies:
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.24.0
+      '@babel/parser': 7.24.1
+      '@babel/types': 7.20.5
 
   /@types/babel__traverse@7.17.1:
     resolution: {integrity: sha512-kVzjari1s2YVi77D3w1yuvohV2idweYXMCDzqBiVNN63TcDWrIlTVOYpqVrvbbyOE/IyzBoTKF0fdnLPEORFxA==}
@@ -7335,8 +7078,8 @@ packages:
     dependencies:
       '@types/yargs-parser': 21.0.0
 
-  /@types/yauzl@2.10.3:
-    resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
+  /@types/yauzl@2.10.0:
+    resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
     requiresBuild: true
     dependencies:
       '@types/node': 18.11.9
@@ -7498,60 +7241,10 @@ packages:
   /@vue/compiler-core@3.4.0:
     resolution: {integrity: sha512-cw4S15PkNGTKkP9OFFl4wnQoJJk+HqaYBafgrpDnSukiQGpcYJeRpzmqnCVCIkl6V6Eqsv58E0OAdl6b592vuA==}
     dependencies:
-<<<<<<< HEAD
       '@babel/parser': 7.24.1
       '@babel/types': 7.23.0
       '@vue/shared': 3.4.0
       entities: 4.5.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/parser': 7.22.16
-      '@babel/types': 7.20.5
-      '@vue/shared': 3.2.37
-      estree-walker: 2.0.2
-      source-map: 0.6.1
-    dev: true
-
-  /@vue/compiler-core@3.2.45:
-    resolution: {integrity: sha512-rcMj7H+PYe5wBV3iYeUgbCglC+pbpN8hBLTJvRiK2eKQiWqu+fG9F+8sW99JdL4LQi7Re178UOxn09puSXvn4A==}
-    dependencies:
-      '@babel/parser': 7.22.16
-      '@babel/types': 7.20.5
-      '@vue/shared': 3.2.45
-      estree-walker: 2.0.2
-      source-map: 0.6.1
-    dev: false
-
-  /@vue/compiler-core@3.3.4:
-    resolution: {integrity: sha512-cquyDNvZ6jTbf/+x+AgM2Arrp6G4Dzbb0R64jiG804HRMfRiFXWI6kqUVqZ6ZR0bQhIoQjB4+2bhNtVwndW15g==}
-    dependencies:
-      '@babel/parser': 7.22.16
-      '@babel/types': 7.20.5
-      '@vue/shared': 3.3.4
-=======
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.24.0
-      '@vue/shared': 3.2.37
-      estree-walker: 2.0.2
-      source-map: 0.6.1
-    dev: true
-
-  /@vue/compiler-core@3.2.45:
-    resolution: {integrity: sha512-rcMj7H+PYe5wBV3iYeUgbCglC+pbpN8hBLTJvRiK2eKQiWqu+fG9F+8sW99JdL4LQi7Re178UOxn09puSXvn4A==}
-    dependencies:
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.24.0
-      '@vue/shared': 3.2.45
-      estree-walker: 2.0.2
-      source-map: 0.6.1
-    dev: false
-
-  /@vue/compiler-core@3.3.4:
-    resolution: {integrity: sha512-cquyDNvZ6jTbf/+x+AgM2Arrp6G4Dzbb0R64jiG804HRMfRiFXWI6kqUVqZ6ZR0bQhIoQjB4+2bhNtVwndW15g==}
-    dependencies:
-      '@babel/parser': 7.22.16
-      '@babel/types': 7.20.5
-      '@vue/shared': 3.3.4
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       estree-walker: 2.0.2
       source-map-js: 1.0.2
 
@@ -7564,94 +7257,14 @@ packages:
   /@vue/compiler-sfc@3.4.0:
     resolution: {integrity: sha512-PWE0mE2yW7bJS7PmaCrVDEG6KPaDJo0pb4AKnCxJ5lRRDO4IwL/fswBGhCpov+v/c+N/e+hQHpXNwvqU9BtUXg==}
     dependencies:
-<<<<<<< HEAD
       '@babel/parser': 7.24.1
       '@vue/compiler-core': 3.4.0
       '@vue/compiler-dom': 3.4.0
       '@vue/compiler-ssr': 3.4.0
       '@vue/shared': 3.4.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@vue/compiler-core': 3.2.45
-      '@vue/shared': 3.2.45
-    dev: false
-
-  /@vue/compiler-dom@3.3.4:
-    resolution: {integrity: sha512-wyM+OjOVpuUukIq6p5+nwHYtj9cFroz9cwkfmP9O1nzH68BenTTv0u7/ndggT8cIQlnBeOo6sUT/gvHcIkLA5w==}
-    dependencies:
-      '@vue/compiler-core': 3.3.4
-      '@vue/shared': 3.3.4
-
-  /@vue/compiler-sfc@3.2.45:
-    resolution: {integrity: sha512-1jXDuWah1ggsnSAOGsec8cFjT/K6TMZ0sPL3o3d84Ft2AYZi2jWJgRMjw4iaK0rBfA89L5gw427H4n1RZQBu6Q==}
-    dependencies:
-      '@babel/parser': 7.22.16
-      '@vue/compiler-core': 3.2.45
-      '@vue/compiler-dom': 3.2.45
-      '@vue/compiler-ssr': 3.2.45
-      '@vue/reactivity-transform': 3.2.45
-      '@vue/shared': 3.2.45
-=======
-      '@vue/compiler-core': 3.2.45
-      '@vue/shared': 3.2.45
-    dev: false
-
-  /@vue/compiler-dom@3.3.4:
-    resolution: {integrity: sha512-wyM+OjOVpuUukIq6p5+nwHYtj9cFroz9cwkfmP9O1nzH68BenTTv0u7/ndggT8cIQlnBeOo6sUT/gvHcIkLA5w==}
-    dependencies:
-      '@vue/compiler-core': 3.3.4
-      '@vue/shared': 3.3.4
-
-  /@vue/compiler-sfc@3.2.45:
-    resolution: {integrity: sha512-1jXDuWah1ggsnSAOGsec8cFjT/K6TMZ0sPL3o3d84Ft2AYZi2jWJgRMjw4iaK0rBfA89L5gw427H4n1RZQBu6Q==}
-    dependencies:
-      '@babel/parser': 7.23.0
-      '@vue/compiler-core': 3.2.45
-      '@vue/compiler-dom': 3.2.45
-      '@vue/compiler-ssr': 3.2.45
-      '@vue/reactivity-transform': 3.2.45
-      '@vue/shared': 3.2.45
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       estree-walker: 2.0.2
-<<<<<<< HEAD
       magic-string: 0.30.8
       postcss: 8.4.38
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      magic-string: 0.25.9
-      postcss: 8.4.19
-      source-map: 0.6.1
-    dev: false
-
-  /@vue/compiler-sfc@3.3.4:
-    resolution: {integrity: sha512-6y/d8uw+5TkCuzBkgLS0v3lSM3hJDntFEiUORM11pQ/hKvkhSKZrXW6i69UyXlJQisJxuUEJKAWEqWbWsLeNKQ==}
-    dependencies:
-      '@babel/parser': 7.22.16
-      '@vue/compiler-core': 3.3.4
-      '@vue/compiler-dom': 3.3.4
-      '@vue/compiler-ssr': 3.3.4
-      '@vue/reactivity-transform': 3.3.4
-      '@vue/shared': 3.3.4
-      estree-walker: 2.0.2
-      magic-string: 0.30.0
-      postcss: 8.4.19
-=======
-      magic-string: 0.25.9
-      postcss: 8.4.19
-      source-map: 0.6.1
-    dev: false
-
-  /@vue/compiler-sfc@3.3.4:
-    resolution: {integrity: sha512-6y/d8uw+5TkCuzBkgLS0v3lSM3hJDntFEiUORM11pQ/hKvkhSKZrXW6i69UyXlJQisJxuUEJKAWEqWbWsLeNKQ==}
-    dependencies:
-      '@babel/parser': 7.23.0
-      '@vue/compiler-core': 3.3.4
-      '@vue/compiler-dom': 3.3.4
-      '@vue/compiler-ssr': 3.3.4
-      '@vue/reactivity-transform': 3.3.4
-      '@vue/shared': 3.3.4
-      estree-walker: 2.0.2
-      magic-string: 0.30.0
-      postcss: 8.4.19
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       source-map-js: 1.0.2
 
   /@vue/compiler-ssr@3.4.0:
@@ -7668,49 +7281,15 @@ packages:
   /@vue/runtime-core@3.4.0:
     resolution: {integrity: sha512-NYrj/JgMMqnSWcIud8lLzDQrBLu+EVEeQ56QE9DYJeKG2eFrnQy8o/h57R9nCprafHs0uImKL3xsdXjHseYVxw==}
     dependencies:
-<<<<<<< HEAD
       '@vue/reactivity': 3.4.0
       '@vue/shared': 3.4.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/parser': 7.22.16
-      '@babel/types': 7.20.5
-      '@vue/compiler-core': 3.2.45
-      '@vue/shared': 3.2.45
-      estree-walker: 2.0.2
-      magic-string: 0.25.9
-    dev: false
-=======
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.24.0
-      '@vue/compiler-core': 3.2.45
-      '@vue/shared': 3.2.45
-      estree-walker: 2.0.2
-      magic-string: 0.25.9
-    dev: false
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
 
   /@vue/runtime-dom@3.4.0:
     resolution: {integrity: sha512-1ZoHEsA5l77qbx2F+SWo/hQdBksPuOmww1t/jznidDG+xMB/iidafEFvo2ZTtZii0JfTIrlDhjshfYUvQC17wQ==}
     dependencies:
-<<<<<<< HEAD
       '@vue/runtime-core': 3.4.0
       '@vue/shared': 3.4.0
       csstype: 3.1.3
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/parser': 7.22.16
-      '@babel/types': 7.20.5
-      '@vue/compiler-core': 3.3.4
-      '@vue/shared': 3.3.4
-      estree-walker: 2.0.2
-      magic-string: 0.30.0
-=======
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.24.0
-      '@vue/compiler-core': 3.3.4
-      '@vue/shared': 3.3.4
-      estree-walker: 2.0.2
-      magic-string: 0.30.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
 
   /@vue/server-renderer@3.4.0(vue@3.4.0):
     resolution: {integrity: sha512-GuOVCyLDlWPu8nKo5AUxb8B+iB/Ik4I1WwqAlBqf5+y48z6D6rvKshp7KR3cJea+pte1tdTsb0+Ja82KizMZOw==}
@@ -8596,16 +8175,8 @@ packages:
     resolution: {integrity: sha512-zSuuuAlTMT4mzLj2nPnUm6fsE6270vdOfnpbJ+RmruU75UhLFvL0N2NgI7xpeS7NaB6hGqmd5pVpGTDYvi4Q3w==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-<<<<<<< HEAD
       '@babel/template': 7.18.10
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/template': 7.18.10
-      '@babel/types': 7.20.5
-=======
-      '@babel/template': 7.22.15
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       '@types/babel__core': 7.1.19
       '@types/babel__traverse': 7.17.1
 
@@ -9250,7 +8821,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
-      fsevents: 2.3.3
+      fsevents: 2.3.2
     dev: true
 
   /chownr@1.1.4:
@@ -11463,7 +11034,7 @@ packages:
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
-      '@types/yauzl': 2.10.3
+      '@types/yauzl': 2.10.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -11794,7 +11365,7 @@ packages:
       vue-template-compiler:
         optional: true
     dependencies:
-      '@babel/code-frame': 7.23.5
+      '@babel/code-frame': 7.22.13
       '@types/json-schema': 7.0.13
       chalk: 4.1.2
       chokidar: 3.5.3
@@ -11913,8 +11484,8 @@ packages:
   /fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
-  /fsevents@2.3.3:
-    resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
+  /fsevents@2.3.2:
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
@@ -12286,7 +11857,6 @@ packages:
 
   /graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
-    requiresBuild: true
 
   /grapheme-splitter@1.0.4:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
@@ -13256,13 +12826,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       '@babel/core': 7.18.10
-<<<<<<< HEAD
       '@babel/parser': 7.24.1
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/parser': 7.22.16
-=======
-      '@babel/parser': 7.23.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.0
       semver: 6.3.1
@@ -13553,7 +13117,7 @@ packages:
       micromatch: 4.0.5
       walker: 1.0.8
     optionalDependencies:
-      fsevents: 2.3.3
+      fsevents: 2.3.2
 
   /jest-junit@16.0.0:
     resolution: {integrity: sha512-A94mmw6NfJab4Fg/BlvVOUXzXgF0XIH6EmTgJ5NDPp4xoKq0Kr7sErb+4Xs9nZvu58pJojz5RFGpqnZYJTrRfQ==}
@@ -13703,19 +13267,11 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@babel/core': 7.18.10
-      '@babel/generator': 7.23.6
+      '@babel/generator': 7.18.12
       '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.18.10)
       '@babel/plugin-syntax-typescript': 7.18.6(@babel/core@7.18.10)
-<<<<<<< HEAD
       '@babel/traverse': 7.18.11
       '@babel/types': 7.23.0
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/traverse': 7.18.11
-      '@babel/types': 7.20.5
-=======
-      '@babel/traverse': 7.23.9
-      '@babel/types': 7.24.0
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       '@jest/expect-utils': 29.5.0
       '@jest/transform': 29.5.0
       '@jest/types': 29.5.0
@@ -13981,7 +13537,7 @@ packages:
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
 
   /jsonify@0.0.0:
     resolution: {integrity: sha512-trvBk1ki43VZptdBI5rIlG4YOzyeH/WefQt5rj1grasPn4iiZWKet8nkgc4GlsAylaztn0qZfUYOiTsASJFdNA==}
@@ -16014,13 +15570,7 @@ packages:
     resolution: {integrity: sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==}
     engines: {node: '>=8'}
     dependencies:
-<<<<<<< HEAD
       '@babel/code-frame': 7.22.13
-||||||| parent of 3d397401 (Add support for gts, gjs and hbs files.)
-      '@babel/code-frame': 7.18.6
-=======
-      '@babel/code-frame': 7.23.5
->>>>>>> 3d397401 (Add support for gts, gjs and hbs files.)
       error-ex: 1.3.2
       json-parse-even-better-errors: 2.3.1
       lines-and-columns: 1.2.4
@@ -20701,7 +20251,3 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
