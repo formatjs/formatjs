@@ -1,31 +1,56 @@
-import {transform} from 'ember-template-recast'
+import { transform } from 'ember-template-recast'
+import type { AST } from '@glimmer/syntax';
+import { Opts } from '@formatjs/ts-transformer'
 
-function extractText(node: any, fileName: any, options: any) {
+function extractText(
+  node: AST.MustacheStatement | AST.SubExpression,
+  fileName: string,
+  options: Opts
+) {
+  if (!options.onMsgExtracted) return;
+  if (!options.overrideIdFn) return;
+
+  if (node.path.type !== 'PathExpression') return;
+
   if (['format-message', 'formatMessage'].includes(node.path.original)) {
-    let message = node.params[0]?.original
-    let desc = node.params[1]?.original?.trim().replace(/\s+/gm, ' ')
+    let [first, second] = node.params
+
+    if (first.type !== 'StringLiteral') return;
+
+    let message = first?.value;
+
+    let desc: string | undefined;
+    if (second?.type === 'StringLiteral') {
+      desc = second.value?.trim().replace(/\s+/gm, ' ')
+    }
+
     let defaultMessage = message?.trim().replace(/\s+/gm, ' ')
 
-    let id = options.overrideIdFn(undefined, defaultMessage, desc, fileName)
-    options.onMsgExtracted(undefined, {
+    let id = typeof options.overrideIdFn === 'string'
+      ? options.overrideIdFn
+      : options.overrideIdFn(undefined, defaultMessage, desc, fileName);
+
+    options.onMsgExtracted(fileName, [{
       id: id,
       defaultMessage: defaultMessage,
       description: desc,
-    })
+    }])
   }
 }
 
 export function parseFile(source: string, fileName: string, options: any) {
-  let visitor = function () {
+  let visitor = function() {
     return {
-      MustacheStatement(node: any) {
+      MustacheStatement(node: AST.MustacheStatement) {
         extractText(node, fileName, options)
       },
-      SubExpression(node: any) {
+      SubExpression(node: AST.SubExpression) {
         extractText(node, fileName, options)
       },
     }
   }
 
-  transform(source, visitor)
+  // SAFETY: ember-template-recast's types are out of date, 
+  // but it does not affect runtime
+  transform(source, visitor as any)
 }
