@@ -1,9 +1,9 @@
-import {MessageDescriptor, interpolateName} from '@formatjs/ts-transformer'
-import {parseFile} from '../../src/hbs_extractor'
-import {readFile} from 'fs-extra'
-import {join} from 'path'
+import { MessageDescriptor, interpolateName } from '@formatjs/ts-transformer'
+import { readFile } from 'fs-extra'
+import { join } from 'path'
 
-test('hbs_extractor', async function () {
+test('hbs_extractor', async function() {
+  const { parseFile } = await import('../../src/hbs_extractor.mjs');
   let messages: MessageDescriptor[] = []
   const fixturePath = join(__dirname, './fixtures/comp.hbs')
   parseFile(await readFile(fixturePath, 'utf8'), fixturePath, {
