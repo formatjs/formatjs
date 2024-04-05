@@ -10,15 +10,10 @@ import {service} from '@ember/service';
  * They are supported in JS because it's an API that we don't control.
  */
 const Header = <template>
-  <header>{{formatMessage 'hello from a secondary component in the same file'}}</header>
+  <header>{{formatMessage "G'day!, from a secondary component in the same GJS file"}}</header>
 </template>;
 
-
-interface Signature {
-   Element: HTMLElement; 
-}
-
-export default class Comp extends Component<Signature> {
+export default class Comp extends Component {
   @service intl;
 
   get message() {
@@ -36,7 +31,7 @@ export default class Comp extends Component<Signature> {
 
   <template>
       <Header />
-      <p ...attributes>
+      <p>
         {{formatMessage 'in template' 'in template desc'}}
       </p>
 
