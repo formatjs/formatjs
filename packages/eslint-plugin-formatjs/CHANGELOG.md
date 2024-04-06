@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.13.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.12.2...eslint-plugin-formatjs@4.13.0) (2024-04-06)
+
+### Features
+
+* **eslint-plugin-formatjs:** lint `this.intl.formatMessage(...)` calls ([#4383](https://github.com/formatjs/formatjs/issues/4383)) ([d019691](https://github.com/formatjs/formatjs/commit/d0196918fca64ea76bde3a6f5e24934227f9fe7f)) - by @timmorey
+
 ## [4.12.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.12.1...eslint-plugin-formatjs@4.12.2) (2024-01-26)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
