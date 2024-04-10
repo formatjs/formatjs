@@ -10,11 +10,7 @@ import {parseScript} from './parse_script'
 let {Preprocessor} = require('content-tag')
 let p = new Preprocessor()
 
-export async function parseFile(
-  source: string,
-  fileName: string,
-  options: any
-) {
+export function parseFile(source: string, fileName: string, options: any) {
   const scriptParseFn = parseScript(options, fileName)
   const transformedSource = p.process(source, {filename: fileName})
 
@@ -24,6 +20,6 @@ export async function parseFile(
   const parseResult = p.parse(source, {filename: fileName})
 
   for (let parsed of parseResult) {
-    await parseHbsFile(parsed.contents, fileName, options)
+    parseHbsFile(parsed.contents, fileName, options)
   }
 }

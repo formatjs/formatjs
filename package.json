@@ -145,12 +145,6 @@
     "source-map-js": "1.0.2"
   },
   "pnpm": {
-    "overrides": {
-      "ember-template-recast": "^6.1.4",
-      "@glimmer/reference": "^0.91.1",
-      "@glimmer/syntax": "^0.91.1",
-      "@glimmer/validator": "^0.91.1"
-    },
     "packageExtensions": {
       "ts-jest": {
         "dependencies": {

@@ -6,7 +6,7 @@ import {join} from 'path'
 test('gts_extractor', async function () {
   let messages: MessageDescriptor[] = []
   const fixturePath = join(__dirname, './fixtures/comp.gts')
-  await parseFile(await readFile(fixturePath, 'utf8'), fixturePath, {
+  parseFile(await readFile(fixturePath, 'utf8'), fixturePath, {
     onMsgExtracted(_: any, msgs: any) {
       messages = messages.concat(msgs)
     },
