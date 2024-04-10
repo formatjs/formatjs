@@ -1,12 +1,13 @@
 import cliMain from '../../src/cli'
+import {vi} from 'vitest'
 const glob = require('fast-glob')
 import ts from 'typescript'
-jest.mock('typescript')
+vi.mock('typescript')
 // Commander.js will call this.
-jest.spyOn(process, 'exit').mockImplementation((() => null) as any)
-jest.spyOn(glob, 'sync').mockImplementation(p => (Array.isArray(p) ? p : [p]))
+vi.spyOn(process, 'exit').mockImplementation((() => null) as any)
+vi.spyOn(glob, 'sync').mockImplementation(p => (Array.isArray(p) ? p : [p]))
 
-jest.mock('fs-extra', () => ({
+vi.mock('fs-extra', () => ({
   outputJSONSync: () => Promise.resolve(),
   readFile: () => Promise.resolve(';'),
 }))
@@ -14,7 +15,7 @@ jest.mock('fs-extra', () => ({
 // Since TS5.0 jest mock doesn't seem to work bc of readonly properties
 describe.skip('unit', function () {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it('it passes camelCase-converted arguments to typescript API', async () => {
@@ -37,7 +38,7 @@ describe.skip('unit', function () {
 
   it('does not read from stdin when the glob pattern does NOT match anything', async () => {
     // Does not match anything
-    jest.spyOn(glob, 'sync').mockImplementation(() => [])
+    vi.spyOn(glob, 'sync').mockImplementation(() => [])
     // This should not hang
     await cliMain(['node', 'path/to/formatjs-cli', 'extract', '*.doesnotexist'])
     expect(ts.transpileModule).not.toHaveBeenCalled()

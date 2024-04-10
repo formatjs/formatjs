@@ -23,7 +23,7 @@ npm_package(
     visibility = ["//visibility:public"],
 )
 
-SRCS = glob(["src/**/*.ts"]) + [
+SRCS = glob(["src/**/*.ts", "src/**/*.mts"]) + [
     "index.ts",
     "main.ts",
     # "package.json",
