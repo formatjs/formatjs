@@ -192,8 +192,8 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
         esbuild(
             name = "%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]),
             entry_point = "%s/%s.js" % (name, f[:f.rindex(".")]),
-            format = "iife",
-            target = "es6",
+            format = "cjs",
+            target = "node18",
             # TODO: fix this and set it back to es5
             define = {
                 "process.version": "0",

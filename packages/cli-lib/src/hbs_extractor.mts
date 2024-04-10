@@ -1,6 +1,6 @@
-import {transform} from 'ember-template-recast'
-import type {AST} from '@glimmer/syntax'
-import {Opts} from '@formatjs/ts-transformer'
+import { transform } from 'ember-template-recast'
+import type { AST } from '@glimmer/syntax'
+import { Opts } from '@formatjs/ts-transformer'
 
 function extractText(
   node: AST.MustacheStatement | AST.SubExpression,
@@ -42,7 +42,7 @@ function extractText(
 }
 
 export function parseFile(source: string, fileName: string, options: any) {
-  let visitor = function () {
+  let visitor = function() {
     return {
       MustacheStatement(node: AST.MustacheStatement) {
         extractText(node, fileName, options)
