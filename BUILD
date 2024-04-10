@@ -184,7 +184,7 @@ multirun(
 )
 
 CONFIG_FILES = [
-    "jest.config.js",
+    "vitest.config.mts",
     "package.json",
     "tsconfig.json",
 ]

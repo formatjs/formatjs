@@ -2,7 +2,6 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -56,14 +55,6 @@ TESTS_BASE_SRCS = SRCS + glob(
 TEST_FILES = glob([
     "tests/*.test.ts",
 ])
-
-jest_test(
-    name = "unit_test",
-    data = TESTS_BASE_SRCS + TEST_FILES + SRC_DEPS + [
-        "//:node_modules/@typescript-eslint/parser",
-        "//:node_modules/vue-eslint-parser",
-    ],
-)
 
 write_source_files(
     name = "tsconfig_json",

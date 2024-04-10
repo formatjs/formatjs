@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`[parseNumberSkeleton] case: "% .##" 1`] = `
 {
@@ -362,6 +362,368 @@ exports[`[parseNumberSkeleton] case: "sign-never" 1`] = `
 }
 `;
 
+exports[`[parseNumberSkeleton] case: %p % .## 1`] = `
+{
+  "maximumFractionDigits": 2,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p %x100 1`] = `
+{
+  "scale": 100,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p () 1`] = `
+{
+  "currencySign": "accounting",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p ()! 1`] = `
+{
+  "currencySign": "accounting",
+  "signDisplay": "always",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p ()? 1`] = `
+{
+  "currencySign": "accounting",
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p +! 1`] = `
+{
+  "signDisplay": "always",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p +? 1`] = `
+{
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p +_ 1`] = `
+{
+  "signDisplay": "never",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p . 1`] = `
+{
+  "maximumFractionDigits": 0,
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p .## 1`] = `
+{
+  "maximumFractionDigits": 2,
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p .##/@##r 1`] = `
+{
+  "maximumFractionDigits": 2,
+  "maximumSignificantDigits": 3,
+  "minimumSignificantDigits": 1,
+  "roundingPriority": "morePrecision",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p .##/@##s 1`] = `
+{
+  "maximumFractionDigits": 2,
+  "maximumSignificantDigits": 3,
+  "minimumSignificantDigits": 1,
+  "roundingPriority": "lessPrecision",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p .##/w 1`] = `
+{
+  "maximumFractionDigits": 2,
+  "trailingZeroDisplay": "stripIfInteger",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p .00/w currency/CAD 1`] = `
+{
+  "currency": "CAD",
+  "maximumFractionDigits": 2,
+  "minimumFractionDigits": 2,
+  "style": "currency",
+  "trailingZeroDisplay": "stripIfInteger",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p @ rounding-mode-floor 1`] = `
+{
+  "maximumSignificantDigits": 1,
+  "minimumSignificantDigits": 1,
+  "roundingMode": "floor",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p 000 1`] = `
+{
+  "minimumIntegerDigits": 3,
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p E+!00 1`] = `
+{
+  "minimumIntegerDigits": 2,
+  "notation": "scientific",
+  "signDisplay": "always",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p E0 1`] = `
+{
+  "minimumIntegerDigits": 1,
+  "notation": "scientific",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p EE+?000 1`] = `
+{
+  "minimumIntegerDigits": 3,
+  "notation": "engineering",
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p compact-long 1`] = `
+{
+  "compactDisplay": "long",
+  "notation": "compact",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p compact-short 1`] = `
+{
+  "compactDisplay": "short",
+  "notation": "compact",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p currency/CAD . 1`] = `
+{
+  "currency": "CAD",
+  "maximumFractionDigits": 0,
+  "style": "currency",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p currency/GBP .0*/@@@ 1`] = `
+{
+  "currency": "GBP",
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 1,
+  "minimumSignificantDigits": 3,
+  "style": "currency",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p currency/GBP .00##/@@@ 1`] = `
+{
+  "currency": "GBP",
+  "maximumFractionDigits": 4,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 3,
+  "style": "currency",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p currency/GBP .00##/@@@ unit-width-full-name 1`] = `
+{
+  "currency": "GBP",
+  "currencyDisplay": "name",
+  "maximumFractionDigits": 4,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 3,
+  "style": "currency",
+  "unitDisplay": "long",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p engineering 1`] = `
+{
+  "notation": "engineering",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p engineering/sign-except-zero 1`] = `
+{
+  "notation": "engineering",
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p integer-width/*000 1`] = `
+{
+  "minimumIntegerDigits": 3,
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p measure-unit/length-meter .00##/@@@ 1`] = `
+{
+  "maximumFractionDigits": 4,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 3,
+  "style": "unit",
+  "unit": "meter",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p measure-unit/length-meter .00##/@@@ unit-width-full-name 1`] = `
+{
+  "currencyDisplay": "name",
+  "maximumFractionDigits": 4,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 3,
+  "style": "unit",
+  "unit": "meter",
+  "unitDisplay": "long",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p notation-simple 1`] = `
+{
+  "notation": "standard",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p percent .## 1`] = `
+{
+  "maximumFractionDigits": 2,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p percent .0### 1`] = `
+{
+  "maximumFractionDigits": 4,
+  "minimumFractionDigits": 1,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p percent .00/@## 1`] = `
+{
+  "maximumFractionDigits": 2,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 1,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p percent .00/@@@ 1`] = `
+{
+  "maximumFractionDigits": 2,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 3,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p percent .00/@@@@* 1`] = `
+{
+  "maximumFractionDigits": 2,
+  "minimumFractionDigits": 2,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p percent .000* 1`] = `
+{
+  "minimumFractionDigits": 3,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p percent scale/0.01 1`] = `
+{
+  "scale": 0.01,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p scientific 1`] = `
+{
+  "notation": "scientific",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p scientific/+ee/sign-always 1`] = `
+{
+  "notation": "scientific",
+  "signDisplay": "always",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p scientific/sign-always 1`] = `
+{
+  "notation": "scientific",
+  "signDisplay": "always",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p sign-accounting 1`] = `
+{
+  "currencySign": "accounting",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p sign-accounting-always 1`] = `
+{
+  "currencySign": "accounting",
+  "signDisplay": "always",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p sign-accounting-except-zero 1`] = `
+{
+  "currencySign": "accounting",
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p sign-always 1`] = `
+{
+  "signDisplay": "always",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p sign-auto 1`] = `
+{
+  "signDisplay": "auto",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p sign-except-zero 1`] = `
+{
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: %p sign-never 1`] = `
+{
+  "signDisplay": "never",
+}
+`;
+
 exports[`case: "" 1`] = `{}`;
 
 exports[`case: "EEE, MMM d, ''yy" 1`] = `
@@ -392,6 +754,49 @@ exports[`case: "h:mm a" 1`] = `
 `;
 
 exports[`case: "yyyy.MM.dd G 'at' HH:mm:ss zzzz" 1`] = `
+{
+  "day": "2-digit",
+  "era": "short",
+  "hour": "2-digit",
+  "hourCycle": "h23",
+  "minute": "2-digit",
+  "month": "2-digit",
+  "second": "2-digit",
+  "timeZoneName": "long",
+  "year": "numeric",
+}
+`;
+
+exports[`case: %p  1`] = `{}`;
+
+exports[`case: %p EEE, MMM d, ''yy 1`] = `
+{
+  "day": "numeric",
+  "month": "short",
+  "weekday": "short",
+  "year": "2-digit",
+}
+`;
+
+exports[`case: %p EEEE, d MMMM yyyy 1`] = `
+{
+  "day": "numeric",
+  "month": "long",
+  "weekday": "long",
+  "year": "numeric",
+}
+`;
+
+exports[`case: %p h:mm a 1`] = `
+{
+  "hour": "numeric",
+  "hour12": true,
+  "hourCycle": "h12",
+  "minute": "2-digit",
+}
+`;
+
+exports[`case: %p yyyy.MM.dd G 'at' HH:mm:ss zzzz 1`] = `
 {
   "day": "2-digit",
   "era": "short",

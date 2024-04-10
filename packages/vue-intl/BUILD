@@ -1,7 +1,6 @@
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -34,18 +33,6 @@ ts_compile_node(
     srcs = SRCS,
     package = PACKAGE_NAME,
     deps = SRC_DEPS,
-)
-
-jest_test(
-    name = "unit_test",
-    data = SRCS + SRC_DEPS + [
-        "tests/index.test.ts",
-        "//:node_modules/@vue/test-utils",
-        "//:node_modules/@vue/compiler-dom",
-        "//:node_modules/@vue/server-renderer",
-        "//:node_modules/jest-environment-jsdom",
-    ],
-    jest_config = "jest.config.js",
 )
 
 package_json_test(

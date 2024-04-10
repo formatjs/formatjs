@@ -22,7 +22,7 @@ packages/cli/integration-tests/extract/typescript/err.tsx
 **/*.generated.*
 # Let Bazel manage this
 rust/cargo-bazel-lock.json
-# Snapshots managed by Jest
+# Snapshots managed by Vitest
 **/__snapshots__/*
 # Changelog managed by Lerna 
 **/CHANGELOG.md

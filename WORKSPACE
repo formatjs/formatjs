@@ -117,26 +117,6 @@ register_copy_directory_toolchains()
 
 register_copy_to_directory_toolchains()
 
-# Jest
-http_archive(
-    name = "aspect_rules_jest",
-    sha256 = "d3bb833f74b8ad054e6bff5e41606ff10a62880cc99e4d480f4bdfa70add1ba7",
-    strip_prefix = "rules_jest-0.18.4",
-    url = "https://github.com/aspect-build/rules_jest/releases/download/v0.18.4/rules_jest-v0.18.4.tar.gz",
-)
-
-####################
-# rules_jest setup #
-####################
-# Fetches the rules_jest dependencies.
-# If you want to have a different version of some dependency,
-# you should fetch it *before* calling this.
-# Alternatively, you can skip calling this function, so long as you've
-# already fetched all the dependencies.
-load("@aspect_rules_jest//jest:dependencies.bzl", "rules_jest_dependencies")
-
-rules_jest_dependencies()
-
 # Multirun
 
 http_archive(

@@ -13,4 +13,5 @@ actions:
     bazel_commands:
       # Check if all files are properly formatted.
       - 'run //:format -- --mode check'
+      - 'pnpm vitest'
       - 'test //...'

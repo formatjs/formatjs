@@ -4,7 +4,6 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -45,15 +44,6 @@ ts_compile(
     package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
     deps = SRC_DEPS,
-)
-
-jest_test(
-    name = "unit_test",
-    data = SRCS + TESTS + SRC_DEPS + [
-        ":node_modules/@formatjs/intl-datetimeformat",
-        ":node_modules/@formatjs/intl-numberformat",
-        "//:node_modules/@types/node",
-    ],
 )
 
 write_source_files(

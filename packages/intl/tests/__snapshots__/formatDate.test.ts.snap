@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`format API formatDate() options falls back and warns on invalid Intl.DateTimeFormat options 1`] = `
 [

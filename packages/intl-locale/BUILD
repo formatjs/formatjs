@@ -5,7 +5,6 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -41,15 +40,6 @@ ts_compile(
     package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
     deps = SRC_DEPS,
-)
-
-jest_test(
-    name = "unit_test",
-    data = SRCS + SRC_DEPS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-    ]),
-    snapshots = glob(["tests/**/*.snap"]),
 )
 
 # Test262

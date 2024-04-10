@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`hoist some random case 1 1`] = `"{p1,plural,one{{foo,select,bar{one two} baz{one three} other{one other}}} other{other}}"`;
 

@@ -4,7 +4,6 @@ load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -51,11 +50,6 @@ ts_compile(
     skip_esm = False,
     skip_esm_esnext = False,
     deps = SRC_DEPS,
-)
-
-jest_test(
-    name = "unit_test",
-    data = SRCS + TESTS + TEST_DEPS + ["//:node_modules/@types/node"],
 )
 
 esbuild(

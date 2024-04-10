@@ -3,7 +3,6 @@ load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "package_json_test", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -38,19 +37,6 @@ ts_compile(
     package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
     deps = SRC_DEPS,
-)
-
-jest_test(
-    name = "unit_test",
-    data = SRCS + SRC_DEPS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-    ]) + [
-        "//:node_modules/@types/lodash",
-        "//:node_modules/fast-glob",
-        "//:node_modules/lodash",
-    ],
-    snapshots = glob(["tests/**/*.snap"]),
 )
 
 js_binary(

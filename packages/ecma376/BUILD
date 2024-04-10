@@ -1,7 +1,6 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
 
 exports_files([
     "package.json",
@@ -46,10 +45,6 @@ write_source_files(
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
-jest_test(
-    name = "unit_test",
-    data = SRCS + TESTS + SRC_DEPS,
-)
 
 package_json_test(
     name = "package_json_test",

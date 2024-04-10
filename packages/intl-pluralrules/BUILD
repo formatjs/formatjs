@@ -5,7 +5,6 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -274,15 +273,6 @@ ts_compile(
     srcs = SRCS,
     skip_esm = False,
     deps = SRC_DEPS,
-)
-
-jest_test(
-    name = "unit_test",
-    data = SRCS + TESTS + TEST_LOCALE_DATA + SRC_DEPS + [
-        ":node_modules/@formatjs/intl-getcanonicallocales",
-        ":node_modules/@formatjs/intl-locale",
-        "//:node_modules/@types/node",
-    ],
 )
 
 # CLDR

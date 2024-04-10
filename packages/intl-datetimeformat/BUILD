@@ -10,7 +10,6 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 

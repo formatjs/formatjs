@@ -3,7 +3,6 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -57,14 +56,6 @@ ts_compile_node(
     package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm_esnext = False,
     deps = SRC_DEPS,
-)
-
-jest_test(
-    name = "unit_test",
-    data = SRCS + SRC_DEPS + [
-        "//:node_modules/@types/rimraf",
-        "//:node_modules/rimraf",
-    ] + glob(["tests/unit/**/*"]),
 )
 
 write_source_files(

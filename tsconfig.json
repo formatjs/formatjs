@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "target": "es5",
+    "target": "es2022",
     "lib": [
       "dom",
       "ES2017.Intl",

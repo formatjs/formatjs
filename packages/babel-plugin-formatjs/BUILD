@@ -2,7 +2,6 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -42,24 +41,6 @@ ts_compile_node(
     name = "dist",
     srcs = SRCS,
     deps = SRC_DEPS,
-)
-
-jest_test(
-    name = "unit_test",
-    data = SRCS + SRC_DEPS + glob(
-        [
-            "tests/**/*.test.ts",
-            "tests/**/*.test.tsx",
-            "tests/**/*.test.js",
-        ],
-        exclude = ["tests/vue/**/*"],
-    ) + [
-        "//:node_modules/@babel/preset-env",
-        "//:node_modules/@babel/preset-react",
-        "//:node_modules/@types/node",
-        "//packages/babel-plugin-formatjs/tests/fixtures",
-    ],
-    snapshots = glob(["tests/**/*.snap"]),
 )
 
 package_json_test(

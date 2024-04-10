@@ -3,7 +3,6 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -84,22 +83,6 @@ genrule(
     srcs = [":%s.esbuild.iife.js" % PACKAGE_NAME],
     outs = ["%s.iife.js" % PACKAGE_NAME],
     cmd = "cat $< | sed -E 's/__require\\(\"react\"\\)/window.React/g' > $@",
-)
-
-jest_test(
-    name = "unit_test",
-    data = SRCS + TESTS + TEST_DEPS + ["tests/setup.js"],
-    jest_config = "jest.config.js",
-    snapshots = glob(["tests/unit/components/__snapshots__/*"]),
-)
-
-jest_test(
-    name = "functional_test",
-    data = TEST_DEPS + glob(["tests/functional/**/*.ts*"]) + [
-        "tests/setup.js",
-        ":dist",
-    ],
-    jest_config = "jest.config.js",
 )
 
 write_source_files(

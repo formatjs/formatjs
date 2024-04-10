@@ -5,7 +5,6 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_src_file", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -62,11 +61,6 @@ ts_compile(
     skip_esm = False,
     deps = SRC_DEPS,
 )
-
-[jest_test(
-    name = "unit_test_%s" % fn.split("/")[-1].split(".")[0],
-    data = SRCS + [fn] + TEST_DEPS,
-) for fn in TESTS if fn.endswith(".test.ts")]
 
 generate_src_file(
     name = "test262-main",
