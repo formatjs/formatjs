@@ -161,7 +161,7 @@ async function processFile(
   } else if (fn.endsWith('.hbs')) {
     debug('Processing %s using hbs extractor', fn)
     const {parseFile} = await import('./hbs_extractor.js')
-    parseFile(source, fn, opts)
+    await parseFile(source, fn, opts)
   } else if (fn.endsWith('.gts') || fn.endsWith('.gjs')) {
     debug('Processing %s as gts/gjs file', fn)
     const {parseFile} = await import('./gts_extractor.js')
