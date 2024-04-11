@@ -274,5 +274,25 @@ intl.formatMessage({defaultMessage: "{count, plural, one {#} other {# more}}", d
       output: `
 intl.formatMessage({defaultMessage: "{count, plural, one {#} other {# more}}", id: 'j9qhn+', description: "asd"})`,
     },
+    {
+      code: `
+import { defineMessages } from 'react-intl'
+defineMessages({ example: { defaultMessage: 'example1', id: 'payment_string' }, example2: { defaultMessage: 'example2' }  })`,
+      options: optionsWithWhitelist,
+      errors: [
+        {
+          messageId: 'enforceIdMatchingAllowlisted',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'FnMvk8',
+            actual: 'undefined',
+            idWhitelist: '"/\\./i", "/^payment_.*/i"',
+          },
+        },
+      ],
+      output: `
+import { defineMessages } from 'react-intl'
+defineMessages({ example: { defaultMessage: 'example1', id: 'payment_string' }, example2: { defaultMessage: 'example2', id: 'FnMvk8' }  })`,
+    },
   ],
 })

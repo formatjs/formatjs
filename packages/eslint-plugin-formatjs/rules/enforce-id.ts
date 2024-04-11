@@ -71,7 +71,7 @@ function checkNode(
           idWhitelistRegexps.some((r: RegExp) => r.test(id))
         ) {
           // messageId is allowlisted so skip interpolation id check
-          return
+          continue
         }
 
         const correctId = interpolateName(
