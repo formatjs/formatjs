@@ -1,10 +1,14 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   terser: 5.27.0
   source-map-js: 1.0.2
 
-packageExtensionsChecksum: 3703c4d559c7e552e53cc74d61cf5682
+packageExtensionsChecksum: 76b703b906c4715da3c7dad71f1ddd63
 
 patchedDependencies:
   '@commitlint/rules@17.0.0':
@@ -200,26 +204,26 @@ importers:
         specifier: 43.1.0
         version: 43.1.0
       cldr-core:
-        specifier: 43.1.0
-        version: 43.1.0
+        specifier: 44.1.0
+        version: 44.1.0
       cldr-dates-full:
         specifier: 43.1.0
         version: 43.1.0(cldr-numbers-full@43.1.0)
       cldr-localenames-full:
         specifier: 43.1.0
-        version: 43.1.0(cldr-core@43.1.0)
+        version: 43.1.0(cldr-core@44.1.0)
       cldr-misc-full:
         specifier: 43.1.0
-        version: 43.1.0(cldr-core@43.1.0)
+        version: 43.1.0(cldr-core@44.1.0)
       cldr-numbers-full:
         specifier: 43.1.0
-        version: 43.1.0(cldr-core@43.1.0)
+        version: 43.1.0(cldr-core@44.1.0)
       cldr-segments-full:
         specifier: 43.1.0
-        version: 43.1.0(cldr-core@43.1.0)
+        version: 43.1.0(cldr-core@44.1.0)
       cldr-units-full:
         specifier: 43.1.0
-        version: 43.1.0(cldr-core@43.1.0)
+        version: 43.1.0(cldr-core@44.1.0)
       clsx:
         specifier: '2'
         version: 2.0.0
@@ -8733,8 +8737,8 @@ packages:
     resolution: {integrity: sha512-XwgjUTVaaIg8kyf9Zj9cGl210/TzQHshJ/YCYuVC9oNErL1c6GpmDqdunQHZ27zs+Ce11sbuY2XhcSjwLDFdcA==}
     dev: true
 
-  /cldr-core@43.1.0:
-    resolution: {integrity: sha512-8Q/Zh/eCzV4SxggzZhPnw5WDWH9OnhbPfwzthfG8uXsCn7F5UeBCiAOTxsstxuxtXPKlvPJqqMSQjiYcqJPJsA==}
+  /cldr-core@44.1.0:
+    resolution: {integrity: sha512-ssbJaXu3pCkc4YqNC6xHhgleZG7YqnOFZ9laMlJfHOfnspoA9waI4AH54gKB3Fe/+wI4i3cVxKFdCTVGTRw+UA==}
     dev: true
 
   /cldr-dates-full@43.1.0(cldr-numbers-full@43.1.0):
@@ -8742,47 +8746,47 @@ packages:
     peerDependencies:
       cldr-numbers-full: 43.1.0
     dependencies:
-      cldr-numbers-full: 43.1.0(cldr-core@43.1.0)
+      cldr-numbers-full: 43.1.0(cldr-core@44.1.0)
     dev: true
 
-  /cldr-localenames-full@43.1.0(cldr-core@43.1.0):
+  /cldr-localenames-full@43.1.0(cldr-core@44.1.0):
     resolution: {integrity: sha512-g9Vx5jJ6yRvNI4uiSR7921GA8ErQTsQFFhio6O9hbdtJtQD3bWJmV8gNxnUTjpdzza0xeTUtH1I/L5ylESp6IA==}
     peerDependencies:
       cldr-core: 43.1.0
     dependencies:
-      cldr-core: 43.1.0
+      cldr-core: 44.1.0
     dev: true
 
-  /cldr-misc-full@43.1.0(cldr-core@43.1.0):
+  /cldr-misc-full@43.1.0(cldr-core@44.1.0):
     resolution: {integrity: sha512-RV+Skf523c+jr+fPw3QwjHKjakLuGNF4edqKH2I+gMxD4WTVeP5omej5RQKGd77Z1IzYdRP/pMr542K2qPC27A==}
     peerDependencies:
       cldr-core: 43.1.0
     dependencies:
-      cldr-core: 43.1.0
+      cldr-core: 44.1.0
     dev: true
 
-  /cldr-numbers-full@43.1.0(cldr-core@43.1.0):
+  /cldr-numbers-full@43.1.0(cldr-core@44.1.0):
     resolution: {integrity: sha512-IP1/DLQnC0U1r+KsaNYqNu1rRv3yeiYtImFrtssMqRs5HRMt9DvuSaKEIgj91EpoyNwAxMeRBCGLP5NYkzP4XQ==}
     peerDependencies:
       cldr-core: 43.1.0
     dependencies:
-      cldr-core: 43.1.0
+      cldr-core: 44.1.0
     dev: true
 
-  /cldr-segments-full@43.1.0(cldr-core@43.1.0):
+  /cldr-segments-full@43.1.0(cldr-core@44.1.0):
     resolution: {integrity: sha512-THxxBrnYqjVSvca7RiSgGomLcpnWZfGqwtSk97NP+EiOXwFvpvIeyzp4FbMdLw1UwvmMa0Gcm6imuJDZH8p7Xg==}
     peerDependencies:
       cldr-core: 43.1.0
     dependencies:
-      cldr-core: 43.1.0
+      cldr-core: 44.1.0
     dev: true
 
-  /cldr-units-full@43.1.0(cldr-core@43.1.0):
+  /cldr-units-full@43.1.0(cldr-core@44.1.0):
     resolution: {integrity: sha512-UvQt8ESjPvsibo0jfkfze2j8GtH54DtsYRDFq+tVJf2ROTH3TVXmTdvpl7UfMj3ZROrb0ks1DN9oexgSuZ+HlA==}
     peerDependencies:
       cldr-core: 43.1.0
     dependencies:
-      cldr-core: 43.1.0
+      cldr-core: 44.1.0
     dev: true
 
   /clean-css@5.3.2:
@@ -20105,7 +20109,3 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
