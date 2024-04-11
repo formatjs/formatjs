@@ -1,10 +1,14 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   terser: 5.27.0
   source-map-js: 1.0.2
 
-packageExtensionsChecksum: 3703c4d559c7e552e53cc74d61cf5682
+packageExtensionsChecksum: 76b703b906c4715da3c7dad71f1ddd63
 
 patchedDependencies:
   '@commitlint/rules@17.0.0':
@@ -197,8 +201,8 @@ importers:
         specifier: ^1.2.2
         version: 1.2.2
       cldr-bcp47:
-        specifier: 43.1.0
-        version: 43.1.0
+        specifier: 44.1.0
+        version: 44.1.0
       cldr-core:
         specifier: 43.1.0
         version: 43.1.0
@@ -8729,8 +8733,8 @@ packages:
     resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
     dev: true
 
-  /cldr-bcp47@43.1.0:
-    resolution: {integrity: sha512-XwgjUTVaaIg8kyf9Zj9cGl210/TzQHshJ/YCYuVC9oNErL1c6GpmDqdunQHZ27zs+Ce11sbuY2XhcSjwLDFdcA==}
+  /cldr-bcp47@44.1.0:
+    resolution: {integrity: sha512-mesYHc0VHccMn8pLr1aYxWJ8vhlY+oj83kxRkh+O10eVqb/TUXfu6ue/AP8G0T31eEqlqNpdjkjlOUGjErTYhQ==}
     dev: true
 
   /cldr-core@43.1.0:
@@ -20105,7 +20109,3 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
