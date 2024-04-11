@@ -71,7 +71,6 @@ export function isIntlFormatMessageCall(
     ((node.callee.object.type === 'Identifier' &&
       node.callee.object.name === 'intl') ||
       (node.callee.object.type === 'MemberExpression' &&
-        node.callee.object.object.type === 'ThisExpression' &&
         node.callee.object.property.type === 'Identifier' &&
         node.callee.object.property.name === 'intl')) &&
     node.callee.property.type === 'Identifier' &&

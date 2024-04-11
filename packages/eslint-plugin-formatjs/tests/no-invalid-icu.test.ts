@@ -12,6 +12,10 @@ ruleTester.run(name, rule, {
       defaultMessage: '{count, plural, one {#} other {# more}}',
       description: 'asd'
   }, {count: 1})`,
+    `IntlStore.intl.formatMessage({
+      defaultMessage: '{count, plural, one {#} other {# more}}',
+      description: 'asd'
+  }, {count: 1})`,
     `intl.formatMessage({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
@@ -115,6 +119,20 @@ ruleTester.run(name, rule, {
     {
       code: `
         this.intl.formatMessage({
+          defaultMessage: "{aDifferentKey, plur {#} other {# more}}" },
+          { count: 1 }
+        )`,
+      errors: [
+        {
+          messageId: 'icuError',
+          data: {message: 'Error parsing ICU string: INVALID_ARGUMENT_TYPE'},
+        },
+      ],
+    },
+
+    {
+      code: `
+        IntlStore.intl.formatMessage({
           defaultMessage: "{aDifferentKey, plur {#} other {# more}}" },
           { count: 1 }
         )`,
