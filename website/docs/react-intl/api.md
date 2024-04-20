@@ -469,7 +469,7 @@ intl.formatDisplayName('UN', {type: 'region'})
 
 ### Message Syntax
 
-String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](https://unicode-org.github.io/icu/userguide/format_parse/messages) by using the [ICU Message Syntax](../core-concepts/icu-syntax.md). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
+String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](https://unicode-org.github.io/icu/userguide/format_parse/messages) by using the [ICU Message Syntax](../core-concepts/icu-syntax.mdx). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
 
 **Simple Message:**
 
@@ -487,7 +487,7 @@ Hello, {name}, you have {itemCount, plural,
 }.
 ```
 
-**See:** The [Message Syntax Guide](../core-concepts/icu-syntax.md).
+**See:** The [Message Syntax Guide](../core-concepts/icu-syntax.mdx).
 
 ### Message Descriptor
 

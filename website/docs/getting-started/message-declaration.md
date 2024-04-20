@@ -10,7 +10,7 @@ While you can declare your messages using only `id`s, we highly recommend declar
 3. Text styling is also dependent on the message itself. Things like truncation, capitalization... certainly affect the messages themselves.
 4. Better integrations with toolchains. Most toolchains cannot verify cross-file references to validate syntax/usage.
 
-At a high level, formatjs messages use [ICU Syntax](../core-concepts/icu-syntax.md) with a couple of enhancements common in other message format such as [Fluent](https://github.com/projectfluent/fluent.js/). This section focuses on the actual supported ways of calling `formatjs` APIs so messages can be extracted.
+At a high level, formatjs messages use [ICU Syntax](../core-concepts/icu-syntax.mdx) with a couple of enhancements common in other message format such as [Fluent](https://github.com/projectfluent/fluent.js/). This section focuses on the actual supported ways of calling `formatjs` APIs so messages can be extracted.
 
 ## Using imperative API `intl.formatMessage`
 

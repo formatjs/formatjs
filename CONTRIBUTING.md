@@ -33,7 +33,7 @@ Pull requests are very welcome, but should be within the scope of the project, a
 - [`bazel`](https://bazel.build/)
 - [`docker`](https://www.docker.com/)
 
-You can build & test with `pnpm`:
+You can build & test with `pnpm`. At the moment version >= 9 is not supported:
 
 ```sh
 pnpm i && pnpm t

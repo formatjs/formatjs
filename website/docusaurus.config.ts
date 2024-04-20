@@ -9,14 +9,10 @@ export default {
   organizationName: 'formatjs', // Usually your GitHub org/user name.
   projectName: 'formatjs.github.io', // Usually your repo name.
   themes: ['@docusaurus/theme-live-codeblock'],
+  plugins: ['@orama/plugin-docusaurus-v3'],
   themeConfig: {
     prism: {
       additionalLanguages: ['markup'],
-    },
-    algolia: {
-      appId: '4V7OJU17Z9',
-      apiKey: '64ffba7fb3e3ee96182a32b6bf44591f',
-      indexName: 'formatjs',
     },
     navbar: {
       title: 'Format.JS',
