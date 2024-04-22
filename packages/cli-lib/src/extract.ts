@@ -3,15 +3,15 @@ import {
   Opts,
   interpolateName,
 } from '@formatjs/ts-transformer'
-import { outputFile, readFile } from 'fs-extra'
-import { debug, getStdinAsString, warn, writeStdout } from './console_utils'
+import {outputFile, readFile} from 'fs-extra'
+import {debug, getStdinAsString, warn, writeStdout} from './console_utils'
 
-import { parse } from '@formatjs/icu-messageformat-parser'
-import { hoistSelectors } from '@formatjs/icu-messageformat-parser/manipulator'
-import { printAST } from '@formatjs/icu-messageformat-parser/printer'
+import {parse} from '@formatjs/icu-messageformat-parser'
+import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator'
+import {printAST} from '@formatjs/icu-messageformat-parser/printer'
 import stringify from 'json-stable-stringify'
-import { Formatter, resolveBuiltinFormatter } from './formatters'
-import { parseScript } from './parse_script'
+import {Formatter, resolveBuiltinFormatter} from './formatters'
+import {parseScript} from './parse_script'
 export interface ExtractionResult<M = Record<string, string>> {
   /**
    * List of extracted messages
@@ -81,18 +81,18 @@ function calculateLineColFromOffset(
   start?: number
 ): Pick<ExtractedMessageDescriptor, 'line' | 'col'> {
   if (!start) {
-    return { line: 1, col: 1 }
+    return {line: 1, col: 1}
   }
   const chunk = text.slice(0, start)
   const lines = chunk.split('\n')
   const lastLine = lines[lines.length - 1]
-  return { line: lines.length, col: lastLine.length }
+  return {line: lines.length, col: lastLine.length}
 }
 
 async function processFile(
   source: string,
   fn: string,
-  { idInterpolationPattern, ...opts }: Opts & { idInterpolationPattern?: string }
+  {idInterpolationPattern, ...opts}: Opts & {idInterpolationPattern?: string}
 ) {
   let messages: ExtractedMessageDescriptor[] = []
   let meta: Record<string, string> | undefined
@@ -140,10 +140,11 @@ async function processFile(
           idInterpolationPattern,
           {
             content: description
-              ? `${defaultMessage}#${typeof description === 'string'
-                ? description
-                : stringify(description)
-              }`
+              ? `${defaultMessage}#${
+                  typeof description === 'string'
+                    ? description
+                    : stringify(description)
+                }`
               : defaultMessage,
           }
         ),
@@ -155,21 +156,21 @@ async function processFile(
   const scriptParseFn = parseScript(opts, fn)
   if (fn.endsWith('.vue')) {
     debug('Processing %s using vue extractor', fn)
-    const { parseFile } = await import('./vue_extractor.js')
+    const {parseFile} = await import('./vue_extractor.js')
     parseFile(source, fn, scriptParseFn)
   } else if (fn.endsWith('.hbs')) {
     debug('Processing %s using hbs extractor', fn)
-    // SAFETY: The TS config does not understand that this is a 
+    // SAFETY: The TS config does not understand that this is a
     //         safe way to import a module in a cjs project
     // @ts-ignore
-    const { parseFile } = await import('./hbs_extractor.mjs')
+    const {parseFile} = await import('./hbs_extractor.mjs')
     parseFile(source, fn, opts)
   } else if (fn.endsWith('.gts') || fn.endsWith('.gjs')) {
     debug('Processing %s as gts/gjs file', fn)
-    // SAFETY: The TS config does not understand that this is a 
+    // SAFETY: The TS config does not understand that this is a
     //         safe way to import a module in a cjs project
     // @ts-ignore
-    const { parseFile } = await import('./gts_extractor.mjs')
+    const {parseFile} = await import('./gts_extractor.mjs')
     parseFile(source, fn, opts)
   } else {
     debug('Processing %s using typescript extractor', fn)
@@ -180,7 +181,7 @@ async function processFile(
     debug('Extracted meta:', meta)
     messages.forEach(m => (m.meta = meta))
   }
-  return { messages, meta }
+  return {messages, meta}
 }
 
 /**
@@ -194,7 +195,7 @@ export async function extract(
   files: readonly string[],
   extractOpts: ExtractOpts
 ) {
-  const { throws, readFromStdin, flatten, ...opts } = extractOpts
+  const {throws, readFromStdin, flatten, ...opts} = extractOpts
   let rawResults: Array<ExtractionResult | undefined>
   if (readFromStdin) {
     debug(`Reading input from stdin`)
@@ -227,9 +228,9 @@ export async function extract(
 
   const extractedMessages = new Map<string, MessageDescriptor>()
 
-  for (const { messages } of extractionResults) {
+  for (const {messages} of extractionResults) {
     for (const message of messages) {
-      const { id, description, defaultMessage } = message
+      const {id, description, defaultMessage} = message
       if (!id) {
         const error = new Error(
           `[FormatJS CLI] Missing message id for message:
@@ -251,7 +252,7 @@ ${JSON.stringify(message, undefined, 2)}`
         ) {
           const error = new Error(
             `[FormatJS CLI] Duplicate message id: "${id}", ` +
-            'but the `description` and/or `defaultMessage` are different.'
+              'but the `description` and/or `defaultMessage` are different.'
           )
           if (throws) {
             throw error
@@ -265,7 +266,7 @@ ${JSON.stringify(message, undefined, 2)}`
   }
   const results: Record<string, Omit<MessageDescriptor, 'id'>> = {}
   const messages = Array.from(extractedMessages.values())
-  for (const { id, ...msg } of messages) {
+  for (const {id, ...msg} of messages) {
     if (flatten && msg.defaultMessage) {
       msg.defaultMessage = printAST(hoistSelectors(parse(msg.defaultMessage)))
     }
@@ -290,7 +291,7 @@ export default async function extractAndWrite(
   files: readonly string[],
   extractOpts: ExtractCLIOptions
 ) {
-  const { outFile, ...opts } = extractOpts
+  const {outFile, ...opts} = extractOpts
   const serializedResult = (await extract(files, opts)) + '\n'
   if (outFile) {
     debug('Writing output file:', outFile)
