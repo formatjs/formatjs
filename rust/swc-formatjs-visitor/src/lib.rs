@@ -230,7 +230,7 @@ fn get_call_expr_message_descriptor_value(
     }
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone)]
 pub enum MessageDescriptionValue {
     Str(String),
     Obj(ObjectLit),
@@ -381,7 +381,7 @@ fn get_jsx_icu_message_value(
 
     let mut parser = Parser::new(message.as_str(), &ParserOptions::default());
 
-    if let Err(e) = parser.parse() {
+    if let Err(_e) = parser.parse() {
         let is_literal_err = if let Some(message_path) = message_path {
             if let JSXAttrValue::Lit(..) = message_path {
                 if message.contains("\\\\") {
@@ -463,7 +463,7 @@ fn get_call_expr_icu_message_value(
 
     let mut parser = Parser::new(message.as_str(), &ParserOptions::default());
 
-    if let Err(e) = parser.parse() {
+    if let Err(_e) = parser.parse() {
         #[cfg(feature = "plugin")]
         let handler = &swc_core::plugin::errors::HANDLER;
 
@@ -492,7 +492,7 @@ fn get_call_expr_icu_message_value(
     return message;
 }
 
-fn interpolate_name(resource_path: &str, name: &str, content: &str) -> Option<String> {
+fn interpolate_name(_resource_path: &str, name: &str, content: &str) -> Option<String> {
     let filename = name;
 
     let content = content;
@@ -732,7 +732,7 @@ fn assert_object_expression(expr: &Option<&mut Expr>, callee: &Callee) {
     };
 
     if assert_fail {
-        let prop = if let Callee::Expr(expr) = callee {
+        let _prop = if let Callee::Expr(expr) = callee {
             if let Expr::Ident(ident) = &**expr {
                 Some(ident.sym.to_string())
             } else {
@@ -764,7 +764,7 @@ fn assert_object_expression(expr: &Option<&mut Expr>, callee: &Callee) {
     }
 }
 
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize)]
 #[serde(rename_all = "camelCase", default)]
 pub struct ExtractedMessage {
     pub id: String,

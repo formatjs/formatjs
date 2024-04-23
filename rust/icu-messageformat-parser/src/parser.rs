@@ -8,7 +8,7 @@ use crate::intl::options::{
     NumberFormatOptionsTrailingZeroDisplay, TimeZoneNameFormat, UnitDisplay,
 };
 use crate::pattern_syntax::is_pattern_syntax;
-use langtag::LanguageTag;
+use langtag::LangTag;
 use once_cell::sync::Lazy;
 use regex::Regex as Regexp;
 use serde::{Deserialize, Serialize};
@@ -108,13 +108,13 @@ fn is_alpha(ch: Option<char>) -> bool {
 }
 
 fn get_default_hour_symbol_from_locale(locale: &str) -> char {
-    let language_tag = LanguageTag::parse(locale).expect("Should able to parse locale tag");
+    let language_tag = LangTag::new(locale).expect("Should able to parse locale tag");
 
     // There's no built in Intl.Locale, manually read through extensions for the values we need to read
-    for extension in language_tag.extensions() {
+    for extension in language_tag.extensions().iter() {
         //TODO: locale.hourCycles support is missing
 
-        let hour_cycle = if extension.singleton() as char == 'u' {
+        let hour_cycle = if extension.singleton().unwrap() == b'u' {
             let mut ret = None;
             let mut ext_iter = extension.iter();
             loop {
