@@ -16,4 +16,7 @@ serde_json = "1"
 swc-formatjs-visitor = { path = "../swc-formatjs-visitor", version = "0.0.2", features = [
   "plugin",
 ] }
-swc_core = { version = "0.75.42", features = ["ecma_plugin_transform", "ecma_ast_serde"] }
+swc_core = { version = "0.91.0", features = [
+  "ecma_plugin_transform",
+  "ecma_ast_serde",
+] }
