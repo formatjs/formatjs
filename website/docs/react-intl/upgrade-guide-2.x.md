@@ -21,7 +21,7 @@ This assumes a locale data `<script>` is added based on the request; e.g., for F
 <script src="react-intl/locale-data/fr.js"></script>
 ```
 
-**Using `<script src="react-intl/dist/react-intl.js>`:**
+**Using `<script src="react-intl/dist/react-intl.js>`**
 
 ```tsx
 if ('ReactIntl' in window && 'ReactIntlLocaleData' in window) {
@@ -31,7 +31,7 @@ if ('ReactIntl' in window && 'ReactIntlLocaleData' in window) {
 }
 ```
 
-**Using Browserify/Webpack to Load React Intl:**
+**Using Browserify/Webpack to Load React Intl**
 
 ```tsx
 import {addLocaleData} from 'react-intl'
@@ -43,7 +43,7 @@ if ('ReactIntlLocaleData' in window) {
 }
 ```
 
-::info
+:::info
 This decoupling of the library from the locale data, allows for the files to be loaded via `<script async>`. When using async scripts, your client bootstrapping code will need to wait for the `load` event, including the code above.
 :::
 
