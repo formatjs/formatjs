@@ -117,11 +117,6 @@ export default {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-        googleAnalytics: {
-          trackingID: 'UA-173519367-1',
-          // Optional fields.
-          anonymizeIP: true, // Should IPs be anonymized?
-        },
       } satisfies Preset.Options,
     ],
   ],
