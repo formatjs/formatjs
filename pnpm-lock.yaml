@@ -986,29 +986,29 @@ importers:
         specifier: workspace:*
         version: link:../packages/icu-messageformat-parser
       '@mdx-js/react':
-        specifier: '3'
-        version: 3.0.0(@types/react@18.0.25)(react@18.2.0)
+        specifier: 3.0.1
+        version: 3.0.1(@types/react@18.0.25)(react@18.2.0)
       '@orama/plugin-docusaurus-v3':
         specifier: 2.0.17
         version: 2.0.17(@docusaurus/plugin-content-docs@3.3.2)(@docusaurus/theme-common@3.3.2)(@docusaurus/types@3.3.2)(@preact/signals-core@1.6.0)(@preact/signals-react@2.0.1)(@r2wc/react-to-web-component@2.0.3)(react-dom@18.2.0)(react-markdown@9.0.1)(react@18.2.0)(typescript@5.2.2)
       classnames:
-        specifier: '2'
-        version: 2.3.1
+        specifier: 2.5.1
+        version: 2.5.1
       http-server:
-        specifier: '14'
+        specifier: 14.1.1
         version: 14.1.1
       intl-messageformat:
         specifier: workspace:*
         version: link:../packages/intl-messageformat
       prism-react-renderer:
-        specifier: '2'
-        version: 2.1.0(react@18.2.0)
+        specifier: 2.3.1
+        version: 2.3.1(react@18.2.0)
       react-intl:
         specifier: workspace:*
         version: link:../packages/react-intl
       react-live:
-        specifier: '4'
-        version: 4.0.0(react-dom@18.2.0)(react@18.2.0)
+        specifier: 4.1.6
+        version: 4.1.6(react-dom@18.2.0)(react@18.2.0)
       typescript:
         specifier: '5'
         version: 5.2.2
@@ -4728,7 +4728,7 @@ packages:
       '@docusaurus/utils': 3.3.2(@docusaurus/types@3.3.2)(@swc/core@1.3.56)(typescript@5.2.2)
       '@docusaurus/utils-common': 3.3.2(@docusaurus/types@3.3.2)
       '@docusaurus/utils-validation': 3.3.2(@docusaurus/types@3.3.2)(@swc/core@1.3.56)(typescript@5.2.2)
-      '@mdx-js/react': 3.0.0(@types/react@18.0.25)(react@18.2.0)
+      '@mdx-js/react': 3.0.1(@types/react@18.0.25)(react@18.2.0)
       clsx: 2.0.0
       copy-text-to-clipboard: 3.2.0
       infima: 0.2.0-alpha.43
@@ -5540,8 +5540,8 @@ packages:
       - supports-color
     dev: true
 
-  /@mdx-js/react@3.0.0(@types/react@18.0.25)(react@18.2.0):
-    resolution: {integrity: sha512-nDctevR9KyYFyV+m+/+S4cpzCWHqj+iHDHq3QrsWezcC+B17uZdIWgCguESUkwFhM3n/56KxWVE3V6EokrmONQ==}
+  /@mdx-js/react@3.0.1(@types/react@18.0.25)(react@18.2.0):
+    resolution: {integrity: sha512-9ZrPIU4MGf6et1m1ov3zKf+q9+deetI51zprKB1D/z3NOb+rUxxtEl3mCjW5wTGh6VhRdwPueh1oRzi6ezkA8A==}
     peerDependencies:
       '@types/react': '>=16'
       react: '>=16'
@@ -8933,10 +8933,6 @@ packages:
   /cjs-module-lexer@1.2.2:
     resolution: {integrity: sha512-cOU9usZw8/dXIXKtwa8pM0OTJQuJkxMN6w30csNRUerHfeQ5R6U3kkU/FtJeIf3M202OHfY2U8ccInBG7/xogA==}
 
-  /classnames@2.3.1:
-    resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
-    dev: true
-
   /classnames@2.5.1:
     resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
     dev: true
@@ -9089,11 +9085,6 @@ packages:
   /clone@1.0.4:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
-    dev: true
-
-  /clsx@1.2.1:
-    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
-    engines: {node: '>=6'}
     dev: true
 
   /clsx@2.0.0:
@@ -11548,14 +11539,6 @@ packages:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
 
-  /get-intrinsic@1.1.2:
-    resolution: {integrity: sha512-Jfm3OyCxHh9DJyc28qGk+JmfkpO41A4XkneDSujN9MDXrm4oDKdHvndhZ2dN94+ERNfkYJWDclW6k2L/ZGHjXA==}
-    dependencies:
-      function-bind: 1.1.1
-      has: 1.0.3
-      has-symbols: 1.0.3
-    dev: true
-
   /get-intrinsic@1.1.3:
     resolution: {integrity: sha512-QJVz1Tj7MS099PevUG5jvnt9tSkXN8K14dxQlikJuPt4uD9hHAHjLyLBiLR5zELelBdD9QNRAXZzsJx0WaDL9A==}
     dependencies:
@@ -11918,7 +11901,7 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
     dependencies:
-      minimist: 1.2.6
+      minimist: 1.2.8
       neo-async: 2.6.2
       source-map: 0.6.1
       wordwrap: 1.0.0
@@ -11952,7 +11935,7 @@ packages:
   /has-property-descriptors@1.0.0:
     resolution: {integrity: sha512-62DVLZGoiEBDHQyqG4w9xCuZ7eJEwNmJRWw2VY84Oedb7WFcA27fiEVe8oUQx9hAUJ4ekurquucTGwsyO1XGdQ==}
     dependencies:
-      get-intrinsic: 1.1.2
+      get-intrinsic: 1.1.3
     dev: true
 
   /has-symbol-support-x@1.4.2:
@@ -15480,7 +15463,7 @@ packages:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
     hasBin: true
     dependencies:
-      minimist: 1.2.6
+      minimist: 1.2.8
     dev: true
 
   /mkdirp@1.0.4:
@@ -16859,24 +16842,6 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /prism-react-renderer@1.3.5(react@18.2.0):
-    resolution: {integrity: sha512-IJ+MSwBWKG+SM3b2SUfdrhC+gu01QkV2KmRQgREThBfSQRoufqRfxfHUxpG1WcaFjP+kojcFyO9Qqtpgt3qLCg==}
-    peerDependencies:
-      react: '>=0.14.9'
-    dependencies:
-      react: 18.2.0
-    dev: true
-
-  /prism-react-renderer@2.1.0(react@18.2.0):
-    resolution: {integrity: sha512-I5cvXHjA1PVGbGm1MsWCpvBCRrYyxEri0MC7/JbfIfYfcXAxHyO5PaUjs3A8H5GW6kJcLhTHxxMaOZZpRZD2iQ==}
-    peerDependencies:
-      react: '>=16.0.0'
-    dependencies:
-      '@types/prismjs': 1.26.2
-      clsx: 1.2.1
-      react: 18.2.0
-    dev: true
-
   /prism-react-renderer@2.3.1(react@18.2.0):
     resolution: {integrity: sha512-Rdf+HzBLR7KYjzpJ1rSoxT9ioO85nZngQEoFIhL07XhtJHlCU3SOz0GJ6+qvMyQe0Se+BV3qpe6Yd/NmQF5Juw==}
     peerDependencies:
@@ -17229,20 +17194,6 @@ packages:
       react: ^16.13.1 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
-    dev: true
-
-  /react-live@4.0.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-HE//oUi2J0Ji0DM2BU8PAeYOdqIbm+HqF7hvwXzChyfNCGZC+zsgeJNkg7cy5na/A0jEGrUpNp9pdzCytZtYxw==}
-    engines: {node: '>= 0.12.0', npm: '>= 2.0.0'}
-    peerDependencies:
-      react: '*'
-      react-dom: '*'
-    dependencies:
-      prism-react-renderer: 1.3.5(react@18.2.0)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      sucrase: 3.34.0
-      use-editable: 2.3.3(react@18.2.0)
     dev: true
 
   /react-live@4.1.6(react-dom@18.2.0)(react@18.2.0):
@@ -19093,7 +19044,7 @@ packages:
     hasBin: true
     dependencies:
       duplexer: 0.1.2
-      minimist: 1.2.6
+      minimist: 1.2.8
       through: 2.3.8
     dev: true
 
@@ -19119,7 +19070,7 @@ packages:
     engines: {node: '>=8'}
     hasBin: true
     dependencies:
-      '@jridgewell/gen-mapping': 0.3.2
+      '@jridgewell/gen-mapping': 0.3.5
       commander: 4.1.1
       glob: 7.1.6
       lines-and-columns: 1.2.4
