@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`gjs 1`] = `{}`;
+
+exports[`gts 1`] = `{}`;
+
+exports[`hbs 1`] = `
+{
+  "7MCO2v": {
+    "defaultMessage": "in template",
+    "description": "in template desc",
+  },
+  "lMXYqa": {
+    "defaultMessage": "{connectorName, select, none {Install Service} other {Install {connectorName}} }",
+  },
+  "mkhWoT": {
+    "defaultMessage": "Very long message with multiple'' breaklines and multiple spaces '<a href={href}>' Link '</a>'",
+    "description": "Nice description",
+  },
+}
+`;

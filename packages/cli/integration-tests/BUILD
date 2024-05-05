@@ -56,6 +56,21 @@ jest_test(
 )
 
 jest_test(
+    name = "extract_glimmer_integration_test",
+    data = glob(
+        ["extract-glimmer/**/*"],
+        exclude = ["extract-glimmer/__snapshots__/*"],
+    ) + [
+        ":node_modules/@formatjs/cli",
+        "//:node_modules/@babel/types",
+        "//:node_modules/@types/node",
+        "//:node_modules/fast-glob",
+    ],
+    flaky = True,
+    snapshots = glob(["extract-glimmer/__snapshots__/*"]),
+)
+
+jest_test(
     name = "compile_integration_test",
     data = [
         "formatter.js",
