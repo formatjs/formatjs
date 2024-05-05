@@ -196,31 +196,31 @@ export async function extract(
   extractOpts: ExtractOpts
 ) {
   const {throws, readFromStdin, flatten, ...opts} = extractOpts
-  let rawResults: Array<ExtractionResult | undefined>
-  if (readFromStdin) {
-    debug(`Reading input from stdin`)
-    // Read from stdin
-    if (process.stdin.isTTY) {
-      warn('Reading source file from TTY.')
-    }
-    const stdinSource = await getStdinAsString()
-    rawResults = [await processFile(stdinSource, 'dummy', opts)]
-  } else {
-    rawResults = await Promise.all(
-      files.map(async fn => {
-        debug('Extracting file:', fn)
-        try {
+  let rawResults: Array<ExtractionResult | undefined> = []
+  try {
+    if (readFromStdin) {
+      debug(`Reading input from stdin`)
+      // Read from stdin
+      if (process.stdin.isTTY) {
+        warn('Reading source file from TTY.')
+      }
+      const stdinSource = await getStdinAsString()
+      rawResults = [await processFile(stdinSource, 'dummy', opts)]
+    } else {
+      rawResults = await Promise.all(
+        files.map(async fn => {
+          debug('Extracting file:', fn)
           const source = await readFile(fn, 'utf8')
           return processFile(source, fn, opts)
-        } catch (e) {
-          if (throws) {
-            throw e
-          } else {
-            warn(String(e))
-          }
-        }
-      })
-    )
+        })
+      )
+    }
+  } catch (e) {
+    if (throws) {
+      throw e
+    } else {
+      warn(String(e))
+    }
   }
 
   const formatter: Formatter = await resolveBuiltinFormatter(opts.format)
