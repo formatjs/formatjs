@@ -36,10 +36,38 @@
     "@formatjs/cli-lib": "workspace:*"
   },
   "peerDependencies": {
+    "@glimmer/env": "^0.1.7",
+    "@glimmer/reference": "^0.91.1",
+    "@glimmer/syntax": "^0.91.1",
+    "@glimmer/validator": "^0.91.1",
+    "@vue/compiler-core": "^3.4.0",
+    "content-tag": "^2.0.1",
+    "ember-template-recast": "^6.1.4",
     "vue": "^3.4.0"
   },
   "peerDependenciesMeta": {
     "vue": {
+      "optional": true
+    },
+    "@vue/compiler-core": {
+      "optional": true
+    },
+    "@glimmer/env": {
+      "optional": true
+    },
+    "@glimmer/reference": {
+      "optional": true
+    },
+    "@glimmer/syntax": {
+      "optional": true
+    },
+    "@glimmer/validator": {
+      "optional": true
+    },
+    "ember-template-recast": {
+      "optional": true
+    },
+    "content-tag": {
       "optional": true
     }
   },

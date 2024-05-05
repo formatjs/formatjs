@@ -31,20 +31,14 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@babel/parser": "^7.22.10",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
-    "@glimmer/env": "^0.1.7",
-    "@glimmer/reference": "^0.91.1",
-    "@glimmer/syntax": "^0.91.1",
-    "@glimmer/validator": "^0.91.1",
     "@types/estree": "^1.0.0",
     "@types/fs-extra": "^9.0.1",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/node": "14 || 16 || 17",
     "chalk": "^4.0.0",
     "commander": "8",
-    "ember-template-recast": "^6.1.4",
     "fast-glob": "^3.2.7",
     "fs-extra": "10",
     "json-stable-stringify": "^1.0.1",
@@ -53,7 +47,13 @@
     "typescript": "5"
   },
   "peerDependencies": {
+    "@glimmer/env": "^0.1.7",
+    "@glimmer/reference": "^0.91.1",
+    "@glimmer/syntax": "^0.91.1",
+    "@glimmer/validator": "^0.91.1",
     "@vue/compiler-core": "^3.4.0",
+    "content-tag": "^2.0.1",
+    "ember-template-recast": "^6.1.4",
     "vue": "^3.4.0"
   },
   "peerDependenciesMeta": {
@@ -61,6 +61,24 @@
       "optional": true
     },
     "@vue/compiler-core": {
+      "optional": true
+    },
+    "@glimmer/env": {
+      "optional": true
+    },
+    "@glimmer/reference": {
+      "optional": true
+    },
+    "@glimmer/syntax": {
+      "optional": true
+    },
+    "@glimmer/validator": {
+      "optional": true
+    },
+    "ember-template-recast": {
+      "optional": true
+    },
+    "content-tag": {
       "optional": true
     }
   },

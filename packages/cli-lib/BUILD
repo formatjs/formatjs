@@ -42,7 +42,6 @@ GLIMMER_HBS_DEPS = [
     "//:node_modules/@glimmer/validator",
     "//:node_modules/content-tag",
     "//:node_modules/ember-template-recast",
-    ":node_modules/@babel/parser",
 ]
 
 SRC_DEPS = [
@@ -95,6 +94,14 @@ esbuild(
     entry_point = "lib_esnext/main.js",
     external = [
         "vue",
+        "content-tag",
+        "@glimmer/env",
+        "@glimmer/reference",
+        "@glimmer/syntax",
+        "@glimmer/validator",
+        "@vue/compiler-core",
+        "content-tag",
+        "ember-template-recast",
     ],
     platform = "node",
     target = "node16",

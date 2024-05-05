@@ -3,6 +3,15 @@ load("//tools:jest.bzl", "jest_test")
 
 npm_link_all_packages(name = "node_modules")
 
+GLIMMER_HBS_DEPS = [
+    "//:node_modules/@glimmer/env",
+    "//:node_modules/@glimmer/reference",
+    "//:node_modules/@glimmer/syntax",
+    "//:node_modules/@glimmer/validator",
+    "//:node_modules/content-tag",
+    "//:node_modules/ember-template-recast",
+]
+
 jest_test(
     name = "compile_folder_integration_test",
     data = glob(
@@ -65,7 +74,7 @@ jest_test(
         "//:node_modules/@babel/types",
         "//:node_modules/@types/node",
         "//:node_modules/fast-glob",
-    ],
+    ] + GLIMMER_HBS_DEPS,
     flaky = True,
     snapshots = glob(["extract-glimmer/__snapshots__/*"]),
 )
