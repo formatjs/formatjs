@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.3.8...@formatjs/cli-lib@6.4.0) (2024-05-05)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** fix [#4404](https://github.com/formatjs/formatjs/issues/4404) ([2195fc0](https://github.com/formatjs/formatjs/commit/2195fc0bd37bce263752d8d497a2d5865a4f373a)) - by @longlho
+* **@formatjs/cli-lib:** make glimmer stuff external ([cc4432d](https://github.com/formatjs/formatjs/commit/cc4432dfa5c305590bce51253c4e2ee1c301ca95)) - by @longlho
+
+### Features
+
+* **@formatjs/cli-lib:** add support for gts, gjs and hbs files. ([1693515](https://github.com/formatjs/formatjs/commit/1693515a03278a3cfff5a16a9c7ca708c8a0e54e)) - by @kiwiupover
+
 ## [6.3.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.3.7...@formatjs/cli-lib@6.3.8) (2024-03-27)
 
 ### Bug Fixes

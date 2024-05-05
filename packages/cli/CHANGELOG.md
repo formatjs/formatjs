@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.10](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.2.9...@formatjs/cli@6.2.10) (2024-05-05)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** make glimmer stuff external ([cc4432d](https://github.com/formatjs/formatjs/commit/cc4432dfa5c305590bce51253c4e2ee1c301ca95)) - by @longlho
+
 ## [6.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.2.8...@formatjs/cli@6.2.9) (2024-03-27)
 
 ### Bug Fixes

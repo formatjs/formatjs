@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.5.0](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.30...vue-intl@6.5.0) (2024-05-05)
+
+### Features
+
+* **@formatjs/cli-lib:** add support for gts, gjs and hbs files. ([1693515](https://github.com/formatjs/formatjs/commit/1693515a03278a3cfff5a16a9c7ca708c8a0e54e)) - by @kiwiupover
+
 ## [6.4.30](https://github.com/formatjs/formatjs/compare/vue-intl@6.4.29...vue-intl@6.4.30) (2024-03-27)
 
 ### Bug Fixes

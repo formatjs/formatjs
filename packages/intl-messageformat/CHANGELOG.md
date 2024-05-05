@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.12](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.5.11...intl-messageformat@10.5.12) (2024-05-05)
+
+**Note:** Version bump only for package intl-messageformat
+
 ## [10.5.11](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.5.10...intl-messageformat@10.5.11) (2024-01-26)
 
 **Note:** Version bump only for package intl-messageformat
