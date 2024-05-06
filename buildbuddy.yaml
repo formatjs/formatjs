@@ -8,6 +8,7 @@ actions:
       pull_request:
         branches:
           - '*'
+    user: 'buildbuddy'
     resource_requests:
       memory: 10GB
     bazel_commands:
