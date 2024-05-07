@@ -9,3 +9,4 @@ node_modules
 rust/target
 .css
 build
+.DS_Store
