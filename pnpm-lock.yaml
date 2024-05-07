@@ -1,12 +1,16 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   terser: 5.27.0
   source-map-js: 1.0.2
   '@glimmer/syntax': 0.91.1
   '@glimmer/interfaces': 0.91.2
 
-packageExtensionsChecksum: b9ce7c3e3786b4420c484d1e957a9a9b
+packageExtensionsChecksum: 36f586ee47cc544e88bd717a1b6ef1ae
 
 patchedDependencies:
   '@commitlint/rules@17.0.0':
@@ -28,22 +32,6 @@ patchedDependencies:
 importers:
 
   .:
-    dependencies:
-      '@swc/helpers':
-        specifier: ^0.5.1
-        version: 0.5.1
-      content-tag:
-        specifier: ^2.0.1
-        version: 2.0.1(patch_hash=vcuji544ffu5buppehwyhsxi3i)
-      jest-cli:
-        specifier: ^29.5.0
-        version: 29.5.0(@types/node@18.11.9)
-      jest-junit:
-        specifier: ^16.0.0
-        version: 16.0.0
-      magic-string:
-        specifier: ^0.30.0
-        version: 0.30.0
     devDependencies:
       '@babel/core':
         specifier: ^7.10.4
@@ -114,6 +102,9 @@ importers:
       '@swc/core':
         specifier: ^1.3.56
         version: 1.3.56(@swc/helpers@0.5.1)
+      '@swc/helpers':
+        specifier: ^0.5.1
+        version: 0.5.1
       '@swc/jest':
         specifier: ^0.2.23
         version: 0.2.23(@swc/core@1.3.56)
@@ -252,6 +243,9 @@ importers:
       commander:
         specifier: '8'
         version: 8.3.0
+      content-tag:
+        specifier: ^2.0.1
+        version: 2.0.1(patch_hash=vcuji544ffu5buppehwyhsxi3i)
       core-js:
         specifier: ^3.6.5
         version: 3.23.2
@@ -285,9 +279,15 @@ importers:
       jest:
         specifier: '29'
         version: 29.5.0(@types/node@18.11.9)
+      jest-cli:
+        specifier: ^29.5.0
+        version: 29.5.0(@types/node@18.11.9)
       jest-environment-jsdom:
         specifier: '29'
         version: 29.0.3
+      jest-junit:
+        specifier: ^16.0.0
+        version: 16.0.0
       json-stable-stringify:
         specifier: ^1.0.1
         version: 1.0.1
@@ -312,6 +312,9 @@ importers:
       loud-rejection:
         specifier: ^2.2.0
         version: 2.2.0
+      magic-string:
+        specifier: ^0.30.0
+        version: 0.30.0
       make-plural-compiler:
         specifier: 5.1.0
         version: 5.1.0(patch_hash=qdcdtqeknhxqnjirmx4dcdabaq)
@@ -429,6 +432,27 @@ importers:
 
   packages/cli:
     dependencies:
+      '@glimmer/env':
+        specifier: ^0.1.7
+        version: 0.1.7
+      '@glimmer/reference':
+        specifier: ^0.91.1
+        version: 0.91.1
+      '@glimmer/syntax':
+        specifier: 0.91.1
+        version: 0.91.1(patch_hash=kzfaehsfdvlao2akir2tjxkzyq)
+      '@glimmer/validator':
+        specifier: ^0.91.1
+        version: 0.91.1
+      '@vue/compiler-core':
+        specifier: ^3.4.0
+        version: 3.4.0
+      content-tag:
+        specifier: ^2.0.1
+        version: 2.0.1(patch_hash=vcuji544ffu5buppehwyhsxi3i)
+      ember-template-recast:
+        specifier: ^6.1.4
+        version: 6.1.4
       vue:
         specifier: ^3.4.0
         version: 3.4.0(typescript@5.2.2)
@@ -439,9 +463,6 @@ importers:
 
   packages/cli-lib:
     dependencies:
-      '@babel/parser':
-        specifier: ^7.22.10
-        version: 7.22.16
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:../icu-messageformat-parser
@@ -481,6 +502,9 @@ importers:
       commander:
         specifier: '8'
         version: 8.3.0
+      content-tag:
+        specifier: ^2.0.1
+        version: 2.0.1(patch_hash=vcuji544ffu5buppehwyhsxi3i)
       ember-template-recast:
         specifier: ^6.1.4
         version: 6.1.4
@@ -1036,8 +1060,8 @@ importers:
         specifier: 3.0.1
         version: 3.0.1(@types/react@18.0.25)(react@18.2.0)
       '@orama/plugin-docusaurus-v3':
-        specifier: 2.0.17
-        version: 2.0.17(@docusaurus/plugin-content-docs@3.3.2)(@docusaurus/theme-common@3.3.2)(@docusaurus/types@3.3.2)(@preact/signals-core@1.6.0)(@preact/signals-react@2.0.1)(@r2wc/react-to-web-component@2.0.3)(react-dom@18.2.0)(react-markdown@9.0.1)(react@18.2.0)(typescript@5.2.2)
+        specifier: 2.0.18
+        version: 2.0.18(@docusaurus/plugin-content-docs@3.3.2)(@docusaurus/theme-common@3.3.2)(@docusaurus/types@3.3.2)(@preact/signals-core@1.6.0)(@preact/signals-react@2.0.1)(@r2wc/react-to-web-component@2.0.3)(react-dom@18.2.0)(react-markdown@9.0.1)(react@18.2.0)(typescript@5.2.2)
       classnames:
         specifier: 2.5.1
         version: 2.5.1
@@ -1897,21 +1921,6 @@ packages:
     hasBin: true
     dependencies:
       '@babel/types': 7.20.5
-
-  /@babel/parser@7.22.16:
-    resolution: {integrity: sha512-+gPfKv8UWeKKeJTUxe59+OobVcrYHETCsORl61EmSkmgymguYk/X5bp7GuUIXaFsc6y++v8ZxPsLSSuujqDphA==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-    dependencies:
-      '@babel/types': 7.24.0
-    dev: false
-
-  /@babel/parser@7.24.1:
-    resolution: {integrity: sha512-Zo9c7N3xdOIQrNip7Lc9wvRPzlRtovHVE4lkz8WEDr7uYh/GMQhSiIgFxGIArRHYdJE5kxtZjAf8rT0xhdLCzg==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-    dependencies:
-      '@babel/types': 7.23.0
 
   /@babel/parser@7.24.4:
     resolution: {integrity: sha512-zTvEBcghmeBma9QIGunWevvBAp4/Qu9Bdq+2k0Ot4fVMD6v3dsC9WOcRSKk7tRRyBM/53yKMJko9xOatGQAwSg==}
@@ -3994,14 +4003,6 @@ packages:
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
-  /@babel/types@7.23.0:
-    resolution: {integrity: sha512-0oIyUfKoI3mSqMvsxBdclDwxXKXAUA8v/apZbc+iSyARYou1o8ZGDxbUYyLFoW2arqS2jDGqJuZvv1d/io1axg==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/helper-string-parser': 7.22.5
-      '@babel/helper-validator-identifier': 7.22.20
-      to-fast-properties: 2.0.0
-
   /@babel/types@7.24.0:
     resolution: {integrity: sha512-+j7a5c253RfKh8iABBhywc8NSfP5LURe7Uh4qpsh6jc+aLJguvmIUBdjSdEMQv2bENrCR5MfRdjGo7vzS/ob7w==}
     engines: {node: '>=6.9.0'}
@@ -5883,22 +5884,22 @@ packages:
   /@orama/highlight@0.1.6:
     resolution: {integrity: sha512-6Va8paStIoVy5algYDQu1hU0NUCkcrBx7FSt+0Lllp4d2VA1aVi6ACQ7xoINYls8sDZqg6vXf2lj4YDlVamBtw==}
     dependencies:
-      '@orama/orama': 2.0.17
+      '@orama/orama': 2.0.18
     dev: true
 
-  /@orama/orama@2.0.17:
-    resolution: {integrity: sha512-RU0oGnV/ieaiLnMhCsVZcJTOT0bo5ne0KndEK7xMHsvA2RDAt8za2XFW57JaMWgBXLDKNX+Q5CHKje72PS6uzw==}
+  /@orama/orama@2.0.18:
+    resolution: {integrity: sha512-KSty7+r8JxXv3iCuhLqQfwMvUiSWnXPaTPQPPoVPpwdvynEKcp1JNWKzTMB2tISDggf8jKhQXHEP3QXlGkvvtA==}
     engines: {node: '>= 16.0.0'}
     dev: true
 
-  /@orama/plugin-analytics@2.0.17:
-    resolution: {integrity: sha512-qJ0vx+5VqoqUsHHg0SJjYB8OmOhlwttAf/xj7ME/o/pNVnRTfojOLvP7mUf+zGWcwULB9KNdOfxHwOcFwvFl4g==}
+  /@orama/plugin-analytics@2.0.18:
+    resolution: {integrity: sha512-E6C1kLjf7Db3QTeww3L5Iooa2lFL/jp+uNgaGSNBfHR+kUi/pnifmtFAItIQ12ZIa6bv07UvbhWhDMELQcz//A==}
     dependencies:
-      '@orama/orama': 2.0.17
+      '@orama/orama': 2.0.18
     dev: true
 
-  /@orama/plugin-docusaurus-v3@2.0.17(@docusaurus/plugin-content-docs@3.3.2)(@docusaurus/theme-common@3.3.2)(@docusaurus/types@3.3.2)(@preact/signals-core@1.6.0)(@preact/signals-react@2.0.1)(@r2wc/react-to-web-component@2.0.3)(react-dom@18.2.0)(react-markdown@9.0.1)(react@18.2.0)(typescript@5.2.2):
-    resolution: {integrity: sha512-PZBjXGWzAAD/EG8YT+J3bYIjJCYN9sH+7Cr4daKNeB5dF/wl79ILMI4a/dz7hWrESFeCTm3KMneSivgEK+8DeQ==}
+  /@orama/plugin-docusaurus-v3@2.0.18(@docusaurus/plugin-content-docs@3.3.2)(@docusaurus/theme-common@3.3.2)(@docusaurus/types@3.3.2)(@preact/signals-core@1.6.0)(@preact/signals-react@2.0.1)(@r2wc/react-to-web-component@2.0.3)(react-dom@18.2.0)(react-markdown@9.0.1)(react@18.2.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-O4ZP926WQ+y8Q5wfjjpf1E6/bFOAl7vLeR2dvtqrzcAX8wkUiP01er4COxNbr0GUxvpJwLoKJx5vNx+dX2FwVw==}
     peerDependencies:
       '@docusaurus/plugin-content-docs': '>= 3.2.0'
       '@docusaurus/theme-common': '>= 3.2.0'
@@ -5910,10 +5911,10 @@ packages:
       '@docusaurus/theme-common': 3.3.2(@docusaurus/types@3.3.2)(@swc/core@1.3.56)(eslint@8.18.0)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@docusaurus/types': 3.3.2(@swc/core@1.3.56)(react-dom@18.2.0)(react@18.2.0)
       '@orama/highlight': 0.1.6
-      '@orama/orama': 2.0.17
-      '@orama/plugin-analytics': 2.0.17
-      '@orama/plugin-parsedoc': 2.0.17
-      '@orama/searchbox': 1.0.0-rc25(@orama/highlight@0.1.6)(@orama/orama@2.0.17)(@oramacloud/client@1.0.14)(@preact/signals-core@1.6.0)(@preact/signals-react@2.0.1)(@r2wc/react-to-web-component@2.0.3)(react-dom@18.2.0)(react-markdown@9.0.1)(react@18.2.0)(typescript@5.2.2)
+      '@orama/orama': 2.0.18
+      '@orama/plugin-analytics': 2.0.18
+      '@orama/plugin-parsedoc': 2.0.18
+      '@orama/searchbox': 1.0.0-rc25(@orama/highlight@0.1.6)(@orama/orama@2.0.18)(@oramacloud/client@1.0.14)(@preact/signals-core@1.6.0)(@preact/signals-react@2.0.1)(@r2wc/react-to-web-component@2.0.3)(react-dom@18.2.0)(react-markdown@9.0.1)(react@18.2.0)(typescript@5.2.2)
       '@oramacloud/client': 1.0.14(typescript@5.2.2)
       github-slugger: 2.0.0
       gray-matter: 4.0.3
@@ -5937,10 +5938,10 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@orama/plugin-parsedoc@2.0.17:
-    resolution: {integrity: sha512-vothzYIAjoCkHASgLFQhRzF+Kjh4/IurMg3W3aXZjpHSjXB5a9oEwAGLd2mJGZ52yIDYm0vaXGKjd7y+bNdYzQ==}
+  /@orama/plugin-parsedoc@2.0.18:
+    resolution: {integrity: sha512-FQ4qM+lfsjPVdK7DEYdXAYHzHAamsVA9aJwy9KxgsA/Yp90h1SGgjfKqDc43bn7yN9iKvc563EvpCg4esVvdKw==}
     dependencies:
-      '@orama/orama': 2.0.17
+      '@orama/orama': 2.0.18
       glob: 8.1.0
       hast-util-from-html: 1.0.2
       hast-util-from-string: 2.0.0
@@ -5965,7 +5966,7 @@ packages:
       - typescript
     dev: true
 
-  /@orama/searchbox@1.0.0-rc25(@orama/highlight@0.1.6)(@orama/orama@2.0.17)(@oramacloud/client@1.0.14)(@preact/signals-core@1.6.0)(@preact/signals-react@2.0.1)(@r2wc/react-to-web-component@2.0.3)(react-dom@18.2.0)(react-markdown@9.0.1)(react@18.2.0)(typescript@5.2.2):
+  /@orama/searchbox@1.0.0-rc25(@orama/highlight@0.1.6)(@orama/orama@2.0.18)(@oramacloud/client@1.0.14)(@preact/signals-core@1.6.0)(@preact/signals-react@2.0.1)(@r2wc/react-to-web-component@2.0.3)(react-dom@18.2.0)(react-markdown@9.0.1)(react@18.2.0)(typescript@5.2.2):
     resolution: {integrity: sha512-p+pBrm0ileYkw0eYPq2wtrMwQHsisdpiWEBRKous+aM/17+Yi/m01goCOjd38nYEIvwzef6HAN7zUw9H1Dfk0A==}
     peerDependencies:
       '@orama/highlight': ^0.1.6
@@ -5979,8 +5980,8 @@ packages:
       react-markdown: ^9.0.1
     dependencies:
       '@orama/highlight': 0.1.6
-      '@orama/orama': 2.0.17
-      '@orama/plugin-analytics': 2.0.17
+      '@orama/orama': 2.0.18
+      '@orama/plugin-analytics': 2.0.18
       '@orama/plugin-secure-proxy': 2.0.16(typescript@5.2.2)
       '@oramacloud/client': 1.0.14(typescript@5.2.2)
       '@phosphor-icons/react': 2.1.5(react-dom@18.2.0)(react@18.2.0)
@@ -6013,7 +6014,7 @@ packages:
   /@oramacloud/client@1.0.14(typescript@5.2.2):
     resolution: {integrity: sha512-cWoY7pq45lq5E6xCYXaXNFsYnDFzeOTV1UvSg5f+8V3MS5kPlK0aAdpHEEQIyNFhAhxji/qEIA8+icEs0oy6XQ==}
     dependencies:
-      '@orama/orama': 2.0.17
+      '@orama/orama': 2.0.18
       '@orama/stemmers': 2.0.16
       '@orama/stopwords': 2.0.16
       '@paralleldrive/cuid2': 2.2.2
@@ -6629,6 +6630,7 @@ packages:
     resolution: {integrity: sha512-sJ902EfIzn1Fa+qYmjdQqh8tPsoxyBz+8yBKC2HKUxyezKJFwPGOn7pv4WY6QuQW//ySQi5lJjA/ZT9sNWWNTg==}
     dependencies:
       tslib: 2.6.2
+    dev: true
 
   /@swc/jest@0.2.23(@swc/core@1.3.56):
     resolution: {integrity: sha512-ZLj17XjHbPtNsgqjm83qizENw05emLkKGu3WuPUttcy9hkngl0/kcc7fDbcSBpADS0GUtsO+iKPjZFWVAtJSlA==}
@@ -7424,8 +7426,8 @@ packages:
   /@vue/compiler-core@3.4.0:
     resolution: {integrity: sha512-cw4S15PkNGTKkP9OFFl4wnQoJJk+HqaYBafgrpDnSukiQGpcYJeRpzmqnCVCIkl6V6Eqsv58E0OAdl6b592vuA==}
     dependencies:
-      '@babel/parser': 7.24.1
-      '@babel/types': 7.23.0
+      '@babel/parser': 7.24.4
+      '@babel/types': 7.24.0
       '@vue/shared': 3.4.0
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -9475,7 +9477,6 @@ packages:
 
   /content-tag@2.0.1(patch_hash=vcuji544ffu5buppehwyhsxi3i):
     resolution: {integrity: sha512-jxsETSDs5NbNwyiDuIp672fUMhUyu8Qxc5MOBOJOcgW/fQESI6o5K1LBDrnEE7Bh810a685lWEZHTF4jQYGEEw==}
-    dev: false
     patched: true
 
   /content-type@1.0.4:
@@ -13385,6 +13386,7 @@ packages:
       - '@types/node'
       - supports-color
       - ts-node
+    dev: true
 
   /jest-config@29.5.0(@types/node@17.0.45):
     resolution: {integrity: sha512-kvDUKBnNJPNBmFFOhDbm59iu1Fii1Q6SxyhXfvylq3UTHbg6o7j/g8k2dZyXWLvfdKB1vAPxNZnMgtKJcmu3kA==}
@@ -13548,7 +13550,7 @@ packages:
       strip-ansi: 6.0.1
       uuid: 8.3.2
       xml: 1.0.1
-    dev: false
+    dev: true
 
   /jest-leak-detector@29.5.0:
     resolution: {integrity: sha512-u9YdeeVnghBUtpN5mVxjID7KbkKE1QU4f6uUwuxiY0vYRi9BUCLKlPEZfDGR67ofdFmDz9oPAy2G92Ujrntmow==}
@@ -14455,7 +14457,6 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.14
-    dev: false
 
   /magic-string@0.30.8:
     resolution: {integrity: sha512-ISQTe55T2ao7XtlAStud6qwYPZjE4GK1S/BeVPus4jrq6JuOnQ00YKQC581RWhR122W7msZV263KzVeLoqidyQ==}
@@ -15624,6 +15625,7 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
+    dev: true
 
   /modify-values@1.0.1:
     resolution: {integrity: sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==}
@@ -20220,6 +20222,7 @@ packages:
   /uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
+    dev: true
 
   /uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
@@ -20987,7 +20990,7 @@ packages:
 
   /xml@1.0.1:
     resolution: {integrity: sha512-huCv9IH9Tcf95zuYCsQraZtWnJvBtLVE0QHMOs8bWyZAFZNDcYjsPq1nEx8jKA9y+Beo9v+7OBPRisQTjinQMw==}
-    dev: false
+    dev: true
 
   /xmlchars@2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
@@ -21138,7 +21141,3 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
