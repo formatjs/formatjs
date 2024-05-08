@@ -196,7 +196,7 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0(vue@3.4.0)
       '@vue/test-utils':
-        specifier: ^2.4.6
+        specifier: ^2.4.0
         version: 2.4.6
       babel-loader:
         specifier: '9'
@@ -328,8 +328,8 @@ importers:
         specifier: '8'
         version: 8.0.0
       prettier:
-        specifier: ^3.0.3
-        version: 3.0.3
+        specifier: ^3.2.5
+        version: 3.2.5
       react:
         specifier: ^16.6.0 || 17 || 18
         version: 18.2.0
@@ -17167,8 +17167,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /prettier@3.0.3:
-    resolution: {integrity: sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==}
+  /prettier@3.2.5:
+    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
