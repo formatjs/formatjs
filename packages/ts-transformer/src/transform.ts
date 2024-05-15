@@ -32,12 +32,12 @@ function primitiveToTSNode(
   return typeof v === 'string'
     ? factory.createStringLiteral(v)
     : typeof v === 'number'
-    ? factory.createNumericLiteral(v + '')
-    : typeof v === 'boolean'
-    ? v
-      ? factory.createTrue()
-      : factory.createFalse()
-    : undefined
+      ? factory.createNumericLiteral(v + '')
+      : typeof v === 'boolean'
+        ? v
+          ? factory.createTrue()
+          : factory.createFalse()
+        : undefined
 }
 
 function isValidIdentifier(k: string): boolean {
@@ -737,14 +737,14 @@ function getVisitor(
     const newNode = ts.isCallExpression(node)
       ? extractMessagesFromCallExpression(ts, ctx.factory, node, opts, sf)
       : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
-      ? extractMessageFromJsxComponent(
-          ts,
-          ctx.factory,
-          node as typescript.JsxOpeningElement,
-          opts,
-          sf
-        )
-      : node
+        ? extractMessageFromJsxComponent(
+            ts,
+            ctx.factory,
+            node as typescript.JsxOpeningElement,
+            opts,
+            sf
+          )
+        : node
     return ts.visitEachChild(newNode as typescript.Node, visitor, ctx)
   }
   return visitor

@@ -152,9 +152,8 @@ const parseUCDTextFile = (filePath: string) => {
 
       const rangeResult = rawCodes.match(UCD_CODE_RANGE_REGEX)
       if (rangeResult) {
-        result[
-          propertyValueName
-        ] += `\\u{${rangeResult[1]}}-\\u{${rangeResult[2]}}`
+        result[propertyValueName] +=
+          `\\u{${rangeResult[1]}}-\\u{${rangeResult[2]}}`
       } else {
         result[propertyValueName] += `\\u{${rawCodes}}`
       }

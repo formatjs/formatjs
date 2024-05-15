@@ -210,8 +210,8 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
           value === 'h11' || value === 'h12'
             ? true
             : value === 'h23' || value === 'h24'
-            ? false
-            : undefined
+              ? false
+              : undefined
         if (hour12 !== undefined) {
           ro.hour12 = hour12
         }

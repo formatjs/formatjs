@@ -177,8 +177,8 @@ export function formatToParts<T>(
         typeof el.style === 'string'
           ? formats.date[el.style]
           : isDateTimeSkeleton(el.style)
-          ? el.style.parsedOptions
-          : undefined
+            ? el.style.parsedOptions
+            : undefined
       result.push({
         type: PART_TYPE.literal,
         value: formatters
@@ -192,8 +192,8 @@ export function formatToParts<T>(
         typeof el.style === 'string'
           ? formats.time[el.style]
           : isDateTimeSkeleton(el.style)
-          ? el.style.parsedOptions
-          : formats.time.medium
+            ? el.style.parsedOptions
+            : formats.time.medium
       result.push({
         type: PART_TYPE.literal,
         value: formatters
@@ -207,8 +207,8 @@ export function formatToParts<T>(
         typeof el.style === 'string'
           ? formats.number[el.style]
           : isNumberSkeleton(el.style)
-          ? el.style.parsedOptions
-          : undefined
+            ? el.style.parsedOptions
+            : undefined
 
       if (style && (style as ExtendedNumberFormatOptions).scale) {
         value =

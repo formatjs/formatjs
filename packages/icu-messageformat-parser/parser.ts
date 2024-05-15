@@ -799,8 +799,8 @@ export class Parser {
               argType === 'number'
                 ? TYPE.number
                 : argType === 'date'
-                ? TYPE.date
-                : TYPE.time,
+                  ? TYPE.date
+                  : TYPE.time,
             value,
             location,
             style: styleAndLocation?.style ?? null,
