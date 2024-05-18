@@ -19,13 +19,13 @@ function main(args: Args) {
   const externalDeps = Array.isArray(externalDep)
     ? externalDep
     : externalDep
-    ? [externalDep]
-    : []
+      ? [externalDep]
+      : []
   const internalDeps = Array.isArray(internalDep)
     ? internalDep
     : internalDep
-    ? [internalDep]
-    : []
+      ? [internalDep]
+      : []
   const packageJsonContent = readJSONSync(packageJson)
   const rootPackageJsonContent = readJSONSync(rootPackageJson)
   const {devDependencies: rootDependencies} = rootPackageJsonContent

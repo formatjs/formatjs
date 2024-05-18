@@ -119,10 +119,10 @@ function primitiveToTSNode(
   return typeof v === 'string'
     ? createStringLiteral(v, span)
     : typeof v === 'number'
-    ? createNumericLiteral(v, span)
-    : typeof v === 'boolean'
-    ? createBooleanLiteral(v, span)
-    : undefined
+      ? createNumericLiteral(v, span)
+      : typeof v === 'boolean'
+        ? createBooleanLiteral(v, span)
+        : undefined
 }
 
 function isValidIdentifier(k: string): boolean {
@@ -330,8 +330,8 @@ function extractMessageDescriptor(
           ? prop.key
           : undefined
         : prop.type === 'JSXAttribute' && prop.name.type === 'Identifier'
-        ? prop.name
-        : undefined
+          ? prop.name
+          : undefined
     if (!name) {
       return
     }
@@ -349,10 +349,10 @@ function extractMessageDescriptor(
         prop.value.type === 'BinaryExpression')
         ? prop.value
         : prop.type === 'JSXAttribute' &&
-          (prop.value?.type === 'StringLiteral' ||
-            prop.value?.type === 'JSXExpressionContainer')
-        ? prop.value
-        : undefined
+            (prop.value?.type === 'StringLiteral' ||
+              prop.value?.type === 'JSXExpressionContainer')
+          ? prop.value
+          : undefined
 
     if (name && name.type === 'Identifier' && value) {
       // {id: 'id'}
