@@ -202,8 +202,3 @@ export function createNumberElement(
     style,
   }
 }
-
-export type IntlLocaleLike = {
-  readonly hourCycle?: Intl.LocaleHourCycleKey
-  readonly hourCycles?: Array<Intl.LocaleHourCycleKey>
-}
