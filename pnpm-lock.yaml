@@ -58,8 +58,8 @@ importers:
         specifier: ^1.5.0
         version: 1.12.0
       '@bazel/ibazel':
-        specifier: '0.24'
-        version: 0.24.0
+        specifier: '0.25'
+        version: 0.25.0
       '@commitlint/cli':
         specifier: '17'
         version: 17.0.3(@swc/core@1.3.56)
@@ -3951,8 +3951,8 @@ packages:
     hasBin: true
     dev: true
 
-  /@bazel/ibazel@0.24.0:
-    resolution: {integrity: sha512-lA0Ey6iorssDTJDwBQW0bCmzQyBTAtOj7L4mqmmlFT6LhIzTc3r0iFOuzxFBsDq8NbxVs/W9PRNIsC/LfpI1nA==}
+  /@bazel/ibazel@0.25.0:
+    resolution: {integrity: sha512-dtosfsuZCSaqlUe5EyxNdaN7Gow0Y+ZJixdlciytcSieUcB/1lXPFTx6OihxhjgtTHkeFovlQ/QbvArRPnk+nQ==}
     hasBin: true
     dev: true
 
