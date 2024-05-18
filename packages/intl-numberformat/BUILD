@@ -27,6 +27,7 @@ TEST_LOCALES = [
     "bn",
     "da",
     "de",
+    "de-AT",
     "en-BS",
     "en-GB",
     "en",

@@ -1,6 +1,6 @@
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import '@formatjs/intl-pluralrules/polyfill'
 import {NumberFormat} from '../src/core'
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 const LOCALES = [
   'en',

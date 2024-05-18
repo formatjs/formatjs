@@ -1,5 +1,5 @@
-import {LDMLPluralRule} from './plural-rules'
 import {LocaleData} from './core'
+import {LDMLPluralRule} from './plural-rules'
 
 export type NumberFormatNotation =
   | 'standard'
@@ -148,6 +148,7 @@ export interface SymbolsData {
   timeSeparator: string
   approximatelySign: string
   rangeSign: string
+  currencyGroup?: string
 }
 
 export interface RawNumberData {

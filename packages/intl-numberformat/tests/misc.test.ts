@@ -6,6 +6,7 @@ const LOCALES = [
   'en-GB',
   'da',
   'de',
+  'de-AT',
   'es',
   'fr',
   'id',
@@ -313,4 +314,12 @@ it('correctly set default options', () => {
     style: 'decimal',
     useGrouping: 'auto',
   })
+})
+
+test('#4422', () => {
+  const nf = new NumberFormat('de-AT', {
+    style: 'currency',
+    currency: 'EUR',
+  })
+  expect(nf.format(12345678)).toEqual('€ 12.345.678,00')
 })

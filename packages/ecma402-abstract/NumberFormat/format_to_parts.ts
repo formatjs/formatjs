@@ -1,23 +1,23 @@
+import {S_UNICODE_REGEX} from '../regex.generated'
 import {
-  NumberFormatOptionsStyle,
-  NumberFormatOptionsNotation,
+  DecimalFormatNum,
+  LDMLPluralRuleMap,
+  NumberFormatLocaleInternalData,
   NumberFormatOptionsCompactDisplay,
   NumberFormatOptionsCurrencyDisplay,
   NumberFormatOptionsCurrencySign,
+  NumberFormatOptionsNotation,
+  NumberFormatOptionsStyle,
   NumberFormatOptionsUnitDisplay,
-  NumberFormatLocaleInternalData,
-  UnitData,
-  SymbolsData,
-  RawNumberFormatResult,
-  DecimalFormatNum,
-  LDMLPluralRuleMap,
   NumberFormatPart,
+  RawNumberFormatResult,
+  SymbolsData,
+  UnitData,
   UseGroupingType,
 } from '../types/number'
-import {ToRawFixed} from './ToRawFixed'
 import {LDMLPluralRule} from '../types/plural-rules'
+import {ToRawFixed} from './ToRawFixed'
 import {digitMapping} from './digit-mapping.generated'
-import {S_UNICODE_REGEX} from '../regex.generated'
 
 // This is from: unicode-12.1.0/General_Category/Symbol/regex.js
 // IE11 does not support unicode flag, otherwise this is just /\p{S}/u.
@@ -197,7 +197,8 @@ export default function formatToParts(
             numberingSystem,
             // If compact number pattern exists, do not insert group separators.
             !compactNumberPattern && Boolean(options.useGrouping),
-            decimalNumberPattern
+            decimalNumberPattern,
+            style
           )
         )
         break
@@ -375,7 +376,8 @@ function paritionNumberIntoParts(
    * A typical value looks like "#,##0.00" (primary group size is 3).
    * Some locales like Hindi has secondary group size of 2 (e.g. "#,##,##0.00").
    */
-  decimalNumberPattern: string
+  decimalNumberPattern: string,
+  style: NumberFormatOptionsStyle
 ): NumberFormatPart[] {
   const result: NumberFormatPart[] = []
   // eslint-disable-next-line prefer-const
@@ -411,7 +413,12 @@ function paritionNumberIntoParts(
   //   NumberFormat('de', {notation: 'compact', compactDisplay: 'short'}).format(1234) //=> "1234"
   //   NumberFormat('de').format(1234) //=> "1.234"
   if (useGrouping && (notation !== 'compact' || x >= 10000)) {
-    const groupSepSymbol = symbols.group
+    // a. Let groupSepSymbol be the implementation-, locale-, and numbering system-dependent (ILND) String representing the grouping separator.
+    // For currency we should use `currencyGroup` instead of generic `group`
+    const groupSepSymbol =
+      style === 'currency' && symbols.currencyGroup != null
+        ? symbols.currencyGroup
+        : symbols.group
     const groups: string[] = []
 
     // > There may be two different grouping sizes: The primary grouping size used for the least
