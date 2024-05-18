@@ -314,7 +314,7 @@ importers:
         version: 2.2.0
       magic-string:
         specifier: ^0.30.0
-        version: 0.30.0
+        version: 0.30.10
       make-plural-compiler:
         specifier: 5.1.0
         version: 5.1.0(patch_hash=qdcdtqeknhxqnjirmx4dcdabaq)
@@ -352,7 +352,7 @@ importers:
         specifier: '10'
         version: 10.0.0
       ts-jest:
-        specifier: ^29.1.2
+        specifier: '29'
         version: 29.1.2(@babel/core@7.18.5)(@jest/types@29.5.0)(jest@29.5.0)(typescript@5.2.2)
       ts-loader:
         specifier: ^9.1.2
@@ -576,7 +576,7 @@ importers:
         version: 8.18.0
       magic-string:
         specifier: ^0.30.0
-        version: 0.30.0
+        version: 0.30.10
       picomatch:
         specifier: ^2.3.1
         version: 2.3.1
@@ -7589,7 +7589,7 @@ packages:
       '@vue/compiler-ssr': 3.4.0
       '@vue/shared': 3.4.0
       estree-walker: 2.0.2
-      magic-string: 0.30.8
+      magic-string: 0.30.10
       postcss: 8.4.38
       source-map-js: 1.0.2
 
@@ -14755,15 +14755,8 @@ packages:
       sourcemap-codec: 1.4.8
     dev: true
 
-  /magic-string@0.30.0:
-    resolution: {integrity: sha512-LA+31JYDJLs82r2ScLrlz1GjSgu66ZV518eyWT+S8VhyQn/JL0u9MeBOvQMGYiPk1DBiSN9DDMOcXvigJZaViQ==}
-    engines: {node: '>=12'}
-    dependencies:
-      '@jridgewell/sourcemap-codec': 1.4.14
-
-  /magic-string@0.30.8:
-    resolution: {integrity: sha512-ISQTe55T2ao7XtlAStud6qwYPZjE4GK1S/BeVPus4jrq6JuOnQ00YKQC581RWhR122W7msZV263KzVeLoqidyQ==}
-    engines: {node: '>=12'}
+  /magic-string@0.30.10:
+    resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
 
