@@ -467,8 +467,12 @@ function paritionNumberIntoParts(
   // #endregion
 
   if (fraction !== undefined) {
+    const decimalSepSymbol =
+      style === 'currency' && symbols.currencyDecimal != null
+        ? symbols.currencyDecimal
+        : symbols.decimal
     result.push(
-      {type: 'decimal', value: symbols.decimal},
+      {type: 'decimal', value: decimalSepSymbol},
       {type: 'fraction', value: fraction}
     )
   }

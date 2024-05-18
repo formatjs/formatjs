@@ -33,6 +33,7 @@ TEST_LOCALES = [
     "en",
     "es",
     "fr",
+    "fr-CH",
     "hi",
     "id",
     "it",

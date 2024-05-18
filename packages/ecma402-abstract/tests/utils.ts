@@ -28,6 +28,7 @@ export function getInternalSlots(x: Intl.NumberFormat): NumberFormatInternal {
             exponential: 'E',
             superscriptingExponent: '×',
             currencyGroup: '.',
+            currencyDecimal: ',',
             perMille: '‰',
             infinity: '∞',
             nan: 'NaN',

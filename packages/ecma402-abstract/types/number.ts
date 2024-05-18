@@ -149,6 +149,7 @@ export interface SymbolsData {
   approximatelySign: string
   rangeSign: string
   currencyGroup?: string
+  currencyDecimal?: string
 }
 
 export interface RawNumberData {

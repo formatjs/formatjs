@@ -9,6 +9,7 @@ const LOCALES = [
   'de-AT',
   'es',
   'fr',
+  'fr-CH',
   'id',
   'it',
   'ja',
@@ -322,4 +323,12 @@ test('#4422', () => {
     currency: 'EUR',
   })
   expect(nf.format(12345678)).toEqual('€ 12.345.678,00')
+})
+
+test('currencyDecimal', () => {
+  const nf = new NumberFormat('fr-CH', {
+    style: 'currency',
+    currency: 'USD',
+  })
+  expect(nf.format(12345678)).toEqual('12 345 678.00 $US')
 })
