@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.10.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.10.1...@formatjs/intl-numberformat@8.10.2) (2024-05-18)
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** use currencyGroup when style is currency if possible, fix [#4422](https://github.com/formatjs/formatjs/issues/4422) ([6bc4bf1](https://github.com/formatjs/formatjs/commit/6bc4bf1ffeaa7eade5f84d4363819ef07d33221f)) - by @longlho
+
 ## [8.10.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.10.0...@formatjs/intl-numberformat@8.10.1) (2024-03-24)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

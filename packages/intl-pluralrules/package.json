@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-pluralrules",
-  "version": "5.2.12",
+  "version": "5.2.13",
   "description": "Polyfill for Intl.PluralRules",
   "keywords": [
     "polyfill",

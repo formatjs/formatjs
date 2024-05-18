@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.18.2...@formatjs/ecma402-abstract@1.18.3) (2024-05-18)
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** use currencyGroup when style is currency if possible, fix [#4422](https://github.com/formatjs/formatjs/issues/4422) ([6bc4bf1](https://github.com/formatjs/formatjs/commit/6bc4bf1ffeaa7eade5f84d4363819ef07d33221f)) - by @longlho
+
 ## [1.18.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.18.1...@formatjs/ecma402-abstract@1.18.2) (2024-01-16)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract

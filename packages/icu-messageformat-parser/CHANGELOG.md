@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.7](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.7.6...@formatjs/icu-messageformat-parser@2.7.7) (2024-05-18)
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** remove orphaned type from icu-messageformat-parser ([#4418](https://github.com/formatjs/formatjs/issues/4418)) ([961a2bb](https://github.com/formatjs/formatjs/commit/961a2bb496d2501acd45c8c0a06157fec38ea44d)) - by @Renegade334
+
 ## [2.7.6](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.7.5...@formatjs/icu-messageformat-parser@2.7.6) (2024-01-26)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

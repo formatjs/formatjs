@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.6.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.6.6...@formatjs/intl-displaynames@6.6.7) (2024-05-18)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** fix main in package.json ([ba32309](https://github.com/formatjs/formatjs/commit/ba3230988f54bab441ca01ab277b6409db291d7c)), closes [#4417](https://github.com/formatjs/formatjs/issues/4417) - by @longlho
+
 ## [6.6.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.6.5...@formatjs/intl-displaynames@6.6.6) (2024-01-16)
 
 ### Bug Fixes
