@@ -140,7 +140,7 @@ importers:
         version: 9.0.13
       '@types/hoist-non-react-statics':
         specifier: ^3.3.1
-        version: 3.3.1
+        version: 3.3.5
       '@types/jest':
         specifier: '29'
         version: 29.1.2
@@ -872,7 +872,7 @@ importers:
         version: link:../intl-listformat
       '@types/hoist-non-react-statics':
         specifier: ^3.3.1
-        version: 3.3.1
+        version: 3.3.5
       '@types/react':
         specifier: 16 || 17 || 18
         version: 18.0.14
@@ -933,7 +933,7 @@ importers:
         version: link:../../intl-pluralrules
       '@types/hoist-non-react-statics':
         specifier: ^3.3.1
-        version: 3.3.1
+        version: 3.3.5
       '@types/react':
         specifier: 16 || 17 || 18
         version: 18.0.14
@@ -7039,8 +7039,8 @@ packages:
     resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
     dev: true
 
-  /@types/hoist-non-react-statics@3.3.1:
-    resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
+  /@types/hoist-non-react-statics@3.3.5:
+    resolution: {integrity: sha512-SbcrWzkKBw2cdwRTwQAswfpB9g9LJWfjtUeW/jvNwbhC8cpmmNYVePa+ncbUe0rGTQ7G3Ff6mYUN2VMfLVr+Sg==}
     dependencies:
       '@types/react': 18.0.14
       hoist-non-react-statics: 3.3.2
@@ -7272,7 +7272,7 @@ packages:
   /@types/react@18.0.25:
     resolution: {integrity: sha512-xD6c0KDT4m7n9uD4ZHi02lzskaiqcBxf4zi+tXZY98a04wvc0hi/TcCPC2FOESZi51Nd7tlUeOJY8RofL799/g==}
     dependencies:
-      '@types/prop-types': 15.7.5
+      '@types/prop-types': 15.7.12
       '@types/scheduler': 0.16.2
       csstype: 3.1.3
     dev: true
