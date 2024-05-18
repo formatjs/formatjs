@@ -149,7 +149,7 @@
     "terser": "5.27.0",
     "source-map-js": "1.0.2",
     "@glimmer/syntax": "0.91.1",
-    "@glimmer/interfaces": "0.91.2"
+    "@glimmer/interfaces": "0.92.0"
   },
   "pnpm": {
     "packageExtensions": {
