@@ -34,7 +34,7 @@
     "@commitlint/cli": "17",
     "@commitlint/config-angular": "17",
     "@glimmer/env": "^0.1.7",
-    "@glimmer/reference": "^0.91.1",
+    "@glimmer/reference": "^0.92.0",
     "@glimmer/syntax": "^0.91.1",
     "@glimmer/validator": "^0.91.1",
     "@jest/transform": "29",
