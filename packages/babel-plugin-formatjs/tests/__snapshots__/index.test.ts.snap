@@ -327,7 +327,8 @@ var msgs = {
   }),
   stringKeys: defineMessage({
     // prettier-ignore
-    'id': "string.key.id",
+    'id': "string.key.id" // prettier-ignore
+    ,
     // prettier-ignore
     'defaultMessage': "This is message"
   })
