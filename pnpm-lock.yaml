@@ -148,7 +148,7 @@ importers:
         specifier: ^1.0.32
         version: 1.0.34
       '@types/lodash':
-        specifier: ^4.17.4
+        specifier: ^4.14.150
         version: 4.17.4
       '@types/minimist':
         specifier: ^1.2.1
@@ -247,8 +247,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1(patch_hash=vcuji544ffu5buppehwyhsxi3i)
       core-js:
-        specifier: ^3.6.5
-        version: 3.23.2
+        specifier: ^3.37.1
+        version: 3.37.1
       ember-template-recast:
         specifier: ^6.1.4
         version: 6.1.4
@@ -9657,18 +9657,13 @@ packages:
     requiresBuild: true
     dev: true
 
-  /core-js@3.23.2:
-    resolution: {integrity: sha512-ELJOWxNrJfOH/WK4VJ3Qd+fOqZuOuDNDJz0xG6Bt4mGg2eO/UT9CljCrbqDGovjLKUrGajEEBcoTOc0w+yBYeQ==}
-    requiresBuild: true
-    dev: true
-
-  /core-js@3.24.1:
-    resolution: {integrity: sha512-0QTBSYSUZ6Gq21utGzkfITDylE8jWC9Ne1D2MrhvlsZBI1x39OdDIVbzSqtgMndIy6BlHxBXpMGqzZmnztg2rg==}
-    requiresBuild: true
-    dev: true
-
   /core-js@3.33.2:
     resolution: {integrity: sha512-XeBzWI6QL3nJQiHmdzbAOiMYqjrb7hwU7A39Qhvd/POSa/t9E1AeZyEZx3fNvp/vtM8zXwhoL0FsiS0hD0pruQ==}
+    requiresBuild: true
+    dev: true
+
+  /core-js@3.37.1:
+    resolution: {integrity: sha512-Xn6qmxrQZyB0FFY8E3bgRXei3lWDJHhvI+u0q9TKIYM49G8pAr0FgnnrFRAmsbptZL1yxRADVXn+x5AGsbBfyw==}
     requiresBuild: true
     dev: true
 
@@ -11964,7 +11959,7 @@ packages:
     engines: {node: '>=10.0'}
     dependencies:
       boolean: 3.2.0
-      core-js: 3.24.1
+      core-js: 3.37.1
       es6-error: 4.1.1
       matcher: 3.0.0
       roarr: 2.15.4
