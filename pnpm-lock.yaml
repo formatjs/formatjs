@@ -1,27 +1,23 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 overrides:
   terser: 5.27.0
   source-map-js: 1.0.2
-  '@glimmer/syntax': 0.91.1
-  '@glimmer/interfaces': 0.91.2
+  '@glimmer/syntax': 0.92.0
+  '@glimmer/interfaces': 0.92.0
 
-packageExtensionsChecksum: 36f586ee47cc544e88bd717a1b6ef1ae
+packageExtensionsChecksum: b9ce7c3e3786b4420c484d1e957a9a9b
 
 patchedDependencies:
   '@commitlint/rules@17.0.0':
     hash: 4fdrifxuyvetgqnxt54kx2v36y
     path: patches/@commitlint__rules@17.0.0.patch
-  '@glimmer/interfaces@0.91.2':
-    hash: cx46uam44ranua3vmrptxgekz4
-    path: patches/@glimmer__interfaces@0.91.2.patch
-  '@glimmer/syntax@0.91.1':
-    hash: kzfaehsfdvlao2akir2tjxkzyq
-    path: patches/@glimmer__syntax@0.91.1.patch
+  '@glimmer/interfaces@0.92.0':
+    hash: ztfnuhzbeau5eb4qmkbybo27ta
+    path: patches/@glimmer__interfaces@0.92.0.patch
+  '@glimmer/syntax@0.92.0':
+    hash: bvz4ppux7y36zue6cmkb7453aa
+    path: patches/@glimmer__syntax@0.92.0.patch
   content-tag@2.0.1:
     hash: vcuji544ffu5buppehwyhsxi3i
     path: patches/content-tag@2.0.1.patch
@@ -73,11 +69,11 @@ importers:
         specifier: ^0.92.0
         version: 0.92.0
       '@glimmer/syntax':
-        specifier: 0.91.1
-        version: 0.91.1(patch_hash=kzfaehsfdvlao2akir2tjxkzyq)
+        specifier: 0.92.0
+        version: 0.92.0(patch_hash=bvz4ppux7y36zue6cmkb7453aa)
       '@glimmer/validator':
-        specifier: ^0.91.1
-        version: 0.91.1
+        specifier: ^0.92.0
+        version: 0.92.0
       '@jest/transform':
         specifier: '29'
         version: 29.5.0
@@ -439,11 +435,11 @@ importers:
         specifier: ^0.91.1 || ^0.92.0
         version: 0.92.0
       '@glimmer/syntax':
-        specifier: 0.91.1
-        version: 0.91.1(patch_hash=kzfaehsfdvlao2akir2tjxkzyq)
+        specifier: ^0.92.0
+        version: 0.92.0(patch_hash=bvz4ppux7y36zue6cmkb7453aa)
       '@glimmer/validator':
-        specifier: ^0.91.1
-        version: 0.91.1
+        specifier: ^0.92.0
+        version: 0.92.0
       '@vue/compiler-core':
         specifier: ^3.4.0
         version: 3.4.0
@@ -476,11 +472,11 @@ importers:
         specifier: ^0.91.1 || ^0.92.0
         version: 0.92.0
       '@glimmer/syntax':
-        specifier: 0.91.1
-        version: 0.91.1(patch_hash=kzfaehsfdvlao2akir2tjxkzyq)
+        specifier: ^0.92.0
+        version: 0.92.0(patch_hash=bvz4ppux7y36zue6cmkb7453aa)
       '@glimmer/validator':
-        specifier: ^0.91.1
-        version: 0.91.1
+        specifier: ^0.92.0
+        version: 0.92.0
       '@types/estree':
         specifier: ^1.0.0
         version: 1.0.5
@@ -959,8 +955,8 @@ importers:
         specifier: workspace:*
         version: link:../ts-transformer
       '@swc/core':
-        specifier: 1.2.241
-        version: 1.2.241
+        specifier: 1.5.7
+        version: 1.5.7(@swc/helpers@0.5.1)
       '@types/json-stable-stringify':
         specifier: ^1.0.32
         version: 1.0.34
@@ -5014,14 +5010,11 @@ packages:
     dependencies:
       '@glimmer/env': 0.1.7
 
-  /@glimmer/global-context@0.91.2:
-    resolution: {integrity: sha512-JWU2XWS8StYY9lozGk1aA6Rjcc1KbU9T4LiHHKWykf6NiT3KbX2w3omX8OJ3NFYquBaZtQJqSbtiALoCEV1nZg==}
-
   /@glimmer/global-context@0.92.0:
     resolution: {integrity: sha512-XUPXIsz/F0YQz3vY9x+u3YQMibM3378gEPJObs3CHzAWJUl9Kz1CAb+jRigRrxIcmdzoonA49VMwGmmKRNoGag==}
 
-  /@glimmer/interfaces@0.91.2(patch_hash=cx46uam44ranua3vmrptxgekz4):
-    resolution: {integrity: sha512-AVmS2zgT+ndlAiPrdMYNkSKOqZvz+IKLvTXJpWZC/SINXKI2fiHMBGrZKP0dKNqyFeugKdEf2N81Y45sMM06PQ==}
+  /@glimmer/interfaces@0.92.0(patch_hash=ztfnuhzbeau5eb4qmkbybo27ta):
+    resolution: {integrity: sha512-SKZvIs+ZPN8F3EH8kEzs7rGIUa+wuV+/3oWYyEiBrqd+VrZlmAxIELM6qZ6oxXT2tx6q1rh2EmA5rWezi6bmYQ==}
     dependencies:
       '@simple-dom/interface': 1.4.0
     patched: true
@@ -5031,7 +5024,7 @@ packages:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.84.3
-      '@glimmer/interfaces': 0.91.2(patch_hash=cx46uam44ranua3vmrptxgekz4)
+      '@glimmer/interfaces': 0.92.0(patch_hash=ztfnuhzbeau5eb4qmkbybo27ta)
       '@glimmer/util': 0.84.3
       '@glimmer/validator': 0.84.3
 
@@ -5040,16 +5033,16 @@ packages:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.92.0
-      '@glimmer/interfaces': 0.91.2(patch_hash=cx46uam44ranua3vmrptxgekz4)
+      '@glimmer/interfaces': 0.92.0(patch_hash=ztfnuhzbeau5eb4qmkbybo27ta)
       '@glimmer/util': 0.92.0
       '@glimmer/validator': 0.92.0
 
-  /@glimmer/syntax@0.91.1(patch_hash=kzfaehsfdvlao2akir2tjxkzyq):
-    resolution: {integrity: sha512-/US6/yxgBlyw/etw7ptmQvbg134th2JJg6EJYp1Y8oIsFkjkB+huYkSxidcG0ENUNwy6FMefg/XjiSq/C9qrqw==}
+  /@glimmer/syntax@0.92.0(patch_hash=bvz4ppux7y36zue6cmkb7453aa):
+    resolution: {integrity: sha512-h8pYBC2cCnEyjbZBip2Yw4qi8S8sjNCYAb57iHek3AIhyFKMM13aTN+/aajFOM4FUTMCVE2B/iAAmO41WRCX4A==}
     dependencies:
-      '@glimmer/interfaces': 0.91.2(patch_hash=cx46uam44ranua3vmrptxgekz4)
-      '@glimmer/util': 0.91.2
-      '@glimmer/wire-format': 0.91.2
+      '@glimmer/interfaces': 0.92.0(patch_hash=ztfnuhzbeau5eb4qmkbybo27ta)
+      '@glimmer/util': 0.92.0
+      '@glimmer/wire-format': 0.92.0
       '@handlebars/parser': 2.0.0
       simple-html-tokenizer: 0.5.11
     patched: true
@@ -5058,20 +5051,14 @@ packages:
     resolution: {integrity: sha512-qFkh6s16ZSRuu2rfz3T4Wp0fylFj3HBsONGXQcrAdZjdUaIS6v3pNj6mecJ71qRgcym9Hbaq/7/fefIwECUiKw==}
     dependencies:
       '@glimmer/env': 0.1.7
-      '@glimmer/interfaces': 0.91.2(patch_hash=cx46uam44ranua3vmrptxgekz4)
+      '@glimmer/interfaces': 0.92.0(patch_hash=ztfnuhzbeau5eb4qmkbybo27ta)
       '@simple-dom/interface': 1.4.0
-
-  /@glimmer/util@0.91.2:
-    resolution: {integrity: sha512-pCasBL49fX23S0ZH3FZqpoO+8sZfYtNa8Lc4d/JMXDf5RyVAYG8DN4oad08tNPUKDX+Jt+ZS8MDaQvX07McvTA==}
-    dependencies:
-      '@glimmer/env': 0.1.7
-      '@glimmer/interfaces': 0.91.2(patch_hash=cx46uam44ranua3vmrptxgekz4)
 
   /@glimmer/util@0.92.0:
     resolution: {integrity: sha512-Fap52smLp8RkCgvozrZG7RysNJ2T6mk1SPoknMzmukbabFVBAzxl5iyY4OXUbmR09j6t2pupjF6sPabnLtL4vw==}
     dependencies:
       '@glimmer/env': 0.1.7
-      '@glimmer/interfaces': 0.91.2(patch_hash=cx46uam44ranua3vmrptxgekz4)
+      '@glimmer/interfaces': 0.92.0(patch_hash=ztfnuhzbeau5eb4qmkbybo27ta)
 
   /@glimmer/validator@0.84.3:
     resolution: {integrity: sha512-RTBV4TokUB0vI31UC7ikpV7lOYpWUlyqaKV//pRC4pexYMlmqnVhkFrdiimB/R1XyNdUOQUmnIAcdic39NkbhQ==}
@@ -5079,27 +5066,19 @@ packages:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.84.3
 
-  /@glimmer/validator@0.91.1:
-    resolution: {integrity: sha512-RH9RTiOixw+IpBZybBlomoJnMtMWDIcJh1ae0qT1BguVBnPywTvsSw5b1MBLWOyhM2NfAfAeucG16bswXkDCCA==}
-    dependencies:
-      '@glimmer/env': 0.1.7
-      '@glimmer/global-context': 0.91.2
-      '@glimmer/interfaces': 0.91.2(patch_hash=cx46uam44ranua3vmrptxgekz4)
-      '@glimmer/util': 0.91.2
-
   /@glimmer/validator@0.92.0:
     resolution: {integrity: sha512-GFX54PD8BRi+lg/HJ8KJRcvnV4rbDzJooQnOpJ9PlgIQi4KP/ivdjsw3DaEuvqn4K584LR6VTgHmxfZlLkDh2g==}
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.92.0
-      '@glimmer/interfaces': 0.91.2(patch_hash=cx46uam44ranua3vmrptxgekz4)
+      '@glimmer/interfaces': 0.92.0(patch_hash=ztfnuhzbeau5eb4qmkbybo27ta)
       '@glimmer/util': 0.92.0
 
-  /@glimmer/wire-format@0.91.2:
-    resolution: {integrity: sha512-ZBtea8p4f/ECagChjHFh8s0NrX+lM1nCWCiP1Z0HaGomQuH05rLS4meTJHKiLXvc9K7yuK1NDt5QNrZGfRXI6g==}
+  /@glimmer/wire-format@0.92.0:
+    resolution: {integrity: sha512-yKhfU7b3PN86iqbfKksB+F9PB/RqbVkZlcRpZWRpEL3HnZ0bJUKC9bsOJynOg77PDXuYQXkbDMfL8ngTuxk+rg==}
     dependencies:
-      '@glimmer/interfaces': 0.91.2(patch_hash=cx46uam44ranua3vmrptxgekz4)
-      '@glimmer/util': 0.91.2
+      '@glimmer/interfaces': 0.92.0(patch_hash=ztfnuhzbeau5eb4qmkbybo27ta)
+      '@glimmer/util': 0.92.0
 
   /@handlebars/parser@2.0.0:
     resolution: {integrity: sha512-EP9uEDZv/L5Qh9IWuMUGJRfwhXJ4h1dqKTT4/3+tY0eu7sPis7xh23j61SYUnNF4vqCQvvUXpDo9Bh/+q1zASA==}
@@ -6351,37 +6330,6 @@ packages:
       tslib: 2.6.2
     dev: true
 
-  /@swc/core-android-arm-eabi@1.2.241:
-    resolution: {integrity: sha512-VfbyFAQ+JT4kl4a7kPFM4pUSLHXnJ/bKIW0gAsVngBIcu73cz59HlylKiOtmx3UtXPsYu0Ort/qfC/UJfeEgrQ==}
-    engines: {node: '>=10'}
-    cpu: [arm]
-    os: [android]
-    requiresBuild: true
-    dependencies:
-      '@swc/wasm': 1.2.122
-    dev: false
-    optional: true
-
-  /@swc/core-android-arm64@1.2.241:
-    resolution: {integrity: sha512-WAJW542fxtO5iTP/vrBrf64dWfBq6rmWgL0HpM+ENFbqO4ME0xO49ky+5rMRAQdtwnJ5ZNkCvb49J+iIIY6yaw==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [android]
-    requiresBuild: true
-    dependencies:
-      '@swc/wasm': 1.2.130
-    dev: false
-    optional: true
-
-  /@swc/core-darwin-arm64@1.2.241:
-    resolution: {integrity: sha512-5lQaguosciAN6kOfmNY1UeitrwMyPUt4d/Z70A1ac5e1ZFuYlhOxGHuhkz6abEewLkS/b1CGruSAtphEEVGLmw==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: false
-    optional: true
-
   /@swc/core-darwin-arm64@1.3.56:
     resolution: {integrity: sha512-DZcu7BzDaLEdWHabz9DRTP0yEBLqkrWmskFcD5BX0lGAvoIvE4duMnAqi5F2B3X7630QioHRCYFoRw2WkeE3Cw==}
     engines: {node: '>=10'}
@@ -6391,10 +6339,10 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-darwin-x64@1.2.241:
-    resolution: {integrity: sha512-VtcCBdhOktYPDnEEL0f+pfGmvjIlmXWMZKIb48WTYunxwsehxQk79ZkLXc+TwZ3ur9GEoZHh31RaKqOj4QDHpQ==}
+  /@swc/core-darwin-arm64@1.5.7:
+    resolution: {integrity: sha512-bZLVHPTpH3h6yhwVl395k0Mtx8v6CGhq5r4KQdAoPbADU974Mauz1b6ViHAJ74O0IVE5vyy7tD3OpkQxL/vMDQ==}
     engines: {node: '>=10'}
-    cpu: [x64]
+    cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: false
@@ -6409,25 +6357,12 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-freebsd-x64@1.2.241:
-    resolution: {integrity: sha512-i12GxWnm1LuvZ9T0HVB8+CFIhcFzTxu3u2U97LZNb7vbHGHehUwIb6GmTwUbF+wEdFkwsIKWTf3RpvnEejWUsA==}
+  /@swc/core-darwin-x64@1.5.7:
+    resolution: {integrity: sha512-RpUyu2GsviwTc2qVajPL0l8nf2vKj5wzO3WkLSHAHEJbiUZk83NJrZd1RVbEknIMO7+Uyjh54hEh8R26jSByaw==}
     engines: {node: '>=10'}
     cpu: [x64]
-    os: [freebsd]
+    os: [darwin]
     requiresBuild: true
-    dependencies:
-      '@swc/wasm': 1.2.130
-    dev: false
-    optional: true
-
-  /@swc/core-linux-arm-gnueabihf@1.2.241:
-    resolution: {integrity: sha512-lTSiPkfEscfYEZxsKLbVqISRvCcatB+h7eENy0+Qdqqyio0yTOMfG7837jZhfy1hCjAwT8x2sh77fbvfQD4dRA==}
-    engines: {node: '>=10'}
-    cpu: [arm]
-    os: [linux]
-    requiresBuild: true
-    dependencies:
-      '@swc/wasm': 1.2.130
     dev: false
     optional: true
 
@@ -6440,10 +6375,10 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm64-gnu@1.2.241:
-    resolution: {integrity: sha512-H6lTvd6nm4eaOi4Ledo5z1a6LXzJ2WpHTRsf3FssM9qqwFmbvNIz9vCTI4jCR5Y3Ed3jlmQli+znzmWJ/qzLLQ==}
+  /@swc/core-linux-arm-gnueabihf@1.5.7:
+    resolution: {integrity: sha512-cTZWTnCXLABOuvWiv6nQQM0hP6ZWEkzdgDvztgHI/+u/MvtzJBN5lBQ2lue/9sSFYLMqzqff5EHKlFtrJCA9dQ==}
     engines: {node: '>=10'}
-    cpu: [arm64]
+    cpu: [arm]
     os: [linux]
     requiresBuild: true
     dev: false
@@ -6458,8 +6393,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm64-musl@1.2.241:
-    resolution: {integrity: sha512-K8bXA+JtoD0g+w9wDyI3R0VkFaxFokF9KI0ioDVRfwDDNoFWq3slQWyN9fkj0dI9XagK15OcSuMGTH+h9B7veQ==}
+  /@swc/core-linux-arm64-gnu@1.5.7:
+    resolution: {integrity: sha512-hoeTJFBiE/IJP30Be7djWF8Q5KVgkbDtjySmvYLg9P94bHg9TJPSQoC72tXx/oXOgXvElDe/GMybru0UxhKx4g==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -6476,10 +6411,10 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-x64-gnu@1.2.241:
-    resolution: {integrity: sha512-jLr+mtNhHMcSRz0xZ9/R9g59kVmgekcz9RyXIFkO7RzJOGVzXxGxfO3pSsQ+u2tCpYbK9M6rMiaNoRYnQj3yNQ==}
+  /@swc/core-linux-arm64-musl@1.5.7:
+    resolution: {integrity: sha512-+NDhK+IFTiVK1/o7EXdCeF2hEzCiaRSrb9zD7X2Z7inwWlxAntcSuzZW7Y6BRqGQH89KA91qYgwbnjgTQ22PiQ==}
     engines: {node: '>=10'}
-    cpu: [x64]
+    cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: false
@@ -6494,8 +6429,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-x64-musl@1.2.241:
-    resolution: {integrity: sha512-yXkhlxTSH6ddcBCxwRHTnpj5TA0GXbWADjPIhhXG8KlM4KGjnEvfSBa1xtSNbJcYT8kBYM1n+jYf0dIX2je5eg==}
+  /@swc/core-linux-x64-gnu@1.5.7:
+    resolution: {integrity: sha512-25GXpJmeFxKB+7pbY7YQLhWWjkYlR+kHz5I3j9WRl3Lp4v4UD67OGXwPe+DIcHqcouA1fhLhsgHJWtsaNOMBNg==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -6512,14 +6447,12 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-arm64-msvc@1.2.241:
-    resolution: {integrity: sha512-/f3ylWLHfUtRgHFER3FdH5QwDhO7siQ6h5ug0yVKXIDfNJhJVt9Hd+ZjMGJhNGTkzrl+uZmwXWBiklMcaMCtbQ==}
+  /@swc/core-linux-x64-musl@1.5.7:
+    resolution: {integrity: sha512-0VN9Y5EAPBESmSPPsCJzplZHV26akC0sIgd3Hc/7S/1GkSMoeuVL+V9vt+F/cCuzr4VidzSkqftdP3qEIsXSpg==}
     engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [win32]
+    cpu: [x64]
+    os: [linux]
     requiresBuild: true
-    dependencies:
-      '@swc/wasm': 1.2.130
     dev: false
     optional: true
 
@@ -6532,14 +6465,12 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-ia32-msvc@1.2.241:
-    resolution: {integrity: sha512-HC1T9sWC9zuZ6C/WWTFMHdgKYv+qaOfWduIvNVqhECa+FXRcBTPtDgNBhMTc2lpt4biKf5iPHhAVZkP6Za3OOw==}
+  /@swc/core-win32-arm64-msvc@1.5.7:
+    resolution: {integrity: sha512-RtoNnstBwy5VloNCvmvYNApkTmuCe4sNcoYWpmY7C1+bPR+6SOo8im1G6/FpNem8AR5fcZCmXHWQ+EUmRWJyuA==}
     engines: {node: '>=10'}
-    cpu: [ia32]
+    cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dependencies:
-      '@swc/wasm': 1.2.130
     dev: false
     optional: true
 
@@ -6552,10 +6483,10 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-x64-msvc@1.2.241:
-    resolution: {integrity: sha512-BW1MHKdmi+DDBH+Z/XlhluIjZj9SMkMheeN95G71Z2Pim5LrvzIHf31UD0kYh6ZWWphP06Jlpzl0oi4stxeETw==}
+  /@swc/core-win32-ia32-msvc@1.5.7:
+    resolution: {integrity: sha512-Xm0TfvcmmspvQg1s4+USL3x8D+YPAfX2JHygvxAnCJ0EHun8cm2zvfNBcsTlnwYb0ybFWXXY129aq1wgFC9TpQ==}
     engines: {node: '>=10'}
-    cpu: [x64]
+    cpu: [ia32]
     os: [win32]
     requiresBuild: true
     dev: false
@@ -6570,26 +6501,14 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core@1.2.241:
-    resolution: {integrity: sha512-zDUpW3ffFllBi2c5ui9JXl7zUjzMOOZGwy9JCAsodWo7DXWjw5pJF4GsTCzaYHDf62XQzQWuL7zGyRnJyMiyAA==}
+  /@swc/core-win32-x64-msvc@1.5.7:
+    resolution: {integrity: sha512-tp43WfJLCsKLQKBmjmY/0vv1slVywR5Q4qKjF5OIY8QijaEW7/8VwPyUyVoJZEnDgv9jKtUTG5PzqtIYPZGnyg==}
     engines: {node: '>=10'}
-    hasBin: true
+    cpu: [x64]
+    os: [win32]
     requiresBuild: true
-    optionalDependencies:
-      '@swc/core-android-arm-eabi': 1.2.241
-      '@swc/core-android-arm64': 1.2.241
-      '@swc/core-darwin-arm64': 1.2.241
-      '@swc/core-darwin-x64': 1.2.241
-      '@swc/core-freebsd-x64': 1.2.241
-      '@swc/core-linux-arm-gnueabihf': 1.2.241
-      '@swc/core-linux-arm64-gnu': 1.2.241
-      '@swc/core-linux-arm64-musl': 1.2.241
-      '@swc/core-linux-x64-gnu': 1.2.241
-      '@swc/core-linux-x64-musl': 1.2.241
-      '@swc/core-win32-arm64-msvc': 1.2.241
-      '@swc/core-win32-ia32-msvc': 1.2.241
-      '@swc/core-win32-x64-msvc': 1.2.241
     dev: false
+    optional: true
 
   /@swc/core@1.3.56(@swc/helpers@0.5.1):
     resolution: {integrity: sha512-yz/EeXT+PMZucUNrYceRUaTfuNS4IIu5EDZSOlvCEvm4jAmZi7CYH1B/kvzEzoAOzr7zkQiDPNJftcQXLkjbjA==}
@@ -6615,11 +6534,40 @@ packages:
       '@swc/core-win32-x64-msvc': 1.3.56
     dev: true
 
+  /@swc/core@1.5.7(@swc/helpers@0.5.1):
+    resolution: {integrity: sha512-U4qJRBefIJNJDRCCiVtkfa/hpiZ7w0R6kASea+/KLp+vkus3zcLSB8Ub8SvKgTIxjWpwsKcZlPf5nrv4ls46SQ==}
+    engines: {node: '>=10'}
+    requiresBuild: true
+    peerDependencies:
+      '@swc/helpers': ^0.5.0
+    peerDependenciesMeta:
+      '@swc/helpers':
+        optional: true
+    dependencies:
+      '@swc/counter': 0.1.3
+      '@swc/helpers': 0.5.1
+      '@swc/types': 0.1.7
+    optionalDependencies:
+      '@swc/core-darwin-arm64': 1.5.7
+      '@swc/core-darwin-x64': 1.5.7
+      '@swc/core-linux-arm-gnueabihf': 1.5.7
+      '@swc/core-linux-arm64-gnu': 1.5.7
+      '@swc/core-linux-arm64-musl': 1.5.7
+      '@swc/core-linux-x64-gnu': 1.5.7
+      '@swc/core-linux-x64-musl': 1.5.7
+      '@swc/core-win32-arm64-msvc': 1.5.7
+      '@swc/core-win32-ia32-msvc': 1.5.7
+      '@swc/core-win32-x64-msvc': 1.5.7
+    dev: false
+
+  /@swc/counter@0.1.3:
+    resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
+    dev: false
+
   /@swc/helpers@0.5.1:
     resolution: {integrity: sha512-sJ902EfIzn1Fa+qYmjdQqh8tPsoxyBz+8yBKC2HKUxyezKJFwPGOn7pv4WY6QuQW//ySQi5lJjA/ZT9sNWWNTg==}
     dependencies:
       tslib: 2.6.2
-    dev: true
 
   /@swc/jest@0.2.23(@swc/core@1.3.56):
     resolution: {integrity: sha512-ZLj17XjHbPtNsgqjm83qizENw05emLkKGu3WuPUttcy9hkngl0/kcc7fDbcSBpADS0GUtsO+iKPjZFWVAtJSlA==}
@@ -6632,17 +6580,11 @@ packages:
       jsonc-parser: 3.2.0
     dev: true
 
-  /@swc/wasm@1.2.122:
-    resolution: {integrity: sha512-sM1VCWQxmNhFtdxME+8UXNyPNhxNu7zdb6ikWpz0YKAQQFRGT5ThZgJrubEpah335SUToNg8pkdDF7ibVCjxbQ==}
-    requiresBuild: true
+  /@swc/types@0.1.7:
+    resolution: {integrity: sha512-scHWahbHF0eyj3JsxG9CFJgFdFNaVQCNAimBlT6PzS3n/HptxqREjsm4OH6AN3lYcffZYSPxXW8ua2BEHp0lJQ==}
+    dependencies:
+      '@swc/counter': 0.1.3
     dev: false
-    optional: true
-
-  /@swc/wasm@1.2.130:
-    resolution: {integrity: sha512-rNcJsBxS70+pv8YUWwf5fRlWX6JoY/HJc25HD/F8m6Kv7XhJdqPPMhyX6TKkUBPAG7TWlZYoxa+rHAjPy4Cj3Q==}
-    requiresBuild: true
-    dev: false
-    optional: true
 
   /@szmarczak/http-timer@4.0.6:
     resolution: {integrity: sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==}
@@ -10681,7 +10623,7 @@ packages:
     hasBin: true
     dependencies:
       '@glimmer/reference': 0.84.3
-      '@glimmer/syntax': 0.91.1(patch_hash=kzfaehsfdvlao2akir2tjxkzyq)
+      '@glimmer/syntax': 0.92.0(patch_hash=bvz4ppux7y36zue6cmkb7453aa)
       '@glimmer/validator': 0.84.3
       async-promise-queue: 1.0.5
       colors: 1.4.0
@@ -21526,3 +21468,7 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false

@@ -6,19 +6,19 @@ exports[`resourcePath 2`] = `
         id: "resourcePath-hYpBl",
         defaultMessage: "props {intl}"
     }, {
-        bar: "bar"
+        bar: 'bar'
     });
     this.props.intl.formatMessage({
         id: "resourcePath-tBZlS",
         defaultMessage: "this props {intl}"
     }, {
-        bar: "bar"
+        bar: 'bar'
     });
     return intl.formatMessage({
         id: "resourcePath-ALfyd",
         defaultMessage: "foo {bar}"
     }, {
-        bar: "bar"
+        bar: 'bar'
     });
 }
 "

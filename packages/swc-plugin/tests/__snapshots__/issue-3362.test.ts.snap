@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`github issue #3362 2`] = `
-"import React from "react";
+"import React from 'react';
 var InputTest = function(param) {
     var intl = param.intl;
     var placeholder = intl.formatMessage({
@@ -12,7 +12,7 @@ var InputTest = function(param) {
         id: "HELLO..7.undefined",
         defaultMessage: "in call"
     }));
-    return /*#__PURE__*/ React.createElement("div", null, getFieldDecorator("emails", {
+    return /*#__PURE__*/ React.createElement("div", null, getFieldDecorator('emails', {
         rules: [
             {
                 required: true,
@@ -20,7 +20,7 @@ var InputTest = function(param) {
                     id: "HELLO.1.6.undefined",
                     defaultMessage: "nesttt"
                 })
-            }, 
+            }
         ]
     })(/*#__PURE__*/ React.createElement("input", {
         placeholder: placeholder,

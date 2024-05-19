@@ -12,10 +12,10 @@ exports[`GH issue #3371 2`] = `
             {
                 type: 1,
                 value: "intl"
-            }, 
+            }
         ]
     }, {
-        bar: "bar"
+        bar: 'bar'
     });
     this.props.intl.formatMessage({
         id: "HELLO..17.string.resourcePath.tsx",
@@ -27,10 +27,10 @@ exports[`GH issue #3371 2`] = `
             {
                 type: 1,
                 value: "intl"
-            }, 
+            }
         ]
     }, {
-        bar: "bar"
+        bar: 'bar'
     });
     return intl.formatMessage({
         id: "HELLO..9.string.resourcePath.tsx",
@@ -42,10 +42,10 @@ exports[`GH issue #3371 2`] = `
             {
                 type: 1,
                 value: "bar"
-            }, 
+            }
         ]
     }, {
-        bar: "bar"
+        bar: 'bar'
     });
 }
 "
