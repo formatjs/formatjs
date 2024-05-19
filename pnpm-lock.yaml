@@ -1,12 +1,16 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   terser: 5.27.0
   source-map-js: 1.0.2
   '@glimmer/syntax': 0.92.0
   '@glimmer/interfaces': 0.92.0
 
-packageExtensionsChecksum: b9ce7c3e3786b4420c484d1e957a9a9b
+packageExtensionsChecksum: 36f586ee47cc544e88bd717a1b6ef1ae
 
 patchedDependencies:
   '@commitlint/rules@17.0.0':
@@ -28,6 +32,10 @@ patchedDependencies:
 importers:
 
   .:
+    dependencies:
+      '@glimmer/interfaces':
+        specifier: 0.92.0
+        version: 0.92.0(patch_hash=ztfnuhzbeau5eb4qmkbybo27ta)
     devDependencies:
       '@babel/core':
         specifier: ^7.10.4
@@ -5312,7 +5320,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/test-result': 29.5.0
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
       jest-haste-map: 29.5.0
       slash: 3.0.0
 
@@ -8287,7 +8295,7 @@ packages:
       babel-plugin-istanbul: 6.1.1
       babel-preset-jest: 29.5.0(@babel/core@7.18.10)
       chalk: 4.1.2
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
       slash: 3.0.0
     transitivePeerDependencies:
       - supports-color
@@ -14143,7 +14151,7 @@ packages:
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
 
   /jsonify@0.0.0:
     resolution: {integrity: sha512-trvBk1ki43VZptdBI5rIlG4YOzyeH/WefQt5rj1grasPn4iiZWKet8nkgc4GlsAylaztn0qZfUYOiTsASJFdNA==}
@@ -21468,7 +21476,3 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
