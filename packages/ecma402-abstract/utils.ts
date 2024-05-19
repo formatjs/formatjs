@@ -118,6 +118,25 @@ export function defineProperty<T extends object>(
   })
 }
 
+/**
+ * 7.3.5 CreateDataProperty
+ * @param target
+ * @param name
+ * @param value
+ */
+export function createDataProperty<T extends object>(
+  target: T,
+  name: string | symbol,
+  value: any
+) {
+  Object.defineProperty(target, name, {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value,
+  })
+}
+
 export const UNICODE_EXTENSION_SEQUENCE_REGEX = /-u(?:-[0-9a-z]{2,8})+/gi
 
 export function invariant(

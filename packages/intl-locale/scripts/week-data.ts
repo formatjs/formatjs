@@ -1,11 +1,11 @@
-import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra'
+import minimist from 'minimist'
 
-import * as rawWeekData from 'cldr-core/supplemental/weekData.json'
 import * as rawTerritoryInfo from 'cldr-core/supplemental/territoryInfo.json'
+import * as rawWeekData from 'cldr-core/supplemental/weekData.json'
 
-import type {Args} from './common-types'
 import stringify from 'json-stable-stringify'
+import type {Args} from './common-types'
 
 type WeekInfoInternal = {
   firstDay: number

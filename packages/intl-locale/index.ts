@@ -1,37 +1,38 @@
+import {
+  CoerceOptionsToObject,
+  GetOption,
+  HasOwnProperty,
+  SameValue,
+  createDataProperty,
+  invariant,
+} from '@formatjs/ecma402-abstract'
 import {supportedValuesOf} from '@formatjs/intl-enumerator'
 import {
-  defineProperty,
-  GetOption,
-  invariant,
-  SameValue,
-  CoerceOptionsToObject,
-} from '@formatjs/ecma402-abstract'
-import {
+  UnicodeExtension,
+  UnicodeLanguageId,
+  emitUnicodeLanguageId,
+  emitUnicodeLocaleId,
+  getCanonicalLocales,
   isStructurallyValidLanguageTag,
   isUnicodeLanguageSubtag,
   isUnicodeRegionSubtag,
-  parseUnicodeLanguageId,
-  UnicodeExtension,
   isUnicodeScriptSubtag,
-  emitUnicodeLocaleId,
-  parseUnicodeLocaleId,
-  emitUnicodeLanguageId,
-  getCanonicalLocales,
-  UnicodeLanguageId,
   likelySubtags,
+  parseUnicodeLanguageId,
+  parseUnicodeLocaleId,
 } from '@formatjs/intl-getcanonicallocales'
+import {characterOrders} from './character-orders.generated'
 import getInternalSlots from './get_internal_slots'
+import {numberingSystems} from './numbering-systems.generated'
 import {
   getCalendarPreferenceDataForRegion,
   getHourCyclesPreferenceDataForLocaleOrRegion,
   getTimeZonePreferenceForRegion,
   getWeekDataForRegion,
 } from './preference-data'
-import {characterOrders} from './character-orders.generated'
-import {numberingSystems} from './numbering-systems.generated'
 
-import type {WeekInfoInternal} from './preference-data'
 import type {CharacterOrder} from './character-orders.generated'
+import type {WeekInfoInternal} from './preference-data'
 
 export interface IntlLocaleOptions {
   language?: string
@@ -43,9 +44,20 @@ export interface IntlLocaleOptions {
   caseFirst?: 'upper' | 'lower' | 'false'
   numberingSystem?: string
   numeric?: boolean
+  firstDayOfWeek?: string
 }
 
-const RELEVANT_EXTENSION_KEYS = ['ca', 'co', 'hc', 'kf', 'kn', 'nu'] as const
+const ALPHANUM_3_8 = /^[a-z0-9]{3,8}$/i
+
+const RELEVANT_EXTENSION_KEYS = [
+  'ca',
+  'co',
+  'hc',
+  'kf',
+  'kn',
+  'nu',
+  'fw',
+] as const
 type RELEVANT_EXTENSION_KEY = (typeof RELEVANT_EXTENSION_KEYS)[number]
 type ExtensionOpts = Record<RELEVANT_EXTENSION_KEY, string>
 
@@ -429,6 +441,12 @@ function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
   return getWeekDataForRegion(region)
 }
 
+const TABLE_1 = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const
+
+function weekdayToString(fw: string) {
+  return TABLE_1[+fw]
+}
+
 export class Locale {
   constructor(tag: string | Locale, opts?: IntlLocaleOptions) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
@@ -467,18 +485,18 @@ export class Locale {
       throw new TypeError('tag must be a string or object')
     }
 
-    let internalSlots
+    let tagInternalSlots
     if (
       typeof tag === 'object' &&
-      (internalSlots = getInternalSlots(tag)) &&
-      internalSlots.initializedLocale
+      (tagInternalSlots = getInternalSlots(tag)) &&
+      HasOwnProperty(tagInternalSlots, 'initializedLocale')
     ) {
-      tag = internalSlots.locale
+      tag = tagInternalSlots.locale
     } else {
       tag = tag.toString() as string
     }
 
-    internalSlots = getInternalSlots(this)
+    let internalSlots = getInternalSlots(this, internalSlotsList)
 
     let options = CoerceOptionsToObject<IntlLocaleOptions>(opts)
 
@@ -511,6 +529,20 @@ export class Locale {
       }
     }
     opt.co = collation
+    let fw = GetOption(
+      options,
+      'firstDayOfWeek',
+      'string',
+      undefined,
+      undefined
+    )
+    if (fw !== undefined) {
+      fw = weekdayToString(fw)
+      if (!ALPHANUM_3_8.test(fw)) {
+        throw new RangeError('Invalid firstDayOfWeek')
+      }
+    }
+    opt.fw = fw
     const hc = GetOption(
       options,
       'hourCycle',
@@ -550,6 +582,7 @@ export class Locale {
     internalSlots.locale = r.locale
     internalSlots.calendar = r.ca
     internalSlots.collation = r.co
+    internalSlots.firstDayOfWeek = r.fw
     internalSlots.hourCycle = r.hc as 'h11'
 
     if (relevantExtensionKeys.indexOf('kf') > -1) {
@@ -604,10 +637,6 @@ export class Locale {
     return getInternalSlots(this).collation
   }
 
-  public get hourCycle() {
-    return getInternalSlots(this).hourCycle
-  }
-
   public get caseFirst() {
     return getInternalSlots(this).caseFirst
   }
@@ -640,18 +669,27 @@ export class Locale {
     return parseUnicodeLanguageId(locale).region
   }
 
+  public get firstDayOfWeek() {
+    const internalSlots = getInternalSlots(this)
+    if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
+      throw new TypeError('Error uninitialized locale')
+    }
+    return internalSlots.firstDayOfWeek
+  }
+
+  public get hourCycle() {
+    const internalSlots = getInternalSlots(this)
+    if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
+      throw new TypeError('Error uninitialized locale')
+    }
+    return internalSlots.hourCycle
+  }
+
   /**
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCalendars
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCalendars
    */
   public getCalendars() {
-    return calendarsOfLocale(this)
-  }
-
-  /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.calendars
-   */
-  public get calendars() {
     return calendarsOfLocale(this)
   }
 
@@ -664,29 +702,15 @@ export class Locale {
   }
 
   /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.collations
-   */
-  public get collations() {
-    return collationsOfLocale(this)
-  }
-
-  /**
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getHourCycles
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getHourCycles
    */
   public getHourCycles() {
-    const locInternalSlots = getInternalSlots(this)
-    if (locInternalSlots.initializedLocale === undefined) {
+    const internalSlots = getInternalSlots(this)
+    if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
       throw new TypeError('Error uninitialized locale')
     }
 
-    return hourCyclesOfLocale(this)
-  }
-
-  /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.hourCycles
-   */
-  public get hourCycles() {
     return hourCyclesOfLocale(this)
   }
 
@@ -699,24 +723,10 @@ export class Locale {
   }
 
   /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.numberingSystems
-   */
-  public get numberingSystems() {
-    return numberingSystemsOfLocale(this)
-  }
-
-  /**
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTimeZones
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTimeZones
    */
   public getTimeZones() {
-    return timeZonesOfLocale(this)
-  }
-
-  /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.timeZones
-   */
-  public get timeZones() {
     return timeZonesOfLocale(this)
   }
 
@@ -728,32 +738,9 @@ export class Locale {
     const info = Object.create(Object.prototype)
     const dir = characterDirectionOfLocale(this)
 
-    defineProperty(info, 'direction', {
-      value: dir,
-    })
+    createDataProperty(info, 'direction', dir)
 
     return info
-  }
-
-  /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.textInfo
-   */
-  public get textInfo() {
-    try {
-      const info = Object.create(Object.prototype)
-      const dir = characterDirectionOfLocale(this)
-
-      Object.defineProperty(info, 'direction', {
-        value: dir,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      })
-
-      return info
-    } catch (e) {
-      throw new TypeError('Error retrieving textInfo')
-    }
   }
 
   /**
@@ -762,63 +749,26 @@ export class Locale {
    */
   public getWeekInfo() {
     const info = Object.create(Object.prototype)
-    const locInternalSlots = getInternalSlots(this)
-    if (locInternalSlots.initializedLocale === undefined) {
+    const internalSlots = getInternalSlots(this)
+    if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
       throw new TypeError('Error uninitialized locale')
     }
 
     const wi = weekInfoOfLocale(this)
     const we = wi.weekend
 
-    defineProperty(info, 'firstDay', {
-      value: wi.firstDay,
-    })
+    createDataProperty(info, 'firstDay', wi.firstDay)
 
-    defineProperty(info, 'weekend', {
-      value: we,
-    })
+    createDataProperty(info, 'weekend', we)
 
-    defineProperty(info, 'minimalDays', {
-      value: wi.minimalDays,
-    })
+    createDataProperty(info, 'minimalDays', wi.minimalDays)
+
+    const fw = internalSlots.firstDayOfWeek
+    if (fw !== undefined) {
+      info.firstDay = fw
+    }
 
     return info
-  }
-
-  /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.weekInfo
-   */
-  public get weekInfo() {
-    try {
-      const info = Object.create(Object.prototype)
-      const wi = weekInfoOfLocale(this)
-      const we = wi.weekend
-
-      Object.defineProperty(info, 'firstDay', {
-        value: wi.firstDay,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      })
-
-      Object.defineProperty(info, 'weekend', {
-        value: we,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      })
-
-      Object.defineProperty(info, 'minimalDays', {
-        value: wi.minimalDays,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      })
-
-      return info
-    } catch (e) {
-      throw new TypeError('Error retrieving weekInfo')
-    }
   }
 
   static relevantExtensionKeys = RELEVANT_EXTENSION_KEYS

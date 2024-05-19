@@ -19,68 +19,68 @@ describe('intl-locale', () => {
   describe('new locale info proposal properties', () => {
     it('ar', () => {
       const locale = new Locale('ar')
-      expect(locale.calendars).toEqual([
+      expect(locale.getCalendars()).toEqual([
         'gregory',
         'coptic',
         'islamic',
         'islamicc',
         'islamic-tbla',
       ])
-      expect(locale.collations).toEqual(['compat', 'emoji', 'eor'])
-      expect(locale.hourCycles).toEqual(['h12', 'h23'])
-      expect(locale.numberingSystems).toEqual(['arab'])
-      expect(locale.timeZones).toBe(undefined)
+      expect(locale.getCollations()).toEqual(['compat', 'emoji', 'eor'])
+      expect(locale.getHourCycles()).toEqual(['h12', 'h23'])
+      expect(locale.getNumberingSystems()).toEqual(['arab'])
+      expect(locale.getTimeZones()).toBe(undefined)
     })
 
     it('ar-EG', () => {
       const locale = new Locale('ar-EG')
-      expect(locale.calendars).toEqual([
+      expect(locale.getCalendars()).toEqual([
         'gregory',
         'coptic',
         'islamic',
         'islamicc',
         'islamic-tbla',
       ])
-      expect(locale.collations).toEqual(['compat', 'emoji', 'eor'])
-      expect(locale.hourCycles).toEqual(['h12', 'h23'])
-      expect(locale.numberingSystems).toEqual(['arab'])
-      expect(JSON.stringify(locale.timeZones)).toMatch(
+      expect(locale.getCollations()).toEqual(['compat', 'emoji', 'eor'])
+      expect(locale.getHourCycles()).toEqual(['h12', 'h23'])
+      expect(locale.getNumberingSystems()).toEqual(['arab'])
+      expect(JSON.stringify(locale.getTimeZones())).toMatch(
         JSON.stringify(['Africa/Cairo'])
       )
     })
 
     it('ar-SA', () => {
       const locale = new Locale('ar-SA')
-      expect(locale.calendars).toEqual([
+      expect(locale.getCalendars()).toEqual([
         'islamic-umalqura',
         'gregory',
         'islamic',
         'islamic-rgsa',
       ])
-      expect(locale.collations).toEqual(['compat', 'emoji', 'eor'])
-      expect(locale.hourCycles).toEqual(['h12', 'h23'])
-      expect(locale.numberingSystems).toEqual(['arab'])
-      expect(JSON.stringify(locale.timeZones)).toMatch(
+      expect(locale.getCollations()).toEqual(['compat', 'emoji', 'eor'])
+      expect(locale.getHourCycles()).toEqual(['h12', 'h23'])
+      expect(locale.getNumberingSystems()).toEqual(['arab'])
+      expect(JSON.stringify(locale.getTimeZones())).toMatch(
         JSON.stringify(['Asia/Riyadh'])
       )
     })
 
     it('ja', () => {
       const locale = new Locale('ja')
-      expect(locale.calendars).toEqual(['gregory', 'japanese'])
-      expect(locale.collations).toEqual(['emoji', 'eor', 'unihan'])
-      expect(locale.hourCycles).toEqual(['h23', 'h11', 'h12'])
-      expect(locale.numberingSystems).toEqual(['latn', 'jpan', 'jpanfin'])
-      expect(locale.timeZones).toBe(undefined)
+      expect(locale.getCalendars()).toEqual(['gregory', 'japanese'])
+      expect(locale.getCollations()).toEqual(['emoji', 'eor', 'unihan'])
+      expect(locale.getHourCycles()).toEqual(['h23', 'h11', 'h12'])
+      expect(locale.getNumberingSystems()).toEqual(['latn', 'jpan', 'jpanfin'])
+      expect(locale.getTimeZones()).toBe(undefined)
     })
 
     it('pt-BR', () => {
       const locale = new Locale('pt-BR')
-      expect(locale.calendars).toEqual(['gregory'])
-      expect(locale.collations).toEqual(['emoji', 'eor'])
-      expect(locale.hourCycles).toEqual(['h23'])
-      expect(locale.numberingSystems).toEqual(['latn'])
-      expect(JSON.stringify(locale.timeZones)).toMatch(
+      expect(locale.getCalendars()).toEqual(['gregory'])
+      expect(locale.getCollations()).toEqual(['emoji', 'eor'])
+      expect(locale.getHourCycles()).toEqual(['h23'])
+      expect(locale.getNumberingSystems()).toEqual(['latn'])
+      expect(JSON.stringify(locale.getTimeZones())).toMatch(
         JSON.stringify([
           'America/Araguaina',
           'America/Bahia',
@@ -105,5 +105,13 @@ describe('intl-locale', () => {
 
   it('has static polyfilled property', function () {
     expect(Locale.polyfilled).toBe(true)
+  })
+})
+
+test('getWeekInfo', function () {
+  expect(new Locale('en-uS').getWeekInfo()).toEqual({
+    firstDay: 7,
+    weekend: [6, 7],
+    minimalDays: 1,
   })
 })

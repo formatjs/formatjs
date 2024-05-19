@@ -31,23 +31,24 @@ export {default as _formatToParts} from './NumberFormat/format_to_parts'
 export * from './PartitionPattern'
 export * from './SupportedLocales'
 export {
+  createDataProperty,
+  defineProperty,
   getInternalSlot,
+  getMagnitude,
   getMultiInternalSlots,
   isLiteralPart,
   setInternalSlot,
   setMultiInternalSlots,
-  getMagnitude,
-  defineProperty,
 } from './utils'
 export type {LiteralPart} from './utils'
 
-export {isMissingLocaleDataError} from './data'
-export * from './types/relative-time'
-export * from './types/date-time'
-export * from './types/list'
-export * from './types/plural-rules'
-export * from './types/number'
-export * from './types/displaynames'
-export {invariant} from './utils'
-export type {LocaleData} from './types/core'
 export * from './262'
+export {isMissingLocaleDataError} from './data'
+export type {LocaleData} from './types/core'
+export * from './types/date-time'
+export * from './types/displaynames'
+export * from './types/list'
+export * from './types/number'
+export * from './types/plural-rules'
+export * from './types/relative-time'
+export {invariant} from './utils'
