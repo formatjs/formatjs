@@ -38,7 +38,7 @@
   "peerDependencies": {
     "@glimmer/env": "^0.1.7",
     "@glimmer/reference": "^0.91.1 || ^0.92.0",
-    "@glimmer/syntax": "^0.91.1",
+    "@glimmer/syntax": "^0.91.1 || ^0.92.0",
     "@glimmer/validator": "^0.91.1",
     "@vue/compiler-core": "^3.4.0",
     "content-tag": "^2.0.1",

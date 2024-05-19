@@ -35,7 +35,7 @@
     "@commitlint/config-angular": "17",
     "@glimmer/env": "^0.1.7",
     "@glimmer/reference": "^0.92.0",
-    "@glimmer/syntax": "^0.91.1",
+    "@glimmer/syntax": "^0.92.0",
     "@glimmer/validator": "^0.91.1",
     "@jest/transform": "29",
     "@jest/types": "29",
@@ -148,7 +148,7 @@
   "resolutions": {
     "terser": "5.27.0",
     "source-map-js": "1.0.2",
-    "@glimmer/syntax": "0.91.1",
+    "@glimmer/syntax": "^0.92.0",
     "@glimmer/interfaces": "0.92.0"
   },
   "pnpm": {
