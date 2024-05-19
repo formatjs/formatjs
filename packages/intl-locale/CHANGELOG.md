@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.4.6...@formatjs/intl-locale@4.0.0) (2024-05-19)
+
+### Features
+
+* **@formatjs/intl-locale:** update impl to match stage-3 ([753bfea](https://github.com/formatjs/formatjs/commit/753bfeab3d8b590d041da221542180f5e1b5c346)), closes [#4375](https://github.com/formatjs/formatjs/issues/4375) - by @longlho
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-locale:** a lot of getters have been removed from the spec so
+we've also removed them from this polyfill
+
 ## [3.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@3.4.5...@formatjs/intl-locale@3.4.6) (2024-05-18)
 
 **Note:** Version bump only for package @formatjs/intl-locale

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.10.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.10.2...@formatjs/intl-numberformat@8.10.3) (2024-05-19)
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** use currencyDecimal when style is currency if possible, mainly for fr-CH ([4286b68](https://github.com/formatjs/formatjs/commit/4286b681ce1bfe7894ed6e32b5c4f21e91e6af91)) - by @longlho
+
 ## [8.10.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.10.1...@formatjs/intl-numberformat@8.10.2) (2024-05-18)
 
 ### Bug Fixes

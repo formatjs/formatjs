@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-segmenter",
-  "version": "11.5.6",
+  "version": "11.5.7",
   "description": "Polyfill for Intl.Segmenter",
   "keywords": [
     "intl",

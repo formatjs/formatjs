@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.16](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.15...babel-plugin-formatjs@10.5.16) (2024-05-19)
+
+### Bug Fixes
+
+* **deps:** update dependency @babel/traverse to v7.23.2 [security] ([#4361](https://github.com/formatjs/formatjs/issues/4361)) ([db7f965](https://github.com/formatjs/formatjs/commit/db7f9656012af5b65cb9174e031f48b5cf4bf325)) - by @renovate[bot]
+
 ## [10.5.15](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.14...babel-plugin-formatjs@10.5.15) (2024-05-18)
 
 **Note:** Version bump only for package babel-plugin-formatjs

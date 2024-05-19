@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.18.3...@formatjs/ecma402-abstract@2.0.0) (2024-05-19)
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** use currencyDecimal when style is currency if possible, mainly for fr-CH ([4286b68](https://github.com/formatjs/formatjs/commit/4286b681ce1bfe7894ed6e32b5c4f21e91e6af91)) - by @longlho
+
+### Features
+
+* **@formatjs/intl-locale:** update impl to match stage-3 ([753bfea](https://github.com/formatjs/formatjs/commit/753bfeab3d8b590d041da221542180f5e1b5c346)), closes [#4375](https://github.com/formatjs/formatjs/issues/4375) - by @longlho
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-locale:** a lot of getters have been removed from the spec so
+we've also removed them from this polyfill
+
 ## [1.18.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.18.2...@formatjs/ecma402-abstract@1.18.3) (2024-05-18)
 
 ### Bug Fixes
