@@ -148,8 +148,8 @@ importers:
         specifier: ^1.0.32
         version: 1.0.34
       '@types/lodash':
-        specifier: ^4.14.150
-        version: 4.14.182
+        specifier: ^4.17.4
+        version: 4.17.4
       '@types/minimist':
         specifier: ^1.2.1
         version: 1.2.2
@@ -6976,8 +6976,8 @@ packages:
       '@types/node': 18.19.33
     dev: true
 
-  /@types/lodash@4.14.182:
-    resolution: {integrity: sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q==}
+  /@types/lodash@4.17.4:
+    resolution: {integrity: sha512-wYCP26ZLxaT3R39kiN2+HcJ4kTd3U1waI/cY7ivWYqFP6pW3ZNpvi6Wd6PHZx7T/t8z0vlkXMg3QYLa7DZ/IJQ==}
     dev: true
 
   /@types/mdast@3.0.15:
