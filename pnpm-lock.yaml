@@ -208,10 +208,10 @@ importers:
         specifier: ^4.0.0
         version: 4.1.2
       chokidar:
-        specifier: ^3.6.0
+        specifier: ^3.4.2
         version: 3.6.0
       cjs-module-lexer:
-        specifier: ^1.3.1
+        specifier: ^1.2.2
         version: 1.3.1
       cldr-bcp47:
         specifier: 43.1.0
@@ -247,7 +247,7 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1(patch_hash=vcuji544ffu5buppehwyhsxi3i)
       core-js:
-        specifier: ^3.37.1
+        specifier: ^3.6.5
         version: 3.37.1
       ember-template-recast:
         specifier: ^6.1.4
@@ -325,8 +325,8 @@ importers:
         specifier: ^2.3.1
         version: 2.3.1
       pnpm:
-        specifier: '8'
-        version: 8.0.0
+        specifier: ^8.15.8
+        version: 8.15.8
       prettier:
         specifier: ^3.0.3
         version: 3.2.5
@@ -5316,7 +5316,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/test-result': 29.5.0
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
       jest-haste-map: 29.5.0
       slash: 3.0.0
 
@@ -7104,7 +7104,7 @@ packages:
     resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.3.2
+      '@types/react': 18.0.25
       '@types/react-router': 5.1.18
     dev: true
 
@@ -7112,7 +7112,7 @@ packages:
     resolution: {integrity: sha512-YYknwy0D0iOwKQgz9v8nOzt2J6l4gouBmDnWqUUznltOTaon+r8US8ky8HvN0tXvc38U9m6z/t2RsVsnd1zM0g==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.3.2
+      '@types/react': 18.0.25
     dev: true
 
   /@types/react@18.0.14:
@@ -8299,7 +8299,7 @@ packages:
       babel-plugin-istanbul: 6.1.1
       babel-preset-jest: 29.5.0(@babel/core@7.18.10)
       chalk: 4.1.2
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
       slash: 3.0.0
     transitivePeerDependencies:
       - supports-color
@@ -13594,7 +13594,7 @@ packages:
       ci-info: 3.3.2
       deepmerge: 4.2.2
       glob: 7.2.3
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
       jest-circus: 29.5.0
       jest-environment-node: 29.5.0
       jest-get-type: 29.4.3
@@ -13679,7 +13679,7 @@ packages:
       '@types/node': 18.19.33
       anymatch: 3.1.3
       fb-watchman: 2.0.1
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
       jest-regex-util: 29.4.3
       jest-util: 29.5.0
       jest-worker: 29.5.0
@@ -13869,7 +13869,7 @@ packages:
       '@types/node': 18.19.33
       chalk: 4.1.2
       ci-info: 3.3.2
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
       picomatch: 2.3.1
 
   /jest-util@29.7.0:
@@ -14165,7 +14165,7 @@ packages:
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
 
   /jsonify@0.0.0:
     resolution: {integrity: sha512-trvBk1ki43VZptdBI5rIlG4YOzyeH/WefQt5rj1grasPn4iiZWKet8nkgc4GlsAylaztn0qZfUYOiTsASJFdNA==}
@@ -16741,8 +16741,8 @@ packages:
       irregular-plurals: 3.3.0
     dev: true
 
-  /pnpm@8.0.0:
-    resolution: {integrity: sha512-Crsvd8LKb+SoEB/bQxRZrtSt5Ri8g9jmPg6MKyexMTI1pdLd44gPwVV6cZLq2jYYPv5q+gADPkYTbYr8SeFCeA==}
+  /pnpm@8.15.8:
+    resolution: {integrity: sha512-0aAp4aRHrZC8ls1YsPrUhtKZPVMYVjlve6vy2D6xgju4PFo9D8GPZ1stEDIdSesWH+zjb+gTSqWCPs0hX+7Tkg==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
