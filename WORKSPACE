@@ -156,9 +156,9 @@ go_register_toolchains(version = "1.18")
 
 http_archive(
     name = "rules_multirun",
-    sha256 = "9cd384e42b2da00104f0e18f25e66285aa21f64b573c667638a7a213206885ab",
-    strip_prefix = "rules_multirun-0.6.1",
-    url = "https://github.com/keith/rules_multirun/archive/refs/tags/0.6.1.tar.gz",
+    sha256 = "504612040149edce01376c4809b33f2e0c5331cdd0ec56df562dc89ecbc045a0",
+    strip_prefix = "rules_multirun-0.9.0",
+    url = "https://github.com/keith/rules_multirun/archive/refs/tags/0.9.0.tar.gz",
 )
 
 # Buildifier
