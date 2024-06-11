@@ -31,6 +31,7 @@ module.exports = {
       'react-intl/upgrade-guide-2x',
     ],
     '@formatjs/intl': ['intl'],
+    'ember-intl': ['ember-intl'],
     'vue-intl': ['vue-intl'],
     'intl-messageformat': ['intl-messageformat'],
     'icu-messageformat-parser': ['icu-messageformat-parser'],

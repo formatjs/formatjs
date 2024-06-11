@@ -33,7 +33,7 @@ export default {
           label: 'API References',
           position: 'left',
           activeBaseRegex:
-            'docs/(vue-intl|intl|react-intl|intl-messageformat|icu-messageformat-parser)',
+            'docs/(vue-intl|intl|ember-intl|react-intl|intl-messageformat|icu-messageformat-parser)',
         },
         {
           to: 'docs/polyfills',
