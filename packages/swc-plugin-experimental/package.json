@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
-  "homepage": "https://github.com/formatjs/formatjs#readme"
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "peerDependencies": {
+    "@swc/core": "^1.5.0"
+  }
 }
