@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "peerDependencies": {
-    "@swc/core": "^1.5.0"
+    "@swc/core": "^1.6.0"
   }
 }

@@ -25,7 +25,7 @@ serde_json = { version = "1.0.85", features = ["unbounded_depth"] }
 swc-formatjs-visitor = { path = "../swc-formatjs-visitor", features = [
   "custom_transform",
 ] }
-swc_core = { version = "0.92.7", features = [
+swc_core = { version = "0.95.2", features = [
   "common_concurrent",
   "ecma_transforms",
   "ecma_ast",

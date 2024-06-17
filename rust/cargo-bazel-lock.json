@@ -1,5 +1,5 @@
 {
-  "checksum": "ba43d2e4dd9d65940cdc1943b343a1e7e0d371b8f5323428e46dd3c6caa61970",
+  "checksum": "dacea3d65a5e1cba44f6bc2c8432f136ce455a97a41e7758db253600ed370e78",
   "crates": {
     "Inflector 0.11.4": {
       "name": "Inflector",
@@ -2787,7 +2787,7 @@
               "target": "similar_asserts"
             },
             {
-              "id": "testing 0.35.25",
+              "id": "testing 0.36.0",
               "target": "testing"
             }
           ],
@@ -6064,6 +6064,39 @@
       },
       "license": "Apache-2.0 OR BSL-1.0"
     },
+    "ryu-js 1.0.1": {
+      "name": "ryu-js",
+      "version": "1.0.1",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/ryu-js/1.0.1/download",
+          "sha256": "ad97d4ce1560a5e27cec89519dc8300d1aa6035b099821261c651486a19e44d5"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "ryu_js",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "include": [
+                "**/*.rs"
+              ],
+              "exclude": []
+            }
+          }
+        }
+      ],
+      "library_target_name": "ryu_js",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "edition": "2018",
+        "version": "1.0.1"
+      },
+      "license": "Apache-2.0 OR BSL-1.0"
+    },
     "scoped-tls 1.0.1": {
       "name": "scoped-tls",
       "version": "1.0.1",
@@ -7509,7 +7542,7 @@
               "target": "sha2"
             },
             {
-              "id": "swc_core 0.92.7",
+              "id": "swc_core 0.95.2",
               "target": "swc_core"
             }
           ],
@@ -7550,7 +7583,7 @@
               "target": "serde_json"
             },
             {
-              "id": "swc_core 0.92.7",
+              "id": "swc_core 0.95.2",
               "target": "swc_core"
             }
           ],
@@ -7629,13 +7662,13 @@
       },
       "license": "Apache-2.0"
     },
-    "swc_common 0.33.26": {
+    "swc_common 0.34.1": {
       "name": "swc_common",
-      "version": "0.33.26",
+      "version": "0.34.1",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_common/0.33.26/download",
-          "sha256": "a2f9706038906e66f3919028f9f7a37f3ed552f1b85578e93f4468742e2da438"
+          "url": "https://static.crates.io/crates/swc_common/0.34.1/download",
+          "sha256": "5d0a5e455ba23fcd687b05ee944ea2c4b026f7de6bb648be3061a434509963e2"
         }
       },
       "targets": [
@@ -7784,17 +7817,17 @@
           ],
           "selects": {}
         },
-        "version": "0.33.26"
+        "version": "0.34.1"
       },
       "license": "Apache-2.0"
     },
-    "swc_core 0.92.7": {
+    "swc_core 0.95.2": {
       "name": "swc_core",
-      "version": "0.92.7",
+      "version": "0.95.2",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_core/0.92.7/download",
-          "sha256": "3fd5db8f3366e64dfa51569bde51a90abf7bd1bf9b291135baa87c0364208524"
+          "url": "https://static.crates.io/crates/swc_core/0.95.2/download",
+          "sha256": "2d98a9010ece859955625a9c1a54ac60986063d755acd8e1fd3a6d7a7e96bce1"
         }
       },
       "targets": [
@@ -7864,27 +7897,27 @@
               "target": "swc_atoms"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             },
             {
-              "id": "swc_core 0.92.7",
+              "id": "swc_core 0.95.2",
               "target": "build_script_build"
             },
             {
-              "id": "swc_ecma_ast 0.113.5",
+              "id": "swc_ecma_ast 0.115.0",
               "target": "swc_ecma_ast"
             },
             {
-              "id": "swc_ecma_transforms_base 0.138.2",
+              "id": "swc_ecma_transforms_base 0.140.0",
               "target": "swc_ecma_transforms_base"
             },
             {
-              "id": "swc_ecma_transforms_testing 0.141.1",
+              "id": "swc_ecma_transforms_testing 0.143.0",
               "target": "swc_ecma_transforms_testing"
             },
             {
-              "id": "swc_ecma_visit 0.99.1",
+              "id": "swc_ecma_visit 0.101.0",
               "target": "swc_ecma_visit"
             },
             {
@@ -7892,7 +7925,7 @@
               "target": "swc_plugin"
             },
             {
-              "id": "swc_plugin_proxy 0.42.1",
+              "id": "swc_plugin_proxy 0.44.0",
               "target": "swc_plugin_proxy"
             }
           ],
@@ -7908,7 +7941,7 @@
           ],
           "selects": {}
         },
-        "version": "0.92.7"
+        "version": "0.95.2"
       },
       "build_script_attrs": {
         "data_glob": [
@@ -7926,13 +7959,13 @@
       },
       "license": "Apache-2.0"
     },
-    "swc_ecma_ast 0.113.5": {
+    "swc_ecma_ast 0.115.0": {
       "name": "swc_ecma_ast",
-      "version": "0.113.5",
+      "version": "0.115.0",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_ecma_ast/0.113.5/download",
-          "sha256": "0fa77fca9412729a3fe634e55c354f6c70c7983f127411ce8684e4c7edf32ed3"
+          "url": "https://static.crates.io/crates/swc_ecma_ast/0.115.0/download",
+          "sha256": "065b55c4d3bf7994a47abd420b9d69c69dd48e602030cbc85557077d5705fb63"
         }
       },
       "targets": [
@@ -7998,7 +8031,7 @@
               "target": "swc_atoms"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             },
             {
@@ -8022,17 +8055,17 @@
           ],
           "selects": {}
         },
-        "version": "0.113.5"
+        "version": "0.115.0"
       },
       "license": "Apache-2.0"
     },
-    "swc_ecma_codegen 0.149.2": {
+    "swc_ecma_codegen 0.151.0": {
       "name": "swc_ecma_codegen",
-      "version": "0.149.2",
+      "version": "0.151.0",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_ecma_codegen/0.149.2/download",
-          "sha256": "6ab6d5e7bbd9208f980b5dad2a4a6ae798c97569f809a48c3f92e6ae7e183c6c"
+          "url": "https://static.crates.io/crates/swc_ecma_codegen/0.151.0/download",
+          "sha256": "cc6602bcf4fd78b2ef0c7b2abcdbd3e35dfa564a6bcfb0f256e86b41ff3299d7"
         }
       },
       "targets": [
@@ -8085,11 +8118,11 @@
               "target": "swc_atoms"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             },
             {
-              "id": "swc_ecma_ast 0.113.5",
+              "id": "swc_ecma_ast 0.115.0",
               "target": "swc_ecma_ast"
             },
             {
@@ -8109,7 +8142,7 @@
           ],
           "selects": {}
         },
-        "version": "0.149.2"
+        "version": "0.151.0"
       },
       "license": "Apache-2.0"
     },
@@ -8167,13 +8200,13 @@
       },
       "license": "Apache-2.0"
     },
-    "swc_ecma_parser 0.144.1": {
+    "swc_ecma_parser 0.146.1": {
       "name": "swc_ecma_parser",
-      "version": "0.144.1",
+      "version": "0.146.1",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_ecma_parser/0.144.1/download",
-          "sha256": "0499e69683ae5d67a20ff0279b94bc90f29df7922a46331b54d5dd367bf89570"
+          "url": "https://static.crates.io/crates/swc_ecma_parser/0.146.1/download",
+          "sha256": "f884c766155c58b98503961612d1caced9d50267fcbf7914d9407d6fc5447efe"
         }
       },
       "targets": [
@@ -8239,11 +8272,11 @@
               "target": "swc_atoms"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             },
             {
-              "id": "swc_ecma_ast 0.113.5",
+              "id": "swc_ecma_ast 0.115.0",
               "target": "swc_ecma_ast"
             },
             {
@@ -8265,17 +8298,17 @@
           }
         },
         "edition": "2021",
-        "version": "0.144.1"
+        "version": "0.146.1"
       },
       "license": "Apache-2.0"
     },
-    "swc_ecma_testing 0.22.23": {
+    "swc_ecma_testing 0.23.0": {
       "name": "swc_ecma_testing",
-      "version": "0.22.23",
+      "version": "0.23.0",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_ecma_testing/0.22.23/download",
-          "sha256": "dbe778ce5eae6a7e620e1f6b5326e78f00203c4548e0c659fd22da8be0538fd1"
+          "url": "https://static.crates.io/crates/swc_ecma_testing/0.23.0/download",
+          "sha256": "7f495dae76f1ef3f5be46993b050c3c7f9bf534bcdacf1e40789d32255040776"
         }
       },
       "targets": [
@@ -8312,7 +8345,7 @@
               "target": "sha2"
             },
             {
-              "id": "testing 0.35.25",
+              "id": "testing 0.36.0",
               "target": "testing"
             },
             {
@@ -8323,17 +8356,17 @@
           "selects": {}
         },
         "edition": "2021",
-        "version": "0.22.23"
+        "version": "0.23.0"
       },
       "license": "Apache-2.0"
     },
-    "swc_ecma_transforms_base 0.138.2": {
+    "swc_ecma_transforms_base 0.140.0": {
       "name": "swc_ecma_transforms_base",
-      "version": "0.138.2",
+      "version": "0.140.0",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_ecma_transforms_base/0.138.2/download",
-          "sha256": "eddb95c2bdad1c9c29edf35712e1e0f9b9ddc1cdb5ba2d582fd93468cb075a03"
+          "url": "https://static.crates.io/crates/swc_ecma_transforms_base/0.140.0/download",
+          "sha256": "daee7af0abfccc9855656fc36ac472e1e6a61398a3a1a1b3bf05ef7a7e7af6b0"
         }
       },
       "targets": [
@@ -8394,23 +8427,23 @@
               "target": "swc_atoms"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             },
             {
-              "id": "swc_ecma_ast 0.113.5",
+              "id": "swc_ecma_ast 0.115.0",
               "target": "swc_ecma_ast"
             },
             {
-              "id": "swc_ecma_parser 0.144.1",
+              "id": "swc_ecma_parser 0.146.1",
               "target": "swc_ecma_parser"
             },
             {
-              "id": "swc_ecma_utils 0.128.2",
+              "id": "swc_ecma_utils 0.130.0",
               "target": "swc_ecma_utils"
             },
             {
-              "id": "swc_ecma_visit 0.99.1",
+              "id": "swc_ecma_visit 0.101.0",
               "target": "swc_ecma_visit"
             },
             {
@@ -8421,17 +8454,17 @@
           "selects": {}
         },
         "edition": "2021",
-        "version": "0.138.2"
+        "version": "0.140.0"
       },
       "license": "Apache-2.0"
     },
-    "swc_ecma_transforms_testing 0.141.1": {
+    "swc_ecma_transforms_testing 0.143.0": {
       "name": "swc_ecma_transforms_testing",
-      "version": "0.141.1",
+      "version": "0.143.0",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_ecma_transforms_testing/0.141.1/download",
-          "sha256": "686445efd086ca6dd52874b4d1935663914e2fb76514c0ad7b0105cec7859451"
+          "url": "https://static.crates.io/crates/swc_ecma_transforms_testing/0.143.0/download",
+          "sha256": "2622a94000bb4e04548afe0540150f616c58296d5485c0653d1fae69c23efd98"
         }
       },
       "targets": [
@@ -8488,35 +8521,35 @@
               "target": "sourcemap"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             },
             {
-              "id": "swc_ecma_ast 0.113.5",
+              "id": "swc_ecma_ast 0.115.0",
               "target": "swc_ecma_ast"
             },
             {
-              "id": "swc_ecma_codegen 0.149.2",
+              "id": "swc_ecma_codegen 0.151.0",
               "target": "swc_ecma_codegen"
             },
             {
-              "id": "swc_ecma_parser 0.144.1",
+              "id": "swc_ecma_parser 0.146.1",
               "target": "swc_ecma_parser"
             },
             {
-              "id": "swc_ecma_testing 0.22.23",
+              "id": "swc_ecma_testing 0.23.0",
               "target": "swc_ecma_testing"
             },
             {
-              "id": "swc_ecma_transforms_base 0.138.2",
+              "id": "swc_ecma_transforms_base 0.140.0",
               "target": "swc_ecma_transforms_base"
             },
             {
-              "id": "swc_ecma_utils 0.128.2",
+              "id": "swc_ecma_utils 0.130.0",
               "target": "swc_ecma_utils"
             },
             {
-              "id": "swc_ecma_visit 0.99.1",
+              "id": "swc_ecma_visit 0.101.0",
               "target": "swc_ecma_visit"
             },
             {
@@ -8524,24 +8557,24 @@
               "target": "tempfile"
             },
             {
-              "id": "testing 0.35.25",
+              "id": "testing 0.36.0",
               "target": "testing"
             }
           ],
           "selects": {}
         },
         "edition": "2021",
-        "version": "0.141.1"
+        "version": "0.143.0"
       },
       "license": "Apache-2.0"
     },
-    "swc_ecma_utils 0.128.2": {
+    "swc_ecma_utils 0.130.0": {
       "name": "swc_ecma_utils",
-      "version": "0.128.2",
+      "version": "0.130.0",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_ecma_utils/0.128.2/download",
-          "sha256": "2f978f911664091d2d161ed7fedfb2128f6a8af77765a264b470195d6e20b768"
+          "url": "https://static.crates.io/crates/swc_ecma_utils/0.130.0/download",
+          "sha256": "831490c6d4a52f06932fa2c3d87fc0d0aa43211a5df6b5e05a1ec2c57a2f2519"
         }
       },
       "targets": [
@@ -8582,19 +8615,23 @@
               "target": "rustc_hash"
             },
             {
+              "id": "ryu-js 1.0.1",
+              "target": "ryu_js"
+            },
+            {
               "id": "swc_atoms 0.6.7",
               "target": "swc_atoms"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             },
             {
-              "id": "swc_ecma_ast 0.113.5",
+              "id": "swc_ecma_ast 0.115.0",
               "target": "swc_ecma_ast"
             },
             {
-              "id": "swc_ecma_visit 0.99.1",
+              "id": "swc_ecma_visit 0.101.0",
               "target": "swc_ecma_visit"
             },
             {
@@ -8609,17 +8646,17 @@
           "selects": {}
         },
         "edition": "2021",
-        "version": "0.128.2"
+        "version": "0.130.0"
       },
       "license": "Apache-2.0"
     },
-    "swc_ecma_visit 0.99.1": {
+    "swc_ecma_visit 0.101.0": {
       "name": "swc_ecma_visit",
-      "version": "0.99.1",
+      "version": "0.101.0",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_ecma_visit/0.99.1/download",
-          "sha256": "28a6ce28ad8e591f8d627f1f9cb26b25e5d83052a9bc1b674d95fc28040cfa98"
+          "url": "https://static.crates.io/crates/swc_ecma_visit/0.101.0/download",
+          "sha256": "ce0d997f0c9b4e181225f603d161f6757c2a97022258170982cfe005ec69ec92"
         }
       },
       "targets": [
@@ -8660,11 +8697,11 @@
               "target": "swc_atoms"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             },
             {
-              "id": "swc_ecma_ast 0.113.5",
+              "id": "swc_ecma_ast 0.115.0",
               "target": "swc_ecma_ast"
             },
             {
@@ -8679,7 +8716,7 @@
           "selects": {}
         },
         "edition": "2021",
-        "version": "0.99.1"
+        "version": "0.101.0"
       },
       "license": "Apache-2.0"
     },
@@ -8733,13 +8770,13 @@
       },
       "license": "Apache-2.0"
     },
-    "swc_error_reporters 0.17.20": {
+    "swc_error_reporters 0.18.0": {
       "name": "swc_error_reporters",
-      "version": "0.17.20",
+      "version": "0.18.0",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_error_reporters/0.17.20/download",
-          "sha256": "72100a5f7b0c178adf7bcc5e7c8ad9d4180f499a5f5bae9faf3f417c7cbc4915"
+          "url": "https://static.crates.io/crates/swc_error_reporters/0.18.0/download",
+          "sha256": "9bd8f9a90efb59dc5d918b4470e5d152f34cac2f8733bfba141a96440cab3eff"
         }
       },
       "targets": [
@@ -8780,14 +8817,14 @@
               "target": "parking_lot"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             }
           ],
           "selects": {}
         },
         "edition": "2021",
-        "version": "0.17.20"
+        "version": "0.18.0"
       },
       "license": "Apache-2.0"
     },
@@ -8933,13 +8970,13 @@
       },
       "license": "Apache-2.0"
     },
-    "swc_plugin_proxy 0.42.1": {
+    "swc_plugin_proxy 0.44.0": {
       "name": "swc_plugin_proxy",
-      "version": "0.42.1",
+      "version": "0.44.0",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/swc_plugin_proxy/0.42.1/download",
-          "sha256": "98974702046356b67da841a8de561480fd75f963f5d406eee40d690e014e4b55"
+          "url": "https://static.crates.io/crates/swc_plugin_proxy/0.44.0/download",
+          "sha256": "98740e5a1ac82ad0de823bcf4aea97a76dce77c1ccff167d148e8a114b2932c0"
         }
       },
       "targets": [
@@ -8979,11 +9016,11 @@
               "target": "rkyv"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             },
             {
-              "id": "swc_ecma_ast 0.113.5",
+              "id": "swc_ecma_ast 0.115.0",
               "target": "swc_ecma_ast"
             },
             {
@@ -9003,7 +9040,7 @@
           ],
           "selects": {}
         },
-        "version": "0.42.1"
+        "version": "0.44.0"
       },
       "license": "Apache-2.0"
     },
@@ -9496,13 +9533,13 @@
       },
       "license": "MIT OR Apache-2.0"
     },
-    "testing 0.35.25": {
+    "testing 0.36.0": {
       "name": "testing",
-      "version": "0.35.25",
+      "version": "0.36.0",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/testing/0.35.25/download",
-          "sha256": "15028f8ec7f95006f4e00e6c5ab6620f322bc6dc208a6cba09afa36375981cec"
+          "url": "https://static.crates.io/crates/testing/0.36.0/download",
+          "sha256": "27d395aa823f3ad1ad845ed74b96188f493b469794cfbe9ef82f03196064086f"
         }
       },
       "targets": [
@@ -9559,11 +9596,11 @@
               "target": "serde_json"
             },
             {
-              "id": "swc_common 0.33.26",
+              "id": "swc_common 0.34.1",
               "target": "swc_common"
             },
             {
-              "id": "swc_error_reporters 0.17.20",
+              "id": "swc_error_reporters 0.18.0",
               "target": "swc_error_reporters"
             },
             {
@@ -9587,7 +9624,7 @@
           ],
           "selects": {}
         },
-        "version": "0.35.25"
+        "version": "0.36.0"
       },
       "license": "Apache-2.0"
     },
