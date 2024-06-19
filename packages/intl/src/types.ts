@@ -118,102 +118,103 @@ export type FormatDisplayNameOptions = Omit<
  * For example, with React, `TBase` should be `React.ReactNode`.
  */
 export interface IntlFormatters<TBase = unknown> {
-  formatDateTimeRange(
+  formatDateTimeRange:(
     from: Parameters<DateTimeFormat['formatRange']>[0],
     to: Parameters<DateTimeFormat['formatRange']>[1],
     opts?: FormatDateOptions
-  ): string
-  formatDate(
+  ) => string
+  formatDate:(
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
-  ): string
-  formatTime(
+  ) => string
+  formatTime:(
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
-  ): string
-  formatDateToParts(
+  ) => string
+  formatDateToParts:(
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
-  ): Intl.DateTimeFormatPart[]
-  formatTimeToParts(
+  ) => Intl.DateTimeFormatPart[]
+  formatTimeToParts:(
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
-  ): Intl.DateTimeFormatPart[]
-  formatRelativeTime(
+  ) => Intl.DateTimeFormatPart[]
+  formatRelativeTime:(
     value: Parameters<Intl.RelativeTimeFormat['format']>[0],
     unit?: Parameters<Intl.RelativeTimeFormat['format']>[1],
     opts?: FormatRelativeTimeOptions
-  ): string
-  formatNumber(
+  ) => string
+  formatNumber:(
     value: Parameters<Intl.NumberFormat['format']>[0],
     opts?: FormatNumberOptions
-  ): string
-  formatNumberToParts(
+  ) => string
+  formatNumberToParts:(
     value: Parameters<Intl.NumberFormat['format']>[0],
     opts?: FormatNumberOptions
-  ): Intl.NumberFormatPart[]
-  formatPlural(
+  ) => Intl.NumberFormatPart[]
+  formatPlural:(
     value: Parameters<Intl.PluralRules['select']>[0],
     opts?: FormatPluralOptions
-  ): ReturnType<Intl.PluralRules['select']>
-  formatMessage(
+  ) => ReturnType<Intl.PluralRules['select']>
+  formatMessage:{(
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
-  ): string
-  formatMessage<T extends TBase>(
+  ) : string,
+  <T extends TBase>(
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
     opts?: IntlMessageFormatOptions
-  ): string | T | (T | string)[]
-  $t(
+  ) : string | T | (T | string)[]}
+  $t:{(
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
-  ): string
+  ) : string
   $t<T extends TBase>(
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
     opts?: IntlMessageFormatOptions
-  ): string | T | (T | string)[]
-  formatList(values: ReadonlyArray<string>, opts?: FormatListOptions): string
-  formatList<T extends TBase>(
+  ) : string | T | (T | string)[]
+  }
+  formatList:{(values: ReadonlyArray<string>, opts?: FormatListOptions) : string,
+  <T extends TBase>(
     values: ReadonlyArray<string | T>,
     opts?: FormatListOptions
-  ): T | string | (string | T)[]
-  formatListToParts<T extends TBase>(
+  ) : T | string | (string | T)[]}
+  formatListToParts:<T extends TBase>(
     values: ReadonlyArray<string | T>,
     opts?: FormatListOptions
-  ): Part[]
-  formatDisplayName(
+  ) => Part[]
+  formatDisplayName:(
     value: Parameters<DisplayNames['of']>[0],
     opts: FormatDisplayNameOptions
-  ): string | undefined
+  ) => string | undefined
 }
 
 export interface Formatters {
-  getDateTimeFormat(
+  getDateTimeFormat:(
     ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
-  ): DateTimeFormat
-  getNumberFormat(
+  ) => DateTimeFormat
+  getNumberFormat:(
     locales?: string | string[],
     opts?: NumberFormatOptions
-  ): Intl.NumberFormat
-  getMessageFormat(
+  ) => Intl.NumberFormat
+  getMessageFormat:(
     ...args: ConstructorParameters<typeof IntlMessageFormat>
-  ): IntlMessageFormat
-  getRelativeTimeFormat(
+  ) => IntlMessageFormat
+  getRelativeTimeFormat:(
     ...args: ConstructorParameters<typeof Intl.RelativeTimeFormat>
-  ): Intl.RelativeTimeFormat
-  getPluralRules(
+  ) => Intl.RelativeTimeFormat
+  getPluralRules:(
     ...args: ConstructorParameters<typeof Intl.PluralRules>
-  ): Intl.PluralRules
-  getListFormat(
+  ) => Intl.PluralRules
+  getListFormat:(
     ...args: ConstructorParameters<typeof IntlListFormat>
-  ): IntlListFormat
-  getDisplayNames(
+  ) => IntlListFormat
+  getDisplayNames:(
     ...args: ConstructorParameters<typeof DisplayNames>
-  ): DisplayNames
+  ) => DisplayNames
 }
 
 export interface IntlShape<T = string>
