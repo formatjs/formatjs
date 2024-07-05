@@ -42,7 +42,6 @@ PACKAGES_TO_DIST = [
     "//packages/fast-memoize",
     "//packages/icu-messageformat-parser",
     "//packages/icu-skeleton-parser",
-    "//packages/intl",
     "//packages/intl-datetimeformat",
     "//packages/intl-displaynames",
     "//packages/intl-durationformat",
@@ -56,10 +55,12 @@ PACKAGES_TO_DIST = [
     "//packages/intl-pluralrules",
     "//packages/intl-relativetimeformat",
     "//packages/intl-segmenter",
+    "//packages/intl",
     "//packages/react-intl",
-    "//packages/swc-plugin",
     "//packages/swc-plugin-experimental",
+    "//packages/swc-plugin",
     "//packages/ts-transformer",
+    "//packages/utils",
     "//packages/vue-intl",
 ]
 

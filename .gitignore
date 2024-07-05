@@ -8,5 +8,5 @@ node_modules
 .swc
 rust/target
 .css
-build
+build/
 .DS_Store

@@ -39,6 +39,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md#Development) for instructions.
 | [eslint-plugin-formatjs](https://www.npmjs.com/package/eslint-plugin-formatjs)                         | ![version](https://badgen.net/npm/v/eslint-plugin-formatjs)             | [CHANGELOG](packages/eslint-plugin-formatjs/CHANGELOG.md)             | ![license](https://badgen.net/npm/license/eslint-plugin-formatjs)             |
 | [intl-messageformat](https://www.npmjs.com/package/intl-messageformat)                                 | ![version](https://badgen.net/npm/v/intl-messageformat)                 | [CHANGELOG](packages/intl-messageformat/CHANGELOG.md)                 | ![license](https://badgen.net/npm/license/intl-messageformat)                 |
 | [react-intl](https://www.npmjs.com/package/react-intl)                                                 | ![version](https://badgen.net/npm/v/react-intl)                         | [CHANGELOG](packages/react-intl/CHANGELOG.md)                         | ![license](https://badgen.net/npm/license/react-intl)                         |
+| [@formatjs/utils](https://www.npmjs.com/package/@formatjs/utils)                                       | ![version](https://badgen.net/npm/v/@formatjs/utils)                    | [CHANGELOG](packages/utils/CHANGELOG.md)                              | ![license](https://badgen.net/npm/license/@formatjs/utils)                    |
 
 ## Big Thanks
 
