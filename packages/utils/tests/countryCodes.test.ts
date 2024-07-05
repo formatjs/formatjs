@@ -1,12 +1,12 @@
-import {countryCodeAlpha3ToAlpha2} from '../src/countryCodes'
+import {canonicalizeCountryCode} from '../src/countryCodes'
 
-test('countryCodeAlpha3ToAlpha2', () => {
-  expect(countryCodeAlpha3ToAlpha2('USA')).toBe('US')
-  expect(countryCodeAlpha3ToAlpha2('US')).toBe('US')
-  expect(countryCodeAlpha3ToAlpha2('usa')).toBe('US')
-  expect(countryCodeAlpha3ToAlpha2('us')).toBe('US')
-  expect(countryCodeAlpha3ToAlpha2('')).toBe(undefined)
-  expect(countryCodeAlpha3ToAlpha2()).toBe(undefined)
-  expect(countryCodeAlpha3ToAlpha2('ZZ')).toBe(undefined)
-  expect(countryCodeAlpha3ToAlpha2('zz')).toBe(undefined)
+test('canonicalizeCountryCode', () => {
+  expect(canonicalizeCountryCode('USA')).toBe('US')
+  expect(canonicalizeCountryCode('US')).toBe('US')
+  expect(canonicalizeCountryCode('usa')).toBe('US')
+  expect(canonicalizeCountryCode('us')).toBe('US')
+  expect(canonicalizeCountryCode('')).toBe(undefined)
+  expect(canonicalizeCountryCode()).toBe(undefined)
+  expect(canonicalizeCountryCode('ZZ')).toBe(undefined)
+  expect(canonicalizeCountryCode('zz')).toBe(undefined)
 })
