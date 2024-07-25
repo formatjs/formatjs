@@ -71,7 +71,7 @@ async function polyfill(locale: string) {
   }
   // Load the polyfill 1st BEFORE loading data
   await import('@formatjs/intl-listformat/polyfill-force')
-  await import(`@formatjs/intl-listformat/locale-data/${unsupportedLocale}`)
+  await import(`@formatjs/intl-listformat/locale-data/${locale}`)
 }
 ```
 
