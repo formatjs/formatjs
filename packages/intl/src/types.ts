@@ -161,11 +161,11 @@ export interface IntlFormatters<TBase = unknown> {
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
-  formatMessage<T extends TBase>(
+  formatMessage<T extends TBase, TValue extends T | FormatXMLElementFn<T>>(
     descriptor: MessageDescriptor,
-    values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
+    values?: Record<string, PrimitiveType | TValue>,
     opts?: IntlMessageFormatOptions
-  ): string | T | (T | string)[]
+  ): string | T | Array<string | T>
   $t(
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
