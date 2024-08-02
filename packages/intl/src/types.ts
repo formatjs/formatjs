@@ -1,27 +1,26 @@
-import {
-  IntlMessageFormat,
-  Formats,
-  FormatXMLElementFn,
-  FormatError,
-  PrimitiveType,
-  Options as IntlMessageFormatOptions,
-} from 'intl-messageformat'
-import {DateTimeFormat} from '@formatjs/ecma402-abstract'
+import {DateTimeFormat, NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames'
 import IntlListFormat, {
   IntlListFormatOptions,
   Part,
 } from '@formatjs/intl-listformat'
-import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames'
 import {
-  MissingTranslationError,
+  FormatError,
+  Formats,
+  FormatXMLElementFn,
+  IntlMessageFormat,
+  Options as IntlMessageFormatOptions,
+  PrimitiveType,
+} from 'intl-messageformat'
+import {
+  InvalidConfigError,
   MessageFormatError,
   MissingDataError,
-  InvalidConfigError,
+  MissingTranslationError,
   UnsupportedFormatterError,
 } from './error'
 import {DEFAULT_INTL_CONFIG} from './utils'
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 // Note: FormatjsIntl is defined as a global namespace so the library user can
 // override the default types of Message.ids (e.g. as string literal unions from extracted strings)
@@ -119,73 +118,93 @@ export type FormatDisplayNameOptions = Omit<
  */
 export interface IntlFormatters<TBase = unknown> {
   formatDateTimeRange(
+    this: void,
     from: Parameters<DateTimeFormat['formatRange']>[0],
     to: Parameters<DateTimeFormat['formatRange']>[1],
     opts?: FormatDateOptions
   ): string
   formatDate(
+    this: void,
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
   ): string
   formatTime(
+    this: void,
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
   ): string
   formatDateToParts(
+    this: void,
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
   ): Intl.DateTimeFormatPart[]
   formatTimeToParts(
+    this: void,
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
   ): Intl.DateTimeFormatPart[]
   formatRelativeTime(
+    this: void,
     value: Parameters<Intl.RelativeTimeFormat['format']>[0],
     unit?: Parameters<Intl.RelativeTimeFormat['format']>[1],
     opts?: FormatRelativeTimeOptions
   ): string
   formatNumber(
+    this: void,
     value: Parameters<Intl.NumberFormat['format']>[0],
     opts?: FormatNumberOptions
   ): string
   formatNumberToParts(
+    this: void,
     value: Parameters<Intl.NumberFormat['format']>[0],
     opts?: FormatNumberOptions
   ): Intl.NumberFormatPart[]
   formatPlural(
+    this: void,
     value: Parameters<Intl.PluralRules['select']>[0],
     opts?: FormatPluralOptions
   ): ReturnType<Intl.PluralRules['select']>
   formatMessage(
+    this: void,
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
   formatMessage<T extends TBase>(
+    this: void,
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
     opts?: IntlMessageFormatOptions
   ): string | T | (T | string)[]
   $t(
+    this: void,
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
   $t<T extends TBase>(
+    this: void,
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
     opts?: IntlMessageFormatOptions
   ): string | T | (T | string)[]
-  formatList(values: ReadonlyArray<string>, opts?: FormatListOptions): string
+  formatList(
+    this: void,
+    values: ReadonlyArray<string>,
+    opts?: FormatListOptions
+  ): string
   formatList<T extends TBase>(
+    this: void,
     values: ReadonlyArray<string | T>,
     opts?: FormatListOptions
   ): T | string | (string | T)[]
   formatListToParts<T extends TBase>(
+    this: void,
     values: ReadonlyArray<string | T>,
     opts?: FormatListOptions
   ): Part[]
   formatDisplayName(
+    this: void,
     value: Parameters<DisplayNames['of']>[0],
     opts: FormatDisplayNameOptions
   ): string | undefined
@@ -193,25 +212,32 @@ export interface IntlFormatters<TBase = unknown> {
 
 export interface Formatters {
   getDateTimeFormat(
+    this: void,
     ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
   ): DateTimeFormat
   getNumberFormat(
+    this: void,
     locales?: string | string[],
     opts?: NumberFormatOptions
   ): Intl.NumberFormat
   getMessageFormat(
+    this: void,
     ...args: ConstructorParameters<typeof IntlMessageFormat>
   ): IntlMessageFormat
   getRelativeTimeFormat(
+    this: void,
     ...args: ConstructorParameters<typeof Intl.RelativeTimeFormat>
   ): Intl.RelativeTimeFormat
   getPluralRules(
+    this: void,
     ...args: ConstructorParameters<typeof Intl.PluralRules>
   ): Intl.PluralRules
   getListFormat(
+    this: void,
     ...args: ConstructorParameters<typeof IntlListFormat>
   ): IntlListFormat
   getDisplayNames(
+    this: void,
     ...args: ConstructorParameters<typeof DisplayNames>
   ): DisplayNames
 }
