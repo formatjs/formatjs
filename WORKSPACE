@@ -295,7 +295,7 @@ crate_repositories()
 
 http_archive(
     name = "aspect_rules_lint",
-    sha256 = "ddc21b1399c03708f82e5a46d6c747bf23d55484bad1efdaa92a22d5fee20ea1",
-    strip_prefix = "rules_lint-0.5.0",
-    url = "https://github.com/aspect-build/rules_lint/releases/download/v0.5.0/rules_lint-v0.5.0.tar.gz",
+    sha256 = "1e679b081750ca9cedad4f79e371ee5e14d9a157de8018661af9fe45879100b2",
+    strip_prefix = "rules_lint-0.21.0",
+    url = "https://github.com/aspect-build/rules_lint/releases/download/v0.21.0/rules_lint-v0.21.0.tar.gz",
 )
