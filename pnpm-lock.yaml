@@ -86,19 +86,19 @@ importers:
         version: 29.5.0
       '@lerna-lite/cli':
         specifier: '2'
-        version: 2.0.0(typescript@5.2.2)
+        version: 2.0.0(typescript@5.5.4)
       '@lerna-lite/list':
         specifier: '2'
-        version: 2.0.0(typescript@5.2.2)
+        version: 2.0.0(typescript@5.5.4)
       '@lerna-lite/version':
         specifier: '2'
-        version: 2.0.0(typescript@5.2.2)
+        version: 2.0.0(typescript@5.5.4)
       '@napi-rs/cli':
         specifier: ^2.11.0
         version: 2.18.3
       '@swc-node/register':
         specifier: ^1.5.4
-        version: 1.5.4(@swc/core@1.6.1)(typescript@5.2.2)
+        version: 1.5.4(@swc/core@1.6.1)(typescript@5.5.4)
       '@swc/core':
         specifier: ^1.6.0
         version: 1.6.1(@swc/helpers@0.5.1)
@@ -179,10 +179,10 @@ importers:
         version: 5.28.0(@swc/core@1.6.1)
       '@typescript-eslint/parser':
         specifier: ^6.7.5
-        version: 6.7.5(eslint@8.18.0)(typescript@5.2.2)
+        version: 6.7.5(eslint@8.18.0)(typescript@5.5.4)
       '@typescript-eslint/utils':
         specifier: ^6.7.5
-        version: 6.7.5(eslint@8.18.0)(typescript@5.2.2)
+        version: 6.7.5(eslint@8.18.0)(typescript@5.5.4)
       '@unicode/unicode-13.0.0':
         specifier: ^1.0.6
         version: 1.2.2
@@ -353,10 +353,10 @@ importers:
         version: 10.0.0
       ts-jest:
         specifier: '29'
-        version: 29.1.2(@babel/core@7.18.5)(@jest/types@29.5.0)(jest@29.5.0)(typescript@5.2.2)
+        version: 29.1.2(@babel/core@7.18.5)(@jest/types@29.5.0)(jest@29.5.0)(typescript@5.5.4)
       ts-loader:
         specifier: ^9.1.2
-        version: 9.3.1(typescript@5.2.2)(webpack@5.73.0)
+        version: 9.3.1(typescript@5.5.4)(webpack@5.73.0)
       tsd:
         specifier: ^0.31.0
         version: 0.31.0
@@ -364,8 +364,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0
       typescript:
-        specifier: 5.2.2
-        version: 5.2.2
+        specifier: 5.5.4
+        version: 5.5.4
       unicode-emoji-utils:
         specifier: ^1.1.1
         version: 1.1.1
@@ -374,7 +374,7 @@ importers:
         version: 1.0.2
       vue:
         specifier: ^3.4.0
-        version: 3.4.0(typescript@5.2.2)
+        version: 3.4.0(typescript@5.5.4)
       vue-class-component:
         specifier: ^8.0.0-rc.1
         version: 8.0.0-rc.1(vue@3.4.0)
@@ -455,7 +455,7 @@ importers:
         version: 6.1.4
       vue:
         specifier: ^3.4.0
-        version: 3.4.0(typescript@5.2.2)
+        version: 3.4.0(typescript@5.5.4)
     devDependencies:
       '@formatjs/cli-lib':
         specifier: workspace:*
@@ -975,7 +975,7 @@ importers:
         version: 1.0.1
       ts-jest:
         specifier: 27 || 28 || 29
-        version: 29.1.0(@babel/core@7.18.10)(@jest/types@29.5.0)(jest@29.5.0)(typescript@5.2.2)
+        version: 29.1.0(@babel/core@7.18.10)(@jest/types@29.5.0)(jest@29.5.0)(typescript@5.5.4)
       tslib:
         specifier: ^2.4.0
         version: 2.4.0
@@ -1041,7 +1041,7 @@ importers:
         version: 2.4.0
       vue:
         specifier: ^3.4.0
-        version: 3.4.0(typescript@5.2.2)
+        version: 3.4.0(typescript@5.5.4)
 
   website:
     devDependencies:
@@ -5429,13 +5429,13 @@ packages:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
     dev: true
 
-  /@lerna-lite/cli@2.0.0(typescript@5.2.2):
+  /@lerna-lite/cli@2.0.0(typescript@5.5.4):
     resolution: {integrity: sha512-cY/q9hewHTkP1Dj9HB+Rqq3w755lBSCnjcNpMoyvgMwsBGd1JAdycXgGclHGP33dypssRpzwPq3pZS2i/O2PnQ==}
     engines: {node: '>=16.15.0', npm: '>=8.5.0'}
     hasBin: true
     dependencies:
-      '@lerna-lite/core': 2.0.0(typescript@5.2.2)
-      '@lerna-lite/init': 2.0.0(typescript@5.2.2)
+      '@lerna-lite/core': 2.0.0(typescript@5.5.4)
+      '@lerna-lite/init': 2.0.0(typescript@5.5.4)
       dedent: 0.7.0
       dotenv: 16.3.1
       import-local: 3.1.0
@@ -5448,7 +5448,7 @@ packages:
       - typescript
     dev: true
 
-  /@lerna-lite/core@2.0.0(typescript@5.2.2):
+  /@lerna-lite/core@2.0.0(typescript@5.5.4):
     resolution: {integrity: sha512-A602CgKjHoHPPcnBfggroxwVuZH8XJyn+hrslX+GiEZO6pziiuMuIA9eXMJEoK23Afbmp51B178MsDae2VfsIg==}
     engines: {node: '>=16.15.0', npm: '>=8.5.0'}
     dependencies:
@@ -5456,7 +5456,7 @@ packages:
       chalk: 5.3.0
       clone-deep: 4.0.1
       config-chain: 1.1.13
-      cosmiconfig: 8.3.6(typescript@5.2.2)
+      cosmiconfig: 8.3.6(typescript@5.5.4)
       dedent: 0.7.0
       execa: 7.2.0
       fs-extra: 11.1.1
@@ -5483,11 +5483,11 @@ packages:
       - typescript
     dev: true
 
-  /@lerna-lite/filter-packages@2.0.0(typescript@5.2.2):
+  /@lerna-lite/filter-packages@2.0.0(typescript@5.5.4):
     resolution: {integrity: sha512-PBxDFD8ris8rV++eFWmkUCuhkdQELgToKe5x7AaVrL1ukLdSkkaRsHQFYv//n5b23mRjNljUWA37+p1kwWZqbA==}
     engines: {node: '>=16.15.0', npm: '>=8.5.0'}
     dependencies:
-      '@lerna-lite/core': 2.0.0(typescript@5.2.2)
+      '@lerna-lite/core': 2.0.0(typescript@5.5.4)
       multimatch: 6.0.0
       npmlog: 7.0.1
     transitivePeerDependencies:
@@ -5496,11 +5496,11 @@ packages:
       - typescript
     dev: true
 
-  /@lerna-lite/init@2.0.0(typescript@5.2.2):
+  /@lerna-lite/init@2.0.0(typescript@5.5.4):
     resolution: {integrity: sha512-Y8DL5eFJavxcVj9NrMn7fYOljMJYhq2N/YMSi67DQDx7MGQoQ9alA7yZImtXwwVFaRVVPKQtM8g7jL7MkeXhdw==}
     engines: {node: '>=16.15.0', npm: '>=8.5.0'}
     dependencies:
-      '@lerna-lite/core': 2.0.0(typescript@5.2.2)
+      '@lerna-lite/core': 2.0.0(typescript@5.5.4)
       fs-extra: 11.1.1
       p-map: 4.0.0
       write-json-file: 5.0.0
@@ -5510,25 +5510,25 @@ packages:
       - typescript
     dev: true
 
-  /@lerna-lite/list@2.0.0(typescript@5.2.2):
+  /@lerna-lite/list@2.0.0(typescript@5.5.4):
     resolution: {integrity: sha512-/7+f0WWHPIx6761kVXm1hxHZ70wQpjdRupRQhBXBRQGw4c8vapfQSEgSC2DK8VWdbJvlHz5A4JcyjBKIfX/WlQ==}
     engines: {node: '>=16.15.0', npm: '>=8.5.0'}
     dependencies:
-      '@lerna-lite/cli': 2.0.0(typescript@5.2.2)
-      '@lerna-lite/core': 2.0.0(typescript@5.2.2)
-      '@lerna-lite/filter-packages': 2.0.0(typescript@5.2.2)
-      '@lerna-lite/listable': 2.0.0(typescript@5.2.2)
+      '@lerna-lite/cli': 2.0.0(typescript@5.5.4)
+      '@lerna-lite/core': 2.0.0(typescript@5.5.4)
+      '@lerna-lite/filter-packages': 2.0.0(typescript@5.5.4)
+      '@lerna-lite/listable': 2.0.0(typescript@5.5.4)
     transitivePeerDependencies:
       - bluebird
       - supports-color
       - typescript
     dev: true
 
-  /@lerna-lite/listable@2.0.0(typescript@5.2.2):
+  /@lerna-lite/listable@2.0.0(typescript@5.5.4):
     resolution: {integrity: sha512-gsINm7wiF3erKNYYuI94mnNFkiYaz/oHMpQtHe8Wy2lIypza2/6A1AmAzWbgbgWXIf8eC4AFXNJJpzCC0Duuyw==}
     engines: {node: '>=16.15.0', npm: '>=8.5.0'}
     dependencies:
-      '@lerna-lite/core': 2.0.0(typescript@5.2.2)
+      '@lerna-lite/core': 2.0.0(typescript@5.5.4)
       chalk: 5.3.0
       columnify: 1.6.0
     transitivePeerDependencies:
@@ -5537,12 +5537,12 @@ packages:
       - typescript
     dev: true
 
-  /@lerna-lite/version@2.0.0(typescript@5.2.2):
+  /@lerna-lite/version@2.0.0(typescript@5.5.4):
     resolution: {integrity: sha512-x6HD/ixn9DCc+MhX6NoQbUsRajDjs2gz5A4virBhUX2EXHWLrrkwXXyfPw/NRGOxhM9oGdXxGmjXK9JwDr7pnQ==}
     engines: {node: '>=16.15.0', npm: '>=8.5.0'}
     dependencies:
-      '@lerna-lite/cli': 2.0.0(typescript@5.2.2)
-      '@lerna-lite/core': 2.0.0(typescript@5.2.2)
+      '@lerna-lite/cli': 2.0.0(typescript@5.5.4)
+      '@lerna-lite/core': 2.0.0(typescript@5.5.4)
       '@octokit/plugin-enterprise-rest': 6.0.1
       '@octokit/rest': 19.0.13
       chalk: 5.3.0
@@ -6300,7 +6300,7 @@ packages:
       '@swc/core': 1.6.1(@swc/helpers@0.5.1)
     dev: true
 
-  /@swc-node/register@1.5.4(@swc/core@1.6.1)(typescript@5.2.2):
+  /@swc-node/register@1.5.4(@swc/core@1.6.1)(typescript@5.5.4):
     resolution: {integrity: sha512-cM5/A63bO6qLUFC4gcBnOlQO5yd8ObSdFUIp7sXf11Oq5mPVAnJy2DqjbWMUsqUaHuNk+lOIt76ie4DEseUIyA==}
     peerDependencies:
       '@swc/core': '>= 1.3'
@@ -6313,7 +6313,7 @@ packages:
       debug: 4.3.4
       pirates: 4.0.5
       tslib: 2.6.2
-      typescript: 5.2.2
+      typescript: 5.5.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -7260,7 +7260,7 @@ packages:
     dev: true
     optional: true
 
-  /@typescript-eslint/parser@6.7.5(eslint@8.18.0)(typescript@5.2.2):
+  /@typescript-eslint/parser@6.7.5(eslint@8.18.0)(typescript@5.5.4):
     resolution: {integrity: sha512-bIZVSGx2UME/lmhLcjdVc7ePBwn7CLqKarUBL4me1C5feOd663liTGjMBGVcGr+BhnSLeP4SgwdvNnnkbIdkCw==}
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
@@ -7272,11 +7272,11 @@ packages:
     dependencies:
       '@typescript-eslint/scope-manager': 6.7.5
       '@typescript-eslint/types': 6.7.5
-      '@typescript-eslint/typescript-estree': 6.7.5(typescript@5.2.2)
+      '@typescript-eslint/typescript-estree': 6.7.5(typescript@5.5.4)
       '@typescript-eslint/visitor-keys': 6.7.5
       debug: 4.3.4
       eslint: 8.18.0
-      typescript: 5.2.2
+      typescript: 5.5.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -7329,7 +7329,7 @@ packages:
       - supports-color
     dev: false
 
-  /@typescript-eslint/typescript-estree@6.7.5(typescript@5.2.2):
+  /@typescript-eslint/typescript-estree@6.7.5(typescript@5.5.4):
     resolution: {integrity: sha512-NhJiJ4KdtwBIxrKl0BqG1Ur+uw7FiOnOThcYx9DpOGJ/Abc9z2xNzLeirCG02Ig3vkvrc2qFLmYSSsaITbKjlg==}
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
@@ -7344,8 +7344,8 @@ packages:
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.6.2
-      ts-api-utils: 1.0.3(typescript@5.2.2)
-      typescript: 5.2.2
+      ts-api-utils: 1.0.3(typescript@5.5.4)
+      typescript: 5.5.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -7369,7 +7369,7 @@ packages:
       - typescript
     dev: false
 
-  /@typescript-eslint/utils@6.7.5(eslint@8.18.0)(typescript@5.2.2):
+  /@typescript-eslint/utils@6.7.5(eslint@8.18.0)(typescript@5.5.4):
     resolution: {integrity: sha512-pfRRrH20thJbzPPlPc4j0UNGvH1PjPlhlCMq4Yx7EGjV7lvEeGX0U6MJYe8+SyFutWgSHsdbJ3BXzZccYggezA==}
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
@@ -7380,7 +7380,7 @@ packages:
       '@types/semver': 7.5.3
       '@typescript-eslint/scope-manager': 6.7.5
       '@typescript-eslint/types': 6.7.5
-      '@typescript-eslint/typescript-estree': 6.7.5(typescript@5.2.2)
+      '@typescript-eslint/typescript-estree': 6.7.5(typescript@5.5.4)
       eslint: 8.18.0
       semver: 7.5.4
     transitivePeerDependencies:
@@ -7472,7 +7472,7 @@ packages:
     dependencies:
       '@vue/compiler-ssr': 3.4.0
       '@vue/shared': 3.4.0
-      vue: 3.4.0(typescript@5.2.2)
+      vue: 3.4.0(typescript@5.5.4)
 
   /@vue/shared@3.4.0:
     resolution: {integrity: sha512-Nhh3ed3G1R6HDAWiG6YYFt0Zmq/To6u5vjzwa9TIquGheCXPY6nEdIAO8ZdlwXsWqC2yNLj700FOvShpYt5CEA==}
@@ -9681,6 +9681,22 @@ packages:
       parse-json: 5.2.0
       path-type: 4.0.0
       typescript: 5.2.2
+    dev: true
+
+  /cosmiconfig@8.3.6(typescript@5.5.4):
+    resolution: {integrity: sha512-kcZ6+W5QzcJ3P1Mt+83OUv/oHFqZHIx8DuxG6eZ5RGMERoLqp4BuGjhHLYGK+Kf5XVkQvqBSmAy/nGWN3qDgEA==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      typescript: '>=4.9.5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      import-fresh: 3.3.0
+      js-yaml: 4.1.0
+      parse-json: 5.2.0
+      path-type: 4.0.0
+      typescript: 5.5.4
     dev: true
 
   /crc-32@1.2.2:
@@ -19742,6 +19758,16 @@ packages:
       typescript: '>=4.2.0'
     dependencies:
       typescript: 5.2.2
+    dev: false
+
+  /ts-api-utils@1.0.3(typescript@5.5.4):
+    resolution: {integrity: sha512-wNMeqtMz5NtwpT/UZGY5alT+VoKdSsOOP/kqHFcUW1P/VRhH2wJ48+DN2WwUliNbQ976ETwDL0Ifd2VVvgonvg==}
+    engines: {node: '>=16.13.0'}
+    peerDependencies:
+      typescript: '>=4.2.0'
+    dependencies:
+      typescript: 5.5.4
+    dev: true
 
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
@@ -19786,7 +19812,46 @@ packages:
       - supports-color
     dev: false
 
-  /ts-jest@29.1.2(@babel/core@7.18.5)(@jest/types@29.5.0)(jest@29.5.0)(typescript@5.2.2):
+  /ts-jest@29.1.0(@babel/core@7.18.10)(@jest/types@29.5.0)(jest@29.5.0)(typescript@5.5.4):
+    resolution: {integrity: sha512-ZhNr7Z4PcYa+JjMl62ir+zPiNJfXJN6E8hSLnaUKhOgqcn8vb3e537cpkd0FuAfRK3sR1LSqM1MOhliXNgOFPA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    hasBin: true
+    peerDependencies:
+      '@babel/core': '>=7.0.0-beta.0 <8'
+      '@jest/types': ^29.0.0
+      babel-jest: ^29.0.0
+      esbuild: '*'
+      jest: ^29.0.0
+      typescript: '>=4.3 <6'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@jest/types':
+        optional: true
+      babel-jest:
+        optional: true
+      esbuild:
+        optional: true
+    dependencies:
+      '@babel/core': 7.18.10
+      '@jest/transform': 29.5.0
+      '@jest/types': 29.5.0
+      '@types/babel__core': 7.1.19
+      bs-logger: 0.2.6
+      fast-json-stable-stringify: 2.1.0
+      jest: 29.5.0(@types/node@17.0.45)
+      jest-util: 29.5.0
+      json5: 2.2.3
+      lodash.memoize: 4.1.2
+      make-error: 1.3.6
+      semver: 7.3.7
+      typescript: 5.5.4
+      yargs-parser: 21.0.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /ts-jest@29.1.2(@babel/core@7.18.5)(@jest/types@29.5.0)(jest@29.5.0)(typescript@5.5.4):
     resolution: {integrity: sha512-br6GJoH/WUX4pu7FbZXuWGKGNDuU7b8Uj77g/Sp7puZV6EXzuByl6JrECvm0MzVzSTkSHWTihsXt+5XYER5b+g==}
     engines: {node: ^16.10.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -19819,13 +19884,13 @@ packages:
       lodash.memoize: 4.1.2
       make-error: 1.3.6
       semver: 7.6.2
-      typescript: 5.2.2
+      typescript: 5.5.4
       yargs-parser: 21.1.1
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /ts-loader@9.3.1(typescript@5.2.2)(webpack@5.73.0):
+  /ts-loader@9.3.1(typescript@5.5.4)(webpack@5.73.0):
     resolution: {integrity: sha512-OkyShkcZTsTwyS3Kt7a4rsT/t2qvEVQuKCTg4LJmpj9fhFR7ukGdZwV6Qq3tRUkqcXtfGpPR7+hFKHCG/0d3Lw==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -19836,7 +19901,7 @@ packages:
       enhanced-resolve: 5.9.3
       micromatch: 4.0.5
       semver: 7.3.7
-      typescript: 5.2.2
+      typescript: 5.5.4
       webpack: 5.73.0(@swc/core@1.6.1)
     dev: true
 
@@ -19988,6 +20053,11 @@ packages:
 
   /typescript@5.2.2:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  /typescript@5.5.4:
+    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -20488,7 +20558,7 @@ packages:
     peerDependencies:
       vue: ^3.0.0
     dependencies:
-      vue: 3.4.0(typescript@5.2.2)
+      vue: 3.4.0(typescript@5.5.4)
     dev: true
 
   /vue-component-type-helpers@2.0.16:
@@ -20538,6 +20608,21 @@ packages:
       '@vue/server-renderer': 3.4.0(vue@3.4.0)
       '@vue/shared': 3.4.0
       typescript: 5.2.2
+
+  /vue@3.4.0(typescript@5.5.4):
+    resolution: {integrity: sha512-iTE9Ve/7DO/H39+gXHrNkRdnh1jDwPe/fap4brbPKkp1APMkS03OiZ+UY0dwpqtRX0iPWQTkh8Fu3hKgLtaxfA==}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/compiler-dom': 3.4.0
+      '@vue/compiler-sfc': 3.4.0
+      '@vue/runtime-dom': 3.4.0
+      '@vue/server-renderer': 3.4.0(vue@3.4.0)
+      '@vue/shared': 3.4.0
+      typescript: 5.5.4
 
   /w3c-hr-time@1.0.2:
     resolution: {integrity: sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ==}

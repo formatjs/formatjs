@@ -132,7 +132,7 @@
     "ts-loader": "^9.1.2",
     "tsd": "^0.31.0",
     "tslib": "^2.4.0",
-    "typescript": "5.2.2",
+    "typescript": "5.5.4",
     "unicode-emoji-utils": "^1.1.1",
     "unidiff": "^1.0.2",
     "vue-class-component": "^8.0.0-rc.1",
