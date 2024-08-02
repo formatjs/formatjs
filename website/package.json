@@ -23,7 +23,7 @@
     "@docusaurus/types": "3.3.2",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@mdx-js/react": "3.0.1",
-    "@orama/plugin-docusaurus-v3": "2.0.18",
+    "@orama/plugin-docusaurus-v3": "2.0.22",
     "classnames": "2.5.1",
     "http-server": "14.1.1",
     "intl-messageformat": "workspace:*",
