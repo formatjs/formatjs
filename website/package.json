@@ -15,21 +15,21 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/core": "3.3.2",
-    "@docusaurus/plugin-google-analytics": "3.3.2",
-    "@docusaurus/preset-classic": "3.3.2",
-    "@docusaurus/theme-common": "3.3.2",
-    "@docusaurus/theme-live-codeblock": "3.3.2",
-    "@docusaurus/types": "3.3.2",
+    "@docusaurus/core": "3.4.0",
+    "@docusaurus/plugin-google-analytics": "3.4.0",
+    "@docusaurus/preset-classic": "3.4.0",
+    "@docusaurus/theme-common": "3.4.0",
+    "@docusaurus/theme-live-codeblock": "3.4.0",
+    "@docusaurus/types": "3.4.0",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@mdx-js/react": "3.0.1",
-    "@orama/plugin-docusaurus-v3": "2.0.18",
+    "@orama/plugin-docusaurus-v3": "2.0.22",
     "classnames": "2.5.1",
     "http-server": "14.1.1",
     "intl-messageformat": "workspace:*",
     "prism-react-renderer": "2.3.1",
     "react-intl": "workspace:*",
-    "react-live": "4.1.6",
+    "react-live": "4.1.7",
     "typescript": "5"
   }
 }
