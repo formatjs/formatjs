@@ -59,6 +59,15 @@ import '@formatjs/intl-pluralrules/polyfill'
 import '@formatjs/intl-pluralrules/locale-data/en' // locale-data for en
 ```
 
+### React Native
+
+The polyfill conditional detection code runs [very slowly on Android](https://github.com/formatjs/formatjs/issues/4463) and can slow down your app's startup time by seconds. Since React Native uses Hermes which does not support `Intl.PluralRules`, import `/polyfill-force` instead for much better performance:
+
+```tsx
+import '@formatjs/intl-pluralrules/polyfill-force' // instead of /polyfill
+import '@formatjs/intl-pluralrules/locale-data/en'
+```
+
 ### Dynamic import + capability detection
 
 ```tsx
