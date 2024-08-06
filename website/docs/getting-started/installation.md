@@ -43,6 +43,7 @@ defaultValue="react"
 values={[
 {label: 'Node', value: 'node'},
 {label: 'React', value: 'react'},
+{label: 'Ember', value: 'ember'},
 {label: 'Vue3', value: 'vue'},
 ]}>
 
@@ -87,6 +88,40 @@ console.log(
 
 // 19,00 €
 console.log(intl.formatNumber(19, {style: 'currency', currency: 'EUR'}))
+```
+
+</TabItem>
+
+<TabItem value="ember">
+
+Setup:
+
+```ts
+/* app/routes/application.ts */
+import Route from '@ember/routing/route'
+import {service} from '@ember/service'
+import type {IntlService} from 'ember-intl'
+
+export default class ApplicationRoute extends Route {
+  @service declare intl: IntlService
+
+  beforeModel() {
+    this.intl.setLocale(['de-de', 'en-us'])
+  }
+}
+```
+
+Use:
+
+```ts
+/* app/components/hello.gts */
+import { t } from 'ember-intl';
+
+<template>
+  <div>
+    {{t "hello.message" name=@name}}
+  </div>
+</template>
 ```
 
 </TabItem>
