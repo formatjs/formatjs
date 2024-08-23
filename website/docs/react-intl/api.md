@@ -76,7 +76,7 @@ This function is exported by the `react-intl` package and is a High-Order Compon
 By default, the formatting API will be provided to the wrapped component via `props.intl`, but this can be overridden when specifying `options.intlPropName`. The value of the prop will be of type [`IntlShape`](#Intlshape), defined in the next section.
 
 ```tsx
-import React, {PropTypes} from 'react'
+import React from 'react'
 import {injectIntl, FormattedDate} from 'react-intl'
 
 interface Props {
