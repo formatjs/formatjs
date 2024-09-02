@@ -76,7 +76,7 @@ ruleTester.run(name, rule, {
   ],
 })
 
-vueRuleTester.run('vue/blocklist-elements', rule, {
+vueRuleTester.run(`vue-${name}`, rule, {
   valid: [
     {
       code: `<template>

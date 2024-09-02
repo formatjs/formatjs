@@ -10,6 +10,7 @@ import {
   RuleListener,
 } from '@typescript-eslint/utils/ts-eslint'
 import {extractMessages, getSettings} from '../util'
+import {getParserServices} from '../context-compat'
 
 type MessageIds =
   | 'unnecessaryFormat'
@@ -67,12 +68,11 @@ function checkNode(
 
 export const name = 'no-useless-message'
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds, Options, {}, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow unnecessary formatted message',
-      recommended: 'recommended',
       url: 'https://formatjs.io/docs/tooling/linter#no-useless-message',
     },
     fixable: 'code',
@@ -93,9 +93,9 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
       checkNode(context, node)
 
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-    if (context.parserServices.defineTemplateBodyVisitor) {
+    if (getParserServices(context).defineTemplateBodyVisitor) {
       //@ts-expect-error
-      return context.parserServices.defineTemplateBodyVisitor(
+      return getParserServices(context).defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
         },

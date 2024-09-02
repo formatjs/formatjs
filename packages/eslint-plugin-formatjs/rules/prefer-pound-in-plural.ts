@@ -12,6 +12,7 @@ import {
 } from '@typescript-eslint/utils/ts-eslint'
 import MagicString from 'magic-string'
 import {extractMessages, getSettings, patchMessage} from '../util'
+import {getParserServices} from '../context-compat'
 
 type MessageIds = 'preferPoundInPlurals' | 'parseError'
 type Options = []
@@ -223,7 +224,7 @@ function checkNode(
 
 export const name = 'prefer-pound-in-plural'
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds, Options, {}, RuleListener> = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -246,9 +247,9 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
       checkNode(context, node)
 
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-    if (context.parserServices.defineTemplateBodyVisitor) {
+    if (getParserServices(context).defineTemplateBodyVisitor) {
       //@ts-expect-error
-      return context.parserServices.defineTemplateBodyVisitor(
+      return getParserServices(context).defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
         },

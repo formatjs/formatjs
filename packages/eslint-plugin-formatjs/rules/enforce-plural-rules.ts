@@ -10,6 +10,7 @@ import {
   RuleListener,
 } from '@typescript-eslint/utils/ts-eslint'
 import {extractMessages, getSettings} from '../util'
+import {getParserServices} from '../context-compat'
 
 enum LDML {
   zero = 'zero',
@@ -87,7 +88,7 @@ function checkNode(
 
 export const name = 'enforce-plural-rules'
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds, Options, {}, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
@@ -121,9 +122,9 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
     const callExpressionVisitor = (node: TSESTree.Node) =>
       checkNode(context, node)
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-    if (context.parserServices.defineTemplateBodyVisitor) {
+    if (getParserServices(context).defineTemplateBodyVisitor) {
       //@ts-expect-error
-      return context.parserServices.defineTemplateBodyVisitor(
+      return getParserServices(context).defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
         },

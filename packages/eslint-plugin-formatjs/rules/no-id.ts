@@ -6,6 +6,7 @@ import {
   SourceCode,
 } from '@typescript-eslint/utils/ts-eslint'
 import {extractMessages, getSettings} from '../util'
+import {getParserServices} from '../context-compat'
 
 function isComment(
   token: ReturnType<SourceCode['getTokenAfter']>
@@ -42,7 +43,7 @@ function checkNode(
   }
 }
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds, Options, {}, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
@@ -61,9 +62,9 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
       checkNode(context, node)
 
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-    if (context.parserServices.defineTemplateBodyVisitor) {
+    if (getParserServices(context).defineTemplateBodyVisitor) {
       //@ts-expect-error
-      return context.parserServices.defineTemplateBodyVisitor(
+      return getParserServices(context).defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
         },

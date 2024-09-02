@@ -13,6 +13,7 @@ import {
   type EmojiVersion,
 } from 'unicode-emoji-utils'
 import {extractMessages, getSettings} from '../util'
+import {getParserServices} from '../context-compat'
 
 export const name = 'no-emoji'
 type MessageIds = 'notAllowed' | 'notAllowedAboveVersion'
@@ -90,7 +91,7 @@ const versionAboveEnums: EmojiVersion[] = [
   '15.0',
 ]
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds, Options, {}, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
@@ -117,9 +118,9 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
       checkNode(context, node)
 
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-    if (context.parserServices.defineTemplateBodyVisitor) {
+    if (getParserServices(context).defineTemplateBodyVisitor) {
       //@ts-expect-error
-      return context.parserServices.defineTemplateBodyVisitor(
+      return getParserServices(context).defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
         },

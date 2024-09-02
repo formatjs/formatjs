@@ -1,24 +1,30 @@
-import {TSESLint} from '@typescript-eslint/utils'
+import * as tsParser from '@typescript-eslint/parser'
+import {RuleTester} from '@typescript-eslint/rule-tester'
+import * as vueParser from 'vue-eslint-parser'
 
-export const ruleTester = new TSESLint.RuleTester({
-  parser: require.resolve('@typescript-eslint/parser'),
-  parserOptions: {
+export const ruleTester = new RuleTester({
+  languageOptions: {
+    parser: tsParser,
     ecmaVersion: 6,
     sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
+    parserOptions: {
+      ecmaFeatures: {
+        jsx: true,
+      },
     },
   },
 })
 
-export const vueRuleTester = new TSESLint.RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
+export const vueRuleTester = new RuleTester({
+  languageOptions: {
+    parser: vueParser,
     ecmaVersion: 6,
     sourceType: 'module',
-    ecmaFeatures: {
-      globalReturn: false,
-      jsx: false,
+    parserOptions: {
+      ecmaFeatures: {
+        globalReturn: false,
+        jsx: false,
+      },
     },
   },
 })

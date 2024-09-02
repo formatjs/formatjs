@@ -10,6 +10,7 @@ import {
   RuleListener,
 } from '@typescript-eslint/utils/ts-eslint'
 import {extractMessages, getSettings} from '../util'
+import {getParserServices} from '../context-compat'
 
 type MessageIds = 'noMultiplePlurals'
 type Options = []
@@ -64,7 +65,7 @@ function checkNode(
 
 export const name = 'no-multiple-plurals'
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds, Options, {}, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
@@ -83,9 +84,9 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
       checkNode(context, node)
 
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-    if (context.parserServices.defineTemplateBodyVisitor) {
+    if (getParserServices(context).defineTemplateBodyVisitor) {
       //@ts-expect-error
-      return context.parserServices.defineTemplateBodyVisitor(
+      return getParserServices(context).defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
         },

@@ -7,7 +7,7 @@ type Options = []
 
 export const name = 'prefer-formatted-message'
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds, Options, {}, RuleListener> = {
   meta: {
     type: 'suggestion',
     docs: {

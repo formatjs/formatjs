@@ -58,7 +58,7 @@ function compilePropMatcher(propMatcher: PropMatcher): CompiledPropMatcher {
 
 export const name = 'no-literal-string-in-jsx'
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds, Options, {}, RuleListener> = {
   meta: {
     type: 'problem',
     docs: {
