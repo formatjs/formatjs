@@ -47,18 +47,6 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
       code: `
             import {defineMessage} from 'react-intl'
             defineMessage({
-                description: 'this is default message'
-            })`,
-      errors: [
-        {
-          messageId: 'defaultMessage',
-        },
-      ],
-    },
-    {
-      code: `
-            import {defineMessage} from 'react-intl'
-            defineMessage({
                 defaultMessage,
                 description: 'this is default message'
             })`,
@@ -197,7 +185,7 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
   ],
 })
 
-vueRuleTester.run(`vue/${name}`, rule, {
+vueRuleTester.run(`vue-${name}`, rule, {
   valid: [
     `<template>
 <p>{{$formatMessage({

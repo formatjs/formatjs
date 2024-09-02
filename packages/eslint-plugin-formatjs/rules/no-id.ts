@@ -2,9 +2,9 @@ import {TSESTree} from '@typescript-eslint/utils'
 import {
   RuleContext,
   RuleModule,
-  RuleListener,
   SourceCode,
 } from '@typescript-eslint/utils/ts-eslint'
+import {getParserServices} from '../context-compat'
 import {extractMessages, getSettings} from '../util'
 
 function isComment(
@@ -14,12 +14,11 @@ function isComment(
 }
 
 type MessageIds = 'noId'
-type Options = []
 
 export const name = 'no-id'
 
 function checkNode(
-  context: RuleContext<MessageIds, Options>,
+  context: RuleContext<MessageIds, unknown[]>,
   node: TSESTree.Node
 ) {
   const msgs = extractMessages(node, getSettings(context))
@@ -42,7 +41,7 @@ function checkNode(
   }
 }
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds> = {
   meta: {
     type: 'problem',
     docs: {
@@ -61,9 +60,9 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
       checkNode(context, node)
 
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-    if (context.parserServices.defineTemplateBodyVisitor) {
+    if (getParserServices(context).defineTemplateBodyVisitor) {
       //@ts-expect-error
-      return context.parserServices.defineTemplateBodyVisitor(
+      return getParserServices(context).defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
         },

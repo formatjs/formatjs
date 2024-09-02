@@ -1,13 +1,12 @@
 import {TSESTree} from '@typescript-eslint/utils'
-import {RuleModule, RuleListener} from '@typescript-eslint/utils/ts-eslint'
+import {RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import {isIntlFormatMessageCall} from '../util'
 
 type MessageIds = 'jsxChildren'
-type Options = []
 
 export const name = 'prefer-formatted-message'
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds> = {
   meta: {
     type: 'suggestion',
     docs: {

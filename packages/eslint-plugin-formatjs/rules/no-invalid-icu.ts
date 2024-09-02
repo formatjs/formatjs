@@ -1,19 +1,15 @@
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/utils'
-import {
-  RuleContext,
-  RuleModule,
-  RuleListener,
-} from '@typescript-eslint/utils/ts-eslint'
+import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
+import {getParserServices} from '../context-compat'
 import {extractMessages, getSettings} from '../util'
 
 type MessageIds = 'icuError'
-type Options = []
 
 export const name = 'no-invalid-icu'
 
 function checkNode(
-  context: RuleContext<MessageIds, Options>,
+  context: RuleContext<MessageIds, unknown[]>,
   node: TSESTree.Node
 ) {
   const settings = getSettings(context)
@@ -48,7 +44,7 @@ function checkNode(
   }
 }
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds> = {
   meta: {
     type: 'problem',
     docs: {
@@ -66,9 +62,9 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
       checkNode(context, node)
 
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-    if (context.parserServices.defineTemplateBodyVisitor) {
+    if (getParserServices(context).defineTemplateBodyVisitor) {
       //@ts-expect-error
-      return context.parserServices.defineTemplateBodyVisitor(
+      return getParserServices(context).defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
         },

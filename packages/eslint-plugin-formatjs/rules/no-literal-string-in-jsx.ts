@@ -1,6 +1,6 @@
 import {TSESTree} from '@typescript-eslint/utils'
 import {JSONSchema4ArraySchema} from '@typescript-eslint/utils/json-schema'
-import {RuleModule, RuleListener} from '@typescript-eslint/utils/ts-eslint'
+import {RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import picomatch from 'picomatch'
 
 type PropMatcher = readonly [TagNamePattern: string, PropNamePattern: string][]
@@ -58,7 +58,7 @@ function compilePropMatcher(propMatcher: PropMatcher): CompiledPropMatcher {
 
 export const name = 'no-literal-string-in-jsx'
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'problem',
     docs: {

@@ -1,27 +1,36 @@
-import {rule, name} from '../rules/no-id'
+import {name, rule} from '../rules/no-id'
+import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester} from './util'
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 ruleTester.run(name, rule, {
   valid: [
-    `intl.formatMessage({
+    {
+      code: `intl.formatMessage({
       defaultMessage: '{count, plural, one {#} other {# more}}',
       description: 'asd'
   }, {count: 1})`,
-    `intl.formatMessage({
+    },
+    {
+      code: `intl.formatMessage({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
   }, {'count': 1})`,
-    `import {FormattedMessage} from 'react-intl'
+    },
+    {
+      code: `import {FormattedMessage} from 'react-intl'
   const a = <FormattedMessage 
   defaultMessage="{count, plural, one {#} other {# more}}"
   values={{ count: 1}} />
         `,
-    `import {FormattedMessage} from 'react-intl'
+    },
+    {
+      code: `import {FormattedMessage} from 'react-intl'
   const a = <FormattedMessage 
   defaultMessage="{count, plural, one {#} other {# more}} {bar}"
   values={{ 'count': 1, bar: 2}} />
         `,
-    `import {defineMessages, _} from 'react-intl'
+    },
+    {
+      code: `import {defineMessages, _} from 'react-intl'
   defineMessages({
     foo: {
       defaultMessage: '{count, plural, one {#} other {# more}}',
@@ -33,7 +42,9 @@ ruleTester.run(name, rule, {
     description: 'asd'
   })
   `,
-    `
+    },
+    {
+      code: `
   intl.formatMessage({
     defaultMessage: '{count, plural, one {<a>#</a>} other {# more}}',
     description: 'asd'
@@ -42,7 +53,9 @@ ruleTester.run(name, rule, {
     a: (...chunks) => <a>{chunks}</a>
   })
   `,
-    `
+    },
+    {
+      code: `
   intl.formatMessage({
     defaultMessage: '{count, plural, one {<a>#</a>} other {# more}}',
     description: 'asd'
@@ -52,13 +65,14 @@ ruleTester.run(name, rule, {
     a: (...chunks) => <a>{chunks}</a>
   })
   `,
+    },
     noMatch,
     spreadJsx,
     emptyFnCall,
   ],
   invalid: [
     {
-      code: dynamicMessage,
+      code: dynamicMessage.code,
       errors: [{messageId: 'noId'}],
       output: `
 import {defineMessage} from 'react-intl'

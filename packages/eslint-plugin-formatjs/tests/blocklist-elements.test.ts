@@ -1,4 +1,4 @@
-import {rule, Element, name} from '../rules/blocklist-elements'
+import {Element, name, rule} from '../rules/blocklist-elements'
 import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester, vueRuleTester} from './util'
 
@@ -76,7 +76,7 @@ ruleTester.run(name, rule, {
   ],
 })
 
-vueRuleTester.run('vue/blocklist-elements', rule, {
+vueRuleTester.run(`vue-${name}`, rule, {
   valid: [
     {
       code: `<template>
@@ -86,9 +86,9 @@ vueRuleTester.run('vue/blocklist-elements', rule, {
     </template>`,
       options: [[Element.selectordinal]],
     },
-    `<script>${dynamicMessage}</script>`,
-    `<script>${noMatch}</script>`,
-    `<script>${emptyFnCall}</script>`,
+    {code: `<script>${dynamicMessage.code}</script>`},
+    {code: `<script>${noMatch.code}</script>`},
+    {code: `<script>${emptyFnCall.code}</script>`},
   ],
   invalid: [
     {

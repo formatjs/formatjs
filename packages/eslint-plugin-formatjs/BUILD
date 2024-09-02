@@ -23,6 +23,7 @@ npm_package(
 SRCS = glob(["rules/*.ts"]) + [
     "index.ts",
     "util.ts",
+    "context-compat.ts"
 ]
 
 SRC_DEPS = [
@@ -61,6 +62,7 @@ jest_test(
     name = "unit_test",
     data = TESTS_BASE_SRCS + TEST_FILES + SRC_DEPS + [
         "//:node_modules/@typescript-eslint/parser",
+        "//:node_modules/@typescript-eslint/rule-tester",
         "//:node_modules/vue-eslint-parser",
     ],
 )

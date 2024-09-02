@@ -1,12 +1,12 @@
 import {name, rule} from '../rules/no-multiple-whitespaces'
-import {ruleTester} from './util'
 import {
+  defineMessage,
   dynamicMessage,
+  emptyFnCall,
   noMatch,
   spreadJsx,
-  emptyFnCall,
-  defineMessage,
 } from './fixtures'
+import {ruleTester} from './util'
 
 ruleTester.run(name, rule, {
   valid: [
@@ -15,7 +15,8 @@ ruleTester.run(name, rule, {
     noMatch,
     spreadJsx,
     emptyFnCall,
-    `
+    {
+      code: `
       import {defineMessage} from 'react-intl'
       defineMessage({
         defaultMessage: \`a {
@@ -25,6 +26,7 @@ ruleTester.run(name, rule, {
         }\`
       })
     `,
+    },
   ],
   invalid: [
     {

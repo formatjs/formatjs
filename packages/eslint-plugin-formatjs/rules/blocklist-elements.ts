@@ -13,13 +13,13 @@ import {
 import {TSESTree} from '@typescript-eslint/utils'
 import {
   RuleContext,
-  RuleModule,
   RuleListener,
+  RuleModule,
 } from '@typescript-eslint/utils/ts-eslint'
+import {getParserServices} from '../context-compat'
 import {extractMessages, getSettings} from '../util'
 
 type MessageIds = 'blocklist'
-type Options = [Element[]?]
 
 export const name = 'blocklist-elements'
 
@@ -92,7 +92,7 @@ function verifyAst(blocklist: Element[], ast: MessageFormatElement[]) {
 }
 
 function checkNode(
-  context: RuleContext<MessageIds, Options>,
+  context: RuleContext<MessageIds, unknown[]>,
   node: TSESTree.Node
 ) {
   const settings = getSettings(context)
@@ -129,14 +129,14 @@ function checkNode(
   }
 }
 
-const create = (context: RuleContext<MessageIds, Options>): RuleListener => {
+const create = (context: RuleContext<MessageIds, unknown[]>): RuleListener => {
   const callExpressionVisitor = (node: TSESTree.Node) =>
     checkNode(context, node)
 
   //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-  if (context.parserServices?.defineTemplateBodyVisitor) {
+  if (getParserServices(context).defineTemplateBodyVisitor) {
     //@ts-expect-error
-    return context.parserServices.defineTemplateBodyVisitor(
+    return getParserServices(context).defineTemplateBodyVisitor(
       {
         CallExpression: callExpressionVisitor,
       },
@@ -151,7 +151,7 @@ const create = (context: RuleContext<MessageIds, Options>): RuleListener => {
   }
 }
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds> = {
   meta: {
     type: 'problem',
     docs: {

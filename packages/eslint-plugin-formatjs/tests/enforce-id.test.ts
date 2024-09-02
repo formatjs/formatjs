@@ -1,6 +1,6 @@
-import {name, rule, Option} from '../rules/enforce-id'
+import {name, Option, rule} from '../rules/enforce-id'
+import {emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester} from './util'
-import {noMatch, spreadJsx, emptyFnCall} from './fixtures'
 const options: [Option] = [
   {idInterpolationPattern: '[sha512:contenthash:base64:6]'},
 ]
@@ -19,9 +19,9 @@ ruleTester.run(name, rule, {
       options,
     },
     `<FormattedMessage id="manual id" defaultMessage="{count, plural, one {#} other {# more}}" values={{foo: 1}} />`,
-    {code: noMatch, options},
-    {code: spreadJsx, options},
-    {code: emptyFnCall, options},
+    {code: noMatch.code, options},
+    {code: spreadJsx.code, options},
+    {code: emptyFnCall.code, options},
   ],
   invalid: [
     {

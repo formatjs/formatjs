@@ -4,11 +4,8 @@ import {
   parse,
 } from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/utils'
-import {
-  RuleContext,
-  RuleModule,
-  RuleListener,
-} from '@typescript-eslint/utils/ts-eslint'
+import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
+import {getParserServices} from '../context-compat'
 import {extractMessages, getSettings} from '../util'
 
 interface Config {
@@ -120,17 +117,17 @@ function checkNode(
 
 export const name = 'no-complex-selectors'
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'problem',
     docs: {
-      description: `Make sure a sentence is not too complex. 
+      description: `Make sure a sentence is not too complex.
 Complexity is determined by how many strings are produced when we try to
 flatten the sentence given its selectors. For example:
 "I have {count, plural, one{a dog} other{many dogs}}"
 has the complexity of 2 because flattening the plural selector
 results in 2 sentences: "I have a dog" & "I have many dogs".
-Default complexity limit is 20 
+Default complexity limit is 20
 (using Smartling as a reference: https://help.smartling.com/hc/en-us/articles/360008030994-ICU-MessageFormat)
 `,
       url: 'https://formatjs.io/docs/tooling/linter#no-complex-selectors',
@@ -149,7 +146,7 @@ Default complexity limit is 20
     fixable: 'code',
     messages: {
       tooComplex: `Message complexity is too high ({{complexity}} vs limit at {{limit}})`,
-      parserError: '{{meesage}}',
+      parserError: '{{message}}',
     },
   },
   defaultOptions: [{limit: 20}],
@@ -158,9 +155,9 @@ Default complexity limit is 20
       checkNode(context, node)
 
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-    if (context.parserServices.defineTemplateBodyVisitor) {
+    if (getParserServices(context).defineTemplateBodyVisitor) {
       //@ts-expect-error
-      return context.parserServices.defineTemplateBodyVisitor(
+      return getParserServices(context).defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
         },
