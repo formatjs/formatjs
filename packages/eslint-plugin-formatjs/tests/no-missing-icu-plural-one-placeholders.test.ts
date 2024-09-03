@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/no-explicit-icu-plural'
+import {name, rule} from '../rules/no-missing-icu-plural-one-placeholders'
 import {ruleTester} from './util'
 
 ruleTester.run(name, rule, {
@@ -54,7 +54,7 @@ ruleTester.run(name, rule, {
       options: [],
       errors: [
         {
-          messageId: 'noExplicitIcuPlural',
+          messageId: 'noMissingIcuPluralOnePlaceholders',
         },
       ],
       output: `import {defineMessage} from 'react-intl'
@@ -72,7 +72,7 @@ ruleTester.run(name, rule, {
       options: [],
       errors: [
         {
-          messageId: 'noExplicitIcuPlural',
+          messageId: 'noMissingIcuPluralOnePlaceholders',
         },
       ],
       output: `import {defineMessage} from 'react-intl'
@@ -90,7 +90,7 @@ ruleTester.run(name, rule, {
       options: [],
       errors: [
         {
-          messageId: 'noExplicitIcuPlural',
+          messageId: 'noMissingIcuPluralOnePlaceholders',
         },
       ],
       output: `import {defineMessage} from 'react-intl'
@@ -108,7 +108,7 @@ ruleTester.run(name, rule, {
       options: [],
       errors: [
         {
-          messageId: 'noExplicitIcuPlural',
+          messageId: 'noMissingIcuPluralOnePlaceholders',
         },
       ],
       output: `import {defineMessage} from 'react-intl'

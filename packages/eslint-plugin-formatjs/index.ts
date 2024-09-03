@@ -61,7 +61,7 @@ import {
 import {
   rule as noExplicitIcuPlural,
   name as noExplicitIcuPluralName,
-} from './rules/no-explicit-icu-plural'
+} from './rules/no-missing-icu-plural-one-placeholders'
 import {RuleModule} from '@typescript-eslint/utils/ts-eslint'
 
 const plugin: Plugin = {

@@ -6,9 +6,9 @@ import {
 import {TSESTree} from '@typescript-eslint/utils'
 import {extractMessages} from '../util'
 
-export const name = 'no-explicit-icu-plural'
+export const name = 'no-missing-icu-plural-one-placeholders'
 
-export type MessageIds = 'noExplicitIcuPlural'
+export type MessageIds = 'noMissingIcuPluralOnePlaceholders'
 type Options = []
 
 // Matches `one {`, then zero or more `{1}` brace pairs, then a `1` before the closing brace `}`.
@@ -39,7 +39,7 @@ function checkNode(
       if (ruleRegex.test(defaultMessage)) {
         context.report({
           node: messageNode,
-          messageId: 'noExplicitIcuPlural',
+          messageId: 'noMissingIcuPluralOnePlaceholders',
           fix: fixer =>
             fixer.replaceText(messageNode, `'${fix(messageNode.value)}'`),
         })
@@ -58,7 +58,7 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
     },
     fixable: 'code',
     messages: {
-      noExplicitIcuPlural:
+      noMissingIcuPluralOnePlaceholders:
         'Use `one {# item}` instead of `one {1 item}` in ICU messages.',
     },
     schema: [],
