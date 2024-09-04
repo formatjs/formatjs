@@ -352,13 +352,13 @@ const messages = defineMessages({
 })
 ```
 
-### `no-explicit-icu-plural`
+### `no-missing-icu-plural-one-placeholders`
 
 Messages that look like `{thing, plural, one {1 thing} other {# things}}` will need to be changed to `{thing, plural, one {# thing} other {# things}}`
 
 #### Why
 
-- one is a category for any number that behaves like 1. So in some languages, for example, one → numbers that end in 1 (like 1, 21, 151) but that don’t end in 11 (like 11, 111, 10311). [More info](https://formatjs.io/docs/core-concepts/icu-syntax/#plural-format)
+- one is a category for any number that behaves like 1. So in some languages, for example Ukrainian, Russian and Polish, one → numbers that end in 1 (like 1, 21, 151) but that don’t end in 11 (like 11, 111, 10311). [More info](https://formatjs.io/docs/core-concepts/icu-syntax/#plural-format)
 
 ### `no-emoji`
 
