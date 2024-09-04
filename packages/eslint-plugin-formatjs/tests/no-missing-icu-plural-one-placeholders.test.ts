@@ -48,7 +48,7 @@ ruleTester.run(name, rule, {
     {
       code: `import {defineMessage} from 'react-intl'
             defineMessage({
-                defaultMessage: 'maximum of {0, plural, one {1 item} other {# items}}',
+                defaultMessage: "maximum of {0, plural, one {1 item} other {# items}}",
                 description: 'asd'
             })`,
       options: [],
@@ -59,14 +59,14 @@ ruleTester.run(name, rule, {
       ],
       output: `import {defineMessage} from 'react-intl'
             defineMessage({
-                defaultMessage: 'maximum of {0, plural, one {# item} other {# items}}',
+                defaultMessage: "maximum of {0, plural, one {# item} other {# items}}",
                 description: 'asd'
             })`,
     },
     {
       code: `import {defineMessage} from 'react-intl'
             defineMessage({
-                defaultMessage: 'maximum of {0, plural, one {{2} 1 item} other {{2} # items}}',
+                defaultMessage: "maximum of {0, plural, one {{2} 1 item} other {{2} # items}}",
                 description: 'asd'
             })`,
       options: [],
@@ -77,14 +77,14 @@ ruleTester.run(name, rule, {
       ],
       output: `import {defineMessage} from 'react-intl'
             defineMessage({
-                defaultMessage: 'maximum of {0, plural, one {{2} # item} other {{2} # items}}',
+                defaultMessage: "maximum of {0, plural, one {{2} # item} other {{2} # items}}",
                 description: 'asd'
             })`,
     },
     {
       code: `import {defineMessage} from 'react-intl'
             defineMessage({
-                defaultMessage: 'maximum of {0, plural, one {<strong>1</strong> item} other {# items}}',
+                defaultMessage: "maximum of {0, plural, one {<strong>1</strong> item} other {# items}}",
                 description: 'asd'
             })`,
       options: [],
@@ -95,14 +95,14 @@ ruleTester.run(name, rule, {
       ],
       output: `import {defineMessage} from 'react-intl'
             defineMessage({
-                defaultMessage: 'maximum of {0, plural, one {<strong>#</strong> item} other {# items}}',
+                defaultMessage: "maximum of {0, plural, one {<strong>#</strong> item} other {# items}}",
                 description: 'asd'
             })`,
     },
     {
       code: `import {defineMessage} from 'react-intl'
             defineMessage({
-                defaultMessage: 'another {0, plural, one {1-day} other {#-day}} trial',
+                defaultMessage: "another {0, plural, one {1-day} other {#-day}} trial",
                 description: 'asd'
             })`,
       options: [],
@@ -113,7 +113,7 @@ ruleTester.run(name, rule, {
       ],
       output: `import {defineMessage} from 'react-intl'
             defineMessage({
-                defaultMessage: 'another {0, plural, one {#-day} other {#-day}} trial',
+                defaultMessage: "another {0, plural, one {#-day} other {#-day}} trial",
                 description: 'asd'
             })`,
     },
