@@ -6,6 +6,14 @@ ruleTester.run(name, rule, {
     {
       code: `import {defineMessage} from 'react-intl'
             defineMessage({
+                defaultMessage: '1 should be valid',
+                description: 'asd'
+            })`,
+      options: [],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'
+            defineMessage({
                 defaultMessage: 'thanks to {1, plural, one {{1} photo} other {{1}+ photos}} plus',
                 description: 'asd'
             })`,
