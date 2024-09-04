@@ -14,6 +14,22 @@ ruleTester.run(name, rule, {
     {
       code: `import {defineMessage} from 'react-intl'
             defineMessage({
+                defaultMessage: '<strong>1</strong> should be valid',
+                description: 'asd'
+            })`,
+      options: [],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'
+            defineMessage({
+                defaultMessage: '{gender, select, male{1 male} female{1 female} other{other}} should be valid',
+                description: 'asd'
+            })`,
+      options: [],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'
+            defineMessage({
                 defaultMessage: 'thanks to {1, plural, one {{1} photo} other {{1}+ photos}} plus',
                 description: 'asd'
             })`,
