@@ -32,7 +32,7 @@ function verifyAst(
 ) {
   const patches: MessagePatch[] = []
 
-  _verifyAstAndReplace(ast, false)
+  _verifyAstAndReplace(ast)
 
   if (patches.length > 0) {
     const patchedMessage = patchMessage(messageNode, ast, content => {
@@ -62,18 +62,18 @@ function verifyAst(
 
   function _verifyAstAndReplace(
     ast: readonly MessageFormatElement[],
-    inner = true
+    root = true
   ) {
     for (const el of ast) {
       if (isPluralElement(el) && el.options['one']) {
-        _verifyAstAndReplace(el.options['one'].value)
+        _verifyAstAndReplace(el.options['one'].value, false)
       } else if (isSelectElement(el)) {
         for (const {value} of Object.values(el.options)) {
-          _verifyAstAndReplace(value)
+          _verifyAstAndReplace(value, root)
         }
       } else if (isTagElement(el)) {
-        _verifyAstAndReplace(el.children)
-      } else if (inner && isLiteralElement(el)) {
+        _verifyAstAndReplace(el.children, root)
+      } else if (!root && isLiteralElement(el)) {
         const match = el.value.match(/\b1\b/)
         if (match && el.location) {
           patches.push({
