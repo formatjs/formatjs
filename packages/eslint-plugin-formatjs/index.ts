@@ -59,8 +59,8 @@ import {
   name as preferPoundInPluralName,
 } from './rules/prefer-pound-in-plural'
 import {
-  rule as noExplicitIcuPlural,
-  name as noExplicitIcuPluralName,
+  rule as noMissingIcuPluralOnePlaceholders,
+  name as noMissingIcuPluralOnePlaceholdersName,
 } from './rules/no-missing-icu-plural-one-placeholders'
 import {RuleModule} from '@typescript-eslint/utils/ts-eslint'
 
@@ -84,7 +84,7 @@ const plugin: Plugin = {
     [noUselessMessageName]: noUselessMessage,
     [preferFormattedMessageName]: preferFormattedMessage,
     [preferPoundInPluralName]: preferPoundInPlural,
-    [noExplicitIcuPluralName]: noExplicitIcuPlural,
+    [noMissingIcuPluralOnePlaceholdersName]: noMissingIcuPluralOnePlaceholders,
   },
 }
 
