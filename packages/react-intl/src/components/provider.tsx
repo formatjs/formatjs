@@ -76,7 +76,7 @@ export default class IntlProvider extends React.PureComponent<
     return null
   }
 
-  render(): JSX.Element {
+  render(): React.JSX.Element {
     invariantIntlContext(this.state.intl)
     return <Provider value={this.state.intl}>{this.props.children}</Provider>
   }

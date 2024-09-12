@@ -6,7 +6,7 @@ import injectIntl, {
 import {render} from '@testing-library/react'
 import {IntlShape} from '@formatjs/intl'
 
-const mountWithProvider = (el: JSX.Element) =>
+const mountWithProvider = (el: React.JSX.Element) =>
   render(<IntlProvider locale="en">{el}</IntlProvider>)
 
 describe('injectIntl()', () => {
