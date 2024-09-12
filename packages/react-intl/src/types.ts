@@ -18,7 +18,7 @@ export type IntlConfig = Omit<
 
 export interface ResolvedIntlConfig
   extends CoreResolvedIntlConfig<React.ReactNode> {
-  textComponent?: React.ComponentType | keyof React.ReactHTML
+  textComponent?: React.ComponentType | keyof React.JSX.IntrinsicElements
   wrapRichTextChunksInFragment?: boolean
 }
 

@@ -32,7 +32,7 @@ interface IntlConfig {
   defaultLocale: string
   defaultFormats: CustomFormats
   timeZone?: string
-  textComponent?: React.ComponentType | keyof React.ReactHTML
+  textComponent?: React.ComponentType | keyof React.JSX.IntrinsicElements
   wrapRichTextChunksInFragment?: boolean
   defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>
   onError(err: string): void

@@ -132,7 +132,7 @@ interface IntlConfig {
   locale: string
   timeZone?: string
   formats: CustomFormats
-  textComponent?: React.ComponentType | keyof React.ReactHTML
+  textComponent?: React.ComponentType | keyof React.JSX.IntrinsicElements
   messages: Record<string, string> | Record<string, MessageFormatElement[]>
   defaultLocale: string
   defaultFormats: CustomFormats
