@@ -51,6 +51,9 @@ export interface IntlDateTimeFormatInternal {
   format: Formats
   rangePatterns: Record<TABLE_2 | 'default', RangePatterns>
   boundFormat?: Intl.DateTimeFormat['format']
+  numberFormat?: Intl.NumberFormat
+  numberFormatTwoIntegerDigits?: Intl.NumberFormat
+  numberFormatFractionalSecondDigits?: Intl.NumberFormat
 }
 
 export interface RangePatternPart<
