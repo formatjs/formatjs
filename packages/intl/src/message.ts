@@ -65,6 +65,7 @@ function deepMergeFormatsAndSetTimeZone(
 }
 
 export type FormatMessageFn<T> = (
+  this: void,
   {
     locale,
     formats,

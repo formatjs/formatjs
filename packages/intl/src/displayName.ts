@@ -15,6 +15,7 @@ const DISPLAY_NAMES_OPTONS: Array<keyof DisplayNamesOptions> = [
 ]
 
 export function formatDisplayName(
+  this: void,
   {
     locale,
     onError,

@@ -72,6 +72,7 @@ export function getFormatter(
 }
 
 export function formatDate(
+  this: void,
   config: {
     locale: string
     timeZone?: string
@@ -94,6 +95,7 @@ export function formatDate(
 }
 
 export function formatTime(
+  this: void,
   config: {
     locale: string
     timeZone?: string
@@ -117,6 +119,7 @@ export function formatTime(
 }
 
 export function formatDateTimeRange(
+  this: void,
   config: {
     locale: string
     timeZone?: string
@@ -145,6 +148,7 @@ export function formatDateTimeRange(
 }
 
 export function formatDateToParts(
+  this: void,
   config: {
     locale: string
     timeZone?: string
@@ -172,6 +176,7 @@ export function formatDateToParts(
 }
 
 export function formatTimeToParts(
+  this: void,
   config: {
     locale: string
     timeZone?: string

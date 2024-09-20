@@ -9,6 +9,7 @@ const RELATIVE_TIME_FORMAT_OPTIONS: Array<
 > = ['numeric', 'style']
 
 function getFormatter(
+  this: void,
   {
     locale,
     formats,
@@ -35,6 +36,7 @@ function getFormatter(
 }
 
 export function formatRelativeTime(
+  this: void,
   config: {
     locale: string
     formats: CustomFormats

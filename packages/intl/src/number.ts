@@ -61,6 +61,7 @@ export function getFormatter(
 }
 
 export function formatNumber(
+  this: void,
   config: {
     locale: string
 
@@ -83,6 +84,7 @@ export function formatNumber(
 }
 
 export function formatNumberToParts(
+  this: void,
   config: {
     locale: string
     formats: CustomFormats

@@ -96,62 +96,66 @@ export function createIntl<T = string>(
     ...resolvedConfig,
     formatters,
     formatNumber: formatNumber.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getNumberFormat
     ),
     formatNumberToParts: formatNumberToParts.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getNumberFormat
     ),
     formatRelativeTime: formatRelativeTime.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getRelativeTimeFormat
     ),
     formatDate: formatDate.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getDateTimeFormat
     ),
     formatDateToParts: formatDateToParts.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getDateTimeFormat
     ),
     formatTime: formatTime.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getDateTimeFormat
     ),
     formatDateTimeRange: formatDateTimeRange.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getDateTimeFormat
     ),
     formatTimeToParts: formatTimeToParts.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getDateTimeFormat
     ),
     formatPlural: formatPlural.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getPluralRules
     ),
     // @ts-expect-error TODO: will get to this later
-    formatMessage: formatMessage.bind(null, resolvedConfig, formatters),
+    formatMessage: formatMessage.bind(undefined, resolvedConfig, formatters),
     // @ts-expect-error TODO: will get to this later
-    $t: formatMessage.bind(null, resolvedConfig, formatters),
-    formatList: formatList.bind(null, resolvedConfig, formatters.getListFormat),
+    $t: formatMessage.bind(undefined, resolvedConfig, formatters),
+    formatList: formatList.bind(
+      undefined,
+      resolvedConfig,
+      formatters.getListFormat
+    ),
     formatListToParts: formatListToParts.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getListFormat
     ),
     formatDisplayName: formatDisplayName.bind(
-      null,
+      undefined,
       resolvedConfig,
       formatters.getDisplayNames
     ),

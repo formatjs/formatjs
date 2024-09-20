@@ -18,6 +18,7 @@ function generateToken(i: number): string {
 }
 
 export function formatList(
+  this: void,
   opts: {
     locale: string
     onError: OnErrorFn
@@ -27,6 +28,7 @@ export function formatList(
   options: Parameters<IntlFormatters['formatList']>[1]
 ): string
 export function formatList<T>(
+  this: void,
   opts: {
     locale: string
     onError: OnErrorFn
@@ -55,6 +57,7 @@ export function formatList<T>(
 }
 
 export function formatListToParts<T>(
+  this: void,
   opts: {
     locale: string
     onError: OnErrorFn
@@ -64,6 +67,7 @@ export function formatListToParts<T>(
   options: Parameters<IntlFormatters['formatList']>[1]
 ): Part[]
 export function formatListToParts<T>(
+  this: void,
   {
     locale,
     onError,

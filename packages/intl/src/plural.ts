@@ -7,6 +7,7 @@ import {LDMLPluralRule} from '@formatjs/ecma402-abstract'
 const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = ['type']
 
 export function formatPlural(
+  this: void,
   {
     locale,
     onError,
