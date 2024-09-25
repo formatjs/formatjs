@@ -97,7 +97,7 @@
     "core-js": "^3.6.5",
     "ember-template-recast": "^6.1.4",
     "emoji-regex": "^10.2.1",
-    "eslint": "7 || 8 || 9",
+    "eslint": "9",
     "fast-glob": "^3.2.7",
     "fs-extra": "10",
     "hoist-non-react-statics": "^3.3.2",
