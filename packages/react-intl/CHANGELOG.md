@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.7.0](https://github.com/formatjs/formatjs/compare/react-intl@6.6.8...react-intl@6.7.0) (2024-09-23)
+
+### Bug Fixes
+
+* **@formatjs/intl:** add this: void to IntlShape method, fix [#4133](https://github.com/formatjs/formatjs/issues/4133) ([a9ba729](https://github.com/formatjs/formatjs/commit/a9ba729089943629a84220c9d9f7b12f6410ad2a)) - by @longlho
+
+### Features
+
+* **eslint-plugin-formatjs:** add support for eslint v9 ([f9a0e1b](https://github.com/formatjs/formatjs/commit/f9a0e1b4a7c8517afef3b7a049a68edd76863121)) - by @michaelfaith
+
 ## [6.6.8](https://github.com/formatjs/formatjs/compare/react-intl@6.6.7...react-intl@6.6.8) (2024-05-19)
 
 **Note:** Version bump only for package react-intl
