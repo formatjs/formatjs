@@ -9,13 +9,13 @@ use sha2::{Digest, Sha512};
 use swc_core::{
     common::{
         comments::{Comment, CommentKind, Comments},
-        source_map::Pos,
+        source_map::SmallPos,
         BytePos, Loc, SourceMapper, Span, Spanned, DUMMY_SP,
     },
     ecma::{
         ast::{
-            ArrayLit, Bool, CallExpr, Callee, Expr, ExprOrSpread, Ident, JSXAttr, JSXAttrName,
-            JSXAttrOrSpread, JSXAttrValue, JSXElementName, JSXExpr, JSXNamespacedName,
+            ArrayLit, Bool, CallExpr, Callee, Expr, ExprOrSpread, Ident, IdentName, JSXAttr,
+            JSXAttrName, JSXAttrOrSpread, JSXAttrValue, JSXElementName, JSXExpr, JSXNamespacedName,
             JSXOpeningElement, KeyValueProp, Lit, MemberProp, ModuleItem, Number, ObjectLit, Prop,
             PropName, PropOrSpread, Str,
         },
@@ -934,7 +934,7 @@ impl<C: Clone + Comments, S: SourceMapper> FormatJSVisitor<C, S> {
                         obj.props.insert(
                             0,
                             PropOrSpread::Prop(Box::new(Prop::KeyValue(KeyValueProp {
-                                key: PropName::Ident(Ident::new("id".into(), DUMMY_SP)),
+                                key: PropName::Ident(IdentName::new("id".into(), DUMMY_SP)),
                                 value: Box::new(Expr::Lit(Lit::Str(Str {
                                     span: DUMMY_SP,
                                     value: descriptor_id.into(),
@@ -1088,7 +1088,7 @@ impl<C: Clone + Comments, S: SourceMapper> VisitMut for FormatJSVisitor<C, S> {
                     0,
                     JSXAttrOrSpread::JSXAttr(JSXAttr {
                         span: DUMMY_SP,
-                        name: JSXAttrName::Ident(Ident::new("id".into(), DUMMY_SP)),
+                        name: JSXAttrName::Ident(IdentName::new("id".into(), DUMMY_SP)),
                         value: Some(JSXAttrValue::Lit(Lit::Str(Str::from(
                             descriptor.id.unwrap(),
                         )))),
@@ -1275,11 +1275,7 @@ fn json_value_to_expr(json_value: &serde_json::Value) -> Box<Expr> {
                 .iter()
                 .map(|(key, value)| {
                     PropOrSpread::Prop(Box::new(Prop::KeyValue(KeyValueProp {
-                        key: PropName::Ident(Ident {
-                            span: DUMMY_SP,
-                            sym: key.to_string().into(),
-                            optional: false,
-                        }),
+                        key: PropName::Ident(IdentName::new(key.to_string().into(), DUMMY_SP)),
                         value: json_value_to_expr(value),
                     })))
                 })
