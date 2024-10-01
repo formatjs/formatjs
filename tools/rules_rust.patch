@@ -1,8 +1,8 @@
 --- rust/private/rustc.bzl
 +++ rust/private/rustc.bzl
-@@ -1024,7 +1024,7 @@ def rustc_compile_action(
-         ),
-     ]
+@@ -1519,7 +1519,7 @@ def rustc_compile_action(
+         })
+         crate_info = rust_common.create_crate_info(**crate_info_dict)
 
 -    if crate_info.type in ["staticlib", "cdylib"]:
 +    if crate_info.type in ["staticlib", "cdylib"] and not out_binary:
