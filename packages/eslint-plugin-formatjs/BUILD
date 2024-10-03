@@ -23,7 +23,7 @@ npm_package(
 SRCS = glob(["rules/*.ts"]) + [
     "index.ts",
     "util.ts",
-    "context-compat.ts"
+    "context-compat.ts",
 ]
 
 SRC_DEPS = [

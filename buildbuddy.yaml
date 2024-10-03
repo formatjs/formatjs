@@ -1,5 +1,6 @@
 actions:
   - name: 'Test all targets'
+    container_image: 'ubuntu-20.04'
     triggers:
       push:
         branches:

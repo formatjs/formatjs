@@ -131,11 +131,10 @@ export default async function compileAndWrite(
   compileOpts: CompileCLIOpts = {}
 ) {
   const {outFile, ...opts} = compileOpts
-  const serializedResult = await compile(inputFiles, opts)
+  const serializedResult = (await compile(inputFiles, opts)) + '\n'
   if (outFile) {
     debug('Writing output file:', outFile)
     return outputFile(outFile, serializedResult)
   }
   await writeStdout(serializedResult)
-  await writeStdout('\n')
 }
