@@ -44,7 +44,7 @@
     "@lerna-lite/version": "2",
     "@napi-rs/cli": "^2.11.0",
     "@swc-node/register": "^1.5.4",
-    "@swc/core": "^1.6.0",
+    "@swc/core": "^1.7.0",
     "@swc/helpers": "^0.5.1",
     "@swc/jest": "^0.2.23",
     "@taplo/cli": "^0.7.0",
