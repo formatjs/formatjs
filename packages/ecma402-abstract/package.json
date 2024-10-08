@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "@formatjs/intl-localematcher": "workspace:*",
+    "@formatjs/fast-memoize": "workspace:*",
     "tslib": "^2.4.0"
   },
   "author": "Long Ho <holevietlong@gmail.com",

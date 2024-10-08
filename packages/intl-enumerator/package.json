@@ -24,9 +24,7 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
+    "@formatjs/ecma402-abstract": "workspace:*",
     "tslib": "^2.4.0"
-  },
-  "devDependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*"
   }
 }

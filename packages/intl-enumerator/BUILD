@@ -30,6 +30,10 @@ SRCS = glob([
     "*.ts",
 ])
 
+SRC_DEPS = [
+    ":node_modules/@formatjs/ecma402-abstract",
+]
+
 TESTS = glob([
     "tests/*.test.ts",
 ])
@@ -39,12 +43,12 @@ ts_compile(
     srcs = SRCS,
     package = "@formatjs/%s" % PACKAGE_NAME,
     skip_esm = False,
-    deps = [],
+    deps = SRC_DEPS,
 )
 
 jest_test(
     name = "unit_test",
-    data = SRCS + TESTS,
+    data = SRCS + TESTS + SRC_DEPS,
 )
 
 # Test262
@@ -55,7 +59,7 @@ ts_project(
     out_dir = "test262",
     resolve_json_module = True,
     tsconfig = "//:tsconfig.es6",
-    deps = [],
+    deps = SRC_DEPS,
 )
 
 write_source_files(

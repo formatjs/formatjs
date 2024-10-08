@@ -33,6 +33,7 @@ SRCS = glob(
 
 SRC_DEPS = [
     ":node_modules/@formatjs/intl-localematcher",
+    ":node_modules/@formatjs/fast-memoize",
 ]
 
 ts_compile(
