@@ -1,13 +1,14 @@
 import {
-  IntlDateTimeFormatInternal,
+  DateTimeFormat,
   DateTimeFormatLocaleInternalData,
+  IntlDateTimeFormatInternal,
   IntlDateTimeFormatPart,
   TimeClip,
-  DateTimeFormat,
+  createMemoizedNumberFormat,
 } from '@formatjs/ecma402-abstract'
 
-import {DATE_TIME_PROPS} from './utils'
 import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime'
+import {DATE_TIME_PROPS} from './utils'
 
 function pad(n: number): string {
   if (n < 10) {
@@ -80,18 +81,18 @@ export function FormatDateTimePattern(
   const nfOptions = Object.create(null)
   nfOptions.useGrouping = false
 
-  const nf = new Intl.NumberFormat(locale, nfOptions)
+  const nf = createMemoizedNumberFormat(locale, nfOptions)
   const nf2Options = Object.create(null)
   nf2Options.minimumIntegerDigits = 2
   nf2Options.useGrouping = false
-  const nf2 = new Intl.NumberFormat(locale, nf2Options)
+  const nf2 = createMemoizedNumberFormat(locale, nf2Options)
   const fractionalSecondDigits = internalSlots.fractionalSecondDigits
   let nf3: Intl.NumberFormat
   if (fractionalSecondDigits !== undefined) {
     const nf3Options = Object.create(null)
     nf3Options.minimumIntegerDigits = fractionalSecondDigits
     nf3Options.useGrouping = false
-    nf3 = new Intl.NumberFormat(locale, nf3Options)
+    nf3 = createMemoizedNumberFormat(locale, nf3Options)
   }
   const tm = ToLocalTime(
     x,
