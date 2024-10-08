@@ -1,3 +1,4 @@
+import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract'
 import {numberingSystemNames} from './numbering-systems.generated'
 
 function isSupportedNumberingSystem(
@@ -5,7 +6,7 @@ function isSupportedNumberingSystem(
   locale: string = 'en'
 ): boolean {
   try {
-    const numberFormat = new Intl.NumberFormat(`${locale}-u-nu-${system}`)
+    const numberFormat = createMemoizedNumberFormat(`${locale}-u-nu-${system}`)
     const options = numberFormat.resolvedOptions().numberingSystem
 
     if (
