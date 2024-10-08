@@ -1,3 +1,4 @@
+import {memoize, strategies} from '@formatjs/fast-memoize'
 /**
  * Cannot do Math.log(x) / Math.log(10) bc if IEEE floating point issue
  * @param x number
@@ -148,3 +149,53 @@ export function invariant(
     throw new Err(message)
   }
 }
+
+export const createMemoizedNumberFormat: (
+  ...args: ConstructorParameters<typeof Intl.NumberFormat>
+) => Intl.NumberFormat = memoize(
+  (...args: ConstructorParameters<typeof Intl.NumberFormat>) =>
+    new Intl.NumberFormat(...args),
+  {
+    strategy: strategies.variadic,
+  }
+)
+
+export const createMemoizedDateTimeFormat: (
+  ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
+) => Intl.DateTimeFormat = memoize(
+  (...args: ConstructorParameters<typeof Intl.DateTimeFormat>) =>
+    new Intl.DateTimeFormat(...args),
+  {
+    strategy: strategies.variadic,
+  }
+)
+
+export const createMemoizedPluralRules: (
+  ...args: ConstructorParameters<typeof Intl.PluralRules>
+) => Intl.PluralRules = memoize(
+  (...args: ConstructorParameters<typeof Intl.PluralRules>) =>
+    new Intl.PluralRules(...args),
+  {
+    strategy: strategies.variadic,
+  }
+)
+
+export const createMemoizedLocale: (
+  ...args: ConstructorParameters<typeof Intl.Locale>
+) => Intl.Locale = memoize(
+  (...args: ConstructorParameters<typeof Intl.Locale>) =>
+    new Intl.Locale(...args),
+  {
+    strategy: strategies.variadic,
+  }
+)
+
+export const createMemoizedListFormat: (
+  ...args: ConstructorParameters<typeof Intl.ListFormat>
+) => Intl.ListFormat = memoize(
+  (...args: ConstructorParameters<typeof Intl.ListFormat>) =>
+    new Intl.ListFormat(...args),
+  {
+    strategy: strategies.variadic,
+  }
+)
