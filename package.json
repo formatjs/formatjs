@@ -133,7 +133,7 @@
     "ts-loader": "^9.1.2",
     "tsd": "^0.31.0",
     "tslib": "^2.4.0",
-    "typescript": "5.2.2",
+    "typescript": "5.6.2",
     "unicode-emoji-utils": "^1.1.1",
     "unidiff": "^1.0.2",
     "vue-class-component": "^8.0.0-rc.1",
@@ -151,7 +151,8 @@
     "source-map-js": "1.0.2",
     "@glimmer/syntax": "0.92.0",
     "@glimmer/interfaces": "0.92.0",
-    "eslint": "9"
+    "eslint": "9",
+    "typescript": "5.6.2"
   },
   "pnpm": {
     "packageExtensions": {
