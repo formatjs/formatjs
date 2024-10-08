@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/swc-plugin-experimental",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "SWC plugin for formatjs",
   "main": "./index.wasm",
   "files": [
