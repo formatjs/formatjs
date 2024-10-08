@@ -15,7 +15,10 @@ export default function (ReactIntl: typeof IReactIntl, noParser?: boolean) {
       FormattedMessage,
     } = ReactIntl
 
-    const renderWithIntlProvider = (Element: React.JSX.Element, providerProps = {}) =>
+    const renderWithIntlProvider = (
+      Element: React.JSX.Element,
+      providerProps = {}
+    ) =>
       render(
         <IntlProvider locale="en" {...providerProps}>
           {Element}
