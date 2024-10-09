@@ -8,7 +8,7 @@ load("@io_bazel_rules_docker//docker/package_managers:install_pkgs.bzl", "instal
 load("@io_bazel_rules_docker//docker/util:run.bzl", "container_run_and_extract")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
-load("//:index.bzl", "ZONES")
+load("//:index.bzl", "IANA_TZ_VERSION", "TZCODE_SHA256", "TZDATA_SHA256", "ZONES")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
 
@@ -1034,9 +1034,15 @@ genrule(
         done
 
         # Perform the substitutions in the Dockerfile.template and output to Dockerfile
-        sed 's/{{{{zic_files}}}}/'"$$zic_files"'/g' $(location Dockerfile.template) > tmp_dockerfile
-        sed 's|{{{{zone_commands}}}}|'"$$zone_commands"'|g' tmp_dockerfile > $@
+        sed 's/{{{{iana_tz_version}}}}/'"{iana_tz_version}"'/g' $(location Dockerfile.template) > tmp_dockerfile
+        sed 's/{{{{tzdata_sha256}}}}/'"{tzdata_sha256}"'/g' tmp_dockerfile > tmp_dockerfile2
+        sed 's/{{{{tzcode_sha256}}}}/'"{tzcode_sha256}"'/g' tmp_dockerfile2 > tmp_dockerfile3
+        sed 's/{{{{zic_files}}}}/'"$$zic_files"'/g' tmp_dockerfile3 > tmp_dockerfile4
+        sed 's|{{{{zone_commands}}}}|'"$$zone_commands"'|g' tmp_dockerfile4 > $@
     """.format(
+        iana_tz_version = IANA_TZ_VERSION,
+        tzcode_sha256 = TZCODE_SHA256,
+        tzdata_sha256 = TZDATA_SHA256,
         zic_files = " ".join(ZIC_FILES),
         zones = " ".join(ZONES),
     ),

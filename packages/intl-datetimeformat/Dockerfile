@@ -1,14 +1,29 @@
 # Dockerfile.template
 
-FROM debian:bullseye-slim
+FROM ubuntu:22.04
+
+# Set the IANA time zone version
+ARG IANA_TZ_VERSION=2024b
 
 # Install dependencies
 RUN apt-get update
-RUN apt-get install -y build-essential make tzdata tar
+RUN apt-get install -y build-essential make tzdata tar curl
 RUN rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /tz
+
+# Download tzdata and tzcode based on the version
+RUN curl -o tzdata.tar.gz https://data.iana.org/time-zones/releases/tzdata${IANA_TZ_VERSION}.tar.gz
+RUN curl -o tzcode.tar.gz https://data.iana.org/time-zones/releases/tzcode${IANA_TZ_VERSION}.tar.gz
+
+# Verify the SHA-256 checksum
+RUN echo "70e754db126a8d0db3d16d6b4cb5f7ec1e04d5f261255e4558a67fe92d39e550  tzdata.tar.gz" | sha256sum -c -
+RUN echo "5e438fc449624906af16a18ff4573739f0cda9862e5ec28d3bcb19cbaed0f672  tzcode.tar.gz" | sha256sum -c -
+
+# Extract the downloaded files into /tz
+RUN tar -xzf tzdata.tar.gz -C /tz
+RUN tar -xzf tzcode.tar.gz -C /tz
 
 # Pre-compile tzdata
 ENV TOPDIR=/tzdir
