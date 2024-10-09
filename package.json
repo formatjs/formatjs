@@ -16,7 +16,7 @@
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
     "postinstall": "husky install",
-    "prerelease": "HUSKY=0 lerna version --yes",
+    "prerelease": "HUSKY=0 lerna version --yes --no-private",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
     "release": "bazel build :dist && cd dist/bin/formatjs_dist && pnpm publish --no-git-checks -r --dry-run",
     "test": "bazel test //..."
