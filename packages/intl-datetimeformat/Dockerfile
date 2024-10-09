@@ -49,7 +49,7 @@ RUN mkdir -p /tz_data_generated/zdump/Pacific
 # Install tzdata and compile zic files
 RUN make TOPDIR=/tzdir install
 RUN echo 'Compiling zic data'
-RUN /tzdir/usr/sbin/zic -d /zic ["backward", "africa", "antarctica", "asia", "australasia", "etcetera", "europe", "northamerica", "southamerica"]
+RUN /tzdir/usr/sbin/zic -d /zic backward africa antarctica asia australasia etcetera europe northamerica southamerica
 RUN cp /tz/backward /tz_data_generated
 RUN echo 'Compiling zdump data'
 
