@@ -34,6 +34,9 @@ def generate_dockerfile(name):
     # Create zdump commands for each zone
     zdump_commands = "\n".join(["RUN /tzdir/usr/bin/zdump -c 2100 -v /zic/%s > /tz_data_generated/zdump/%s" % (zone, zone) for zone in ZONES])
 
+    # Join the ZIC files list into a space-separated string
+    zic_files = " ".join(ZIC_FILES)
+
     # Generate the entire Dockerfile content as a string
     dockerfile_content = """
 FROM ubuntu:22.04
@@ -90,7 +93,7 @@ CMD ["cp", "/tz_data.tar.gz", "/output/tz_data.tar.gz"]
         tzdata_sha256 = TZDATA_SHA256,
         tzcode_sha256 = TZCODE_SHA256,
         mkdir_commands = mkdir_commands,
-        zic_files = ZIC_FILES,
+        zic_files = zic_files,
         zdump_commands = zdump_commands,
     )
 
