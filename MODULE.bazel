@@ -58,10 +58,29 @@ bazel_dep(
     dev_dependency = True,
 )
 
-bazel_dep(name = "rules_rust", version = "0.52.2")
+bazel_dep(name = "rules_rust", version = "0.42.1")
+
+single_version_override(
+    module_name = "rules_rust",
+    version = "0.42.1",
+    patches = [
+        "//tools:rules_rust.patch",
+    ],
+)
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+
+rust.toolchain(
+    edition = "2021",
+    extra_target_triples = [
+        "wasm32-unknown-unknown",
+        "wasm32-wasi",
+    ],
+)
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 
+# Run `CARGO_BAZEL_REPIN=1 bazel sync --only=crate_index` after updating
 crate.from_cargo(
     name = "crate_index",
     cargo_lockfile = "//rust:Cargo.lock",

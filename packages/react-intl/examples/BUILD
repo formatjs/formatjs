@@ -4,7 +4,7 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:http-server/package_json.bzl", "bin")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 EXAMPLES_SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
@@ -44,7 +44,7 @@ ts_project(
 esbuild(
     name = "main",
     define = {
-        "process.env.NODE_ENV": "development",
+        "process.env.NODE_ENV": '"development"',
     },
     entry_point = "examples-lib/index.js",
     format = "iife",

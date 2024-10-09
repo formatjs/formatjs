@@ -1,27 +1,27 @@
 import {NumberSkeletonToken} from '@formatjs/icu-skeleton-parser'
 import {
-  MessageFormatElement,
-  isLiteralElement,
-  LiteralElement,
   ArgumentElement,
   DateElement,
-  TimeElement,
-  NumberElement,
-  SelectElement,
-  PluralElement,
-  TagElement,
-  isTagElement,
-  isSelectElement,
+  DateTimeSkeleton,
   isArgumentElement,
   isDateElement,
-  isTimeElement,
+  isLiteralElement,
   isNumberElement,
   isPluralElement,
-  TYPE,
+  isPoundElement,
+  isSelectElement,
+  isTagElement,
+  isTimeElement,
+  LiteralElement,
+  MessageFormatElement,
+  NumberElement,
+  PluralElement,
+  SelectElement,
   Skeleton,
   SKELETON_TYPE,
-  DateTimeSkeleton,
-  isPoundElement,
+  TagElement,
+  TimeElement,
+  TYPE,
 } from './types'
 
 export function printAST(ast: MessageFormatElement[]): string {
@@ -68,7 +68,7 @@ function printTagElement(el: TagElement): string {
 }
 
 function printEscapedMessage(message: string): string {
-  return message.replace(/([{}](?:.*[{}])?)/su, `'$1'`)
+  return message.replace(/([{}](?:[\s\S]*[{}])?)/, `'$1'`)
 }
 
 function printLiteralElement(

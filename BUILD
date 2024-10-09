@@ -6,6 +6,8 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 
+npm_link_all_packages()
+
 exports_files(
     [
         "karma.conf.js",
@@ -82,7 +84,7 @@ copy_to_directory(
         ":pnpm_workspace_config",
         "package.json",
         "pnpm-lock.yaml",
-    ] + PACKAGES_TO_DIST + glob(["patches/*"]),
+    ] + ["%s:pkg" % pkg for pkg in PACKAGES_TO_DIST] + glob(["patches/*"]),
     out = "formatjs_dist",
     replace_prefixes = {k: v for k, v in [(
         "packages/%s" % p,
@@ -90,7 +92,6 @@ copy_to_directory(
     ) for p in PACKAGE_DIRNAMES]},
 )
 
-npm_link_all_packages(name = "node_modules")
 
 # We run this centrally so it doesn't spawn
 # multiple browser sessions which overwhelms SauceLabs
