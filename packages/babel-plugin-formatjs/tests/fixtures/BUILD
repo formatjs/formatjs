@@ -21,3 +21,4 @@ copy_to_bin(
         "//packages/swc-plugin-experimental:__subpackages__",
     ],
 )
+

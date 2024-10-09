@@ -1,7 +1,8 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 jest_test(
     name = "vue_integration_test",
@@ -17,3 +18,4 @@ jest_test(
     ],
     # flaky = True,
 )
+

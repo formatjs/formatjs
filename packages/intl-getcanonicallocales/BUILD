@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
@@ -12,7 +13,7 @@ exports_files([
 PACKAGE_NAME = "intl-getcanonicallocales"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name ="pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -34,6 +35,11 @@ TESTS = glob([
     "tests/*.test.ts",
 ])
 
+copy_to_bin(
+    name = "tests",
+    srcs = TESTS,
+)
+
 SRC_DEPS = [
 ]
 
@@ -41,15 +47,13 @@ TEST_DEPS = SRC_DEPS
 
 ts_compile(
     name = "dist",
-    srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
-    skip_esm = False,
+    srcs = [":srcs"],
     deps = SRC_DEPS,
 )
 
 jest_test(
     name = "unit_test",
-    data = SRCS + TESTS + TEST_DEPS,
+    data = [":srcs", ":tests"] + TEST_DEPS,
 )
 
 # aliases
@@ -80,8 +84,8 @@ generate_src_file(
 # karma tests
 bundle_karma_tests(
     name = "bundled-karma-tests",
-    srcs = SRCS,
-    tests = TESTS,
+    srcs = [":srcs"],
+    tests = [":tests"],
     deps = TEST_DEPS,
 )
 
@@ -92,10 +96,10 @@ write_source_files(
 
 esbuild(
     name = "polyfill.iife",
-    entry_point = "lib/polyfill.js",
+    entry_point = "polyfill.ts",
     target = "es6",
+    srcs = [":srcs"],
     deps = [
-        ":dist-esm",
         "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
@@ -104,3 +108,5 @@ package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
 )
+
+copy_to_bin(name = "srcs", srcs=SRCS)

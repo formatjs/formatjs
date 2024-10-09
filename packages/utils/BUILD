@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile")
@@ -11,7 +12,7 @@ exports_files([
 PACKAGE_NAME = "utils"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name ="pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -33,8 +34,7 @@ SRC_DEPS = [
 
 ts_compile(
     name = "dist",
-    srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = [":srcs"],
     skip_esm = False,
     deps = SRC_DEPS,
 )
@@ -51,7 +51,7 @@ package_json_test(
 
 jest_test(
     name = "unit_test",
-    data = SRCS + SRC_DEPS + glob([
+    data = [":srcs"] + SRC_DEPS + glob([
         "tests/*.ts*",
         "tests/fixtures/*.ts*",
     ]),
@@ -66,3 +66,5 @@ generate_src_file(
     ],
     entry_point = "tools/extract-default-currency.ts",
 )
+
+copy_to_bin(name = "srcs", srcs=SRCS)

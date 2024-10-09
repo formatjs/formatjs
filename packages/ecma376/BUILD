@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
@@ -11,7 +12,7 @@ exports_files([
 PACKAGE_NAME = "ecma376"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name ="pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -35,8 +36,7 @@ TESTS = glob(["tests/*"])
 
 ts_compile(
     name = "dist",
-    srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = [":srcs"],
     skip_esm = False,
     deps = SRC_DEPS,
 )
@@ -48,10 +48,12 @@ write_source_files(
 
 jest_test(
     name = "unit_test",
-    data = SRCS + TESTS + SRC_DEPS,
+    data = [":srcs"] + TESTS + SRC_DEPS,
 )
 
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
 )
+
+copy_to_bin(name = "srcs", srcs=SRCS)
