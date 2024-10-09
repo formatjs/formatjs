@@ -6,7 +6,7 @@ ARG IANA_TZ_VERSION=2024b
 
 # Install dependencies
 RUN apt-get update
-RUN apt-get install -y build-essential make tzdata tar curl
+RUN apt-get install -y build-essential make tar curl
 RUN rm -rf /var/lib/apt/lists/*
 
 # Set working directory for downloading files
