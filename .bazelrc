@@ -13,6 +13,8 @@ import %workspace%/.aspect/bazelrc/performance.bazelrc
 
 ### YOUR PROJECT SPECIFIC SETTINGS GO HERE ###
 
+common --enable_bzlmod 
+
 build --java_runtime_version=remotejdk_11
 
 build --action_env=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -22,7 +24,7 @@ build --verbose_failures
 
 build --experimental_remote_cache_compression
 build --legacy_important_outputs
-build --experimental_remote_build_event_upload=minimal
+build --remote_build_event_upload=minimal
 build --noslim_profile 
 build --experimental_profile_include_target_label 
 build --experimental_profile_include_primary_output 

@@ -1,0 +1,92 @@
+module(
+    name = "formatjs",
+    version = "1.0",
+)
+
+bazel_dep(name = "aspect_rules_js", version = "2.0.2")
+
+####### Node.js version #########
+# By default you get the node version from DEFAULT_NODE_VERSION in @rules_nodejs//nodejs:repositories.bzl
+# Optionally you can pin a different node version:
+bazel_dep(name = "rules_nodejs", version = "6.3.0")
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node", dev_dependency = True)
+node.toolchain(node_version = "18.17.0")
+#################################
+
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
+
+npm.npm_translate_lock(
+    name = "npm",
+    data = [
+        "//:patches/@commitlint__rules@17.0.0.patch",
+        "//:patches/make-plural-compiler@5.1.0.patch",
+    ],
+    patch_args = {"*": ["-p1"]},
+    pnpm_lock = "//:pnpm-lock.yaml",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+
+use_repo(npm, "npm")
+
+pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
+
+# Allows developers to use the matching pnpm version, for example:
+# bazel run -- @pnpm --dir /home/runner/work/rules_js/rules_js install
+use_repo(pnpm, "pnpm")
+
+bazel_dep(name = "aspect_rules_esbuild", version = "0.21.0")
+
+bazel_dep(name = "aspect_rules_ts", version = "3.2.0")
+
+rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext", dev_dependency = True)
+
+rules_ts_ext.deps(
+    ts_version_from = "//:package.json",
+)
+
+use_repo(rules_ts_ext, "npm_typescript")
+
+bazel_dep(name = "aspect_bazel_lib", version = "2.9.1")
+
+bazel_dep(name = "aspect_rules_jest", version = "0.22.0")
+
+bazel_dep(name = "rules_multirun", version = "0.9.0")
+
+bazel_dep(
+    name = "buildifier_prebuilt",
+    version = "7.3.1",
+    dev_dependency = True,
+)
+
+bazel_dep(name = "rules_rust", version = "0.52.2")
+
+crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
+
+crate.from_cargo(
+    name = "crate_index",
+    cargo_lockfile = "//rust:Cargo.lock",
+    manifests = [
+        "//rust:Cargo.toml",
+        "//rust/icu-messageformat-parser:Cargo.toml",
+        "//rust/swc-formatjs-visitor:Cargo.toml",
+        "//rust/swc-plugin-formatjs:Cargo.toml",
+        # FIX THIS
+        # "//rust/swc-formatjs-custom-transform:Cargo.toml",
+    ],
+)
+use_repo(crate, "crate_index")
+
+bazel_dep(name = "aspect_rules_lint", version = "1.0.2")
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+TEST262_COMMIT = "ade328d530525333751e8a3b58f02e18624da085"
+
+http_archive(
+    name = "com_github_tc39_test262",
+    build_file = "@//:test262.BUILD",
+    sha256 = "f4915077f38016d0f20ad8cbeaeec4e3d4a5eca3a98a895e01653f3375802a4b",
+    strip_prefix = "tc39-test262-%s" % TEST262_COMMIT[:7],
+    type = "tar.gz",
+    urls = ["https://github.com/tc39/test262/tarball/%s" % TEST262_COMMIT],
+)
