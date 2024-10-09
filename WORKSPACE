@@ -45,19 +45,19 @@ load("@npm//:repositories.bzl", "npm_repositories")
 
 npm_repositories()
 
-IANA_TZ_VERSION = "2024b"
+load("//:index.bzl", "IANA_TZ_VERSION", "TZCODE_SHA256", "TZDATA_SHA256")
 
 http_file(
     name = "tzdata",
     downloaded_file_path = "tzdata.tar.gz",
-    sha256 = "70e754db126a8d0db3d16d6b4cb5f7ec1e04d5f261255e4558a67fe92d39e550",
+    sha256 = TZDATA_SHA256,
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
 http_file(
     name = "tzcode",
     downloaded_file_path = "tzcode.tar.gz",
-    sha256 = "5e438fc449624906af16a18ff4573739f0cda9862e5ec28d3bcb19cbaed0f672",
+    sha256 = TZCODE_SHA256,
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
@@ -155,10 +155,20 @@ go_rules_dependencies()
 go_register_toolchains(version = "1.18")
 
 http_archive(
+    name = "rules_python",
+    sha256 = "e85ae30de33625a63eca7fc40a94fea845e641888e52f32b6beea91e8b1b2793",
+    strip_prefix = "rules_python-0.27.1",
+    url = "https://github.com/bazelbuild/rules_python/releases/download/0.27.1/rules_python-0.27.1.tar.gz",
+)
+
+load("@rules_python//python:repositories.bzl", "py_repositories")
+
+py_repositories()
+
+http_archive(
     name = "rules_multirun",
-    sha256 = "504612040149edce01376c4809b33f2e0c5331cdd0ec56df562dc89ecbc045a0",
-    strip_prefix = "rules_multirun-0.9.0",
-    url = "https://github.com/keith/rules_multirun/archive/refs/tags/0.9.0.tar.gz",
+    sha256 = "0e124567fa85287874eff33a791c3bbdcc5343329a56faa828ef624380d4607c",
+    url = "https://github.com/keith/rules_multirun/releases/download/0.9.0/rules_multirun.0.9.0.tar.gz",
 )
 
 # Buildifier
@@ -186,8 +196,6 @@ buildifier_prebuilt_register_toolchains()
 # Test262
 TEST262_COMMIT = "ade328d530525333751e8a3b58f02e18624da085"
 
-DOCKER_RULES_COMMIT = "b6231a43e19b7d2a32c7a7487ce9f4f40d85e992"
-
 http_archive(
     name = "com_github_tc39_test262",
     build_file = "@//:test262.BUILD",
@@ -195,40 +203,6 @@ http_archive(
     strip_prefix = "tc39-test262-%s" % TEST262_COMMIT[:7],
     type = "tar.gz",
     urls = ["https://github.com/tc39/test262/tarball/%s" % TEST262_COMMIT],
-)
-
-# Docker
-http_archive(
-    name = "io_bazel_rules_docker",
-    sha256 = "d429279fa3f1ccd2a44c5db8cd995a06564fa9a349e6fd48dded19fc66d131b6",
-    strip_prefix = "rules_docker-%s" % DOCKER_RULES_COMMIT,
-    type = "tar.gz",
-    urls = ["https://github.com/bassco/rules_docker/archive/%s.tar.gz" % DOCKER_RULES_COMMIT],
-)
-
-load(
-    "@io_bazel_rules_docker//repositories:repositories.bzl",
-    container_repositories = "repositories",
-)
-
-container_repositories()
-
-load("@io_bazel_rules_docker//repositories:deps.bzl", container_deps = "deps")
-
-container_deps()
-
-load(
-    "@io_bazel_rules_docker//container:container.bzl",
-    "container_pull",
-)
-
-container_pull(
-    name = "ubuntu23",
-    architecture = "amd64",
-    digest = "sha256:fd7fe639db24c4e005643921beea92bc449aac4f4d40d60cd9ad9ab6456aec01",
-    registry = "index.docker.io",
-    repository = "library/ubuntu",
-    tag = "23.10",
 )
 
 http_archive(

@@ -61,19 +61,21 @@ npx pnpm -r publish
 
 ### Updating tzdata version
 
+tzdata requires Docker to be installed. This is because tzdata compilation requires `make`.
+
 1. Change `IANA_TZ_VERSION` in WORKSPACE to the desired version
 
-1. Update the sha512 for tzdata & tzcode targets
+1. Update the sha256 for tzdata & tzcode targets
 
-1. Update tz data
+1. Run the Docker image & update the tz_data.tar.gz
 
 ```
-bazel run //packages/intl-datetimeformat:generated_tz_data
+bazel run //packages/intl-datetimeformat:execute_tz_docker
 ```
 
-4. Test to make sure everything passes
+1. Test to make sure everything passes
 
-5. New TimeZones or renames of TimeZones are not updated using the Bazel script. You need to manually update `index.bzl`.
+1. New TimeZones or renames of TimeZones are not updated using the Bazel script. You need to manually update `index.bzl`.
 
 ### Updating test snapshots
 
