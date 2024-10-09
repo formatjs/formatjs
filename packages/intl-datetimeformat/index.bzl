@@ -29,10 +29,10 @@ def generate_dockerfile(name):
         unique_dirs[parent_dir] = True  # Dictionary to ensure uniqueness
 
     # Create mkdir commands for unique directories
-    mkdir_commands = "\n".join(["RUN mkdir -p /tz_data_generated/zdump/%s" % dir for dir in unique_dirs])
+    mkdir_commands = " && \\ \n".join(["mkdir -p /tz_data_generated/zdump/{}".format(dir) for dir in unique_dirs])
 
     # Create zdump commands for each zone
-    zdump_commands = "\n".join(["RUN /tzdir/usr/bin/zdump -c 2100 -v /zic/%s > /tz_data_generated/zdump/%s" % (zone, zone) for zone in ZONES])
+    zdump_commands = " && \\ \n".join(["/tzdir/usr/bin/zdump -c 2100 -v /zic/{} > /tz_data_generated/zdump/{}".format(zone, zone) for zone in ZONES])
 
     # Join the ZIC files list into a space-separated string
     zic_files = " ".join(ZIC_FILES)
@@ -41,13 +41,9 @@ def generate_dockerfile(name):
     dockerfile_content = """
 FROM ubuntu:22.04
 
-# Set the IANA time zone version
-ARG IANA_TZ_VERSION={iana_tz_version}
-
-# Install dependencies
-RUN apt-get update
-RUN apt-get install -y build-essential make tar curl
-RUN rm -rf /var/lib/apt/lists/*
+# Install dependencies (excluding tzdata)
+RUN apt-get update && apt-get install -y build-essential make tar curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set working directory for downloading files
 WORKDIR /tz
@@ -60,34 +56,20 @@ RUN curl -o tzcode.tar.gz https://data.iana.org/time-zones/releases/tzcode{iana_
 RUN echo "{tzdata_sha256}  tzdata.tar.gz" | sha256sum -c -
 RUN echo "{tzcode_sha256}  tzcode.tar.gz" | sha256sum -c -
 
-# Extract the downloaded files into /tz
-RUN tar -xzf tzdata.tar.gz -C /tz
-RUN tar -xzf tzcode.tar.gz -C /tz
+# Extract the copied files into /tz and set up directories in a single layer
+RUN tar -xzf tzdata.tar.gz -C /tz && \\
+    tar -xzf tzcode.tar.gz -C /tz && \\
+    mkdir -p /tzdir/usr/sbin /tzdir/usr/bin /tz_data_generated/zdump && \\
+    {mkdir_commands}
 
-# Set the new working directory to /tz
-WORKDIR /tz
-
-# Pre-compile tzdata
-ENV TOPDIR=/tzdir
-
-# Create the necessary directories (only once per parent directory)
-{mkdir_commands}
-
-# Install tzdata and compile zic files
-RUN make TOPDIR=/tzdir install
-RUN echo 'Compiling zic data'
-RUN /tzdir/usr/sbin/zic -d /zic {zic_files}
-RUN cp /tz/backward /tz_data_generated
-RUN echo 'Compiling zdump data'
-
-# Compile zdump data for all zones
-{zdump_commands}
+# Pre-compile tzdata and run zdump commands
+RUN make TOPDIR=/tzdir install && \\
+    /tzdir/usr/sbin/zic -d /zic {zic_files} && \\
+    cp /tz/backward /tz_data_generated && \\
+    {zdump_commands}
 
 # Archive the data
 RUN tar -czvf /tz_data.tar.gz /tz_data_generated
-
-# Command to copy the data archive
-CMD ["cp", "/tz_data.tar.gz", "/output/tz_data.tar.gz"]
     """.format(
         iana_tz_version = IANA_TZ_VERSION,
         tzdata_sha256 = TZDATA_SHA256,
@@ -101,7 +83,7 @@ CMD ["cp", "/tz_data.tar.gz", "/output/tz_data.tar.gz"]
     native.genrule(
         name = "%s_gen" % name,
         srcs = [],
-        outs = ["Dockerfile"],
+        outs = ["generated_dockerfile"],
         cmd = """
             echo '{}' > $@
         """.format(dockerfile_content.replace("'", "'\\''")),
@@ -110,6 +92,6 @@ CMD ["cp", "/tz_data.tar.gz", "/output/tz_data.tar.gz"]
     write_source_files(
         name = name,
         files = {
-            "Dockerfile": "%s_gen" % name,
+            "Dockerfile": ":%s_gen" % name,
         },
     )
