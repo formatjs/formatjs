@@ -22,10 +22,11 @@ set -e
 # --- end runfiles.bash initialization v3 ---
 
 # Source location
-src_dir=$(dirname $(rlocation formatjs/packages/intl-datetimeformat/Dockerfile))
+outfile=$(rlocation formatjs/packages/intl-datetimeformat/tz_data.tar.gz)
+docker_dir=$(dirname $(rlocation formatjs/packages/intl-datetimeformat/Dockerfile))
 
 # Build the Docker image
-docker build -t tz_image "$src_dir"
+docker build -t tz_image "$docker_dir"
 
 # Run the container and capture the container ID
 container_id=$(docker create tz_image)
@@ -35,13 +36,13 @@ if [ -n "$container_id" ]; then
     echo "Container $container_id created successfully."
 
     # Copy the file from the container to the host
-    docker cp "$container_id":/tz_data.tar.gz "$src_dir/tz_data.tar.gz"
+    docker cp "$container_id":/tz_data.tar.gz "$outfile"
 
     # Check if the file was copied successfully
-    if [ -f "$src_dir/tz_data.tar.gz" ]; then
-        echo "File tz_data.tar.gz copied successfully."
+    if [ -f "$outfile" ]; then
+        echo "File $outfile copied successfully."
     else
-        echo "File tz_data.tar.gz not found or failed to copy."
+        echo "File $outfile not found or failed to copy."
         # Remove the container
         docker rm "$container_id"
         exit 1

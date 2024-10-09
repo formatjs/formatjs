@@ -7,7 +7,7 @@ workspace(
     name = "formatjs",
 )
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # rules_js
 http_archive(
@@ -44,22 +44,6 @@ npm_translate_lock(
 load("@npm//:repositories.bzl", "npm_repositories")
 
 npm_repositories()
-
-load("//:index.bzl", "IANA_TZ_VERSION", "TZCODE_SHA256", "TZDATA_SHA256")
-
-http_file(
-    name = "tzdata",
-    downloaded_file_path = "tzdata.tar.gz",
-    sha256 = TZDATA_SHA256,
-    urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
-)
-
-http_file(
-    name = "tzcode",
-    downloaded_file_path = "tzcode.tar.gz",
-    sha256 = TZCODE_SHA256,
-    urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
-)
 
 # esbuild
 # https://github.com/aspect-build/rules_esbuild/issues/58

@@ -941,8 +941,11 @@ generate_dockerfile(
 )
 
 sh_binary(
-    name = "execute_tz_docker",
+    name = "update_tz_data",
     srcs = ["scripts/execute_tz_docker.sh"],
-    data = ["Dockerfile"],
+    data = [
+        "tz_data.tar.gz",
+        ":dockerfile",
+    ],
     deps = ["@bazel_tools//tools/bash/runfiles"],
 )
