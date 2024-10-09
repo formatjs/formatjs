@@ -1,0 +1,34 @@
+# Dockerfile.template
+
+FROM debian:bullseye-slim
+
+# Install dependencies
+RUN apt-get update
+RUN apt-get install -y build-essential make tzdata tar
+RUN rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /tz
+
+# Pre-compile tzdata
+ENV TOPDIR=/tzdir
+
+# Create the necessary directories
+RUN mkdir -p /tzdir/usr/sbin /tzdir/usr/bin /tz_data_generated /zic /tz_data_generated/zdump
+
+# Install tzdata and compile zic files
+RUN make TOPDIR=/tzdir install
+RUN echo 'Compiling zic data'
+RUN /tzdir/usr/sbin/zic -d /zic {{zic_files}}
+RUN cp /tz/backward /tz_data_generated
+RUN echo 'Compiling zdump data'
+
+# Compile zdump data for all zones
+RUN mkdir -p /tz_data_generated/zdump
+{{zone_commands}}
+
+# Archive the data
+RUN tar -czvf /tz_data.tar.gz /tz_data_generated
+
+# Command to copy the data archive
+CMD ["cp", "/tz_data.tar.gz", "/output/tz_data.tar.gz"]

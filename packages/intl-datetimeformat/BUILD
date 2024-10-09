@@ -1016,3 +1016,35 @@ container_run_and_extract(
     image = ":build_essential_bazel_wrapper.tar",
     tags = ["manual"],
 )
+
+genrule(
+    name = "generate_dockerfile",
+    srcs = ["Dockerfile.template"],
+    outs = ["Dockerfile"],
+    cmd = """
+        # Prepare ZIC files list from the Starlark variable
+        zic_files="{zic_files}"
+
+        # Generate zone commands from the Starlark ZONES variable
+        zone_commands=""
+        for zone in {zones}; do
+            dir=$$(dirname "$$zone")
+            zone_commands="$${{zone_commands}}RUN mkdir -p /tz_data_generated/zdump/$$dir\\n"
+            zone_commands="$${{zone_commands}}RUN /tzdir/usr/bin/zdump -c 2100 -v /zic/$$zone > /tz_data_generated/zdump/$$zone\\n"
+        done
+
+        # Perform the substitutions in the Dockerfile.template and output to Dockerfile
+        sed 's/{{{{zic_files}}}}/'"$$zic_files"'/g' $(location Dockerfile.template) > tmp_dockerfile
+        sed 's|{{{{zone_commands}}}}|'"$$zone_commands"'|g' tmp_dockerfile > $@
+    """.format(
+        zic_files = " ".join(ZIC_FILES),
+        zones = " ".join(ZONES),
+    ),
+)
+
+write_source_files(
+    name = "dockerfile",
+    files = {
+        "Dockerfile": ":generate_dockerfile",
+    },
+)
