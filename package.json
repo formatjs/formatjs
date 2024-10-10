@@ -197,5 +197,13 @@
       "@glimmer/interfaces@0.92.0": "patches/@glimmer__interfaces@0.92.0.patch"
     }
   },
-  "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
+  "prettier": {
+    "arrowParens": "avoid",
+    "bracketSpacing": false,
+    "endOfLine": "lf",
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "author": "Long Ho <holevietlong@gmail.com>"
 }
