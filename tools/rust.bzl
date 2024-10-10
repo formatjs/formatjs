@@ -43,7 +43,6 @@ def _wasm_library_impl(ctx):
 def _wasm_attrs(transition):
     return {
         "library": attr.label(mandatory = True, cfg = transition),
-        "_whitelist_function_transition": attr.label(default = "@bazel_tools//tools/whitelists/function_transition_whitelist"),
     }
 
 _rust_wasm_library_rule = rule(

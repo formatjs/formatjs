@@ -97,7 +97,8 @@ use_repo(
     "rust_toolchains",
 )
 
-register_toolchains("@rust_toolchains//:all")
+register_toolchains("@rust_toolchains//:all", "@rules_rust//wasm_bindgen:default_wasm_bindgen_toolchain",
+    "@rules_rust//rust/private/dummy_cc_toolchain:dummy_cc_wasm32_toolchain",)
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 
