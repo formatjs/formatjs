@@ -3,6 +3,8 @@ module(
     version = "1.0",
 )
 
+######### JS & Node.js rules #########
+
 bazel_dep(name = "aspect_rules_js", version = "2.0.2")
 
 ####### Node.js version #########
@@ -34,7 +36,11 @@ pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
 # bazel run -- @pnpm --dir /home/runner/work/rules_js/rules_js install
 use_repo(pnpm, "pnpm")
 
+######### ESBuild rules #########
+
 bazel_dep(name = "aspect_rules_esbuild", version = "0.21.0")
+
+######### TypeScript rules #########
 
 bazel_dep(name = "aspect_rules_ts", version = "3.2.0")
 
@@ -46,11 +52,19 @@ rules_ts_ext.deps(
 
 use_repo(rules_ts_ext, "npm_typescript")
 
+######### Bazel lib rules #########
+
 bazel_dep(name = "aspect_bazel_lib", version = "2.9.1")
+
+######### Jest rules #########
 
 bazel_dep(name = "aspect_rules_jest", version = "0.22.0")
 
+######### Multirun rules #########
+
 bazel_dep(name = "rules_multirun", version = "0.9.0")
+
+######### buildifier rules #########
 
 bazel_dep(
     name = "buildifier_prebuilt",
@@ -58,11 +72,11 @@ bazel_dep(
     dev_dependency = True,
 )
 
+######### Rust rules #########
 bazel_dep(name = "rules_rust", version = "0.42.1")
 
 single_version_override(
     module_name = "rules_rust",
-    version = "0.42.1",
     patches = [
         "//tools:rules_rust.patch",
     ],
@@ -77,6 +91,13 @@ rust.toolchain(
         "wasm32-wasi",
     ],
 )
+
+use_repo(
+    rust,
+    "rust_toolchains",
+)
+
+register_toolchains("@rust_toolchains//:all")
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 
@@ -95,7 +116,11 @@ crate.from_cargo(
 )
 use_repo(crate, "crate_index")
 
+######### Lint rules #########
+
 bazel_dep(name = "aspect_rules_lint", version = "1.0.2")
+
+######### test262 rules #########
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
