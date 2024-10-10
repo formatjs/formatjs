@@ -87,8 +87,8 @@ copy_to_directory(
     ] + ["%s:pkg" % pkg for pkg in PACKAGES_TO_DIST] + glob(["patches/*"]),
     out = "formatjs_dist",
     replace_prefixes = {k: v for k, v in [(
-        "%s/pkg" % p,
-        p,
+        "packages/%s/pkg" % p,
+        "packages/%s" % p,
     ) for p in PACKAGE_DIRNAMES]},
 )
 
