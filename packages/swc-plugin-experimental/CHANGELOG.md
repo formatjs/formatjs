@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin-experimental@0.4.0...@formatjs/swc-plugin-experimental@0.6.0) (2024-10-08)
+
+### Features
+
+* **@formatjs/swc-plugin-experimental:** add support for @swc/core v1.7.x ([a861702](https://github.com/formatjs/formatjs/commit/a861702370f0633ad116fca476009a101ffb3eaf)) - by @runarheggset
+
 # [0.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin-experimental@0.3.7...@formatjs/swc-plugin-experimental@0.4.0) (2024-06-18)
 
 ### Features

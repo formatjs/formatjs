@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.0.1...eslint-plugin-formatjs@5.0.2) (2024-10-09)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+## [5.0.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.0.0...eslint-plugin-formatjs@5.0.1) (2024-10-08)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+# [5.0.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.14.0...eslint-plugin-formatjs@5.0.0) (2024-09-25)
+
+### Features
+
+* **eslint-plugin-formatjs:** drop support for eslint 7 & 8 ([e6dcd3e](https://github.com/formatjs/formatjs/commit/e6dcd3e8751befd4daefe426bc616cda9d1ab08f)) - by @longlho
+
+### BREAKING CHANGES
+
+* **eslint-plugin-formatjs:** This drops support for eslint 7 & 8
+
+# [4.14.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.13.3...eslint-plugin-formatjs@4.14.0) (2024-09-23)
+
+### Features
+
+* **eslint-plugin-formatjs:** add support for eslint v9 ([f9a0e1b](https://github.com/formatjs/formatjs/commit/f9a0e1b4a7c8517afef3b7a049a68edd76863121)) - by @michaelfaith
+
 ## [4.13.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@4.13.2...eslint-plugin-formatjs@4.13.3) (2024-05-19)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

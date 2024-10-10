@@ -1,15 +1,16 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "eslint-plugin-formatjs"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name ="pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -23,6 +24,7 @@ npm_package(
 SRCS = glob(["rules/*.ts"]) + [
     "index.ts",
     "util.ts",
+    "context-compat.ts",
 ]
 
 SRC_DEPS = [
@@ -41,12 +43,11 @@ SRC_DEPS = [
 
 ts_compile_node(
     name = "dist",
-    srcs = SRCS,
-    package = PACKAGE_NAME,
+    srcs = [":srcs"],
     deps = SRC_DEPS,
 )
 
-TESTS_BASE_SRCS = SRCS + glob(
+TESTS_BASE_SRCS = [":srcs"] + glob(
     [
         "tests/*.ts",
     ],
@@ -61,6 +62,7 @@ jest_test(
     name = "unit_test",
     data = TESTS_BASE_SRCS + TEST_FILES + SRC_DEPS + [
         "//:node_modules/@typescript-eslint/parser",
+        "//:node_modules/@typescript-eslint/rule-tester",
         "//:node_modules/vue-eslint-parser",
     ],
 )
@@ -74,3 +76,5 @@ package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
 )
+
+copy_to_bin(name = "srcs", srcs=SRCS)

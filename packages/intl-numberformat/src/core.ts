@@ -9,6 +9,7 @@ import {
   RawNumberLocaleData,
   SupportedLocales,
   ToNumber,
+  createMemoizedPluralRules,
   defineProperty,
   invariant,
 } from '@formatjs/ecma402-abstract'
@@ -75,13 +76,13 @@ export const NumberFormat = function (
     `Cannot load locale-dependent data for ${dataLocale}.`
   )
 
-  internalSlots.pl = new Intl.PluralRules(dataLocale, {
+  internalSlots.pl = createMemoizedPluralRules(dataLocale, {
     minimumFractionDigits: internalSlots.minimumFractionDigits,
     maximumFractionDigits: internalSlots.maximumFractionDigits,
     minimumIntegerDigits: internalSlots.minimumIntegerDigits,
     minimumSignificantDigits: internalSlots.minimumSignificantDigits,
     maximumSignificantDigits: internalSlots.maximumSignificantDigits,
-  } as any)
+  })
   return this
 } as NumberFormatConstructor
 

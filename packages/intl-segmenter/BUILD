@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
@@ -7,12 +8,12 @@ load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-segmenter"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name ="pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -57,15 +58,14 @@ TESTS = glob([
 
 ts_compile(
     name = "dist",
-    srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = [":srcs"],
     skip_esm = False,
     deps = SRC_DEPS,
 )
 
 [jest_test(
     name = "unit_test_%s" % fn.split("/")[-1].split(".")[0],
-    data = SRCS + [fn] + TEST_DEPS,
+    data = [":srcs"] + [fn] + TEST_DEPS,
 ) for fn in TESTS if fn.endswith(".test.ts")]
 
 generate_src_file(
@@ -78,23 +78,12 @@ generate_src_file(
 )
 
 # Test262
-ts_project(
-    name = "test262-main-bundle",
-    srcs = SRCS,
-    declaration = True,
-    out_dir = "test262",
-    resolve_json_module = True,
-    tsconfig = "//:tsconfig.es6",
-    deps = SRC_DEPS,
-)
-
 esbuild(
     name = "test262-polyfill",
-    entry_point = "test262/test262-main.js",
+    entry_point = "test262-main.ts",
+    srcs = [":srcs"],
     target = "es6",
-    deps = [
-        ":test262-main-bundle",
-    ] + SRC_DEPS,
+    deps = SRC_DEPS,
 )
 
 test262_harness_bin.test262_harness_test(
@@ -108,8 +97,8 @@ test262_harness_bin.test262_harness_test(
         "--prelude",
         "$(rootpath test262-polyfill.js)",
         "--test262Dir",
-        "../com_github_tc39_test262",
-        "../com_github_tc39_test262/test/intl402/Segmenter/**/*.js",
+        "../_main~_repo_rules~com_github_tc39_test262",
+        "../_main~_repo_rules~com_github_tc39_test262/test/intl402/Segmenter/**/*.js",
     ],
     data = [
         "test262-polyfill.js",
@@ -128,11 +117,10 @@ write_source_files(
 
 esbuild(
     name = "polyfill.iife",
-    entry_point = "lib/polyfill.js",
+    entry_point = "polyfill.ts",
+    srcs = [":srcs"],
     target = "es6",
-    # TODO: fix this and set it back to es5
     deps = [
-        ":dist-esm",
         "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
@@ -156,3 +144,5 @@ generate_src_file(
     ],
     entry_point = "scripts/generate-cldr-segmentation-rules.ts",
 )
+
+copy_to_bin(name = "srcs", srcs=SRCS)

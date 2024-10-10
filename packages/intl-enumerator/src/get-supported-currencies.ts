@@ -1,3 +1,4 @@
+import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract'
 import type {Currency} from './currencies.generated'
 import {currencies} from './currencies.generated'
 
@@ -6,7 +7,7 @@ function isSupportedCurrency(
   locale: string = 'en'
 ): boolean {
   try {
-    const numberFormat = new Intl.NumberFormat(locale, {
+    const numberFormat = createMemoizedNumberFormat(locale, {
       style: 'currency',
       currencyDisplay: 'name',
       currency,

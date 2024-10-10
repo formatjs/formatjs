@@ -1,12 +1,12 @@
-import {rule, name} from '../rules/prefer-pound-in-plural'
-import {ruleTester} from './util'
+import {name, rule} from '../rules/prefer-pound-in-plural'
 import {
+  defineMessage,
   dynamicMessage,
+  emptyFnCall,
   noMatch,
   spreadJsx,
-  emptyFnCall,
-  defineMessage,
 } from './fixtures'
+import {ruleTester} from './util'
 
 ruleTester.run(name, rule, {
   valid: [
@@ -15,7 +15,8 @@ ruleTester.run(name, rule, {
     noMatch,
     spreadJsx,
     emptyFnCall,
-    `
+    {
+      code: `
       import {defineMessage} from 'react-intl'
       defineMessage({
         defaultMessage: \`I have {
@@ -25,7 +26,9 @@ ruleTester.run(name, rule, {
         }.\`
       })
     `,
-    `
+    },
+    {
+      code: `
       import {defineMessage} from 'react-intl'
       defineMessage({
         defaultMessage: \`I have {
@@ -35,8 +38,10 @@ ruleTester.run(name, rule, {
         }.\`
       })
     `,
+    },
     // Ignore number argument with style option
-    `
+    {
+      code: `
       import {defineMessage} from 'react-intl'
       defineMessage({
         defaultMessage: \`I have {count, number, integer} {
@@ -46,7 +51,9 @@ ruleTester.run(name, rule, {
         }.\`
       })
     `,
-    `
+    },
+    {
+      code: `
       import {defineMessage} from 'react-intl'
       defineMessage({
         defaultMessage: \`I have {
@@ -56,8 +63,10 @@ ruleTester.run(name, rule, {
         }.\`
       })
     `,
+    },
     // Does not reach into nested plural argument
-    `
+    {
+      code: `
       import {defineMessage} from 'react-intl'
       defineMessage({
         defaultMessage: \`I have {
@@ -75,8 +84,10 @@ ruleTester.run(name, rule, {
         }.\`
       })
     `,
+    },
     // Checks the matching argument name
-    `
+    {
+      code: `
       import {defineMessage} from 'react-intl'
       defineMessage({
         defaultMessage: \`I have {meh} {
@@ -86,7 +97,9 @@ ruleTester.run(name, rule, {
         }.\`
       })
     `,
-    `
+    },
+    {
+      code: `
       import {defineMessage} from 'react-intl'
       defineMessage({
         defaultMessage: \`I have {
@@ -96,6 +109,7 @@ ruleTester.run(name, rule, {
         }.\`
       })
     `,
+    },
   ],
   invalid: [
     // Sink the argument preceding the plural argument as `#` into the plural clauses.

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-enumerator",
-  "version": "1.4.7",
+  "version": "1.5.0",
   "description": "Intl.Enumerator polyfill",
   "keywords": [
     "intl",
@@ -24,9 +24,7 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
+    "@formatjs/ecma402-abstract": "workspace:*",
     "tslib": "^2.4.0"
-  },
-  "devDependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*"
   }
 }

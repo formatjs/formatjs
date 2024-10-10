@@ -1,12 +1,14 @@
-import {rule, name} from '../rules/no-offset'
+import {name, rule} from '../rules/no-offset'
+import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester} from './util'
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 ruleTester.run(name, rule, {
   valid: [
-    `import {defineMessage} from 'react-intl'
+    {
+      code: `import {defineMessage} from 'react-intl'
   defineMessage({
       defaultMessage: '{count, plural, one {#} other {# more}}'
   })`,
+    },
     dynamicMessage,
     noMatch,
     spreadJsx,

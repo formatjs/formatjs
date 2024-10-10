@@ -4,21 +4,21 @@ Copyrights licensed under the New BSD License.
 See the accompanying LICENSE file for terms.
 */
 
+import {Cache, memoize, strategies} from '@formatjs/fast-memoize'
 import {
-  parse,
   MessageFormatElement,
+  parse,
   ParserOptions,
 } from '@formatjs/icu-messageformat-parser'
-import {memoize, Cache, strategies} from '@formatjs/fast-memoize'
 import {
+  Formats,
   FormatterCache,
   Formatters,
-  Formats,
   formatToParts,
   FormatXMLElementFn,
-  PrimitiveType,
   MessageFormatPart,
   PART_TYPE,
+  PrimitiveType,
 } from './formatters'
 
 // -- MessageFormat --------------------------------------------------------

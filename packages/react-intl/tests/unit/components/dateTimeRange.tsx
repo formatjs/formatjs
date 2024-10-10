@@ -1,9 +1,8 @@
-import * as React from 'react'
-import {FormattedDateTimeRange} from '../../../'
-import {mountFormattedComponentWithProvider} from '../testUtils'
-import {createIntl} from '../../../src/components/createIntl'
-import {IntlShape} from '../../../'
 import {render} from '@testing-library/react'
+import * as React from 'react'
+import {FormattedDateTimeRange, IntlShape} from '../../../'
+import {createIntl} from '../../../src/components/createIntl'
+import {mountFormattedComponentWithProvider} from '../testUtils'
 const mountWithProvider = mountFormattedComponentWithProvider(
   FormattedDateTimeRange
 )
@@ -30,14 +29,12 @@ describe('<FormattedDateTimeRange>', () => {
   })
 
   it('renders a formatted date in a <>', () => {
-    const from = new Date('2020-1-1')
-    const to = new Date('2020-1-15')
+    const from = new Date(2020, 0, 1)
+    const to = new Date(2020, 0, 15)
 
     const {getByTestId} = mountWithProvider({from, to}, intl)
 
-    expect(getByTestId('comp')).toHaveTextContent(
-      intl.formatDateTimeRange(from, to)
-    )
+    expect(getByTestId('comp')).toHaveTextContent('1/1/2020 – 1/15/2020')
   })
   it('renders a formatted date w/o textComponent', () => {
     const from = new Date('2020-1-1')

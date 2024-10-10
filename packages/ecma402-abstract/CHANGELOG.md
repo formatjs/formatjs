@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.0.0...@formatjs/ecma402-abstract@2.1.0) (2024-10-09)
+
+### Features
+
+* **@formatjs/ecma402-abstract:** add utils to memoize Intl constructor ([b411a46](https://github.com/formatjs/formatjs/commit/b411a46e60c467dee9ca4be7cd98a6c889c39df2)) - by @longlho
+
 # [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.18.3...@formatjs/ecma402-abstract@2.0.0) (2024-05-19)
 
 ### Bug Fixes

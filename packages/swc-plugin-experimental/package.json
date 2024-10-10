@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/swc-plugin-experimental",
-  "version": "0.4.0",
+  "version": "0.6.0",
   "description": "SWC plugin for formatjs",
   "main": "./index.wasm",
   "files": [
@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "peerDependencies": {
-    "@swc/core": "^1.6.0"
+    "@swc/core": ">= 1.7.0 < 1.8.0"
   }
 }

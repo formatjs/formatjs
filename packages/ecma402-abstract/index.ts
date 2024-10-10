@@ -14,6 +14,7 @@ export * from './NumberFormat/CollapseNumberRange'
 export * from './NumberFormat/ComputeExponent'
 export * from './NumberFormat/ComputeExponentForMagnitude'
 export * from './NumberFormat/CurrencyDigits'
+export {default as _formatToParts} from './NumberFormat/format_to_parts'
 export * from './NumberFormat/FormatApproximately'
 export * from './NumberFormat/FormatNumericRange'
 export * from './NumberFormat/FormatNumericRangeToParts'
@@ -27,7 +28,6 @@ export * from './NumberFormat/SetNumberFormatDigitOptions'
 export * from './NumberFormat/SetNumberFormatUnitOptions'
 export * from './NumberFormat/ToRawFixed'
 export * from './NumberFormat/ToRawPrecision'
-export {default as _formatToParts} from './NumberFormat/format_to_parts'
 export * from './PartitionPattern'
 export * from './SupportedLocales'
 export {
@@ -51,4 +51,11 @@ export * from './types/list'
 export * from './types/number'
 export * from './types/plural-rules'
 export * from './types/relative-time'
-export {invariant} from './utils'
+export {
+  createMemoizedDateTimeFormat,
+  createMemoizedListFormat,
+  createMemoizedLocale,
+  createMemoizedNumberFormat,
+  createMemoizedPluralRules,
+  invariant,
+} from './utils'

@@ -1,4 +1,9 @@
-import {NumberFormatOptions, invariant} from '@formatjs/ecma402-abstract'
+import {
+  NumberFormatOptions,
+  createMemoizedListFormat,
+  createMemoizedNumberFormat,
+  invariant,
+} from '@formatjs/ecma402-abstract'
 import {TABLE_2} from '../constants'
 import {DurationFormat} from '../core'
 import {getInternalSlots} from '../get_internal_slots'
@@ -73,7 +78,7 @@ export function PartitionDurationFormatPattern(
         nfOpts.unit = numberFormatUnit
         nfOpts.unitDisplay = style
       }
-      const nf = new Intl.NumberFormat(
+      const nf = createMemoizedNumberFormat(
         internalSlots.locale,
         nfOpts as Intl.NumberFormatOptions
       )
@@ -112,7 +117,7 @@ export function PartitionDurationFormatPattern(
     listStyle = 'short'
   }
   lfOpts.style = listStyle
-  const lf = new Intl.ListFormat(internalSlots.locale, lfOpts)
+  const lf = createMemoizedListFormat(internalSlots.locale, lfOpts)
   const strings: string[] = []
   for (const parts of result) {
     let string = ''

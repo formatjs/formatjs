@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.4.3...@formatjs/cli-lib@6.4.4) (2024-10-09)
+
+**Note:** Version bump only for package @formatjs/cli-lib
+
+## [6.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.4.2...@formatjs/cli-lib@6.4.3) (2024-10-08)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** add newline to compiled file, fix [#4539](https://github.com/formatjs/formatjs/issues/4539) ([2f81a2e](https://github.com/formatjs/formatjs/commit/2f81a2eb7023d80e39cbd6fe3e711c5867d31966)) - by @
+
 ## [6.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.4.1...@formatjs/cli-lib@6.4.2) (2024-05-19)
 
 **Note:** Version bump only for package @formatjs/cli-lib

@@ -1,18 +1,16 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_layer")
-load("@io_bazel_rules_docker//docker/package_managers:download_pkgs.bzl", "download_pkgs")
-load("@io_bazel_rules_docker//docker/package_managers:install_pkgs.bzl", "install_pkgs")
-load("@io_bazel_rules_docker//docker/util:run.bzl", "container_run_and_extract")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
+load(":index.bzl", "generate_dockerfile")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-datetimeformat"
 
@@ -32,7 +30,7 @@ TEST_LOCALES = [
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
 npm_package(
-    name = PACKAGE_NAME,
+    name ="pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -67,7 +65,6 @@ SRC_DEPS = [
 ]
 
 TEST_DEPS = SRC_DEPS + [
-    "//packages/intl-pluralrules",
     ":node_modules/@formatjs/intl-getcanonicallocales",
     ":node_modules/@formatjs/intl-locale",
     "//:node_modules/@types/node",
@@ -75,22 +72,21 @@ TEST_DEPS = SRC_DEPS + [
 
 ts_compile(
     name = "dist",
-    srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = [":srcs"],
     skip_esm = False,
     deps = SRC_DEPS,
 )
 
 jest_test(
     name = "unit_test",
-    data = SRCS + TESTS + TEST_LOCALE_DATA + TEST_DEPS,
+    data = [":srcs"] + TESTS + TEST_LOCALE_DATA + TEST_DEPS,
 )
 
 # Expand zdump files
 genrule(
     name = "tz_data_extract",
     srcs = [
-        ":tz_install/tz_data.tar.gz",
+        "tz_data.tar.gz",
     ],
     outs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES] + ["tz_data_generated/backward"],
     cmd = "tar -xzvf $< -C $(@D)",
@@ -100,7 +96,7 @@ genrule(
 
 filegroup(
     name = "zdumps",
-    srcs = ["tz_data/zdump/%s" % zone for zone in ZONES],
+    srcs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES],
 )
 
 # CLDR
@@ -776,10 +772,10 @@ generate_src_file(
     src = "src/data/links.ts",
     args = [
         "--input",
-        package_name() + "/tz_data/backward",
+        package_name() + "/tz_data_generated/backward",
     ],
     data = [
-        ":tz_data/backward",
+        ":tz_data_generated/backward",
         "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/json-stable-stringify",
     ],
@@ -899,11 +895,10 @@ write_source_files(
 
 esbuild(
     name = "polyfill.iife",
-    entry_point = "lib/polyfill.js",
+    entry_point = "polyfill.ts",
+    srcs = [":srcs"],
     target = "es6",
-    # TODO: fix this and set it back to es5
     deps = [
-        ":dist-esm",
         "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
@@ -911,7 +906,7 @@ esbuild(
 # Use with `bazel run`.
 js_binary(
     name = "benchmark",
-    data = SRCS + SRC_DEPS + [
+    data = [":srcs"] + SRC_DEPS + [
         "tests/locale-data/en.json",
         "//:node_modules/@swc-node/register",
         "//:node_modules/@swc/helpers",
@@ -939,80 +934,18 @@ multirun(
     ],
 )
 
-# Build the Docker container so can compile tzcode + tzdata at the version we want
-# First thing, apt install build-essential
-download_pkgs(
-    name = "build_essential_pkgs",
-    image_tar = "@ubuntu23//image",
-    packages = [
-        "build-essential",
+generate_dockerfile(
+    name = "dockerfile",
+)
+
+sh_binary(
+    name = "update_tz_data",
+    srcs = ["scripts/execute_tz_docker.sh"],
+    data = [
+        "tz_data.tar.gz",
+        ":dockerfile",
     ],
-    tags = ["manual"],
+    deps = ["@bazel_tools//tools/bash/runfiles"],
 )
 
-install_pkgs(
-    name = "ubuntu_build_essential_image",
-    image_tar = "@ubuntu23//image",
-    installables_tar = ":build_essential_pkgs.tar",
-    output_image_name = "ubuntu_build_essential_image",
-    tags = ["manual"],
-)
-
-# Package tzcode + tzdata into a single Docker layer
-container_layer(
-    name = "tz",
-    directory = "tz",
-    tags = ["manual"],
-    tars = [
-        "@tzcode//file",
-        "@tzdata//file",
-    ],
-)
-
-# Create a new Docker image with build-essential, tzcode + tzdata
-container_image(
-    name = "build_essential_bazel_wrapper",
-    base = ":ubuntu_build_essential_image.tar",
-    layers = [":tz"],
-    tags = ["manual"],
-)
-
-# Pre-compile tzdata
-ZIC_FILES = [
-    "backward",
-    "africa",
-    "antarctica",
-    "asia",
-    "australasia",
-    "etcetera",
-    "europe",
-    "northamerica",
-    "southamerica",
-]
-
-container_run_and_extract(
-    name = "tz_install",
-    commands = [
-                   "cd /tz",
-                   # Run make install in the container
-                   "make TOPDIR=/tzdir install",
-                   "echo 'Compiling zic data'",
-                   "/tzdir/usr/sbin/zic -d /zic %s" % " ".join(["/tz/%s" % f for f in ZIC_FILES]),
-                   # Make a folder to house all the data we need to extract
-                   "mkdir /tz_data_generated",
-                   # Copy backward file
-                   "cp /tz/backward /tz_data_generated",
-                   # Compile zdump into it
-                   "echo 'Compiling zdump data'",
-               ] + [
-                   "mkdir -p /tz_data_generated/zdump/%s" %
-                   zone.rsplit("/", 1)[0]
-                   for zone in ZONES
-               ] +
-               ["/tzdir/usr/bin/zdump -c 2100 -v /zic/%s > /tz_data_generated/zdump/%s" % (zone, zone) for zone in ZONES] + [
-        "tar -czvf /tz_data.tar.gz /tz_data_generated",
-    ],
-    extract_file = "/tz_data.tar.gz",
-    image = ":build_essential_bazel_wrapper.tar",
-    tags = ["manual"],
-)
+copy_to_bin(name = "srcs", srcs=SRCS)

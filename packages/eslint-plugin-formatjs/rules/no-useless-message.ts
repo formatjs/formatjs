@@ -4,11 +4,8 @@ import {
   TYPE,
 } from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/utils'
-import {
-  RuleContext,
-  RuleModule,
-  RuleListener,
-} from '@typescript-eslint/utils/ts-eslint'
+import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
+import {getParserServices} from '../context-compat'
 import {extractMessages, getSettings} from '../util'
 
 type MessageIds =
@@ -16,7 +13,6 @@ type MessageIds =
   | 'unnecessaryFormatNumber'
   | 'unnecessaryFormatDate'
   | 'unnecessaryFormatTime'
-type Options = []
 
 function verifyAst(ast: MessageFormatElement[]): MessageIds | undefined {
   if (ast.length !== 1) {
@@ -36,7 +32,7 @@ function verifyAst(ast: MessageFormatElement[]): MessageIds | undefined {
 }
 
 function checkNode(
-  context: RuleContext<MessageIds, Options>,
+  context: RuleContext<MessageIds, unknown[]>,
   node: TSESTree.Node
 ) {
   const settings = getSettings(context)
@@ -67,12 +63,11 @@ function checkNode(
 
 export const name = 'no-useless-message'
 
-export const rule: RuleModule<MessageIds, Options, RuleListener> = {
+export const rule: RuleModule<MessageIds> = {
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow unnecessary formatted message',
-      recommended: 'recommended',
       url: 'https://formatjs.io/docs/tooling/linter#no-useless-message',
     },
     fixable: 'code',
@@ -93,9 +88,9 @@ export const rule: RuleModule<MessageIds, Options, RuleListener> = {
       checkNode(context, node)
 
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-    if (context.parserServices.defineTemplateBodyVisitor) {
+    if (getParserServices(context).defineTemplateBodyVisitor) {
       //@ts-expect-error
-      return context.parserServices.defineTemplateBodyVisitor(
+      return getParserServices(context).defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
         },

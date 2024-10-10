@@ -56,54 +56,63 @@ mkdir ../formatjs2
 cp -rf dist/bin/formatjs_dist/ ../formatjs2/
 # Use `--access=public` to publish new packages with `@formatjs/` scope.
 cd ../formatjs2
-npx pnpm -r publish
+npx pnpm -r publish --access=public
 ```
 
 ### Updating tzdata version
 
-1. Change `IANA_TZ_VERSION` in WORKSPACE to the desired version
+`tzdata` requires `Docker` to be installed. This is because tzdata compilation requires `make`.
 
-1. Update the sha512 for tzdata & tzcode targets
+1. Change `IANA_TZ_VERSION` in [packages/intl-datetimeformat/index.bzl](https://github.com/formatjs/formatjs/blob/main/packages/intl-datetimeformat/index.bzl) to the desired version
 
-1. Update tz data
+1. Update the sha256 for tzdata & tzcode targets
 
+1. Run the Docker image & update the tz_data.tar.gz
+
+```sh
+bazel run //packages/intl-datetimeformat:update_tz_data
 ```
-bazel run //packages/intl-datetimeformat:generated_tz_data
-```
 
-4. Test to make sure everything passes
+1. Test to make sure everything passes
 
-5. New TimeZones or renames of TimeZones are not updated using the Bazel script. You need to manually update `index.bzl`.
+1. New TimeZones or renames of TimeZones are not updated using the Bazel script. You need to manually update `index.bzl`.
 
 ### Updating test snapshots
 
 You can update the snapshot by running the test target + `_update_snapshots`, e.g
 
-```
+```sh
 bazel run //packages/cli/integration-tests:compile_folder_integration_test_update_snapshots
 ```
 
 ### Generating CLDR data
 
 1. Check out `./BUILD` file for generatable data — which are identifiable via `generate_src_file()` call
-   ```BUILD
+
+```starlark
    generate_src_file(
      name = "regex",
      ...
    )
-   ```
+```
+
 2. Create an empty file with the given `src` attribute — path is relative to module root
-   ```shell
+
+```sh
    touch packages/icu-messageformat-parser/regex.generated.ts
-   ```
+```
+
 3. Run update script
-   ```shell
+
+```sh
    bazel run //packages/icu-messageformat-parser:regex.update
-   ```
+```
+
 4. Verify
-   ```shell
+
+```sh
    bazel run //packages/icu-messageformat-parser:regex
-   ```
+```
 
 ### Working on `formatjs.io` website
 

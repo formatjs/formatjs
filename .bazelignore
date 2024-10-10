@@ -30,6 +30,7 @@ packages/intl-pluralrules/node_modules
 packages/intl-relativetimeformat/node_modules
 packages/intl-segmenter/node_modules
 packages/intl/node_modules
+packages/intl/integration-tests/node_modules
 packages/react-intl/examples/node_modules
 packages/react-intl/node_modules
 packages/swc-plugin-experimental/node_modules

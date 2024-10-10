@@ -16,7 +16,7 @@
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
     "postinstall": "husky install",
-    "prerelease": "HUSKY=0 lerna version --yes",
+    "prerelease": "HUSKY=0 lerna version --yes --no-private",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
     "release": "bazel build :dist && cd dist/bin/formatjs_dist && pnpm publish --no-git-checks -r --dry-run",
     "test": "bazel test //..."
@@ -44,7 +44,7 @@
     "@lerna-lite/version": "2",
     "@napi-rs/cli": "^2.11.0",
     "@swc-node/register": "^1.5.4",
-    "@swc/core": "^1.6.0",
+    "@swc/core": "^1.7.0",
     "@swc/helpers": "^0.5.1",
     "@swc/jest": "^0.2.23",
     "@taplo/cli": "^0.7.0",
@@ -54,7 +54,7 @@
     "@types/babel__helper-plugin-utils": "^7.10.0",
     "@types/babel__traverse": "^7.1.7",
     "@types/benchmark": "^2.1.0",
-    "@types/eslint": "7 || 8",
+    "@types/eslint": "9.6.1",
     "@types/estree": "1",
     "@types/fs-extra": "^9.0.1",
     "@types/hoist-non-react-statics": "^3.3.1",
@@ -70,8 +70,9 @@
     "@types/rimraf": "^3.0.0",
     "@types/serialize-javascript": "^5.0.0",
     "@types/webpack": "5",
-    "@typescript-eslint/parser": "^6.7.5",
-    "@typescript-eslint/utils": "^6.7.5",
+    "@typescript-eslint/parser": "8.5.0",
+    "@typescript-eslint/rule-tester": "8.5.0",
+    "@typescript-eslint/utils": "8.5.0",
     "@unicode/unicode-13.0.0": "^1.0.6",
     "@vue/compiler-core": "^3.4.0",
     "@vue/compiler-dom": "^3.4.0",
@@ -96,7 +97,7 @@
     "core-js": "^3.6.5",
     "ember-template-recast": "^6.1.4",
     "emoji-regex": "^10.2.1",
-    "eslint": "7 || 8",
+    "eslint": "9",
     "fast-glob": "^3.2.7",
     "fs-extra": "10",
     "hoist-non-react-statics": "^3.3.2",
@@ -132,11 +133,11 @@
     "ts-loader": "^9.1.2",
     "tsd": "^0.31.0",
     "tslib": "^2.4.0",
-    "typescript": "5.2.2",
+    "typescript": "5.6.2",
     "unicode-emoji-utils": "^1.1.1",
     "unidiff": "^1.0.2",
     "vue-class-component": "^8.0.0-rc.1",
-    "vue-eslint-parser": "^9.4.0",
+    "vue-eslint-parser": "9.4.3",
     "vue-loader": "17",
     "vue": "^3.4.0",
     "webpack": "5"
@@ -146,10 +147,12 @@
     "npm": "6.x"
   },
   "resolutions": {
-    "terser": "5.27.0",
+    "terser": "5.32.0",
     "source-map-js": "1.0.2",
     "@glimmer/syntax": "0.92.0",
-    "@glimmer/interfaces": "0.92.0"
+    "@glimmer/interfaces": "0.92.0",
+    "eslint": "9",
+    "typescript": "5.6.2"
   },
   "pnpm": {
     "packageExtensions": {
@@ -194,5 +197,13 @@
       "@glimmer/interfaces@0.92.0": "patches/@glimmer__interfaces@0.92.0.patch"
     }
   },
-  "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
+  "prettier": {
+    "arrowParens": "avoid",
+    "bracketSpacing": false,
+    "endOfLine": "lf",
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "author": "Long Ho <holevietlong@gmail.com>"
 }

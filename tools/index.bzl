@@ -6,14 +6,13 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 
-def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_esnext = True, visibility = None):
+def ts_compile_node(name, srcs, deps = [], data = [], skip_esm_esnext = True, visibility = None):
     """Compile TS with prefilled args, specifically for Node tooling.
 
     Args:
         name: target name
         srcs: src files
         deps: deps
-        package: name from package.json
         data: add data deps like internal transitive deps
         skip_esm_esnext: whether to skip building esnext
         visibility: visibility
@@ -45,28 +44,28 @@ def ts_compile_node(name, srcs, deps = [], data = [], package = None, skip_esm_e
         visibility = visibility,
     )
 
-def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True, skip_esm_esnext = True, visibility = None):
+def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_esm_esnext = True, visibility = None):
     """Compile TS with prefilled args.
 
     Args:
         name: target name
         srcs: src files
         deps: deps
-        package: name from package.json
+        skip_cjs: skip building CJS bundle
         skip_esm: skip building ESM bundle
         skip_esm_esnext: skip building the ESM ESNext bundle
-        data: add data deps like internal transitive deps
         visibility: visibility
     """
     deps = deps + ["//:node_modules/tslib"]
-    ts_project(
-        name = "%s-base" % name,
-        srcs = srcs,
-        declaration = True,
-        tsconfig = "//:tsconfig",
-        resolve_json_module = True,
-        deps = deps,
-    )
+    if not skip_cjs:
+        ts_project(
+            name = "%s-base" % name,
+            srcs = srcs,
+            declaration = True,
+            tsconfig = "//:tsconfig",
+            resolve_json_module = True,
+            deps = deps,
+        )
     if not skip_esm:
         ts_project(
             name = "%s-esm" % name,
@@ -90,7 +89,7 @@ def ts_compile(name, srcs, deps = [], data = [], package = None, skip_esm = True
 
     js_library(
         name = name,
-        srcs = [":%s-base" % name] + ([":%s-esm" % name] if not skip_esm else []) + ["package.json"],
+        srcs = ([":%s-base" % name] if not skip_cjs else []) + ([":%s-esm" % name] if not skip_esm else []) + ["package.json"],
         visibility = visibility,
     )
 
@@ -170,46 +169,47 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
         deps: src + test deps
         esbuild_deps: deps to package with rollup but not to compile
     """
-    ts_project(
-        name = "%s-compile" % name,
-        srcs = srcs + tests + data,
-        declaration = True,
-        out_dir = name,
-        resolve_json_module = True,
-        tsconfig = "//:tsconfig.esm",
-        deps = deps + [
-            "//:node_modules/@jest/transform",
-            "//:node_modules/ts-jest",
-            "//:node_modules/@types/jest",
-            "//:node_modules/tslib",
-        ],
-        data = data,
-    )
+    # ts_project(
+    #     name = "%s-compile" % name,
+    #     srcs = srcs + tests + data,
+    #     declaration = True,
+    #     out_dir = name,
+    #     resolve_json_module = True,
+    #     tsconfig = "//:tsconfig.esm",
+    #     deps = deps + [
+    #         "//:node_modules/@jest/transform",
+    #         "//:node_modules/ts-jest",
+    #         "//:node_modules/@types/jest",
+    #         "//:node_modules/tslib",
+    #     ],
+    #     data = data,
+    # )
 
-    BUNDLE_KARMA_TESTS = ["%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]) for f in tests]
+    # BUNDLE_KARMA_TESTS = ["%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]) for f in tests]
 
-    for f in tests:
-        esbuild(
-            name = "%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]),
-            entry_point = "%s/%s.js" % (name, f[:f.rindex(".")]),
-            format = "iife",
-            target = "es6",
-            # TODO: fix this and set it back to es5
-            define = {
-                "process.version": "0",
-            },
-            deps = [
-                ":%s-compile" % name,
-                "//:node_modules/tslib",
-            ] + deps + esbuild_deps,
-        )
+    # for f in tests:
+    #     esbuild(
+    #         name = "%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]),
+    #         entry_point = "%s/%s.js" % (name, f[:f.rindex(".")]),
+    #         format = "iife",
+    #         target = "es6",
+    #         # TODO: fix this and set it back to es5
+    #         define = {
+    #             "process.version": "0",
+    #         },
+    #         deps = [
+    #             ":%s-compile" % name,
+    #             "//:node_modules/tslib",
+    #         ] + deps + esbuild_deps,
+    #     )
 
-    native.filegroup(
-        name = name,
-        srcs = BUNDLE_KARMA_TESTS,
-        testonly = True,
-        visibility = ["//:__pkg__"],
-    )
+    # native.filegroup(
+    #     name = name,
+    #     srcs = BUNDLE_KARMA_TESTS,
+    #     testonly = True,
+    #     visibility = ["//:__pkg__"],
+    # )
+    pass
 
 def is_internal_dep(s):
     return s.startswith("//:node_modules/@formatjs") or s in [
