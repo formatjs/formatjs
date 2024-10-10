@@ -73,7 +73,7 @@ bazel_dep(
 )
 
 ######### Rust rules #########
-bazel_dep(name = "rules_rust", version = "0.42.1")
+bazel_dep(name = "rules_rust", version = "0.52.2")
 
 single_version_override(
     module_name = "rules_rust",
