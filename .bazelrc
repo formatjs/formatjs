@@ -75,6 +75,19 @@ build --@aspect_rules_ts//ts:default_to_tsc_transpiler
 fetch --@aspect_rules_ts//ts:default_to_tsc_transpiler
 query --@aspect_rules_ts//ts:default_to_tsc_transpiler
 
+# BuildBuddy RBE
+build:remote --remote_executor=grpcs://remote.buildbuddy.io
+build:remote --host_platform=@buildbuddy_toolchain//:platform
+build:remote --platforms=@buildbuddy_toolchain//:platform
+build:remote --extra_execution_platforms=@buildbuddy_toolchain//:platform
+build:remote --crosstool_top=@buildbuddy_toolchain//:toolchain
+build:remote --extra_toolchains=@buildbuddy_toolchain//:cc_toolchain
+build:remote --java_language_version=11
+build:remote --tool_java_language_version=11
+build:remote --java_runtime_version=remotejdk_11
+build:remote --tool_java_runtime_version=remotejdk_11
+build:remote --define=EXECUTOR=remote
+
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
 # This needs to be last statement in this
