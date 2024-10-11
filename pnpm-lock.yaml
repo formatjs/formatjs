@@ -81,7 +81,7 @@ importers:
         version: 0.92.0(patch_hash=bvz4ppux7y36zue6cmkb7453aa)
       '@glimmer/validator':
         specifier: ^0.92.0
-        version: 0.92.0
+        version: 0.92.3
       '@jest/transform':
         specifier: '29'
         version: 29.5.0
@@ -6726,6 +6726,7 @@ packages:
 
   /@glimmer/global-context@0.92.0:
     resolution: {integrity: sha512-XUPXIsz/F0YQz3vY9x+u3YQMibM3378gEPJObs3CHzAWJUl9Kz1CAb+jRigRrxIcmdzoonA49VMwGmmKRNoGag==}
+    dev: false
 
   /@glimmer/global-context@0.92.3:
     resolution: {integrity: sha512-tvlK5pt6oSe3furJ1KsO9vG/KmF9S98HLrcR48XbfwXlkuxvUeS94cdQId4GCN5naeX4OC4xm6eEjZWdc2s+jw==}
@@ -6809,6 +6810,7 @@ packages:
       '@glimmer/global-context': 0.92.0
       '@glimmer/interfaces': 0.92.0(patch_hash=ztfnuhzbeau5eb4qmkbybo27ta)
       '@glimmer/util': 0.92.0
+    dev: false
 
   /@glimmer/validator@0.92.3:
     resolution: {integrity: sha512-HKrMYeW0YhiksSeKYqX2chUR/rz82j12DcY7p2dORQlTV3qlAfiE5zRTJH1KRA1X3ZMf7DI2/GOzkXwYp0o+3Q==}
@@ -10061,7 +10063,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.24.0
-      caniuse-lite: 1.0.30001667
+      caniuse-lite: 1.0.30001668
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.0
@@ -10744,6 +10746,10 @@ packages:
 
   /caniuse-lite@1.0.30001667:
     resolution: {integrity: sha512-7LTwJjcRkzKFmtqGsibMeuXmvFDfZq/nzIjnmgCGzKKRVzjD72selLDK1oPF/Oxzmt4fNcPvTDvGqSDG4tCALw==}
+
+  /caniuse-lite@1.0.30001668:
+    resolution: {integrity: sha512-nWLrdxqCdblixUO+27JtGJJE/txpJlyUy5YN1u53wLZkP0emYCo5zgS6QYft7VUYR42LGgi/S5hdLZTrnyIddw==}
+    dev: true
 
   /capital-case@1.0.4:
     resolution: {integrity: sha512-ds37W8CytHgwnhGGTi88pcPyR15qoNkOpYwmMMfnWqqWgESapLqvDx6huFjQ5vqWSn2Z06173XNA7LtMOeUh1A==}
@@ -23017,7 +23023,7 @@ packages:
   /vfile-message@4.0.2:
     resolution: {integrity: sha512-jRDZ1IMLttGj41KcZvlrYAaI3CfqpLpfpf+Mfig13viT6NKvRzWZ+lXz0Y5D60w6uJIBAOGq9mSHf0gktF0duw==}
     dependencies:
-      '@types/unist': 3.0.3
+      '@types/unist': 3.0.2
       unist-util-stringify-position: 4.0.0
     dev: true
 
