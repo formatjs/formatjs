@@ -171,7 +171,7 @@ importers:
         version: 18.0.5
       '@types/regenerate':
         specifier: ^1.4.1
-        version: 1.4.1
+        version: 1.4.3
       '@types/rimraf':
         specifier: ^3.0.0
         version: 3.0.2
@@ -8853,8 +8853,8 @@ packages:
       csstype: 3.1.3
     dev: true
 
-  /@types/regenerate@1.4.1:
-    resolution: {integrity: sha512-BtBshkGkPu8MOTdqaGFGFX8netLOyqZu4bIYGy66f8RdfT+eJ8KWSziMqAvMycA/2aDsWs0z7MD202vIXKDOaA==}
+  /@types/regenerate@1.4.3:
+    resolution: {integrity: sha512-56IFSbwI8P0FswkxlEQhUq8HwF50scnIcskcvU0yy8jx/A1e+upJSiiTw2RD1QxCHvJQZdH7HVoKWF0n4fbQJA==}
     dev: true
 
   /@types/responselike@1.0.0:
@@ -10061,7 +10061,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.24.0
-      caniuse-lite: 1.0.30001667
+      caniuse-lite: 1.0.30001668
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.0
@@ -10744,6 +10744,10 @@ packages:
 
   /caniuse-lite@1.0.30001667:
     resolution: {integrity: sha512-7LTwJjcRkzKFmtqGsibMeuXmvFDfZq/nzIjnmgCGzKKRVzjD72selLDK1oPF/Oxzmt4fNcPvTDvGqSDG4tCALw==}
+
+  /caniuse-lite@1.0.30001668:
+    resolution: {integrity: sha512-nWLrdxqCdblixUO+27JtGJJE/txpJlyUy5YN1u53wLZkP0emYCo5zgS6QYft7VUYR42LGgi/S5hdLZTrnyIddw==}
+    dev: true
 
   /capital-case@1.0.4:
     resolution: {integrity: sha512-ds37W8CytHgwnhGGTi88pcPyR15qoNkOpYwmMMfnWqqWgESapLqvDx6huFjQ5vqWSn2Z06173XNA7LtMOeUh1A==}
