@@ -161,8 +161,8 @@ importers:
         specifier: ^18.3.11
         version: 18.3.11
       '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.0
+        specifier: ^18.3.1
+        version: 18.3.1
       '@types/regenerate':
         specifier: ^1.4.3
         version: 1.4.3
@@ -877,7 +877,7 @@ importers:
         specifier: ^3.3.1
         version: 3.3.5
       '@types/react':
-        specifier: ^18.3.0
+        specifier: ^18.3.11
         version: 18.3.11
       hoist-non-react-statics:
         specifier: ^3.3.2
@@ -5919,7 +5919,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.25.7
       '@testing-library/dom': 9.3.4
-      '@types/react-dom': 18.3.0
+      '@types/react-dom': 18.3.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     dev: true
@@ -6315,8 +6315,8 @@ packages:
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
     dev: true
 
-  /@types/react-dom@18.3.0:
-    resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
+  /@types/react-dom@18.3.1:
+    resolution: {integrity: sha512-qW1Mfv8taImTthu4KoXgDfLuk4bydU6Q/TkADnDWWHwi4NX4BR+LWfTp2sVmTqRrsHvyDDTelgelxJ+SsejKKQ==}
     dependencies:
       '@types/react': 18.3.11
     dev: true
