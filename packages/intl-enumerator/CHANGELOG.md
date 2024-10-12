@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.4.7...@formatjs/intl-enumerator@1.6.0) (2024-10-12)
+
+### Features
+
+* **@formatjs/intl-enumerator:** use memoized constructor creation for perf ([8949482](https://github.com/formatjs/formatjs/commit/89494821d7f346d7a6803fe5cc0bf987e3d34324)) - by @longlho
+
 # [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.4.7...@formatjs/intl-enumerator@1.5.0) (2024-10-09)
 
 ### Features

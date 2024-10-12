@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.8.0](https://github.com/formatjs/formatjs/compare/react-intl@6.7.1...react-intl@6.8.0) (2024-10-12)
+
+### Bug Fixes
+
+* **react-intl:** rm stray package-lock.json ([00bc9f1](https://github.com/formatjs/formatjs/commit/00bc9f1691e8f44bae69769ad9c34256b4396b41)) - by @longlho
+
+### Features
+
+* **react-intl:** adopt React.JSX types in prep for React 19 ([96725cb](https://github.com/formatjs/formatjs/commit/96725cb37e4a7d4749d9399c2d9b69862dcd2b4b)) - by @nstepien
+
 ## [6.7.1](https://github.com/formatjs/formatjs/compare/react-intl@6.7.0...react-intl@6.7.1) (2024-10-08)
 
 **Note:** Version bump only for package react-intl

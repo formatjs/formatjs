@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.11](https://github.com/formatjs/formatjs/compare/@formatjs/ecma376@0.3.10...@formatjs/ecma376@0.3.11) (2024-10-12)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** add polyfill detector + docs ([d6d237a](https://github.com/formatjs/formatjs/commit/d6d237a2ffca73d5e3824df17bf5ebf7e7b135a8)) - by @
+
 ## [0.3.10](https://github.com/formatjs/formatjs/compare/@formatjs/ecma376@0.3.9...@formatjs/ecma376@0.3.10) (2023-06-06)
 
 **Note:** Version bump only for package @formatjs/ecma376

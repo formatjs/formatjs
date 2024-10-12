@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.0.1...eslint-plugin-formatjs@5.1.0) (2024-10-12)
+
+### Features
+
+* **eslint-plugin-formatjs:** introduce no no-explicit-icu-plural lint rule ([0fa83d4](https://github.com/formatjs/formatjs/commit/0fa83d47efc04e65acacb6cad8fc585b8882a77f)) - by @cungminh2710
+
 ## [5.0.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.0.1...eslint-plugin-formatjs@5.0.2) (2024-10-09)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

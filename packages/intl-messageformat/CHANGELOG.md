@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.7.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.5.14...intl-messageformat@10.7.0) (2024-10-12)
+
+### Features
+
+* **intl-messageformat:** use memoized constructor creation for perf ([12f94f7](https://github.com/formatjs/formatjs/commit/12f94f778c6453a75cc7a3c7ac0fc587b6f4a157)) - by @longlho
+
 # [10.6.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.5.14...intl-messageformat@10.6.0) (2024-10-09)
 
 ### Features

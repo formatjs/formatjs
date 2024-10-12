@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.2.4...@formatjs/intl-durationformat@0.4.0) (2024-10-12)
+
+### Features
+
+* **@formatjs/intl-durationformat:** use memoized constructor creation for perf ([100d0c2](https://github.com/formatjs/formatjs/commit/100d0c2b546fc48a776e772394c4f23e740d3b5f)) - by @longlho
+
 # [0.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.2.4...@formatjs/intl-durationformat@0.3.0) (2024-10-09)
 
 ### Features

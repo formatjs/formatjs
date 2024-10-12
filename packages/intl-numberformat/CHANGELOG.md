@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.10.3...@formatjs/intl-numberformat@8.12.0) (2024-10-12)
+
+### Features
+
+* **@formatjs/intl-numberformat:** use memoized constructor creation for perf ([2283992](https://github.com/formatjs/formatjs/commit/2283992cc2c5a2e46582289ea99874754c16ddaf)) - by @longlho
+
 # [8.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.10.3...@formatjs/intl-numberformat@8.11.0) (2024-10-09)
 
 ### Features

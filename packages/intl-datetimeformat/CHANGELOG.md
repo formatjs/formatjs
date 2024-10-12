@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.14.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.12.6...@formatjs/intl-datetimeformat@6.14.0) (2024-10-12)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** update tzdata, fix tooling to generate tzdata ([c50a60c](https://github.com/formatjs/formatjs/commit/c50a60c8603aeaa387b7b444f35dfd340822f268)) - by @longlho
+* **@formatjs/intl-datetimeformat:** use memoized constructor creation for perf ([cd55fef](https://github.com/formatjs/formatjs/commit/cd55fefb7539eba6efd74271dfcde17802e66001)) - by @longlho
+
 # [6.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.12.6...@formatjs/intl-datetimeformat@6.13.0) (2024-10-09)
 
 ### Features
