@@ -1,9 +1,11 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-localematcher"
 
@@ -24,19 +26,24 @@ SRCS = glob(
     exclude = ["tests/*"],
 ) + ["index.ts"]
 
+SRC_DEPS = [
+]
+
 ts_compile(
     name = "dist",
     srcs = [":srcs"],
     skip_esm = False,
+    deps = SRC_DEPS,
 )
 
 jest_test(
     name = "unit_test",
-    data = [":srcs"] + glob([
+    data = [":srcs"] + SRC_DEPS + glob([
         "tests/**/*.ts",
         "tests/**/*.tsx",
     ]),
     snapshots = glob(["tests/**/*.snap"]),
+    
 )
 
 # Test262

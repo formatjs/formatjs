@@ -1,9 +1,8 @@
-import webpack from 'webpack'
-import {VueLoaderPlugin} from 'vue-loader'
 import {readFileSync} from 'fs'
 import {join} from 'path'
+import {VueLoaderPlugin} from 'vue-loader'
+import webpack from 'webpack'
 test('dummy', function (done) {
-  console.log(require.resolve('babel-plugin-formatjs'))
   webpack(
     {
       entry: require.resolve('./fixtures/app.js'),

@@ -1,10 +1,9 @@
-import {resolve, join} from 'path'
-import {promisify} from 'util'
 import {exec as nodeExec} from 'child_process'
-import {readJSON, mkdirp} from 'fs-extra'
-import _rimraf from 'rimraf'
+import {mkdirp, readJSON} from 'fs-extra'
+import {join, resolve} from 'path'
+import {rimraf} from 'rimraf'
+import {promisify} from 'util'
 const exec = promisify(nodeExec)
-const rimraf = promisify(_rimraf)
 
 const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
 const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts')

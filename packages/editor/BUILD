@@ -52,7 +52,6 @@
 # #
 # #
 # #         "//:node_modules/rimraf",
-# #         "//:node_modules/@types/rimraf",
 # #     ] + SRC_DEPS,
 # # )
 

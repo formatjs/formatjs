@@ -11,17 +11,17 @@
   "types": "index.d.ts",
   "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {
-    "@babel/core": "^7.10.4",
-    "@babel/helper-plugin-utils": "^7.10.4",
-    "@babel/plugin-syntax-jsx": "7",
-    "@babel/traverse": "7",
-    "@babel/types": "^7.12.11",
+    "@babel/core": "^7.25.0",
+    "@babel/helper-plugin-utils": "^7.25.0",
+    "@babel/plugin-syntax-jsx": "^7.25.0",
+    "@babel/traverse": "^7.25.0",
+    "@babel/types": "^7.25.0",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
-    "@types/babel__core": "^7.1.7",
-    "@types/babel__helper-plugin-utils": "^7.10.0",
-    "@types/babel__traverse": "^7.1.7",
-    "tslib": "^2.4.0"
+    "@types/babel__core": "^7.20.5",
+    "@types/babel__helper-plugin-utils": "^7.10.3",
+    "@types/babel__traverse": "^7.20.6",
+    "tslib": "^2.7.0"
   },
   "keywords": [
     "babel-plugin",

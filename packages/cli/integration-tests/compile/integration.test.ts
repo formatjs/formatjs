@@ -1,6 +1,5 @@
 import {exec as nodeExec} from 'child_process'
 import {join, resolve} from 'path'
-import _rimraf from 'rimraf'
 import {promisify} from 'util'
 const exec = promisify(nodeExec)
 const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')

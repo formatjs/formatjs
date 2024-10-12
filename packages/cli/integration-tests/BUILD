@@ -21,7 +21,6 @@ jest_test(
     ) + [
         ":node_modules/@formatjs/cli",
         "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/rimraf",
         "//:node_modules/fast-glob",
         "//:node_modules/fs-extra",
         "//:node_modules/rimraf",
@@ -39,7 +38,6 @@ jest_test(
         "formatter.js",
         ":node_modules/@formatjs/cli",
         "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/rimraf",
         "//:node_modules/fast-glob",
         "//:node_modules/fs-extra",
         "//:node_modules/rimraf",
@@ -85,7 +83,6 @@ jest_test(
     data = [
         "formatter.js",
         ":node_modules/@formatjs/cli",
-        "//:node_modules/@types/rimraf",
         "//:node_modules/rimraf",
     ] + glob(
         ["compile/**/*"],

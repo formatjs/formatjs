@@ -4,7 +4,9 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 
+npm_link_all_packages()
 exports_files([
     "package.json",
     "tsconfig.json",
@@ -53,7 +55,7 @@ ts_compile(
 
 jest_test(
     name = "unit_test",
-    data = [":srcs", ":tests"] + TEST_DEPS,
+    data = [":srcs", ":tests"] + SRC_DEPS + TEST_DEPS,
 )
 
 # aliases

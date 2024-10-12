@@ -71,7 +71,6 @@ ts_compile_node(
 jest_test(
     name = "unit_test",
     data = [":srcs"] + SRC_DEPS + [
-        "//:node_modules/@types/rimraf",
         "//:node_modules/rimraf",
     ] + glob(["tests/unit/**/*"]),
 )

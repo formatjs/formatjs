@@ -2,7 +2,9 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 
+npm_link_all_packages()
 exports_files([
     "package.json",
     "tsconfig.json",

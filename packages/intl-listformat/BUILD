@@ -54,7 +54,6 @@ TESTS = glob([
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
-    ":node_modules/tslib"
 ]
 
 TEST_DEPS = SRC_DEPS + [
