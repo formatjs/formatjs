@@ -10,7 +10,7 @@ npm_link_all_packages()
 PACKAGE_NAME = "babel-plugin-formatjs"
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -73,4 +73,7 @@ write_source_files(
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

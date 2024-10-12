@@ -92,7 +92,6 @@ copy_to_directory(
     ) for p in PACKAGE_DIRNAMES]},
 )
 
-
 # We run this centrally so it doesn't spawn
 # multiple browser sessions which overwhelms SauceLabs
 KARMA_TESTS = [

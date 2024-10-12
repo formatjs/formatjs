@@ -1,4 +1,3 @@
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 
 PACKAGE_NAME = "cli"
@@ -11,7 +10,7 @@ genrule(
 )
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -21,4 +20,3 @@ npm_package(
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
 )
-

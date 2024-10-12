@@ -1,4 +1,3 @@
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
@@ -47,4 +46,3 @@ jest_test(
     ]),
     snapshots = glob(["tests/__snapshots__/*.snap"]),
 )
-

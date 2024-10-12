@@ -16,7 +16,7 @@ exports_files([
 PACKAGE_NAME = "intl-messageformat"
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -60,22 +60,22 @@ jest_test(
 
 esbuild(
     name = "%s.iife" % PACKAGE_NAME,
+    srcs = [":srcs"],
     config = {
         "globalName": "IntlMessageFormat",
     },
     entry_point = "index.ts",
-    srcs = [":srcs"],
     target = "es6",
     deps = SRC_DEPS,
 )
 
 esbuild(
     name = "%s.esm" % PACKAGE_NAME,
+    srcs = [":srcs"],
     config = {
         "globalName": "IntlMessageFormat",
     },
     entry_point = "index.ts",
-    srcs = [":srcs"],
     format = "esm",
     target = "esnext",
     deps = SRC_DEPS,
@@ -109,4 +109,7 @@ package_json_test(
     deps = SRC_DEPS,
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

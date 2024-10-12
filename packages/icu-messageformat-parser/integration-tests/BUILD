@@ -1,4 +1,3 @@
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_src_file")
 
@@ -37,5 +36,3 @@ TEST_CASES = glob(["test_cases/*"])
     ],
     entry_point = "run-parser.ts",
 ) for f in TEST_CASES]
-
-

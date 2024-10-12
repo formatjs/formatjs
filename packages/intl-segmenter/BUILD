@@ -2,7 +2,6 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_src_file", "ts_compile")
@@ -13,7 +12,7 @@ npm_link_all_packages()
 PACKAGE_NAME = "intl-segmenter"
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -80,8 +79,8 @@ generate_src_file(
 # Test262
 esbuild(
     name = "test262-polyfill",
-    entry_point = "test262-main.ts",
     srcs = [":srcs"],
+    entry_point = "test262-main.ts",
     target = "es6",
     deps = SRC_DEPS,
 )
@@ -117,8 +116,8 @@ write_source_files(
 
 esbuild(
     name = "polyfill.iife",
-    entry_point = "polyfill.ts",
     srcs = [":srcs"],
+    entry_point = "polyfill.ts",
     target = "es6",
     deps = [
         "//:node_modules/tslib",
@@ -145,4 +144,7 @@ generate_src_file(
     entry_point = "scripts/generate-cldr-segmentation-rules.ts",
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

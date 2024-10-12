@@ -11,7 +11,7 @@ npm_link_all_packages()
 PACKAGE_NAME = "react-intl"
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -67,11 +67,11 @@ ts_compile(
 
 esbuild(
     name = "%s.esbuild.iife" % PACKAGE_NAME,
+    srcs = [":srcs"],
     config = {
         "globalName": "ReactIntl",
     },
     entry_point = "index.ts",
-    srcs = [":srcs"],
     external = ["react"],
     target = "es6",
     deps = SRC_DEPS,
@@ -110,4 +110,7 @@ package_json_test(
     deps = SRC_DEPS,
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

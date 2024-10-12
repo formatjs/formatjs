@@ -30,7 +30,7 @@ TEST_LOCALES = [
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -895,8 +895,8 @@ write_source_files(
 
 esbuild(
     name = "polyfill.iife",
-    entry_point = "polyfill.ts",
     srcs = [":srcs"],
+    entry_point = "polyfill.ts",
     target = "es6",
     deps = [
         "//:node_modules/tslib",
@@ -948,4 +948,7 @@ sh_binary(
     deps = ["@bazel_tools//tools/bash/runfiles"],
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

@@ -12,7 +12,7 @@ npm_link_all_packages()
 PACKAGE_NAME = "intl"
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -70,9 +70,9 @@ package_json_test(
 copy_to_directory(
     name = "global_type_overrides_test_files",
     srcs = [
-        ":pkg",
         "tests/global_type_overrides.test-d.ts",
         "tsconfig.json",
+        ":pkg",
     ],
     out = "global_type_overrides_test_files",
     # Remove the prefix so the package directory merges with the test file directory.
@@ -99,4 +99,7 @@ tsd_bin.tsd_test(
     ] + SRC_DEPS,
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

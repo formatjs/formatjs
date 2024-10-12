@@ -1,16 +1,16 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@npm//:defs.bzl", "npm_link_all_packages")
 
 npm_link_all_packages()
 
 PACKAGE_NAME = "intl-localematcher"
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -43,7 +43,6 @@ jest_test(
         "tests/**/*.tsx",
     ]),
     snapshots = glob(["tests/**/*.snap"]),
-    
 )
 
 # Test262
@@ -67,4 +66,7 @@ generate_src_file(
     entry_point = "scripts/regions-gen.ts",
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

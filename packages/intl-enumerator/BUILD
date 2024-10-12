@@ -2,7 +2,6 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "generate_src_file", "ts_compile")
@@ -13,7 +12,7 @@ npm_link_all_packages()
 PACKAGE_NAME = "intl-enumerator"
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -118,11 +117,14 @@ generate_src_file(
 
 esbuild(
     name = "polyfill.iife",
-    entry_point = "polyfill.ts",
     srcs = [":srcs"],
+    entry_point = "polyfill.ts",
     deps = [
         "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

@@ -12,7 +12,7 @@ exports_files([
 PACKAGE_NAME = "utils"
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -67,4 +67,7 @@ generate_src_file(
     entry_point = "tools/extract-default-currency.ts",
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

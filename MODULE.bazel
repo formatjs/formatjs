@@ -11,12 +11,12 @@ bazel_dep(name = "aspect_rules_js", version = "2.0.2")
 # By default you get the node version from DEFAULT_NODE_VERSION in @rules_nodejs//nodejs:repositories.bzl
 # Optionally you can pin a different node version:
 bazel_dep(name = "rules_nodejs", version = "6.3.0")
+
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node", dev_dependency = True)
-node.toolchain(node_version = "18.17.0")
+node.toolchain(node_version = "20.17.0")
 #################################
 
 npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
-
 npm.npm_translate_lock(
     name = "npm",
     data = [
@@ -28,7 +28,6 @@ npm.npm_translate_lock(
     pnpm_lock = "//:pnpm-lock.yaml",
     verify_node_modules_ignored = "//:.bazelignore",
 )
-
 use_repo(npm, "npm")
 
 pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
@@ -46,11 +45,9 @@ bazel_dep(name = "aspect_rules_esbuild", version = "0.21.0")
 bazel_dep(name = "aspect_rules_ts", version = "3.2.0")
 
 rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext", dev_dependency = True)
-
 rules_ts_ext.deps(
     ts_version_from = "//:package.json",
 )
-
 use_repo(rules_ts_ext, "npm_typescript")
 
 ######### Bazel lib rules #########
@@ -75,7 +72,6 @@ bazel_dep(
 
 ######### Rust rules #########
 bazel_dep(name = "rules_rust", version = "0.52.2")
-
 single_version_override(
     module_name = "rules_rust",
     patches = [
@@ -84,7 +80,6 @@ single_version_override(
 )
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
-
 rust.toolchain(
     edition = "2021",
     extra_target_triples = [
@@ -92,14 +87,16 @@ rust.toolchain(
         "wasm32-wasi",
     ],
 )
-
 use_repo(
     rust,
     "rust_toolchains",
 )
 
-register_toolchains("@rust_toolchains//:all", "@rules_rust//wasm_bindgen:default_wasm_bindgen_toolchain",
-    "@rules_rust//rust/private/dummy_cc_toolchain:dummy_cc_wasm32_toolchain",)
+register_toolchains(
+    "@rust_toolchains//:all",
+    "@rules_rust//wasm_bindgen:default_wasm_bindgen_toolchain",
+    "@rules_rust//rust/private/dummy_cc_toolchain:dummy_cc_wasm32_toolchain",
+)
 
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 

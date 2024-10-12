@@ -2,11 +2,12 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
-load("@npm//:defs.bzl", "npm_link_all_packages")
 
 npm_link_all_packages()
+
 exports_files([
     "package.json",
     "tsconfig.json",
@@ -15,7 +16,7 @@ exports_files([
 PACKAGE_NAME = "intl-getcanonicallocales"
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -55,7 +56,10 @@ ts_compile(
 
 jest_test(
     name = "unit_test",
-    data = [":srcs", ":tests"] + SRC_DEPS + TEST_DEPS,
+    data = [
+        ":srcs",
+        ":tests",
+    ] + SRC_DEPS + TEST_DEPS,
 )
 
 # aliases
@@ -98,9 +102,9 @@ write_source_files(
 
 esbuild(
     name = "polyfill.iife",
+    srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es6",
-    srcs = [":srcs"],
     deps = [
         "//:node_modules/tslib",
     ] + SRC_DEPS,
@@ -111,4 +115,7 @@ package_json_test(
     deps = SRC_DEPS,
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

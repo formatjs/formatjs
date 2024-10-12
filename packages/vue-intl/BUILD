@@ -9,7 +9,7 @@ npm_link_all_packages()
 PACKAGE_NAME = "vue-intl"
 
 npm_package(
-    name ="pkg",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -53,4 +53,7 @@ package_json_test(
     deps = SRC_DEPS,
 )
 
-copy_to_bin(name = "srcs", srcs=SRCS)
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)
