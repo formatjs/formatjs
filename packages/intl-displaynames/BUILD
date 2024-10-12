@@ -1,13 +1,13 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-displaynames"
 
@@ -19,7 +19,7 @@ TEST_LOCALES = [
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
 npm_package(
-    name = PACKAGE_NAME,
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -57,15 +57,14 @@ TEST_DEPS = SRC_DEPS + [
 
 ts_compile(
     name = "dist",
-    srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = [":srcs"],
     skip_esm = False,
     deps = SRC_DEPS,
 )
 
 jest_test(
     name = "unit_test",
-    data = SRCS + TESTS + TEST_LOCALE_DATA + TEST_DEPS,
+    data = [":srcs"] + TESTS + TEST_LOCALE_DATA + TEST_DEPS,
 )
 
 # CLDR
@@ -732,23 +731,12 @@ generate_src_file(
 )
 
 # Test262
-ts_project(
-    name = "test262-main-bundle",
-    srcs = SRCS + ["test262-main.ts"],
-    declaration = True,
-    out_dir = "test262",
-    resolve_json_module = True,
-    tsconfig = "//:tsconfig.es6",
-    deps = SRC_DEPS,
-)
-
 esbuild(
     name = "test262-polyfill",
-    entry_point = "test262/test262-main.js",
+    srcs = [":srcs"],
+    entry_point = "test262-main.ts",
     target = "es6",
-    deps = [
-        ":test262-main-bundle",
-    ] + SRC_DEPS,
+    deps = SRC_DEPS,
 )
 
 test262_harness_bin.test262_harness_test(
@@ -762,8 +750,8 @@ test262_harness_bin.test262_harness_test(
         "--prelude",
         "$(rootpath test262-polyfill.js)",
         "--test262Dir",
-        "../com_github_tc39_test262",
-        "../com_github_tc39_test262/test/intl402/DisplayNames/**/*.js",
+        "../_main~_repo_rules~com_github_tc39_test262",
+        "../_main~_repo_rules~com_github_tc39_test262/test/intl402/DisplayNames/**/*.js",
     ],
     data = [
         "test262-polyfill.js",
@@ -776,7 +764,7 @@ test262_harness_bin.test262_harness_test(
 
 bundle_karma_tests(
     name = "bundled-karma-tests",
-    srcs = SRCS,
+    srcs = [":srcs"],
     data = TEST_LOCALE_DATA,
     esbuild_deps = [
         ":node_modules/@formatjs/intl-getcanonicallocales",
@@ -806,10 +794,10 @@ write_source_files(
 
 esbuild(
     name = "polyfill.iife",
-    entry_point = "lib/polyfill.js",
+    srcs = [":srcs"],
+    entry_point = "polyfill.ts",
     target = "es6",
     deps = [
-        ":dist-esm",
         "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
@@ -817,4 +805,9 @@ esbuild(
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
 )

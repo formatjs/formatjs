@@ -1,6 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
-load("@aspect_rules_lint//format:defs.bzl", "multi_formatter_binary")
+load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 load("@npm//:prettier/package_json.bzl", prettier = "bin")
@@ -87,17 +87,14 @@ buildifier(
         "http-archive",
         "integer-division",
         "load",
-        "load-on-top",
         "native-build",
         "native-package",
-        "out-of-order-load",
         "output-group",
         "package-name",
         "package-on-top",
         "positional-args",
         "redefined-variable",
         "repository-name",
-        "same-origin-load",
         "string-iteration",
         "unsorted-dict-items",
         "unused-variable",
@@ -105,7 +102,7 @@ buildifier(
     verbose = True,
 )
 
-multi_formatter_binary(
+format_multirun(
     name = "format",
     javascript = ":prettier",
     # TODO: Add starlark formatter

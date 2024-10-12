@@ -429,7 +429,3 @@ ZONES = [
     "Pacific/Wake",
     "Pacific/Wallis",
 ]
-
-IANA_TZ_VERSION = "2024b"
-TZCODE_SHA256 = "5e438fc449624906af16a18ff4573739f0cda9862e5ec28d3bcb19cbaed0f672"
-TZDATA_SHA256 = "70e754db126a8d0db3d16d6b4cb5f7ec1e04d5f261255e4558a67fe92d39e550"

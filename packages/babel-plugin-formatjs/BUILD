@@ -1,15 +1,16 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "babel-plugin-formatjs"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -40,13 +41,13 @@ SRC_DEPS = [
 
 ts_compile_node(
     name = "dist",
-    srcs = SRCS,
+    srcs = [":srcs"],
     deps = SRC_DEPS,
 )
 
 jest_test(
     name = "unit_test",
-    data = SRCS + SRC_DEPS + glob(
+    data = [":srcs"] + SRC_DEPS + glob(
         [
             "tests/**/*.test.ts",
             "tests/**/*.test.tsx",
@@ -70,4 +71,9 @@ package_json_test(
 write_source_files(
     name = "tsconfig_json",
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
 )

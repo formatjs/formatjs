@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
@@ -5,14 +6,14 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "cli-lib"
 
 exports_files(["package.json"])
 
 npm_package(
-    name = PACKAGE_NAME,
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -57,21 +58,19 @@ SRC_DEPS = [
     "//:node_modules/loud-rejection",
     "//:node_modules/typescript",
     ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/icu-skeleton-parser",
     ":node_modules/@formatjs/ts-transformer",
 ] + VUE_DEPS + GLIMMER_HBS_DEPS
 
 ts_compile_node(
     name = "dist",
-    srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
-    skip_esm_esnext = False,
+    srcs = [":srcs"],
     deps = SRC_DEPS,
 )
 
 jest_test(
     name = "unit_test",
-    data = SRCS + SRC_DEPS + [
-        "//:node_modules/@types/rimraf",
+    data = [":srcs"] + SRC_DEPS + [
         "//:node_modules/rimraf",
     ] + glob(["tests/unit/**/*"]),
 )
@@ -90,8 +89,8 @@ genrule(
 
 esbuild(
     name = "formatjs",
-    srcs = [":dist-esm-esnext"],
-    entry_point = "lib_esnext/main.js",
+    srcs = [":srcs"],
+    entry_point = "main.ts",
     external = [
         "vue",
         "content-tag",
@@ -102,6 +101,7 @@ esbuild(
         "@vue/compiler-core",
         "content-tag",
         "ember-template-recast",
+        "source-map-support",
     ],
     platform = "node",
     target = "node16",
@@ -114,4 +114,9 @@ esbuild(
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
 )

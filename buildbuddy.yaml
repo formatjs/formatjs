@@ -11,6 +11,7 @@ actions:
           - '*'
     resource_requests:
       memory: 10GB
+      disk: 16GB
     bazel_commands:
       # Check if all files are properly formatted.
       - 'run //:format -- --mode check'

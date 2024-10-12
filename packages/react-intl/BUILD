@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
@@ -5,12 +6,12 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "react-intl"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -59,24 +60,21 @@ TEST_DEPS = SRC_DEPS + [
 
 ts_compile(
     name = "dist",
-    srcs = SRCS,
-    package = PACKAGE_NAME,
+    srcs = [":srcs"],
     skip_esm = False,
     deps = SRC_DEPS,
 )
 
 esbuild(
     name = "%s.esbuild.iife" % PACKAGE_NAME,
+    srcs = [":srcs"],
     config = {
         "globalName": "ReactIntl",
     },
-    entry_point = "lib/index.js",
+    entry_point = "index.ts",
     external = ["react"],
     target = "es6",
-    # TODO: fix this and set it back to es5
-    deps = [
-        ":dist-esm",
-    ] + SRC_DEPS,
+    deps = SRC_DEPS,
 )
 
 genrule(
@@ -88,7 +86,7 @@ genrule(
 
 jest_test(
     name = "unit_test",
-    data = SRCS + TESTS + TEST_DEPS + ["tests/setup.js"],
+    data = [":srcs"] + TESTS + TEST_DEPS + ["tests/setup.js"],
     jest_config = "jest.config.js",
     snapshots = glob(["tests/unit/components/__snapshots__/*"]),
 )
@@ -110,4 +108,9 @@ write_source_files(
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
 )

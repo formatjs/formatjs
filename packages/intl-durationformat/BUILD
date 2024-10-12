@@ -1,16 +1,16 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-durationformat"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -29,20 +29,18 @@ SRCS = glob([
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
-    ":node_modules/tslib",
 ]
 
 ts_compile(
     name = "dist",
-    srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = [":srcs"],
     skip_esm = False,
     deps = SRC_DEPS,
 )
 
 jest_test(
     name = "unit_test",
-    data = SRCS + SRC_DEPS + glob([
+    data = [":srcs"] + SRC_DEPS + glob([
         "tests/**/*.ts",
         "tests/**/*.tsx",
     ]),
@@ -50,16 +48,6 @@ jest_test(
 )
 
 # Test262
-ts_project(
-    name = "test262-main-bundle",
-    srcs = SRCS,
-    declaration = True,
-    out_dir = "test262",
-    resolve_json_module = True,
-    tsconfig = "//:tsconfig.es6",
-    deps = SRC_DEPS,
-)
-
 write_source_files(
     name = "tsconfig_json",
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
@@ -90,6 +78,11 @@ generate_src_file(
         "//:node_modules/lodash",
     ],
     entry_point = "scripts/time-separators.ts",
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
 )
 
 # package_json_test(

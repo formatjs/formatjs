@@ -1,7 +1,7 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_src_file")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 TEST_CASES = glob(["test_cases/*"])
 

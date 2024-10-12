@@ -13,6 +13,8 @@ import %workspace%/.aspect/bazelrc/performance.bazelrc
 
 ### YOUR PROJECT SPECIFIC SETTINGS GO HERE ###
 
+common --enable_bzlmod 
+
 build --java_runtime_version=remotejdk_11
 
 build --action_env=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -22,7 +24,7 @@ build --verbose_failures
 
 build --experimental_remote_cache_compression
 build --legacy_important_outputs
-build --experimental_remote_build_event_upload=minimal
+build --remote_build_event_upload=minimal
 build --noslim_profile 
 build --experimental_profile_include_target_label 
 build --experimental_profile_include_primary_output 
@@ -58,10 +60,9 @@ build --define=NODE_OPTIONS=--max-old-space-size=4096
 
 # BuildBuddy GH Actions Config
 # https://www.buildbuddy.io/docs/rbe-github-actions
-build --bes_results_url=https://app.buildbuddy.io/invocation/
-build --bes_backend=grpcs://remote.buildbuddy.io
-build --remote_cache=grpcs://remote.buildbuddy.io
-build --remote_header=x-buildbuddy-api-key=aCq1wBKPstlE6hey9EHj
+build --bes_results_url=https://formatjs.buildbuddy.io/invocation/
+build --bes_backend=grpcs://formatjs.buildbuddy.io
+build --remote_cache=grpcs://formatjs.buildbuddy.io
 
 # honor the setting of `skipLibCheck` in the tsconfig.json file
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
@@ -72,6 +73,19 @@ query --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 build --@aspect_rules_ts//ts:default_to_tsc_transpiler
 fetch --@aspect_rules_ts//ts:default_to_tsc_transpiler
 query --@aspect_rules_ts//ts:default_to_tsc_transpiler
+
+# BuildBuddy RBE
+build:remote --remote_executor=grpcs://formatjs.buildbuddy.io
+build:remote --host_platform=@buildbuddy_toolchain//:platform
+build:remote --platforms=@buildbuddy_toolchain//:platform
+build:remote --extra_execution_platforms=@buildbuddy_toolchain//:platform
+build:remote --crosstool_top=@buildbuddy_toolchain//:toolchain
+build:remote --extra_toolchains=@buildbuddy_toolchain//:cc_toolchain
+build:remote --java_language_version=11
+build:remote --tool_java_language_version=11
+build:remote --java_runtime_version=remotejdk_11
+build:remote --tool_java_runtime_version=remotejdk_11
+build:remote --define=EXECUTOR=remote
 
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members

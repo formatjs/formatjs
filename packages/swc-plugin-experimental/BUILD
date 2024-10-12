@@ -4,7 +4,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 copy_file(
     name = "wasm",
@@ -22,7 +22,7 @@ copy_to_directory(
 )
 
 npm_package(
-    name = "swc-plugin-experimental",
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",

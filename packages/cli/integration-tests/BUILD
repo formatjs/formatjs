@@ -1,7 +1,7 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 GLIMMER_HBS_DEPS = [
     "//:node_modules/@glimmer/env",
@@ -20,7 +20,6 @@ jest_test(
     ) + [
         ":node_modules/@formatjs/cli",
         "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/rimraf",
         "//:node_modules/fast-glob",
         "//:node_modules/fs-extra",
         "//:node_modules/rimraf",
@@ -38,7 +37,6 @@ jest_test(
         "formatter.js",
         ":node_modules/@formatjs/cli",
         "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/rimraf",
         "//:node_modules/fast-glob",
         "//:node_modules/fs-extra",
         "//:node_modules/rimraf",
@@ -84,7 +82,6 @@ jest_test(
     data = [
         "formatter.js",
         ":node_modules/@formatjs/cli",
-        "//:node_modules/@types/rimraf",
         "//:node_modules/rimraf",
     ] + glob(
         ["compile/**/*"],

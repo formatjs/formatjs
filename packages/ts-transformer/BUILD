@@ -1,10 +1,11 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 exports_files([
     "package.json",
@@ -13,7 +14,7 @@ exports_files([
 PACKAGE_NAME = "ts-transformer"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -40,7 +41,7 @@ SRC_DEPS = [
 
 ts_compile_node(
     name = "dist",
-    srcs = SRCS,
+    srcs = [":srcs"],
     deps = SRC_DEPS + [
         "//:node_modules/@jest/types",
         "//:node_modules/@types/jest",
@@ -51,7 +52,7 @@ ts_compile_node(
 
 jest_test(
     name = "unit_test",
-    data = SRCS + SRC_DEPS + glob([
+    data = [":srcs"] + SRC_DEPS + glob([
         "tests/*.ts*",
         "tests/fixtures/*.ts*",
     ]),
@@ -66,4 +67,9 @@ write_source_files(
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
 )

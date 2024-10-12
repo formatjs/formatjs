@@ -1,18 +1,18 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-locale"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -37,15 +37,14 @@ SRC_DEPS = [
 
 ts_compile(
     name = "dist",
-    srcs = SRCS,
-    package = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = [":srcs"],
     skip_esm = False,
     deps = SRC_DEPS,
 )
 
 jest_test(
     name = "unit_test",
-    data = SRCS + SRC_DEPS + glob([
+    data = [":srcs"] + SRC_DEPS + glob([
         "tests/**/*.ts",
         "tests/**/*.tsx",
     ]),
@@ -53,23 +52,12 @@ jest_test(
 )
 
 # Test262
-ts_project(
-    name = "test262-main-bundle",
-    srcs = SRCS,
-    declaration = True,
-    out_dir = "test262",
-    resolve_json_module = True,
-    tsconfig = "//:tsconfig.es6",
-    deps = SRC_DEPS,
-)
-
 esbuild(
     name = "test262-polyfill",
-    entry_point = "test262/polyfill-force.js",
+    srcs = [":srcs"],
+    entry_point = "polyfill-force.ts",
     target = "es6",
-    deps = [
-        ":test262-main-bundle",
-    ] + SRC_DEPS,
+    deps = SRC_DEPS,
 )
 
 test262_harness_bin.test262_harness_test(
@@ -83,8 +71,8 @@ test262_harness_bin.test262_harness_test(
         "--prelude",
         "$(rootpath test262-polyfill.js)",
         "--test262Dir",
-        "../com_github_tc39_test262",
-        "../com_github_tc39_test262/test/intl402/Locale/**/*.js",
+        "../_main~_repo_rules~com_github_tc39_test262",
+        "../_main~_repo_rules~com_github_tc39_test262/test/intl402/Locale/**/*.js",
     ],
     data = [
         "test262-polyfill.js",
@@ -102,12 +90,9 @@ write_source_files(
 
 esbuild(
     name = "polyfill.iife",
-    config = {
-        "resolveExtensions": [".js"],
-    },
-    entry_point = "lib/polyfill.js",
+    srcs = [":srcs"],
+    entry_point = "polyfill.ts",
     deps = [
-        ":dist-esm",
         "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
@@ -199,4 +184,9 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/week-data.ts",
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
 )

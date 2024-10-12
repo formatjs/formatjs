@@ -9,7 +9,7 @@
 # PACKAGE_NAME = "editor"
 
 # npm_package(
-#     name = PACKAGE_NAME,
+#     name ="pkg",
 #     package = "@formatjs/%s" % PACKAGE_NAME,
 #     srcs = [
 #         "LICENSE.md",
@@ -35,8 +35,7 @@
 
 # ts_compile(
 #     name = "dist",
-#     package = "@formatjs/%s" % PACKAGE_NAME,
-#     srcs = SRCS,
+#     srcs = [":srcs"],
 #     skip_esm = False,
 #     deps = SRC_DEPS,
 # )
@@ -48,12 +47,11 @@
 # #         "tests/extract/unit.test.ts",
 # #         "tests/extract/vue_extractor.test.ts",
 # #         "tests/extract/__snapshots__/unit.test.ts.snap",
-# #     ] + SRCS,
+# #     ] + [":srcs"],
 # #     deps = [
 # #
 # #
 # #         "//:node_modules/rimraf",
-# #         "//:node_modules/@types/rimraf",
 # #     ] + SRC_DEPS,
 # # )
 

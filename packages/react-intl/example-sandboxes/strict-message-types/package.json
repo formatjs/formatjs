@@ -11,8 +11,8 @@
     "parcel": "^2.0.0"
   },
   "devDependencies": {
-    "@types/react": "17.0.20",
-    "@types/react-dom": "17.0.9",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1", 
     "typescript": "5"
   },
   "scripts": {

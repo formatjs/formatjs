@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
@@ -6,7 +7,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 exports_files([
     "package.json",
@@ -15,7 +16,7 @@ exports_files([
 PACKAGE_NAME = "intl-messageformat"
 
 npm_package(
-    name = PACKAGE_NAME,
+    name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
@@ -46,8 +47,7 @@ TEST_DEPS = SRC_DEPS + [
 
 ts_compile(
     name = "dist",
-    srcs = SRCS,
-    package = PACKAGE_NAME,
+    srcs = [":srcs"],
     skip_esm = False,
     skip_esm_esnext = False,
     deps = SRC_DEPS,
@@ -55,33 +55,30 @@ ts_compile(
 
 jest_test(
     name = "unit_test",
-    data = SRCS + TESTS + TEST_DEPS + ["//:node_modules/@types/node"],
+    data = [":srcs"] + TESTS + TEST_DEPS + ["//:node_modules/@types/node"],
 )
 
 esbuild(
     name = "%s.iife" % PACKAGE_NAME,
+    srcs = [":srcs"],
     config = {
         "globalName": "IntlMessageFormat",
     },
-    entry_point = "lib/index.js",
+    entry_point = "index.ts",
     target = "es6",
-    # TODO: fix this and set it back to es5
-    deps = [
-        ":dist-esm",
-    ] + SRC_DEPS,
+    deps = SRC_DEPS,
 )
 
 esbuild(
     name = "%s.esm" % PACKAGE_NAME,
+    srcs = [":srcs"],
     config = {
         "globalName": "IntlMessageFormat",
     },
-    entry_point = "lib_esnext/index.js",
+    entry_point = "index.ts",
     format = "esm",
     target = "esnext",
-    deps = [
-        ":dist-esm-esnext",
-    ] + SRC_DEPS,
+    deps = SRC_DEPS,
 )
 
 write_source_files(
@@ -92,7 +89,7 @@ write_source_files(
 # Use with `bazel run`.
 js_binary(
     name = "benchmark",
-    data = SRCS + SRC_DEPS + [
+    data = [":srcs"] + SRC_DEPS + [
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/@swc-node/register",
@@ -110,4 +107,9 @@ js_binary(
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
 )

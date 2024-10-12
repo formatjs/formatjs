@@ -1,7 +1,7 @@
-import * as React from 'react'
 import hoistNonReactStatics from 'hoist-non-react-statics'
-import {invariantIntlContext} from '../utils'
+import * as React from 'react'
 import {IntlShape} from '../types'
+import {invariantIntlContext} from '../utils'
 
 function getDisplayName(Component: React.ComponentType<any>): string {
   return Component.displayName || Component.name || 'Component'
@@ -133,6 +133,7 @@ export default function injectIntl<
 
   if (forwardRef) {
     return hoistNonReactStatics(
+      // @ts-expect-error
       React.forwardRef<T, P>((props: P, ref) => (
         <WithIntl {...props} forwardedRef={ref} />
       )),

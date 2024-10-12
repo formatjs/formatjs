@@ -43,5 +43,8 @@ def jest_test(name, data, size = "small", jest_config = "//:jest.config", node_m
         snapshots = snapshots,
         flaky = flaky,
         tags = tags,
+        node_options = [
+            "--experimental-vm-modules",
+        ],
         **kwargs
     )
