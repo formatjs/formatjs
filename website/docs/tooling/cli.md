@@ -264,6 +264,10 @@ Given the English message `my name is {name}`
 | `en-XA` | `[ḿẏ ƞȧȧḿḗḗ īş {name}]`                      |
 | `en-XB` | `‮ɯʎ uɐɯǝ ıs {name}‬`                        |
 
+:::caution
+Requires `--ast`
+:::
+
 ## Extraction and compilation with a single script
 
 In some environments you may want to simply extract your messages to a file ready for use with react-intl without using an intermediary extracted message file format. This could be useful for quickly and easily creating the file for the original language that uses the default messages. This could also be useful if you use a Translation Management System (TMS) that is best suited to working with the compiled files. Keep in mind that the compiled file does not contain message descriptions so it is harder to work with for translators. Ideally you want to find or write a custom formatter you can use to extract messages into a file format that works with your TMS.
