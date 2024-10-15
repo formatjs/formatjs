@@ -117,6 +117,10 @@ ruleTester.run(name, rule, {
       // Ignores empty attributes (as template literal expression in the attribute value).
       code: '<img alt={``} role="presentational" />',
     },
+    {
+      // Ignore spacing string literals
+      code: '<div>{" "}</div>',
+    },
   ],
   invalid: [
     {

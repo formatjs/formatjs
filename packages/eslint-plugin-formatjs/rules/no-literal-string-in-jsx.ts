@@ -147,7 +147,7 @@ export const rule: RuleModule<MessageIds, Options> = {
       if (
         (node.type === 'Literal' &&
           typeof node.value === 'string' &&
-          node.value.length > 0) ||
+          node.value.replace(/\s*/gm, '').length > 0) ||
         (node.type === 'TemplateLiteral' &&
           (node.quasis.length > 1 || node.quasis[0].value.raw.length > 0))
       ) {
