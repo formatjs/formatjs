@@ -178,6 +178,10 @@ Options:
                                   https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale
                                   for possible values.
                                   "--ast" is required for this to work.
+  --ignore-tag                    Whether the parser to treat HTML/XML tags as
+                                  string literal instead of parsing them as tag
+                                  token. When this is false we only allow
+                                  simple tags without any attributes.
   -h, --help                      display help for command
 ",
 }
@@ -775,6 +779,20 @@ exports[`out-file --ast 2`] = `
       "value": "a message",
     },
   ],
+}
+`;
+
+exports[`out-file --ignore-tag 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`out-file --ignore-tag 2`] = `
+{
+  "brmsg": "a message with a non-explicit <br> self-closing tag",
+  "linkmsg": "a message containing <a href=\"https://formatjs.io/\">a link</a>",
 }
 `;
 
