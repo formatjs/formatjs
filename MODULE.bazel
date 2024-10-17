@@ -5,7 +5,7 @@ module(
 
 ######### JS & Node.js rules #########
 
-bazel_dep(name = "aspect_rules_js", version = "2.0.2")
+bazel_dep(name = "aspect_rules_js", version = "2.1.0")
 
 ####### Node.js version #########
 # By default you get the node version from DEFAULT_NODE_VERSION in @rules_nodejs//nodejs:repositories.bzl
@@ -42,7 +42,7 @@ bazel_dep(name = "aspect_rules_esbuild", version = "0.21.0")
 
 ######### TypeScript rules #########
 
-bazel_dep(name = "aspect_rules_ts", version = "3.2.0")
+bazel_dep(name = "aspect_rules_ts", version = "3.2.1")
 
 rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext", dev_dependency = True)
 rules_ts_ext.deps(
