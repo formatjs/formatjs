@@ -197,6 +197,19 @@ test('out-file --ast', async () => {
   expect(require(outFilePath)).toMatchSnapshot()
 }, 20000)
 
+test('out-file --ignore-tag', async () => {
+  const outFilePath = join(ARTIFACT_PATH, 'ignore-tag.json')
+  await expect(
+    exec(
+      `${BIN_PATH} compile --ignore-tag ${join(
+        __dirname,
+        'lang/html-messages.json'
+      )} --out-file ${outFilePath}`
+    )
+  ).resolves.toMatchSnapshot()
+  expect(require(outFilePath)).toMatchSnapshot()
+}, 20000)
+
 test('compile glob', async () => {
   await expect(
     exec(`${BIN_PATH} compile "${join(__dirname, 'glob/*.json')}"`)
