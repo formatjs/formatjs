@@ -778,6 +778,17 @@ exports[`out-file --ast 2`] = `
 }
 `;
 
+exports[`out-file --ignore-tag 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "brmsg": "a message with a non-explicit <br> self-closing tag",
+  "linkmsg": "a message containing <a href=\"https://formatjs.io/\">a link</a>"
+}
+",
+}
+`;
+
 exports[`out-file 1`] = `
 {
   "stderr": "",
