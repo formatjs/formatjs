@@ -146,7 +146,7 @@
     "npm": "6.x"
   },
   "resolutions": {
-    "terser": "5.32.0",
+    "terser": "5.36.0",
     "source-map-js": "1.2.1",
     "@glimmer/syntax": "0.92.0",
     "@glimmer/interfaces": "0.92.0",
