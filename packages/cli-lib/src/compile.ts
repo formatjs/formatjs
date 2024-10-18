@@ -40,6 +40,13 @@ export interface Opts {
    * Whether to compile to pseudo locale
    */
   pseudoLocale?: PseudoLocale
+  /**
+   * Whether the parser to treat HTML/XML tags as string literal
+   * instead of parsing them as tag token.
+   * When this is false we only allow simple tags without
+   * any attributes
+   */
+  ignoreTag?: boolean
 }
 
 /**
@@ -53,7 +60,7 @@ export interface Opts {
  */
 export async function compile(inputFiles: string[], opts: Opts = {}) {
   debug('Compiling files:', inputFiles)
-  const {ast, format, pseudoLocale, skipErrors} = opts
+  const {ast, format, pseudoLocale, skipErrors, ignoreTag} = opts
   const formatter = await resolveBuiltinFormatter(format)
 
   const messages: Record<string, string> = {}
@@ -76,7 +83,7 @@ Message from ${inputFile}: ${compiled[id]}
 `)
       }
       try {
-        const msgAst = parse(compiled[id])
+        const msgAst = parse(compiled[id], {ignoreTag})
         messages[id] = compiled[id]
         switch (pseudoLocale) {
           case 'xx-LS':

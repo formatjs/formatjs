@@ -184,6 +184,11 @@ for more information`
       `Whether to generate pseudo-locale files. See https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. 
 "--ast" is required for this to work.`
     )
+    .option(
+      '--ignore-tag',
+      `Whether the parser to treat HTML/XML tags as string literal instead of parsing them as tag token. When this is false we only allow 
+simple tags without any attributes.`
+    )
     .action(async (filePatterns: string[], opts: CompileCLIOpts) => {
       debug('File pattern:', filePatterns)
       debug('Options:', opts)

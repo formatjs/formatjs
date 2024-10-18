@@ -1,0 +1,8 @@
+{
+  "brmsg": {
+    "defaultMessage": "a message with a non-explicit <br> self-closing tag"
+  },
+  "linkmsg": {
+    "defaultMessage": "a message containing <a href=\"https://formatjs.io/\">a link</a>"
+  }
+}
