@@ -111,7 +111,7 @@ importers:
         version: 0.7.0
       '@testing-library/jest-dom':
         specifier: ^6.5.0
-        version: 6.6.1
+        version: 6.6.2
       '@testing-library/react':
         specifier: ^14.3.1
         version: 14.3.1(react-dom@18.3.1)(react@18.3.1)
@@ -5921,8 +5921,8 @@ packages:
       pretty-format: 27.5.1
     dev: true
 
-  /@testing-library/jest-dom@6.6.1:
-    resolution: {integrity: sha512-mNYIiAuP4yJwV2zBRQCV7PHoQwbb6/8TfMpPcwSUzcSVDJHWOXt6hjNtIN1v5knDmimYnjJxKhsoVd4LVGIO+w==}
+  /@testing-library/jest-dom@6.6.2:
+    resolution: {integrity: sha512-P6GJD4yqc9jZLbe98j/EkyQDTPgqftohZF5FBkHY5BUERZmcf4HeO2k0XaefEg329ux2p21i1A1DmyQ1kKw2Jw==}
     engines: {node: '>=14', npm: '>=6', yarn: '>=1'}
     dependencies:
       '@adobe/css-tools': 4.4.0
