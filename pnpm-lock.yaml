@@ -360,7 +360,7 @@ importers:
         version: 0.31.2
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
       typescript:
         specifier: 5.6.2
         version: 5.6.2
@@ -420,7 +420,7 @@ importers:
         version: 7.20.6
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/babel-plugin-formatjs/integration-tests:
     dependencies:
@@ -523,7 +523,7 @@ importers:
         version: 2.2.0
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
       typescript:
         specifier: 5.6.2
         version: 5.6.2
@@ -541,7 +541,7 @@ importers:
     dependencies:
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/ecma402-abstract:
     dependencies:
@@ -553,7 +553,7 @@ importers:
         version: link:../intl-localematcher
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/eslint-plugin-formatjs:
     dependencies:
@@ -586,7 +586,7 @@ importers:
         version: 2.3.1
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
       typescript:
         specifier: 5.6.2
         version: 5.6.2
@@ -598,7 +598,7 @@ importers:
     dependencies:
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/icu-messageformat-parser:
     dependencies:
@@ -610,7 +610,7 @@ importers:
         version: link:../icu-skeleton-parser
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/icu-messageformat-parser/integration-tests:
     dependencies:
@@ -625,7 +625,7 @@ importers:
         version: link:../ecma402-abstract
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/intl:
     dependencies:
@@ -649,7 +649,7 @@ importers:
         version: link:../intl-messageformat
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
       typescript:
         specifier: 5.6.2
         version: 5.6.2
@@ -671,7 +671,7 @@ importers:
         version: link:../intl-localematcher
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
     devDependencies:
       '@formatjs/intl-getcanonicallocales':
         specifier: workspace:*
@@ -690,7 +690,7 @@ importers:
         version: link:../intl-localematcher
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
     devDependencies:
       '@formatjs/intl-getcanonicallocales':
         specifier: workspace:*
@@ -709,7 +709,7 @@ importers:
         version: link:../intl-localematcher
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/intl-enumerator:
     dependencies:
@@ -718,13 +718,13 @@ importers:
         version: link:../ecma402-abstract
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/intl-getcanonicallocales:
     dependencies:
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/intl-listformat:
     dependencies:
@@ -736,7 +736,7 @@ importers:
         version: link:../intl-localematcher
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
     devDependencies:
       '@formatjs/intl-getcanonicallocales':
         specifier: workspace:*
@@ -758,13 +758,13 @@ importers:
         version: link:../intl-getcanonicallocales
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/intl-localematcher:
     dependencies:
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/intl-messageformat:
     dependencies:
@@ -779,7 +779,7 @@ importers:
         version: link:../icu-messageformat-parser
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/intl-numberformat:
     dependencies:
@@ -791,7 +791,7 @@ importers:
         version: link:../intl-localematcher
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
     devDependencies:
       '@formatjs/intl-getcanonicallocales':
         specifier: workspace:*
@@ -813,7 +813,7 @@ importers:
         version: link:../intl-localematcher
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
     devDependencies:
       '@formatjs/intl-getcanonicallocales':
         specifier: workspace:*
@@ -832,7 +832,7 @@ importers:
         version: link:../intl-localematcher
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
     devDependencies:
       '@formatjs/intl-getcanonicallocales':
         specifier: workspace:*
@@ -854,7 +854,7 @@ importers:
         version: link:../intl-localematcher
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/react-intl:
     dependencies:
@@ -890,7 +890,7 @@ importers:
         version: 18.3.1
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
       typescript:
         specifier: 5.6.2
         version: 5.6.2
@@ -951,7 +951,7 @@ importers:
         version: link:..
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/swc-plugin:
     dependencies:
@@ -981,7 +981,7 @@ importers:
         version: 29.2.5(@babel/core@7.25.8)(@jest/transform@29.7.0)(@jest/types@29.6.3)(jest@29.7.0)(typescript@5.6.2)
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/swc-plugin-experimental:
     dependencies:
@@ -1011,7 +1011,7 @@ importers:
         version: 29.2.5(@babel/core@7.25.8)(@jest/transform@29.7.0)(@jest/types@29.6.3)(jest@29.7.0)(typescript@5.6.2)
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
       typescript:
         specifier: 5.6.2
         version: 5.6.2
@@ -1026,7 +1026,7 @@ importers:
     dependencies:
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
 
   packages/vue-intl:
     dependencies:
@@ -1041,7 +1041,7 @@ importers:
         version: link:../intl
       tslib:
         specifier: ^2.7.0
-        version: 2.7.0
+        version: 2.8.0
       vue:
         specifier: ^3.4.0
         version: 3.5.12(typescript@5.6.2)
@@ -1056,7 +1056,7 @@ importers:
         version: 3.4.0(@swc/core@1.7.35)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.6.2)
       '@docusaurus/preset-classic':
         specifier: 3.4.0
-        version: 3.4.0(@algolia/client-search@5.9.0)(@swc/core@1.7.35)(@types/react@18.3.11)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2)(typescript@5.6.2)
+        version: 3.4.0(@algolia/client-search@5.9.1)(@swc/core@1.7.35)(@types/react@18.3.11)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2)(typescript@5.6.2)
       '@docusaurus/theme-common':
         specifier: 3.4.0
         version: 3.4.0(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.6.2)
@@ -1103,47 +1103,47 @@ packages:
     resolution: {integrity: sha512-Ff9+ksdQQB3rMncgqDK78uLznstjyfIf2Arnh22pW8kBpLs6rpKDwgnZT46hin5Hl1WzazzK64DOrhSwYpS7bQ==}
     dev: true
 
-  /@algolia/autocomplete-core@1.9.3(@algolia/client-search@5.9.0)(algoliasearch@4.24.0)(search-insights@2.17.2):
+  /@algolia/autocomplete-core@1.9.3(@algolia/client-search@5.9.1)(algoliasearch@4.24.0)(search-insights@2.17.2):
     resolution: {integrity: sha512-009HdfugtGCdC4JdXUbVJClA0q0zh24yyePn+KUGk3rP7j8FEe/m5Yo/z65gn6nP/cM39PxpzqKrL7A6fP6PPw==}
     dependencies:
-      '@algolia/autocomplete-plugin-algolia-insights': 1.9.3(@algolia/client-search@5.9.0)(algoliasearch@4.24.0)(search-insights@2.17.2)
-      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@5.9.0)(algoliasearch@4.24.0)
+      '@algolia/autocomplete-plugin-algolia-insights': 1.9.3(@algolia/client-search@5.9.1)(algoliasearch@4.24.0)(search-insights@2.17.2)
+      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@5.9.1)(algoliasearch@4.24.0)
     transitivePeerDependencies:
       - '@algolia/client-search'
       - algoliasearch
       - search-insights
     dev: true
 
-  /@algolia/autocomplete-plugin-algolia-insights@1.9.3(@algolia/client-search@5.9.0)(algoliasearch@4.24.0)(search-insights@2.17.2):
+  /@algolia/autocomplete-plugin-algolia-insights@1.9.3(@algolia/client-search@5.9.1)(algoliasearch@4.24.0)(search-insights@2.17.2):
     resolution: {integrity: sha512-a/yTUkcO/Vyy+JffmAnTWbr4/90cLzw+CC3bRbhnULr/EM0fGNvM13oQQ14f2moLMcVDyAx/leczLlAOovhSZg==}
     peerDependencies:
       search-insights: '>= 1 < 3'
     dependencies:
-      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@5.9.0)(algoliasearch@4.24.0)
+      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@5.9.1)(algoliasearch@4.24.0)
       search-insights: 2.17.2
     transitivePeerDependencies:
       - '@algolia/client-search'
       - algoliasearch
     dev: true
 
-  /@algolia/autocomplete-preset-algolia@1.9.3(@algolia/client-search@5.9.0)(algoliasearch@4.24.0):
+  /@algolia/autocomplete-preset-algolia@1.9.3(@algolia/client-search@5.9.1)(algoliasearch@4.24.0):
     resolution: {integrity: sha512-d4qlt6YmrLMYy95n5TB52wtNDr6EgAIPH81dvvvW8UmuWRgxEtY0NJiPwl/h95JtG2vmRM804M0DSwMCNZlzRA==}
     peerDependencies:
       '@algolia/client-search': '>= 4.9.1 < 6'
       algoliasearch: '>= 4.9.1 < 6'
     dependencies:
-      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@5.9.0)(algoliasearch@4.24.0)
-      '@algolia/client-search': 5.9.0
+      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@5.9.1)(algoliasearch@4.24.0)
+      '@algolia/client-search': 5.9.1
       algoliasearch: 4.24.0
     dev: true
 
-  /@algolia/autocomplete-shared@1.9.3(@algolia/client-search@5.9.0)(algoliasearch@4.24.0):
+  /@algolia/autocomplete-shared@1.9.3(@algolia/client-search@5.9.1)(algoliasearch@4.24.0):
     resolution: {integrity: sha512-Wnm9E4Ye6Rl6sTTqjoymD+l8DjSTHsHboVRYrKgEt8Q7UHm9nYbqhN/i0fhUYA3OAEH7WA8x3jfpnmJm3rKvaQ==}
     peerDependencies:
       '@algolia/client-search': '>= 4.9.1 < 6'
       algoliasearch: '>= 4.9.1 < 6'
     dependencies:
-      '@algolia/client-search': 5.9.0
+      '@algolia/client-search': 5.9.1
       algoliasearch: 4.24.0
     dev: true
 
@@ -1187,8 +1187,8 @@ packages:
       '@algolia/transporter': 4.24.0
     dev: true
 
-  /@algolia/client-common@5.9.0:
-    resolution: {integrity: sha512-pJVsnuXJa2V0WSXJJASwjnDdEP4fODDtmh4JnyurWbY+f9EPHymAk5zjx0ThGXyiroXEsCywP/AUV69MG0kDyw==}
+  /@algolia/client-common@5.9.1:
+    resolution: {integrity: sha512-YWPGDyISFNbPFVswI16c4rgt2CeTgFk82e543FSyw/3H5eNKa0YPb876GguEb50NualXCF7DCuVhcp6XMTpaSg==}
     engines: {node: '>= 14.0.0'}
     dev: true
 
@@ -1208,14 +1208,14 @@ packages:
       '@algolia/transporter': 4.24.0
     dev: true
 
-  /@algolia/client-search@5.9.0:
-    resolution: {integrity: sha512-8WEe9aZUxi/cOPWgM6EQ0EHS/gX1xFtSjsHXKO0qa3Bg8WRp2DEZOMrpbHaYZu3bvpoFVzI52otFWOoF0YNIGA==}
+  /@algolia/client-search@5.9.1:
+    resolution: {integrity: sha512-JDK8kv1ZR2uwEbUVOZ6GA2AQyHI1+T5noupyTsu7SY2M6W3wPwQO3oUou6Xq+fWJmXGUB8TUj4Yv3ioYoTjQVg==}
     engines: {node: '>= 14.0.0'}
     dependencies:
-      '@algolia/client-common': 5.9.0
-      '@algolia/requester-browser-xhr': 5.9.0
-      '@algolia/requester-fetch': 5.9.0
-      '@algolia/requester-node-http': 5.9.0
+      '@algolia/client-common': 5.9.1
+      '@algolia/requester-browser-xhr': 5.9.1
+      '@algolia/requester-fetch': 5.9.1
+      '@algolia/requester-node-http': 5.9.1
     dev: true
 
   /@algolia/events@4.0.1:
@@ -1254,22 +1254,22 @@ packages:
       '@algolia/requester-common': 4.24.0
     dev: true
 
-  /@algolia/requester-browser-xhr@5.9.0:
-    resolution: {integrity: sha512-CPI7p40md5Hnbi9eJfjeHJZgUTYOcu0lpkimVJD+GIr8qIV9DMNtliwBaugxOGtanNU0E6bAH9/EzvpwzVZqqg==}
+  /@algolia/requester-browser-xhr@5.9.1:
+    resolution: {integrity: sha512-EevzJJ2AXu+U2w14XgK9GnJn9Y4q5GNnoAUWS0aErCCb7XhYiM7xa1eJnVq+FoOwRuZj8RmS4GEV7t3CQI3TqA==}
     engines: {node: '>= 14.0.0'}
     dependencies:
-      '@algolia/client-common': 5.9.0
+      '@algolia/client-common': 5.9.1
     dev: true
 
   /@algolia/requester-common@4.24.0:
     resolution: {integrity: sha512-k3CXJ2OVnvgE3HMwcojpvY6d9kgKMPRxs/kVohrwF5WMr2fnqojnycZkxPoEg+bXm8fi5BBfFmOqgYztRtHsQA==}
     dev: true
 
-  /@algolia/requester-fetch@5.9.0:
-    resolution: {integrity: sha512-IJeK16Kqt030s1XesqZtGuNR0heHH+ET43FTPkmgBrxNZnFkeOKAxVTU/Q6T8c6DJwdwDrsZVfRodS3SXxJVkg==}
+  /@algolia/requester-fetch@5.9.1:
+    resolution: {integrity: sha512-gBSi8QotBfOu3BbF25PB2uVbCNfrjVDGyvfeIQ6DukUldjEE8ruusNJnVMHoR00rO1C8G86/USHkbmXx73vf7Q==}
     engines: {node: '>= 14.0.0'}
     dependencies:
-      '@algolia/client-common': 5.9.0
+      '@algolia/client-common': 5.9.1
     dev: true
 
   /@algolia/requester-node-http@4.24.0:
@@ -1278,11 +1278,11 @@ packages:
       '@algolia/requester-common': 4.24.0
     dev: true
 
-  /@algolia/requester-node-http@5.9.0:
-    resolution: {integrity: sha512-nI4daxMurZRCbEIa7zxCYNrvM3e4R3/A/Zb+H+R52ezV1/zSgMfSfhb5L9jIgBjAmuIDqSCAHqlFJ1XpMBPXgg==}
+  /@algolia/requester-node-http@5.9.1:
+    resolution: {integrity: sha512-ImECpAR0A0q+9UfTprA099JJ6VZ+GjUoOC+m5rbyJieA4rUbt/A6QHkqeUq/2fObeezOzLn4DZDAXW93YHM+oQ==}
     engines: {node: '>= 14.0.0'}
     dependencies:
-      '@algolia/client-common': 5.9.0
+      '@algolia/client-common': 5.9.1
     dev: true
 
   /@algolia/transporter@4.24.0:
@@ -2836,7 +2836,7 @@ packages:
     resolution: {integrity: sha512-vKNZepO2j7MrYBTZIGXvlUOIR+v9KRf70FApRgovWrj3GTs1EITz/Xb0AOlm1xsQBp16clVZj1SY/qaOJbQtZw==}
     dev: true
 
-  /@docsearch/react@3.6.2(@algolia/client-search@5.9.0)(@types/react@18.3.11)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2):
+  /@docsearch/react@3.6.2(@algolia/client-search@5.9.1)(@types/react@18.3.11)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2):
     resolution: {integrity: sha512-rtZce46OOkVflCQH71IdbXSFK+S8iJZlUF56XBW5rIgx/eG5qoomC7Ag3anZson1bBac/JFQn7XOBfved/IMRA==}
     peerDependencies:
       '@types/react': '>= 16.8.0 < 19.0.0'
@@ -2853,8 +2853,8 @@ packages:
       search-insights:
         optional: true
     dependencies:
-      '@algolia/autocomplete-core': 1.9.3(@algolia/client-search@5.9.0)(algoliasearch@4.24.0)(search-insights@2.17.2)
-      '@algolia/autocomplete-preset-algolia': 1.9.3(@algolia/client-search@5.9.0)(algoliasearch@4.24.0)
+      '@algolia/autocomplete-core': 1.9.3(@algolia/client-search@5.9.1)(algoliasearch@4.24.0)(search-insights@2.17.2)
+      '@algolia/autocomplete-preset-algolia': 1.9.3(@algolia/client-search@5.9.1)(algoliasearch@4.24.0)
       '@docsearch/css': 3.6.2
       '@types/react': 18.3.11
       algoliasearch: 4.24.0
@@ -2935,7 +2935,7 @@ packages:
       serve-handler: 6.1.5
       shelljs: 0.8.5
       terser-webpack-plugin: 5.3.10(@swc/core@1.7.35)(webpack@5.95.0)
-      tslib: 2.7.0
+      tslib: 2.8.0
       update-notifier: 6.0.2
       url-loader: 4.1.1(file-loader@6.2.0)(webpack@5.95.0)
       webpack: 5.95.0(@swc/core@1.7.35)
@@ -3070,7 +3070,7 @@ packages:
       cssnano-preset-advanced: 6.1.2(postcss@8.4.47)
       postcss: 8.4.47
       postcss-sort-media-queries: 5.2.0(postcss@8.4.47)
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /@docusaurus/cssnano-preset@3.5.2:
@@ -3088,7 +3088,7 @@ packages:
     engines: {node: '>=18.0'}
     dependencies:
       chalk: 4.1.2
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /@docusaurus/logger@3.5.2:
@@ -3096,7 +3096,7 @@ packages:
     engines: {node: '>=18.0'}
     dependencies:
       chalk: 4.1.2
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /@docusaurus/mdx-loader@3.4.0(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(react-dom@18.3.1)(react@18.3.1)(typescript@5.6.2):
@@ -3126,7 +3126,7 @@ packages:
       remark-frontmatter: 5.0.0
       remark-gfm: 4.0.0
       stringify-object: 3.3.0
-      tslib: 2.7.0
+      tslib: 2.8.0
       unified: 11.0.5
       unist-util-visit: 5.0.0
       url-loader: 4.1.1(file-loader@6.2.0)(webpack@5.95.0)
@@ -3253,7 +3253,7 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
       reading-time: 1.5.0
       srcset: 4.0.0
-      tslib: 2.7.0
+      tslib: 2.8.0
       unist-util-visit: 5.0.0
       utility-types: 3.11.0
       webpack: 5.95.0(@swc/core@1.7.35)
@@ -3298,7 +3298,7 @@ packages:
       lodash: 4.17.21
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
       utility-types: 3.11.0
       webpack: 5.95.0(@swc/core@1.7.35)
     transitivePeerDependencies:
@@ -3381,7 +3381,7 @@ packages:
       fs-extra: 11.2.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
       webpack: 5.95.0(@swc/core@1.7.35)
     transitivePeerDependencies:
       - '@parcel/css'
@@ -3416,7 +3416,7 @@ packages:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-json-view-lite: 1.5.0(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
     transitivePeerDependencies:
       - '@parcel/css'
       - '@rspack/core'
@@ -3448,7 +3448,7 @@ packages:
       '@docusaurus/utils-validation': 3.4.0(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(typescript@5.6.2)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
     transitivePeerDependencies:
       - '@parcel/css'
       - '@rspack/core'
@@ -3481,7 +3481,7 @@ packages:
       '@types/gtag.js': 0.0.12
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
     transitivePeerDependencies:
       - '@parcel/css'
       - '@rspack/core'
@@ -3513,7 +3513,7 @@ packages:
       '@docusaurus/utils-validation': 3.4.0(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(typescript@5.6.2)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
     transitivePeerDependencies:
       - '@parcel/css'
       - '@rspack/core'
@@ -3550,7 +3550,7 @@ packages:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       sitemap: 7.1.2
-      tslib: 2.7.0
+      tslib: 2.8.0
     transitivePeerDependencies:
       - '@parcel/css'
       - '@rspack/core'
@@ -3570,7 +3570,7 @@ packages:
       - webpack-cli
     dev: true
 
-  /@docusaurus/preset-classic@3.4.0(@algolia/client-search@5.9.0)(@swc/core@1.7.35)(@types/react@18.3.11)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2)(typescript@5.6.2):
+  /@docusaurus/preset-classic@3.4.0(@algolia/client-search@5.9.1)(@swc/core@1.7.35)(@types/react@18.3.11)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2)(typescript@5.6.2):
     resolution: {integrity: sha512-Ohj6KB7siKqZaQhNJVMBBUzT3Nnp6eTKqO+FXO3qu/n1hJl3YLwVKTWBg28LF7MWrKu46UuYavwMRxud0VyqHg==}
     engines: {node: '>=18.0'}
     peerDependencies:
@@ -3588,7 +3588,7 @@ packages:
       '@docusaurus/plugin-sitemap': 3.4.0(@swc/core@1.7.35)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.6.2)
       '@docusaurus/theme-classic': 3.4.0(@swc/core@1.7.35)(@types/react@18.3.11)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.6.2)
       '@docusaurus/theme-common': 3.4.0(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.6.2)
-      '@docusaurus/theme-search-algolia': 3.4.0(@algolia/client-search@5.9.0)(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(@types/react@18.3.11)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2)(typescript@5.6.2)
+      '@docusaurus/theme-search-algolia': 3.4.0(@algolia/client-search@5.9.1)(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(@types/react@18.3.11)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2)(typescript@5.6.2)
       '@docusaurus/types': 3.4.0(@swc/core@1.7.35)(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -3655,7 +3655,7 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
       react-router-dom: 5.3.4(react@18.3.1)
       rtlcss: 4.3.0
-      tslib: 2.7.0
+      tslib: 2.8.0
       utility-types: 3.11.0
     transitivePeerDependencies:
       - '@parcel/css'
@@ -3699,7 +3699,7 @@ packages:
       prism-react-renderer: 2.4.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
       utility-types: 3.11.0
     transitivePeerDependencies:
       - '@docusaurus/types'
@@ -3771,7 +3771,7 @@ packages:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-live: 4.1.7(react-dom@18.3.1)(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
     transitivePeerDependencies:
       - '@docusaurus/types'
       - '@parcel/css'
@@ -3792,14 +3792,14 @@ packages:
       - webpack-cli
     dev: true
 
-  /@docusaurus/theme-search-algolia@3.4.0(@algolia/client-search@5.9.0)(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(@types/react@18.3.11)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2)(typescript@5.6.2):
+  /@docusaurus/theme-search-algolia@3.4.0(@algolia/client-search@5.9.1)(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(@types/react@18.3.11)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2)(typescript@5.6.2):
     resolution: {integrity: sha512-aiHFx7OCw4Wck1z6IoShVdUWIjntC8FHCw9c5dR8r3q4Ynh+zkS8y2eFFunN/DL6RXPzpnvKCg3vhLQYJDmT9Q==}
     engines: {node: '>=18.0'}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
     dependencies:
-      '@docsearch/react': 3.6.2(@algolia/client-search@5.9.0)(@types/react@18.3.11)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2)
+      '@docsearch/react': 3.6.2(@algolia/client-search@5.9.1)(@types/react@18.3.11)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.17.2)
       '@docusaurus/core': 3.4.0(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.6.2)
       '@docusaurus/logger': 3.4.0
       '@docusaurus/plugin-content-docs': 3.4.0(@swc/core@1.7.35)(eslint@9.12.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.6.2)
@@ -3815,7 +3815,7 @@ packages:
       lodash: 4.17.21
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
       utility-types: 3.11.0
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -3845,7 +3845,7 @@ packages:
     engines: {node: '>=18.0'}
     dependencies:
       fs-extra: 11.2.0
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /@docusaurus/types@3.4.0(@swc/core@1.7.35)(react-dom@18.3.1)(react@18.3.1):
@@ -3908,7 +3908,7 @@ packages:
         optional: true
     dependencies:
       '@docusaurus/types': 3.4.0(@swc/core@1.7.35)(react-dom@18.3.1)(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /@docusaurus/utils-common@3.5.2(@docusaurus/types@3.4.0):
@@ -3921,7 +3921,7 @@ packages:
         optional: true
     dependencies:
       '@docusaurus/types': 3.4.0(@swc/core@1.7.35)(react-dom@18.3.1)(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /@docusaurus/utils-common@3.5.2(@docusaurus/types@3.5.2):
@@ -3934,7 +3934,7 @@ packages:
         optional: true
     dependencies:
       '@docusaurus/types': 3.5.2(@swc/core@1.7.35)(react-dom@18.3.1)(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /@docusaurus/utils-validation@3.4.0(@docusaurus/types@3.4.0)(@swc/core@1.7.35)(typescript@5.6.2):
@@ -3948,7 +3948,7 @@ packages:
       joi: 17.13.3
       js-yaml: 4.1.0
       lodash: 4.17.21
-      tslib: 2.7.0
+      tslib: 2.8.0
     transitivePeerDependencies:
       - '@docusaurus/types'
       - '@swc/core'
@@ -4007,7 +4007,7 @@ packages:
       prompts: 2.4.2
       resolve-pathname: 3.0.0
       shelljs: 0.8.5
-      tslib: 2.7.0
+      tslib: 2.8.0
       url-loader: 4.1.1(file-loader@6.2.0)(webpack@5.95.0)
       utility-types: 3.11.0
       webpack: 5.95.0(@swc/core@1.7.35)
@@ -4046,7 +4046,7 @@ packages:
       prompts: 2.4.2
       resolve-pathname: 3.0.0
       shelljs: 0.8.5
-      tslib: 2.7.0
+      tslib: 2.8.0
       url-loader: 4.1.1(file-loader@6.2.0)(webpack@5.95.0)
       utility-types: 3.11.0
       webpack: 5.95.0(@swc/core@1.7.35)
@@ -4085,7 +4085,7 @@ packages:
       prompts: 2.4.2
       resolve-pathname: 3.0.0
       shelljs: 0.8.5
-      tslib: 2.7.0
+      tslib: 2.8.0
       url-loader: 4.1.1(file-loader@6.2.0)(webpack@5.95.0)
       utility-types: 3.11.0
       webpack: 5.95.0(@swc/core@1.7.35)
@@ -4102,21 +4102,21 @@ packages:
     resolution: {integrity: sha512-pVGjBIt1Y6gg3EJN8jTcfpP/+uuRksIo055oE/OBkDNcjZqVbfkWCksG1Jp4yZnj3iKWyWX8fdG/j6UDYPbFog==}
     dependencies:
       '@emnapi/wasi-threads': 1.0.1
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
     optional: true
 
   /@emnapi/runtime@1.3.1:
     resolution: {integrity: sha512-kEBmG8KyqtxJZv+ygbEim+KCGtIq1fC22Ms3S4ziXmYKm8uyoLX0MHONVKwp+9opg390VaKRNt4a7A9NwmpNhw==}
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
     optional: true
 
   /@emnapi/wasi-threads@1.0.1:
     resolution: {integrity: sha512-iIBu7mwkq4UQGeMEM8bLwNK962nXdhodeScX4slfQnRhEMMzvYivHhutCIk8uojvmASXXPC2WNEjwxFWk72Oqw==}
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
     optional: true
 
@@ -5109,7 +5109,7 @@ packages:
       pako: 2.1.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      tslib: 2.7.0
+      tslib: 2.8.0
       vfile-message: 3.1.4
     transitivePeerDependencies:
       - '@preact/signals-core'
@@ -5638,7 +5638,7 @@ packages:
       debug: 4.3.7
       oxc-resolver: 1.12.0
       pirates: 4.0.6
-      tslib: 2.7.0
+      tslib: 2.8.0
       typescript: 5.6.2
     transitivePeerDependencies:
       - '@swc/types'
@@ -5649,7 +5649,7 @@ packages:
     resolution: {integrity: sha512-JxIvIo/Hrpv0JCHSyRpetAdQ6lB27oFYhv0PKCNf1g2gUXOjpeR1exrXccRxLMuAV5WAmGFBwRnNOJqN38+qtg==}
     dependencies:
       source-map-support: 0.5.21
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /@swc/core-darwin-arm64@1.5.7:
@@ -5857,7 +5857,7 @@ packages:
   /@swc/helpers@0.5.13:
     resolution: {integrity: sha512-UoKGxQ3r5kYI9dALKJapMmuK+1zWM/H17Z1+iwnNmzcJRnfFuevZs375TA5rW31pu4BS4NoSy1fRsexDXfWn5w==}
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
 
   /@swc/jest@0.2.36(@swc/core@1.7.35):
     resolution: {integrity: sha512-8X80dp81ugxs4a11z1ka43FPhP+/e+mJNXJSxiNYk8gIX/jPBtY4gQTrKu/KIoco8bzKuPI5lUxjfLiGsfvnlw==}
@@ -5982,7 +5982,7 @@ packages:
   /@tybys/wasm-util@0.9.0:
     resolution: {integrity: sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw==}
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
     optional: true
 
@@ -7257,7 +7257,7 @@ packages:
     resolution: {integrity: sha512-x1FCFnFifvYDDzTaLII71vG5uvDwgtmDTEVWAxrgeiR8VjMONcCXJx7E+USjDtHlwFmt9MysbqgF9b9Vjr6w+w==}
     engines: {node: '>=4'}
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /astring@1.9.0:
@@ -7845,7 +7845,7 @@ packages:
     resolution: {integrity: sha512-gxGWBrTT1JuMx6R+o5PTXMmUnhnVzLQ9SNutD4YqKtI6ap897t3tKECYla6gCWEkplXnlNybEkZg9GEGxKFCgw==}
     dependencies:
       pascal-case: 3.1.2
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /camelcase-keys@6.2.2:
@@ -7890,7 +7890,7 @@ packages:
     resolution: {integrity: sha512-ds37W8CytHgwnhGGTi88pcPyR15qoNkOpYwmMMfnWqqWgESapLqvDx6huFjQ5vqWSn2Z06173XNA7LtMOeUh1A==}
     dependencies:
       no-case: 3.0.4
-      tslib: 2.7.0
+      tslib: 2.8.0
       upper-case-first: 2.0.2
     dev: true
 
@@ -7950,7 +7950,7 @@ packages:
       path-case: 3.0.4
       sentence-case: 3.0.4
       snake-case: 3.0.4
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /char-regex@1.0.2:
@@ -8436,7 +8436,7 @@ packages:
     resolution: {integrity: sha512-I2hSBi7Vvs7BEuJDr5dDHfzb/Ruj3FyvFyh7KLilAjNQw3Be+xgqUBA2W6scVEcL0hL1dwPRtIqEPVUCKkSsyQ==}
     dependencies:
       no-case: 3.0.4
-      tslib: 2.7.0
+      tslib: 2.8.0
       upper-case: 2.0.2
     dev: true
 
@@ -9538,7 +9538,7 @@ packages:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
     dependencies:
       no-case: 3.0.4
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /dot-prop@5.3.0:
@@ -11578,7 +11578,7 @@ packages:
     resolution: {integrity: sha512-H/vuk5TEEVZwrR0lp2zed9OCo1uAILMlx0JEMgC26rzyJJ3N1v6XkwHHXJQdR2doSjcGPM6OKPYoJgf0plJ11Q==}
     dependencies:
       capital-case: 1.0.4
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /highlight.js@11.10.0:
@@ -13628,7 +13628,7 @@ packages:
   /lower-case@2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /lowercase-keys@1.0.0:
@@ -14986,7 +14986,7 @@ packages:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /node-domexception@1.0.0:
@@ -15580,7 +15580,7 @@ packages:
     resolution: {integrity: sha512-RXlj7zCYokReqWpOPH9oYivUzLYZ5vAPIfEmCTNViosC78F8F0H9y7T7gG2M39ymgutxF5gcFEsyZQSph9Bp3A==}
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /parent-module@1.0.1:
@@ -15686,14 +15686,14 @@ packages:
     resolution: {integrity: sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g==}
     dependencies:
       no-case: 3.0.4
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /path-case@3.0.4:
     resolution: {integrity: sha512-qO4qCFjXqVTrcbPt/hQfhTQ+VhFsqNKOPtytgNKkKxSoEp3XPUQ8ObFuePylOIok5gjn69ry8XiULxCwot3Wfg==}
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /path-exists@3.0.0:
@@ -17679,7 +17679,7 @@ packages:
   /rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /sade@1.8.1:
@@ -17876,7 +17876,7 @@ packages:
     resolution: {integrity: sha512-8LS0JInaQMCRoQ7YUytAo/xUu5W2XnQxV2HI/6uM6U7CITS1RqPElr30V6uIqyMKM9lJGRVFy5/4CuzcixNYSg==}
     dependencies:
       no-case: 3.0.4
-      tslib: 2.7.0
+      tslib: 2.8.0
       upper-case-first: 2.0.2
     dev: true
 
@@ -18114,7 +18114,7 @@ packages:
     resolution: {integrity: sha512-LAOh4z89bGQvl9pFfNF8V146i7o7/CqFPbqzYgP+yYzDIDeS9HaNFtXABamRW+AQzEVODcvE79ljJ+8a9YSdMg==}
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /socket.io-adapter@1.1.2:
@@ -19132,12 +19132,8 @@ packages:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
     dev: true
 
-  /tslib@2.7.0:
-    resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
-
   /tslib@2.8.0:
     resolution: {integrity: sha512-jWVzBLplnCmoaTr13V9dYbiQ99wvZRd0vNWaDRg+aVYRcjDF3nDksxFDE/+fkXnKhpnUUkmx5pK/v8mCtLVqZA==}
-    dev: true
 
   /tunnel-agent@0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
@@ -19510,13 +19506,13 @@ packages:
   /upper-case-first@2.0.2:
     resolution: {integrity: sha512-514ppYHBaKwfJRK/pNC6c/OxfGa0obSnAl106u97Ed0I625Nin96KAjttZF6ZL3e1XLtphxnqrOi9iWgm+u+bg==}
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /upper-case@2.0.2:
     resolution: {integrity: sha512-KgdgDGJt2TpuwBUIjgG6lzw2GWFRCW9Qkfkiv0DxqHHLYJHmtmdUIKcZd8rHgFSjopVTlw6ggzCm1b8MFQwikg==}
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
     dev: true
 
   /uri-js@4.4.1:
