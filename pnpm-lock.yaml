@@ -153,8 +153,8 @@ importers:
         specifier: ^20.0.0
         version: 20.16.13
       '@types/picomatch':
-        specifier: ^2.3.4
-        version: 2.3.4
+        specifier: ^3.0.0
+        version: 3.0.1
       '@types/react':
         specifier: ^18.3.11
         version: 18.3.11
@@ -562,8 +562,8 @@ importers:
         specifier: '9'
         version: 9.6.1
       '@types/picomatch':
-        specifier: ^2.3.0
-        version: 2.3.4
+        specifier: ^3.0.0
+        version: 3.0.1
       '@typescript-eslint/utils':
         specifier: 8.10.0
         version: 8.10.0(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.2)
@@ -3133,8 +3133,8 @@ packages:
   '@types/parse5@6.0.3':
     resolution: {integrity: sha512-SuT16Q1K51EAVPz1K29DJ/sXjhSQ0zjvsypYJ6tlwVsRV9jwW5Adq2ch8Dq8kDBCkYnELS7N7VNCSB5nC56t/g==}
 
-  '@types/picomatch@2.3.4':
-    resolution: {integrity: sha512-0so8lU8O5zatZS/2Fi4zrwks+vZv7e0dygrgEZXljODXBig97l4cPQD+9LabXfGJOWwoRkTVz6Q4edZvD12UOA==}
+  '@types/picomatch@3.0.1':
+    resolution: {integrity: sha512-1MRgzpzY0hOp9pW/kLRxeQhUWwil6gnrUYd3oEpeYBqp/FexhaCPv3F8LsYr47gtUU45fO2cm1dbwkSrHEo8Uw==}
 
   '@types/prismjs@1.26.4':
     resolution: {integrity: sha512-rlAnzkW2sZOjbqZ743IHUhFcvzaGbqijwOu8QZnZCjfQzBqFE3s4lOTJEsxikImav9uzz/42I+O7YUs1mWgMlg==}
@@ -13426,7 +13426,7 @@ snapshots:
 
   '@types/parse5@6.0.3': {}
 
-  '@types/picomatch@2.3.4': {}
+  '@types/picomatch@3.0.1': {}
 
   '@types/prismjs@1.26.4': {}
 
