@@ -407,6 +407,12 @@ describe('Intl.DateTimeFormat', function () {
     const date1 = new Date('')
     expect(date1.toLocaleString('en-US')).toBe('Invalid Date')
   })
+  it('toLocaleString returns "Invalid Date", GH #3508', function () {
+    const date1 = new Date(0)
+    expect(date1.toLocaleString('en-US')).toMatch(
+      /\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2} [AP]M/
+    )
+  })
   it('toLocaleTimeString returns "Invalid Date", GH #3508', function () {
     const date1 = new Date('')
     expect(date1.toLocaleTimeString('en-US')).toBe('Invalid Date')
