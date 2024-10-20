@@ -1,6 +1,3 @@
-diff --git a/index.ts b/index.ts
-deleted file mode 100644
-index a3f41eec763133a2d7b9f0669ff3b8d6a31ccbef..0000000000000000000000000000000000000000
 diff --git a/package.json b/package.json
 index 62edbbd23aec67b25b0c17b03d5b8b42158025a0..828877e78af75b5bef9bbe2dcf07c545ab42b4f1 100644
 --- a/package.json

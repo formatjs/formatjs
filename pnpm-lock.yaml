@@ -21,7 +21,7 @@ patchedDependencies:
     hash: 75gmslt2lrk4ybls6stmqfpu2m
     path: patches/@glimmer__interfaces@0.92.3.patch
   '@glimmer/syntax@0.92.3':
-    hash: 6yevalk2qa2vb5m5ntqb5ee4re
+    hash: 7stkqv6abzim5fnspwum4z3xfa
     path: patches/@glimmer__syntax@0.92.3.patch
   make-plural-compiler@5.1.0:
     hash: qdcdtqeknhxqnjirmx4dcdabaq
@@ -72,7 +72,7 @@ importers:
         version: 0.92.3
       '@glimmer/syntax':
         specifier: 0.92.3
-        version: 0.92.3(patch_hash=6yevalk2qa2vb5m5ntqb5ee4re)
+        version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
       '@glimmer/validator':
         specifier: ^0.92.3
         version: 0.92.3
@@ -435,7 +435,7 @@ importers:
         version: 0.92.3
       '@glimmer/syntax':
         specifier: ^0.92.0
-        version: 0.92.3(patch_hash=6yevalk2qa2vb5m5ntqb5ee4re)
+        version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
       '@glimmer/validator':
         specifier: ^0.92.0
         version: 0.92.3
@@ -475,7 +475,7 @@ importers:
         version: 0.92.3
       '@glimmer/syntax':
         specifier: ^0.92.0
-        version: 0.92.3(patch_hash=6yevalk2qa2vb5m5ntqb5ee4re)
+        version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
       '@glimmer/validator':
         specifier: ^0.92.0
         version: 0.92.3
@@ -3802,7 +3802,7 @@ packages:
       '@glimmer/util': 0.92.3
       '@glimmer/validator': 0.92.3
 
-  /@glimmer/syntax@0.92.3(patch_hash=6yevalk2qa2vb5m5ntqb5ee4re):
+  /@glimmer/syntax@0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa):
     resolution: {integrity: sha512-7wPKQmULyXCYf0KvbPmfrs/skPISH2QGR9atCnmDWnHyLv5SSZVLm1P0Ctrpta6+Ci3uGQb7hGk0IjsLEavcYQ==}
     dependencies:
       '@glimmer/interfaces': 0.92.3(patch_hash=75gmslt2lrk4ybls6stmqfpu2m)
@@ -9103,7 +9103,7 @@ packages:
     hasBin: true
     dependencies:
       '@glimmer/reference': 0.84.3
-      '@glimmer/syntax': 0.92.3(patch_hash=6yevalk2qa2vb5m5ntqb5ee4re)
+      '@glimmer/syntax': 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
       '@glimmer/validator': 0.84.3
       async-promise-queue: 1.0.5
       colors: 1.4.0
