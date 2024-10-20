@@ -1,7 +1,6 @@
 import {exec as nodeExec} from 'child_process'
-import {mkdirp, readJSON} from 'fs-extra'
+import {mkdirp, readJSON, remove} from 'fs-extra'
 import {join, resolve} from 'path'
-import {rimraf} from 'rimraf'
 import {promisify} from 'util'
 const exec = promisify(nodeExec)
 
@@ -10,7 +9,7 @@ const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts')
 
 beforeEach(async () => {
   await mkdirp(join(__dirname, 'test_artifacts'))
-  await rimraf(ARTIFACT_PATH)
+  await remove(ARTIFACT_PATH)
 })
 
 test('basic case: help', async () => {

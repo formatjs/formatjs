@@ -22,7 +22,6 @@ jest_test(
         "//:node_modules/@types/fs-extra",
         "//:node_modules/fast-glob",
         "//:node_modules/fs-extra",
-        "//:node_modules/rimraf",
     ],
     flaky = True,
     snapshots = glob(["compile_folder/__snapshots__/*"]),
@@ -39,7 +38,6 @@ jest_test(
         "//:node_modules/@types/fs-extra",
         "//:node_modules/fast-glob",
         "//:node_modules/fs-extra",
-        "//:node_modules/rimraf",
     ],
     flaky = True,
     snapshots = glob(["extract/__snapshots__/*"]),
@@ -82,7 +80,6 @@ jest_test(
     data = [
         "formatter.js",
         ":node_modules/@formatjs/cli",
-        "//:node_modules/rimraf",
     ] + glob(
         ["compile/**/*"],
         exclude = ["compile/__snapshots__/**/*"],

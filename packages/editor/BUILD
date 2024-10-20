@@ -49,9 +49,6 @@
 # #         "tests/extract/__snapshots__/unit.test.ts.snap",
 # #     ] + [":srcs"],
 # #     deps = [
-# #
-# #
-# #         "//:node_modules/rimraf",
 # #     ] + SRC_DEPS,
 # # )
 
