@@ -14,7 +14,7 @@ overrides:
   eslint: '9'
   typescript: 5.6.2
 
-packageExtensionsChecksum: b9ce7c3e3786b4420c484d1e957a9a9b
+packageExtensionsChecksum: 36f586ee47cc544e88bd717a1b6ef1ae
 
 patchedDependencies:
   '@glimmer/interfaces@0.92.3':
@@ -242,8 +242,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       commander:
-        specifier: ^8.3.0
-        version: 8.3.0
+        specifier: ^12.0.0
+        version: 12.1.0
       content-tag:
         specifier: ^2.0.2
         version: 2.0.2
@@ -437,7 +437,7 @@ importers:
         specifier: ^0.91.1 || ^0.92.0
         version: 0.92.3
       '@glimmer/syntax':
-        specifier: ^0.92.0
+        specifier: 0.92.3
         version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
       '@glimmer/validator':
         specifier: ^0.92.0
@@ -477,7 +477,7 @@ importers:
         specifier: ^0.91.1 || ^0.92.0
         version: 0.92.3
       '@glimmer/syntax':
-        specifier: ^0.92.0
+        specifier: 0.92.3
         version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
       '@glimmer/validator':
         specifier: ^0.92.0
@@ -501,8 +501,8 @@ importers:
         specifier: ^4.0.0
         version: 4.1.2
       commander:
-        specifier: '8'
-        version: 8.3.0
+        specifier: '12'
+        version: 12.1.0
       content-tag:
         specifier: ^2.0.1
         version: 2.0.2
@@ -651,7 +651,7 @@ importers:
         specifier: ^2.7.0
         version: 2.8.0
       typescript:
-        specifier: ^4.7 || 5
+        specifier: 5.6.2
         version: 5.6.2
     devDependencies:
       '@formatjs/intl-datetimeformat':
@@ -892,7 +892,7 @@ importers:
         specifier: ^2.7.0
         version: 2.8.0
       typescript:
-        specifier: ^4.7 || 5
+        specifier: 5.6.2
         version: 5.6.2
     devDependencies:
       '@formatjs/intl-numberformat':
@@ -3721,7 +3721,7 @@ packages:
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
-      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
+      eslint: '9'
     dependencies:
       eslint: 9.0.0
       eslint-visitor-keys: 3.4.3
@@ -6034,7 +6034,7 @@ packages:
     resolution: {integrity: sha512-E24l90SxuJhytWJ0pTQydFT46Nk0Z+bsLKo/L8rtQSL93rQ6byd1V/QbDpHUTdLPOMsBCcYXZweADNCfOCmOAg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
+      eslint: '9'
       typescript: '*'
     peerDependenciesMeta:
       typescript:
@@ -6055,7 +6055,7 @@ packages:
     resolution: {integrity: sha512-/+Cms6eddJv4UW1wzxbRYeaZKJOlwWrfzuPQCGtzMsiZMTn5SaABS/wyCSZ+po+nUXc86OtP5QajUfsZGH/tSg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
+      eslint: '9'
     dependencies:
       '@typescript-eslint/typescript-estree': 8.10.0(typescript@5.6.2)
       '@typescript-eslint/utils': 8.10.0(eslint@9.0.0)(typescript@5.6.2)
@@ -6105,7 +6105,7 @@ packages:
     resolution: {integrity: sha512-Oq4uZ7JFr9d1ZunE/QKy5egcDRXT/FrS2z/nlxzPua2VHFtmMvFNDvpq1m/hq0ra+T52aUezfcjGRIB7vNJF9w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
+      eslint: '9'
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@9.0.0)
       '@typescript-eslint/scope-manager': 8.10.0
@@ -7801,6 +7801,10 @@ packages:
     engines: {node: '>=14'}
     dev: true
 
+  /commander@12.1.0:
+    resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
+    engines: {node: '>=18'}
+
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: true
@@ -8106,7 +8110,7 @@ packages:
     peerDependencies:
       '@types/node': '*'
       cosmiconfig: '>=8.2'
-      typescript: '>=4'
+      typescript: 5.6.2
     dependencies:
       '@types/node': 20.16.13
       cosmiconfig: 9.0.0(typescript@5.6.2)
@@ -8129,7 +8133,7 @@ packages:
     resolution: {integrity: sha512-kcZ6+W5QzcJ3P1Mt+83OUv/oHFqZHIx8DuxG6eZ5RGMERoLqp4BuGjhHLYGK+Kf5XVkQvqBSmAy/nGWN3qDgEA==}
     engines: {node: '>=14'}
     peerDependencies:
-      typescript: '>=4.9.5'
+      typescript: 5.6.2
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -8145,7 +8149,7 @@ packages:
     resolution: {integrity: sha512-itvL5h8RETACmOTFc4UfIyB2RfEHi71Ax6E/PivVxq9NseKbOWpeyHEOIbmAw1rs8Ak0VursQNww7lf7YtUwzg==}
     engines: {node: '>=14'}
     peerDependencies:
-      typescript: '>=4.9.5'
+      typescript: 5.6.2
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -10002,8 +10006,8 @@ packages:
     resolution: {integrity: sha512-SbH/l9ikmMWycd5puHJKTkZJKddF4iRLyW3DeZ08HTI7NGyLS38MXd/KGgeWumQO7YNQbW2u/NtPT2YowbPaGQ==}
     engines: {node: '>=10', yarn: '>=1.0.0'}
     peerDependencies:
-      eslint: '>= 6'
-      typescript: '>= 2.7'
+      eslint: '9'
+      typescript: 5.6.2
       vue-template-compiler: '*'
       webpack: '>= 4'
     peerDependenciesMeta:
@@ -15744,7 +15748,7 @@ packages:
     resolution: {integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==}
     engines: {node: '>=14'}
     peerDependencies:
-      typescript: '>=2.7'
+      typescript: 5.6.2
       webpack: '>=4'
     peerDependenciesMeta:
       typescript:
@@ -18042,7 +18046,7 @@ packages:
     resolution: {integrity: sha512-UQMIo7pb8WRomKR1/+MFVLTroIvDVtMX3K6OUir8ynLyzB8Jeriont2bTAtmNPa1ekAgN7YPDyf6V+ygrdU+eQ==}
     engines: {node: '>=16'}
     peerDependencies:
-      typescript: '>=4.2.0'
+      typescript: 5.6.2
     dependencies:
       typescript: 5.6.2
 
@@ -18094,7 +18098,7 @@ packages:
     resolution: {integrity: sha512-rNH3sK9kGZcH9dYzC7CewQm4NtxJTjSEVRJ2DyBZR7f8/wcta+iV44UPCXc5+nzDzivKtlzV6c9P4e+oFhDLYg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
-      typescript: '*'
+      typescript: 5.6.2
       webpack: ^5.0.0
     dependencies:
       chalk: 4.1.2
@@ -18700,7 +18704,7 @@ packages:
     resolution: {integrity: sha512-2rYRLWlIpaiN8xbPiDyXZXRgLGOtWxERV7ND5fFAv5qo1D2N9Fu9MNajBNc6o13lZ+24DAWCkQCvj4klgmcITg==}
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
-      eslint: '>=6.0.0'
+      eslint: '9'
     dependencies:
       debug: 4.3.7
       eslint: 9.0.0
