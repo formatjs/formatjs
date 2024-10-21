@@ -27,7 +27,7 @@
     "@typescript-eslint/utils": "8.10.0",
     "emoji-regex": "^10.2.1",
     "magic-string": "^0.30.0",
-    "picomatch": "^4.0.0",
+    "picomatch": "2 || 3 || 4",
     "tslib": "^2.7.0",
     "typescript": "5",
     "unicode-emoji-utils": "^1.2.0"
