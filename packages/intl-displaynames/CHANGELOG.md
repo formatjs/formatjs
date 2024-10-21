@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.6.10...@formatjs/intl-displaynames@6.7.0) (2024-10-21)
+
+### Features
+
+* upgrade cldr to v45 ([#4620](https://github.com/formatjs/formatjs/issues/4620)) ([fbb2bbf](https://github.com/formatjs/formatjs/commit/fbb2bbf6e038d5833c1f2752b805002436480948)) - by @longlho
+
 ## [6.6.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.6.8...@formatjs/intl-displaynames@6.6.10) (2024-10-12)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

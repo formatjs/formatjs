@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.4.0...@formatjs/intl-durationformat@0.5.0) (2024-10-21)
+
+### Features
+
+* upgrade cldr to v45 ([#4620](https://github.com/formatjs/formatjs/issues/4620)) ([fbb2bbf](https://github.com/formatjs/formatjs/commit/fbb2bbf6e038d5833c1f2752b805002436480948)) - by @longlho
+
 # [0.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.2.4...@formatjs/intl-durationformat@0.4.0) (2024-10-12)
 
 ### Features

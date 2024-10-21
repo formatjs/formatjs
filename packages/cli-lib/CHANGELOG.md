@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.5.0...@formatjs/cli-lib@6.5.1) (2024-10-21)
+
+### Bug Fixes
+
+* **deps:** update dependency @types/node to v20 ([#4617](https://github.com/formatjs/formatjs/issues/4617)) ([80f8055](https://github.com/formatjs/formatjs/commit/80f80559989b7f4549f20ad9ebfa90e838c8b2ac)) - by @renovate[bot]
+
 # [6.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.4.5...@formatjs/cli-lib@6.5.0) (2024-10-18)
 
 ### Features
