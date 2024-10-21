@@ -915,7 +915,7 @@
         "displayName": {
           "other": "키르기스스탄 솜"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1520,9 +1520,16 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "other": "시에라리온 리온"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "other": "시에라리온 리온(1964~2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1869,6 +1876,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {
@@ -2532,7 +2545,7 @@
             "other": "{0}리터"
           },
           "narrow": {
-            "other": "{0}ℓ"
+            "other": "{0}L"
           },
           "perUnit": {
             "long": "리터당 {0}",

@@ -573,7 +573,7 @@
         "displayName": {
           "other": "किर्गिस्तानी सोम"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1013,9 +1013,16 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "other": "सिएरा लियोनियन लियोन"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "other": "सिएरा लियोनियन लियोन (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1278,6 +1285,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XEU": {
         "displayName": {
@@ -1637,7 +1650,7 @@
             "other": "{0}′"
           },
           "perUnit": {
-            "long": "{0}/फ़ीट",
+            "long": "{0}/फ़ुट",
             "narrow": "{0}/फ़ीट",
             "short": "{0}/फ़ीट"
           },
@@ -1692,11 +1705,11 @@
             "other": "{0} ग्राम"
           },
           "narrow": {
-            "other": "{0} ग्रा॰"
+            "other": "{0} ग्रा"
           },
           "perUnit": {
             "long": "{0}/ग्राम",
-            "narrow": "{0}/ग्रा॰",
+            "narrow": "{0}/ग्रा",
             "short": "{0}/ग्रा॰"
           },
           "short": {
@@ -1722,7 +1735,6 @@
             "other": "{0} घंटे"
           },
           "narrow": {
-            "one": "{0}घं॰",
             "other": "{0} घं"
           },
           "perUnit": {
@@ -1784,8 +1796,8 @@
             "other": "{0} किग्रा"
           },
           "perUnit": {
-            "long": "{0}/किलोग्राम",
-            "narrow": "{0}/कि॰ग्रा॰",
+            "long": "{0} प्रति किलोग्राम",
+            "narrow": "{0}/किग्रा",
             "short": "{0}/कि॰ग्रा॰"
           },
           "short": {
@@ -2019,7 +2031,7 @@
             "other": "{0} महीने"
           },
           "narrow": {
-            "other": "{0}माह"
+            "other": "{0} माह"
           },
           "perUnit": {
             "long": "{0} प्रति महीना",
@@ -2162,7 +2174,8 @@
         },
         "yard": {
           "long": {
-            "other": "{0} यार्ड"
+            "one": "{0} यार्ड",
+            "other": "{0} गज़"
           },
           "narrow": {
             "other": "{0} यार्ड"
@@ -2178,7 +2191,7 @@
             "other": "{0} वर्ष"
           },
           "narrow": {
-            "other": "{0}वर्ष"
+            "other": "{0} व"
           },
           "perUnit": {
             "long": "{0} प्रति वर्ष",

@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
@@ -6,6 +7,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
+load(":index.bzl", "unicode_file_name")
 
 npm_link_all_packages()
 
@@ -30,13 +32,17 @@ SRC_DEPS = [
     ":node_modules/@formatjs/intl-localematcher",
 ]
 
+TEST_UNICODE_FILES = [
+    "@GraphemeBreakTest//file",
+    "@WordBreakTest//file",
+    "@SentenceBreakTest//file",
+]
+
 TEST_DEPS = SRC_DEPS + [
     "//:node_modules/@types/node",
+    "//:node_modules/@bazel/runfiles",
     "tests/test-utils.ts",
-    "unicodeFiles/GraphemeBreakTest.txt",
-    "unicodeFiles/WordBreakTest.txt",
-    "unicodeFiles/SentenceBreakTest.txt",
-]
+] + TEST_UNICODE_FILES
 
 SRCS = glob(
     [
@@ -65,6 +71,11 @@ ts_compile(
 [jest_test(
     name = "unit_test_%s" % fn.split("/")[-1].split(".")[0],
     data = [":srcs"] + [fn] + TEST_DEPS,
+    no_copy_to_bin = [
+        "@GraphemeBreakTest//file",
+        "@WordBreakTest//file",
+        "@SentenceBreakTest//file",
+    ],
 ) for fn in TESTS if fn.endswith(".test.ts")]
 
 generate_src_file(
@@ -124,23 +135,38 @@ esbuild(
     ] + SRC_DEPS,
 )
 
+UNICODE_FILES = [
+    "@DerivedCombiningClass//file",
+    "@DerivedEastAsianWidth//file",
+    "@GraphemeBreakProperty//file",
+    "@IndicSyllabicCategory//file",
+    "@SentenceBreakProperty//file",
+    "@WordBreakProperty//file",
+]
+
+[
+    copy_file(
+        # Name is something like DerivedCombiningClass
+        name = unicode_file_name(f),
+        src = f,
+        out = "%s.txt" % unicode_file_name(f),
+    )
+    for f in UNICODE_FILES
+]
+
 # Segmentation UCDs
 generate_src_file(
     name = "generate-cldr-segmentation-rules",
     src = "src/cldr-segmentation-rules.generated.ts",
-    data = [
-        "unicodeFiles/DerivedCombiningClass.txt",
-        "unicodeFiles/DerivedEastAsianWidth.txt",
-        "unicodeFiles/GraphemeBreakProperty.txt",
-        "unicodeFiles/IndicSyllabicCategory.txt",
-        "unicodeFiles/SentenceBreakProperty.txt",
-        "unicodeFiles/WordBreakProperty.txt",
-        "//:node_modules/@types/json-stable-stringify",
-        "//:node_modules/@types/regenerate",
-        "//:node_modules/cldr-segments-full",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/regexpu-core",
-    ],
+    args = ["--unicodeFiles=$(rootpath :%s)" % unicode_file_name(f) for f in UNICODE_FILES],
+    data =
+        [":%s" % unicode_file_name(f) for f in UNICODE_FILES] + [
+            "//:node_modules/@types/json-stable-stringify",
+            "//:node_modules/@types/regenerate",
+            "//:node_modules/cldr-segments-full",
+            "//:node_modules/json-stable-stringify",
+            "//:node_modules/regexpu-core",
+        ],
     entry_point = "scripts/generate-cldr-segmentation-rules.ts",
 )
 

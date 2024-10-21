@@ -420,12 +420,6 @@
           "미 산지 하계 표준시"
         ]
       },
-      "America/Hermosillo": {
-        "long": [
-          "미 산악 표준시",
-          "미 산지 하계 표준시"
-        ]
-      },
       "America/Los_Angeles": {
         "long": [
           "미 태평양 표준시",
@@ -1206,16 +1200,16 @@
           "그리니치 표준시"
         ]
       },
-      "America/Scoresbysund": {
-        "long": [
-          "그린란드 동부 표준시",
-          "그린란드 동부 하계 표준시"
-        ]
-      },
       "America/Godthab": {
         "long": [
           "그린란드 서부 표준시",
           "그린란드 서부 하계 표준시"
+        ]
+      },
+      "America/Scoresbysund": {
+        "long": [
+          "그린란드 동부 표준시",
+          "그린란드 동부 하계 표준시"
         ]
       },
       "Asia/Dubai": {
@@ -1386,12 +1380,6 @@
           "마카오 하계 표준시"
         ]
       },
-      "Antarctica/Macquarie": {
-        "long": [
-          "매쿼리섬 시간",
-          "매쿼리섬 시간"
-        ]
-      },
       "Asia/Magadan": {
         "long": [
           "마가단 표준시",
@@ -1426,12 +1414,6 @@
         "long": [
           "모슨 시간",
           "모슨 시간"
-        ]
-      },
-      "America/Santa_Isabel": {
-        "long": [
-          "멕시코 북서부 표준시",
-          "멕시코 북서부 하계 표준시"
         ]
       },
       "America/Mazatlan": {
@@ -1760,8 +1742,8 @@
     "gmtFormat": "GMT{0}",
     "hourFormat": "+HH:mm;-HH:mm",
     "dateFormat": {
-      "full": "y년 M월 d일 EEEE",
-      "long": "y년 M월 d일",
+      "full": "y년 MMMM d일 EEEE",
+      "long": "y년 MMMM d일",
       "medium": "y. M. d.",
       "short": "yy. M. d."
     },
@@ -1831,16 +1813,16 @@
         "yMMMEd": "y년 MMM d일 (E)",
         "yMMMEEEEd": "y년 MMM d일 EEEE",
         "yMMMM": "y년 MMMM",
-        "y년 M월 d일 EEEE": "y년 M월 d일 EEEE",
-        "y년 M월 d일": "y년 M월 d일",
+        "y년 MMMM d일 EEEE": "y년 MMMM d일 EEEE",
+        "y년 MMMM d일": "y년 MMMM d일",
         "y. M. d.": "y. M. d.",
         "yy. M. d.": "yy. M. d.",
         "a h시 m분 s초 zzzz": "a h시 m분 s초 zzzz",
         "a h시 m분 s초 z": "a h시 m분 s초 z",
         "a h:mm:ss": "a h:mm:ss",
         "a h:mm": "a h:mm",
-        "y년 M월 d일 EEEE a h시 m분 s초 zzzz": "y년 M월 d일 EEEE a h시 m분 s초 zzzz",
-        "y년 M월 d일 a h시 m분 s초 zzzz": "y년 M월 d일 a h시 m분 s초 zzzz",
+        "y년 MMMM d일 EEEE a h시 m분 s초 zzzz": "y년 MMMM d일 EEEE a h시 m분 s초 zzzz",
+        "y년 MMMM d일 a h시 m분 s초 zzzz": "y년 MMMM d일 a h시 m분 s초 zzzz",
         "y. M. d. a h시 m분 s초 zzzz": "y. M. d. a h시 m분 s초 zzzz",
         "yy. M. d. a h시 m분 s초 zzzz": "yy. M. d. a h시 m분 s초 zzzz",
         "d a h시 m분 s초 zzzz": "d일 a h시 m분 s초 zzzz",
@@ -1873,8 +1855,8 @@
         "yMMMEd a h시 m분 s초 zzzz": "y년 MMM d일 (E) a h시 m분 s초 zzzz",
         "yMMMEEEEd a h시 m분 s초 zzzz": "y년 MMM d일 EEEE a h시 m분 s초 zzzz",
         "yMMMM a h시 m분 s초 zzzz": "y년 MMMM a h시 m분 s초 zzzz",
-        "y년 M월 d일 EEEE a h시 m분 s초 z": "y년 M월 d일 EEEE a h시 m분 s초 z",
-        "y년 M월 d일 a h시 m분 s초 z": "y년 M월 d일 a h시 m분 s초 z",
+        "y년 MMMM d일 EEEE a h시 m분 s초 z": "y년 MMMM d일 EEEE a h시 m분 s초 z",
+        "y년 MMMM d일 a h시 m분 s초 z": "y년 MMMM d일 a h시 m분 s초 z",
         "y. M. d. a h시 m분 s초 z": "y. M. d. a h시 m분 s초 z",
         "yy. M. d. a h시 m분 s초 z": "yy. M. d. a h시 m분 s초 z",
         "d a h시 m분 s초 z": "d일 a h시 m분 s초 z",
@@ -1907,8 +1889,8 @@
         "yMMMEd a h시 m분 s초 z": "y년 MMM d일 (E) a h시 m분 s초 z",
         "yMMMEEEEd a h시 m분 s초 z": "y년 MMM d일 EEEE a h시 m분 s초 z",
         "yMMMM a h시 m분 s초 z": "y년 MMMM a h시 m분 s초 z",
-        "y년 M월 d일 EEEE a h:mm:ss": "y년 M월 d일 EEEE a h:mm:ss",
-        "y년 M월 d일 a h:mm:ss": "y년 M월 d일 a h:mm:ss",
+        "y년 MMMM d일 EEEE a h:mm:ss": "y년 MMMM d일 EEEE a h:mm:ss",
+        "y년 MMMM d일 a h:mm:ss": "y년 MMMM d일 a h:mm:ss",
         "y. M. d. a h:mm:ss": "y. M. d. a h:mm:ss",
         "yy. M. d. a h:mm:ss": "yy. M. d. a h:mm:ss",
         "d a h:mm:ss": "d일 a h:mm:ss",
@@ -1941,8 +1923,8 @@
         "yMMMEd a h:mm:ss": "y년 MMM d일 (E) a h:mm:ss",
         "yMMMEEEEd a h:mm:ss": "y년 MMM d일 EEEE a h:mm:ss",
         "yMMMM a h:mm:ss": "y년 MMMM a h:mm:ss",
-        "y년 M월 d일 EEEE a h:mm": "y년 M월 d일 EEEE a h:mm",
-        "y년 M월 d일 a h:mm": "y년 M월 d일 a h:mm",
+        "y년 MMMM d일 EEEE a h:mm": "y년 MMMM d일 EEEE a h:mm",
+        "y년 MMMM d일 a h:mm": "y년 MMMM d일 a h:mm",
         "y. M. d. a h:mm": "y. M. d. a h:mm",
         "yy. M. d. a h:mm": "yy. M. d. a h:mm",
         "d a h:mm": "d일 a h:mm",
@@ -1975,8 +1957,8 @@
         "yMMMEd a h:mm": "y년 MMM d일 (E) a h:mm",
         "yMMMEEEEd a h:mm": "y년 MMM d일 EEEE a h:mm",
         "yMMMM a h:mm": "y년 MMMM a h:mm",
-        "y년 M월 d일 EEEE Bh": "y년 M월 d일 EEEE B h시",
-        "y년 M월 d일 Bh": "y년 M월 d일 B h시",
+        "y년 MMMM d일 EEEE Bh": "y년 MMMM d일 EEEE B h시",
+        "y년 MMMM d일 Bh": "y년 MMMM d일 B h시",
         "y. M. d. Bh": "y. M. d. B h시",
         "yy. M. d. Bh": "yy. M. d. B h시",
         "d Bh": "d일 B h시",
@@ -2009,8 +1991,8 @@
         "yMMMEd Bh": "y년 MMM d일 (E) B h시",
         "yMMMEEEEd Bh": "y년 MMM d일 EEEE B h시",
         "yMMMM Bh": "y년 MMMM B h시",
-        "y년 M월 d일 EEEE Bhm": "y년 M월 d일 EEEE B h:mm",
-        "y년 M월 d일 Bhm": "y년 M월 d일 B h:mm",
+        "y년 MMMM d일 EEEE Bhm": "y년 MMMM d일 EEEE B h:mm",
+        "y년 MMMM d일 Bhm": "y년 MMMM d일 B h:mm",
         "y. M. d. Bhm": "y. M. d. B h:mm",
         "yy. M. d. Bhm": "yy. M. d. B h:mm",
         "d Bhm": "d일 B h:mm",
@@ -2043,8 +2025,8 @@
         "yMMMEd Bhm": "y년 MMM d일 (E) B h:mm",
         "yMMMEEEEd Bhm": "y년 MMM d일 EEEE B h:mm",
         "yMMMM Bhm": "y년 MMMM B h:mm",
-        "y년 M월 d일 EEEE Bhms": "y년 M월 d일 EEEE B h:mm:ss",
-        "y년 M월 d일 Bhms": "y년 M월 d일 B h:mm:ss",
+        "y년 MMMM d일 EEEE Bhms": "y년 MMMM d일 EEEE B h:mm:ss",
+        "y년 MMMM d일 Bhms": "y년 MMMM d일 B h:mm:ss",
         "y. M. d. Bhms": "y. M. d. B h:mm:ss",
         "yy. M. d. Bhms": "yy. M. d. B h:mm:ss",
         "d Bhms": "d일 B h:mm:ss",
@@ -2077,8 +2059,8 @@
         "yMMMEd Bhms": "y년 MMM d일 (E) B h:mm:ss",
         "yMMMEEEEd Bhms": "y년 MMM d일 EEEE B h:mm:ss",
         "yMMMM Bhms": "y년 MMMM B h:mm:ss",
-        "y년 M월 d일 EEEE h": "y년 M월 d일 EEEE a h시",
-        "y년 M월 d일 h": "y년 M월 d일 a h시",
+        "y년 MMMM d일 EEEE h": "y년 MMMM d일 EEEE a h시",
+        "y년 MMMM d일 h": "y년 MMMM d일 a h시",
         "y. M. d. h": "y. M. d. a h시",
         "yy. M. d. h": "yy. M. d. a h시",
         "d h": "d일 a h시",
@@ -2111,8 +2093,8 @@
         "yMMMEd h": "y년 MMM d일 (E) a h시",
         "yMMMEEEEd h": "y년 MMM d일 EEEE a h시",
         "yMMMM h": "y년 MMMM a h시",
-        "y년 M월 d일 EEEE H": "y년 M월 d일 EEEE H시",
-        "y년 M월 d일 H": "y년 M월 d일 H시",
+        "y년 MMMM d일 EEEE H": "y년 MMMM d일 EEEE H시",
+        "y년 MMMM d일 H": "y년 MMMM d일 H시",
         "y. M. d. H": "y. M. d. H시",
         "yy. M. d. H": "yy. M. d. H시",
         "d H": "d일 H시",
@@ -2145,8 +2127,8 @@
         "yMMMEd H": "y년 MMM d일 (E) H시",
         "yMMMEEEEd H": "y년 MMM d일 EEEE H시",
         "yMMMM H": "y년 MMMM H시",
-        "y년 M월 d일 EEEE HHmmss": "y년 M월 d일 EEEE HH:mm:ss",
-        "y년 M월 d일 HHmmss": "y년 M월 d일 HH:mm:ss",
+        "y년 MMMM d일 EEEE HHmmss": "y년 MMMM d일 EEEE HH:mm:ss",
+        "y년 MMMM d일 HHmmss": "y년 MMMM d일 HH:mm:ss",
         "y. M. d. HHmmss": "y. M. d. HH:mm:ss",
         "yy. M. d. HHmmss": "yy. M. d. HH:mm:ss",
         "d HHmmss": "d일 HH:mm:ss",
@@ -2179,8 +2161,8 @@
         "yMMMEd HHmmss": "y년 MMM d일 (E) HH:mm:ss",
         "yMMMEEEEd HHmmss": "y년 MMM d일 EEEE HH:mm:ss",
         "yMMMM HHmmss": "y년 MMMM HH:mm:ss",
-        "y년 M월 d일 EEEE hm": "y년 M월 d일 EEEE a h:mm",
-        "y년 M월 d일 hm": "y년 M월 d일 a h:mm",
+        "y년 MMMM d일 EEEE hm": "y년 MMMM d일 EEEE a h:mm",
+        "y년 MMMM d일 hm": "y년 MMMM d일 a h:mm",
         "y. M. d. hm": "y. M. d. a h:mm",
         "yy. M. d. hm": "yy. M. d. a h:mm",
         "d hm": "d일 a h:mm",
@@ -2213,8 +2195,8 @@
         "yMMMEd hm": "y년 MMM d일 (E) a h:mm",
         "yMMMEEEEd hm": "y년 MMM d일 EEEE a h:mm",
         "yMMMM hm": "y년 MMMM a h:mm",
-        "y년 M월 d일 EEEE Hm": "y년 M월 d일 EEEE HH:mm",
-        "y년 M월 d일 Hm": "y년 M월 d일 HH:mm",
+        "y년 MMMM d일 EEEE Hm": "y년 MMMM d일 EEEE HH:mm",
+        "y년 MMMM d일 Hm": "y년 MMMM d일 HH:mm",
         "y. M. d. Hm": "y. M. d. HH:mm",
         "yy. M. d. Hm": "yy. M. d. HH:mm",
         "d Hm": "d일 HH:mm",
@@ -2247,8 +2229,8 @@
         "yMMMEd Hm": "y년 MMM d일 (E) HH:mm",
         "yMMMEEEEd Hm": "y년 MMM d일 EEEE HH:mm",
         "yMMMM Hm": "y년 MMMM HH:mm",
-        "y년 M월 d일 EEEE hms": "y년 M월 d일 EEEE a h:mm:ss",
-        "y년 M월 d일 hms": "y년 M월 d일 a h:mm:ss",
+        "y년 MMMM d일 EEEE hms": "y년 MMMM d일 EEEE a h:mm:ss",
+        "y년 MMMM d일 hms": "y년 MMMM d일 a h:mm:ss",
         "y. M. d. hms": "y. M. d. a h:mm:ss",
         "yy. M. d. hms": "yy. M. d. a h:mm:ss",
         "d hms": "d일 a h:mm:ss",
@@ -2281,8 +2263,8 @@
         "yMMMEd hms": "y년 MMM d일 (E) a h:mm:ss",
         "yMMMEEEEd hms": "y년 MMM d일 EEEE a h:mm:ss",
         "yMMMM hms": "y년 MMMM a h:mm:ss",
-        "y년 M월 d일 EEEE Hms": "y년 M월 d일 EEEE H시 m분 s초",
-        "y년 M월 d일 Hms": "y년 M월 d일 H시 m분 s초",
+        "y년 MMMM d일 EEEE Hms": "y년 MMMM d일 EEEE H시 m분 s초",
+        "y년 MMMM d일 Hms": "y년 MMMM d일 H시 m분 s초",
         "y. M. d. Hms": "y. M. d. H시 m분 s초",
         "yy. M. d. Hms": "yy. M. d. H시 m분 s초",
         "d Hms": "d일 H시 m분 s초",
@@ -2315,8 +2297,8 @@
         "yMMMEd Hms": "y년 MMM d일 (E) H시 m분 s초",
         "yMMMEEEEd Hms": "y년 MMM d일 EEEE H시 m분 s초",
         "yMMMM Hms": "y년 MMMM H시 m분 s초",
-        "y년 M월 d일 EEEE hmsv": "y년 M월 d일 EEEE a h:mm:ss v",
-        "y년 M월 d일 hmsv": "y년 M월 d일 a h:mm:ss v",
+        "y년 MMMM d일 EEEE hmsv": "y년 MMMM d일 EEEE a h:mm:ss v",
+        "y년 MMMM d일 hmsv": "y년 MMMM d일 a h:mm:ss v",
         "y. M. d. hmsv": "y. M. d. a h:mm:ss v",
         "yy. M. d. hmsv": "yy. M. d. a h:mm:ss v",
         "d hmsv": "d일 a h:mm:ss v",
@@ -2349,8 +2331,8 @@
         "yMMMEd hmsv": "y년 MMM d일 (E) a h:mm:ss v",
         "yMMMEEEEd hmsv": "y년 MMM d일 EEEE a h:mm:ss v",
         "yMMMM hmsv": "y년 MMMM a h:mm:ss v",
-        "y년 M월 d일 EEEE Hmsv": "y년 M월 d일 EEEE H시 m분 s초 v",
-        "y년 M월 d일 Hmsv": "y년 M월 d일 H시 m분 s초 v",
+        "y년 MMMM d일 EEEE Hmsv": "y년 MMMM d일 EEEE H시 m분 s초 v",
+        "y년 MMMM d일 Hmsv": "y년 MMMM d일 H시 m분 s초 v",
         "y. M. d. Hmsv": "y. M. d. H시 m분 s초 v",
         "yy. M. d. Hmsv": "yy. M. d. H시 m분 s초 v",
         "d Hmsv": "d일 H시 m분 s초 v",
@@ -2383,8 +2365,8 @@
         "yMMMEd Hmsv": "y년 MMM d일 (E) H시 m분 s초 v",
         "yMMMEEEEd Hmsv": "y년 MMM d일 EEEE H시 m분 s초 v",
         "yMMMM Hmsv": "y년 MMMM H시 m분 s초 v",
-        "y년 M월 d일 EEEE hmv": "y년 M월 d일 EEEE a h:mm v",
-        "y년 M월 d일 hmv": "y년 M월 d일 a h:mm v",
+        "y년 MMMM d일 EEEE hmv": "y년 MMMM d일 EEEE a h:mm v",
+        "y년 MMMM d일 hmv": "y년 MMMM d일 a h:mm v",
         "y. M. d. hmv": "y. M. d. a h:mm v",
         "yy. M. d. hmv": "yy. M. d. a h:mm v",
         "d hmv": "d일 a h:mm v",
@@ -2417,8 +2399,8 @@
         "yMMMEd hmv": "y년 MMM d일 (E) a h:mm v",
         "yMMMEEEEd hmv": "y년 MMM d일 EEEE a h:mm v",
         "yMMMM hmv": "y년 MMMM a h:mm v",
-        "y년 M월 d일 EEEE Hmv": "y년 M월 d일 EEEE HH:mm v",
-        "y년 M월 d일 Hmv": "y년 M월 d일 HH:mm v",
+        "y년 MMMM d일 EEEE Hmv": "y년 MMMM d일 EEEE HH:mm v",
+        "y년 MMMM d일 Hmv": "y년 MMMM d일 HH:mm v",
         "y. M. d. Hmv": "y. M. d. HH:mm v",
         "yy. M. d. Hmv": "yy. M. d. HH:mm v",
         "d Hmv": "d일 HH:mm v",
@@ -2451,8 +2433,8 @@
         "yMMMEd Hmv": "y년 MMM d일 (E) HH:mm v",
         "yMMMEEEEd Hmv": "y년 MMM d일 EEEE HH:mm v",
         "yMMMM Hmv": "y년 MMMM HH:mm v",
-        "y년 M월 d일 EEEE mmss": "y년 M월 d일 EEEE mm:ss",
-        "y년 M월 d일 mmss": "y년 M월 d일 mm:ss",
+        "y년 MMMM d일 EEEE mmss": "y년 MMMM d일 EEEE mm:ss",
+        "y년 MMMM d일 mmss": "y년 MMMM d일 mm:ss",
         "y. M. d. mmss": "y. M. d. mm:ss",
         "yy. M. d. mmss": "yy. M. d. mm:ss",
         "d mmss": "d일 mm:ss",
@@ -2485,8 +2467,8 @@
         "yMMMEd mmss": "y년 MMM d일 (E) mm:ss",
         "yMMMEEEEd mmss": "y년 MMM d일 EEEE mm:ss",
         "yMMMM mmss": "y년 MMMM mm:ss",
-        "y년 M월 d일 EEEE ms": "y년 M월 d일 EEEE mm:ss",
-        "y년 M월 d일 ms": "y년 M월 d일 mm:ss",
+        "y년 MMMM d일 EEEE ms": "y년 MMMM d일 EEEE mm:ss",
+        "y년 MMMM d일 ms": "y년 MMMM d일 mm:ss",
         "y. M. d. ms": "y. M. d. mm:ss",
         "yy. M. d. ms": "yy. M. d. mm:ss",
         "d ms": "d일 mm:ss",

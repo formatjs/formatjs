@@ -417,8 +417,8 @@
       },
       "CNY": {
         "displayName": {
-          "one": "renmimbi cinese",
-          "other": "renmimbi cinesi"
+          "one": "yuan cinese",
+          "other": "yuan cinesi"
         },
         "narrow": "¥",
         "symbol": "CN¥"
@@ -907,7 +907,7 @@
           "one": "som kirghiso",
           "other": "som kirghisi"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1538,10 +1538,18 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "one": "leone della Sierra Leone",
           "other": "leoni della Sierra Leone"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "one": "leone della Sierra Leone (1964–2022)",
+          "other": "leoni della Sierra Leone (1964–2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1615,7 +1623,8 @@
       },
       "SZL": {
         "displayName": {
-          "other": "lilangeni dello Swaziland"
+          "one": "lilangeni",
+          "other": "emalangeni"
         },
         "narrow": "SZL",
         "symbol": "SZL"
@@ -1908,6 +1917,12 @@
         "narrow": "$",
         "symbol": "EC$"
       },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
+      },
       "XDR": {
         "displayName": {
           "other": "diritti speciali di incasso"
@@ -2099,13 +2114,13 @@
               "other": "0"
             },
             "1000000": {
-              "other": "0 Mio ¤"
+              "other": "0 Mln ¤"
             },
             "10000000": {
-              "other": "00 Mio ¤"
+              "other": "00 Mln ¤"
             },
             "100000000": {
-              "other": "000 Mio ¤"
+              "other": "000 Mln ¤"
             },
             "1000000000": {
               "other": "0 Mrd ¤"

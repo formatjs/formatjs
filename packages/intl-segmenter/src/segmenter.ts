@@ -1,15 +1,15 @@
-import {SegmentationRules} from './cldr-segmentation-rules.generated'
-import {replaceVariables, isSurrogate} from './segmentation-utils'
 import {
-  GetOption,
-  SupportedLocales,
   CanonicalizeLocaleList,
+  GetOption,
   GetOptionsObject,
+  SupportedLocales,
   getInternalSlot,
-  setInternalSlot,
   getMultiInternalSlots,
+  setInternalSlot,
 } from '@formatjs/ecma402-abstract'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
+import {SegmentationRules} from './cldr-segmentation-rules.generated'
+import {isSurrogate, replaceVariables} from './segmentation-utils'
 
 type SegmentationRule = {
   breaks: boolean
@@ -44,7 +44,7 @@ export interface SegmenterResolvedOptions {
 }
 
 /**
- * Adds $ to before rules and ^ to after rules for strickness
+ * Adds $ to before rules and ^ to after rules for strictness
  * Replaces variables
  * Initializes the RegExp
  *

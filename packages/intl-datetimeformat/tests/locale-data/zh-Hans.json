@@ -420,12 +420,6 @@
           "北美山区夏令时间"
         ]
       },
-      "America/Hermosillo": {
-        "long": [
-          "北美山区标准时间",
-          "北美山区夏令时间"
-        ]
-      },
       "America/Los_Angeles": {
         "long": [
           "北美太平洋标准时间",
@@ -740,8 +734,8 @@
       },
       "Pacific/Chatham": {
         "long": [
-          "查坦标准时间",
-          "查坦夏令时间"
+          "查塔姆标准时间",
+          "查塔姆夏令时间"
         ]
       },
       "America/Santiago": {
@@ -1218,16 +1212,16 @@
           "格林尼治标准时间"
         ]
       },
-      "America/Scoresbysund": {
-        "long": [
-          "格陵兰岛东部标准时间",
-          "格陵兰岛东部夏令时间"
-        ]
-      },
       "America/Godthab": {
         "long": [
           "格陵兰岛西部标准时间",
           "格陵兰岛西部夏令时间"
+        ]
+      },
+      "America/Scoresbysund": {
+        "long": [
+          "格陵兰岛东部标准时间",
+          "格陵兰岛东部夏令时间"
         ]
       },
       "Asia/Dubai": {
@@ -1404,12 +1398,6 @@
           "澳门夏令时间"
         ]
       },
-      "Antarctica/Macquarie": {
-        "long": [
-          "麦夸里岛时间",
-          "麦夸里岛时间"
-        ]
-      },
       "Asia/Magadan": {
         "long": [
           "马加丹标准时间",
@@ -1444,12 +1432,6 @@
         "long": [
           "莫森时间",
           "莫森时间"
-        ]
-      },
-      "America/Santa_Isabel": {
-        "long": [
-          "墨西哥西北部标准时间",
-          "墨西哥西北部夏令时间"
         ]
       },
       "America/Mazatlan": {
@@ -1834,7 +1816,7 @@
         "MMMMd": "M月d日",
         "ms": "mm:ss",
         "y": "y年",
-        "yM": "y年M月",
+        "yM": "y/M",
         "yMd": "y/M/d",
         "yMEd": "y/M/dE",
         "yMEEEEd": "y年M月d日EEEE",
@@ -1870,7 +1852,7 @@
         "MMMEd zzzz HH:mm:ss": "M月d日E zzzz HH:mm:ss",
         "MMMMd zzzz HH:mm:ss": "M月d日 zzzz HH:mm:ss",
         "y zzzz HH:mm:ss": "y年 zzzz HH:mm:ss",
-        "yM zzzz HH:mm:ss": "y年M月 zzzz HH:mm:ss",
+        "yM zzzz HH:mm:ss": "y/M zzzz HH:mm:ss",
         "yMd zzzz HH:mm:ss": "y/M/d zzzz HH:mm:ss",
         "yMEd zzzz HH:mm:ss": "y/M/dE zzzz HH:mm:ss",
         "yMEEEEd zzzz HH:mm:ss": "y年M月d日EEEE zzzz HH:mm:ss",
@@ -1899,7 +1881,7 @@
         "MMMEd z HH:mm:ss": "M月d日E z HH:mm:ss",
         "MMMMd z HH:mm:ss": "M月d日 z HH:mm:ss",
         "y z HH:mm:ss": "y年 z HH:mm:ss",
-        "yM z HH:mm:ss": "y年M月 z HH:mm:ss",
+        "yM z HH:mm:ss": "y/M z HH:mm:ss",
         "yMd z HH:mm:ss": "y/M/d z HH:mm:ss",
         "yMEd z HH:mm:ss": "y/M/dE z HH:mm:ss",
         "yMEEEEd z HH:mm:ss": "y年M月d日EEEE z HH:mm:ss",
@@ -1928,7 +1910,7 @@
         "MMMEd HH:mm:ss": "M月d日E HH:mm:ss",
         "MMMMd HH:mm:ss": "M月d日 HH:mm:ss",
         "y HH:mm:ss": "y年 HH:mm:ss",
-        "yM HH:mm:ss": "y年M月 HH:mm:ss",
+        "yM HH:mm:ss": "y/M HH:mm:ss",
         "yMd HH:mm:ss": "y/M/d HH:mm:ss",
         "yMEd HH:mm:ss": "y/M/dE HH:mm:ss",
         "yMEEEEd HH:mm:ss": "y年M月d日EEEE HH:mm:ss",
@@ -1957,7 +1939,7 @@
         "MMMEd HH:mm": "M月d日E HH:mm",
         "MMMMd HH:mm": "M月d日 HH:mm",
         "y HH:mm": "y年 HH:mm",
-        "yM HH:mm": "y年M月 HH:mm",
+        "yM HH:mm": "y/M HH:mm",
         "yMd HH:mm": "y/M/d HH:mm",
         "yMEd HH:mm": "y/M/dE HH:mm",
         "yMEEEEd HH:mm": "y年M月d日EEEE HH:mm",
@@ -1986,7 +1968,7 @@
         "MMMEd Bh": "M月d日E Bh时",
         "MMMMd Bh": "M月d日 Bh时",
         "y Bh": "y年 Bh时",
-        "yM Bh": "y年M月 Bh时",
+        "yM Bh": "y/M Bh时",
         "yMd Bh": "y/M/d Bh时",
         "yMEd Bh": "y/M/dE Bh时",
         "yMEEEEd Bh": "y年M月d日EEEE Bh时",
@@ -2015,7 +1997,7 @@
         "MMMEd Bhm": "M月d日E Bh:mm",
         "MMMMd Bhm": "M月d日 Bh:mm",
         "y Bhm": "y年 Bh:mm",
-        "yM Bhm": "y年M月 Bh:mm",
+        "yM Bhm": "y/M Bh:mm",
         "yMd Bhm": "y/M/d Bh:mm",
         "yMEd Bhm": "y/M/dE Bh:mm",
         "yMEEEEd Bhm": "y年M月d日EEEE Bh:mm",
@@ -2044,7 +2026,7 @@
         "MMMEd Bhms": "M月d日E Bh:mm:ss",
         "MMMMd Bhms": "M月d日 Bh:mm:ss",
         "y Bhms": "y年 Bh:mm:ss",
-        "yM Bhms": "y年M月 Bh:mm:ss",
+        "yM Bhms": "y/M Bh:mm:ss",
         "yMd Bhms": "y/M/d Bh:mm:ss",
         "yMEd Bhms": "y/M/dE Bh:mm:ss",
         "yMEEEEd Bhms": "y年M月d日EEEE Bh:mm:ss",
@@ -2073,7 +2055,7 @@
         "MMMEd h": "M月d日E ah时",
         "MMMMd h": "M月d日 ah时",
         "y h": "y年 ah时",
-        "yM h": "y年M月 ah时",
+        "yM h": "y/M ah时",
         "yMd h": "y/M/d ah时",
         "yMEd h": "y/M/dE ah时",
         "yMEEEEd h": "y年M月d日EEEE ah时",
@@ -2102,7 +2084,7 @@
         "MMMEd H": "M月d日E H时",
         "MMMMd H": "M月d日 H时",
         "y H": "y年 H时",
-        "yM H": "y年M月 H时",
+        "yM H": "y/M H时",
         "yMd H": "y/M/d H时",
         "yMEd H": "y/M/dE H时",
         "yMEEEEd H": "y年M月d日EEEE H时",
@@ -2131,7 +2113,7 @@
         "MMMEd hm": "M月d日E ah:mm",
         "MMMMd hm": "M月d日 ah:mm",
         "y hm": "y年 ah:mm",
-        "yM hm": "y年M月 ah:mm",
+        "yM hm": "y/M ah:mm",
         "yMd hm": "y/M/d ah:mm",
         "yMEd hm": "y/M/dE ah:mm",
         "yMEEEEd hm": "y年M月d日EEEE ah:mm",
@@ -2160,7 +2142,7 @@
         "MMMEd Hm": "M月d日E HH:mm",
         "MMMMd Hm": "M月d日 HH:mm",
         "y Hm": "y年 HH:mm",
-        "yM Hm": "y年M月 HH:mm",
+        "yM Hm": "y/M HH:mm",
         "yMd Hm": "y/M/d HH:mm",
         "yMEd Hm": "y/M/dE HH:mm",
         "yMEEEEd Hm": "y年M月d日EEEE HH:mm",
@@ -2189,7 +2171,7 @@
         "MMMEd hms": "M月d日E ah:mm:ss",
         "MMMMd hms": "M月d日 ah:mm:ss",
         "y hms": "y年 ah:mm:ss",
-        "yM hms": "y年M月 ah:mm:ss",
+        "yM hms": "y/M ah:mm:ss",
         "yMd hms": "y/M/d ah:mm:ss",
         "yMEd hms": "y/M/dE ah:mm:ss",
         "yMEEEEd hms": "y年M月d日EEEE ah:mm:ss",
@@ -2218,7 +2200,7 @@
         "MMMEd Hms": "M月d日E HH:mm:ss",
         "MMMMd Hms": "M月d日 HH:mm:ss",
         "y Hms": "y年 HH:mm:ss",
-        "yM Hms": "y年M月 HH:mm:ss",
+        "yM Hms": "y/M HH:mm:ss",
         "yMd Hms": "y/M/d HH:mm:ss",
         "yMEd Hms": "y/M/dE HH:mm:ss",
         "yMEEEEd Hms": "y年M月d日EEEE HH:mm:ss",
@@ -2247,7 +2229,7 @@
         "MMMEd hmsv": "M月d日E v ah:mm:ss",
         "MMMMd hmsv": "M月d日 v ah:mm:ss",
         "y hmsv": "y年 v ah:mm:ss",
-        "yM hmsv": "y年M月 v ah:mm:ss",
+        "yM hmsv": "y/M v ah:mm:ss",
         "yMd hmsv": "y/M/d v ah:mm:ss",
         "yMEd hmsv": "y/M/dE v ah:mm:ss",
         "yMEEEEd hmsv": "y年M月d日EEEE v ah:mm:ss",
@@ -2276,7 +2258,7 @@
         "MMMEd Hmsv": "M月d日E v HH:mm:ss",
         "MMMMd Hmsv": "M月d日 v HH:mm:ss",
         "y Hmsv": "y年 v HH:mm:ss",
-        "yM Hmsv": "y年M月 v HH:mm:ss",
+        "yM Hmsv": "y/M v HH:mm:ss",
         "yMd Hmsv": "y/M/d v HH:mm:ss",
         "yMEd Hmsv": "y/M/dE v HH:mm:ss",
         "yMEEEEd Hmsv": "y年M月d日EEEE v HH:mm:ss",
@@ -2305,7 +2287,7 @@
         "MMMEd hmv": "M月d日E v ah:mm",
         "MMMMd hmv": "M月d日 v ah:mm",
         "y hmv": "y年 v ah:mm",
-        "yM hmv": "y年M月 v ah:mm",
+        "yM hmv": "y/M v ah:mm",
         "yMd hmv": "y/M/d v ah:mm",
         "yMEd hmv": "y/M/dE v ah:mm",
         "yMEEEEd hmv": "y年M月d日EEEE v ah:mm",
@@ -2334,7 +2316,7 @@
         "MMMEd Hmv": "M月d日E v HH:mm",
         "MMMMd Hmv": "M月d日 v HH:mm",
         "y Hmv": "y年 v HH:mm",
-        "yM Hmv": "y年M月 v HH:mm",
+        "yM Hmv": "y/M v HH:mm",
         "yMd Hmv": "y/M/d v HH:mm",
         "yMEd Hmv": "y/M/dE v HH:mm",
         "yMEEEEd Hmv": "y年M月d日EEEE v HH:mm",
@@ -2363,7 +2345,7 @@
         "MMMEd ms": "M月d日E mm:ss",
         "MMMMd ms": "M月d日 mm:ss",
         "y ms": "y年 mm:ss",
-        "yM ms": "y年M月 mm:ss",
+        "yM ms": "y/M mm:ss",
         "yMd ms": "y/M/d mm:ss",
         "yMEd ms": "y/M/dE mm:ss",
         "yMEEEEd ms": "y年M月d日EEEE mm:ss",
@@ -2443,17 +2425,17 @@
         "m": "HH:mm–HH:mm"
       },
       "hmv": {
-        "a": "v ah:mm至ah:mm",
-        "h": "v ah:mm至h:mm",
-        "m": "v ah:mm至h:mm"
+        "a": "vah:mm至ah:mm",
+        "h": "vah:mm至h:mm",
+        "m": "vah:mm至h:mm"
       },
       "Hmv": {
         "H": "v HH:mm–HH:mm",
         "m": "v HH:mm–HH:mm"
       },
       "hv": {
-        "a": "v ah时至ah时",
-        "h": "v ah时至h时"
+        "a": "vah时至ah时",
+        "h": "vah时至h时"
       },
       "Hv": {
         "H": "v HH–HH"

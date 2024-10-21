@@ -3,11 +3,10 @@
 // @ts-ignore to ignore missing type definitions for regexpu-core
 import rewritePattern from 'regexpu-core'
 
-import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra'
-import {readFileSync} from 'node:fs'
-import path from 'node:path'
 import stringify from 'json-stable-stringify'
+import minimist, {ParsedArgs} from 'minimist'
+import {readFileSync} from 'node:fs'
 
 const SEGMENTATION_LOCALES = [
   'de',
@@ -171,34 +170,43 @@ const parseUCDTextFile = (filePath: string) => {
  * If this is an issue `PropertyValueAliases.txt` and `PropertyAliases.txt` could be used to generate replacements for all possible aliases
  *
  */
-const generateRegexForUnsupportedProperties = () => {
+const generateRegexForUnsupportedProperties = (unicodeFiles: string[]) => {
   const regexReplacements: Record<string, string> = {}
 
+  const DerivedCombiningClass = parseUCDTextFile(
+    unicodeFiles.find(fn => fn.includes('DerivedCombiningClass')) ?? ''
+  )
+
   const GraphemeClusterBreak = parseUCDTextFile(
-    path.resolve(__dirname, '../unicodeFiles/GraphemeBreakProperty.txt')
+    unicodeFiles.find(fn => fn.includes('GraphemeBreakProperty')) ?? ''
   )
 
   const WordBreak = parseUCDTextFile(
-    path.resolve(__dirname, '../unicodeFiles/WordBreakProperty.txt')
+    unicodeFiles.find(fn => fn.includes('WordBreakProperty')) ?? ''
   )
 
   const SentenceBreak = parseUCDTextFile(
-    path.resolve(__dirname, '../unicodeFiles/SentenceBreakProperty.txt')
+    unicodeFiles.find(fn => fn.includes('SentenceBreakProperty')) ?? ''
   )
 
   const IndicSyllabicCategory = parseUCDTextFile(
-    path.resolve(__dirname, '../unicodeFiles/IndicSyllabicCategory.txt')
-  )
-
-  const DerivedCombiningClass = parseUCDTextFile(
-    path.resolve(__dirname, '../unicodeFiles/DerivedCombiningClass.txt')
+    unicodeFiles.find(fn => fn.includes('IndicSyllabicCategory')) ?? ''
   )
 
   const EastAsianWidth = parseUCDTextFile(
-    path.resolve(__dirname, '../unicodeFiles/DerivedEastAsianWidth.txt')
+    unicodeFiles.find(fn => fn.includes('DerivedEastAsianWidth')) ?? ''
   )
 
   // Collect regex replacements that regexpu-core can not rewrite
+
+  // Deal with Indic_Conjunct_Break https://www.unicode.org/reports/tr44/#Indic_Conjunct_Break
+  // also: https://github.com/unicode-org/unicodetools/blob/bf10f7d64da3db53861a03ccc13f673dc7605d7f/unicodetools/src/main/resources/org/unicode/tools/SegmenterDefault.txt#L23
+  regexReplacements['\\p{Indic_Conjunct_Break=Extend}'] =
+    '[[\\p{Grapheme_Cluster_Break=Extend}\\p{Grapheme_Cluster_Break=ZWJ}]--\\p{Indic_Conjunct_Break=Linker}--\\p{Indic_Conjunct_Break=Consonant}--[\\u200C]]'
+  regexReplacements['\\p{Indic_Conjunct_Break=Linker}'] =
+    `[$ConjunctLinkingScripts&&\\p{Indic_Syllabic_Category=Virama}]`
+  regexReplacements['\\p{Indic_Conjunct_Break=Consonant}'] =
+    `[$ConjunctLinkingScripts&&\\p{Indic_Syllabic_Category=Consonant}]`
 
   // Replace all of the \p{Grapheme_Cluster_Break=*}
   for (const [key, value] of Object.entries(GraphemeClusterBreak)) {
@@ -234,8 +242,6 @@ const generateRegexForUnsupportedProperties = () => {
   return regexReplacements
 }
 
-const regexReplacements = generateRegexForUnsupportedProperties()
-
 /**
  * Transforms the regex used in CLDRs into regexpu-core compatible regex leaving variables in place
  *
@@ -244,7 +250,10 @@ const regexReplacements = generateRegexForUnsupportedProperties()
  * @param unicodeRegex regex used in CLDR inside variables, not compatible with js or regexpu-core
  * @returns
  */
-const transformCLDRVariablesRegex = (unicodeRegex: string) => {
+const transformCLDRVariablesRegex = (
+  unicodeRegex: string,
+  regexReplacements: Record<string, string>
+) => {
   let jsCompatibleRegex = ''
 
   //replace all spaces in the regex (js interprets spaces in regex as literal, but unicode regex seems to be ignoring it)
@@ -312,6 +321,7 @@ const replaceVariables = (variables: Record<string, string>, input: string) => {
  */
 const remapSegmentationJson = (
   segmentationFile: SegmentationsJson,
+  regexReplacements: Record<string, string>,
   contextVariables?: Record<SegmentationsJsonBreakType, Record<string, string>>
 ) => {
   const language = segmentationFile.segments.identity.language
@@ -344,14 +354,15 @@ const remapSegmentationJson = (
       for (const variable of segmentationTypeValue.variables) {
         for (const [variableName, variableValue] of Object.entries(variable)) {
           try {
-            const hardcodedReplacment =
-              HARDCODED_VARIABLE_REPLACMENTS[
-                `${language}.${segmentationTypeName}.${variableName}`
-              ]
+            const key = `${language}.${segmentationTypeName}.${variableName}`
+            const hardcodedReplacment = HARDCODED_VARIABLE_REPLACMENTS[key]
 
             let variableRegex = hardcodedReplacment || variableValue
 
-            variableRegex = transformCLDRVariablesRegex(variableRegex)
+            variableRegex = transformCLDRVariablesRegex(
+              variableRegex,
+              regexReplacements
+            )
 
             //replace variables with context variables
             variableRegex = replaceVariables(
@@ -481,17 +492,23 @@ const remapSegmentationJson = (
   }
 }
 
-async function main(args: minimist.ParsedArgs) {
-  const {out} = args
+interface Args extends ParsedArgs {
+  out: string
+  unicodeFiles: string[]
+}
+
+async function main({out, unicodeFiles}: Args) {
   //root rules (needed to be separate for the context Variables)
   const {und: rootSegmentation, ...localeSegmentations} =
     await cldrSegmentationRules()
+
+  const regexReplacements = generateRegexForUnsupportedProperties(unicodeFiles)
 
   //locale rules
   const {
     currentContexVariables: rootContextVariables,
     segmentations: remappedRootSegmentation,
-  } = remapSegmentationJson(rootSegmentation)
+  } = remapSegmentationJson(rootSegmentation, regexReplacements)
 
   const remappedLocaleSegmentations: Record<
     string,
@@ -504,6 +521,7 @@ async function main(args: minimist.ParsedArgs) {
   for (const [_, segmentationsFile] of Object.entries(localeSegmentations)) {
     const {language, segmentations} = remapSegmentationJson(
       segmentationsFile,
+      regexReplacements,
       rootContextVariables
     )
     remappedLocaleSegmentations[language] = segmentations
@@ -522,5 +540,5 @@ async function main(args: minimist.ParsedArgs) {
 }
 
 if (require.main === module) {
-  main(minimist(process.argv))
+  main(minimist<Args>(process.argv))
 }

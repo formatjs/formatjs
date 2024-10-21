@@ -943,7 +943,7 @@
         "displayName": {
           "other": "吉尔吉斯斯坦索姆"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1940,6 +1940,12 @@
         "narrow": "$",
         "symbol": "EC$"
       },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
+      },
       "XDR": {
         "displayName": {
           "other": "特别提款权"
@@ -2494,7 +2500,7 @@
             "other": "{0}g"
           },
           "perUnit": {
-            "long": "{0}/g",
+            "long": "每克{0}",
             "narrow": "{0}/g",
             "short": "{0}/g"
           },

@@ -423,24 +423,24 @@
       },
       "BYB": {
         "displayName": {
-          "one": "vitrysk rubel (1994–1999)",
-          "other": "vitryska nya rubel (1994–1999)"
+          "one": "belarusisk ny rubel (1994–1999)",
+          "other": "belarusiska nya rubel (1994–1999)"
         },
         "narrow": "BYB",
         "symbol": "BYB"
       },
       "BYN": {
         "displayName": {
-          "one": "vitrysk rubel",
-          "other": "vitryska rubel"
+          "one": "belarusisk rubel",
+          "other": "belarusiska rubel"
         },
         "narrow": "р.",
         "symbol": "BYN"
       },
       "BYR": {
         "displayName": {
-          "one": "vitrysk rubel (2000–2016)",
-          "other": "vitryska rubel (2000–2016)"
+          "one": "belarusisk rubel (2000–2016)",
+          "other": "belarusiska rubel (2000–2016)"
         },
         "narrow": "BYR",
         "symbol": "BYR"
@@ -1068,7 +1068,7 @@
           "one": "kirgizisk som",
           "other": "kirgiziska somer"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1782,10 +1782,18 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "one": "sierraleonsk leone",
           "other": "sierraleonska leoner"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "one": "sierraleonsk leone (1964—2022)",
+          "other": "sierraleonska leoner (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -2185,6 +2193,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {

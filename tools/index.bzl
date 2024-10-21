@@ -117,7 +117,7 @@ def ts_script(name, entry_point, args = [], chdir = None, srcs = [], outs = [], 
         **kwargs
     )
 
-def generate_src_file(name, entry_point, src, chdir = None, args = [], data = [], visibility = None):
+def generate_src_file(name, entry_point, src, chdir = None, args = [], data = [], visibility = []):
     """Generate a source file.
 
     Args:
@@ -153,7 +153,9 @@ def generate_src_file(name, entry_point, src, chdir = None, args = [], data = []
     write_source_files(
         name = name,
         files = files,
-        visibility = visibility,
+        visibility = visibility + [
+            "//:__pkg__",
+        ],
         suggested_update_target = "//%s:%s" % (native.package_name(), tmp_filename[:tmp_filename.rindex(".")]),
     )
 

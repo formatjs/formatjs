@@ -990,7 +990,7 @@
           "one": "som kirghize",
           "other": "soms kirghizes"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1657,10 +1657,18 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "one": "leone sierra-léonais",
           "other": "leones sierra-léonais"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "one": "leone sierra-léonais (1964—2022)",
+          "other": "leones sierra-léonais (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -2047,6 +2055,14 @@
         },
         "narrow": "$",
         "symbol": "XCD"
+      },
+      "XCG": {
+        "displayName": {
+          "one": "florin caribéen",
+          "other": "florins caribéens"
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {
@@ -2843,6 +2859,7 @@
             "other": "{0} mètres par seconde"
           },
           "narrow": {
+            "one": "{0} m/s",
             "other": "{0}m/s"
           },
           "perUnit": {
@@ -2885,7 +2902,7 @@
             "other": "{0} miles par heure"
           },
           "narrow": {
-            "other": "{0}mi/h"
+            "other": "{0} mi/h"
           },
           "perUnit": {
           },

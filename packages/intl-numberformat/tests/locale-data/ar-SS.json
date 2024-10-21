@@ -782,7 +782,7 @@
         "displayName": {
           "other": "سوم قيرغستاني"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1355,9 +1355,16 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "other": "ليون سيراليوني"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "other": "ليون سيراليوني - 1964-2022"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1689,6 +1696,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {
@@ -2088,7 +2101,7 @@
         "arab": {
           "approximatelySign": "~",
           "decimal": "٫",
-          "exponential": "اس",
+          "exponential": "أس",
           "group": "٬",
           "infinity": "∞",
           "list": "؛",
@@ -2455,6 +2468,8 @@
         },
         "kilometer": {
           "long": {
+            "few": "{0} كيلومترات",
+            "many": "{0} كيلومترًا",
             "other": "{0} كيلومتر"
           },
           "narrow": {
@@ -2547,8 +2562,7 @@
             "few": "{0} أمتار",
             "many": "{0} مترًا",
             "one": "متر",
-            "other": "{0} متر",
-            "two": "متران"
+            "other": "{0} متر"
           },
           "narrow": {
             "other": "{0} م"

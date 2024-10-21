@@ -420,12 +420,6 @@
           "Rocky-Mountain-Sommerzeit"
         ]
       },
-      "America/Hermosillo": {
-        "long": [
-          "Rocky-Mountain-Normalzeit",
-          "Rocky-Mountain-Sommerzeit"
-        ]
-      },
       "America/Los_Angeles": {
         "long": [
           "Nordamerikanische Westküsten-Normalzeit",
@@ -1386,16 +1380,16 @@
           "Mittlere Greenwich-Zeit"
         ]
       },
-      "America/Scoresbysund": {
-        "long": [
-          "Ostgrönland-Normalzeit",
-          "Ostgrönland-Sommerzeit"
-        ]
-      },
       "America/Godthab": {
         "long": [
           "Westgrönland-Normalzeit",
           "Westgrönland-Sommerzeit"
+        ]
+      },
+      "America/Scoresbysund": {
+        "long": [
+          "Ostgrönland-Normalzeit",
+          "Ostgrönland-Sommerzeit"
         ]
       },
       "Asia/Dubai": {
@@ -1572,12 +1566,6 @@
           "Macau-Sommerzeit"
         ]
       },
-      "Antarctica/Macquarie": {
-        "long": [
-          "Macquarieinsel-Zeit",
-          "Macquarieinsel-Zeit"
-        ]
-      },
       "Asia/Magadan": {
         "long": [
           "Magadan-Normalzeit",
@@ -1612,12 +1600,6 @@
         "long": [
           "Mawson-Zeit",
           "Mawson-Zeit"
-        ]
-      },
-      "America/Santa_Isabel": {
-        "long": [
-          "Nordwestmexiko-Normalzeit",
-          "Nordwestmexiko-Sommerzeit"
         ]
       },
       "America/Mazatlan": {
@@ -2004,7 +1986,7 @@
         "MMMMEd": "E, d. MMMM",
         "ms": "mm:ss",
         "y": "y",
-        "yM": "MM/y",
+        "yM": "M/y",
         "yMd": "d.M.y",
         "yMEd": "E, d.M.y",
         "yMM": "MM.y",
@@ -2044,7 +2026,7 @@
         "MMMMd, HH:mm:ss zzzz": "d. MMMM, HH:mm:ss zzzz",
         "MMMMEd, HH:mm:ss zzzz": "E, d. MMMM, HH:mm:ss zzzz",
         "y, HH:mm:ss zzzz": "y, HH:mm:ss zzzz",
-        "yM, HH:mm:ss zzzz": "MM/y, HH:mm:ss zzzz",
+        "yM, HH:mm:ss zzzz": "M/y, HH:mm:ss zzzz",
         "yMd, HH:mm:ss zzzz": "d.M.y, HH:mm:ss zzzz",
         "yMEd, HH:mm:ss zzzz": "E, d.M.y, HH:mm:ss zzzz",
         "yMM, HH:mm:ss zzzz": "MM.y, HH:mm:ss zzzz",
@@ -2076,7 +2058,7 @@
         "MMMMd, HH:mm:ss z": "d. MMMM, HH:mm:ss z",
         "MMMMEd, HH:mm:ss z": "E, d. MMMM, HH:mm:ss z",
         "y, HH:mm:ss z": "y, HH:mm:ss z",
-        "yM, HH:mm:ss z": "MM/y, HH:mm:ss z",
+        "yM, HH:mm:ss z": "M/y, HH:mm:ss z",
         "yMd, HH:mm:ss z": "d.M.y, HH:mm:ss z",
         "yMEd, HH:mm:ss z": "E, d.M.y, HH:mm:ss z",
         "yMM, HH:mm:ss z": "MM.y, HH:mm:ss z",
@@ -2108,7 +2090,7 @@
         "MMMMd, HH:mm:ss": "d. MMMM, HH:mm:ss",
         "MMMMEd, HH:mm:ss": "E, d. MMMM, HH:mm:ss",
         "y, HH:mm:ss": "y, HH:mm:ss",
-        "yM, HH:mm:ss": "MM/y, HH:mm:ss",
+        "yM, HH:mm:ss": "M/y, HH:mm:ss",
         "yMd, HH:mm:ss": "d.M.y, HH:mm:ss",
         "yMEd, HH:mm:ss": "E, d.M.y, HH:mm:ss",
         "yMM, HH:mm:ss": "MM.y, HH:mm:ss",
@@ -2140,7 +2122,7 @@
         "MMMMd, HH:mm": "d. MMMM, HH:mm",
         "MMMMEd, HH:mm": "E, d. MMMM, HH:mm",
         "y, HH:mm": "y, HH:mm",
-        "yM, HH:mm": "MM/y, HH:mm",
+        "yM, HH:mm": "M/y, HH:mm",
         "yMd, HH:mm": "d.M.y, HH:mm",
         "yMEd, HH:mm": "E, d.M.y, HH:mm",
         "yMM, HH:mm": "MM.y, HH:mm",
@@ -2172,7 +2154,7 @@
         "MMMMd, Bh": "d. MMMM, h B",
         "MMMMEd, Bh": "E, d. MMMM, h B",
         "y, Bh": "y, h B",
-        "yM, Bh": "MM/y, h B",
+        "yM, Bh": "M/y, h B",
         "yMd, Bh": "d.M.y, h B",
         "yMEd, Bh": "E, d.M.y, h B",
         "yMM, Bh": "MM.y, h B",
@@ -2204,7 +2186,7 @@
         "MMMMd, Bhm": "d. MMMM, h:mm B",
         "MMMMEd, Bhm": "E, d. MMMM, h:mm B",
         "y, Bhm": "y, h:mm B",
-        "yM, Bhm": "MM/y, h:mm B",
+        "yM, Bhm": "M/y, h:mm B",
         "yMd, Bhm": "d.M.y, h:mm B",
         "yMEd, Bhm": "E, d.M.y, h:mm B",
         "yMM, Bhm": "MM.y, h:mm B",
@@ -2236,7 +2218,7 @@
         "MMMMd, Bhms": "d. MMMM, h:mm:ss B",
         "MMMMEd, Bhms": "E, d. MMMM, h:mm:ss B",
         "y, Bhms": "y, h:mm:ss B",
-        "yM, Bhms": "MM/y, h:mm:ss B",
+        "yM, Bhms": "M/y, h:mm:ss B",
         "yMd, Bhms": "d.M.y, h:mm:ss B",
         "yMEd, Bhms": "E, d.M.y, h:mm:ss B",
         "yMM, Bhms": "MM.y, h:mm:ss B",
@@ -2268,7 +2250,7 @@
         "MMMMd, h": "d. MMMM, h 'Uhr' a",
         "MMMMEd, h": "E, d. MMMM, h 'Uhr' a",
         "y, h": "y, h 'Uhr' a",
-        "yM, h": "MM/y, h 'Uhr' a",
+        "yM, h": "M/y, h 'Uhr' a",
         "yMd, h": "d.M.y, h 'Uhr' a",
         "yMEd, h": "E, d.M.y, h 'Uhr' a",
         "yMM, h": "MM.y, h 'Uhr' a",
@@ -2300,7 +2282,7 @@
         "MMMMd, H": "d. MMMM, HH 'Uhr'",
         "MMMMEd, H": "E, d. MMMM, HH 'Uhr'",
         "y, H": "y, HH 'Uhr'",
-        "yM, H": "MM/y, HH 'Uhr'",
+        "yM, H": "M/y, HH 'Uhr'",
         "yMd, H": "d.M.y, HH 'Uhr'",
         "yMEd, H": "E, d.M.y, HH 'Uhr'",
         "yMM, H": "MM.y, HH 'Uhr'",
@@ -2332,7 +2314,7 @@
         "MMMMd, hm": "d. MMMM, h:mm a",
         "MMMMEd, hm": "E, d. MMMM, h:mm a",
         "y, hm": "y, h:mm a",
-        "yM, hm": "MM/y, h:mm a",
+        "yM, hm": "M/y, h:mm a",
         "yMd, hm": "d.M.y, h:mm a",
         "yMEd, hm": "E, d.M.y, h:mm a",
         "yMM, hm": "MM.y, h:mm a",
@@ -2364,7 +2346,7 @@
         "MMMMd, Hm": "d. MMMM, HH:mm",
         "MMMMEd, Hm": "E, d. MMMM, HH:mm",
         "y, Hm": "y, HH:mm",
-        "yM, Hm": "MM/y, HH:mm",
+        "yM, Hm": "M/y, HH:mm",
         "yMd, Hm": "d.M.y, HH:mm",
         "yMEd, Hm": "E, d.M.y, HH:mm",
         "yMM, Hm": "MM.y, HH:mm",
@@ -2396,7 +2378,7 @@
         "MMMMd, hms": "d. MMMM, h:mm:ss a",
         "MMMMEd, hms": "E, d. MMMM, h:mm:ss a",
         "y, hms": "y, h:mm:ss a",
-        "yM, hms": "MM/y, h:mm:ss a",
+        "yM, hms": "M/y, h:mm:ss a",
         "yMd, hms": "d.M.y, h:mm:ss a",
         "yMEd, hms": "E, d.M.y, h:mm:ss a",
         "yMM, hms": "MM.y, h:mm:ss a",
@@ -2428,7 +2410,7 @@
         "MMMMd, Hms": "d. MMMM, HH:mm:ss",
         "MMMMEd, Hms": "E, d. MMMM, HH:mm:ss",
         "y, Hms": "y, HH:mm:ss",
-        "yM, Hms": "MM/y, HH:mm:ss",
+        "yM, Hms": "M/y, HH:mm:ss",
         "yMd, Hms": "d.M.y, HH:mm:ss",
         "yMEd, Hms": "E, d.M.y, HH:mm:ss",
         "yMM, Hms": "MM.y, HH:mm:ss",
@@ -2460,7 +2442,7 @@
         "MMMMd, hmsv": "d. MMMM, h:mm:ss a v",
         "MMMMEd, hmsv": "E, d. MMMM, h:mm:ss a v",
         "y, hmsv": "y, h:mm:ss a v",
-        "yM, hmsv": "MM/y, h:mm:ss a v",
+        "yM, hmsv": "M/y, h:mm:ss a v",
         "yMd, hmsv": "d.M.y, h:mm:ss a v",
         "yMEd, hmsv": "E, d.M.y, h:mm:ss a v",
         "yMM, hmsv": "MM.y, h:mm:ss a v",
@@ -2492,7 +2474,7 @@
         "MMMMd, Hmsv": "d. MMMM, HH:mm:ss v",
         "MMMMEd, Hmsv": "E, d. MMMM, HH:mm:ss v",
         "y, Hmsv": "y, HH:mm:ss v",
-        "yM, Hmsv": "MM/y, HH:mm:ss v",
+        "yM, Hmsv": "M/y, HH:mm:ss v",
         "yMd, Hmsv": "d.M.y, HH:mm:ss v",
         "yMEd, Hmsv": "E, d.M.y, HH:mm:ss v",
         "yMM, Hmsv": "MM.y, HH:mm:ss v",
@@ -2524,7 +2506,7 @@
         "MMMMd, hmv": "d. MMMM, h:mm a v",
         "MMMMEd, hmv": "E, d. MMMM, h:mm a v",
         "y, hmv": "y, h:mm a v",
-        "yM, hmv": "MM/y, h:mm a v",
+        "yM, hmv": "M/y, h:mm a v",
         "yMd, hmv": "d.M.y, h:mm a v",
         "yMEd, hmv": "E, d.M.y, h:mm a v",
         "yMM, hmv": "MM.y, h:mm a v",
@@ -2556,7 +2538,7 @@
         "MMMMd, Hmv": "d. MMMM, HH:mm v",
         "MMMMEd, Hmv": "E, d. MMMM, HH:mm v",
         "y, Hmv": "y, HH:mm v",
-        "yM, Hmv": "MM/y, HH:mm v",
+        "yM, Hmv": "M/y, HH:mm v",
         "yMd, Hmv": "d.M.y, HH:mm v",
         "yMEd, Hmv": "E, d.M.y, HH:mm v",
         "yMM, Hmv": "MM.y, HH:mm v",
@@ -2588,7 +2570,7 @@
         "MMMMd, ms": "d. MMMM, mm:ss",
         "MMMMEd, ms": "E, d. MMMM, mm:ss",
         "y, ms": "y, mm:ss",
-        "yM, ms": "MM/y, mm:ss",
+        "yM, ms": "M/y, mm:ss",
         "yMd, ms": "d.M.y, mm:ss",
         "yMEd, ms": "E, d.M.y, mm:ss",
         "yMM, ms": "MM.y, mm:ss",
@@ -2712,8 +2694,8 @@
         "y": "y–y"
       },
       "yM": {
-        "M": "MM/y – MM/y",
-        "y": "MM/y – MM/y"
+        "M": "M/y – M/y",
+        "y": "M/y – M/y"
       },
       "yMd": {
         "d": "dd.–dd.MM.y",

@@ -414,12 +414,6 @@
           "czas górski letni"
         ]
       },
-      "America/Hermosillo": {
-        "long": [
-          "czas górski standardowy",
-          "czas górski letni"
-        ]
-      },
       "America/Los_Angeles": {
         "long": [
           "czas pacyficzny standardowy",
@@ -1362,16 +1356,16 @@
           "czas uniwersalny"
         ]
       },
-      "America/Scoresbysund": {
-        "long": [
-          "Grenlandia Wschodnia (czas standardowy)",
-          "Grenlandia Wschodnia (czas letni)"
-        ]
-      },
       "America/Godthab": {
         "long": [
           "Grenlandia Zachodnia (czas standardowy)",
           "Grenlandia Zachodnia (czas letni)"
+        ]
+      },
+      "America/Scoresbysund": {
+        "long": [
+          "Grenlandia Wschodnia (czas standardowy)",
+          "Grenlandia Wschodnia (czas letni)"
         ]
       },
       "Asia/Dubai": {
@@ -1530,12 +1524,6 @@
           "Lord Howe (czas letni)"
         ]
       },
-      "Antarctica/Macquarie": {
-        "long": [
-          "czas Macquarie",
-          "czas Macquarie"
-        ]
-      },
       "Asia/Magadan": {
         "long": [
           "Magadan (czas standardowy)",
@@ -1570,12 +1558,6 @@
         "long": [
           "czas Mawson",
           "czas Mawson"
-        ]
-      },
-      "America/Santa_Isabel": {
-        "long": [
-          "Meksyk Północno-Zachodni (czas standardowy)",
-          "Meksyk Północno-Zachodni (czas letni)"
         ]
       },
       "America/Mazatlan": {

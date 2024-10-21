@@ -5,6 +5,10 @@ export const hourCycles = {
     "h23",
     "h12"
   ],
+  "419": [
+    "h12",
+    "h23"
+  ],
   "AC": [
     "h23",
     "h12"
@@ -39,8 +43,8 @@ export const hourCycles = {
     "h23"
   ],
   "AR": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "AS": [
     "h12",
@@ -108,8 +112,8 @@ export const hourCycles = {
     "h23"
   ],
   "BO": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "BQ": [
     "h23"
@@ -167,8 +171,8 @@ export const hourCycles = {
     "h12"
   ],
   "CL": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "CM": [
     "h23",
@@ -186,12 +190,12 @@ export const hourCycles = {
     "h23"
   ],
   "CR": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "CU": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "CV": [
     "h23"
@@ -241,8 +245,8 @@ export const hourCycles = {
     "h12"
   ],
   "EC": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "EE": [
     "h23"
@@ -342,8 +346,8 @@ export const hourCycles = {
     "h23"
   ],
   "GT": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "GU": [
     "h12",
@@ -361,8 +365,8 @@ export const hourCycles = {
     "h23"
   ],
   "HN": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "HR": [
     "h23"
@@ -590,8 +594,8 @@ export const hourCycles = {
     "h23"
   ],
   "MX": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "MY": [
     "h12",
@@ -619,8 +623,8 @@ export const hourCycles = {
     "h12"
   ],
   "NI": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "NL": [
     "h23"
@@ -654,8 +658,8 @@ export const hourCycles = {
     "h23"
   ],
   "PE": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "PF": [
     "h23",
@@ -700,8 +704,8 @@ export const hourCycles = {
     "h23"
   ],
   "PY": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "QA": [
     "h12",
@@ -787,8 +791,8 @@ export const hourCycles = {
     "h23"
   ],
   "SV": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "SX": [
     "h23",
@@ -877,8 +881,8 @@ export const hourCycles = {
     "h23"
   ],
   "UY": [
-    "h23",
-    "h12"
+    "h12",
+    "h23"
   ],
   "UZ": [
     "h23",
@@ -958,15 +962,7 @@ export const hourCycles = {
     "h12",
     "h23"
   ],
-  "es-BO": [
-    "h23",
-    "h12"
-  ],
   "es-BR": [
-    "h23",
-    "h12"
-  ],
-  "es-EC": [
     "h23",
     "h12"
   ],
@@ -975,10 +971,6 @@ export const hourCycles = {
     "h12"
   ],
   "es-GQ": [
-    "h23",
-    "h12"
-  ],
-  "es-PE": [
     "h23",
     "h12"
   ],

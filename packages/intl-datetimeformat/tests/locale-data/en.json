@@ -492,16 +492,6 @@
           "MDT"
         ]
       },
-      "America/Hermosillo": {
-        "long": [
-          "Mountain Standard Time",
-          "Mountain Daylight Time"
-        ],
-        "short": [
-          "MST",
-          "MDT"
-        ]
-      },
       "America/Los_Angeles": {
         "long": [
           "Pacific Standard Time",
@@ -1450,16 +1440,16 @@
           "GMT"
         ]
       },
-      "America/Scoresbysund": {
-        "long": [
-          "East Greenland Standard Time",
-          "East Greenland Summer Time"
-        ]
-      },
       "America/Godthab": {
         "long": [
           "West Greenland Standard Time",
           "West Greenland Summer Time"
+        ]
+      },
+      "America/Scoresbysund": {
+        "long": [
+          "East Greenland Standard Time",
+          "East Greenland Summer Time"
         ]
       },
       "Asia/Dubai": {
@@ -1640,12 +1630,6 @@
           "Macao Summer Time"
         ]
       },
-      "Antarctica/Macquarie": {
-        "long": [
-          "Macquarie Island Time",
-          "Macquarie Island Time"
-        ]
-      },
       "Asia/Magadan": {
         "long": [
           "Magadan Standard Time",
@@ -1680,12 +1664,6 @@
         "long": [
           "Mawson Time",
           "Mawson Time"
-        ]
-      },
-      "America/Santa_Isabel": {
-        "long": [
-          "Northwest Mexico Standard Time",
-          "Northwest Mexico Daylight Time"
         ]
       },
       "America/Mazatlan": {

@@ -972,7 +972,7 @@
           "one": "som",
           "other": "soms"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1635,10 +1635,18 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "one": "leona",
           "other": "leonas"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "one": "leona (1964—2022)",
+          "other": "leonas (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -2028,6 +2036,14 @@
         },
         "narrow": "$",
         "symbol": "XCD"
+      },
+      "XCG": {
+        "displayName": {
+          "one": "florín caribeño",
+          "other": "florines caribeños"
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {
