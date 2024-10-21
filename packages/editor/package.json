@@ -30,8 +30,8 @@
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@material-ui/lab": "4.0.0-alpha.57",
-    "@mui/icons-material": "^5.0.0",
-    "@mui/material": "^5.0.0",
+    "@mui/icons-material": "^6.0.0",
+    "@mui/material": "^6.0.0",
     "@types/react": "^18.3.11",
     "react": "18",
     "react-intl": "workspace:*"
