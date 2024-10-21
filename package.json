@@ -88,7 +88,7 @@
     "cldr-localenames-full": "43.1.0",
     "cldr-misc-full": "43.1.0",
     "cldr-numbers-full": "43.1.0",
-    "cldr-segments-full": "43.1.0",
+    "cldr-segments-full": "45.0.0",
     "cldr-units-full": "43.1.0",
     "clsx": "^2.1.1",
     "commander": "^8.3.0",
