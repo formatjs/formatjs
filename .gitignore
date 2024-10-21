@@ -1,4 +1,4 @@
-bazel-out
+bazel-*
 dist
 node_modules
 .cache
