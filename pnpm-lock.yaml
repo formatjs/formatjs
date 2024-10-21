@@ -242,8 +242,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       commander:
-        specifier: ^8.3.0
-        version: 8.3.0
+        specifier: ^12.0.0
+        version: 12.1.0
       content-tag:
         specifier: ^2.0.2
         version: 2.0.2
@@ -501,8 +501,8 @@ importers:
         specifier: ^4.0.0
         version: 4.1.2
       commander:
-        specifier: '8'
-        version: 8.3.0
+        specifier: '12'
+        version: 12.1.0
       content-tag:
         specifier: ^2.0.1
         version: 2.0.2
@@ -5281,7 +5281,7 @@ packages:
     resolution: {integrity: sha512-iXy2sjP0phPEpK2yivjRC3PAgoLaT4sjSk0LDWCTdcTBJmR4waEog0E6eJbvoOkLkOtWw37SB8vCkl/bbh4+8A==}
     peerDependencies:
       '@swc/core': '>= 1.4.13'
-      typescript: 5.6.2
+      typescript: '>= 4.3'
     dependencies:
       '@swc-node/core': 1.13.3(@swc/core@1.7.36)(@swc/types@0.1.12)
       '@swc-node/sourcemap-support': 0.5.1
@@ -7800,6 +7800,10 @@ packages:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
     engines: {node: '>=14'}
     dev: true
+
+  /commander@12.1.0:
+    resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
+    engines: {node: '>=18'}
 
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -18061,7 +18065,7 @@ packages:
       babel-jest: ^29.0.0
       esbuild: '*'
       jest: ^29.0.0
-      typescript: 5.6.2
+      typescript: '>=4.3 <6'
     peerDependenciesMeta:
       '@babel/core':
         optional: true
@@ -18736,7 +18740,7 @@ packages:
   /vue@3.5.12(typescript@5.6.2):
     resolution: {integrity: sha512-CLVZtXtn2ItBIi/zHZ0Sg1Xkb7+PU32bJJ8Bmy7ts3jxXTcbfsEfBivFYYWz1Hur+lalqGAh65Coin0r+HRUfg==}
     peerDependencies:
-      typescript: 5.6.2
+      typescript: '*'
     peerDependenciesMeta:
       typescript:
         optional: true

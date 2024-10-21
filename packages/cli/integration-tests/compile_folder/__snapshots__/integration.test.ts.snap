@@ -21,13 +21,12 @@ exports[`basic case: help 1`] = `
   "stderr": "",
   "stdout": "Usage: formatjs compile-folder [options] <folder> <outFolder>
 
-Batch compile all extracted translation JSON files in <folder> to <outFolder> containing
-react-intl consumable JSON. We also verify that the messages are 
+Batch compile all extracted translation JSON files in <folder> to <outFolder>
+containing react-intl consumable JSON. We also verify that the messages are
 valid ICU and not malformed.
 
 Options:
-  --format <path>  Path to a formatter file that converts JSON files in \`<folder>\` to \`Record<string, string>\`
-  so we can compile. The file must export a function named \`compile\` with the signature:
+  --format <path>  Path to a formatter file that converts JSON files in \`<folder>\` to \`Record<string, string>\` so we can compile. The file must export a function named \`compile\` with the signature:
   \`\`\`
   type CompileFn = <T = Record<string, MessageDescriptor>>(
     msgs: T

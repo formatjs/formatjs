@@ -1,10 +1,10 @@
 import {program} from 'commander'
+import {sync as globSync} from 'fast-glob'
 import loudRejection from 'loud-rejection'
-import extract, {ExtractCLIOptions} from './extract'
 import compile, {CompileCLIOpts, Opts} from './compile'
 import compileFolder from './compile_folder'
-import {sync as globSync} from 'fast-glob'
 import {debug} from './console_utils'
+import extract, {ExtractCLIOptions} from './extract'
 
 const KNOWN_COMMANDS = ['extract']
 
@@ -149,14 +149,11 @@ sentences are not translator-friendly.`
   program
     .command('compile [translation_files...]')
     .description(
-      `Compile extracted translation file into react-intl consumable JSON
-We also verify that the messages are valid ICU and not malformed. 
-<translation_files> can be a glob like "foo/**/en.json"`
+      `Compile extracted translation file into react-intl consumable JSON We also verify that the messages are valid ICU and not malformed. <translation_files> can be a glob like "foo/**/en.json"`
     )
     .option(
       '--format <path>',
-      `Path to a formatter file that converts \`<translation_file>\` to \`Record<string, string>\`
-so we can compile. The file must export a function named \`compile\` with the signature:
+      `Path to a formatter file that converts \`<translation_file>\` to \`Record<string, string>\` so we can compile. The file must export a function named \`compile\` with the signature:
 \`\`\`
 type CompileFn = <T = Record<string, MessageDescriptor>>(
   msgs: T
@@ -167,13 +164,11 @@ This is especially useful to convert from a TMS-specific format back to react-in
     )
     .option(
       '--out-file <path>',
-      `Compiled translation output file.
-If this is not provided, result will be printed to stdout`
+      `Compiled translation output file. If this is not provided, result will be printed to stdout`
     )
     .option(
       '--ast',
-      `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
-for more information`
+      `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages for more information`
     )
     .option(
       '--skip-errors',
@@ -181,13 +176,11 @@ for more information`
     )
     .option(
       '--pseudo-locale <pseudoLocale>',
-      `Whether to generate pseudo-locale files. See https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. 
-"--ast" is required for this to work.`
+      `Whether to generate pseudo-locale files. See https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. "--ast" is required for this to work.`
     )
     .option(
       '--ignore-tag',
-      `Whether the parser to treat HTML/XML tags as string literal instead of parsing them as tag token. When this is false we only allow 
-simple tags without any attributes.`
+      `Whether the parser to treat HTML/XML tags as string literal instead of parsing them as tag token. When this is false we only allow simple tags without any attributes.`
     )
     .action(async (filePatterns: string[], opts: CompileCLIOpts) => {
       debug('File pattern:', filePatterns)
@@ -203,14 +196,11 @@ simple tags without any attributes.`
   program
     .command('compile-folder <folder> <outFolder>')
     .description(
-      `Batch compile all extracted translation JSON files in <folder> to <outFolder> containing
-react-intl consumable JSON. We also verify that the messages are 
-valid ICU and not malformed.`
+      `Batch compile all extracted translation JSON files in <folder> to <outFolder> containing react-intl consumable JSON. We also verify that the messages are valid ICU and not malformed.`
     )
     .option(
       '--format <path>',
-      `Path to a formatter file that converts JSON files in \`<folder>\` to \`Record<string, string>\`
-so we can compile. The file must export a function named \`compile\` with the signature:
+      `Path to a formatter file that converts JSON files in \`<folder>\` to \`Record<string, string>\` so we can compile. The file must export a function named \`compile\` with the signature:
 \`\`\`
 type CompileFn = <T = Record<string, MessageDescriptor>>(
   msgs: T
@@ -221,8 +211,7 @@ This is especially useful to convert from a TMS-specific format back to react-in
     )
     .option(
       '--ast',
-      `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
-for more information`
+      `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages for more information`
     )
     .action(async (folder: string, outFolder: string, opts?: Opts) => {
       debug('Folder:', folder)
