@@ -206,8 +206,8 @@ importers:
         specifier: ^2.1.4
         version: 2.1.4
       chalk:
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^5.0.0
+        version: 5.3.0
       chokidar:
         specifier: ^4.0.1
         version: 4.0.1
@@ -437,7 +437,7 @@ importers:
         specifier: ^0.91.1 || ^0.92.0
         version: 0.92.3
       '@glimmer/syntax':
-        specifier: ^0.92.0
+        specifier: 0.92.3
         version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
       '@glimmer/validator':
         specifier: ^0.92.0
@@ -477,7 +477,7 @@ importers:
         specifier: ^0.91.1 || ^0.92.0
         version: 0.92.3
       '@glimmer/syntax':
-        specifier: ^0.92.0
+        specifier: 0.92.3
         version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
       '@glimmer/validator':
         specifier: ^0.92.0
@@ -498,8 +498,8 @@ importers:
         specifier: ^3.4.0
         version: 3.5.12
       chalk:
-        specifier: ^4.0.0
-        version: 4.1.2
+        specifier: ^5.0.0
+        version: 5.3.0
       commander:
         specifier: '12'
         version: 12.1.0
@@ -651,7 +651,7 @@ importers:
         specifier: ^2.7.0
         version: 2.8.0
       typescript:
-        specifier: ^4.7 || 5
+        specifier: 5.6.2
         version: 5.6.2
     devDependencies:
       '@formatjs/intl-datetimeformat':
@@ -892,7 +892,7 @@ importers:
         specifier: ^2.7.0
         version: 2.8.0
       typescript:
-        specifier: ^4.7 || 5
+        specifier: 5.6.2
         version: 5.6.2
     devDependencies:
       '@formatjs/intl-numberformat':
@@ -971,8 +971,8 @@ importers:
         specifier: 14 || 16 || 17 || 18 || 20
         version: 20.16.13
       chalk:
-        specifier: ^4.0.0
-        version: 4.1.2
+        specifier: ^5.0.0
+        version: 5.3.0
       json-stable-stringify:
         specifier: ^1.0.1
         version: 1.1.1
@@ -1001,8 +1001,8 @@ importers:
         specifier: 14 || 16 || 17 || 18 || 20
         version: 20.16.13
       chalk:
-        specifier: ^4.0.0
-        version: 4.1.2
+        specifier: ^5.0.0
+        version: 5.3.0
       json-stable-stringify:
         specifier: ^1.0.1
         version: 1.1.1
@@ -5281,7 +5281,7 @@ packages:
     resolution: {integrity: sha512-iXy2sjP0phPEpK2yivjRC3PAgoLaT4sjSk0LDWCTdcTBJmR4waEog0E6eJbvoOkLkOtWw37SB8vCkl/bbh4+8A==}
     peerDependencies:
       '@swc/core': '>= 1.4.13'
-      typescript: '>= 4.3'
+      typescript: 5.6.2
     dependencies:
       '@swc-node/core': 1.13.3(@swc/core@1.7.36)(@swc/types@0.1.12)
       '@swc-node/sourcemap-support': 0.5.1
@@ -7442,7 +7442,6 @@ packages:
   /chalk@5.3.0:
     resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
-    dev: true
 
   /change-case@4.1.2:
     resolution: {integrity: sha512-bSxY2ws9OtviILG1EiY5K7NNxkqg/JnRnFxLtKQ96JaviiIxi7djMrSd0ECT9AC+lttClmYwKw53BWpOMblo7A==}
@@ -18060,7 +18059,7 @@ packages:
       babel-jest: ^29.0.0
       esbuild: '*'
       jest: ^29.0.0
-      typescript: '>=4.3 <6'
+      typescript: 5.6.2
     peerDependenciesMeta:
       '@babel/core':
         optional: true
@@ -18735,7 +18734,7 @@ packages:
   /vue@3.5.12(typescript@5.6.2):
     resolution: {integrity: sha512-CLVZtXtn2ItBIi/zHZ0Sg1Xkb7+PU32bJJ8Bmy7ts3jxXTcbfsEfBivFYYWz1Hur+lalqGAh65Coin0r+HRUfg==}
     peerDependencies:
-      typescript: '*'
+      typescript: 5.6.2
     peerDependenciesMeta:
       typescript:
         optional: true
