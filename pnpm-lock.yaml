@@ -324,7 +324,7 @@ importers:
         version: 1.2.8
       picomatch:
         specifier: ^4.0.0
-        version: 4.0.0
+        version: 4.0.2
       pnpm:
         specifier: ^9.12.2
         version: 9.12.2
@@ -583,7 +583,7 @@ importers:
         version: 0.30.12
       picomatch:
         specifier: 2 || 3 || 4
-        version: 4.0.0
+        version: 4.0.2
       tslib:
         specifier: ^2.7.0
         version: 2.8.0
@@ -14913,14 +14913,9 @@ packages:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
 
-  /picomatch@4.0.0:
-    resolution: {integrity: sha512-luYHSuwP2yHKySJ5J1ujgN2gSGFP+Ua6F1dvOTusl392lTqouuf5KO3QFRbc8nBM1uWiDhltecTxnij9wIorAA==}
-    engines: {node: '>=10'}
-
   /picomatch@4.0.2:
     resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
     engines: {node: '>=12'}
-    dev: true
 
   /pify@2.3.0:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
