@@ -217,7 +217,7 @@ importers:
         version: 43.1.0
       cldr-dates-full:
         specifier: 43.1.0
-        version: 43.1.0(cldr-numbers-full@43.1.0(cldr-core@43.1.0))
+        version: 43.1.0(cldr-numbers-full@45.0.0(cldr-core@43.1.0))
       cldr-localenames-full:
         specifier: 43.1.0
         version: 43.1.0(cldr-core@43.1.0)
@@ -225,8 +225,8 @@ importers:
         specifier: 43.1.0
         version: 43.1.0(cldr-core@43.1.0)
       cldr-numbers-full:
-        specifier: 43.1.0
-        version: 43.1.0(cldr-core@43.1.0)
+        specifier: 45.0.0
+        version: 45.0.0(cldr-core@43.1.0)
       cldr-segments-full:
         specifier: 43.1.0
         version: 43.1.0(cldr-core@43.1.0)
@@ -4045,10 +4045,10 @@ packages:
     peerDependencies:
       cldr-core: 43.1.0
 
-  cldr-numbers-full@43.1.0:
-    resolution: {integrity: sha512-IP1/DLQnC0U1r+KsaNYqNu1rRv3yeiYtImFrtssMqRs5HRMt9DvuSaKEIgj91EpoyNwAxMeRBCGLP5NYkzP4XQ==}
+  cldr-numbers-full@45.0.0:
+    resolution: {integrity: sha512-5Lf03tqz7XgHEA2hXTHAxOAYxea5d/BYMIAtt8HtGmrfHK2vNLJgaOoqALx801GJgQjCBoYs6f0P98qUkji+CQ==}
     peerDependencies:
-      cldr-core: 43.1.0
+      cldr-core: 45.0.0
 
   cldr-segments-full@43.1.0:
     resolution: {integrity: sha512-THxxBrnYqjVSvca7RiSgGomLcpnWZfGqwtSk97NP+EiOXwFvpvIeyzp4FbMdLw1UwvmMa0Gcm6imuJDZH8p7Xg==}
@@ -14567,9 +14567,9 @@ snapshots:
 
   cldr-core@43.1.0: {}
 
-  cldr-dates-full@43.1.0(cldr-numbers-full@43.1.0(cldr-core@43.1.0)):
+  cldr-dates-full@43.1.0(cldr-numbers-full@45.0.0(cldr-core@43.1.0)):
     dependencies:
-      cldr-numbers-full: 43.1.0(cldr-core@43.1.0)
+      cldr-numbers-full: 45.0.0(cldr-core@43.1.0)
 
   cldr-localenames-full@43.1.0(cldr-core@43.1.0):
     dependencies:
@@ -14579,7 +14579,7 @@ snapshots:
     dependencies:
       cldr-core: 43.1.0
 
-  cldr-numbers-full@43.1.0(cldr-core@43.1.0):
+  cldr-numbers-full@45.0.0(cldr-core@43.1.0):
     dependencies:
       cldr-core: 43.1.0
 
