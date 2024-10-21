@@ -948,7 +948,7 @@
         "displayName": {
           "other": "Kirgizische som"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1585,7 +1585,7 @@
       },
       "SLL": {
         "displayName": {
-          "other": "Sierraleoonse leone (1964—2022)"
+          "other": "Sierra Leoonse leone (1964–2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1949,6 +1949,13 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+          "other": "Caribische gulden"
+        },
+        "narrow": "Cg",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {

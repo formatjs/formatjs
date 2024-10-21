@@ -915,7 +915,7 @@
         "displayName": {
           "other": "ซอมคีร์กีซสถาน"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1534,9 +1534,16 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "other": "ลีโอนเซียร์ราลีโอน"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "other": "ลีโอนเซียร์ราลีโอน (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1883,6 +1890,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {

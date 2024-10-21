@@ -949,7 +949,7 @@
           "one": "kirgisisk som",
           "other": "kirgisiske som"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1596,10 +1596,18 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "one": "sierraleonsk leone",
           "other": "sierraleonske leone"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "one": "sierraleonsk leone (1964—2022)",
+          "other": "sierraleonske leone (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1956,6 +1964,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {
@@ -2551,7 +2565,7 @@
           "perUnit": {
             "long": "{0} pr. time",
             "narrow": "{0}/t",
-            "short": "{0} /t"
+            "short": "{0}/t."
           },
           "short": {
             "other": "{0} t."
@@ -2636,7 +2650,6 @@
         },
         "kilometer-per-hour": {
           "long": {
-            "one": "kilometer i timen",
             "other": "{0} kilometer i timen"
           },
           "narrow": {
@@ -2736,15 +2749,15 @@
         "mile": {
           "long": {
             "one": "{0} engelsk mil",
-            "other": "{0} engelske mil"
+            "other": "{0} miles"
           },
           "narrow": {
-            "other": "{0} mil"
+            "other": "{0} mi"
           },
           "perUnit": {
           },
           "short": {
-            "other": "{0} mil"
+            "other": "{0} mi"
           }
         },
         "mile-per-gallon": {

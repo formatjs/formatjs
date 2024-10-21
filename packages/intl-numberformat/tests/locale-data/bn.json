@@ -862,7 +862,7 @@
         "displayName": {
           "other": "কিরগিজস্তান সোম"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1447,9 +1447,16 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "other": "সিয়েরালিয়ন লিয়ন"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "other": "সিয়েরালিয়ন লিয়ন (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1768,6 +1775,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XEU": {
         "displayName": {

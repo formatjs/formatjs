@@ -1031,7 +1031,7 @@
           "one": "Kirgisischer Som",
           "other": "Kirgisische Som"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1713,10 +1713,18 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "one": "Sierra-leonischer Leone",
           "other": "Sierra-leonische Leones"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "one": "Sierra-leonischer Leone (1964—2022)",
+          "other": "Sierra-leonische Leones (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -2086,6 +2094,12 @@
         "narrow": "$",
         "symbol": "EC$"
       },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
+      },
       "XDR": {
         "displayName": {
           "other": "Sonderziehungsrechte"
@@ -2298,7 +2312,7 @@
     "numbers": {
       "currency": {
         "latn": {
-          "accounting": "#,##0.00 ¤",
+          "accounting": "¤ #,##0.00",
           "currencySpacing": {
             "afterInsertBetween": " ",
             "beforeInsertBetween": " "

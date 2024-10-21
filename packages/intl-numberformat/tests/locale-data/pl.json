@@ -1082,7 +1082,7 @@
           "one": "som kirgiski",
           "other": "soma kirgiskiego"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1834,12 +1834,22 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "few": "leone sierraleońskie",
           "many": "leone sierraleońskich",
           "one": "leone sierraleoński",
           "other": "leone sierraleońskiego"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "few": "leone sierraleońskie (1964—2022)",
+          "many": "leone sierraleońskich (1964—2022)",
+          "one": "leone sierraleoński (1964—2022)",
+          "other": "leone sierraleońskiego (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -2237,6 +2247,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {
@@ -3001,7 +3017,10 @@
             "other": "{0} kilometra na godzinę"
           },
           "narrow": {
-            "other": "{0} km/godz."
+            "few": "{0} km/h",
+            "many": "{0} km/h",
+            "one": "{0} km/h",
+            "other": "{0}km/h"
           },
           "perUnit": {
           },
@@ -3417,9 +3436,7 @@
             "other": "{0} tygodnia"
           },
           "narrow": {
-            "few": "{0} t.",
-            "one": "{0} tydz.",
-            "other": "{0} tyg."
+            "other": "{0} t."
           },
           "perUnit": {
             "long": "{0} na tydzień",

@@ -1078,7 +1078,7 @@
           "one": "Som quirguiz",
           "other": "Sons quirguizes"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1784,10 +1784,18 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "one": "Leone de Serra Leoa",
           "other": "Leones de Serra Leoa"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "one": "Leone de Serra Leoa (1964—2022)",
+          "other": "Leones de Serra Leoa (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -2182,6 +2190,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {
@@ -2667,12 +2681,12 @@
             "other": "{0} graus"
           },
           "narrow": {
-            "other": "{0}°"
+            "other": "{0} °"
           },
           "perUnit": {
           },
           "short": {
-            "other": "{0}°"
+            "other": "{0} °"
           }
         },
         "fahrenheit": {
@@ -2709,17 +2723,15 @@
             "other": "{0} pés"
           },
           "narrow": {
-            "one": "{0} pé",
-            "other": "{0} pés"
+            "other": "{0}′"
           },
           "perUnit": {
             "long": "{0} por pé",
-            "narrow": "{0}/pé",
-            "short": "{0}/pé"
+            "narrow": "{0}/ft",
+            "short": "{0}/ft"
           },
           "short": {
-            "one": "{0} pé",
-            "other": "{0} pés"
+            "other": "{0} ft"
           }
         },
         "gallon": {

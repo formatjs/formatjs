@@ -5,6 +5,12 @@ export const timeData: Record<string, string[]> = {
     "H",
     "h"
   ],
+  "419": [
+    "h",
+    "H",
+    "hB",
+    "hb"
+  ],
   "AC": [
     "H",
     "h",
@@ -53,8 +59,8 @@ export const timeData: Record<string, string[]> = {
     "hB"
   ],
   "AR": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
@@ -144,9 +150,9 @@ export const timeData: Record<string, string[]> = {
     "H"
   ],
   "BO": [
+    "h",
     "H",
     "hB",
-    "h",
     "hb"
   ],
   "BQ": [
@@ -223,8 +229,8 @@ export const timeData: Record<string, string[]> = {
     "hB"
   ],
   "CL": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
@@ -249,14 +255,14 @@ export const timeData: Record<string, string[]> = {
     "H"
   ],
   "CR": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
   "CU": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
@@ -325,9 +331,9 @@ export const timeData: Record<string, string[]> = {
     "hb"
   ],
   "EC": [
+    "h",
     "H",
     "hB",
-    "h",
     "hb"
   ],
   "EE": [
@@ -463,8 +469,8 @@ export const timeData: Record<string, string[]> = {
     "hB"
   ],
   "GT": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
@@ -491,8 +497,8 @@ export const timeData: Record<string, string[]> = {
     "H"
   ],
   "HN": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
@@ -806,8 +812,8 @@ export const timeData: Record<string, string[]> = {
     "hB"
   ],
   "MX": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
@@ -847,8 +853,8 @@ export const timeData: Record<string, string[]> = {
     "hB"
   ],
   "NI": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
@@ -896,9 +902,9 @@ export const timeData: Record<string, string[]> = {
     "hb"
   ],
   "PE": [
+    "h",
     "H",
     "hB",
-    "h",
     "hb"
   ],
   "PF": [
@@ -956,8 +962,8 @@ export const timeData: Record<string, string[]> = {
     "H"
   ],
   "PY": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
@@ -1070,8 +1076,8 @@ export const timeData: Record<string, string[]> = {
     "hB"
   ],
   "SV": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
@@ -1193,8 +1199,8 @@ export const timeData: Record<string, string[]> = {
     "hB"
   ],
   "UY": [
-    "H",
     "h",
+    "H",
     "hB",
     "hb"
   ],
@@ -1302,19 +1308,7 @@ export const timeData: Record<string, string[]> = {
     "H",
     "hB"
   ],
-  "es-BO": [
-    "H",
-    "h",
-    "hB",
-    "hb"
-  ],
   "es-BR": [
-    "H",
-    "h",
-    "hB",
-    "hb"
-  ],
-  "es-EC": [
     "H",
     "h",
     "hB",
@@ -1327,12 +1321,6 @@ export const timeData: Record<string, string[]> = {
     "hb"
   ],
   "es-GQ": [
-    "H",
-    "h",
-    "hB",
-    "hb"
-  ],
-  "es-PE": [
     "H",
     "h",
     "hB",

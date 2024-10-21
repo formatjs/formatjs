@@ -26,7 +26,7 @@ const testDataMaximal: Record<string, string> = {
   'und-Cyrl-RO': 'bg-Cyrl-RO',
 
   // Undefined primary language not required to change in all cases.
-  'und-AQ': 'und-Latn-AQ',
+  'und-AQ': 'en-Latn-AQ',
 }
 
 const testDataMinimal: Record<string, string> = {

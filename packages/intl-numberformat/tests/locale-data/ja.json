@@ -943,7 +943,7 @@
         "displayName": {
           "other": "キルギス ソム"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1569,9 +1569,16 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "other": "シエラレオネ レオン"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "other": "シエラレオネ レオン (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1711,7 +1718,7 @@
       },
       "TRY": {
         "displayName": {
-          "other": "トルコリラ"
+          "other": "トルコ リラ"
         },
         "narrow": "₺",
         "symbol": "TRY"
@@ -1918,6 +1925,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {

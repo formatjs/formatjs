@@ -508,7 +508,7 @@
         "displayName": {
           "other": "Som Kyrgystani"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -875,12 +875,6 @@
         "narrow": "₽",
         "symbol": "RUB"
       },
-      "RUR": {
-        "displayName": {
-        },
-        "narrow": "RUR",
-        "symbol": "RUR"
-      },
       "RWF": {
         "displayName": {
           "other": "Franc Rwanda"
@@ -937,9 +931,16 @@
         "narrow": "£",
         "symbol": "SHP"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "other": "Leone Sierra Leone"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "other": "Leone Sierra Leone (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1146,6 +1147,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XOF": {
         "displayName": {

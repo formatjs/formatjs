@@ -184,6 +184,23 @@ multirun(
     ],
 )
 
+multirun(
+    name = "cldr-gen",
+    testonly = True,
+    commands = [
+        "//packages/intl-segmenter:generate-cldr-segmentation-rules",
+        "//packages/icu-messageformat-parser:time-data",
+        "//packages/intl-durationformat:time-separators",
+        "//packages/intl-enumerator:currencies",
+        "//packages/intl-getcanonicallocales:likelySubtags",
+        "//packages/intl-locale:character-orders",
+        "//packages/intl-locale:hour-cycles",
+        "//packages/intl-locale:numbering-systems",
+        "//packages/intl-locale:timezones",
+        "//packages/utils:default-currency",
+    ],
+)
+
 CONFIG_FILES = [
     "jest.config.js",
     "package.json",

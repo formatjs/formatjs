@@ -593,7 +593,7 @@
           "one": "som ya Kyrgystan",
           "other": "som za Kyrgystan"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1056,10 +1056,18 @@
         "narrow": "£",
         "symbol": "SHP"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "one": "leone ya Siera Leoni",
           "other": "leone za Siera Leoni"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "one": "leone ya Siera Leoni (1964—2022)",
+          "other": "leone za Siera Leoni (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1287,6 +1295,12 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XOF": {
         "displayName": {

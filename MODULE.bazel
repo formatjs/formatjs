@@ -133,3 +133,59 @@ http_archive(
     type = "tar.gz",
     urls = ["https://github.com/tc39/test262/tarball/%s" % TEST262_COMMIT],
 )
+
+http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+http_file(
+    name = "DerivedCombiningClass",
+    sha256 = "52064d588c98c623b2373905e6a449eb520f900113954bcd212e94ef0810b471",
+    url = "https://www.unicode.org/Public/16.0.0/ucd/extracted/DerivedCombiningClass.txt",
+)
+
+http_file(
+    name = "DerivedEastAsianWidth",
+    sha256 = "372e34de237e5a644ce8379a0d02b91a1f584f04d4fb240ea6ccc87c5767f926",
+    url = "https://www.unicode.org/Public/16.0.0/ucd/extracted/DerivedEastAsianWidth.txt",
+)
+
+http_file(
+    name = "GraphemeBreakProperty",
+    sha256 = "c29360bd6f7132811d701d29069541e827eb44bfc4c8fbde8c370d6982689dc1",
+    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/GraphemeBreakProperty.txt",
+)
+
+http_file(
+    name = "GraphemeBreakTest",
+    sha256 = "ee2b9354d270ac061b29f09662cafea06341d77e704b8cc6bd72aaeeda363cb5",
+    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/GraphemeBreakTest.txt",
+)
+
+http_file(
+    name = "IndicSyllabicCategory",
+    sha256 = "615f1b92ba7ec76e18c5b5c05d2e1836e4b98bc791eb9e27946c7621fc047ae7",
+    url = "https://www.unicode.org/Public/16.0.0/ucd/IndicSyllabicCategory.txt",
+)
+
+http_file(
+    name = "SentenceBreakProperty",
+    sha256 = "20aab5eca3842c7a27cc6756d74488a4a5f744c8dca2948ec1128f26a60d1f79",
+    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/SentenceBreakProperty.txt",
+)
+
+http_file(
+    name = "SentenceBreakTest",
+    sha256 = "0aef84034ee1789eb71021454fac384e83080b05922272d63cf297f4bf08150e",
+    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/SentenceBreakTest.txt",
+)
+
+http_file(
+    name = "WordBreakProperty",
+    sha256 = "476464e71a4b7b779b8ba7c5671f4338fea77da8e6b6b05fb82b3fdd14603779",
+    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/WordBreakProperty.txt",
+)
+
+http_file(
+    name = "WordBreakTest",
+    sha256 = "ad985d5721f3fa6b45495663dfe44180f2f68976100dee0ea7451ef1a8f838e8",
+    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/WordBreakTest.txt",
+)

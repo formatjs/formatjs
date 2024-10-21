@@ -182,6 +182,9 @@ export const numberingSystems = {
   "bem": [
     "latn"
   ],
+  "bew": [
+    "latn"
+  ],
   "bez": [
     "latn"
   ],
@@ -209,6 +212,9 @@ export const numberingSystems = {
   ],
   "bho": [
     "deva",
+    "latn"
+  ],
+  "blo": [
     "latn"
   ],
   "blt": [
@@ -313,6 +319,9 @@ export const numberingSystems = {
     "latn"
   ],
   "cs": [
+    "latn"
+  ],
+  "csw": [
     "latn"
   ],
   "cu": [
@@ -523,6 +532,9 @@ export const numberingSystems = {
     "latn"
   ],
   "en-HK": [
+    "latn"
+  ],
+  "en-ID": [
     "latn"
   ],
   "en-IE": [
@@ -1163,6 +1175,9 @@ export const numberingSystems = {
   "id": [
     "latn"
   ],
+  "ie": [
+    "latn"
+  ],
   "ig": [
     "latn"
   ],
@@ -1268,6 +1283,9 @@ export const numberingSystems = {
   "ko": [
     "latn"
   ],
+  "ko-CN": [
+    "latn"
+  ],
   "ko-KP": [
     "latn"
   ],
@@ -1304,6 +1322,24 @@ export const numberingSystems = {
   ],
   "kw": [
     "latn"
+  ],
+  "kxv": [
+    "latn"
+  ],
+  "kxv-Deva": [
+    "latn",
+    "deva"
+  ],
+  "kxv-Latn": [
+    "latn"
+  ],
+  "kxv-Orya": [
+    "latn",
+    "orya"
+  ],
+  "kxv-Telu": [
+    "latn",
+    "telu"
   ],
   "ky": [
     "latn"
@@ -1395,6 +1431,9 @@ export const numberingSystems = {
     "latn"
   ],
   "mi": [
+    "latn"
+  ],
+  "mic": [
     "latn"
   ],
   "mk": [
@@ -1799,6 +1838,9 @@ export const numberingSystems = {
   "sk": [
     "latn"
   ],
+  "skr": [
+    "latn"
+  ],
   "sl": [
     "latn"
   ],
@@ -2010,6 +2052,9 @@ export const numberingSystems = {
   "twq": [
     "latn"
   ],
+  "tyv": [
+    "latn"
+  ],
   "tzm": [
     "latn"
   ],
@@ -2063,6 +2108,9 @@ export const numberingSystems = {
   "vi": [
     "latn"
   ],
+  "vmw": [
+    "latn"
+  ],
   "vo": [
     "latn"
   ],
@@ -2087,6 +2135,10 @@ export const numberingSystems = {
   ],
   "xh": [
     "latn"
+  ],
+  "xnr": [
+    "latn",
+    "deva"
   ],
   "xog": [
     "latn"
@@ -2130,6 +2182,9 @@ export const numberingSystems = {
     "hanidec",
     "hant",
     "hantfin"
+  ],
+  "za": [
+    "latn"
   ],
   "zgh": [
     "latn"

@@ -434,8 +434,8 @@
       },
       "BYN": {
         "displayName": {
-          "one": "ny hviterussisk rubel",
-          "other": "nye hviterussiske rubler"
+          "one": "ny belarusisk rubel",
+          "other": "nye belarusiske rubler"
         },
         "narrow": "р.",
         "symbol": "BYN"
@@ -474,7 +474,7 @@
       },
       "CHE": {
         "displayName": {
-          "other": "WIR euro"
+          "other": "WIR-euro"
         },
         "narrow": "CHE",
         "symbol": "CHE"
@@ -489,7 +489,7 @@
       },
       "CHW": {
         "displayName": {
-          "other": "WIR franc"
+          "other": "WIR-franc"
         },
         "narrow": "CHW",
         "symbol": "CHW"
@@ -1070,7 +1070,7 @@
           "one": "kirgisisk som",
           "other": "kirgisiske som"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -1785,10 +1785,18 @@
         "narrow": "SKK",
         "symbol": "SKK"
       },
-      "SLL": {
+      "SLE": {
         "displayName": {
           "one": "sierraleonsk leone",
           "other": "sierraleonske leone"
+        },
+        "narrow": "SLE",
+        "symbol": "SLE"
+      },
+      "SLL": {
+        "displayName": {
+          "one": "sierraleonsk leone (1964—2022)",
+          "other": "sierraleonske leone (1964—2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -2184,6 +2192,12 @@
         "narrow": "$",
         "symbol": "XCD"
       },
+      "XCG": {
+        "displayName": {
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
+      },
       "XDR": {
         "displayName": {
           "one": "spesiell trekkrettighet",
@@ -2453,7 +2467,7 @@
               "other": "¤ 000 bill'.'"
             }
           },
-          "standard": "¤ #,##0.00;¤ -#,##0.00",
+          "standard": "#,##0.00 ¤;-#,##0.00 ¤",
           "unitPattern": "{0} {1}"
         }
       },
@@ -2594,8 +2608,7 @@
             "other": "{0} bit"
           },
           "narrow": {
-            "one": "{0}bit",
-            "other": "{0} bit"
+            "other": "{0}bit"
           },
           "perUnit": {
           },
@@ -2608,8 +2621,7 @@
             "other": "{0} byte"
           },
           "narrow": {
-            "one": "{0}B",
-            "other": "{0} B"
+            "other": "{0}B"
           },
           "perUnit": {
           },
@@ -2742,8 +2754,7 @@
             "other": "{0} gigabit"
           },
           "narrow": {
-            "one": "{0}Gb",
-            "other": "{0} Gb"
+            "other": "{0}Gb"
           },
           "perUnit": {
           },
@@ -2756,8 +2767,7 @@
             "other": "{0} gigabyte"
           },
           "narrow": {
-            "one": "{0}GB",
-            "other": "{0} GB"
+            "other": "{0}GB"
           },
           "perUnit": {
           },
@@ -2817,7 +2827,7 @@
             "other": "{0} tommer"
           },
           "narrow": {
-            "other": "{0}in"
+            "other": "{0}″"
           },
           "perUnit": {
             "long": "{0} per tomme",
@@ -2834,8 +2844,7 @@
             "other": "{0} kilobit"
           },
           "narrow": {
-            "one": "{0}kb",
-            "other": "{0} kb"
+            "other": "{0}kb"
           },
           "perUnit": {
           },
@@ -2848,8 +2857,7 @@
             "other": "{0} kilobyte"
           },
           "narrow": {
-            "one": "{0}kB",
-            "other": "{0} kB"
+            "other": "{0}kB"
           },
           "perUnit": {
           },
@@ -2936,8 +2944,7 @@
             "other": "{0} megabit"
           },
           "narrow": {
-            "one": "{0}Mb",
-            "other": "{0} Mb"
+            "other": "{0}Mb"
           },
           "perUnit": {
           },
@@ -2950,8 +2957,7 @@
             "other": "{0} megabyte"
           },
           "narrow": {
-            "one": "{0}MB",
-            "other": "{0} MB"
+            "other": "{0}MB"
           },
           "perUnit": {
           },
@@ -3050,8 +3056,7 @@
             "other": "{0} milliliter"
           },
           "narrow": {
-            "one": "{0}ml",
-            "other": "{0} ml"
+            "other": "{0}ml"
           },
           "perUnit": {
           },
@@ -3215,8 +3220,7 @@
             "other": "{0} terabit"
           },
           "narrow": {
-            "one": "{0}Tb",
-            "other": "{0} Tb"
+            "other": "{0}Tb"
           },
           "perUnit": {
           },
@@ -3229,8 +3233,7 @@
             "other": "{0} terabyte"
           },
           "narrow": {
-            "one": "{0}TB",
-            "other": "{0} TB"
+            "other": "{0}TB"
           },
           "perUnit": {
           },

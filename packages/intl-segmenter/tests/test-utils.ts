@@ -2,8 +2,10 @@
  * Loads the 3 UCD test files: GraphemeBreakTest.txt SentenceBreakTest.txt WordBreakTest.txt
  * Parses them so they can be easily consumed by either uint tests or debug util
  */
+import {Runfiles} from '@bazel/runfiles'
 import {readFileSync} from 'node:fs'
-import * as pathUtil from 'node:path'
+
+const runfiles = new Runfiles()
 
 function testDataFromLine(line: string) {
   const [test, comment] = line.split('#')
@@ -83,7 +85,7 @@ function testDataFromLine(line: string) {
 }
 
 const loadUCDTestFile = (filePath: string) => {
-  const testFile = readFileSync(pathUtil.resolve(__dirname, filePath), {
+  const testFile = readFileSync(filePath, {
     encoding: 'utf8',
   })
 
@@ -99,7 +101,13 @@ const loadUCDTestFile = (filePath: string) => {
 }
 
 export const segmentationTests = {
-  grapheme: loadUCDTestFile('../unicodeFiles/GraphemeBreakTest.txt'),
-  sentence: loadUCDTestFile('../unicodeFiles/SentenceBreakTest.txt'),
-  word: loadUCDTestFile('../unicodeFiles/WordBreakTest.txt'),
+  grapheme: loadUCDTestFile(
+    runfiles.resolve('_main~_repo_rules~GraphemeBreakTest/file/downloaded')
+  ),
+  sentence: loadUCDTestFile(
+    runfiles.resolve('_main~_repo_rules~SentenceBreakTest/file/downloaded')
+  ),
+  word: loadUCDTestFile(
+    runfiles.resolve('_main~_repo_rules~WordBreakTest/file/downloaded')
+  ),
 }

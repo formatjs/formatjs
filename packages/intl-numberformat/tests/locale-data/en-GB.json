@@ -1072,7 +1072,7 @@
           "one": "Kyrgystani som",
           "other": "Kyrgystani soms"
         },
-        "narrow": "KGS",
+        "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
@@ -2192,6 +2192,14 @@
         },
         "narrow": "$",
         "symbol": "EC$"
+      },
+      "XCG": {
+        "displayName": {
+          "one": "Caribbean guilder",
+          "other": "Caribbean guilders"
+        },
+        "narrow": "Cg.",
+        "symbol": "Cg."
       },
       "XDR": {
         "displayName": {
