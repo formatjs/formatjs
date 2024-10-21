@@ -54,87 +54,67 @@ const COMPACT_DISPLAYS: Array<NumberFormatOptions['compactDisplay']> = [
   'short',
 ]
 
-function test() {
-  LOCALES.forEach(locale => {
-    describe(locale, function () {
-      describe('unit', function () {
-        UNIT_DISPLAYS.forEach(unitDisplay =>
-          describe(`unitDisplay/${unitDisplay}`, function () {
-            SIGN_DISPLAYS.forEach(signDisplay =>
-              describe(`signDisplay/${signDisplay}`, function () {
-                NOTATIONS.forEach(notation =>
-                  describe(`notation/${notation}`, function () {
-                    COMPACT_DISPLAYS.forEach(compactDisplay => {
-                      const numberFormatBit = new NumberFormat(locale, {
-                        style: 'unit',
-                        unit: 'bit',
-                        unitDisplay,
-                        signDisplay,
-                        notation,
-                        compactDisplay,
-                      })
-                      const numberFormatCelsius = new NumberFormat(locale, {
-                        style: 'unit',
-                        unit: 'celsius',
-                        unitDisplay,
-                        signDisplay,
-                        notation,
-                        compactDisplay,
-                      })
-                      const numberFormatGallon = new NumberFormat(locale, {
-                        style: 'unit',
-                        unit: 'gallon',
-                        unitDisplay,
-                        signDisplay,
-                        notation,
-                        compactDisplay,
-                      })
-                      it(`compactDisplay/${compactDisplay} formatToParts`, function () {
-                        expect(
-                          numberFormatBit.formatToParts(10000)
-                        ).toMatchSnapshot()
-                        expect(
-                          numberFormatCelsius.formatToParts(10000)
-                        ).toMatchSnapshot()
-                        expect(
-                          numberFormatGallon.formatToParts(10000)
-                        ).toMatchSnapshot()
-                      })
-
-                      it(`compactDisplay/${compactDisplay} formatRange`, function () {
-                        expect(
-                          numberFormatBit.formatRange(10000, 20000)
-                        ).toMatchSnapshot()
-                        expect(
-                          numberFormatCelsius.formatRange(10000, 20000)
-                        ).toMatchSnapshot()
-                        expect(
-                          numberFormatGallon.formatRange(10000, 20000)
-                        ).toMatchSnapshot()
-                      })
-
-                      it(`compactDisplay/${compactDisplay} formatRangeToParts`, function () {
-                        expect(
-                          numberFormatBit.formatRangeToParts(10000, 20000)
-                        ).toMatchSnapshot()
-                        expect(
-                          numberFormatCelsius.formatRangeToParts(10000, 20000)
-                        ).toMatchSnapshot()
-                        expect(
-                          numberFormatGallon.formatRangeToParts(10000, 20000)
-                        ).toMatchSnapshot()
-                      })
-                    })
-                  })
-                )
-              })
-            )
-          })
-        )
-      })
-    })
-  })
-}
+const testCombos: Array<any[]> = LOCALES.flatMap(locale =>
+  UNIT_DISPLAYS.flatMap(unit =>
+    SIGN_DISPLAYS.flatMap(sign =>
+      NOTATIONS.map(notation =>
+        COMPACT_DISPLAYS.flatMap(compactDisplay => [
+          locale,
+          unit,
+          sign,
+          notation,
+          compactDisplay,
+        ])
+      )
+    )
+  )
+)
 
 // Node v8 does not have formatToParts and v12 has native NumberFormat.
-describe('NumberFormat', test)
+describe('NumberFormat', () => {
+  it.each(testCombos)(
+    'NumberFormat %s, unitDisplay=%s, signDisplay=%s, notation=%s, compactDisplay=%s',
+    (locale, unitDisplay, signDisplay, notation, compactDisplay) => {
+      const numberFormatBit = new NumberFormat(locale, {
+        style: 'unit',
+        unit: 'bit',
+        unitDisplay,
+        signDisplay,
+        notation,
+        compactDisplay,
+      })
+      const numberFormatCelsius = new NumberFormat(locale, {
+        style: 'unit',
+        unit: 'celsius',
+        unitDisplay,
+        signDisplay,
+        notation,
+        compactDisplay,
+      })
+      const numberFormatGallon = new NumberFormat(locale, {
+        style: 'unit',
+        unit: 'gallon',
+        unitDisplay,
+        signDisplay,
+        notation,
+        compactDisplay,
+      })
+
+      expect(numberFormatBit.formatToParts(10000)).toMatchSnapshot()
+      expect(numberFormatCelsius.formatToParts(10000)).toMatchSnapshot()
+      expect(numberFormatGallon.formatToParts(10000)).toMatchSnapshot()
+
+      expect(numberFormatBit.formatRange(10000, 20000)).toMatchSnapshot()
+      expect(numberFormatCelsius.formatRange(10000, 20000)).toMatchSnapshot()
+      expect(numberFormatGallon.formatRange(10000, 20000)).toMatchSnapshot()
+
+      expect(numberFormatBit.formatRangeToParts(10000, 20000)).toMatchSnapshot()
+      expect(
+        numberFormatCelsius.formatRangeToParts(10000, 20000)
+      ).toMatchSnapshot()
+      expect(
+        numberFormatGallon.formatRangeToParts(10000, 20000)
+      ).toMatchSnapshot()
+    }
+  )
+})
