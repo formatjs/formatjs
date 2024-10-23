@@ -133,9 +133,9 @@
     "@formatjs/intl": "workspace:*",
     "@formatjs/intl-displaynames": "workspace:*",
     "@formatjs/intl-listformat": "workspace:*",
-    "@types/hoist-non-react-statics": "^3.3.1",
+    "@types/hoist-non-react-statics": "3",
     "@types/react": "^18.3.11",
-    "hoist-non-react-statics": "^3.3.2",
+    "hoist-non-react-statics": "3",
     "intl-messageformat": "workspace:*",
     "tslib": "^2.7.0"
   },
