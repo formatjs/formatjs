@@ -144,7 +144,7 @@ importers:
         version: 3.3.5
       '@types/jest':
         specifier: ^29.5.13
-        version: 29.5.13
+        version: 29.5.14
       '@types/json-stable-stringify':
         specifier: ^1.0.36
         version: 1.0.36
@@ -6113,8 +6113,8 @@ packages:
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
 
-  /@types/jest@29.5.13:
-    resolution: {integrity: sha512-wd+MVEZCHt23V0/L642O5APvspWply/rGY5BcW4SUETo2UzPU3Z26qr8jC2qxpimI2jjx9h7+2cj2FwIr01bXg==}
+  /@types/jest@29.5.14:
+    resolution: {integrity: sha512-ZN+4sdnLUbo8EVvVc2ao0GFW6oVrQRPn4K2lglySj7APvSrgzxHiNNK99us4WDMi57xxA2yggblIAMNhXOotLQ==}
     dependencies:
       expect: 29.7.0
       pretty-format: 29.7.0
