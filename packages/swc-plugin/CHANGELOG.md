@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.18](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.5.17...@formatjs/swc-plugin@1.5.18) (2024-10-24)
+
+### Bug Fixes
+
+* **deps:** update dependency @swc/core to v1.7.39 ([#4633](https://github.com/formatjs/formatjs/issues/4633)) ([0452a3a](https://github.com/formatjs/formatjs/commit/0452a3a5702ba6d3c250b5641061c629fb1e2f99)) - by @renovate[bot]
+
 ## [1.5.17](https://github.com/formatjs/formatjs/compare/@formatjs/swc-plugin@1.5.16...@formatjs/swc-plugin@1.5.17) (2024-10-21)
 
 ### Bug Fixes

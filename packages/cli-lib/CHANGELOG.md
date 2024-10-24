@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.5.1...@formatjs/cli-lib@6.5.2) (2024-10-24)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** restore fs-extra dep range ([babff2f](https://github.com/formatjs/formatjs/commit/babff2fa5cbd14ad3eed4154e12dd1c1ef9d438e)) - by @longlho
+* **deps:** update dependency commander to v12 ([#4621](https://github.com/formatjs/formatjs/issues/4621)) ([3c1d046](https://github.com/formatjs/formatjs/commit/3c1d0463e708b2b0bd4ff1b36a83479276b62e8f)) - by @renovate[bot]
+* **deps:** update dependency fs-extra to v11 ([#4622](https://github.com/formatjs/formatjs/issues/4622)) ([5d798af](https://github.com/formatjs/formatjs/commit/5d798afb48bf640e86adeb1d36d46e90880fa2a6)) - by @renovate[bot]
+
 ## [6.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.5.0...@formatjs/cli-lib@6.5.1) (2024-10-21)
 
 ### Bug Fixes

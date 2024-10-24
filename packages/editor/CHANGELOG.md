@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.53](https://github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.52...@formatjs/editor@2.0.53) (2024-10-24)
+
+### Bug Fixes
+
+* **deps:** update material-ui monorepo to v6 (major) ([#4624](https://github.com/formatjs/formatjs/issues/4624)) ([a19c6ba](https://github.com/formatjs/formatjs/commit/a19c6ba025f01c521b01b405aa352f311a4eb777)) - by @renovate[bot]
+
 ## [2.0.52](https://github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.51...@formatjs/editor@2.0.52) (2024-10-21)
 
 **Note:** Version bump only for package @formatjs/editor

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.3.1...@formatjs/cli@6.3.2) (2024-10-24)
+
+### Bug Fixes
+
+* **deps:** update dependency commander to v12 ([#4621](https://github.com/formatjs/formatjs/issues/4621)) ([3c1d046](https://github.com/formatjs/formatjs/commit/3c1d0463e708b2b0bd4ff1b36a83479276b62e8f)) - by @renovate[bot]
+
 ## [6.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.3.0...@formatjs/cli@6.3.1) (2024-10-21)
 
 **Note:** Version bump only for package @formatjs/cli
