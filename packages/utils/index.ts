@@ -1,2 +1,6 @@
 export {canonicalizeCountryCode} from './src/countryCodes'
-export {defaultCurrency} from './src/defaultCurrency'
+export {
+  countriesUsingDefaultCurrency,
+  defaultCurrency,
+} from './src/defaultCurrency'
+export {defaultLocale} from './src/defaultLocale'
