@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.5.0...@formatjs/utils@1.5.1) (2024-10-24)
+
+### Bug Fixes
+
+* **@formatjs/utils:** add missing exports ([4373589](https://github.com/formatjs/formatjs/commit/4373589a5b0d43246a5fdc462bf6689b0658eb3f)) - by @longlho
+
 # [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.4.0...@formatjs/utils@1.5.0) (2024-10-24)
 
 ### Features
