@@ -218,26 +218,26 @@ importers:
         specifier: ^45.0.0
         version: 45.0.0
       cldr-core:
-        specifier: ^45.0.0
-        version: 45.0.0
+        specifier: ^46.0.0
+        version: 46.0.0
       cldr-dates-full:
         specifier: ^45.0.0
         version: 45.0.0(cldr-numbers-full@45.0.0)
       cldr-localenames-full:
         specifier: ^45.0.0
-        version: 45.0.0(cldr-core@45.0.0)
+        version: 45.0.0(cldr-core@46.0.0)
       cldr-misc-full:
         specifier: ^45.0.0
-        version: 45.0.0(cldr-core@45.0.0)
+        version: 45.0.0(cldr-core@46.0.0)
       cldr-numbers-full:
         specifier: ^45.0.0
-        version: 45.0.0(cldr-core@45.0.0)
+        version: 45.0.0(cldr-core@46.0.0)
       cldr-segments-full:
         specifier: ^45.0.0
-        version: 45.0.0(cldr-core@45.0.0)
+        version: 45.0.0(cldr-core@46.0.0)
       cldr-units-full:
         specifier: ^45.0.0
-        version: 45.0.0(cldr-core@45.0.0)
+        version: 45.0.0(cldr-core@46.0.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -437,7 +437,7 @@ importers:
         specifier: ^0.91.1 || ^0.92.0
         version: 0.92.3
       '@glimmer/syntax':
-        specifier: ^0.92.0
+        specifier: 0.92.3
         version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
       '@glimmer/validator':
         specifier: ^0.92.0
@@ -477,7 +477,7 @@ importers:
         specifier: ^0.91.1 || ^0.92.0
         version: 0.92.3
       '@glimmer/syntax':
-        specifier: ^0.92.0
+        specifier: 0.92.3
         version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
       '@glimmer/validator':
         specifier: ^0.92.0
@@ -651,7 +651,7 @@ importers:
         specifier: ^2.7.0
         version: 2.8.0
       typescript:
-        specifier: ^4.7 || 5
+        specifier: 5.6.2
         version: 5.6.2
     devDependencies:
       '@formatjs/intl-datetimeformat':
@@ -892,7 +892,7 @@ importers:
         specifier: ^2.7.0
         version: 2.8.0
       typescript:
-        specifier: ^4.7 || 5
+        specifier: 5.6.2
         version: 5.6.2
     devDependencies:
       '@formatjs/intl-numberformat':
@@ -7583,8 +7583,8 @@ packages:
     resolution: {integrity: sha512-apbGddRxucCKsBkxQsPVkt59q8lhIP84vvN35J24cnQHMjx7AXimBd9LTTTkzDBWS0b4il1GXn4GjLaS5seLOg==}
     dev: true
 
-  /cldr-core@45.0.0:
-    resolution: {integrity: sha512-gQVxy3gzOQpXiTRGmlKiRQFLYimrr1RgvqGKZCS61JgmdkeNm7+LZGx+Lhw5/AW0t8WMM/uZhf4CMva6LuUobQ==}
+  /cldr-core@46.0.0:
+    resolution: {integrity: sha512-2RkpQFhbrxPGeoF1KB8HyNjNcJa9xgkkiQcL1up0nm+dFHI8kSNDMkZxzwIkrLkhxneoZQeqqX3G+ZggeuUVPw==}
     dev: true
 
   /cldr-dates-full@45.0.0(cldr-numbers-full@45.0.0):
@@ -7592,47 +7592,47 @@ packages:
     peerDependencies:
       cldr-numbers-full: 45.0.0
     dependencies:
-      cldr-numbers-full: 45.0.0(cldr-core@45.0.0)
+      cldr-numbers-full: 45.0.0(cldr-core@46.0.0)
     dev: true
 
-  /cldr-localenames-full@45.0.0(cldr-core@45.0.0):
+  /cldr-localenames-full@45.0.0(cldr-core@46.0.0):
     resolution: {integrity: sha512-mSkwgrbDIjFO5TP+Ink7xozd0pmILNdDKYpA0AcasYnNQDBPUi8WMfg8XimNNN3Kf59Yb/Lk+4KPn7JBlDxUuw==}
     peerDependencies:
       cldr-core: 45.0.0
     dependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dev: true
 
-  /cldr-misc-full@45.0.0(cldr-core@45.0.0):
+  /cldr-misc-full@45.0.0(cldr-core@46.0.0):
     resolution: {integrity: sha512-UCHJSQNxQRefqtP7qv26VNyLRQ1SZpZM8TlFIHDDzhKIq7upwjgbxjv7aEmGYYEk6wSQMzF0/v5oIR4eWkwCyA==}
     peerDependencies:
       cldr-core: 45.0.0
     dependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dev: true
 
-  /cldr-numbers-full@45.0.0(cldr-core@45.0.0):
+  /cldr-numbers-full@45.0.0(cldr-core@46.0.0):
     resolution: {integrity: sha512-5Lf03tqz7XgHEA2hXTHAxOAYxea5d/BYMIAtt8HtGmrfHK2vNLJgaOoqALx801GJgQjCBoYs6f0P98qUkji+CQ==}
     peerDependencies:
       cldr-core: 45.0.0
     dependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dev: true
 
-  /cldr-segments-full@45.0.0(cldr-core@45.0.0):
+  /cldr-segments-full@45.0.0(cldr-core@46.0.0):
     resolution: {integrity: sha512-0aw7uhgm3HwVcAttyxP0pkprTflcqupQ3j2vQGRwjmtQoXQGBovu95mVYOQXsQUToqSMvQ31IiBqByTw2FIeZA==}
     peerDependencies:
       cldr-core: 45.0.0
     dependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dev: true
 
-  /cldr-units-full@45.0.0(cldr-core@45.0.0):
+  /cldr-units-full@45.0.0(cldr-core@46.0.0):
     resolution: {integrity: sha512-plkuDoBaS2L9dCFJjgV7J9cERXs6b8eiS08fduDm5++n3Z6hegK91JYL6rmUPGQEtUPZNk7+jqFu1Ocgk47WVA==}
     peerDependencies:
       cldr-core: 45.0.0
     dependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dev: true
 
   /clean-css@5.3.3:

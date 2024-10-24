@@ -84,7 +84,7 @@
     "chokidar": "^4.0.1",
     "cjs-module-lexer": "^1.4.1",
     "cldr-bcp47": "^45.0.0",
-    "cldr-core": "^45.0.0",
+    "cldr-core": "^46.0.0",
     "cldr-dates-full": "^45.0.0",
     "cldr-localenames-full": "^45.0.0",
     "cldr-misc-full": "^45.0.0",
