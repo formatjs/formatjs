@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.4.0...@formatjs/utils@1.5.0) (2024-10-24)
+
+### Features
+
+* **@formatjs/utils:** add countriesUsingDefaultCurrency that gives a list of countries using certain currencies as default ([51c0ef3](https://github.com/formatjs/formatjs/commit/51c0ef351f0a39b5d3ab9ebe06dc41abd2009b36)) - by @longlho
+
 # [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.3.0...@formatjs/utils@1.4.0) (2024-10-24)
 
 ### Features
