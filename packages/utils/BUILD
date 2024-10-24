@@ -67,6 +67,15 @@ generate_src_file(
     entry_point = "tools/extract-default-currency.ts",
 )
 
+generate_src_file(
+    name = "default-locale",
+    src = "src/defaultLocaleData.generated.json",
+    data = [
+        "//:node_modules/cldr-core",
+    ],
+    entry_point = "tools/extract-default-locale.ts",
+)
+
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
