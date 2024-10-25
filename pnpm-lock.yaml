@@ -145,7 +145,7 @@ importers:
         version: 29.5.14
       '@types/json-stable-stringify':
         specifier: ^1.0.36
-        version: 1.0.36
+        version: 1.1.0
       '@types/lodash':
         specifier: ^4.17.12
         version: 4.17.12
@@ -485,7 +485,7 @@ importers:
         version: 11.0.4
       '@types/json-stable-stringify':
         specifier: '1'
-        version: 1.0.36
+        version: 1.1.0
       '@types/node':
         specifier: 14 || 16 || 17 || 18 || 20
         version: 20.16.13
@@ -961,7 +961,7 @@ importers:
         version: 1.7.39(@swc/helpers@0.5.13)
       '@types/json-stable-stringify':
         specifier: '1'
-        version: 1.0.36
+        version: 1.1.0
       '@types/node':
         specifier: 14 || 16 || 17 || 18 || 20
         version: 20.16.13
@@ -991,7 +991,7 @@ importers:
         version: link:../icu-messageformat-parser
       '@types/json-stable-stringify':
         specifier: '1'
-        version: 1.0.36
+        version: 1.1.0
       '@types/node':
         specifier: 14 || 16 || 17 || 18 || 20
         version: 20.16.13
@@ -3066,8 +3066,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/json-stable-stringify@1.0.36':
-    resolution: {integrity: sha512-b7bq23s4fgBB76n34m2b3RBf6M369B0Z9uRR8aHTMd8kZISRkmDEpPD8hhpYvDFzr3bJCPES96cm3Q6qRNDbQw==}
+  '@types/json-stable-stringify@1.1.0':
+    resolution: {integrity: sha512-ESTsHWB72QQq+pjUFIbEz9uSCZppD31YrVkbt2rnUciTYEvcwN6uZIhX5JZeBHqRlFJ41x/7MewCs7E2Qux6Cg==}
 
   '@types/jsonfile@6.1.4':
     resolution: {integrity: sha512-D5qGUYwjvnNNextdU59/+fI+spnwtTFmyQP0h+PfIOSkNfpU6AOICUOkm4i0OnSk+NyjdPJrxCDro0sJsWlRpQ==}
@@ -13369,7 +13369,7 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/json-stable-stringify@1.0.36': {}
+  '@types/json-stable-stringify@1.1.0': {}
 
   '@types/jsonfile@6.1.4':
     dependencies:
