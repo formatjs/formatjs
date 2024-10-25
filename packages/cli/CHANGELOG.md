@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.3.2...@formatjs/cli@6.3.3) (2024-10-25)
+
+**Note:** Version bump only for package @formatjs/cli
+
 ## [6.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.3.1...@formatjs/cli@6.3.2) (2024-10-24)
 
 ### Bug Fixes

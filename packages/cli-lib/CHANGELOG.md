@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.5.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.5.2...@formatjs/cli-lib@6.5.3) (2024-10-25)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** bump down chalk to v4 ([5fb690f](https://github.com/formatjs/formatjs/commit/5fb690f62e1a42b0626b506a9c756b6c624a394e)) - by @longlho
+
 ## [6.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.5.1...@formatjs/cli-lib@6.5.2) (2024-10-24)
 
 ### Bug Fixes
