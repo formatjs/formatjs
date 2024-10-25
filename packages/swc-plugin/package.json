@@ -22,7 +22,7 @@
     "@swc/core": "1.7.39",
     "@types/json-stable-stringify": "1",
     "@types/node": "14 || 16 || 17 || 18 || 20",
-    "chalk": "4",
+    "chalk": "5",
     "json-stable-stringify": "1",
     "tslib": "2"
   },
