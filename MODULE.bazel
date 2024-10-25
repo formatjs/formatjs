@@ -32,6 +32,13 @@ use_repo(npm, "npm")
 
 pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
 
+# Choose a different version of pnpm - note that only the "root" module may do this,
+# not some transitive dependency.
+pnpm.pnpm(
+    name = "pnpm",
+    pnpm_version = "9.12.1",
+)
+
 # Allows developers to use the matching pnpm version, for example:
 # bazel run -- @pnpm --dir /home/runner/work/rules_js/rules_js install
 use_repo(pnpm, "pnpm")

@@ -17,8 +17,6 @@
     "karma:local": "bazel test :karma",
     "postinstall": "husky install",
     "prerelease": "HUSKY=0 lerna version --yes --no-private",
-    "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
-    "release": "bazel build :dist && cd dist/bin/formatjs_dist && pnpm publish --no-git-checks -r --dry-run",
     "test": "bazel test //..."
   },
   "devDependencies": {
@@ -120,7 +118,6 @@
     "make-plural-compiler": "5.1.0",
     "minimist": "^1.2.8",
     "picomatch": "^4.0.0",
-    "pnpm": "^9.12.2",
     "prettier": "^3.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
