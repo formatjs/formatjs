@@ -85,7 +85,7 @@
     "cjs-module-lexer": "^1.4.1",
     "cldr-bcp47": "^45.0.0",
     "cldr-core": "^45.0.0",
-    "cldr-dates-full": "^45.0.0",
+    "cldr-dates-full": "^46.0.0",
     "cldr-localenames-full": "^45.0.0",
     "cldr-misc-full": "^45.0.0",
     "cldr-numbers-full": "^45.0.0",
