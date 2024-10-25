@@ -2,7 +2,8 @@ packages/*/src/data/* linguist-generated
 packages/*/test262-main.ts linguist-generated
 packages/*/supported-locales.ts linguist-generated
 packages/*/tests/locale-data/* linguist-generated
-*.generated.* linguist-generated
+*.generated.ts linguist-generated
+*.generated.json linguist-generated
 packages/intl-datetimeformat/tz_data.tar.gz binary
 website/* linguist-documentation
 **/CHANGELOG.md linguist-documentation
