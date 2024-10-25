@@ -44,7 +44,7 @@
     "fs-extra": "9 || 10 || 11",
     "json-stable-stringify": "1",
     "loud-rejection": "2",
-    "tslib": "^2.7.0",
+    "tslib": "2",
     "typescript": "5"
   },
   "peerDependencies": {
