@@ -1863,20 +1863,10 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       }
     },
     "nu": [
-      "arab",
       "latn"
     ],
     "numbers": {
       "currency": {
-        "arab": {
-          "accounting": "‏#,##0.00 ¤",
-          "currencySpacing": {
-            "afterInsertBetween": " ",
-            "beforeInsertBetween": " "
-          },
-          "standard": "‏#,##0.00 ¤",
-          "unitPattern": "{0} {1}"
-        },
         "latn": {
           "accounting": "؜#,##0.00¤;(؜#,##0.00¤)",
           "currencySpacing": {
@@ -1926,89 +1916,6 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         }
       },
       "decimal": {
-        "arab": {
-          "long": {
-            "1000": {
-              "few": "0 آلاف",
-              "other": "0 ألف"
-            },
-            "10000": {
-              "other": "00 ألف"
-            },
-            "100000": {
-              "other": "000 ألف"
-            },
-            "1000000": {
-              "few": "0 ملايين",
-              "other": "0 مليون"
-            },
-            "10000000": {
-              "few": "00 ملايين",
-              "other": "00 مليون"
-            },
-            "100000000": {
-              "other": "000 مليون"
-            },
-            "1000000000": {
-              "other": "0 مليار"
-            },
-            "10000000000": {
-              "other": "00 مليار"
-            },
-            "100000000000": {
-              "other": "000 مليار"
-            },
-            "1000000000000": {
-              "other": "0 ترليون"
-            },
-            "10000000000000": {
-              "other": "00 ترليون"
-            },
-            "100000000000000": {
-              "other": "000 ترليون"
-            }
-          },
-          "short": {
-            "1000": {
-              "few": "0 آلاف",
-              "other": "0 ألف"
-            },
-            "10000": {
-              "other": "00 ألف"
-            },
-            "100000": {
-              "other": "000 ألف"
-            },
-            "1000000": {
-              "other": "0 مليون"
-            },
-            "10000000": {
-              "other": "00 مليون"
-            },
-            "100000000": {
-              "other": "000 مليون"
-            },
-            "1000000000": {
-              "other": "0 مليار"
-            },
-            "10000000000": {
-              "other": "00 مليار"
-            },
-            "100000000000": {
-              "other": "000 مليار"
-            },
-            "1000000000000": {
-              "other": "0 ترليون"
-            },
-            "10000000000000": {
-              "other": "00 ترليون"
-            },
-            "100000000000000": {
-              "other": "000 ترليون"
-            }
-          },
-          "standard": "#,##0.###"
-        },
         "latn": {
           "long": {
             "1000": {
@@ -2094,30 +2001,12 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         }
       },
       "nu": [
-        "arab",
         "latn"
       ],
       "percent": {
-        "arab": "#,##0%",
         "latn": "#,##0%"
       },
       "symbols": {
-        "arab": {
-          "approximatelySign": "~",
-          "decimal": "٫",
-          "exponential": "أس",
-          "group": "٬",
-          "infinity": "∞",
-          "list": "؛",
-          "minusSign": "؜-",
-          "nan": "ليس رقم",
-          "perMille": "؉",
-          "percentSign": "٪؜",
-          "plusSign": "؜+",
-          "rangeSign": "–",
-          "superscriptingExponent": "×",
-          "timeSeparator": ":"
-        },
         "latn": {
           "approximatelySign": "~",
           "decimal": ".",
@@ -4660,8 +4549,8 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "SLL": {
         "displayName": {
-          "one": "Sierra-leonischer Leone (1964—2022)",
-          "other": "Sierra-leonische Leones (1964—2022)"
+          "one": "Sierra-leonischer Leone (1964–2022)",
+          "other": "Sierra-leonische Leones (1964–2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -8542,10 +8431,17 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         "narrow": "ZWD",
         "symbol": "ZWD"
       },
+      "ZWG": {
+        "displayName": {
+          "other": "Zimbabwean gold"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
+      },
       "ZWL": {
         "displayName": {
-          "one": "Zimbabwean dollar (2009)",
-          "other": "Zimbabwean dollars (2009)"
+          "one": "Zimbabwean dollar (2009–2024)",
+          "other": "Zimbabwean dollars (2009–2024)"
         },
         "narrow": "ZWL",
         "symbol": "ZWL"
@@ -10929,7 +10825,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "RSD": {
         "displayName": {
-          "other": "ディナール (セルビア)"
+          "other": "セルビア ディナール"
         },
         "narrow": "RSD",
         "symbol": "RSD"
@@ -11209,7 +11105,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "UAH": {
         "displayName": {
-          "other": "ウクライナ グリブナ"
+          "other": "ウクライナ フリヴニャ"
         },
         "narrow": "₴",
         "symbol": "UAH"
@@ -14114,7 +14010,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "TRY": {
         "displayName": {
-          "other": "터키 리라"
+          "other": "튀르키예 리라"
         },
         "narrow": "₺",
         "symbol": "TRY"
@@ -19140,7 +19036,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "IDR": {
         "displayName": {
-          "other": "印度尼西亚盾"
+          "other": "印度尼西亚卢比"
         },
         "narrow": "Rp",
         "symbol": "IDR"
@@ -19290,7 +19186,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
           "other": "韩元"
         },
         "narrow": "₩",
-        "symbol": "￦"
+        "symbol": "₩"
       },
       "KWD": {
         "displayName": {
@@ -23738,7 +23634,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
           },
           "perUnit": {
             "long": "每加侖 {0}",
-            "narrow": "{0}/gal",
+            "narrow": "{0}/加侖",
             "short": "{0}/加侖"
           },
           "short": {
@@ -24028,7 +23924,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         },
         "mile-scandinavian": {
           "long": {
-            "other": "{0} 斯堪地那維亞英里"
+            "other": "{0} 斯堪地那維亞里"
           },
           "narrow": {
             "other": "{0}smi"
@@ -24036,7 +23932,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
           "perUnit": {
           },
           "short": {
-            "other": "{0} 斯堪地那維亞英里"
+            "other": "{0} 斯堪地那維亞里"
           }
         },
         "milliliter": {
@@ -25111,7 +25007,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "IDR": {
         "displayName": {
-          "other": "印度尼西亚盾"
+          "other": "印度尼西亚卢比"
         },
         "narrow": "Rp",
         "symbol": "IDR"
@@ -25261,7 +25157,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
           "other": "韩元"
         },
         "narrow": "₩",
-        "symbol": "￦"
+        "symbol": "₩"
       },
       "KWD": {
         "displayName": {

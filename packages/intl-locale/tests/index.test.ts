@@ -28,7 +28,7 @@ describe('intl-locale', () => {
       ])
       expect(locale.getCollations()).toEqual(['compat', 'emoji', 'eor'])
       expect(locale.getHourCycles()).toEqual(['h12', 'h23'])
-      expect(locale.getNumberingSystems()).toEqual(['arab'])
+      expect(locale.getNumberingSystems()).toEqual(['latn', 'arab'])
       expect(locale.getTimeZones()).toBe(undefined)
     })
 
@@ -52,8 +52,8 @@ describe('intl-locale', () => {
     it('ar-SA', () => {
       const locale = new Locale('ar-SA')
       expect(locale.getCalendars()).toEqual([
-        'islamic-umalqura',
         'gregory',
+        'islamic-umalqura',
         'islamic',
         'islamic-rgsa',
       ])

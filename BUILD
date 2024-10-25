@@ -188,16 +188,22 @@ multirun(
     name = "cldr-gen",
     testonly = True,
     commands = [
-        "//packages/intl-segmenter:generate-cldr-segmentation-rules",
         "//packages/icu-messageformat-parser:time-data",
+        "//packages/intl-durationformat:numbering-systems",
         "//packages/intl-durationformat:time-separators",
         "//packages/intl-enumerator:currencies",
+        "//packages/intl-enumerator:numbering-systems",
         "//packages/intl-getcanonicallocales:likelySubtags",
+        "//packages/intl-locale:calendars",
         "//packages/intl-locale:character-orders",
         "//packages/intl-locale:hour-cycles",
         "//packages/intl-locale:numbering-systems",
         "//packages/intl-locale:timezones",
+        "//packages/intl-locale:week-data",
+        "//packages/intl-numberformat:numbering-systems",
+        "//packages/intl-segmenter:generate-cldr-segmentation-rules",
         "//packages/utils:default-currency",
+        "//packages/utils:default-locale",
     ],
 )
 

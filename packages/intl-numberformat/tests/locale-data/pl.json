@@ -1197,10 +1197,10 @@
       },
       "LSL": {
         "displayName": {
-          "few": "loti lesotyjskie",
-          "many": "loti lesotyjskich",
-          "one": "loti lesotyjskie",
-          "other": "loti lesotyjskiego"
+          "few": "loti sotyjskie",
+          "many": "loti sotyjskich",
+          "one": "loti sotyjskie",
+          "other": "loti sotyjskiego"
         },
         "narrow": "LSL",
         "symbol": "LSL"
@@ -2729,9 +2729,10 @@
         },
         "day": {
           "long": {
-            "many": "{0} dób",
-            "one": "{0} doba",
-            "other": "{0} doby"
+            "few": "{0} dni",
+            "many": "{0} dni",
+            "one": "{0} dzień",
+            "other": "{0} dnia"
           },
           "narrow": {
             "other": "{0} d."
@@ -2742,9 +2743,10 @@
             "short": "{0}/dobę"
           },
           "short": {
-            "many": "{0} dób",
-            "one": "{0} doba",
-            "other": "{0} doby"
+            "few": "{0} dni",
+            "many": "{0} dni",
+            "one": "{0} dzień",
+            "other": "{0} dnia"
           }
         },
         "degree": {

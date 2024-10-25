@@ -1308,6 +1308,24 @@ export const timeData: Record<string, string[]> = {
     "H",
     "hB"
   ],
+  "en-HK": [
+    "h",
+    "hb",
+    "H",
+    "hB"
+  ],
+  "en-IL": [
+    "H",
+    "h",
+    "hb",
+    "hB"
+  ],
+  "en-MY": [
+    "h",
+    "hb",
+    "H",
+    "hB"
+  ],
   "es-BR": [
     "H",
     "h",

@@ -39,6 +39,7 @@ export const numberingSystems = {
     "latn"
   ],
   "ar": [
+    "latn",
     "arab"
   ],
   "ar-AE": [
@@ -1230,6 +1231,15 @@ export const numberingSystems = {
     "latn",
     "geor"
   ],
+  "kaa": [
+    "latn"
+  ],
+  "kaa-Cyrl": [
+    "latn"
+  ],
+  "kaa-Latn": [
+    "latn"
+  ],
   "kab": [
     "latn"
   ],
@@ -1263,6 +1273,15 @@ export const numberingSystems = {
   "kk": [
     "latn"
   ],
+  "kk-Arab": [
+    "latn"
+  ],
+  "kk-Cyrl": [
+    "latn"
+  ],
+  "kk-KZ": [
+    "latn"
+  ],
   "kkj": [
     "latn"
   ],
@@ -1292,6 +1311,13 @@ export const numberingSystems = {
   "kok": [
     "latn",
     "deva"
+  ],
+  "kok-Deva": [
+    "latn",
+    "deva"
+  ],
+  "kok-Latn": [
+    "latn"
   ],
   "kpe": [
     "latn"
@@ -1362,6 +1388,9 @@ export const numberingSystems = {
   "lkt": [
     "latn"
   ],
+  "lld": [
+    "latn"
+  ],
   "lmo": [
     "latn"
   ],
@@ -1388,6 +1417,9 @@ export const numberingSystems = {
     "arabext"
   ],
   "lt": [
+    "latn"
+  ],
+  "ltg": [
     "latn"
   ],
   "lu": [
@@ -1428,6 +1460,9 @@ export const numberingSystems = {
     "latn"
   ],
   "mgo": [
+    "latn"
+  ],
+  "mhn": [
     "latn"
   ],
   "mi": [
@@ -2183,6 +2218,12 @@ export const numberingSystems = {
     "hant",
     "hantfin"
   ],
+  "yue-Hant-CN": [
+    "latn",
+    "hanidec",
+    "hant",
+    "hantfin"
+  ],
   "za": [
     "latn"
   ],
@@ -2213,6 +2254,12 @@ export const numberingSystems = {
     "hans",
     "hansfin"
   ],
+  "zh-Hans-MY": [
+    "latn",
+    "hanidec",
+    "hans",
+    "hansfin"
+  ],
   "zh-Hans-SG": [
     "latn",
     "hanidec",
@@ -2236,6 +2283,15 @@ export const numberingSystems = {
     "hanidec",
     "hant",
     "hantfin"
+  ],
+  "zh-Hant-MY": [
+    "latn",
+    "hanidec",
+    "hant",
+    "hantfin"
+  ],
+  "zh-Latn": [
+    "latn"
   ],
   "zu": [
     "latn"

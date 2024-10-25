@@ -410,14 +410,14 @@
       },
       "America/Denver": {
         "long": [
-          "Rocky-Mountain-Normalzeit",
-          "Rocky-Mountain-Sommerzeit"
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
         ]
       },
       "America/Edmonton": {
         "long": [
-          "Rocky-Mountain-Normalzeit",
-          "Rocky-Mountain-Sommerzeit"
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
         ]
       },
       "America/Los_Angeles": {
@@ -500,8 +500,8 @@
       },
       "Asia/Ashgabat": {
         "long": [
-          "Turkmenistan-Normalzeit",
-          "Turkmenistan-Sommerzeit"
+          "Turkmenische Normalzeit",
+          "Turkmenische Sommerzeit"
         ]
       },
       "America/Halifax": {
@@ -750,12 +750,6 @@
           "Chinesische Sommerzeit"
         ]
       },
-      "Asia/Choibalsan": {
-        "long": [
-          "Tschoibalsan-Normalzeit",
-          "Tschoibalsan-Sommerzeit"
-        ]
-      },
       "Indian/Christmas": {
         "long": [
           "Weihnachtsinsel-Zeit",
@@ -800,8 +794,8 @@
       },
       "Asia/Dushanbe": {
         "long": [
-          "Tadschikistan-Zeit",
-          "Tadschikistan-Zeit"
+          "Tadschikische Zeit",
+          "Tadschikische Zeit"
         ]
       },
       "America/Paramaribo": {
@@ -1286,8 +1280,8 @@
       },
       "Asia/Bishkek": {
         "long": [
-          "Kirgisistan-Zeit",
-          "Kirgisistan-Zeit"
+          "Kirgisische Zeit",
+          "Kirgisische Zeit"
         ]
       },
       "Pacific/Galapagos": {
@@ -1826,8 +1820,8 @@
       },
       "Asia/Tashkent": {
         "long": [
-          "Usbekistan-Normalzeit",
-          "Usbekistan-Sommerzeit"
+          "Usbekische Normalzeit",
+          "Usbekische Sommerzeit"
         ]
       },
       "Pacific/Fakaofo": {

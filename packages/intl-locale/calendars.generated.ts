@@ -216,8 +216,8 @@ export const calendars = {
     "islamic-tbla"
   ],
   "SA": [
-    "islamic-umalqura",
     "gregorian",
+    "islamic-umalqura",
     "islamic",
     "islamic-rgsa"
   ],

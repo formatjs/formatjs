@@ -2407,10 +2407,17 @@
         "narrow": "ZWD",
         "symbol": "ZWD"
       },
+      "ZWG": {
+        "displayName": {
+          "other": "Zimbabwean gold"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
+      },
       "ZWL": {
         "displayName": {
-          "one": "Zimbabwean dollar (2009)",
-          "other": "Zimbabwean dollars (2009)"
+          "one": "Zimbabwean dollar (2009–2024)",
+          "other": "Zimbabwean dollars (2009–2024)"
         },
         "narrow": "ZWL",
         "symbol": "ZWL"
@@ -2640,7 +2647,7 @@
             "other": "{0} degrees Celsius"
           },
           "narrow": {
-            "other": "{0}°"
+            "other": "{0}°C"
           },
           "perUnit": {
           },
@@ -2748,11 +2755,11 @@
             "other": "{0} US gallons"
           },
           "narrow": {
-            "other": "{0}galUS"
+            "other": "{0}USgal"
           },
           "perUnit": {
             "long": "{0} per US gallon",
-            "narrow": "{0}/galUS",
+            "narrow": "{0}/USgal",
             "short": "{0}/US gal"
           },
           "short": {

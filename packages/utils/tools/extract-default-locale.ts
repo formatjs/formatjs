@@ -10,14 +10,13 @@ const UND_LOCALE = /^und-([A-Z]{2})$/
 
 function main(args: Args) {
   const {likelySubtags} = supplemental
-  console.log(args)
   outputJsonSync(
     args.out,
     Object.keys(likelySubtags)
       .filter(k => k.match(UND_LOCALE))
       .reduce<Record<string, string>>((all, locale) => {
         const region = locale.match(UND_LOCALE)![1]
-        all[region] = likelySubtags[locale as 'und-US']
+        all[region] = likelySubtags[locale as 'und']
         return all
       }, {})
   )

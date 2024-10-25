@@ -215,29 +215,29 @@ importers:
         specifier: ^1.4.1
         version: 1.4.1
       cldr-bcp47:
-        specifier: ^45.0.0
-        version: 45.0.0
+        specifier: '46'
+        version: 46.0.0
       cldr-core:
-        specifier: ^45.0.0
-        version: 45.0.0
+        specifier: '46'
+        version: 46.0.0
       cldr-dates-full:
-        specifier: ^45.0.0
-        version: 45.0.0(cldr-numbers-full@45.0.0)
+        specifier: '46'
+        version: 46.0.0(cldr-numbers-full@46.0.0)
       cldr-localenames-full:
-        specifier: ^45.0.0
-        version: 45.0.0(cldr-core@45.0.0)
+        specifier: '46'
+        version: 46.0.0(cldr-core@46.0.0)
       cldr-misc-full:
-        specifier: ^45.0.0
-        version: 45.0.0(cldr-core@45.0.0)
+        specifier: '46'
+        version: 46.0.0(cldr-core@46.0.0)
       cldr-numbers-full:
-        specifier: ^45.0.0
-        version: 45.0.0(cldr-core@45.0.0)
+        specifier: '46'
+        version: 46.0.0(cldr-core@46.0.0)
       cldr-segments-full:
-        specifier: ^45.0.0
-        version: 45.0.0(cldr-core@45.0.0)
+        specifier: '46'
+        version: 46.0.0(cldr-core@46.0.0)
       cldr-units-full:
-        specifier: ^45.0.0
-        version: 45.0.0(cldr-core@45.0.0)
+        specifier: '46'
+        version: 46.0.0(cldr-core@46.0.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -5280,7 +5280,7 @@ packages:
     resolution: {integrity: sha512-iXy2sjP0phPEpK2yivjRC3PAgoLaT4sjSk0LDWCTdcTBJmR4waEog0E6eJbvoOkLkOtWw37SB8vCkl/bbh4+8A==}
     peerDependencies:
       '@swc/core': '>= 1.4.13'
-      typescript: 5.6.2
+      typescript: '>= 4.3'
     dependencies:
       '@swc-node/core': 1.13.3(@swc/core@1.7.39)(@swc/types@0.1.12)
       '@swc-node/sourcemap-support': 0.5.1
@@ -6060,7 +6060,7 @@ packages:
     resolution: {integrity: sha512-1kjFS+KCxgyClHr/mv3qmxEfz8qN+kZGyMjdWJecM4AbHmS46shVxDzfAsl0Gr+dr72nsVzGWNBcY9rhgzvHiQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      eslint: '9'
+      eslint: ^8.57.0 || ^9.0.0
     dependencies:
       '@typescript-eslint/typescript-estree': 8.11.0(typescript@5.6.2)
       '@typescript-eslint/utils': 8.11.0(eslint@9.0.0)(typescript@5.6.2)
@@ -7581,60 +7581,60 @@ packages:
     resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
     dev: true
 
-  /cldr-bcp47@45.0.0:
-    resolution: {integrity: sha512-apbGddRxucCKsBkxQsPVkt59q8lhIP84vvN35J24cnQHMjx7AXimBd9LTTTkzDBWS0b4il1GXn4GjLaS5seLOg==}
+  /cldr-bcp47@46.0.0:
+    resolution: {integrity: sha512-qgot+RLaSB6tYssyIofhBS0ok/vnmehgfrfOb1SmWjCwKvxfDiwyyh61etqxrVp/cQcrCibf4mKk7ISrXvomgg==}
     dev: true
 
-  /cldr-core@45.0.0:
-    resolution: {integrity: sha512-gQVxy3gzOQpXiTRGmlKiRQFLYimrr1RgvqGKZCS61JgmdkeNm7+LZGx+Lhw5/AW0t8WMM/uZhf4CMva6LuUobQ==}
+  /cldr-core@46.0.0:
+    resolution: {integrity: sha512-2RkpQFhbrxPGeoF1KB8HyNjNcJa9xgkkiQcL1up0nm+dFHI8kSNDMkZxzwIkrLkhxneoZQeqqX3G+ZggeuUVPw==}
     dev: true
 
-  /cldr-dates-full@45.0.0(cldr-numbers-full@45.0.0):
-    resolution: {integrity: sha512-HeJ7BM0tqRnI2xIHhKPx6Mr4mEdW81nYrpW7VGXkl4NMdX6XbggJoGzb+odJwSiF4LPS+pzdFTdcYp9vohkOqg==}
+  /cldr-dates-full@46.0.0(cldr-numbers-full@46.0.0):
+    resolution: {integrity: sha512-bQ9DV4x1kJrv9n0UEOru5f3WrnOsxM4p2sDKVk/ORKwqWnCZa/126h74IO1KBfhoY3atKaxVmdeBOVN99J0J9w==}
     peerDependencies:
-      cldr-numbers-full: 45.0.0
+      cldr-numbers-full: 46.0.0
     dependencies:
-      cldr-numbers-full: 45.0.0(cldr-core@45.0.0)
+      cldr-numbers-full: 46.0.0(cldr-core@46.0.0)
     dev: true
 
-  /cldr-localenames-full@45.0.0(cldr-core@45.0.0):
-    resolution: {integrity: sha512-mSkwgrbDIjFO5TP+Ink7xozd0pmILNdDKYpA0AcasYnNQDBPUi8WMfg8XimNNN3Kf59Yb/Lk+4KPn7JBlDxUuw==}
+  /cldr-localenames-full@46.0.0(cldr-core@46.0.0):
+    resolution: {integrity: sha512-3nvcan/3ASDJKwoHU8d4hE0PzQDxypuJWHL6BWTBfxvYQf+N2QA9gxEG/pvGkwsnbltc5nVk6OCutUNkDIn6KA==}
     peerDependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dev: true
 
-  /cldr-misc-full@45.0.0(cldr-core@45.0.0):
-    resolution: {integrity: sha512-UCHJSQNxQRefqtP7qv26VNyLRQ1SZpZM8TlFIHDDzhKIq7upwjgbxjv7aEmGYYEk6wSQMzF0/v5oIR4eWkwCyA==}
+  /cldr-misc-full@46.0.0(cldr-core@46.0.0):
+    resolution: {integrity: sha512-cCqRm8g+HI2VUSFgeXsyv+VD6W5S+JASq4tP1TwSZmjjorWLMsYdAF78zDVIju9TkjuVJ9NuKAZEAJ+jDg58bg==}
     peerDependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dev: true
 
-  /cldr-numbers-full@45.0.0(cldr-core@45.0.0):
-    resolution: {integrity: sha512-5Lf03tqz7XgHEA2hXTHAxOAYxea5d/BYMIAtt8HtGmrfHK2vNLJgaOoqALx801GJgQjCBoYs6f0P98qUkji+CQ==}
+  /cldr-numbers-full@46.0.0(cldr-core@46.0.0):
+    resolution: {integrity: sha512-oRI3EQ6nMBVlWsdZBLQkSxLtIX81IpMMTmTIJ5xSWkG6BBs1aiKudh7Mu3X4FBFPlTaVEnSj2iTvQNmLk9pD0Q==}
     peerDependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dev: true
 
-  /cldr-segments-full@45.0.0(cldr-core@45.0.0):
-    resolution: {integrity: sha512-0aw7uhgm3HwVcAttyxP0pkprTflcqupQ3j2vQGRwjmtQoXQGBovu95mVYOQXsQUToqSMvQ31IiBqByTw2FIeZA==}
+  /cldr-segments-full@46.0.0(cldr-core@46.0.0):
+    resolution: {integrity: sha512-vn3jtJ65TZ7tK+1+54cwXDVE9s9zT8lb/oAA1eICLfrlsp5uHc1tR5vgWCE4CbgbdQ35AsD4qy0p/cNvsjbI3A==}
     peerDependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dev: true
 
-  /cldr-units-full@45.0.0(cldr-core@45.0.0):
-    resolution: {integrity: sha512-plkuDoBaS2L9dCFJjgV7J9cERXs6b8eiS08fduDm5++n3Z6hegK91JYL6rmUPGQEtUPZNk7+jqFu1Ocgk47WVA==}
+  /cldr-units-full@46.0.0(cldr-core@46.0.0):
+    resolution: {integrity: sha512-vM8t+xtozGiOwmxp5f2wBF3niKjOGXs+o59a0BEE4mzgMcXtDz6CNLTBFl06R00zhiLGRFxJfW57ZVtxQnqoCA==}
     peerDependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dependencies:
-      cldr-core: 45.0.0
+      cldr-core: 46.0.0
     dev: true
 
   /clean-css@5.3.3:
@@ -18052,7 +18052,7 @@ packages:
       babel-jest: ^29.0.0
       esbuild: '*'
       jest: ^29.0.0
-      typescript: 5.6.2
+      typescript: '>=4.3 <6'
     peerDependenciesMeta:
       '@babel/core':
         optional: true

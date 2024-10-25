@@ -26,24 +26,24 @@
       },
       "AFN": {
         "displayName": {
-          "one": "afgani",
-          "other": "afganis"
+          "one": "afgani afgano",
+          "other": "afganis afganos"
         },
         "narrow": "؋",
         "symbol": "AFN"
       },
       "ALL": {
         "displayName": {
-          "one": "lek",
-          "other": "leks"
+          "one": "lek albanés",
+          "other": "leks albaneses"
         },
         "narrow": "ALL",
         "symbol": "ALL"
       },
       "AMD": {
         "displayName": {
-          "one": "dram",
-          "other": "drams"
+          "one": "dram armenio",
+          "other": "drams armenios"
         },
         "narrow": "֏",
         "symbol": "AMD"
@@ -58,8 +58,8 @@
       },
       "AOA": {
         "displayName": {
-          "one": "kuanza",
-          "other": "kuanzas"
+          "one": "kuanza angoleño",
+          "other": "kuanzas angoleños"
         },
         "narrow": "Kz",
         "symbol": "AOA"
@@ -174,8 +174,8 @@
       },
       "BDT": {
         "displayName": {
-          "one": "taka",
-          "other": "takas"
+          "one": "taka bangladesí",
+          "other": "takas bangladesíes"
         },
         "narrow": "৳",
         "symbol": "BDT"
@@ -334,8 +334,8 @@
       },
       "BTN": {
         "displayName": {
-          "one": "gultrum",
-          "other": "gultrums"
+          "one": "gultrum butanés",
+          "other": "gultrums butaneses"
         },
         "narrow": "BTN",
         "symbol": "BTN"
@@ -350,8 +350,8 @@
       },
       "BWP": {
         "displayName": {
-          "one": "pula",
-          "other": "pulas"
+          "one": "pula botsuano",
+          "other": "pulas botsuanos"
         },
         "narrow": "P",
         "symbol": "BWP"
@@ -454,8 +454,8 @@
       },
       "CNY": {
         "displayName": {
-          "one": "yuan",
-          "other": "yuanes"
+          "one": "yuan renminbi",
+          "other": "yuanes renminbi"
         },
         "narrow": "¥",
         "symbol": "CNY"
@@ -622,8 +622,8 @@
       },
       "ERN": {
         "displayName": {
-          "one": "nakfa",
-          "other": "nakfas"
+          "one": "nakfa eritreo",
+          "other": "nakfas eritreos"
         },
         "narrow": "ERN",
         "symbol": "ERN"
@@ -654,8 +654,8 @@
       },
       "ETB": {
         "displayName": {
-          "one": "bir",
-          "other": "bires"
+          "one": "bir etíope",
+          "other": "bires etíopes"
         },
         "narrow": "ETB",
         "symbol": "ETB"
@@ -717,8 +717,8 @@
       },
       "GEL": {
         "displayName": {
-          "one": "lari",
-          "other": "laris"
+          "one": "lari georgiano",
+          "other": "laris georgianos"
         },
         "narrow": "₾",
         "symbol": "GEL"
@@ -732,8 +732,8 @@
       },
       "GHS": {
         "displayName": {
-          "one": "cedi",
-          "other": "cedis"
+          "one": "cedi ghanés",
+          "other": "cedis ghaneses"
         },
         "narrow": "GH₵",
         "symbol": "GHS"
@@ -748,8 +748,8 @@
       },
       "GMD": {
         "displayName": {
-          "one": "dalasi",
-          "other": "dalasis"
+          "one": "dalasi gambiano",
+          "other": "dalasis gambianos"
         },
         "narrow": "GMD",
         "symbol": "GMD"
@@ -841,8 +841,8 @@
       },
       "HRK": {
         "displayName": {
-          "one": "kuna",
-          "other": "kunas"
+          "one": "kuna croata",
+          "other": "kunas croatas"
         },
         "narrow": "kn",
         "symbol": "HRK"
@@ -953,8 +953,8 @@
       },
       "JPY": {
         "displayName": {
-          "one": "yen",
-          "other": "yenes"
+          "one": "yen japonés",
+          "other": "yenes japoneses"
         },
         "narrow": "¥",
         "symbol": "JPY"
@@ -969,16 +969,16 @@
       },
       "KGS": {
         "displayName": {
-          "one": "som",
-          "other": "soms"
+          "one": "som kirguís",
+          "other": "soms kirguises"
         },
         "narrow": "⃀",
         "symbol": "KGS"
       },
       "KHR": {
         "displayName": {
-          "one": "riel",
-          "other": "rieles"
+          "one": "riel camboyano",
+          "other": "rieles camboyanos"
         },
         "narrow": "៛",
         "symbol": "KHR"
@@ -1033,8 +1033,8 @@
       },
       "LAK": {
         "displayName": {
-          "one": "kip",
-          "other": "kips"
+          "one": "kip laosiano",
+          "other": "kips laosianos"
         },
         "narrow": "₭",
         "symbol": "LAK"
@@ -1161,8 +1161,8 @@
       },
       "MGA": {
         "displayName": {
-          "one": "ariari",
-          "other": "ariaris"
+          "one": "ariari malgache",
+          "other": "ariaris malgaches"
         },
         "narrow": "Ar",
         "symbol": "MGA"
@@ -1191,24 +1191,24 @@
       },
       "MMK": {
         "displayName": {
-          "one": "kiat",
-          "other": "kiats"
+          "one": "kiat de Myanmar",
+          "other": "kiats de Myanmar"
         },
         "narrow": "K",
         "symbol": "MMK"
       },
       "MNT": {
         "displayName": {
-          "one": "tugrik",
-          "other": "tugriks"
+          "one": "tugrik mongol",
+          "other": "tugriks mongoles"
         },
         "narrow": "₮",
         "symbol": "MNT"
       },
       "MOP": {
         "displayName": {
-          "one": "pataca de Macao",
-          "other": "patacas de Macao"
+          "one": "pataca macaense",
+          "other": "patacas macaenses"
         },
         "narrow": "MOP",
         "symbol": "MOP"
@@ -1223,8 +1223,8 @@
       },
       "MRU": {
         "displayName": {
-          "one": "uguiya",
-          "other": "uguiyas"
+          "one": "uguiya mauritano",
+          "other": "uguiyas mauritanos"
         },
         "narrow": "MRU",
         "symbol": "MRU"
@@ -1255,8 +1255,8 @@
       },
       "MVR": {
         "displayName": {
-          "one": "rufiya",
-          "other": "rufiyas"
+          "one": "rufiya maldiva",
+          "other": "rufiyas maldivas"
         },
         "narrow": "MVR",
         "symbol": "MVR"
@@ -1295,8 +1295,8 @@
       },
       "MYR": {
         "displayName": {
-          "one": "ringit",
-          "other": "ringits"
+          "one": "ringit malasio",
+          "other": "ringits malasios"
         },
         "narrow": "RM",
         "symbol": "MYR"
@@ -1318,8 +1318,8 @@
       },
       "MZN": {
         "displayName": {
-          "one": "metical",
-          "other": "meticales"
+          "one": "metical mozambiqueño",
+          "other": "meticales mozambiqueños"
         },
         "narrow": "MZN",
         "symbol": "MZN"
@@ -1334,8 +1334,8 @@
       },
       "NGN": {
         "displayName": {
-          "one": "naira",
-          "other": "nairas"
+          "one": "naira nigeriano",
+          "other": "nairas nigerianos"
         },
         "narrow": "₦",
         "symbol": "NGN"
@@ -1430,8 +1430,8 @@
       },
       "PGK": {
         "displayName": {
-          "one": "kina",
-          "other": "kinas"
+          "one": "kina papú",
+          "other": "kinas papúes"
         },
         "narrow": "PGK",
         "symbol": "PGK"
@@ -1454,8 +1454,8 @@
       },
       "PLN": {
         "displayName": {
-          "one": "esloti",
-          "other": "eslotis"
+          "one": "esloti polaco",
+          "other": "eslotis polacos"
         },
         "narrow": "zł",
         "symbol": "PLN"
@@ -1637,16 +1637,16 @@
       },
       "SLE": {
         "displayName": {
-          "one": "leona",
-          "other": "leonas"
+          "one": "leona sierraleonesa",
+          "other": "leonas sierraleonesas"
         },
         "narrow": "SLE",
         "symbol": "SLE"
       },
       "SLL": {
         "displayName": {
-          "one": "leona (1964—2022)",
-          "other": "leonas (1964—2022)"
+          "one": "leona sierraleonesa (1964–2022)",
+          "other": "leonas sierraleonesas (1964–2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -1692,8 +1692,8 @@
       },
       "STN": {
         "displayName": {
-          "one": "dobra",
-          "other": "dobras"
+          "one": "dobra santotomense",
+          "other": "dobras santotomenses"
         },
         "narrow": "Db",
         "symbol": "STN"
@@ -1724,16 +1724,16 @@
       },
       "SZL": {
         "displayName": {
-          "one": "lilangeni",
-          "other": "lilangenis"
+          "one": "lilangeni esuatiní",
+          "other": "lilangenis esuatiníes"
         },
         "narrow": "SZL",
         "symbol": "SZL"
       },
       "THB": {
         "displayName": {
-          "one": "bat",
-          "other": "bats"
+          "one": "bat tailandés",
+          "other": "bats tailandeses"
         },
         "narrow": "฿",
         "symbol": "฿"
@@ -1779,8 +1779,8 @@
       },
       "TOP": {
         "displayName": {
-          "one": "paanga",
-          "other": "paangas"
+          "one": "paanga tongano",
+          "other": "paangas tonganos"
         },
         "narrow": "T$",
         "symbol": "TOP"
@@ -1834,8 +1834,8 @@
       },
       "UAH": {
         "displayName": {
-          "one": "grivna",
-          "other": "grivnas"
+          "one": "grivna ucraniana",
+          "other": "grivnas ucranianas"
         },
         "narrow": "₴",
         "symbol": "UAH"
@@ -1921,8 +1921,8 @@
       },
       "UZS": {
         "displayName": {
-          "one": "sum",
-          "other": "sums"
+          "one": "sum uzbeko",
+          "other": "sums uzbekos"
         },
         "narrow": "UZS",
         "symbol": "UZS"
@@ -1953,24 +1953,24 @@
       },
       "VND": {
         "displayName": {
-          "one": "dong",
-          "other": "dongs"
+          "one": "dong vietnamita",
+          "other": "dongs vietnamitas"
         },
         "narrow": "₫",
         "symbol": "₫"
       },
       "VUV": {
         "displayName": {
-          "one": "vatu",
-          "other": "vatus"
+          "one": "vatu vanuatense",
+          "other": "vatus vanuatenses"
         },
         "narrow": "VUV",
         "symbol": "VUV"
       },
       "WST": {
         "displayName": {
-          "one": "tala",
-          "other": "talas"
+          "one": "tala samoano",
+          "other": "talas samoanos"
         },
         "narrow": "WST",
         "symbol": "WST"
@@ -2173,8 +2173,8 @@
       },
       "ZAR": {
         "displayName": {
-          "one": "rand",
-          "other": "rands"
+          "one": "rand sudafricano",
+          "other": "rands sudafricanos"
         },
         "narrow": "R",
         "symbol": "ZAR"

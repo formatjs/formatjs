@@ -479,7 +479,7 @@
       "America/Denver": {
         "long": [
           "Mountain Standard Time",
-          "Mountain Daylight Saving Time"
+          "Mountain Daylight Time"
         ],
         "short": [
           "MST",
@@ -489,7 +489,7 @@
       "America/Edmonton": {
         "long": [
           "Mountain Standard Time",
-          "Mountain Daylight Saving Time"
+          "Mountain Daylight Time"
         ],
         "short": [
           "MST",
@@ -499,7 +499,7 @@
       "America/Los_Angeles": {
         "long": [
           "Pacific Standard Time",
-          "Pacific Daylight Saving Time"
+          "Pacific Daylight Time"
         ],
         "short": [
           "PST",
@@ -509,7 +509,7 @@
       "America/Vancouver": {
         "long": [
           "Pacific Standard Time",
-          "Pacific Daylight Saving Time"
+          "Pacific Daylight Time"
         ],
         "short": [
           "PST",
@@ -519,7 +519,7 @@
       "America/Tijuana": {
         "long": [
           "Pacific Standard Time",
-          "Pacific Daylight Saving Time"
+          "Pacific Daylight Time"
         ],
         "short": [
           "PST",
@@ -535,43 +535,43 @@
       "Pacific/Apia": {
         "long": [
           "Apia Standard Time",
-          "Apia Daylight Saving Time"
+          "Apia Daylight Time"
         ]
       },
       "Asia/Riyadh": {
         "long": [
           "Arabian Standard Time",
-          "Arabian Daylight Saving Time"
+          "Arabian Daylight Time"
         ]
       },
       "Asia/Bahrain": {
         "long": [
           "Arabian Standard Time",
-          "Arabian Daylight Saving Time"
+          "Arabian Daylight Time"
         ]
       },
       "Asia/Baghdad": {
         "long": [
           "Arabian Standard Time",
-          "Arabian Daylight Saving Time"
+          "Arabian Daylight Time"
         ]
       },
       "Asia/Kuwait": {
         "long": [
           "Arabian Standard Time",
-          "Arabian Daylight Saving Time"
+          "Arabian Daylight Time"
         ]
       },
       "Asia/Qatar": {
         "long": [
           "Arabian Standard Time",
-          "Arabian Daylight Saving Time"
+          "Arabian Daylight Time"
         ]
       },
       "Asia/Aden": {
         "long": [
           "Arabian Standard Time",
-          "Arabian Daylight Saving Time"
+          "Arabian Daylight Time"
         ]
       },
       "America/Buenos_Aires": {
@@ -599,7 +599,7 @@
       "America/Halifax": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -609,7 +609,7 @@
       "America/Antigua": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -619,7 +619,7 @@
       "America/Anguilla": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -629,7 +629,7 @@
       "America/Aruba": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -639,7 +639,7 @@
       "America/Barbados": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -649,7 +649,7 @@
       "Atlantic/Bermuda": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -659,7 +659,7 @@
       "America/Kralendijk": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -669,7 +669,7 @@
       "America/Curacao": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -679,7 +679,7 @@
       "America/Dominica": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -689,7 +689,7 @@
       "America/Grenada": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -699,7 +699,7 @@
       "America/Thule": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -709,7 +709,7 @@
       "America/Guadeloupe": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -719,7 +719,7 @@
       "America/St_Kitts": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -729,7 +729,7 @@
       "America/St_Lucia": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -739,7 +739,7 @@
       "America/Marigot": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -749,7 +749,7 @@
       "America/Martinique": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -759,7 +759,7 @@
       "America/Montserrat": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -769,7 +769,7 @@
       "America/Puerto_Rico": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -779,7 +779,7 @@
       "America/Lower_Princes": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -789,7 +789,7 @@
       "America/Port_of_Spain": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -799,7 +799,7 @@
       "America/St_Vincent": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -809,7 +809,7 @@
       "America/Tortola": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -819,7 +819,7 @@
       "America/St_Thomas": {
         "long": [
           "Atlantic Standard Time",
-          "Atlantic Daylight Saving Time"
+          "Atlantic Daylight Time"
         ],
         "short": [
           "AST",
@@ -829,13 +829,13 @@
       "Australia/Adelaide": {
         "long": [
           "Australian Central Standard Time",
-          "Australian Central Daylight Saving Time"
+          "Australian Central Daylight Time"
         ]
       },
       "Australia/Eucla": {
         "long": [
           "Australian Central Western Standard Time",
-          "Australian Central Western Daylight Saving Time"
+          "Australian Central Western Daylight Time"
         ],
         "short": [
           "ACWST",
@@ -845,7 +845,7 @@
       "Australia/Sydney": {
         "long": [
           "Australian Eastern Standard Time",
-          "Australian Eastern Daylight Saving Time"
+          "Australian Eastern Daylight Time"
         ],
         "short": [
           "AEST",
@@ -855,7 +855,7 @@
       "Australia/Perth": {
         "long": [
           "Australian Western Standard Time",
-          "Australian Western Daylight Saving Time"
+          "Australian Western Daylight Time"
         ],
         "short": [
           "AWST",
@@ -951,7 +951,7 @@
       "Pacific/Chatham": {
         "long": [
           "Chatham Standard Time",
-          "Chatham Daylight Saving Time"
+          "Chatham Daylight Time"
         ],
         "short": [
           "CHAST",
@@ -967,13 +967,7 @@
       "Asia/Shanghai": {
         "long": [
           "China Standard Time",
-          "China Daylight Saving Time"
-        ]
-      },
-      "Asia/Choibalsan": {
-        "long": [
-          "Choibalsan Standard Time",
-          "Choibalsan Summer Time"
+          "China Daylight Time"
         ]
       },
       "Indian/Christmas": {
@@ -1015,7 +1009,7 @@
       "America/Havana": {
         "long": [
           "Cuba Standard Time",
-          "Cuba Daylight Saving Time"
+          "Cuba Daylight Time"
         ]
       },
       "Antarctica/Davis": {
@@ -1532,12 +1526,20 @@
         "long": [
           "Gulf Standard Time",
           "Gulf Standard Time"
+        ],
+        "short": [
+          "Gulf Time",
+          "Gulf Time"
         ]
       },
       "Asia/Muscat": {
         "long": [
           "Gulf Standard Time",
           "Gulf Standard Time"
+        ],
+        "short": [
+          "Gulf Time",
+          "Gulf Time"
         ]
       },
       "America/Guyana": {
@@ -1553,7 +1555,7 @@
       "Pacific/Honolulu": {
         "long": [
           "Hawaii-Aleutian Standard Time",
-          "Hawaii-Aleutian Daylight Saving Time"
+          "Hawaii-Aleutian Daylight Time"
         ],
         "short": [
           "HAST",
@@ -1673,13 +1675,13 @@
       "Asia/Jerusalem": {
         "long": [
           "Israel Standard Time",
-          "Israel Daylight Saving Time"
+          "Israel Daylight Time"
         ]
       },
       "Asia/Tokyo": {
         "long": [
           "Japan Standard Time",
-          "Japan Daylight Saving Time"
+          "Japan Daylight Time"
         ]
       },
       "Asia/Kamchatka": {
@@ -1707,7 +1709,7 @@
       "Asia/Seoul": {
         "long": [
           "Korean Standard Time",
-          "Korean Daylight Saving Time"
+          "Korean Daylight Time"
         ]
       },
       "Pacific/Kosrae": {
@@ -1737,7 +1739,7 @@
       "Australia/Lord_Howe": {
         "long": [
           "Lord Howe Standard Time",
-          "Lord Howe Daylight Saving Time"
+          "Lord Howe Daylight Time"
         ]
       },
       "Asia/Macau": {
@@ -1789,7 +1791,7 @@
       "America/Mazatlan": {
         "long": [
           "Mexican Pacific Standard Time",
-          "Mexican Pacific Daylight Saving Time"
+          "Mexican Pacific Daylight Time"
         ]
       },
       "Asia/Ulaanbaatar": {
@@ -1835,19 +1837,19 @@
       "Pacific/Auckland": {
         "long": [
           "New Zealand Standard Time",
-          "New Zealand Daylight Saving Time"
+          "New Zealand Daylight Time"
         ]
       },
       "Antarctica/McMurdo": {
         "long": [
           "New Zealand Standard Time",
-          "New Zealand Daylight Saving Time"
+          "New Zealand Daylight Time"
         ]
       },
       "America/St_Johns": {
         "long": [
           "Newfoundland Standard Time",
-          "Newfoundland Daylight Saving Time"
+          "Newfoundland Daylight Time"
         ],
         "short": [
           "NST",
@@ -1863,7 +1865,7 @@
       "Pacific/Norfolk": {
         "long": [
           "Norfolk Island Standard Time",
-          "Norfolk Island Daylight Saving Time"
+          "Norfolk Island Daylight Time"
         ]
       },
       "America/Noronha": {
@@ -1981,7 +1983,7 @@
       "Pacific/Pago_Pago": {
         "long": [
           "Samoa Standard Time",
-          "Samoa Daylight Saving Time"
+          "Samoan Time"
         ]
       },
       "Indian/Mahe": {
@@ -2029,7 +2031,7 @@
       "Asia/Taipei": {
         "long": [
           "Taipei Standard Time",
-          "Taipei Daylight Saving Time"
+          "Taipei Daylight Time"
         ]
       },
       "Asia/Tashkent": {

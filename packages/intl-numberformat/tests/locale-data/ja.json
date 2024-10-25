@@ -1466,7 +1466,7 @@
       },
       "RSD": {
         "displayName": {
-          "other": "ディナール (セルビア)"
+          "other": "セルビア ディナール"
         },
         "narrow": "RSD",
         "symbol": "RSD"
@@ -1746,7 +1746,7 @@
       },
       "UAH": {
         "displayName": {
-          "other": "ウクライナ グリブナ"
+          "other": "ウクライナ フリヴニャ"
         },
         "narrow": "₴",
         "symbol": "UAH"

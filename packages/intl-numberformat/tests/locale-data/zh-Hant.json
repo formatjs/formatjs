@@ -2438,7 +2438,7 @@
           },
           "perUnit": {
             "long": "每加侖 {0}",
-            "narrow": "{0}/gal",
+            "narrow": "{0}/加侖",
             "short": "{0}/加侖"
           },
           "short": {
@@ -2728,7 +2728,7 @@
         },
         "mile-scandinavian": {
           "long": {
-            "other": "{0} 斯堪地那維亞英里"
+            "other": "{0} 斯堪地那維亞里"
           },
           "narrow": {
             "other": "{0}smi"
@@ -2736,7 +2736,7 @@
           "perUnit": {
           },
           "short": {
-            "other": "{0} 斯堪地那維亞英里"
+            "other": "{0} 斯堪地那維亞里"
           }
         },
         "milliliter": {

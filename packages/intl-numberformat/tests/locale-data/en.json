@@ -2411,10 +2411,17 @@
         "narrow": "ZWD",
         "symbol": "ZWD"
       },
+      "ZWG": {
+        "displayName": {
+          "other": "Zimbabwean gold"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
+      },
       "ZWL": {
         "displayName": {
-          "one": "Zimbabwean dollar (2009)",
-          "other": "Zimbabwean dollars (2009)"
+          "one": "Zimbabwean dollar (2009–2024)",
+          "other": "Zimbabwean dollars (2009–2024)"
         },
         "narrow": "ZWL",
         "symbol": "ZWL"

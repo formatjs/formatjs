@@ -46,21 +46,21 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     },
     "unit": {
       "long": {
-        "end": "{0} en {1}",
+        "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} en {1}",
+        "pair": "{0}, {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0} en {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0} en {1}",
-        "start": "{0}, {1}"
+        "end": "{0} {1}",
+        "middle": "{0} {1}",
+        "pair": "{0} {1}",
+        "start": "{0} {1}"
       },
       "short": {
-        "end": "{0} en {1}",
+        "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} en {1}",
+        "pair": "{0}, {1}",
         "start": "{0}, {1}"
       }
     }
@@ -111,21 +111,21 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     },
     "unit": {
       "long": {
-        "end": "{0} en {1}",
+        "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} en {1}",
+        "pair": "{0}, {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0} en {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0} en {1}",
-        "start": "{0}, {1}"
+        "end": "{0} {1}",
+        "middle": "{0} {1}",
+        "pair": "{0} {1}",
+        "start": "{0} {1}"
       },
       "short": {
-        "end": "{0} en {1}",
+        "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} en {1}",
+        "pair": "{0}, {1}",
         "start": "{0}, {1}"
       }
     }
@@ -201,61 +201,61 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   "data": {
     "conjunction": {
       "long": {
-        "end": "{0}, {1}",
+        "end": "{0}, ne {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} ne {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
+        "end": "{0}, ne {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} ne {1}",
         "start": "{0}, {1}"
       },
       "short": {
-        "end": "{0}, {1}",
+        "end": "{0}, ne {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} ne {1}",
         "start": "{0}, {1}"
       }
     },
     "disjunction": {
       "long": {
-        "end": "{0}, or {1}",
+        "end": "{0}, anaa {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0} anaa {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, or {1}",
+        "end": "{0}, anaa {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0} anaa {1}",
         "start": "{0}, {1}"
       },
       "short": {
-        "end": "{0}, or {1}",
+        "end": "{0}, anaa {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0} anaa {1}",
         "start": "{0}, {1}"
       }
     },
     "unit": {
       "long": {
-        "end": "{0}, {1}",
+        "end": "{0}, ne {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} ne {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "end": "{0} {1}",
+        "middle": "{0} {1}",
+        "pair": "{0} {1}",
+        "start": "{0} {1}"
       },
       "short": {
-        "end": "{0}, {1}",
+        "end": "{0}, ne {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} ne {1}",
         "start": "{0}, {1}"
       }
     }
@@ -266,19 +266,19 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   "data": {
     "conjunction": {
       "long": {
-        "end": "{0}፣ እና {1}",
+        "end": "{0} እና {1}",
         "middle": "{0}፣ {1}",
         "pair": "{0} እና {1}",
         "start": "{0}፣ {1}"
       },
       "narrow": {
-        "end": "{0}, እና {1}",
+        "end": "{0} እና {1}",
         "middle": "{0}፣ {1}",
         "pair": "{0} እና {1}",
         "start": "{0}፣ {1}"
       },
       "short": {
-        "end": "{0}፣ እና {1}",
+        "end": "{0} እና {1}",
         "middle": "{0}፣ {1}",
         "pair": "{0} እና {1}",
         "start": "{0}፣ {1}"
@@ -286,19 +286,19 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     },
     "disjunction": {
       "long": {
-        "end": "{0}፣ ወይም {1}",
+        "end": "{0} ወይም {1}",
         "middle": "{0}፣ {1}",
         "pair": "{0} ወይም {1}",
         "start": "{0}፣ {1}"
       },
       "narrow": {
-        "end": "{0}፣ ወይም {1}",
+        "end": "{0} ወይም {1}",
         "middle": "{0}፣ {1}",
         "pair": "{0} ወይም {1}",
         "start": "{0}፣ {1}"
       },
       "short": {
-        "end": "{0}፣ ወይም {1}",
+        "end": "{0} ወይም {1}",
         "middle": "{0}፣ {1}",
         "pair": "{0} ወይም {1}",
         "start": "{0}፣ {1}"
@@ -306,21 +306,21 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     },
     "unit": {
       "long": {
-        "end": "{0}፣ {1}",
+        "end": "{0} እና {1}",
         "middle": "{0}፣ {1}",
-        "pair": "{0}፣ {1}",
+        "pair": "{0} እና {1}",
         "start": "{0}፣ {1}"
       },
       "narrow": {
-        "end": "{0} {1}",
+        "end": "{0} እና {1}",
         "middle": "{0}፣ {1}",
-        "pair": "{0} {1}",
+        "pair": "{0} እና {1}",
         "start": "{0}፣ {1}"
       },
       "short": {
-        "end": "{0}፣ {1}",
+        "end": "{0} እና {1}",
         "middle": "{0}፣ {1}",
-        "pair": "{0}፣ {1}",
+        "pair": "{0} እና {1}",
         "start": "{0}፣ {1}"
       }
     }
@@ -21462,7 +21462,7 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, na {1}",
+        "end": "{0}, {1}",
         "middle": "{0}, {1}",
         "pair": "{0}, {1}",
         "start": "{0}, {1}"
@@ -21476,41 +21476,41 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     },
     "disjunction": {
       "long": {
-        "end": "{0}, or {1}",
+        "end": "{0}, ma ọ bụ {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0} ma ọ bụ {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, or {1}",
+        "end": "{0}, ma ọ bụ {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0} ma ọ bụ {1}",
         "start": "{0}, {1}"
       },
       "short": {
-        "end": "{0}, or {1}",
+        "end": "{0}, ma ọ bụ {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0} ma ọ bụ {1}",
         "start": "{0}, {1}"
       }
     },
     "unit": {
       "long": {
-        "end": "{0}, na {1}",
+        "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} na {1}",
+        "pair": "{0}, {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, na {1}",
+        "end": "{0} {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} na {1}",
+        "pair": "{0} {1}",
         "start": "{0}, {1}"
       },
       "short": {
-        "end": "{0}, na {1}",
+        "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} na {1}",
+        "pair": "{0}, {1}",
         "start": "{0}, {1}"
       }
     }
@@ -21521,62 +21521,62 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   "data": {
     "conjunction": {
       "long": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "end": "{0}ꌋꆀ{1}",
+        "middle": "{0}、{1}",
+        "pair": "{0}ꌋꆀ{1}",
+        "start": "{0}、{1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "end": "{0}ꌋꆀ{1}",
+        "middle": "{0}、{1}",
+        "pair": "{0}ꌋꆀ{1}",
+        "start": "{0}、{1}"
       },
       "short": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "end": "{0}ꌋꆀ{1}",
+        "middle": "{0}、{1}",
+        "pair": "{0}ꌋꆀ{1}",
+        "start": "{0}、{1}"
       }
     },
     "disjunction": {
       "long": {
-        "end": "{0}, or {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
-        "start": "{0}, {1}"
+        "end": "{0}ꅀ{1}",
+        "middle": "{0}、{1}",
+        "pair": "{0}ꅀ{1}",
+        "start": "{0}、{1}"
       },
       "narrow": {
-        "end": "{0}, or {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
-        "start": "{0}, {1}"
+        "end": "{0}ꅀ{1}",
+        "middle": "{0}、{1}",
+        "pair": "{0}ꅀ{1}",
+        "start": "{0}、{1}"
       },
       "short": {
-        "end": "{0}, or {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
-        "start": "{0}, {1}"
+        "end": "{0}ꅀ{1}",
+        "middle": "{0}、{1}",
+        "pair": "{0}ꅀ{1}",
+        "start": "{0}、{1}"
       }
     },
     "unit": {
       "long": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "end": "{0}ꌋꆀ{1}",
+        "middle": "{0}、{1}",
+        "pair": "{0}ꌋꆀ{1}",
+        "start": "{0}、{1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "end": "{0}ꌋꆀ{1}",
+        "middle": "{0}、{1}",
+        "pair": "{0}ꌋꆀ{1}",
+        "start": "{0}、{1}"
       },
       "short": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "end": "{0}ꌋꆀ{1}",
+        "middle": "{0}、{1}",
+        "pair": "{0}ꌋꆀ{1}",
+        "start": "{0}、{1}"
       }
     }
   },
@@ -25378,19 +25378,19 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
       "long": {
         "end": "{0}, {1} rānei",
         "middle": "{0}, {1}",
-        "pair": "{0} {1} rānei",
+        "pair": "{0}, {1} rānei",
         "start": "{0}, {1}"
       },
       "narrow": {
         "end": "{0}, {1} rānei",
         "middle": "{0}, {1}",
-        "pair": "{0} {1} rānei",
+        "pair": "{0}, {1} rānei",
         "start": "{0}, {1}"
       },
       "short": {
         "end": "{0}, {1} rānei",
         "middle": "{0}, {1}",
-        "pair": "{0} {1} rānei",
+        "pair": "{0}, {1} rānei",
         "start": "{0}, {1}"
       }
     },
@@ -30752,21 +30752,21 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     "conjunction": {
       "long": {
         "end": "{0}، ۽ {1}",
-        "middle": "{0}, {1}",
+        "middle": "{0}، {1}",
         "pair": "{0} ۽ {1}",
-        "start": "{0}, {1}"
+        "start": "{0}، {1}"
       },
       "narrow": {
         "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "middle": "{0}، {1}",
+        "pair": "{0}، {1}",
+        "start": "{0}، {1}"
       },
       "short": {
         "end": "{0}، ۽ {1}",
-        "middle": "{0}, {1}",
+        "middle": "{0}، {1}",
         "pair": "{0} ۽ {1}",
-        "start": "{0}, {1}"
+        "start": "{0}، {1}"
       }
     },
     "disjunction": {
@@ -30792,21 +30792,21 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     "unit": {
       "long": {
         "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "middle": "{0}، {1}",
+        "pair": "{0}، {1}",
+        "start": "{0}، {1}"
       },
       "narrow": {
         "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "middle": "{0}، {1}",
+        "pair": "{0}، {1}",
+        "start": "{0}، {1}"
       },
       "short": {
         "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "middle": "{0}، {1}",
+        "pair": "{0}، {1}",
+        "start": "{0}، {1}"
       }
     }
   },
@@ -30882,21 +30882,21 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     "conjunction": {
       "long": {
         "end": "{0}، ۽ {1}",
-        "middle": "{0}, {1}",
+        "middle": "{0}، {1}",
         "pair": "{0} ۽ {1}",
-        "start": "{0}, {1}"
+        "start": "{0}، {1}"
       },
       "narrow": {
         "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "middle": "{0}، {1}",
+        "pair": "{0}، {1}",
+        "start": "{0}، {1}"
       },
       "short": {
         "end": "{0}، ۽ {1}",
-        "middle": "{0}, {1}",
+        "middle": "{0}، {1}",
         "pair": "{0} ۽ {1}",
-        "start": "{0}, {1}"
+        "start": "{0}، {1}"
       }
     },
     "disjunction": {
@@ -30922,21 +30922,21 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     "unit": {
       "long": {
         "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "middle": "{0}، {1}",
+        "pair": "{0}، {1}",
+        "start": "{0}، {1}"
       },
       "narrow": {
         "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "middle": "{0}، {1}",
+        "pair": "{0}، {1}",
+        "start": "{0}، {1}"
       },
       "short": {
         "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "middle": "{0}، {1}",
+        "pair": "{0}، {1}",
+        "start": "{0}، {1}"
       }
     }
   },
@@ -33938,39 +33938,39 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
       "long": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} ва {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} ва {1}",
         "start": "{0}, {1}"
       },
       "short": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} ва {1}",
         "start": "{0}, {1}"
       }
     },
     "disjunction": {
       "long": {
-        "end": "{0}, or {1}",
+        "end": "{0}, ё {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0}, ё {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, or {1}",
+        "end": "{0}, ё {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0}, ё {1}",
         "start": "{0}, {1}"
       },
       "short": {
-        "end": "{0}, or {1}",
+        "end": "{0}, ё {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0}, ё {1}",
         "start": "{0}, {1}"
       }
     },
@@ -33978,19 +33978,19 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
       "long": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} ва {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "end": "{0} {1}",
+        "middle": "{0} {1}",
+        "pair": "{0} {1}",
+        "start": "{0} {1}"
       },
       "short": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} ва {1}",
         "start": "{0}, {1}"
       }
     }
@@ -34074,7 +34074,7 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
       "narrow": {
         "end": "{0}ን {1}ን",
         "middle": "{0}፣ {1}",
-        "pair": "{0}ን {1}ን",
+        "pair": "{0}፣ {1}",
         "start": "{0}፣ {1}"
       },
       "short": {
@@ -34106,9 +34106,9 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     },
     "unit": {
       "long": {
-        "end": "{0}ን {1}ን",
+        "end": "{0}፣ {1}",
         "middle": "{0}፣ {1}",
-        "pair": "{0}ን {1}ን",
+        "pair": "{0}፣ {1}",
         "start": "{0}፣ {1}"
       },
       "narrow": {
@@ -34120,7 +34120,7 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
       "short": {
         "end": "{0}፣ {1}",
         "middle": "{0}፣ {1}",
-        "pair": "{0}ን {1}ን",
+        "pair": "{0}፣ {1}",
         "start": "{0}፣ {1}"
       }
     }
@@ -34139,7 +34139,7 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
       "narrow": {
         "end": "{0}ን {1}ን",
         "middle": "{0}፣ {1}",
-        "pair": "{0}ን {1}ን",
+        "pair": "{0}፣ {1}",
         "start": "{0}፣ {1}"
       },
       "short": {
@@ -34171,9 +34171,9 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     },
     "unit": {
       "long": {
-        "end": "{0}ን {1}ን",
+        "end": "{0}፣ {1}",
         "middle": "{0}፣ {1}",
-        "pair": "{0}ን {1}ን",
+        "pair": "{0}፣ {1}",
         "start": "{0}፣ {1}"
       },
       "narrow": {
@@ -34185,7 +34185,7 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
       "short": {
         "end": "{0}፣ {1}",
         "middle": "{0}፣ {1}",
-        "pair": "{0}ን {1}ን",
+        "pair": "{0}፣ {1}",
         "start": "{0}፣ {1}"
       }
     }
@@ -34462,9 +34462,9 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0} һәм {1}",
+        "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} һәм {1}",
+        "pair": "{0}, {1}",
         "start": "{0}, {1}"
       },
       "short": {
@@ -34476,41 +34476,41 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     },
     "disjunction": {
       "long": {
-        "end": "{0}, or {1}",
+        "end": "{0}, яки {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0} яки {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, or {1}",
+        "end": "{0}, яки {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0} яки {1}",
         "start": "{0}, {1}"
       },
       "short": {
-        "end": "{0}, or {1}",
+        "end": "{0}, яки {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} or {1}",
+        "pair": "{0} яки {1}",
         "start": "{0}, {1}"
       }
     },
     "unit": {
       "long": {
-        "end": "{0} һәм {1}",
+        "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} һәм {1}",
+        "pair": "{0}, {1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0} һәм {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0} һәм {1}",
+        "end": "{0} {1}",
+        "middle": "{0} {1}",
+        "pair": "{0} {1}",
         "start": "{0}, {1}"
       },
       "short": {
-        "end": "{0} һәм {1}",
+        "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0} һәм {1}",
+        "pair": "{0}, {1}",
         "start": "{0}, {1}"
       }
     }
@@ -35632,15 +35632,15 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
+        "end": "{0}, & {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} & {1}",
         "start": "{0}, {1}"
       },
       "short": {
-        "end": "{0}, {1}",
+        "end": "{0}, & {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} & {1}",
         "start": "{0}, {1}"
       }
     },
@@ -35672,10 +35672,10 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
+        "end": "{0} {1}",
+        "middle": "{0} {1}",
         "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "start": "{0} {1}"
       },
       "short": {
         "end": "{0}, {1}",
@@ -35953,19 +35953,19 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
       "long": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} àti{1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
+        "end": "{0} àti {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} àti{1}",
         "start": "{0}, {1}"
       },
       "short": {
-        "end": "{0}, {1}",
+        "end": "{0} àti {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} àti{1}",
         "start": "{0}, {1}"
       }
     },
@@ -35974,38 +35974,38 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
         "end": "{0}, tabi {1}",
         "middle": "{0}, {1}",
         "pair": "{0} tàbí {1}",
-        "start": "{0} pɛ̀lú {1}"
+        "start": "{0}, {1}"
       },
       "narrow": {
         "end": "{0}, tabi {1}",
         "middle": "{0}, {1}",
         "pair": "{0} tàbí {1}",
-        "start": "{0} pɛ̀lú {1}"
+        "start": "{0}, {1}"
       },
       "short": {
         "end": "{0}, tabi {1}",
         "middle": "{0}, {1}",
         "pair": "{0} tàbí {1}",
-        "start": "{0} pɛ̀lú {1}"
+        "start": "{0}, {1}"
       }
     },
     "unit": {
       "long": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} àti{1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "end": "{0} {1}",
+        "middle": "{0} {1}",
+        "pair": "{0} àti{1}",
+        "start": "{0} {1}"
       },
       "short": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} àti{1}",
         "start": "{0}, {1}"
       }
     }
@@ -36018,19 +36018,19 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
       "long": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} àti{1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
+        "end": "{0} àti {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} àti{1}",
         "start": "{0}, {1}"
       },
       "short": {
-        "end": "{0}, {1}",
+        "end": "{0} àti {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} àti{1}",
         "start": "{0}, {1}"
       }
     },
@@ -36039,38 +36039,38 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
         "end": "{0}, tabi {1}",
         "middle": "{0}, {1}",
         "pair": "{0} tàbí {1}",
-        "start": "{0} pẹ̀lú {1}"
+        "start": "{0}, {1}"
       },
       "narrow": {
         "end": "{0}, tabi {1}",
         "middle": "{0}, {1}",
         "pair": "{0} tàbí {1}",
-        "start": "{0} pẹ̀lú {1}"
+        "start": "{0}, {1}"
       },
       "short": {
         "end": "{0}, tabi {1}",
         "middle": "{0}, {1}",
         "pair": "{0} tàbí {1}",
-        "start": "{0} pẹ̀lú {1}"
+        "start": "{0}, {1}"
       }
     },
     "unit": {
       "long": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} àti{1}",
         "start": "{0}, {1}"
       },
       "narrow": {
-        "end": "{0}, {1}",
-        "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
-        "start": "{0}, {1}"
+        "end": "{0} {1}",
+        "middle": "{0} {1}",
+        "pair": "{0} àti{1}",
+        "start": "{0} {1}"
       },
       "short": {
         "end": "{0}, {1}",
         "middle": "{0}, {1}",
-        "pair": "{0}, {1}",
+        "pair": "{0} àti{1}",
         "start": "{0}, {1}"
       }
     }

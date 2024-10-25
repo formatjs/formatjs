@@ -962,6 +962,18 @@ export const hourCycles = {
     "h12",
     "h23"
   ],
+  "en-HK": [
+    "h12",
+    "h23"
+  ],
+  "en-IL": [
+    "h23",
+    "h12"
+  ],
+  "en-MY": [
+    "h12",
+    "h23"
+  ],
   "es-BR": [
     "h23",
     "h12"

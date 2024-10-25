@@ -59,6 +59,7 @@ write_source_files(
     files = {
         "src/numbering-systems.generated.ts": "//packages/intl-numberformat:src/numbering-systems.generated.ts",
     },
+    visibility = ["//:__pkg__"],
 )
 
 generate_src_file(

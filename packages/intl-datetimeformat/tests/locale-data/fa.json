@@ -644,20 +644,20 @@
       },
       "Australia/Eucla": {
         "long": [
-          "وقت عادی مرکز-غرب استرالیا",
-          "وقت تابستانی مرکز-غرب استرالیا"
+          "وقت عادی مرکز استرالیای غربی",
+          "وقت تابستانی مرکز استرالیای غربی"
         ]
       },
       "Australia/Sydney": {
         "long": [
-          "وقت عادی شرق استرالیا",
-          "وقت تابستانی شرق استرالیا"
+          "وقت عادی استرالیای شرقی",
+          "وقت تابستانی استرالیای شرقی"
         ]
       },
       "Australia/Perth": {
         "long": [
-          "وقت عادی غرب استرالیا",
-          "وقت تابستانی غرب استرالیا"
+          "وقت عادی استرالیای غربی",
+          "وقت تابستانی استرالیای غربی"
         ]
       },
       "Atlantic/Azores": {
@@ -736,12 +736,6 @@
         "long": [
           "وقت عادی چین",
           "وقت تابستانی چین"
-        ]
-      },
-      "Asia/Choibalsan": {
-        "long": [
-          "وقت عادی چویبالسان",
-          "وقت تابستانی چویبالسان"
         ]
       },
       "Indian/Christmas": {
@@ -1784,7 +1778,7 @@
         "GyMMM": "MMM y G",
         "GyMMMd": "d MMM y G",
         "GyMMMEd": "E d MMM y G",
-        "h": "h a",
+        "h": "h a",
         "H": "H",
         "HHmmZ": "HH:mm (Z)",
         "hm": "h:mm a",
@@ -2025,35 +2019,35 @@
         "yMMMEd،‏ Bhms": "E d MMM y،‏ h:mm:ss B",
         "yMMMM، ساعت Bhms": "MMMM y، ساعت h:mm:ss B",
         "yMMMMEEEEd، ساعت Bhms": "EEEE d MMMM y، ساعت h:mm:ss B",
-        "EEEE d MMMM y، ساعت h": "EEEE d MMMM y، ساعت h a",
-        "d MMMM y، ساعت h": "d MMMM y، ساعت h a",
-        "d MMM y،‏ h": "d MMM y،‏ h a",
-        "y/M/d،‏ h": "y/M/d،‏ h a",
-        "d،‏ h": "d،‏ h a",
-        "E،‏ h": "ccc،‏ h a",
-        "Ed،‏ h": "E d،‏ h a",
-        "Gy،‏ h": "y G،‏ h a",
-        "GyMd،‏ h": "y/M/d GGGGG،‏ h a",
-        "GyMMM،‏ h": "MMM y G،‏ h a",
-        "GyMMMd،‏ h": "d MMM y G،‏ h a",
-        "GyMMMEd،‏ h": "E d MMM y G،‏ h a",
-        "M،‏ h": "L،‏ h a",
-        "Md،‏ h": "M/d،‏ h a",
-        "MEd،‏ h": "E M/d،‏ h a",
-        "MMM،‏ h": "LLL،‏ h a",
-        "MMMd،‏ h": "d LLL،‏ h a",
-        "MMMEd،‏ h": "E d LLL،‏ h a",
-        "MMMMd، ساعت h": "d LLLL، ساعت h a",
-        "MMMMEd، ساعت h": "E d LLLL، ساعت h a",
-        "y،‏ h": "y،‏ h a",
-        "yM،‏ h": "y/M،‏ h a",
-        "yMd،‏ h": "y/M/d،‏ h a",
-        "yMEd،‏ h": "E y/M/d،‏ h a",
-        "yMMM،‏ h": "MMM y،‏ h a",
-        "yMMMd،‏ h": "d MMM y،‏ h a",
-        "yMMMEd،‏ h": "E d MMM y،‏ h a",
-        "yMMMM، ساعت h": "MMMM y، ساعت h a",
-        "yMMMMEEEEd، ساعت h": "EEEE d MMMM y، ساعت h a",
+        "EEEE d MMMM y، ساعت h": "EEEE d MMMM y، ساعت h a",
+        "d MMMM y، ساعت h": "d MMMM y، ساعت h a",
+        "d MMM y،‏ h": "d MMM y،‏ h a",
+        "y/M/d،‏ h": "y/M/d،‏ h a",
+        "d،‏ h": "d،‏ h a",
+        "E،‏ h": "ccc،‏ h a",
+        "Ed،‏ h": "E d،‏ h a",
+        "Gy،‏ h": "y G،‏ h a",
+        "GyMd،‏ h": "y/M/d GGGGG،‏ h a",
+        "GyMMM،‏ h": "MMM y G،‏ h a",
+        "GyMMMd،‏ h": "d MMM y G،‏ h a",
+        "GyMMMEd،‏ h": "E d MMM y G،‏ h a",
+        "M،‏ h": "L،‏ h a",
+        "Md،‏ h": "M/d،‏ h a",
+        "MEd،‏ h": "E M/d،‏ h a",
+        "MMM،‏ h": "LLL،‏ h a",
+        "MMMd،‏ h": "d LLL،‏ h a",
+        "MMMEd،‏ h": "E d LLL،‏ h a",
+        "MMMMd، ساعت h": "d LLLL، ساعت h a",
+        "MMMMEd، ساعت h": "E d LLLL، ساعت h a",
+        "y،‏ h": "y،‏ h a",
+        "yM،‏ h": "y/M،‏ h a",
+        "yMd،‏ h": "y/M/d،‏ h a",
+        "yMEd،‏ h": "E y/M/d،‏ h a",
+        "yMMM،‏ h": "MMM y،‏ h a",
+        "yMMMd،‏ h": "d MMM y،‏ h a",
+        "yMMMEd،‏ h": "E d MMM y،‏ h a",
+        "yMMMM، ساعت h": "MMMM y، ساعت h a",
+        "yMMMMEEEEd، ساعت h": "EEEE d MMMM y، ساعت h a",
         "EEEE d MMMM y، ساعت H": "EEEE d MMMM y، ساعت H",
         "d MMMM y، ساعت H": "d MMMM y، ساعت H",
         "d MMM y،‏ H": "d MMM y،‏ H",

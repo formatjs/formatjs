@@ -65,7 +65,7 @@ export const TIME_SEPARATORS = {
     },
     "ar": {
       "nu": [
-        "arab",
+        "latn",
         "latn"
       ]
     },
@@ -2046,6 +2046,21 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "kaa": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "kaa-Cyrl": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "kaa-Latn": {
+      "nu": [
+        "latn"
+      ]
+    },
     "kab": {
       "nu": [
         "latn"
@@ -2101,6 +2116,21 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "kk-Arab": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "kk-Cyrl": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "kk-KZ": {
+      "nu": [
+        "latn"
+      ]
+    },
     "kkj": {
       "nu": [
         "latn"
@@ -2142,6 +2172,16 @@ export const TIME_SEPARATORS = {
       ]
     },
     "kok": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "kok-Deva": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "kok-Latn": {
       "nu": [
         "latn"
       ]
@@ -2256,6 +2296,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "lld": {
+      "nu": [
+        "latn"
+      ]
+    },
     "lmo": {
       "nu": [
         "latn"
@@ -2297,6 +2342,11 @@ export const TIME_SEPARATORS = {
       ]
     },
     "lt": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "ltg": {
       "nu": [
         "latn"
       ]
@@ -2362,6 +2412,11 @@ export const TIME_SEPARATORS = {
       ]
     },
     "mgo": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "mhn": {
       "nu": [
         "latn"
       ]
@@ -3567,6 +3622,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "yue-Hant-CN": {
+      "nu": [
+        "latn"
+      ]
+    },
     "za": {
       "nu": [
         "latn"
@@ -3597,6 +3657,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "zh-Hans-MY": {
+      "nu": [
+        "latn"
+      ]
+    },
     "zh-Hans-SG": {
       "nu": [
         "latn"
@@ -3613,6 +3678,16 @@ export const TIME_SEPARATORS = {
       ]
     },
     "zh-Hant-MO": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "zh-Hant-MY": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "zh-Latn": {
       "nu": [
         "latn"
       ]

@@ -2748,7 +2748,7 @@
         },
         "mile": {
           "long": {
-            "one": "{0} engelsk mil",
+            "one": "{0} mile",
             "other": "{0} miles"
           },
           "narrow": {

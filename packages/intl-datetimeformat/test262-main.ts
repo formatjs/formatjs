@@ -743,12 +743,6 @@ Intl.DateTimeFormat.__addLocaleData({
           "توقيت الصين الصيفي"
         ]
       },
-      "Asia/Choibalsan": {
-        "long": [
-          "توقيت شويبالسان الرسمي",
-          "التوقيت الصيفي لشويبالسان"
-        ]
-      },
       "Indian/Christmas": {
         "long": [
           "توقيت جزر الكريسماس",
@@ -1779,7 +1773,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "GyMMM": "MMM y G",
         "GyMMMd": "d MMM y G",
         "GyMMMEd": "E، d MMM y G",
-        "h": "h a",
+        "h": "h a",
         "H": "HH",
         "hm": "h:mm a",
         "Hm": "HH:mm",
@@ -2026,36 +2020,36 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMd، Bhms": "d MMM y، h:mm:ss B",
         "yMMMEd، Bhms": "E، d MMM y، h:mm:ss B",
         "yMMMM، Bhms": "MMMM y، h:mm:ss B",
-        "EEEE، d MMMM y، h": "EEEE، d MMMM y، h a",
-        "d MMMM y، h": "d MMMM y، h a",
-        "dd‏/MM‏/y، h": "dd‏/MM‏/y، h a",
-        "d‏/M‏/y، h": "d‏/M‏/y، h a",
-        "d، h": "d، h a",
-        "E، h": "ccc، h a",
-        "Ed، h": "E، d، h a",
-        "Gy، h": "y G، h a",
-        "GyMd، h": "dd-MM-y GGGGG، h a",
-        "GyMMM، h": "MMM y G، h a",
-        "GyMMMd، h": "d MMM y G، h a",
-        "GyMMMEd، h": "E، d MMM y G، h a",
-        "M، h": "L، h a",
-        "Md، h": "d‏/M، h a",
-        "MEd، h": "E، d‏/M، h a",
-        "MMdd، h": "dd‏/MM، h a",
-        "MMM، h": "LLL، h a",
-        "MMMd، h": "d MMM، h a",
-        "MMMEd، h": "E، d MMM، h a",
-        "MMMMd، h": "d MMMM، h a",
-        "MMMMEd، h": "E، d MMMM، h a",
-        "y، h": "y، h a",
-        "yM، h": "M‏/y، h a",
-        "yMd، h": "d‏/M‏/y، h a",
-        "yMEd، h": "E، d‏/M‏/y، h a",
-        "yMM، h": "MM‏/y، h a",
-        "yMMM، h": "MMM y، h a",
-        "yMMMd، h": "d MMM y، h a",
-        "yMMMEd، h": "E، d MMM y، h a",
-        "yMMMM، h": "MMMM y، h a",
+        "EEEE، d MMMM y، h": "EEEE، d MMMM y، h a",
+        "d MMMM y، h": "d MMMM y، h a",
+        "dd‏/MM‏/y، h": "dd‏/MM‏/y، h a",
+        "d‏/M‏/y، h": "d‏/M‏/y، h a",
+        "d، h": "d، h a",
+        "E، h": "ccc، h a",
+        "Ed، h": "E، d، h a",
+        "Gy، h": "y G، h a",
+        "GyMd، h": "dd-MM-y GGGGG، h a",
+        "GyMMM، h": "MMM y G، h a",
+        "GyMMMd، h": "d MMM y G، h a",
+        "GyMMMEd، h": "E، d MMM y G، h a",
+        "M، h": "L، h a",
+        "Md، h": "d‏/M، h a",
+        "MEd، h": "E، d‏/M، h a",
+        "MMdd، h": "dd‏/MM، h a",
+        "MMM، h": "LLL، h a",
+        "MMMd، h": "d MMM، h a",
+        "MMMEd، h": "E، d MMM، h a",
+        "MMMMd، h": "d MMMM، h a",
+        "MMMMEd، h": "E، d MMMM، h a",
+        "y، h": "y، h a",
+        "yM، h": "M‏/y، h a",
+        "yMd، h": "d‏/M‏/y، h a",
+        "yMEd، h": "E، d‏/M‏/y، h a",
+        "yMM، h": "MM‏/y، h a",
+        "yMMM، h": "MMM y، h a",
+        "yMMMd، h": "d MMM y، h a",
+        "yMMMEd، h": "E، d MMM y، h a",
+        "yMMMM، h": "MMMM y، h a",
         "EEEE، d MMMM y، H": "EEEE، d MMMM y، HH",
         "d MMMM y، H": "d MMMM y، HH",
         "dd‏/MM‏/y، H": "dd‏/MM‏/y، HH",
@@ -2361,11 +2355,11 @@ Intl.DateTimeFormat.__addLocaleData({
     "intervalFormats": {
       "intervalFormatFallback": "{0} – {1}",
       "Bh": {
-        "B": "h B – h B",
+        "B": "h B – h B",
         "h": "h–h B"
       },
       "Bhm": {
-        "B": "h:mm B – h:mm B",
+        "B": "h:mm B – h:mm B",
         "h": "h:mm–h:mm B",
         "m": "h:mm–h:mm B"
       },
@@ -2411,14 +2405,14 @@ Intl.DateTimeFormat.__addLocaleData({
         "y": "E, d MMM y – E, d MMM y G"
       },
       "h": {
-        "a": "h a – h a",
-        "h": "h–h a"
+        "a": "h a – h a",
+        "h": "h–h a"
       },
       "H": {
         "H": "HH–HH"
       },
       "hm": {
-        "a": "h:mm a – h:mm a",
+        "a": "h:mm a – h:mm a",
         "h": "h:mm–h:mm a",
         "m": "h:mm–h:mm a"
       },
@@ -2427,7 +2421,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "m": "HH:mm–HH:mm"
       },
       "hmv": {
-        "a": "h:mm a – h:mm a v",
+        "a": "h:mm a – h:mm a v",
         "h": "h:mm–h:mm a v",
         "m": "h:mm–h:mm a v"
       },
@@ -2436,8 +2430,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "m": "HH:mm–HH:mm v"
       },
       "hv": {
-        "a": "h a – h a v",
-        "h": "h–h a v"
+        "a": "h a – h a v",
+        "h": "h–h a v"
       },
       "Hv": {
         "H": "HH–HH v"
@@ -2485,27 +2479,27 @@ Intl.DateTimeFormat.__addLocaleData({
         "y": "E، d‏/M‏/y – E، d‏/M‏/y"
       },
       "yMMM": {
-        "M": "MMM – MMM، y",
-        "y": "MMM، y – MMM، y"
+        "M": "MMM – MMM y",
+        "y": "MMM y – MMM y"
       },
       "yMMMd": {
-        "d": "d–d MMM، y",
-        "M": "d MMM – d MMM، y",
-        "y": "d MMM، y – d MMM، y"
+        "d": "d–d MMM y",
+        "M": "d MMM – d MMM y",
+        "y": "d MMM y – d MMM y"
       },
       "yMMMEd": {
         "d": "E، d – E، d MMM، y",
         "M": "E، d MMM – E، d MMM، y",
-        "y": "E، d MMM، y – E، d MMM، y"
+        "y": "E، d MMM y – E، d MMM y"
       },
       "yMMMM": {
-        "M": "MMMM – MMMM، y",
-        "y": "MMMM، y – MMMM، y"
+        "M": "MMMM – MMMM y",
+        "y": "MMMM y – MMMM y"
       }
     },
     "hourCycle": "h12",
     "nu": [
-      "arab"
+      "latn"
     ],
     "ca": [
       "gregory",
@@ -2936,14 +2930,14 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "America/Denver": {
         "long": [
-          "Rocky-Mountain-Normalzeit",
-          "Rocky-Mountain-Sommerzeit"
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
         ]
       },
       "America/Edmonton": {
         "long": [
-          "Rocky-Mountain-Normalzeit",
-          "Rocky-Mountain-Sommerzeit"
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
         ]
       },
       "America/Los_Angeles": {
@@ -3026,8 +3020,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Ashgabat": {
         "long": [
-          "Turkmenistan-Normalzeit",
-          "Turkmenistan-Sommerzeit"
+          "Turkmenische Normalzeit",
+          "Turkmenische Sommerzeit"
         ]
       },
       "America/Halifax": {
@@ -3276,12 +3270,6 @@ Intl.DateTimeFormat.__addLocaleData({
           "Chinesische Sommerzeit"
         ]
       },
-      "Asia/Choibalsan": {
-        "long": [
-          "Tschoibalsan-Normalzeit",
-          "Tschoibalsan-Sommerzeit"
-        ]
-      },
       "Indian/Christmas": {
         "long": [
           "Weihnachtsinsel-Zeit",
@@ -3326,8 +3314,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Dushanbe": {
         "long": [
-          "Tadschikistan-Zeit",
-          "Tadschikistan-Zeit"
+          "Tadschikische Zeit",
+          "Tadschikische Zeit"
         ]
       },
       "America/Paramaribo": {
@@ -3812,8 +3800,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Bishkek": {
         "long": [
-          "Kirgisistan-Zeit",
-          "Kirgisistan-Zeit"
+          "Kirgisische Zeit",
+          "Kirgisische Zeit"
         ]
       },
       "Pacific/Galapagos": {
@@ -4352,8 +4340,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Tashkent": {
         "long": [
-          "Usbekistan-Normalzeit",
-          "Usbekistan-Sommerzeit"
+          "Usbekische Normalzeit",
+          "Usbekische Sommerzeit"
         ]
       },
       "Pacific/Fakaofo": {
@@ -6197,12 +6185,6 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "China Standard Time",
           "China Daylight Time"
-        ]
-      },
-      "Asia/Choibalsan": {
-        "long": [
-          "Choibalsan Standard Time",
-          "Choibalsan Summer Time"
         ]
       },
       "Indian/Christmas": {
@@ -8849,12 +8831,6 @@ Intl.DateTimeFormat.__addLocaleData({
           "中国夏時間"
         ]
       },
-      "Asia/Choibalsan": {
-        "long": [
-          "チョイバルサン標準時",
-          "チョイバルサン夏時間"
-        ]
-      },
       "Indian/Christmas": {
         "long": [
           "クリスマス島時間",
@@ -11437,12 +11413,6 @@ Intl.DateTimeFormat.__addLocaleData({
           "중국 하계 표준시"
         ]
       },
-      "Asia/Choibalsan": {
-        "long": [
-          "초이발산 표준시",
-          "초이발산 하계 표준시"
-        ]
-      },
       "Indian/Christmas": {
         "long": [
           "크리스마스섬 시간",
@@ -13290,8 +13260,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "M": "M월~M월"
       },
       "Md": {
-        "d": "M. d ~ M. d",
-        "M": "M. d ~ M. d"
+        "d": "M/d ~ M/d",
+        "M": "M/d ~ M/d"
       },
       "MEd": {
         "d": "M. d (E) ~ M. d (E)",
@@ -14120,12 +14090,6 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "เวลามาตรฐานจีน",
           "เวลาออมแสงจีน"
-        ]
-      },
-      "Asia/Choibalsan": {
-        "long": [
-          "เวลามาตรฐานชอยปาลชาน",
-          "เวลาฤดูร้อนชอยปาลชาน"
         ]
       },
       "Indian/Christmas": {
@@ -15169,7 +15133,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "GyMMMd": "d MMM G y",
         "GyMMMEd": "E d MMM G y",
         "GyMMMEEEEd": "EEEEที่ d MMM G y",
-        "h": "h a",
+        "h": "h a",
         "H": "HH",
         "hm": "h:mm a",
         "Hm": "HH:mm น.",
@@ -15456,41 +15420,41 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMMd Bhms": "d MMMM y h:mm:ss B",
         "yMMMMEd Bhms": "E d MMMM y h:mm:ss B",
         "yMMMMEEEEd Bhms": "EEEEที่ d MMMM y h:mm:ss B",
-        "EEEEที่ d MMMM G y h": "EEEEที่ d MMMM G y h a",
-        "d MMMM G y h": "d MMMM G y h a",
-        "d MMM y h": "d MMM y h a",
-        "d/M/yy h": "d/M/yy h a",
-        "d h": "d h a",
-        "E h": "ccc h a",
-        "Ed h": "E d h a",
-        "Gy h": "G y h a",
-        "GyMd h": "d/M/GGGGG y h a",
-        "GyMMM h": "MMM G y h a",
-        "GyMMMd h": "d MMM G y h a",
-        "GyMMMEd h": "E d MMM G y h a",
-        "GyMMMEEEEd h": "EEEEที่ d MMM G y h a",
-        "M h": "L h a",
-        "Md h": "d/M h a",
-        "MEd h": "E d/M h a",
-        "MMM h": "LLL h a",
-        "MMMd h": "d MMM h a",
-        "MMMEd h": "E d MMM h a",
-        "MMMEEEEd h": "EEEEที่ d MMM h a",
-        "MMMMd h": "d MMMM h a",
-        "MMMMEd h": "E d MMMM h a",
-        "MMMMEEEEd h": "EEEEที่ d MMMM h a",
-        "y h": "y h a",
-        "yM h": "M/y h a",
-        "yMd h": "d/M/y h a",
-        "yMEd h": "E d/M/y h a",
-        "yMMM h": "MMM y h a",
-        "yMMMd h": "d MMM y h a",
-        "yMMMEd h": "E d MMM y h a",
-        "yMMMEEEEd h": "EEEEที่ d MMM y h a",
-        "yMMMM h": "MMMM y h a",
-        "yMMMMd h": "d MMMM y h a",
-        "yMMMMEd h": "E d MMMM y h a",
-        "yMMMMEEEEd h": "EEEEที่ d MMMM y h a",
+        "EEEEที่ d MMMM G y h": "EEEEที่ d MMMM G y h a",
+        "d MMMM G y h": "d MMMM G y h a",
+        "d MMM y h": "d MMM y h a",
+        "d/M/yy h": "d/M/yy h a",
+        "d h": "d h a",
+        "E h": "ccc h a",
+        "Ed h": "E d h a",
+        "Gy h": "G y h a",
+        "GyMd h": "d/M/GGGGG y h a",
+        "GyMMM h": "MMM G y h a",
+        "GyMMMd h": "d MMM G y h a",
+        "GyMMMEd h": "E d MMM G y h a",
+        "GyMMMEEEEd h": "EEEEที่ d MMM G y h a",
+        "M h": "L h a",
+        "Md h": "d/M h a",
+        "MEd h": "E d/M h a",
+        "MMM h": "LLL h a",
+        "MMMd h": "d MMM h a",
+        "MMMEd h": "E d MMM h a",
+        "MMMEEEEd h": "EEEEที่ d MMM h a",
+        "MMMMd h": "d MMMM h a",
+        "MMMMEd h": "E d MMMM h a",
+        "MMMMEEEEd h": "EEEEที่ d MMMM h a",
+        "y h": "y h a",
+        "yM h": "M/y h a",
+        "yMd h": "d/M/y h a",
+        "yMEd h": "E d/M/y h a",
+        "yMMM h": "MMM y h a",
+        "yMMMd h": "d MMM y h a",
+        "yMMMEd h": "E d MMM y h a",
+        "yMMMEEEEd h": "EEEEที่ d MMM y h a",
+        "yMMMM h": "MMMM y h a",
+        "yMMMMd h": "d MMMM y h a",
+        "yMMMMEd h": "E d MMMM y h a",
+        "yMMMMEEEEd h": "EEEEที่ d MMMM y h a",
         "EEEEที่ d MMMM G y H": "EEEEที่ d MMMM G y HH",
         "d MMMM G y H": "d MMMM G y HH",
         "d MMM y H": "d MMM y HH",
@@ -15881,11 +15845,11 @@ Intl.DateTimeFormat.__addLocaleData({
     "intervalFormats": {
       "intervalFormatFallback": "{0} – {1}",
       "Bh": {
-        "B": "h B – h B",
+        "B": "h B – h B",
         "h": "h – h B"
       },
       "Bhm": {
-        "B": "h:mm B – h:mm B",
+        "B": "h:mm B – h:mm B",
         "h": "h:mm – h:mm B",
         "m": "h:mm – h:mm B"
       },
@@ -15893,7 +15857,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "d": "d–d"
       },
       "Gy": {
-        "G": "G y – G y",
+        "G": "G y – G y",
         "y": "G y–y"
       },
       "GyM": {
@@ -15931,14 +15895,14 @@ Intl.DateTimeFormat.__addLocaleData({
         "y": "E d MMM G y – E d MMM y"
       },
       "h": {
-        "a": "h a – h a",
-        "h": "h–h a"
+        "a": "h a – h a",
+        "h": "h–h a"
       },
       "H": {
         "H": "HH–HH"
       },
       "hm": {
-        "a": "h:mm a – h:mm a",
+        "a": "h:mm a – h:mm a",
         "h": "h:mm–h:mm a",
         "m": "h:mm–h:mm a"
       },
@@ -15947,7 +15911,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "m": "HH:mm น. – HH:mm น."
       },
       "hmv": {
-        "a": "h:mm a – h:mm a v",
+        "a": "h:mm a – h:mm a v",
         "h": "h:mm–h:mm a v",
         "m": "h:mm–h:mm a v"
       },
@@ -15956,8 +15920,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "m": "H:mm น. – H:mm น. v"
       },
       "hv": {
-        "a": "h a – h a v",
-        "h": "h–h a v"
+        "a": "h a – h a v",
+        "h": "h–h a v"
       },
       "Hv": {
         "H": "HH–HH v"
@@ -15977,7 +15941,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "M": "MMM – MMM"
       },
       "MMMd": {
-        "d": "MMM d–d",
+        "d": "d–d MMM",
         "M": "d MMM – d MMM"
       },
       "MMMEd": {
@@ -16812,12 +16776,6 @@ Intl.DateTimeFormat.__addLocaleData({
           "中国夏令时间"
         ]
       },
-      "Asia/Choibalsan": {
-        "long": [
-          "乔巴山标准时间",
-          "乔巴山夏令时间"
-        ]
-      },
       "Indian/Christmas": {
         "long": [
           "圣诞岛时间",
@@ -17186,8 +17144,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Pacific/Galapagos": {
         "long": [
-          "加拉帕戈斯时间",
-          "加拉帕戈斯时间"
+          "科隆群岛时间",
+          "科隆群岛时间"
         ]
       },
       "Pacific/Gambier": {
@@ -19508,12 +19466,6 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "中國標準時間",
           "中國夏令時間"
-        ]
-      },
-      "Asia/Choibalsan": {
-        "long": [
-          "喬巴山標準時間",
-          "喬巴山夏令時間"
         ]
       },
       "Indian/Christmas": {
@@ -22088,12 +22040,6 @@ Intl.DateTimeFormat.__addLocaleData({
           "中国夏令时间"
         ]
       },
-      "Asia/Choibalsan": {
-        "long": [
-          "乔巴山标准时间",
-          "乔巴山夏令时间"
-        ]
-      },
       "Indian/Christmas": {
         "long": [
           "圣诞岛时间",
@@ -22462,8 +22408,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Pacific/Galapagos": {
         "long": [
-          "加拉帕戈斯时间",
-          "加拉帕戈斯时间"
+          "科隆群岛时间",
+          "科隆群岛时间"
         ]
       },
       "Pacific/Gambier": {

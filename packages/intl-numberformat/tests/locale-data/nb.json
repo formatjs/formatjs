@@ -1788,15 +1788,15 @@
       "SLE": {
         "displayName": {
           "one": "sierraleonsk leone",
-          "other": "sierraleonske leone"
+          "other": "sierraleonske leoner"
         },
         "narrow": "SLE",
         "symbol": "SLE"
       },
       "SLL": {
         "displayName": {
-          "one": "sierraleonsk leone (1964—2022)",
-          "other": "sierraleonske leone (1964—2022)"
+          "one": "sierraleonsk leone (1964–2022)",
+          "other": "sierraleonske leoner (1964–2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -3101,7 +3101,7 @@
           },
           "perUnit": {
             "long": "{0} per minutt",
-            "narrow": "{0}/m",
+            "narrow": "{0}/min",
             "short": "{0}/min"
           },
           "short": {
@@ -3148,7 +3148,7 @@
             "other": "{0} prosent"
           },
           "narrow": {
-            "other": "{0} %"
+            "other": "{0}%"
           },
           "perUnit": {
           },

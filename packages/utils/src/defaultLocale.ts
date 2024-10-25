@@ -9,6 +9,6 @@ import * as data from './defaultLocaleData.generated.json'
 export function defaultLocale(countryCode?: string): string | undefined {
   countryCode = canonicalizeCountryCode(countryCode)
   return (
-    (countryCode && countryCode in data && data[countryCode as 'US']) || 'en'
+    (countryCode && countryCode in data && data[countryCode as 'CN']) || 'en'
   )
 }

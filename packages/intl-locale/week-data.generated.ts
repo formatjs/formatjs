@@ -26,7 +26,7 @@ export const weekData = {
     ]
   },
   "AE": {
-    "firstDay": 6,
+    "firstDay": 1,
     "minimalDays": 1,
     "weekend": [
       6,

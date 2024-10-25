@@ -229,7 +229,7 @@ export const timezones = {
     "America/Costa_Rica"
   ],
   "cs": [
-    "CST6CDT"
+    "America/Chicago"
   ],
   "cu": [
     "America/Havana"
@@ -286,7 +286,7 @@ export const timezones = {
     "Africa/Ceuta",
     "Atlantic/Canary",
     "Europe/Madrid",
-    "EST5EDT"
+    "America/New_York"
   ],
   "et": [
     "Africa/Addis_Ababa"
@@ -541,7 +541,7 @@ export const timezones = {
     "Asia/Rangoon"
   ],
   "mn": [
-    "Asia/Choibalsan",
+    "Asia/Ulaanbaatar",
     "Asia/Hovd",
     "Asia/Ulaanbaatar"
   ],
@@ -559,7 +559,7 @@ export const timezones = {
   ],
   "ms": [
     "America/Montserrat",
-    "MST7MDT"
+    "America/Denver"
   ],
   "mt": [
     "Europe/Malta"
@@ -669,7 +669,7 @@ export const timezones = {
     "America/Puerto_Rico"
   ],
   "ps": [
-    "PST8PDT"
+    "America/Los_Angeles"
   ],
   "pt": [
     "Atlantic/Madeira",

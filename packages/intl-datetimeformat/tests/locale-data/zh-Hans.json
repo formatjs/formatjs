@@ -750,12 +750,6 @@
           "中国夏令时间"
         ]
       },
-      "Asia/Choibalsan": {
-        "long": [
-          "乔巴山标准时间",
-          "乔巴山夏令时间"
-        ]
-      },
       "Indian/Christmas": {
         "long": [
           "圣诞岛时间",
@@ -1124,8 +1118,8 @@
       },
       "Pacific/Galapagos": {
         "long": [
-          "加拉帕戈斯时间",
-          "加拉帕戈斯时间"
+          "科隆群岛时间",
+          "科隆群岛时间"
         ]
       },
       "Pacific/Gambier": {
