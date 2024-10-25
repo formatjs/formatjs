@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@11.6.0...@formatjs/intl-segmenter@11.7.0) (2024-10-25)
+
+### Features
+
+* upgrade cldr to v46 ([daafb44](https://github.com/formatjs/formatjs/commit/daafb449ba2fc4553f5a484b969affa1529752db)) - by @longlho
+
 # [11.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@11.5.9...@formatjs/intl-segmenter@11.6.0) (2024-10-21)
 
 ### Features
