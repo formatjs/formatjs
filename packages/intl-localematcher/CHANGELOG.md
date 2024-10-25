@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.5.5...@formatjs/intl-localematcher@0.5.6) (2024-10-25)
+
+### Bug Fixes
+
+* relax tslib req to 2 instead of 2.7 ([930c3e8](https://github.com/formatjs/formatjs/commit/930c3e8ddcc160fde7466449575455f135f78ca6)) - by @longlho
+
 ## [0.5.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.5.4...@formatjs/intl-localematcher@0.5.5) (2024-10-12)
 
 **Note:** Version bump only for package @formatjs/intl-localematcher

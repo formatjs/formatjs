@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.1.4...eslint-plugin-formatjs@5.1.5) (2024-10-25)
+
+### Bug Fixes
+
+* relax tslib req to 2 instead of 2.7 ([930c3e8](https://github.com/formatjs/formatjs/commit/930c3e8ddcc160fde7466449575455f135f78ca6)) - by @longlho
+
 ## [5.1.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.1.3...eslint-plugin-formatjs@5.1.4) (2024-10-25)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

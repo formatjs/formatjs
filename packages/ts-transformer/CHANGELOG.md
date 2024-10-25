@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.20](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.13.19...@formatjs/ts-transformer@3.13.20) (2024-10-25)
+
+### Bug Fixes
+
+* relax tslib req to 2 instead of 2.7 ([930c3e8](https://github.com/formatjs/formatjs/commit/930c3e8ddcc160fde7466449575455f135f78ca6)) - by @longlho
+
 ## [3.13.19](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.13.18...@formatjs/ts-transformer@3.13.19) (2024-10-25)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

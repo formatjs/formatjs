@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@11.7.0...@formatjs/intl-segmenter@11.7.1) (2024-10-25)
+
+### Bug Fixes
+
+* relax tslib req to 2 instead of 2.7 ([930c3e8](https://github.com/formatjs/formatjs/commit/930c3e8ddcc160fde7466449575455f135f78ca6)) - by @longlho
+
 # [11.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@11.6.0...@formatjs/intl-segmenter@11.7.0) (2024-10-25)
 
 ### Features

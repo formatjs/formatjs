@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@2.2.1...@formatjs/fast-memoize@2.2.2) (2024-10-25)
+
+### Bug Fixes
+
+* relax tslib req to 2 instead of 2.7 ([930c3e8](https://github.com/formatjs/formatjs/commit/930c3e8ddcc160fde7466449575455f135f78ca6)) - by @longlho
+
 ## [2.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@2.2.0...@formatjs/fast-memoize@2.2.1) (2024-10-12)
 
 ### Bug Fixes
