@@ -582,9 +582,6 @@ importers:
       tslib:
         specifier: ^2.7.0
         version: 2.8.0
-      typescript:
-        specifier: 5.6.2
-        version: 5.6.2
       unicode-emoji-utils:
         specifier: ^1.2.0
         version: 1.2.0
