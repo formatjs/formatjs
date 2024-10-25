@@ -124,7 +124,7 @@ use_repo(crate, "crate_index")
 
 ######### Lint rules #########
 
-bazel_dep(name = "aspect_rules_lint", version = "1.0.2")
+bazel_dep(name = "aspect_rules_lint", version = "1.0.3")
 
 ######### test262 rules #########
 
