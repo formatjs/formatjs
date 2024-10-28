@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.2](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.6.1...@formatjs/utils@1.6.2) (2024-10-28)
+
+### Bug Fixes
+
+* **@formatjs/utils:** fix default currency type ([ba6f51a](https://github.com/formatjs/formatjs/commit/ba6f51ae8b86b4d4405da54a58ddc73ae11e65fa)) - by @longlho
+
 ## [1.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.6.0...@formatjs/utils@1.6.1) (2024-10-25)
 
 ### Bug Fixes
