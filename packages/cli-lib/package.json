@@ -37,7 +37,7 @@
     "@types/estree": "^1.0.0",
     "@types/fs-extra": "9 || 10 || 11",
     "@types/json-stable-stringify": "1",
-    "@types/node": "14 || 16 || 17 || 18 || 20",
+    "@types/node": "14 || 16 || 17 || 18 || 20 || 22",
     "chalk": "4",
     "commander": "12",
     "fast-glob": "3",
