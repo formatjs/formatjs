@@ -19,7 +19,7 @@
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
-    "@swc/core": "1.7.40",
+    "@swc/core": "1.7.42",
     "@types/json-stable-stringify": "1",
     "@types/node": "14 || 16 || 17 || 18 || 20 || 22",
     "chalk": "4",
