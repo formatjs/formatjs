@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/swc-plugin",
-  "version": "1.5.21",
+  "version": "1.5.22",
   "description": "SWC plugin for formatjs",
   "main": "index.js",
   "types": "index.d.ts",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.8.5](https://github.com/formatjs/formatjs/compare/react-intl@6.8.4...react-intl@6.8.5) (2024-11-02)
+
+### Bug Fixes
+
+* **react-intl:** relax @types/react versions ([d8f6047](https://github.com/formatjs/formatjs/commit/d8f6047c291a545eb8690290f7bc7761838e5c86)) - by @longlho
+
 ## [6.8.4](https://github.com/formatjs/formatjs/compare/react-intl@6.8.3...react-intl@6.8.4) (2024-10-25)
 
 ### Bug Fixes

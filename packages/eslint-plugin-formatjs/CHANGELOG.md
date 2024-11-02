@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.1.5...eslint-plugin-formatjs@5.2.0) (2024-11-02)
+
+### Features
+
+* **eslint-plugin-formatjs:** add recommended and strict shareable eslint config ([a4fc437](https://github.com/formatjs/formatjs/commit/a4fc4379700283448350b6982338f169f15d9bba)), closes [#4501](https://github.com/formatjs/formatjs/issues/4501) - by @longlho
+
 ## [5.1.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.1.4...eslint-plugin-formatjs@5.1.5) (2024-10-25)
 
 ### Bug Fixes
