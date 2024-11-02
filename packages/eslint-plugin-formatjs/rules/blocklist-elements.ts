@@ -10,12 +10,8 @@ import {
   isTimeElement,
   parse,
 } from '@formatjs/icu-messageformat-parser'
-import {TSESTree} from '@typescript-eslint/utils'
-import {
-  RuleContext,
-  RuleListener,
-  RuleModule,
-} from '@typescript-eslint/utils/ts-eslint'
+import {ESLintUtils, TSESTree} from '@typescript-eslint/utils'
+import {RuleContext} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat'
 import {extractMessages, getSettings} from '../util'
 
@@ -129,30 +125,12 @@ function checkNode(
   }
 }
 
-const create = (context: RuleContext<MessageIds, unknown[]>): RuleListener => {
-  const callExpressionVisitor = (node: TSESTree.Node) =>
-    checkNode(context, node)
-  const parserServices = getParserServices(context)
+const createRule = ESLintUtils.RuleCreator(
+  _ => 'https://formatjs.io/docs/tooling/linter#blocklist-elements'
+)
 
-  //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
-  if (parserServices?.defineTemplateBodyVisitor) {
-    //@ts-expect-error
-    return parserServices.defineTemplateBodyVisitor(
-      {
-        CallExpression: callExpressionVisitor,
-      },
-      {
-        CallExpression: callExpressionVisitor,
-      }
-    )
-  }
-  return {
-    JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
-    CallExpression: callExpressionVisitor,
-  }
-}
-
-export const rule: RuleModule<MessageIds> = {
+export const rule = createRule({
+  name,
   meta: {
     type: 'problem',
     docs: {
@@ -174,5 +152,26 @@ export const rule: RuleModule<MessageIds> = {
     },
   },
   defaultOptions: [],
-  create,
-}
+  create(context) {
+    const callExpressionVisitor: ESLintUtils.RuleListener['CallExpression'] =
+      node => checkNode(context, node)
+    const parserServices = getParserServices(context)
+
+    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+    if (parserServices?.defineTemplateBodyVisitor) {
+      //@ts-expect-error
+      return parserServices.defineTemplateBodyVisitor(
+        {
+          CallExpression: callExpressionVisitor,
+        },
+        {
+          CallExpression: callExpressionVisitor,
+        }
+      )
+    }
+    return {
+      JSXOpeningElement: node => checkNode(context, node),
+      CallExpression: callExpressionVisitor,
+    }
+  },
+})

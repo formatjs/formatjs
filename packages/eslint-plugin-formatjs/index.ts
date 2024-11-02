@@ -1,6 +1,7 @@
+import {ESLint} from 'eslint'
 import {
-  rule as blocklistElements,
   name as blocklistElementRuleName,
+  rule as blocklistElements,
 } from './rules/blocklist-elements'
 import {
   rule as enforceDefaultMessage,
@@ -16,10 +17,6 @@ import {
   name as enforcePlaceholdersName,
 } from './rules/enforce-placeholders'
 import {
-  rule as noInvalidICU,
-  name as noInvalidICUName,
-} from './rules/no-invalid-icu'
-import {
   rule as enforcePluralRules,
   name as enforcePluralRulesName,
 } from './rules/enforce-plural-rules'
@@ -34,6 +31,18 @@ import {
 import {rule as noEmoji, name as noEmojiName} from './rules/no-emoji'
 import {rule as noId, name as noIdName} from './rules/no-id'
 import {
+  rule as noInvalidICU,
+  name as noInvalidICUName,
+} from './rules/no-invalid-icu'
+import {
+  rule as noLiteralStringInJsx,
+  name as noLiteralStringInJsxName,
+} from './rules/no-literal-string-in-jsx'
+import {
+  rule as noMissingIcuPluralOnePlaceholders,
+  name as noMissingIcuPluralOnePlaceholdersName,
+} from './rules/no-missing-icu-plural-one-placeholders'
+import {
   rule as noMultiplePlurals,
   name as noMultiplePluralsName,
 } from './rules/no-multiple-plurals'
@@ -42,10 +51,6 @@ import {
   name as noMultipleWhitespacesName,
 } from './rules/no-multiple-whitespaces'
 import {rule as noOffset, name as noOffsetName} from './rules/no-offset'
-import {
-  rule as noLiteralStringInJsx,
-  name as noLiteralStringInJsxName,
-} from './rules/no-literal-string-in-jsx'
 import {
   rule as noUselessMessage,
   name as noUselessMessageName,
@@ -58,38 +63,120 @@ import {
   rule as preferPoundInPlural,
   name as preferPoundInPluralName,
 } from './rules/prefer-pound-in-plural'
-import {
-  rule as noMissingIcuPluralOnePlaceholders,
-  name as noMissingIcuPluralOnePlaceholdersName,
-} from './rules/no-missing-icu-plural-one-placeholders'
-import {RuleModule} from '@typescript-eslint/utils/ts-eslint'
 
-const plugin: Plugin = {
+const plugin: ESLint.Plugin = {
+  configs: {
+    strict: {
+      plugins: ['formatjs'],
+      rules: {
+        'formatjs/no-offset': 'error',
+        'formatjs/enforce-default-message': ['error', 'literal'],
+        'formatjs/enforce-description': ['error', 'literal'],
+        'formatjs/enforce-placeholders': 'error',
+        'formatjs/no-emoji': 'error',
+        'formatjs/no-multiple-whitespaces': 'error',
+        'formatjs/no-multiple-plurals': 'error',
+        'formatjs/no-complex-selectors': ['error', {limit: 20}],
+        'formatjs/no-useless-message': 'error',
+        'formatjs/prefer-pound-in-plural': 'error',
+        'formatjs/no-missing-icu-plural-one-placeholders': 'error',
+        'formatjs/enforce-id': [
+          'error',
+          {
+            idInterpolationPattern: '[sha512:contenthash:base64:10]',
+          },
+        ],
+        'formatjs/enforce-plural-rules': [
+          'error',
+          {
+            one: true,
+            other: true,
+          },
+        ],
+        'formatjs/no-literal-string-in-jsx': [
+          'error',
+          {
+            props: {
+              include: [['*', '{label,placeholder,title}']],
+            },
+          },
+        ],
+        'formatjs/blocklist-elements': ['error', {elements: ['selectordinal']}],
+      },
+    },
+    recommended: {
+      plugins: ['formatjs'],
+      rules: {
+        'formatjs/no-offset': 'error',
+        'formatjs/enforce-default-message': ['error', 'literal'],
+        'formatjs/enforce-description': ['error', 'literal'],
+        'formatjs/enforce-placeholders': 'error',
+        'formatjs/no-emoji': 'error',
+        'formatjs/no-multiple-whitespaces': 'error',
+        'formatjs/no-multiple-plurals': 'error',
+        'formatjs/no-complex-selectors': ['error', {limit: 20}],
+        'formatjs/no-useless-message': 'error',
+        'formatjs/prefer-pound-in-plural': 'error',
+        'formatjs/no-missing-icu-plural-one-placeholders': 'error',
+        'formatjs/enforce-plural-rules': [
+          'error',
+          {
+            one: true,
+            other: true,
+          },
+        ],
+        'formatjs/no-literal-string-in-jsx': [
+          'warn',
+          {
+            props: {
+              include: [['*', '{label,placeholder,title}']],
+            },
+          },
+        ],
+        'formatjs/blocklist-elements': ['error', {elements: ['selectordinal']}],
+      },
+    },
+  },
   rules: {
+    // @ts-expect-error
     [blocklistElementRuleName]: blocklistElements,
+    // @ts-expect-error
     [enforceDefaultMessageName]: enforceDefaultMessage,
+    // @ts-expect-error
     [enforceDescriptionName]: enforceDescription,
+    // @ts-expect-error
     [enforceIdName]: enforceId,
+    // @ts-expect-error
     [enforcePlaceholdersName]: enforcePlaceholders,
+    // @ts-expect-error
     [enforcePluralRulesName]: enforcePluralRules,
+    // @ts-expect-error
     [noCamelCaseName]: noCamelCase,
+    // @ts-expect-error
     [noComplexSelectorsName]: noComplexSelectors,
+    // @ts-expect-error
     [noEmojiName]: noEmoji,
+    // @ts-expect-error
     [noIdName]: noId,
+    // @ts-expect-error
     [noInvalidICUName]: noInvalidICU,
+    // @ts-expect-error
     [noLiteralStringInJsxName]: noLiteralStringInJsx,
+    // @ts-expect-error
     [noMultiplePluralsName]: noMultiplePlurals,
+    // @ts-expect-error
     [noMultipleWhitespacesName]: noMultipleWhitespaces,
+    // @ts-expect-error
     [noOffsetName]: noOffset,
+    // @ts-expect-error
     [noUselessMessageName]: noUselessMessage,
+    // @ts-expect-error
     [preferFormattedMessageName]: preferFormattedMessage,
+    // @ts-expect-error
     [preferPoundInPluralName]: preferPoundInPlural,
+    // @ts-expect-error
     [noMissingIcuPluralOnePlaceholdersName]: noMissingIcuPluralOnePlaceholders,
   },
-}
-
-export type Plugin = {
-  rules: Record<string, RuleModule<string, readonly unknown[]>>
 }
 
 module.exports = plugin
