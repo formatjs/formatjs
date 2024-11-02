@@ -1,4 +1,6 @@
 {
+  "name": "examples",
+  "private": true,
   "devDependencies": {
     "@formatjs/intl-datetimeformat": "workspace:*",
     "@formatjs/intl-getcanonicallocales": "workspace:*",

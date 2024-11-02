@@ -1,4 +1,6 @@
 {
+  "name": "integration-tests",
+  "private": true,
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*"
   }
