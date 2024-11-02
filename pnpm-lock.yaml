@@ -65,6 +65,9 @@ importers:
       '@commitlint/config-angular':
         specifier: ^19.5.0
         version: 19.5.0
+      '@commitlint/config-angular-type-enum':
+        specifier: ^19.5.0
+        version: 19.5.0
       '@glimmer/env':
         specifier: ^0.1.7
         version: 0.1.7
