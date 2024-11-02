@@ -1,9 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
+load("@aspect_rules_lint//format:defs.bzl", "format_multirun", "format_test")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
+load("@npm//:prettier/package_json.bzl", prettier = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 
 npm_link_all_packages()
@@ -257,7 +259,32 @@ npm_link_package(
     src = "//packages/intl-localematcher",
 )
 
-alias(
+prettier.prettier_binary(
+    name = "prettier",
+    data = [
+        ".prettierignore",
+        ".prettierrc.json",
+    ],
+    # Allow the binary to be run outside bazel
+    env = {"BAZEL_BINDIR": "."},
+)
+
+format_multirun(
     name = "format",
-    actual = "//tools:format",
+    css = ":prettier",
+    html = ":prettier",
+    javascript = ":prettier",
+    markdown = ":prettier",
+    starlark = "@buildifier_prebuilt//:buildifier",
+    visibility = ["//visibility:public"],
+)
+
+format_test(
+    name = "format_test",
+    size = "small",
+    javascript = ":prettier",
+    markdown = ":prettier",
+    no_sandbox = True,  # Enables formatting the entire workspace, paired with 'workspace' attribute
+    starlark = "@buildifier_prebuilt//:buildifier",
+    workspace = "//:package.json",  # A file in the workspace root, where the no_sandbox mode will run the formatter
 )
