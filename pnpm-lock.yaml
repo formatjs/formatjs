@@ -15,6 +15,9 @@ overrides:
 packageExtensionsChecksum: 36f586ee47cc544e88bd717a1b6ef1ae
 
 patchedDependencies:
+  '@commitlint/rules':
+    hash: 643wrmkq4v5plqlknfac4m5esi
+    path: patches/@commitlint__rules.patch
   '@glimmer/interfaces@0.92.3':
     hash: 75gmslt2lrk4ybls6stmqfpu2m
     path: patches/@glimmer__interfaces@0.92.3.patch
@@ -10782,7 +10785,7 @@ snapshots:
     dependencies:
       '@commitlint/is-ignored': 19.5.0
       '@commitlint/parse': 19.5.0
-      '@commitlint/rules': 19.5.0
+      '@commitlint/rules': 19.5.0(patch_hash=643wrmkq4v5plqlknfac4m5esi)
       '@commitlint/types': 19.5.0
 
   '@commitlint/load@19.5.0(@types/node@22.8.2)(typescript@5.6.2)':
@@ -10826,7 +10829,7 @@ snapshots:
       lodash.mergewith: 4.6.2
       resolve-from: 5.0.0
 
-  '@commitlint/rules@19.5.0':
+  '@commitlint/rules@19.5.0(patch_hash=643wrmkq4v5plqlknfac4m5esi)':
     dependencies:
       '@commitlint/ensure': 19.5.0
       '@commitlint/message': 19.5.0
