@@ -37,7 +37,7 @@ LOCALES.forEach(locale => {
 
 // Replicate Google Chrome's behavior: when there is a compact pattern, drop the percentage sign.
 // For example, 10000 is formatted to "1M" (10000 * 100 = 1M).
-it('formats percentage with comapct notation', () => {
+it('formats percentage with compact notation', () => {
   expect(
     NumberFormat('en-BS', {
       style: 'percent',

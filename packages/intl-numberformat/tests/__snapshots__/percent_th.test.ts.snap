@@ -1,0 +1,2945 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=always, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "ล้าน",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1 ล้าน-+2 ล้าน"`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=always, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "compact",
+    "value": "ล้าน",
+  },
+  {
+    "result": "4",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "ล้าน",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=always, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "compact",
+    "value": "M",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1M-+2M"`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=always, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "compact",
+    "value": "M",
+  },
+  {
+    "result": "3",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "4",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "M",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=auto, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "ล้าน",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1 ล้าน-2 ล้าน"`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=auto, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "compact",
+    "value": "ล้าน",
+  },
+  {
+    "result": "3",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "4",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "ล้าน",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=auto, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "compact",
+    "value": "M",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1M-2M"`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=auto, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "compact",
+    "value": "M",
+  },
+  {
+    "result": "2",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "3",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "4",
+    "source": "endRange",
+    "type": "compact",
+    "value": "M",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=exceptZero, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "ล้าน",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1 ล้าน-+2 ล้าน"`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=exceptZero, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "compact",
+    "value": "ล้าน",
+  },
+  {
+    "result": "4",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "ล้าน",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "compact",
+    "value": "M",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1M-+2M"`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=exceptZero, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "compact",
+    "value": "M",
+  },
+  {
+    "result": "3",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "4",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "M",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=never, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "ล้าน",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1 ล้าน-2 ล้าน"`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=never, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "compact",
+    "value": "ล้าน",
+  },
+  {
+    "result": "3",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "4",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "ล้าน",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=never, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "compact",
+    "value": "M",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1M-2M"`;
+
+exports[`Intl.NumberFormat th notation=compact, signDisplay=never, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "compact",
+    "value": "M",
+  },
+  {
+    "result": "2",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "3",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "4",
+    "source": "endRange",
+    "type": "compact",
+    "value": "M",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=always, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=always, compactDisplay=long 2`] = `"+1E6%-+2E6%"`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=always, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "5",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=always, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=always, compactDisplay=short 2`] = `"+1E6%-+2E6%"`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=always, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "5",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=auto, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=auto, compactDisplay=long 2`] = `"1E6%-2E6%"`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=auto, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "4",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=auto, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=auto, compactDisplay=short 2`] = `"1E6%-2E6%"`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=auto, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "4",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=exceptZero, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1E6%-+2E6%"`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=exceptZero, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "5",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1E6%-+2E6%"`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=exceptZero, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "5",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=never, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=never, compactDisplay=long 2`] = `"1E6%-2E6%"`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=never, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "4",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=never, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=never, compactDisplay=short 2`] = `"1E6%-2E6%"`;
+
+exports[`Intl.NumberFormat th notation=engineering, signDisplay=never, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "4",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=always, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=always, compactDisplay=long 2`] = `"+1E6%-+2E6%"`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=always, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "5",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=always, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=always, compactDisplay=short 2`] = `"+1E6%-+2E6%"`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=always, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "5",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=auto, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=auto, compactDisplay=long 2`] = `"1E6%-2E6%"`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=auto, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "4",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=auto, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=auto, compactDisplay=short 2`] = `"1E6%-2E6%"`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=auto, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "4",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=exceptZero, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1E6%-+2E6%"`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=exceptZero, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "5",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1E6%-+2E6%"`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=exceptZero, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "5",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=never, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=never, compactDisplay=long 2`] = `"1E6%-2E6%"`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=never, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "4",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=never, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=never, compactDisplay=short 2`] = `"1E6%-2E6%"`;
+
+exports[`Intl.NumberFormat th notation=scientific, signDisplay=never, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "4",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=always, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=always, compactDisplay=long 2`] = `"+1,000,000%-+2,000,000%"`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=always, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "5",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "6",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "7",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "11",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "12",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "13",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "14",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=always, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=always, compactDisplay=short 2`] = `"+1,000,000%-+2,000,000%"`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=always, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "5",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "6",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "7",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "11",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "12",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "13",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "14",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=auto, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=auto, compactDisplay=long 2`] = `"1,000,000%-2,000,000%"`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=auto, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "5",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "6",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "11",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "12",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=auto, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=auto, compactDisplay=short 2`] = `"1,000,000%-2,000,000%"`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=auto, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "5",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "6",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "11",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "12",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=exceptZero, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1,000,000%-+2,000,000%"`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=exceptZero, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "5",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "6",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "7",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "11",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "12",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "13",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "14",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1,000,000%-+2,000,000%"`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=exceptZero, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "5",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "6",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "7",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "11",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "12",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "13",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "14",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=never, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=never, compactDisplay=long 2`] = `"1,000,000%-2,000,000%"`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=never, compactDisplay=long 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "5",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "6",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "11",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "12",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=never, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=never, compactDisplay=short 2`] = `"1,000,000%-2,000,000%"`;
+
+exports[`Intl.NumberFormat th notation=standard, signDisplay=never, compactDisplay=short 3`] = `
+[
+  {
+    "result": "0",
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "result": "1",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "2",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "3",
+    "source": "startRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "4",
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "5",
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "result": "6",
+    "source": "shared",
+    "type": "literal",
+    "value": "-",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "9",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "10",
+    "source": "endRange",
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "result": "11",
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "result": "12",
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
