@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.6.3...@formatjs/utils@1.7.0) (2024-11-04)
+
+### Features
+
+* **@formatjs/utils:** add a fn to get memoized default timezone for the system ([95c120e](https://github.com/formatjs/formatjs/commit/95c120e16a8f4704ccee27e17620e0463da146b0)) - by @longlho
+
 ## [1.6.3](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.6.2...@formatjs/utils@1.6.3) (2024-11-02)
 
 **Note:** Version bump only for package @formatjs/utils
