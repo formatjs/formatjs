@@ -67,17 +67,17 @@ export function test(locale: string) {
         signDisplay,
         compactDisplay
       ) => {
-        expect(
-          new NumberFormat(locale, {
-            style: 'currency',
-            currency,
-            currencySign,
-            currencyDisplay,
-            signDisplay,
-            notation,
-            compactDisplay,
-          }).format(10000)
-        ).toMatchSnapshot()
+        const nf = new NumberFormat(locale, {
+          style: 'currency',
+          currency,
+          currencySign,
+          currencyDisplay,
+          signDisplay,
+          notation,
+          compactDisplay,
+        })
+        expect(nf.format(10000)).toMatchSnapshot()
+        expect(nf.formatRange(10000, 100000)).toMatchSnapshot()
       }
     )
   })

@@ -135,6 +135,26 @@ LOCALE_TEST_TYPES = [
     "percent",
 ]
 
+[genrule(
+    name = "%s_test_update_snapshots_gen" % type,
+    srcs = ["scripts/update_snapshots.sh"],
+    outs = ["%s_test_update_snapshots.sh" % type],
+    cmd = """
+    cat $< > $@\n
+    """ + "\n".join(["echo 'bazel run //%s:%s_%s_test_update_snapshots' >> $@ " % (
+        package_name(),
+        type,
+        locale,
+    ) for locale in UNIT_TEST_LOCALES]),
+) for type in LOCALE_TEST_TYPES]
+
+[sh_binary(
+    name = "%s_test_update_snapshots" % type,
+    srcs = ["%s_test_update_snapshots.sh" % type],
+    data = ["scripts/update_snapshots.sh"],
+    deps = ["@bazel_tools//tools/bash/runfiles"],
+) for type in LOCALE_TEST_TYPES]
+
 [
     [genrule(
         name = "%s_%s_test_gen" % (type, locale),
