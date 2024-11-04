@@ -1,3 +1,0 @@
-[submodule "docs"]
-	path = docs
-	url = git@github.com:formatjs/formatjs.github.io.git
