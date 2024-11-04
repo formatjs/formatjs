@@ -63,11 +63,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"+1万比特-+2万比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"+1万-+2万比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"+1万摄氏度-+2万摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"+1万-+2万摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"+1万加仑-+2万加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"+1万-+2万加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 7`] = `
 [
@@ -91,36 +91,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -150,36 +144,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -209,36 +197,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -321,11 +303,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"+10E3比特-+20E3比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"+10E3-+20E3比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"+10E3摄氏度-+20E3摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"+10E3-+20E3摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"+10E3加仑-+20E3加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"+10E3-+20E3加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 7`] = `
 [
@@ -355,42 +337,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -426,42 +402,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -497,42 +467,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -615,11 +579,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"+1E4比特-+2E4比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"+1E4-+2E4比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"+1E4摄氏度-+2E4摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"+1E4-+2E4摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"+1E4加仑-+2E4加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"+1E4-+2E4加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 7`] = `
 [
@@ -649,42 +613,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -720,42 +678,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -791,42 +743,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -909,11 +855,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"+10,000比特-+20,000比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"+10,000-+20,000比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"+10,000摄氏度-+20,000摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"+10,000-+20,000摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"+10,000加仑-+20,000加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"+10,000-+20,000加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 7`] = `
 [
@@ -943,42 +889,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -1014,42 +954,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -1085,42 +1019,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -1179,11 +1107,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=c
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"1万比特-2万比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"1万-2万比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"1万摄氏度-2万摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"1万-2万摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"1万加仑-2万加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"1万-2万加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 7`] = `
 [
@@ -1201,30 +1129,24 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=c
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -1248,30 +1170,24 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=c
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -1295,30 +1211,24 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=c
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -1389,11 +1299,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=e
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"10E3比特-20E3比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"10E3-20E3比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"10E3摄氏度-20E3摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"10E3-20E3摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"10E3加仑-20E3加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"10E3-20E3加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 7`] = `
 [
@@ -1417,36 +1327,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=e
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -1476,36 +1380,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=e
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -1535,36 +1433,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=e
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -1635,11 +1527,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=s
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"1E4比特-2E4比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"1E4-2E4比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"1E4摄氏度-2E4摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"1E4-2E4摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"1E4加仑-2E4加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"1E4-2E4加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 7`] = `
 [
@@ -1663,36 +1555,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -1722,36 +1608,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -1781,36 +1661,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -1881,11 +1755,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=s
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"10,000比特-20,000比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"10,000-20,000比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"10,000摄氏度-20,000摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"10,000-20,000摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"10,000加仑-20,000加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"10,000-20,000加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 7`] = `
 [
@@ -1909,36 +1783,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -1968,36 +1836,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -2027,36 +1889,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -2127,11 +1983,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"+1万比特-+2万比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"+1万-+2万比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"+1万摄氏度-+2万摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"+1万-+2万摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"+1万加仑-+2万加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"+1万-+2万加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 7`] = `
 [
@@ -2155,36 +2011,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -2214,36 +2064,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -2273,36 +2117,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -2385,11 +2223,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"+10E3比特-+20E3比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"+10E3-+20E3比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"+10E3摄氏度-+20E3摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"+10E3-+20E3摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"+10E3加仑-+20E3加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"+10E3-+20E3加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 7`] = `
 [
@@ -2419,42 +2257,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -2490,42 +2322,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -2561,42 +2387,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -2679,11 +2499,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"+1E4比特-+2E4比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"+1E4-+2E4比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"+1E4摄氏度-+2E4摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"+1E4-+2E4摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"+1E4加仑-+2E4加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"+1E4-+2E4加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 7`] = `
 [
@@ -2713,42 +2533,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -2784,42 +2598,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -2855,42 +2663,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -2973,11 +2775,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"+10,000比特-+20,000比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"+10,000-+20,000比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"+10,000摄氏度-+20,000摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"+10,000-+20,000摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"+10,000加仑-+20,000加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"+10,000-+20,000加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 7`] = `
 [
@@ -3007,42 +2809,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -3078,42 +2874,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -3149,42 +2939,36 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -3243,11 +3027,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"1万比特-2万比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"1万-2万比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"1万摄氏度-2万摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"1万-2万摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"1万加仑-2万加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"1万-2万加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 7`] = `
 [
@@ -3265,30 +3049,24 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -3312,30 +3090,24 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -3359,30 +3131,24 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -3453,11 +3219,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"10E3比特-20E3比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"10E3-20E3比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"10E3摄氏度-20E3摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"10E3-20E3摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"10E3加仑-20E3加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"10E3-20E3加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 7`] = `
 [
@@ -3481,36 +3247,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -3540,36 +3300,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -3599,36 +3353,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -3699,11 +3447,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"1E4比特-2E4比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"1E4-2E4比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"1E4摄氏度-2E4摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"1E4-2E4摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"1E4加仑-2E4加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"1E4-2E4加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 7`] = `
 [
@@ -3727,36 +3475,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -3786,36 +3528,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -3845,36 +3581,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -3945,11 +3675,11 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"10,000比特-20,000比特"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"10,000-20,000比特"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"10,000摄氏度-20,000摄氏度"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"10,000-20,000摄氏度"`;
 
-exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"10,000加仑-20,000加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"10,000-20,000加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 7`] = `
 [
@@ -3973,36 +3703,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "比特",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "比特",
@@ -4032,36 +3756,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "摄氏度",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "摄氏度",
@@ -4091,36 +3809,30 @@ exports[`Intl.NumberFormat zh NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -4195,11 +3907,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"+1万 b-+2万 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"+1万-+2万 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"+1万°C-+2万°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"+1万-+2万°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"+1万gal-+2万gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"+1万-+2万gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -4223,48 +3935,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -4294,36 +3994,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -4353,36 +4047,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -4469,11 +4157,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"+10E3 b-+20E3 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"+10E3-+20E3 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"+10E3°C-+20E3°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"+10E3-+20E3°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"+10E3gal-+20E3gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"+10E3-+20E3gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -4503,54 +4191,42 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -4586,42 +4262,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -4657,42 +4327,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -4779,11 +4443,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"+1E4 b-+2E4 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"+1E4-+2E4 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"+1E4°C-+2E4°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"+1E4-+2E4°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"+1E4gal-+2E4gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"+1E4-+2E4gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -4813,54 +4477,42 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -4896,42 +4548,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -4967,42 +4613,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -5089,11 +4729,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"+10,000 b-+20,000 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"+10,000-+20,000 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"+10,000°C-+20,000°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"+10,000-+20,000°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"+10,000gal-+20,000gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"+10,000-+20,000gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -5123,54 +4763,42 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -5206,42 +4834,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -5277,42 +4899,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -5375,11 +4991,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"1万 b-2万 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"1万-2万 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"1万°C-2万°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"1万-2万°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"1万gal-2万gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"1万-2万gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -5397,42 +5013,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -5456,30 +5060,24 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -5503,30 +5101,24 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -5601,11 +5193,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"10E3 b-20E3 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"10E3-20E3 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"10E3°C-20E3°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"10E3-20E3°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"10E3gal-20E3gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"10E3-20E3gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -5629,48 +5221,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -5700,36 +5280,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -5759,36 +5333,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -5863,11 +5431,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"1E4 b-2E4 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"1E4-2E4 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"1E4°C-2E4°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"1E4-2E4°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"1E4gal-2E4gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"1E4-2E4gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -5891,48 +5459,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -5962,36 +5518,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -6021,36 +5571,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -6125,11 +5669,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"10,000 b-20,000 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"10,000-20,000 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"10,000°C-20,000°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"10,000-20,000°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"10,000gal-20,000gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"10,000-20,000gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -6153,48 +5697,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -6224,36 +5756,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -6283,36 +5809,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -6387,11 +5907,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"+1万 b-+2万 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"+1万-+2万 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"+1万°C-+2万°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"+1万-+2万°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"+1万gal-+2万gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"+1万-+2万gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -6415,48 +5935,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -6486,36 +5994,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -6545,36 +6047,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -6661,11 +6157,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"+10E3 b-+20E3 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"+10E3-+20E3 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"+10E3°C-+20E3°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"+10E3-+20E3°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"+10E3gal-+20E3gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"+10E3-+20E3gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -6695,54 +6191,42 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -6778,42 +6262,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -6849,42 +6327,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -6971,11 +6443,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"+1E4 b-+2E4 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"+1E4-+2E4 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"+1E4°C-+2E4°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"+1E4-+2E4°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"+1E4gal-+2E4gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"+1E4-+2E4gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -7005,54 +6477,42 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -7088,42 +6548,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -7159,42 +6613,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -7281,11 +6729,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"+10,000 b-+20,000 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"+10,000-+20,000 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"+10,000°C-+20,000°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"+10,000-+20,000°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"+10,000gal-+20,000gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"+10,000-+20,000gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -7315,54 +6763,42 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -7398,42 +6834,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -7469,42 +6899,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -7567,11 +6991,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"1万 b-2万 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"1万-2万 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"1万°C-2万°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"1万-2万°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"1万gal-2万gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"1万-2万gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -7589,42 +7013,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -7648,30 +7060,24 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -7695,30 +7101,24 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -7793,11 +7193,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"10E3 b-20E3 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"10E3-20E3 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"10E3°C-20E3°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"10E3-20E3°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"10E3gal-20E3gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"10E3-20E3gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -7821,48 +7221,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -7892,36 +7280,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -7951,36 +7333,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -8055,11 +7431,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"1E4 b-2E4 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"1E4-2E4 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"1E4°C-2E4°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"1E4-2E4°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"1E4gal-2E4gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"1E4-2E4gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -8083,48 +7459,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -8154,36 +7518,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -8213,36 +7571,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -8317,11 +7669,11 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"10,000 b-20,000 b"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"10,000-20,000 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"10,000°C-20,000°C"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"10,000-20,000°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"10,000gal-20,000gal"`;
+exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"10,000-20,000gal"`;
 
 exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -8345,48 +7697,36 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -8416,36 +7756,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -8475,36 +7809,30 @@ exports[`Intl.NumberFormat zh NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "gal",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "gal",
@@ -8579,11 +7907,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"+1万 b-+2万 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"+1万-+2万 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"+1万°C-+2万°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"+1万-+2万°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"+1万加仑-+2万加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"+1万-+2万加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 7`] = `
 [
@@ -8607,48 +7935,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -8678,36 +7994,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -8737,36 +8047,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -8853,11 +8157,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"+10E3 b-+20E3 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"+10E3-+20E3 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"+10E3°C-+20E3°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"+10E3-+20E3°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"+10E3加仑-+20E3加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"+10E3-+20E3加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 7`] = `
 [
@@ -8887,54 +8191,42 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -8970,42 +8262,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -9041,42 +8327,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -9163,11 +8443,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"+1E4 b-+2E4 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"+1E4-+2E4 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"+1E4°C-+2E4°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"+1E4-+2E4°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"+1E4加仑-+2E4加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"+1E4-+2E4加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 7`] = `
 [
@@ -9197,54 +8477,42 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -9280,42 +8548,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -9351,42 +8613,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -9473,11 +8729,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"+10,000 b-+20,000 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"+10,000-+20,000 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"+10,000°C-+20,000°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"+10,000-+20,000°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"+10,000加仑-+20,000加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"+10,000-+20,000加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 7`] = `
 [
@@ -9507,54 +8763,42 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -9590,42 +8834,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -9661,42 +8899,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -9759,11 +8991,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"1万 b-2万 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"1万-2万 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"1万°C-2万°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"1万-2万°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"1万加仑-2万加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"1万-2万加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 7`] = `
 [
@@ -9781,42 +9013,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -9840,30 +9060,24 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -9887,30 +9101,24 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -9985,11 +9193,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"10E3 b-20E3 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"10E3-20E3 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"10E3°C-20E3°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"10E3-20E3°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"10E3加仑-20E3加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"10E3-20E3加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 7`] = `
 [
@@ -10013,48 +9221,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -10084,36 +9280,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -10143,36 +9333,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -10247,11 +9431,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"1E4 b-2E4 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"1E4-2E4 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"1E4°C-2E4°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"1E4-2E4°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"1E4加仑-2E4加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"1E4-2E4加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 7`] = `
 [
@@ -10275,48 +9459,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -10346,36 +9518,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -10405,36 +9571,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -10509,11 +9669,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"10,000 b-20,000 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"10,000-20,000 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"10,000°C-20,000°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"10,000-20,000°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"10,000加仑-20,000加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"10,000-20,000加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 7`] = `
 [
@@ -10537,48 +9697,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -10608,36 +9756,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -10667,36 +9809,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -10771,11 +9907,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"+1万 b-+2万 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"+1万-+2万 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"+1万°C-+2万°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"+1万-+2万°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"+1万加仑-+2万加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"+1万-+2万加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 7`] = `
 [
@@ -10799,48 +9935,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -10870,36 +9994,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -10929,36 +10047,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -11045,11 +10157,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"+10E3 b-+20E3 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"+10E3-+20E3 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"+10E3°C-+20E3°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"+10E3-+20E3°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"+10E3加仑-+20E3加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"+10E3-+20E3加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 7`] = `
 [
@@ -11079,54 +10191,42 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -11162,42 +10262,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -11233,42 +10327,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -11355,11 +10443,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"+1E4 b-+2E4 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"+1E4-+2E4 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"+1E4°C-+2E4°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"+1E4-+2E4°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"+1E4加仑-+2E4加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"+1E4-+2E4加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 7`] = `
 [
@@ -11389,54 +10477,42 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -11472,42 +10548,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -11543,42 +10613,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -11665,11 +10729,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"+10,000 b-+20,000 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"+10,000-+20,000 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"+10,000°C-+20,000°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"+10,000-+20,000°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"+10,000加仑-+20,000加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"+10,000-+20,000加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 7`] = `
 [
@@ -11699,54 +10763,42 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -11782,42 +10834,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -11853,42 +10899,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -11951,11 +10991,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"1万 b-2万 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"1万-2万 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"1万°C-2万°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"1万-2万°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"1万加仑-2万加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"1万-2万加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 7`] = `
 [
@@ -11973,42 +11013,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -12032,30 +11060,24 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -12079,30 +11101,24 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "2",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "3",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "4",
+    "result": "3",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "compact",
     "value": "万",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -12177,11 +11193,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"10E3 b-20E3 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"10E3-20E3 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"10E3°C-20E3°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"10E3-20E3°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"10E3加仑-20E3加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"10E3-20E3加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 7`] = `
 [
@@ -12205,48 +11221,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -12276,36 +11280,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -12335,36 +11333,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -12439,11 +11431,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"1E4 b-2E4 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"1E4-2E4 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"1E4°C-2E4°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"1E4-2E4°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"1E4加仑-2E4加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"1E4-2E4加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 7`] = `
 [
@@ -12467,48 +11459,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -12538,36 +11518,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -12597,36 +11571,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",
@@ -12701,11 +11669,11 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"10,000 b-20,000 b"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"10,000-20,000 b"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"10,000°C-20,000°C"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"10,000-20,000°C"`;
 
-exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"10,000加仑-20,000加仑"`;
+exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"10,000-20,000加仑"`;
 
 exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 7`] = `
 [
@@ -12729,48 +11697,36 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "b",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "b",
@@ -12800,36 +11756,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -12859,36 +11809,30 @@ exports[`Intl.NumberFormat zh NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "加仑",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "-",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": ",",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "加仑",

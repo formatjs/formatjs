@@ -617,7 +617,7 @@ exports[`Intl.NumberFormat tr notation=engineering, signDisplay=always, compactD
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=engineering, signDisplay=always, compactDisplay=long 2`] = `"+%1E6–+%2E6"`;
+exports[`Intl.NumberFormat tr notation=engineering, signDisplay=always, compactDisplay=long 2`] = `"+%1E6–2E6"`;
 
 exports[`Intl.NumberFormat tr notation=engineering, signDisplay=always, compactDisplay=long 3`] = `
 [
@@ -660,29 +660,17 @@ exports[`Intl.NumberFormat tr notation=engineering, signDisplay=always, compactD
   {
     "result": "6",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "result": "7",
-    "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
-  },
-  {
-    "result": "8",
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "6",
@@ -715,7 +703,7 @@ exports[`Intl.NumberFormat tr notation=engineering, signDisplay=always, compactD
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=engineering, signDisplay=always, compactDisplay=short 2`] = `"+%1E6–+%2E6"`;
+exports[`Intl.NumberFormat tr notation=engineering, signDisplay=always, compactDisplay=short 2`] = `"+%1E6–2E6"`;
 
 exports[`Intl.NumberFormat tr notation=engineering, signDisplay=always, compactDisplay=short 3`] = `
 [
@@ -758,29 +746,17 @@ exports[`Intl.NumberFormat tr notation=engineering, signDisplay=always, compactD
   {
     "result": "6",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "result": "7",
-    "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
-  },
-  {
-    "result": "8",
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "6",
@@ -977,7 +953,7 @@ exports[`Intl.NumberFormat tr notation=engineering, signDisplay=exceptZero, comp
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=engineering, signDisplay=exceptZero, compactDisplay=long 2`] = `"+%1E6–+%2E6"`;
+exports[`Intl.NumberFormat tr notation=engineering, signDisplay=exceptZero, compactDisplay=long 2`] = `"+%1E6–2E6"`;
 
 exports[`Intl.NumberFormat tr notation=engineering, signDisplay=exceptZero, compactDisplay=long 3`] = `
 [
@@ -1020,29 +996,17 @@ exports[`Intl.NumberFormat tr notation=engineering, signDisplay=exceptZero, comp
   {
     "result": "6",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "result": "7",
-    "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
-  },
-  {
-    "result": "8",
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "6",
@@ -1075,7 +1039,7 @@ exports[`Intl.NumberFormat tr notation=engineering, signDisplay=exceptZero, comp
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=engineering, signDisplay=exceptZero, compactDisplay=short 2`] = `"+%1E6–+%2E6"`;
+exports[`Intl.NumberFormat tr notation=engineering, signDisplay=exceptZero, compactDisplay=short 2`] = `"+%1E6–2E6"`;
 
 exports[`Intl.NumberFormat tr notation=engineering, signDisplay=exceptZero, compactDisplay=short 3`] = `
 [
@@ -1118,29 +1082,17 @@ exports[`Intl.NumberFormat tr notation=engineering, signDisplay=exceptZero, comp
   {
     "result": "6",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "result": "7",
-    "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
-  },
-  {
-    "result": "8",
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "6",
@@ -1337,7 +1289,7 @@ exports[`Intl.NumberFormat tr notation=scientific, signDisplay=always, compactDi
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=scientific, signDisplay=always, compactDisplay=long 2`] = `"+%1E6–+%2E6"`;
+exports[`Intl.NumberFormat tr notation=scientific, signDisplay=always, compactDisplay=long 2`] = `"+%1E6–2E6"`;
 
 exports[`Intl.NumberFormat tr notation=scientific, signDisplay=always, compactDisplay=long 3`] = `
 [
@@ -1380,29 +1332,17 @@ exports[`Intl.NumberFormat tr notation=scientific, signDisplay=always, compactDi
   {
     "result": "6",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "result": "7",
-    "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
-  },
-  {
-    "result": "8",
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "6",
@@ -1435,7 +1375,7 @@ exports[`Intl.NumberFormat tr notation=scientific, signDisplay=always, compactDi
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=scientific, signDisplay=always, compactDisplay=short 2`] = `"+%1E6–+%2E6"`;
+exports[`Intl.NumberFormat tr notation=scientific, signDisplay=always, compactDisplay=short 2`] = `"+%1E6–2E6"`;
 
 exports[`Intl.NumberFormat tr notation=scientific, signDisplay=always, compactDisplay=short 3`] = `
 [
@@ -1478,29 +1418,17 @@ exports[`Intl.NumberFormat tr notation=scientific, signDisplay=always, compactDi
   {
     "result": "6",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "result": "7",
-    "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
-  },
-  {
-    "result": "8",
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "6",
@@ -1697,7 +1625,7 @@ exports[`Intl.NumberFormat tr notation=scientific, signDisplay=exceptZero, compa
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=scientific, signDisplay=exceptZero, compactDisplay=long 2`] = `"+%1E6–+%2E6"`;
+exports[`Intl.NumberFormat tr notation=scientific, signDisplay=exceptZero, compactDisplay=long 2`] = `"+%1E6–2E6"`;
 
 exports[`Intl.NumberFormat tr notation=scientific, signDisplay=exceptZero, compactDisplay=long 3`] = `
 [
@@ -1740,29 +1668,17 @@ exports[`Intl.NumberFormat tr notation=scientific, signDisplay=exceptZero, compa
   {
     "result": "6",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "result": "7",
-    "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
-  },
-  {
-    "result": "8",
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "6",
@@ -1795,7 +1711,7 @@ exports[`Intl.NumberFormat tr notation=scientific, signDisplay=exceptZero, compa
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=scientific, signDisplay=exceptZero, compactDisplay=short 2`] = `"+%1E6–+%2E6"`;
+exports[`Intl.NumberFormat tr notation=scientific, signDisplay=exceptZero, compactDisplay=short 2`] = `"+%1E6–2E6"`;
 
 exports[`Intl.NumberFormat tr notation=scientific, signDisplay=exceptZero, compactDisplay=short 3`] = `
 [
@@ -1838,29 +1754,17 @@ exports[`Intl.NumberFormat tr notation=scientific, signDisplay=exceptZero, compa
   {
     "result": "6",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "result": "7",
-    "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
-  },
-  {
-    "result": "8",
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "E",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "6",
@@ -2065,7 +1969,7 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisp
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisplay=long 2`] = `"+%1.000.000–+%2.000.000"`;
+exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisplay=long 2`] = `"+%1.000.000–2.000.000"`;
 
 exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisplay=long 3`] = `
 [
@@ -2120,20 +2024,20 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisp
   {
     "result": "8",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
+    "type": "integer",
+    "value": "2",
   },
   {
     "result": "9",
     "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
+    "type": "group",
+    "value": ".",
   },
   {
     "result": "10",
     "source": "endRange",
     "type": "integer",
-    "value": "2",
+    "value": "000",
   },
   {
     "result": "11",
@@ -2143,18 +2047,6 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisp
   },
   {
     "result": "12",
-    "source": "endRange",
-    "type": "integer",
-    "value": "000",
-  },
-  {
-    "result": "13",
-    "source": "endRange",
-    "type": "group",
-    "value": ".",
-  },
-  {
-    "result": "14",
     "source": "endRange",
     "type": "integer",
     "value": "000",
@@ -2195,7 +2087,7 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisp
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisplay=short 2`] = `"+%1.000.000–+%2.000.000"`;
+exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisplay=short 2`] = `"+%1.000.000–2.000.000"`;
 
 exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisplay=short 3`] = `
 [
@@ -2250,20 +2142,20 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisp
   {
     "result": "8",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
+    "type": "integer",
+    "value": "2",
   },
   {
     "result": "9",
     "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
+    "type": "group",
+    "value": ".",
   },
   {
     "result": "10",
     "source": "endRange",
     "type": "integer",
-    "value": "2",
+    "value": "000",
   },
   {
     "result": "11",
@@ -2273,18 +2165,6 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=always, compactDisp
   },
   {
     "result": "12",
-    "source": "endRange",
-    "type": "integer",
-    "value": "000",
-  },
-  {
-    "result": "13",
-    "source": "endRange",
-    "type": "group",
-    "value": ".",
-  },
-  {
-    "result": "14",
     "source": "endRange",
     "type": "integer",
     "value": "000",
@@ -2553,7 +2433,7 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compact
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compactDisplay=long 2`] = `"+%1.000.000–+%2.000.000"`;
+exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compactDisplay=long 2`] = `"+%1.000.000–2.000.000"`;
 
 exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compactDisplay=long 3`] = `
 [
@@ -2608,20 +2488,20 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compact
   {
     "result": "8",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
+    "type": "integer",
+    "value": "2",
   },
   {
     "result": "9",
     "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
+    "type": "group",
+    "value": ".",
   },
   {
     "result": "10",
     "source": "endRange",
     "type": "integer",
-    "value": "2",
+    "value": "000",
   },
   {
     "result": "11",
@@ -2631,18 +2511,6 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compact
   },
   {
     "result": "12",
-    "source": "endRange",
-    "type": "integer",
-    "value": "000",
-  },
-  {
-    "result": "13",
-    "source": "endRange",
-    "type": "group",
-    "value": ".",
-  },
-  {
-    "result": "14",
     "source": "endRange",
     "type": "integer",
     "value": "000",
@@ -2683,7 +2551,7 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compact
 ]
 `;
 
-exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compactDisplay=short 2`] = `"+%1.000.000–+%2.000.000"`;
+exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compactDisplay=short 2`] = `"+%1.000.000–2.000.000"`;
 
 exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compactDisplay=short 3`] = `
 [
@@ -2738,20 +2606,20 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compact
   {
     "result": "8",
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
+    "type": "integer",
+    "value": "2",
   },
   {
     "result": "9",
     "source": "endRange",
-    "type": "percentSign",
-    "value": "%",
+    "type": "group",
+    "value": ".",
   },
   {
     "result": "10",
     "source": "endRange",
     "type": "integer",
-    "value": "2",
+    "value": "000",
   },
   {
     "result": "11",
@@ -2761,18 +2629,6 @@ exports[`Intl.NumberFormat tr notation=standard, signDisplay=exceptZero, compact
   },
   {
     "result": "12",
-    "source": "endRange",
-    "type": "integer",
-    "value": "000",
-  },
-  {
-    "result": "13",
-    "source": "endRange",
-    "type": "group",
-    "value": ".",
-  },
-  {
-    "result": "14",
     "source": "endRange",
     "type": "integer",
     "value": "000",

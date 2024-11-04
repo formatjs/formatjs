@@ -87,11 +87,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"+10 тисяч бітів–+20 тисяч бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"+10 тисяч–+20 тисяч бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"+10 тисяч градусів Цельсія–+20 тисяч градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"+10 тисяч–+20 тисяч градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"+10 тисяч галонів–+20 тисяч галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"+10 тисяч–+20 тисяч галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=long 7`] = `
 [
@@ -121,33 +121,33 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "9",
@@ -157,18 +157,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "10",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "11",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "12",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -204,33 +192,33 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "9",
@@ -240,18 +228,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "10",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "11",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "12",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -287,33 +263,33 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "9",
@@ -323,18 +299,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "10",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "11",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "12",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -429,11 +393,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"+10Е3 бітів–+20Е3 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"+10Е3–+20Е3 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"+10Е3 градусів Цельсія–+20Е3 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"+10Е3–+20Е3 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"+10Е3 галонів–+20Е3 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"+10Е3–+20Е3 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=long 7`] = `
 [
@@ -463,54 +427,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -546,54 +498,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -629,54 +569,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -771,11 +699,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"+1Е4 бітів–+2Е4 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"+1Е4–+2Е4 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"+1Е4 градусів Цельсія–+2Е4 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"+1Е4–+2Е4 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"+1Е4 галонів–+2Е4 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"+1Е4–+2Е4 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=long 7`] = `
 [
@@ -805,54 +733,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -888,54 +804,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -971,54 +875,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -1113,11 +1005,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"+10 000 бітів–+20 000 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"+10 000–+20 000 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"+10 000 градусів Цельсія–+20 000 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"+10 000–+20 000 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"+10 000 галонів–+20 000 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"+10 000–+20 000 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=long 7`] = `
 [
@@ -1147,54 +1039,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -1230,54 +1110,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -1313,54 +1181,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=always, signDisplay
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -1443,11 +1299,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=c
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"10 тисяч бітів–20 тисяч бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"10 тисяч–20 тисяч бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"10 тисяч градусів Цельсія–20 тисяч градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"10 тисяч–20 тисяч градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"10 тисяч галонів–20 тисяч галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"10 тисяч–20 тисяч галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=long 7`] = `
 [
@@ -1471,27 +1327,27 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=c
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "7",
@@ -1501,18 +1357,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=c
   },
   {
     "result": "8",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "9",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -1542,27 +1386,27 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=c
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "7",
@@ -1572,18 +1416,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=c
   },
   {
     "result": "8",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "9",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -1613,27 +1445,27 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=c
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "7",
@@ -1643,18 +1475,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=c
   },
   {
     "result": "8",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "9",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -1737,11 +1557,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=e
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"10Е3 бітів–20Е3 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"10Е3–20Е3 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"10Е3 градусів Цельсія–20Е3 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"10Е3–20Е3 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"10Е3 галонів–20Е3 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"10Е3–20Е3 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=long 7`] = `
 [
@@ -1765,48 +1585,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=e
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -1836,48 +1644,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=e
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -1907,48 +1703,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=e
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -2031,11 +1815,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=s
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"1Е4 бітів–2Е4 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"1Е4–2Е4 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"1Е4 градусів Цельсія–2Е4 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"1Е4–2Е4 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"1Е4 галонів–2Е4 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"1Е4–2Е4 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=long 7`] = `
 [
@@ -2059,48 +1843,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -2130,48 +1902,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -2201,48 +1961,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -2325,11 +2073,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=s
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"10 000 бітів–20 000 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"10 000–20 000 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"10 000 градусів Цельсія–20 000 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"10 000–20 000 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"10 000 галонів–20 000 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"10 000–20 000 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=long 7`] = `
 [
@@ -2353,48 +2101,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -2424,48 +2160,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -2495,48 +2219,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=auto, signDisplay=s
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -2631,11 +2343,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"+10 тисяч бітів–+20 тисяч бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"+10 тисяч–+20 тисяч бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"+10 тисяч градусів Цельсія–+20 тисяч градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"+10 тисяч–+20 тисяч градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"+10 тисяч галонів–+20 тисяч галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"+10 тисяч–+20 тисяч галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=long 7`] = `
 [
@@ -2665,33 +2377,33 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "9",
@@ -2701,18 +2413,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "10",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "11",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "12",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -2748,33 +2448,33 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "9",
@@ -2784,18 +2484,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "10",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "11",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "12",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -2831,33 +2519,33 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "9",
@@ -2867,18 +2555,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "10",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "11",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "12",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -2973,11 +2649,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"+10Е3 бітів–+20Е3 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"+10Е3–+20Е3 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"+10Е3 градусів Цельсія–+20Е3 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"+10Е3–+20Е3 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"+10Е3 галонів–+20Е3 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"+10Е3–+20Е3 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=long 7`] = `
 [
@@ -3007,54 +2683,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -3090,54 +2754,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -3173,54 +2825,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -3315,11 +2955,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"+1Е4 бітів–+2Е4 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"+1Е4–+2Е4 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"+1Е4 градусів Цельсія–+2Е4 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"+1Е4–+2Е4 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"+1Е4 галонів–+2Е4 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"+1Е4–+2Е4 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=long 7`] = `
 [
@@ -3349,54 +2989,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -3432,54 +3060,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -3515,54 +3131,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -3657,11 +3261,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"+10 000 бітів–+20 000 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"+10 000–+20 000 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"+10 000 градусів Цельсія–+20 000 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"+10 000–+20 000 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"+10 000 галонів–+20 000 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"+10 000–+20 000 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=long 7`] = `
 [
@@ -3691,54 +3295,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -3774,54 +3366,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -3857,54 +3437,42 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=exceptZero, signDis
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -3987,11 +3555,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"10 тисяч бітів–20 тисяч бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 4`] = `"10 тисяч–20 тисяч бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"10 тисяч градусів Цельсія–20 тисяч градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 5`] = `"10 тисяч–20 тисяч градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"10 тисяч галонів–20 тисяч галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 6`] = `"10 тисяч–20 тисяч галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=long 7`] = `
 [
@@ -4015,27 +3583,27 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "7",
@@ -4045,18 +3613,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "8",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "9",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -4086,27 +3642,27 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "7",
@@ -4116,18 +3672,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "8",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "9",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -4157,27 +3701,27 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "7",
@@ -4187,18 +3731,6 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "8",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "9",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -4281,11 +3813,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"10Е3 бітів–20Е3 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 4`] = `"10Е3–20Е3 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"10Е3 градусів Цельсія–20Е3 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 5`] = `"10Е3–20Е3 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"10Е3 галонів–20Е3 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 6`] = `"10Е3–20Е3 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=long 7`] = `
 [
@@ -4309,48 +3841,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -4380,48 +3900,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -4451,48 +3959,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -4575,11 +4071,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"1Е4 бітів–2Е4 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 4`] = `"1Е4–2Е4 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"1Е4 градусів Цельсія–2Е4 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 5`] = `"1Е4–2Е4 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"1Е4 галонів–2Е4 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 6`] = `"1Е4–2Е4 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=long 7`] = `
 [
@@ -4603,48 +4099,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -4674,48 +4158,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -4745,48 +4217,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -4869,11 +4329,11 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"10 000 бітів–20 000 бітів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 4`] = `"10 000–20 000 бітів"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"10 000 градусів Цельсія–20 000 градусів Цельсія"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 5`] = `"10 000–20 000 градусів Цельсія"`;
 
-exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"10 000 галонів–20 000 галонів"`;
+exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 6`] = `"10 000–20 000 галонів"`;
 
 exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=long 7`] = `
 [
@@ -4897,48 +4357,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "бітів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "бітів",
@@ -4968,48 +4416,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "градусів Цельсія",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "градусів Цельсія",
@@ -5039,48 +4475,36 @@ exports[`Intl.NumberFormat uk NumberFormat long, unitDisplay=never, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "галонів",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "галонів",
@@ -5165,9 +4589,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"+10 тисячб–+20 тисячб"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"+10 тисяч°C–+20 тисяч°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"+10 тисяч–+20 тисяч°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"+10 тисячгал.–+20 тисячгал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"+10 тисяч–+20 тисячгал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -5268,42 +4692,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -5339,42 +4757,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -5459,9 +4871,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"+10Е3б–+20Е3б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"+10Е3°C–+20Е3°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"+10Е3–+20Е3°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"+10Е3гал.–+20Е3гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"+10Е3–+20Е3гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -5562,42 +4974,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -5633,42 +5039,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -5753,9 +5153,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"+1Е4б–+2Е4б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"+1Е4°C–+2Е4°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"+1Е4–+2Е4°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"+1Е4гал.–+2Е4гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"+1Е4–+2Е4гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -5856,42 +5256,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -5927,42 +5321,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -6047,9 +5435,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"+10 000б–+20 000б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"+10 000°C–+20 000°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"+10 000–+20 000°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"+10 000гал.–+20 000гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"+10 000–+20 000гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -6150,42 +5538,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -6221,42 +5603,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=always, signDispl
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -6329,9 +5705,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"10 тисячб–20 тисячб"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"10 тисяч°C–20 тисяч°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"10 тисяч–20 тисяч°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"10 тисячгал.–20 тисячгал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"10 тисяч–20 тисячгал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -6414,36 +5790,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -6473,36 +5843,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -6575,9 +5939,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"10Е3б–20Е3б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"10Е3°C–20Е3°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"10Е3–20Е3°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"10Е3гал.–20Е3гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"10Е3–20Е3гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -6660,36 +6024,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -6719,36 +6077,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -6821,9 +6173,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"1Е4б–2Е4б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"1Е4°C–2Е4°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"1Е4–2Е4°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"1Е4гал.–2Е4гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"1Е4–2Е4гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -6906,36 +6258,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -6965,36 +6311,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -7067,9 +6407,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"10 000б–20 000б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"10 000°C–20 000°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"10 000–20 000°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"10 000гал.–20 000гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"10 000–20 000гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -7152,36 +6492,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -7211,36 +6545,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=auto, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -7325,9 +6653,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"+10 тисячб–+20 тисячб"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"+10 тисяч°C–+20 тисяч°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"+10 тисяч–+20 тисяч°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"+10 тисячгал.–+20 тисячгал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"+10 тисяч–+20 тисячгал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -7428,42 +6756,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -7499,42 +6821,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -7619,9 +6935,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"+10Е3б–+20Е3б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"+10Е3°C–+20Е3°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"+10Е3–+20Е3°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"+10Е3гал.–+20Е3гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"+10Е3–+20Е3гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -7722,42 +7038,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -7793,42 +7103,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -7913,9 +7217,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"+1Е4б–+2Е4б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"+1Е4°C–+2Е4°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"+1Е4–+2Е4°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"+1Е4гал.–+2Е4гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"+1Е4–+2Е4гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -8016,42 +7320,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -8087,42 +7385,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -8207,9 +7499,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"+10 000б–+20 000б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"+10 000°C–+20 000°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"+10 000–+20 000°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"+10 000гал.–+20 000гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"+10 000–+20 000гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -8310,42 +7602,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -8381,42 +7667,36 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=exceptZero, signD
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "9",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "10",
+    "result": "9",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -8489,9 +7769,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 4`] = `"10 тисячб–20 тисячб"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"10 тисяч°C–20 тисяч°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 5`] = `"10 тисяч–20 тисяч°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"10 тисячгал.–20 тисячгал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 6`] = `"10 тисяч–20 тисячгал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -8574,36 +7854,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -8633,36 +7907,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -8735,9 +8003,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 4`] = `"10Е3б–20Е3б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"10Е3°C–20Е3°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 5`] = `"10Е3–20Е3°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"10Е3гал.–20Е3гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 6`] = `"10Е3–20Е3гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -8820,36 +8088,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -8879,36 +8141,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -8981,9 +8237,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 4`] = `"1Е4б–2Е4б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"1Е4°C–2Е4°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 5`] = `"1Е4–2Е4°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"1Е4гал.–2Е4гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 6`] = `"1Е4–2Е4гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -9066,36 +8322,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -9125,36 +8375,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -9227,9 +8471,9 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 4`] = `"10 000б–20 000б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"10 000°C–20 000°C"`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 5`] = `"10 000–20 000°C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"10 000гал.–20 000гал."`;
+exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 6`] = `"10 000–20 000гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=narrow 7`] = `
 [
@@ -9312,36 +8556,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -9371,36 +8609,30 @@ exports[`Intl.NumberFormat uk NumberFormat narrow, unitDisplay=never, signDispla
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "4",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "5",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "6",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "7",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "8",
+    "result": "7",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -9495,11 +8727,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"+10 тисяч б–+20 тисяч б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"+10 тисяч–+20 тисяч б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"+10 тисяч °C–+20 тисяч °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"+10 тисяч–+20 тисяч °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"+10 тисяч гал.–+20 тисяч гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"+10 тисяч–+20 тисяч гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=compact, notation=long, compactDisplay=short 7`] = `
 [
@@ -9529,33 +8761,33 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "9",
@@ -9565,18 +8797,6 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "10",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "11",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "12",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -9612,54 +8832,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -9695,33 +8903,33 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "9",
@@ -9731,18 +8939,6 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "10",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "11",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "12",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -9837,11 +9033,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"+10Е3 б–+20Е3 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"+10Е3–+20Е3 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"+10Е3 °C–+20Е3 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"+10Е3–+20Е3 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"+10Е3 гал.–+20Е3 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"+10Е3–+20Е3 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=engineering, notation=long, compactDisplay=short 7`] = `
 [
@@ -9871,54 +9067,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -9954,54 +9138,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -10037,54 +9209,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -10179,11 +9339,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"+1Е4 б–+2Е4 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"+1Е4–+2Е4 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"+1Е4 °C–+2Е4 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"+1Е4–+2Е4 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"+1Е4 гал.–+2Е4 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"+1Е4–+2Е4 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=scientific, notation=long, compactDisplay=short 7`] = `
 [
@@ -10213,54 +9373,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -10296,54 +9444,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -10379,54 +9515,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -10521,11 +9645,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"+10 000 б–+20 000 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"+10 000–+20 000 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"+10 000 °C–+20 000 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"+10 000–+20 000 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"+10 000 гал.–+20 000 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"+10 000–+20 000 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDisplay=standard, notation=long, compactDisplay=short 7`] = `
 [
@@ -10555,54 +9679,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -10638,54 +9750,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -10721,54 +9821,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=always, signDispla
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -10851,11 +9939,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"10 тисяч б–20 тисяч б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"10 тисяч–20 тисяч б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"10 тисяч °C–20 тисяч °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"10 тисяч–20 тисяч °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"10 тисяч гал.–20 тисяч гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"10 тисяч–20 тисяч гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=compact, notation=long, compactDisplay=short 7`] = `
 [
@@ -10879,27 +9967,27 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "7",
@@ -10909,18 +9997,6 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "8",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "9",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -10950,48 +10026,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -11021,27 +10085,27 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "7",
@@ -11051,18 +10115,6 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "8",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "9",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -11145,11 +10197,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"10Е3 б–20Е3 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"10Е3–20Е3 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"10Е3 °C–20Е3 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"10Е3–20Е3 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"10Е3 гал.–20Е3 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"10Е3–20Е3 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=engineering, notation=long, compactDisplay=short 7`] = `
 [
@@ -11173,48 +10225,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -11244,48 +10284,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -11315,48 +10343,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -11439,11 +10455,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"1Е4 б–2Е4 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"1Е4–2Е4 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"1Е4 °C–2Е4 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"1Е4–2Е4 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"1Е4 гал.–2Е4 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"1Е4–2Е4 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=scientific, notation=long, compactDisplay=short 7`] = `
 [
@@ -11467,48 +10483,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -11538,48 +10542,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -11609,48 +10601,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -11733,11 +10713,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"10 000 б–20 000 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"10 000–20 000 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"10 000 °C–20 000 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"10 000–20 000 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"10 000 гал.–20 000 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"10 000–20 000 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=standard, notation=long, compactDisplay=short 7`] = `
 [
@@ -11761,48 +10741,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -11832,48 +10800,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -11903,48 +10859,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=auto, signDisplay=
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -12039,11 +10983,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"+10 тисяч б–+20 тисяч б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"+10 тисяч–+20 тисяч б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"+10 тисяч °C–+20 тисяч °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"+10 тисяч–+20 тисяч °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"+10 тисяч гал.–+20 тисяч гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"+10 тисяч–+20 тисяч гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=compact, notation=long, compactDisplay=short 7`] = `
 [
@@ -12073,33 +11017,33 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "9",
@@ -12109,18 +11053,6 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "10",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "11",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "12",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -12156,54 +11088,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -12239,33 +11159,33 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "7",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "8",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "9",
@@ -12275,18 +11195,6 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "10",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "11",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "12",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -12381,11 +11289,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"+10Е3 б–+20Е3 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"+10Е3–+20Е3 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"+10Е3 °C–+20Е3 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"+10Е3–+20Е3 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"+10Е3 гал.–+20Е3 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"+10Е3–+20Е3 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=engineering, notation=long, compactDisplay=short 7`] = `
 [
@@ -12415,54 +11323,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -12498,54 +11394,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -12581,54 +11465,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -12723,11 +11595,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"+1Е4 б–+2Е4 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"+1Е4–+2Е4 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"+1Е4 °C–+2Е4 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"+1Е4–+2Е4 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"+1Е4 гал.–+2Е4 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"+1Е4–+2Е4 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=scientific, notation=long, compactDisplay=short 7`] = `
 [
@@ -12757,54 +11629,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -12840,54 +11700,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -12923,54 +11771,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -13065,11 +11901,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"+10 000 б–+20 000 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"+10 000–+20 000 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"+10 000 °C–+20 000 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"+10 000–+20 000 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"+10 000 гал.–+20 000 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"+10 000–+20 000 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDisplay=standard, notation=long, compactDisplay=short 7`] = `
 [
@@ -13099,54 +11935,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -13182,54 +12006,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -13265,54 +12077,42 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=exceptZero, signDi
   },
   {
     "result": "4",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "5",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "6",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "plusSign",
     "value": "+",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "11",
+    "result": "9",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "12",
+    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -13395,11 +12195,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"10 тисяч б–20 тисяч б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 4`] = `"10 тисяч–20 тисяч б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"10 тисяч °C–20 тисяч °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 5`] = `"10 тисяч–20 тисяч °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"10 тисяч гал.–20 тисяч гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 6`] = `"10 тисяч–20 тисяч гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=compact, notation=long, compactDisplay=short 7`] = `
 [
@@ -13423,27 +12223,27 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "7",
@@ -13453,18 +12253,6 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "8",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "9",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -13494,48 +12282,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "compact",
     "value": "тисяч",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -13565,27 +12341,27 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
+  },
+  {
+    "result": "5",
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "result": "6",
+    "source": "endRange",
+    "type": "compact",
+    "value": "тисяч",
   },
   {
     "result": "7",
@@ -13595,18 +12371,6 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "8",
-    "source": "endRange",
-    "type": "compact",
-    "value": "тисяч",
-  },
-  {
-    "result": "9",
-    "source": "endRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "10",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -13689,11 +12453,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"10Е3 б–20Е3 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 4`] = `"10Е3–20Е3 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"10Е3 °C–20Е3 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 5`] = `"10Е3–20Е3 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"10Е3 гал.–20Е3 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 6`] = `"10Е3–20Е3 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=engineering, notation=long, compactDisplay=short 7`] = `
 [
@@ -13717,48 +12481,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -13788,48 +12540,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -13859,48 +12599,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "3",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -13983,11 +12711,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"1Е4 б–2Е4 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 4`] = `"1Е4–2Е4 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"1Е4 °C–2Е4 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 5`] = `"1Е4–2Е4 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"1Е4 гал.–2Е4 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 6`] = `"1Е4–2Е4 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=scientific, notation=long, compactDisplay=short 7`] = `
 [
@@ -14011,48 +12739,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -14082,48 +12798,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -14153,48 +12857,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "2",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "exponentSeparator",
     "value": "Е",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "exponentInteger",
     "value": "4",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",
@@ -14277,11 +12969,11 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"10 000 б–20 000 б"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 4`] = `"10 000–20 000 б"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"10 000 °C–20 000 °C"`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 5`] = `"10 000–20 000 °C"`;
 
-exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"10 000 гал.–20 000 гал."`;
+exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 6`] = `"10 000–20 000 гал."`;
 
 exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay=standard, notation=long, compactDisplay=short 7`] = `
 [
@@ -14305,48 +12997,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "б",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "б",
@@ -14376,48 +13056,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "°C",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "°C",
@@ -14447,48 +13115,36 @@ exports[`Intl.NumberFormat uk NumberFormat short, unitDisplay=never, signDisplay
   },
   {
     "result": "3",
-    "source": "startRange",
-    "type": "literal",
-    "value": " ",
-  },
-  {
-    "result": "4",
-    "source": "startRange",
-    "type": "unit",
-    "value": "гал.",
-  },
-  {
-    "result": "5",
     "source": "shared",
     "type": "literal",
     "value": "–",
   },
   {
-    "result": "6",
+    "result": "4",
     "source": "endRange",
     "type": "integer",
     "value": "20",
   },
   {
-    "result": "7",
+    "result": "5",
     "source": "endRange",
     "type": "group",
     "value": " ",
   },
   {
-    "result": "8",
+    "result": "6",
     "source": "endRange",
     "type": "integer",
     "value": "000",
   },
   {
-    "result": "9",
+    "result": "7",
     "source": "endRange",
     "type": "literal",
     "value": " ",
   },
   {
-    "result": "10",
+    "result": "8",
     "source": "endRange",
     "type": "unit",
     "value": "гал.",

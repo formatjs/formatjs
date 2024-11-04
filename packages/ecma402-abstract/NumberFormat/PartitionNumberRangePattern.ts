@@ -1,7 +1,7 @@
 import {NumberFormatInternal, NumberFormatPart} from '../types/number'
-import {PartitionNumberPattern} from './PartitionNumberPattern'
 import {CollapseNumberRange} from './CollapseNumberRange'
 import {FormatApproximately} from './FormatApproximately'
+import {PartitionNumberPattern} from './PartitionNumberPattern'
 
 /**
  * https://tc39.es/ecma402/#sec-partitionnumberrangepattern
@@ -46,5 +46,6 @@ export function PartitionNumberRangePattern(
 
   result = result.concat(yResult)
 
-  return CollapseNumberRange(result)
+  return CollapseNumberRange(numberFormat, result, {getInternalSlots})
+  // TODO: Needs to implement Range Pattern Processing https://unicode-org.github.io/cldr/ldml/tr35-numbers.html#range-pattern-processing
 }
