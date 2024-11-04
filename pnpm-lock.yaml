@@ -1016,6 +1016,9 @@ importers:
 
   packages/utils:
     dependencies:
+      '@formatjs/fast-memoize':
+        specifier: workspace:*
+        version: link:../fast-memoize
       tslib:
         specifier: '2'
         version: 2.8.1
