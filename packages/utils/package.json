@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/utils",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Collection of useful intl utilities",
   "main": "index.js",
   "module": "lib/index.js",
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
-    "tslib": "2",
-    "@formatjs/fast-memoize": "workspace:*"
+    "@formatjs/fast-memoize": "workspace:*",
+    "tslib": "2"
   }
 }

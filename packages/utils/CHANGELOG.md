@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.7.0...@formatjs/utils@1.8.0) (2024-11-04)
+
+### Features
+
+* **@formatjs/utils:** add ability to return localized default timezone ([a53d0a2](https://github.com/formatjs/formatjs/commit/a53d0a2e4112816d453bb65eb2500b7a72143011)) - by @longlho
+
 # [1.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.6.3...@formatjs/utils@1.7.0) (2024-11-04)
 
 ### Features
