@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.2.2...@formatjs/ecma402-abstract@2.2.3) (2024-11-04)
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** implement CollapseNumberRange using LDML, fix [#4521](https://github.com/formatjs/formatjs/issues/4521) ([fbe4128](https://github.com/formatjs/formatjs/commit/fbe41286cf7a128098657c1c8d313915332319b5)) - by @longlho
+
 ## [2.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.2.1...@formatjs/ecma402-abstract@2.2.2) (2024-11-02)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract
