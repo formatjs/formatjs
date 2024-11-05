@@ -417,6 +417,21 @@ exports[`ignore -> stdout TS 1`] = `
 }
 `;
 
+exports[`import meta 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`import meta 2`] = `
+{
+  "greeting": {
+    "defaultMessage": "Hello, {name}!",
+  },
+}
+`;
+
 exports[`non duplicated descriptors does not throw 1`] = `
 {
   "stderr": "",

@@ -252,3 +252,19 @@ test('TypeScript 4.7 syntax', async () => {
     await readJSON(join(ARTIFACT_PATH, 'typescript/ts47.json'))
   ).toMatchSnapshot()
 })
+
+// https://github.com/formatjs/formatjs/issues/4489
+test('import meta', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} extract --throws '${join(
+        __dirname,
+        'typescript/importMeta.mts'
+      )}' --out-file ${ARTIFACT_PATH}/typescript/importMeta.json`
+    )
+  ).resolves.toMatchSnapshot()
+
+  expect(
+    await readJSON(join(ARTIFACT_PATH, 'typescript/importMeta.json'))
+  ).toMatchSnapshot()
+})
