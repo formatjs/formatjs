@@ -244,7 +244,7 @@ importers:
         version: 12.1.0
       content-tag:
         specifier: ^2.0.2
-        version: 2.0.2
+        version: 2.0.3
       core-js:
         specifier: ^3.38.1
         version: 3.39.0
@@ -4189,6 +4189,9 @@ packages:
 
   content-tag@2.0.2:
     resolution: {integrity: sha512-qHRyTp02dgzRK2tsCFxZ1H289bZOuSLNpupr6prvnSFq4SFPmNlBKbbE5PCMb+8+Z1a1z+yCVtXvQIGUCCa3lQ==}
+
+  content-tag@2.0.3:
+    resolution: {integrity: sha512-htLIdtfhhKW2fHlFLnZH7GFzHSdSpHhDLrWVswkNiiPMZ5uXq5JfrGboQKFhNQuAAFF8VNB2EYUj3MsdJrKKpg==}
 
   content-type@1.0.5:
     resolution: {integrity: sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==}
@@ -14224,6 +14227,8 @@ snapshots:
       safe-buffer: 5.2.1
 
   content-tag@2.0.2: {}
+
+  content-tag@2.0.3: {}
 
   content-type@1.0.5: {}
 
