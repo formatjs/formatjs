@@ -422,9 +422,7 @@ function translateCharacterOrder(order: CharacterOrder | undefined): string {
 }
 
 function characterDirectionOfLocale(loc: Locale): string {
-  const locInternalSlots = getInternalSlots(loc)
-
-  const locale = locInternalSlots.locale as keyof typeof characterOrders
+  const locale = loc.minimize().toString() as keyof typeof characterOrders
   return translateCharacterOrder(characterOrders[locale])
 }
 

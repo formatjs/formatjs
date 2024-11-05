@@ -115,3 +115,12 @@ test('getWeekInfo', function () {
     minimalDays: 1,
   })
 })
+
+test('GH #4575', function () {
+  expect(new Locale('ar-sa').getTextInfo()).toEqual({
+    direction: 'rtl',
+  })
+  expect(new Locale('ar-sa').maximize().getTextInfo()).toEqual({
+    direction: 'rtl',
+  })
+})
