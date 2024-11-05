@@ -211,6 +211,7 @@ multirun(
 
 CONFIG_FILES = [
     "jest.config.js",
+    "jest-no-transpile.config.js",
     "package.json",
     "tsconfig.json",
 ]

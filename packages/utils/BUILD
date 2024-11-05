@@ -3,7 +3,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
+load("//tools:jest.bzl", "jest_test_v2")
 
 npm_link_all_packages()
 
@@ -53,13 +53,14 @@ package_json_test(
     deps = SRC_DEPS,
 )
 
-jest_test(
+jest_test_v2(
     name = "unit_test",
-    data = [":srcs"] + SRC_DEPS + glob([
+    srcs = [":dist"] + glob([
         "tests/*.ts*",
         "tests/fixtures/*.ts*",
     ]),
     snapshots = glob(["tests/__snapshots__/*.snap"]),
+    deps = SRC_DEPS,
 )
 
 generate_src_file(
