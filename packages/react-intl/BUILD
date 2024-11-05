@@ -4,7 +4,7 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
+load("//tools:jest.bzl", "jest_test_v2")
 
 npm_link_all_packages()
 
@@ -51,8 +51,8 @@ TEST_DEPS = SRC_DEPS + [
     ":node_modules/@formatjs/intl-relativetimeformat",
     "//:node_modules/@testing-library/jest-dom",
     "//:node_modules/@testing-library/react",
+    "//:node_modules/@types/aria-query",
     "//:node_modules/@types/node",
-    "//:node_modules/cjs-module-lexer",
     "//:node_modules/jest-environment-jsdom",
     "//:node_modules/react-dom",
     "//:node_modules/typescript",
@@ -84,20 +84,15 @@ genrule(
     cmd = "cat $< | sed -E 's/__require\\(\"react\"\\)/window.React/g' > $@",
 )
 
-jest_test(
+jest_test_v2(
     name = "unit_test",
-    data = [":srcs"] + TESTS + TEST_DEPS + ["tests/setup.js"],
+    srcs = [
+        ":dist",
+        ":tests_setup",
+    ] + TESTS,
     jest_config = "jest.config.js",
     snapshots = glob(["tests/unit/components/__snapshots__/*"]),
-)
-
-jest_test(
-    name = "functional_test",
-    data = TEST_DEPS + glob(["tests/functional/**/*.ts*"]) + [
-        "tests/setup.js",
-        ":dist",
-    ],
-    jest_config = "jest.config.js",
+    deps = TEST_DEPS,
 )
 
 write_source_files(
@@ -113,4 +108,9 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+copy_to_bin(
+    name = "tests_setup",
+    srcs = ["tests/setup.js"],
 )

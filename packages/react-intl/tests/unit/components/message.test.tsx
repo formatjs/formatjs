@@ -1,11 +1,11 @@
+import {render} from '@testing-library/react'
 import * as React from 'react'
+import {IntlShape} from '../../..'
+import {createIntl} from '../../../src/components/createIntl'
 import FormattedMessage from '../../../src/components/message'
 import IntlProvider from '../../../src/components/provider'
-import {createIntl} from '../../../src/components/createIntl'
-import {mountFormattedComponentWithProvider} from '../testUtils'
-import {IntlShape} from '../../../'
-import {render} from '@testing-library/react'
 import type {IntlConfig} from '../../../src/types'
+import {mountFormattedComponentWithProvider} from '../testUtils'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage)
 

@@ -1,10 +1,10 @@
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {IntlShape} from '@formatjs/intl'
+import {render} from '@testing-library/react'
 import * as React from 'react'
-import {FormattedNumber, FormattedNumberParts} from '../../../'
+import {FormattedNumber, FormattedNumberParts} from '../../..'
 import {createIntl} from '../../../src/components/createIntl'
 import {mountFormattedComponentWithProvider} from '../testUtils'
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
-import {render} from '@testing-library/react'
-import {IntlShape} from '@formatjs/intl'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedNumber)
 const mountPartsWithProvider =

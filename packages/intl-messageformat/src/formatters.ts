@@ -1,5 +1,6 @@
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {
+  ExtendedNumberFormatOptions,
   isArgumentElement,
   isDateElement,
   isDateTimeSkeleton,
@@ -9,17 +10,16 @@ import {
   isPluralElement,
   isPoundElement,
   isSelectElement,
+  isTagElement,
   isTimeElement,
   MessageFormatElement,
-  isTagElement,
-  ExtendedNumberFormatOptions,
 } from '@formatjs/icu-messageformat-parser'
 import {
-  MissingValueError,
-  InvalidValueError,
   ErrorCode,
   FormatError,
+  InvalidValueError,
   InvalidValueTypeError,
+  MissingValueError,
 } from './error'
 
 declare global {

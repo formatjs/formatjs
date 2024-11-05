@@ -1,8 +1,8 @@
-import * as React from 'react'
-import IntlProvider from '../../../src/components/provider'
-import withIntl from '../../../src/components/injectIntl'
 import {render} from '@testing-library/react'
-import {FormattedDate, FormattedMessage} from '../../../'
+import * as React from 'react'
+import {FormattedDate, FormattedMessage} from '../../..'
+import withIntl from '../../../src/components/injectIntl'
+import IntlProvider from '../../../src/components/provider'
 import type {IntlConfig} from '../../../src/types'
 
 describe('<IntlProvider>', () => {

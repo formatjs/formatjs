@@ -1,7 +1,6 @@
 module.exports = {
   testEnvironment: 'jsdom',
-  coverageReporters: ['lcov', 'text', 'text-summary', 'html'],
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/setup.js'],
   coverageThreshold: {
     global: {
       branches: 85,

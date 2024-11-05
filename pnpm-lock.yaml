@@ -83,6 +83,9 @@ importers:
       '@glimmer/validator':
         specifier: ^0.92.3
         version: 0.92.3
+      '@jest/globals':
+        specifier: ^29.7.0
+        version: 29.7.0
       '@jest/transform':
         specifier: ^29.7.0
         version: 29.7.0
@@ -113,6 +116,9 @@ importers:
       '@testing-library/react':
         specifier: ^16.0.1
         version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/aria-query':
+        specifier: 5.0.4
+        version: 5.0.4
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
@@ -206,9 +212,6 @@ importers:
       chokidar:
         specifier: ^4.0.1
         version: 4.0.1
-      cjs-module-lexer:
-        specifier: ^1.4.1
-        version: 1.4.1
       cldr-bcp47:
         specifier: ^46.0.0
         version: 46.0.0
@@ -944,6 +947,12 @@ importers:
       tslib:
         specifier: ^2.7.0
         version: 2.8.1
+
+  packages/react-intl/integration-tests:
+    dependencies:
+      react-intl:
+        specifier: workspace:*
+        version: link:..
 
   packages/swc-plugin:
     dependencies:

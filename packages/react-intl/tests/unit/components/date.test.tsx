@@ -1,9 +1,8 @@
-import * as React from 'react'
-import {FormattedDate, FormattedDateParts} from '../../../'
-import {mountFormattedComponentWithProvider} from '../testUtils'
-import {createIntl} from '../../../src/components/createIntl'
-import {IntlShape} from '../../../'
 import {render} from '@testing-library/react'
+import * as React from 'react'
+import {FormattedDate, FormattedDateParts, IntlShape} from '../../..'
+import {createIntl} from '../../../src/components/createIntl'
+import {mountFormattedComponentWithProvider} from '../testUtils'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedDate)
 const mountPartsWithProvider =

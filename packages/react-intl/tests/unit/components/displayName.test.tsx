@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import {FormattedDisplayName} from '../../../'
-import {mountFormattedComponentWithProvider} from '../testUtils'
 import {render} from '@testing-library/react'
+import {FormattedDisplayName} from '../../..'
+import {mountFormattedComponentWithProvider} from '../testUtils'
 const mountWithProvider =
   mountFormattedComponentWithProvider(FormattedDisplayName)
 

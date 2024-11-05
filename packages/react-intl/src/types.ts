@@ -3,12 +3,18 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import * as React from 'react'
 import {
   ResolvedIntlConfig as CoreResolvedIntlConfig,
-  IntlFormatters,
   Formatters,
+  IntlFormatters,
+  MessageDescriptor,
 } from '@formatjs/intl'
+import {
+  FormatXMLElementFn,
+  Options as IntlMessageFormatOptions,
+  PrimitiveType,
+} from 'intl-messageformat'
+import * as React from 'react'
 import {DEFAULT_INTL_CONFIG} from './utils'
 export type IntlConfig = Omit<
   ResolvedIntlConfig,
@@ -25,5 +31,23 @@ export interface ResolvedIntlConfig
 export interface IntlShape
   extends ResolvedIntlConfig,
     IntlFormatters<React.ReactNode> {
+  formatMessage(
+    this: void,
+    descriptor: MessageDescriptor,
+    values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
+    opts?: IntlMessageFormatOptions
+  ): string
+  formatMessage(
+    this: void,
+    descriptor: MessageDescriptor,
+    values?: Record<
+      string,
+      | React.ReactNode
+      | PrimitiveType
+      | FormatXMLElementFn<string, React.ReactNode>
+    >,
+    opts?: IntlMessageFormatOptions
+  ): Array<React.ReactNode>
+
   formatters: Formatters
 }

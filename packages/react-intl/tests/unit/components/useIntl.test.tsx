@@ -1,6 +1,6 @@
-import * as React from 'react'
 import {render} from '@testing-library/react'
-import {IntlProvider} from '../../../'
+import * as React from 'react'
+import {IntlProvider} from '../../..'
 import useIntl from '../../../src/components/useIntl'
 
 const FunctionComponent = ({spy}: {spy?: Function}) => {

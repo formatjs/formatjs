@@ -1,9 +1,4 @@
-import * as React from 'react'
 import * as ReactIntl from '../..'
-import * as ts from 'typescript'
-import fs from 'fs'
-import lexer from 'cjs-module-lexer'
-import path from 'path'
 
 describe('react-intl', () => {
   describe('exports', () => {
@@ -67,66 +62,6 @@ describe('react-intl', () => {
       it('exports `FormattedDisplayNames`', () => {
         expect(typeof ReactIntl.FormattedDisplayName).toBe('function')
       })
-    })
-  })
-  describe('static analysis of named exports ', () => {
-    // Parse dist file for statically analyzable named exports
-    const filePath = path.resolve(__dirname, '..', '..', 'index.ts')
-    const source = fs.readFileSync(filePath, 'utf8')
-    const {outputText} = ts.transpileModule(source, {
-      compilerOptions: {
-        esModuleInterop: true,
-        module: ts.ModuleKind.CommonJS,
-      },
-    })
-    const parsed = lexer.parse(outputText)
-    const keys = Object.keys(ReactIntl)
-
-    it.each(keys)('has named export "%s"', key => {
-      expect(parsed.exports).toContain(key)
-    })
-  })
-
-  describe('types', () => {
-    // https://github.com/formatjs/formatjs/issues/3856
-    it('works with react18 typing', () => {
-      function Test() {
-        const messages = ReactIntl.defineMessages({
-          greeting: {
-            id: 'app.greeting',
-            defaultMessage: 'Hello, <bold>{name}</bold>!',
-            description: 'Greeting to welcome the user to the app',
-          },
-        })
-
-        const intl = ReactIntl.useIntl()
-
-        return intl.formatMessage(messages.greeting, {
-          name: 'Eric',
-          bold: str => <b>{str}</b>,
-        })
-      }
-
-      // This test only need to pass the type checking.
-      ;<Test />
-    })
-
-    it('injectIntl works with union prop types', () => {
-      type TestProps = {intl: ReactIntl.IntlShape; base: string} & (
-        | {type: 'a'; text: string}
-        | {type: 'b'; value: number}
-      )
-
-      class _Test extends React.Component<TestProps> {
-        render() {
-          return null
-        }
-      }
-
-      const Test = ReactIntl.injectIntl(_Test)
-
-      // This test only need to pass the type checking.
-      ;<Test base="base" type="a" text="text" />
     })
   })
 })
