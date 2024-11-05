@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@4.2.3...@formatjs/intl-locale@4.2.4) (2024-11-05)
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** lookup by minimized locale for char orders, fix [#4575](https://github.com/formatjs/formatjs/issues/4575) ([cb20764](https://github.com/formatjs/formatjs/commit/cb207647ba3879c1a24492a75c18dad2ea0bec71)) - by @longlho
+
 ## [4.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@4.2.2...@formatjs/intl-locale@4.2.3) (2024-11-04)
 
 **Note:** Version bump only for package @formatjs/intl-locale

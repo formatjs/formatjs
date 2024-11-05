@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.7.6](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.7.5...intl-messageformat@10.7.6) (2024-11-05)
+
+### Bug Fixes
+
+* **react-intl:** fix type inference and overload for formatMessage, fix [#4538](https://github.com/formatjs/formatjs/issues/4538) ([5073395](https://github.com/formatjs/formatjs/commit/5073395a49628b273dc99ff750a564ee881c751b)) - by @longlho
+
 ## [10.7.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.7.4...intl-messageformat@10.7.5) (2024-11-04)
 
 **Note:** Version bump only for package intl-messageformat
