@@ -22,5 +22,6 @@ jest_test_v2(
     name = "test",
     srcs = glob(["*.ts*"]),
     jest_config = "jest.config.js",
+    tsconfig = "tsconfig.json",
     deps = TEST_DEPS,
 )

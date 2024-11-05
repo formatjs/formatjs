@@ -92,6 +92,7 @@ jest_test_v2(
     ] + TESTS,
     jest_config = "jest.config.js",
     snapshots = glob(["tests/unit/components/__snapshots__/*"]),
+    tsconfig = "tsconfig.jest.json",
     deps = TEST_DEPS,
 )
 

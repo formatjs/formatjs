@@ -235,7 +235,6 @@ TSCONFIG_FILES = [
     "tsconfig.node.json",
     "tsconfig.esm.json",
     "tsconfig.esm.esnext.json",
-    "tsconfig.jest.json",
 ]
 
 [

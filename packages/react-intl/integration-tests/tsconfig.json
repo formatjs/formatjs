@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "target": "ES6",
+    "target": "es6",
     "types": ["jest", "node", "@testing-library/jest-dom"]
   }
 }
