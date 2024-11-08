@@ -15,12 +15,12 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/core": "3.6.0",
-    "@docusaurus/plugin-google-analytics": "3.6.0",
-    "@docusaurus/preset-classic": "3.6.0",
-    "@docusaurus/theme-common": "3.6.0",
-    "@docusaurus/theme-live-codeblock": "3.6.0",
-    "@docusaurus/types": "3.6.0",
+    "@docusaurus/core": "3.6.1",
+    "@docusaurus/plugin-google-analytics": "3.6.1",
+    "@docusaurus/preset-classic": "3.6.1",
+    "@docusaurus/theme-common": "3.6.1",
+    "@docusaurus/theme-live-codeblock": "3.6.1",
+    "@docusaurus/types": "3.6.1",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@mdx-js/react": "3.1.0",
     "@orama/plugin-docusaurus-v3": "3.0.1",
