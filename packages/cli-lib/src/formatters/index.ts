@@ -9,15 +9,15 @@ import * as simple from './simple'
 import * as smartling from './smartling'
 import * as transifex from './transifex'
 
-export interface Formatter {
-  serialize?: SerializeFn
-  format: FormatFn
-  compile: CompileFn
+export interface Formatter<T> {
+  serialize?: SerializeFn<T>
+  format: FormatFn<T>
+  compile: CompileFn<T>
   compareMessages?: Comparator
 }
 
 export async function resolveBuiltinFormatter(
-  format?: string | Formatter
+  format?: string | Formatter<unknown>
 ): Promise<any> {
   if (!format) {
     return defaultFormatter
