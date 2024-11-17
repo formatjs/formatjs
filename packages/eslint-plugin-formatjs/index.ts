@@ -1,4 +1,3 @@
-import {name, version} from './package.json'
 import {ESLint} from 'eslint'
 import {
   name as blocklistElementRuleName,
@@ -64,6 +63,8 @@ import {
   rule as preferPoundInPlural,
   name as preferPoundInPluralName,
 } from './rules/prefer-pound-in-plural'
+
+const {name, version} = require('package.json')
 
 // All rules
 const rules: ESLint.Plugin['rules'] = {
