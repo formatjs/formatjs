@@ -40,11 +40,9 @@
     }
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "npm.packageManager": "yarn",
-  "eslint.packageManager": "yarn",
+  "npm.packageManager": "pnpm",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "rust-analyzer.linkedProjects": ["rust/Cargo.toml"],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -60,10 +58,10 @@
   "[shellscript]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
-  "[rust]": {
-    "editor.defaultFormatter": "rust-lang.rust-analyzer"
-  },
   "[starlark]": {
     "editor.defaultFormatter": "BazelBuild.vscode-bazel"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }

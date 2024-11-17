@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "rust-lang.rust-analyzer",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "foxundermoon.shell-format",

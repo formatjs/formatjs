@@ -61,8 +61,6 @@ PACKAGES_TO_DIST = [
     "//packages/intl-segmenter",
     "//packages/intl",
     "//packages/react-intl",
-    "//packages/swc-plugin-experimental",
-    "//packages/swc-plugin",
     "//packages/ts-transformer",
     "//packages/utils",
     "//packages/vue-intl",

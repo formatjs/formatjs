@@ -78,51 +78,6 @@ bazel_dep(
     dev_dependency = True,
 )
 
-######### Rust rules #########
-bazel_dep(name = "rules_rust", version = "0.54.1")
-single_version_override(
-    module_name = "rules_rust",
-    patches = [
-        "//tools:rules_rust.patch",
-    ],
-)
-
-rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
-rust.toolchain(
-    edition = "2021",
-    extra_target_triples = [
-        "wasm32-unknown-unknown",
-        "wasm32-wasi",
-    ],
-)
-use_repo(
-    rust,
-    "rust_toolchains",
-)
-
-register_toolchains(
-    "@rust_toolchains//:all",
-    "@rules_rust//wasm_bindgen:default_wasm_bindgen_toolchain",
-    "@rules_rust//rust/private/dummy_cc_toolchain:dummy_cc_wasm32_toolchain",
-)
-
-crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
-
-# Run `CARGO_BAZEL_REPIN=1 bazel sync --only=crate_index` after updating
-crate.from_cargo(
-    name = "crate_index",
-    cargo_lockfile = "//rust:Cargo.lock",
-    manifests = [
-        "//rust:Cargo.toml",
-        "//rust/icu-messageformat-parser:Cargo.toml",
-        "//rust/swc-formatjs-visitor:Cargo.toml",
-        "//rust/swc-plugin-formatjs:Cargo.toml",
-        # FIX THIS
-        # "//rust/swc-formatjs-custom-transform:Cargo.toml",
-    ],
-)
-use_repo(crate, "crate_index")
-
 ######### Lint rules #########
 
 bazel_dep(name = "aspect_rules_lint", version = "1.0.3")

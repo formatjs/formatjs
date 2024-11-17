@@ -1,13 +1,10 @@
-# Export these files for reuse by @formatjs/swc-plugin-experimental test cases.
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
-# Export file group for reuse by @formatjs/swc-plugin-experimental test cases.
 filegroup(
     name = "files",
     srcs = glob(["*.js"]),
     visibility = [
         "//packages/babel-plugin-formatjs:__subpackages__",
-        "//packages/swc-plugin-experimental:__subpackages__",
     ],
 )
 
@@ -18,6 +15,5 @@ copy_to_bin(
     srcs = [":files"],
     visibility = [
         "//packages/babel-plugin-formatjs:__subpackages__",
-        "//packages/swc-plugin-experimental:__subpackages__",
     ],
 )
