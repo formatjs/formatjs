@@ -16,6 +16,7 @@ eslint_bin.eslint_test(
         "fixture.js",
         ":node_modules/eslint-plugin-formatjs",
     ],
+    expected_exit_code = 1,
     node_options = [
         "--experimental-vm-modules",
     ],
