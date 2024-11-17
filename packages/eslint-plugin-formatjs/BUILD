@@ -25,6 +25,7 @@ SRCS = glob(["rules/*.ts"]) + [
     "index.ts",
     "util.ts",
     "context-compat.ts",
+    "package.json",
 ]
 
 SRC_DEPS = [

@@ -64,119 +64,131 @@ import {
   name as preferPoundInPluralName,
 } from './rules/prefer-pound-in-plural'
 
+import {name, version} from './package.json'
+
+// All rules
+const rules: ESLint.Plugin['rules'] = {
+  // @ts-expect-error
+  [blocklistElementRuleName]: blocklistElements,
+  // @ts-expect-error
+  [enforceDefaultMessageName]: enforceDefaultMessage,
+  // @ts-expect-error
+  [enforceDescriptionName]: enforceDescription,
+  // @ts-expect-error
+  [enforceIdName]: enforceId,
+  // @ts-expect-error
+  [enforcePlaceholdersName]: enforcePlaceholders,
+  // @ts-expect-error
+  [enforcePluralRulesName]: enforcePluralRules,
+  // @ts-expect-error
+  [noCamelCaseName]: noCamelCase,
+  // @ts-expect-error
+  [noComplexSelectorsName]: noComplexSelectors,
+  // @ts-expect-error
+  [noEmojiName]: noEmoji,
+  // @ts-expect-error
+  [noIdName]: noId,
+  // @ts-expect-error
+  [noInvalidICUName]: noInvalidICU,
+  // @ts-expect-error
+  [noLiteralStringInJsxName]: noLiteralStringInJsx,
+  // @ts-expect-error
+  [noMultiplePluralsName]: noMultiplePlurals,
+  // @ts-expect-error
+  [noMultipleWhitespacesName]: noMultipleWhitespaces,
+  // @ts-expect-error
+  [noOffsetName]: noOffset,
+  // @ts-expect-error
+  [noUselessMessageName]: noUselessMessage,
+  // @ts-expect-error
+  [preferFormattedMessageName]: preferFormattedMessage,
+  // @ts-expect-error
+  [preferPoundInPluralName]: preferPoundInPlural,
+  // @ts-expect-error
+  [noMissingIcuPluralOnePlaceholdersName]: noMissingIcuPluralOnePlaceholders,
+}
+
+// Base plugin
 const plugin: ESLint.Plugin = {
-  configs: {
-    strict: {
-      plugins: ['formatjs'],
-      rules: {
-        'formatjs/no-offset': 'error',
-        'formatjs/enforce-default-message': ['error', 'literal'],
-        'formatjs/enforce-description': ['error', 'literal'],
-        'formatjs/enforce-placeholders': 'error',
-        'formatjs/no-emoji': 'error',
-        'formatjs/no-multiple-whitespaces': 'error',
-        'formatjs/no-multiple-plurals': 'error',
-        'formatjs/no-complex-selectors': ['error', {limit: 20}],
-        'formatjs/no-useless-message': 'error',
-        'formatjs/prefer-pound-in-plural': 'error',
-        'formatjs/no-missing-icu-plural-one-placeholders': 'error',
-        'formatjs/enforce-id': [
-          'error',
-          {
-            idInterpolationPattern: '[sha512:contenthash:base64:10]',
+  meta: {name, version},
+  rules,
+}
+
+// Configs
+const configs: ESLint.Plugin['configs'] = {
+  strict: {
+    name: 'formatjs/strict',
+    plugins: {formatjs: plugin},
+    rules: {
+      'formatjs/no-offset': 'error',
+      'formatjs/enforce-default-message': ['error', 'literal'],
+      'formatjs/enforce-description': ['error', 'literal'],
+      'formatjs/enforce-placeholders': 'error',
+      'formatjs/no-emoji': 'error',
+      'formatjs/no-multiple-whitespaces': 'error',
+      'formatjs/no-multiple-plurals': 'error',
+      'formatjs/no-complex-selectors': ['error', {limit: 20}],
+      'formatjs/no-useless-message': 'error',
+      'formatjs/prefer-pound-in-plural': 'error',
+      'formatjs/no-missing-icu-plural-one-placeholders': 'error',
+      'formatjs/enforce-id': [
+        'error',
+        {
+          idInterpolationPattern: '[sha512:contenthash:base64:10]',
+        },
+      ],
+      'formatjs/enforce-plural-rules': [
+        'error',
+        {
+          one: true,
+          other: true,
+        },
+      ],
+      'formatjs/no-literal-string-in-jsx': [
+        'error',
+        {
+          props: {
+            include: [['*', '{label,placeholder,title}']],
           },
-        ],
-        'formatjs/enforce-plural-rules': [
-          'error',
-          {
-            one: true,
-            other: true,
-          },
-        ],
-        'formatjs/no-literal-string-in-jsx': [
-          'error',
-          {
-            props: {
-              include: [['*', '{label,placeholder,title}']],
-            },
-          },
-        ],
-        'formatjs/blocklist-elements': ['error', {elements: ['selectordinal']}],
-      },
-    },
-    recommended: {
-      plugins: ['formatjs'],
-      rules: {
-        'formatjs/no-offset': 'error',
-        'formatjs/enforce-default-message': ['error', 'literal'],
-        'formatjs/enforce-description': ['error', 'literal'],
-        'formatjs/enforce-placeholders': 'error',
-        'formatjs/no-emoji': 'error',
-        'formatjs/no-multiple-whitespaces': 'error',
-        'formatjs/no-multiple-plurals': 'error',
-        'formatjs/no-complex-selectors': ['error', {limit: 20}],
-        'formatjs/no-useless-message': 'error',
-        'formatjs/prefer-pound-in-plural': 'error',
-        'formatjs/no-missing-icu-plural-one-placeholders': 'error',
-        'formatjs/enforce-plural-rules': [
-          'error',
-          {
-            one: true,
-            other: true,
-          },
-        ],
-        'formatjs/no-literal-string-in-jsx': [
-          'warn',
-          {
-            props: {
-              include: [['*', '{label,placeholder,title}']],
-            },
-          },
-        ],
-        'formatjs/blocklist-elements': ['error', {elements: ['selectordinal']}],
-      },
+        },
+      ],
+      'formatjs/blocklist-elements': ['error', ['selectordinal']],
     },
   },
-  rules: {
-    // @ts-expect-error
-    [blocklistElementRuleName]: blocklistElements,
-    // @ts-expect-error
-    [enforceDefaultMessageName]: enforceDefaultMessage,
-    // @ts-expect-error
-    [enforceDescriptionName]: enforceDescription,
-    // @ts-expect-error
-    [enforceIdName]: enforceId,
-    // @ts-expect-error
-    [enforcePlaceholdersName]: enforcePlaceholders,
-    // @ts-expect-error
-    [enforcePluralRulesName]: enforcePluralRules,
-    // @ts-expect-error
-    [noCamelCaseName]: noCamelCase,
-    // @ts-expect-error
-    [noComplexSelectorsName]: noComplexSelectors,
-    // @ts-expect-error
-    [noEmojiName]: noEmoji,
-    // @ts-expect-error
-    [noIdName]: noId,
-    // @ts-expect-error
-    [noInvalidICUName]: noInvalidICU,
-    // @ts-expect-error
-    [noLiteralStringInJsxName]: noLiteralStringInJsx,
-    // @ts-expect-error
-    [noMultiplePluralsName]: noMultiplePlurals,
-    // @ts-expect-error
-    [noMultipleWhitespacesName]: noMultipleWhitespaces,
-    // @ts-expect-error
-    [noOffsetName]: noOffset,
-    // @ts-expect-error
-    [noUselessMessageName]: noUselessMessage,
-    // @ts-expect-error
-    [preferFormattedMessageName]: preferFormattedMessage,
-    // @ts-expect-error
-    [preferPoundInPluralName]: preferPoundInPlural,
-    // @ts-expect-error
-    [noMissingIcuPluralOnePlaceholdersName]: noMissingIcuPluralOnePlaceholders,
+  recommended: {
+    name: 'formatjs/recommended',
+    plugins: {formatjs: plugin},
+    rules: {
+      'formatjs/no-offset': 'error',
+      'formatjs/enforce-default-message': ['error', 'literal'],
+      'formatjs/enforce-description': ['error', 'literal'],
+      'formatjs/enforce-placeholders': 'error',
+      'formatjs/no-emoji': 'error',
+      'formatjs/no-multiple-whitespaces': 'error',
+      'formatjs/no-multiple-plurals': 'error',
+      'formatjs/no-complex-selectors': ['error', {limit: 20}],
+      'formatjs/no-useless-message': 'error',
+      'formatjs/prefer-pound-in-plural': 'error',
+      'formatjs/no-missing-icu-plural-one-placeholders': 'error',
+      'formatjs/enforce-plural-rules': [
+        'error',
+        {
+          one: true,
+          other: true,
+        },
+      ],
+      'formatjs/no-literal-string-in-jsx': [
+        'warn',
+        {
+          props: {
+            include: [['*', '{label,placeholder,title}']],
+          },
+        },
+      ],
+      'formatjs/blocklist-elements': ['error', ['selectordinal']],
+    },
   },
 }
+plugin.configs = configs
 
 module.exports = plugin
