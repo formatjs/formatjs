@@ -1,2 +1,2 @@
 import formatjs from 'eslint-plugin-formatjs'
-export default [formatjs.configs.recommended]
+export default [formatjs.configs.strict]

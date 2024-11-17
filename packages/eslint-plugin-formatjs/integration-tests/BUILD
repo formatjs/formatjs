@@ -7,11 +7,13 @@ eslint_bin.eslint_test(
     name = "lint_test",
     args = [
         "--config",
-        "$(location eslint.config.mjs)",
+        "eslint.config.mjs",
+        "fixture.js",
     ],
+    chdir = package_name(),
     data = [
         "eslint.config.mjs",
-        "fixture.ts",
+        "fixture.js",
         ":node_modules/eslint-plugin-formatjs",
     ],
     node_options = [
