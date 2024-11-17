@@ -155,8 +155,8 @@ export const rule = createRule({
   create(context) {
     const callExpressionVisitor: ESLintUtils.RuleListener['CallExpression'] =
       node => checkNode(context, node)
-    const parserServices = getParserServices(context)
 
+    const parserServices = getParserServices(context)
     //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
     if (parserServices?.defineTemplateBodyVisitor) {
       //@ts-expect-error
