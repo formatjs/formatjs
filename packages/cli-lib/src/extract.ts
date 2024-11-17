@@ -69,7 +69,7 @@ export type ExtractOpts = Opts & {
   /**
    * Path to a formatter file that controls the shape of JSON file from `outFile`.
    */
-  format?: string | Formatter
+  format?: string | Formatter<unknown>
   /**
    * Whether to hoist selectors & flatten sentences
    */
@@ -217,7 +217,9 @@ export async function extract(
     }
   }
 
-  const formatter: Formatter = await resolveBuiltinFormatter(opts.format)
+  const formatter: Formatter<unknown> = await resolveBuiltinFormatter(
+    opts.format
+  )
   const extractionResults = rawResults.filter((r): r is ExtractionResult => !!r)
 
   const extractedMessages = new Map<string, MessageDescriptor>()
