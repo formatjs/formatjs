@@ -11,6 +11,7 @@ packages/ecma376/node_modules
 packages/ecma402-abstract/node_modules
 packages/editor/node_modules
 packages/eslint-plugin-formatjs/node_modules
+packages/eslint-plugin-formatjs/integration-tests/node_modules
 packages/fast-memoize/node_modules
 packages/icu-messageformat-parser/integration-tests/node_modules
 packages/icu-messageformat-parser/node_modules

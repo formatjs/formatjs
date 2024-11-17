@@ -589,6 +589,18 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
 
+  packages/eslint-plugin-formatjs/integration-tests:
+    dependencies:
+      eslint:
+        specifier: 9.14.0
+        version: 9.14.0(jiti@1.21.6)
+      eslint-plugin-formatjs:
+        specifier: workspace:*
+        version: link:..
+      react-intl:
+        specifier: workspace:*
+        version: link:../../react-intl
+
   packages/fast-memoize:
     dependencies:
       tslib:

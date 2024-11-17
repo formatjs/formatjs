@@ -64,7 +64,7 @@ import {
   name as preferPoundInPluralName,
 } from './rules/prefer-pound-in-plural'
 
-const {name, version} = require('package.json')
+import {name, version} from './package.json'
 
 // All rules
 const rules: ESLint.Plugin['rules'] = {
