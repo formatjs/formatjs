@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.2.2...eslint-plugin-formatjs@5.2.3) (2024-11-17)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** account for possibly undefined parserServices ([#4708](https://github.com/formatjs/formatjs/issues/4708)) ([cad6613](https://github.com/formatjs/formatjs/commit/cad6613cbc3f7cac877d134b540bbc7e8566efd9)), closes [#4524](https://github.com/formatjs/formatjs/issues/4524) - by @michaelfaith
+* **eslint-plugin-formatjs:** make shareable configs compatible with flat config ([#4706](https://github.com/formatjs/formatjs/issues/4706)) ([b64b8fe](https://github.com/formatjs/formatjs/commit/b64b8feb865316237e6244ab5b7605a834b02384)), closes [#4501](https://github.com/formatjs/formatjs/issues/4501) [#4705](https://github.com/formatjs/formatjs/issues/4705) - by @michaelfaith
+
 ## [5.2.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.2.1...eslint-plugin-formatjs@5.2.2) (2024-11-05)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

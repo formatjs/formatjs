@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.6.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.6.3...@formatjs/cli-lib@6.6.4) (2024-11-17)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** instantiate FormatFn with unknown in Formatter definition ([#4700](https://github.com/formatjs/formatjs/issues/4700)) ([ab8e6ee](https://github.com/formatjs/formatjs/commit/ab8e6eebdf41dee62bb8b5fb046850f5fbbf914e)) - by @pablobirukov
+
 ## [6.6.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.6.2...@formatjs/cli-lib@6.6.3) (2024-11-04)
 
 **Note:** Version bump only for package @formatjs/cli-lib
