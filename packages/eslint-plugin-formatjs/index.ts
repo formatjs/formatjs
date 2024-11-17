@@ -152,7 +152,7 @@ const configs: ESLint.Plugin['configs'] = {
           },
         },
       ],
-      'formatjs/blocklist-elements': ['error', {elements: ['selectordinal']}],
+      'formatjs/blocklist-elements': ['error', ['selectordinal']],
     },
   },
   recommended: {
