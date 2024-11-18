@@ -70,7 +70,7 @@
     "@types/webpack": "^5.28.5",
     "@typescript-eslint/parser": "8.15.0",
     "@typescript-eslint/rule-tester": "8.15.0",
-    "@typescript-eslint/utils": "8.14.0",
+    "@typescript-eslint/utils": "8.15.0",
     "@unicode/unicode-13.0.0": "^1.6.0",
     "@vue/compiler-core": "^3.5.12",
     "@vue/compiler-dom": "^3.5.12",
