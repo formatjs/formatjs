@@ -1,18 +1,18 @@
-import {UnicodeLocaleId, KV, Extension, UnicodeLanguageId} from './types'
 import {
   languageAlias,
-  variantAlias,
   scriptAlias,
   territoryAlias,
+  variantAlias,
 } from './aliases.generated'
+import {emitUnicodeLanguageId} from './emitter'
+import {likelySubtags} from './likelySubtags.generated'
 import {
-  parseUnicodeLanguageId,
-  isUnicodeVariantSubtag,
   isUnicodeLanguageSubtag,
+  isUnicodeVariantSubtag,
+  parseUnicodeLanguageId,
   SEPARATOR,
 } from './parser'
-import {likelySubtags} from './likelySubtags.generated'
-import {emitUnicodeLanguageId} from './emitter'
+import {Extension, KV, UnicodeLanguageId, UnicodeLocaleId} from './types'
 
 function canonicalizeAttrs(strs: string[]): string[] {
   return Object.keys(
@@ -241,7 +241,7 @@ export function canonicalizeUnicodeLanguageId(
  * IMPORTANT: This modifies the object inline
  * @param locale
  */
-export function canonicalizeUnicodeLocaleId(
+export function CanonicalizeUnicodeLocaleId(
   locale: UnicodeLocaleId
 ): UnicodeLocaleId {
   locale.lang = canonicalizeUnicodeLanguageId(locale.lang)

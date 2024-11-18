@@ -3,3 +3,8 @@ export interface LookupMatcherResult {
   extension?: string
   nu?: string
 }
+
+export interface Keyword {
+  key: string
+  value: string
+}

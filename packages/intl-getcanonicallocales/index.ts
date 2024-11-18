@@ -1,6 +1,6 @@
-import {parseUnicodeLocaleId} from './src/parser'
+import {CanonicalizeUnicodeLocaleId} from './src/canonicalizer'
 import {emitUnicodeLocaleId} from './src/emitter'
-import {canonicalizeUnicodeLocaleId} from './src/canonicalizer'
+import {parseUnicodeLocaleId} from './src/parser'
 
 /**
  * https://tc39.es/ecma402/#sec-canonicalizelocalelist
@@ -16,7 +16,7 @@ function CanonicalizeLocaleList(locales?: string[] | string): string[] {
   }
   for (const locale of locales) {
     const canonicalizedTag = emitUnicodeLocaleId(
-      canonicalizeUnicodeLocaleId(parseUnicodeLocaleId(locale))
+      CanonicalizeUnicodeLocaleId(parseUnicodeLocaleId(locale))
     )
     if (seen.indexOf(canonicalizedTag) < 0) {
       seen.push(canonicalizedTag)
@@ -29,15 +29,15 @@ export function getCanonicalLocales(locales?: string[] | string): string[] {
   return CanonicalizeLocaleList(locales)
 }
 
+export * from './src/emitter'
 export {
-  parseUnicodeLocaleId,
-  parseUnicodeLanguageId,
   isStructurallyValidLanguageTag,
+  isUnicodeLanguageSubtag,
   isUnicodeRegionSubtag,
   isUnicodeScriptSubtag,
-  isUnicodeLanguageSubtag,
+  parseUnicodeLanguageId,
+  parseUnicodeLocaleId,
 } from './src/parser'
 export * from './src/types'
-export * from './src/emitter'
 
 export * from './src/likelySubtags.generated'

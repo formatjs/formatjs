@@ -68,3 +68,19 @@ test('empty requested', function () {
     locale: 'en',
   })
 })
+
+test('GH #4384', function () {
+  expect(
+    ResolveLocale(
+      ['en-x-owo', 'en'],
+      ['en-x-owo'],
+      {localeMatcher: 'best fit'},
+      [],
+      {},
+      () => 'en'
+    )
+  ).toEqual({
+    dataLocale: 'en-x-owo',
+    locale: 'en-x-owo',
+  })
+})

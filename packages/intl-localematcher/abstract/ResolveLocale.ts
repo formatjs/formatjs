@@ -1,7 +1,9 @@
 import {BestFitMatcher} from './BestFitMatcher'
+import {CanonicalizeUValue} from './CanonicalizeUValue'
+import {InsertUnicodeExtensionAndCanonicalize} from './InsertUnicodeExtensionAndCanonicalize'
 import {LookupMatcher} from './LookupMatcher'
-import {UnicodeExtensionValue} from './UnicodeExtensionValue'
-import {LookupMatcherResult} from './types'
+import {UnicodeExtensionComponents} from './UnicodeExtensionComponents'
+import {Keyword, LookupMatcherResult} from './types'
 import {invariant} from './utils'
 
 export interface ResolveLocaleResult {
@@ -39,73 +41,93 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
       getDefaultLocale
     )
   }
+  if (r == null) {
+    r = {
+      locale: getDefaultLocale(),
+      extension: '',
+    }
+  }
   let foundLocale = r.locale
-  const result: ResolveLocaleResult = {locale: '', dataLocale: foundLocale}
-  let supportedExtension = '-u'
+  let foundLocaleData = localeData[foundLocale]
+  // TODO: We can't really guarantee that the locale data is available
+  // invariant(
+  //   foundLocaleData !== undefined,
+  //   `Missing locale data for ${foundLocale}`
+  // )
+  const result: ResolveLocaleResult = {locale: 'en', dataLocale: foundLocale}
+  let components
+  let keywords: Keyword[]
+  if (r.extension) {
+    components = UnicodeExtensionComponents(r.extension)
+    keywords = components.keywords
+  } else {
+    keywords = []
+  }
+  let supportedKeywords: Keyword[] = []
   for (const key of relevantExtensionKeys) {
-    invariant(
-      foundLocale in localeData,
-      `Missing locale data for ${foundLocale}`
-    )
-    const foundLocaleData = localeData[foundLocale]
-    invariant(
-      typeof foundLocaleData === 'object' && foundLocaleData !== null,
-      `locale data ${key} must be an object`
-    )
-    const keyLocaleData = foundLocaleData[key]
+    // TODO: Shouldn't default to empty array, see TODO above
+    let keyLocaleData: string[] = foundLocaleData?.[key] ?? []
     invariant(
       Array.isArray(keyLocaleData),
       `keyLocaleData for ${key} must be an array`
     )
     let value = keyLocaleData[0]
     invariant(
-      typeof value === 'string' || value === null,
-      `value must be string or null but got ${typeof value} in key ${key}`
+      value === undefined || typeof value === 'string',
+      `value must be a string or undefined`
     )
-    let supportedExtensionAddition = ''
-    if (r.extension) {
-      const requestedValue = UnicodeExtensionValue(r.extension, key)
-      if (requestedValue !== undefined) {
-        if (requestedValue !== '') {
-          if (~keyLocaleData.indexOf(requestedValue)) {
-            value = requestedValue
-            supportedExtensionAddition = `-${key}-${value}`
+    let supportedKeyword: Keyword | undefined
+    let entry = keywords.find(k => k.key === key)
+    if (entry) {
+      let requestedValue = entry.value
+      if (requestedValue !== '') {
+        if (keyLocaleData.indexOf(requestedValue) > -1) {
+          value = requestedValue
+          supportedKeyword = {
+            key,
+            value,
           }
-        } else if (~requestedValue.indexOf('true')) {
-          value = 'true'
-          supportedExtensionAddition = `-${key}`
+        }
+      } else if (keyLocaleData.indexOf('true') > -1) {
+        value = 'true'
+        supportedKeyword = {
+          key,
+          value,
         }
       }
     }
-    if (key in options) {
-      const optionsValue = options[key]
-      invariant(
-        typeof optionsValue === 'string' ||
-          typeof optionsValue === 'undefined' ||
-          optionsValue === null,
-        'optionsValue must be String, Undefined or Null'
-      )
-      if (~keyLocaleData.indexOf(optionsValue)) {
-        if (optionsValue !== value) {
-          value = optionsValue
-          supportedExtensionAddition = ''
-        }
+
+    let optionsValue = options[key]
+    invariant(
+      optionsValue == null || typeof optionsValue === 'string',
+      `optionsValue must be a string or undefined`
+    )
+    if (typeof optionsValue === 'string') {
+      let ukey = key.toLowerCase()
+      optionsValue = CanonicalizeUValue(ukey, optionsValue)
+      if (optionsValue === '') {
+        optionsValue = 'true'
       }
+    }
+    if (optionsValue !== value && keyLocaleData.indexOf(optionsValue) > -1) {
+      value = optionsValue
+      supportedKeyword = undefined
+    }
+    if (supportedKeyword) {
+      supportedKeywords.push(supportedKeyword)
     }
     result[key] = value
-    supportedExtension += supportedExtensionAddition
   }
-  if (supportedExtension.length > 2) {
-    const privateIndex = foundLocale.indexOf('-x-')
-    if (privateIndex === -1) {
-      foundLocale = foundLocale + supportedExtension
-    } else {
-      const preExtension = foundLocale.slice(0, privateIndex)
-      const postExtension = foundLocale.slice(privateIndex, foundLocale.length)
-      foundLocale = preExtension + supportedExtension + postExtension
-    }
-    foundLocale = (Intl as any).getCanonicalLocales(foundLocale)[0]
+  let supportedAttributes: string[] = []
+  if (supportedKeywords.length > 0) {
+    supportedAttributes = []
+    foundLocale = InsertUnicodeExtensionAndCanonicalize(
+      foundLocale,
+      supportedAttributes,
+      supportedKeywords
+    )
   }
+
   result.locale = foundLocale
   return result
 }
