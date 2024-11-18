@@ -26,7 +26,7 @@ jobs:
 
       # Build the Docusaurus site
       - name: Build Docusaurus Site
-        run: cd website; pnpm docusaurus build
+        run: cd website; bazel run -- @pnpm//:pnpm --dir $PWD docusaurus build
 
       # Deploy to Organization GitHub Pages Repository
       - name: Deploy
