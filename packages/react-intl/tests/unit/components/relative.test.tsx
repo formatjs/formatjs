@@ -1,11 +1,10 @@
-import '@formatjs/intl-relativetimeformat/polyfill'
+import {act, render} from '@testing-library/react'
 import * as React from 'react'
-import FormattedRelativeTime from '../../../src/components/relative'
 import {createIntl} from '../../../src/components/createIntl'
+import FormattedRelativeTime from '../../../src/components/relative'
+import type {IntlConfig} from '../../../src/types'
 import {IntlShape} from '../../../src/types'
 import {mountFormattedComponentWithProvider} from '../testUtils'
-import type {IntlConfig} from '../../../src/types'
-import {render, act} from '@testing-library/react'
 
 jest.useFakeTimers()
 

@@ -3,69 +3,67 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {
+  CustomFormatConfig,
+  FormatDateOptions,
+  MessageDescriptor,
+} from '@formatjs/intl'
 import * as React from 'react'
 import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,
 } from './src/components/createFormattedComponent'
-import {
-  MessageDescriptor,
-  CustomFormatConfig,
-  FormatDateOptions,
-} from '@formatjs/intl'
-import {IntlListFormatOptions} from '@formatjs/intl-listformat'
-import {DisplayNamesOptions} from '@formatjs/intl-displaynames'
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {createIntl} from './src/components/createIntl'
+import FormattedDateTimeRange from './src/components/dateTimeRange'
 import injectIntl, {
-  Provider as RawIntlProvider,
   Context as IntlContext,
+  Provider as RawIntlProvider,
   WithIntlProps,
   WrappedComponentProps,
 } from './src/components/injectIntl'
-import useIntl from './src/components/useIntl'
-import IntlProvider from './src/components/provider'
-import {createIntl} from './src/components/createIntl'
-import FormattedRelativeTime from './src/components/relative'
-import FormattedPlural from './src/components/plural'
 import FormattedMessage from './src/components/message'
-import FormattedDateTimeRange from './src/components/dateTimeRange'
+import FormattedPlural from './src/components/plural'
+import IntlProvider from './src/components/provider'
+import FormattedRelativeTime from './src/components/relative'
+import useIntl from './src/components/useIntl'
 export {
+  createIntlCache,
+  CustomFormatConfig,
+  CustomFormats,
+  FormatDateOptions,
+  FormatDisplayNameOptions,
+  FormatListOptions,
+  FormatNumberOptions,
+  FormatPluralOptions,
+  FormatRelativeTimeOptions,
+  Formatters,
+  IntlCache,
+  IntlFormatters,
+  InvalidConfigError,
+  MessageDescriptor,
+  MessageFormatError,
+  MissingDataError,
+  MissingTranslationError,
+  IntlError as ReactIntlError,
+  IntlErrorCode as ReactIntlErrorCode,
+  UnsupportedFormatterError,
+} from '@formatjs/intl'
+export {IntlConfig, IntlShape, ResolvedIntlConfig} from './src/types'
+export {
+  createIntl,
   FormattedDateTimeRange,
   FormattedMessage,
   FormattedPlural,
   FormattedRelativeTime,
+  injectIntl,
   IntlContext,
   IntlProvider,
   RawIntlProvider,
+  useIntl,
   WithIntlProps,
   WrappedComponentProps,
-  createIntl,
-  injectIntl,
-  useIntl,
 }
-export {IntlConfig, ResolvedIntlConfig, IntlShape} from './src/types'
-export {
-  createIntlCache,
-  MessageDescriptor,
-  IntlCache,
-  Formatters,
-  IntlFormatters,
-  FormatDisplayNameOptions,
-  FormatListOptions,
-  FormatPluralOptions,
-  FormatRelativeTimeOptions,
-  FormatNumberOptions,
-  FormatDateOptions,
-  CustomFormatConfig,
-  CustomFormats,
-  UnsupportedFormatterError,
-  InvalidConfigError,
-  MissingDataError,
-  MessageFormatError,
-  MissingTranslationError,
-  IntlErrorCode as ReactIntlErrorCode,
-  IntlError as ReactIntlError,
-} from '@formatjs/intl'
 
 export function defineMessages<
   K extends keyof any,
@@ -101,13 +99,13 @@ export const FormattedNumber: React.FC<
     }
 > = createFormattedComponent('formatNumber')
 export const FormattedList: React.FC<
-  IntlListFormatOptions & {
+  Intl.ListFormatOptions & {
     value: readonly React.ReactNode[]
   }
 > = createFormattedComponent('formatList')
 export const FormattedDisplayName: React.FC<
-  DisplayNamesOptions & {
-    value: string | number | Record<string, unknown>
+  Intl.DisplayNamesOptions & {
+    value: string
   }
 > = createFormattedComponent('formatDisplayName')
 export const FormattedDateParts: React.FC<
@@ -123,9 +121,9 @@ export const FormattedTimeParts: React.FC<
   }
 > = createFormattedDateTimePartsComponent('formatTime')
 
-export {
-  FormattedNumberParts,
-  FormattedListParts,
-} from './src/components/createFormattedComponent'
 export type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 export type {PrimitiveType} from 'intl-messageformat'
+export {
+  FormattedListParts,
+  FormattedNumberParts,
+} from './src/components/createFormattedComponent'
