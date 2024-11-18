@@ -1,4 +1,3 @@
-import {DateTimeFormat, NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
 import {
@@ -93,7 +92,10 @@ export type FormatDateOptions = Omit<
   'localeMatcher'
 > &
   CustomFormatConfig<'date'>
-export type FormatNumberOptions = Omit<NumberFormatOptions, 'localeMatcher'> &
+export type FormatNumberOptions = Omit<
+  Intl.NumberFormatOptions,
+  'localeMatcher'
+> &
   CustomFormatConfig<'number'>
 export type FormatRelativeTimeOptions = Omit<
   Intl.RelativeTimeFormatOptions,
@@ -120,8 +122,8 @@ export type FormatDisplayNameOptions = Omit<
 export interface IntlFormatters<TBase = unknown> {
   formatDateTimeRange(
     this: void,
-    from: Parameters<DateTimeFormat['formatRange']>[0],
-    to: Parameters<DateTimeFormat['formatRange']>[1],
+    from: Parameters<Intl.DateTimeFormat['formatRange']>[0],
+    to: Parameters<Intl.DateTimeFormat['formatRange']>[1],
     opts?: FormatDateOptions
   ): string
   formatDate(
@@ -215,11 +217,11 @@ export interface Formatters {
   getDateTimeFormat(
     this: void,
     ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
-  ): DateTimeFormat
+  ): Intl.DateTimeFormat
   getNumberFormat(
     this: void,
     locales?: string | string[],
-    opts?: NumberFormatOptions
+    opts?: Intl.NumberFormatOptions
   ): Intl.NumberFormat
   getMessageFormat(
     this: void,
@@ -250,7 +252,7 @@ export interface IntlShape<T = string>
 }
 
 export interface IntlCache {
-  dateTime: Record<string, DateTimeFormat>
+  dateTime: Record<string, Intl.DateTimeFormat>
   number: Record<string, Intl.NumberFormat>
   message: Record<string, IntlMessageFormat>
   relativeTime: Record<string, Intl.RelativeTimeFormat>

@@ -1,15 +1,24 @@
+import {Cache, memoize, strategies} from '@formatjs/fast-memoize'
+import {IntlMessageFormat} from 'intl-messageformat'
+import {UnsupportedFormatterError} from './error'
 import {
-  IntlCache,
   CustomFormats,
   Formatters,
+  IntlCache,
   OnErrorFn,
   OnWarnFn,
   ResolvedIntlConfig,
 } from './types'
-import {IntlMessageFormat} from 'intl-messageformat'
-import {memoize, Cache, strategies} from '@formatjs/fast-memoize'
-import {UnsupportedFormatterError} from './error'
-import {DateTimeFormat, NumberFormatOptions} from '@formatjs/ecma402-abstract'
+
+export function invariant(
+  condition: boolean,
+  message: string,
+  Err: any = Error
+): asserts condition {
+  if (!condition) {
+    throw new Err(message)
+  }
+}
 
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
@@ -108,7 +117,7 @@ export function createFormatters(
   const ListFormat = (Intl as any).ListFormat
   const DisplayNames = (Intl as any).DisplayNames
   const getDateTimeFormat = memoize(
-    (...args) => new Intl.DateTimeFormat(...args) as DateTimeFormat,
+    (...args) => new Intl.DateTimeFormat(...args),
     {
       cache: createFastMemoizeCache(cache.dateTime),
       strategy: strategies.variadic,
@@ -165,7 +174,7 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   name: string,
   onError: OnErrorFn
 ):
-  | NumberFormatOptions
+  | Intl.NumberFormatOptions
   | Intl.DateTimeFormatOptions
   | Intl.RelativeTimeFormatOptions
   | undefined {

@@ -1,8 +1,7 @@
-import {Formatters, IntlFormatters, CustomFormats, OnErrorFn} from './types'
+import {CustomFormats, Formatters, IntlFormatters, OnErrorFn} from './types'
 
-import {filterProps, getNamedFormat} from './utils'
 import {IntlFormatError} from './error'
-import {DateTimeFormat} from '@formatjs/ecma402-abstract'
+import {filterProps, getNamedFormat} from './utils'
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'formatMatcher',
@@ -43,7 +42,7 @@ export function getFormatter(
   type: 'date' | 'time',
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   options: Parameters<IntlFormatters['formatDate']>[1] = {}
-): DateTimeFormat {
+): Intl.DateTimeFormat {
   const {format} = options
   const defaults = {
     ...(timeZone && {timeZone}),

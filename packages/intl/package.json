@@ -29,7 +29,6 @@
   "module": "lib/index.js",
   "sideEffects": false,
   "dependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/fast-memoize": "workspace:*",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "intl-messageformat": "workspace:*",

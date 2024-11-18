@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 import {formatTime as formatTimeFn} from '../src/dateTime'
 import {Formatters, IntlConfig, IntlFormatters} from '../src/types'
 
@@ -10,7 +9,7 @@ describe('format API', () => {
 
   let getDateTimeFormat: Formatters['getDateTimeFormat'] = (
     ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
-  ) => new Intl.DateTimeFormat(...args) as DateTimeFormat
+  ) => new Intl.DateTimeFormat(...args)
   beforeEach(() => {
     config = {
       locale: 'en',

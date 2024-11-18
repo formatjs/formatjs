@@ -1,8 +1,7 @@
+import {ErrorCode, FormatError} from 'intl-messageformat'
+import {IntlFormatError} from './error'
 import {Formatters, IntlFormatters, OnErrorFn} from './types'
 import {filterProps} from './utils'
-import {IntlFormatError} from './error'
-import {ErrorCode, FormatError} from 'intl-messageformat'
-import {LDMLPluralRule} from '@formatjs/ecma402-abstract'
 
 const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = ['type']
 
@@ -17,7 +16,7 @@ export function formatPlural(
   getPluralRules: Formatters['getPluralRules'],
   value: Parameters<IntlFormatters['formatPlural']>[0],
   options: Parameters<IntlFormatters['formatPlural']>[1] = {}
-): LDMLPluralRule {
+): Intl.LDMLPluralRule {
   if (!Intl.PluralRules) {
     onError(
       new FormatError(
@@ -36,7 +35,7 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
   try {
     return getPluralRules(locale, filteredOptions).select(
       value
-    ) as LDMLPluralRule
+    ) as Intl.LDMLPluralRule
   } catch (e) {
     onError(new IntlFormatError('Error formatting plural.', locale, e))
   }

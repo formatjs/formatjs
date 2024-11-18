@@ -1,5 +1,3 @@
-import {invariant} from '@formatjs/ecma402-abstract'
-
 import {CustomFormats, Formatters, MessageDescriptor, OnErrorFn} from './types'
 
 import {MessageFormatElement, TYPE} from '@formatjs/icu-messageformat-parser'
@@ -11,6 +9,7 @@ import {
   PrimitiveType,
 } from 'intl-messageformat'
 import {MessageFormatError, MissingTranslationError} from './error'
+import {invariant} from './utils'
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
