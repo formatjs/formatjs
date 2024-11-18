@@ -14,6 +14,9 @@
       "last 1 safari version"
     ]
   },
+  "scripts": {
+    "build": "docusaurus build"
+  },
   "devDependencies": {
     "@docusaurus/core": "3.6.1",
     "@docusaurus/plugin-google-analytics": "3.6.1",

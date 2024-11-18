@@ -3,7 +3,7 @@ name: Deploy Docusaurus to Organization GitHub Pages
 on:
   push:
     branches:
-      - main  # The branch where updates are made in the source repo
+      - main # The branch where updates are made in the source repo
 
 jobs:
   deploy:
@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20  # Specify the Node.js version compatible with your Docusaurus site
+          node-version: 20 # Specify the Node.js version compatible with your Docusaurus site
 
       # Install dependencies
       - name: Install Dependencies
@@ -26,7 +26,7 @@ jobs:
 
       # Build the Docusaurus site
       - name: Build Docusaurus Site
-        run: cd website; bazel run -- @pnpm//:pnpm --dir $PWD docusaurus build
+        run: cd website; bazel run -- @pnpm//:pnpm --dir $PWD run build
 
       # Deploy to Organization GitHub Pages Repository
       - name: Deploy
@@ -34,5 +34,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           external_repository: formatjs/formatjs.github.io
-          publish_branch: main  # default: gh-pages
+          publish_branch: main # default: gh-pages
           publish_dir: ./website/build
