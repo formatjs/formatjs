@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.1](https://github.com/formatjs/formatjs/compare/react-intl@7.0.0...react-intl@7.0.1) (2024-11-18)
+
+### Bug Fixes
+
+* **react-intl:** remove @formatjs/ecma402-abstract, use native TS Intl typdefs ([289aa91](https://github.com/formatjs/formatjs/commit/289aa9142e4ee06ddc25e61d7b9a771486cdd8b3)) - by @longlho
+
 # [7.0.0](https://github.com/formatjs/formatjs/compare/react-intl@6.8.9...react-intl@7.0.0) (2024-11-18)
 
 ### Features

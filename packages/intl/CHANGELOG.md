@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.0.0...@formatjs/intl@3.0.1) (2024-11-18)
+
+### Bug Fixes
+
+* **@formatjs/cli:** remove @formatjs/ecma402-abstract, use native TS Intl typdefs ([3fed5f4](https://github.com/formatjs/formatjs/commit/3fed5f4e8ba7302a0cefbcdf0bf602007fbff614)) - by @longlho
+
 # [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.10.15...@formatjs/intl@3.0.0) (2024-11-18)
 
 ### Features
