@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/icu-skeleton-parser",
-  "version": "1.8.7",
+  "version": "1.8.8",
   "main": "index.js",
   "module": "lib/index.js",
   "types": "index.d.ts",

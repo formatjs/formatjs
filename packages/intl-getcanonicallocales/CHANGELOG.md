@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@2.5.2...@formatjs/intl-getcanonicallocales@2.5.3) (2024-11-18)
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** update impl to latest spec ([1258dac](https://github.com/formatjs/formatjs/commit/1258dacb0e8c70f9c84517bc1aba4814a8b4ff83)) - by @longlho
+
 ## [2.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@2.5.1...@formatjs/intl-getcanonicallocales@2.5.2) (2024-11-02)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

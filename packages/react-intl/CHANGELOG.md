@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.8.9](https://github.com/formatjs/formatjs/compare/react-intl@6.8.8...react-intl@6.8.9) (2024-11-18)
+
+### Bug Fixes
+
+* remove sourceMap from tsconfig, fix [#4693](https://github.com/formatjs/formatjs/issues/4693) ([361d13b](https://github.com/formatjs/formatjs/commit/361d13b6d33236cff685c783e785a69ecbf963f6)) - by @longlho
+
 ## [6.8.8](https://github.com/formatjs/formatjs/compare/react-intl@6.8.7...react-intl@6.8.8) (2024-11-17)
 
 **Note:** Version bump only for package react-intl

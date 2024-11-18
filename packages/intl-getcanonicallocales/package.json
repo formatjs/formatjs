@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-getcanonicallocales",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "description": "Intl.getCanonicalLocales polyfill",
   "keywords": [
     "intl",
