@@ -27,7 +27,6 @@
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "importHelpers": true,
-    "sourceMap": true,
     "jsx": "react"
   },
   "exclude": [

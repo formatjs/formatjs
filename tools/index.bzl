@@ -23,7 +23,6 @@ def ts_compile_node(name, srcs, deps = [], data = [], skip_esm_esnext = True, vi
         declaration = True,
         tsconfig = "//:tsconfig.node",
         resolve_json_module = True,
-        source_map = True,
         deps = deps,
     )
     if not skip_esm_esnext:
@@ -34,7 +33,6 @@ def ts_compile_node(name, srcs, deps = [], data = [], skip_esm_esnext = True, vi
             out_dir = "lib_esnext",
             tsconfig = "//:tsconfig.esm.esnext",
             resolve_json_module = True,
-            source_map = True,
             deps = deps,
         )
 
@@ -65,7 +63,6 @@ def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_es
             declaration = True,
             tsconfig = "//:tsconfig",
             resolve_json_module = True,
-            source_map = True,
             deps = deps,
         )
     if not skip_esm:
@@ -76,7 +73,6 @@ def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_es
             out_dir = "lib",
             tsconfig = "//:tsconfig.esm",
             resolve_json_module = True,
-            source_map = True,
             deps = deps,
         )
     if not skip_esm_esnext:
@@ -87,7 +83,6 @@ def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_es
             out_dir = "lib_esnext",
             tsconfig = "//:tsconfig.esm.esnext",
             resolve_json_module = True,
-            source_map = True,
             deps = deps,
         )
 
