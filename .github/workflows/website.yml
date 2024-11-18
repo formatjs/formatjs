@@ -22,7 +22,7 @@ jobs:
 
       # Install dependencies
       - name: Install Dependencies
-        run: bazel run -- @pnpm//:pnpm --dir $PWD install --frozen-lockfile
+        run: bazel run --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} -- @pnpm//:pnpm --dir $PWD install --frozen-lockfile
 
       # Build the Docusaurus site
       - name: Build Docusaurus Site
