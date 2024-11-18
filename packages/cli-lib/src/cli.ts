@@ -168,7 +168,7 @@ This is especially useful to convert from a TMS-specific format back to react-in
     )
     .option(
       '--ast',
-      `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages for more information`
+      `Whether to compile to AST. See https://formatjs.github.io/docs/guides/advanced-usage#pre-parsing-messages for more information`
     )
     .option(
       '--skip-errors',
@@ -176,7 +176,7 @@ This is especially useful to convert from a TMS-specific format back to react-in
     )
     .option(
       '--pseudo-locale <pseudoLocale>',
-      `Whether to generate pseudo-locale files. See https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. "--ast" is required for this to work.`
+      `Whether to generate pseudo-locale files. See https://formatjs.github.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. "--ast" is required for this to work.`
     )
     .option(
       '--ignore-tag',
@@ -211,7 +211,7 @@ This is especially useful to convert from a TMS-specific format back to react-in
     )
     .option(
       '--ast',
-      `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages for more information`
+      `Whether to compile to AST. See https://formatjs.github.io/docs/guides/advanced-usage#pre-parsing-messages for more information`
     )
     .action(async (folder: string, outFolder: string, opts?: Opts) => {
       debug('Folder:', folder)

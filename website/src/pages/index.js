@@ -1,21 +1,21 @@
-import React, {useState} from 'react'
-import cx from 'classnames'
-import Layout from '@theme/Layout'
 import Link from '@docusaurus/Link'
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
-import useBaseUrl from '@docusaurus/useBaseUrl'
-import styles from './styles.module.css'
-import {IntlProvider, FormattedMessage, useIntl} from 'react-intl'
 import {useColorMode} from '@docusaurus/theme-common'
+import useBaseUrl from '@docusaurus/useBaseUrl'
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
+import Layout from '@theme/Layout'
+import cx from 'classnames'
+import React, {useState} from 'react'
+import {FormattedMessage, IntlProvider, useIntl} from 'react-intl'
+import styles from './styles.module.css'
 
+import cs from '../../lang/strings_cs-CZ.json'
+import de from '../../lang/strings_de-DE.json'
 import en from '../../lang/strings_en-US.json'
+import es from '../../lang/strings_es-AR.json'
 import fr from '../../lang/strings_fr-FR.json'
 import ja from '../../lang/strings_ja-JP.json'
-import cs from '../../lang/strings_cs-CZ.json'
 import pt from '../../lang/strings_pt-BR.json'
 import sv from '../../lang/strings_sv-SE.json'
-import es from '../../lang/strings_es-AR.json'
-import de from '../../lang/strings_de-DE.json'
 
 const MESSAGES = {
   'en-US': en,
@@ -33,7 +33,10 @@ function IntegrationSection({className}) {
   return (
     <div className={cx(className, styles.integration)}>
       <div className={`row ${styles.imgs}`}>
-        <a className="col col--4" href="https://formatjs.io/docs/react-intl">
+        <a
+          className="col col--4"
+          href="https://formatjs.github.io/docs/react-intl"
+        >
           <img
             src={useBaseUrl('img/react.svg')}
             alt={intl.formatMessage({
@@ -54,7 +57,10 @@ function IntegrationSection({className}) {
             })}
           />
         </a>
-        <a className="col col--4" href="https://formatjs.io/docs/vue-intl">
+        <a
+          className="col col--4"
+          href="https://formatjs.github.io/docs/vue-intl"
+        >
           <img
             src={useBaseUrl('img/vue-logo.svg')}
             alt={intl.formatMessage({

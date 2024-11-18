@@ -48,7 +48,7 @@ export const rule: RuleModule<MessageIds, Options> = {
     type: 'problem',
     docs: {
       description: 'Enforce description in message descriptor',
-      url: 'https://formatjs.io/docs/tooling/linter#enforce-description',
+      url: 'https://formatjs.github.io/docs/tooling/linter#enforce-description',
     },
     fixable: 'code',
     schema: [

@@ -90,7 +90,7 @@ export const rule: RuleModule<MessageIds, Options> = {
     docs: {
       description:
         'Enforce plural rules to always specify certain categories like `one`/`other`',
-      url: 'https://formatjs.io/docs/tooling/linter#enforce-plural-rules',
+      url: 'https://formatjs.github.io/docs/tooling/linter#enforce-plural-rules',
     },
     fixable: 'code',
     schema: [

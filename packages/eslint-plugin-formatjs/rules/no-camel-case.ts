@@ -73,7 +73,7 @@ export const rule: RuleModule<MessageIds> = {
     type: 'problem',
     docs: {
       description: 'Disallow camel case placeholders in message',
-      url: 'https://formatjs.io/docs/tooling/linter#no-camel-case',
+      url: 'https://formatjs.github.io/docs/tooling/linter#no-camel-case',
     },
     fixable: 'code',
     schema: [],

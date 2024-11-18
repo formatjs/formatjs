@@ -143,7 +143,7 @@ export const rule: RuleModule<MessageIds, Options> = {
     docs: {
       description:
         'Enforce that all messages with placeholders have enough passed-in values',
-      url: 'https://formatjs.io/docs/tooling/linter#enforce-placeholders',
+      url: 'https://formatjs.github.io/docs/tooling/linter#enforce-placeholders',
     },
     schema: [
       {

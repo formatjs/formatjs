@@ -225,7 +225,7 @@ export const rule: RuleModule<MessageIds> = {
     docs: {
       description:
         'Prefer using # to reference the count in the plural argument.',
-      url: 'https://formatjs.io/docs/tooling/linter#prefer-pound-in-plurals',
+      url: 'https://formatjs.github.io/docs/tooling/linter#prefer-pound-in-plurals',
     },
     messages: {
       preferPoundInPlurals:

@@ -130,7 +130,7 @@ results in 2 sentences: "I have a dog" & "I have many dogs".
 Default complexity limit is 20
 (using Smartling as a reference: https://help.smartling.com/hc/en-us/articles/360008030994-ICU-MessageFormat)
 `,
-      url: 'https://formatjs.io/docs/tooling/linter#no-complex-selectors',
+      url: 'https://formatjs.github.io/docs/tooling/linter#no-complex-selectors',
     },
     schema: [
       {

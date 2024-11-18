@@ -65,7 +65,7 @@ export const rule: RuleModule<MessageIds> = {
     type: 'problem',
     docs: {
       description: 'Disallow multiple plural rules in the same message',
-      url: 'https://formatjs.io/docs/tooling/linter#no-multiple-plurals',
+      url: 'https://formatjs.github.io/docs/tooling/linter#no-multiple-plurals',
     },
     fixable: 'code',
     schema: [],

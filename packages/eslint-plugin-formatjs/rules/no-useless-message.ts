@@ -68,7 +68,7 @@ export const rule: RuleModule<MessageIds> = {
     type: 'problem',
     docs: {
       description: 'Disallow unnecessary formatted message',
-      url: 'https://formatjs.io/docs/tooling/linter#no-useless-message',
+      url: 'https://formatjs.github.io/docs/tooling/linter#no-useless-message',
     },
     fixable: 'code',
     schema: [],

@@ -140,7 +140,7 @@ export const rule: RuleModule<MessageIds, Options> = {
     type: 'problem',
     docs: {
       description: 'Enforce (generated) ID in message descriptor',
-      url: 'https://formatjs.io/docs/tooling/linter#enforce-id',
+      url: 'https://formatjs.github.io/docs/tooling/linter#enforce-id',
     },
     fixable: 'code',
     schema: [

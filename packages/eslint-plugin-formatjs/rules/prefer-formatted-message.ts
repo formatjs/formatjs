@@ -12,7 +12,7 @@ export const rule: RuleModule<MessageIds> = {
     docs: {
       description:
         'Prefer `FormattedMessage` component over `intl.formatMessage` if applicable.',
-      url: 'https://formatjs.io/docs/tooling/linter#prefer-formatted-message',
+      url: 'https://formatjs.github.io/docs/tooling/linter#prefer-formatted-message',
     },
     messages: {
       jsxChildren:

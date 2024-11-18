@@ -149,7 +149,7 @@ export const rule: RuleModule<MessageIds> = {
     docs: {
       description:
         'Prevents usage of multiple consecutive whitespaces in message',
-      url: 'https://formatjs.io/docs/tooling/linter#no-multiple-whitespaces',
+      url: 'https://formatjs.github.io/docs/tooling/linter#no-multiple-whitespaces',
     },
     messages: {
       noMultipleWhitespaces: 'Multiple consecutive whitespaces are not allowed',

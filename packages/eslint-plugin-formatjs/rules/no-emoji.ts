@@ -92,7 +92,7 @@ export const rule: RuleModule<MessageIds, Options> = {
     type: 'problem',
     docs: {
       description: 'Disallow emojis in message',
-      url: 'https://formatjs.io/docs/tooling/linter#no-emoji',
+      url: 'https://formatjs.github.io/docs/tooling/linter#no-emoji',
     },
     fixable: 'code',
     schema: [

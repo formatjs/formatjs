@@ -64,7 +64,7 @@ export const rule: RuleModule<MessageIds> = {
     type: 'problem',
     docs: {
       description: 'Disallow offset in plural rules',
-      url: 'https://formatjs.io/docs/tooling/linter#no-offset',
+      url: 'https://formatjs.github.io/docs/tooling/linter#no-offset',
     },
     fixable: 'code',
     messages: {

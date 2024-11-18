@@ -2,13 +2,13 @@ import * as t from '@babel/types'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {interpolateName} from '@formatjs/ts-transformer'
 
+import {NodePath} from '@babel/core'
 import {
-  Options,
   ExtractedMessageDescriptor,
   MessageDescriptor,
   MessageDescriptorPath,
+  Options,
 } from './types'
-import {NodePath} from '@babel/core'
 
 const DESCRIPTOR_PROPS = new Set<keyof MessageDescriptorPath>([
   'id',
@@ -166,7 +166,7 @@ function getICUMessageValue(
 
     throw messagePath.buildCodeFrameError(
       '[React Intl] Message failed to parse. ' +
-        'See: https://formatjs.io/docs/core-concepts/icu-syntax' +
+        'See: https://formatjs.github.io/docs/core-concepts/icu-syntax' +
         `\n${parseError}`
     )
   }

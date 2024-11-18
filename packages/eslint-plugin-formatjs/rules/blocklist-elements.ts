@@ -126,7 +126,7 @@ function checkNode(
 }
 
 const createRule = ESLintUtils.RuleCreator(
-  _ => 'https://formatjs.io/docs/tooling/linter#blocklist-elements'
+  _ => 'https://formatjs.github.io/docs/tooling/linter#blocklist-elements'
 )
 
 export const rule = createRule({
@@ -135,7 +135,7 @@ export const rule = createRule({
     type: 'problem',
     docs: {
       description: 'Disallow specific elements in ICU message format',
-      url: 'https://formatjs.io/docs/tooling/linter#blocklist-elements',
+      url: 'https://formatjs.github.io/docs/tooling/linter#blocklist-elements',
     },
     fixable: 'code',
     schema: [

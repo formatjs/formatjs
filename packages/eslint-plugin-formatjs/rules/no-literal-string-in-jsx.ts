@@ -63,7 +63,7 @@ export const rule: RuleModule<MessageIds, Options> = {
     type: 'problem',
     docs: {
       description: 'Disallow untranslated literal strings without translation.',
-      url: 'https://formatjs.io/docs/tooling/linter#no-literal-string-in-jsx',
+      url: 'https://formatjs.github.io/docs/tooling/linter#no-literal-string-in-jsx',
     },
     schema: [
       {
