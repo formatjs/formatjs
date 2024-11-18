@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/formatjs/formatjs/compare/react-intl@6.8.9...react-intl@7.0.0) (2024-11-18)
+
+### Features
+
+* **react-intl:** drop typescript@4 support ([12ecc1b](https://github.com/formatjs/formatjs/commit/12ecc1b36c7d86bd8bd7e7786f5565e5a5b80f88)) - by @longlho
+* **react-intl:** remove polyfill packages in deps ([31b832f](https://github.com/formatjs/formatjs/commit/31b832f9a24bff0776d66e35cf85f59de25ed3c3)) - by @longlho
+
+### BREAKING CHANGES
+
+* **react-intl:** This removes @formatjs/intl-displaynames & @formatjs/intl-listformat as
+deps which will reduce package size. However, this also means you'll
+need typescript@5 at least since that has new type defs for those native
+Intl APIs.
+
 ## [6.8.9](https://github.com/formatjs/formatjs/compare/react-intl@6.8.8...react-intl@6.8.9) (2024-11-18)
 
 ### Bug Fixes

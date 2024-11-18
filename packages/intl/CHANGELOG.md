@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.10.15...@formatjs/intl@3.0.0) (2024-11-18)
+
+### Features
+
+* **@formatjs/intl:** drop typescript@4 support ([98d8910](https://github.com/formatjs/formatjs/commit/98d891091dc58c0695701fb1aca62fb8e51bf4ad)) - by @longlho
+* **@formatjs/intl:** remove polyfill packages in deps ([4713e1b](https://github.com/formatjs/formatjs/commit/4713e1b240a52f7e357dcc77912c33e8bef9bfa4)) - by @longlho
+
+### BREAKING CHANGES
+
+* **@formatjs/intl:** This removes @formatjs/intl-displaynames & @formatjs/intl-listformat as
+deps which will reduce package size. However, this also means you'll
+need typescript@5 at least since that has new type defs for those native
+Intl APIs.
+
 ## [2.10.15](https://github.com/formatjs/formatjs/compare/@formatjs/intl@2.10.14...@formatjs/intl@2.10.15) (2024-11-18)
 
 **Note:** Version bump only for package @formatjs/intl
