@@ -4,18 +4,16 @@
  * See the accompanying LICENSE file for terms.
  */
 import * as React from 'react'
-import {
-  invariant,
-  RelativeTimeFormatSingularUnit,
-} from '@formatjs/ecma402-abstract'
+
 import {FormatRelativeTimeOptions} from '@formatjs/intl'
+import {invariant} from '../utils'
 import useIntl from './useIntl'
 
 const MINUTE = 60
 const HOUR = 60 * 60
 const DAY = 60 * 60 * 24
 
-function selectUnit(seconds: number): RelativeTimeFormatSingularUnit {
+function selectUnit(seconds: number): Intl.RelativeTimeFormatUnit {
   const absValue = Math.abs(seconds)
 
   if (absValue < MINUTE) {
@@ -33,7 +31,7 @@ function selectUnit(seconds: number): RelativeTimeFormatSingularUnit {
   return 'day'
 }
 
-function getDurationInSeconds(unit?: RelativeTimeFormatSingularUnit): number {
+function getDurationInSeconds(unit?: Intl.RelativeTimeFormatUnit): number {
   switch (unit) {
     case 'second':
       return 1
@@ -48,7 +46,7 @@ function getDurationInSeconds(unit?: RelativeTimeFormatSingularUnit): number {
 
 function valueToSeconds(
   value?: number,
-  unit?: RelativeTimeFormatSingularUnit
+  unit?: Intl.RelativeTimeFormatUnit
 ): number {
   if (!value) {
     return 0
@@ -65,19 +63,17 @@ function valueToSeconds(
 
 export interface Props extends FormatRelativeTimeOptions {
   value?: number
-  unit?: RelativeTimeFormatSingularUnit
+  unit?: Intl.RelativeTimeFormatUnit
   updateIntervalInSeconds?: number
   children?(value: string): React.ReactElement | null
 }
 
-const INCREMENTABLE_UNITS: RelativeTimeFormatSingularUnit[] = [
+const INCREMENTABLE_UNITS: Intl.RelativeTimeFormatUnit[] = [
   'second',
   'minute',
   'hour',
 ]
-function canIncrement(
-  unit: RelativeTimeFormatSingularUnit = 'second'
-): boolean {
+function canIncrement(unit: Intl.RelativeTimeFormatUnit = 'second'): boolean {
   return INCREMENTABLE_UNITS.indexOf(unit) > -1
 }
 
@@ -110,7 +106,7 @@ const FormattedRelativeTime: React.FC<Props> = ({
     'Cannot schedule update with unit longer than hour'
   )
   const [prevUnit, setPrevUnit] = React.useState<
-    RelativeTimeFormatSingularUnit | undefined
+    Intl.RelativeTimeFormatUnit | undefined
   >()
   const [prevValue, setPrevValue] = React.useState<number>(0)
   const [currentValueInSeconds, setCurrentValueInSeconds] =

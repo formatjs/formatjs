@@ -1,4 +1,3 @@
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {IntlShape} from '@formatjs/intl'
 import {render} from '@testing-library/react'
 import * as React from 'react'
@@ -67,7 +66,7 @@ describe('<FormattedNumber>', () => {
 
   it('accepts valid Intl.NumberFormat options as props', () => {
     const num = 0.5
-    const options = {style: 'percent' as NumberFormatOptions['style']}
+    const options = {style: 'percent' as Intl.NumberFormatOptions['style']}
 
     const {getByTestId} = mountWithProvider({value: num, ...options}, intl)
 
@@ -162,7 +161,7 @@ describe('<FormattedNumberParts>', function () {
   it('accepts valid Intl.NumberFormat options as props', () => {
     const num = 0.5
     const options = {
-      style: 'percent' as NumberFormatOptions['style'],
+      style: 'percent' as Intl.NumberFormatOptions['style'],
       children,
     }
 

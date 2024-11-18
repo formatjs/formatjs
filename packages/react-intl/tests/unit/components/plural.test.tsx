@@ -1,10 +1,9 @@
-import * as React from 'react'
-import FormattedPlural from '../../../src/components/plural'
-import {mountFormattedComponentWithProvider} from '../testUtils'
-import {createIntl} from '../../../src/components/createIntl'
 import {IntlShape} from '@formatjs/intl'
 import {render} from '@testing-library/react'
-import {LDMLPluralRule} from '@formatjs/ecma402-abstract'
+import * as React from 'react'
+import {createIntl} from '../../../src/components/createIntl'
+import FormattedPlural from '../../../src/components/plural'
+import {mountFormattedComponentWithProvider} from '../testUtils'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedPlural)
 
@@ -98,7 +97,7 @@ describe('<FormattedPlural>', () => {
   })
 
   it('supports function-as-child pattern', () => {
-    const props = {one: 'foo'} as Record<LDMLPluralRule, string>
+    const props = {one: 'foo'} as Record<Intl.LDMLPluralRule, string>
     const num = 1
 
     const spy = jest.fn().mockImplementation(() => <b data-testid="b">Jest</b>)

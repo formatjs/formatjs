@@ -10,14 +10,14 @@ import {
   createIntl as coreCreateIntl,
   formatMessage as coreFormatMessage,
 } from '@formatjs/intl'
-import * as React from 'react'
-import type {IntlConfig, IntlShape, ResolvedIntlConfig} from '../types'
-import {DEFAULT_INTL_CONFIG, assignUniqueKeysToParts} from '../utils'
 import {
   FormatXMLElementFn,
   PrimitiveType,
   isFormatXMLElementFn,
 } from 'intl-messageformat'
+import * as React from 'react'
+import type {IntlConfig, IntlShape, ResolvedIntlConfig} from '../types'
+import {DEFAULT_INTL_CONFIG, assignUniqueKeysToParts} from '../utils'
 
 function assignUniqueKeysToFormatXMLElementFnArgument<
   T extends Record<
@@ -107,10 +107,8 @@ export const createIntl: CreateIntlFn<
     formatMessage: formatMessage.bind(
       null,
       resolvedConfig,
-      // @ts-expect-error fix this
       coreIntl.formatters
     ),
-    // @ts-expect-error fix this
     $t: formatMessage.bind(null, resolvedConfig, coreIntl.formatters),
   } as any
 }
