@@ -22,7 +22,7 @@ jobs:
 
       # Install dependencies
       - name: Install Dependencies
-        run: bazel run -- @pnpm//:pnpm --dir $PWD install
+        run: bazel run -- @pnpm//:pnpm --dir $PWD install --frozen-lockfile
 
       # Build the Docusaurus site
       - name: Build Docusaurus Site
