@@ -636,9 +636,6 @@ importers:
 
   packages/intl:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/fast-memoize':
         specifier: workspace:*
         version: link:../fast-memoize
@@ -852,9 +849,6 @@ importers:
 
   packages/react-intl:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:../icu-messageformat-parser
