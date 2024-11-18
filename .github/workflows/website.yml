@@ -32,7 +32,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.WEBSITE_SECRET_KEY }}
           external_repository: formatjs/formatjs.github.io
           publish_branch: main # default: gh-pages
           publish_dir: ./website/build
