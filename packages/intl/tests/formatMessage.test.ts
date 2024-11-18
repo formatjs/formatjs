@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import '@formatjs/intl-numberformat/polyfill'
-import '@formatjs/intl-numberformat/locale-data/en'
-import '@formatjs/intl-numberformat/locale-data/es'
-import IntlMessageFormat from 'intl-messageformat'
 import {parse} from '@formatjs/icu-messageformat-parser'
+import IntlMessageFormat from 'intl-messageformat'
 import {formatMessage as baseFormatMessage} from '../src/message'
 import {Formatters, IntlConfig, IntlFormatters} from '../src/types'
 

@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import '@formatjs/intl-displaynames/polyfill'
-import '@formatjs/intl-displaynames/locale-data/en'
-import '@formatjs/intl-displaynames/locale-data/zh-Hans-SG'
 import {formatDisplayName as formatDisplayNameFn} from '../src/displayName'
 import {IntlConfig, IntlFormatters} from '../src/types'
 
@@ -45,7 +42,7 @@ describe('format API', () => {
 
     it('should return locale display name as string', function () {
       expect(formatDisplayName('zh-Hans-SG', {type: 'language'})).toBe(
-        'Simplified Chinese (Singapore)'
+        'Chinese (Simplified, Singapore)'
       )
     })
 

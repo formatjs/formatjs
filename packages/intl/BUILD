@@ -30,8 +30,6 @@ SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/fast-memoize",
     ":node_modules/@formatjs/icu-messageformat-parser",
-    ":node_modules/@formatjs/intl-displaynames",
-    ":node_modules/@formatjs/intl-listformat",
     ":node_modules/intl-messageformat",
 ]
 
@@ -50,8 +48,6 @@ ts_compile(
 jest_test(
     name = "unit_test",
     data = [":srcs"] + TESTS + SRC_DEPS + [
-        ":node_modules/@formatjs/intl-datetimeformat",
-        ":node_modules/@formatjs/intl-numberformat",
         "//:node_modules/@types/node",
     ],
 )

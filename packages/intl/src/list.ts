@@ -1,12 +1,9 @@
-import {Formatters, IntlFormatters, OnErrorFn} from './types'
-import {filterProps} from './utils'
-import type IntlListFormat from '@formatjs/intl-listformat'
-import type {Part} from '@formatjs/intl-listformat'
-import type {IntlListFormatOptions} from '@formatjs/intl-listformat'
-import {FormatError, ErrorCode} from 'intl-messageformat'
+import {ErrorCode, FormatError} from 'intl-messageformat'
 import {IntlFormatError} from './error'
+import {Formatters, IntlFormatters, OnErrorFn, Part} from './types'
+import {filterProps} from './utils'
 
-const LIST_FORMAT_OPTIONS: Array<keyof IntlListFormatOptions> = [
+const LIST_FORMAT_OPTIONS: Array<keyof Intl.ListFormatOptions> = [
   'type',
   'style',
 ]
@@ -74,8 +71,8 @@ export function formatListToParts<T>(
   getListFormat: Formatters['getListFormat'],
   values: Parameters<IntlFormatters['formatList']>[0],
   options: Parameters<IntlFormatters['formatList']>[1] = {}
-): Part<T | string>[] {
-  const ListFormat: typeof IntlListFormat = (Intl as any).ListFormat
+): Part<T>[] {
+  const ListFormat: typeof Intl.ListFormat = Intl.ListFormat
   if (!ListFormat) {
     onError(
       new FormatError(
@@ -89,7 +86,7 @@ Try polyfilling it using "@formatjs/intl-listformat"
   const filteredOptions = filterProps(
     options,
     LIST_FORMAT_OPTIONS
-  ) as IntlListFormatOptions
+  ) as Intl.ListFormatOptions
 
   try {
     const richValues: Record<string, T> = {}
@@ -103,10 +100,11 @@ Try polyfilling it using "@formatjs/intl-listformat"
     })
     return getListFormat(locale, filteredOptions)
       .formatToParts(serializedValues)
-      .map(part =>
-        part.type === 'literal'
-          ? part
-          : {...part, value: richValues[part.value] || part.value}
+      .map(
+        part =>
+          (part.type === 'literal'
+            ? part
+            : {...part, value: richValues[part.value] || part.value}) as Part<T>
       )
   } catch (e) {
     onError(new IntlFormatError('Error formatting list.', locale, e))

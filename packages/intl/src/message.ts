@@ -1,16 +1,16 @@
 import {invariant} from '@formatjs/ecma402-abstract'
 
-import {Formatters, MessageDescriptor, CustomFormats, OnErrorFn} from './types'
+import {CustomFormats, Formatters, MessageDescriptor, OnErrorFn} from './types'
 
+import {MessageFormatElement, TYPE} from '@formatjs/icu-messageformat-parser'
 import {
-  IntlMessageFormat,
   FormatXMLElementFn,
-  PrimitiveType,
+  IntlMessageFormat,
   Formatters as IntlMessageFormatFormatters,
   Options,
+  PrimitiveType,
 } from 'intl-messageformat'
-import {MissingTranslationError, MessageFormatError} from './error'
-import {TYPE, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+import {MessageFormatError, MissingTranslationError} from './error'
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
@@ -115,9 +115,9 @@ export const formatMessage: FormatMessageFn<any> = (
   invariant(
     !!msgId,
     `[@formatjs/intl] An \`id\` must be provided to format a message. You can either:
-1. Configure your build toolchain with [babel-plugin-formatjs](https://formatjs.io/docs/tooling/babel-plugin)
-or [@formatjs/ts-transformer](https://formatjs.io/docs/tooling/ts-transformer) OR
-2. Configure your \`eslint\` config to include [eslint-plugin-formatjs](https://formatjs.io/docs/tooling/linter#enforce-id)
+1. Configure your build toolchain with [babel-plugin-formatjs](https://formatjs.github.io/docs/tooling/babel-plugin)
+or [@formatjs/ts-transformer](https://formatjs.github.io/docs/tooling/ts-transformer) OR
+2. Configure your \`eslint\` config to include [eslint-plugin-formatjs](https://formatjs.github.io/docs/tooling/linter#enforce-id)
 to autofix this issue`
   )
   const id = String(msgId)

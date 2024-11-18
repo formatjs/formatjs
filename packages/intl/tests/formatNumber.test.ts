@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import '@formatjs/intl-numberformat/polyfill'
-import '@formatjs/intl-numberformat/locale-data/en'
-import '@formatjs/intl-numberformat/locale-data/es'
 import {formatNumber as formatNumberFn} from '../src/number'
 import {IntlConfig} from '../src/types'
 

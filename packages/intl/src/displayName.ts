@@ -1,13 +1,10 @@
 import {Formatters, IntlFormatters, OnErrorFn} from './types'
 import {filterProps} from './utils'
-import {
-  DisplayNamesOptions,
-  DisplayNames as IntlDisplayNames,
-} from '@formatjs/intl-displaynames'
-import {FormatError, ErrorCode} from 'intl-messageformat'
+
+import {ErrorCode, FormatError} from 'intl-messageformat'
 import {IntlFormatError} from './error'
 
-const DISPLAY_NAMES_OPTONS: Array<keyof DisplayNamesOptions> = [
+const DISPLAY_NAMES_OPTONS: Array<keyof Intl.DisplayNamesOptions> = [
   'style',
   'type',
   'fallback',
@@ -26,7 +23,7 @@ export function formatDisplayName(
   value: Parameters<IntlFormatters['formatDisplayName']>[0],
   options: Parameters<IntlFormatters['formatDisplayName']>[1]
 ): string | undefined {
-  const DisplayNames: typeof IntlDisplayNames = (Intl as any).DisplayNames
+  const DisplayNames: typeof Intl.DisplayNames = (Intl as any).DisplayNames
   if (!DisplayNames) {
     onError(
       new FormatError(
@@ -40,7 +37,7 @@ Try polyfilling it using "@formatjs/intl-displaynames"
   const filteredOptions = filterProps(
     options,
     DISPLAY_NAMES_OPTONS
-  ) as DisplayNamesOptions
+  ) as Intl.DisplayNamesOptions
   try {
     return getDisplayNames(locale, filteredOptions).of(value)
   } catch (e) {
