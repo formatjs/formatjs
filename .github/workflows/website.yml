@@ -1,0 +1,38 @@
+name: Deploy Docusaurus to Organization GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # The branch where updates are made in the source repo
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20  # Specify the Node.js version compatible with your Docusaurus site
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: bazel run -- @pnpm//:pnpm --dir $PWD install
+
+      # Build the Docusaurus site
+      - name: Build Docusaurus Site
+        run: cd website; pnpm docusaurus build
+
+      # Deploy to Organization GitHub Pages Repository
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          external_repository: formatjs/formatjs.github.io
+          publish_branch: main  # default: gh-pages
+          publish_dir: ./website/build
