@@ -114,7 +114,7 @@ bazel run //packages/cli/integration-tests:compile_folder_integration_test_updat
    bazel run //packages/icu-messageformat-parser:regex
 ```
 
-### Working on `formatjs.io` website
+### Working on `formatjs.github.io` website
 
 We use [docusaurus](https://docusaurus.io/) for documentation. To run the website locally:
 

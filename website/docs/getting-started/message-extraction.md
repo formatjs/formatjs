@@ -71,7 +71,7 @@ yarn extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file lang/en.json --id-in
 </Tabs>
 
 :::caution ID Interpolation Pattern
-Make sure this pattern matches `idInterpolationPattern` when you use `babel-plugin-formatjs` or `@formatjs/ts-transformer` in [Bundling with formatjs](https://formatjs.io/docs/guides/bundler-plugins) or you'll get a `MISSING_TRANSLATION` error.
+Make sure this pattern matches `idInterpolationPattern` when you use `babel-plugin-formatjs` or `@formatjs/ts-transformer` in [Bundling with formatjs](https://formatjs.github.io/docs/guides/bundler-plugins) or you'll get a `MISSING_TRANSLATION` error.
 :::
 
 Given a file that has the following messages:
@@ -237,7 +237,7 @@ During extraction, we'll preserve explicit declared IDs and insert a hash as an 
 
 ## Automatic ID Generation
 
-Since manual IDs are discouraged, we've provided a `babel` plugin and a `TypeScript` AST transformer that will automatically insert message IDs in your transpiled code. For more details please visit [Bundling with formatjs](https://formatjs.io/docs/guides/bundler-plugins).
+Since manual IDs are discouraged, we've provided a `babel` plugin and a `TypeScript` AST transformer that will automatically insert message IDs in your transpiled code. For more details please visit [Bundling with formatjs](https://formatjs.github.io/docs/guides/bundler-plugins).
 
 ## Translation Management System (TMS) Integration
 

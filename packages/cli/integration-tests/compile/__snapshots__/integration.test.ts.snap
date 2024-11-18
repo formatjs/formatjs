@@ -168,13 +168,13 @@ Options:
                                   not provided, result will be printed to
                                   stdout
   --ast                           Whether to compile to AST. See
-                                  https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
+                                  https://formatjs.github.io/docs/guides/advanced-usage#pre-parsing-messages
                                   for more information
   --skip-errors                   Whether to continue compiling messages after
                                   encountering an error. Any keys with errors
                                   will not be included in the output file.
   --pseudo-locale <pseudoLocale>  Whether to generate pseudo-locale files. See
-                                  https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale
+                                  https://formatjs.github.io/docs/tooling/cli#--pseudo-locale-pseudolocale
                                   for possible values. "--ast" is required for
                                   this to work.
   --ignore-tag                    Whether the parser to treat HTML/XML tags as
@@ -791,7 +791,7 @@ exports[`out-file --ignore-tag 1`] = `
 exports[`out-file --ignore-tag 2`] = `
 {
   "brmsg": "a message with a non-explicit <br> self-closing tag",
-  "linkmsg": "a message containing <a href="https://formatjs.io/">a link</a>",
+  "linkmsg": "a message containing <a href="https://formatjs.github.io/">a link</a>",
 }
 `;
 
