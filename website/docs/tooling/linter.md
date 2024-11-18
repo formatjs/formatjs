@@ -35,13 +35,20 @@ yarn add -D eslint-plugin-formatjs
 
 Then in your eslint config:
 
-```json
-{
-  "plugins": ["formatjs"],
-  "rules": {
-    "formatjs/no-offset": "error"
-  }
-}
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  // other configs...
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/no-offset': 'error',
+    },
+  },
+]
 ```
 
 ### React
@@ -104,6 +111,27 @@ Similar to [babel-plugin-formatjs](./babel-plugin.md#additionalfunctionnames) & 
 
 Similar to [babel-plugin-formatjs](./babel-plugin.md#additionalcomponentnames) & [@formatjs/ts-transformer](./ts-transformer.md#additionalcomponentnames), this allows you to specify additional component names to check besides `FormattedMessage`.
 
+## Shareable Configs
+
+The plugin provides the following two shareable configs:
+
+1. `recommended`
+1. `strict`
+
+By using these, you can simplify your configuration while still using a set of rules that aligns with your
+quality standards.
+
+### Example
+
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  formatjs.configs.recommended,
+  // Other configs...
+]
+```
+
 ## Available Rules
 
 ### `blocklist-elements`
@@ -139,13 +167,19 @@ enum Element {
 
 #### Example
 
-```json
-{
-  "plugins": ["formatjs"],
-  "rules": {
-    "formatjs/blocklist-elements": [2, ["selectordinal"]]
-  }
-}
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/blocklist-elements': [2, ['selectordinal']],
+    },
+  },
+]
 ```
 
 ### `enforce-description`
@@ -174,13 +208,19 @@ const messages = defineMessages({
 
 #### Options
 
-```json
-{
-  "plugins": ["formatjs"],
-  "rules": {
-    "formatjs/enforce-description": ["error", "literal"]
-  }
-}
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/enforce-description': ['error', 'literal'],
+    },
+  },
+]
 ```
 
 Setting `literal` forces `description` to always be a string literal instead of function calls or variables. This is helpful for extraction tools that expects `description` to always be a literal
@@ -211,13 +251,19 @@ const messages = defineMessages({
 
 #### Options
 
-```json
-{
-  "plugins": ["formatjs"],
-  "rules": {
-    "formatjs/enforce-default-message": ["error", "literal"]
-  }
-}
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/enforce-default-message': ['error', 'literal'],
+    },
+  },
+]
 ```
 
 Setting `literal` forces `defaultMessage` to always be a string literal instead of function calls or variables. This is helpful for extraction tools that expects `defaultMessage` to always be a literal
@@ -273,18 +319,24 @@ intl.formatMessage({
 
 #### Options
 
-```json
-{
-  "plugins": ["formatjs"],
-  "rules": {
-    "formatjs/enforce-placeholders": [
-      "error",
-      {
-        "ignoreList": ["foo"]
-      }
-    ]
-  }
-}
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/enforce-placeholders': [
+        'error',
+        {
+          ignoreList: ['foo'],
+        },
+      ],
+    },
+  },
+]
 ```
 
 - `ignoreList`: List of placeholder names to ignore. This works with `defaultRichTextElements` in `react-intl` so we don't provide false positive for ambient global tag formatting
@@ -313,20 +365,26 @@ enum LDML {
 
 #### Example
 
-```json
-{
-  "plugins": ["formatjs"],
-  "rules": {
-    "formatjs/enforce-plural-rules": [
-      2,
-      {
-        "one": true,
-        "other": true,
-        "zero": false
-      }
-    ]
-  }
-}
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/enforce-plural-rules': [
+        2,
+        {
+          one: true,
+          other: true,
+          zero: false,
+        },
+      ],
+    },
+  },
+]
 ```
 
 ### `no-camel-case`
@@ -364,21 +422,29 @@ Messages that look like `{thing, plural, one {1 thing} other {# things}}` will n
 
 This prevents usage of emojis (or above a certain Unicode version) in message
 
-```json
-{
-  "plugins": ["formatjs"],
-  "rules": {
-    "formatjs/no-emoji": ["error"]
-  }
-}
+```js
+import formatjs from 'eslint-plugin-formatjs'
 
-// OR
-{
-  "plugins": ["formatjs"],
-  "rules": {
-    "formatjs/no-emoji": ["error", {"versionAbove": "12.0"}]
-  }
-}
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/no-emoji': ['error'],
+    },
+  },
+
+  // OR
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/no-emoji': ['error', {versionAbove: '12.0'}],
+    },
+  },
+]
 ```
 
 #### Why
@@ -448,42 +514,51 @@ This prevents untranslated strings in JSX.
 <input aria-label={`Untranslated label`} />
 ```
 
-This linter reporter text literals or string expressions, including string
+This linter reports text literals or string expressions, including string
 concatenation expressions in the JSX children. It also checks certain JSX
-attributes that you can customize. Example:
+attributes that you can customize.
 
-```javascript
-// In .eslintrc.js
-module.exports = {
-  // other rules...
-  'formatjs/no-literal-string-in-jsx': [
-    2,
-    {
-      // Include or exclude additional prop checks (merged with the default checks)
-      props: {
-        include: [
-          // picomatch style glob pattern for tag name and prop name.
-          // check `name` prop of `UI.Button` tag.
-          ['UI.Button', 'name'],
-          // check `message` of any component.
-          ['*', 'message'],
-        ],
-        // Exclude will always override include.
-        exclude: [
-          // do not check `message` of the `Foo` tag.
-          ['Foo', 'message'],
-          // do not check aria-label and aria-description of `Bar` tag.
-          ['Bar', 'aria-{label,description}'],
-        ],
-      },
+#### Example
+
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  {
+    plugins: {
+      formatjs,
     },
-  ],
-}
+    rules: {
+      'formatjs/no-literal-string-in-jsx': [
+        2,
+        {
+          // Include or exclude additional prop checks (merged with the default checks)
+          props: {
+            include: [
+              // picomatch style glob pattern for tag name and prop name.
+              // check `name` prop of `UI.Button` tag.
+              ['UI.Button', 'name'],
+              // check `message` of any component.
+              ['*', 'message'],
+            ],
+            // Exclude will always override include.
+            exclude: [
+              // do not check `message` of the `Foo` tag.
+              ['Foo', 'message'],
+              // do not check aria-label and aria-description of `Bar` tag.
+              ['Bar', 'aria-{label,description}'],
+            ],
+          },
+        },
+      ],
+    },
+  },
+]
 ```
 
 The default prop checks are:
 
-```jsx
+```js
 {
   include: [
     // check aria attributes that the screen reader announces.
@@ -608,18 +683,24 @@ const messages = defineMessages({
 
 #### Options
 
-```json
-{
-  "plugins": ["formatjs"],
-  "rules": {
-    "formatjs/enforce-id": [
-      "error",
-      {
-        "idInterpolationPattern": "[sha512:contenthash:base64:6]"
-      }
-    ]
-  }
-}
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/enforce-id': [
+        'error',
+        {
+          idInterpolationPattern: '[sha512:contenthash:base64:6]',
+        },
+      ],
+    },
+  },
+]
 ```
 
 - `idInterpolationPattern`: Pattern to verify ID against
@@ -666,18 +747,24 @@ Default complexity limit is 20 (using [Smartling as a reference](https://help.sm
 
 #### Options
 
-```json
-{
-  "plugins": ["formatjs"],
-  "rules": {
-    "formatjs/no-complex-selectors": [
-      "error",
-      {
-        "limit": 3
-      }
-    ]
-  }
-}
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/no-complex-selectors': [
+        'error',
+        {
+          limit: 3,
+        },
+      ],
+    },
+  },
+]
 ```
 
 ### `no-invalid-icu`
