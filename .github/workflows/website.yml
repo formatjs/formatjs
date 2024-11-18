@@ -16,7 +16,7 @@ jobs:
 
       # Set up Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20  # Specify the Node.js version compatible with your Docusaurus site
 
