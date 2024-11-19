@@ -1039,8 +1039,8 @@ importers:
         specifier: workspace:*
         version: link:../packages/react-intl
       react-live:
-        specifier: 4.1.7
-        version: 4.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 4.1.8
+        version: 4.1.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typescript:
         specifier: 5.6.2
         version: 5.6.2
@@ -7941,8 +7941,8 @@ packages:
     peerDependencies:
       react: ^16.13.1 || ^17.0.0 || ^18.0.0
 
-  react-live@4.1.7:
-    resolution: {integrity: sha512-NTzl0POOAW3dkp7+QL30duOrIu2Vzf2LHdx4TaQ0BqOAtQcSTKEXujfm9jR2VoCHko0oi35PYp38yKQBXz4mrg==}
+  react-live@4.1.8:
+    resolution: {integrity: sha512-B2SgNqwPuS2ekqj4lcxi5TibEcjWkdVyYykBEUBshPAPDQ527x2zPEZg560n8egNtAjUpwXFQm7pcXV65aAYmg==}
     engines: {node: '>= 0.12.0', npm: '>= 2.0.0'}
     peerDependencies:
       react: '>=18.0.0'
@@ -11435,7 +11435,7 @@ snapshots:
       fs-extra: 11.2.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-live: 4.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-live: 4.1.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tslib: 2.8.1
     transitivePeerDependencies:
       - '@docusaurus/faster'
@@ -19002,7 +19002,7 @@ snapshots:
     dependencies:
       react: 18.3.1
 
-  react-live@4.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-live@4.1.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       prism-react-renderer: 2.4.0(react@18.3.1)
       react: 18.3.1
