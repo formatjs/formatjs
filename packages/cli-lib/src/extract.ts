@@ -67,9 +67,9 @@ export type ExtractOpts = Opts & {
    */
   readFromStdin?: boolean
   /**
-   * Path to a formatter file that controls the shape of JSON file from `outFile`.
+   * Either path to a formatter file that controls the shape of JSON file from `outFile` or {@link Formatter} object.
    */
-  format?: string | Formatter<unknown>
+  format?: string | Formatter<any>
   /**
    * Whether to hoist selectors & flatten sentences
    */
