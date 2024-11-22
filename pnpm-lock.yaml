@@ -1021,8 +1021,8 @@ importers:
         specifier: 3.1.0
         version: 3.1.0(@types/react@18.3.12)(react@18.3.1)
       '@orama/plugin-docusaurus-v3':
-        specifier: 3.0.1
-        version: 3.0.1(@docusaurus/plugin-content-docs@3.6.2(@mdx-js/react@3.1.0(@types/react@18.3.12)(react@18.3.1))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(eslint@9.14.0(jiti@1.21.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@docusaurus/theme-common@3.6.2(@docusaurus/plugin-content-docs@3.6.2(@mdx-js/react@3.1.0(@types/react@18.3.12)(react@18.3.1))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(eslint@9.14.0(jiti@1.21.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@docusaurus/types@3.6.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@docusaurus/utils@3.6.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)(zod@3.23.8)
+        specifier: 3.0.2
+        version: 3.0.2(@docusaurus/plugin-content-docs@3.6.2(@mdx-js/react@3.1.0(@types/react@18.3.12)(react@18.3.1))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(eslint@9.14.0(jiti@1.21.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@docusaurus/theme-common@3.6.2(@docusaurus/plugin-content-docs@3.6.2(@mdx-js/react@3.1.0(@types/react@18.3.12)(react@18.3.1))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(eslint@9.14.0(jiti@1.21.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@docusaurus/types@3.6.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@docusaurus/utils@3.6.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)(zod@3.23.8)
       classnames:
         specifier: 2.5.1
         version: 2.5.1
@@ -2600,15 +2600,15 @@ packages:
     resolution: {integrity: sha512-euTV/2kya290SNkl5m8e/H1na8iDygk74nNtl4E0YZNyYIrEMwE1JwamoroMKGZw2Uz+in/8gH3m1+2YfP0j1w==}
     engines: {node: '>= 16.0.0'}
 
-  '@orama/orama@3.0.1':
-    resolution: {integrity: sha512-18hl0MiCLmumODHjrLzSdTb1Ny3Dh8tn44jwgx0LksCdvVAsr3jQvfr+hwrE7bVkap0wPELb/dnuJjvupKxheQ==}
+  '@orama/orama@3.0.2':
+    resolution: {integrity: sha512-1dfxup89K2DB2bbfx9rXyr/IAvhCKbH79lZCXVh5HWvdJ9g0VAvPIs3+UzjiyOdycEHYTbYundCTN6+Ygj3z4w==}
     engines: {node: '>= 16.0.0'}
 
-  '@orama/plugin-analytics@3.0.1':
-    resolution: {integrity: sha512-80dLWS8q5H0tiRklIuetOr+HluXi4Xtkq4YEXGaWBWsqtn5KqzN9j05HEJNBVNOg89XdbX/FYDoiH5qcHsQQ6A==}
+  '@orama/plugin-analytics@3.0.2':
+    resolution: {integrity: sha512-Os68/U7mK8OvBOuxdFtyxio8lAn4/MJJ7ty9rUiLHf90NlYqisevjxN+XTM5ofwR4Sv8v4a6OCclDGvCR6H0+g==}
 
-  '@orama/plugin-docusaurus-v3@3.0.1':
-    resolution: {integrity: sha512-rbTFDjhbCCjXPueUswZUUZD7Q+xOkDXgJaooUVO+RRlV01zkvi4a/82uIuxdk5C8QvbyQosmVYhCmoPbGmjHlQ==}
+  '@orama/plugin-docusaurus-v3@3.0.2':
+    resolution: {integrity: sha512-9pBJt9o5cEeB2C5lbrKim5COShhbiHy37JhbShTp6i9+huOA261O9CXmZCBz02KeS4w47a9NtiYxXbE8d8IFFg==}
     peerDependencies:
       '@docusaurus/plugin-content-docs': '>= 3.2.0'
       '@docusaurus/theme-common': '>= 3.2.0'
@@ -2617,8 +2617,8 @@ packages:
       react: '>= 18.0.0'
       react-dom: '>= 18.0.0'
 
-  '@orama/plugin-parsedoc@3.0.1':
-    resolution: {integrity: sha512-MrmJCNGSmnIQUaG1Zw6pA8v50GQa8AujNgGXtGk9O8VenquedpRCchPhESbMcsJv1j5/Jj26q/CPt8oxldZ8Bg==}
+  '@orama/plugin-parsedoc@3.0.2':
+    resolution: {integrity: sha512-qg9VGrPxruqGxZICKVQRDkNosCTgcB8p0cBHHEJScanNOrcdPimI/yuEy3IwKNa4epm/ZRb1l+tUPuAl7CYilw==}
 
   '@orama/react-components@0.0.28':
     resolution: {integrity: sha512-zd4j5zEOLOLQgqHipprUnh0cSMWryOX562m6oeVcqm6ckEX72F0gI3MK6nPo0Zc5rrm5nJKqqqteKK1dCLRd4w==}
@@ -2626,11 +2626,11 @@ packages:
       react: ^17.0.0 || ^18.3.1
       react-dom: ^17.0.0 || ^18.3.1
 
-  '@orama/switch@3.0.1':
-    resolution: {integrity: sha512-YNqLIZg2lQAhckzdtutM71adrODUqRlwIheAc/E6UnrYmY+9b1A1rHkfvQ9apLK9HlfBAij1/UDnAoNRrVZ5Ig==}
+  '@orama/switch@3.0.2':
+    resolution: {integrity: sha512-ui59rKC67rqF5rg6ncQhHCl11LDw4WZJfhsqJ2UHxxsh3S5F7LsT3a8/5MZDGKkFtj3IVqIRKF+pi0flMJxuTQ==}
     peerDependencies:
-      '@orama/orama': 3.0.1
-      '@oramacloud/client': 1.3.15
+      '@orama/orama': 3.0.2
+      '@oramacloud/client': ^2.1.1
 
   '@orama/wc-components@0.0.28':
     resolution: {integrity: sha512-caxCZ2MdoEC92BKbN9Ki7R+icTQnpL3SAzKX2J8k4eFSMvt0svujGxogSbo1stQYtWGaQx2Rf1ucNMI/z7mQhw==}
@@ -12706,24 +12706,24 @@ snapshots:
 
   '@orama/orama@2.1.1': {}
 
-  '@orama/orama@3.0.1': {}
+  '@orama/orama@3.0.2': {}
 
-  '@orama/plugin-analytics@3.0.1':
+  '@orama/plugin-analytics@3.0.2':
     dependencies:
-      '@orama/orama': 3.0.1
+      '@orama/orama': 3.0.2
 
-  '@orama/plugin-docusaurus-v3@3.0.1(@docusaurus/plugin-content-docs@3.6.2(@mdx-js/react@3.1.0(@types/react@18.3.12)(react@18.3.1))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(eslint@9.14.0(jiti@1.21.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@docusaurus/theme-common@3.6.2(@docusaurus/plugin-content-docs@3.6.2(@mdx-js/react@3.1.0(@types/react@18.3.12)(react@18.3.1))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(eslint@9.14.0(jiti@1.21.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@docusaurus/types@3.6.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@docusaurus/utils@3.6.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)(zod@3.23.8)':
+  '@orama/plugin-docusaurus-v3@3.0.2(@docusaurus/plugin-content-docs@3.6.2(@mdx-js/react@3.1.0(@types/react@18.3.12)(react@18.3.1))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(eslint@9.14.0(jiti@1.21.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@docusaurus/theme-common@3.6.2(@docusaurus/plugin-content-docs@3.6.2(@mdx-js/react@3.1.0(@types/react@18.3.12)(react@18.3.1))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(eslint@9.14.0(jiti@1.21.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@docusaurus/types@3.6.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@docusaurus/utils@3.6.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)(zod@3.23.8)':
     dependencies:
       '@docusaurus/plugin-content-docs': 3.6.2(@mdx-js/react@3.1.0(@types/react@18.3.12)(react@18.3.1))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(eslint@9.14.0(jiti@1.21.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)
       '@docusaurus/theme-common': 3.6.2(@docusaurus/plugin-content-docs@3.6.2(@mdx-js/react@3.1.0(@types/react@18.3.12)(react@18.3.1))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(eslint@9.14.0(jiti@1.21.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)
       '@docusaurus/types': 3.6.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@docusaurus/utils': 3.6.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)
       '@orama/highlight': 0.1.6
-      '@orama/orama': 3.0.1
-      '@orama/plugin-analytics': 3.0.1
-      '@orama/plugin-parsedoc': 3.0.1
+      '@orama/orama': 3.0.2
+      '@orama/plugin-analytics': 3.0.2
+      '@orama/plugin-parsedoc': 3.0.2
       '@orama/react-components': 0.0.28(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)(zod@3.23.8)
-      '@orama/switch': 3.0.1(@orama/orama@3.0.1)(@oramacloud/client@1.3.18(encoding@0.1.13)(typescript@5.6.2)(zod@3.23.8))
+      '@orama/switch': 3.0.2(@orama/orama@3.0.2)(@oramacloud/client@1.3.18(encoding@0.1.13)(typescript@5.6.2)(zod@3.23.8))
       '@oramacloud/client': 1.3.18(encoding@0.1.13)(typescript@5.6.2)(zod@3.23.8)
       github-slugger: 2.0.0
       gray-matter: 4.0.3
@@ -12743,9 +12743,9 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@orama/plugin-parsedoc@3.0.1':
+  '@orama/plugin-parsedoc@3.0.2':
     dependencies:
-      '@orama/orama': 3.0.1
+      '@orama/orama': 3.0.2
       glob: 8.1.0
       hast-util-from-html: 1.0.2
       hast-util-from-string: 2.0.0
@@ -12771,9 +12771,9 @@ snapshots:
       - typescript
       - zod
 
-  '@orama/switch@3.0.1(@orama/orama@3.0.1)(@oramacloud/client@1.3.18(encoding@0.1.13)(typescript@5.6.2)(zod@3.23.8))':
+  '@orama/switch@3.0.2(@orama/orama@3.0.2)(@oramacloud/client@1.3.18(encoding@0.1.13)(typescript@5.6.2)(zod@3.23.8))':
     dependencies:
-      '@orama/orama': 3.0.1
+      '@orama/orama': 3.0.2
       '@oramacloud/client': 1.3.18(encoding@0.1.13)(typescript@5.6.2)(zod@3.23.8)
 
   '@orama/wc-components@0.0.28(encoding@0.1.13)(typescript@5.6.2)(zod@3.23.8)':
