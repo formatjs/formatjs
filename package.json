@@ -90,7 +90,7 @@
     "cldr-units-full": "^46.0.0",
     "clsx": "^2.1.1",
     "commander": "^12.1.0",
-    "content-tag": "^2.0.2",
+    "content-tag": "^3.0.0",
     "core-js": "^3.38.1",
     "ember-template-recast": "^6.1.5",
     "emoji-regex": "^10.4.0",
