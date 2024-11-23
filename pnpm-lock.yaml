@@ -75,8 +75,8 @@ importers:
         specifier: ^0.1.7
         version: 0.1.7
       '@glimmer/reference':
-        specifier: ^0.92.3
-        version: 0.92.3
+        specifier: ^0.93.0
+        version: 0.93.0
       '@glimmer/syntax':
         specifier: 0.92.3
         version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
@@ -432,8 +432,8 @@ importers:
         specifier: ^0.1.7
         version: 0.1.7
       '@glimmer/reference':
-        specifier: ^0.91.1 || ^0.92.0
-        version: 0.92.3
+        specifier: ^0.91.1 || ^0.92.0 || ^0.93.0
+        version: 0.93.0
       '@glimmer/syntax':
         specifier: 0.92.3
         version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
@@ -472,8 +472,8 @@ importers:
         specifier: ^0.1.7
         version: 0.1.7
       '@glimmer/reference':
-        specifier: ^0.91.1 || ^0.92.0
-        version: 0.92.3
+        specifier: ^0.91.1 || ^0.92.0 || ^0.93.0
+        version: 0.93.0
       '@glimmer/syntax':
         specifier: 0.92.3
         version: 0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)
@@ -2386,14 +2386,17 @@ packages:
   '@glimmer/global-context@0.92.3':
     resolution: {integrity: sha512-tvlK5pt6oSe3furJ1KsO9vG/KmF9S98HLrcR48XbfwXlkuxvUeS94cdQId4GCN5naeX4OC4xm6eEjZWdc2s+jw==}
 
+  '@glimmer/global-context@0.92.4':
+    resolution: {integrity: sha512-WCbiZXk1lSt3qLniOHpNC7d7yPTBnycgGBVTFW70niJOBmZr2A4NSUQP1kB1t0ljS2t765DHLMGSRny1zFK4Pw==}
+
   '@glimmer/interfaces@0.92.3':
     resolution: {integrity: sha512-QwQeA01N+0h+TAi/J7iUnZtRuJy+093hNyagxDQBA6b1wCBw+q+al9+O6gmbWlkWE7EifzmNE1nnrgcecJBlJQ==}
 
   '@glimmer/reference@0.84.3':
     resolution: {integrity: sha512-lV+p/aWPVC8vUjmlvYVU7WQJsLh319SdXuAWoX/SE3pq340BJlAJiEcAc6q52y9JNhT57gMwtjMX96W5Xcx/qw==}
 
-  '@glimmer/reference@0.92.3':
-    resolution: {integrity: sha512-Ud4LE689mEXL6BJnJx0ZPt2dt/A540C+TAnBFXHpcAjROz5gT337RN+tgajwudEUqpufExhcPSMGzs1pvWYCJg==}
+  '@glimmer/reference@0.93.0':
+    resolution: {integrity: sha512-7XOQydl54GMOUg1i2VB6psyF7Ce2EDBgK6QStMuTTsA1RtMNizx8hrg0mWJWCROeqhPwE6tmwsR8zFYHLALqgg==}
 
   '@glimmer/syntax@0.92.3':
     resolution: {integrity: sha512-7wPKQmULyXCYf0KvbPmfrs/skPISH2QGR9atCnmDWnHyLv5SSZVLm1P0Ctrpta6+Ci3uGQb7hGk0IjsLEavcYQ==}
@@ -2404,11 +2407,17 @@ packages:
   '@glimmer/util@0.92.3':
     resolution: {integrity: sha512-K1oH93gGU36slycxJ9CcFpUTsdOc4XQ6RuZFu5oRsxFYtEF5PSu7ik11h58fyeoaWOr1ebfkyAMawbeI2AJ5GA==}
 
+  '@glimmer/util@0.93.0':
+    resolution: {integrity: sha512-C0kJlyG2NKoBYC97xkrvR+imhxKEG4Pki6HdpaYvKk6h2EuOxw6fgBBW45DAPcEkjmNKeVuMGXPzd5nAJih0YQ==}
+
   '@glimmer/validator@0.84.3':
     resolution: {integrity: sha512-RTBV4TokUB0vI31UC7ikpV7lOYpWUlyqaKV//pRC4pexYMlmqnVhkFrdiimB/R1XyNdUOQUmnIAcdic39NkbhQ==}
 
   '@glimmer/validator@0.92.3':
     resolution: {integrity: sha512-HKrMYeW0YhiksSeKYqX2chUR/rz82j12DcY7p2dORQlTV3qlAfiE5zRTJH1KRA1X3ZMf7DI2/GOzkXwYp0o+3Q==}
+
+  '@glimmer/validator@0.93.0':
+    resolution: {integrity: sha512-bRxTAXS5iTpMxH2hqkkAs4GU/+KbHANz9bglpb0ZnO7DdYJOZCl+XlE1s/5fNk6KQ5x3EtKD0Ekn7dw62yLvLA==}
 
   '@glimmer/wire-format@0.92.3':
     resolution: {integrity: sha512-gFz81Q9+V7Xs0X8mSq6y8qacHm0dPaGJo2/Bfcsdow1hLOKNgTCLr4XeDBhRML8f6I6Gk9ugH4QDxyIOXOpC4w==}
@@ -12343,6 +12352,8 @@ snapshots:
 
   '@glimmer/global-context@0.92.3': {}
 
+  '@glimmer/global-context@0.92.4': {}
+
   '@glimmer/interfaces@0.92.3(patch_hash=75gmslt2lrk4ybls6stmqfpu2m)':
     dependencies:
       '@simple-dom/interface': 1.4.0
@@ -12355,13 +12366,13 @@ snapshots:
       '@glimmer/util': 0.84.3
       '@glimmer/validator': 0.84.3
 
-  '@glimmer/reference@0.92.3':
+  '@glimmer/reference@0.93.0':
     dependencies:
       '@glimmer/env': 0.1.7
-      '@glimmer/global-context': 0.92.3
+      '@glimmer/global-context': 0.92.4
       '@glimmer/interfaces': 0.92.3(patch_hash=75gmslt2lrk4ybls6stmqfpu2m)
-      '@glimmer/util': 0.92.3
-      '@glimmer/validator': 0.92.3
+      '@glimmer/util': 0.93.0
+      '@glimmer/validator': 0.93.0
 
   '@glimmer/syntax@0.92.3(patch_hash=7stkqv6abzim5fnspwum4z3xfa)':
     dependencies:
@@ -12382,6 +12393,11 @@ snapshots:
       '@glimmer/env': 0.1.7
       '@glimmer/interfaces': 0.92.3(patch_hash=75gmslt2lrk4ybls6stmqfpu2m)
 
+  '@glimmer/util@0.93.0':
+    dependencies:
+      '@glimmer/env': 0.1.7
+      '@glimmer/interfaces': 0.92.3(patch_hash=75gmslt2lrk4ybls6stmqfpu2m)
+
   '@glimmer/validator@0.84.3':
     dependencies:
       '@glimmer/env': 0.1.7
@@ -12393,6 +12409,13 @@ snapshots:
       '@glimmer/global-context': 0.92.3
       '@glimmer/interfaces': 0.92.3(patch_hash=75gmslt2lrk4ybls6stmqfpu2m)
       '@glimmer/util': 0.92.3
+
+  '@glimmer/validator@0.93.0':
+    dependencies:
+      '@glimmer/env': 0.1.7
+      '@glimmer/global-context': 0.92.4
+      '@glimmer/interfaces': 0.92.3(patch_hash=75gmslt2lrk4ybls6stmqfpu2m)
+      '@glimmer/util': 0.93.0
 
   '@glimmer/wire-format@0.92.3':
     dependencies:
