@@ -27,6 +27,7 @@ npm_package(
 SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
+    ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/fast-memoize",
     ":node_modules/@formatjs/icu-messageformat-parser",
     ":node_modules/intl-messageformat",

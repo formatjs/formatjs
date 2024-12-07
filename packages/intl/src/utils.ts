@@ -1,3 +1,4 @@
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {Cache, memoize, strategies} from '@formatjs/fast-memoize'
 import {IntlMessageFormat} from 'intl-messageformat'
 import {UnsupportedFormatterError} from './error'
@@ -174,7 +175,7 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   name: string,
   onError: OnErrorFn
 ):
-  | Intl.NumberFormatOptions
+  | NumberFormatOptions
   | Intl.DateTimeFormatOptions
   | Intl.RelativeTimeFormatOptions
   | undefined {

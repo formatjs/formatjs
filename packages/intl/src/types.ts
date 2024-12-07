@@ -1,5 +1,6 @@
 import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {
   FormatError,
   Formats,
@@ -92,10 +93,7 @@ export type FormatDateOptions = Omit<
   'localeMatcher'
 > &
   CustomFormatConfig<'date'>
-export type FormatNumberOptions = Omit<
-  Intl.NumberFormatOptions,
-  'localeMatcher'
-> &
+export type FormatNumberOptions = Omit<NumberFormatOptions, 'localeMatcher'> &
   CustomFormatConfig<'number'>
 export type FormatRelativeTimeOptions = Omit<
   Intl.RelativeTimeFormatOptions,
@@ -221,7 +219,7 @@ export interface Formatters {
   getNumberFormat(
     this: void,
     locales?: string | string[],
-    opts?: Intl.NumberFormatOptions
+    opts?: NumberFormatOptions
   ): Intl.NumberFormat
   getMessageFormat(
     this: void,

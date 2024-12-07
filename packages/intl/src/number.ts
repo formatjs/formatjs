@@ -1,8 +1,9 @@
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {IntlFormatError} from './error'
 import {CustomFormats, Formatters, IntlFormatters, OnErrorFn} from './types'
 import {filterProps, getNamedFormat} from './utils'
 
-const NUMBER_FORMAT_OPTIONS: Array<keyof Intl.NumberFormatOptions> = [
+const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
   'style',
   'currency',
   'unit',
@@ -26,13 +27,9 @@ const NUMBER_FORMAT_OPTIONS: Array<keyof Intl.NumberFormatOptions> = [
   'numberingSystem',
 
   // ES2023 NumberFormat
-  // @ts-expect-error: TypeScript doesn't know about this yet
   'trailingZeroDisplay',
-  // @ts-expect-error: TypeScript doesn't know about this yet
   'roundingPriority',
-  // @ts-expect-error: TypeScript doesn't know about this yet
   'roundingIncrement',
-  // @ts-expect-error: TypeScript doesn't know about this yet
   'roundingMode',
 ]
 
@@ -53,12 +50,12 @@ export function getFormatter(
   const {format} = options
   const defaults = ((format &&
     getNamedFormat(formats!, 'number', format, onError)) ||
-    {}) as Intl.NumberFormatOptions
+    {}) as NumberFormatOptions
   const filteredOptions = filterProps(
     options,
     NUMBER_FORMAT_OPTIONS,
     defaults
-  ) as Intl.NumberFormatOptions
+  ) as NumberFormatOptions
 
   return getNumberFormat(locale, filteredOptions)
 }

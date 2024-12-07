@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import {formatNumber as formatNumberFn} from '../src/number'
 import {IntlConfig} from '../src/types'
 
