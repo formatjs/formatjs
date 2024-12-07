@@ -4,7 +4,7 @@ import {
   IntlFormatters,
   IntlShape,
 } from '@formatjs/intl'
-import Vue from 'vue'
+import type {Plugin} from 'vue'
 import {intlKey} from './injection-key'
 
 declare module 'vue' {
@@ -21,7 +21,7 @@ declare module 'vue' {
   }
 }
 
-export const createIntl = (options: IntlConfig): Vue.Plugin => ({
+export const createIntl = (options: IntlConfig): Plugin => ({
   install(app) {
     if (!options) {
       throw new Error('Missing `options` for vue-intl plugin')
