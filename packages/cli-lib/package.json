@@ -22,7 +22,8 @@
   "author": "Linjie Ding <linjie@airtable.com>",
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
-  "main": "index.js",
+  "type": "module",
+  "main": "lib_esnext/index.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"
