@@ -70,7 +70,7 @@ importers:
         version: 0.1.7
       '@glimmer/reference':
         specifier: ^0.93.0
-        version: 0.93.0
+        version: 0.93.1
       '@glimmer/syntax':
         specifier: 0.93.1
         version: 0.93.1
@@ -2395,6 +2395,9 @@ packages:
   '@glimmer/reference@0.93.0':
     resolution: {integrity: sha512-7XOQydl54GMOUg1i2VB6psyF7Ce2EDBgK6QStMuTTsA1RtMNizx8hrg0mWJWCROeqhPwE6tmwsR8zFYHLALqgg==}
 
+  '@glimmer/reference@0.93.1':
+    resolution: {integrity: sha512-OyVPi0Nia5PnXchbhP4pE9kxH3kL2bu/EcAibiE4c9pqm7UTiSMBhFfqbUQx1sQ8I15MxfbLsdxTEo/ekOLgFQ==}
+
   '@glimmer/syntax@0.93.1':
     resolution: {integrity: sha512-Dvq+Ni4Dcpn8kEiYN4ziTQxHrmPSchJCQJppXmFzdz77SFnhl0nWf7W8nnj88DNFEyBzKiTQCyCSuew4jrbgjA==}
 
@@ -2412,6 +2415,9 @@ packages:
 
   '@glimmer/validator@0.93.0':
     resolution: {integrity: sha512-bRxTAXS5iTpMxH2hqkkAs4GU/+KbHANz9bglpb0ZnO7DdYJOZCl+XlE1s/5fNk6KQ5x3EtKD0Ekn7dw62yLvLA==}
+
+  '@glimmer/validator@0.93.1':
+    resolution: {integrity: sha512-PmqlpVODtLq+bKDyJxtgVyKuC0u9IHf6vEYwWe4N1vEEWPkktslqQrqOwRBsKYQvxF8ZSC9SzWFWV4bCdiMS1Q==}
 
   '@glimmer/wire-format@0.93.1':
     resolution: {integrity: sha512-EHtdlZAZsOMBP6b9YC03OyduswqiT6Ei/mR/N1oR/4LZZ8lOyVgp6Q4H0TQW6jprWEiTMdHaO8/SEGTCrrhtUw==}
@@ -12376,6 +12382,14 @@ snapshots:
       '@glimmer/util': 0.93.0
       '@glimmer/validator': 0.93.0
 
+  '@glimmer/reference@0.93.1':
+    dependencies:
+      '@glimmer/env': 0.1.7
+      '@glimmer/global-context': 0.92.4
+      '@glimmer/interfaces': 0.93.0
+      '@glimmer/util': 0.93.1
+      '@glimmer/validator': 0.93.1
+
   '@glimmer/syntax@0.93.1':
     dependencies:
       '@glimmer/interfaces': 0.93.0
@@ -12411,6 +12425,13 @@ snapshots:
       '@glimmer/global-context': 0.92.4
       '@glimmer/interfaces': 0.93.0
       '@glimmer/util': 0.93.0
+
+  '@glimmer/validator@0.93.1':
+    dependencies:
+      '@glimmer/env': 0.1.7
+      '@glimmer/global-context': 0.92.4
+      '@glimmer/interfaces': 0.93.0
+      '@glimmer/util': 0.93.1
 
   '@glimmer/wire-format@0.93.1':
     dependencies:
