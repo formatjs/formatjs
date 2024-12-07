@@ -3,6 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {
   CustomFormatConfig,
   FormatDateOptions,
@@ -91,7 +92,7 @@ export const FormattedTime: React.FC<
     }
 > = createFormattedComponent('formatTime')
 export const FormattedNumber: React.FC<
-  Omit<Intl.NumberFormatOptions, 'localeMatcher'> &
+  Omit<NumberFormatOptions, 'localeMatcher'> &
     CustomFormatConfig<'number'> & {
       value: number
       children?(formattedNumber: string): React.ReactElement | null
