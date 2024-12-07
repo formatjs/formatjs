@@ -136,7 +136,7 @@ importers:
         version: 11.0.4
       '@types/hoist-non-react-statics':
         specifier: ^3.3.5
-        version: 3.3.5
+        version: 3.3.6
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
@@ -857,7 +857,7 @@ importers:
         version: link:../intl
       '@types/hoist-non-react-statics':
         specifier: '3'
-        version: 3.3.5
+        version: 3.3.6
       '@types/react':
         specifier: 16 || 17 || 18 || 19
         version: 18.3.14
@@ -911,7 +911,7 @@ importers:
         version: link:../../intl-pluralrules
       '@types/hoist-non-react-statics':
         specifier: ^3.3.1
-        version: 3.3.5
+        version: 3.3.6
       '@types/react':
         specifier: 16 || 17 || 18 || 19
         version: 18.3.14
@@ -3128,8 +3128,8 @@ packages:
   '@types/history@4.7.11':
     resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
 
-  '@types/hoist-non-react-statics@3.3.5':
-    resolution: {integrity: sha512-SbcrWzkKBw2cdwRTwQAswfpB9g9LJWfjtUeW/jvNwbhC8cpmmNYVePa+ncbUe0rGTQ7G3Ff6mYUN2VMfLVr+Sg==}
+  '@types/hoist-non-react-statics@3.3.6':
+    resolution: {integrity: sha512-lPByRJUer/iN/xa4qpyL0qmL11DqNW81iU/IG1S3uvRUq4oKagz8VCxZjiWkumgt66YT3vOdDgZ0o32sGKtCEw==}
 
   '@types/html-minifier-terser@6.1.0':
     resolution: {integrity: sha512-oh/6byDPnL1zeNXFrDXFLyZjkr1MsBG667IM792caf1L2UPOOMf65NFzjUH/ltyfwjAGfs1rsX1eftK0jC/KIg==}
@@ -13383,7 +13383,7 @@ snapshots:
 
   '@types/history@4.7.11': {}
 
-  '@types/hoist-non-react-statics@3.3.5':
+  '@types/hoist-non-react-statics@3.3.6':
     dependencies:
       '@types/react': 18.3.14
       hoist-non-react-statics: 3.3.2
