@@ -163,24 +163,24 @@ const serializerDefault: Serializer = function (): string {
 // Cache
 //
 
-function ObjectWithoutPrototypeCache(this: any) {
-  this.cache = Object.create(null) as Record<string, any>
-}
+class ObjectWithoutPrototypeCache {
+  private cache: Record<string, any>
 
-ObjectWithoutPrototypeCache.prototype.get = function (key: string) {
-  return this.cache[key]
-}
+  constructor() {
+    this.cache = Object.create(null) as Record<string, any>
+  }
 
-ObjectWithoutPrototypeCache.prototype.set = function <T>(
-  key: string,
-  value: T
-): void {
-  this.cache[key] = value
+  get(key: string) {
+    return this.cache[key]
+  }
+
+  set<T>(key: string, value: T): void {
+    this.cache[key] = value
+  }
 }
 
 const cacheDefault: Cache<any, any> = {
   create: function create() {
-    // @ts-ignore
     return new ObjectWithoutPrototypeCache()
   },
 }
