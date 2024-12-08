@@ -7,7 +7,7 @@ import {timeData} from './time-data.generated'
  * @param skeleton date time skeleton pattern that possibly includes j, J or C
  * @param locale
  */
-export function getBestPattern(skeleton: string, locale: Intl.Locale) {
+export function getBestPattern(skeleton: string, locale: Intl.Locale): string {
   let skeletonCopy = ''
   for (let patternPos = 0; patternPos < skeleton.length; patternPos++) {
     const patternChar = skeleton.charAt(patternPos)

@@ -9,6 +9,6 @@ function hasIntlGetCanonicalLocalesBug(): boolean {
   }
 }
 
-export function shouldPolyfill() {
+export function shouldPolyfill(): boolean {
   return !('Locale' in Intl) || hasIntlGetCanonicalLocalesBug()
 }

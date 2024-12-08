@@ -1,7 +1,7 @@
-import './global'
-import regenerate from 'regenerate'
 import {outputFileSync} from 'fs-extra'
 import minimist from 'minimist'
+import regenerate from 'regenerate'
+import './global'
 
 function main(args: minimist.ParsedArgs) {
   const set = regenerate().add(
@@ -10,7 +10,7 @@ function main(args: minimist.ParsedArgs) {
   outputFileSync(
     args.out,
     `// @generated from regex-gen.ts
-export const WHITE_SPACE_REGEX = /${set.toString()}/i`
+export const WHITE_SPACE_REGEX: RegExp = /${set.toString()}/i`
   )
 }
 

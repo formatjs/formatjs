@@ -11,7 +11,9 @@ const COUNTRY_CODE_ALPHA2 = new Set(
  * @param alpha3OrAlpha2 - 2 or 3 letter country code (case-insensitive)
  * @returns canonicalized 2 letter country code (uppercase) or undefined if not found
  */
-export function canonicalizeCountryCode(alpha3OrAlpha2?: string) {
+export function canonicalizeCountryCode(
+  alpha3OrAlpha2?: string
+): string | undefined {
   if (!alpha3OrAlpha2) {
     return
   }

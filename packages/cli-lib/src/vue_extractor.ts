@@ -95,7 +95,7 @@ export function parseFile(
   source: string,
   filename: string,
   parseScriptFn: ScriptParseFn
-): any {
+): void {
   const {descriptor, errors} = parse(source, {
     filename,
   })

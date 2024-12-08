@@ -1,17 +1,17 @@
 import {
   IntlDateTimeFormatPart,
   IntlDateTimeFormatPartType,
-  RangePatternType,
-  TABLE_2,
   PartitionPattern,
+  RangePatternType,
   SameValue,
+  TABLE_2,
   TimeClip,
 } from '@formatjs/ecma402-abstract'
-import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime'
 import {
   FormatDateTimePattern,
   FormatDateTimePatternImplDetails,
 } from './FormatDateTimePattern'
+import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime'
 
 const TABLE_2_FIELDS: Array<TABLE_2> = [
   'era',
@@ -31,7 +31,7 @@ export function PartitionDateTimeRangePattern(
   x: number,
   y: number,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
-) {
+): IntlDateTimeFormatPart[] {
   x = TimeClip(x)
   if (isNaN(x)) {
     throw new RangeError('Invalid start time')

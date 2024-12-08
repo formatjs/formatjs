@@ -1,14 +1,14 @@
-import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+import {MessageFormatElement, parse} from '@formatjs/icu-messageformat-parser'
 import {outputFile, readJSON} from 'fs-extra'
 import stringify from 'json-stable-stringify'
 import {debug, warn, writeStdout} from './console_utils'
-import {resolveBuiltinFormatter, Formatter} from './formatters'
+import {Formatter, resolveBuiltinFormatter} from './formatters'
 import {
-  generateXXAC,
-  generateXXLS,
-  generateXXHA,
   generateENXA,
   generateENXB,
+  generateXXAC,
+  generateXXHA,
+  generateXXLS,
 } from './pseudo_locale'
 
 export type CompileFn = (msgs: any) => Record<string, string>
@@ -58,7 +58,10 @@ export interface Opts {
  * @param opts Options
  * @returns serialized result in string format
  */
-export async function compile(inputFiles: string[], opts: Opts = {}) {
+export async function compile(
+  inputFiles: string[],
+  opts: Opts = {}
+): Promise<string> {
   debug('Compiling files:', inputFiles)
   const {ast, format, pseudoLocale, skipErrors, ignoreTag} = opts
   const formatter = await resolveBuiltinFormatter(format)
@@ -136,7 +139,7 @@ Message from ${inputFile}: ${compiled[id]}
 export default async function compileAndWrite(
   inputFiles: string[],
   compileOpts: CompileCLIOpts = {}
-) {
+): Promise<void> {
   const {outFile, ...opts} = compileOpts
   const serializedResult = (await compile(inputFiles, opts)) + '\n'
   if (outFile) {

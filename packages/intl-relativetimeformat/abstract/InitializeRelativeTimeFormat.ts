@@ -29,7 +29,7 @@ export function InitializeRelativeTimeFormat(
     localeData: Record<string, LocaleFieldsData | undefined>
     getDefaultLocale(): string
   }
-) {
+): Intl.RelativeTimeFormat {
   const internalSlots = getInternalSlots(rtf)
   internalSlots.initializedRelativeTimeFormat = true
   const requestedLocales = CanonicalizeLocaleList(locales)

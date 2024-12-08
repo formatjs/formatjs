@@ -9,7 +9,7 @@ function supportedLocalesOf(locale?: string | string[]) {
   return Intl.PluralRules.supportedLocalesOf(locales).length === locales.length
 }
 
-export function shouldPolyfill(locale = 'en') {
+export function shouldPolyfill(locale = 'en'): string | undefined {
   if (
     !('PluralRules' in Intl) ||
     new Intl.PluralRules('en', {minimumFractionDigits: 2} as any).select(1) ===

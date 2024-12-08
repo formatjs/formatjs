@@ -21,7 +21,7 @@ function partToPattern(part: Intl.NumberFormatPart): string {
 export function generateNumFmtPattern(
   locales: string | string[],
   opts: Intl.NumberFormatOptions
-) {
+): string {
   const nf = new Intl.NumberFormat(locales, opts)
   const positivePattern = nf.formatToParts(NUMBER).reduce((pattern, part) => {
     return pattern + partToPattern(part)

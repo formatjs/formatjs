@@ -1,4 +1,4 @@
-export function shouldPolyfill() {
+export function shouldPolyfill(): boolean {
   return (
     typeof Intl === 'undefined' ||
     !('getCanonicalLocales' in Intl) ||

@@ -11,7 +11,7 @@ export function CanonicalizeTimeZoneName(
     zoneNames: readonly string[]
     uppercaseLinks: Record<string, string>
   }
-) {
+): string {
   const uppercasedTz = tz.toUpperCase()
   const uppercasedZones = zoneNames.reduce((all: Record<string, string>, z) => {
     all[z.toUpperCase()] = z

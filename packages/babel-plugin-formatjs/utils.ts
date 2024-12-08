@@ -27,7 +27,7 @@ function evaluatePath(path: NodePath<any>): string {
   )
 }
 
-export function getMessageDescriptorKey(path: NodePath<any>) {
+export function getMessageDescriptorKey(path: NodePath<any>): string {
   if (path.isIdentifier() || path.isJSXIdentifier()) {
     return path.node.name
   }
@@ -92,7 +92,7 @@ export function evaluateMessageDescriptor(
   idInterpolationPattern?: string,
   overrideIdFn?: Options['overrideIdFn'],
   preserveWhitespace?: Options['preserveWhitespace']
-) {
+): MessageDescriptor {
   let id = getMessageDescriptorValue(descriptorPath.id)
   const defaultMessage = getICUMessageValue(
     descriptorPath.defaultMessage,
@@ -182,14 +182,14 @@ const EXTRACTED = Symbol('FormatJSExtracted')
  * multiple plugin runs
  * @param path
  */
-export function tagAsExtracted(path: NodePath<any>) {
+export function tagAsExtracted(path: NodePath<any>): void {
   path.node[EXTRACTED] = true
 }
 /**
  * Check if a node was extracted
  * @param path
  */
-export function wasExtracted(path: NodePath<any>) {
+export function wasExtracted(path: NodePath<any>): boolean {
   return !!path.node[EXTRACTED]
 }
 
@@ -208,7 +208,7 @@ export function storeMessage(
 
   filename: string | undefined,
   messages: ExtractedMessageDescriptor[]
-) {
+): void {
   if (!id && !defaultMessage) {
     throw path.buildCodeFrameError(
       '[React Intl] Message Descriptors require an `id` or `defaultMessage`.'

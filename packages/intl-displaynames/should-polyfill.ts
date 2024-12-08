@@ -42,11 +42,11 @@ function supportedLocalesOf(locale?: string | string[]) {
   )
 }
 
-export function _shouldPolyfillWithoutLocale() {
+export function _shouldPolyfillWithoutLocale(): boolean {
   return !(Intl as any).DisplayNames || hasMissingICUBug() || hasScriptBug()
 }
 
-export function shouldPolyfill(locale = 'en') {
+export function shouldPolyfill(locale = 'en'): string | true | undefined {
   try {
     if (_shouldPolyfillWithoutLocale() || !supportedLocalesOf(locale)) {
       return match([locale], supportedLocales, 'en')

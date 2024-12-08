@@ -1,6 +1,10 @@
 // @generated
 // prettier-ignore
-export default {
+const data: {
+  abbrvs: string;
+  offsets: string;
+  zones: string[];
+} = {
   "abbrvs": "LMT|GMT|+0230|EAT|+0245|PMT|WET|WEST|CET|CEST|+0030|WAT|-01|CAT|EET|EEST|+00|+01|SAST|CAST|MMT|WAST|+0130|NST|NWT|NPT|BST|BDT|AHST|HST|HDT|AST|AWT|APT|AHDT|YST|AKST|AKDT|-03|-02|CMT|-04|AMT|EST|MST|CST|MDT|CDT|ADT|-0330|-0530|CWT|CPT|BMT|-05|PST|PDT|MWT|MPT|-00|EDT|-0430|SJMT|YDT|YWT|YPT|YDDT|PWT|PPT|EWT|EPT|NDT|ADDT|KMT|QMT|-0345|HMT|FFMT|-0230|-0130|PPMT|SMT|SDMT|NDDT|+08|+11|+07|+05|PMMT|+10|AEST|AEDT|+06|NZMT|NZST|NZDT|+03|+02|CEMT|+12|+13|+14|+04|+0730|+0820|+09|+0530|+0630|IST|IDT|PLMT|HKT|HKST|HKWT|JST|IMT|+0720|WIB|+0930|WIT|JMT|IDDT|+0430|PKT|PKST|+0545|WITA|KST|KDT|TBMT|TMT|+0330|JDT|RMT|FMT|ACST|ACDT|+0845|+0945|+1030|+1130|AWST|AWDT|MSK|MSD|DMT|BDST|WEMT|MDST|LST|WMT|-1130|-11|-10|+1215|+1245|+1345|EMT|-07|-06|-09|GST|GDT|ChST|HWT|HPT|-12|-1040|-0930|SST|-1120|+1112|+1230|-0830|-08|-1030|+1220|GMT+14|GMT+13|GMT+12|GMT+11|GMT+10|GMT+9|GMT+8|GMT+7|GMT+6|GMT+5|GMT+4|GMT+3|GMT+2|GMT+1|GMT-1|GMT-2|GMT-3|GMT-4|GMT-5|GMT-6|GMT-7|GMT-8|GMT-9|GMT-10|GMT-11|GMT-12",
   "offsets": "-qw|0|6tg|6y0|8c0|7n0|kc|fl|2s0|5k0|mn|1e0|-2vw|-2s0|616|5sl|-1ek|-zg|-2g0|56o|460|5us|60w|-1zw|-226|2sc|18w|-1p9|2fw|1vw|360|xya|-wpq|-uk0|-rs0|-p00|12wo|-rrc|-m80|-c8p|-b40|-8c0|-8xc|-5k0|-ato|-bw0|-c6k|-c3c|-cdo|-cqs|-ctg|-c44|-cos|-cac|-c2s|-cnc|-aog|-eq8|-eso|-dw0|-74s|-jho|-jg0|-go0|-b1h|-9q0|-8z8|-gc0|-fa0|-b8g|-dps|-lip|-a44|-g2g|-ce8|-ce4|-ci0|-9ow|-g8c|-jn8|-jpw|-fkd|-kr6|-adw|-3gg|-ptg|-m9k|-jfw|-fdn|-l0g|-cxs|-gio|-mpz|-74o|-b3o|-b6s|-9rg|-6zg|-6y0|-d68|-e7y|-grg|-es8|-ejc|-arr|-af0|-bs0|-f94|-f9c|-kjs|-fye|-g1i|-fzn|-g5v|-g2f|-fr4|-g7j|-g1d|15rv|-ow5|-fvq|-fpo|-cmc|-9uc|-e9o|-eac|-lwa|-6m4|-fz8|-fzc|-b44|-bb8|-i20|-jpg|-g83|-glg|16au|-od6|-id0|-aeg|-bzw|-iks|-aer|-460|-ep8|-dpe|101a|-umq|-604|-iuj|-irc|-is3|-9kw|-jc4|-a7s|-a84|-a7o|-de8|-ddo|-bu0|-d4s|-d39|-hzo|-6go|-jdo|-ck0|-a4o|-cy0|-cyo|-8ms|-42g|15lz|-p21|-jyw|-g5g|-cqk|-lo4|-mss|-p0c|14sh|-pvj|m80|uk0|jg0|dw0|r94|r8w|rs0|go0|wd4|vy0|yq0|xc0|1040|8ng|2h4|e90|6nk|wv8|12w0|9b4|b40|al4|at8|9m8|884|880|9jk|98c|im4|fic|6ko|dtc|kfk|ku0|n5c|p00|l0g|jsk|esc|esk|fa0|i20|6q0|gqs|gcw|n98|a8o|cqo|6ac|6ds|6hz|jqu|l56|nm0|gz0|jb5|js0|kdc|q20|qe0|6iu|6ig|ctc|ci0|tdo|cf0|fss|fz0|p3p|gd4|eva|h72|j8d|l0y|rxc|m40|-189c|meo|66g|g5c|fcs|dl6|9ic|k8w|nac|bs4|c4g|qfc|ceh|nig|mhj|sgs|mi0|ctz|8an|9iw|9q0|glo|pvn|fqf|g7w|qiu|of7|o0y|htb|b89|af5|88o|-4r4|-5aw|-c06|-986|-2uo|-4cs|-194|-34o|-6rk|-apo|pnw|t60|sc8|q70|ra4|o88|nv4|ob0|r30|rl8|tgk|qug|lgc|s04|t6|a4|8wc|4e4|3so|2o8|4u0|3j8|1kw|1dm|5c8|5bo|-169|1lr|-zo|-23|4md|5d4|5ew|97c|5ng|-ok|2os|53s|53c|6yh|707|9s7|ck7|4gy|78y|2b8|99w|8j6|6bc|6ao|4bg|4l0|3o8|8yo|30x|4os|3w0|4fc|des|dm0|anc|yv4|-vsw|-vy0|st4|xz0|y10|zf0|1270|-k94|v64|-vpk|x4w|w1g|-glc|-ozo|tmc|-13v0|qt0|-t8e|-t60|-qe0|-xc0|-t4w|-tmo|-10hg|u6k|uzk|-pu0|z20|-vm0|uws|-vgs|-vhc|v3s|v40|uto|-15rg|owk|-o38|-nm0|112w|-tl4|-rp4|y80|y9c",
   "zones": [
@@ -458,3 +462,4 @@ export default {
     "Pacific/Wallis|,0,372,0|-100f9dh,0,372,0|-100f9dg,99,192,0|NaN,99,192,0"
   ]
 }
+export default data

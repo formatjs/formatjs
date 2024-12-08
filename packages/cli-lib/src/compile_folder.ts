@@ -1,11 +1,11 @@
-import {Opts, compile} from './compile'
-import {join, basename} from 'path'
 import {outputFile} from 'fs-extra'
+import {basename, join} from 'path'
+import {Opts, compile} from './compile'
 export default async function compileFolder(
   files: string[],
   outFolder: string,
   opts: Opts = {}
-) {
+): Promise<void[]> {
   const results = await Promise.all(files.map(f => compile([f], opts)))
   const outFiles = files.map(f => join(outFolder, basename(f)))
 

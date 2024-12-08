@@ -25,7 +25,7 @@ function hasResolvedOptionsNumberingSystem(locale?: string | string[]) {
   }
 }
 
-export function shouldPolyfill(locale = 'en') {
+export function shouldPolyfill(locale = 'en'): string | undefined {
   if (
     !('RelativeTimeFormat' in Intl) ||
     !supportedLocalesOf(locale) ||

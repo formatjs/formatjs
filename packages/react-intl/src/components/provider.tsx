@@ -7,9 +7,14 @@
 import {IntlCache, createIntlCache} from '@formatjs/intl'
 import * as React from 'react'
 import type {IntlConfig, IntlShape} from '../types'
-import {DEFAULT_INTL_CONFIG, invariantIntlContext, shallowEqual} from '../utils'
-import {Provider} from './injectIntl'
+import {
+  DEFAULT_INTL_CONFIG,
+  DefaultIntlConfig,
+  invariantIntlContext,
+  shallowEqual,
+} from '../utils'
 import {createIntl} from './createIntl'
+import {Provider} from './injectIntl'
 
 interface State {
   /**
@@ -54,7 +59,7 @@ export default class IntlProvider extends React.PureComponent<
   State
 > {
   static displayName = 'IntlProvider'
-  static defaultProps = DEFAULT_INTL_CONFIG
+  static defaultProps: DefaultIntlConfig = DEFAULT_INTL_CONFIG
   private cache: IntlCache = createIntlCache()
   state: State = {
     cache: this.cache,

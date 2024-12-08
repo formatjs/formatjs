@@ -618,56 +618,56 @@ export class Locale {
     }
   }
 
-  public toString() {
+  public toString(): string {
     return getInternalSlots(this).locale
   }
 
-  public get baseName() {
+  public get baseName(): string {
     const locale = getInternalSlots(this).locale
     return emitUnicodeLanguageId(parseUnicodeLanguageId(locale))
   }
 
-  public get calendar() {
+  public get calendar(): string | undefined {
     return getInternalSlots(this).calendar
   }
 
-  public get collation() {
+  public get collation(): string | undefined {
     return getInternalSlots(this).collation
   }
 
-  public get caseFirst() {
+  public get caseFirst(): 'upper' | 'lower' | 'false' | undefined {
     return getInternalSlots(this).caseFirst
   }
 
-  public get numeric() {
+  public get numeric(): boolean | undefined {
     return getInternalSlots(this).numeric
   }
-  public get numberingSystem() {
+  public get numberingSystem(): string | undefined {
     return getInternalSlots(this).numberingSystem
   }
   /**
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.language
    */
-  public get language() {
+  public get language(): string {
     const locale = getInternalSlots(this).locale
     return parseUnicodeLanguageId(locale).lang
   }
   /**
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.script
    */
-  public get script() {
+  public get script(): string | undefined {
     const locale = getInternalSlots(this).locale
     return parseUnicodeLanguageId(locale).script
   }
   /**
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.region
    */
-  public get region() {
+  public get region(): string | undefined {
     const locale = getInternalSlots(this).locale
     return parseUnicodeLanguageId(locale).region
   }
 
-  public get firstDayOfWeek() {
+  public get firstDayOfWeek(): string | undefined {
     const internalSlots = getInternalSlots(this)
     if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
       throw new TypeError('Error uninitialized locale')
@@ -675,7 +675,7 @@ export class Locale {
     return internalSlots.firstDayOfWeek
   }
 
-  public get hourCycle() {
+  public get hourCycle(): 'h11' | 'h12' | 'h23' | 'h24' | undefined {
     const internalSlots = getInternalSlots(this)
     if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
       throw new TypeError('Error uninitialized locale')
@@ -687,7 +687,7 @@ export class Locale {
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCalendars
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCalendars
    */
-  public getCalendars() {
+  public getCalendars(): string[] {
     return calendarsOfLocale(this)
   }
 
@@ -695,7 +695,7 @@ export class Locale {
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCollations
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCollations
    */
-  public getCollations() {
+  public getCollations(): string[] {
     return collationsOfLocale(this)
   }
 
@@ -703,7 +703,7 @@ export class Locale {
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getHourCycles
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getHourCycles
    */
-  public getHourCycles() {
+  public getHourCycles(): string[] {
     const internalSlots = getInternalSlots(this)
     if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
       throw new TypeError('Error uninitialized locale')
@@ -716,7 +716,7 @@ export class Locale {
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getNumberingSystems
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getNumberingSystems
    */
-  public getNumberingSystems() {
+  public getNumberingSystems(): string[] {
     return numberingSystemsOfLocale(this)
   }
 
@@ -724,7 +724,7 @@ export class Locale {
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTimeZones
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTimeZones
    */
-  public getTimeZones() {
+  public getTimeZones(): string[] | undefined {
     return timeZonesOfLocale(this)
   }
 
@@ -732,7 +732,9 @@ export class Locale {
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTextInfo
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTextInfo
    */
-  public getTextInfo() {
+  public getTextInfo(): {
+    direction: string
+  } {
     const info = Object.create(Object.prototype)
     const dir = characterDirectionOfLocale(this)
 
@@ -745,7 +747,11 @@ export class Locale {
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getWeekInfo
    */
-  public getWeekInfo() {
+  public getWeekInfo(): {
+    firstDay: string
+    weekend: {start: string; end: string}
+    minimalDays: number
+  } {
     const info = Object.create(Object.prototype)
     const internalSlots = getInternalSlots(this)
     if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
@@ -769,7 +775,15 @@ export class Locale {
     return info
   }
 
-  static relevantExtensionKeys = RELEVANT_EXTENSION_KEYS
+  static relevantExtensionKeys: readonly [
+    'ca',
+    'co',
+    'hc',
+    'kf',
+    'kn',
+    'nu',
+    'fw',
+  ] = RELEVANT_EXTENSION_KEYS
   public static readonly polyfilled = true
 }
 

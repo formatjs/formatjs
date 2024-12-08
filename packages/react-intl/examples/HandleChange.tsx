@@ -1,5 +1,13 @@
+import {FormatXMLElementFn, Options} from 'intl-messageformat'
 import * as React from 'react'
-import {createIntl, createIntlCache, RawIntlProvider} from 'react-intl'
+import type {MessageDescriptor, PrimitiveType} from 'react-intl'
+import {
+  createIntl,
+  createIntlCache,
+  IntlCache,
+  IntlShape,
+  RawIntlProvider,
+} from 'react-intl'
 
 const messages: Record<string, Record<string, string>> = {
   'en-US': {selectalanguage: 'Select a language'},
@@ -7,13 +15,31 @@ const messages: Record<string, Record<string, string>> = {
 }
 
 const initialLocale = 'en-US'
-export const cache = createIntlCache()
+export const cache: IntlCache = createIntlCache()
 /** You can use this variable in other files even after reassigning it. */
-export let intl = createIntl(
+export let intl: IntlShape = createIntl(
   {locale: initialLocale, messages: messages[initialLocale]},
   cache
 )
-export let fmt = intl.formatMessage
+export let fmt: {
+  (
+    this: void,
+    descriptor: MessageDescriptor,
+    values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
+    opts?: Options
+  ): string
+  (
+    this: void,
+    descriptor: MessageDescriptor,
+    values?: Record<
+      string,
+      | React.ReactNode
+      | PrimitiveType
+      | FormatXMLElementFn<string, React.ReactNode>
+    >,
+    opts?: Options
+  ): Array<React.ReactNode>
+} = intl.formatMessage
 
 const App: React.FC = () => {
   // You could use redux to get the locale or get it from the url.

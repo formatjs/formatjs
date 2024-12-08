@@ -533,7 +533,7 @@ async function main({out, unicodeFiles}: Args) {
     // prettier-ignore
     export const SegmentationRules = ${stringify(remappedLocaleSegmentations, {
       space: 2,
-    })}
+    })} as const
 
     `
   )

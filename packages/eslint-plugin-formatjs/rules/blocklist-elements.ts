@@ -129,7 +129,12 @@ const createRule = ESLintUtils.RuleCreator(
   _ => 'https://formatjs.github.io/docs/tooling/linter#blocklist-elements'
 )
 
-export const rule = createRule({
+export const rule: ESLintUtils.RuleModule<
+  'blocklist',
+  [],
+  unknown,
+  ESLintUtils.RuleListener
+> = createRule({
   name,
   meta: {
     type: 'problem',

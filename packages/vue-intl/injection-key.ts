@@ -1,1 +1,1 @@
-export const intlKey = Symbol()
+export const intlKey: unique symbol = Symbol()

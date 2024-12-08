@@ -29,7 +29,7 @@ export function setInternalSlot<
   pl: Instance,
   field: Field,
   value: NonNullable<Internal>[Field]
-) {
+): void {
   if (!map.get(pl)) {
     map.set(pl, Object.create(null))
   }
@@ -45,7 +45,7 @@ export function setMultiInternalSlots<
   map: WeakMap<Instance, Internal>,
   pl: Instance,
   props: Pick<NonNullable<Internal>, K>
-) {
+): void {
   for (const k of Object.keys(props) as K[]) {
     setInternalSlot(map, pl, k, props[k])
   }
@@ -110,7 +110,7 @@ export function defineProperty<T extends object>(
   target: T,
   name: string | symbol,
   {value}: {value: any} & ThisType<any>
-) {
+): void {
   Object.defineProperty(target, name, {
     configurable: true,
     enumerable: false,
@@ -129,7 +129,7 @@ export function createDataProperty<T extends object>(
   target: T,
   name: string | symbol,
   value: any
-) {
+): void {
   Object.defineProperty(target, name, {
     configurable: true,
     enumerable: true,
@@ -138,7 +138,8 @@ export function createDataProperty<T extends object>(
   })
 }
 
-export const UNICODE_EXTENSION_SEQUENCE_REGEX = /-u(?:-[0-9a-z]{2,8})+/gi
+export const UNICODE_EXTENSION_SEQUENCE_REGEX: RegExp =
+  /-u(?:-[0-9a-z]{2,8})+/gi
 
 export function invariant(
   condition: boolean,

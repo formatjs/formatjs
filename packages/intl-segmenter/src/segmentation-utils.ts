@@ -1,7 +1,7 @@
 export const replaceVariables = (
   variables: Record<string, string>,
   input: string
-) => {
+): string => {
   const findVarRegex = /\$[A-Za-z0-9_]+/gm
   return input.replaceAll(findVarRegex, match => {
     if (!(match in variables)) {
@@ -11,7 +11,7 @@ export const replaceVariables = (
   })
 }
 
-export const isSurrogate = (str: string, pos: number) => {
+export const isSurrogate = (str: string, pos: number): boolean => {
   return (
     0xd800 <= str.charCodeAt(pos - 1) &&
     str.charCodeAt(pos - 1) <= 0xdbff &&

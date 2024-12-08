@@ -7,7 +7,10 @@ export function GetDurationUnitOptions<T extends object>(
   stylesList: readonly T[keyof T][],
   digitalBase: Exclude<T[keyof T], undefined>,
   prevStyle: string
-) {
+): {
+  style: Exclude<T[keyof T], undefined>
+  display: string | Exclude<T[keyof T], undefined>
+} {
   let style = GetOption(options, unit, 'string', stylesList, undefined)
   let displayDefault = 'always'
   if (style === undefined) {

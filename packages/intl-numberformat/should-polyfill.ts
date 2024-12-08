@@ -70,7 +70,7 @@ function supportedLocalesOf(locale?: string | string[]) {
   return Intl.NumberFormat.supportedLocalesOf(locales).length === locales.length
 }
 
-export function shouldPolyfill(locale = 'en') {
+export function shouldPolyfill(locale = 'en'): string | undefined {
   if (
     typeof Intl === 'undefined' ||
     !('NumberFormat' in Intl) ||

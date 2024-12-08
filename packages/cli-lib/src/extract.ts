@@ -188,7 +188,7 @@ async function processFile(
 export async function extract(
   files: readonly string[],
   extractOpts: ExtractOpts
-) {
+): Promise<string> {
   const {throws, readFromStdin, flatten, ...opts} = extractOpts
   let rawResults: Array<ExtractionResult | undefined> = []
   try {
@@ -286,7 +286,7 @@ ${JSON.stringify(message, undefined, 2)}`
 export default async function extractAndWrite(
   files: readonly string[],
   extractOpts: ExtractCLIOptions
-) {
+): Promise<void> {
   const {outFile, ...opts} = extractOpts
   const serializedResult = (await extract(files, opts)) + '\n'
   if (outFile) {

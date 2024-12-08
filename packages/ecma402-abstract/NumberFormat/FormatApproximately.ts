@@ -11,7 +11,7 @@ export function FormatApproximately(
   }: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
-) {
+): NumberFormatPart[] {
   const internalSlots = getInternalSlots(numberFormat)
 
   const symbols =

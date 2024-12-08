@@ -1,11 +1,10 @@
-import minimist from 'minimist'
-import {execFile as _execFile} from 'child_process'
 import {readFile as _readFile} from 'fs'
-import {promisify} from 'util'
 import {outputFileSync} from 'fs-extra'
-import {UnpackedData, ZoneData} from '../src/types'
-import {pack} from '../src/packer'
 import stringify from 'json-stable-stringify'
+import minimist from 'minimist'
+import {promisify} from 'util'
+import {pack} from '../src/packer'
+import {UnpackedData, ZoneData} from '../src/types'
 
 const readFile = promisify(_readFile)
 const SPACE_REGEX = /[\s\t]+/
@@ -413,9 +412,14 @@ if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
       out,
       `// @generated
 // prettier-ignore
-export default ${stringify(pack(data), {
+const data: {
+  abbrvs: string;
+  offsets: string;
+  zones: string[];
+} = ${stringify(pack(data), {
         space: 2,
-      })}`
+      })}
+export default data`
     )
   }
 }

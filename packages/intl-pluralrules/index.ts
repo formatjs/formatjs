@@ -66,7 +66,7 @@ export class PluralRules implements Intl.PluralRules {
       getInternalSlots,
     })
   }
-  public resolvedOptions() {
+  public resolvedOptions(): Intl.ResolvedPluralRulesOptions {
     validateInstance(this, 'resolvedOptions')
     const opts = Object.create(null)
     const internalSlots = getInternalSlots(this)
@@ -106,14 +106,14 @@ export class PluralRules implements Intl.PluralRules {
   public static supportedLocalesOf(
     locales?: string | string[],
     options?: Pick<Intl.PluralRulesOptions, 'localeMatcher'>
-  ) {
+  ): string[] {
     return SupportedLocales(
       PluralRules.availableLocales,
       CanonicalizeLocaleList(locales),
       options
     )
   }
-  public static __addLocaleData(...data: PluralRulesLocaleData[]) {
+  public static __addLocaleData(...data: PluralRulesLocaleData[]): void {
     for (const {data: d, locale} of data) {
       PluralRules.localeData[locale] = d
       PluralRules.availableLocales.add(locale)
@@ -123,12 +123,12 @@ export class PluralRules implements Intl.PluralRules {
     }
   }
   static localeData: Record<string, PluralRulesData> = {}
-  static availableLocales = new Set<string>()
+  static availableLocales: Set<string> = new Set<string>()
   static __defaultLocale = ''
-  static getDefaultLocale() {
+  static getDefaultLocale(): string {
     return PluralRules.__defaultLocale
   }
-  static relevantExtensionKeys = []
+  static relevantExtensionKeys: never[] = []
   public static polyfilled = true
 }
 

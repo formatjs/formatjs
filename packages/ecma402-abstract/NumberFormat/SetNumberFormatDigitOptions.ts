@@ -16,7 +16,7 @@ export function SetNumberFormatDigitOptions(
   mnfdDefault: number,
   mxfdDefault: number,
   notation: NumberFormatNotation
-) {
+): void {
   const mnid = GetNumberOption(opts, 'minimumIntegerDigits', 1, 21, 1)
   let mnfd = opts.minimumFractionDigits
   let mxfd = opts.maximumFractionDigits

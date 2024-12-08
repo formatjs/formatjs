@@ -1,8 +1,8 @@
-import {NumberFormatInternal} from '../types/number'
-import {FormatNumericToString} from './FormatNumericToString'
 import {SameValue} from '../262'
+import {NumberFormatInternal, NumberFormatPart} from '../types/number'
 import {ComputeExponent} from './ComputeExponent'
 import formatToParts from './format_to_parts'
+import {FormatNumericToString} from './FormatNumericToString'
 
 /**
  * https://tc39.es/ecma402/#sec-formatnumberstring
@@ -15,7 +15,7 @@ export function PartitionNumberPattern(
   }: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
-) {
+): NumberFormatPart[] {
   const internalSlots = getInternalSlots(numberFormat)
   const {pl, dataLocaleData, numberingSystem} = internalSlots
   const symbols =

@@ -1,18 +1,18 @@
-import {NumberFormatInternal, NumberFormatOptions} from '../types/number'
 import {GetOption} from '../GetOption'
 import {IsWellFormedCurrencyCode} from '../IsWellFormedCurrencyCode'
 import {IsWellFormedUnitIdentifier} from '../IsWellFormedUnitIdentifier'
+import {NumberFormatInternal, NumberFormatOptions} from '../types/number'
 
 /**
  * https://tc39.es/ecma402/#sec-setnumberformatunitoptions
  */
 export function SetNumberFormatUnitOptions(
   nf: Intl.NumberFormat,
-  options: NumberFormatOptions = Object.create(null),
+  options: NumberFormatOptions | undefined = Object.create(null),
   {
     getInternalSlots,
   }: {getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal}
-) {
+): void {
   const internalSlots = getInternalSlots(nf)
   const style = GetOption(
     options,

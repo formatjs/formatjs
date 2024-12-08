@@ -7,7 +7,7 @@ export function FormatDateTimeRange(
   x: number,
   y: number,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
-) {
+): string {
   const parts = PartitionDateTimeRangePattern(dtf, x, y, implDetails)
   let result = ''
   for (const part of parts) {

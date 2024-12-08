@@ -154,7 +154,7 @@ export class IntlMessageFormat {
 
   format = <T = void>(
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>
-  ) => {
+  ): string | T | (string | T)[] => {
     const parts = this.formatToParts(values)
     // Hot path for straight simple msg translations
     if (parts.length === 1) {
@@ -193,15 +193,17 @@ export class IntlMessageFormat {
       undefined,
       this.message
     )
-  resolvedOptions = () => ({
+  resolvedOptions = (): {
+    locale: string
+  } => ({
     locale:
       this.resolvedLocale?.toString() ||
       Intl.NumberFormat.supportedLocalesOf(this.locales)[0],
   })
-  getAst = () => this.ast
+  getAst = (): MessageFormatElement[] => this.ast
   private static memoizedDefaultLocale: string | null = null
 
-  static get defaultLocale() {
+  static get defaultLocale(): string {
     if (!IntlMessageFormat.memoizedDefaultLocale) {
       IntlMessageFormat.memoizedDefaultLocale =
         new Intl.NumberFormat().resolvedOptions().locale

@@ -1,7 +1,7 @@
-import './global'
-import regenerate from 'regenerate'
 import {outputFileSync} from 'fs-extra'
 import minimist from 'minimist'
+import regenerate from 'regenerate'
+import './global'
 
 function main(args: minimist.ParsedArgs) {
   const spaceSeparator = regenerate().add(
@@ -13,8 +13,8 @@ function main(args: minimist.ParsedArgs) {
   outputFileSync(
     args.out,
     `// @generated from regex-gen.ts
-export const SPACE_SEPARATOR_REGEX = /${spaceSeparator.toString()}/
-export const WHITE_SPACE_REGEX = /${ws.toString()}/
+export const SPACE_SEPARATOR_REGEX: RegExp = /${spaceSeparator.toString()}/
+export const WHITE_SPACE_REGEX: RegExp = /${ws.toString()}/
 `
   )
 }

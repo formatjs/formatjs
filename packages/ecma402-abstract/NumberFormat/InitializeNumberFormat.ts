@@ -41,8 +41,7 @@ export function InitializeNumberFormat(
     getDefaultLocale(): string
     currencyDigitsData: Record<string, number>
   }
-) {
-  // @ts-ignore
+): Intl.NumberFormat {
   const requestedLocales: string[] = CanonicalizeLocaleList(locales)
   const options = CoerceOptionsToObject<NumberFormatOptions>(opts)
   const opt = Object.create(null)

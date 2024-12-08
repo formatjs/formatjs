@@ -29,8 +29,8 @@ const IntlContext =
     : React.createContext<IntlShape>(null as any)
 const {Consumer: IntlConsumer, Provider: IntlProvider} = IntlContext
 
-export const Provider = IntlProvider
-export const Context = IntlContext
+export const Provider: React.Provider<IntlShape> = IntlProvider
+export const Context: React.Context<IntlShape> = IntlContext
 
 export interface Opts<
   IntlPropName extends string = 'intl',

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {IntlProvider, FormattedMessage} from 'react-intl'
+import {FormattedMessage, IntlProvider} from 'react-intl'
 
 type IntlProviderProps = React.ComponentProps<typeof IntlProvider>
 
@@ -62,7 +62,9 @@ const App: React.FC<Props> = props => {
   )
 }
 
-export async function bootstrapApplication(locale: string) {
+export async function bootstrapApplication(
+  locale: string
+): Promise<React.JSX.Element> {
   const messages = await loadLocaleData(locale)
   return <App locale={locale} messages={messages.default} />
 }

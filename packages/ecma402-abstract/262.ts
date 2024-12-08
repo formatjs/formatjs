@@ -59,7 +59,7 @@ function ToInteger(n: any) {
  * https://tc39.es/ecma262/#sec-timeclip
  * @param time
  */
-export function TimeClip(time: number) {
+export function TimeClip(time: number): number {
   if (!isFinite(time)) {
     return NaN
   }
@@ -87,7 +87,7 @@ export function ToObject<T>(
  * @param x
  * @param y
  */
-export function SameValue(x: any, y: any) {
+export function SameValue(x: any, y: any): boolean {
   if (Object.is) {
     return Object.is(x, y)
   }
@@ -105,7 +105,7 @@ export function SameValue(x: any, y: any) {
  * https://www.ecma-international.org/ecma-262/11.0/index.html#sec-arraycreate
  * @param len
  */
-export function ArrayCreate(len: number) {
+export function ArrayCreate<T = any>(len: number): T[] {
   return new Array(len)
 }
 
@@ -114,7 +114,7 @@ export function ArrayCreate(len: number) {
  * @param o
  * @param prop
  */
-export function HasOwnProperty(o: object, prop: string) {
+export function HasOwnProperty(o: object, prop: string): boolean {
   return Object.prototype.hasOwnProperty.call(o, prop)
 }
 
@@ -122,7 +122,18 @@ export function HasOwnProperty(o: object, prop: string) {
  * https://www.ecma-international.org/ecma-262/11.0/index.html#sec-type
  * @param x
  */
-export function Type(x: any) {
+export function Type(
+  x: any
+):
+  | 'Null'
+  | 'Undefined'
+  | 'Object'
+  | 'Number'
+  | 'Boolean'
+  | 'String'
+  | 'Symbol'
+  | 'BigInt'
+  | undefined {
   if (x === null) {
     return 'Null'
   }
@@ -165,7 +176,7 @@ function mod(x: number, y: number): number {
  * https://tc39.es/ecma262/#eqn-Day
  * @param t
  */
-export function Day(t: number) {
+export function Day(t: number): number {
   return Math.floor(t / MS_PER_DAY)
 }
 
@@ -173,7 +184,7 @@ export function Day(t: number) {
  * https://tc39.es/ecma262/#sec-week-day
  * @param t
  */
-export function WeekDay(t: number) {
+export function WeekDay(t: number): number {
   return mod(Day(t) + 4, 7)
 }
 
@@ -181,7 +192,7 @@ export function WeekDay(t: number) {
  * https://tc39.es/ecma262/#sec-year-number
  * @param y
  */
-export function DayFromYear(y: number) {
+export function DayFromYear(y: number): number {
   return Date.UTC(y, 0) / MS_PER_DAY
 }
 
@@ -189,7 +200,7 @@ export function DayFromYear(y: number) {
  * https://tc39.es/ecma262/#sec-year-number
  * @param y
  */
-export function TimeFromYear(y: number) {
+export function TimeFromYear(y: number): number {
   return Date.UTC(y, 0)
 }
 
@@ -197,11 +208,11 @@ export function TimeFromYear(y: number) {
  * https://tc39.es/ecma262/#sec-year-number
  * @param t
  */
-export function YearFromTime(t: number) {
+export function YearFromTime(t: number): number {
   return new Date(t).getUTCFullYear()
 }
 
-export function DaysInYear(y: number) {
+export function DaysInYear(y: number): 365 | 366 {
   if (y % 4 !== 0) {
     return 365
   }
@@ -214,7 +225,7 @@ export function DaysInYear(y: number) {
   return 366
 }
 
-export function DayWithinYear(t: number) {
+export function DayWithinYear(t: number): number {
   return Day(t) - DayFromYear(YearFromTime(t))
 }
 
@@ -226,7 +237,9 @@ export function InLeapYear(t: number): 0 | 1 {
  * https://tc39.es/ecma262/#sec-month-number
  * @param t
  */
-export function MonthFromTime(t: number) {
+export function MonthFromTime(
+  t: number
+): 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 {
   const dwy = DayWithinYear(t)
   const leap = InLeapYear(t)
   if (dwy >= 0 && dwy < 31) {
@@ -268,7 +281,7 @@ export function MonthFromTime(t: number) {
   throw new Error('Invalid time')
 }
 
-export function DateFromTime(t: number) {
+export function DateFromTime(t: number): number {
   const dwy = DayWithinYear(t)
   const mft = MonthFromTime(t)
   const leap = InLeapYear(t)
@@ -318,15 +331,15 @@ const MS_PER_SECOND = 1e3
 const MS_PER_MINUTE = MS_PER_SECOND * SECONDS_PER_MINUTE
 const MS_PER_HOUR = MS_PER_MINUTE * MINUTES_PER_HOUR
 
-export function HourFromTime(t: number) {
+export function HourFromTime(t: number): number {
   return mod(Math.floor(t / MS_PER_HOUR), HOURS_PER_DAY)
 }
 
-export function MinFromTime(t: number) {
+export function MinFromTime(t: number): number {
   return mod(Math.floor(t / MS_PER_MINUTE), MINUTES_PER_HOUR)
 }
 
-export function SecFromTime(t: number) {
+export function SecFromTime(t: number): number {
   return mod(Math.floor(t / MS_PER_SECOND), SECONDS_PER_MINUTE)
 }
 
@@ -347,7 +360,7 @@ export function OrdinaryHasInstance(
   C: Object,
   O: any,
   internalSlots?: {boundTargetFunction: any}
-) {
+): boolean {
   if (!IsCallable(C)) {
     return false
   }

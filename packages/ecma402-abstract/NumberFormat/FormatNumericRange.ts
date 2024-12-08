@@ -13,7 +13,7 @@ export function FormatNumericRange(
   }: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
-) {
+): string {
   const parts = PartitionNumberRangePattern(numberFormat, x, y, {
     getInternalSlots,
   })

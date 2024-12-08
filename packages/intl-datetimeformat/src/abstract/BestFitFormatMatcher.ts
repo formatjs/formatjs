@@ -1,15 +1,15 @@
 import {Formats, TABLE_6, invariant} from '@formatjs/ecma402-abstract'
+import {processDateTimePattern} from './skeleton'
 import {
   DATE_TIME_PROPS,
-  removalPenalty,
   additionPenalty,
   differentNumericTypePenalty,
-  longMorePenalty,
-  shortMorePenalty,
-  shortLessPenalty,
   longLessPenalty,
+  longMorePenalty,
+  removalPenalty,
+  shortLessPenalty,
+  shortMorePenalty,
 } from './utils'
-import {processDateTimePattern} from './skeleton'
 
 function isNumericType(
   t: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long'
@@ -80,7 +80,7 @@ export function bestFitFormatMatcherScore(
 export function BestFitFormatMatcher(
   options: Intl.DateTimeFormatOptions,
   formats: Formats[]
-) {
+): Formats {
   let bestScore = -Infinity
   let bestFormat = formats[0]
   invariant(Array.isArray(formats), 'formats should be a list of things')

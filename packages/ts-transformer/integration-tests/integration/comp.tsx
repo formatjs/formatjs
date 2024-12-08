@@ -9,7 +9,7 @@ export function FormattedMessage(props: {
   defaultMessage: string
   description?: string
   children?: any
-}) {
+}): React.JSX.Element {
   return (
     <span>
       {props.id} - {JSON.stringify(props.defaultMessage)} - {props.description}{' '}
@@ -21,7 +21,7 @@ export function FormattedMessage(props: {
 function defineMessage(any: any): any {
   return any
 }
-export const msg = defineMessage({
+export const msg: any = defineMessage({
   defaultMessage: 'defineMessage',
   description: 'foo',
 })
@@ -34,7 +34,7 @@ export const Component = (): React.ReactElement => {
   )
 }
 
-export const formattedMessage = intl.formatMessage({
+export const formattedMessage: any = intl.formatMessage({
   defaultMessage: 'formatMessage',
   description: 'foo',
 })

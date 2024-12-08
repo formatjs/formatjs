@@ -1,5 +1,5 @@
-import * as path from 'path'
 import {BinaryToTextEncoding, createHash} from 'crypto'
+import * as path from 'path'
 export interface LoaderContext {
   resourceQuery?: string
   resourcePath?: string
@@ -36,7 +36,7 @@ export function interpolateName(
   loaderContext: LoaderContext,
   name: string | NameFn,
   options: Options
-) {
+): string {
   let filename
 
   const hasQuery =

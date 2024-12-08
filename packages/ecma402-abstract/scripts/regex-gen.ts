@@ -1,6 +1,6 @@
-import regenerate from 'regenerate'
 import {outputFileSync} from 'fs-extra'
 import minimist from 'minimist'
+import regenerate from 'regenerate'
 
 function main(args: minimist.ParsedArgs) {
   const symbolSeparator = regenerate().add(
@@ -9,7 +9,7 @@ function main(args: minimist.ParsedArgs) {
   outputFileSync(
     args.out,
     `// @generated from regex-gen.ts
-export const S_UNICODE_REGEX = /${symbolSeparator.toString()}/
+export const S_UNICODE_REGEX: RegExp = /${symbolSeparator.toString()}/
 `
   )
 }

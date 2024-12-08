@@ -8,7 +8,7 @@ import extract, {ExtractCLIOptions} from './extract'
 
 const KNOWN_COMMANDS = ['extract']
 
-async function main(argv: string[]) {
+async function main(argv: string[]): Promise<void> {
   loudRejection()
 
   program

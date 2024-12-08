@@ -1,6 +1,7 @@
 import {data as jsonData} from './languageMatching'
 import {regions} from './regions.generated'
-export const UNICODE_EXTENSION_SEQUENCE_REGEX = /-u(?:-[0-9a-z]{2,8})+/gi
+export const UNICODE_EXTENSION_SEQUENCE_REGEX: RegExp =
+  /-u(?:-[0-9a-z]{2,8})+/gi
 
 export function invariant(
   condition: boolean,
@@ -47,11 +48,16 @@ function processData(): LanguageInfo {
     const data = jsonData.supplemental.languageMatching['written-new'].slice(5)
     const matches = data.map(d => {
       const key = Object.keys(d)[0] as string
-      const value = d[key as 'no'] as {
-        _desired: string
-        _distance: string
-        oneway?: string
-      }
+      const value = (
+        d as Record<
+          string,
+          {
+            _desired: string
+            _distance: string
+            oneway?: string
+          }
+        >
+      )[key]
       return {
         supported: key,
         desired: value._desired,
@@ -145,7 +151,10 @@ function findMatchingDistanceForLSR(
   throw new Error('No matching distance found')
 }
 
-export function findMatchingDistance(desired: string, supported: string) {
+export function findMatchingDistance(
+  desired: string,
+  supported: string
+): number {
   const desiredLocale = new Intl.Locale(desired).maximize()
   const supportedLocale = new Intl.Locale(supported).maximize()
   const desiredLSR: LSR = {
@@ -214,7 +223,7 @@ interface LocaleMatchingResult {
 export function findBestMatch(
   requestedLocales: readonly string[],
   supportedLocales: readonly string[],
-  threshold = DEFAULT_MATCHING_THRESHOLD
+  threshold: number = DEFAULT_MATCHING_THRESHOLD
 ): LocaleMatchingResult {
   let lowestDistance = Infinity
   let result: LocaleMatchingResult = {

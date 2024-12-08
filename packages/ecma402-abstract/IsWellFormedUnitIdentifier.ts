@@ -12,7 +12,7 @@ function toLowerCase(str: string): string {
  * https://tc39.es/ecma402/#sec-iswellformedunitidentifier
  * @param unit
  */
-export function IsWellFormedUnitIdentifier(unit: string) {
+export function IsWellFormedUnitIdentifier(unit: string): boolean {
   unit = toLowerCase(unit)
   if (IsSanctionedSimpleUnitIdentifier(unit)) {
     return true

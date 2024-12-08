@@ -1,9 +1,9 @@
 import {
-  PluralRulesInternal,
-  PluralRulesData,
   CanonicalizeLocaleList,
   CoerceOptionsToObject,
   GetOption,
+  PluralRulesData,
+  PluralRulesInternal,
   SetNumberFormatDigitOptions,
 } from '@formatjs/ecma402-abstract'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
@@ -25,7 +25,7 @@ export function InitializePluralRules(
     getDefaultLocale(): string
     getInternalSlots(pl: Intl.PluralRules): PluralRulesInternal
   }
-) {
+): Intl.PluralRules {
   const requestedLocales = CanonicalizeLocaleList(locales)
   const opt: any = Object.create(null)
   const opts = CoerceOptionsToObject<Intl.PluralRulesOptions>(options)

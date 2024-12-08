@@ -26,7 +26,7 @@ type SegmentationRuleRaw = {
 type SegmentationTypeTypeRaw = {
   variables: Record<string, string>
   segmentRules: Record<string, SegmentationRuleRaw>
-  suppressions: string[]
+  suppressions: ReadonlyArray<string>
 }
 
 type SegmentResult =
@@ -93,7 +93,13 @@ const prepareLocaleSegmentationRules = (
   return preparedRules
 }
 
-const breaksAtResult = (breaks: boolean, matchingRule: string) => ({
+const breaksAtResult = (
+  breaks: boolean,
+  matchingRule: string
+): {
+  breaks: boolean
+  matchingRule: string
+} => ({
   breaks,
   matchingRule,
 })
@@ -243,7 +249,7 @@ export class Segmenter {
     return breaksAtResult(true, '999')
   }
 
-  segment(input: string) {
+  segment(input: string): SegmentIterator {
     checkReceiver(this, 'segment')
     return new SegmentIterator(this, input)
   }
@@ -260,7 +266,7 @@ export class Segmenter {
     }
   }
 
-  static availableLocales = new Set(
+  static availableLocales: Set<string> = new Set(
     Object.keys(SegmentationRules).filter(key => key !== 'root')
   )
   static supportedLocalesOf(
@@ -313,11 +319,24 @@ class SegmentIterator
     this.input = String(input)
   }
 
-  [Symbol.iterator]() {
+  [Symbol.iterator](): SegmentIterator {
     return new SegmentIterator(this.segmenter, this.input)
   }
 
-  next() {
+  next():
+    | {
+        done: boolean
+        value: {
+          segment: string
+          index: number
+          input: string
+          isWordLike?: boolean
+        }
+      }
+    | {
+        done: boolean
+        value: undefined
+      } {
     //using only the relevant bit of the string
     let checkString = this.input.substring(this.lastSegmentIndex)
 
@@ -348,7 +367,14 @@ class SegmentIterator
     return {done: true, value: undefined}
   }
 
-  containing(positionInput: number) {
+  containing(positionInput: number):
+    | {
+        segment: string
+        index: number
+        input: string
+        isWordLike?: boolean
+      }
+    | undefined {
     if (typeof positionInput === 'bigint') {
       throw TypeError('Index must not be a BigInt')
     }

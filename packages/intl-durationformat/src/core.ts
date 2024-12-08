@@ -283,7 +283,7 @@ export class DurationFormat implements DurationFormatType {
   static supportedLocalesOf(
     locales: string | string[],
     options?: Pick<DurationFormatOptions, 'localeMatcher'>
-  ) {
+  ): string[] {
     return SupportedLocales(
       DurationFormat.availableLocales,
       CanonicalizeLocaleList(locales),
@@ -292,8 +292,11 @@ export class DurationFormat implements DurationFormatType {
   }
 
   static __defaultLocale = 'en'
-  static availableLocales = new Set<string>()
-  static localeData = (
+  static availableLocales: Set<string> = new Set<string>()
+  static localeData: Record<
+    string,
+    DurationFormatLocaleInternalData | undefined
+  > = (
     Object.keys(TIME_SEPARATORS.localeData) as Array<
       keyof (typeof TIME_SEPARATORS)['localeData']
     >
@@ -314,7 +317,7 @@ export class DurationFormat implements DurationFormatType {
     },
     {}
   )
-  static getDefaultLocale = () => {
+  static getDefaultLocale = (): string => {
     return DurationFormat.__defaultLocale
   }
   static polyfilled = true

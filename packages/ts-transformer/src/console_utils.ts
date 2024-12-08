@@ -13,7 +13,7 @@ function label(level: keyof typeof LEVEL_COLORS, message: string) {
   )}] ${message}`
 }
 
-export async function debug(message: string, ...args: any[]) {
+export async function debug(message: string, ...args: any[]): Promise<void> {
   if (process.env.LOG_LEVEL !== 'debug') {
     return
   }

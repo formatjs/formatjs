@@ -5,7 +5,10 @@ import {invariant} from './utils'
  * @param extension
  * @param key
  */
-export function UnicodeExtensionValue(extension: string, key: string) {
+export function UnicodeExtensionValue(
+  extension: string,
+  key: string
+): string | undefined {
   invariant(key.length === 2, 'key must have 2 elements')
   const size = extension.length
   let searchValue = `-${key}-`

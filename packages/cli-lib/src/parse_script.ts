@@ -7,7 +7,7 @@ import {debug} from './console_utils'
  * @param fn filename
  */
 export function parseScript(opts: Opts, fn?: string) {
-  return (source: string) => {
+  return (source: string): void => {
     let output
     try {
       debug('Using TS compiler to process file', fn)

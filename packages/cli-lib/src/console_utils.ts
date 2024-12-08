@@ -1,18 +1,22 @@
-import {supportsColor, green, red, yellow} from 'chalk'
+import {green, red, supportsColor, yellow} from 'chalk'
 import readline from 'readline'
 import {format, promisify} from 'util'
 
 const CLEAR_WHOLE_LINE = 0
 
-export const writeStderr = promisify(process.stderr.write).bind(process.stderr)
-export const writeStdout = promisify(process.stdout.write).bind(process.stdout)
+export const writeStderr: (arg1: string | Uint8Array) => Promise<void> =
+  promisify(process.stderr.write).bind(process.stderr)
+export const writeStdout: (arg1: string | Uint8Array) => Promise<void> =
+  promisify(process.stdout.write).bind(process.stdout)
 
 const nativeClearLine = promisify(readline.clearLine).bind(readline)
 const nativeCursorTo = promisify(readline.cursorTo).bind(readline)
 
 // From:
 // https://github.com/yarnpkg/yarn/blob/53d8004229f543f342833310d5af63a4b6e59c8a/src/reporters/console/util.js
-export async function clearLine(terminal: (typeof process)['stderr']) {
+export async function clearLine(
+  terminal: (typeof process)['stderr']
+): Promise<void> {
   if (!supportsColor) {
     if (terminal.isTTY) {
       // terminal
@@ -40,7 +44,7 @@ function label(level: keyof typeof LEVEL_COLORS, message: string) {
   )}] ${message}`
 }
 
-export async function debug(message: string, ...args: any[]) {
+export async function debug(message: string, ...args: any[]): Promise<void> {
   if (process.env.LOG_LEVEL !== 'debug') {
     return
   }
@@ -49,13 +53,13 @@ export async function debug(message: string, ...args: any[]) {
   await writeStderr('\n')
 }
 
-export async function warn(message: string, ...args: any[]) {
+export async function warn(message: string, ...args: any[]): Promise<void> {
   await clearLine(process.stderr)
   await writeStderr(format(label('warn', message), ...args))
   await writeStderr('\n')
 }
 
-export async function error(message: string, ...args: any[]) {
+export async function error(message: string, ...args: any[]): Promise<void> {
   await clearLine(process.stderr)
   await writeStderr(format(label('error', message), ...args))
   await writeStderr('\n')

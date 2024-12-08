@@ -15,7 +15,7 @@ export function PartitionNumberRangePattern(
   }: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
-) {
+): NumberFormatPart[] {
   if (isNaN(x) || isNaN(y)) {
     throw new RangeError('Input must be a number')
   }

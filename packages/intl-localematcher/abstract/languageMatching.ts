@@ -2614,7 +2614,7 @@ export const data = {
             _distance: '4',
           },
         },
-      ],
+      ] as const,
     },
   },
 }

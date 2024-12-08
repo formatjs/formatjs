@@ -22,7 +22,7 @@ export function invariantIntlContext(intl?: any): asserts intl {
   )
 }
 
-export const DEFAULT_INTL_CONFIG: Pick<
+export type DefaultIntlConfig = Pick<
   ResolvedIntlConfig,
   | 'fallbackOnEmptyString'
   | 'formats'
@@ -32,7 +32,9 @@ export const DEFAULT_INTL_CONFIG: Pick<
   | 'defaultLocale'
   | 'defaultFormats'
   | 'onError'
-> = {
+>
+
+export const DEFAULT_INTL_CONFIG: DefaultIntlConfig = {
   ...CORE_DEFAULT_INTL_CONFIG,
   textComponent: React.Fragment,
 }
@@ -54,7 +56,7 @@ export function assignUniqueKeysToParts(
 
 export function shallowEqual<
   T extends Record<string, unknown> = Record<string, unknown>,
->(objA?: T, objB?: T) {
+>(objA?: T, objB?: T): boolean {
   if (objA === objB) {
     return true
   }

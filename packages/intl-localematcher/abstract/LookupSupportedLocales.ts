@@ -9,7 +9,7 @@ import {UNICODE_EXTENSION_SEQUENCE_REGEX} from './utils'
 export function LookupSupportedLocales(
   availableLocales: string[],
   requestedLocales: string[]
-) {
+): string[] {
   const subset: string[] = []
   for (const locale of requestedLocales) {
     const noExtensionLocale = locale.replace(

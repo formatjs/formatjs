@@ -750,7 +750,10 @@ function getVisitor(
   return visitor
 }
 
-export function transformWithTs(ts: TypeScript, opts: Opts) {
+export function transformWithTs(
+  ts: TypeScript,
+  opts: Opts
+): typescript.TransformerFactory<typescript.SourceFile> {
   opts = {...DEFAULT_OPTS, ...opts}
   debug('Transforming options', opts)
   const transformFn: typescript.TransformerFactory<
@@ -781,6 +784,8 @@ export function transformWithTs(ts: TypeScript, opts: Opts) {
   return transformFn
 }
 
-export function transform(opts: Opts) {
+export function transform(
+  opts: Opts
+): typescript.TransformerFactory<typescript.SourceFile> {
   return transformWithTs(typescript, opts)
 }

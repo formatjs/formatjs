@@ -1,11 +1,11 @@
 import {SameValue} from '../262'
-import {ToRawPrecision} from './ToRawPrecision'
-import {repeat} from '../utils'
 import {
   NumberFormatDigitInternalSlots,
   RawNumberFormatResult,
 } from '../types/number'
+import {repeat} from '../utils'
 import {ToRawFixed} from './ToRawFixed'
+import {ToRawPrecision} from './ToRawPrecision'
 
 /**
  * https://tc39.es/ecma402/#sec-formatnumberstring
@@ -21,7 +21,10 @@ export function FormatNumericToString(
     | 'maximumFractionDigits'
   >,
   x: number
-) {
+): {
+  roundedNumber: number
+  formattedString: string
+} {
   const isNegative = x < 0 || SameValue(x, -0)
   if (isNegative) {
     x = -x

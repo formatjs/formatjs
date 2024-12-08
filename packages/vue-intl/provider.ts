@@ -1,12 +1,20 @@
 import {IntlShape} from '@formatjs/intl'
-import {inject, provide, VNode} from 'vue'
+import {inject, provide, RendererElement, RendererNode, VNode} from 'vue'
 import {intlKey} from './injection-key'
 
-export function provideIntl(intl: IntlShape<VNode>) {
+export function provideIntl(intl: IntlShape<VNode>): void {
   provide(intlKey, intl)
 }
 
-export function useIntl() {
+export function useIntl(): IntlShape<
+  VNode<
+    RendererNode,
+    RendererElement,
+    {
+      [key: string]: any
+    }
+  >
+> {
   const intl = inject<IntlShape<VNode>>(intlKey)
   if (!intl) {
     throw new Error(

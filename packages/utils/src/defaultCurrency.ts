@@ -17,7 +17,7 @@ const COUNTRIES_BY_DEFAULT_CURRENCY = Object.keys(data).reduce<
  * @param countryCode country code (alpha-2)
  * @returns default currency code, or USD if not found
  */
-export function defaultCurrency(countryCode?: string) {
+export function defaultCurrency(countryCode?: string): string {
   countryCode = canonicalizeCountryCode(countryCode)
   return (
     (countryCode && countryCode in data && data[countryCode as 'US']) || 'USD'
@@ -29,6 +29,6 @@ export function defaultCurrency(countryCode?: string) {
  * @param currencyCode currency code (ISO 4217)
  * @returns list of country codes (alpha-2)
  */
-export function countriesUsingDefaultCurrency(currencyCode?: string) {
+export function countriesUsingDefaultCurrency(currencyCode?: string): string[] {
   return COUNTRIES_BY_DEFAULT_CURRENCY[currencyCode || 'USD'] || []
 }

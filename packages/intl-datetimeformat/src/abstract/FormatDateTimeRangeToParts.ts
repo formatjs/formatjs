@@ -1,3 +1,4 @@
+import {IntlDateTimeFormatPart} from '@formatjs/ecma402-abstract'
 import {FormatDateTimePatternImplDetails} from './FormatDateTimePattern'
 import {PartitionDateTimeRangePattern} from './PartitionDateTimeRangePattern'
 import {ToLocalTimeImplDetails} from './ToLocalTime'
@@ -7,7 +8,7 @@ export function FormatDateTimeRangeToParts(
   x: number,
   y: number,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
-) {
+): IntlDateTimeFormatPart[] {
   const parts = PartitionDateTimeRangePattern(dtf, x, y, implDetails)
   const result = new Array(0)
   for (const part of parts) {

@@ -6,7 +6,7 @@
 export function BestAvailableLocale(
   availableLocales: readonly string[],
   locale: string
-) {
+): string | undefined {
   let candidate = locale
   while (true) {
     if (availableLocales.indexOf(candidate) > -1) {

@@ -1,17 +1,17 @@
 import {
-  GetOption,
-  ListPatternLocaleData,
-  setInternalSlot,
-  SupportedLocales,
+  CanonicalizeLocaleList,
   getInternalSlot,
-  ListPatternFieldsData,
-  ListPatternData,
-  PartitionPattern,
+  GetOption,
+  GetOptionsObject,
   invariant,
   isLiteralPart,
+  ListPatternData,
+  ListPatternFieldsData,
+  ListPatternLocaleData,
   LiteralPart,
-  GetOptionsObject,
-  CanonicalizeLocaleList,
+  PartitionPattern,
+  setInternalSlot,
+  SupportedLocales,
 } from '@formatjs/ecma402-abstract'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 
@@ -309,7 +309,7 @@ export default class ListFormat {
   public static supportedLocalesOf(
     locales: string | string[],
     options?: Pick<IntlListFormatOptions, 'localeMatcher'>
-  ) {
+  ): string[] {
     // test262/test/intl402/ListFormat/constructor/supportedLocalesOf/result-type.js
     return SupportedLocales(
       ListFormat.availableLocales,
@@ -318,7 +318,7 @@ export default class ListFormat {
     )
   }
 
-  public static __addLocaleData(...data: ListPatternLocaleData[]) {
+  public static __addLocaleData(...data: ListPatternLocaleData[]): void {
     for (const {data: d, locale} of data) {
       const minimizedLocale = new (Intl as any).Locale(locale)
         .minimize()

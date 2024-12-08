@@ -3,7 +3,11 @@ import {parseFile as parseHbsFile} from './hbs_extractor'
 import {parseScript} from './parse_script'
 let p = new Preprocessor()
 
-export function parseFile(source: string, fileName: string, options: any) {
+export function parseFile(
+  source: string,
+  fileName: string,
+  options: any
+): void {
   const scriptParseFn = parseScript(options, fileName)
   const transformedSource = p.process(source, {filename: fileName})
 

@@ -37,6 +37,7 @@ test('tranpilation', function (done) {
                   compilerOptions: {
                     module: 'NodeNext',
                     moduleResolution: 'NodeNext',
+                    isolatedDeclarations: false,
                   },
                 },
               },

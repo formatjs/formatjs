@@ -10,7 +10,7 @@ export function FormatDateTime(
   dtf: Intl.DateTimeFormat | DateTimeFormat,
   x: number,
   implDetails: Parameters<typeof PartitionDateTimePattern>[2]
-) {
+): string {
   const parts = PartitionDateTimePattern(dtf, x, implDetails)
   let result = ''
   for (const part of parts) {
