@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.6.6...@formatjs/cli-lib@7.0.0) (2024-12-08)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** allow passing any formatter ([#4724](https://github.com/formatjs/formatjs/issues/4724)) ([28c0385](https://github.com/formatjs/formatjs/commit/28c038550083d523021a501fb19b71319570b7a9)) - by @pablobirukov
+
+### Features
+
+* **@formatjs/cli-lib:** change main entry point to esm ([bda0d1f](https://github.com/formatjs/formatjs/commit/bda0d1fdbadfb54abf3c1be2396e4c5120f0b781)) - by @longlho
+
+### BREAKING CHANGES
+
+* **@formatjs/cli-lib:** Due to downstream deps changes in Vue we have to change main
+entry point to esm esnext.
+
 ## [6.6.6](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.6.5...@formatjs/cli-lib@6.6.6) (2024-11-18)
 
 **Note:** Version bump only for package @formatjs/cli-lib

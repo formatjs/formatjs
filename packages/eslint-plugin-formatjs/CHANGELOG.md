@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.6](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.2.5...eslint-plugin-formatjs@5.2.6) (2024-12-08)
+
+### Bug Fixes
+
+* **deps:** update dependency @typescript-eslint/utils to v8.15.0 ([#4716](https://github.com/formatjs/formatjs/issues/4716)) ([0abf5a6](https://github.com/formatjs/formatjs/commit/0abf5a659512394849ae597c80ba0e94e1bc26ae)) - by @renovate[bot]
+
 ## [5.2.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.2.4...eslint-plugin-formatjs@5.2.5) (2024-11-18)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

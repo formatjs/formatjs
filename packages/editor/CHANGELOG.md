@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.63](https://github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.62...@formatjs/editor@2.0.63) (2024-12-08)
+
+### Bug Fixes
+
+* **deps:** update react monorepo to v19 (major) ([#4749](https://github.com/formatjs/formatjs/issues/4749)) ([c443e1f](https://github.com/formatjs/formatjs/commit/c443e1f3d85c2a3a04e7aaf0a6c575a12b6a974f)) - by @renovate[bot]
+
 ## [2.0.62](https://github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.61...@formatjs/editor@2.0.62) (2024-11-18)
 
 **Note:** Version bump only for package @formatjs/editor

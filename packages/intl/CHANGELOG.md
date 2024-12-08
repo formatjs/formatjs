@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.0.1...@formatjs/intl@3.0.2) (2024-12-08)
+
+### Bug Fixes
+
+* **@formatjs/intl:** fix NumberFormat types, fix [#4717](https://github.com/formatjs/formatjs/issues/4717) ([6fad11a](https://github.com/formatjs/formatjs/commit/6fad11a7ecaf3de1464c16f0a4530d5e59dd6cfe)) - by @longlho
+
 ## [3.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.0.0...@formatjs/intl@3.0.1) (2024-11-18)
 
 ### Bug Fixes

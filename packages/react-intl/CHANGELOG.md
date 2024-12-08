@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.2](https://github.com/formatjs/formatjs/compare/react-intl@7.0.1...react-intl@7.0.2) (2024-12-08)
+
+### Bug Fixes
+
+* **deps:** update react monorepo to v19 (major) ([#4749](https://github.com/formatjs/formatjs/issues/4749)) ([c443e1f](https://github.com/formatjs/formatjs/commit/c443e1f3d85c2a3a04e7aaf0a6c575a12b6a974f)) - by @renovate[bot]
+* **react-intl:** fix NumberFormat types, fix [#4717](https://github.com/formatjs/formatjs/issues/4717) ([cac541d](https://github.com/formatjs/formatjs/commit/cac541dcdb9dd343dabd4f6a53012d5dc9f9feff)) - by @longlho
+
 ## [7.0.1](https://github.com/formatjs/formatjs/compare/react-intl@7.0.0...react-intl@7.0.1) (2024-11-18)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.5.16](https://github.com/formatjs/formatjs/compare/vue-intl@6.5.15...vue-intl@6.5.16) (2024-12-08)
+
+### Bug Fixes
+
+* **vue-intl:** fix gts extractor and types after upgrade ([2b97a63](https://github.com/formatjs/formatjs/commit/2b97a63d2155abab131aa96f5840879e20e6dbe9)) - by @longlho
+
 ## [6.5.15](https://github.com/formatjs/formatjs/compare/vue-intl@6.5.14...vue-intl@6.5.15) (2024-11-18)
 
 **Note:** Version bump only for package vue-intl
