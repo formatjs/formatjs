@@ -1,20 +1,27 @@
 import {
   NumberFormatLocaleInternalData,
-  RawNumberLocaleData,
-  ResolvedNumberFormatOptions,
   NumberFormatOptions,
   NumberFormatPart,
   NumberRangeToParts,
+  RawNumberLocaleData,
+  ResolvedNumberFormatOptions,
 } from '@formatjs/ecma402-abstract'
+import Decimal from 'decimal.js'
 
 // Public --------------------------------------------------------------------------------------------------------------
 
 export interface NumberFormat {
   resolvedOptions(): ResolvedNumberFormatOptions
-  formatToParts(x: number): NumberFormatPart[]
-  format(x: number): string
-  formatRange(start: number, end: number): string
-  formatRangeToParts(start: number, end: number): NumberRangeToParts[]
+  formatToParts(x: number | bigint | Decimal): NumberFormatPart[]
+  format(x: number | bigint | Decimal): string
+  formatRange(
+    start: number | bigint | Decimal,
+    end: number | bigint | Decimal
+  ): string
+  formatRangeToParts(
+    start: number | bigint | Decimal,
+    end: number | bigint | Decimal
+  ): NumberRangeToParts[]
 }
 
 export interface NumberFormatConstructor {

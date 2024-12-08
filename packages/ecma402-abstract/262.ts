@@ -1,3 +1,5 @@
+import {Decimal} from 'decimal.js'
+import {ZERO} from './constants'
 /**
  * https://tc39.es/ecma262/#sec-tostring
  */
@@ -14,43 +16,37 @@ export function ToString(o: unknown): string {
  * https://tc39.es/ecma262/#sec-tonumber
  * @param val
  */
-export function ToNumber(val: any): number {
+export function ToNumber(val: any): Decimal {
   if (val === undefined) {
-    return NaN
+    return new Decimal(NaN)
   }
   if (val === null) {
-    return +0
+    return ZERO
   }
   if (typeof val === 'boolean') {
-    return val ? 1 : +0
-  }
-  if (typeof val === 'number') {
-    return val
+    return new Decimal(val ? 1 : 0)
   }
   if (typeof val === 'symbol' || typeof val === 'bigint') {
     throw new TypeError('Cannot convert symbol/bigint to number')
   }
-  return Number(val)
+  return new Decimal(Number(val))
 }
 
 /**
  * https://tc39.es/ecma262/#sec-tointeger
  * @param n
  */
-function ToInteger(n: any) {
+function ToInteger(n: any): Decimal {
   const number = ToNumber(n)
-  if (isNaN(number) || SameValue(number, -0)) {
-    return 0
+  if (number.isNaN() || number.isZero()) {
+    return ZERO
   }
-  if (isFinite(number)) {
+  if (number.isFinite()) {
     return number
   }
-  let integer = Math.floor(Math.abs(number))
-  if (number < 0) {
-    integer = -integer
-  }
-  if (SameValue(integer, -0)) {
-    return 0
+  let integer = number.abs().floor()
+  if (number.isNegative()) {
+    integer = integer.negated()
   }
   return integer
 }
@@ -66,7 +62,7 @@ export function TimeClip(time: number): number {
   if (Math.abs(time) > 8.64 * 1e15) {
     return NaN
   }
-  return ToInteger(time)
+  return ToInteger(time).toNumber()
 }
 
 /**

@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js'
 import {FormatNumericRangeToParts} from '../NumberFormat/FormatNumericRangeToParts'
 import {getInternalSlots} from './utils'
 
@@ -5,9 +6,14 @@ describe('FormatNumericRangeToParts', () => {
   const numberFormat: Intl.NumberFormat = new Intl.NumberFormat('it')
 
   it('correctly return numeric range', () => {
-    const result = FormatNumericRangeToParts(numberFormat, 3, 10, {
-      getInternalSlots,
-    })
+    const result = FormatNumericRangeToParts(
+      numberFormat,
+      new Decimal(3),
+      new Decimal(10),
+      {
+        getInternalSlots,
+      }
+    )
 
     expect(result).toMatchObject([
       {result: '0', source: 'startRange', type: 'integer', value: '3'},
@@ -17,9 +23,14 @@ describe('FormatNumericRangeToParts', () => {
   })
 
   it('correctly return numeric range with single negative number', () => {
-    const result = FormatNumericRangeToParts(numberFormat, -3, 10, {
-      getInternalSlots,
-    })
+    const result = FormatNumericRangeToParts(
+      numberFormat,
+      new Decimal(-3),
+      new Decimal(10),
+      {
+        getInternalSlots,
+      }
+    )
 
     expect(result).toMatchObject([
       {result: '0', source: 'startRange', type: 'minusSign', value: '-'},
@@ -30,9 +41,14 @@ describe('FormatNumericRangeToParts', () => {
   })
 
   it('correctly return numeric range with both negative numbers', () => {
-    const result = FormatNumericRangeToParts(numberFormat, -10, -3, {
-      getInternalSlots,
-    })
+    const result = FormatNumericRangeToParts(
+      numberFormat,
+      new Decimal(-10),
+      new Decimal(-3),
+      {
+        getInternalSlots,
+      }
+    )
 
     expect(result).toMatchObject([
       {result: '0', source: 'startRange', type: 'minusSign', value: '-'},

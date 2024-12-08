@@ -7,6 +7,7 @@ import {
   SupportedLocales,
   ToNumber,
 } from '@formatjs/ecma402-abstract'
+import Decimal from 'decimal.js'
 import {OperandsRecord} from './abstract/GetOperands'
 import {InitializePluralRules} from './abstract/InitializePluralRules'
 import {ResolvePlural} from './abstract/ResolvePlural'
@@ -38,7 +39,7 @@ export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
 function PluralRuleSelect(
   locale: string,
   type: 'cardinal' | 'ordinal',
-  _n: number,
+  _n: Decimal,
   {IntegerDigits, NumberOfFractionDigits, FractionDigits}: OperandsRecord
 ): LDMLPluralRule {
   return PluralRules.localeData[locale].fn(

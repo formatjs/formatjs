@@ -1,4 +1,5 @@
 import {_formatToParts} from '@formatjs/ecma402-abstract'
+import Decimal from 'decimal.js'
 
 function format(...args: Parameters<typeof _formatToParts>): string {
   return _formatToParts(...args)
@@ -11,6 +12,7 @@ const defaultOptions = {
   useGrouping: false,
   style: 'decimal',
   notation: 'standard',
+  roundingIncrement: 1,
 } as const
 
 const baseNumberResult = {
@@ -22,7 +24,11 @@ const baseNumberResult = {
 it('formats decimal', () => {
   const data = require('./locale-data/ja.json').data
   const pl = new Intl.PluralRules('ja')
-  const n = {...baseNumberResult, formattedString: '1', roundedNumber: 1}
+  const n = {
+    ...baseNumberResult,
+    formattedString: '1',
+    roundedNumber: new Decimal(1),
+  }
   expect(format(n, data, pl, defaultOptions)).toEqual('1')
   expect(format({...n, sign: -1}, data, pl, defaultOptions)).toEqual('-1')
   expect(format({...n, sign: 1}, data, pl, defaultOptions)).toEqual('+1')
@@ -32,7 +38,11 @@ it('formats percentage', () => {
   const options = {...defaultOptions, style: 'percent'} as const
   const data = require('./locale-data/ja.json').data
   const pl = new Intl.PluralRules('ja')
-  const n = {...baseNumberResult, formattedString: '42', roundedNumber: 42}
+  const n = {
+    ...baseNumberResult,
+    formattedString: '42',
+    roundedNumber: new Decimal(42),
+  }
   expect(format(n, data, pl, options)).toEqual('42%')
   expect(format({...n, sign: -1}, data, pl, options)).toEqual('-42%')
   expect(format({...n, sign: 1}, data, pl, options)).toEqual('+42%')
@@ -52,7 +62,7 @@ it('formats percentage with compact display', () => {
   const n = {
     ...baseNumberResult,
     formattedString: '1',
-    roundedNumber: 1,
+    roundedNumber: new Decimal(1),
     exponent: 6,
     magnitude: 6,
   }
@@ -69,7 +79,11 @@ it('formats accounting currency sign pattern', () => {
   } as const
   const data = require('./locale-data/ja.json').data
   const pl = new Intl.PluralRules('ja')
-  const n = {...baseNumberResult, formattedString: '42', roundedNumber: 42}
+  const n = {
+    ...baseNumberResult,
+    formattedString: '42',
+    roundedNumber: new Decimal(42),
+  }
   expect(format(n, data, pl, options)).toEqual('$42')
   expect(format({...n, sign: -1}, data, pl, options)).toEqual('($42)')
   expect(format({...n, sign: 1}, data, pl, options)).toEqual('+$42')
@@ -89,7 +103,11 @@ it('formats currency where the number precedes the symbol', () => {
   } as const
   const data = require('./locale-data/ar-SS.json').data
   const pl = new Intl.PluralRules('ar-SS')
-  const n = {...baseNumberResult, formattedString: '12', roundedNumber: 12}
+  const n = {
+    ...baseNumberResult,
+    formattedString: '12',
+    roundedNumber: new Decimal(12),
+  }
   expect(format(n, data, pl, options)).toEqual('\u200F١٢\xa0US$')
   expect(format({...n, sign: -1}, data, pl, options)).toEqual(
     '\u061C-\u200F١٢\xa0US$'
@@ -112,7 +130,11 @@ it('respects currencyBefore insertion rule', () => {
   } as const
   const data = require('./locale-data/ja.json').data
   const pl = new Intl.PluralRules('ja')
-  const n = {...baseNumberResult, formattedString: '123', roundedNumber: 123}
+  const n = {
+    ...baseNumberResult,
+    formattedString: '123',
+    roundedNumber: new Decimal(123),
+  }
   expect(format(n, data, pl, options1)).toEqual('USD\xa0123')
   expect(format({...n, sign: -1}, data, pl, options1)).toEqual('-USD\xa0123')
   expect(format({...n, sign: 1}, data, pl, options1)).toEqual('+USD\xa0123')
@@ -133,7 +155,7 @@ it('respects currencyAfter insertion rule', () => {
   const n = {
     ...baseNumberResult,
     formattedString: '123.00',
-    roundedNumber: 123,
+    roundedNumber: new Decimal(123),
   }
   const options1 = {
     ...defaultOptions,
@@ -156,7 +178,7 @@ it('respects currencyAfter insertion rule for compact display', () => {
   const n = {
     ...baseNumberResult,
     formattedString: '10',
-    roundedNumber: 10,
+    roundedNumber: new Decimal(10),
     exponent: 3,
     magnitude: 4,
   }
@@ -183,7 +205,11 @@ it('formats unit pattern with both prefix and suffix', () => {
   } as const
   const data = require('./locale-data/ja.json').data
   const pl = new Intl.PluralRules('ja')
-  const n = {...baseNumberResult, formattedString: '123', roundedNumber: 123}
+  const n = {
+    ...baseNumberResult,
+    formattedString: '123',
+    roundedNumber: new Decimal(123),
+  }
   expect(format(n, data, pl, options)).toEqual('摂氏 123 度')
   expect(format({...n, sign: -1}, data, pl, options)).toEqual('摂氏 -123 度')
   expect(format({...n, sign: 1}, data, pl, options)).toEqual('摂氏 +123 度')
@@ -204,7 +230,7 @@ it('formats currency name pattern with currency before number', () => {
   const n = {
     ...baseNumberResult,
     formattedString: '123.00',
-    roundedNumber: 123,
+    roundedNumber: new Decimal(123),
   }
   expect(format(n, data, pl, options)).toEqual('dola za Marekani 123.00')
   expect(format({...n, sign: -1}, data, pl, options)).toEqual(
@@ -230,7 +256,7 @@ it('formats compact notation that is currency and sign dependent', () => {
   const n = {
     ...baseNumberResult,
     formattedString: '100',
-    roundedNumber: 100,
+    roundedNumber: new Decimal(100),
     magnitude: 5,
   }
   expect(format(n, data, pl, options1)).toEqual('elfu 100')
@@ -265,7 +291,7 @@ it('properly unquotes characters from CLDR pattern', () => {
   const n = {
     ...baseNumberResult,
     formattedString: '1000',
-    roundedNumber: 1000,
+    roundedNumber: new Decimal(1000),
     magnitude: 14,
   }
   expect(format(n, data, pl, options)).toEqual('১০০০\xa0লা.কো.')
@@ -291,7 +317,7 @@ it('determines plurality of unit based on the number value of the scientific not
   const n = {
     ...baseNumberResult,
     formattedString: '1',
-    roundedNumber: 1,
+    roundedNumber: new Decimal(1),
     magnitude: 4,
     exponent: 4,
   }
@@ -312,7 +338,7 @@ it('determines the plurality of the currency in the compact notation based on th
   const n = {
     ...baseNumberResult,
     formattedString: '1',
-    roundedNumber: 1,
+    roundedNumber: new Decimal(1),
     magnitude: 3,
     exponent: 3,
   }
@@ -332,7 +358,7 @@ it('determines plurality of currency based on the number value of scientific not
   const n = {
     ...baseNumberResult,
     formattedString: '1',
-    roundedNumber: 1,
+    roundedNumber: new Decimal(1),
     magnitude: 4,
     exponent: 4,
   }
@@ -357,7 +383,7 @@ it('uses decimal compact pattern to format currency with currencyDisplay === "na
   const n = {
     ...baseNumberResult,
     formattedString: '10',
-    roundedNumber: 10,
+    roundedNumber: new Decimal(10),
     magnitude: 5,
     exponent: 4,
   }
@@ -380,7 +406,7 @@ it('falls back to non-compact formatting when the matching CLDR compact pattern 
   const n = {
     ...baseNumberResult,
     formattedString: '10000',
-    roundedNumber: 10000,
+    roundedNumber: new Decimal(10000),
     magnitude: 4,
   }
   expect(format(n, data, pl, options)).toEqual('10.000')
@@ -393,17 +419,21 @@ it('correctly handles NaN and Infinity in scientific notation', () => {
   const n1 = {
     ...baseNumberResult,
     formattedString: '∞',
-    roundedNumber: Infinity,
+    roundedNumber: new Decimal(Infinity),
   }
   expect(format(n1, data, pl, options)).toEqual('∞')
   const n2 = {
     ...baseNumberResult,
     formattedString: '∞',
-    roundedNumber: -Infinity,
+    roundedNumber: new Decimal(-Infinity),
     sign: -1,
   } as const
   expect(format(n2, data, pl, options)).toEqual('-∞')
-  const n3 = {...baseNumberResult, formattedString: 'NaN', roundedNumber: NaN}
+  const n3 = {
+    ...baseNumberResult,
+    formattedString: 'NaN',
+    roundedNumber: new Decimal(NaN),
+  }
   expect(format(n3, data, pl, options)).toEqual('NaN')
 })
 
@@ -418,7 +448,11 @@ it('formats compound unit that has the specialized pattern available', () => {
   } as const
   const data = require('./locale-data/ja.json').data
   const pl = new Intl.PluralRules('ja')
-  const n = {...baseNumberResult, formattedString: '42', roundedNumber: 42}
+  const n = {
+    ...baseNumberResult,
+    formattedString: '42',
+    roundedNumber: new Decimal(42),
+  }
   expect(format(n, data, pl, options)).toEqual('42 km/h')
 })
 
@@ -433,7 +467,11 @@ it('formats compound unit that has perUnitPattern available', () => {
   } as const
   const data = require('./locale-data/ja.json').data
   const pl = new Intl.PluralRules('ja')
-  const n = {...baseNumberResult, formattedString: '5', roundedNumber: 5}
+  const n = {
+    ...baseNumberResult,
+    formattedString: '5',
+    roundedNumber: new Decimal(5),
+  }
   expect(format(n, data, pl, options)).toEqual('5 センチメートル/秒')
 })
 
@@ -454,7 +492,11 @@ it('formats compound unit with fallback "per" compound pattern', () => {
   } as const
   const data = require('./locale-data/ja.json').data
   const pl = new Intl.PluralRules('ja')
-  const n = {...baseNumberResult, formattedString: '42', roundedNumber: 42}
+  const n = {
+    ...baseNumberResult,
+    formattedString: '42',
+    roundedNumber: new Decimal(42),
+  }
   expect(_formatToParts(n, data, pl, options)).toEqual([
     {type: 'unit', value: '摂氏'},
     // Spacing around "{0}" are considered literal instead of unit...
@@ -468,7 +510,11 @@ it('formats compound unit with fallback "per" compound pattern', () => {
 it('correctly formats NaN to parts', () => {
   const data = require('./locale-data/en.json').data
   const pl = new Intl.PluralRules('en')
-  const n = {...baseNumberResult, formattedString: 'NaN', roundedNumber: NaN}
+  const n = {
+    ...baseNumberResult,
+    formattedString: 'NaN',
+    roundedNumber: new Decimal(NaN),
+  }
   expect(_formatToParts(n, data, pl, defaultOptions)).toEqual([
     {type: 'nan', value: 'NaN'},
   ])
@@ -480,7 +526,7 @@ it('correctly formats Infinity to parts', () => {
   const n = {
     ...baseNumberResult,
     formattedString: '∞',
-    roundedNumber: Infinity,
+    roundedNumber: new Decimal(Infinity),
   }
   expect(_formatToParts(n, data, pl, defaultOptions)).toEqual([
     {type: 'infinity', value: '∞'},
@@ -493,7 +539,7 @@ it('can format numbers with primary and secondary grouping sizes', () => {
   const n = {
     ...baseNumberResult,
     formattedString: '123556.456',
-    roundedNumber: 123556,
+    roundedNumber: new Decimal(123556),
   }
   expect(
     _formatToParts(n, data, pl, {

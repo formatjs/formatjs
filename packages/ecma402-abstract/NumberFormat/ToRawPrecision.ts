@@ -1,86 +1,119 @@
-import {RawNumberFormatResult} from '../types/number'
-import {repeat, getMagnitude} from '../utils'
+import Decimal from 'decimal.js'
+import {TEN, ZERO} from '../constants'
+import {RawNumberFormatResult, UnsignedRoundingModeType} from '../types/number'
+import {invariant, repeat} from '../utils'
+import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode'
+
+Decimal.set({
+  toExpPos: 100,
+})
+
+function ToRawPrecisionFn(n: Decimal, e: Decimal, p: number) {
+  invariant(
+    TEN.pow(p - 1).lessThanOrEqualTo(n) && n.lessThan(TEN.pow(p)),
+    `n should be in the range ${TEN.pow(p - 1)} <= n < ${TEN.pow(p)} but got ${n}`
+  )
+  // n * 10^(e - p + 1)
+  return n.times(TEN.pow(e.minus(p).plus(1)))
+}
+
+function findN1E1R1(x: Decimal, p: number) {
+  const maxN1 = TEN.pow(p)
+  const minN1 = TEN.pow(p - 1)
+
+  const maxE1 = x.div(minN1).log(10).plus(p).minus(1).ceil()
+
+  for (let currentE1 = maxE1; ; currentE1 = currentE1.minus(1)) {
+    let currentN1 = x.div(TEN.pow(currentE1.minus(p).plus(1))).floor()
+    if (currentN1.lessThan(maxN1) && currentN1.greaterThanOrEqualTo(minN1)) {
+      const currentR1 = ToRawPrecisionFn(currentN1, currentE1, p)
+      if (currentR1.lessThanOrEqualTo(x)) {
+        return {
+          n1: currentN1,
+          e1: currentE1,
+          r1: currentR1,
+        }
+      }
+    }
+  }
+}
+
+function findN2E2R2(x: Decimal, p: number) {
+  const maxN2 = TEN.pow(p)
+  const minN2 = TEN.pow(p - 1)
+  const minE2 = x.div(maxN2).log(10).plus(p).minus(1).floor()
+
+  for (let currentE2 = minE2; ; currentE2 = currentE2.plus(1)) {
+    let currentN2 = x.div(TEN.pow(currentE2.minus(p).plus(1))).ceil()
+    if (currentN2.lessThan(maxN2) && currentN2.greaterThanOrEqualTo(minN2)) {
+      const currentR2 = ToRawPrecisionFn(currentN2, currentE2, p)
+      if (currentR2.greaterThanOrEqualTo(x)) {
+        return {
+          n2: currentN2,
+          e2: currentE2,
+          r2: currentR2,
+        }
+      }
+    }
+  }
+}
 
 export function ToRawPrecision(
-  x: number,
+  x: Decimal,
   minPrecision: number,
-  maxPrecision: number
+  maxPrecision: number,
+  unsignedRoundingMode: UnsignedRoundingModeType
 ): RawNumberFormatResult {
   const p = maxPrecision
   let m: string
   let e: number
-  let xFinal: number
-  if (x === 0) {
+  let xFinal: Decimal
+  if (x.isZero()) {
     m = repeat('0', p)
     e = 0
-    xFinal = 0
+    xFinal = ZERO
   } else {
-    const xToString = x.toString()
-    // If xToString is formatted as scientific notation, the number is either very small or very
-    // large. If the precision of the formatted string is lower that requested max precision, we
-    // should still infer them from the formatted string, otherwise the formatted result might have
-    // precision loss (e.g. 1e41 will not have 0 in every trailing digits).
-    const xToStringExponentIndex = xToString.indexOf('e')
-    const [xToStringMantissa, xToStringExponent] = xToString.split('e')
-    const xToStringMantissaWithoutDecimalPoint = xToStringMantissa.replace(
-      '.',
-      ''
-    )
-
-    if (
-      xToStringExponentIndex >= 0 &&
-      xToStringMantissaWithoutDecimalPoint.length <= p
-    ) {
-      e = +xToStringExponent
-      m =
-        xToStringMantissaWithoutDecimalPoint +
-        repeat('0', p - xToStringMantissaWithoutDecimalPoint.length)
-      xFinal = x
+    const {n1, e1, r1} = findN1E1R1(x, p)
+    const {n2, e2, r2} = findN2E2R2(x, p)
+    let r = ApplyUnsignedRoundingMode(x, r1, r2, unsignedRoundingMode)
+    let n
+    if (r.eq(r1)) {
+      n = n1
+      e = e1.toNumber()
+      xFinal = r1
     } else {
-      e = getMagnitude(x)
-
-      const decimalPlaceOffset = e - p + 1
-      // n is the integer containing the required precision digits. To derive the formatted string,
-      // we will adjust its decimal place in the logic below.
-      let n = Math.round(adjustDecimalPlace(x, decimalPlaceOffset))
-
-      // The rounding caused the change of magnitude, so we should increment `e` by 1.
-      if (adjustDecimalPlace(n, p - 1) >= 10) {
-        e = e + 1
-        // Divide n by 10 to swallow one precision.
-        n = Math.floor(n / 10)
-      }
-
-      m = n.toString()
-      // Equivalent of n * 10 ** (e - p + 1)
-      xFinal = adjustDecimalPlace(n, p - 1 - e)
+      n = n2
+      e = e2.toNumber()
+      xFinal = r2
     }
+    m = n.toString()
   }
-  let int: number
+  let int
   if (e >= p - 1) {
     m = m + repeat('0', e - p + 1)
     int = e + 1
   } else if (e >= 0) {
-    m = `${m.slice(0, e + 1)}.${m.slice(e + 1)}`
+    m = m.slice(0, e + 1) + '.' + m.slice(m.length - (p - (e + 1)))
     int = e + 1
   } else {
-    m = `0.${repeat('0', -e - 1)}${m}`
+    invariant(e < 0, 'e should be less than 0')
+    m = '0.' + repeat('0', -e - 1) + m
     int = 1
   }
-  if (m.indexOf('.') >= 0 && maxPrecision > minPrecision) {
+  if (m.includes('.') && maxPrecision > minPrecision) {
     let cut = maxPrecision - minPrecision
     while (cut > 0 && m[m.length - 1] === '0') {
-      m = m.slice(0, -1)
+      m = m.slice(0, m.length - 1)
       cut--
     }
     if (m[m.length - 1] === '.') {
-      m = m.slice(0, -1)
+      m = m.slice(0, m.length - 1)
     }
   }
-  return {formattedString: m, roundedNumber: xFinal, integerDigitsCount: int}
-
-  // x / (10 ** magnitude), but try to preserve as much floating point precision as possible.
-  function adjustDecimalPlace(x: number, magnitude: number): number {
-    return magnitude < 0 ? x * 10 ** -magnitude : x / 10 ** magnitude
+  return {
+    formattedString: m,
+    roundedNumber: xFinal,
+    integerDigitsCount: int,
+    roundingMagnitude: e,
   }
 }

@@ -1,10 +1,11 @@
-import '@formatjs/intl-pluralrules/polyfill'
+import {NumberFormatPart} from '@formatjs/ecma402-abstract'
 import '@formatjs/intl-pluralrules/locale-data/ko'
-import * as ko from './locale-data/ko.json'
+import '@formatjs/intl-pluralrules/polyfill'
 import {NumberFormat} from '../src/core'
+import * as ko from './locale-data/ko.json'
 NumberFormat.__addLocaleData(ko as any)
 
-const tests: any[] = [
+const tests: Array<[number, NumberFormatPart[]]> = [
   [
     987654321,
     [

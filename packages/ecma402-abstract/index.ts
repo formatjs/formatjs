@@ -34,7 +34,6 @@ export {
   createDataProperty,
   defineProperty,
   getInternalSlot,
-  getMagnitude,
   getMultiInternalSlots,
   isLiteralPart,
   setInternalSlot,
@@ -59,3 +58,5 @@ export {
   createMemoizedPluralRules,
   invariant,
 } from './utils'
+
+export {ZERO} from './constants'

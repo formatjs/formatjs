@@ -1,13 +1,4 @@
 import {memoize, strategies} from '@formatjs/fast-memoize'
-/**
- * Cannot do Math.log(x) / Math.log(10) bc if IEEE floating point issue
- * @param x number
- */
-export function getMagnitude(x: number): number {
-  // Cannot count string length via Number.toString because it may use scientific notation
-  // for very small or very large numbers.
-  return Math.floor(Math.log(x) * Math.LOG10E)
-}
 
 export function repeat(s: string, times: number): string {
   if (typeof s.repeat === 'function') {

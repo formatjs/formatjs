@@ -1,10 +1,11 @@
-import {invariant, ToNumber} from '@formatjs/ecma402-abstract'
+import {invariant, ToNumber, ZERO} from '@formatjs/ecma402-abstract'
+import Decimal from 'decimal.js'
 
 export interface OperandsRecord {
   /**
    * Absolute value of the source number (integer and decimals)
    */
-  Number: number
+  Number: Decimal
   /**
    * Number of digits of `number`
    */
@@ -37,15 +38,15 @@ export function GetOperands(s: string): OperandsRecord {
     `GetOperands should have been called with a string`
   )
   const n = ToNumber(s)
-  invariant(isFinite(n), 'n should be finite')
+  invariant(n.isFinite(), 'n should be finite')
   let dp = s.indexOf('.')
-  let iv: string | number
-  let f: number
+  let iv
+  let f: Decimal
   let v: number
   let fv = ''
   if (dp === -1) {
     iv = n
-    f = 0
+    f = ZERO
     v = 0
   } else {
     iv = s.slice(0, dp)
@@ -53,23 +54,23 @@ export function GetOperands(s: string): OperandsRecord {
     f = ToNumber(fv)
     v = fv.length
   }
-  const i = Math.abs(ToNumber(iv))
+  const i = ToNumber(iv).abs()
   let w: number
-  let t: number
-  if (f !== 0) {
+  let t: Decimal
+  if (!f.isZero()) {
     const ft = fv.replace(/0+$/, '')
     w = ft.length
     t = ToNumber(ft)
   } else {
     w = 0
-    t = 0
+    t = ZERO
   }
   return {
     Number: n,
-    IntegerDigits: i,
+    IntegerDigits: i.toNumber(),
     NumberOfFractionDigits: v,
     NumberOfFractionDigitsWithoutTrailing: w,
-    FractionDigits: f,
-    FractionDigitsWithoutTrailing: t,
+    FractionDigits: f.toNumber(),
+    FractionDigitsWithoutTrailing: t.toNumber(),
   }
 }

@@ -125,6 +125,9 @@ importers:
       '@types/benchmark':
         specifier: ^2.1.5
         version: 2.1.5
+      '@types/big.js':
+        specifier: ^6.2.2
+        version: 6.2.2
       '@types/eslint':
         specifier: 9.6.1
         version: 9.6.1
@@ -242,6 +245,9 @@ importers:
       core-js:
         specifier: ^3.38.1
         version: 3.39.0
+      decimal.js:
+        specifier: ^10.4.3
+        version: 10.4.3
       ember-template-recast:
         specifier: ^6.1.5
         version: 6.1.5
@@ -543,6 +549,9 @@ importers:
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
+      decimal.js:
+        specifier: '10'
+        version: 10.4.3
       tslib:
         specifier: '2'
         version: 2.8.1
@@ -777,6 +786,9 @@ importers:
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
+      decimal.js:
+        specifier: '10'
+        version: 10.4.3
       tslib:
         specifier: '2'
         version: 2.8.1
@@ -799,6 +811,9 @@ importers:
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
+      decimal.js:
+        specifier: '10'
+        version: 10.4.3
       tslib:
         specifier: '2'
         version: 2.8.1
@@ -3054,6 +3069,9 @@ packages:
 
   '@types/benchmark@2.1.5':
     resolution: {integrity: sha512-cKio2eFB3v7qmKcvIHLUMw/dIx/8bhWPuzpzRT4unCPRTD8VdA9Zb0afxpcxOqR4PixRS7yT42FqGS8BYL8g1w==}
+
+  '@types/big.js@6.2.2':
+    resolution: {integrity: sha512-e2cOW9YlVzFY2iScnGBBkplKsrn2CsObHQ2Hiw4V1sSyiGbgWL8IyqE3zFi1Pt5o1pdAtYkDAIsF3KKUPjdzaA==}
 
   '@types/body-parser@1.19.5':
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
@@ -12093,7 +12111,7 @@ snapshots:
 
   '@docusaurus/react-loadable@6.0.0(react@19.0.0)':
     dependencies:
-      '@types/react': 19.0.1
+      '@types/react': 18.3.14
       react: 19.0.0
 
   '@docusaurus/theme-classic@3.6.3(@swc/core@1.10.0(@swc/helpers@0.5.15))(@types/react@19.0.1)(acorn@8.14.0)(eslint@9.16.0(jiti@1.21.6))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.6.2)':
@@ -13331,6 +13349,8 @@ snapshots:
 
   '@types/benchmark@2.1.5': {}
 
+  '@types/big.js@6.2.2': {}
+
   '@types/body-parser@1.19.5':
     dependencies:
       '@types/connect': 3.4.38
@@ -13565,13 +13585,13 @@ snapshots:
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.0.1
+      '@types/react': 18.3.14
       '@types/react-router': 5.1.20
 
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.0.1
+      '@types/react': 18.3.14
 
   '@types/react@18.3.14':
     dependencies:

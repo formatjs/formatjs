@@ -1,10 +1,11 @@
-import {PartitionNumberPattern} from './PartitionNumberPattern'
+import Decimal from 'decimal.js'
 import {ArrayCreate} from '../262'
 import {NumberFormatInternal, NumberFormatPart} from '../types/number'
+import {PartitionNumberPattern} from './PartitionNumberPattern'
 
 export function FormatNumericToParts(
   nf: Intl.NumberFormat,
-  x: number,
+  x: Decimal,
   implDetails: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }

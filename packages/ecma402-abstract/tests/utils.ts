@@ -1,3 +1,4 @@
+import {SetNumberFormatDigitOptions} from '../NumberFormat/SetNumberFormatDigitOptions'
 import {NumberFormatInternal} from '../types/number'
 
 const internalSlotMap = new WeakMap<Intl.NumberFormat, NumberFormatInternal>()
@@ -6,6 +7,7 @@ export function getInternalSlots(x: Intl.NumberFormat): NumberFormatInternal {
   let internalSlots = internalSlotMap.get(x)
   if (!internalSlots) {
     internalSlots = Object.create(null) as NumberFormatInternal
+    SetNumberFormatDigitOptions(internalSlots, {}, 0, 3, 'standard')
     internalSlotMap.set(x, internalSlots)
   }
   return {

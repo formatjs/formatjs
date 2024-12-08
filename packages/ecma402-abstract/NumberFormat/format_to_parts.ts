@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js'
+import {TEN} from '../constants'
 import {S_UNICODE_REGEX} from '../regex.generated'
 import {
   DecimalFormatNum,
@@ -11,13 +13,16 @@ import {
   NumberFormatOptionsUnitDisplay,
   NumberFormatPart,
   RawNumberFormatResult,
+  RoundingModeType,
   SymbolsData,
   UnitData,
+  UnsignedRoundingModeType,
   UseGroupingType,
 } from '../types/number'
 import {LDMLPluralRule} from '../types/plural-rules'
-import {ToRawFixed} from './ToRawFixed'
 import {digitMapping} from './digit-mapping.generated'
+import {GetUnsignedRoundingMode} from './GetUnsignedRoundingMode'
+import {ToRawFixed} from './ToRawFixed'
 
 // This is from: unicode-12.1.0/General_Category/Symbol/regex.js
 // IE11 does not support unicode flag, otherwise this is just /\p{S}/u.
@@ -30,7 +35,7 @@ const CLDR_NUMBER_PATTERN = /[#0](?:[\.,][#0]+)*/g
 
 interface NumberResult {
   formattedString: string
-  roundedNumber: number
+  roundedNumber: Decimal
   sign: -1 | 0 | 1
   // Example: 100K has exponent 3 and magnitude 5.
   exponent: number
@@ -56,6 +61,8 @@ export default function formatToParts(
     // Unit
     unit?: string
     unitDisplay?: NumberFormatOptionsUnitDisplay
+    roundingIncrement: number
+    roundingMode: RoundingModeType
   }
 ): NumberFormatPart[] {
   const {sign, exponent, magnitude} = numberResult
@@ -189,7 +196,7 @@ export default function formatToParts(
       case '{0}': {
         // We only need to handle scientific and engineering notation here.
         numberParts.push(
-          ...paritionNumberIntoParts(
+          ...partitionNumberIntoParts(
             symbols,
             numberResult,
             notation,
@@ -198,7 +205,9 @@ export default function formatToParts(
             // If compact number pattern exists, do not insert group separators.
             !compactNumberPattern && Boolean(options.useGrouping),
             decimalNumberPattern,
-            style
+            style,
+            options.roundingIncrement,
+            GetUnsignedRoundingMode(options.roundingMode, sign === -1)
           )
         )
         break
@@ -250,7 +259,7 @@ export default function formatToParts(
         if (currencyNameData) {
           unitName = selectPlural(
             pl,
-            numberResult.roundedNumber * 10 ** exponent,
+            numberResult.roundedNumber.times(TEN.pow(exponent)).toNumber(),
             currencyNameData.displayName
           )
         } else {
@@ -292,7 +301,7 @@ export default function formatToParts(
         // Simple unit pattern
         unitPattern = selectPlural(
           pl,
-          numberResult.roundedNumber * 10 ** exponent,
+          numberResult.roundedNumber.times(TEN.pow(exponent)).toNumber(),
           data.units.simple[unit!][unitDisplay!]
         )
       } else {
@@ -304,7 +313,7 @@ export default function formatToParts(
 
         const numeratorUnitPattern = selectPlural(
           pl,
-          numberResult.roundedNumber * 10 ** exponent,
+          numberResult.roundedNumber.times(TEN.pow(exponent)).toNumber(),
           data.units.simple[numeratorUnit!][unitDisplay!]
         )
         const perUnitPattern =
@@ -359,7 +368,7 @@ export default function formatToParts(
 
 // A subset of https://tc39.es/ecma402/#sec-partitionnotationsubpattern
 // Plus the exponent parts handling.
-function paritionNumberIntoParts(
+function partitionNumberIntoParts(
   symbols: SymbolsData,
   numberResult: Pick<
     RawNumberFormatResult,
@@ -377,15 +386,17 @@ function paritionNumberIntoParts(
    * Some locales like Hindi has secondary group size of 2 (e.g. "#,##,##0.00").
    */
   decimalNumberPattern: string,
-  style: NumberFormatOptionsStyle
+  style: NumberFormatOptionsStyle,
+  roundingIncrement: number,
+  unsignedRoundingMode: UnsignedRoundingModeType
 ): NumberFormatPart[] {
   const result: NumberFormatPart[] = []
   // eslint-disable-next-line prefer-const
   let {formattedString: n, roundedNumber: x} = numberResult
 
-  if (isNaN(x)) {
+  if (x.isNaN()) {
     return [{type: 'nan', value: n}]
-  } else if (!isFinite(x)) {
+  } else if (!x.isFinite()) {
     return [{type: 'infinity', value: n}]
   }
 
@@ -412,7 +423,10 @@ function paritionNumberIntoParts(
   // unless the rounded number is greater than 10000:
   //   NumberFormat('de', {notation: 'compact', compactDisplay: 'short'}).format(1234) //=> "1234"
   //   NumberFormat('de').format(1234) //=> "1.234"
-  if (useGrouping && (notation !== 'compact' || x >= 10000)) {
+  if (
+    useGrouping &&
+    (notation !== 'compact' || x.greaterThanOrEqualTo(10000))
+  ) {
     // a. Let groupSepSymbol be the implementation-, locale-, and numbering system-dependent (ILND) String representing the grouping separator.
     // For currency we should use `currencyGroup` instead of generic `group`
     const groupSepSymbol =
@@ -479,14 +493,20 @@ function paritionNumberIntoParts(
 
   if (
     (notation === 'scientific' || notation === 'engineering') &&
-    isFinite(x)
+    x.isFinite()
   ) {
     result.push({type: 'exponentSeparator', value: symbols.exponential})
     if (exponent < 0) {
       result.push({type: 'exponentMinusSign', value: symbols.minusSign})
       exponent = -exponent
     }
-    const exponentResult = ToRawFixed(exponent, 0, 0)
+    const exponentResult = ToRawFixed(
+      new Decimal(exponent),
+      0,
+      0,
+      roundingIncrement,
+      unsignedRoundingMode
+    )
     result.push({
       type: 'exponentInteger',
       value: exponentResult.formattedString,
@@ -545,7 +565,7 @@ function getCompactDisplayPattern(
     if (!compactPluralRules) {
       return null
     }
-    pattern = selectPlural(pl, roundedNumber, compactPluralRules)
+    pattern = selectPlural(pl, roundedNumber.toNumber(), compactPluralRules)
   } else {
     const byNumberingSystem = data.numbers.decimal
     const byCompactDisplay =
@@ -556,7 +576,7 @@ function getCompactDisplayPattern(
     if (!compactPlaralRule) {
       return null
     }
-    pattern = selectPlural(pl, roundedNumber, compactPlaralRule)
+    pattern = selectPlural(pl, roundedNumber.toNumber(), compactPlaralRule)
   }
   // See https://unicode.org/reports/tr35/tr35-numbers.html#Compact_Number_Formats
   // > If the value is precisely “0”, either explicit or defaulted, then the normal number format

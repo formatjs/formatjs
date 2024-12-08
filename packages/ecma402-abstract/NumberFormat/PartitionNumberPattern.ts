@@ -1,5 +1,7 @@
-import {SameValue} from '../262'
+import Decimal from 'decimal.js'
+import {TEN} from '../constants'
 import {NumberFormatInternal, NumberFormatPart} from '../types/number'
+import {invariant} from '../utils'
 import {ComputeExponent} from './ComputeExponent'
 import formatToParts from './format_to_parts'
 import {FormatNumericToString} from './FormatNumericToString'
@@ -9,7 +11,7 @@ import {FormatNumericToString} from './FormatNumericToString'
  */
 export function PartitionNumberPattern(
   numberFormat: Intl.NumberFormat,
-  x: number,
+  x: Decimal,
   {
     getInternalSlots,
   }: {
@@ -26,23 +28,20 @@ export function PartitionNumberPattern(
   let exponent = 0
   let n: string
 
-  if (isNaN(x)) {
+  if (x.isNaN()) {
     n = symbols.nan
-  } else if (x == Number.POSITIVE_INFINITY || x == Number.NEGATIVE_INFINITY) {
+  } else if (!x.isFinite()) {
     n = symbols.infinity
   } else {
-    if (!SameValue(x, -0)) {
-      if (!isFinite(x)) {
-        throw new Error('Input must be a mathematical value')
-      }
+    if (!x.isZero()) {
+      invariant(x.isFinite(), 'Input must be a mathematical value')
       if (internalSlots.style == 'percent') {
-        x *= 100
+        x = x.times(100)
       }
       ;[exponent, magnitude] = ComputeExponent(numberFormat, x, {
         getInternalSlots,
       })
-      // Preserve more precision by doing multiplication when exponent is negative.
-      x = exponent < 0 ? x * 10 ** -exponent : x / 10 ** exponent
+      x = x.times(TEN.pow(-exponent))
     }
     const formatNumberResult = FormatNumericToString(internalSlots, x)
     n = formatNumberResult.formattedString
@@ -58,28 +57,36 @@ export function PartitionNumberPattern(
       sign = 0
       break
     case 'auto':
-      if (SameValue(x, 0) || x > 0 || isNaN(x)) {
+      if (x.isPositive() || x.isNaN()) {
         sign = 0
       } else {
         sign = -1
       }
       break
     case 'always':
-      if (SameValue(x, 0) || x > 0 || isNaN(x)) {
+      if (x.isPositive() || x.isNaN()) {
         sign = 1
       } else {
         sign = -1
       }
       break
-    default:
-      // x === 0 -> x is 0 or x is -0
-      if (x === 0 || isNaN(x)) {
+    case 'exceptZero':
+      if (x.isZero()) {
         sign = 0
-      } else if (x > 0) {
-        sign = 1
-      } else {
+      } else if (x.isNegative()) {
         sign = -1
+      } else {
+        sign = 1
       }
+      break
+    default:
+      invariant(signDisplay === 'negative', 'signDisplay must be "negative"')
+      if (x.isNegative() && !x.isZero()) {
+        sign = -1
+      } else {
+        sign = 0
+      }
+      break
   }
 
   return formatToParts(

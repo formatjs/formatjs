@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js'
 import {NumberFormatInternal} from '../types/number'
 import {PartitionNumberRangePattern} from './PartitionNumberRangePattern'
 
@@ -6,8 +7,8 @@ import {PartitionNumberRangePattern} from './PartitionNumberRangePattern'
  */
 export function FormatNumericRange(
   numberFormat: Intl.NumberFormat,
-  x: number,
-  y: number,
+  x: Decimal,
+  y: Decimal,
   {
     getInternalSlots,
   }: {

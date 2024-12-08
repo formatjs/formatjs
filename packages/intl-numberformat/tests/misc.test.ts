@@ -157,6 +157,9 @@ describe('test262 examples', function () {
         compactDisplay: 'short',
       }).format(10000)
     ).toBe('+10 тис. англійських фунтів')
+  })
+
+  it('10000 currency uk scientific', function () {
     expect(
       new NumberFormat('uk', {
         style: 'currency',
@@ -167,7 +170,7 @@ describe('test262 examples', function () {
         notation: 'scientific',
         compactDisplay: 'short',
       }).format(10000)
-    ).toBe('+1,00Е4 англійського фунта')
+    ).toBe('+1Е4 англійських фунтів')
   })
 
   it('10000 currency de compactLong', function () {
@@ -184,18 +187,16 @@ describe('test262 examples', function () {
     ).toBe('10 Tausend US-Dollar')
   })
 
-  for (const [number, engineering, scientific] of tests) {
-    it(`number ${number}`, function () {
-      const nfEngineering = new NumberFormat('de-DE', {
-        notation: 'engineering',
-      })
-      expect(nfEngineering.format(+number)).toBe(engineering)
-      const nfScientific = new NumberFormat('de-DE', {
-        notation: 'scientific',
-      })
-      expect(nfScientific.format(+number)).toBe(scientific)
+  it.each(tests)(`number %s`, (number, engineering, scientific) => {
+    const nfEngineering = new NumberFormat('de-DE', {
+      notation: 'engineering',
     })
-  }
+    expect(nfEngineering.format(+number)).toBe(engineering)
+    const nfScientific = new NumberFormat('de-DE', {
+      notation: 'scientific',
+    })
+    expect(nfScientific.format(+number)).toBe(scientific)
+  })
 })
 
 // https://github.com/formatjs/formatjs/issues/1670
@@ -217,17 +218,23 @@ describe('For wrong options NumberFormat correctly throws exception', () => {
   it('uses an invalid value for rounding incremenet', () => {
     const createInstance = () => new NumberFormat('en', {roundingIncrement: 3})
 
-    expect(createInstance).toThrowError(
+    expect(createInstance).toThrow(
       new RangeError(
-        'Invalid rounding increment value: 3.\nValid values are 1,2,5,10,20,25,50,100,200,250,500,1000,2000.'
+        `Invalid rounding increment value: 3.
+Valid values are 1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000.`
       )
     )
   })
 
   it('roundingIncrement > 1 with undefined fraction digits', () => {
-    const createInstance = () => new NumberFormat('en', {roundingIncrement: 2})
+    const createInstance = () =>
+      new NumberFormat('en', {
+        roundingIncrement: 2,
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 2,
+      })
 
-    expect(createInstance).toThrowError(
+    expect(createInstance).toThrow(
       new RangeError(
         'With roundingIncrement > 1, maximumFractionDigits and minimumFractionDigits must be equal.'
       )
@@ -331,4 +338,13 @@ test('currencyDecimal', () => {
     currency: 'USD',
   })
   expect(nf.format(12345678)).toEqual('12 345 678.00 $US')
+})
+
+test('#4678', () => {
+  const nf = new NumberFormat('en', {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+    roundingMode: 'trunc',
+  })
+  expect(nf.format(1050)).toEqual('1K')
 })

@@ -16,6 +16,7 @@ import {
 import {currencyDigitsData} from './currency-digits.generated'
 import {numberingSystemNames} from './numbering-systems.generated'
 // eslint-disable-next-line import/no-cycle
+import Decimal from 'decimal.js'
 import getInternalSlots from './get_internal_slots'
 import {
   NumberFormatConstructor,
@@ -86,22 +87,30 @@ export const NumberFormat = function (
   return this
 } as NumberFormatConstructor
 
-function formatToParts(this: Intl.NumberFormat, x: number) {
-  return FormatNumericToParts(this, toNumeric(x) as number, {
+function formatToParts(this: Intl.NumberFormat, x: number | bigint | Decimal) {
+  return FormatNumericToParts(this, toNumeric(x), {
     getInternalSlots,
   })
 }
 
-function formatRange(this: Intl.NumberFormat, start: number, end: number) {
-  return FormatNumericRange(this, start, end, {getInternalSlots})
+function formatRange(
+  this: Intl.NumberFormat,
+  start: number | bigint | Decimal,
+  end: number | bigint | Decimal
+) {
+  return FormatNumericRange(this, toNumeric(start), toNumeric(end), {
+    getInternalSlots,
+  })
 }
 
 function formatRangeToParts(
   this: Intl.NumberFormat,
-  start: number,
-  end: number
+  start: number | bigint | Decimal,
+  end: number | bigint | Decimal
 ) {
-  return FormatNumericRangeToParts(this, start, end, {getInternalSlots})
+  return FormatNumericRangeToParts(this, toNumeric(start), toNumeric(end), {
+    getInternalSlots,
+  })
 }
 
 try {
@@ -171,7 +180,7 @@ const formatDescriptor = {
       // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
       boundFormat = (value?: number | bigint) => {
         // TODO: check bigint
-        const x = toNumeric(value) as number
+        const x = toNumeric(value)
         return numberFormat
           .formatToParts(x)
           .map(x => x.value)
@@ -266,9 +275,9 @@ NumberFormat.getDefaultLocale = () => {
 }
 NumberFormat.polyfilled = true
 
-function toNumeric(val: any) {
+function toNumeric(val: any): Decimal {
   if (typeof val === 'bigint') {
-    return val
+    return new Decimal(val.toString())
   }
   return ToNumber(val)
 }

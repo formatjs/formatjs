@@ -1,68 +1,68 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 GBP"`;
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 GBP"`;
 
@@ -96,69 +96,69 @@ exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySig
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=accounting, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 GBP"`;
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 GBP"`;
 
@@ -192,69 +192,69 @@ exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySig
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=code, currencySign=standard, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 англійських фунтів"`;
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 англійського фунта"`;
 
@@ -288,69 +288,69 @@ exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySig
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=accounting, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 англійського фунта"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 англійських фунтів"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 англійського фунта"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 англійських фунтів"`;
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 англійського фунта"`;
 
@@ -384,69 +384,69 @@ exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySig
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=name, currencySign=standard, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 англійського фунта"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 £"`;
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 £"`;
 
@@ -480,69 +480,69 @@ exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, cur
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 £"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 £"`;
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 £"`;
 
@@ -576,69 +576,69 @@ exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, cur
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 £"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 GBP"`;
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 GBP"`;
 
@@ -672,69 +672,69 @@ exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencyS
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=accounting, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 GBP"`;
+exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 GBP"`;
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 GBP"`;
 
@@ -768,69 +768,69 @@ exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencyS
 
 exports[`Intl.NumberFormat 'uk', currency=GBP, currencyDisplay=symbol, currencySign=standard, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 GBP"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 USD"`;
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 USD"`;
 
@@ -864,69 +864,69 @@ exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySig
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=accounting, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 USD"`;
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 USD"`;
 
@@ -960,69 +960,69 @@ exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySig
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=code, currencySign=standard, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 доларів США"`;
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 долара США"`;
 
@@ -1056,69 +1056,69 @@ exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySig
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=accounting, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 долара США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 доларів США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 долара США"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 доларів США"`;
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 долара США"`;
 
@@ -1152,69 +1152,69 @@ exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySig
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=name, currencySign=standard, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 долара США"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 $"`;
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 $"`;
 
@@ -1248,69 +1248,69 @@ exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, cur
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=accounting, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 $"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 $"`;
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 $"`;
 
@@ -1344,69 +1344,69 @@ exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, cur
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=narrowSymbol, currencySign=standard, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 $"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 USD"`;
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 USD"`;
 
@@ -1440,69 +1440,69 @@ exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencyS
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=accounting, signDisplay=standard, notation=never, compactDisplay=short 2`] = `"10 000,00–100 000,00 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=long 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=always, compactDisplay=short 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=long 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=auto, compactDisplay=short 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=long 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 1`] = `"+10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10,00Е3–+100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=exceptZero, compactDisplay=short 2`] = `"+10Е3–+100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=long 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 1`] = `"10Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10,00Е3–100,00Е3 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=engineering, notation=never, compactDisplay=short 2`] = `"10Е3–100Е3 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=long 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=always, compactDisplay=short 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=long 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=auto, compactDisplay=short 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=long 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 1`] = `"+1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1,00Е4–+1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=exceptZero, compactDisplay=short 2`] = `"+1Е4–+1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=long 2`] = `"1Е4–1Е5 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1,00Е4 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 1`] = `"1Е4 USD"`;
 
-exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1,00Е4–1,00Е5 USD"`;
+exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=scientific, notation=never, compactDisplay=short 2`] = `"1Е4–1Е5 USD"`;
 
 exports[`Intl.NumberFormat 'uk', currency=USD, currencyDisplay=symbol, currencySign=standard, signDisplay=standard, notation=always, compactDisplay=long 1`] = `"+10 000,00 USD"`;
 

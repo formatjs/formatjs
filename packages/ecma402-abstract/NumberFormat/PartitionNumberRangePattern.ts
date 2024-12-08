@@ -1,4 +1,6 @@
+import Decimal from 'decimal.js'
 import {NumberFormatInternal, NumberFormatPart} from '../types/number'
+import {invariant} from '../utils'
 import {CollapseNumberRange} from './CollapseNumberRange'
 import {FormatApproximately} from './FormatApproximately'
 import {PartitionNumberPattern} from './PartitionNumberPattern'
@@ -8,17 +10,15 @@ import {PartitionNumberPattern} from './PartitionNumberPattern'
  */
 export function PartitionNumberRangePattern(
   numberFormat: Intl.NumberFormat,
-  x: number,
-  y: number,
+  x: Decimal,
+  y: Decimal,
   {
     getInternalSlots,
   }: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
 ): NumberFormatPart[] {
-  if (isNaN(x) || isNaN(y)) {
-    throw new RangeError('Input must be a number')
-  }
+  invariant(!x.isNaN() && !y.isNaN(), 'Input must be a number')
 
   let result: NumberFormatPart[] = []
   const xResult = PartitionNumberPattern(numberFormat, x, {getInternalSlots})

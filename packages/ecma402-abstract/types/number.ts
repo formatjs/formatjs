@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js'
 import {LocaleData} from './core'
 import {LDMLPluralRule} from './plural-rules'
 
@@ -42,19 +43,24 @@ export interface NumberFormatDigitOptions {
   minimumFractionDigits?: number
   maximumFractionDigits?: number
   roundingPriority?: RoundingPriorityType
+  roundingIncrement?: number
+  roundingMode?: RoundingModeType
+  trailingZeroDisplay?: TrailingZeroDisplay
 }
 
 export interface NumberFormatDigitInternalSlots {
   minimumIntegerDigits: number
-  minimumSignificantDigits?: number
-  maximumSignificantDigits?: number
+  minimumSignificantDigits: number
+  maximumSignificantDigits: number
   roundingType: NumberFormatRoundingType
   // These two properties are only used when `roundingType` is "fractionDigits".
-  minimumFractionDigits?: number
-  maximumFractionDigits?: number
-  notation?: NumberFormatNotation
-  roundingIncrement?: number
-  trailingZeroDisplay?: TrailingZeroDisplay
+  minimumFractionDigits: number
+  maximumFractionDigits: number
+  notation: NumberFormatNotation
+  roundingIncrement: number
+  roundingMode: RoundingModeType
+  trailingZeroDisplay: TrailingZeroDisplay
+  roundingPriority: RoundingPriorityType
 }
 
 // All fields are optional due to de-duping
@@ -180,8 +186,9 @@ export type LDMLPluralRuleMap<T> = Omit<
 
 export interface RawNumberFormatResult {
   formattedString: string
-  roundedNumber: number
+  roundedNumber: Decimal
   integerDigitsCount: number
+  roundingMagnitude: number
 }
 
 export type NumberFormatOptionsLocaleMatcher = 'lookup' | 'best fit'
@@ -225,7 +232,7 @@ export interface NumberFormatInternal extends NumberFormatDigitInternalSlots {
   numberingSystem: string
   // Locale-dependent formatter data
   dataLocaleData: NumberFormatLocaleInternalData
-  roundingMode?: RoundingModeType
+  roundingMode: RoundingModeType
 }
 
 export type NumberFormatOptions = Omit<

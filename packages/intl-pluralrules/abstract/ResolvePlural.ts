@@ -1,10 +1,11 @@
 import {
-  Type,
-  invariant,
-  PluralRulesInternal,
-  LDMLPluralRule,
   FormatNumericToString,
+  invariant,
+  LDMLPluralRule,
+  PluralRulesInternal,
+  Type,
 } from '@formatjs/ecma402-abstract'
+import Decimal from 'decimal.js'
 import {GetOperands, OperandsRecord} from './GetOperands'
 
 /**
@@ -15,7 +16,7 @@ import {GetOperands, OperandsRecord} from './GetOperands'
  */
 export function ResolvePlural(
   pl: Intl.PluralRules,
-  n: number,
+  n: Decimal,
   {
     getInternalSlots,
     PluralRuleSelect,
@@ -24,7 +25,7 @@ export function ResolvePlural(
     PluralRuleSelect: (
       locale: string,
       type: 'cardinal' | 'ordinal',
-      n: number,
+      n: Decimal,
       operands: OperandsRecord
     ) => LDMLPluralRule
   }
@@ -35,8 +36,7 @@ export function ResolvePlural(
     'initializedPluralRules' in internalSlots,
     'pluralrules must be initialized'
   )
-  invariant(Type(n) === 'Number', 'n must be a number')
-  if (!isFinite(n)) {
+  if (!n.isFinite()) {
     return 'other'
   }
   const {locale, type} = internalSlots

@@ -39,15 +39,6 @@ export function InitializePluralRules(
     'best fit'
   )
   opt.localeMatcher = matcher
-  internalSlots.type = GetOption(
-    opts,
-    'type',
-    'string',
-    ['cardinal', 'ordinal'],
-    'cardinal'
-  )
-
-  SetNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard')
   const r = ResolveLocale(
     availableLocales,
     requestedLocales,
@@ -57,5 +48,15 @@ export function InitializePluralRules(
     getDefaultLocale
   )
   internalSlots.locale = r.locale
+  internalSlots.type = GetOption(
+    opts,
+    'type',
+    'string',
+    ['cardinal', 'ordinal'],
+    'cardinal'
+  )
+
+  SetNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard')
+
   return pl
 }

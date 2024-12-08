@@ -238,7 +238,7 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
     if (date === undefined) {
       date = Date.now()
     } else {
-      date = ToNumber(date)
+      date = ToNumber(date).toNumber()
     }
     return FormatDateTimeToParts(this, date, {
       getInternalSlots,
@@ -261,8 +261,8 @@ defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
     if (startDate === undefined || endDate === undefined) {
       throw new TypeError('startDate/endDate cannot be undefined')
     }
-    const x = ToNumber(startDate)
-    const y = ToNumber(endDate)
+    const x = ToNumber(startDate).toNumber()
+    const y = ToNumber(endDate).toNumber()
     return FormatDateTimeRangeToParts(dtf, x, y, {
       getInternalSlots,
       localeData: DateTimeFormat.localeData,
@@ -284,8 +284,8 @@ defineProperty(DateTimeFormat.prototype, 'formatRange', {
     if (startDate === undefined || endDate === undefined) {
       throw new TypeError('startDate/endDate cannot be undefined')
     }
-    const x = ToNumber(startDate)
-    const y = ToNumber(endDate)
+    const x = ToNumber(startDate).toNumber()
+    const y = ToNumber(endDate).toNumber()
     return FormatDateTimeRange(dtf, x, y, {
       getInternalSlots,
       localeData: DateTimeFormat.localeData,

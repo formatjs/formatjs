@@ -1,9 +1,11 @@
-import {SameValue} from '../262'
+import Decimal from 'decimal.js'
+import {NEGATIVE_ZERO, ZERO} from '../constants'
 import {
   NumberFormatDigitInternalSlots,
   RawNumberFormatResult,
 } from '../types/number'
-import {repeat} from '../utils'
+import {invariant, repeat} from '../utils'
+import {GetUnsignedRoundingMode} from './GetUnsignedRoundingMode'
 import {ToRawFixed} from './ToRawFixed'
 import {ToRawPrecision} from './ToRawPrecision'
 
@@ -19,46 +21,103 @@ export function FormatNumericToString(
     | 'minimumIntegerDigits'
     | 'minimumFractionDigits'
     | 'maximumFractionDigits'
+    | 'roundingIncrement'
+    | 'roundingMode'
+    | 'trailingZeroDisplay'
   >,
-  x: number
+  x: Decimal
 ): {
-  roundedNumber: number
+  roundedNumber: Decimal
   formattedString: string
 } {
-  const isNegative = x < 0 || SameValue(x, -0)
-  if (isNegative) {
-    x = -x
+  let sign
+  // -0
+  if (x.isZero() && x.isNegative()) {
+    sign = 'negative'
+    x = ZERO
+  } else {
+    invariant(
+      x.isFinite(),
+      'NumberFormatDigitInternalSlots value is not finite'
+    )
+    if (x.lessThan(0)) {
+      sign = 'negative'
+    } else {
+      sign = 'positive'
+    }
+    if (sign === 'negative') {
+      x = x.negated()
+    }
   }
 
   let result: RawNumberFormatResult
 
-  const rourndingType = intlObject.roundingType
+  const roundingType = intlObject.roundingType
+  const unsignedRoundingMode = GetUnsignedRoundingMode(
+    intlObject.roundingMode,
+    sign === 'negative'
+  )
 
-  switch (rourndingType) {
+  switch (roundingType) {
     case 'significantDigits':
       result = ToRawPrecision(
         x,
-        intlObject.minimumSignificantDigits!,
-        intlObject.maximumSignificantDigits!
+        intlObject.minimumSignificantDigits,
+        intlObject.maximumSignificantDigits,
+        unsignedRoundingMode
       )
       break
     case 'fractionDigits':
       result = ToRawFixed(
         x,
-        intlObject.minimumFractionDigits!,
-        intlObject.maximumFractionDigits!
+        intlObject.minimumFractionDigits,
+        intlObject.maximumFractionDigits,
+        intlObject.roundingIncrement,
+        unsignedRoundingMode
       )
       break
     default:
-      result = ToRawPrecision(x, 1, 2)
-      if (result.integerDigitsCount > 1) {
-        result = ToRawFixed(x, 0, 0)
+      let sResult = ToRawPrecision(
+        x,
+        intlObject.minimumSignificantDigits,
+        intlObject.maximumSignificantDigits,
+        unsignedRoundingMode
+      )
+      let fResult = ToRawFixed(
+        x,
+        intlObject.minimumFractionDigits,
+        intlObject.maximumFractionDigits,
+        intlObject.roundingIncrement,
+        unsignedRoundingMode
+      )
+      if (intlObject.roundingType === 'morePrecision') {
+        if (sResult.roundingMagnitude <= fResult.roundingMagnitude) {
+          result = sResult
+        } else {
+          result = fResult
+        }
+      } else {
+        invariant(
+          intlObject.roundingType === 'lessPrecision',
+          'Invalid roundingType'
+        )
+        if (sResult.roundingMagnitude <= fResult.roundingMagnitude) {
+          result = fResult
+        } else {
+          result = sResult
+        }
       }
       break
   }
 
   x = result.roundedNumber
   let string = result.formattedString
+  if (intlObject.trailingZeroDisplay === 'stripIfInteger' && x.isInteger()) {
+    let i = string.indexOf('.')
+    if (i > -1) {
+      string = string.slice(0, i)
+    }
+  }
   const int = result.integerDigitsCount
   const minInteger = intlObject.minimumIntegerDigits
 
@@ -67,8 +126,12 @@ export function FormatNumericToString(
     string = forwardZeros + string
   }
 
-  if (isNegative) {
-    x = -x
+  if (sign === 'negative') {
+    if (x.isZero()) {
+      x = NEGATIVE_ZERO
+    } else {
+      x = x.negated()
+    }
   }
   return {roundedNumber: x, formattedString: string}
 }

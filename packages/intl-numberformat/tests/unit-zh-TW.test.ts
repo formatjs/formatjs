@@ -1,13 +1,22 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill'
-import '@formatjs/intl-pluralrules/polyfill'
 import '@formatjs/intl-pluralrules/locale-data/zh'
-import * as zh from './locale-data/zh.json'
-import * as zhHant from './locale-data/zh-Hant.json'
+import '@formatjs/intl-pluralrules/polyfill'
 import {NumberFormat} from '../src/core'
+import * as zhHant from './locale-data/zh-Hant.json'
+import * as zh from './locale-data/zh.json'
 NumberFormat.__addLocaleData(zh as any, zhHant as any)
 
-const tests: any = [
+const tests: Array<
+  [
+    number,
+    {
+      short: Intl.NumberFormatPart[]
+      narrow: Intl.NumberFormatPart[]
+      long: Intl.NumberFormatPart[]
+    },
+  ]
+> = [
   [
     -987,
     {
@@ -146,17 +155,14 @@ const tests: any = [
 ]
 
 describe('unit-zh-TW', function () {
-  for (const [number, expectedData] of tests) {
-    for (const unitDisplay in expectedData) {
-      const expected = expectedData[unitDisplay]
-      it(`${number} - ${unitDisplay}`, function () {
-        const nf = new NumberFormat('zh-TW', {
-          style: 'unit',
-          unit: 'meter',
-          unitDisplay: unitDisplay as 'narrow',
-        })
-        expect(nf.formatToParts(number)).toEqual(expected)
+  describe.each(tests)('%s', (number, expectedData) => {
+    it.each(Object.entries(expectedData))('%s', (unitDisplay, expected) => {
+      const nf = new NumberFormat('zh-TW', {
+        style: 'unit',
+        unit: 'meter',
+        unitDisplay: unitDisplay as 'narrow',
       })
-    }
-  }
+      expect(nf.formatToParts(number)).toEqual(expected)
+    })
+  })
 })

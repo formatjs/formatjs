@@ -1,7 +1,6 @@
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList'
 import {CoerceOptionsToObject} from '../CoerceOptionsToObject'
-import {GetNumberOption} from '../GetNumberOption'
 import {GetOption} from '../GetOption'
 import {GetStringOrBooleanOption} from '../GetStringOrBooleanOption'
 import {
@@ -14,10 +13,6 @@ import {invariant} from '../utils'
 import {CurrencyDigits} from './CurrencyDigits'
 import {SetNumberFormatDigitOptions} from './SetNumberFormatDigitOptions'
 import {SetNumberFormatUnitOptions} from './SetNumberFormatUnitOptions'
-
-const VALID_ROUND_INCREMENT_VALUES = [
-  1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000,
-]
 
 /**
  * https://tc39.es/ecma402/#sec-initializenumberformat
@@ -91,18 +86,6 @@ export function InitializeNumberFormat(
   SetNumberFormatUnitOptions(nf, options, {getInternalSlots})
   const style = internalSlots.style
 
-  let mnfdDefault: number
-  let mxfdDefault: number
-  if (style === 'currency') {
-    const currency = internalSlots.currency
-    const cDigits = CurrencyDigits(currency!, {currencyDigitsData})
-    mnfdDefault = cDigits
-    mxfdDefault = cDigits
-  } else {
-    mnfdDefault = 0
-    mxfdDefault = style === 'percent' ? 0 : 3
-  }
-
   const notation = GetOption(
     options,
     'notation',
@@ -112,6 +95,18 @@ export function InitializeNumberFormat(
   )
   internalSlots.notation = notation
 
+  let mnfdDefault: number
+  let mxfdDefault: number
+  if (style === 'currency' && notation === 'standard') {
+    const currency = internalSlots.currency
+    const cDigits = CurrencyDigits(currency!, {currencyDigitsData})
+    mnfdDefault = cDigits
+    mxfdDefault = cDigits
+  } else {
+    mnfdDefault = 0
+    mxfdDefault = style === 'percent' ? 0 : 3
+  }
+
   SetNumberFormatDigitOptions(
     internalSlots,
     options,
@@ -119,50 +114,6 @@ export function InitializeNumberFormat(
     mxfdDefault,
     notation
   )
-
-  const roundingIncrement = GetNumberOption(
-    options,
-    'roundingIncrement',
-    1,
-    5000,
-    1
-  )
-
-  if (VALID_ROUND_INCREMENT_VALUES.indexOf(roundingIncrement) === -1) {
-    throw new RangeError(
-      `Invalid rounding increment value: ${roundingIncrement}.\nValid values are ${VALID_ROUND_INCREMENT_VALUES}.`
-    )
-  }
-
-  if (
-    roundingIncrement !== 1 &&
-    internalSlots.roundingType !== 'fractionDigits'
-  ) {
-    throw new TypeError(
-      `For roundingIncrement > 1 only fractionDigits is a valid roundingType`
-    )
-  }
-
-  if (
-    roundingIncrement !== 1 &&
-    internalSlots.maximumFractionDigits !== internalSlots.minimumFractionDigits
-  ) {
-    throw new RangeError(
-      'With roundingIncrement > 1, maximumFractionDigits and minimumFractionDigits must be equal.'
-    )
-  }
-
-  internalSlots.roundingIncrement = roundingIncrement
-
-  const trailingZeroDisplay = GetOption(
-    options,
-    'trailingZeroDisplay',
-    'string',
-    ['auto', 'stripIfInteger'],
-    'auto'
-  )
-
-  internalSlots.trailingZeroDisplay = trailingZeroDisplay
 
   const compactDisplay = GetOption(
     options,
@@ -179,7 +130,7 @@ export function InitializeNumberFormat(
     defaultUseGrouping = 'min2'
   }
 
-  internalSlots.useGrouping = GetStringOrBooleanOption(
+  let useGrouping = GetStringOrBooleanOption(
     options,
     'useGrouping',
     ['min2', 'auto', 'always'],
@@ -187,32 +138,16 @@ export function InitializeNumberFormat(
     false,
     defaultUseGrouping
   )
+  internalSlots.useGrouping = useGrouping
 
-  internalSlots.signDisplay = GetOption(
+  let signDisplay = GetOption(
     options,
     'signDisplay',
     'string',
     ['auto', 'never', 'always', 'exceptZero', 'negative'],
     'auto'
   )
-
-  internalSlots.roundingMode = GetOption(
-    options,
-    'roundingMode',
-    'string',
-    [
-      'ceil',
-      'floor',
-      'expand',
-      'trunc',
-      'halfCeil',
-      'halfFloor',
-      'halfExpand',
-      'halfTrunc',
-      'halfEven',
-    ],
-    'halfExpand'
-  )
+  internalSlots.signDisplay = signDisplay
 
   return nf
 }
