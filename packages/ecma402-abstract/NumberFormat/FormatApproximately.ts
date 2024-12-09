@@ -4,16 +4,9 @@ import {NumberFormatInternal, NumberFormatPart} from '../types/number'
  * https://tc39.es/ecma402/#sec-formatapproximately
  */
 export function FormatApproximately(
-  numberFormat: Intl.NumberFormat,
-  result: NumberFormatPart[],
-  {
-    getInternalSlots,
-  }: {
-    getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
-  }
+  internalSlots: NumberFormatInternal,
+  result: NumberFormatPart[]
 ): NumberFormatPart[] {
-  const internalSlots = getInternalSlots(numberFormat)
-
   const symbols =
     internalSlots.dataLocaleData.numbers.symbols[internalSlots.numberingSystem]
 

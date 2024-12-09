@@ -9,11 +9,8 @@ describe('PartitionNumberPattern', () => {
 
   test('manages NaN', () => {
     const result = PartitionNumberPattern(
-      decimalNumberFormat,
-      new Decimal(NaN),
-      {
-        getInternalSlots,
-      }
+      getInternalSlots(decimalNumberFormat),
+      new Decimal(NaN)
     )
 
     expect(result).toEqual([{type: 'nan', value: 'NaN'}])
@@ -22,11 +19,8 @@ describe('PartitionNumberPattern', () => {
   describe('manage numbers', () => {
     it('positive number', () => {
       const result = PartitionNumberPattern(
-        decimalNumberFormat,
-        new Decimal(+3),
-        {
-          getInternalSlots,
-        }
+        getInternalSlots(decimalNumberFormat),
+        new Decimal(+3)
       )
 
       expect(result).toEqual([{type: 'integer', value: '3'}])
@@ -37,9 +31,10 @@ describe('PartitionNumberPattern', () => {
         style: 'decimal',
         signDisplay: 'always',
       })
-      const result = PartitionNumberPattern(numberFormat, new Decimal(+3), {
-        getInternalSlots,
-      })
+      const result = PartitionNumberPattern(
+        getInternalSlots(numberFormat),
+        new Decimal(+3)
+      )
 
       expect(result).toEqual([
         {type: 'plusSign', value: '+'},
@@ -52,9 +47,10 @@ describe('PartitionNumberPattern', () => {
         style: 'percent',
         signDisplay: 'always',
       })
-      const result = PartitionNumberPattern(numberFormat, new Decimal(+3), {
-        getInternalSlots,
-      })
+      const result = PartitionNumberPattern(
+        getInternalSlots(numberFormat),
+        new Decimal(+3)
+      )
 
       expect(result).toEqual([
         {type: 'plusSign', value: '+'},
@@ -65,11 +61,8 @@ describe('PartitionNumberPattern', () => {
 
     it('negative number', () => {
       const result = PartitionNumberPattern(
-        decimalNumberFormat,
-        new Decimal(-3),
-        {
-          getInternalSlots,
-        }
+        getInternalSlots(decimalNumberFormat),
+        new Decimal(-3)
       )
 
       expect(result).toEqual([
@@ -82,9 +75,8 @@ describe('PartitionNumberPattern', () => {
   describe('manage Infinity', () => {
     it('positive infinity', () => {
       const result = PartitionNumberPattern(
-        decimalNumberFormat,
-        new Decimal(Number.POSITIVE_INFINITY),
-        {getInternalSlots}
+        getInternalSlots(decimalNumberFormat),
+        new Decimal(Number.POSITIVE_INFINITY)
       )
 
       expect(result).toEqual([{type: 'infinity', value: '∞'}])
@@ -92,9 +84,8 @@ describe('PartitionNumberPattern', () => {
 
     it('negative number', () => {
       const result = PartitionNumberPattern(
-        decimalNumberFormat,
-        new Decimal(Number.NEGATIVE_INFINITY),
-        {getInternalSlots}
+        getInternalSlots(decimalNumberFormat),
+        new Decimal(Number.NEGATIVE_INFINITY)
       )
 
       expect(result).toEqual([

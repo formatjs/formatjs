@@ -10,7 +10,7 @@ export function FormatNumericToParts(
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
 ): NumberFormatPart[] {
-  const parts = PartitionNumberPattern(nf, x, implDetails)
+  const parts = PartitionNumberPattern(implDetails.getInternalSlots(nf), x)
   const result = ArrayCreate(0) as NumberFormatPart[]
 
   for (const part of parts) {

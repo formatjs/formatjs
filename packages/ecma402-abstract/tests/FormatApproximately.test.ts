@@ -7,7 +7,7 @@ describe('FormatApproximately', () => {
 
   it('append approximatelySign', () => {
     const result: NumberFormatPart[] = []
-    FormatApproximately(numberFormat, result, {getInternalSlots})
+    FormatApproximately(getInternalSlots(numberFormat), result)
 
     expect(result).toMatchObject([{type: 'approximatelySign', value: '~'}])
   })

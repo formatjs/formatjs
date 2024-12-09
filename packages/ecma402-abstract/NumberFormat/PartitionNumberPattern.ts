@@ -9,18 +9,11 @@ import {FormatNumericToString} from './FormatNumericToString'
  * https://tc39.es/ecma402/#sec-partitionnumberpattern
  */
 export function PartitionNumberPattern(
-  numberFormat: Intl.NumberFormat,
-  x: Decimal,
-  {
-    getInternalSlots,
-  }: {
-    getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
-  }
+  internalSlots: NumberFormatInternal,
+  x: Decimal
 ): NumberFormatPart[] {
   // IMPL: We need to record the magnitude of the number
   let magnitude = 0
-  // 1. Let internalSlots be ? GetInternalSlots(numberFormat).
-  const internalSlots = getInternalSlots(numberFormat)
 
   // 2. Let dataLocaleData be internalSlots.[[dataLocaleData]].
   const {pl, dataLocaleData, numberingSystem} = internalSlots
@@ -60,9 +53,7 @@ export function PartitionNumberPattern(
         exponent,
         // IMPL: We need to record the magnitude of the number
         magnitude,
-      ] = ComputeExponent(numberFormat, x, {
-        getInternalSlots,
-      })
+      ] = ComputeExponent(internalSlots, x)
 
       // 8.d. Let x be x × 10^(-exponent).
       x = x.times(Decimal.pow(10, -exponent))

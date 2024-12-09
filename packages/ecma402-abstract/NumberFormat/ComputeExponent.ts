@@ -10,11 +10,8 @@ import {FormatNumericToString} from './FormatNumericToString'
  * NOT IN SPEC: it returns [exponent, magnitude].
  */
 export function ComputeExponent(
-  numberFormat: Intl.NumberFormat,
-  x: Decimal,
-  {
-    getInternalSlots,
-  }: {getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal}
+  internalSlots: NumberFormatInternal,
+  x: Decimal
 ): [number, number] {
   if (x.isZero()) {
     return [0, 0]
@@ -23,15 +20,10 @@ export function ComputeExponent(
     x = x.negated()
   }
   const magnitude = x.log(10).floor()
-  const exponent = ComputeExponentForMagnitude(numberFormat, magnitude, {
-    getInternalSlots,
-  })
+  const exponent = ComputeExponentForMagnitude(internalSlots, magnitude)
   // Preserve more precision by doing multiplication when exponent is negative.
   x = x.times(Decimal.pow(10, -exponent))
-  const formatNumberResult = FormatNumericToString(
-    getInternalSlots(numberFormat),
-    x
-  )
+  const formatNumberResult = FormatNumericToString(internalSlots, x)
   if (formatNumberResult.roundedNumber.isZero()) {
     return [exponent, magnitude.toNumber()]
   }
@@ -40,9 +32,7 @@ export function ComputeExponent(
     return [exponent, magnitude.toNumber()]
   }
   return [
-    ComputeExponentForMagnitude(numberFormat, magnitude.plus(1), {
-      getInternalSlots,
-    }),
+    ComputeExponentForMagnitude(internalSlots, magnitude.plus(1)),
     magnitude.plus(1).toNumber(),
   ]
 }

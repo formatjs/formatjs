@@ -10,13 +10,9 @@ Decimal.set({
  * locale and the desired notation (scientific, engineering, or compact).
  */
 export function ComputeExponentForMagnitude(
-  numberFormat: Intl.NumberFormat,
-  magnitude: Decimal,
-  {
-    getInternalSlots,
-  }: {getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal}
+  internalSlots: NumberFormatInternal,
+  magnitude: Decimal
 ): number {
-  const internalSlots = getInternalSlots(numberFormat)
   const {notation, dataLocaleData, numberingSystem} = internalSlots
 
   switch (notation) {
