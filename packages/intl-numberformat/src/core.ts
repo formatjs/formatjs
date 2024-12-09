@@ -1,5 +1,6 @@
 import {
   CanonicalizeLocaleList,
+  FormatNumeric,
   FormatNumericRange,
   FormatNumericRangeToParts,
   FormatNumericToParts,
@@ -173,19 +174,12 @@ const formatDescriptor = {
       )
     }
     const internalSlots = getInternalSlots(this as any)
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const numberFormat = this
     let boundFormat = internalSlots.boundFormat
     if (boundFormat === undefined) {
       // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
-      boundFormat = (value?: number | bigint) => {
-        // TODO: check bigint
-        const x = toNumeric(value)
-        return numberFormat
-          .formatToParts(x)
-          .map(x => x.value)
-          .join('')
-      }
+      boundFormat = (value?: number | bigint) =>
+        FormatNumeric(internalSlots, toNumeric(value))
+
       try {
         // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js
         Object.defineProperty(boundFormat, 'name', {
