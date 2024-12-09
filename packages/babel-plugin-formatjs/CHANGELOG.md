@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.28](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.27...babel-plugin-formatjs@10.5.28) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 ## [10.5.27](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.26...babel-plugin-formatjs@10.5.27) (2024-12-08)
 
 **Note:** Version bump only for package babel-plugin-formatjs

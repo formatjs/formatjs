@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.2.5...@formatjs/ecma402-abstract@2.3.0) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
+### Features
+
+* use Decimal in polyfills to fix floating point issues ([50bd498](https://github.com/formatjs/formatjs/commit/50bd498a45952ad69e62d19a55b19846f33d91e9)), closes [#4678](https://github.com/formatjs/formatjs/issues/4678) - by @longlho
+
 ## [2.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.2.4...@formatjs/ecma402-abstract@2.2.5) (2024-12-08)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract

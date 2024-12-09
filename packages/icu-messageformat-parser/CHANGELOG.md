@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.6](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.9.5...@formatjs/icu-messageformat-parser@2.9.6) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 ## [2.9.5](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.9.4...@formatjs/icu-messageformat-parser@2.9.5) (2024-12-08)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@2.5.3...@formatjs/intl-getcanonicallocales@2.5.4) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 ## [2.5.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@2.5.2...@formatjs/intl-getcanonicallocales@2.5.3) (2024-11-18)
 
 ### Bug Fixes

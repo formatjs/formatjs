@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.14](https://github.com/formatjs/formatjs/compare/@formatjs/ecma376@0.3.13...@formatjs/ecma376@0.3.14) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 ## [0.3.13](https://github.com/formatjs/formatjs/compare/@formatjs/ecma376@0.3.12...@formatjs/ecma376@0.3.13) (2024-11-02)
 
 **Note:** Version bump only for package @formatjs/ecma376

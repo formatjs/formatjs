@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@4.2.6...@formatjs/intl-locale@4.2.7) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 ## [4.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@4.2.5...@formatjs/intl-locale@4.2.6) (2024-12-08)
 
 **Note:** Version bump only for package @formatjs/intl-locale

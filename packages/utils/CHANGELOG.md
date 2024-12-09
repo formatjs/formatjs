@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.3](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.8.2...@formatjs/utils@1.8.3) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 ## [1.8.2](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.8.1...@formatjs/utils@1.8.2) (2024-12-08)
 
 **Note:** Version bump only for package @formatjs/utils

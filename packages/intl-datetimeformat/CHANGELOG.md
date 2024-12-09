@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.17.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.16.6...@formatjs/intl-datetimeformat@6.17.0) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
+### Features
+
+* use Decimal in polyfills to fix floating point issues ([50bd498](https://github.com/formatjs/formatjs/commit/50bd498a45952ad69e62d19a55b19846f33d91e9)), closes [#4678](https://github.com/formatjs/formatjs/issues/4678) - by @longlho
+
 ## [6.16.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.16.5...@formatjs/intl-datetimeformat@6.16.6) (2024-12-08)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

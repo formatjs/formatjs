@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.5.8...@formatjs/intl-localematcher@0.5.9) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 ## [0.5.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.5.7...@formatjs/intl-localematcher@0.5.8) (2024-11-18)
 
 ### Bug Fixes

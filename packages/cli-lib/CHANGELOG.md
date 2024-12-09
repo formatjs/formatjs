@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.0.0...@formatjs/cli-lib@7.0.1) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 # [7.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@6.6.6...@formatjs/cli-lib@7.0.0) (2024-12-08)
 
 ### Bug Fixes

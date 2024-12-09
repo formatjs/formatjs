@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.5.17](https://github.com/formatjs/formatjs/compare/vue-intl@6.5.16...vue-intl@6.5.17) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 ## [6.5.16](https://github.com/formatjs/formatjs/compare/vue-intl@6.5.15...vue-intl@6.5.16) (2024-12-08)
 
 ### Bug Fixes

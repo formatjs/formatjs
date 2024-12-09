@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.7.9](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.7.8...intl-messageformat@10.7.9) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 ## [10.7.8](https://github.com/formatjs/formatjs/compare/intl-messageformat@10.7.7...intl-messageformat@10.7.8) (2024-12-08)
 
 **Note:** Version bump only for package intl-messageformat

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@2.2.4...@formatjs/fast-memoize@2.2.5) (2024-12-09)
+
+### Bug Fixes
+
+* turn on isolatedDeclarations and specify explicit types everywhere ([4d855c2](https://github.com/formatjs/formatjs/commit/4d855c2324426633eb84c346c76a5fd1ac854780)) - by @longlho
+
 ## [2.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@2.2.3...@formatjs/fast-memoize@2.2.4) (2024-12-08)
 
 ### Bug Fixes
