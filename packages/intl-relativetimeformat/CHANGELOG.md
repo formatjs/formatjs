@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.4.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@11.4.7...@formatjs/intl-relativetimeformat@11.4.8) (2024-12-09)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
 ## [11.4.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@11.4.6...@formatjs/intl-relativetimeformat@11.4.7) (2024-12-09)
 
 ### Bug Fixes

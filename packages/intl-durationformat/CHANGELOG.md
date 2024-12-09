@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.7.0...@formatjs/intl-durationformat@0.7.1) (2024-12-09)
+
+**Note:** Version bump only for package @formatjs/intl-durationformat
+
 # [0.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.6.5...@formatjs/intl-durationformat@0.7.0) (2024-12-09)
 
 ### Bug Fixes

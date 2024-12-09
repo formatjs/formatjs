@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.15.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.15.0...@formatjs/intl-numberformat@8.15.1) (2024-12-09)
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** better handling of useGrouping, fix [#4476](https://github.com/formatjs/formatjs/issues/4476) ([7743782](https://github.com/formatjs/formatjs/commit/7743782165f37c8665022d1d046948db4eb1bc52)) - by @longlho
+
 # [8.15.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.14.6...@formatjs/intl-numberformat@8.15.0) (2024-12-09)
 
 ### Bug Fixes
