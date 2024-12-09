@@ -348,3 +348,11 @@ test('#4678', () => {
   })
   expect(nf.format(1050)).toEqual('1K')
 })
+
+test('#4476', () => {
+  const formatter = new NumberFormat('zh-Hant', {
+    notation: 'compact',
+    useGrouping: 'always',
+  })
+  expect(formatter.format(1000)).toEqual('1,000')
+})

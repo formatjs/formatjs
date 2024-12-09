@@ -203,7 +203,7 @@ export default function formatToParts(
             exponent,
             numberingSystem,
             // If compact number pattern exists, do not insert group separators.
-            !compactNumberPattern && Boolean(options.useGrouping),
+            !compactNumberPattern && (options.useGrouping ?? true),
             decimalNumberPattern,
             style,
             options.roundingIncrement,
@@ -377,7 +377,7 @@ function partitionNumberIntoParts(
   notation: NumberFormatOptionsNotation,
   exponent: number,
   numberingSystem: string,
-  useGrouping: boolean,
+  useGrouping: UseGroupingType,
   /**
    * This is the decimal number pattern without signs or symbols.
    * It is used to infer the group size when `useGrouping` is true.
@@ -423,10 +423,15 @@ function partitionNumberIntoParts(
   // unless the rounded number is greater than 10000:
   //   NumberFormat('de', {notation: 'compact', compactDisplay: 'short'}).format(1234) //=> "1234"
   //   NumberFormat('de').format(1234) //=> "1.234"
-  if (
-    useGrouping &&
-    (notation !== 'compact' || x.greaterThanOrEqualTo(10000))
-  ) {
+  let shouldUseGrouping = false
+  if (useGrouping === 'always') {
+    shouldUseGrouping = true
+  } else if (useGrouping === 'min2') {
+    shouldUseGrouping = x.greaterThanOrEqualTo(10000)
+  } else if (useGrouping === 'auto' || useGrouping) {
+    shouldUseGrouping = notation !== 'compact' || x.greaterThanOrEqualTo(10000)
+  }
+  if (shouldUseGrouping) {
     // a. Let groupSepSymbol be the implementation-, locale-, and numbering system-dependent (ILND) String representing the grouping separator.
     // For currency we should use `currencyGroup` instead of generic `group`
     const groupSepSymbol =
