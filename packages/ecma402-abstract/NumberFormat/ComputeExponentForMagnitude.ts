@@ -1,5 +1,4 @@
 import Decimal from 'decimal.js'
-import {TEN} from '../constants'
 import {DecimalFormatNum, NumberFormatInternal} from '../types/number'
 import {invariant} from '../utils'
 Decimal.set({
@@ -48,7 +47,7 @@ export function ComputeExponentForMagnitude(
       if (!thresholdMap) {
         return 0
       }
-      const num = TEN.pow(magnitude).toString() as DecimalFormatNum
+      const num = Decimal.pow(10, magnitude).toString() as DecimalFormatNum
       const thresholds = Object.keys(thresholdMap) as DecimalFormatNum[] // TODO: this can be pre-processed
       if (num < thresholds[0]) {
         return 0

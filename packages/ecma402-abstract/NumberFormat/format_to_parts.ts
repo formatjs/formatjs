@@ -1,5 +1,4 @@
 import Decimal from 'decimal.js'
-import {TEN} from '../constants'
 import {S_UNICODE_REGEX} from '../regex.generated'
 import {
   DecimalFormatNum,
@@ -259,7 +258,9 @@ export default function formatToParts(
         if (currencyNameData) {
           unitName = selectPlural(
             pl,
-            numberResult.roundedNumber.times(TEN.pow(exponent)).toNumber(),
+            numberResult.roundedNumber
+              .times(Decimal.pow(10, exponent))
+              .toNumber(),
             currencyNameData.displayName
           )
         } else {
@@ -301,7 +302,9 @@ export default function formatToParts(
         // Simple unit pattern
         unitPattern = selectPlural(
           pl,
-          numberResult.roundedNumber.times(TEN.pow(exponent)).toNumber(),
+          numberResult.roundedNumber
+            .times(Decimal.pow(10, exponent))
+            .toNumber(),
           data.units.simple[unit!][unitDisplay!]
         )
       } else {
@@ -313,7 +316,9 @@ export default function formatToParts(
 
         const numeratorUnitPattern = selectPlural(
           pl,
-          numberResult.roundedNumber.times(TEN.pow(exponent)).toNumber(),
+          numberResult.roundedNumber
+            .times(Decimal.pow(10, exponent))
+            .toNumber(),
           data.units.simple[numeratorUnit!][unitDisplay!]
         )
         const perUnitPattern =

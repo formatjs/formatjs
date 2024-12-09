@@ -1,5 +1,4 @@
 import Decimal from 'decimal.js'
-import {TEN} from '../constants'
 import {NumberFormatInternal} from '../types/number'
 import {ComputeExponentForMagnitude} from './ComputeExponentForMagnitude'
 import {FormatNumericToString} from './FormatNumericToString'
@@ -28,7 +27,7 @@ export function ComputeExponent(
     getInternalSlots,
   })
   // Preserve more precision by doing multiplication when exponent is negative.
-  x = x.times(TEN.pow(-exponent))
+  x = x.times(Decimal.pow(10, -exponent))
   const formatNumberResult = FormatNumericToString(
     getInternalSlots(numberFormat),
     x

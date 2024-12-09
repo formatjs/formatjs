@@ -83,7 +83,7 @@ export function InitializeNumberFormat(
   internalSlots.numberingSystem = r.nu
   internalSlots.dataLocaleData = dataLocaleData
 
-  SetNumberFormatUnitOptions(nf, options, {getInternalSlots})
+  SetNumberFormatUnitOptions(internalSlots, options)
   const style = internalSlots.style
 
   const notation = GetOption(
