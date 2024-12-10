@@ -24,7 +24,6 @@ npm_package(
 SRCS = glob(
     [
         "**/*.ts",
-        "NumberFormat/*.json",
     ],
     exclude = [
         "scripts/*.ts",
@@ -51,7 +50,6 @@ jest_test(
         "tests/**/*.ts",
         "tests/**/*.tsx",
     ]),
-    snapshots = glob(["tests/**/*.snap"]),
 )
 
 write_source_files(

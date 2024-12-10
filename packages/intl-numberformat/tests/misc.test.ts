@@ -356,3 +356,13 @@ test('#4476', () => {
   })
   expect(formatter.format(1000)).toEqual('1,000')
 })
+
+test('#4771', function () {
+  const nf = new NumberFormat('en', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  })
+  expect(nf.format(1234567891234567.35)).toEqual('$1,234,567,891,234,567.20')
+})

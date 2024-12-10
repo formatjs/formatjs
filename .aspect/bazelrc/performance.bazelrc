@@ -7,18 +7,12 @@ build --noexperimental_check_output_files
 fetch --noexperimental_check_output_files
 query --noexperimental_check_output_files
 
-# Don't apply `--noremote_upload_local_results` and `--noremote_accept_cached` to the disk cache.
-# If you have both `--noremote_upload_local_results` and `--disk_cache`, then this fixes a bug where
-# Bazel doesn't write to the local disk cache as it treats as a remote cache.
-# Docs: https://bazel.build/reference/command-line-reference#flag--incompatible_remote_results_ignore_disk
-build --incompatible_remote_results_ignore_disk
-
 # Directories used by sandboxed non-worker execution may be reused to avoid unnecessary setup costs.
 # Save time on Sandbox creation and deletion when many of the same kind of action run during the
 # build.
 # No longer experimental in Bazel 6: https://github.com/bazelbuild/bazel/commit/c1a95501a5611878e5cc43a3cc531f2b9e47835b
 # Docs: https://bazel.build/reference/command-line-reference#flag--reuse_sandbox_directories
-build --experimental_reuse_sandbox_directories
+build --reuse_sandbox_directories
 
 # Do not build runfiles symlink forests for external repositories under
 # `.runfiles/wsname/external/repo` (in addition to `.runfiles/repo`). This reduces runfiles &

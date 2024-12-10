@@ -75,7 +75,6 @@ SRCS = glob(
     [
         "*.ts",
         "src/*.ts",
-        "src/data/*",
     ],
     exclude = ["test*.*"],
 )

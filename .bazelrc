@@ -23,7 +23,7 @@ build --action_env=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/
 build --verbose_failures
 
 build --experimental_platform_in_output_dir
-build --experimental_remote_cache_compression
+build --remote_cache_compression
 build --legacy_important_outputs
 build --remote_build_event_upload=minimal
 build --noslim_profile 

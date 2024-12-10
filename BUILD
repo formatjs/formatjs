@@ -14,7 +14,7 @@ exports_files(
     [
         "karma.conf.js",
         "karma.conf-ci.js",
-    ] + glob(["npm_package_patches/*"]),
+    ],
     visibility = ["//:__subpackages__"],
 )
 

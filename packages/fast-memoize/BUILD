@@ -27,7 +27,6 @@ npm_package(
 )
 
 SRCS = glob([
-    "src/*.ts",
     "*.ts",
 ])
 

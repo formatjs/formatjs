@@ -7,4 +7,4 @@
 # We use it to register the Aspect CLI so that everyone has the same commands available.
 
 BAZELISK_BASE_URL=https://static.aspect.build/aspect
-USE_BAZEL_VERSION=aspect/2024.41.17
+USE_BAZEL_VERSION=aspect/2024.46.33
