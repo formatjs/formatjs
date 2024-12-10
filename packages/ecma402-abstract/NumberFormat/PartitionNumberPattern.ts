@@ -10,8 +10,9 @@ import {FormatNumericToString} from './FormatNumericToString'
  */
 export function PartitionNumberPattern(
   internalSlots: NumberFormatInternal,
-  x: Decimal
+  _x: Decimal
 ): NumberFormatPart[] {
+  let x = _x
   // IMPL: We need to record the magnitude of the number
   let magnitude = 0
 

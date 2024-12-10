@@ -92,6 +92,20 @@ describe('SetNumberFormatDigitOptions', () => {
     expect(internalSlots.roundingPriority).toBe('morePrecision')
   })
 
+  it('standard 2/2 (currency) notation', () => {
+    SetNumberFormatDigitOptions(internalSlots, {}, 2, 2, 'standard')
+    expect(internalSlots).toEqual({
+      minimumIntegerDigits: 1,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      roundingIncrement: 1,
+      roundingMode: 'halfExpand',
+      roundingPriority: 'auto',
+      roundingType: 'fractionDigits',
+      trailingZeroDisplay: 'auto',
+    })
+  })
+
   it('compact notation', () => {
     SetNumberFormatDigitOptions(internalSlots, {}, 0, 3, 'compact')
     expect(internalSlots).toEqual({

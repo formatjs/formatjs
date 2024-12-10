@@ -47,3 +47,14 @@ it('ToRawFixed(1.2344501e+34, 1, 3)', () => {
     roundingMagnitude: -3,
   })
 })
+
+it('ToRawFixed(1,234,567,891,234,567.35, 2, 2)', () => {
+  expect(
+    ToRawFixed(new Decimal('1234567891234567.35'), 2, 2, 1, 'half-infinity')
+  ).toEqual({
+    formattedString: '1234567891234567.35',
+    roundedNumber: new Decimal('1234567891234567.35'),
+    integerDigitsCount: 16,
+    roundingMagnitude: -2,
+  })
+})

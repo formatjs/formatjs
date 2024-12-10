@@ -1,16 +1,16 @@
 import {
-  UnpackedZoneData,
-  Type,
-  YearFromTime,
-  WeekDay,
-  MonthFromTime,
   DateFromTime,
   HourFromTime,
   MinFromTime,
+  MonthFromTime,
   SecFromTime,
-  msFromTime,
+  UnpackedZoneData,
+  WeekDay,
+  YearFromTime,
   invariant,
+  msFromTime,
 } from '@formatjs/ecma402-abstract'
+import Decimal from 'decimal.js'
 
 function getApplicableZoneData(
   t: number,
@@ -45,7 +45,7 @@ export interface ToLocalTimeImplDetails {
  * @param timeZone
  */
 export function ToLocalTime(
-  t: number,
+  t: Decimal,
   calendar: string,
   timeZone: string,
   {tzData}: ToLocalTimeImplDetails
@@ -64,14 +64,17 @@ export function ToLocalTime(
   inDST: boolean
   timeZoneOffset: number
 } {
-  invariant(Type(t) === 'Number', 'invalid time')
   invariant(
     calendar === 'gregory',
     'We only support Gregory calendar right now'
   )
-  const [timeZoneOffset, inDST] = getApplicableZoneData(t, timeZone, tzData)
+  const [timeZoneOffset, inDST] = getApplicableZoneData(
+    t.toNumber(),
+    timeZone,
+    tzData
+  )
 
-  const tz = t + timeZoneOffset
+  const tz = t.plus(timeZoneOffset).toNumber()
   const year = YearFromTime(tz)
   return {
     weekday: WeekDay(tz),

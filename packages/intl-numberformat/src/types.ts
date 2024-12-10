@@ -12,15 +12,15 @@ import Decimal from 'decimal.js'
 
 export interface NumberFormat {
   resolvedOptions(): ResolvedNumberFormatOptions
-  formatToParts(x: number | bigint | Decimal): NumberFormatPart[]
-  format(x: number | bigint | Decimal): string
+  formatToParts(x: number | bigint | Decimal | string): NumberFormatPart[]
+  format(x: number | bigint | Decimal | string): string
   formatRange(
-    start: number | bigint | Decimal,
-    end: number | bigint | Decimal
+    start: number | bigint | Decimal | string,
+    end: number | bigint | Decimal | string
   ): string
   formatRangeToParts(
-    start: number | bigint | Decimal,
-    end: number | bigint | Decimal
+    start: number | bigint | Decimal | string,
+    end: number | bigint | Decimal | string
   ): NumberRangeToParts[]
 }
 

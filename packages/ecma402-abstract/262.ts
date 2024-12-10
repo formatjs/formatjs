@@ -1,5 +1,6 @@
 import {Decimal} from 'decimal.js'
 import {ZERO} from './constants'
+import {invariant} from './utils'
 /**
  * https://tc39.es/ecma262/#sec-tostring
  */
@@ -16,20 +17,35 @@ export function ToString(o: unknown): string {
  * https://tc39.es/ecma262/#sec-tonumber
  * @param val
  */
-export function ToNumber(val: any): Decimal {
-  if (val === undefined) {
+export function ToNumber(arg: any): Decimal {
+  if (typeof arg === 'number') {
+    return new Decimal(arg)
+  }
+  invariant(
+    typeof arg !== 'bigint' && typeof arg !== 'symbol',
+    'BigInt and Symbol are not supported',
+    TypeError
+  )
+  if (arg === undefined) {
     return new Decimal(NaN)
   }
-  if (val === null) {
+  if (arg === null || arg === 0) {
     return ZERO
   }
-  if (typeof val === 'boolean') {
-    return new Decimal(val ? 1 : 0)
+  if (arg === true) {
+    return new Decimal(1)
   }
-  if (typeof val === 'symbol' || typeof val === 'bigint') {
-    throw new TypeError('Cannot convert symbol/bigint to number')
+  if (typeof arg === 'string') {
+    try {
+      return new Decimal(arg)
+    } catch (e) {
+      return new Decimal(NaN)
+    }
   }
-  return new Decimal(Number(val))
+  invariant(typeof arg === 'object', 'object expected', TypeError)
+  let primValue = ToPrimitive(arg, 'number')
+  invariant(typeof primValue !== 'object', 'object expected', TypeError)
+  return ToNumber(primValue)
 }
 
 /**
@@ -55,14 +71,14 @@ function ToInteger(n: any): Decimal {
  * https://tc39.es/ecma262/#sec-timeclip
  * @param time
  */
-export function TimeClip(time: number): number {
-  if (!isFinite(time)) {
-    return NaN
+export function TimeClip(time: Decimal): Decimal {
+  if (!time.isFinite()) {
+    return new Decimal(NaN)
   }
-  if (Math.abs(time) > 8.64 * 1e15) {
-    return NaN
+  if (time.abs().greaterThan(8.64 * 1e15)) {
+    return new Decimal(NaN)
   }
-  return ToInteger(time).toNumber()
+  return ToInteger(time)
 }
 
 /**
@@ -378,4 +394,58 @@ export function OrdinaryHasInstance(
 
 export function msFromTime(t: number): number {
   return mod(t, MS_PER_SECOND)
+}
+
+function OrdinaryToPrimitive<
+  T extends 'string' | 'number' = 'string' | 'number',
+>(O: object, hint: T): string | number | boolean | undefined | null {
+  let methodNames: Array<'toString' | 'valueOf'>
+  if (hint === 'string') {
+    methodNames = ['toString', 'valueOf']
+  } else {
+    methodNames = ['valueOf', 'toString']
+  }
+  for (const name of methodNames) {
+    const method = O[name]
+    if (IsCallable(method)) {
+      let result = method.call(O)
+      if (typeof result !== 'object') {
+        return result
+      }
+    }
+  }
+  throw new TypeError('Cannot convert object to primitive value')
+}
+
+export function ToPrimitive<
+  T extends 'string' | 'number' = 'string' | 'number',
+>(input: any, preferredType: T): string | number | boolean | undefined | null {
+  if (typeof input === 'object' && input != null) {
+    const exoticToPrim =
+      Symbol.toPrimitive in input ? input[Symbol.toPrimitive] : undefined
+    let hint
+    if (exoticToPrim !== undefined) {
+      if (preferredType === undefined) {
+        hint = 'default'
+      } else if (preferredType === 'string') {
+        hint = 'string'
+      } else {
+        invariant(
+          preferredType === 'number',
+          'preferredType must be "string" or "number"'
+        )
+        hint = 'number'
+      }
+      let result = exoticToPrim.call(input, hint)
+      if (typeof result !== 'object') {
+        return result
+      }
+      throw new TypeError('Cannot convert exotic object to primitive.')
+    }
+    if (preferredType === undefined) {
+      preferredType = 'number' as T
+    }
+    return OrdinaryToPrimitive(input, preferredType)
+  }
+  return input
 }

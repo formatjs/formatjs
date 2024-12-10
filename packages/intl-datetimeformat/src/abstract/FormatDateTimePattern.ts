@@ -7,6 +7,7 @@ import {
   createMemoizedNumberFormat,
 } from '@formatjs/ecma402-abstract'
 
+import Decimal from 'decimal.js'
 import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime'
 import {DATE_TIME_PROPS} from './utils'
 
@@ -62,7 +63,7 @@ export interface FormatDateTimePatternImplDetails {
 export function FormatDateTimePattern(
   dtf: Intl.DateTimeFormat | DateTimeFormat,
   patternParts: IntlDateTimeFormatPart[],
-  x: number,
+  x: Decimal,
   {
     getInternalSlots,
     localeData,

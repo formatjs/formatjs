@@ -1,5 +1,6 @@
-import {PartitionDateTimePattern} from './PartitionDateTimePattern'
 import {ArrayCreate, IntlDateTimeFormatPart} from '@formatjs/ecma402-abstract'
+import Decimal from 'decimal.js'
+import {PartitionDateTimePattern} from './PartitionDateTimePattern'
 
 /**
  * https://tc39.es/ecma402/#sec-formatdatetimetoparts
@@ -10,7 +11,7 @@ import {ArrayCreate, IntlDateTimeFormatPart} from '@formatjs/ecma402-abstract'
  */
 export function FormatDateTimeToParts(
   dtf: Intl.DateTimeFormat,
-  x: number,
+  x: Decimal,
   implDetails: Parameters<typeof PartitionDateTimePattern>[2]
 ): IntlDateTimeFormatPart[] {
   const parts = PartitionDateTimePattern(dtf, x, implDetails)

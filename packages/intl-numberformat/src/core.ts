@@ -9,7 +9,7 @@ import {
   OrdinaryHasInstance,
   RawNumberLocaleData,
   SupportedLocales,
-  ToNumber,
+  ToIntlMathematicalValue,
   createMemoizedPluralRules,
   defineProperty,
   invariant,
@@ -89,7 +89,7 @@ export const NumberFormat = function (
 } as NumberFormatConstructor
 
 function formatToParts(this: Intl.NumberFormat, x: number | bigint | Decimal) {
-  return FormatNumericToParts(this, toNumeric(x), {
+  return FormatNumericToParts(this, ToIntlMathematicalValue(x), {
     getInternalSlots,
   })
 }
@@ -99,9 +99,14 @@ function formatRange(
   start: number | bigint | Decimal,
   end: number | bigint | Decimal
 ) {
-  return FormatNumericRange(this, toNumeric(start), toNumeric(end), {
-    getInternalSlots,
-  })
+  return FormatNumericRange(
+    this,
+    ToIntlMathematicalValue(start),
+    ToIntlMathematicalValue(end),
+    {
+      getInternalSlots,
+    }
+  )
 }
 
 function formatRangeToParts(
@@ -109,9 +114,14 @@ function formatRangeToParts(
   start: number | bigint | Decimal,
   end: number | bigint | Decimal
 ) {
-  return FormatNumericRangeToParts(this, toNumeric(start), toNumeric(end), {
-    getInternalSlots,
-  })
+  return FormatNumericRangeToParts(
+    this,
+    ToIntlMathematicalValue(start),
+    ToIntlMathematicalValue(end),
+    {
+      getInternalSlots,
+    }
+  )
 }
 
 try {
@@ -178,7 +188,7 @@ const formatDescriptor = {
     if (boundFormat === undefined) {
       // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
       boundFormat = (value?: number | bigint) =>
-        FormatNumeric(internalSlots, toNumeric(value))
+        FormatNumeric(internalSlots, ToIntlMathematicalValue(value))
 
       try {
         // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js
@@ -268,13 +278,6 @@ NumberFormat.getDefaultLocale = () => {
   return NumberFormat.__defaultLocale
 }
 NumberFormat.polyfilled = true
-
-function toNumeric(val: any): Decimal {
-  if (typeof val === 'bigint') {
-    return new Decimal(val.toString())
-  }
-  return ToNumber(val)
-}
 
 try {
   // IE11 does not have Symbol

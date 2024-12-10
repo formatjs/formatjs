@@ -25,11 +25,12 @@ export function FormatNumericToString(
     | 'roundingMode'
     | 'trailingZeroDisplay'
   >,
-  x: Decimal
+  _x: Decimal
 ): {
   roundedNumber: Decimal
   formattedString: string
 } {
+  let x = _x
   let sign
   // -0
   if (x.isZero() && x.isNegative()) {

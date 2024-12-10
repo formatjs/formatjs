@@ -7,6 +7,7 @@ import {
   TABLE_2,
   TimeClip,
 } from '@formatjs/ecma402-abstract'
+import Decimal from 'decimal.js'
 import {
   FormatDateTimePattern,
   FormatDateTimePatternImplDetails,
@@ -28,16 +29,16 @@ const TABLE_2_FIELDS: Array<TABLE_2> = [
 
 export function PartitionDateTimeRangePattern(
   dtf: Intl.DateTimeFormat,
-  x: number,
-  y: number,
+  x: Decimal,
+  y: Decimal,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
   x = TimeClip(x)
-  if (isNaN(x)) {
+  if (x.isNaN()) {
     throw new RangeError('Invalid start time')
   }
   y = TimeClip(y)
-  if (isNaN(y)) {
+  if (y.isNaN()) {
     throw new RangeError('Invalid end time')
   }
   /** IMPL START */

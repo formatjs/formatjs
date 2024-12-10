@@ -13,6 +13,7 @@ import {
   defineProperty,
   invariant,
 } from '@formatjs/ecma402-abstract'
+import Decimal from 'decimal.js'
 import {FormatDateTime} from './abstract/FormatDateTime'
 import {FormatDateTimeRange} from './abstract/FormatDateTimeRange'
 import {FormatDateTimeRangeToParts} from './abstract/FormatDateTimeRangeToParts'
@@ -73,11 +74,11 @@ const formatDescriptor = {
     if (boundFormat === undefined) {
       // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
       boundFormat = (date?: Date | number) => {
-        let x: number
+        let x: Decimal
         if (date === undefined) {
-          x = Date.now()
+          x = new Decimal(Date.now())
         } else {
-          x = Number(date)
+          x = ToNumber(date)
         }
         return FormatDateTime(dtf as Intl.DateTimeFormat, x, {
           getInternalSlots,
@@ -235,12 +236,13 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
 
 defineProperty(DateTimeFormat.prototype, 'formatToParts', {
   value: function formatToParts(date?: number | Date) {
+    let x: Decimal
     if (date === undefined) {
-      date = Date.now()
+      x = new Decimal(Date.now())
     } else {
-      date = ToNumber(date).toNumber()
+      x = ToNumber(date)
     }
-    return FormatDateTimeToParts(this, date, {
+    return FormatDateTimeToParts(this, x, {
       getInternalSlots,
       localeData: DateTimeFormat.localeData,
       tzData: DateTimeFormat.tzData,
@@ -255,20 +257,24 @@ defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
     endDate: number | Date
   ) {
     const dtf = this
-    if (typeof dtf !== 'object') {
-      throw new TypeError()
-    }
-    if (startDate === undefined || endDate === undefined) {
-      throw new TypeError('startDate/endDate cannot be undefined')
-    }
-    const x = ToNumber(startDate).toNumber()
-    const y = ToNumber(endDate).toNumber()
-    return FormatDateTimeRangeToParts(dtf, x, y, {
-      getInternalSlots,
-      localeData: DateTimeFormat.localeData,
-      tzData: DateTimeFormat.tzData,
-      getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
-    })
+    invariant(typeof dtf === 'object', 'receiver is not an object', TypeError)
+    invariant(
+      startDate !== undefined && endDate !== undefined,
+      'startDate/endDate cannot be undefined',
+      TypeError
+    )
+
+    return FormatDateTimeRangeToParts(
+      dtf,
+      ToNumber(startDate),
+      ToNumber(endDate),
+      {
+        getInternalSlots,
+        localeData: DateTimeFormat.localeData,
+        tzData: DateTimeFormat.tzData,
+        getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+      }
+    )
   },
 })
 
@@ -278,15 +284,13 @@ defineProperty(DateTimeFormat.prototype, 'formatRange', {
     endDate: number | Date
   ) {
     const dtf = this
-    if (typeof dtf !== 'object') {
-      throw new TypeError()
-    }
-    if (startDate === undefined || endDate === undefined) {
-      throw new TypeError('startDate/endDate cannot be undefined')
-    }
-    const x = ToNumber(startDate).toNumber()
-    const y = ToNumber(endDate).toNumber()
-    return FormatDateTimeRange(dtf, x, y, {
+    invariant(typeof dtf === 'object', 'receiver is not an object', TypeError)
+    invariant(
+      startDate !== undefined && endDate !== undefined,
+      'startDate/endDate cannot be undefined',
+      TypeError
+    )
+    return FormatDateTimeRange(dtf, ToNumber(startDate), ToNumber(endDate), {
       getInternalSlots,
       localeData: DateTimeFormat.localeData,
       tzData: DateTimeFormat.tzData,

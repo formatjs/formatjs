@@ -61,3 +61,4 @@ export {
 } from './utils'
 
 export {ZERO} from './constants'
+export {ToIntlMathematicalValue} from './ToIntlMathematicalValue'

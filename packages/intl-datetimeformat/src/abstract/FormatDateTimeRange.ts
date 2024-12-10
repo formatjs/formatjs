@@ -1,11 +1,12 @@
+import Decimal from 'decimal.js'
 import {FormatDateTimePatternImplDetails} from './FormatDateTimePattern'
 import {PartitionDateTimeRangePattern} from './PartitionDateTimeRangePattern'
 import {ToLocalTimeImplDetails} from './ToLocalTime'
 
 export function FormatDateTimeRange(
   dtf: Intl.DateTimeFormat,
-  x: number,
-  y: number,
+  x: Decimal,
+  y: Decimal,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): string {
   const parts = PartitionDateTimeRangePattern(dtf, x, y, implDetails)
