@@ -18,21 +18,21 @@
     "build": "docusaurus build"
   },
   "devDependencies": {
-    "@docusaurus/core": "3.6.3",
-    "@docusaurus/plugin-google-analytics": "3.6.3",
-    "@docusaurus/preset-classic": "3.6.3",
-    "@docusaurus/theme-common": "3.6.3",
-    "@docusaurus/theme-live-codeblock": "3.6.3",
-    "@docusaurus/types": "3.6.3",
+    "@docusaurus/core": "3",
+    "@docusaurus/plugin-google-analytics": "3",
+    "@docusaurus/preset-classic": "3",
+    "@docusaurus/theme-common": "3",
+    "@docusaurus/theme-live-codeblock": "3",
+    "@docusaurus/types": "3",
     "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@mdx-js/react": "3.1.0",
-    "@orama/plugin-docusaurus-v3": "3.0.2",
-    "classnames": "2.5.1",
-    "http-server": "14.1.1",
+    "@mdx-js/react": "3",
+    "@orama/plugin-docusaurus-v3": "3",
+    "classnames": "2",
+    "http-server": "14",
     "intl-messageformat": "workspace:*",
-    "prism-react-renderer": "2.4.0",
+    "prism-react-renderer": "2",
     "react-intl": "workspace:*",
-    "react-live": "4.1.8",
+    "react-live": "4",
     "typescript": "5"
   }
 }
