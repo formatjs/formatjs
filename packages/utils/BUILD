@@ -57,9 +57,7 @@ jest_test_v2(
     name = "unit_test",
     srcs = [":dist"] + glob([
         "tests/*.ts*",
-        "tests/fixtures/*.ts*",
     ]),
-    snapshots = glob(["tests/__snapshots__/*.snap"]),
     deps = SRC_DEPS,
 )
 

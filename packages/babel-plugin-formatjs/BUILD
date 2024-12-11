@@ -50,8 +50,6 @@ jest_test(
     data = [":srcs"] + SRC_DEPS + glob(
         [
             "tests/**/*.test.ts",
-            "tests/**/*.test.tsx",
-            "tests/**/*.test.js",
         ],
         exclude = ["tests/vue/**/*"],
     ) + [

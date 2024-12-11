@@ -922,8 +922,8 @@ test262_harness_bin.test262_harness_test(
         "--prelude",
         "$(rootpath test262-polyfill.js)",
         "--test262Dir",
-        "../_main~_repo_rules~com_github_tc39_test262",
-        "../_main~_repo_rules~com_github_tc39_test262/test/intl402/NumberFormat/**/*.js",
+        "../+_repo_rules+com_github_tc39_test262",
+        "../+_repo_rules+com_github_tc39_test262/test/intl402/NumberFormat/**/*.js",
     ],
     data = [
         "test262-polyfill.js",
