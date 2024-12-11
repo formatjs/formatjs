@@ -109,7 +109,7 @@ importers:
         version: 6.6.3
       '@testing-library/react':
         specifier: ^16.0.1
-        version: 16.1.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.2)(@types/react@18.3.14)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 16.1.0(@testing-library/dom@10.4.0)(@types/react-dom@19.0.2(@types/react@19.0.1))(@types/react@19.0.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@types/aria-query':
         specifier: 5.0.4
         version: 5.0.4
@@ -156,11 +156,11 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       '@types/react':
-        specifier: ^18.3.12
-        version: 18.3.14
+        specifier: ^19.0.0
+        version: 19.0.1
       '@types/react-dom':
-        specifier: ^18.3.1
-        version: 18.3.2
+        specifier: ^19.0.0
+        version: 19.0.2(@types/react@19.0.1)
       '@types/regenerate':
         specifier: ^1.4.3
         version: 1.4.3
@@ -3248,8 +3248,10 @@ packages:
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
 
-  '@types/react-dom@18.3.2':
-    resolution: {integrity: sha512-Fqp+rcvem9wEnGr3RY8dYNvSQ8PoLqjZ9HLgaPUOjJJD120uDyOxOjc/39M4Kddp9JQCxpGQbnhVQF0C0ncYVg==}
+  '@types/react-dom@19.0.2':
+    resolution: {integrity: sha512-c1s+7TKFaDRRxr1TxccIX2u7sfCnc3RxkVyBIUA2lCpyqCF+QoAwQ/CBg7bsMdVwP120HEH143VQezKtef5nCg==}
+    peerDependencies:
+      '@types/react': ^19.0.0
 
   '@types/react-router-config@5.0.11':
     resolution: {integrity: sha512-WmSAg7WgqW7m4x8Mt4N6ZyKz0BubSj/2tVUMsAHp+Yd2AMwcSbeFq9WympT19p5heCFmF97R9eD5uUR/t4HEqw==}
@@ -11725,7 +11727,7 @@ snapshots:
     dependencies:
       '@docusaurus/types': 3.6.3(@swc/core@1.10.1(@swc/helpers@0.5.15))(acorn@8.14.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@types/history': 4.7.11
-      '@types/react': 18.3.14
+      '@types/react': 19.0.1
       '@types/react-router-config': 5.0.11
       '@types/react-router-dom': 5.3.3
       react: 19.0.0
@@ -12055,7 +12057,7 @@ snapshots:
 
   '@docusaurus/react-loadable@6.0.0(react@19.0.0)':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 19.0.1
       react: 19.0.0
 
   '@docusaurus/theme-classic@3.6.3(@swc/core@1.10.1(@swc/helpers@0.5.15))(@types/react@19.0.1)(acorn@8.14.0)(eslint@9.16.0(jiti@1.21.6))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.6.2)':
@@ -13237,15 +13239,15 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
 
-  '@testing-library/react@16.1.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.2)(@types/react@18.3.14)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@testing-library/react@16.1.0(@testing-library/dom@10.4.0)(@types/react-dom@19.0.2(@types/react@19.0.1))(@types/react@19.0.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@babel/runtime': 7.26.0
       '@testing-library/dom': 10.4.0
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
     optionalDependencies:
-      '@types/react': 18.3.14
-      '@types/react-dom': 18.3.2
+      '@types/react': 19.0.1
+      '@types/react-dom': 19.0.2(@types/react@19.0.1)
 
   '@tootallnate/once@2.0.0': {}
 
@@ -13514,26 +13516,26 @@ snapshots:
 
   '@types/range-parser@1.2.7': {}
 
-  '@types/react-dom@18.3.2':
+  '@types/react-dom@19.0.2(@types/react@19.0.1)':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 19.0.1
 
   '@types/react-router-config@5.0.11':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.3.14
+      '@types/react': 19.0.1
       '@types/react-router': 5.1.20
 
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.3.14
+      '@types/react': 19.0.1
       '@types/react-router': 5.1.20
 
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.3.14
+      '@types/react': 19.0.1
 
   '@types/react@18.3.14':
     dependencies:
