@@ -223,7 +223,7 @@ A map of tag to rich text formatting function. This is meant to provide a centra
 
 ```tsx
 function formatDate(
-  value: number | Date,
+  value: number | Date | string,
   options?: Intl.DateTimeFormatOptions & {format?: string}
 ): string
 ```
@@ -242,7 +242,7 @@ intl.formatDate(Date.now(), {
 
 ```tsx
 function formatTime(
-  value: number | Date,
+  value: number | Date | string,
   options?: Intl.DateTimeFormatOptions & {format?: string}
 ): string
 ```
@@ -270,13 +270,13 @@ This requires [Intl.DateTimeFormat.prototype.formatRange](https://developer.mozi
 
 ```tsx
 function formatDateTimeRange(
-  from: number | Date,
-  to: number | Date,
+  from: number | Date | string,
+  to: number | Date | string,
   options?: Intl.DateTimeFormatOptions & {format?: string}
 ): string
 ```
 
-This function will return a formatted date/time range string
+This function will return a formatted date/time range string. Both `from` & `to` must be values which can be parsed as a date (i.e., `isFinite(new Date(value))`).
 
 It expects 2 values (a `from` Date & a `to` Date) and accepts `options` that conform to `DateTimeFormatOptions`.
 
