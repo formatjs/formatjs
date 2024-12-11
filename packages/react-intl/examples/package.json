@@ -13,7 +13,7 @@
     "@formatjs/intl-displaynames": "workspace:*",
     "@formatjs/intl-listformat": "workspace:*",
     "@types/hoist-non-react-statics": "^3.3.1",
-    "@types/react": "16 || 17 || 18 || 19",
+    "@types/react": "16 || 17 || 18",
     "hoist-non-react-statics": "^3.3.2",
     "intl-messageformat": "workspace:*",
     "react-intl": "workspace:*",
