@@ -100,14 +100,48 @@ const loadUCDTestFile = (filePath: string) => {
   )
 }
 
-export const segmentationTests = {
+export const segmentationTests: {
+  grapheme: {
+    testDetails: {
+      breaks: boolean
+      rule: string
+      characterName: string
+      codePoint: number | ''
+    }[]
+    testInput: string
+    expected: string[]
+    comment: string
+  }[]
+  sentence: {
+    testDetails: {
+      breaks: boolean
+      rule: string
+      characterName: string
+      codePoint: number | ''
+    }[]
+    testInput: string
+    expected: string[]
+    comment: string
+  }[]
+  word: {
+    testDetails: {
+      breaks: boolean
+      rule: string
+      characterName: string
+      codePoint: number | ''
+    }[]
+    testInput: string
+    expected: string[]
+    comment: string
+  }[]
+} = {
   grapheme: loadUCDTestFile(
-    runfiles.resolve('_main~_repo_rules~GraphemeBreakTest/file/downloaded')
+    runfiles.resolve('+_repo_rules2+GraphemeBreakTest/file/downloaded')
   ),
   sentence: loadUCDTestFile(
-    runfiles.resolve('_main~_repo_rules~SentenceBreakTest/file/downloaded')
+    runfiles.resolve('+_repo_rules2+SentenceBreakTest/file/downloaded')
   ),
   word: loadUCDTestFile(
-    runfiles.resolve('_main~_repo_rules~WordBreakTest/file/downloaded')
+    runfiles.resolve('+_repo_rules2+WordBreakTest/file/downloaded')
   ),
 }

@@ -44,7 +44,6 @@ jest_test(
     name = "unit_test",
     data = [":srcs"] + SRC_DEPS + glob([
         "tests/**/*.ts",
-        "tests/**/*.tsx",
     ]) + [
         "//:node_modules/@types/lodash",
         "//:node_modules/fast-glob",

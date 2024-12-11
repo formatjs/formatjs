@@ -39,15 +39,12 @@ npm_package(
 SRCS = glob(
     [
         "*.ts",
-        "src/*.ts",
-        "src/data/*",
     ],
     exclude = ["test*.*"],
 )
 
 TESTS = glob([
     "tests/*.test.ts",
-    "tests/__snapshots__/*.snap",
 ])
 
 SRC_DEPS = [
@@ -744,8 +741,8 @@ test262_harness_bin.test262_harness_test(
         "--prelude",
         "$(rootpath test262-polyfill.js)",
         "--test262Dir",
-        "../_main~_repo_rules~com_github_tc39_test262",
-        "../_main~_repo_rules~com_github_tc39_test262/test/intl402/ListFormat/**/*.js",
+        "../+_repo_rules+com_github_tc39_test262",
+        "../+_repo_rules+com_github_tc39_test262/test/intl402/ListFormat/**/*.js",
     ],
     data = [
         "test262-polyfill.js",

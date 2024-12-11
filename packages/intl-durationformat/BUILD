@@ -42,7 +42,6 @@ jest_test(
     name = "unit_test",
     data = [":srcs"] + SRC_DEPS + glob([
         "tests/**/*.ts",
-        "tests/**/*.tsx",
     ]),
     snapshots = glob(["tests/**/*.snap"]),
 )

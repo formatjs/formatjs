@@ -28,8 +28,7 @@ ts_project(
     name = "examples-esm",
     srcs = glob(
         [
-            "**/*.ts",
-            "**/*.tsx",
+            "**/*.ts*",
             "**/*.json",
         ],
         exclude = ["package.json"],
