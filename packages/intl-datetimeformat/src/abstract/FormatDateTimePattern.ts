@@ -112,9 +112,11 @@ export function FormatDateTimePattern(
         value: patternPart.value!,
       })
     } else if (p === 'fractionalSecondDigits') {
-      const v = Math.floor(
-        tm.millisecond * 10 ** ((fractionalSecondDigits || 0) - 3)
-      )
+      const v = new Decimal(tm.millisecond)
+        .times(10)
+        .pow((fractionalSecondDigits || 0) - 3)
+        .floor()
+        .toNumber()
       result.push({
         type: 'fractionalSecond',
         value: nf3!.format(v),
