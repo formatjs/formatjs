@@ -125,6 +125,8 @@ export function formatDateTimeRange(
   ...[from, to, options = {}]: Parameters<IntlFormatters['formatDateTimeRange']>
 ): string {
   const {timeZone, locale, onError} = config
+  const fromDate = typeof from === 'string' ? new Date(from || 0) : from
+  const toDate = typeof to === 'string' ? new Date(to || 0) : to
 
   const filteredOptions = filterProps(
     options,
@@ -133,14 +135,17 @@ export function formatDateTimeRange(
   ) as Intl.DateTimeFormatOptions
 
   try {
-    return getDateTimeFormat(locale, filteredOptions).formatRange(from, to)
+    return getDateTimeFormat(locale, filteredOptions).formatRange(
+      fromDate,
+      toDate
+    )
   } catch (e) {
     onError(
       new IntlFormatError('Error formatting date time range.', config.locale, e)
     )
   }
 
-  return String(from)
+  return String(fromDate)
 }
 
 export function formatDateToParts(

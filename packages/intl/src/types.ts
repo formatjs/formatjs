@@ -120,8 +120,8 @@ export type FormatDisplayNameOptions = Omit<
 export interface IntlFormatters<TBase = unknown> {
   formatDateTimeRange(
     this: void,
-    from: Parameters<Intl.DateTimeFormat['formatRange']>[0],
-    to: Parameters<Intl.DateTimeFormat['formatRange']>[1],
+    from: Parameters<Intl.DateTimeFormat['formatRange']>[0] | string,
+    to: Parameters<Intl.DateTimeFormat['formatRange']>[1] | string,
     opts?: FormatDateOptions
   ): string
   formatDate(
