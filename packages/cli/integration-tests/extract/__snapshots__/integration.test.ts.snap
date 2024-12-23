@@ -95,6 +95,53 @@ exports[`basic case: defineMessages -> out-file 2`] = `
 }
 `;
 
+exports[`basic case: defineMessages -> out-file with  --additional-function-names 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`basic case: defineMessages -> out-file with  --additional-function-names 2`] = `
+{
+  "286VP8": {
+    "defaultMessage": "No ID",
+    "description": "no ID",
+  },
+  "OvR0NS": {
+    "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
+  },
+  "app.home.kittens": {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens",
+  },
+  "e+FgwJ": {
+    "defaultMessage": "additional function names t",
+    "description": "The default message",
+  },
+  "escaped.apostrophe": {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+  },
+  "foo.bar.baz": {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+  },
+  "foo.bar.biff": {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message",
+  },
+  "inline-msg": {
+    "defaultMessage": "inline message",
+    "description": "inline description",
+  },
+  "trailing.ws": {
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace",
+  },
+}
+`;
+
 exports[`basic case: defineMessages -> out-file with location 1`] = `
 {
   "stderr": "",
@@ -161,10 +208,10 @@ exports[`basic case: defineMessages -> out-file with location 2`] = `
     "col": 10,
     "defaultMessage": "inline message",
     "description": "inline description",
-    "end": 1505,
+    "end": 1633,
     "file": "defineMessages/actual.js",
-    "line": 56,
-    "start": 1358,
+    "line": 60,
+    "start": 1486,
   },
   "trailing.ws": {
     "col": 21,

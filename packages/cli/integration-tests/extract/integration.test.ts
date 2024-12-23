@@ -65,6 +65,19 @@ test('basic case: defineMessages -> out-file', async () => {
   ).toMatchSnapshot()
 }, 20000)
 
+test('basic case: defineMessages -> out-file with  --additional-function-names', async () => {
+  process.chdir(__dirname)
+  await expect(
+    exec(
+      `${BIN_PATH} extract defineMessages/actual.js --additional-function-names t --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
+    )
+  ).resolves.toMatchSnapshot()
+
+  expect(
+    await readJSON(join(ARTIFACT_PATH, 'defineMessages/actual.json'))
+  ).toMatchSnapshot()
+}, 20000)
+
 test('basic case: defineMessages -> out-file with location', async () => {
   process.chdir(__dirname)
   await expect(

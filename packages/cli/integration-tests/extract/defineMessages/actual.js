@@ -45,6 +45,10 @@ export default class Foo extends Component {
     const msg = msgs?.header
     return (
       <div>
+        {t({
+          defaultMessage: 'additional function names t',
+          description: 'The default message',
+        })}
         <h1>
           <FormattedMessage {...msg} />
         </h1>
