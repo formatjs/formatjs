@@ -626,6 +626,66 @@ exports[`typescript -> stdout 1`] = `
 }
 `;
 
+exports[`typescript -> stdout with --additional-function-names 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "286VP8": {
+    "defaultMessage": "No ID",
+    "description": "no ID"
+  },
+  "app.home.kittens": {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens"
+  },
+  "e+FgwJ": {
+    "defaultMessage": "additional function names t",
+    "description": "The default message"
+  },
+  "eCy8Eo": {
+    "defaultMessage": "No Desc"
+  },
+  "escaped.apostrophe": {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe"
+  },
+  "foo.bar.baz": {
+    "defaultMessage": "Hello World!",
+    "description": "The default message"
+  },
+  "foo.bar.biff": {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message"
+  },
+  "inline": {
+    "defaultMessage": "formatted message",
+    "description": "foo"
+  },
+  "inline.linebreak": {
+    "defaultMessage": "formatted message with linebreak",
+    "description": "foo\\n\\t\\t\\t\\t\\t\\tbar"
+  },
+  "linebreak": {
+    "defaultMessage": "this is a message",
+    "description": "this is\\na\\ndescription"
+  },
+  "newline": {
+    "defaultMessage": "this is a message",
+    "description": "this is     a     description"
+  },
+  "templateLinebreak": {
+    "defaultMessage": "this is a message",
+    "description": "this is\\n    a\\n    description"
+  },
+  "trailing.ws": {
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace"
+  }
+}
+",
+}
+`;
+
 exports[`typescript -> stdout with crowdin 1`] = `
 {
   "stderr": "",

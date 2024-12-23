@@ -79,6 +79,10 @@ export default class Foo extends Component<{}, {}> {
   render() {
     return (
       <div>
+        {t({
+          defaultMessage: 'additional function names t',
+          description: 'The default message',
+        })}
         <h1>
           <FormattedMessage {...msgs.header} />
         </h1>

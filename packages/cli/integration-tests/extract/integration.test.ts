@@ -97,6 +97,14 @@ test('typescript -> stdout', async () => {
   ).resolves.toMatchSnapshot()
 }, 20000)
 
+test('typescript -> stdout with --additional-function-names', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} extract --additional-function-names t ${join(__dirname, 'typescript/actual.tsx')}`
+    )
+  ).resolves.toMatchSnapshot()
+}, 20000)
+
 test('pragma', async () => {
   await expect(
     exec(
