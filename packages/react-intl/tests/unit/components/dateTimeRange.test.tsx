@@ -13,6 +13,15 @@ describe('<FormattedDateTimeRange>', () => {
     intl = createIntl({
       onError: () => {},
       locale: 'en',
+      formats: {
+        dateTimeRange: {
+          custom: {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          },
+        },
+      },
     })
   })
 
@@ -96,5 +105,14 @@ describe('<FormattedDateTimeRange>', () => {
     const rendered = getByTestId('b')
     expect(rendered.tagName).toBe('B')
     expect(rendered).toHaveTextContent('Jest')
+  })
+
+  it('#4792 formats', function () {
+    const from = new Date(2020, 0, 1)
+    const to = new Date(2020, 0, 15)
+
+    const {getByTestId} = mountWithProvider({from, to, format: 'custom'}, intl)
+
+    expect(getByTestId('comp')).toHaveTextContent('January 1 – 15, 2020')
   })
 })
