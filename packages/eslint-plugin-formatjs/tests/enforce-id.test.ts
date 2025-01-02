@@ -1,6 +1,6 @@
 import {name, Option, rule} from '../rules/enforce-id'
 import {emptyFnCall, noMatch, spreadJsx} from './fixtures'
-import {ruleTester} from './util'
+import {ruleTester, vueRuleTester} from './util'
 const options: [Option] = [
   {idInterpolationPattern: '[sha512:contenthash:base64:6]'},
 ]
@@ -293,6 +293,60 @@ defineMessages({ example: { defaultMessage: 'example1', id: 'payment_string' }, 
       output: `
 import { defineMessages } from 'react-intl'
 defineMessages({ example: { defaultMessage: 'example1', id: 'payment_string' }, example2: { defaultMessage: 'example2', id: 'FnMvk8' }  })`,
+    },
+  ],
+})
+
+vueRuleTester.run(`vue-${name}`, rule, {
+  valid: [
+    {
+      options,
+      code: `<template>
+<p>{{$formatMessage({
+    defaultMessage: 'this is default message',
+    id: 'q5HLu+'
+})}}</p></template>`,
+    },
+    {
+      options,
+      code: `<script>intl.formatMessage({
+    defaultMessage: 'this is default message',
+    id: 'p/v1z6',
+    description: 'asd'
+})</script>`,
+    },
+    {
+      options,
+      code: `<script>intl.formatMessage({
+  defaultMessage: 'this is default message' + 'vvv',
+  id: '8DyoUa',
+  description: 'asd'
+})</script>`,
+    },
+  ],
+  invalid: [
+    {
+      code: `
+      <template>
+      <p>{{$formatMessage({
+                defaultMessage: 'this is default message'
+            })}}</p></template>`,
+      options,
+      errors: [
+        {
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'q5HLu+',
+            actual: 'undefined',
+          },
+        },
+      ],
+      output: `
+      <template>
+      <p>{{$formatMessage({
+                defaultMessage: 'this is default message', id: 'q5HLu+'
+            })}}</p></template>`,
     },
   ],
 })
