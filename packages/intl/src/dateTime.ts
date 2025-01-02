@@ -39,7 +39,7 @@ export function getFormatter(
     formats: CustomFormats
     onError: OnErrorFn
   },
-  type: 'date' | 'time',
+  type: 'date' | 'time' | 'dateTimeRange',
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   options: Parameters<IntlFormatters['formatDate']>[1] = {}
 ): Intl.DateTimeFormat {
@@ -119,28 +119,24 @@ export function formatDateTimeRange(
   config: {
     locale: string
     timeZone?: string
+    formats: CustomFormats
     onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   ...[from, to, options = {}]: Parameters<IntlFormatters['formatDateTimeRange']>
 ): string {
-  const {timeZone, locale, onError} = config
   const fromDate = typeof from === 'string' ? new Date(from || 0) : from
   const toDate = typeof to === 'string' ? new Date(to || 0) : to
 
-  const filteredOptions = filterProps(
-    options,
-    DATE_TIME_FORMAT_OPTIONS,
-    timeZone ? {timeZone} : {}
-  ) as Intl.DateTimeFormatOptions
-
   try {
-    return getDateTimeFormat(locale, filteredOptions).formatRange(
-      fromDate,
-      toDate
-    )
+    return getFormatter(
+      config,
+      'dateTimeRange',
+      getDateTimeFormat,
+      options
+    ).formatRange(fromDate, toDate)
   } catch (e) {
-    onError(
+    config.onError(
       new IntlFormatError('Error formatting date time range.', config.locale, e)
     )
   }

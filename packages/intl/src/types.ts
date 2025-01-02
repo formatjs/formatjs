@@ -80,6 +80,7 @@ export interface ResolvedIntlConfig<T = string> {
 
 export interface CustomFormats extends Partial<Formats> {
   relative?: Record<string, Intl.RelativeTimeFormatOptions>
+  dateTimeRange?: Record<string, Intl.DateTimeFormatOptions>
 }
 
 export interface CustomFormatConfig<Source = string> {
@@ -87,6 +88,12 @@ export interface CustomFormatConfig<Source = string> {
     ? FormatjsIntl.Formats[Source]
     : string
 }
+
+export type FormatDateTimeRangeOptions = Omit<
+  Intl.DateTimeFormatOptions,
+  'localeMatcher'
+> &
+  CustomFormatConfig<'dateTimeRange'>
 
 export type FormatDateOptions = Omit<
   Intl.DateTimeFormatOptions,
@@ -122,7 +129,7 @@ export interface IntlFormatters<TBase = unknown> {
     this: void,
     from: Parameters<Intl.DateTimeFormat['formatRange']>[0] | string,
     to: Parameters<Intl.DateTimeFormat['formatRange']>[1] | string,
-    opts?: FormatDateOptions
+    opts?: FormatDateTimeRangeOptions
   ): string
   formatDate(
     this: void,
