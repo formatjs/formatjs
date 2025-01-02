@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.1.0](https://github.com/formatjs/formatjs/compare/react-intl@7.0.4...react-intl@7.1.0) (2025-01-02)
+
+### Features
+
+* **react-intl:** add new format key for dateTimeRange, fix [#4792](https://github.com/formatjs/formatjs/issues/4792) ([50f8bc3](https://github.com/formatjs/formatjs/commit/50f8bc380284c07f69041eb5eec80937dcb6bac2)) - by @longlho
+
 ## [7.0.4](https://github.com/formatjs/formatjs/compare/react-intl@7.0.3...react-intl@7.0.4) (2024-12-09)
 
 **Note:** Version bump only for package react-intl

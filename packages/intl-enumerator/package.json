@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-enumerator",
-  "version": "1.8.7",
+  "version": "1.8.8",
   "description": "Intl.Enumerator polyfill",
   "keywords": [
     "intl",

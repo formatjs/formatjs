@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.17.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.17.1...@formatjs/intl-datetimeformat@6.17.2) (2025-01-02)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix floating point issue in fractionalSecond ([b47b4f4](https://github.com/formatjs/formatjs/commit/b47b4f416292967d29540ffc8cf9dccd07c671ad)) - by @longlho
+* **@formatjs/intl-numberformat:** fix precision truncation, fix [#4771](https://github.com/formatjs/formatjs/issues/4771) ([9300845](https://github.com/formatjs/formatjs/commit/93008458a9b984b3b5bd1c5a8e021c6fb8e9d3d4)) - by @longlho
+
 ## [6.17.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.17.0...@formatjs/intl-datetimeformat@6.17.1) (2024-12-09)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

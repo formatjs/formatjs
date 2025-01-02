@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.1...@formatjs/ecma402-abstract@2.3.2) (2025-01-02)
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix precision truncation, fix [#4771](https://github.com/formatjs/formatjs/issues/4771) ([9300845](https://github.com/formatjs/formatjs/commit/93008458a9b984b3b5bd1c5a8e021c6fb8e9d3d4)) - by @longlho
+* **@formatjs/intl-numberformat:** tweak format range ([918d58b](https://github.com/formatjs/formatjs/commit/918d58b839fa6a90aaa1b7bf31386db52924900d)) - by @longlho
+* **@formatjs/intl-numberformat:** use FormatNumeric in NF ([7b58924](https://github.com/formatjs/formatjs/commit/7b5892419604fdcc7e6c4b22b68bab968374a605)) - by @longlho
+
 ## [2.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.0...@formatjs/ecma402-abstract@2.3.1) (2024-12-09)
 
 ### Bug Fixes

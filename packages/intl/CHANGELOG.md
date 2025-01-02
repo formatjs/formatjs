@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.0.4...@formatjs/intl@3.1.0) (2025-01-02)
+
+### Bug Fixes
+
+* **@formatjs/intl:** allow string in formatDateTimeRange ([#4784](https://github.com/formatjs/formatjs/issues/4784)) ([49a6015](https://github.com/formatjs/formatjs/commit/49a6015ddeb76fc913fa6c7ee5808c12b76ae8f6)), closes [/github.com/formatjs/formatjs/commit/aed8c6877cff6d32bf1801bb835a0dde81e65ae9#diff-41c7b3ac268a3a1ae5c7be92f1230f600013b7170e44a693570ccbdb183ea36bR95](https://github.com//github.com/formatjs/formatjs/commit/aed8c6877cff6d32bf1801bb835a0dde81e65ae9/issues/diff-41c7b3ac268a3a1ae5c7be92f1230f600013b7170e44a693570ccbdb183ea36bR95) - by @miguelcobain
+
+### Features
+
+* **@formatjs/intl:** add new format key for dateTimeRange ([91cc5f1](https://github.com/formatjs/formatjs/commit/91cc5f1e0d1295807e985906530abec671e1304e)), closes [#4792](https://github.com/formatjs/formatjs/issues/4792) - by @longlho
+
 ## [3.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.0.3...@formatjs/intl@3.0.4) (2024-12-09)
 
 **Note:** Version bump only for package @formatjs/intl

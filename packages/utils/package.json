@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/utils",
-  "version": "1.8.3",
+  "version": "1.8.4",
   "description": "Collection of useful intl utilities",
   "main": "index.js",
   "module": "lib/index.js",
