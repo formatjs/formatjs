@@ -33,6 +33,7 @@
     "prism-react-renderer": "2",
     "react-intl": "workspace:*",
     "react-live": "4",
-    "typescript": "5"
+    "typescript": "5",
+    "clsx": "2"
   }
 }

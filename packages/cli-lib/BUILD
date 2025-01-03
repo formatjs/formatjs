@@ -46,20 +46,20 @@ GLIMMER_HBS_DEPS = [
 ]
 
 SRC_DEPS = [
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/icu-skeleton-parser",
+    ":node_modules/@formatjs/ts-transformer",
+    ":node_modules/commander",
+    ":node_modules/loud-rejection",
     "//:node_modules/@types/estree",
     "//:node_modules/@types/fs-extra",
     "//:node_modules/@types/json-stable-stringify",
     "//:node_modules/@types/node",
     "//:node_modules/chalk",
-    "//:node_modules/commander",
     "//:node_modules/fast-glob",
     "//:node_modules/fs-extra",
     "//:node_modules/json-stable-stringify",
-    "//:node_modules/loud-rejection",
     "//:node_modules/typescript",
-    ":node_modules/@formatjs/icu-messageformat-parser",
-    ":node_modules/@formatjs/icu-skeleton-parser",
-    ":node_modules/@formatjs/ts-transformer",
 ] + VUE_DEPS + GLIMMER_HBS_DEPS
 
 ts_compile_node(

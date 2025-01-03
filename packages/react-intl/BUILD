@@ -30,10 +30,10 @@ SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/icu-messageformat-parser",
     ":node_modules/@formatjs/intl",
+    ":node_modules/@types/hoist-non-react-statics",
+    ":node_modules/hoist-non-react-statics",
     ":node_modules/intl-messageformat",
-    "//:node_modules/@types/hoist-non-react-statics",
     "//:node_modules/@types/react",
-    "//:node_modules/hoist-non-react-statics",
     "//:node_modules/react",
 ]
 

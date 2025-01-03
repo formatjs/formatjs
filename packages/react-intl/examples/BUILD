@@ -16,7 +16,6 @@ EXAMPLES_SRC_DEPS = [
     ":node_modules/@formatjs/intl-numberformat",
     ":node_modules/@formatjs/intl-pluralrules",
     ":node_modules/react-intl",
-    "//:node_modules/core-js",
     "//:node_modules/@types/react",
     "//:node_modules/@types/react-dom",
     "//:node_modules/react",
