@@ -31,14 +31,14 @@ SRCS = glob(["rules/*.ts"]) + [
 SRC_DEPS = [
     ":node_modules/@formatjs/icu-messageformat-parser",
     ":node_modules/@formatjs/ts-transformer",
+    ":node_modules/@types/picomatch",
     ":node_modules/magic-string",
+    ":node_modules/picomatch",
     ":node_modules/unicode-emoji-utils",
     "//:node_modules/@types/eslint",
     "//:node_modules/@types/node",
-    "//:node_modules/@types/picomatch",
     "//:node_modules/@typescript-eslint/utils",
     "//:node_modules/eslint",
-    "//:node_modules/picomatch",
     "//:node_modules/typescript",
 ]
 

@@ -130,9 +130,6 @@ importers:
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
-      '@types/hoist-non-react-statics':
-        specifier: ^3.3.5
-        version: 3.3.6
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
@@ -148,9 +145,6 @@ importers:
       '@types/node':
         specifier: ^22.0.0
         version: 22.8.2
-      '@types/picomatch':
-        specifier: ^3.0.1
-        version: 3.0.1
       '@types/react':
         specifier: ^18.3.12
         version: 18.3.14
@@ -199,9 +193,6 @@ importers:
       chalk:
         specifier: ^4.1.2
         version: 4.1.2
-      chokidar:
-        specifier: ^4.0.1
-        version: 4.0.3
       cldr-bcp47:
         specifier: ^46.0.0
         version: 46.0.0
@@ -226,9 +217,6 @@ importers:
       cldr-units-full:
         specifier: ^46.0.0
         version: 46.0.0(cldr-core@46.0.0)
-      commander:
-        specifier: ^12.1.0
-        version: 12.1.0
       content-tag:
         specifier: ^3.0.0
         version: 3.0.0
@@ -247,9 +235,6 @@ importers:
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
-      hoist-non-react-statics:
-        specifier: ^3.3.2
-        version: 3.3.2
       http-server:
         specifier: ^14.1.1
         version: 14.1.1
@@ -301,9 +286,6 @@ importers:
       minimist:
         specifier: ^1.2.8
         version: 1.2.8
-      picomatch:
-        specifier: ^4.0.2
-        version: 4.0.2
       prettier:
         specifier: ^3.3.3
         version: 3.4.2
@@ -4066,10 +4048,6 @@ packages:
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
     engines: {node: '>= 8.10.0'}
-
-  chokidar@4.0.3:
-    resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
-    engines: {node: '>= 14.16.0'}
 
   chownr@1.1.4:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
@@ -8469,10 +8447,6 @@ packages:
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
-
-  readdirp@4.0.2:
-    resolution: {integrity: sha512-yDMz9g+VaZkqBYS/ozoBJwaBhTbZo3UNYQHNRw1D3UFQB8oHB4uS/tAODO+ZLjGWmUbKnIlOWO+aaIiAxrUWHA==}
-    engines: {node: '>= 14.16.0'}
 
   reading-time@1.5.0:
     resolution: {integrity: sha512-onYyVhBNr4CmAxFsKS7bz+uTLRakypIe4R+5A824vBSkQy/hB3fZepoVEf8OVAxzLvK+H/jm9TzpI3ETSm64Kg==}
@@ -14645,10 +14619,6 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  chokidar@4.0.3:
-    dependencies:
-      readdirp: 4.0.2
-
   chownr@1.1.4: {}
 
   chrome-launcher@0.13.4:
@@ -20165,8 +20135,6 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
-
-  readdirp@4.0.2: {}
 
   reading-time@1.5.0: {}
 
