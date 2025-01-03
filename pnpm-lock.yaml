@@ -88,9 +88,6 @@ importers:
       '@jest/types':
         specifier: ^29.6.3
         version: 29.6.3
-      '@napi-rs/cli':
-        specifier: ^2.18.4
-        version: 2.18.4
       '@swc-node/register':
         specifier: ^1.10.9
         version: 1.10.9(@swc/core@1.10.1(@swc/helpers@0.5.15))(@swc/types@0.1.17)(typescript@5.6.2)
@@ -103,9 +100,6 @@ importers:
       '@swc/jest':
         specifier: ^0.2.36
         version: 0.2.37(@swc/core@1.10.1(@swc/helpers@0.5.15))
-      '@taplo/cli':
-        specifier: ^0.7.0
-        version: 0.7.0
       '@testing-library/jest-dom':
         specifier: ^6.6.2
         version: 6.6.3
@@ -232,27 +226,18 @@ importers:
       cldr-units-full:
         specifier: ^46.0.0
         version: 46.0.0(cldr-core@46.0.0)
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
       commander:
         specifier: ^12.1.0
         version: 12.1.0
       content-tag:
         specifier: ^3.0.0
         version: 3.0.0
-      core-js:
-        specifier: ^3.38.1
-        version: 3.39.0
       decimal.js:
         specifier: ^10.4.3
         version: 10.4.3
       ember-template-recast:
         specifier: ^6.1.5
         version: 6.1.5
-      emoji-regex:
-        specifier: ^10.4.0
-        version: 10.4.0
       eslint:
         specifier: 9.16.0
         version: 9.16.0(jiti@1.21.6)
@@ -310,12 +295,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      loud-rejection:
-        specifier: ^2.2.0
-        version: 2.2.0
-      magic-string:
-        specifier: ^0.30.12
-        version: 0.30.14
       make-plural-compiler:
         specifier: 5.1.0
         version: 5.1.0(patch_hash=qdcdtqeknhxqnjirmx4dcdabaq)
@@ -361,9 +340,6 @@ importers:
       typescript:
         specifier: 5.6.2
         version: 5.6.2
-      unicode-emoji-utils:
-        specifier: ^1.2.0
-        version: 1.2.0
       unidiff:
         specifier: ^1.0.4
         version: 1.0.4
@@ -572,9 +548,6 @@ importers:
       '@typescript-eslint/utils':
         specifier: 8.17.0
         version: 8.17.0(eslint@9.16.0(jiti@1.21.6))(typescript@5.6.2)
-      emoji-regex:
-        specifier: '10'
-        version: 10.4.0
       eslint:
         specifier: 9.16.0
         version: 9.16.0(jiti@1.21.6)
@@ -2585,11 +2558,6 @@ packages:
       '@types/react': '>=16'
       react: '18'
 
-  '@napi-rs/cli@2.18.4':
-    resolution: {integrity: sha512-SgJeA4df9DE2iAEpr3M2H0OKl/yjtg1BnRI5/JyowS71tUWhrfSu2LT0V3vlHET+g1hBVlrO60PmEXwUEKp8Mg==}
-    engines: {node: '>= 10'}
-    hasBin: true
-
   '@napi-rs/wasm-runtime@0.2.5':
     resolution: {integrity: sha512-kwUxR7J9WLutBbulqg1dfOrMTwhMdXLdcGUhcbCcGwnPLt3gz19uHVdwH1syKVDbE022ZS2vZxOWflFLS0YTjw==}
 
@@ -3002,10 +2970,6 @@ packages:
   '@szmarczak/http-timer@5.0.1':
     resolution: {integrity: sha512-+PmQX0PiAYPMeVYe237LJAYvOMYW1j2rH5YROyS3b4CTVJum34HfRvKvAzozHAQG0TnHNdUfY9nCeUyRAs//cw==}
     engines: {node: '>=14.16'}
-
-  '@taplo/cli@0.7.0':
-    resolution: {integrity: sha512-Ck3zFhQhIhi02Hl6T4ZmJsXdnJE+wXcJz5f8klxd4keRYgenMnip3JDPMGDRLbnC/2iGd8P0sBIQqI3KxfVjBg==}
-    hasBin: true
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -12113,7 +12077,7 @@ snapshots:
 
   '@docusaurus/react-loadable@6.0.0(react@19.0.0)':
     dependencies:
-      '@types/react': 19.0.2
+      '@types/react': 18.3.14
       react: 19.0.0
 
   '@docusaurus/theme-classic@3.6.3(@swc/core@1.10.1(@swc/helpers@0.5.15))(@types/react@19.0.2)(acorn@8.14.0)(eslint@9.16.0(jiti@1.21.6))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.6.2)':
@@ -12780,8 +12744,6 @@ snapshots:
       '@types/react': 19.0.2
       react: 19.0.0
 
-  '@napi-rs/cli@2.18.4': {}
-
   '@napi-rs/wasm-runtime@0.2.5':
     dependencies:
       '@emnapi/core': 1.3.1
@@ -13269,8 +13231,6 @@ snapshots:
   '@szmarczak/http-timer@5.0.1':
     dependencies:
       defer-to-connect: 2.0.1
-
-  '@taplo/cli@0.7.0': {}
 
   '@testing-library/dom@10.4.0':
     dependencies:
