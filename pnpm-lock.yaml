@@ -876,7 +876,7 @@ importers:
         specifier: '3'
         version: 3.3.6
       '@types/react':
-        specifier: 16 || 17 || 18
+        specifier: 16 || 17 || 18 || 19
         version: 18.3.14
       hoist-non-react-statics:
         specifier: '3'
@@ -930,7 +930,7 @@ importers:
         specifier: ^3.3.1
         version: 3.3.6
       '@types/react':
-        specifier: 16 || 17 || 18
+        specifier: 16 || 17 || 18 || 19
         version: 18.3.14
       hoist-non-react-statics:
         specifier: ^3.3.2
@@ -12113,7 +12113,7 @@ snapshots:
 
   '@docusaurus/react-loadable@6.0.0(react@19.0.0)':
     dependencies:
-      '@types/react': 19.0.2
+      '@types/react': 18.3.14
       react: 19.0.0
 
   '@docusaurus/theme-classic@3.6.3(@swc/core@1.10.1(@swc/helpers@0.5.15))(@types/react@19.0.2)(acorn@8.14.0)(eslint@9.16.0(jiti@1.21.6))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.6.2)':
