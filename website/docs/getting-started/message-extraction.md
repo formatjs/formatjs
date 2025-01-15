@@ -302,6 +302,7 @@ We also provide several [builtin formatters](../tooling/cli.md#builtin-formatter
 | [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)                                  | `crowdin`   |
 | [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)                                 | `simple`    |
 | [Localize's Simple JSON](https://developers.localizejs.com/docs/simple-json-import-export)                    | `simple`    |
+| [Localizely](https://localizely.com/flat-json-file/?tab=react-intl)                                           | `simple`    |
 | [locize](https://docs.locize.com/integration/supported-formats#json-nested)                                   | `simple`    |
 | [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json)                     | `lokalise`  |
 | [Phrase Strings](https://support.phrase.com/hc/en-us/articles/6111390065948--JSON-React-Intl-Simple-Strings-) | `simple`    |
