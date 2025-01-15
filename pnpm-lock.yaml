@@ -219,7 +219,7 @@ importers:
         version: 46.1.0(cldr-core@46.0.0)
       content-tag:
         specifier: ^3.0.0
-        version: 3.0.0
+        version: 3.1.0
       decimal.js:
         specifier: ^10.4.3
         version: 10.4.3
@@ -4309,6 +4309,9 @@ packages:
 
   content-tag@3.0.0:
     resolution: {integrity: sha512-HxWPmF9hzehv5PV7TSK7QSzlVBhmwQA8NgBrXmL+fqXfM3L1r3ResAPzeiGbxra3Zw6U3gdhw3cIDJADQnuCVQ==}
+
+  content-tag@3.1.0:
+    resolution: {integrity: sha512-gSESx+fia81/vKjorui0V6wY7IBpuitd84LcQnaPVF9Xe9ctLAf4saHwbUi3SAhYfi9kxs5ODfAVnm5MmjojCQ==}
 
   content-type@1.0.5:
     resolution: {integrity: sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==}
@@ -14879,6 +14882,8 @@ snapshots:
       safe-buffer: 5.2.1
 
   content-tag@3.0.0: {}
+
+  content-tag@3.1.0: {}
 
   content-type@1.0.5: {}
 
