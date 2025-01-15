@@ -117,7 +117,7 @@
     "ts-loader": "^9.5.1",
     "tsd": "^0.31.2",
     "tslib": "^2.8.0",
-    "typescript": "5.6.2",
+    "typescript": "5.7.3",
     "unidiff": "^1.0.4",
     "vue": "^3.5.12",
     "vue-class-component": "8.0.0-rc.1",
@@ -137,7 +137,7 @@
     "eslint": "9.16.0",
     "react": "18",
     "react-dom": "18",
-    "typescript": "5.6.2"
+    "typescript": "5.7.3"
   },
   "pnpm": {
     "onlyBuiltDependencies": [],
