@@ -89,7 +89,7 @@ test('structurally same plural mismatch element', function () {
         'some static string {count, plural, one {{count, number} cat} other {{count, number} cats}}'
       ),
       parse(
-        '{count, plural, one {{count, number} foo} other {{count, number} bax}}'
+        '{count2, plural, one {{count, number} foo} other {{count, number} bax}}'
       )
     )
   ).toBe(false)
