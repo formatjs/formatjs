@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.1.0...@formatjs/cli-lib@7.1.1) (2025-01-17)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** handle parsing error during verification ([ddca2c2](https://github.com/formatjs/formatjs/commit/ddca2c22899ce698f945927a35df6126c8cdbc48)) - by @longlho
+
 # [7.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.0.3...@formatjs/cli-lib@7.1.0) (2025-01-17)
 
 ### Features
