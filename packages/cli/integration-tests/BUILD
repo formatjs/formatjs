@@ -86,3 +86,12 @@ jest_test(
     ),
     snapshots = glob(["compile/__snapshots__/*.snap"]),
 )
+
+jest_test(
+    name = "verify_integration_test",
+    data = [
+        ":node_modules/@formatjs/cli",
+    ] + glob(
+        ["verify/**/*"],
+    ),
+)
