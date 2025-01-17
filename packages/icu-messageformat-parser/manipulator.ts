@@ -125,12 +125,41 @@ export function isStructurallySame(
   a: MessageFormatElement[],
   b: MessageFormatElement[]
 ): boolean {
-  if (a.length !== b.length) {
+  const aWithoutLiteral = a.filter(el => !isLiteralElement(el))
+  const bWithoutLiteral = b.filter(el => !isLiteralElement(el))
+  if (aWithoutLiteral.length !== bWithoutLiteral.length) {
     return false
   }
-  for (let i = 0; i < a.length; i++) {
-    const elA = a[i]
-    const elB = b[i]
+
+  const elementsMapInA = aWithoutLiteral.reduce<
+    Record<string, MessageFormatElement>
+  >((all, el) => {
+    if (isPoundElement(el)) {
+      all['#'] = el
+      return all
+    }
+    all[el.value] = el
+    return all
+  }, {})
+
+  const elementsMapInB = bWithoutLiteral.reduce<
+    Record<string, MessageFormatElement>
+  >((all, el) => {
+    if (isPoundElement(el)) {
+      all['#'] = el
+      return all
+    }
+    all[el.value] = el
+    return all
+  }, {})
+
+  for (const varName of Object.keys(elementsMapInA)) {
+    const elA = elementsMapInA[varName]
+    const elB = elementsMapInB[varName]
+    if (!elB) {
+      return false
+    }
+
     if (elA.type !== elB.type) {
       return false
     }

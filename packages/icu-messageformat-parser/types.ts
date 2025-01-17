@@ -68,11 +68,8 @@ export interface BaseElement<T extends TYPE> {
 
 export type LiteralElement = BaseElement<TYPE.literal>
 export type ArgumentElement = BaseElement<TYPE.argument>
-export interface TagElement {
-  type: TYPE.tag
-  value: string
+export interface TagElement extends BaseElement<TYPE.tag> {
   children: MessageFormatElement[]
-  location?: Location
 }
 
 export interface SimpleFormatElement<T extends TYPE, S extends Skeleton>

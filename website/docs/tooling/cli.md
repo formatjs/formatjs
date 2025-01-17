@@ -200,6 +200,45 @@ becomes
 The goal is to provide as many full sentences as possible since fragmented
 sentences are not translator-friendly.
 
+## Verification
+
+Verify translation files to make sure keys are translated and messages are structurally compatible with source locale.
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm run formatjs verify [options] <translationFiles>
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn formatjs verify [options] <translationFiles>
+```
+
+</TabItem>
+</Tabs>
+
+### `--source-locale <sourceLocale>`
+
+The source locale of the translation files. There must be a file named `<sourceLocale>.json` in the list of translation files. This is used as source to verify other translations against.
+
+### `--missing-keys`
+
+Whether to check for missing keys in target locale compared to source locale. This basically guarantees that no messages are untranslated.
+
+### `--structural-equality`
+
+Whether to check for structural equality of messages between source and target locale. This makes sure translations are formattable and are not missing any tokens.
+
 ## Compilation
 
 Compile extracted files from `formatjs extract` to a [react-intl](../react-intl.md) consumable
