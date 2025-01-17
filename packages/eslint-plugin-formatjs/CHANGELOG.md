@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.10](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.2.9...eslint-plugin-formatjs@5.2.10) (2025-01-17)
+
+### Bug Fixes
+
+* **deps:** update typescript-eslint monorepo to v8.20.0 ([#4744](https://github.com/formatjs/formatjs/issues/4744)) ([4367831](https://github.com/formatjs/formatjs/commit/4367831e3f9ef5b53e9106cca50e3a5c1bcf6f31)) - by @renovate[bot]
+
 ## [5.2.9](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.2.8...eslint-plugin-formatjs@5.2.9) (2025-01-02)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

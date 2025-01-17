@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.3.15...@formatjs/cli@6.4.0) (2025-01-17)
+
+### Features
+
+* **@formatjs/cli:** add new capability to formatjs CLI: verify ([65aedd6](https://github.com/formatjs/formatjs/commit/65aedd6b646405345f05feeecff49006a52f6c80)) - by @longlho
+
 ## [6.3.15](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.3.14...@formatjs/cli@6.3.15) (2025-01-02)
 
 **Note:** Version bump only for package @formatjs/cli

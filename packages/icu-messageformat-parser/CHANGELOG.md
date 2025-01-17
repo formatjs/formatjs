@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.9.8...@formatjs/icu-messageformat-parser@2.10.0) (2025-01-17)
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** fix structural check ([d4d0f99](https://github.com/formatjs/formatjs/commit/d4d0f99c74b093e2a2ad9cd01e094d276419952e)) - by @longlho
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** add function to check if 2 messages are structurally the same ([c9912ef](https://github.com/formatjs/formatjs/commit/c9912ef0aa0c4cd4d9fdf5338bef46a5f9e09e53)) - by @longlho
+
 ## [2.9.8](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.9.7...@formatjs/icu-messageformat-parser@2.9.8) (2025-01-02)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser
