@@ -21,8 +21,9 @@ function flatten(obj: any, parentKey = ''): Record<string, string> {
     const key = parentKey ? `${parentKey}.${k}` : k
     if (typeof value === 'object') {
       Object.assign(all, flatten(value, key))
+    } else {
+      all[key] = value
     }
-    all[key] = value
     return all
   }, {})
 }
