@@ -5,6 +5,7 @@ import compile, {CompileCLIOpts, Opts} from './compile'
 import compileFolder from './compile_folder'
 import {debug} from './console_utils'
 import extract, {ExtractCLIOptions} from './extract'
+import {verify, VerifyOpts} from './verify'
 
 const KNOWN_COMMANDS = ['extract']
 
@@ -223,6 +224,38 @@ This is especially useful to convert from a TMS-specific format back to react-in
       }
       debug('Files to compile:', files)
       await compileFolder(files, outFolder, opts)
+    })
+
+  program
+    .command('verify [translation_files...]')
+    .description(
+      `Run a series of checks on a list of translation files. <translation_files> can be a glob like "foo/**/en.json"`
+    )
+    .option(
+      '--source-locale <sourceLocale>',
+      `The source locale of the translation files.
+      There must be a file named <sourceLocale>.json in the list of translation files.
+      This is used as source to verify other translations against.`
+    )
+    .option(
+      '--missing-keys',
+      `Whether to check for missing keys in target locale compared to source locale. 
+      This basically guarantees that no messages are untranslated.`
+    )
+    .option(
+      '--structural-equality',
+      `Whether to check for structural equality of messages between source and target locale. 
+      This makes sure translations are formattable and are not missing any tokens.`
+    )
+    .action(async (filePatterns: string[], opts: VerifyOpts) => {
+      debug('File pattern:', filePatterns)
+      debug('Options:', opts)
+      const files = globSync(filePatterns)
+      if (!files.length) {
+        throw new Error(`No input file found with pattern ${filePatterns}`)
+      }
+      debug('Files to verify:', files)
+      await verify(files, opts)
     })
 
   if (argv.length < 3) {
