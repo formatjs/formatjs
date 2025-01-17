@@ -4,5 +4,6 @@
   "3": "bar {var, date}",
   "4": "bar {var} {var2, number} {var3, date} {var5, time}",
   "5": "bar {var} {var2, number} {var3, date} {var4, time} {var5, plural, one {# foo} other {# foos}}",
-  "6": "bar {var} {var2, number} {var3, date} {var4, time} {var5, plural, one {# foo} other {# foos}} foo"
+  "6": "bar {var} {var2, number} {var3, date} {var4, time} {var5, plural, one {# foo} other {# foos}} foo",
+  "7": "malform {a"
 }

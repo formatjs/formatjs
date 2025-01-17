@@ -4,6 +4,7 @@ import {
   parse,
 } from '@formatjs/icu-messageformat-parser'
 import {debug, writeStderr} from '../console_utils'
+import {error} from 'console'
 
 /**
  * Flatten nested obj into list of keys, delimited by `.`
@@ -38,26 +39,30 @@ export async function checkStructuralEquality(
   const enUSMessages = Object.entries(flatten(enUSContent)).reduce<
     Record<string, MessageFormatElement[]>
   >((all, [key, value]) => {
-    all[key] = parse(value)
+    try {
+      all[key] = parse(value)
+    } catch (e) {
+      error('Error parsing message', key, value, e)
+    }
     return all
   }, {})
   return Object.entries(translationFilesContents)
     .filter(([locale]) => locale !== sourceLocale)
     .reduce<boolean>((result, [locale, content]) => {
-      const localeMessages = Object.entries(flatten(content)).reduce<
-        Record<string, MessageFormatElement[]>
-      >((all, [key, value]) => {
-        all[key] = parse(value)
-        return all
-      }, {})
+      const localeMessages = flatten(content)
 
       const problematicKeys = Object.keys(enUSMessages).filter(k => {
         if (!localeMessages[k]) {
           return false
         }
         const enUSMessage = enUSMessages[k]
-        const localeMessage = localeMessages[k]
-        return !isStructurallySame(enUSMessage, localeMessage)
+        try {
+          const localeMessage = parse(localeMessages[k])
+          return !isStructurallySame(enUSMessage, localeMessage)
+        } catch (e) {
+          error('Error comparing message', k, enUSMessage, localeMessages[k], e)
+          return true
+        }
       })
 
       if (!problematicKeys.length) {
