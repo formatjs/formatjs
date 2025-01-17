@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.4.1...@formatjs/cli@6.4.2) (2025-01-17)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** fix flatten during structural equality check ([144453a](https://github.com/formatjs/formatjs/commit/144453a7a91af42678cb3c5b57d31673ef72b9cc)) - by @longlho
+
 ## [6.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.4.0...@formatjs/cli@6.4.1) (2025-01-17)
 
 ### Bug Fixes
