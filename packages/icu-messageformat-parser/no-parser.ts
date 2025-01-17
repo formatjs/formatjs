@@ -5,3 +5,4 @@ export function parse(): void {
 }
 export * from './types'
 export const _Parser = undefined
+export {isStructurallySame} from './manipulator'

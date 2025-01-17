@@ -1,5 +1,5 @@
 import {parse} from '..'
-import {hoistSelectors} from '../manipulator'
+import {hoistSelectors, isStructurallySame} from '../manipulator'
 import {printAST} from '../printer'
 
 test('should hoist 1 plural', function () {
@@ -67,4 +67,30 @@ test('should hoist 1 plural with number', function () {
       )
     )
   ).toBe('{count,plural,one{{count, number} cat} other{{count, number} cats}}')
+})
+
+test('structurally same plural', function () {
+  expect(
+    isStructurallySame(
+      parse(
+        '{count, plural, one {{count, number} cat} other {{count, number} cats}}'
+      ),
+      parse(
+        '{count, plural, one {{count, number} foo} other {{count, number} bax}}'
+      )
+    )
+  ).toBe(true)
+})
+
+test('structurally same plural mismatch element', function () {
+  expect(
+    isStructurallySame(
+      parse(
+        'some static string {count, plural, one {{count, number} cat} other {{count, number} cats}}'
+      ),
+      parse(
+        '{count, plural, one {{count, number} foo} other {{count, number} bax}}'
+      )
+    )
+  ).toBe(false)
 })

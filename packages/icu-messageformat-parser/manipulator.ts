@@ -1,7 +1,13 @@
 import {
+  isArgumentElement,
+  isDateElement,
+  isLiteralElement,
+  isNumberElement,
   isPluralElement,
+  isPoundElement,
   isSelectElement,
   isTagElement,
+  isTimeElement,
   MessageFormatElement,
   PluralElement,
   PluralOrSelectOption,
@@ -93,4 +99,95 @@ export function hoistSelectors(
     }
   }
   return ast
+}
+
+function isStructurallySamePluralOrSelect(
+  el1: PluralElement | SelectElement,
+  el2: PluralElement | SelectElement
+): boolean {
+  const options1 = el1.options
+  const options2 = el2.options
+  if (Object.keys(options1).length !== Object.keys(options2).length) {
+    return false
+  }
+  for (const key in options1) {
+    if (!options2[key]) {
+      return false
+    }
+    if (!isStructurallySame(options1[key].value, options2[key].value)) {
+      return false
+    }
+  }
+  return true
+}
+
+export function isStructurallySame(
+  a: MessageFormatElement[],
+  b: MessageFormatElement[]
+): boolean {
+  if (a.length !== b.length) {
+    return false
+  }
+  for (let i = 0; i < a.length; i++) {
+    const elA = a[i]
+    const elB = b[i]
+    if (elA.type !== elB.type) {
+      return false
+    }
+
+    if (isLiteralElement(elA) || isLiteralElement(elB)) {
+      continue
+    }
+
+    if (
+      isArgumentElement(elA) &&
+      isArgumentElement(elB) &&
+      elA.value !== elB.value
+    ) {
+      return false
+    }
+
+    if (isPoundElement(elA) || isPoundElement(elB)) {
+      continue
+    }
+
+    if (
+      isDateElement(elA) ||
+      isTimeElement(elA) ||
+      isNumberElement(elA) ||
+      isDateElement(elB) ||
+      isTimeElement(elB) ||
+      isNumberElement(elB)
+    ) {
+      if (elA.value !== elB.value) {
+        return false
+      }
+    }
+
+    if (
+      isPluralElement(elA) &&
+      isPluralElement(elB) &&
+      !isStructurallySamePluralOrSelect(elA, elB)
+    ) {
+      return false
+    }
+
+    if (
+      isSelectElement(elA) &&
+      isSelectElement(elB) &&
+      isStructurallySamePluralOrSelect(elA, elB)
+    ) {
+      return false
+    }
+
+    if (isTagElement(elA) && isTagElement(elB)) {
+      if (elA.value !== elB.value) {
+        return false
+      }
+      if (!isStructurallySame(elA.children, elB.children)) {
+        return false
+      }
+    }
+  }
+  return true
 }

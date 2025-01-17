@@ -61,3 +61,4 @@ export * from './types'
 export type {ParserOptions}
 // only for testing
 export const _Parser: typeof Parser = Parser
+export {isStructurallySame} from './manipulator'
