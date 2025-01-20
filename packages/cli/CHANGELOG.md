@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.4.2...@formatjs/cli@6.4.3) (2025-01-20)
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** make plural check more lenient ([e0194bf](https://github.com/formatjs/formatjs/commit/e0194bf15632f4aa529ca075a5c958f2ffb254c8)) - by @longlho
+
 ## [6.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.4.1...@formatjs/cli@6.4.2) (2025-01-17)
 
 ### Bug Fixes

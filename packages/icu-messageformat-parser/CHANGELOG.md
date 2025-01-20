@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.10.0...@formatjs/icu-messageformat-parser@2.10.1) (2025-01-20)
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** make plural check more lenient ([e0194bf](https://github.com/formatjs/formatjs/commit/e0194bf15632f4aa529ca075a5c958f2ffb254c8)) - by @longlho
+
 # [2.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.9.8...@formatjs/icu-messageformat-parser@2.10.0) (2025-01-17)
 
 ### Bug Fixes
