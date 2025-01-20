@@ -1,4 +1,8 @@
 {
   "foo": "baz {var}",
-  "2": "{c, plural, one {#} other {#}}"
+  "2": "{c, plural, one {#} other {#}}",
+  "3": "only string",
+  "4": {
+    "5": "nested"
+  }
 }

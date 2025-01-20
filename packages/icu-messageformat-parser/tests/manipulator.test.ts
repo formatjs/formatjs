@@ -76,10 +76,12 @@ test('structurally same plural', function () {
         '{count, plural, one {{count, number} cat} other {{count, number} cats}}'
       ),
       parse(
-        '{count, plural, one {{count, number} foo} other {{count, number} bax}}'
+        '{count, plural, one {{count, number} foo} few{# cats} other {{count, number} bax}}'
       )
     )
-  ).toBe(true)
+  ).toEqual({
+    success: true,
+  })
 })
 
 test('structurally same plural mismatch element', function () {
@@ -92,5 +94,18 @@ test('structurally same plural mismatch element', function () {
         '{count2, plural, one {{count, number} foo} other {{count, number} bax}}'
       )
     )
-  ).toBe(false)
+  ).toEqual({
+    success: false,
+    error: new Error(
+      `Different number of variables: [count] vs [count2, count]`
+    ),
+  })
+})
+
+test('structurally same literal', function () {
+  expect(isStructurallySame(parse('some static string'), parse('asd'))).toEqual(
+    {
+      success: true,
+    }
+  )
 })

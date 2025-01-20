@@ -136,6 +136,11 @@ function collectVariables(
   })
 }
 
+interface IsStructurallySameResult {
+  error?: Error
+  success: boolean
+}
+
 /**
  * Check if 2 ASTs are structurally the same. This primarily means that
  * they have the same variables with the same type
@@ -146,17 +151,43 @@ function collectVariables(
 export function isStructurallySame(
   a: MessageFormatElement[],
   b: MessageFormatElement[]
-): boolean {
+): IsStructurallySameResult {
   const aVars = new Map<string, TYPE>()
   const bVars = new Map<string, TYPE>()
   collectVariables(a, aVars)
   collectVariables(b, bVars)
 
   if (aVars.size !== bVars.size) {
-    return false
+    return {
+      success: false,
+      error: new Error(
+        `Different number of variables: [${Array.from(aVars.keys()).join(', ')}] vs [${Array.from(bVars.keys()).join(', ')}]`
+      ),
+    }
   }
 
-  return Array.from(aVars.entries()).every(([key, type]) => {
-    return bVars.has(key) && bVars.get(key) === type
-  })
+  return Array.from(aVars.entries()).reduce<IsStructurallySameResult>(
+    (result, [key, type]) => {
+      if (!result.success) {
+        return result
+      }
+      const bType = bVars.get(key)
+      if (bType == null) {
+        return {
+          success: false,
+          error: new Error(`Missing variable ${key} in message`),
+        }
+      }
+      if (bType !== type) {
+        return {
+          success: false,
+          error: new Error(
+            `Variable ${key} has conflicting types: ${TYPE[type]} vs ${TYPE[bType]}`
+          ),
+        }
+      }
+      return result
+    },
+    {success: true}
+  )
 }

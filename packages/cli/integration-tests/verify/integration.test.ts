@@ -51,6 +51,10 @@ test('structural equality fail', async () => {
       `${BIN_PATH} verify --source-locale en-US --structural-equality '${join(__dirname, 'structural-equality', 'fixtures2', '*.json')}'`
     )
   ).rejects.toThrow(
-    /These translation keys for locale fr-FR are structurally different from en-US:\n3\n4\n6/
+    `These translation keys for locale fr-FR are structurally different from en-US:
+3: Variable var has conflicting types: number vs date
+4: Missing variable var4 in message
+6: Different number of variables: [var, var2, var3, var4, var5, b] vs [var, var2, var3, var4, var5]
+7: EXPECT_ARGUMENT_CLOSING_BRACE`
   )
 }, 20000)

@@ -1,16 +1,16 @@
 {
   "1": "bar",
   "2": "bar {var}",
-  "3": "bar {var, number}",
-  "4": "bar {var} {var2, number} {var3, date} {var4, time}",
-  "5": "bar {var} {var2, number} {var3, date} {var4, time} {var5, plural, one {# foo} other {# foos}}",
-  "6": "bar {var} {var2, number} {var3, date} {var4, time} {var5, plural, one {# foo} other {# foos}} <b>foo</b>",
-  "7": "bb",
   "8": {
     "9": "bar",
     "nested": {
       "10": "bar"
     }
   },
+  "3": "bar {var, number}",
+  "4": "bar {var} {var2, number} {var3, date} {var4, time}",
+  "5": "bar {var} {var2, number} {var3, date} {var4, time} {var5, plural, one {# foo} other {# foos}}",
+  "6": "bar {var} {var2, number} {var3, date} {var4, time} {var5, plural, one {# foo} other {# foos}} <b>foo</b>",
+  "7": "bb",
   "11": "nah"
 }

@@ -52,19 +52,27 @@ export async function checkStructuralEquality(
     .reduce<boolean>((result, [locale, content]) => {
       const localeMessages = flatten(content)
 
-      const problematicKeys = Object.keys(enUSMessages).filter(k => {
-        if (!localeMessages[k]) {
-          return false
-        }
-        const enUSMessage = enUSMessages[k]
-        try {
-          const localeMessage = parse(localeMessages[k])
-          return !isStructurallySame(enUSMessage, localeMessage)
-        } catch (e) {
-          error('Error comparing message', k, enUSMessage, localeMessages[k], e)
-          return true
-        }
-      })
+      const problematicKeys = Object.keys(enUSMessages)
+        .map(k => {
+          if (!localeMessages[k]) {
+            return {key: k, success: true}
+          }
+          const enUSMessage = enUSMessages[k]
+          try {
+            const localeMessage = parse(localeMessages[k])
+            return {
+              key: k,
+              ...isStructurallySame(enUSMessage, localeMessage),
+            }
+          } catch (e) {
+            return {
+              key: k,
+              success: false,
+              error: e instanceof Error ? e : new Error(String(e)),
+            }
+          }
+        })
+        .filter(s => !s.success)
 
       if (!problematicKeys.length) {
         return result
@@ -74,7 +82,9 @@ export async function checkStructuralEquality(
       writeStderr(
         `These translation keys for locale ${locale} are structurally different from ${sourceLocale}:\n`
       )
-      problematicKeys.forEach(r => writeStderr(`${r}\n`))
+      problematicKeys.forEach(({key, error}) =>
+        writeStderr(`${key}: ${error?.message}\n`)
+      )
 
       return false
     }, true)
