@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.4](https://github.com/formatjs/formatjs/compare/react-intl@7.1.3...react-intl@7.1.4) (2025-01-20)
+
+### Bug Fixes
+
+* relax React deps to include 19 ([3eeb159](https://github.com/formatjs/formatjs/commit/3eeb1598732f508fae6343860d34f80824a82fa3)), closes [#4796](https://github.com/formatjs/formatjs/issues/4796) [#4797](https://github.com/formatjs/formatjs/issues/4797) - by @longlho
+
 ## [7.1.3](https://github.com/formatjs/formatjs/compare/react-intl@7.1.2...react-intl@7.1.3) (2025-01-20)
 
 **Note:** Version bump only for package react-intl

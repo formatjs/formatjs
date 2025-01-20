@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.31](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.13.30...@formatjs/ts-transformer@3.13.31) (2025-01-20)
+
+### Bug Fixes
+
+* relax React deps to include 19 ([3eeb159](https://github.com/formatjs/formatjs/commit/3eeb1598732f508fae6343860d34f80824a82fa3)), closes [#4796](https://github.com/formatjs/formatjs/issues/4796) [#4797](https://github.com/formatjs/formatjs/issues/4797) - by @longlho
+
 ## [3.13.30](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.13.29...@formatjs/ts-transformer@3.13.30) (2025-01-20)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
