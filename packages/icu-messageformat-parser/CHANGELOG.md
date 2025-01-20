@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.10.1...@formatjs/icu-messageformat-parser@2.11.0) (2025-01-20)
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** return error containing structural differences ([24a6145](https://github.com/formatjs/formatjs/commit/24a61456bb4adc0afbbc0b932de5b7826301e892)) - by @longlho
+
 ## [2.10.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.10.0...@formatjs/icu-messageformat-parser@2.10.1) (2025-01-20)
 
 ### Bug Fixes
