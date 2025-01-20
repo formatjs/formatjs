@@ -11,8 +11,8 @@
     "parcel": "^2.0.0"
   },
   "devDependencies": {
-    "@types/react": "16 || 17 || 18",
-    "@types/react-dom": "16 || 17 || 18",
+    "@types/react": "16 || 17 || 18 || 19",
+    "@types/react-dom": "16 || 17 || 18 || 19",
     "typescript": "5"
   },
   "scripts": {

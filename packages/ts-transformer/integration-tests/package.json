@@ -2,6 +2,7 @@
   "name": "integration-tests",
   "private": true,
   "devDependencies": {
-    "@formatjs/ts-transformer": "workspace:*"
+    "@formatjs/ts-transformer": "workspace:*",
+    "ts-jest": "27 || 28 || 29"
   }
 }

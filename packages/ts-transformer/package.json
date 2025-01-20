@@ -25,8 +25,11 @@
     "tslib": "2",
     "typescript": "5"
   },
+  "devDependencies": {
+    "ts-jest": "29"
+  },
   "peerDependencies": {
-    "ts-jest": ">=27"
+    "ts-jest": "27 || 28 || 29"
   },
   "peerDependenciesMeta": {
     "ts-jest": {

@@ -14,7 +14,7 @@ jest_test(
         "//:node_modules/react",
         "//:node_modules/react-dom",
         # ts-jest deps
-        "//:node_modules/ts-jest",
+        ":node_modules/ts-jest",
         "//:tsconfig",
         "//:node_modules/tslib",
     ],

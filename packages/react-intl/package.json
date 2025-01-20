@@ -132,13 +132,13 @@
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/intl": "workspace:*",
     "@types/hoist-non-react-statics": "3",
-    "@types/react": "16 || 17 || 18",
+    "@types/react": "16 || 17 || 18 || 19",
     "hoist-non-react-statics": "3",
     "intl-messageformat": "workspace:*",
+    "react": "^16.6.0 || 17 || 18 || 19",
     "tslib": "2"
   },
   "peerDependencies": {
-    "react": "^16.6.0 || 17 || 18",
     "typescript": "5"
   },
   "peerDependenciesMeta": {

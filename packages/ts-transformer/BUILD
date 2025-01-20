@@ -31,12 +31,15 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/ts-jest",
+    "//:node_modules/@babel/core",
+    "//:node_modules/@types/babel__core",
+    "//:node_modules/@types/json-stable-stringify",
     "//:node_modules/@types/node",
-    "//:node_modules/typescript",
     "//:node_modules/chalk",
     "//:node_modules/json-stable-stringify",
-    "//:node_modules/@types/json-stable-stringify",
-    ":node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/typescript",
 ]
 
 ts_compile_node(
@@ -45,8 +48,6 @@ ts_compile_node(
     deps = SRC_DEPS + [
         "//:node_modules/@jest/types",
         "//:node_modules/@types/jest",
-        # TODO: move this into integration_tests target.
-        "//:node_modules/ts-jest",
     ],
 )
 
