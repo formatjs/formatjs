@@ -185,12 +185,17 @@ The `{key, plural, matches}` is used to choose output based on the pluralization
 The match is a literal value and is matched to one of these plural categories. Not all languages use all plural categories.
 
 - `zero`: This category is used for languages that have grammar specialized specifically for zero number of items. (Examples are Arabic and Latvian.)
-- `one`: This category is used for languages that have grammar specialized specifically for one item. Many languages, but not all, use this plural category. (Many popular Asian languages, such as Chinese and Japanese, do not use this category.)
-- `two`: This category is used for languages that have grammar specialized specifically for two items. (Examples are Arabic and Welsh.)
-- `few`: This category is used for languages that have grammar specialized specifically for a small number of items. For some languages this is used for 2-4 items, for some 3-10 items, and other languages have even more complex rules.
+- `one`: This category is used for languages that have grammar specialized specifically for one (singular) item. Many languages, but not all, use this plural category. (Many popular Asian languages, such as Chinese and Japanese, do not use this category.)
+- `two`: This category is used for languages that have grammar specialized specifically for two (dual) items. (Examples are Arabic and Welsh.)
+- `few`: This category is used for languages that have grammar specialized specifically for a small number (paucal) of items. For some languages this is used for 2-4 items, for some 3-10 items, and other languages have even more complex rules.
 - `many`: This category is used for languages that have grammar specialized specifically for a larger number of items. (Examples are Arabic, Polish, and Russian.)
 - `other`: This category is used if the value doesn't match one of the other plural categories. Note that this is used for "plural" for languages (such as English) that have a simple "singular" versus "plural" dichotomy.
 - `=value`: This is used to match a specific value regardless of the plural categories of the current locale.
+
+:::info
+Don't use `=1` in place of `one`. `one` doesn't always mean `1` but rather means `singular`, which can match to more than number `1` in certain locales.
+Some locales considered all numbers ends with `1` (like 1, 11, 111) to be `singular`.
+:::
 
 :::danger
 `other` is required as per `icu4j` implementation. We will throw an error if `plural` is used without `other`.
