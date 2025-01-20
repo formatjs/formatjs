@@ -1,10 +1,8 @@
 import {
   isArgumentElement,
   isDateElement,
-  isLiteralElement,
   isNumberElement,
   isPluralElement,
-  isPoundElement,
   isSelectElement,
   isTagElement,
   isTimeElement,
@@ -12,6 +10,7 @@ import {
   PluralElement,
   PluralOrSelectOption,
   SelectElement,
+  TYPE,
 } from './types'
 
 function cloneDeep<T>(obj: T): T {
@@ -101,122 +100,63 @@ export function hoistSelectors(
   return ast
 }
 
-function isStructurallySamePluralOrSelect(
-  el1: PluralElement | SelectElement,
-  el2: PluralElement | SelectElement
-): boolean {
-  const options1 = el1.options
-  const options2 = el2.options
-  if (Object.keys(options1).length !== Object.keys(options2).length) {
-    return false
-  }
-  for (const key in options1) {
-    if (!options2[key]) {
-      return false
+/**
+ * Collect all variables in an AST to Record<string, TYPE>
+ * @param ast AST to collect variables from
+ * @param vars Record of variable name to variable type
+ */
+function collectVariables(
+  ast: MessageFormatElement[],
+  vars: Map<string, TYPE> = new Map<string, TYPE>()
+): void {
+  ast.forEach(el => {
+    if (
+      isArgumentElement(el) ||
+      isDateElement(el) ||
+      isTimeElement(el) ||
+      isNumberElement(el)
+    ) {
+      if (el.value in vars && vars.get(el.value) !== el.type) {
+        throw new Error(`Variable ${el.value} has conflicting types`)
+      }
+      vars.set(el.value, el.type)
     }
-    if (!isStructurallySame(options1[key].value, options2[key].value)) {
-      return false
+
+    if (isPluralElement(el) || isSelectElement(el)) {
+      vars.set(el.value, el.type)
+      Object.keys(el.options).forEach(k => {
+        collectVariables(el.options[k].value, vars)
+      })
     }
-  }
-  return true
+
+    if (isTagElement(el)) {
+      vars.set(el.value, el.type)
+      collectVariables(el.children, vars)
+    }
+  })
 }
 
+/**
+ * Check if 2 ASTs are structurally the same. This primarily means that
+ * they have the same variables with the same type
+ * @param a
+ * @param b
+ * @returns
+ */
 export function isStructurallySame(
   a: MessageFormatElement[],
   b: MessageFormatElement[]
 ): boolean {
-  const aWithoutLiteral = a.filter(el => !isLiteralElement(el))
-  const bWithoutLiteral = b.filter(el => !isLiteralElement(el))
-  if (aWithoutLiteral.length !== bWithoutLiteral.length) {
+  const aVars = new Map<string, TYPE>()
+  const bVars = new Map<string, TYPE>()
+  collectVariables(a, aVars)
+  collectVariables(b, bVars)
+
+  if (aVars.size !== bVars.size) {
     return false
   }
 
-  const elementsMapInA = aWithoutLiteral.reduce<
-    Record<string, MessageFormatElement>
-  >((all, el) => {
-    if (isPoundElement(el)) {
-      all['#'] = el
-      return all
-    }
-    all[el.value] = el
-    return all
-  }, {})
-
-  const elementsMapInB = bWithoutLiteral.reduce<
-    Record<string, MessageFormatElement>
-  >((all, el) => {
-    if (isPoundElement(el)) {
-      all['#'] = el
-      return all
-    }
-    all[el.value] = el
-    return all
-  }, {})
-
-  for (const varName of Object.keys(elementsMapInA)) {
-    const elA = elementsMapInA[varName]
-    const elB = elementsMapInB[varName]
-    if (!elB) {
-      return false
-    }
-
-    if (elA.type !== elB.type) {
-      return false
-    }
-
-    if (isLiteralElement(elA) || isLiteralElement(elB)) {
-      continue
-    }
-
-    if (
-      isArgumentElement(elA) &&
-      isArgumentElement(elB) &&
-      elA.value !== elB.value
-    ) {
-      return false
-    }
-
-    if (isPoundElement(elA) || isPoundElement(elB)) {
-      continue
-    }
-
-    if (
-      isDateElement(elA) ||
-      isTimeElement(elA) ||
-      isNumberElement(elA) ||
-      isDateElement(elB) ||
-      isTimeElement(elB) ||
-      isNumberElement(elB)
-    ) {
-      if (elA.value !== elB.value) {
-        return false
-      }
-    }
-
-    if (
-      isPluralElement(elA) &&
-      isPluralElement(elB) &&
-      !isStructurallySamePluralOrSelect(elA, elB)
-    ) {
-      return false
-    }
-
-    if (
-      isSelectElement(elA) &&
-      isSelectElement(elB) &&
-      isStructurallySamePluralOrSelect(elA, elB)
-    ) {
-      return false
-    }
-
-    if (isTagElement(elA) && isTagElement(elB)) {
-      if (elA.value !== elB.value) {
-        return false
-      }
-      if (!isStructurallySame(elA.children, elB.children)) {
-        return false
-      }
-    }
-  }
-  return true
+  return Array.from(aVars.entries()).every(([key, type]) => {
+    return bVars.has(key) && bVars.get(key) === type
+  })
 }

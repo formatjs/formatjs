@@ -1,3 +1,4 @@
 {
-  "foo": "baz {var}"
+  "foo": "baz {var}",
+  "2": "{c, plural, one {#} other {#}}"
 }
