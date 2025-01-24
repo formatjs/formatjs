@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.5](https://github.com/formatjs/formatjs/compare/react-intl@7.1.4...react-intl@7.1.5) (2025-01-24)
+
+### Bug Fixes
+
+* **react-intl:** move react to peerDep ([bcf6d7a](https://github.com/formatjs/formatjs/commit/bcf6d7a0767f2292762b97017e113d5ae63124e1)) - by @longlho
+
 ## [7.1.4](https://github.com/formatjs/formatjs/compare/react-intl@7.1.3...react-intl@7.1.4) (2025-01-20)
 
 ### Bug Fixes
