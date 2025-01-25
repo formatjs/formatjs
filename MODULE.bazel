@@ -23,6 +23,7 @@ npm.npm_translate_lock(
         "//:patches/@commitlint__rules.patch",
         "//:patches/make-plural-compiler@5.1.0.patch",
     ],
+    npmrc = "//:.npmrc",
     patch_args = {"*": ["-p1"]},
     pnpm_lock = "//:pnpm-lock.yaml",
     verify_node_modules_ignored = "//:.bazelignore",
