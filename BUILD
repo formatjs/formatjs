@@ -82,6 +82,7 @@ copy_to_directory(
         # to verify, run verdaccio at port 4000 and enable this
         # ":dev_npmrc",
         ":pnpm_workspace_config",
+        ".npmrc",
         "package.json",
         "pnpm-lock.yaml",
     ] + ["%s:pkg" % pkg for pkg in PACKAGES_TO_DIST] + glob(["patches/*"]),
