@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   docs: {
     'Getting Started': [
       'getting-started/installation',

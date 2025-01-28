@@ -9,7 +9,7 @@ export default {
   organizationName: 'formatjs', // Usually your GitHub org/user name.
   projectName: 'formatjs.github.io', // Usually your repo name.
   themes: ['@docusaurus/theme-live-codeblock'],
-  plugins: ['@orama/plugin-docusaurus-v3'],
+  plugins: ['docusaurus-lunr-search'],
   themeConfig: {
     prism: {
       additionalLanguages: ['markup'],
@@ -103,19 +103,26 @@ export default {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} FormatJS. Built with Docusaurus.`,
     },
+    liveCodeBlock: {
+      /**
+       * The position of the live playground, above or under the editor
+       * Possible values: "top" | "bottom"
+       */
+      playgroundPosition: 'bottom',
+    },
   } satisfies Preset.ThemeConfig,
   presets: [
     [
-      '@docusaurus/preset-classic',
+      'classic',
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: './sidebars.ts',
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
           editUrl: 'https://github.com/formatjs/formatjs/edit/main/website/',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: './src/css/custom.css',
         },
       } satisfies Preset.Options,
     ],
