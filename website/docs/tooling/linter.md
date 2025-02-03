@@ -767,14 +767,6 @@ export default [
 ]
 ```
 
-### `no-invalid-icu`
-
-This validates the ICU syntax.
-
-#### Why
-
-This will make sure that the ICU message are valid and ready for translation.
-
 ### `no-useless-message`
 
 This bans messages that do not require translation.
