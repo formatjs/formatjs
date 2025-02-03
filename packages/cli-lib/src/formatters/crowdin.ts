@@ -1,6 +1,6 @@
 import {CompileFn, FormatFn} from './default'
 
-export type SmartlingJson = Record<
+export type CrowdinJson = Record<
   string,
   {
     message: string
@@ -8,8 +8,8 @@ export type SmartlingJson = Record<
   }
 >
 
-export const format: FormatFn<SmartlingJson> = msgs => {
-  const results: SmartlingJson = {}
+export const format: FormatFn<CrowdinJson> = msgs => {
+  const results: CrowdinJson = {}
   for (const [id, msg] of Object.entries(msgs)) {
     results[id] = {
       message: msg.defaultMessage!,
@@ -22,7 +22,7 @@ export const format: FormatFn<SmartlingJson> = msgs => {
   return results
 }
 
-export const compile: CompileFn<SmartlingJson> = msgs => {
+export const compile: CompileFn<CrowdinJson> = msgs => {
   const results: Record<string, string> = {}
   for (const [id, msg] of Object.entries(msgs)) {
     if (id === 'smartling') {
