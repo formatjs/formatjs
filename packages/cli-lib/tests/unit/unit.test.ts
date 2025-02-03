@@ -23,7 +23,6 @@ describe.skip('unit', function () {
       'path/to/formatjs-cli',
       'extract',
       '--extract-source-location',
-      '--remove-default-message',
       '--throws',
       '--additional-component-names',
       'Foo,Bar',

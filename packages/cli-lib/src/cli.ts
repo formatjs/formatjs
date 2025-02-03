@@ -68,11 +68,6 @@ extracted message descriptors.`,
       false
     )
     .option(
-      '--remove-default-message',
-      'Remove `defaultMessage` field in generated js after extraction',
-      false
-    )
-    .option(
       '--additional-component-names <comma-separated-names>',
       `Additional component names to extract messages from, e.g: \`'FormattedFooBarMessage'\`. 
 **NOTE**: By default we check for the fact that \`FormattedMessage\` 

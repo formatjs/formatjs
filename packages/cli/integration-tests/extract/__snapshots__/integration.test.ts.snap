@@ -292,7 +292,6 @@ Options:
   --extract-source-location                             Whether the metadata about the location of the message in the source file should be 
   extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each 
   extracted message descriptors. (default: false)
-  --remove-default-message                              Remove \`defaultMessage\` field in generated js after extraction (default: false)
   --additional-component-names <comma-separated-names>  Additional component names to extract messages from, e.g: \`'FormattedFooBarMessage'\`. 
   **NOTE**: By default we check for the fact that \`FormattedMessage\` 
   is imported from \`moduleSourceName\` to make sure variable alias 
