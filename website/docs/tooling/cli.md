@@ -285,6 +285,10 @@ See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/pack
 
 The target file that contains compiled messages.
 
+### `--preserve-whitespace`
+
+Whether to preserve whitespace and newlines in output. We typically remove consecutive whitespaces and newlines since those often gets abused for styling purposes.
+
 ### `--ast`
 
 Whether to compile message into AST instead of just string. See [Advanced Usage](../guides/advanced-usage.md)
