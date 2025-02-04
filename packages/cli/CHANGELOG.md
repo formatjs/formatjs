@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.5.1...@formatjs/cli@6.6.0) (2025-02-04)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** remove removeDefaultMessage option since it doesnt do anything, fix [#4798](https://github.com/formatjs/formatjs/issues/4798) ([3629347](https://github.com/formatjs/formatjs/commit/362934726433bd20c828bbf98789eb6ad91cf0b5)) - by @longlho
+
+### Features
+
+* **@formatjs/cli:** add option to ignore file during verification ([676c34a](https://github.com/formatjs/formatjs/commit/676c34aaa642e18e4a832cd7d928d681ada196f2)) - by @longlho
+
 ## [6.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.5.0...@formatjs/cli@6.5.1) (2025-01-20)
 
 **Note:** Version bump only for package @formatjs/cli

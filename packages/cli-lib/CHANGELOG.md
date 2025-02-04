@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.2.1...@formatjs/cli-lib@7.3.0) (2025-02-04)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** fix [#4800](https://github.com/formatjs/formatjs/issues/4800), rename crowdin json type ([e94c5a6](https://github.com/formatjs/formatjs/commit/e94c5a6cf857c79513cf2ee45bb016e3e1a4d499)) - by @longlho
+* **@formatjs/cli-lib:** remove removeDefaultMessage option since it doesnt do anything, fix [#4798](https://github.com/formatjs/formatjs/issues/4798) ([3629347](https://github.com/formatjs/formatjs/commit/362934726433bd20c828bbf98789eb6ad91cf0b5)) - by @longlho
+
+### Features
+
+* **@formatjs/cli:** add option to ignore file during verification ([676c34a](https://github.com/formatjs/formatjs/commit/676c34aaa642e18e4a832cd7d928d681ada196f2)) - by @longlho
+
 ## [7.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.2.0...@formatjs/cli-lib@7.2.1) (2025-01-20)
 
 **Note:** Version bump only for package @formatjs/cli-lib
