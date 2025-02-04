@@ -7,6 +7,7 @@ export interface VerifyOpts {
   sourceLocale: string
   missingKeys: boolean
   structuralEquality: boolean
+  ignore?: string[]
 }
 
 export async function verify(

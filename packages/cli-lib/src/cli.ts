@@ -232,6 +232,7 @@ This is especially useful to convert from a TMS-specific format back to react-in
       There must be a file named <sourceLocale>.json in the list of translation files.
       This is used as source to verify other translations against.`
     )
+    .option('--ignore <files...>', 'List of glob paths to ignore')
     .option(
       '--missing-keys',
       `Whether to check for missing keys in target locale compared to source locale. 
@@ -245,7 +246,9 @@ This is especially useful to convert from a TMS-specific format back to react-in
     .action(async (filePatterns: string[], opts: VerifyOpts) => {
       debug('File pattern:', filePatterns)
       debug('Options:', opts)
-      const files = globSync(filePatterns)
+      const files = globSync(filePatterns, {
+        ignore: opts.ignore,
+      })
       if (!files.length) {
         throw new Error(`No input file found with pattern ${filePatterns}`)
       }

@@ -8,7 +8,7 @@ const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
 test('misssing keys pass', async () => {
   await expect(
     exec(
-      `${BIN_PATH} verify --source-locale en-US --missing-keys '${join(__dirname, 'missing-keys', 'fixtures1', '*.json')}'`
+      `${BIN_PATH} verify --source-locale en-US --ignore '${join(__dirname, 'missing-keys', 'fixtures1', 'es.json')}' --missing-keys '${join(__dirname, 'missing-keys', 'fixtures1', '*.json')}'`
     )
   ).resolves.toBeTruthy()
 }, 20000)
