@@ -27,15 +27,6 @@ genrule(
 ' > $@",
 )
 
-genrule(
-    name = "dev_npmrc",
-    srcs = [],
-    outs = [".npmrc"],
-    cmd = "echo 'registry=http://localhost:4000/\n\
-//localhost:4000/:_authToken=\"PCQTYjgHpY1Wz8UNyiaQ4w==\"\n\
-' > $@",
-)
-
 PACKAGES_TO_DIST = [
     "//packages/babel-plugin-formatjs",
     "//packages/cli-lib",
@@ -80,9 +71,7 @@ copy_to_directory(
     name = "dist",
     srcs = [
         # to verify, run verdaccio at port 4000 and enable this
-        # ":dev_npmrc",
         ":pnpm_workspace_config",
-        ".npmrc",
         "package.json",
         "pnpm-lock.yaml",
     ] + ["%s:pkg" % pkg for pkg in PACKAGES_TO_DIST] + glob(["patches/*"]),
