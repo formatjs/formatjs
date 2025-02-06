@@ -23,5 +23,8 @@
   "dependencies": {
     "@formatjs/fast-memoize": "workspace:*",
     "tslib": "2"
+  },
+  "devDependencies": {
+    "fast-xml-parser": "^4.5.1"
   }
 }

@@ -151,3 +151,9 @@ http_file(
     sha256 = "ad985d5721f3fa6b45495663dfe44180f2f68976100dee0ea7451ef1a8f838e8",
     url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/WordBreakTest.txt",
 )
+
+http_file(
+    name = "ISO4217",
+    sha256 = "4f02972a22fd66141956877eae1e4741a3bbb7ab2f98900ad8a0f3ed3cb0ea68",
+    url = "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml",
+)

@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
@@ -77,6 +78,26 @@ generate_src_file(
         "//:node_modules/cldr-core",
     ],
     entry_point = "tools/extract-default-locale.ts",
+)
+
+copy_file(
+    name = "iso-4217",
+    src = "@ISO4217//file",
+    out = "iso4217.xml",
+)
+
+generate_src_file(
+    name = "currency-minor-units",
+    src = "src/currencyMinorUnits.generated.json",
+    args = [
+        "--input",
+        "$(rootpath :iso4217.xml)",
+    ],
+    data = [
+        ":iso4217.xml",
+        ":node_modules/fast-xml-parser",
+    ],
+    entry_point = "tools/extract-minor-currency-units.ts",
 )
 
 copy_to_bin(
