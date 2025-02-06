@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.8.4...@formatjs/utils@1.9.0) (2025-02-06)
+
+### Features
+
+* **@formatjs/utils:** add currencyMinorUnits ([2dcecd3](https://github.com/formatjs/formatjs/commit/2dcecd3b1ee8c446340f04a86ad356724fa1abac)) - by @longlho
+
 ## [1.8.4](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.8.3...@formatjs/utils@1.8.4) (2025-01-02)
 
 **Note:** Version bump only for package @formatjs/utils
