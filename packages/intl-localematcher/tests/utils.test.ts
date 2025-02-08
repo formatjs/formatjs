@@ -5,7 +5,13 @@ test('findMatchingDistance', () => {
   expect(findMatchingDistance('en-US', 'en-US')).toBe(0)
   expect(findMatchingDistance('zh-TW', 'zh-Hant')).toBe(0)
   expect(findMatchingDistance('zh-HK', 'zh-NO')).toBe(540)
-  expect(findMatchingDistance('zh-HK', 'zh-Hant')).toBe(40)
+  /**
+   * zh-Hant-HK -> zh-Hant-TW, the value of $cnsar is 'HK+MO'
+   * HK belongs to $cnsar, TW doesn't
+   * the distance rule should be zh_Hant_* <-> zh_Hant_* (distance: 5*10)
+   * instead of zh_Hant_$!cnsar <-> zh_Hant_$!cnsar(distance 4*10)
+   */
+  expect(findMatchingDistance('zh-HK', 'zh-Hant')).toBe(50)
   expect(findMatchingDistance('vi', 'fr')).toBe(840)
   expect(findMatchingDistance('es', 'fr')).toBe(838)
   expect(findMatchingDistance('es', 'en')).toBe(840)
