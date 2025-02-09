@@ -11,7 +11,7 @@ overrides:
   react-dom: '18'
   react: '18'
   source-map-js: 1.2.1
-  terser: 5.37.0
+  terser: 5.38.1
   typescript: 5.7.3
 
 packageExtensionsChecksum: 2b2e8207de2e847c57c1501e7f83c7ce
@@ -9025,8 +9025,8 @@ packages:
       uglify-js:
         optional: true
 
-  terser@5.37.0:
-    resolution: {integrity: sha512-B8wRRkmre4ERucLM/uXx4MOV5cbnOlVAqUst+1+iLKPI0dOgFO28f84ptoQt9HEI537PMzfYa/d+GEPKTRXmYA==}
+  terser@5.38.1:
+    resolution: {integrity: sha512-GWANVlPM/ZfYzuPHjq0nxT+EbOEDDN3Jwhwdg1D8TU8oSkktp8w64Uq4auuGLxFSoNTRDncTq2hQHX1Ld9KHkA==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -11706,7 +11706,7 @@ snapshots:
 
   '@docusaurus/react-loadable@6.0.0(react@19.0.0)':
     dependencies:
-      '@types/react': 19.0.8
+      '@types/react': 18.3.18
       react: 19.0.0
 
   '@docusaurus/theme-classic@3.7.0(@swc/core@1.10.15(@swc/helpers@0.5.15))(@types/react@19.0.8)(acorn@8.14.0)(eslint@9.18.0(jiti@2.4.2))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
@@ -16203,7 +16203,7 @@ snapshots:
       he: 1.2.0
       param-case: 3.0.4
       relateurl: 0.2.7
-      terser: 5.37.0
+      terser: 5.38.1
 
   html-minifier-terser@7.2.0:
     dependencies:
@@ -16213,7 +16213,7 @@ snapshots:
       entities: 4.5.0
       param-case: 3.0.4
       relateurl: 0.2.7
-      terser: 5.37.0
+      terser: 5.38.1
 
   html-tags@3.3.1: {}
 
@@ -20227,7 +20227,7 @@ snapshots:
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
-      terser: 5.37.0
+      terser: 5.38.1
       webpack: 5.97.1(@swc/core@1.10.15(@swc/helpers@0.5.15))
     optionalDependencies:
       '@swc/core': 1.10.15(@swc/helpers@0.5.15)
@@ -20238,12 +20238,12 @@ snapshots:
       jest-worker: 27.5.1
       schema-utils: 4.3.0
       serialize-javascript: 6.0.2
-      terser: 5.37.0
+      terser: 5.38.1
       webpack: 5.97.1(@swc/core@1.10.15(@swc/helpers@0.5.15))
     optionalDependencies:
       '@swc/core': 1.10.15(@swc/helpers@0.5.15)
 
-  terser@5.37.0:
+  terser@5.38.1:
     dependencies:
       '@jridgewell/source-map': 0.3.6
       acorn: 8.14.0
