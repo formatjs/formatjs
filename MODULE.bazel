@@ -59,7 +59,7 @@ use_repo(rules_ts_ext, "npm_typescript")
 
 ######### Bazel lib rules #########
 
-bazel_dep(name = "aspect_bazel_lib", version = "2.11.0")
+bazel_dep(name = "aspect_bazel_lib", version = "2.13.0")
 
 ######### Jest rules #########
 
