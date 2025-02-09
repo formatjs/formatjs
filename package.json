@@ -36,7 +36,7 @@
     "@glimmer/env": "^0.1.7",
     "@glimmer/reference": "^0.94.0",
     "@glimmer/syntax": "0.93.1",
-    "@glimmer/validator": "^0.93.0",
+    "@glimmer/validator": "^0.94.0",
     "@jest/globals": "^29.7.0",
     "@jest/transform": "^29.7.0",
     "@jest/types": "^29.6.3",
