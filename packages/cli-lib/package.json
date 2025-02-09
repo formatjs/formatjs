@@ -50,7 +50,7 @@
   },
   "peerDependencies": {
     "@glimmer/env": "^0.1.7",
-    "@glimmer/reference": "^0.91.1 || ^0.92.0 || ^0.93.0",
+    "@glimmer/reference": "^0.91.1 || ^0.92.0 || ^0.93.0 || ^0.94.0",
     "@glimmer/syntax": "^0.92.0 || ^0.93.0",
     "@glimmer/validator": "^0.92.0 || ^0.93.0",
     "@vue/compiler-core": "^3.4.0",
