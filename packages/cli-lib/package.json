@@ -40,7 +40,7 @@
     "@types/json-stable-stringify": "1",
     "@types/node": "14 || 16 || 17 || 18 || 20 || 22",
     "chalk": "4",
-    "commander": "12",
+    "commander": "13",
     "fast-glob": "3",
     "fs-extra": "9 || 10 || 11",
     "json-stable-stringify": "1",
