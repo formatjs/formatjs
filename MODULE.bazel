@@ -49,7 +49,7 @@ bazel_dep(name = "aspect_rules_esbuild", version = "0.21.0")
 
 ######### TypeScript rules #########
 
-bazel_dep(name = "aspect_rules_ts", version = "3.4.0")
+bazel_dep(name = "aspect_rules_ts", version = "3.5.0")
 
 rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext", dev_dependency = True)
 rules_ts_ext.deps(
