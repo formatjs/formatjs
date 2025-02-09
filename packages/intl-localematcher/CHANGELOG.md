@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.5.10...@formatjs/intl-localematcher@0.6.0) (2025-02-09)
+
+### Features
+
+* **@formatjs/intl-localematcher:** fix distance calculation bugs from expanding region variables and comparing script tags ([#4855](https://github.com/formatjs/formatjs/issues/4855)) ([812cd48](https://github.com/formatjs/formatjs/commit/812cd481d551ad23ae56195426fa773919b5dd69)) - by @AlanSnow
+
 ## [0.5.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.5.9...@formatjs/intl-localematcher@0.5.10) (2025-01-02)
 
 **Note:** Version bump only for package @formatjs/intl-localematcher

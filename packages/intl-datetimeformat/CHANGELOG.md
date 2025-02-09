@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.17.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.17.2...@formatjs/intl-datetimeformat@6.17.3) (2025-02-09)
+
+**Note:** Version bump only for package @formatjs/intl-datetimeformat
+
 ## [6.17.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.17.1...@formatjs/intl-datetimeformat@6.17.2) (2025-01-02)
 
 ### Bug Fixes
