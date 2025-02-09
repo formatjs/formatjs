@@ -222,7 +222,7 @@ importers:
         version: 3.1.1
       decimal.js:
         specifier: ^10.4.3
-        version: 10.4.3
+        version: 10.5.0
       ember-template-recast:
         specifier: ^6.1.5
         version: 6.1.5
@@ -505,7 +505,7 @@ importers:
         version: link:../intl-localematcher
       decimal.js:
         specifier: '10'
-        version: 10.4.3
+        version: 10.5.0
       tslib:
         specifier: '2'
         version: 2.8.1
@@ -619,7 +619,7 @@ importers:
         version: link:../intl-localematcher
       decimal.js:
         specifier: '10'
-        version: 10.4.3
+        version: 10.5.0
       tslib:
         specifier: '2'
         version: 2.8.1
@@ -742,7 +742,7 @@ importers:
         version: link:../intl-localematcher
       decimal.js:
         specifier: '10'
-        version: 10.4.3
+        version: 10.5.0
       tslib:
         specifier: '2'
         version: 2.8.1
@@ -767,7 +767,7 @@ importers:
         version: link:../intl-localematcher
       decimal.js:
         specifier: '10'
-        version: 10.4.3
+        version: 10.5.0
       tslib:
         specifier: '2'
         version: 2.8.1
@@ -4585,8 +4585,8 @@ packages:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
     engines: {node: '>=0.10.0'}
 
-  decimal.js@10.4.3:
-    resolution: {integrity: sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==}
+  decimal.js@10.5.0:
+    resolution: {integrity: sha512-8vDa8Qxvr/+d94hSh5P3IJwI5t8/c0KsMp+g8bNw9cY2icONa5aPfvKeieW1WlG0WQYwwhJ7mjui2xtiePQSXw==}
 
   decode-named-character-reference@1.0.2:
     resolution: {integrity: sha512-O8x12RzrUF8xyVcY0KJowWsmaJxQbmy0/EtnNtHRpsOcT7dFk5W598coHqBVpmWo1oQQfsCqfCmkZN5DJrZVdg==}
@@ -11706,7 +11706,7 @@ snapshots:
 
   '@docusaurus/react-loadable@6.0.0(react@19.0.0)':
     dependencies:
-      '@types/react': 18.3.18
+      '@types/react': 19.0.8
       react: 19.0.0
 
   '@docusaurus/theme-classic@3.7.0(@swc/core@1.10.15(@swc/helpers@0.5.15))(@types/react@19.0.8)(acorn@8.14.0)(eslint@9.18.0(jiti@2.4.2))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
@@ -14690,7 +14690,7 @@ snapshots:
 
   decamelize@1.2.0: {}
 
-  decimal.js@10.4.3: {}
+  decimal.js@10.5.0: {}
 
   decode-named-character-reference@1.0.2:
     dependencies:
@@ -17027,7 +17027,7 @@ snapshots:
       cssom: 0.5.0
       cssstyle: 2.3.0
       data-urls: 3.0.2
-      decimal.js: 10.4.3
+      decimal.js: 10.5.0
       domexception: 4.0.0
       escodegen: 2.1.0
       form-data: 4.0.1
