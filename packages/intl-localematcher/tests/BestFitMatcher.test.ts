@@ -54,3 +54,23 @@ test('GH #4237', function () {
     locale: 'en-US',
   })
 })
+
+test('bestFitMatcher testing $cnsar: zh-HK', function () {
+  expect(BestFitMatcher(['zh-Hant', 'zh-MO'], ['zh-HK'], () => 'en')).toEqual({
+    locale: 'zh-MO',
+  })
+})
+
+test('bestFitMatcher testing $enUS: en-CA', function () {
+  expect(BestFitMatcher(['en-GB', 'en-US'], ['en-CA'], () => 'en-US')).toEqual({
+    locale: 'en-US',
+  })
+})
+
+test('bestFitMatcher testing $americas: es-KY', function () {
+  expect(BestFitMatcher(['es', 'en', 'es-419'], ['es-KY'], () => 'en')).toEqual(
+    {
+      locale: 'es-419',
+    }
+  )
+})

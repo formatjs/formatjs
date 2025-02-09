@@ -104,7 +104,7 @@ function isMatched(
       .map(r => regions[r] || [r])
       .reduce((all, list) => [...all, ...list], [])
     matches &&= !(
-      expandedMatchedRegions.indexOf(locale.region || '') > 1 !=
+      expandedMatchedRegions.indexOf(locale.region || '') > -1 !=
       shouldInclude
     )
   } else {
@@ -196,7 +196,7 @@ export function findMatchingDistance(
       },
       {
         language: supportedLocale.language,
-        script: desiredLSR.script,
+        script: supportedLSR.script,
         region: '',
       },
       data
