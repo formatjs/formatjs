@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@glimmer/interfaces': 0.93.0
+  '@glimmer/interfaces': 0.94.2
   '@glimmer/syntax': 0.93.1
   eslint: 9.18.0
   react-dom: '18'
@@ -2474,8 +2474,8 @@ packages:
   '@glimmer/global-context@0.92.4':
     resolution: {integrity: sha512-WCbiZXk1lSt3qLniOHpNC7d7yPTBnycgGBVTFW70niJOBmZr2A4NSUQP1kB1t0ljS2t765DHLMGSRny1zFK4Pw==}
 
-  '@glimmer/interfaces@0.93.0':
-    resolution: {integrity: sha512-k2xUOMmB5e8/tH+LqiUqYnrV3f2RFxPvo0i62xNvfFnZMayJwonUz97i7+V5E5dv82rckzVHNg0bWyNmMyCnqg==}
+  '@glimmer/interfaces@0.94.2':
+    resolution: {integrity: sha512-tDAAJpIyc1N7cYxpZWJElNHRF2+1vTG2W/HNYvvBjzTzoG2WLxtDJqOHCqGcUNqrOxq8ROiZCt/BQ/L3t5r5eg==}
 
   '@glimmer/reference@0.84.3':
     resolution: {integrity: sha512-lV+p/aWPVC8vUjmlvYVU7WQJsLh319SdXuAWoX/SE3pq340BJlAJiEcAc6q52y9JNhT57gMwtjMX96W5Xcx/qw==}
@@ -12920,7 +12920,7 @@ snapshots:
 
   '@glimmer/global-context@0.92.4': {}
 
-  '@glimmer/interfaces@0.93.0':
+  '@glimmer/interfaces@0.94.2':
     dependencies:
       '@simple-dom/interface': 1.4.0
 
@@ -12928,7 +12928,7 @@ snapshots:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.84.3
-      '@glimmer/interfaces': 0.93.0
+      '@glimmer/interfaces': 0.94.2
       '@glimmer/util': 0.84.3
       '@glimmer/validator': 0.84.3
 
@@ -12936,7 +12936,7 @@ snapshots:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.92.4
-      '@glimmer/interfaces': 0.93.0
+      '@glimmer/interfaces': 0.94.2
       '@glimmer/util': 0.93.0
       '@glimmer/validator': 0.93.0
 
@@ -12944,13 +12944,13 @@ snapshots:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.92.4
-      '@glimmer/interfaces': 0.93.0
+      '@glimmer/interfaces': 0.94.2
       '@glimmer/util': 0.93.1
       '@glimmer/validator': 0.93.1
 
   '@glimmer/syntax@0.93.1':
     dependencies:
-      '@glimmer/interfaces': 0.93.0
+      '@glimmer/interfaces': 0.94.2
       '@glimmer/util': 0.93.1
       '@glimmer/wire-format': 0.93.1
       '@handlebars/parser': 2.0.0
@@ -12959,18 +12959,18 @@ snapshots:
   '@glimmer/util@0.84.3':
     dependencies:
       '@glimmer/env': 0.1.7
-      '@glimmer/interfaces': 0.93.0
+      '@glimmer/interfaces': 0.94.2
       '@simple-dom/interface': 1.4.0
 
   '@glimmer/util@0.93.0':
     dependencies:
       '@glimmer/env': 0.1.7
-      '@glimmer/interfaces': 0.93.0
+      '@glimmer/interfaces': 0.94.2
 
   '@glimmer/util@0.93.1':
     dependencies:
       '@glimmer/env': 0.1.7
-      '@glimmer/interfaces': 0.93.0
+      '@glimmer/interfaces': 0.94.2
 
   '@glimmer/validator@0.84.3':
     dependencies:
@@ -12981,19 +12981,19 @@ snapshots:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.92.4
-      '@glimmer/interfaces': 0.93.0
+      '@glimmer/interfaces': 0.94.2
       '@glimmer/util': 0.93.0
 
   '@glimmer/validator@0.93.1':
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.92.4
-      '@glimmer/interfaces': 0.93.0
+      '@glimmer/interfaces': 0.94.2
       '@glimmer/util': 0.93.1
 
   '@glimmer/wire-format@0.93.1':
     dependencies:
-      '@glimmer/interfaces': 0.93.0
+      '@glimmer/interfaces': 0.94.2
       '@glimmer/util': 0.93.1
 
   '@handlebars/parser@2.0.0': {}
