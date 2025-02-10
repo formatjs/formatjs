@@ -24,7 +24,7 @@
     "@formatjs/ts-transformer": "workspace:*",
     "@types/eslint": "9",
     "@types/picomatch": "3",
-    "@typescript-eslint/utils": "8.23.0",
+    "@typescript-eslint/utils": "8.24.0",
     "magic-string": "^0.30.0",
     "picomatch": "2 || 3 || 4",
     "tslib": "2",
