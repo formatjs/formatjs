@@ -35,7 +35,7 @@
     "@commitlint/config-angular-type-enum": "^19.5.0",
     "@glimmer/env": "^0.1.7",
     "@glimmer/reference": "^0.94.0",
-    "@glimmer/syntax": "0.93.1",
+    "@glimmer/syntax": "0.94.7",
     "@glimmer/validator": "^0.94.0",
     "@jest/globals": "^29.7.0",
     "@jest/transform": "^29.7.0",
@@ -130,7 +130,7 @@
   },
   "resolutions": {
     "@glimmer/interfaces": "0.94.5",
-    "@glimmer/syntax": "0.93.1",
+    "@glimmer/syntax": "0.94.7",
     "eslint": "9.20.0",
     "react-dom": "18",
     "react": "18",
