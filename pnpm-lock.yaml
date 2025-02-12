@@ -72,7 +72,7 @@ importers:
         version: 0.1.7
       '@glimmer/reference':
         specifier: ^0.94.0
-        version: 0.94.3
+        version: 0.94.6
       '@glimmer/syntax':
         specifier: 0.93.1
         version: 0.93.1
@@ -2368,6 +2368,9 @@ packages:
   '@glimmer/reference@0.94.3':
     resolution: {integrity: sha512-ZjXG1ife499P/QZEwTAIyQIM51uAnKX5ZxSxyTLj+fQZNyffiK3udjYw7g1A0yN0WXGnXan6KF29GkNgLK+Zgg==}
 
+  '@glimmer/reference@0.94.6':
+    resolution: {integrity: sha512-iNGbiIgVdTyeaUzRiDbCfBDjmq9TMWbZPNmdujKVOC4Zy9dB57OUQYc21mYXxU3SNb8sT8C9oM5lFDy8h5zImQ==}
+
   '@glimmer/syntax@0.93.1':
     resolution: {integrity: sha512-Dvq+Ni4Dcpn8kEiYN4ziTQxHrmPSchJCQJppXmFzdz77SFnhl0nWf7W8nnj88DNFEyBzKiTQCyCSuew4jrbgjA==}
 
@@ -2380,11 +2383,17 @@ packages:
   '@glimmer/util@0.94.3':
     resolution: {integrity: sha512-TuRWXieDZOFt+mgE+lwqfh/GIKLH1WwAhDV1SqrixQEflQLNqGBMw4Cc5qux9A67hr1oIS+64rHpJLmBHG90dQ==}
 
+  '@glimmer/util@0.94.6':
+    resolution: {integrity: sha512-UDUP4/nHz4/qORWxl9ebc5ZhysKJFhJrY14GAMLBxbXomYtj7liMiht4v5TVW4Law5ziPmpTFQ70RJOOG7ksBg==}
+
   '@glimmer/validator@0.84.3':
     resolution: {integrity: sha512-RTBV4TokUB0vI31UC7ikpV7lOYpWUlyqaKV//pRC4pexYMlmqnVhkFrdiimB/R1XyNdUOQUmnIAcdic39NkbhQ==}
 
   '@glimmer/validator@0.94.3':
     resolution: {integrity: sha512-aI5+caBjBV61UygNBnjnPAq5EPItTW0KIssQ58dxZEOq4yxhKmNrFuhARSI9asVBbJNvPC5EBo7jUVvqyqcRtg==}
+
+  '@glimmer/validator@0.94.6':
+    resolution: {integrity: sha512-s0pzTB+lHXa6eQCSJe57YNNgPsjaY+EmOLH6OsJrWetszltV5fSy2PVjk+2NavsZ6wjaxLKwTd0q3PGPXz/rlQ==}
 
   '@glimmer/wire-format@0.93.1':
     resolution: {integrity: sha512-EHtdlZAZsOMBP6b9YC03OyduswqiT6Ei/mR/N1oR/4LZZ8lOyVgp6Q4H0TQW6jprWEiTMdHaO8/SEGTCrrhtUw==}
@@ -11706,7 +11715,7 @@ snapshots:
 
   '@docusaurus/react-loadable@6.0.0(react@19.0.0)':
     dependencies:
-      '@types/react': 18.3.18
+      '@types/react': 19.0.8
       react: 19.0.0
 
   '@docusaurus/theme-classic@3.7.0(@swc/core@1.10.15(@swc/helpers@0.5.15))(@types/react@19.0.8)(acorn@8.14.0)(eslint@9.20.0(jiti@2.4.2))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
@@ -12045,6 +12054,13 @@ snapshots:
       '@glimmer/util': 0.94.3
       '@glimmer/validator': 0.94.3
 
+  '@glimmer/reference@0.94.6':
+    dependencies:
+      '@glimmer/global-context': 0.93.2
+      '@glimmer/interfaces': 0.94.2
+      '@glimmer/util': 0.94.6
+      '@glimmer/validator': 0.94.6
+
   '@glimmer/syntax@0.93.1':
     dependencies:
       '@glimmer/interfaces': 0.94.2
@@ -12068,12 +12084,21 @@ snapshots:
     dependencies:
       '@glimmer/interfaces': 0.94.2
 
+  '@glimmer/util@0.94.6':
+    dependencies:
+      '@glimmer/interfaces': 0.94.2
+
   '@glimmer/validator@0.84.3':
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/global-context': 0.84.3
 
   '@glimmer/validator@0.94.3':
+    dependencies:
+      '@glimmer/global-context': 0.93.2
+      '@glimmer/interfaces': 0.94.2
+
+  '@glimmer/validator@0.94.6':
     dependencies:
       '@glimmer/global-context': 0.93.2
       '@glimmer/interfaces': 0.94.2
