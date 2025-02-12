@@ -6,7 +6,7 @@ settings:
 
 overrides:
   '@glimmer/interfaces': 0.94.5
-  '@glimmer/syntax': 0.93.1
+  '@glimmer/syntax': 0.94.7
   eslint: 9.20.0
   react-dom: '18'
   react: '18'
@@ -74,8 +74,8 @@ importers:
         specifier: ^0.94.0
         version: 0.94.6
       '@glimmer/syntax':
-        specifier: 0.93.1
-        version: 0.93.1
+        specifier: 0.94.7
+        version: 0.94.7
       '@glimmer/validator':
         specifier: ^0.94.0
         version: 0.94.3
@@ -389,8 +389,8 @@ importers:
         specifier: ^0.91.1 || ^0.92.0 || ^0.93.0 || ^0.94.0
         version: 0.94.3
       '@glimmer/syntax':
-        specifier: 0.93.1
-        version: 0.93.1
+        specifier: 0.94.7
+        version: 0.94.7
       '@glimmer/validator':
         specifier: ^0.92.0 || ^0.93.0 || ^0.94.0
         version: 0.94.3
@@ -429,8 +429,8 @@ importers:
         specifier: ^0.91.1 || ^0.92.0 || ^0.93.0 || ^0.94.0
         version: 0.94.3
       '@glimmer/syntax':
-        specifier: 0.93.1
-        version: 0.93.1
+        specifier: 0.94.7
+        version: 0.94.7
       '@glimmer/validator':
         specifier: ^0.92.0 || ^0.93.0 || ^0.94.0
         version: 0.94.3
@@ -2371,14 +2371,11 @@ packages:
   '@glimmer/reference@0.94.6':
     resolution: {integrity: sha512-iNGbiIgVdTyeaUzRiDbCfBDjmq9TMWbZPNmdujKVOC4Zy9dB57OUQYc21mYXxU3SNb8sT8C9oM5lFDy8h5zImQ==}
 
-  '@glimmer/syntax@0.93.1':
-    resolution: {integrity: sha512-Dvq+Ni4Dcpn8kEiYN4ziTQxHrmPSchJCQJppXmFzdz77SFnhl0nWf7W8nnj88DNFEyBzKiTQCyCSuew4jrbgjA==}
+  '@glimmer/syntax@0.94.7':
+    resolution: {integrity: sha512-6L/1Yl6JLbLrY7ywTL5QFNGKAzxtCbC+kXsTExOcukBqsak+nN75vXvBkv+F+NsAZxhoRt72fNBuy9IrP9sghA==}
 
   '@glimmer/util@0.84.3':
     resolution: {integrity: sha512-qFkh6s16ZSRuu2rfz3T4Wp0fylFj3HBsONGXQcrAdZjdUaIS6v3pNj6mecJ71qRgcym9Hbaq/7/fefIwECUiKw==}
-
-  '@glimmer/util@0.93.1':
-    resolution: {integrity: sha512-EFLxpoGY+cEyi/GVyO5acBpyAlf0CLSvGjURbuWcKcOMtESO72KPJvJuLaAcRssHDqKtWKPO/Fs7nNl8wfn7Lg==}
 
   '@glimmer/util@0.94.3':
     resolution: {integrity: sha512-TuRWXieDZOFt+mgE+lwqfh/GIKLH1WwAhDV1SqrixQEflQLNqGBMw4Cc5qux9A67hr1oIS+64rHpJLmBHG90dQ==}
@@ -2395,8 +2392,8 @@ packages:
   '@glimmer/validator@0.94.6':
     resolution: {integrity: sha512-s0pzTB+lHXa6eQCSJe57YNNgPsjaY+EmOLH6OsJrWetszltV5fSy2PVjk+2NavsZ6wjaxLKwTd0q3PGPXz/rlQ==}
 
-  '@glimmer/wire-format@0.93.1':
-    resolution: {integrity: sha512-EHtdlZAZsOMBP6b9YC03OyduswqiT6Ei/mR/N1oR/4LZZ8lOyVgp6Q4H0TQW6jprWEiTMdHaO8/SEGTCrrhtUw==}
+  '@glimmer/wire-format@0.94.6':
+    resolution: {integrity: sha512-M0ggBTBdeF9AWaq2ZH75fVZ7Y5r/0wqaQ+4tqvEqQJ0kYFwkahnWnFxPYEg2HSRsaNLZjd02sCmh9rwkSANCwg==}
 
   '@handlebars/parser@2.0.0':
     resolution: {integrity: sha512-EP9uEDZv/L5Qh9IWuMUGJRfwhXJ4h1dqKTT4/3+tY0eu7sPis7xh23j61SYUnNF4vqCQvvUXpDo9Bh/+q1zASA==}
@@ -12061,11 +12058,11 @@ snapshots:
       '@glimmer/util': 0.94.6
       '@glimmer/validator': 0.94.6
 
-  '@glimmer/syntax@0.93.1':
+  '@glimmer/syntax@0.94.7':
     dependencies:
       '@glimmer/interfaces': 0.94.5
-      '@glimmer/util': 0.93.1
-      '@glimmer/wire-format': 0.93.1
+      '@glimmer/util': 0.94.6
+      '@glimmer/wire-format': 0.94.6
       '@handlebars/parser': 2.0.0
       simple-html-tokenizer: 0.5.11
 
@@ -12074,11 +12071,6 @@ snapshots:
       '@glimmer/env': 0.1.7
       '@glimmer/interfaces': 0.94.5
       '@simple-dom/interface': 1.4.0
-
-  '@glimmer/util@0.93.1':
-    dependencies:
-      '@glimmer/env': 0.1.7
-      '@glimmer/interfaces': 0.94.5
 
   '@glimmer/util@0.94.3':
     dependencies:
@@ -12103,10 +12095,9 @@ snapshots:
       '@glimmer/global-context': 0.93.2
       '@glimmer/interfaces': 0.94.5
 
-  '@glimmer/wire-format@0.93.1':
+  '@glimmer/wire-format@0.94.6':
     dependencies:
       '@glimmer/interfaces': 0.94.5
-      '@glimmer/util': 0.93.1
 
   '@handlebars/parser@2.0.0': {}
 
@@ -15029,7 +15020,7 @@ snapshots:
   ember-template-recast@6.1.5:
     dependencies:
       '@glimmer/reference': 0.84.3
-      '@glimmer/syntax': 0.93.1
+      '@glimmer/syntax': 0.94.7
       '@glimmer/validator': 0.84.3
       async-promise-queue: 1.0.5
       colors: 1.4.0
