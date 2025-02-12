@@ -129,7 +129,7 @@
     "npm": "6.x"
   },
   "resolutions": {
-    "@glimmer/interfaces": "0.94.2",
+    "@glimmer/interfaces": "0.94.5",
     "@glimmer/syntax": "0.93.1",
     "eslint": "9.20.0",
     "react-dom": "18",
