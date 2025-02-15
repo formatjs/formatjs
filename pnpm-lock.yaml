@@ -78,7 +78,7 @@ importers:
         version: 0.94.7
       '@glimmer/validator':
         specifier: ^0.94.0
-        version: 0.94.3
+        version: 0.94.6
       '@jest/globals':
         specifier: ^29.7.0
         version: 29.7.0
