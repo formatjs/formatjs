@@ -120,10 +120,10 @@
     "unidiff": "^1.0.4",
     "vite": "6",
     "vitest": "3",
+    "vue": "^3.5.12",
     "vue-class-component": "8.0.0-rc.1",
     "vue-eslint-parser": "9.4.3",
     "vue-loader": "^17.4.2",
-    "vue": "^3.5.12",
     "webpack": "^5.95.0"
   },
   "devEngines": {
@@ -178,5 +178,8 @@
     "*": "bazel run //:format"
   },
   "author": "Long Ho <holevietlong@gmail.com>",
-  "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4"
+  "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4",
+  "dependencies": {
+    "happy-dom": "^17.1.0"
+  }
 }

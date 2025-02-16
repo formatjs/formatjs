@@ -2,7 +2,7 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
-load("//tools:jest.bzl", "jest_test_v2")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -34,19 +34,16 @@ ts_compile_node(
     deps = SRC_DEPS,
 )
 
-jest_test_v2(
+vitest(
     name = "unit_test",
-    srcs = [
-        ":dist",
-    ] + glob([
+    srcs = SRCS + glob([
         "tests/*",
     ]),
-    jest_config = "jest.config.js",
+    dom = True,
     deps = SRC_DEPS + [
         "//:node_modules/@vue/compiler-dom",
         "//:node_modules/@vue/server-renderer",
         "//:node_modules/@vue/test-utils",
-        "//:node_modules/jest-environment-jsdom",
     ],
 )
 

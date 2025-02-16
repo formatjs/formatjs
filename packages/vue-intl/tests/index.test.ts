@@ -2,6 +2,7 @@ import {defineComponent, h} from 'vue'
 import {createIntl, intlKey, provideIntl, useIntl} from '../index'
 import {mount} from '@vue/test-utils'
 import {createIntl as rawCreateIntl} from '@formatjs/intl'
+import {expect, test} from 'vitest'
 
 const Translations = defineComponent({
   template: `
