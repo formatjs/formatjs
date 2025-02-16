@@ -222,6 +222,7 @@ copy_to_bin(
 TSCONFIG_FILES = [
     "tsconfig.es6.json",
     "tsconfig.node.json",
+    "tsconfig.test.json",
     "tsconfig.esm.json",
     "tsconfig.esm.esnext.json",
 ]

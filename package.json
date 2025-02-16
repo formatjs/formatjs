@@ -118,10 +118,12 @@
     "tslib": "^2.8.0",
     "typescript": "5.6.2",
     "unidiff": "^1.0.4",
-    "vue": "^3.5.12",
+    "vite": "6",
+    "vitest": "3",
     "vue-class-component": "8.0.0-rc.1",
     "vue-eslint-parser": "9.4.3",
     "vue-loader": "^17.4.2",
+    "vue": "^3.5.12",
     "webpack": "^5.95.0"
   },
   "devEngines": {

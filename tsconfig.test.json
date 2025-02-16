@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "lib": [
+      "dom",
+      "ES2015",
+      "ES2016",
+      "ES2017.Intl",
+      "ES2018.Intl",
+      "ES2019.Intl",
+      "ES2020.Intl",
+      "ES2021.intl",
+      "ES2021.String",
+      "ES2022.Intl",
+      "ESNext.Intl"
+    ],
+    "baseUrl": ".",
+    "declaration": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "noUnusedParameters": true,
+    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "importHelpers": true,
+    "isolatedDeclarations": true,
+    "noEmit": true,
+    "jsx": "react"
+  },
+  "exclude": [
+    "packages/react-intl/example-sandboxes",
+    // Exclude any tsd tests because they can mess with normal
+    // type checking in editors.
+    "**/*.test-d.ts"
+  ]
+}
