@@ -3,7 +3,7 @@ import * as path from 'path'
 import {transformFileSync} from '@babel/core'
 import plugin from '../'
 import {Options, ExtractedMessageDescriptor} from '../types'
-
+import {expect, test} from 'vitest'
 function transformAndCheck(fn: string, opts: Options = {}) {
   const filePath = path.join(__dirname, 'fixtures', `${fn}.js`)
   const messages: ExtractedMessageDescriptor[] = []
@@ -18,10 +18,10 @@ function transformAndCheck(fn: string, opts: Options = {}) {
       Object.assign(meta, m)
     },
   })
-  expect({
+  return {
     data: {messages, meta},
     code: code?.trim(),
-  }).toMatchSnapshot()
+  }
 }
 
 test('additionalComponentNames', function () {
@@ -65,8 +65,29 @@ test('extractFromFormatMessageCallStateless', function () {
 test('formatMessageCall', function () {
   transformAndCheck('formatMessageCall')
 })
-test('FormattedMessage', function () {
-  transformAndCheck('FormattedMessage')
+test('FormattedMessage', () => {
+  expect(transformAndCheck('FormattedMessage')).toEqual({
+    code: `import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+export default class Foo extends Component {
+  render() {
+    return /*#__PURE__*/React.createElement(FormattedMessage, {
+      id: "foo.bar.baz",
+      defaultMessage: "Hello World!"
+    });
+  }
+}`,
+    data: {
+      messages: [
+        {
+          defaultMessage: 'Hello World!',
+          description: 'The default message.',
+          id: 'foo.bar.baz',
+        },
+      ],
+      meta: {},
+    },
+  })
 })
 test('inline', function () {
   transformAndCheck('inline')
@@ -222,5 +243,11 @@ function transform(
 }
 
 test('$t with no arguments', () => {
-  transformAndCheck('shorthandT')
+  expect(transformAndCheck('shorthandT')).toEqual({
+    code: '$t();',
+    data: {
+      messages: [],
+      meta: {},
+    },
+  })
 })
