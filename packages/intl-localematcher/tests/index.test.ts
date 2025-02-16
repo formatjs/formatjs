@@ -1,5 +1,5 @@
 import {match} from '../'
-
+import {expect, test} from 'vitest'
 test('zh-HK', function () {
   expect(match(['zh-HK'], ['zh', 'zh-HANT', 'en'], 'en')).toEqual('zh-HANT')
 })

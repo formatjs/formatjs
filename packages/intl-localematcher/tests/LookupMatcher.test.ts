@@ -1,5 +1,5 @@
 import {LookupMatcher} from '../abstract/LookupMatcher'
-
+import {expect, test} from 'vitest'
 test('LookupMatcher', function () {
   expect(LookupMatcher(['fr', 'en'], ['fr-XX', 'en'], () => 'en')).toEqual({
     locale: 'fr',

@@ -1,5 +1,5 @@
 import {ResolveLocale} from '../abstract/ResolveLocale'
-
+import {expect, test} from 'vitest'
 test('ResolveLocale', function () {
   expect(
     ResolveLocale(
