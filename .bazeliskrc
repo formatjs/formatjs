@@ -6,4 +6,4 @@
 
 # We use it to register the Aspect CLI so that everyone has the same commands available.
 
-USE_BAZEL_VERSION=8.0.1
+USE_BAZEL_VERSION=8.1.0
