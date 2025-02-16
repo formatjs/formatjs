@@ -288,7 +288,7 @@ importers:
         version: 1.2.8
       prettier:
         specifier: ^3.3.3
-        version: 3.5.0
+        version: 3.5.1
       react:
         specifier: '18'
         version: 18.3.1
@@ -7983,8 +7983,8 @@ packages:
     resolution: {integrity: sha512-ravE6m9Atw9Z/jjttRUZ+clIXogdghyZAuWJ3qEzjT+jI/dL1ifAqhZeC5VHzQp1MSt1+jxKkFNemj/iO7tVUA==}
     engines: {node: '>=4'}
 
-  prettier@3.5.0:
-    resolution: {integrity: sha512-quyMrVt6svPS7CjQ9gKb3GLEX/rl3BCL2oa/QkNcXv4YNVBC9olt3s+H7ukto06q7B1Qz46PbrKLO34PR6vXcA==}
+  prettier@3.5.1:
+    resolution: {integrity: sha512-hPpFQvHwL3Qv5AdRvBFMhnKo4tYxp0ReXiPn2bxkiohEX6mBeBwEpBSQTkD458RaaDKQMYSp4hX4UtfUTA5wDw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -18944,7 +18944,7 @@ snapshots:
 
   prepend-http@2.0.0: {}
 
-  prettier@3.5.0: {}
+  prettier@3.5.1: {}
 
   pretty-error@4.0.0:
     dependencies:
