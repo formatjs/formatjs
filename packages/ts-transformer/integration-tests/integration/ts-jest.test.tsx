@@ -1,6 +1,7 @@
 import {msg, Component, formattedMessage} from './comp'
 import * as React from 'react'
 import * as ReactDOMServer from 'react-dom/server'
+import {expect, describe, it} from 'vitest'
 describe('ts-jest transformer', function () {
   it('should work with ts-jest', function () {
     expect(msg).toEqual({

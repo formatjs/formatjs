@@ -1,5 +1,5 @@
 import {defaultCurrency} from '../src/defaultCurrency'
-
+import {expect, describe, it} from 'vitest'
 describe('defaultCurrency', () => {
   it('should return the default currency when no currency is provided', () => {
     const result = defaultCurrency()

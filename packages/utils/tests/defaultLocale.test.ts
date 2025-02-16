@@ -1,5 +1,5 @@
 import {defaultLocale} from '../src/defaultLocale'
-
+import {expect, describe, it} from 'vitest'
 describe('defaultCurrency', () => {
   it('should return the default locale when no country code is provided', () => {
     expect(defaultLocale()).toBe('en')

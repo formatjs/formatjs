@@ -1,5 +1,5 @@
 import {canonicalizeCountryCode} from '../src/countryCodes'
-
+import {expect, test} from 'vitest'
 test('canonicalizeCountryCode', () => {
   expect(canonicalizeCountryCode('USA')).toBe('US')
   expect(canonicalizeCountryCode('US')).toBe('US')

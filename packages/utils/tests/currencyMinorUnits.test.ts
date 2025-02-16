@@ -1,5 +1,5 @@
 import {currencyMinorScale} from '../src/iso4217'
-
+import {expect, describe, it} from 'vitest'
 describe('currencyMinorScale', () => {
   it('should return 100 for USD', () => {
     expect(currencyMinorScale('USD')).toBe(100)
