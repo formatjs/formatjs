@@ -3,7 +3,7 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
 
-def vitest(name, srcs = [], deps = [], size = "small", flaky = False, tags = [], no_copy_to_bin = [], **kwargs):
+def vitest(name, srcs = [], deps = [], size = "small", flaky = False, tags = [], no_copy_to_bin = [], fixtures = [], snapshots = [], **kwargs):
     """
     A rule to define a vitest target.
 
@@ -15,6 +15,8 @@ def vitest(name, srcs = [], deps = [], size = "small", flaky = False, tags = [],
         flaky (bool, optional): Whether the test is flaky. Defaults to False.
         tags (list, optional): A list of tags for the target. Defaults to an empty list.
         no_copy_to_bin (list, optional): A list of files not to copy to the bin directory. Defaults to an empty list.
+        snapshots (list, optional): A list of snapshot files for the target. Defaults to an empty list.
+        fixtures (list, optional): A list of fixture files for the target. Defaults to an empty list.
         **kwargs: Additional keyword arguments.
     """
 
@@ -26,7 +28,7 @@ def vitest(name, srcs = [], deps = [], size = "small", flaky = False, tags = [],
     ]
 
     ts_project(
-        name = "typecheck_test",
+        name = "%s_typecheck" % name,
         srcs = srcs,
         tsconfig = "//:tsconfig.test",
         resolve_json_module = True,
@@ -38,7 +40,7 @@ def vitest(name, srcs = [], deps = [], size = "small", flaky = False, tags = [],
 
     vitest_bin.vitest_test(
         name = name,
-        data = srcs + deps,
+        data = srcs + deps + snapshots + fixtures,
         size = size,
         flaky = flaky,
         tags = tags,

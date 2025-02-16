@@ -1,6 +1,7 @@
 import {join} from 'path'
 import {promisify} from 'util'
 import {exec as nodeExec} from 'child_process'
+import {expect, test} from 'vitest'
 const exec = promisify(nodeExec)
 
 const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
