@@ -1,19 +1,21 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:jest.bzl", "jest_test")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
-jest_test(
+vitest(
     name = "vue_integration_test",
-    data = glob(["vue/fixtures/*"]) + [
+    srcs = glob(["vue/fixtures/*"]) + [
         "vue/integration.test.ts",
+    ],
+    deps = [
         ":node_modules/babel-plugin-formatjs",
-        "//:node_modules/@types/node",
+        "//:node_modules/@babel/types",
         "//:node_modules/@types/webpack",
         "//:node_modules/babel-loader",
+        "//:node_modules/typescript",
         "//:node_modules/vue",
         "//:node_modules/vue-loader",
         "//:node_modules/webpack",
     ],
-    # flaky = True,
 )
