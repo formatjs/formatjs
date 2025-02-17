@@ -1,5 +1,6 @@
 import {Segmenter} from '../src/segmenter'
 import {segmentationTests} from './test-utils'
+import {describe, expect, it} from 'vitest'
 // TODO: This seems broken in CLDRv43
 const EXCLUDED_CASES_INPUTS = new Set([
   'a:a,',

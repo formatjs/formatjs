@@ -6,7 +6,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_src_file", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
+load("//tools:vitest.bzl", "vitest")
 load(":index.bzl", "unicode_file_name")
 
 npm_link_all_packages()
@@ -41,7 +41,6 @@ TEST_UNICODE_FILES = [
 TEST_DEPS = SRC_DEPS + [
     "//:node_modules/@types/node",
     "//:node_modules/@bazel/runfiles",
-    "tests/test-utils.ts",
 ] + TEST_UNICODE_FILES
 
 SRCS = glob(
@@ -68,15 +67,16 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-[jest_test(
-    name = "unit_test_%s" % fn.split("/")[-1].split(".")[0],
-    data = [":srcs"] + [fn] + TEST_DEPS,
+vitest(
+    name = "unit_test",
+    srcs = SRCS + TESTS + ["tests/test-utils.ts"],
     no_copy_to_bin = [
         "@GraphemeBreakTest//file",
         "@WordBreakTest//file",
         "@SentenceBreakTest//file",
     ],
-) for fn in TESTS if fn.endswith(".test.ts")]
+    deps = TEST_DEPS,
+)
 
 generate_src_file(
     name = "test262-main",
