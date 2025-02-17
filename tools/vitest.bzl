@@ -28,6 +28,8 @@ def vitest(name, srcs = [], deps = [], size = "small", flaky = False, tags = [],
         "//:node_modules/@types/node",
     ] + (["//:node_modules/happy-dom"] if dom else [])
 
+    deps = list(set(deps))
+
     ts_project(
         name = "%s_typecheck" % name,
         srcs = srcs,

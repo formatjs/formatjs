@@ -1,5 +1,6 @@
 import {interpolateName} from '../src/interpolate-name'
 import {createHash} from 'crypto'
+import {describe, it, expect} from 'vitest'
 describe('interpolateName', function () {
   it('should match native base64', function () {
     const hasher = createHash('sha1')
