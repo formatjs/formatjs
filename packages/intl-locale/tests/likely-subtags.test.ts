@@ -1,5 +1,6 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import {Locale} from '../'
+import {describe, expect, it} from 'vitest'
 const testDataMaximal: Record<string, string> = {
   // Language subtag is present.
   en: 'en-Latn-US',

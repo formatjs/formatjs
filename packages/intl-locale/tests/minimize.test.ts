@@ -1,5 +1,6 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import {Locale} from '../'
+import {describe, expect, it} from 'vitest'
 const testDataMinimal: Record<string, string> = {
   // Undefined primary language.
   // und: 'en',
