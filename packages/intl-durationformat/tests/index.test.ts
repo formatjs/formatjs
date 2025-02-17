@@ -1,6 +1,32 @@
 import {DurationFormat} from '../src/core'
+import {test, expect} from 'vitest'
 test('Intl.DurationFormat resolvedOptions', function () {
-  expect(new DurationFormat('en').resolvedOptions()).toMatchSnapshot()
+  expect(new DurationFormat('en').resolvedOptions()).toEqual({
+    days: 'short',
+    daysDisplay: 'auto',
+    fractionalDigits: undefined,
+    hours: 'short',
+    hoursDisplay: 'auto',
+    locale: 'en',
+    microseconds: 'short',
+    microsecondsDisplay: 'auto',
+    milliseconds: 'short',
+    millisecondsDisplay: 'auto',
+    minutes: 'short',
+    minutesDisplay: 'auto',
+    months: 'short',
+    monthsDisplay: 'auto',
+    nanoseconds: 'short',
+    nanosecondsDisplay: 'auto',
+    numberingSystem: 'latn',
+    seconds: 'short',
+    secondsDisplay: 'auto',
+    style: 'short',
+    weeks: 'short',
+    weeksDisplay: 'auto',
+    years: 'short',
+    yearsDisplay: 'auto',
+  })
 })
 
 test('Intl.DurationFormat format', function () {
