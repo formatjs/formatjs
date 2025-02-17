@@ -3,7 +3,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
-load("//tools:jest.bzl", "jest_test")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -59,9 +59,11 @@ TEST_FILES = glob([
     "tests/*.test.ts",
 ])
 
-jest_test(
+vitest(
     name = "unit_test",
-    data = TESTS_BASE_SRCS + TEST_FILES + SRC_DEPS + [
+    srcs = TESTS_BASE_SRCS + TEST_FILES,
+    skip_typecheck = True,
+    deps = SRC_DEPS + [
         "//:node_modules/@typescript-eslint/parser",
         "//:node_modules/@typescript-eslint/rule-tester",
         "//:node_modules/vue-eslint-parser",

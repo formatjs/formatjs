@@ -1,7 +1,6 @@
 # load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 # load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
-# # load("//tools:jest.bzl", "jest_test")
 # load("@npm//:http-server/package_json.bzl", "http_server")
 
 # exports_files(["package.json", "tsconfig.json"])
@@ -39,18 +38,6 @@
 #     skip_esm = False,
 #     deps = SRC_DEPS,
 # )
-
-# # jest_test(
-# #     name = "unit",
-# #     srcs = [
-# #         "package.json",
-# #         "tests/extract/unit.test.ts",
-# #         "tests/extract/vue_extractor.test.ts",
-# #         "tests/extract/__snapshots__/unit.test.ts.snap",
-# #     ] + [":srcs"],
-# #     deps = [
-# #     ] + SRC_DEPS,
-# # )
 
 # esbuild(
 #     name = "app",

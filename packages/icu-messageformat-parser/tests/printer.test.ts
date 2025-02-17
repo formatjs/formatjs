@@ -1,6 +1,6 @@
 import {parse} from '..'
 import {printAST} from '../printer'
-
+import {expect, test} from 'vitest'
 test('should escape things properly', function () {
   expect(printAST(parse("Name: ''{name}''."))).toBe("Name: ''{name}''.")
   expect(printAST(parse("'just some {name} thing'"))).toBe(

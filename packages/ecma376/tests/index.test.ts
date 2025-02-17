@@ -1,5 +1,5 @@
 import {generateNumFmtPattern} from '../index'
-
+import {expect, test} from 'vitest'
 test.each`
   locale       | result
   ${'en'}      | ${'"$"#,##0.00;-"$"#,##0.00'}

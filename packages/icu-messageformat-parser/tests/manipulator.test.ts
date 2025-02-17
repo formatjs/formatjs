@@ -1,7 +1,7 @@
 import {parse} from '..'
 import {hoistSelectors, isStructurallySame} from '../manipulator'
 import {printAST} from '../printer'
-
+import {expect, test} from 'vitest'
 test('should hoist 1 plural', function () {
   expect(
     printAST(
@@ -28,7 +28,9 @@ test('hoist some random case 1', function () {
         )
       )
     )
-  ).toMatchSnapshot()
+  ).toBe(
+    '{p1,plural,one{{foo,select,bar{one two} baz{one three} other{one other}}} other{other}}'
+  )
 })
 
 test('should hoist plural & select and tag', function () {
@@ -54,7 +56,32 @@ test('should hoist plural & select and tag', function () {
                 other{many cats}}`)
       )
     )
-  ).toMatchSnapshot()
+  )
+    .toBe(`{count,plural,one{{gender,select,male{{count,plural,one{{gender,select,male{I have a male <b>dog</b>
+             and a male <strong>cat</strong>
+                } female{I have a male <b>dog</b>
+             and a female <strong>cat</strong>
+                } other{I have a male <b>dog</b>
+             and a male <strong>cat</strong>
+                }}} other{I have a male <b>dog</b>
+             and many cats}}} female{{count,plural,one{{gender,select,male{I have a female <b>dog</b>
+             and a male <strong>cat</strong>
+                } female{I have a female <b>dog</b>
+             and a female <strong>cat</strong>
+                } other{I have a female <b>dog</b>
+             and a male <strong>cat</strong>
+                }}} other{I have a female <b>dog</b>
+             and many cats}}} other{{count,plural,one{{gender,select,male{I have a male <b>dog</b>
+             and a male <strong>cat</strong>
+                } female{I have a male <b>dog</b>
+             and a female <strong>cat</strong>
+                } other{I have a male <b>dog</b>
+             and a male <strong>cat</strong>
+                }}} other{I have a male <b>dog</b>
+             and many cats}}}}} other{{count,plural,one{{gender,select,male{I have many dogs and a male <strong>cat</strong>
+                } female{I have many dogs and a female <strong>cat</strong>
+                } other{I have many dogs and a male <strong>cat</strong>
+                }}} other{I have many dogs and many cats}}}}`)
 })
 
 test('should hoist 1 plural with number', function () {

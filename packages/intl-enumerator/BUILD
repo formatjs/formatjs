@@ -5,7 +5,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "generate_src_file", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -45,9 +45,10 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-jest_test(
+vitest(
     name = "unit_test",
-    data = [":srcs"] + TESTS + SRC_DEPS,
+    srcs = SRCS + TESTS,
+    deps = SRC_DEPS,
 )
 
 # Test262

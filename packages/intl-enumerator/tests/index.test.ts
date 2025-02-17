@@ -1,5 +1,5 @@
 import {supportedValuesOf} from '../src'
-
+import {describe, expect, it} from 'vitest'
 describe('Intl.supportedValueOf("calendar")', () => {
   it('should return an array of supported calendars', () => {
     expect(supportedValuesOf('calendar')).toEqual(expect.any(Array))
