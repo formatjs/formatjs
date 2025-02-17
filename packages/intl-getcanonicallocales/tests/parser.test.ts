@@ -1,5 +1,5 @@
 import {parseUnicodeLocaleId} from '../src/parser'
-
+import {describe, expect, it} from 'vitest'
 describe('parser', () => {
   const invalidLanguageTags = [
     // Unicode extension sequence is incomplete.

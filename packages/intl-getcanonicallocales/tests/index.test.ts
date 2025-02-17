@@ -1,5 +1,5 @@
 import {getCanonicalLocales} from '../'
-
+import {describe, expect, it} from 'vitest'
 describe('Intl.getCanonicalLocales', () => {
   it('regular', function () {
     expect(
