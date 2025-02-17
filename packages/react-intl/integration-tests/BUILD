@@ -1,5 +1,5 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:jest.bzl", "jest_test_v2")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -12,16 +12,14 @@ TEST_DEPS = [
     "//:node_modules/@types/node",
     "//:node_modules/@types/react-dom",
     "//:node_modules/@types/react",
-    "//:node_modules/jest-environment-jsdom",
     "//:node_modules/react-dom",
     "//:node_modules/react",
     "//:node_modules/tslib",
 ]
 
-jest_test_v2(
+vitest(
     name = "test",
     srcs = glob(["*.ts*"]),
-    jest_config = "jest.config.js",
-    tsconfig = "tsconfig.json",
+    dom = True,
     deps = TEST_DEPS,
 )

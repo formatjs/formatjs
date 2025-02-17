@@ -18,9 +18,9 @@ describe('supportedLocalesOf', function () {
       'zh'
     )
   }
-  if (RelativeTimeFormat.polyfilled) {
-    it('should return correct locales that we only have data for', test)
-  } else {
-    it.skip('should return correct locales that we only have data for', test)
-  }
+
+  it.skipIf(!RelativeTimeFormat.polyfilled)(
+    'should return correct locales that we only have data for',
+    test
+  )
 })

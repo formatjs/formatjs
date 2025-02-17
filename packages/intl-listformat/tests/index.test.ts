@@ -6,6 +6,7 @@ import * as enAI from './locale-data/en-AI.json'
 import * as zh from './locale-data/zh.json'
 import * as zhHant from './locale-data/zh-Hant.json'
 import * as zhHans from './locale-data/zh-Hans.json'
+import {describe, expect, it} from 'vitest'
 ListFormat.__addLocaleData(en, enAI, zh, zhHans, zhHant)
 
 describe('Intl.ListFormat', function () {

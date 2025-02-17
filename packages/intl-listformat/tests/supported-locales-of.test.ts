@@ -6,6 +6,7 @@ import * as enAI from './locale-data/en-AI.json'
 import * as zh from './locale-data/zh.json'
 import * as zhHant from './locale-data/zh-Hant.json'
 import * as zhHans from './locale-data/zh-Hans.json'
+import {describe, expect, it} from 'vitest'
 ListFormat.__addLocaleData(en, enAI, zh, zhHans, zhHant)
 
 describe('supportedLocalesOf', function () {
@@ -13,9 +14,9 @@ describe('supportedLocalesOf', function () {
     expect(ListFormat.supportedLocalesOf(['zh', 'en-jj'])).toContain('zh')
     expect(ListFormat.supportedLocalesOf('fr')).toEqual([])
   }
-  if (ListFormat.polyfilled) {
-    it('should return correct locales that we only have data for', test)
-  } else {
-    xit('should return correct locales that we only have data for', test)
-  }
+
+  it.skipIf(!ListFormat.polyfilled)(
+    'should return correct locales that we only have data for',
+    test
+  )
 })

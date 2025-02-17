@@ -6,11 +6,18 @@ import {
   FormattedTime,
   IntlProvider,
 } from 'react-intl'
+import {describe, expect, it, afterEach} from 'vitest'
 
-import {render, screen} from '@testing-library/react'
+import {render, screen, cleanup} from '@testing-library/react'
 import React from 'react'
 
+import '@testing-library/jest-dom/vitest'
+
 describe('format', () => {
+  afterEach(() => {
+    cleanup()
+  })
+
   const renderWithIntlProvider = (
     Element: React.JSX.Element,
     providerProps = {}

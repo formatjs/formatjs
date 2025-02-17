@@ -16,9 +16,8 @@ describe('supportedLocalesOf', function () {
     }
   }
 
-  if ((PluralRules as any).polyfilled) {
-    it('should return correct locales that we only have data for', test)
-  } else {
-    it.skip('should return correct locales that we only have data for', test)
-  }
+  it.skipIf(!(PluralRules as any).polyfilled)(
+    'should return correct locales that we only have data for',
+    test
+  )
 })
