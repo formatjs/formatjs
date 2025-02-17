@@ -1,5 +1,5 @@
 import {PartitionPattern} from '../PartitionPattern'
-
+import {expect, test} from 'vitest'
 test('PartitionPattern should partition pattern correctly', function () {
   expect(PartitionPattern('AA{0}BB')).toEqual([
     {

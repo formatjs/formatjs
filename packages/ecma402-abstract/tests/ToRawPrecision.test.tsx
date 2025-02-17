@@ -1,7 +1,6 @@
 import Decimal from 'decimal.js'
 import {ToRawPrecision} from '../NumberFormat/ToRawPrecision'
-
-jest.setTimeout(1000)
+import {describe, expect, it} from 'vitest'
 
 describe('ToRawPrecision', () => {
   it('ToRawPrecision(9.99, 1, 2)', () => {

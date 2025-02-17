@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js'
 import {PartitionNumberPattern} from '../NumberFormat/PartitionNumberPattern'
 import {getInternalSlots} from './utils'
-
+import {describe, expect, test, it} from 'vitest'
 describe('PartitionNumberPattern', () => {
   const decimalNumberFormat: Intl.NumberFormat = new Intl.NumberFormat('it', {
     style: 'decimal',

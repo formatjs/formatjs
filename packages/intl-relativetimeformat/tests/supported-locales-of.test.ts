@@ -9,6 +9,7 @@ import * as zhHans from './locale-data/zh-Hans.json'
 import * as en from './locale-data/en.json'
 import * as enAI from './locale-data/en-AI.json'
 import RelativeTimeFormat from '..'
+import {describe, expect, it} from 'vitest'
 RelativeTimeFormat.__addLocaleData(en, enAI, zh, zhHans, zhHant)
 
 describe('supportedLocalesOf', function () {
@@ -20,6 +21,6 @@ describe('supportedLocalesOf', function () {
   if (RelativeTimeFormat.polyfilled) {
     it('should return correct locales that we only have data for', test)
   } else {
-    xit('should return correct locales that we only have data for', test)
+    it.skip('should return correct locales that we only have data for', test)
   }
 })

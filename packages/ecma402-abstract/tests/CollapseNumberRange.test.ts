@@ -1,5 +1,6 @@
 import {CollapseNumberRange} from '../NumberFormat/CollapseNumberRange'
 import {getInternalSlots} from './utils'
+import {describe, expect, test} from 'vitest'
 const numberFormat: Intl.NumberFormat = new Intl.NumberFormat('it')
 
 describe('CollapseNumberRange', () => {

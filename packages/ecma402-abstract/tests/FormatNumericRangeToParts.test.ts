@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js'
 import {FormatNumericRangeToParts} from '../NumberFormat/FormatNumericRangeToParts'
 import {getInternalSlots} from './utils'
-
+import {describe, expect, it} from 'vitest'
 describe('FormatNumericRangeToParts', () => {
   const numberFormat: Intl.NumberFormat = new Intl.NumberFormat('it')
 

@@ -1,5 +1,5 @@
 import {IsValidTimeZoneName} from '../IsValidTimeZoneName'
-
+import {expect, test} from 'vitest'
 test('IsValidTimeZoneName', () => {
   expect(
     IsValidTimeZoneName('America/Los_Angeles', {

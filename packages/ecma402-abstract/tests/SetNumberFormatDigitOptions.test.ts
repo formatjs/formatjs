@@ -3,7 +3,7 @@ import {
   NumberFormatDigitInternalSlots,
   NumberFormatDigitOptions,
 } from '../types/number'
-
+import {describe, expect, it, beforeEach} from 'vitest'
 describe('SetNumberFormatDigitOptions', () => {
   let internalSlots: NumberFormatDigitInternalSlots
 
