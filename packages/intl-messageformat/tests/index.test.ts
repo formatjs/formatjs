@@ -4,10 +4,10 @@
  * See the accompanying LICENSE file for terms.
  */
 import {IntlMessageFormat} from '../src/core'
+import {MissingValueError} from '../src/error'
 import {PART_TYPE} from '../src/formatters'
 import {parse} from '@formatjs/icu-messageformat-parser'
-import 'jasmine-expect'
-
+import {describe, expect, it} from 'vitest'
 describe('IntlMessageFormat', function () {
   it('should be a function', function () {
     expect(typeof IntlMessageFormat).toBe('function')
@@ -411,11 +411,7 @@ describe('IntlMessageFormat', function () {
         state = 'Missouri'
 
       it('should fail when the argument in the pattern is not provided', function () {
-        expect(msg.format).toThrow(
-          Error(
-            'The intl string context variable "STATE" was not provided to the string "{STATE}"'
-          )
-        )
+        expect(msg.format).toThrow(new MissingValueError('STATE', '{STATE}'))
       })
 
       it('should fail when the argument in the pattern has a typo', function () {
@@ -424,9 +420,7 @@ describe('IntlMessageFormat', function () {
         }
 
         expect(formatWithValueNameTypo).toThrow(
-          Error(
-            'The intl string context variable "STATE" was not provided to the string "{STATE}"'
-          )
+          new MissingValueError('STATE', '{STATE}')
         )
       })
 
@@ -445,9 +439,7 @@ describe('IntlMessageFormat', function () {
         }
 
         expect(formatWithMissingValue).toThrow(
-          Error(
-            'The intl string context variable "ST1ATE" was not provided to the string "{ST1ATE}"'
-          )
+          new MissingValueError('ST1ATE', '{ST1ATE}')
         )
       })
 
@@ -457,9 +449,7 @@ describe('IntlMessageFormat', function () {
         }
 
         expect(formatWithMissingValue).toThrow(
-          Error(
-            'The intl string context variable "ST1ATE" was not provided to the string "{ST1ATE}"'
-          )
+          new MissingValueError('ST1ATE', '{ST1ATE}')
         )
       })
 
