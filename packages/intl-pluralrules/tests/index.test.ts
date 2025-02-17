@@ -1,6 +1,7 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill'
 import {PluralRules} from '../'
+import {describe, expect, it} from 'vitest'
 // @ts-ignore
 import en from './locale-data/en'
 import fr from './locale-data/fr'

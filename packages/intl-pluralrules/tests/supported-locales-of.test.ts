@@ -1,6 +1,7 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill'
 import {PluralRules} from '../'
+import {describe, expect, it} from 'vitest'
 // @ts-ignore
 import zh from './locale-data/zh'
 // @ts-ignore
@@ -18,6 +19,6 @@ describe('supportedLocalesOf', function () {
   if ((PluralRules as any).polyfilled) {
     it('should return correct locales that we only have data for', test)
   } else {
-    xit('should return correct locales that we only have data for', test)
+    it.skip('should return correct locales that we only have data for', test)
   }
 })
