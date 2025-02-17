@@ -7,7 +7,7 @@ import {
 } from '../src/to_locale_string'
 import * as en from './locale-data/en.json'
 import * as ko from './locale-data/ko.json'
-
+import {describe, expect, it} from 'vitest'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, ko)
 DateTimeFormat.__addTZData(allData)

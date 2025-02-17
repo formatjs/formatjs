@@ -7,7 +7,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("//:index.bzl", "ZONES")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
-load("//tools:jest.bzl", "jest_test")
+load("//tools:vitest.bzl", "vitest")
 load(":index.bzl", "generate_dockerfile")
 
 npm_link_all_packages()
@@ -78,9 +78,10 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-jest_test(
+vitest(
     name = "unit_test",
-    data = [":srcs"] + TESTS + TEST_LOCALE_DATA + TEST_DEPS,
+    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    deps = TEST_DEPS,
 )
 
 # Expand zdump files

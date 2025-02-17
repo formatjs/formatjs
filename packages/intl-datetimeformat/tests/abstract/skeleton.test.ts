@@ -3,7 +3,7 @@ import {
   processDateTimePattern,
   splitRangePattern,
 } from '../../src/abstract/skeleton'
-
+import {expect, test} from 'vitest'
 test('splitRangePattern basic case', function () {
   expect(splitRangePattern('{month} {day} - {day}')).toEqual([
     {
