@@ -2,6 +2,7 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill'
 import {DisplayNames} from '..'
+import {describe, expect, it} from 'vitest'
 
 import * as en from './locale-data/en.json'
 import * as zh from './locale-data/zh.json'

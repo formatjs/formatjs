@@ -1,11 +1,9 @@
 import {DisplayNames} from '..'
 import {_shouldPolyfillWithoutLocale, shouldPolyfill} from '../should-polyfill'
-
-describe('before polyfill', function () {
-  it('should-polyfill should be true', function () {
-    // Node 14.9.0/browsers does have this bug
-    expect(_shouldPolyfillWithoutLocale()).toBeTruthy()
-  })
+import {describe, expect, it, test, beforeEach, afterEach} from 'vitest'
+test('should-polyfill should be true', function () {
+  // Node 14.9.0/browsers does have this bug
+  expect(_shouldPolyfillWithoutLocale()).toBeTruthy()
 })
 
 describe('after polyfill', function () {

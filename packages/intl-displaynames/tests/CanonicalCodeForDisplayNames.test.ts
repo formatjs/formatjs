@@ -1,4 +1,5 @@
 import {CanonicalCodeForDisplayNames} from '../abstract/CanonicalCodeForDisplayNames'
+import {describe, expect, it} from 'vitest'
 
 describe('CanonicalCodeForDisplayNames', () => {
   describe('when type is "language"', () => {
