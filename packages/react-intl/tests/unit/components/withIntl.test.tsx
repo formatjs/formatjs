@@ -3,8 +3,10 @@ import IntlProvider from '../../../src/components/provider'
 import injectIntl, {
   WrappedComponentProps,
 } from '../../../src/components/injectIntl'
-import {render} from '@testing-library/react'
+import {cleanup, render} from '@testing-library/react'
 import {IntlShape} from '@formatjs/intl'
+import {describe, expect, it, beforeEach, vi} from 'vitest'
+import '@testing-library/jest-dom/vitest'
 
 const mountWithProvider = (el: React.JSX.Element) =>
   render(<IntlProvider locale="en">{el}</IntlProvider>)
@@ -21,6 +23,7 @@ describe('injectIntl()', () => {
     Wrapped.someNonReactStatic = {
       foo: true,
     }
+    cleanup()
   })
 
   it('allows introspection access to the wrapped component', () => {
@@ -44,7 +47,7 @@ describe('injectIntl()', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     const Injected = injectIntl(Wrapped)
 
     expect(() => render(<Injected />)).toThrow(

@@ -1,9 +1,11 @@
 import {IntlShape} from '@formatjs/intl'
-import {render} from '@testing-library/react'
+import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {FormattedTime, FormattedTimeParts} from '../../..'
 import {createIntl} from '../../../src/components/createIntl'
 import {mountFormattedComponentWithProvider} from '../testUtils'
+import {describe, expect, it, beforeEach, vi} from 'vitest'
+import '@testing-library/jest-dom/vitest'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedTime)
 const mountPartsWithProvider =
@@ -11,13 +13,14 @@ const mountPartsWithProvider =
 
 describe('<FormattedTime>', () => {
   let intl: IntlShape<React.ReactNode>
-  const onError = jest.fn()
+  const onError = vi.fn()
   beforeEach(() => {
     onError.mockClear()
     intl = createIntl({
       locale: 'en',
       onError,
     })
+    cleanup()
   })
 
   it('has a `displayName`', () => {
@@ -26,7 +29,7 @@ describe('<FormattedTime>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => render(<FormattedTime value={0} />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     )
@@ -121,7 +124,7 @@ describe('<FormattedTime>', () => {
   it('supports function-as-child pattern', () => {
     const date = Date.now()
 
-    const spy = jest.fn().mockImplementation(() => <b data-testid="b">Jest</b>)
+    const spy = vi.fn().mockImplementation(() => <b data-testid="b">Jest</b>)
     const {getByTestId} = mountWithProvider({value: date, children: spy}, intl)
 
     expect(getByTestId('b').tagName).toBe('B')
@@ -134,10 +137,10 @@ describe('<FormattedTime>', () => {
 
 describe('<FormattedTimeParts>', () => {
   let intl: IntlShape<React.ReactNode>
-  const children = jest.fn(
+  const children = vi.fn(
     parts => (Array.isArray(parts) && parts[0] && parts[0].value) || null
   )
-  const onError = jest.fn()
+  const onError = vi.fn()
   beforeEach(() => {
     onError.mockClear()
     intl = createIntl({
@@ -153,7 +156,7 @@ describe('<FormattedTimeParts>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() =>
       render(<FormattedTimeParts value={0} children={children} />)
     ).toThrow(

@@ -4,7 +4,7 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
-load("//tools:jest.bzl", "jest_test_v2")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -56,7 +56,7 @@ TEST_DEPS = SRC_DEPS + [
 
 ts_compile(
     name = "dist",
-    srcs = [":srcs"],
+    srcs = SRCS,
     skip_esm = False,
     deps = SRC_DEPS,
 )
@@ -80,15 +80,12 @@ genrule(
     cmd = "cat $< | sed -E 's/__require\\(\"react\"\\)/window.React/g' > $@",
 )
 
-jest_test_v2(
+vitest(
     name = "unit_test",
-    srcs = [
-        ":dist",
-        ":tests_setup",
-    ] + TESTS,
-    jest_config = "jest.config.js",
-    snapshots = glob(["tests/unit/components/__snapshots__/*"]),
-    tsconfig = "tsconfig.jest.json",
+    srcs = SRCS +
+           TESTS,
+    dom = True,
+    skip_typecheck = True,
     deps = TEST_DEPS,
 )
 
@@ -105,9 +102,4 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-copy_to_bin(
-    name = "tests_setup",
-    srcs = ["tests/setup.js"],
 )

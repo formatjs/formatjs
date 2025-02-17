@@ -1,7 +1,9 @@
-import {render} from '@testing-library/react'
+import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {IntlProvider} from '../../..'
 import useIntl from '../../../src/components/useIntl'
+import {describe, expect, it, vi, beforeEach} from 'vitest'
+import '@testing-library/jest-dom/vitest'
 
 const FunctionComponent = ({spy}: {spy?: Function}) => {
   const hookReturns = useIntl()
@@ -15,16 +17,19 @@ const FC = () => {
 }
 
 describe('useIntl() hook', () => {
+  beforeEach(() => {
+    cleanup()
+  })
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => render(<FunctionComponent />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     )
   })
 
   it('hooks onto the intl context', () => {
-    const spy = jest.fn()
+    const spy = vi.fn()
     render(
       <IntlProvider locale="en">
         <FunctionComponent spy={spy} />
@@ -42,7 +47,7 @@ describe('useIntl() hook', () => {
         </span>
       </IntlProvider>
     )
-    expect(getByTestId('comp')).toMatchSnapshot()
+    expect(getByTestId('comp')).toHaveTextContent('$10,000.00')
     rerender(
       <IntlProvider locale="es">
         <span data-testid="comp">
@@ -50,7 +55,7 @@ describe('useIntl() hook', () => {
         </span>
       </IntlProvider>
     )
-    expect(getByTestId('comp')).toMatchSnapshot()
+    expect(getByTestId('comp')).toHaveTextContent('10.000,00 US$')
     rerender(
       <IntlProvider locale="en">
         <span data-testid="comp">
@@ -58,7 +63,6 @@ describe('useIntl() hook', () => {
         </span>
       </IntlProvider>
     )
-
-    expect(getByTestId('comp')).toMatchSnapshot()
+    expect(getByTestId('comp')).toHaveTextContent('$10,000.00')
   })
 })

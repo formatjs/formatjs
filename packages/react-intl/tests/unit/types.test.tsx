@@ -1,6 +1,6 @@
 import React from 'react'
 import {defineMessages, injectIntl, IntlShape, useIntl} from '../../'
-
+import {describe, it} from 'vitest'
 describe('types', () => {
   // https://github.com/formatjs/formatjs/issues/3856
   it('works with react18 typing', () => {

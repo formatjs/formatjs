@@ -1,4 +1,4 @@
-import {render} from '@testing-library/react'
+import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {IntlShape} from '../../..'
 import {createIntl} from '../../../src/components/createIntl'
@@ -6,6 +6,8 @@ import FormattedMessage from '../../../src/components/message'
 import IntlProvider from '../../../src/components/provider'
 import type {IntlConfig} from '../../../src/types'
 import {mountFormattedComponentWithProvider} from '../testUtils'
+import {describe, expect, it, beforeEach, vi} from 'vitest'
+import '@testing-library/jest-dom/vitest'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage)
 
@@ -23,6 +25,7 @@ describe('<FormattedMessage>', () => {
       onError: () => {},
     }
     intl = createIntl(providerProps)
+    cleanup()
   })
 
   it('has a `displayName`', () => {
@@ -31,7 +34,7 @@ describe('<FormattedMessage>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry and there is no defaultMessage', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => render(<FormattedMessage id="foo" />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     )
@@ -115,10 +118,13 @@ describe('<FormattedMessage>', () => {
       providerProps
     )
 
-    expect(container).toMatchSnapshot()
+    expect(container.querySelector(tagName)).toBeTruthy()
+    expect(container.querySelector(tagName)?.textContent).toBe(
+      intl.formatMessage(descriptor)
+    )
   })
 
-  it('accepts an react element as `tagName` prop', () => {
+  it('accepts a React element as `tagName` prop', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, World!',
@@ -161,7 +167,7 @@ describe('<FormattedMessage>', () => {
       defaultMessage: 'Hello, World!',
     }
 
-    const spy = jest.fn().mockImplementation(() => <p>Jest</p>)
+    const spy = vi.fn().mockImplementation(() => <p>Jest</p>)
 
     const {getByTestId} = mountWithProvider(
       {...descriptor, children: spy},
@@ -261,7 +267,10 @@ describe('<FormattedMessage>', () => {
         },
         providerProps
       )
-      expect(getByTestId('comp')).toMatchSnapshot()
+      const compNode = getByTestId('comp')
+      expect(compNode.querySelector('b')).toBeTruthy()
+      expect(compNode.querySelector('i')).toBeTruthy()
+      expect(compNode).toHaveTextContent('Hello, Jest!')
     })
 
     it('supports rich-text message formatting w/ nested tag, chunks merged', () => {
@@ -277,7 +286,10 @@ describe('<FormattedMessage>', () => {
         },
         providerProps
       )
-      expect(getByTestId('comp')).toMatchSnapshot()
+      const compNode = getByTestId('comp')
+      expect(compNode.querySelector('b')).toBeTruthy()
+      expect(compNode.querySelector('i')).toBeTruthy()
+      expect(compNode).toHaveTextContent('Hello, Jest!')
     })
 
     it('supports rich-text message formatting in function-as-child pattern', () => {
@@ -473,7 +485,7 @@ describe('<FormattedMessage>', () => {
       name: 'Jest',
     }
 
-    const spy = jest.fn().mockImplementation(() => null)
+    const spy = vi.fn().mockImplementation(() => null)
     const {rerenderProps} = mountWithProvider(
       {
         ...descriptor,

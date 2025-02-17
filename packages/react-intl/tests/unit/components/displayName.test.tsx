@@ -1,21 +1,25 @@
 import * as React from 'react'
-
-import {render} from '@testing-library/react'
+import {describe, expect, it, vi, beforeEach} from 'vitest'
+import {cleanup, render} from '@testing-library/react'
 import {FormattedDisplayName} from '../../..'
 import {mountFormattedComponentWithProvider} from '../testUtils'
+import '@testing-library/jest-dom/vitest'
 const mountWithProvider =
   mountFormattedComponentWithProvider(FormattedDisplayName)
 
 const intlConfig = {locale: 'en'}
 
 describe('<FormattedDisplayName />', () => {
+  beforeEach(() => {
+    cleanup()
+  })
   it('has a `displayName`', () => {
     expect(FormattedDisplayName.displayName).toBe('FormattedDisplayName')
   })
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() =>
       render(<FormattedDisplayName type="language" value="zh-Hans" />)
     ).toThrow(
@@ -31,7 +35,7 @@ describe('<FormattedDisplayName />', () => {
       },
       intlConfig
     )
-    expect(container).toMatchSnapshot()
+    expect(container.querySelector('span')?.textContent).toBe('Chinese Yuan')
   })
 
   it('renders an empty <> when the underlying DisplayNames would return undefined', () => {
@@ -52,6 +56,6 @@ describe('<FormattedDisplayName />', () => {
       intlConfig
     )
 
-    expect(container).toMatchSnapshot()
+    expect(container.querySelector('span')?.textContent).toBe('')
   })
 })

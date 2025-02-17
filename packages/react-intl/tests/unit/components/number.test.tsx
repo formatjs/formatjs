@@ -1,9 +1,11 @@
 import {IntlShape} from '@formatjs/intl'
-import {render} from '@testing-library/react'
+import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {FormattedNumber, FormattedNumberParts} from '../../..'
 import {createIntl} from '../../../src/components/createIntl'
 import {mountFormattedComponentWithProvider} from '../testUtils'
+import {describe, expect, it, beforeEach, vi} from 'vitest'
+import '@testing-library/jest-dom/vitest'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedNumber)
 const mountPartsWithProvider =
@@ -11,13 +13,14 @@ const mountPartsWithProvider =
 
 describe('<FormattedNumber>', () => {
   let intl: IntlShape<React.ReactNode>
-  const onError = jest.fn()
+  const onError = vi.fn()
   beforeEach(() => {
     onError.mockClear()
     intl = createIntl({
       locale: 'en',
       onError,
     })
+    cleanup()
   })
 
   it('has a `displayName`', () => {
@@ -26,7 +29,7 @@ describe('<FormattedNumber>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => render(<FormattedNumber value={0} />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     )
@@ -113,7 +116,7 @@ describe('<FormattedNumber>', () => {
   it('supports function-as-child pattern', () => {
     const num = Date.now()
 
-    const spy = jest
+    const spy = vi
       .fn()
       .mockImplementation(() => <span data-testid="spy">Jest</span>)
     const {getByTestId} = mountWithProvider({value: num, children: spy}, intl)
@@ -132,7 +135,7 @@ function NOOP(_: Intl.NumberFormatPart[]) {
 
 describe('<FormattedNumberParts>', function () {
   let intl: IntlShape<React.ReactNode>
-  const children = jest.fn(
+  const children = vi.fn(
     parts => (Array.isArray(parts) && parts[0] && parts[0].value) || null
   )
 
@@ -150,7 +153,7 @@ describe('<FormattedNumberParts>', function () {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() =>
       render(<FormattedNumberParts value={0} children={NOOP} />)
     ).toThrow(

@@ -1,4 +1,5 @@
 import * as ReactIntl from '../..'
+import {describe, expect, it} from 'vitest'
 
 describe('react-intl', () => {
   describe('exports', () => {

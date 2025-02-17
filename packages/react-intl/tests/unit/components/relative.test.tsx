@@ -1,12 +1,12 @@
-import {act, render} from '@testing-library/react'
+import {act, cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {createIntl} from '../../../src/components/createIntl'
 import FormattedRelativeTime from '../../../src/components/relative'
 import type {IntlConfig} from '../../../src/types'
 import {IntlShape} from '../../../src/types'
 import {mountFormattedComponentWithProvider} from '../testUtils'
-
-jest.useFakeTimers()
+import {describe, expect, it, beforeEach, vi} from 'vitest'
+import '@testing-library/jest-dom/vitest'
 
 const mountWithProvider = mountFormattedComponentWithProvider(
   FormattedRelativeTime
@@ -21,6 +21,7 @@ describe('<FormattedRelativeTime>', () => {
 
   beforeEach(() => {
     intl = createIntl(intlConfig)
+    cleanup()
   })
 
   it('has a `displayName`', () => {
@@ -29,14 +30,14 @@ describe('<FormattedRelativeTime>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => render(<FormattedRelativeTime />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     )
   })
 
   it('should re-render when props change', () => {
-    const spy = jest.fn().mockImplementation(() => null)
+    const spy = vi.fn().mockImplementation(() => null)
     mountWithProvider({value: 0, children: spy}, intlConfig)
     mountWithProvider({value: 1, children: spy}, intlConfig)
     expect(spy).toHaveBeenCalledTimes(4)
@@ -46,7 +47,7 @@ describe('<FormattedRelativeTime>', () => {
     const otherIntl = createIntl({
       locale: 'en-US',
     })
-    const spy = jest.fn().mockImplementation(() => null)
+    const spy = vi.fn().mockImplementation(() => null)
     mountWithProvider({value: 0, children: spy}, intlConfig)
     mountWithProvider({value: 0, children: spy}, otherIntl)
 
@@ -79,7 +80,7 @@ describe('<FormattedRelativeTime>', () => {
   })
 
   it('throws an error for invalid unit', () => {
-    const onError = jest.fn()
+    const onError = vi.fn()
     const {getByTestId} = mountWithProvider(
       {value: 0, unit: 'invalid' as any},
       {onError, locale: 'en'}
@@ -112,7 +113,7 @@ describe('<FormattedRelativeTime>', () => {
   })
 
   it('supports function-as-child pattern', () => {
-    const spy = jest.fn().mockImplementation(() => <b>Jest</b>)
+    const spy = vi.fn().mockImplementation(() => <b>Jest</b>)
     const {getByTestId} = mountWithProvider(
       {value: 0, children: spy},
       intlConfig
@@ -121,10 +122,10 @@ describe('<FormattedRelativeTime>', () => {
     expect(spy).toHaveBeenCalledTimes(2)
     expect(spy.mock.calls[0]).toEqual([intl.formatRelativeTime(0)])
 
-    expect(getByTestId('comp')).toMatchSnapshot()
+    expect(getByTestId('comp')).toHaveTextContent('Jest')
   })
 
-  xit('updates automatically', () => {
+  it.skip('updates automatically', () => {
     // span bc enzyme support for </> seems buggy
     const {getByTestId} = mountWithProvider(
       {value: 2, updateIntervalInSeconds: 1},
@@ -134,26 +135,26 @@ describe('<FormattedRelativeTime>', () => {
       intl.formatRelativeTime(2, 'second')
     )
     act(() => {
-      jest.advanceTimersByTime(1010)
+      vi.advanceTimersByTime(1010)
     })
     expect(getByTestId('comp')).toHaveTextContent(
       intl.formatRelativeTime(1, 'second')
     )
     act(() => {
-      jest.advanceTimersByTime(1010)
+      vi.advanceTimersByTime(1010)
     })
     expect(getByTestId('comp')).toHaveTextContent(
       intl.formatRelativeTime(0, 'second')
     )
     act(() => {
-      jest.advanceTimersByTime(1010)
+      vi.advanceTimersByTime(1010)
     })
     expect(getByTestId('comp')).toHaveTextContent(
       intl.formatRelativeTime(-1, 'second')
     )
   })
 
-  xit('updates when the `value` prop changes', () => {
+  it.skip('updates when the `value` prop changes', () => {
     const {getByTestId, rerenderProps} = mountWithProvider(
       {value: 0, updateIntervalInSeconds: 1},
       {...intl}
@@ -162,39 +163,39 @@ describe('<FormattedRelativeTime>', () => {
 
     expect(getByTestId('comp')).toHaveTextContent('in 10 seconds')
     act(() => {
-      jest.advanceTimersByTime(1010)
+      vi.advanceTimersByTime(1010)
     })
 
     expect(getByTestId('comp')).toHaveTextContent('in 9 seconds')
   })
 
-  xit('should adjust unit to min correctly', function () {
+  it.skip('should adjust unit to min correctly', function () {
     // span bc enzyme support for </> seems buggy
     const {getByTestId} = mountWithProvider(
       {value: -59, updateIntervalInSeconds: 1},
       {...intlConfig}
     )
     act(() => {
-      jest.advanceTimersByTime(1010)
+      vi.advanceTimersByTime(1010)
     })
     expect(getByTestId('comp')).toHaveTextContent(
       intl.formatRelativeTime(-1, 'minute')
     )
   })
-  xit('should adjust unit to min correctly even if updateIntervalInSeconds goes past that ts', function () {
+  it.skip('should adjust unit to min correctly even if updateIntervalInSeconds goes past that ts', function () {
     // span bc enzyme support for </> seems buggy
     const {getByTestId} = mountWithProvider(
       {value: -59, updateIntervalInSeconds: 2},
       {...intlConfig}
     )
     act(() => {
-      jest.advanceTimersByTime(1010)
+      vi.advanceTimersByTime(1010)
     })
     expect(getByTestId('comp')).toHaveTextContent(
       intl.formatRelativeTime(-1, 'minute')
     )
   })
-  xit('should adjust unit to hour correctly', function () {
+  it.skip('should adjust unit to hour correctly', function () {
     // span bc enzyme support for </> seems buggy
     const {getByTestId} = mountWithProvider(
       {value: -59, unit: 'minute', updateIntervalInSeconds: 1},
@@ -202,13 +203,13 @@ describe('<FormattedRelativeTime>', () => {
     )
     // Advance 1 min
     act(() => {
-      jest.advanceTimersByTime(1000 * 60)
+      vi.advanceTimersByTime(1000 * 60)
     })
     expect(getByTestId('comp')).toHaveTextContent(
       intl.formatRelativeTime(-1, 'hour')
     )
   })
-  xit('should adjust unit to day correctly and stop', function () {
+  it.skip('should adjust unit to day correctly and stop', function () {
     // span bc enzyme support for </> seems buggy
     const {getByTestId} = mountWithProvider(
       {value: -23, unit: 'hour', updateIntervalInSeconds: 1},
@@ -216,21 +217,21 @@ describe('<FormattedRelativeTime>', () => {
     )
     // Advance 1 hour
     act(() => {
-      jest.advanceTimersByTime(1000 * 60 * 60)
+      vi.advanceTimersByTime(1000 * 60 * 60)
     })
     expect(getByTestId('comp')).toHaveTextContent(
       intl.formatRelativeTime(-1, 'day')
     )
     // Advance 1 day
     act(() => {
-      jest.advanceTimersByTime(1000 * 60 * 60 * 24)
+      vi.advanceTimersByTime(1000 * 60 * 60 * 24)
     })
     // shouldn't change anything
     expect(getByTestId('comp')).toHaveTextContent(
       intl.formatRelativeTime(-1, 'day')
     )
   })
-  xit('should show high seconds values as days with no timer', function () {
+  it.skip('should show high seconds values as days with no timer', function () {
     // span bc enzyme support for </> seems buggy
     const {getByTestId} = mountWithProvider(
       {value: -(60 * 60 * 24 * 3), unit: 'second', updateIntervalInSeconds: 1},
@@ -240,7 +241,7 @@ describe('<FormattedRelativeTime>', () => {
       intl.formatRelativeTime(-3, 'day')
     )
   })
-  xit('should throw if try to increment in day', function () {
+  it.skip('should throw if try to increment in day', function () {
     // span bc enzyme support for </> seems buggy
     expect(() =>
       mountWithProvider(
@@ -255,7 +256,7 @@ describe('<FormattedRelativeTime>', () => {
       {...intlConfig}
     )
     rerenderProps()
-    const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout')
+    const clearTimeoutSpy = vi.spyOn(window, 'clearTimeout')
     unmount()
     expect(clearTimeoutSpy).toHaveBeenCalled()
   })

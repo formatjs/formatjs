@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
+import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {FormattedDate, FormattedDateParts, IntlShape} from '../../..'
 import {createIntl} from '../../../src/components/createIntl'
 import {mountFormattedComponentWithProvider} from '../testUtils'
-
+import {describe, expect, it, beforeEach, vi} from 'vitest'
+import '@testing-library/jest-dom/vitest'
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedDate)
 const mountPartsWithProvider =
   mountFormattedComponentWithProvider(FormattedDateParts)
@@ -15,6 +16,7 @@ describe('<FormattedDate>', () => {
       locale: 'en',
       onError: () => {},
     })
+    cleanup()
   })
 
   it('has a `displayName`', () => {
@@ -23,13 +25,13 @@ describe('<FormattedDate>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => render(<FormattedDate value={Date.now()} />)).toThrow(Error)
   })
 
   it('requires a finite `value` prop', () => {
     const value = Date.now()
-    const onError = jest.fn()
+    const onError = vi.fn()
     mountWithProvider({value}, {...intl, onError})
     expect(isFinite(value)).toBe(true)
     expect(onError).toHaveBeenCalledTimes(0)
@@ -70,7 +72,7 @@ describe('<FormattedDate>', () => {
 
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
     const date = new Date()
-    const onError = jest.fn()
+    const onError = vi.fn()
     const {getByTestId} = mountWithProvider(
       // @ts-expect-error invalid value for testing
       {value: date, year: 'invalid'},
@@ -106,7 +108,7 @@ describe('<FormattedDate>', () => {
   it('supports function-as-child pattern', () => {
     const date = Date.now()
 
-    const spyChildren = jest
+    const spyChildren = vi
       .fn()
       .mockImplementation(() => <b data-testid="b">Jest</b>)
     const {getByTestId} = mountWithProvider(
@@ -127,7 +129,7 @@ describe('<FormattedDate>', () => {
 
 describe('<FormattedDateParts>', () => {
   let intl: IntlShape
-  const children = jest.fn(
+  const children = vi.fn(
     parts => (Array.isArray(parts) && parts[0] && parts[0].value) || null
   )
 
@@ -145,7 +147,7 @@ describe('<FormattedDateParts>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() =>
       render(<FormattedDateParts children={children} value={Date.now()} />)
     ).toThrow(
@@ -155,7 +157,7 @@ describe('<FormattedDateParts>', () => {
 
   it('requires a finite `value` prop', () => {
     const value = Date.now()
-    const onError = jest.fn()
+    const onError = vi.fn()
     mountPartsWithProvider({value, children}, {...intl, onError})
     expect(isFinite(value)).toBe(true)
     expect(onError).toHaveBeenCalledTimes(0)
@@ -178,7 +180,7 @@ describe('<FormattedDateParts>', () => {
 
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
     const date = new Date(1567130870626)
-    const onError = jest.fn()
+    const onError = vi.fn()
     mountPartsWithProvider(
       // @ts-expect-error invalid value for testing
       {value: date, year: 'invalid', children},

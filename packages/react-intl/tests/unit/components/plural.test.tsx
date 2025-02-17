@@ -1,9 +1,11 @@
 import {IntlShape} from '@formatjs/intl'
-import {render} from '@testing-library/react'
+import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {createIntl} from '../../../src/components/createIntl'
 import FormattedPlural from '../../../src/components/plural'
 import {mountFormattedComponentWithProvider} from '../testUtils'
+import {describe, expect, it, beforeEach, vi} from 'vitest'
+import '@testing-library/jest-dom/vitest'
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedPlural)
 
@@ -15,6 +17,7 @@ describe('<FormattedPlural>', () => {
       onError: () => {},
       locale: 'en',
     })
+    cleanup()
   })
 
   it('has a `displayName`', () => {
@@ -23,7 +26,7 @@ describe('<FormattedPlural>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => render(<FormattedPlural value={1} other="" />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     )
@@ -100,7 +103,7 @@ describe('<FormattedPlural>', () => {
     const props = {one: 'foo'} as Record<Intl.LDMLPluralRule, string>
     const num = 1
 
-    const spy = jest.fn().mockImplementation(() => <b data-testid="b">Jest</b>)
+    const spy = vi.fn().mockImplementation(() => <b data-testid="b">Jest</b>)
     const {getByTestId} = mountWithProvider(
       {...props, other: undefined, value: num, children: spy},
       intl

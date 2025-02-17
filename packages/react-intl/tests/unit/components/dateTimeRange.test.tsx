@@ -1,8 +1,10 @@
-import {render} from '@testing-library/react'
+import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {FormattedDateTimeRange, IntlShape} from '../../..'
 import {createIntl} from '../../../src/components/createIntl'
 import {mountFormattedComponentWithProvider} from '../testUtils'
+import {describe, expect, it, beforeEach, vi} from 'vitest'
+import '@testing-library/jest-dom/vitest'
 const mountWithProvider = mountFormattedComponentWithProvider(
   FormattedDateTimeRange
 )
@@ -23,6 +25,7 @@ describe('<FormattedDateTimeRange>', () => {
         },
       },
     })
+    cleanup()
   })
 
   it('has a `displayName`', () => {
@@ -31,7 +34,7 @@ describe('<FormattedDateTimeRange>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     // So it doesn't spam the console
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() =>
       render(<FormattedDateTimeRange from={Date.now()} to={Date.now()} />)
     ).toThrow(Error)
@@ -70,7 +73,7 @@ describe('<FormattedDateTimeRange>', () => {
 
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
     const from = new Date()
-    const onError = jest.fn()
+    const onError = vi.fn()
     const {getByTestId} = mountWithProvider(
       // @ts-expect-error invalid for testing
       {from, to: undefined, year: 'invalid'},
@@ -85,7 +88,7 @@ describe('<FormattedDateTimeRange>', () => {
   it('supports function-as-child pattern', () => {
     const from = new Date('2020-1-1')
     const to = new Date('2020-1-15')
-    const spyChildren = jest
+    const spyChildren = vi
       .fn()
       .mockImplementation(() => <b data-testid="b">Jest</b>)
     const {getByTestId} = mountWithProvider(

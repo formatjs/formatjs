@@ -1,9 +1,19 @@
-import {render} from '@testing-library/react'
+import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {FormattedDate, FormattedMessage} from '../../..'
 import withIntl from '../../../src/components/injectIntl'
 import IntlProvider from '../../../src/components/provider'
 import type {IntlConfig} from '../../../src/types'
+import {
+  describe,
+  expect,
+  it,
+  beforeEach,
+  afterEach,
+  vi,
+  MockInstance,
+} from 'vitest'
+import '@testing-library/jest-dom/vitest'
 
 describe('<IntlProvider>', () => {
   const now = Date.now()
@@ -16,10 +26,11 @@ describe('<IntlProvider>', () => {
 
   const IntlChild = withIntl(Child)
 
-  let dateNow: jest.SpyInstance
+  let dateNow: MockInstance<typeof Date.now>
 
   beforeEach(() => {
-    dateNow = jest.spyOn(Date, 'now').mockImplementation(() => now)
+    dateNow = vi.spyOn(Date, 'now').mockImplementation(() => now)
+    cleanup()
   })
 
   afterEach(() => {
@@ -31,7 +42,7 @@ describe('<IntlProvider>', () => {
   })
 
   it('warns when no `locale` prop is provided', () => {
-    const onError = jest.fn()
+    const onError = vi.fn()
     render(
       <IntlProvider
         // @ts-ignore
@@ -47,7 +58,7 @@ describe('<IntlProvider>', () => {
   })
 
   it('should re-render with new messages', () => {
-    const onError = jest.fn()
+    const onError = vi.fn()
     const props: IntlConfig = {
       locale: 'en',
       timeZone: 'Australia/Adelaide',
@@ -95,7 +106,7 @@ describe('<IntlProvider>', () => {
 
   it('warns when `locale` prop provided has no locale data in Intl.NumberFormat', () => {
     const locale = 'missing'
-    const onError = jest.fn()
+    const onError = vi.fn()
     render(
       <IntlProvider locale={locale} onError={onError}>
         <IntlChild />
@@ -108,7 +119,7 @@ describe('<IntlProvider>', () => {
 
   it('warns when `locale` prop provided has no locale data in Intl.DateTimeFormat', () => {
     const locale = 'xx-HA'
-    const onError = jest.fn()
+    const onError = vi.fn()
     const supportedLocalesOf = Intl.NumberFormat.supportedLocalesOf
     Intl.NumberFormat.supportedLocalesOf = (): string[] => ['xx-HA']
     render(
@@ -134,7 +145,7 @@ describe('<IntlProvider>', () => {
   })
 
   it('shadows inherited intl config props from an <IntlProvider> ancestor', () => {
-    const onError = jest.fn()
+    const onError = vi.fn()
     const props: IntlConfig = {
       locale: 'en',
       timeZone: 'Australia/Adelaide',
@@ -182,9 +193,7 @@ describe('<IntlProvider>', () => {
     expect(getByTestId('comp')).toHaveTextContent('31/01/2020')
   })
   it('show warning for non-AST messages with defaultRichTextElements', () => {
-    const consoleWarn = jest
-      .spyOn(console, 'warn')
-      .mockImplementation(() => null)
+    const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => null)
 
     render(
       <IntlProvider
