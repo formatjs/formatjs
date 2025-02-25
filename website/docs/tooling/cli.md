@@ -183,6 +183,10 @@ import {FormattedMessage} from 'react-intl'
 
 and with option `{pragma: "intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
 
+### `--preserve-whitespace`
+
+Whether to preserve whitespace and newlines in output. We typically remove consecutive whitespaces and newlines since those often gets abused for styling purposes.
+
 ### `--flatten`
 
 Whether to hoist selectors & flatten sentences as much as possible. E.g:
@@ -284,10 +288,6 @@ See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/pack
 ### `--out-file <output>`
 
 The target file that contains compiled messages.
-
-### `--preserve-whitespace`
-
-Whether to preserve whitespace and newlines in output. We typically remove consecutive whitespaces and newlines since those often gets abused for styling purposes.
 
 ### `--ast`
 
