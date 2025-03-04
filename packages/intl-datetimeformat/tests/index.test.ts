@@ -407,7 +407,7 @@ describe('Intl.DateTimeFormat', function () {
     const date1 = new Date('')
     expect(date1.toLocaleString('en-US')).toBe('Invalid Date')
   })
-  it('toLocaleString returns "Invalid Date", GH #3508', function () {
+  it('toLocaleString returns date and time with the default format, GH #3508', function () {
     const date1 = new Date(0)
     expect(date1.toLocaleString('en-US')).toMatch(
       /\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2} [AP]M/
