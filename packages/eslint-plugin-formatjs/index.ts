@@ -63,6 +63,10 @@ import {
   rule as preferPoundInPlural,
   name as preferPoundInPluralName,
 } from './rules/prefer-pound-in-plural'
+import {
+  rule as noLiteralStringInObject,
+  name as noLiteralStringInObjectName,
+} from './rules/no-literal-string-in-object'
 
 import {name, version} from './package.json'
 
@@ -106,6 +110,8 @@ const rules: ESLint.Plugin['rules'] = {
   [preferPoundInPluralName]: preferPoundInPlural,
   // @ts-expect-error
   [noMissingIcuPluralOnePlaceholdersName]: noMissingIcuPluralOnePlaceholders,
+  // @ts-expect-error
+  [noLiteralStringInObjectName]: noLiteralStringInObject,
 }
 
 // Base plugin

@@ -572,6 +572,75 @@ The default prop checks are:
 }
 ```
 
+### `no-literal-string-in-object`
+
+This prevents untranslated strings in chosen object properties.
+
+#### Why
+
+- It is easy to forget wrapping literal strings in translation functions, when they are defined in an object field like `{label: "Untranslated label"}`.
+
+```tsx
+const options = () => [
+  // FAILS
+  {value: 'chocolate', label: 'Chocolate'},
+  // WORKS
+  {
+    value: 'strawberry',
+    label: intl.formatMessage({defaultMessage: 'Strawberry'}),
+  },
+  // WORKS, custom translation function
+  {
+    value: 'mint',
+    label: customTranslateFn('Mint'),
+  },
+  // FAILS, string concatenation
+  {
+    value: 'coconut',
+    label: 'Coconut' + intl.formatMessage({defaultMessage: 'Ice Cream'}),
+  },
+  // FAILS, template literal
+  {
+    value: 'mango',
+    label: `Mango ${intl.formatMessage({defaultMessage: 'Ice Cream'})}`,
+  },
+  // FAILS, conditional rendering
+  {
+    value: 'recommended',
+    label: feelLikeSour
+      ? intl.formatMessage({defaultMessage: 'Lime'})
+      : 'Vanilla',
+  },
+]
+
+const MyComponent = () => <Select options={options()} />
+```
+
+This linter reports text literals or string expressions, including string concatenation expressions in the object properties that you can customize.
+
+#### Example
+
+```js
+import formatjs from 'eslint-plugin-formatjs'
+
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/no-literal-string-in-object': [
+        'warn',
+        {
+          // The object properties to check for untranslated literal strings, default: ['label']
+          include: ['label'],
+        },
+      ],
+    },
+  },
+]
+```
+
 ### `no-multiple-whitespaces`
 
 This prevents usage of multiple consecutive whitespaces in message.
