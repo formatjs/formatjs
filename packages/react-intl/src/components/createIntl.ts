@@ -17,7 +17,11 @@ import {
 } from 'intl-messageformat'
 import * as React from 'react'
 import type {IntlConfig, IntlShape, ResolvedIntlConfig} from '../types'
-import {DEFAULT_INTL_CONFIG, assignUniqueKeysToParts} from '../utils'
+import {
+  DEFAULT_INTL_CONFIG,
+  assignUniqueKeysToParts,
+  toKeyedReactNodeArray,
+} from '../utils'
 
 function assignUniqueKeysToFormatXMLElementFnArgument<
   T extends Record<
@@ -59,10 +63,7 @@ const formatMessage: FormatMessageFn<React.ReactNode> = (
     values as any,
     ...rest
   )
-  if (Array.isArray(chunks)) {
-    return React.Children.toArray(chunks)
-  }
-  return chunks as any
+  return toKeyedReactNodeArray(chunks)
 }
 
 /**

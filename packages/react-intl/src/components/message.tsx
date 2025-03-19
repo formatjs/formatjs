@@ -50,16 +50,16 @@ function FormattedMessage(props: Props) {
   } = props
 
   const descriptor = {id, description, defaultMessage}
-  let nodes: React.ReactNode = formatMessage(descriptor, values, {
+  const nodes = formatMessage(descriptor, values, {
     ignoreTag,
   })
 
   if (typeof children === 'function') {
-    return children(Array.isArray(nodes) ? nodes : [nodes])
+    return children(nodes)
   }
 
   if (Component) {
-    return <Component>{React.Children.toArray(nodes)}</Component>
+    return <Component>{nodes}</Component>
   }
   return <>{nodes}</>
 }
