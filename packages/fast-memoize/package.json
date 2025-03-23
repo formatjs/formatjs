@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/fast-memoize",
   "description": "fork of fast-memoize and support esm",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {

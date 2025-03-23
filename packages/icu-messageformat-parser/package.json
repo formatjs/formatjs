@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/icu-messageformat-parser",
-  "version": "2.11.1",
+  "version": "2.11.2",
   "license": "MIT",
   "types": "index.d.ts",
   "dependencies": {

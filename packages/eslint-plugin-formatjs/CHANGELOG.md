@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.2.14...eslint-plugin-formatjs@5.3.0) (2025-03-23)
+
+### Bug Fixes
+
+* **deps:** update typescript-eslint monorepo to v8.23.0 ([#4838](https://github.com/formatjs/formatjs/issues/4838)) ([a03c6cb](https://github.com/formatjs/formatjs/commit/a03c6cb92a68b9d7a5c5a376a946c7c4e2de4a12)) - by @renovate[bot]
+* **deps:** update typescript-eslint monorepo to v8.24.0 ([#4874](https://github.com/formatjs/formatjs/issues/4874)) ([f49edec](https://github.com/formatjs/formatjs/commit/f49edecf9c242235309271ecd3fb3c2680a2c047)) - by @renovate[bot]
+
+### Features
+
+* **eslint-plugin-formatjs:** add no-literal-string-in-object rule with tests ([52d97b2](https://github.com/formatjs/formatjs/commit/52d97b2c5d0cece0072aa9e210b09680149413ac)) - by @niuniuanran
+
 ## [5.2.14](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.2.13...eslint-plugin-formatjs@5.2.14) (2025-02-09)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

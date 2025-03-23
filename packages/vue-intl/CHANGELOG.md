@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.5.24](https://github.com/formatjs/formatjs/compare/vue-intl@6.5.23...vue-intl@6.5.24) (2025-03-23)
+
+### Bug Fixes
+
+* **babel-plugin-formatjs:** update [@babel](https://github.com/babel) dep for security fix ([13075e1](https://github.com/formatjs/formatjs/commit/13075e176dc8975345061d4d4781ddb1da6b5703)), closes [#4908](https://github.com/formatjs/formatjs/issues/4908) - by @longlho
+
 ## [6.5.23](https://github.com/formatjs/formatjs/compare/vue-intl@6.5.22...vue-intl@6.5.23) (2025-02-09)
 
 **Note:** Version bump only for package vue-intl

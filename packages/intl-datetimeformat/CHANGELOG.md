@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.17.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.17.3...@formatjs/intl-datetimeformat@6.17.4) (2025-03-23)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** consistent polyfill with polyfill-force ([22a4be4](https://github.com/formatjs/formatjs/commit/22a4be46b8c9ca144fcc01c96d6bcb6b89462aeb)) - by @longlho
+
 ## [6.17.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.17.2...@formatjs/intl-datetimeformat@6.17.3) (2025-02-09)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

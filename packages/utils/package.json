@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/utils",
   "description": "Collection of useful intl utilities",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {

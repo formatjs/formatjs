@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.36](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.35...babel-plugin-formatjs@10.5.36) (2025-03-23)
+
+### Bug Fixes
+
+* **babel-plugin-formatjs:** update [@babel](https://github.com/babel) dep for security fix ([13075e1](https://github.com/formatjs/formatjs/commit/13075e176dc8975345061d4d4781ddb1da6b5703)), closes [#4908](https://github.com/formatjs/formatjs/issues/4908) - by @longlho
+
 ## [10.5.35](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.34...babel-plugin-formatjs@10.5.35) (2025-02-09)
 
 **Note:** Version bump only for package babel-plugin-formatjs

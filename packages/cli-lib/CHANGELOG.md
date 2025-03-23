@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.3.1...@formatjs/cli-lib@7.3.2) (2025-03-23)
+
+### Bug Fixes
+
+* **@formatjs/cli:** update dependency commander to v13 ([ce27fdb](https://github.com/formatjs/formatjs/commit/ce27fdb4fa827f1c7ada789c43a8e544bb54a7ac)) - by @renovate[bot]
+
 ## [7.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.3.0...@formatjs/cli-lib@7.3.1) (2025-02-09)
 
 **Note:** Version bump only for package @formatjs/cli-lib
