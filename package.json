@@ -169,7 +169,7 @@
   },
   "repository": "formatjs/formatjs",
   "resolutions": {
-    "@glimmer/interfaces": "0.94.5",
+    "@glimmer/interfaces": "0.94.6",
     "@glimmer/syntax": "0.94.7",
     "eslint": "9.20.1",
     "react": "18",
