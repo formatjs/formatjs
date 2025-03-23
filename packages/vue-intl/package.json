@@ -17,13 +17,13 @@
   ],
   "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {
-    "@babel/types": "^7.12.11",
+    "@babel/types": "^7.25.9",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/intl": "workspace:*",
-    "tslib": "2"
+    "tslib": "^2.8.0"
   },
   "peerDependencies": {
-    "vue": "^3.4.0"
+    "vue": "^3.5.12"
   },
   "license": "ISC"
 }

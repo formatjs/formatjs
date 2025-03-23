@@ -1,0 +1,50 @@
+{
+  "dependencyTypes": ["dev", "engines", "peer", "prod"],
+  "sortFirst": [
+    "name",
+    "description",
+    "version",
+    "license",
+    "author",
+    "private",
+    "type",
+    "sideEffects",
+    "source",
+    "types",
+    "exports",
+    "imports",
+    "engines",
+    "scripts",
+    "dependencies",
+    "devDependencies",
+    "peerDependencies",
+    "peerDependencies"
+  ],
+  "sortExports": [
+    "types",
+    "node-addons",
+    "edge-light",
+    "node",
+    "browser",
+    "import",
+    "require",
+    "development",
+    "production",
+    "default"
+  ],
+  "customTypes": {
+    "engines": {
+      "path": "engines",
+      "strategy": "versionsByName"
+    }
+  },
+
+  "versionGroups": [
+    {
+      "label": "Use workspace protocol when developing local packages",
+      "dependencies": ["$LOCAL"],
+      "dependencyTypes": ["dev", "prod", "peer"],
+      "pinVersion": "workspace:*"
+    }
+  ]
+}

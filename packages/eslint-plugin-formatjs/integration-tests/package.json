@@ -4,6 +4,6 @@
   "dependencies": {
     "react-intl": "workspace:*",
     "eslint-plugin-formatjs": "workspace:*",
-    "eslint": "9"
+    "eslint": "9.20.1"
   }
 }

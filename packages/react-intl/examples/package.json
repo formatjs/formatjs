@@ -13,10 +13,10 @@
     "@formatjs/intl-displaynames": "workspace:*",
     "@formatjs/intl-listformat": "workspace:*",
     "@types/hoist-non-react-statics": "^3.3.1",
-    "@types/react": "16 || 17 || 18",
+    "@types/react": "^18.3.12",
     "hoist-non-react-statics": "^3.3.2",
     "intl-messageformat": "workspace:*",
     "react-intl": "workspace:*",
-    "tslib": "^2.7.0"
+    "tslib": "^2.8.0"
   }
 }

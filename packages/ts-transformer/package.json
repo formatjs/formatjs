@@ -18,18 +18,18 @@
   ],
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@types/json-stable-stringify": "1",
-    "@types/node": "14 || 16 || 17 || 18 || 20 || 22",
-    "chalk": "4",
-    "json-stable-stringify": "1",
-    "tslib": "2",
-    "typescript": "5"
+    "@types/json-stable-stringify": "^1.1.0",
+    "@types/node": "^22.0.0",
+    "chalk": "^4.1.2",
+    "json-stable-stringify": "^1.1.1",
+    "tslib": "^2.8.0",
+    "typescript": "5.6.2"
   },
   "devDependencies": {
     "ts-jest": "29"
   },
   "peerDependencies": {
-    "ts-jest": "27 || 28 || 29"
+    "ts-jest": "29"
   },
   "peerDependenciesMeta": {
     "ts-jest": {

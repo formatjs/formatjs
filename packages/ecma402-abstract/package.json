@@ -16,8 +16,8 @@
   "dependencies": {
     "@formatjs/fast-memoize": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
-    "decimal.js": "10",
-    "tslib": "2"
+    "decimal.js": "^10.4.3",
+    "tslib": "^2.8.0"
   },
   "author": "Long Ho <holevietlong@gmail.com",
   "bugs": {

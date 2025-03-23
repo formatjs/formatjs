@@ -27,6 +27,6 @@
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
-    "tslib": "2"
+    "tslib": "^2.8.0"
   }
 }

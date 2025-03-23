@@ -22,8 +22,8 @@
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
-    "decimal.js": "10",
-    "tslib": "2"
+    "decimal.js": "^10.4.3",
+    "tslib": "^2.8.0"
   },
   "devDependencies": {
     "@formatjs/intl-getcanonicallocales": "workspace:*",
