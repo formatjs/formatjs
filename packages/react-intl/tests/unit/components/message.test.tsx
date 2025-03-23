@@ -119,9 +119,7 @@ describe('<FormattedMessage>', () => {
     )
 
     expect(container.querySelector(tagName)).toBeTruthy()
-    expect(container.querySelector(tagName)?.textContent).toBe(
-      intl.formatMessage(descriptor)
-    )
+    expect(container.querySelector(tagName)?.textContent).toBe('Hello, World!')
   })
 
   it('accepts a React element as `tagName` prop', () => {
@@ -176,7 +174,7 @@ describe('<FormattedMessage>', () => {
 
     expect(spy).toHaveBeenCalledTimes(2)
 
-    expect(spy.mock.calls[0][0]).toEqual([intl.formatMessage(descriptor)])
+    expect(spy.mock.calls[0][0]).toEqual(intl.formatMessage(descriptor))
 
     expect(getByTestId('comp')).toHaveTextContent('Jest')
   })

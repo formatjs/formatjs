@@ -39,6 +39,29 @@ export const DEFAULT_INTL_CONFIG: DefaultIntlConfig = {
   textComponent: React.Fragment,
 }
 
+const arbitraryKeyProps = {key: 42}
+const toArbitrarilyKeyedReactNode = (reactNode: React.ReactNode) =>
+  React.isValidElement(reactNode)
+    ? React.createElement(React.Fragment, arbitraryKeyProps, reactNode)
+    : reactNode
+
+/**
+ * Builds an array of {@link React.ReactNode}s with index-based keys, similar to
+ * {@link React.Children.toArray}. However, this function tells React that it
+ * was intentional, so they won't produce a bunch of warnings about it.
+ *
+ * React doesn't recommend doing this because it makes reordering inefficient,
+ * but we mostly need this for message chunks, which don't tend to reorder to
+ * begin with.
+ */
+export const toKeyedReactNodeArray: typeof React.Children.toArray = children =>
+  /**
+   * Note: {@link React.Children.map} will add its own index-based prefix to
+   * every key anyway, so the auto-injected one doesn't even have to be unique.
+   * This basically just tells React that it's explicit/intentional.
+   */
+  React.Children.map(children, toArbitrarilyKeyedReactNode) ?? []
+
 /**
  * Takes a `formatXMLElementFn`, and composes it in function, which passes
  * argument `parts` through, assigning unique key to each part, to prevent
