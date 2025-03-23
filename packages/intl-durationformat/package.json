@@ -1,32 +1,27 @@
 {
   "name": "@formatjs/intl-durationformat",
-  "version": "0.7.3",
   "description": "Intl.DurationFormat polyfill",
-  "keywords": [
-    "intl",
-    "durationformat",
-    "duration",
-    "formatjs",
-    "react-intl",
-    "i18n",
-    "ecma402",
-    "tc39"
-  ],
-  "author": "Long Ho <holevietlong@gmail.com>",
-  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "version": "0.7.3",
   "license": "MIT",
-  "main": "index.js",
+  "author": "Long Ho <holevietlong@gmail.com>",
   "types": "index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/formatjs/formatjs.git"
-  },
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
-  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
     "tslib": "^2.8.0"
-  }
+  },
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "keywords": [
+    "duration",
+    "durationformat",
+    "ecma402",
+    "formatjs",
+    "i18n",
+    "intl",
+    "react-intl",
+    "tc39"
+  ],
+  "main": "index.js",
+  "repository": "formatjs/formatjs.git"
 }

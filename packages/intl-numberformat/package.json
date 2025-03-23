@@ -1,26 +1,9 @@
 {
   "name": "@formatjs/intl-numberformat",
-  "version": "8.15.3",
   "description": "Ponyfill for ES2020 Intl.NumberFormat",
-  "keywords": [
-    "polyfill",
-    "i18n",
-    "numberformat",
-    "intl",
-    "Intl.NumberFormat"
-  ],
-  "contributors": [
-    "Linjie Ding <linjie@airtable.com>",
-    "Long Ho <holevietlong@gmail.com>"
-  ],
-  "homepage": "https://github.com/formatjs/formatjs",
+  "version": "8.15.3",
   "license": "MIT",
-  "main": "index.js",
   "types": "index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/formatjs/formatjs.git"
-  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
@@ -32,8 +15,20 @@
     "@formatjs/intl-locale": "workspace:*",
     "@formatjs/intl-pluralrules": "workspace:*"
   },
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
-  },
-  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "contributors": [
+    "Linjie Ding <linjie@airtable.com>",
+    "Long Ho <holevietlong@gmail.com>"
+  ],
+  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "keywords": [
+    "i18n",
+    "intl",
+    "Intl.NumberFormat",
+    "numberformat",
+    "polyfill"
+  ],
+  "main": "index.js",
+  "repository": "formatjs/formatjs.git"
 }

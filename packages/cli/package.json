@@ -1,36 +1,11 @@
 {
   "name": "@formatjs/cli",
-  "version": "6.6.1",
   "description": "A CLI for formatjs.",
-  "keywords": [
-    "intl",
-    "i18n",
-    "internationalization",
-    "locale",
-    "localization",
-    "globalization",
-    "react",
-    "react-intl",
-    "reactjs",
-    "format",
-    "formatjs",
-    "formatting",
-    "translate",
-    "translation",
-    "cli"
-  ],
-  "author": "Linjie Ding <linjie@airtable.com>",
-  "homepage": "https://github.com/formatjs/formatjs",
+  "version": "6.6.1",
   "license": "MIT",
-  "bin": {
-    "formatjs": "bin/formatjs"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/formatjs/formatjs.git"
-  },
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
+  "author": "Linjie Ding <linjie@airtable.com>",
+  "engines": {
+    "node": ">= 16"
   },
   "devDependencies": {
     "@formatjs/cli-lib": "workspace:*"
@@ -38,13 +13,35 @@
   "peerDependencies": {
     "@glimmer/env": "^0.1.7",
     "@glimmer/reference": "^0.94.0",
-    "@glimmer/syntax": "0.94.7",
+    "@glimmer/syntax": "^0.94.9",
     "@glimmer/validator": "^0.94.0",
     "@vue/compiler-core": "^3.5.12",
     "content-tag": "^3.0.0",
     "ember-template-recast": "^6.1.5",
     "vue": "^3.5.12"
   },
+  "bin": {
+    "formatjs": "bin/formatjs"
+  },
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "keywords": [
+    "cli",
+    "format",
+    "formatjs",
+    "formatting",
+    "globalization",
+    "i18n",
+    "internationalization",
+    "intl",
+    "locale",
+    "localization",
+    "react",
+    "react-intl",
+    "reactjs",
+    "translate",
+    "translation"
+  ],
   "peerDependenciesMeta": {
     "vue": {
       "optional": true
@@ -71,7 +68,5 @@
       "optional": true
     }
   },
-  "engines": {
-    "node": ">= 16"
-  }
+  "repository": "formatjs/formatjs.git"
 }

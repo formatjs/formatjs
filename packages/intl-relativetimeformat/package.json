@@ -1,24 +1,10 @@
 {
   "name": "@formatjs/intl-relativetimeformat",
-  "version": "11.4.10",
   "description": "Formats JavaScript dates to relative time strings.",
-  "keywords": [
-    "intl",
-    "i18n",
-    "relative",
-    "time",
-    "moment",
-    "format",
-    "date"
-  ],
+  "version": "11.4.10",
+  "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:formatjs/formatjs.git"
-  },
+  "types": "index.d.ts",
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
@@ -29,9 +15,18 @@
     "@formatjs/intl-locale": "workspace:*",
     "@formatjs/intl-pluralrules": "workspace:*"
   },
-  "main": "index.js",
-  "types": "index.d.ts",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
   "homepage": "https://github.com/formatjs/formatjs",
-  "license": "MIT",
-  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"
+  "keywords": [
+    "date",
+    "format",
+    "i18n",
+    "intl",
+    "moment",
+    "relative",
+    "time"
+  ],
+  "main": "index.js",
+  "repository": "git@github.com:formatjs/formatjs.git"
 }

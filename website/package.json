@@ -2,18 +2,6 @@
   "name": "website",
   "version": "1.0.3",
   "private": true,
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "scripts": {
     "build": "docusaurus build"
   },
@@ -26,15 +14,27 @@
     "@docusaurus/types": "^3.7.0",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@mdx-js/react": "^3.1.0",
-    "classnames": "2",
-    "clsx": "2",
+    "classnames": "^2",
+    "clsx": "^2",
     "docusaurus-lunr-search": "^3.5.0",
     "http-server": "^14.1.1",
     "intl-messageformat": "workspace:*",
     "lunr": "^2.3.9",
-    "prism-react-renderer": "2",
+    "prism-react-renderer": "^2",
     "react-intl": "workspace:*",
-    "react-live": "4",
-    "typescript": "5.6.2"
+    "react-live": "^4",
+    "typescript": "5.8.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

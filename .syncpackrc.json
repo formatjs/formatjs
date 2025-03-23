@@ -38,7 +38,16 @@
       "strategy": "versionsByName"
     }
   },
-
+  "semverGroups": [
+    {
+      "range": "exact",
+      "dependencies": ["typescript"]
+    },
+    {
+      "range": "^",
+      "dependencies": ["!typescript"]
+    }
+  ],
   "versionGroups": [
     {
       "label": "Use workspace protocol when developing local packages",

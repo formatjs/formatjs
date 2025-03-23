@@ -1,30 +1,25 @@
 {
   "name": "@formatjs/intl-localematcher",
-  "version": "0.6.0",
   "description": "Intl.LocaleMatcher ponyfill",
-  "keywords": [
-    "intl",
-    "locale",
-    "formatjs",
-    "react-intl",
-    "i18n",
-    "ecma402",
-    "tc39"
-  ],
-  "author": "Long Ho <holevietlong@gmail.com>",
-  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "version": "0.6.0",
   "license": "MIT",
-  "main": "index.js",
-  "module": "lib/index.js",
+  "author": "Long Ho <holevietlong@gmail.com>",
   "types": "index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/formatjs/formatjs.git"
-  },
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
-  },
   "dependencies": {
     "tslib": "^2.8.0"
-  }
+  },
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "keywords": [
+    "ecma402",
+    "formatjs",
+    "i18n",
+    "intl",
+    "locale",
+    "react-intl",
+    "tc39"
+  ],
+  "main": "index.js",
+  "module": "lib/index.js",
+  "repository": "formatjs/formatjs.git"
 }

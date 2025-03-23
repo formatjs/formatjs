@@ -1,20 +1,8 @@
 {
   "name": "vue-intl",
-  "version": "6.5.23",
   "description": "formatjs intl binding for vue",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/formatjs/formatjs.git"
-  },
-  "homepage": "https://formatjs.github.io/docs/vue-intl",
-  "keywords": [
-    "vue",
-    "intl",
-    "i18n",
-    "internationalization",
-    "formatjs"
-  ],
+  "version": "6.5.23",
+  "license": "ISC",
   "author": "Long Ho <holevietlong@gmail.com>",
   "dependencies": {
     "@babel/types": "^7.25.9",
@@ -25,5 +13,14 @@
   "peerDependencies": {
     "vue": "^3.5.12"
   },
-  "license": "ISC"
+  "homepage": "https://formatjs.github.io/docs/vue-intl",
+  "keywords": [
+    "formatjs",
+    "i18n",
+    "internationalization",
+    "intl",
+    "vue"
+  ],
+  "main": "index.js",
+  "repository": "formatjs/formatjs.git"
 }

@@ -1,26 +1,10 @@
 {
   "name": "@formatjs/intl-datetimeformat",
-  "version": "6.17.3",
   "description": "Intl.DateTimeFormat polyfill",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/formatjs/formatjs.git"
-  },
-  "keywords": [
-    "i18n",
-    "intl",
-    "polyfill",
-    "datetimeformat",
-    "formatjs"
-  ],
-  "author": "Long Ho <holevietlong@gmail.com>",
+  "version": "6.17.3",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
-  },
-  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "types": "index.d.ts",
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
@@ -30,5 +14,16 @@
   "devDependencies": {
     "@formatjs/intl-getcanonicallocales": "workspace:*",
     "@formatjs/intl-locale": "workspace:*"
-  }
+  },
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "keywords": [
+    "datetimeformat",
+    "formatjs",
+    "i18n",
+    "intl",
+    "polyfill"
+  ],
+  "main": "index.js",
+  "repository": "formatjs/formatjs.git"
 }

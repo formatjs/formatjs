@@ -3,6 +3,6 @@
   "private": true,
   "devDependencies": {
     "@formatjs/ts-transformer": "workspace:*",
-    "ts-jest": "29"
+    "ts-jest": "^29"
   }
 }

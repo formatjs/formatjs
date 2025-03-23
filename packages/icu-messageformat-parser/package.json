@@ -1,18 +1,18 @@
 {
   "name": "@formatjs/icu-messageformat-parser",
   "version": "2.11.1",
-  "main": "index.js",
-  "module": "lib/index.js",
-  "types": "index.d.ts",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/formatjs/formatjs.git",
-    "directory": "packages/icu-messageformat-parser"
-  },
+  "types": "index.d.ts",
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/icu-skeleton-parser": "workspace:*",
     "tslib": "^2.8.0"
+  },
+  "main": "index.js",
+  "module": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/formatjs/formatjs.git",
+    "directory": "packages/icu-messageformat-parser"
   }
 }

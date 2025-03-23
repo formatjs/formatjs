@@ -1,22 +1,29 @@
 {
   "name": "react-intl",
-  "version": "7.1.6",
   "description": "Internationalize React apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.",
-  "keywords": [
-    "intl",
-    "i18n",
-    "internationalization",
-    "locale",
-    "localization",
-    "globalization",
-    "react",
-    "reactjs",
-    "format",
-    "formatting",
-    "translate",
-    "translation"
-  ],
+  "version": "7.1.6",
+  "license": "BSD-3-Clause",
   "author": "Eric Ferraiuolo <edf@ericf.me>",
+  "sideEffects": false,
+  "types": "index.d.ts",
+  "dependencies": {
+    "@formatjs/ecma402-abstract": "workspace:*",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "@formatjs/intl": "workspace:*",
+    "@types/hoist-non-react-statics": "^3.3.1",
+    "@types/react": "^18.3.12",
+    "hoist-non-react-statics": "^3.3.2",
+    "intl-messageformat": "workspace:*",
+    "tslib": "^2.8.0"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "typescript": "5.8.2"
+  },
+  "browserslist": [
+    "ie 11"
+  ],
+  "bugs": "https://github.com/formatjs/formatjs/issues",
   "contributors": [
     "Aarni Koskela <akx@iki.fi>",
     "Alexis Deveria <adeveria@gmail.com>",
@@ -115,40 +122,28 @@
     "Yang Su <yang@quip.com>",
     "zouxuoz <zouxuoz@gmail.com>"
   ],
-  "license": "BSD-3-Clause",
+  "gitHead": "773d6ebf881357f6e4c2dd7e8984b1bd0f69b4ca",
   "homepage": "https://formatjs.github.io/docs/react-intl",
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:formatjs/formatjs.git"
-  },
+  "keywords": [
+    "format",
+    "formatting",
+    "globalization",
+    "i18n",
+    "internationalization",
+    "intl",
+    "locale",
+    "localization",
+    "react",
+    "reactjs",
+    "translate",
+    "translation"
+  ],
   "main": "index.js",
   "module": "lib/index.js",
-  "types": "index.d.ts",
-  "sideEffects": false,
-  "dependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*",
-    "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@formatjs/intl": "workspace:*",
-    "@types/hoist-non-react-statics": "^3.3.1",
-    "@types/react": "^18.3.12",
-    "hoist-non-react-statics": "^3.3.2",
-    "intl-messageformat": "workspace:*",
-    "tslib": "^2.8.0"
-  },
-  "peerDependencies": {
-    "react": "18",
-    "typescript": "5.6.2"
-  },
   "peerDependenciesMeta": {
     "typescript": {
       "optional": true
     }
   },
-  "browserslist": [
-    "ie 11"
-  ],
-  "gitHead": "773d6ebf881357f6e4c2dd7e8984b1bd0f69b4ca"
+  "repository": "git@github.com:formatjs/formatjs.git"
 }

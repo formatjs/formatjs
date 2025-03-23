@@ -1,21 +1,10 @@
 {
   "name": "@formatjs/ts-transformer",
-  "version": "3.13.32",
   "description": "TS Compiler transformer for formatjs",
-  "main": "index.js",
+  "version": "3.13.32",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
   "types": "index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/formatjs/formatjs.git"
-  },
-  "keywords": [
-    "i18n",
-    "internationalization",
-    "typescript",
-    "transform",
-    "transformer",
-    "react-intl"
-  ],
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@types/json-stable-stringify": "^1.1.0",
@@ -23,23 +12,29 @@
     "chalk": "^4.1.2",
     "json-stable-stringify": "^1.1.1",
     "tslib": "^2.8.0",
-    "typescript": "5.6.2"
+    "typescript": "5.8.2"
   },
   "devDependencies": {
-    "ts-jest": "29"
+    "ts-jest": "^29"
   },
   "peerDependencies": {
-    "ts-jest": "29"
+    "ts-jest": "^29"
   },
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "keywords": [
+    "i18n",
+    "internationalization",
+    "react-intl",
+    "transform",
+    "transformer",
+    "typescript"
+  ],
+  "main": "index.js",
   "peerDependenciesMeta": {
     "ts-jest": {
       "optional": true
     }
   },
-  "author": "Long Ho <holevietlong@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
-  },
-  "homepage": "https://github.com/formatjs/formatjs#readme"
+  "repository": "formatjs/formatjs.git"
 }

@@ -1,37 +1,32 @@
 {
   "name": "@formatjs/ecma402-abstract",
-  "version": "2.3.3",
   "description": "A collection of implementation for ECMAScript abstract operations",
-  "keywords": [
-    "intl",
-    "i18n",
-    "relative",
-    "javascript",
-    "es",
-    "abstract",
-    "ecma402",
-    "ecma262",
-    "format"
-  ],
+  "version": "2.3.3",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com",
+  "sideEffects": false,
+  "types": "index.d.ts",
   "dependencies": {
     "@formatjs/fast-memoize": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
     "decimal.js": "^10.4.3",
     "tslib": "^2.8.0"
   },
-  "author": "Long Ho <holevietlong@gmail.com",
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:formatjs/formatjs.git"
-  },
-  "sideEffects": false,
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "keywords": [
+    "abstract",
+    "ecma262",
+    "ecma402",
+    "es",
+    "format",
+    "i18n",
+    "intl",
+    "javascript",
+    "relative"
+  ],
   "main": "index.js",
   "module": "lib/index.js",
-  "types": "index.d.ts",
-  "homepage": "https://github.com/formatjs/formatjs",
-  "license": "MIT",
-  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"
+  "repository": "git@github.com:formatjs/formatjs.git"
 }

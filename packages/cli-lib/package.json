@@ -1,35 +1,12 @@
 {
   "name": "@formatjs/cli-lib",
-  "version": "7.3.1",
   "description": "Lib for CLI for formatjs.",
-  "keywords": [
-    "intl",
-    "i18n",
-    "internationalization",
-    "locale",
-    "localization",
-    "globalization",
-    "react",
-    "react-intl",
-    "reactjs",
-    "format",
-    "formatjs",
-    "formatting",
-    "translate",
-    "translation",
-    "cli"
-  ],
-  "author": "Linjie Ding <linjie@airtable.com>",
-  "homepage": "https://github.com/formatjs/formatjs",
+  "version": "7.3.1",
   "license": "MIT",
+  "author": "Linjie Ding <linjie@airtable.com>",
   "type": "module",
-  "main": "lib_esnext/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/formatjs/formatjs.git"
-  },
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
+  "engines": {
+    "node": ">= 16"
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
@@ -40,24 +17,44 @@
     "@types/json-stable-stringify": "^1.1.0",
     "@types/node": "^22.0.0",
     "chalk": "^4.1.2",
-    "commander": "13",
+    "commander": "^13",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
     "json-stable-stringify": "^1.1.1",
-    "loud-rejection": "2",
+    "loud-rejection": "^2",
     "tslib": "^2.8.0",
-    "typescript": "5.6.2"
+    "typescript": "5.8.2"
   },
   "peerDependencies": {
     "@glimmer/env": "^0.1.7",
     "@glimmer/reference": "^0.94.0",
-    "@glimmer/syntax": "0.94.7",
+    "@glimmer/syntax": "^0.94.9",
     "@glimmer/validator": "^0.94.0",
     "@vue/compiler-core": "^3.5.12",
     "content-tag": "^3.0.0",
     "ember-template-recast": "^6.1.5",
     "vue": "^3.5.12"
   },
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "keywords": [
+    "cli",
+    "format",
+    "formatjs",
+    "formatting",
+    "globalization",
+    "i18n",
+    "internationalization",
+    "intl",
+    "locale",
+    "localization",
+    "react",
+    "react-intl",
+    "reactjs",
+    "translate",
+    "translation"
+  ],
+  "main": "lib_esnext/index.js",
   "peerDependenciesMeta": {
     "vue": {
       "optional": true
@@ -84,7 +81,5 @@
       "optional": true
     }
   },
-  "engines": {
-    "node": ">= 16"
-  }
+  "repository": "formatjs/formatjs.git"
 }

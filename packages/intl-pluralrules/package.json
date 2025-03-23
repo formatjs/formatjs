@@ -1,24 +1,10 @@
 {
   "name": "@formatjs/intl-pluralrules",
-  "version": "5.4.3",
   "description": "Polyfill for Intl.PluralRules",
-  "keywords": [
-    "polyfill",
-    "i18n",
-    "intl",
-    "plural",
-    "rules",
-    "PluralRules"
-  ],
-  "author": "Long Ho <holevietlong@gmail.com>",
-  "homepage": "https://github.com/formatjs/formatjs",
+  "version": "5.4.3",
   "license": "MIT",
-  "main": "index.js",
+  "author": "Long Ho <holevietlong@gmail.com>",
   "types": "index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/formatjs/formatjs.git"
-  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
@@ -29,8 +15,17 @@
     "@formatjs/intl-getcanonicallocales": "workspace:*",
     "@formatjs/intl-locale": "workspace:*"
   },
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
-  },
-  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "keywords": [
+    "i18n",
+    "intl",
+    "plural",
+    "PluralRules",
+    "polyfill",
+    "rules"
+  ],
+  "main": "index.js",
+  "repository": "formatjs/formatjs.git"
 }
