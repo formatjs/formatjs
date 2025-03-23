@@ -132,7 +132,7 @@
   "lint-staged": {
     "*": "bazel run //:format"
   },
-  "packageManager": "pnpm@10.4.1",
+  "packageManager": "pnpm@10.6.5",
   "pnpm": {
     "onlyBuiltDependencies": [],
     "packageExtensions": {
