@@ -9,7 +9,7 @@
     "tslib": "^2.8.0"
   },
   "devDependencies": {
-    "fast-xml-parser": "^4.5.1"
+    "fast-xml-parser": "^5.0.9"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "homepage": "https://github.com/formatjs/formatjs#readme",
