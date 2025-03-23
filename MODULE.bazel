@@ -5,7 +5,7 @@ module(
 
 ######### JS & Node.js rules #########
 
-bazel_dep(name = "aspect_rules_js", version = "2.1.3")
+bazel_dep(name = "aspect_rules_js", version = "2.3.2")
 
 ####### Node.js version #########
 # By default you get the node version from DEFAULT_NODE_VERSION in @rules_nodejs//nodejs:repositories.bzl
@@ -36,7 +36,7 @@ pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
 # not some transitive dependency.
 pnpm.pnpm(
     name = "pnpm",
-    pnpm_version = "9.12.1",
+    pnpm_version = "10.4.1",
 )
 
 # Allows developers to use the matching pnpm version, for example:
@@ -59,7 +59,7 @@ use_repo(rules_ts_ext, "npm_typescript")
 
 ######### Bazel lib rules #########
 
-bazel_dep(name = "aspect_bazel_lib", version = "2.13.0")
+bazel_dep(name = "aspect_bazel_lib", version = "2.14.0")
 
 ######### Jest rules #########
 
