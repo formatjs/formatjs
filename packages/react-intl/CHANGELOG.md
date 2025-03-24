@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.9](https://github.com/formatjs/formatjs/compare/react-intl@7.1.8...react-intl@7.1.9) (2025-03-24)
+
+### Bug Fixes
+
+* **react-intl:** only keyed if value is array, fix [#4915](https://github.com/formatjs/formatjs/issues/4915) ([404f5d9](https://github.com/formatjs/formatjs/commit/404f5d9473d65cbf9137e0e43f1e757d3c13f0f1)) - by @longlho
+
 ## [7.1.8](https://github.com/formatjs/formatjs/compare/react-intl@7.1.7...react-intl@7.1.8) (2025-03-24)
 
 ### Bug Fixes
