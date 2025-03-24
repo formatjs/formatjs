@@ -447,7 +447,7 @@
     "@@aspect_rules_ts+//ts:extensions.bzl%ext": {
       "general": {
         "bzlTransitiveDigest": "NmIg3aT0HCpU245kZoPb+TSBOktXmt7j9HoltcCIi8M=",
-        "usagesDigest": "ro0m1WtcOFcyu6bZx2x/7rK8ea5kA2w6CqfbYJ2u1bA=",
+        "usagesDigest": "tsxRjH5DN8xUnGoUELCp/xuIp04EwwlFAtYpnGb6Y+4=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},

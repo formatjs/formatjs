@@ -42,18 +42,18 @@
     {
       "range": "exact",
       "dependencies": ["typescript"]
-    },
-    {
-      "range": "^",
-      "dependencies": ["!typescript"]
     }
   ],
   "versionGroups": [
     {
       "label": "Use workspace protocol when developing local packages",
       "dependencies": ["$LOCAL"],
-      "dependencyTypes": ["dev", "prod", "peer"],
       "pinVersion": "workspace:*"
+    },
+    {
+      "label": "React packages",
+      "dependencies": ["react", "react-dom"],
+      "pinVersion": "16 || 17 || 18 || 19"
     }
   ]
 }
