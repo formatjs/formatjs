@@ -104,6 +104,7 @@ describe('<FormattedMessage>', () => {
     expect(getByTestId('comp')).toHaveTextContent(
       intl.formatMessage(descriptor, values)
     )
+    expect(intl.formatMessage(descriptor, values)).toBe('Hello, Jest!')
   })
 
   it('accepts string as `tagName` prop', () => {

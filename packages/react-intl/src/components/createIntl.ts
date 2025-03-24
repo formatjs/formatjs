@@ -63,7 +63,10 @@ const formatMessage: FormatMessageFn<React.ReactNode> = (
     values as any,
     ...rest
   )
-  return toKeyedReactNodeArray(chunks)
+  if (Array.isArray(chunks)) {
+    return toKeyedReactNodeArray(chunks)
+  }
+  return chunks
 }
 
 /**
