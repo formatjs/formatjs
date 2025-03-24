@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.8](https://github.com/formatjs/formatjs/compare/react-intl@7.1.7...react-intl@7.1.8) (2025-03-24)
+
+### Bug Fixes
+
+* **react-intl:** fix react dep, fix [#4914](https://github.com/formatjs/formatjs/issues/4914) ([4e91a7c](https://github.com/formatjs/formatjs/commit/4e91a7c334e458f055b22d8cfaa91df0cc4b1414)) - by @longlho
+
 ## [7.1.7](https://github.com/formatjs/formatjs/compare/react-intl@7.1.6...react-intl@7.1.7) (2025-03-23)
 
 **Note:** Version bump only for package react-intl
