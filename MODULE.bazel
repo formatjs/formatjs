@@ -80,7 +80,7 @@ bazel_dep(
 
 ######### Lint rules #########
 
-bazel_dep(name = "aspect_rules_lint", version = "1.2.0")
+bazel_dep(name = "aspect_rules_lint", version = "1.2.2")
 
 ######### test262 rules #########
 
