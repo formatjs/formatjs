@@ -55,7 +55,7 @@ function FormattedMessage(props: Props) {
   })
 
   if (typeof children === 'function') {
-    return children(nodes)
+    return children(Array.isArray(nodes) ? nodes : [nodes])
   }
 
   if (Component) {

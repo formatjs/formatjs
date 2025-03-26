@@ -175,7 +175,7 @@ describe('<FormattedMessage>', () => {
 
     expect(spy).toHaveBeenCalledTimes(2)
 
-    expect(spy.mock.calls[0][0]).toEqual(intl.formatMessage(descriptor))
+    expect(spy.mock.calls[0][0]).toEqual(['Hello, World!'])
 
     expect(getByTestId('comp')).toHaveTextContent('Jest')
   })
