@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.10](https://github.com/formatjs/formatjs/compare/react-intl@7.1.9...react-intl@7.1.10) (2025-03-26)
+
+### Bug Fixes
+
+* drop TS reqs, fix [#4917](https://github.com/formatjs/formatjs/issues/4917) ([f28e20d](https://github.com/formatjs/formatjs/commit/f28e20db2759a4345cb58054a324de6a9ffb5e63)) - by @longlho
+* **react-intl:** restore old behavior, fix [#4918](https://github.com/formatjs/formatjs/issues/4918) ([e4771ac](https://github.com/formatjs/formatjs/commit/e4771acca4e21136bad94b63ef54742db6095960)) - by @longlho
+
 ## [7.1.9](https://github.com/formatjs/formatjs/compare/react-intl@7.1.8...react-intl@7.1.9) (2025-03-24)
 
 ### Bug Fixes

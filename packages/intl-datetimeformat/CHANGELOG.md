@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.18.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.17.4...@formatjs/intl-datetimeformat@6.18.0) (2025-03-26)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** tz data to 2025b, fix [#4873](https://github.com/formatjs/formatjs/issues/4873) ([bd451c1](https://github.com/formatjs/formatjs/commit/bd451c194cc79ffba4ebb11e07c349cb948015dc)) - by @longlho
+
 ## [6.17.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.17.3...@formatjs/intl-datetimeformat@6.17.4) (2025-03-23)
 
 ### Bug Fixes

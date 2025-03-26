@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.5...@formatjs/intl@3.1.6) (2025-03-26)
+
+### Bug Fixes
+
+* drop TS reqs, fix [#4917](https://github.com/formatjs/formatjs/issues/4917) ([f28e20d](https://github.com/formatjs/formatjs/commit/f28e20db2759a4345cb58054a324de6a9ffb5e63)) - by @longlho
+
 ## [3.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.4...@formatjs/intl@3.1.5) (2025-03-23)
 
 **Note:** Version bump only for package @formatjs/intl
