@@ -54,6 +54,18 @@
       "label": "React packages",
       "dependencies": ["react", "react-dom"],
       "pinVersion": "16 || 17 || 18 || 19"
+    },
+    {
+      "label": "Typescript",
+      "dependencies": ["typescript"],
+      "packages": ["!formatjs-repo"],
+      "pinVersion": "^5.6.0"
+    },
+    {
+      "label": "Typescript root",
+      "dependencies": ["typescript"],
+      "packages": ["formatjs-repo"],
+      "pinVersion": "5.8.2"
     }
   ]
 }
