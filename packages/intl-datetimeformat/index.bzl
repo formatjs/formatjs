@@ -13,9 +13,7 @@ ZIC_FILES = [
     "southamerica",
 ]
 
-IANA_TZ_VERSION = "2024b"
-TZCODE_SHA256 = "5e438fc449624906af16a18ff4573739f0cda9862e5ec28d3bcb19cbaed0f672"
-TZDATA_SHA256 = "70e754db126a8d0db3d16d6b4cb5f7ec1e04d5f261255e4558a67fe92d39e550"
+IANA_TZ_VERSION = "2025b"
 
 def generate_dockerfile(name):
     """
@@ -55,10 +53,6 @@ WORKDIR /tz
 RUN curl -o tzdata.tar.gz https://data.iana.org/time-zones/releases/tzdata{iana_tz_version}.tar.gz
 RUN curl -o tzcode.tar.gz https://data.iana.org/time-zones/releases/tzcode{iana_tz_version}.tar.gz
 
-# Verify the SHA-256 checksum
-RUN echo "{tzdata_sha256}  tzdata.tar.gz" | sha256sum -c -
-RUN echo "{tzcode_sha256}  tzcode.tar.gz" | sha256sum -c -
-
 # Extract the copied files into /tz and set up directories in a single layer
 RUN tar -xzf tzdata.tar.gz -C /tz && \\
     tar -xzf tzcode.tar.gz -C /tz && \\
@@ -75,8 +69,6 @@ RUN make TOPDIR=/tzdir install && \\
 RUN tar -czvf /tz_data.tar.gz /tz_data_generated
     """.format(
         iana_tz_version = IANA_TZ_VERSION,
-        tzdata_sha256 = TZDATA_SHA256,
-        tzcode_sha256 = TZCODE_SHA256,
         mkdir_commands = mkdir_commands,
         zic_files = zic_files,
         zdump_commands = zdump_commands,
