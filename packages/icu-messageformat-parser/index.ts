@@ -1,5 +1,5 @@
-import {ErrorKind} from './error'
-import {Parser, ParserOptions} from './parser'
+import {ErrorKind} from './error.js'
+import {Parser, ParserOptions} from './parser.js'
 import {
   isDateElement,
   isDateTimeSkeleton,
