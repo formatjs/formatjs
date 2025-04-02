@@ -5,6 +5,9 @@
   "license": "MIT",
   "author": "Linjie Ding <linjie@airtable.com>",
   "type": "module",
+  "scripts": {
+    "lint:types": "tsc --noEmit"
+  },
   "engines": {
     "node": ">= 16"
   },

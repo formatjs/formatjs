@@ -1,4 +1,4 @@
-import {CompileFn, FormatFn} from './default'
+import {CompileFn, FormatFn} from './default.js'
 
 export type PhraseJson = Record<string, string>
 

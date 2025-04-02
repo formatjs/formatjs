@@ -1,4 +1,4 @@
-import {Location} from './types'
+import {Location} from './types.js'
 
 export interface ParserError {
   kind: ErrorKind

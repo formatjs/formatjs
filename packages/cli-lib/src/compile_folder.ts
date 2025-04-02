@@ -1,6 +1,6 @@
 import {outputFile} from 'fs-extra'
 import {basename, join} from 'path'
-import {Opts, compile} from './compile'
+import {Opts, compile} from './compile.js'
 export default async function compileFolder(
   files: string[],
   outFolder: string,

@@ -1,6 +1,6 @@
 import {Preprocessor} from 'content-tag'
-import {parseFile as parseHbsFile} from './hbs_extractor'
-import {parseScript} from './parse_script'
+import {parseFile as parseHbsFile} from './hbs_extractor.js'
+import {parseScript} from './parse_script.js'
 let p = new Preprocessor()
 
 export function parseFile(

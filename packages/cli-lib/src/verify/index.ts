@@ -1,8 +1,8 @@
 import {basename} from 'path'
-import {debug} from '../console_utils'
-import {checkMissingKeys} from './checkMissingKeys'
+import {debug} from '../console_utils.js'
+import {checkMissingKeys} from './checkMissingKeys.js'
 import {readJSON} from 'fs-extra'
-import {checkStructuralEquality} from './checkStructuralEquality'
+import {checkStructuralEquality} from './checkStructuralEquality.js'
 export interface VerifyOpts {
   sourceLocale: string
   missingKeys: boolean

@@ -1,13 +1,13 @@
 import type {Comparator} from 'json-stable-stringify'
 import {resolve} from 'path'
 import {pathToFileURL} from 'url'
-import * as crowdin from './crowdin'
-import * as defaultFormatter from './default'
-import {CompileFn, FormatFn, SerializeFn} from './default'
-import * as lokalise from './lokalise'
-import * as simple from './simple'
-import * as smartling from './smartling'
-import * as transifex from './transifex'
+import * as crowdin from './crowdin.js'
+import * as defaultFormatter from './default.js'
+import {CompileFn, FormatFn, SerializeFn} from './default.js'
+import * as lokalise from './lokalise.js'
+import * as simple from './simple.js'
+import * as smartling from './smartling.js'
+import * as transifex from './transifex.js'
 
 export interface Formatter<T> {
   serialize?: SerializeFn<T>

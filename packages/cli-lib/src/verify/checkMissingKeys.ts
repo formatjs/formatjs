@@ -1,4 +1,4 @@
-import {debug, writeStderr} from '../console_utils'
+import {debug, writeStderr} from '../console_utils.js'
 
 /**
  * Flatten nested obj into list of keys, delimited by `.`

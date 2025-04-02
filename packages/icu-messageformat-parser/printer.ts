@@ -22,7 +22,7 @@ import {
   TagElement,
   TimeElement,
   TYPE,
-} from './types'
+} from './types.js'
 
 export function printAST(ast: MessageFormatElement[]): string {
   return doPrintAST(ast, false)
