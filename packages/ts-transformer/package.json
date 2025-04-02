@@ -5,6 +5,7 @@
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "types": "index.d.ts",
+  "type": "module",
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@types/json-stable-stringify": "^1.1.0",
