@@ -27,6 +27,7 @@ import FormattedPlural from './src/components/plural'
 import IntlProvider from './src/components/provider'
 import FormattedRelativeTime from './src/components/relative'
 import useIntl from './src/components/useIntl'
+import {IntlShape} from './src/types'
 export {
   createIntlCache,
   CustomFormatConfig,
@@ -94,7 +95,7 @@ export const FormattedTime: React.FC<
 export const FormattedNumber: React.FC<
   Omit<NumberFormatOptions, 'localeMatcher'> &
     CustomFormatConfig<'number'> & {
-      value: number
+      value: Parameters<IntlShape['formatNumber']>[0]
       children?(formattedNumber: string): React.ReactElement | null
     }
 > = createFormattedComponent('formatNumber')
