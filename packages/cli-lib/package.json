@@ -4,7 +4,6 @@
   "version": "7.3.3",
   "license": "MIT",
   "author": "Linjie Ding <linjie@airtable.com>",
-  "type": "module",
   "engines": {
     "node": ">= 16"
   },
@@ -54,7 +53,7 @@
     "translate",
     "translation"
   ],
-  "main": "lib_esnext/index.js",
+  "main": "index.js",
   "peerDependenciesMeta": {
     "vue": {
       "optional": true
