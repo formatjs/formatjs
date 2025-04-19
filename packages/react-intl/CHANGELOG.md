@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.11](https://github.com/formatjs/formatjs/compare/react-intl@7.1.10...react-intl@7.1.11) (2025-04-19)
+
+### Bug Fixes
+
+* **react-intl:** update type of the <FormattedNumber> `value` prop ([#4954](https://github.com/formatjs/formatjs/issues/4954)) ([9160933](https://github.com/formatjs/formatjs/commit/9160933f1cb92e980b1f7c64592c059585ff8144)) - by @probertson
+
 ## [7.1.10](https://github.com/formatjs/formatjs/compare/react-intl@7.1.9...react-intl@7.1.10) (2025-03-26)
 
 ### Bug Fixes

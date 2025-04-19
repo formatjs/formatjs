@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.3.3...@formatjs/cli-lib@7.3.4) (2025-04-19)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** remove type module and fix main ([acdda0c](https://github.com/formatjs/formatjs/commit/acdda0c1d4f5bfbdac8afd5c0a308fb36a29b589)) - by @longlho
+
 ## [7.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.3.2...@formatjs/cli-lib@7.3.3) (2025-03-26)
 
 ### Bug Fixes
