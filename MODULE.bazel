@@ -8,9 +8,33 @@ module(
 # Compatibility with WSL
 single_version_override(
     module_name = "toolchain_utils",
-    version = "1.2.0",
-    patches = ["//:patches/toolchain_utils@1.2.0.patch"],
     patch_strip = 1,
+    patches = ["//:patches/toolchain_utils@1.2.0.patch"],
+    version = "1.2.0",
+)
+
+######## Hermetic CC toolchain #########
+
+bazel_dep(name = "hermetic_cc_toolchain", version = "3.1.0")
+
+cc_toolchains = use_extension("@hermetic_cc_toolchain//toolchain:ext.bzl", "toolchains")
+use_repo(cc_toolchains, "zig_sdk")
+
+register_toolchains(
+    # execution HOST platform
+    "@zig_sdk//toolchain:aarch64-linux-musl",
+    "@zig_sdk//libc_aware/toolchain:linux_arm64_gnu.2.31",
+
+    # toolchains for libc-aware platforms, will be used for amd64 / arm64
+    "@zig_sdk//libc_aware/toolchain:linux_amd64_gnu.2.28",
+    "@zig_sdk//libc_aware/toolchain:linux_arm64_gnu.2.28",
+
+    # toolchains for darwin, will be used for amd64 / arm64
+    "@zig_sdk//toolchain:darwin_amd64",
+    "@zig_sdk//toolchain:darwin_arm64",
+
+    # wasm/wasi toolchains
+    "@zig_sdk//toolchain:wasip1_wasm",
 )
 
 ######### JS & Node.js rules #########
