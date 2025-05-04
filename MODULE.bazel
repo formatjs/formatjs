@@ -3,6 +3,16 @@ module(
     version = "1.0",
 )
 
+######### Misc deps #########
+
+# Compatibility with WSL
+single_version_override(
+    module_name = "toolchain_utils",
+    version = "1.2.0",
+    patches = ["//:patches/toolchain_utils@1.2.0.patch"],
+    patch_strip = 1,
+)
+
 ######### JS & Node.js rules #########
 
 bazel_dep(name = "aspect_rules_js", version = "2.3.4")
@@ -14,6 +24,7 @@ bazel_dep(name = "rules_nodejs", version = "6.3.4")
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node", dev_dependency = True)
 node.toolchain(node_version = "20.17.0")
+
 #################################
 
 npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)

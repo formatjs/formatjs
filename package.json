@@ -126,8 +126,14 @@
     "webpack": "^5.95.0"
   },
   "devEngines": {
-    "node": ">= 18.x",
-    "npm": "6.x"
+    "runtime": {
+      "name": "node",
+      "version": ">= 18.x"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": "10.x"
+    }
   },
   "lint-staged": {
     "*": "bazel run //:format"

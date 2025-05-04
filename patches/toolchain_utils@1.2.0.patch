@@ -1,0 +1,23 @@
+diff --git a/toolchain/local/triplet/os.bzl b/toolchain/local/triplet/os.bzl
+index 206238e..ccf792d 100644
+--- a/toolchain/local/triplet/os.bzl
++++ b/toolchain/local/triplet/os.bzl
+@@ -173,14 +173,14 @@ def os(rctx):
+     if path:
+         return _sw_vers(rctx, path)
+ 
+-    path = rctx.which("cmd.exe")
+-    if path:
+-        return _cmd(rctx, path)
+-
+     path = rctx.which("uname")
+     if path:
+         return _uname(rctx, path)
+ 
++    path = rctx.which("")
++    if path:
++        return _cmd(rctx, path)
++
+     return VersionedInfo({
+         "linux": "linux",
+         "windows 10": "windows.10",
