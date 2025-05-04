@@ -3,7 +3,7 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
 
-def vitest(name, srcs = [], deps = [], size = "small", flaky = False, tags = [], no_copy_to_bin = [], fixtures = [], dom = False, snapshots = [], skip_typecheck = False, **kwargs):
+def vitest(name, srcs = [], deps = [], size = "small", flaky = False, tags = [], no_copy_to_bin = [], fixtures = [], dom = False, snapshots = [], skip_typecheck = False, timeout = None, **kwargs):
     """
     A rule to define a vitest target.
 
@@ -19,6 +19,7 @@ def vitest(name, srcs = [], deps = [], size = "small", flaky = False, tags = [],
         fixtures (list, optional): A list of fixture files for the target. Defaults to an empty list.
         dom (bool, optional): Whether to run the test in a DOM environment. Defaults to False.
         skip_typecheck (bool, optional): Whether to skip typechecking. Defaults to False.
+        timeout (str, optional): Custom timeout for the test in milliseconds. Defaults to None.
         **kwargs: Additional keyword arguments.
     """
 
@@ -52,6 +53,6 @@ def vitest(name, srcs = [], deps = [], size = "small", flaky = False, tags = [],
         no_copy_to_bin = no_copy_to_bin,
         args = [
             "run",
-        ] + (["--dom"] if dom else []),
+        ] + (["--dom"] if dom else []) + (["--test-timeout", timeout] if timeout else []),
         **kwargs
     )
