@@ -6,6 +6,8 @@ import compileFolder from './compile_folder'
 import {debug} from './console_utils'
 import extract, {ExtractCLIOptions} from './extract'
 import {verify, VerifyOpts} from './verify'
+import {readFileSync} from 'fs-extra'
+import {resolve} from 'path'
 
 const KNOWN_COMMANDS = ['extract']
 
@@ -46,6 +48,11 @@ type FormatFn = <T = Record<string, MessageDescriptor>>(
 \`\`\` 
 This is especially useful to convert from our extracted format to a TMS-specific format.
 `
+    )
+    .option(
+      '--in-file <path>',
+      `The file containing list of files to extract from, separated by newlines. This is mainly
+      to deal with the case where you have a large number of files to extract from and bash chokes.`
     )
     .option(
       '--out-file <path>',
@@ -116,9 +123,25 @@ sentences are not translator-friendly.`
     .action(async (filePatterns: string[], cmdObj: ExtractCLIOptions) => {
       debug('File pattern:', filePatterns)
       debug('Options:', cmdObj)
-      const files = globSync(filePatterns, {
-        ignore: cmdObj.ignore,
-      })
+      const files: string[] = []
+      if (filePatterns.length) {
+        files.push(
+          ...globSync(filePatterns, {
+            ignore: cmdObj.ignore,
+          })
+        )
+      }
+
+      if (cmdObj.inFile) {
+        debug('Reading inFile:', cmdObj.inFile)
+        const inFile = readFileSync(cmdObj.inFile, 'utf8')
+        files.push(
+          ...inFile
+            .split('\n')
+            .filter(Boolean)
+            .map(f => resolve(f))
+        )
+      }
 
       debug('Files to extract:', files)
 
@@ -135,7 +158,7 @@ sentences are not translator-friendly.`
         format: cmdObj.format,
         // It is possible that the glob pattern does NOT match anything.
         // But so long as the glob pattern is provided, don't read from stdin.
-        readFromStdin: filePatterns.length === 0,
+        readFromStdin: files.length === 0,
         preserveWhitespace: cmdObj.preserveWhitespace,
         flatten: cmdObj.flatten,
       })

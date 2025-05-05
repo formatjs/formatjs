@@ -143,6 +143,10 @@ This is especially useful to convert from our extracted format to a TMS-specific
 
 See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli-lib/src/formatters) for examples.
 
+### `--in-file [path]`
+
+The file containing list of file paths to extract. This is useful to bypass bash command line limit.
+
 ### `--out-file [path]`
 
 The target file path where the plugin will output an aggregated `.json` file of allthe translations from the `files` supplied. This flag will ignore `--messages-dir`

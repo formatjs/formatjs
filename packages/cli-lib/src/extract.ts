@@ -47,6 +47,10 @@ export type ExtractCLIOptions = Omit<
    */
   outFile?: string
   /**
+   * Input File
+   */
+  inFile?: string
+  /**
    * Ignore file glob pattern
    */
   ignore?: string[]

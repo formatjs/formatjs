@@ -65,6 +65,19 @@ test('basic case: defineMessages -> out-file', async () => {
   ).toMatchSnapshot()
 }, 20000)
 
+test('basic case: inFile', async () => {
+  process.chdir(__dirname)
+  await expect(
+    exec(
+      `${BIN_PATH} extract --in-file inFile.txt --out-file ${ARTIFACT_PATH}/infile-actual.json`
+    )
+  ).resolves.toMatchSnapshot()
+
+  expect(
+    await readJSON(join(ARTIFACT_PATH, 'infile-actual.json'))
+  ).toMatchSnapshot()
+})
+
 test('basic case: defineMessages -> out-file with  --additional-function-names', async () => {
   process.chdir(__dirname)
   await expect(
