@@ -137,7 +137,7 @@ sentences are not translator-friendly.`
         const inFile = readFileSync(cmdObj.inFile, 'utf8')
         files.push(
           ...inFile
-            .split('\n')
+            .split(/\n|\s+/)
             .filter(Boolean)
             .map(f => resolve(f))
         )

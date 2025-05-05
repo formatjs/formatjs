@@ -1,2 +1,2 @@
 defineMessages/actual.js
-duplicated/file1.tsx
+inFile/file1.tsx inFile/file2.tsx
