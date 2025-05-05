@@ -178,8 +178,8 @@
     "@glimmer/interfaces": "0.94.6",
     "@glimmer/syntax": "0.94.9",
     "eslint": "9.23.0",
-    "react": "18",
-    "react-dom": "18",
+    "react": "19",
+    "react-dom": "19",
     "source-map-js": "1.2.1",
     "terser": "5.39.0",
     "typescript": "5.8.2"
