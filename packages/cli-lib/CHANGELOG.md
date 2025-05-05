@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.4.0...@formatjs/cli-lib@7.4.1) (2025-05-05)
+
+### Bug Fixes
+
+* **@formatjs/cli:** support space for in-file ([23f89da](https://github.com/formatjs/formatjs/commit/23f89da8e482760f6df8df1e6bebf5e0943e3424)) - by @longlho
+
 # [7.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.3.4...@formatjs/cli-lib@7.4.0) (2025-05-05)
 
 ### Features
