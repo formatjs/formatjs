@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.6.4...@formatjs/cli@6.7.0) (2025-05-05)
+
+### Features
+
+* **@formatjs/cli:** allow extract to take in --in-file ([bbfaef6](https://github.com/formatjs/formatjs/commit/bbfaef62fa7de54cc4646e292d491419f1b28fd6)) - by @longlho
+
 ## [6.6.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.6.3...@formatjs/cli@6.6.4) (2025-04-19)
 
 **Note:** Version bump only for package @formatjs/cli

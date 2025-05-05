@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.3.4...@formatjs/cli-lib@7.4.0) (2025-05-05)
+
+### Features
+
+* **@formatjs/cli:** allow extract to take in --in-file ([bbfaef6](https://github.com/formatjs/formatjs/commit/bbfaef62fa7de54cc4646e292d491419f1b28fd6)) - by @longlho
+
 ## [7.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.3.3...@formatjs/cli-lib@7.3.4) (2025-04-19)
 
 ### Bug Fixes
