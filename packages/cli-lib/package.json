@@ -53,7 +53,7 @@
     "translate",
     "translation"
   ],
-  "main": "index.js",
+  "main": "lib_esnext/index.js",
   "peerDependenciesMeta": {
     "vue": {
       "optional": true
