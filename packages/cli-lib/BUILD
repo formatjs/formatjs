@@ -37,10 +37,7 @@ VUE_DEPS = [
 ]
 
 GLIMMER_HBS_DEPS = [
-    "//:node_modules/@glimmer/env",
-    "//:node_modules/@glimmer/reference",
     "//:node_modules/@glimmer/syntax",
-    "//:node_modules/@glimmer/validator",
     "//:node_modules/content-tag",
     "//:node_modules/ember-template-recast",
 ]
