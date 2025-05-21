@@ -162,7 +162,7 @@ importers:
         version: 8.27.0(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.2)
       '@unicode/unicode-13.0.0':
         specifier: ^1.6.0
-        version: 1.6.5
+        version: 1.6.6
       '@vue/compiler-core':
         specifier: ^3.5.12
         version: 3.5.13
@@ -3475,8 +3475,8 @@ packages:
   '@ungap/structured-clone@1.2.1':
     resolution: {integrity: sha512-fEzPV3hSkSMltkw152tJKNARhOupqbH96MZWyRjNaYZOMIzbrTeQDG+MTc6Mr2pgzFQzFxAfmhGDNP5QK++2ZA==}
 
-  '@unicode/unicode-13.0.0@1.6.5':
-    resolution: {integrity: sha512-UjiQH4hWNzmF0pLO0Dym3tttgyf8cfLNiv8RucXx/jFqAtWBXsLf+iBqzlNpuNPPqdyN1cv9dvNkbl/1uHoEzQ==}
+  '@unicode/unicode-13.0.0@1.6.6':
+    resolution: {integrity: sha512-pzNIKYOq5SRn6UBeJ7fjF//dOXqodKsFXbJgVnTd+fDQf9iAcGGUu9olmZ3gBIts1Dwpn+z5iZ6Tam25lk45FA==}
 
   '@vitest/expect@3.1.1':
     resolution: {integrity: sha512-q/zjrW9lgynctNbwvFtQkGK9+vvHA5UzVi2V8APrp1C6fG6/MuYYkmlx4FubuqLycCeSdHD5aadWfua/Vr0EUA==}
@@ -13718,7 +13718,7 @@ snapshots:
 
   '@ungap/structured-clone@1.2.1': {}
 
-  '@unicode/unicode-13.0.0@1.6.5': {}
+  '@unicode/unicode-13.0.0@1.6.6': {}
 
   '@vitest/expect@3.1.1':
     dependencies:
