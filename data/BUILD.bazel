@@ -1,0 +1,8 @@
+exports_files(
+    [
+        # This comes from https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml
+        # We check this in bc the don't version this file
+        "list-one.xml",
+    ],
+    visibility = ["//visibility:public"],
+)
