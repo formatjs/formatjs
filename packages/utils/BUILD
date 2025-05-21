@@ -82,7 +82,7 @@ generate_src_file(
 
 copy_file(
     name = "iso-4217",
-    src = "@ISO4217//file",
+    src = "//data:list-one.xml",
     out = "iso4217.xml",
 )
 
