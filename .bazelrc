@@ -61,9 +61,9 @@ build --define=NODE_OPTIONS=--max-old-space-size=4096
 
 # BuildBuddy GH Actions Config
 # https://www.buildbuddy.io/docs/rbe-github-actions
-build --bes_results_url=https://formatjs.buildbuddy.io/invocation/
-build --bes_backend=grpcs://formatjs.buildbuddy.io
-build --remote_cache=grpcs://formatjs.buildbuddy.io
+build --bes_results_url=https://app.buildbuddy.io/invocation/
+build --bes_backend=grpcs://remote.buildbuddy.io
+build --remote_cache=grpcs://remote.buildbuddy.io
 
 # honor the setting of `skipLibCheck` in the tsconfig.json file
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
@@ -76,7 +76,7 @@ fetch --@aspect_rules_ts//ts:default_to_tsc_transpiler
 query --@aspect_rules_ts//ts:default_to_tsc_transpiler
 
 # BuildBuddy RBE
-build:remote --remote_executor=grpcs://formatjs.buildbuddy.io
+build:remote --remote_executor=grpcs://remote.buildbuddy.io
 build:remote --host_platform=@buildbuddy_toolchain//:platform
 build:remote --platforms=@buildbuddy_toolchain//:platform
 build:remote --extra_execution_platforms=@buildbuddy_toolchain//:platform
