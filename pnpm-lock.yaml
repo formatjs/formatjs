@@ -11,7 +11,7 @@ overrides:
   react: '18'
   react-dom: '18'
   source-map-js: 1.2.1
-  terser: 5.39.0
+  terser: 5.39.2
   typescript: 5.8.3
 
 packageExtensionsChecksum: sha256-rMdzKtpp3EwdMIL0y0DAqB8sU9O6+q8LT222xA4eNcg=
@@ -321,10 +321,10 @@ importers:
         version: 1.0.4
       vite:
         specifier: ^6
-        version: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.0)(yaml@2.8.0)
+        version: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.2)(yaml@2.8.0)
       vitest:
         specifier: ^3
-        version: 3.1.1(@types/debug@4.1.12)(@types/node@22.13.10)(happy-dom@17.4.7)(jiti@2.4.2)(jsdom@20.0.3)(terser@5.39.0)(yaml@2.8.0)
+        version: 3.1.1(@types/debug@4.1.12)(@types/node@22.13.10)(happy-dom@17.4.7)(jiti@2.4.2)(jsdom@20.0.3)(terser@5.39.2)(yaml@2.8.0)
       vue:
         specifier: ^3.5.12
         version: 3.5.13(typescript@5.8.3)
@@ -9365,8 +9365,8 @@ packages:
       uglify-js:
         optional: true
 
-  terser@5.39.0:
-    resolution: {integrity: sha512-LBAhFyLho16harJoWMg/nZsQYgTrg5jXOn2nCYjRUcZZEdE3qa2zb8QEDRUGVZBW4rlazf2fxkg8tztybTaqWw==}
+  terser@5.39.2:
+    resolution: {integrity: sha512-yEPUmWve+VA78bI71BW70Dh0TuV4HHd+I5SHOAfS1+QBOmvmCiiffgjR8ryyEd3KIfvPGFqoADt8LdQ6XpXIvg==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -9855,7 +9855,7 @@ packages:
       sass-embedded: '*'
       stylus: '*'
       sugarss: '*'
-      terser: 5.39.0
+      terser: 5.39.2
       tsx: ^4.8.1
       yaml: ^2.4.2
     peerDependenciesMeta:
@@ -13566,13 +13566,13 @@ snapshots:
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.0.12
+      '@types/react': 19.1.5
       '@types/react-router': 5.1.20
 
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.0.12
+      '@types/react': 19.1.5
 
   '@types/react@19.0.12':
     dependencies:
@@ -13725,13 +13725,13 @@ snapshots:
       chai: 5.2.0
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@3.1.1(vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.0)(yaml@2.8.0))':
+  '@vitest/mocker@3.1.1(vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.2)(yaml@2.8.0))':
     dependencies:
       '@vitest/spy': 3.1.1
       estree-walker: 3.0.3
       magic-string: 0.30.17
     optionalDependencies:
-      vite: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.0)(yaml@2.8.0)
+      vite: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.2)(yaml@2.8.0)
 
   '@vitest/pretty-format@3.1.1':
     dependencies:
@@ -16785,7 +16785,7 @@ snapshots:
 
   history@4.10.1:
     dependencies:
-      '@babel/runtime': 7.27.0
+      '@babel/runtime': 7.27.1
       loose-envify: 1.4.0
       resolve-pathname: 3.0.0
       tiny-invariant: 1.3.3
@@ -16834,7 +16834,7 @@ snapshots:
       he: 1.2.0
       param-case: 3.0.4
       relateurl: 0.2.7
-      terser: 5.39.0
+      terser: 5.39.2
 
   html-minifier-terser@7.2.0:
     dependencies:
@@ -16844,7 +16844,7 @@ snapshots:
       entities: 4.5.0
       param-case: 3.0.4
       relateurl: 0.2.7
-      terser: 5.39.0
+      terser: 5.39.2
 
   html-tags@3.3.1: {}
 
@@ -20944,12 +20944,12 @@ snapshots:
       jest-worker: 27.5.1
       schema-utils: 4.3.0
       serialize-javascript: 6.0.2
-      terser: 5.39.0
+      terser: 5.39.2
       webpack: 5.98.0(@swc/core@1.11.16(@swc/helpers@0.5.15))
     optionalDependencies:
       '@swc/core': 1.11.16(@swc/helpers@0.5.15)
 
-  terser@5.39.0:
+  terser@5.39.2:
     dependencies:
       '@jridgewell/source-map': 0.3.6
       acorn: 8.14.1
@@ -21405,13 +21405,13 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.2
 
-  vite-node@3.1.1(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.0)(yaml@2.8.0):
+  vite-node@3.1.1(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.2)(yaml@2.8.0):
     dependencies:
       cac: 6.7.14
       debug: 4.4.0
       es-module-lexer: 1.6.0
       pathe: 2.0.3
-      vite: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.0)(yaml@2.8.0)
+      vite: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.2)(yaml@2.8.0)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -21426,7 +21426,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.0)(yaml@2.8.0):
+  vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.2)(yaml@2.8.0):
     dependencies:
       esbuild: 0.25.3
       postcss: 8.5.3
@@ -21435,13 +21435,13 @@ snapshots:
       '@types/node': 22.13.10
       fsevents: 2.3.3
       jiti: 2.4.2
-      terser: 5.39.0
+      terser: 5.39.2
       yaml: 2.8.0
 
-  vitest@3.1.1(@types/debug@4.1.12)(@types/node@22.13.10)(happy-dom@17.4.7)(jiti@2.4.2)(jsdom@20.0.3)(terser@5.39.0)(yaml@2.8.0):
+  vitest@3.1.1(@types/debug@4.1.12)(@types/node@22.13.10)(happy-dom@17.4.7)(jiti@2.4.2)(jsdom@20.0.3)(terser@5.39.2)(yaml@2.8.0):
     dependencies:
       '@vitest/expect': 3.1.1
-      '@vitest/mocker': 3.1.1(vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.0)(yaml@2.8.0))
+      '@vitest/mocker': 3.1.1(vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.2)(yaml@2.8.0))
       '@vitest/pretty-format': 3.1.1
       '@vitest/runner': 3.1.1
       '@vitest/snapshot': 3.1.1
@@ -21457,8 +21457,8 @@ snapshots:
       tinyexec: 0.3.2
       tinypool: 1.0.2
       tinyrainbow: 2.0.0
-      vite: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.0)(yaml@2.8.0)
-      vite-node: 3.1.1(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.0)(yaml@2.8.0)
+      vite: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.2)(yaml@2.8.0)
+      vite-node: 3.1.1(@types/node@22.13.10)(jiti@2.4.2)(terser@5.39.2)(yaml@2.8.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/debug': 4.1.12
