@@ -80,7 +80,7 @@ use_repo(pnpm, "pnpm")
 
 ######### ESBuild rules #########
 
-bazel_dep(name = "aspect_rules_esbuild", version = "0.21.0")
+bazel_dep(name = "aspect_rules_esbuild", version = "0.22.1")
 
 ######### TypeScript rules #########
 
