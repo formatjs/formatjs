@@ -15,7 +15,7 @@ single_version_override(
 
 ######## Hermetic CC toolchain #########
 
-bazel_dep(name = "hermetic_cc_toolchain", version = "3.1.0")
+bazel_dep(name = "hermetic_cc_toolchain", version = "3.2.0")
 
 cc_toolchains = use_extension("@hermetic_cc_toolchain//toolchain:ext.bzl", "toolchains")
 use_repo(cc_toolchains, "zig_sdk")
