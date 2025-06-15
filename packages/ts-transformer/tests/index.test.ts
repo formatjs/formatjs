@@ -491,9 +491,13 @@ export default class Foo extends Component {
     expect(output.code).toBe(`import React, { Component } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 defineMessage({ id: "template", defaultMessage: "should remove newline and extra spaces" });
+defineMessage({ id: "template dedent", defaultMessage: "dedent Hello World!" });
 export default class Foo extends Component {
     render() {
-        return (<FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>);
+        return (<>
+        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>
+        <FormattedMessage id="dedent foo.bar.baz" defaultMessage="dedent Hello World!"/>
+      </>);
     }
 }
 `)
@@ -504,9 +508,18 @@ export default class Foo extends Component {
         id: 'template',
       },
       {
+        defaultMessage: 'dedent Hello World!',
+        id: 'template dedent',
+      },
+      {
         defaultMessage: 'Hello World!',
         description: 'The default message.',
         id: 'foo.bar.baz',
+      },
+      {
+        defaultMessage: 'dedent Hello World!',
+        description: 'The default message.',
+        id: 'dedent foo.bar.baz',
       },
     ])
   })

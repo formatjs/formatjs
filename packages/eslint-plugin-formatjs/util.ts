@@ -121,9 +121,21 @@ export function extractMessageDescriptor(
     let value: string | undefined = undefined
     if (isStringLiteral(valueNode)) {
       value = valueNode.value
-    } else if (isTemplateLiteralWithoutVar(valueNode)) {
+    }
+    // like "`asd`"
+    else if (isTemplateLiteralWithoutVar(valueNode)) {
       value = valueNode.quasis[0].value.cooked
-    } else if (valueNode.type === 'BinaryExpression') {
+    }
+    // like "dedent`asd`"
+    else if (valueNode.type === 'TaggedTemplateExpression') {
+      const {quasi} = valueNode
+      if (!isTemplateLiteralWithoutVar(quasi)) {
+        throw new Error('Tagged template expression must be no substitution')
+      }
+      value = quasi.quasis[0].value.cooked
+    }
+    // like "`asd` + `asd`"
+    else if (valueNode.type === 'BinaryExpression') {
       const [result, isStatic] = staticallyEvaluateStringConcat(valueNode)
       if (isStatic) {
         value = result
@@ -189,8 +201,20 @@ function extractMessageDescriptorFromJSXElement(
           if (isStatic) {
             value = result
           }
-        } else if (isTemplateLiteralWithoutVar(expression)) {
+        }
+        // like "`asd`"
+        else if (isTemplateLiteralWithoutVar(expression)) {
           value = expression.quasis[0].value.cooked
+        }
+        // like "dedent`asd`"
+        else if (expression.type === 'TaggedTemplateExpression') {
+          const {quasi} = expression
+          if (!isTemplateLiteralWithoutVar(quasi)) {
+            throw new Error(
+              'Tagged template expression must be no substitution'
+            )
+          }
+          value = quasi.quasis[0].value.cooked
         }
       }
     }
