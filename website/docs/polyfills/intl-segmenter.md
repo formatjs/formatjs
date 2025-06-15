@@ -42,16 +42,6 @@ Everything in [intl-segmenter proposal](https://tc39.es/proposal-intl-segmenter)
 
 ## Usage
 
-### Via polyfill-fastly.io
-
-You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to create a polyfill script tag for `Intl.Segmenter`.
-For example:
-
-```html
-<!-- Polyfill Intl.Segmenter-->
-<script src="https://polyfill-fastly.io/v3/polyfill.min.js?features=Intl.Segmenter"></script>
-```
-
 ### Simple
 
 ```tsx
