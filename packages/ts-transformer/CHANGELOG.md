@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.14.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.13.34...@formatjs/ts-transformer@3.14.0) (2025-06-15)
+
+### Features
+
+* **eslint-plugin-formatjs:** support tagged template expression like dedent ([#5016](https://github.com/formatjs/formatjs/issues/5016)) ([be97996](https://github.com/formatjs/formatjs/commit/be979961e54ea8c5369e8631a293909f5a5dcd61)), closes [#5015](https://github.com/formatjs/formatjs/issues/5015) - by @longlho
+
 ## [3.13.34](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.13.33...@formatjs/ts-transformer@3.13.34) (2025-03-26)
 
 ### Bug Fixes

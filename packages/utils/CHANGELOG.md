@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.4](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.9.3...@formatjs/utils@1.9.4) (2025-06-15)
+
+**Note:** Version bump only for package @formatjs/utils
+
 ## [1.9.3](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.9.2...@formatjs/utils@1.9.3) (2025-05-05)
 
 **Note:** Version bump only for package @formatjs/utils

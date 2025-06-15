@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.3.1...eslint-plugin-formatjs@5.4.0) (2025-06-15)
+
+### Features
+
+* **eslint-plugin-formatjs:** support tagged template expression like dedent ([#5016](https://github.com/formatjs/formatjs/issues/5016)) ([be97996](https://github.com/formatjs/formatjs/commit/be979961e54ea8c5369e8631a293909f5a5dcd61)), closes [#5015](https://github.com/formatjs/formatjs/issues/5015) - by @longlho
+
 ## [5.3.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.3.0...eslint-plugin-formatjs@5.3.1) (2025-03-26)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
