@@ -307,6 +307,25 @@ function extractMessageDescriptor(
             msg.description = initializer.text
             break
         }
+      }
+      // {id: dedent`id`}
+      else if (ts.isTaggedTemplateExpression(initializer)) {
+        const {template} = initializer
+        if (!ts.isNoSubstitutionTemplateLiteral(template)) {
+          throw new Error('Tagged template expression must be no substitution')
+        }
+
+        switch (name.text) {
+          case 'id':
+            msg.id = template.text
+            break
+          case 'defaultMessage':
+            msg.defaultMessage = template.text
+            break
+          case 'description':
+            msg.description = template.text
+            break
+        }
       } else if (ts.isJsxExpression(initializer) && initializer.expression) {
         // <FormattedMessage foo={'barbaz'} />
         if (ts.isStringLiteral(initializer.expression)) {
@@ -344,6 +363,28 @@ function extractMessageDescriptor(
               break
             case 'description':
               msg.description = expression.text
+              break
+          }
+        }
+        // <FormattedMessage foo={dedent`dedent Hello World!`} />
+        else if (ts.isTaggedTemplateExpression(initializer.expression)) {
+          const {
+            expression: {template},
+          } = initializer
+          if (!ts.isNoSubstitutionTemplateLiteral(template)) {
+            throw new Error(
+              'Tagged template expression must be no substitution'
+            )
+          }
+          switch (name.text) {
+            case 'id':
+              msg.id = template.text
+              break
+            case 'defaultMessage':
+              msg.defaultMessage = template.text
+              break
+            case 'description':
+              msg.description = template.text
               break
           }
         }

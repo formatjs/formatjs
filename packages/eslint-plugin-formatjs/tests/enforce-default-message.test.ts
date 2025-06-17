@@ -24,8 +24,16 @@ defineMessage({
 \`,
   description: 'asd'
 })`,
+    `intl.formatMessage({
+  defaultMessage: dedent\`a template
+  literal
+\`,
+  description: 'asd'
+})`,
     `import {FormattedMessage} from 'react-intl'
 const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
+    `import {FormattedMessage} from 'react-intl'
+const a = <FormattedMessage defaultMessage={dedent\`asf\`}/>`,
     dynamicMessage,
     noMatch,
     spreadJsx,
