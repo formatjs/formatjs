@@ -205,6 +205,13 @@ export function WeekDay(t: number): number {
  * @param y
  */
 export function DayFromYear(y: number): number {
+  if (y < 100) {
+    // Date.UTC parses 0 - 99 as 1900 - 1999
+    const date = new Date(0);
+    date.setUTCFullYear(y, 0, 1);
+    date.setUTCHours(0, 0, 0, 0);
+    return date.getTime() / MS_PER_DAY;
+  }
   return Date.UTC(y, 0) / MS_PER_DAY
 }
 
