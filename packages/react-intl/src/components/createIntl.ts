@@ -9,6 +9,7 @@ import {
   FormatMessageFn,
   createIntl as coreCreateIntl,
   formatMessage as coreFormatMessage,
+  formatList as coreFormatList,
 } from '@formatjs/intl'
 import {
   FormatXMLElementFn,
@@ -69,6 +70,16 @@ const formatMessage: FormatMessageFn<React.ReactNode> = (
   return chunks
 }
 
+type FormatListFn = (
+  ...args: Parameters<typeof coreFormatList>
+) => React.ReactNode | React.ReactNode[]
+
+const formatList: FormatListFn = (opts, getListFormat, values, options) => {
+  const chunks = coreFormatList(opts, getListFormat, values, options)
+  if (Array.isArray(chunks)) return toKeyedReactNodeArray(chunks)
+  return chunks
+}
+
 /**
  * Create intl object
  * @param config intl config
@@ -106,6 +117,7 @@ export const createIntl: CreateIntlFn<
     defaultRichTextElements,
   }
 
+  coreIntl.formatList
   return {
     ...coreIntl,
     formatMessage: formatMessage.bind(
@@ -114,5 +126,10 @@ export const createIntl: CreateIntlFn<
       coreIntl.formatters
     ),
     $t: formatMessage.bind(null, resolvedConfig, coreIntl.formatters),
+    formatList: formatList.bind(
+      null,
+      resolvedConfig,
+      coreIntl.formatters.getListFormat
+    ),
   } as any
 }
