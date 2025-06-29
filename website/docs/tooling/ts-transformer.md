@@ -87,21 +87,24 @@ This requires `ts-jest@26.4.0` or later
 // jest.config.js
 module.exports = {
   // [...]
-  globals: {
-    'ts-jest': {
-      astTransformers: {
-        before: [
-          {
-            path: '@formatjs/ts-transformer/ts-jest-integration',
-            options: {
-              // options
-              overrideIdFn: '[sha512:contenthash:base64:6]',
-              ast: true,
+  transform: {
+    '^.+\\.(ts|tsx)?$': [
+      'ts-jest',
+      {
+        astTransformers: {
+          before: [
+            {
+              path: '@formatjs/ts-transformer/ts-jest-integration',
+              options: {
+                // options
+                overrideIdFn: '[sha512:contenthash:base64:6]',
+                ast: true,
+              },
             },
-          },
-        ],
+          ],
+        },
       },
-    },
+    ],
   },
 }
 ```
