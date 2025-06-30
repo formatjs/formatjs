@@ -106,10 +106,7 @@ function validateInstance(instance: any, method: string) {
  * @param iterable list
  */
 function stringListFromIterable(iterable: Iterable<unknown>): string[] {
-  if (typeof iterable !== 'object' || iterable === null) return []
-  if (typeof iterable[Symbol.iterator] !== 'function') {
-    throw new TypeError('input not is valid iterable object')
-  }
+  if (typeof iterable !== 'object') return []
   const elements: string[] = []
   const iterator = iterable[Symbol.iterator]()
   let result: IteratorResult<unknown>
@@ -117,7 +114,9 @@ function stringListFromIterable(iterable: Iterable<unknown>): string[] {
     result = iterator.next()
     if (result.done) break
     if (typeof result.value !== 'string') {
-      throw new TypeError(`ArrayList[${elements.length}] is not type String`)
+      throw new TypeError(
+        `Iterable yielded ${elements.length} which is not a string`
+      )
     }
     elements.push(result.value)
   }
