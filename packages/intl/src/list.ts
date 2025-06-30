@@ -91,7 +91,7 @@ Try polyfilling it using "@formatjs/intl-listformat"
   try {
     const richValues: Record<string, T> = {}
     const serializedValues = Array.from(values).map((v, i) => {
-      if (typeof v === 'object') {
+      if (typeof v === 'object' && v !== null) {
         const id = generateToken(i)
         richValues[id] = v as any
         return id
