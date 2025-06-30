@@ -173,12 +173,15 @@ interface IntlFormatters {
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T, R>>
   ): R
-  formatList(values: Array<string>, opts?: FormatListOptions): string
+  formatList(values: Iterable<string>, opts?: FormatListOptions): string
   formatList(
-    values: Array<string | T>,
+    values: Iterable<string | T>,
     opts?: FormatListOptions
   ): T | string | Array<string | T>
-  formatListToParts(values: Array<string | T>, opts?: FormatListOptions): Part[]
+  formatListToParts(
+    values: Iterable<string | T>,
+    opts?: FormatListOptions
+  ): Part[]
   formatDisplayName(
     value: string,
     opts?: FormatDisplayNameOptions

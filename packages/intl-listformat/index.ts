@@ -103,20 +103,25 @@ function validateInstance(instance: any, method: string) {
 
 /**
  * https://tc39.es/proposal-intl-list-format/#sec-createstringlistfromiterable
- * @param list list
+ * @param iterable list
  */
-function stringListFromIterable(list: any[]): string[] {
-  if (list === undefined) {
-    return []
+function stringListFromIterable(iterable: Iterable<unknown>): string[] {
+  if (typeof iterable !== 'object' || iterable === null) return []
+  if (typeof iterable[Symbol.iterator] !== 'function') {
+    throw new TypeError('input not is valid iterable object')
   }
-  const result = []
-  for (const el of list) {
-    if (typeof el !== 'string') {
-      throw new TypeError(`array list[${list.indexOf(el)}] is not type String`)
+  const elements: string[] = []
+  const iterator = iterable[Symbol.iterator]()
+  let result: IteratorResult<unknown>
+  while (true) {
+    result = iterator.next()
+    if (result.done) break
+    if (typeof result.value !== 'string') {
+      throw new TypeError(`ArrayList[${elements.length}] is not type String`)
     }
-    result.push(el)
+    elements.push(result.value)
   }
-  return result
+  return elements
 }
 
 function createPartsFromList(
@@ -264,7 +269,7 @@ export default class ListFormat {
       templates.end
     )
   }
-  format(elements: string[]): string {
+  format(elements: Iterable<string>): string {
     validateInstance(this, 'format')
     let result = ''
     const parts = createPartsFromList(
@@ -280,7 +285,7 @@ export default class ListFormat {
     }
     return result
   }
-  formatToParts(elements: string[]): Part[] {
+  formatToParts(elements: Iterable<string>): Part[] {
     validateInstance(this, 'format')
     const parts = createPartsFromList(
       ListFormat.__INTERNAL_SLOT_MAP__,

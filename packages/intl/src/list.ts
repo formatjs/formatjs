@@ -20,7 +20,7 @@ export function formatList(
     onError: OnErrorFn
   },
   getListFormat: Formatters['getListFormat'],
-  values: ReadonlyArray<string>,
+  values: Iterable<string>,
   options: Parameters<IntlFormatters['formatList']>[1]
 ): string
 export function formatList<T>(
@@ -29,7 +29,7 @@ export function formatList<T>(
     onError: OnErrorFn
   },
   getListFormat: Formatters['getListFormat'],
-  values: ReadonlyArray<string | T>,
+  values: Iterable<string | T>,
   options: Parameters<IntlFormatters['formatList']>[1] = {}
 ): Array<T | string> | T | string {
   const results = formatListToParts(
@@ -57,7 +57,7 @@ export function formatListToParts<T>(
     onError: OnErrorFn
   },
   getListFormat: Formatters['getListFormat'],
-  values: ReadonlyArray<string | T>,
+  values: Iterable<string | T>,
   options: Parameters<IntlFormatters['formatList']>[1]
 ): Part[]
 export function formatListToParts<T>(
@@ -90,7 +90,7 @@ Try polyfilling it using "@formatjs/intl-listformat"
 
   try {
     const richValues: Record<string, T> = {}
-    const serializedValues = values.map((v, i) => {
+    const serializedValues = Array.from(values).map((v, i) => {
       if (typeof v === 'object') {
         const id = generateToken(i)
         richValues[id] = v as any
