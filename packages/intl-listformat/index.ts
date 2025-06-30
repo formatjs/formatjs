@@ -114,9 +114,8 @@ function stringListFromIterable(iterable: Iterable<unknown>): string[] {
     result = iterator.next()
     if (result.done) break
     if (typeof result.value !== 'string') {
-      throw new TypeError(
-        `Iterable yielded ${elements.length} which is not a string`
-      )
+      const nextValue = result.value
+      throw new TypeError(`Iterable yielded ${nextValue} which is not a string`)
     }
     elements.push(result.value)
   }
