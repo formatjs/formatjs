@@ -56,7 +56,6 @@ generate_src_file(
     name = "regions",
     src = "abstract/regions.generated.ts",
     data = [
-        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],

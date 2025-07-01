@@ -161,7 +161,6 @@ generate_src_file(
     args = ["--unicodeFiles=$(rootpath :%s)" % unicode_file_name(f) for f in UNICODE_FILES],
     data =
         [":%s" % unicode_file_name(f) for f in UNICODE_FILES] + [
-            "//:node_modules/@types/json-stable-stringify",
             "//:node_modules/@types/regenerate",
             "//:node_modules/cldr-segments-full",
             "//:node_modules/json-stable-stringify",

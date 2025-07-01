@@ -7,7 +7,6 @@
   "types": "index.d.ts",
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@types/json-stable-stringify": "^1.1.0",
     "@types/node": "^22.0.0",
     "chalk": "^4.1.2",
     "json-stable-stringify": "^1.1.1",

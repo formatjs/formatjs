@@ -260,7 +260,6 @@ def package_json_test(name, packageJson = "package.json", deps = []):
     #         "//:node_modules/@types/minimist",
     #         "//:node_modules/fs-extra",
     #         "//:node_modules/json-stable-stringify",
-    #         "//:node_modules/@types/json-stable-stringify",
     #         "//:node_modules/minimist",
     #         "//:node_modules/lodash",
     #         "//:node_modules/@types/lodash",

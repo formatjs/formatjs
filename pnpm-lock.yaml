@@ -124,9 +124,6 @@ importers:
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
-      '@types/json-stable-stringify':
-        specifier: ^1.1.0
-        version: 1.1.0
       '@types/lodash':
         specifier: ^4.17.12
         version: 4.17.20
@@ -425,9 +422,6 @@ importers:
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
-      '@types/json-stable-stringify':
-        specifier: ^1.1.0
-        version: 1.1.0
       '@types/node':
         specifier: ^22.0.0
         version: 22.16.0
@@ -893,9 +887,6 @@ importers:
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:../icu-messageformat-parser
-      '@types/json-stable-stringify':
-        specifier: ^1.1.0
-        version: 1.1.0
       '@types/node':
         specifier: ^22.0.0
         version: 22.16.0
@@ -3305,9 +3296,6 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
-
-  '@types/json-stable-stringify@1.1.0':
-    resolution: {integrity: sha512-ESTsHWB72QQq+pjUFIbEz9uSCZppD31YrVkbt2rnUciTYEvcwN6uZIhX5JZeBHqRlFJ41x/7MewCs7E2Qux6Cg==}
 
   '@types/jsonfile@6.1.4':
     resolution: {integrity: sha512-D5qGUYwjvnNNextdU59/+fI+spnwtTFmyQP0h+PfIOSkNfpU6AOICUOkm4i0OnSk+NyjdPJrxCDro0sJsWlRpQ==}
@@ -13606,8 +13594,6 @@ snapshots:
       parse5: 7.2.1
 
   '@types/json-schema@7.0.15': {}
-
-  '@types/json-stable-stringify@1.1.0': {}
 
   '@types/jsonfile@6.1.4':
     dependencies:
