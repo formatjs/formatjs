@@ -73,7 +73,7 @@ export function assignUniqueKeysToParts(
 ): FormatXMLElementFn<React.ReactNode> {
   return function (parts: any) {
     // eslint-disable-next-line prefer-rest-params
-    return formatXMLElementFn(React.Children.toArray(parts)) as any
+    return formatXMLElementFn(toKeyedReactNodeArray(parts)) as any
   }
 }
 

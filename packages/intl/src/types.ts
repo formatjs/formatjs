@@ -198,17 +198,17 @@ export interface IntlFormatters<TBase = unknown> {
   ): string | T | (T | string)[]
   formatList(
     this: void,
-    values: ReadonlyArray<string>,
+    values: Iterable<string>,
     opts?: FormatListOptions
   ): string
   formatList<T extends TBase>(
     this: void,
-    values: ReadonlyArray<string | T>,
+    values: Iterable<string | T>,
     opts?: FormatListOptions
   ): T | string | (string | T)[]
   formatListToParts<T extends TBase>(
     this: void,
-    values: ReadonlyArray<string | T>,
+    values: Iterable<string | T>,
     opts?: FormatListOptions
   ): Part[]
   formatDisplayName(
