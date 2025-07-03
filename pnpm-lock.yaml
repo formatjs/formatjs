@@ -520,7 +520,7 @@ importers:
         version: 2.8.1
       unicode-emoji-utils:
         specifier: ^1.2.0
-        version: 1.2.0
+        version: 1.3.1
 
   packages/eslint-plugin-formatjs/integration-tests:
     dependencies:
@@ -5170,8 +5170,9 @@ packages:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
     engines: {node: '>=12'}
 
-  emoji-regex@10.3.0:
-    resolution: {integrity: sha512-QpLs9D9v9kArv4lfDEgg1X/gN5XLnf/A6l9cs8SPZLRZR3ZkY9+kwIQTxm+fsSej5UMYGE8fdoaZVIBlqG0XTw==}
+  emoji-regex-xs@2.0.1:
+    resolution: {integrity: sha512-1QFuh8l7LqUcKe24LsPUNzjrzJQ7pgRwp1QMcZ5MX6mFplk2zQ08NVCM84++1cveaUUYtcCYHmeFEuNg16sU4g==}
+    engines: {node: '>=10.0.0'}
 
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
@@ -9689,8 +9690,8 @@ packages:
     resolution: {integrity: sha512-yLSH4py7oFH3oG/9K+XWrz1pSi3dfUrWEnInbxMfArOfc1+33BlGPQtLsOYwvdMy11AwUBetYuaRxSPqgkq+8g==}
     engines: {node: '>=4'}
 
-  unicode-emoji-utils@1.2.0:
-    resolution: {integrity: sha512-djUB91p/6oYpgps4W5K/MAvM+UspoAANHSUW495BrxeLRoned3iNPEDQgrKx9LbLq93VhNz0NWvI61vcfrwYoA==}
+  unicode-emoji-utils@1.3.1:
+    resolution: {integrity: sha512-6PiQxmnlsOsqzZCZz0sykSyMy/r1HiJiOWWXV98+BDva583DU4CtBeyDNsi4wMYUIbjUtMs4RgAuyft0EKLoVw==}
 
   unicode-match-property-ecmascript@2.0.0:
     resolution: {integrity: sha512-5kaZCrbp5mmbz5ulBkDkbY0SsPOjKqVS35VpL9ulMPfSl0J0Xsm+9Evphv9CoIZFwre7aJoa94AY6seMKGVN5Q==}
@@ -15736,7 +15737,7 @@ snapshots:
 
   emittery@0.13.1: {}
 
-  emoji-regex@10.3.0: {}
+  emoji-regex-xs@2.0.1: {}
 
   emoji-regex@10.4.0: {}
 
@@ -21320,9 +21321,9 @@ snapshots:
 
   unicode-emoji-modifier-base@1.0.0: {}
 
-  unicode-emoji-utils@1.2.0:
+  unicode-emoji-utils@1.3.1:
     dependencies:
-      emoji-regex: 10.3.0
+      emoji-regex-xs: 2.0.1
 
   unicode-match-property-ecmascript@2.0.0:
     dependencies:
