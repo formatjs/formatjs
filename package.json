@@ -177,7 +177,7 @@
     "react": "18",
     "react-dom": "18",
     "source-map-js": "1.2.1",
-    "terser": "5.39.2",
+    "terser": "5.43.1",
     "typescript": "5.8.3"
   }
 }
