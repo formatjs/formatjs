@@ -39,10 +39,9 @@ export const DEFAULT_INTL_CONFIG: DefaultIntlConfig = {
   textComponent: React.Fragment,
 }
 
-const arbitraryKeyProps = {key: 42}
-const toArbitrarilyKeyedReactNode = (reactNode: React.ReactNode) =>
+const toKeyedReactNode = (reactNode: React.ReactNode, key: number) =>
   React.isValidElement(reactNode)
-    ? React.createElement(React.Fragment, arbitraryKeyProps, reactNode)
+    ? React.cloneElement(reactNode, {key})
     : reactNode
 
 /**
@@ -60,7 +59,7 @@ export const toKeyedReactNodeArray: typeof React.Children.toArray = children =>
    * every key anyway, so the auto-injected one doesn't even have to be unique.
    * This basically just tells React that it's explicit/intentional.
    */
-  React.Children.map(children, toArbitrarilyKeyedReactNode) ?? []
+  React.Children.map(children, toKeyedReactNode) ?? []
 
 /**
  * Takes a `formatXMLElementFn`, and composes it in function, which passes
