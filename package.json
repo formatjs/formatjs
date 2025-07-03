@@ -173,7 +173,7 @@
   "resolutions": {
     "@glimmer/interfaces": "0.94.6",
     "@glimmer/syntax": "0.94.9",
-    "eslint": "9.23.0",
+    "eslint": "9.30.1",
     "react": "18",
     "react-dom": "18",
     "source-map-js": "1.2.1",
