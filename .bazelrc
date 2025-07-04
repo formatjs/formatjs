@@ -14,8 +14,12 @@ import %workspace%/.aspect/bazelrc/performance.bazelrc
 ### YOUR PROJECT SPECIFIC SETTINGS GO HERE ###
 
 common --enable_bzlmod 
+common --color=yes
 
-build --java_runtime_version=remotejdk_11
+build --java_language_version=17
+build --java_runtime_version=remotejdk_17
+build --tool_java_language_version=17
+build --tool_java_runtime_version=remotejdk_17
 
 build --action_env=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
 
@@ -61,9 +65,9 @@ build --define=NODE_OPTIONS=--max-old-space-size=4096
 
 # BuildBuddy GH Actions Config
 # https://www.buildbuddy.io/docs/rbe-github-actions
-build --bes_results_url=https://app.buildbuddy.io/invocation/
-build --bes_backend=grpcs://remote.buildbuddy.io
-build --remote_cache=grpcs://remote.buildbuddy.io
+build:ci --build_metadata=ROLE=CI
+build:ci --bes_results_url=https://app.buildbuddy.io/invocation/
+build:ci --bes_backend=grpcs://remote.buildbuddy.io
 
 # honor the setting of `skipLibCheck` in the tsconfig.json file
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
@@ -74,19 +78,6 @@ query --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 build --@aspect_rules_ts//ts:default_to_tsc_transpiler
 fetch --@aspect_rules_ts//ts:default_to_tsc_transpiler
 query --@aspect_rules_ts//ts:default_to_tsc_transpiler
-
-# BuildBuddy RBE
-build:remote --remote_executor=grpcs://remote.buildbuddy.io
-build:remote --host_platform=@buildbuddy_toolchain//:platform
-build:remote --platforms=@buildbuddy_toolchain//:platform
-build:remote --extra_execution_platforms=@buildbuddy_toolchain//:platform
-build:remote --crosstool_top=@buildbuddy_toolchain//:toolchain
-build:remote --extra_toolchains=@buildbuddy_toolchain//:cc_toolchain
-build:remote --java_language_version=11
-build:remote --tool_java_language_version=11
-build:remote --java_runtime_version=remotejdk_11
-build:remote --tool_java_runtime_version=remotejdk_11
-build:remote --define=EXECUTOR=remote
 
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
