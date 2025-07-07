@@ -65,12 +65,17 @@ build --define=NODE_OPTIONS=--max-old-space-size=4096
 
 # BuildBuddy GH Actions Config
 # https://www.buildbuddy.io/docs/rbe-github-actions
-build --remote_cache=grpcs://formatjs.buildbuddy.io
-build --remote_timeout=10m
-build:ci --bes_backend=grpcs://formatjs.buildbuddy.io
-build:ci --bes_results_url=https://formatjs.buildbuddy.io/invocation/
 build:ci --build_metadata=ROLE=CI
 build:ci --build_metadata=VISIBILITY=PUBLIC
+build:ci --config=remote
+build:remote --crosstool_top=@buildbuddy_toolchain//:toolchain
+build:remote --host_platform=@buildbuddy_toolchain//:platform
+build:remote --jobs=100
+build:remote --platforms=@buildbuddy_toolchain//:platform
+build:remote --remote_cache=grpcs://formatjs.buildbuddy.io
+build:remote --remote_executor=grpcs://remote.buildbuddy.io
+build:remote --remote_timeout=10m
+build:remote --remote_upload_local_results
 
 # honor the setting of `skipLibCheck` in the tsconfig.json file
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
