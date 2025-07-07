@@ -213,7 +213,7 @@ importers:
         version: 3.1.3
       decimal.js:
         specifier: ^10.4.3
-        version: 10.5.0
+        version: 10.6.0
       ember-template-recast:
         specifier: ^6.1.5
         version: 6.1.5
@@ -490,7 +490,7 @@ importers:
         version: link:../intl-localematcher
       decimal.js:
         specifier: ^10.4.3
-        version: 10.5.0
+        version: 10.6.0
       tslib:
         specifier: ^2.8.0
         version: 2.8.1
@@ -604,7 +604,7 @@ importers:
         version: link:../intl-localematcher
       decimal.js:
         specifier: ^10.4.3
-        version: 10.5.0
+        version: 10.6.0
       tslib:
         specifier: ^2.8.0
         version: 2.8.1
@@ -727,7 +727,7 @@ importers:
         version: link:../intl-localematcher
       decimal.js:
         specifier: ^10.4.3
-        version: 10.5.0
+        version: 10.6.0
       tslib:
         specifier: ^2.8.0
         version: 2.8.1
@@ -752,7 +752,7 @@ importers:
         version: link:../intl-localematcher
       decimal.js:
         specifier: ^10.4.3
-        version: 10.5.0
+        version: 10.6.0
       tslib:
         specifier: ^2.8.0
         version: 2.8.1
@@ -4927,8 +4927,8 @@ packages:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
     engines: {node: '>=0.10.0'}
 
-  decimal.js@10.5.0:
-    resolution: {integrity: sha512-8vDa8Qxvr/+d94hSh5P3IJwI5t8/c0KsMp+g8bNw9cY2icONa5aPfvKeieW1WlG0WQYwwhJ7mjui2xtiePQSXw==}
+  decimal.js@10.6.0:
+    resolution: {integrity: sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==}
 
   decode-named-character-reference@1.2.0:
     resolution: {integrity: sha512-c6fcElNV6ShtZXmsgNgFFV5tVX2PaV4g+MOAkb8eXHvn6sryJBrZa9r0zV6+dtTyoCKxtDy5tyQ5ZwQuidtd+Q==}
@@ -15397,7 +15397,7 @@ snapshots:
 
   decamelize@1.2.0: {}
 
-  decimal.js@10.5.0: {}
+  decimal.js@10.6.0: {}
 
   decode-named-character-reference@1.2.0:
     dependencies:
@@ -17737,7 +17737,7 @@ snapshots:
       cssom: 0.5.0
       cssstyle: 2.3.0
       data-urls: 3.0.2
-      decimal.js: 10.5.0
+      decimal.js: 10.6.0
       domexception: 4.0.0
       escodegen: 2.1.0
       form-data: 4.0.1
