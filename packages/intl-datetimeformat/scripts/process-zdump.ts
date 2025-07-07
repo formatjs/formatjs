@@ -328,7 +328,7 @@ function processZone(
     const offset = +offsetStr
     let offsetIndex = offsets.indexOf(offset)
     if (offsetIndex < 0) {
-      ;(offsetIndex = offsets.length), offsets.push(offset)
+      ;((offsetIndex = offsets.length), offsets.push(offset))
     }
     if (!zones[zone]) {
       zones[zone] = [['', abbrvIndex, offsetIndex, +dst]]
