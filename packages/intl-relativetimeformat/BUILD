@@ -652,7 +652,6 @@ ts_script(
     srcs = [
         "scripts/extract-relative.ts",
         ":node_modules/@formatjs/ecma402-abstract",
-        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-dates-full",
         "//:node_modules/cldr-numbers-full",

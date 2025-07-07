@@ -294,7 +294,6 @@ ts_script(
     name = "cldr-raw",
     srcs = [
         ":node_modules/@formatjs/ecma402-abstract",
-        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/@types/serialize-javascript",
         "//:node_modules/cldr-core",
         "//:node_modules/fs-extra",
