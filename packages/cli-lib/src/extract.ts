@@ -275,10 +275,12 @@ ${JSON.stringify(message, undefined, 2)}`
   if (typeof formatter.serialize === 'function') {
     return formatter.serialize(formatter.format(results as any))
   }
-  return stringify(formatter.format(results as any), {
-    space: 2,
-    cmp: formatter.compareMessages || undefined,
-  })
+  return (
+    stringify(formatter.format(results as any), {
+      space: 2,
+      cmp: formatter.compareMessages || undefined,
+    }) ?? ''
+  )
 }
 
 /**

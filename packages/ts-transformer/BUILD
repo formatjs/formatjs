@@ -35,7 +35,6 @@ SRC_DEPS = [
     ":node_modules/ts-jest",
     "//:node_modules/@babel/core",
     "//:node_modules/@types/babel__core",
-    "//:node_modules/@types/json-stable-stringify",
     "//:node_modules/@types/node",
     "//:node_modules/chalk",
     "//:node_modules/json-stable-stringify",

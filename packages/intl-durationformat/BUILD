@@ -68,7 +68,6 @@ generate_src_file(
         "scripts/time-separators.ts",
         "scripts/utils.ts",
         ":node_modules/@formatjs/ecma402-abstract",
-        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/@types/lodash",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-localenames-full",

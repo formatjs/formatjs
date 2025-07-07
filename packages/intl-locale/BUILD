@@ -108,7 +108,6 @@ generate_src_file(
     data = [
         "scripts/common-types.ts",
         "scripts/utils.ts",
-        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-misc-full",
         "//:node_modules/fast-glob",
@@ -124,7 +123,6 @@ generate_src_file(
     data = [
         "scripts/common-types.ts",
         "scripts/utils.ts",
-        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
@@ -139,7 +137,6 @@ generate_src_file(
     src = "timezones.generated.ts",
     data = [
         "scripts/common-types.ts",
-        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-bcp47",
         "//:node_modules/json-stable-stringify",
     ],
@@ -152,7 +149,6 @@ generate_src_file(
     src = "hour-cycles.generated.ts",
     data = [
         "scripts/common-types.ts",
-        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
@@ -165,7 +161,6 @@ generate_src_file(
     src = "calendars.generated.ts",
     data = [
         "scripts/common-types.ts",
-        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
@@ -178,7 +173,6 @@ generate_src_file(
     src = "week-data.generated.ts",
     data = [
         "scripts/common-types.ts",
-        "//:node_modules/@types/json-stable-stringify",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
