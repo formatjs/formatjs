@@ -14,37 +14,35 @@ function generateToken(i: number): string {
   return `${now}_${i}_${now}`
 }
 
-export function formatList(
-  opts: {
-    locale: string
-    onError: OnErrorFn
-  },
-  getListFormat: Formatters['getListFormat'],
-  values: Iterable<string>,
-  options: Parameters<IntlFormatters['formatList']>[1]
-): string
-export function formatList<T>(
+export type FormatListFn<T> = (
   opts: {
     locale: string
     onError: OnErrorFn
   },
   getListFormat: Formatters['getListFormat'],
   values: Iterable<string | T>,
-  options: Parameters<IntlFormatters['formatList']>[1] = {}
-): Array<T | string> | T | string {
+  options?: Parameters<IntlFormatters['formatList']>[1]
+) => T extends string ? string : Array<T | string> | string | T
+
+export const formatList: FormatListFn<any> = (
+  opts,
+  getListFormat,
+  values,
+  options = {}
+) => {
   const results = formatListToParts(
     opts,
     getListFormat,
     values,
     options
-  ).reduce((all: Array<string | T>, el) => {
-    const val = el.value
-    if (typeof val !== 'string') {
-      all.push(val)
+  ).reduce((all: unknown[], el) => {
+    const value = el.value
+    if (typeof value !== 'string') {
+      all.push(value)
     } else if (typeof all[all.length - 1] === 'string') {
-      all[all.length - 1] += val
+      all[all.length - 1] += value
     } else {
-      all.push(val)
+      all.push(value)
     }
     return all
   }, [])

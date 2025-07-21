@@ -23,6 +23,7 @@ export {
 export * from './src/error'
 export {formatMessage} from './src/message'
 export type {FormatMessageFn} from './src/message'
+export type {FormatListFn} from './src/list'
 export {
   formatDate,
   formatDateToParts,
