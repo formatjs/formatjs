@@ -189,7 +189,7 @@ importers:
         version: 46.0.0
       cldr-dates-full:
         specifier: ^46.0.0
-        version: 46.1.0(cldr-numbers-full@46.1.0(cldr-core@46.0.0))
+        version: 46.1.0(cldr-numbers-full@47.0.0(cldr-core@46.0.0))
       cldr-localenames-full:
         specifier: ^46.0.0
         version: 46.1.0(cldr-core@46.0.0)
@@ -197,8 +197,8 @@ importers:
         specifier: ^46.0.0
         version: 46.1.0(cldr-core@46.0.0)
       cldr-numbers-full:
-        specifier: ^46.0.0
-        version: 46.1.0(cldr-core@46.0.0)
+        specifier: ^47.0.0
+        version: 47.0.0(cldr-core@46.0.0)
       cldr-segments-full:
         specifier: ^46.0.0
         version: 46.1.0(cldr-core@46.0.0)
@@ -4345,10 +4345,10 @@ packages:
     peerDependencies:
       cldr-core: 46.1.0
 
-  cldr-numbers-full@46.1.0:
-    resolution: {integrity: sha512-RCNE7U3DNKAWQQ4P94YnoZyvoeT9Ku+ECwtQwZytZp2j0t2rtn4qYyrajz4/UYLeb3bAVjL4aeOm2vRHmN1QIw==}
+  cldr-numbers-full@47.0.0:
+    resolution: {integrity: sha512-5OXUfjiAdXYuVD4XlaQe++WKBVmI1bkKxO0uWJMpbokzgcJ30vhFzcX5WsnZMtoZuhEpOt5KubCJaxaHPj5XTQ==}
     peerDependencies:
-      cldr-core: 46.1.0
+      cldr-core: 47.0.0
 
   cldr-segments-full@46.1.0:
     resolution: {integrity: sha512-nSA9+EBrQg6CN719kd70a4qnJ0+hMg/bAVo/b6hdLDAhw91BsqVNuvntgenfXtlAQwoYvBFLh3xBBE7JR/tpNA==}
@@ -8419,6 +8419,7 @@ packages:
   puppeteer@23.6.0:
     resolution: {integrity: sha512-l+Fgo8SVFSd51STtq2crz8t1Y3VXowsuR4zfR64qDOn6oggz7YIZauWiNR4IJjczQ6nvFs3S4cgng55/nesxTQ==}
     engines: {node: '>=18'}
+    deprecated: < 24.9.0 is no longer supported
     hasBin: true
 
   pure-rand@6.1.0:
@@ -14822,9 +14823,9 @@ snapshots:
 
   cldr-core@46.0.0: {}
 
-  cldr-dates-full@46.1.0(cldr-numbers-full@46.1.0(cldr-core@46.0.0)):
+  cldr-dates-full@46.1.0(cldr-numbers-full@47.0.0(cldr-core@46.0.0)):
     dependencies:
-      cldr-numbers-full: 46.1.0(cldr-core@46.0.0)
+      cldr-numbers-full: 47.0.0(cldr-core@46.0.0)
 
   cldr-localenames-full@46.1.0(cldr-core@46.0.0):
     dependencies:
@@ -14834,7 +14835,7 @@ snapshots:
     dependencies:
       cldr-core: 46.0.0
 
-  cldr-numbers-full@46.1.0(cldr-core@46.0.0):
+  cldr-numbers-full@47.0.0(cldr-core@46.0.0):
     dependencies:
       cldr-core: 46.0.0
 
