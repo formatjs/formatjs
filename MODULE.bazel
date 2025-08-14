@@ -65,7 +65,7 @@ bazel_dep(name = "aspect_bazel_lib", version = "2.19.4")
 
 ######### Jest rules #########
 
-bazel_dep(name = "aspect_rules_jest", version = "0.23.2")
+bazel_dep(name = "aspect_rules_jest", version = "0.23.3")
 
 ######### Multirun rules #########
 
