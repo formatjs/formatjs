@@ -17,6 +17,8 @@ A "locale" refers to the lingual and cultural expectations for a region. It is r
 
 This code is comprised of several parts separated by hyphens (-). The first part is a short string representing the language. The second, optional, part is a short string representing the region. Additionally, various extensions and variants can be specified.
 
+For guidance on choosing the right locale components, see the [W3C article on choosing language tags](https://www.w3.org/International/questions/qa-choosing-language-tags).
+
 Typically, web apps are localized to just the language or language-region combination. Examples of such locale codes are:
 
 - `en` for English
