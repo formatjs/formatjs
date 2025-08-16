@@ -147,7 +147,7 @@ Similar to `number` type, we also support ICU DateTime skeleton. ICU provides a 
 
 ### `{select}` Format
 
-The `{key, select, matches}` is used to choose output by matching a value to one of many choices. (It is similar to the `switch` statement available in some programming languages.) The key is looked up in the input data. The corresponding value is matched to one of matches and the corresponding output is returned. The `key` argument must follow [Unicode Pattern_Syntax](https://www.unicode.org/reports/tr31/tr31-9.html#Pattern_Syntax). The `matches` is a space-separated list of `matches`.
+The `{key, select, matches}` is used to choose output by matching a value to one of many choices. (It is similar to the `switch` statement available in some programming languages.) The key is looked up in the input data. The corresponding value is matched to one of matches and the corresponding output is returned. The `key` argument must follow [Unicode Pattern_Syntax](https://www.unicode.org/reports/tr31/#Pattern_Syntax). The `matches` is a space-separated list of `matches`.
 
 The format of a match is match `{output}`. (A match is similar to the case statement of the switch found in some programming languages.) The `match` is a literal value. If it is the same as the value for `key` then the corresponding `output` will be used.
 
