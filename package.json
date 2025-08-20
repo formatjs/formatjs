@@ -30,7 +30,7 @@
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-angular": "^19.5.0",
     "@commitlint/config-angular-type-enum": "^19.5.0",
-    "@glimmer/syntax": "^0.94.9",
+    "@glimmer/syntax": "^0.95.0",
     "@jest/globals": "^29.7.0",
     "@jest/transform": "^29.7.0",
     "@jest/types": "^29.6.3",
@@ -172,7 +172,7 @@
   "repository": "formatjs/formatjs",
   "resolutions": {
     "@glimmer/interfaces": "0.94.6",
-    "@glimmer/syntax": "0.94.9",
+    "@glimmer/syntax": "^0.95.0",
     "eslint": "9.30.1",
     "react": "18",
     "react-dom": "18",

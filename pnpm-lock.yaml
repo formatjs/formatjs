@@ -6,7 +6,7 @@ settings:
 
 overrides:
   '@glimmer/interfaces': 0.94.6
-  '@glimmer/syntax': 0.94.9
+  '@glimmer/syntax': ^0.95.0
   eslint: 9.30.1
   react: '18'
   react-dom: '18'
@@ -68,8 +68,8 @@ importers:
         specifier: ^19.5.0
         version: 19.8.1
       '@glimmer/syntax':
-        specifier: 0.94.9
-        version: 0.94.9
+        specifier: ^0.95.0
+        version: 0.95.0
       '@jest/globals':
         specifier: ^29.7.0
         version: 29.7.0
@@ -383,8 +383,8 @@ importers:
   packages/cli:
     dependencies:
       '@glimmer/syntax':
-        specifier: 0.94.9
-        version: 0.94.9
+        specifier: ^0.95.0
+        version: 0.95.0
       '@vue/compiler-core':
         specifier: ^3.5.12
         version: 3.5.13
@@ -414,8 +414,8 @@ importers:
         specifier: workspace:*
         version: link:../ts-transformer
       '@glimmer/syntax':
-        specifier: 0.94.9
-        version: 0.94.9
+        specifier: ^0.95.0
+        version: 0.95.0
       '@types/estree':
         specifier: ^1.0.6
         version: 1.0.8
@@ -2550,8 +2550,8 @@ packages:
   '@glimmer/reference@0.84.3':
     resolution: {integrity: sha512-lV+p/aWPVC8vUjmlvYVU7WQJsLh319SdXuAWoX/SE3pq340BJlAJiEcAc6q52y9JNhT57gMwtjMX96W5Xcx/qw==}
 
-  '@glimmer/syntax@0.94.9':
-    resolution: {integrity: sha512-OBw8DqMzKO4LX4kJBhwfTUqtpbd7O9amQXNTfb1aS7pufio5Vu5Qi6mRTfdFj6RyJ//aSI/l0kxWt6beYW0Apg==}
+  '@glimmer/syntax@0.95.0':
+    resolution: {integrity: sha512-W/PHdODnpONsXjbbdY9nedgIHpglMfOzncf/moLVrKIcCfeQhw2vG07Rs/YW8KeJCgJRCLkQsi+Ix7XvrurGAg==}
 
   '@glimmer/util@0.84.3':
     resolution: {integrity: sha512-qFkh6s16ZSRuu2rfz3T4Wp0fylFj3HBsONGXQcrAdZjdUaIS6v3pNj6mecJ71qRgcym9Hbaq/7/fefIwECUiKw==}
@@ -2565,8 +2565,9 @@ packages:
   '@glimmer/wire-format@0.94.8':
     resolution: {integrity: sha512-A+Cp5m6vZMAEu0Kg/YwU2dJZXyYxVJs2zI57d3CP6NctmX7FsT8WjViiRUmt5abVmMmRH5b8BUovqY6GSMAdrw==}
 
-  '@handlebars/parser@2.0.0':
-    resolution: {integrity: sha512-EP9uEDZv/L5Qh9IWuMUGJRfwhXJ4h1dqKTT4/3+tY0eu7sPis7xh23j61SYUnNF4vqCQvvUXpDo9Bh/+q1zASA==}
+  '@handlebars/parser@2.2.1':
+    resolution: {integrity: sha512-D76vKOZFEGA9v6g0rZTYTQDUXNopCblW1Zeas3EEVrbdeh8gWrCEO9/goocKmcgtqAwv1Md76p58UQp7HeFTEw==}
+    engines: {node: ^18 || ^20 || ^22 || >=24}
 
   '@hapi/hoek@9.3.0':
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
@@ -12640,12 +12641,12 @@ snapshots:
       '@glimmer/util': 0.84.3
       '@glimmer/validator': 0.84.3
 
-  '@glimmer/syntax@0.94.9':
+  '@glimmer/syntax@0.95.0':
     dependencies:
       '@glimmer/interfaces': 0.94.6
       '@glimmer/util': 0.94.8
       '@glimmer/wire-format': 0.94.8
-      '@handlebars/parser': 2.0.0
+      '@handlebars/parser': 2.2.1
       simple-html-tokenizer: 0.5.11
 
   '@glimmer/util@0.84.3':
@@ -12667,7 +12668,7 @@ snapshots:
     dependencies:
       '@glimmer/interfaces': 0.94.6
 
-  '@handlebars/parser@2.0.0': {}
+  '@handlebars/parser@2.2.1': {}
 
   '@hapi/hoek@9.3.0': {}
 
@@ -13635,13 +13636,13 @@ snapshots:
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.1.8
+      '@types/react': 19.1.10
       '@types/react-router': 5.1.20
 
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.1.8
+      '@types/react': 19.1.10
 
   '@types/react@19.0.12':
     dependencies:
@@ -15699,7 +15700,7 @@ snapshots:
   ember-template-recast@6.1.5:
     dependencies:
       '@glimmer/reference': 0.84.3
-      '@glimmer/syntax': 0.94.9
+      '@glimmer/syntax': 0.95.0
       '@glimmer/validator': 0.84.3
       async-promise-queue: 1.0.5
       colors: 1.4.0
