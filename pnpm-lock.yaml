@@ -189,7 +189,7 @@ importers:
         version: 46.0.0
       cldr-dates-full:
         specifier: ^46.0.0
-        version: 46.1.0(cldr-numbers-full@46.1.0(cldr-core@46.0.0))
+        version: 46.1.0(cldr-numbers-full@47.0.0(cldr-core@46.0.0))
       cldr-localenames-full:
         specifier: ^46.0.0
         version: 46.1.0(cldr-core@46.0.0)
@@ -197,8 +197,8 @@ importers:
         specifier: ^46.0.0
         version: 46.1.0(cldr-core@46.0.0)
       cldr-numbers-full:
-        specifier: ^46.0.0
-        version: 46.1.0(cldr-core@46.0.0)
+        specifier: ^47.0.0
+        version: 47.0.0(cldr-core@46.0.0)
       cldr-segments-full:
         specifier: ^46.0.0
         version: 46.1.0(cldr-core@46.0.0)
@@ -4355,10 +4355,10 @@ packages:
     peerDependencies:
       cldr-core: 46.1.0
 
-  cldr-numbers-full@46.1.0:
-    resolution: {integrity: sha512-RCNE7U3DNKAWQQ4P94YnoZyvoeT9Ku+ECwtQwZytZp2j0t2rtn4qYyrajz4/UYLeb3bAVjL4aeOm2vRHmN1QIw==}
+  cldr-numbers-full@47.0.0:
+    resolution: {integrity: sha512-5OXUfjiAdXYuVD4XlaQe++WKBVmI1bkKxO0uWJMpbokzgcJ30vhFzcX5WsnZMtoZuhEpOt5KubCJaxaHPj5XTQ==}
     peerDependencies:
-      cldr-core: 46.1.0
+      cldr-core: 47.0.0
 
   cldr-segments-full@46.1.0:
     resolution: {integrity: sha512-nSA9+EBrQg6CN719kd70a4qnJ0+hMg/bAVo/b6hdLDAhw91BsqVNuvntgenfXtlAQwoYvBFLh3xBBE7JR/tpNA==}
@@ -13626,13 +13626,13 @@ snapshots:
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.1.8
+      '@types/react': 19.1.10
       '@types/react-router': 5.1.20
 
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.1.8
+      '@types/react': 19.1.10
 
   '@types/react@19.0.12':
     dependencies:
@@ -14838,9 +14838,9 @@ snapshots:
 
   cldr-core@46.0.0: {}
 
-  cldr-dates-full@46.1.0(cldr-numbers-full@46.1.0(cldr-core@46.0.0)):
+  cldr-dates-full@46.1.0(cldr-numbers-full@47.0.0(cldr-core@46.0.0)):
     dependencies:
-      cldr-numbers-full: 46.1.0(cldr-core@46.0.0)
+      cldr-numbers-full: 47.0.0(cldr-core@46.0.0)
 
   cldr-localenames-full@46.1.0(cldr-core@46.0.0):
     dependencies:
@@ -14850,7 +14850,7 @@ snapshots:
     dependencies:
       cldr-core: 46.0.0
 
-  cldr-numbers-full@46.1.0(cldr-core@46.0.0):
+  cldr-numbers-full@47.0.0(cldr-core@46.0.0):
     dependencies:
       cldr-core: 46.0.0
 
