@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.5](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.4...@formatjs/ecma402-abstract@2.3.5) (2025-10-03)
+
+### Bug Fixes
+
+* **ecma402:** DayFromYear handling for years below 100 AD ([#5039](/github.com/formatjs/formatjs/issues/5039)) ([aef53fb](github.com/formatjs/formatjs/commits/aef53fbc55240cb116c02d0ac57b5e4be41609e4)), closes [#5038](github.com/formatjs/formatjs/issues/5038) - by @korri123
+
 ## [2.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.3...@formatjs/ecma402-abstract@2.3.4) (2025-03-23)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract

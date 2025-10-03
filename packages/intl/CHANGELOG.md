@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.7](github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.6...@formatjs/intl@3.1.7) (2025-10-03)
+
+### Bug Fixes
+
+* formatList null value replaced to placeholder value ([f629131](github.com/formatjs/formatjs/commits/f629131bad27b5ef8fbc1d7fd60ef4d2aa33f9e5)) - by @septs
+* string list from iterable ([#5046](/github.com/formatjs/formatjs/issues/5046)) ([19a4c05](github.com/formatjs/formatjs/commits/19a4c051238aa48c6cab5eadf3a46ca7783a987c)) - by @septs
+
 ## [3.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.5...@formatjs/intl@3.1.6) (2025-03-26)
 
 ### Bug Fixes

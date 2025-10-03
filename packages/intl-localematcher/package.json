@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/intl-localematcher",
   "description": "Intl.LocaleMatcher ponyfill",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "types": "index.d.ts",

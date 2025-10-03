@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.7.12](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.11...@formatjs/intl-listformat@7.7.12) (2025-10-03)
+
+### Bug Fixes
+
+* string list from iterable ([#5046](/github.com/formatjs/formatjs/issues/5046)) ([19a4c05](github.com/formatjs/formatjs/commits/19a4c051238aa48c6cab5eadf3a46ca7783a987c)) - by @septs
+
 ## [7.7.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.10...@formatjs/intl-listformat@7.7.11) (2025-03-23)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

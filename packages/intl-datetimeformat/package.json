@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/intl-datetimeformat",
   "description": "Intl.DateTimeFormat polyfill",
-  "version": "6.18.0",
+  "version": "6.18.1",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "types": "index.d.ts",

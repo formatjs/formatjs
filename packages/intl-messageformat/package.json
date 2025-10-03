@@ -1,7 +1,7 @@
 {
   "name": "intl-messageformat",
   "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
-  "version": "10.7.16",
+  "version": "10.7.17",
   "license": "BSD-3-Clause",
   "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
   "sideEffects": false,

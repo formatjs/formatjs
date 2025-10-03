@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/ecma402-abstract",
   "description": "A collection of implementation for ECMAScript abstract operations",
-  "version": "2.3.4",
+  "version": "2.3.5",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com",
   "sideEffects": false,

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.12](github.com/formatjs/formatjs/compare/react-intl@7.1.11...react-intl@7.1.12) (2025-10-03)
+
+### Bug Fixes
+
+* keyed react node ([#5050](/github.com/formatjs/formatjs/issues/5050)) ([8ef2c8b](github.com/formatjs/formatjs/commits/8ef2c8ba5a4959b58eeb53b8eeb0fe4e3067a27f)) - by @septs
+* **react-intl:** add keys on nested rich text elements ([#5032](/github.com/formatjs/formatjs/issues/5032)) ([7ebf80e](github.com/formatjs/formatjs/commits/7ebf80efb8c82cd197d1f2f22f07d55e1c04fd67)) - by @zyzo
+
 ## [7.1.11](https://github.com/formatjs/formatjs/compare/react-intl@7.1.10...react-intl@7.1.11) (2025-04-19)
 
 ### Bug Fixes
