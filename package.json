@@ -35,6 +35,7 @@
     "@jest/transform": "^29.7.0",
     "@jest/types": "^29.6.3",
     "@lerna-lite/cli": "^4.9.0",
+    "@lerna-lite/version": "^4.9.0",
     "@swc-node/register": "^1.10.9",
     "@swc/core": "^1.7.39",
     "@swc/helpers": "^0.5.13",
