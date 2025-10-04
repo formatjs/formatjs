@@ -75,7 +75,7 @@
     "cldr-dates-full": "^46.0.0",
     "cldr-localenames-full": "^46.0.0",
     "cldr-misc-full": "^46.0.0",
-    "cldr-numbers-full": "^46.0.0",
+    "cldr-numbers-full": "^47.0.0",
     "cldr-segments-full": "^46.0.0",
     "cldr-units-full": "^46.0.0",
     "content-tag": "^3.0.0",
