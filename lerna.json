@@ -9,13 +9,14 @@
       "exact": true,
       "ignoreChanges": ["**/tests/**", "**/*.md"],
       "message": "build: publish",
-      "private": false
+      "private": false,
+      "skipBumpOnlyReleases": true
     },
     "run": {
       "stream": true
     },
     "publish": {
-      "removePackageFields": ["devDependencies", "scripts"]
+      "stripPackageKeys": ["devDependencies", "scripts"]
     }
   },
   "packages": ["packages/*"]
