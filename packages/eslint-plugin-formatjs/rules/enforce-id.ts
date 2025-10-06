@@ -110,10 +110,8 @@ function checkNode(
             fix(fixer) {
               if (idPropNode) {
                 if (idPropNode.type === 'JSXAttribute') {
-                  return fixer.replaceText(
-                    idPropNode,
-                    `id=${quote}${correctId}${quote}`
-                  )
+                  // Always use double quotes for JSX attributes
+                  return fixer.replaceText(idPropNode, `id="${correctId}"`)
                 }
                 return fixer.replaceText(
                   idPropNode,
@@ -124,9 +122,10 @@ function checkNode(
               if (messagePropNode) {
                 // Insert after default message node
                 if (messagePropNode.type === 'JSXAttribute') {
+                  // Always use double quotes for JSX attributes
                   return fixer.insertTextAfter(
                     messagePropNode,
-                    ` id=${quote}${correctId}${quote}`
+                    ` id="${correctId}"`
                   )
                 }
                 return fixer.insertTextAfter(
