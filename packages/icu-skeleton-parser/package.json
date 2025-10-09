@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/icu-skeleton-parser",
-  "version": "1.8.15",
+  "version": "1.8.16",
   "license": "MIT",
   "types": "index.d.ts",
   "dependencies": {

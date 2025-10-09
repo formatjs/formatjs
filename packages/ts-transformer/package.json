@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/ts-transformer",
   "description": "TS Compiler transformer for formatjs",
-  "version": "3.14.1",
+  "version": "3.14.2",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "types": "index.d.ts",

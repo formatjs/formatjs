@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/intl-listformat",
   "description": "Formats JS list in a i18n-safe way",
-  "version": "7.7.12",
+  "version": "7.7.13",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "types": "index.d.ts",

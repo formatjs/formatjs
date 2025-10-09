@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.80](github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.79...@formatjs/editor@2.0.80) (2025-10-09)
+
+**Note:** Version bump only for package @formatjs/editor
+
 ## [2.0.79](github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.78...@formatjs/editor@2.0.79) (2025-10-06)
 
 **Note:** Version bump only for package @formatjs/editor

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.7.13](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.12...@formatjs/intl-listformat@7.7.13) (2025-10-09)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
 ## [7.7.12](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.11...@formatjs/intl-listformat@7.7.12) (2025-10-03)
 
 ### Bug Fixes
