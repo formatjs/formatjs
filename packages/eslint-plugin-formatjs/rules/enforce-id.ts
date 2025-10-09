@@ -7,6 +7,7 @@ import {extractMessages, getSettings} from '../util'
 export type Option = {
   idInterpolationPattern: string
   idWhitelist?: string[]
+  quoteStyle?: 'single' | 'double'
 }
 
 type MessageIds =
@@ -31,9 +32,11 @@ function checkNode(
   {
     idInterpolationPattern,
     idWhitelistRegexps,
+    quoteStyle,
   }: {
     idInterpolationPattern: string
     idWhitelistRegexps?: RegExp[]
+    quoteStyle: 'single' | 'double'
   }
 ) {
   const msgs = extractMessages(node, getSettings(context))
@@ -99,6 +102,7 @@ function checkNode(
             }
           }
 
+          const quote = quoteStyle === 'double' ? '"' : "'"
           context.report({
             node,
             messageId,
@@ -106,14 +110,19 @@ function checkNode(
             fix(fixer) {
               if (idPropNode) {
                 if (idPropNode.type === 'JSXAttribute') {
+                  // Always use double quotes for JSX attributes
                   return fixer.replaceText(idPropNode, `id="${correctId}"`)
                 }
-                return fixer.replaceText(idPropNode, `id: '${correctId}'`)
+                return fixer.replaceText(
+                  idPropNode,
+                  `id: ${quote}${correctId}${quote}`
+                )
               }
 
               if (messagePropNode) {
                 // Insert after default message node
                 if (messagePropNode.type === 'JSXAttribute') {
+                  // Always use double quotes for JSX attributes
                   return fixer.insertTextAfter(
                     messagePropNode,
                     ` id="${correctId}"`
@@ -121,7 +130,7 @@ function checkNode(
                 }
                 return fixer.insertTextAfter(
                   messagePropNode,
-                  `, id: '${correctId}'`
+                  `, id: ${quote}${correctId}${quote}`
                 )
               }
               return null
@@ -160,6 +169,12 @@ export const rule: RuleModule<MessageIds, Options> = {
               type: 'string',
             },
           },
+          quoteStyle: {
+            type: 'string',
+            enum: ['single', 'double'],
+            description:
+              'Quote style for generated IDs. Defaults to single quotes.',
+          },
         },
         required: ['idInterpolationPattern'],
         additionalProperties: false,
@@ -180,6 +195,7 @@ Actual: {{actual}}`,
   defaultOptions: [
     {
       idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      quoteStyle: 'single',
     },
   ],
   create(context) {
@@ -187,8 +203,10 @@ Actual: {{actual}}`,
     let opts: {
       idInterpolationPattern: string
       idWhitelistRegexps?: RegExp[]
+      quoteStyle: 'single' | 'double'
     } = {
       idInterpolationPattern: tmp?.idInterpolationPattern,
+      quoteStyle: tmp?.quoteStyle || 'single',
     }
     if (Array.isArray(tmp?.idWhitelist)) {
       const {idWhitelist} = tmp

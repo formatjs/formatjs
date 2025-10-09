@@ -297,6 +297,97 @@ defineMessages({ example: { defaultMessage: 'example1', id: 'payment_string' }, 
   ],
 })
 
+const optionsWithDoubleQuote: [Option] = [
+  {
+    idInterpolationPattern: '[sha512:contenthash:base64:6]',
+    quoteStyle: 'double',
+  },
+]
+
+ruleTester.run(`${name} with quoteStyle: 'double'`, rule, {
+  valid: [],
+  invalid: [
+    {
+      code: `
+intl.formatMessage({ id: 'foo', defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
+      errors: [
+        {
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'j9qhn+',
+            actual: 'foo',
+          },
+        },
+      ],
+      options: optionsWithDoubleQuote,
+      output: `
+intl.formatMessage({ id: "j9qhn+", defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
+    },
+    {
+      code: `
+intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
+      errors: [
+        {
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'j9qhn+',
+            actual: 'undefined',
+          },
+        },
+      ],
+      options: optionsWithDoubleQuote,
+      output: `
+intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', id: "j9qhn+", description: 'asd'})`,
+    },
+    {
+      code: `
+import {FormattedMessage} from 'react-intl'
+const a = (
+  <FormattedMessage defaultMessage="{count, plural, one {#} other {# more}}" values={{foo: 1}} />
+)`,
+      errors: [
+        {
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: '/e77jM',
+            actual: 'undefined',
+          },
+        },
+      ],
+      options: optionsWithDoubleQuote,
+      output: `
+import {FormattedMessage} from 'react-intl'
+const a = (
+  <FormattedMessage defaultMessage="{count, plural, one {#} other {# more}}" id="/e77jM" values={{foo: 1}} />
+)`,
+    },
+    {
+      code: `
+import { defineMessages } from 'react-intl'
+
+defineMessages({ example: { defaultMessage: 'example' } })`,
+      errors: [
+        {
+          messageId: 'enforceIdMatching',
+          data: {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            expected: 'O7Eu2j',
+            actual: 'undefined',
+          },
+        },
+      ],
+      options: optionsWithDoubleQuote,
+      output: `
+import { defineMessages } from 'react-intl'
+
+defineMessages({ example: { defaultMessage: 'example', id: "O7Eu2j" } })`,
+    },
+  ],
+})
+
 vueRuleTester.run(`vue-${name}`, rule, {
   valid: [
     {
