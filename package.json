@@ -84,7 +84,7 @@
     "eslint": "^9.23.0",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
-    "happy-dom": "^17.1.0",
+    "happy-dom": "^20.0.2",
     "http-server": "^14.1.1",
     "husky": "^9",
     "jasmine-expect": "^5.0.0",
