@@ -197,8 +197,8 @@ importers:
         specifier: ^46.0.0
         version: 46.1.0(cldr-numbers-full@46.1.0(cldr-core@46.0.0))
       cldr-localenames-full:
-        specifier: ^46.0.0
-        version: 46.1.0(cldr-core@46.0.0)
+        specifier: ^47.0.0
+        version: 47.0.0(cldr-core@46.0.0)
       cldr-misc-full:
         specifier: ^46.0.0
         version: 46.1.0(cldr-core@46.0.0)
@@ -4632,10 +4632,10 @@ packages:
     peerDependencies:
       cldr-numbers-full: 46.1.0
 
-  cldr-localenames-full@46.1.0:
-    resolution: {integrity: sha512-Er0ymSdvfy3hHzEYdDM/VZSh8ob73JiTXWT1x86l8pfrYPTiKymxmZZ/5zDIrorzBuljRvdF97TZ43L6F/a8Tw==}
+  cldr-localenames-full@47.0.0:
+    resolution: {integrity: sha512-5ztTX7z4V3+YhMe3GuboSslWfKhaipcypyvc0VEsgERlN3mR3gXjkFtxtOSl1wixmhKI2giXGPt6JEit7uvAgQ==}
     peerDependencies:
-      cldr-core: 46.1.0
+      cldr-core: 47.0.0
 
   cldr-misc-full@46.1.0:
     resolution: {integrity: sha512-Prawv8u9yxXp0sQ+5qEVK/Rakv+Fl7hw9PFK1YFnnGAEJWH3BtzkNG4VST4e2pW2yzIbXW2bstzIY9iYI8OgVg==}
@@ -15931,7 +15931,7 @@ snapshots:
     dependencies:
       cldr-numbers-full: 46.1.0(cldr-core@46.0.0)
 
-  cldr-localenames-full@46.1.0(cldr-core@46.0.0):
+  cldr-localenames-full@47.0.0(cldr-core@46.0.0):
     dependencies:
       cldr-core: 46.0.0
 
