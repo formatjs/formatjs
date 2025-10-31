@@ -80,14 +80,14 @@ export function defineMessage<T extends MessageDescriptor>(msg: T): T {
 // IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./src/types').CustomFormatConfig`
 export const FormattedDate: React.FC<
   Intl.DateTimeFormatOptions &
-    CustomFormatConfig & {
+    CustomFormatConfig<'date'> & {
       value: string | number | Date | undefined
       children?(formattedDate: string): React.ReactElement | null
     }
 > = createFormattedComponent('formatDate')
 export const FormattedTime: React.FC<
   Intl.DateTimeFormatOptions &
-    CustomFormatConfig & {
+    CustomFormatConfig<'time'> & {
       value: string | number | Date | undefined
       children?(formattedTime: string): React.ReactElement | null
     }
