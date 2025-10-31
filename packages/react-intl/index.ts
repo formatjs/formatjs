@@ -7,6 +7,7 @@ import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {
   CustomFormatConfig,
   FormatDateOptions,
+  FormatTimeOptions,
   MessageDescriptor,
 } from '@formatjs/intl'
 import * as React from 'react'
@@ -80,14 +81,14 @@ export function defineMessage<T extends MessageDescriptor>(msg: T): T {
 // IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./src/types').CustomFormatConfig`
 export const FormattedDate: React.FC<
   Intl.DateTimeFormatOptions &
-    CustomFormatConfig & {
+    CustomFormatConfig<'date'> & {
       value: string | number | Date | undefined
       children?(formattedDate: string): React.ReactElement | null
     }
 > = createFormattedComponent('formatDate')
 export const FormattedTime: React.FC<
   Intl.DateTimeFormatOptions &
-    CustomFormatConfig & {
+    CustomFormatConfig<'time'> & {
       value: string | number | Date | undefined
       children?(formattedTime: string): React.ReactElement | null
     }
@@ -116,7 +117,7 @@ export const FormattedDateParts: React.FC<
   }
 > = createFormattedDateTimePartsComponent('formatDate')
 export const FormattedTimeParts: React.FC<
-  FormatDateOptions & {
+  FormatTimeOptions & {
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string
     children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null
   }

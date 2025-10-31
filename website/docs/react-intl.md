@@ -308,6 +308,41 @@ declare global {
 }
 ```
 
+## Typing custom formats
+
+By default, the type for the `format` prop of `<FormattedDate>`, `<FormattedDateParts>`, `<FormattedTime>` and `<FormattedTimeParts>` is `string`. The same applies to the `format` configuration of `formatDate`, `formatDateParts`, `formatTime`, and `formatTimeParts`. However, you can set a more restrictive type to get autocomplete and error checking. In order to do this, override the following global namespace with the union type of all of your custom format names. You can do this by including the following somewhere in your code:
+
+```ts
+declare global {
+  namespace FormatjsIntl {
+    interface Formats {
+      date: keyof (typeof customFormats)['date']
+      time: keyof (typeof customFormats)['time']
+    }
+  }
+}
+```
+
+Where `customFormats` is the object you would normally pass to `<IntlProvider>`, and would look something like:
+
+```ts
+const customFormats = {
+  date: {
+    short: {
+      month: 'numeric',
+      day: 'numeric',
+      year: '2-digit',
+    },
+  },
+  time: {
+    short: {
+      hour: 'numeric',
+      minute: 'numeric',
+    },
+  },
+}
+```
+
 # Advanced Usage
 
 Our [Advanced Usage](guides/advanced-usage.md) has further guides for production setup in environments where performance is important.

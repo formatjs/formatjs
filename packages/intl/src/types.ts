@@ -100,6 +100,11 @@ export type FormatDateOptions = Omit<
   'localeMatcher'
 > &
   CustomFormatConfig<'date'>
+export type FormatTimeOptions = Omit<
+  Intl.DateTimeFormatOptions,
+  'localeMatcher'
+> &
+  CustomFormatConfig<'time'>
 export type FormatNumberOptions = Omit<NumberFormatOptions, 'localeMatcher'> &
   CustomFormatConfig<'number'>
 export type FormatRelativeTimeOptions = Omit<
@@ -139,7 +144,7 @@ export interface IntlFormatters<TBase = unknown> {
   formatTime(
     this: void,
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
-    opts?: FormatDateOptions
+    opts?: FormatTimeOptions
   ): string
   formatDateToParts(
     this: void,
