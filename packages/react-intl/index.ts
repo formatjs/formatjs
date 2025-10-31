@@ -7,6 +7,7 @@ import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {
   CustomFormatConfig,
   FormatDateOptions,
+  FormatTimeOptions,
   MessageDescriptor,
 } from '@formatjs/intl'
 import * as React from 'react'
@@ -116,7 +117,7 @@ export const FormattedDateParts: React.FC<
   }
 > = createFormattedDateTimePartsComponent('formatDate')
 export const FormattedTimeParts: React.FC<
-  FormatDateOptions & {
+  FormatTimeOptions & {
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string
     children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null
   }
