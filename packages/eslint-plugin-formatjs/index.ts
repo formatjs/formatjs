@@ -197,4 +197,4 @@ const configs: ESLint.Plugin['configs'] = {
 }
 plugin.configs = configs
 
-module.exports = plugin
+export default plugin
