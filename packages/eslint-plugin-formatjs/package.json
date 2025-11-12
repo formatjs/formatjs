@@ -27,5 +27,6 @@
     "i18n"
   ],
   "main": "index.js",
+  "types": "index.d.ts",
   "repository": "formatjs/formatjs.git"
 }
