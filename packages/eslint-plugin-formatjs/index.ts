@@ -1,3 +1,4 @@
+import type {Linter} from 'eslint'
 import {ESLint} from 'eslint'
 import {
   name as blocklistElementRuleName,
@@ -114,14 +115,27 @@ const rules: ESLint.Plugin['rules'] = {
   [noLiteralStringInObjectName]: noLiteralStringInObject,
 }
 
+type Plugin = {
+  meta: {
+    name: string
+    version: string
+  }
+  rules: ESLint.Plugin['rules']
+  configs: {
+    strict: Linter.Config
+    recommended: Linter.Config
+  }
+}
+
 // Base plugin
-const plugin: ESLint.Plugin = {
+const plugin: Plugin = {
   meta: {name, version},
   rules,
+  configs: {} as Plugin['configs'], // will be populated later
 }
 
 // Configs
-const configs: ESLint.Plugin['configs'] = {
+const configs: Plugin['configs'] = {
   strict: {
     name: 'formatjs/strict',
     plugins: {formatjs: plugin},
@@ -197,4 +211,4 @@ const configs: ESLint.Plugin['configs'] = {
 }
 plugin.configs = configs
 
-module.exports = plugin
+export default plugin
