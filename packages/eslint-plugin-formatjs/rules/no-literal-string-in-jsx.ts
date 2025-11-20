@@ -68,9 +68,11 @@ export const rule: RuleModule<MessageIds, Options> = {
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           props: {
             type: 'object',
+            additionalProperties: false,
             properties: {
               include: {
                 ...propMatcherSchema,
