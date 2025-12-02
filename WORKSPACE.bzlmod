@@ -2,9 +2,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "io_buildbuddy_buildbuddy_toolchain",
-    sha256 = "d9e652e755f0ce4ce1e56e2230fdf77d075ae78e7b9139ab25310e9d01c66727",
-    strip_prefix = "buildbuddy-toolchain-722cf8feaaac5b32710a5d4df93c70376f19f767",
-    urls = ["https://github.com/buildbuddy-io/buildbuddy-toolchain/archive/722cf8feaaac5b32710a5d4df93c70376f19f767.tar.gz"],
+    sha256 = "874890e23010eff912298ae6656e9d93dd5f2d68ae2780a32ee42ee03761cd25",
+    strip_prefix = "buildbuddy-toolchain-e0d0b2a6ba634d81eb3ae8e954c2e51bfe5d0d5d",
+    urls = ["https://github.com/buildbuddy-io/buildbuddy-toolchain/archive/e0d0b2a6ba634d81eb3ae8e954c2e51bfe5d0d5d.tar.gz"],
 )
 
 load("@io_buildbuddy_buildbuddy_toolchain//:deps.bzl", "buildbuddy_deps")
