@@ -20,17 +20,17 @@ export async function checkMissingKeys(
   sourceLocale: string
 ): Promise<boolean> {
   debug('Checking translation files:')
-  const enUSContent = translationFilesContents[sourceLocale]
-  if (!enUSContent) {
+  const sourceContent = translationFilesContents[sourceLocale]
+  if (!sourceContent) {
     throw new Error(`Missing source ${sourceLocale}.json file`)
   }
-  const enUSKeys = extractKeys(enUSContent)
+  const sourceKeys = extractKeys(sourceContent)
   return Object.entries(translationFilesContents)
     .filter(([locale]) => locale !== sourceLocale)
     .reduce<boolean>((result, [locale, content]) => {
       const localeKeys = new Set(extractKeys(content))
 
-      const missingKeys = new Set(enUSKeys.filter(r => !localeKeys.has(r)))
+      const missingKeys = new Set(sourceKeys.filter(r => !localeKeys.has(r)))
       // We're being lenient here since only missing keys are currently considered breaking
       if (!missingKeys.size) {
         return result
