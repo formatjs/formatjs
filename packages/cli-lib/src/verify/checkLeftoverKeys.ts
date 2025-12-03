@@ -15,7 +15,7 @@ function extractKeys(obj: any, parentKey = ''): string[] {
     .flat()
 }
 
-export async function checkMissingKeys(
+export async function checkLeftoverKeys(
   translationFilesContents: Record<string, any>,
   sourceLocale: string
 ): Promise<boolean> {
