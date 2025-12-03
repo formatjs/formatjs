@@ -73,5 +73,5 @@ test('leftover keys fail', async () => {
     exec(
       `${BIN_PATH} verify --source-locale en-US --leftover-keys '${join(__dirname, 'leftover-keys', 'fixtures2', '*.json')}'`
     )
-  ).rejects.toThrow(/Leftover translation keys for locale fr-FR:\nextraKey/)
+  ).rejects.toThrow(/Leftover translation keys for locale fr-FR:\nboo/)
 }, 20000)
