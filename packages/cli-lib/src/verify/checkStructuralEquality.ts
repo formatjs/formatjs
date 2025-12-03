@@ -33,11 +33,11 @@ export async function checkStructuralEquality(
   sourceLocale: string
 ): Promise<boolean> {
   debug('Checking translation files:')
-  const enUSContent = translationFilesContents[sourceLocale]
-  if (!enUSContent) {
+  const sourceContent = translationFilesContents[sourceLocale]
+  if (!sourceContent) {
     throw new Error(`Missing source ${sourceLocale}.json file`)
   }
-  const enUSMessages = Object.entries(flatten(enUSContent)).reduce<
+  const sourceMessages = Object.entries(flatten(sourceContent)).reduce<
     Record<string, MessageFormatElement[]>
   >((all, [key, value]) => {
     try {
@@ -52,17 +52,17 @@ export async function checkStructuralEquality(
     .reduce<boolean>((result, [locale, content]) => {
       const localeMessages = flatten(content)
 
-      const problematicKeys = Object.keys(enUSMessages)
+      const problematicKeys = Object.keys(sourceMessages)
         .map(k => {
           if (!localeMessages[k]) {
             return {key: k, success: true}
           }
-          const enUSMessage = enUSMessages[k]
+          const sourceMessage = sourceMessages[k]
           try {
             const localeMessage = parse(localeMessages[k])
             return {
               key: k,
-              ...isStructurallySame(enUSMessage, localeMessage),
+              ...isStructurallySame(sourceMessage, localeMessage),
             }
           } catch (e) {
             return {
