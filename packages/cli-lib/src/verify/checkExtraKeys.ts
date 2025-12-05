@@ -15,7 +15,7 @@ function extractKeys(obj: any, parentKey = ''): string[] {
     .flat()
 }
 
-export async function checkLeftoverKeys(
+export async function checkExtraKeys(
   translationFilesContents: Record<string, any>,
   sourceLocale: string
 ): Promise<boolean> {
@@ -30,15 +30,15 @@ export async function checkLeftoverKeys(
     .reduce<boolean>((result, [locale, content]) => {
       const localeKeys = new Set(extractKeys(content))
 
-      const leftoverKeys = new Set(localeKeys.filter(k => !sourceKeys.includes(k)))
+      const extraKeys = new Set(localeKeys.filter(k => !sourceKeys.includes(k)))
 
-      if (!leftoverKeys.size) {
+      if (!extraKeys.size) {
         return result
       }
 
       writeStderr('---------------------------------\n')
-      writeStderr(`Leftover translation keys for locale ${locale}:\n`)
-      leftoverKeys.forEach(r => writeStderr(`${r}\n`))
+      writeStderr(`Extra translation keys for locale ${locale}:\n`)
+      extraKeys.forEach(r => writeStderr(`${r}\n`))
 
       return false
     }, true)

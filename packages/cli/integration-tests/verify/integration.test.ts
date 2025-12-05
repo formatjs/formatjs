@@ -60,18 +60,18 @@ test('structural equality fail', async () => {
   )
 }, 20000)
 
-test('leftover keys pass', async () => {
+test('extra keys pass', async () => {
   await expect(
     exec(
-      `${BIN_PATH} verify --source-locale en-US --leftover-keys '${join(__dirname, 'leftover-keys', 'fixtures1', '*.json')}'`
+      `${BIN_PATH} verify --source-locale en-US --extra-keys '${join(__dirname, 'extra-keys', 'fixtures1', '*.json')}'`
     )
   ).resolves.toBeTruthy()
 }, 20000)
 
-test('leftover keys fail', async () => {
+test('extra keys fail', async () => {
   await expect(
     exec(
-      `${BIN_PATH} verify --source-locale en-US --leftover-keys '${join(__dirname, 'leftover-keys', 'fixtures2', '*.json')}'`
+      `${BIN_PATH} verify --source-locale en-US --extra-keys '${join(__dirname, 'extra-keys', 'fixtures2', '*.json')}'`
     )
-  ).rejects.toThrow(/Leftover translation keys for locale fr-FR:\nboo/)
+  ).rejects.toThrow(/Extra translation keys for locale fr-FR:\nboo/)
 }, 20000)

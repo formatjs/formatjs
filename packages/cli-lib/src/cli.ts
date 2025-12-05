@@ -262,7 +262,7 @@ This is especially useful to convert from a TMS-specific format back to react-in
       This basically guarantees that no messages are untranslated.`
     )
     .option(
-      '--leftover-keys',
+      '--extra-keys',
       `Whether to check that target locales don't have extra keys not present in the source locale.`
     )
     .option(

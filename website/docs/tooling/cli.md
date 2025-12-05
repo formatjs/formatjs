@@ -247,6 +247,11 @@ Whether to check for missing keys in target locale compared to source locale. Th
 
 Whether to check for structural equality of messages between source and target locale. This makes sure translations are formattable and are not missing any tokens.
 
+### `--extra-keys`
+
+Whether to check for keys that exist in the target locale but not in the source locale. This ensures that translation files do not contain obsolete or unused keys.
+
+
 ## Compilation
 
 Compile extracted files from `formatjs extract` to a [react-intl](../react-intl.md) consumable

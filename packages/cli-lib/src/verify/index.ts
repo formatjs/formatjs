@@ -1,20 +1,20 @@
 import {basename} from 'path'
 import {debug} from '../console_utils'
 import {checkMissingKeys} from './checkMissingKeys'
-import {checkLeftoverKeys} from './checkLeftoverKeys'
+import {checkExtraKeys} from './checkExtraKeys'
 import {readJSON} from 'fs-extra'
 import {checkStructuralEquality} from './checkStructuralEquality'
 export interface VerifyOpts {
   sourceLocale: string
   missingKeys: boolean
-  leftoverKeys: boolean
+  extraKeys: boolean
   structuralEquality: boolean
   ignore?: string[]
 }
 
 export async function verify(
   files: string[],
-  {sourceLocale, missingKeys, leftoverKeys, structuralEquality}: VerifyOpts
+  {sourceLocale, missingKeys, extraKeys, structuralEquality}: VerifyOpts
 ): Promise<void> {
   debug('Checking translation files:')
   files.forEach(fn => debug(fn))
@@ -39,8 +39,8 @@ export async function verify(
   }
 
   if (
-    leftoverKeys &&
-    !(await checkLeftoverKeys(translationFilesContents, sourceLocale))
+    extraKeys &&
+    !(await checkExtraKeys(translationFilesContents, sourceLocale))
   ) {
     exitCode = 1
   }
