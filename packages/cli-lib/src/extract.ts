@@ -5,13 +5,15 @@ import {
 } from '@formatjs/ts-transformer'
 import {outputFile, readFile} from 'fs-extra'
 import {debug, getStdinAsString, warn, writeStdout} from './console_utils'
+import * as stringifyNs from 'json-stable-stringify'
 
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator'
 import {printAST} from '@formatjs/icu-messageformat-parser/printer'
-import stringify from 'json-stable-stringify'
 import {Formatter, resolveBuiltinFormatter} from './formatters'
 import {parseScript} from './parse_script'
+
+const stringify = (stringifyNs as any).default || stringifyNs
 export interface ExtractionResult<M = Record<string, string>> {
   /**
    * List of extracted messages

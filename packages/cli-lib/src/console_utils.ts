@@ -1,5 +1,8 @@
 import {green, red, supportsColor, yellow} from 'chalk'
-import readline from 'readline'
+import {
+  clearLine as nativeClearLine,
+  cursorTo as nativeCursorTo,
+} from 'readline'
 import {format, promisify} from 'util'
 
 const CLEAR_WHOLE_LINE = 0
@@ -8,9 +11,6 @@ export const writeStderr: (arg1: string | Uint8Array) => Promise<void> =
   promisify(process.stderr.write).bind(process.stderr)
 export const writeStdout: (arg1: string | Uint8Array) => Promise<void> =
   promisify(process.stdout.write).bind(process.stdout)
-
-const nativeClearLine = promisify(readline.clearLine).bind(readline)
-const nativeCursorTo = promisify(readline.cursorTo).bind(readline)
 
 // From:
 // https://github.com/yarnpkg/yarn/blob/53d8004229f543f342833310d5af63a4b6e59c8a/src/reporters/console/util.js
@@ -27,8 +27,8 @@ export async function clearLine(
     }
     // ignore piping to file
   } else {
-    await nativeClearLine(terminal, CLEAR_WHOLE_LINE)
-    await nativeCursorTo(terminal, 0, undefined)
+    nativeClearLine(terminal, CLEAR_WHOLE_LINE)
+    nativeCursorTo(terminal, 0, undefined)
   }
 }
 
