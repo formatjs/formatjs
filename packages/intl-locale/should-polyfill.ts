@@ -4,7 +4,7 @@
 function hasIntlGetCanonicalLocalesBug(): boolean {
   try {
     return new (Intl as any).Locale('und-x-private').toString() === 'x-private'
-  } catch (e) {
+  } catch {
     return true
   }
 }

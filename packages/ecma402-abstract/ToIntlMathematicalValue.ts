@@ -21,7 +21,7 @@ export function ToIntlMathematicalValue(input: unknown): Decimal {
   }
   try {
     return new Decimal(primValue)
-  } catch (e) {
+  } catch {
     return new Decimal(NaN)
   }
 }

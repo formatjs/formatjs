@@ -52,7 +52,7 @@ export function defaultTimezone(
       dtf.formatToParts(now).find(p => p.type === 'timeZoneName')?.value ||
       'UTC'
     )
-  } catch (e) {
+  } catch {
     return 'UTC'
   }
 }

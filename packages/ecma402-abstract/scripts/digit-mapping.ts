@@ -4,7 +4,7 @@ import stringify from 'json-stable-stringify'
 
 // Generate an array of 10 characters with consecutive codepoint, starting from `starCharCode`.
 function generateDigitChars(startCharCode: number): string[] {
-  const arr = new Array<string>(10)
+  const arr = Array.from<string>({length: 10})
   for (let i = 0; i < 10; i++) {
     arr[i] = String.fromCodePoint(startCharCode + i)
   }

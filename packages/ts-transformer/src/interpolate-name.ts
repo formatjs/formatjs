@@ -125,10 +125,11 @@ export function interpolateName(
   if (regExp && loaderContext.resourcePath) {
     const match = loaderContext.resourcePath.match(new RegExp(regExp))
 
-    match &&
+    if (match) {
       match.forEach((matched, i) => {
         url = url.replace(new RegExp('\\[' + i + '\\]', 'ig'), matched)
       })
+    }
   }
 
   if (

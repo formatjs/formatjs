@@ -110,7 +110,7 @@ try {
    * See https://github.com/formatjs/formatjs/issues/2822
    */
   REGEX_SUPPORTS_U_AND_Y = re.exec('a')?.[0] === 'a'
-} catch (_) {
+} catch {
   REGEX_SUPPORTS_U_AND_Y = false
 }
 
@@ -985,7 +985,7 @@ export class Parser {
     let tokens: NumberSkeletonToken[] = []
     try {
       tokens = parseNumberSkeletonFromString(skeleton)
-    } catch (e) {
+    } catch {
       return this.error(ErrorKind.INVALID_NUMBER_SKELETON, location)
     }
 

@@ -15,7 +15,7 @@ function isSupportedNumberingSystem(
     ) {
       return true
     }
-  } catch (_err) {}
+  } catch {}
 
   return false
 }
