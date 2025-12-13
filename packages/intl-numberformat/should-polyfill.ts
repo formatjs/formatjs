@@ -32,7 +32,7 @@ function supportsES2020() {
     if (s !== '1E4 bits') {
       return false
     }
-  } catch (e) {
+  } catch {
     return false
   }
   return true
@@ -57,7 +57,7 @@ function supportsES2023() {
       roundingPriority: 'morePrecision',
     }).format(1e8)
     return s === '100.00M'
-  } catch (e) {
+  } catch {
     return false
   }
 }

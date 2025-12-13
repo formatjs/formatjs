@@ -8,7 +8,7 @@ function supportsDateStyle() {
         dateStyle: 'short',
       } as any).resolvedOptions() as any
     ).dateStyle
-  } catch (e) {
+  } catch {
     return false
   }
 }
@@ -24,7 +24,7 @@ function hasChromeLt71Bug() {
         hour: 'numeric',
       } as any).formatToParts(0)[2].type !== 'dayPeriod'
     )
-  } catch (e) {
+  } catch {
     return false
   }
 }
@@ -40,7 +40,7 @@ function hasUnthrownDateTimeStyleBug(): boolean {
       dateStyle: 'short',
       hour: 'numeric',
     } as any).format(new Date(0))
-  } catch (e) {
+  } catch {
     return false
   }
 }

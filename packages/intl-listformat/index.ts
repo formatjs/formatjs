@@ -373,6 +373,6 @@ try {
     enumerable: false,
     configurable: true,
   })
-} catch (e) {
+} catch {
   // Meta fix so we're test262-compliant, not important
 }

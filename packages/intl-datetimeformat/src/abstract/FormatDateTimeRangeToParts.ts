@@ -11,7 +11,7 @@ export function FormatDateTimeRangeToParts(
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
   const parts = PartitionDateTimeRangePattern(dtf, x, y, implDetails)
-  const result = new Array(0)
+  const result: IntlDateTimeFormatPart[] = []
   for (const part of parts) {
     result.push({
       type: part.type,
