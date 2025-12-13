@@ -8,7 +8,7 @@ import {
   MessageDescriptor,
   MessageDescriptorPath,
   Options,
-} from './types'
+} from './types.js'
 
 const DESCRIPTOR_PROPS = new Set<keyof MessageDescriptorPath>([
   'id',
