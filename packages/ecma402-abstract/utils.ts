@@ -4,7 +4,7 @@ export function repeat(s: string, times: number): string {
   if (typeof s.repeat === 'function') {
     return s.repeat(times)
   }
-  const arr = new Array(times)
+  const arr = Array.from({length: times})
   for (let i = 0; i < arr.length; i++) {
     arr[i] = s
   }

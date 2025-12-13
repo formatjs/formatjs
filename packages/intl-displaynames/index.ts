@@ -288,7 +288,7 @@ try {
     enumerable: false,
     configurable: true,
   })
-} catch (e) {
+} catch {
   // Make test 262 compliant
 }
 

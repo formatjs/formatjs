@@ -51,7 +51,7 @@ export function shouldPolyfill(locale = 'en'): string | true | undefined {
     if (_shouldPolyfillWithoutLocale() || !supportedLocalesOf(locale)) {
       return match([locale], supportedLocales, 'en')
     }
-  } catch (e) {
+  } catch {
     return true
   }
 }

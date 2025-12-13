@@ -7,7 +7,7 @@ function isSupported(collation: Collation, locale: string = 'en'): boolean {
       Intl.Collator(`${locale}-u-co-${collation}`).resolvedOptions()
         .collation === collation
     )
-  } catch (_err) {}
+  } catch {}
 
   return false
 }

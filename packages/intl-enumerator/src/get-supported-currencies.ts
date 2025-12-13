@@ -21,7 +21,7 @@ function isSupportedCurrency(
     ) {
       return true
     }
-  } catch (_err) {}
+  } catch {}
 
   return false
 }

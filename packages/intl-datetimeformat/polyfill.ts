@@ -19,7 +19,7 @@ if (shouldPolyfill()) {
     ) {
       try {
         return _toLocaleString(this, locales, options)
-      } catch (error) {
+      } catch {
         return 'Invalid Date'
       }
     },
@@ -33,7 +33,7 @@ if (shouldPolyfill()) {
     ) {
       try {
         return _toLocaleDateString(this, locales, options)
-      } catch (error) {
+      } catch {
         return 'Invalid Date'
       }
     },
@@ -47,7 +47,7 @@ if (shouldPolyfill()) {
     ) {
       try {
         return _toLocaleTimeString(this, locales, options)
-      } catch (error) {
+      } catch {
         return 'Invalid Date'
       }
     },
