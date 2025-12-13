@@ -1,8 +1,8 @@
 {
   "recommendations": [
-    "esbenp.prettier-vscode",
+    "prettier.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "foxundermoon.shell-format",
-    "ms-azuretools.vscode-docker"
+    "TypeScriptTeam.native-preview"
   ]
 }
