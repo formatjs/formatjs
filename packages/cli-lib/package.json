@@ -4,6 +4,7 @@
   "version": "7.4.4",
   "license": "MIT",
   "author": "Linjie Ding <linjie@airtable.com>",
+  "type": "module",
   "engines": {
     "node": ">= 16"
   },
