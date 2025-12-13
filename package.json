@@ -102,7 +102,7 @@
     "lodash": "^4.17.21",
     "make-plural-compiler": "^5.1.0",
     "minimist": "^1.2.8",
-    "prettier": "^3.3.3",
+    "prettier": "^3.7.4",
     "react": "16 || 17 || 18 || 19",
     "react-dom": "16 || 17 || 18 || 19",
     "regenerate": "^1.4.2",

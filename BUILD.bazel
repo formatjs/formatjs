@@ -239,6 +239,11 @@ prettier.prettier_binary(
     ],
     # Allow the binary to be run outside bazel
     env = {"BAZEL_BINDIR": "."},
+    fixed_args = [
+        # default log level is "log" which spams on success
+        # https://prettier.io/docs/en/cli.html#--log-level
+        "--log-level=warn",
+    ],
 )
 
 format_multirun(

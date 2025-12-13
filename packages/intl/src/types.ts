@@ -256,8 +256,7 @@ export interface Formatters {
 }
 
 export interface IntlShape<T = string>
-  extends ResolvedIntlConfig<T>,
-    IntlFormatters<T> {
+  extends ResolvedIntlConfig<T>, IntlFormatters<T> {
   formatters: Formatters
 }
 

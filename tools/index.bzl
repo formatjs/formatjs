@@ -64,7 +64,7 @@ def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_es
             name = "%s-base" % name,
             srcs = srcs,
             declaration = True,
-            tsconfig = "//:tsconfig",
+            tsconfig = BASE_TSCONFIG,
             resolve_json_module = True,
             deps = deps,
         )
