@@ -4,6 +4,7 @@
   "version": "5.4.2",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "types": "index.d.ts",
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
