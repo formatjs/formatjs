@@ -376,7 +376,7 @@ function IsCallable(fn: any): fn is Function {
  * @param internalSlots internalSlots
  */
 export function OrdinaryHasInstance(
-  C: Object,
+  C: object,
   O: any,
   internalSlots?: {boundTargetFunction: any}
 ): boolean {

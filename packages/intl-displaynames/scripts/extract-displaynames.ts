@@ -68,7 +68,7 @@ function extractCurrencyStyleData(
   for (const [currencyCode, value] of Object.entries(cldrData)) {
     // There does not seem to be narrow or short display names.
     const displayName = value.displayName
-    if (!!displayName) {
+    if (displayName) {
       console.warn(
         `displayName does not exist for currency ${currencyCode} of locale ${locale}.`
       )

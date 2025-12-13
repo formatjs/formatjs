@@ -6,3 +6,9 @@
 **/build
 **/node_modules
 packages/babel-plugin-formatjs/options.ts
+**/test262-main.ts
+**/locale-data/*
+**/tests/fixtures/**
+**/integration-tests/**/fixtures/**
+packages/cli/integration-tests/extract/typescript/err.tsx
+*.generated.*

@@ -30,7 +30,7 @@ const CARET_S_UNICODE_REGEX = new RegExp(`^${S_UNICODE_REGEX.source}`)
 // /\p{S}$/u
 const S_DOLLAR_UNICODE_REGEX = new RegExp(`${S_UNICODE_REGEX.source}$`)
 
-const CLDR_NUMBER_PATTERN = /[#0](?:[\.,][#0]+)*/g
+const CLDR_NUMBER_PATTERN = /[#0](?:[.,][#0]+)*/g
 
 interface NumberResult {
   formattedString: string
@@ -180,7 +180,7 @@ export default function formatToParts(
   }
 
   // The following tokens are special: `{0}`, `¤`, `%`, `-`, `+`, `{c:...}.
-  const numberPatternParts = numberPattern.split(/({c:[^}]+}|\{0\}|[¤%\-\+])/g)
+  const numberPatternParts = numberPattern.split(/({c:[^}]+}|\{0\}|[¤%\-+])/g)
   const numberParts: NumberFormatPart[] = []
 
   const symbols =
@@ -225,7 +225,7 @@ export default function formatToParts(
         numberParts.push({type: 'currency', value: nonNameCurrencyPart!})
         break
       default:
-        if (/^\{c:/.test(part)) {
+        if (part.startsWith('{c:')) {
           numberParts.push({
             type: 'compact',
             value: part.substring(3, part.length - 1),
@@ -597,7 +597,7 @@ function getCompactDisplayPattern(
 
   pattern = getPatternForSign(pattern, sign)
     // Extract compact literal from the pattern
-    .replace(/([^\s;\-\+\d¤]+)/g, '{c:$1}')
+    .replace(/([^\s;\-+\d¤]+)/g, '{c:$1}')
     // We replace one or more zeros with a single zero so it matches `CLDR_NUMBER_PATTERN`.
     .replace(/0+/, '0')
 
