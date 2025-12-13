@@ -16,5 +16,6 @@ export default {
     'scope-enum': [2, 'always', packages],
     'header-max-length': [0, 'never', Infinity],
     'type-enum': [1, 'always', [...types.value(), 'chore']],
+    'subject-exclamation-mark': [0, 'never'],
   },
 }
