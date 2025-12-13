@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/no-multiple-whitespaces'
+import {name, rule} from '../rules/no-multiple-whitespaces.js'
 import {
   defineMessage,
   dynamicMessage,

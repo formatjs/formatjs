@@ -1,6 +1,6 @@
 import {TSESTree} from '@typescript-eslint/utils'
 import {RuleModule} from '@typescript-eslint/utils/ts-eslint'
-import {isIntlFormatMessageCall} from '../util'
+import {isIntlFormatMessageCall} from '../util.js'
 
 type MessageIds = 'jsxChildren'
 

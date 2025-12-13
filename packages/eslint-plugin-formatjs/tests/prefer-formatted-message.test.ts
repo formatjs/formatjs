@@ -1,4 +1,4 @@
-import {rule, name} from '../rules/prefer-formatted-message'
+import {rule, name} from '../rules/prefer-formatted-message.js'
 import {ruleTester} from './util'
 import {
   dynamicMessage,

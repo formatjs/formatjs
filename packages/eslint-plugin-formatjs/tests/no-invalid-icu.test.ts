@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/no-invalid-icu'
+import {name, rule} from '../rules/no-invalid-icu.js'
 import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester} from './util'
 

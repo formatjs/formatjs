@@ -1,6 +1,6 @@
 import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
-import {getParserServices} from '../context-compat'
+import {getParserServices} from '../context-compat.js'
 
 type MessageIds = 'untranslatedProperty'
 type PropertyConfig = {

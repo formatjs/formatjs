@@ -1,4 +1,4 @@
-import {rule, name} from '../rules/no-complex-selectors'
+import {rule, name} from '../rules/no-complex-selectors.js'
 import {ruleTester} from './util'
 import {
   dynamicMessage,

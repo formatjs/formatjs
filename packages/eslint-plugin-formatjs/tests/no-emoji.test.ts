@@ -1,5 +1,5 @@
 import {ruleTester} from './util'
-import {rule, name} from '../rules/no-emoji'
+import {rule, name} from '../rules/no-emoji.js'
 
 ruleTester.run(name, rule, {
   valid: [

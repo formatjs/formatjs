@@ -1,7 +1,7 @@
 import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
-import {getParserServices} from '../context-compat'
-import {extractMessages, getSettings} from '../util'
+import {getParserServices} from '../context-compat.js'
+import {extractMessages, getSettings} from '../util.js'
 
 export enum Option {
   literal = 'literal',
