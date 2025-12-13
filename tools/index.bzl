@@ -4,6 +4,7 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESM_ESNEXT_TSCONFIG", "ESM_TSCONFIG", "NODE_TSCONFIG")
 
 def ts_compile_node(name, srcs, deps = [], data = [], skip_cjs = False, visibility = None):
     """Compile TS with prefilled args, specifically for Node tooling.
@@ -23,7 +24,7 @@ def ts_compile_node(name, srcs, deps = [], data = [], skip_cjs = False, visibili
             name = "%s-base" % name,
             srcs = srcs,
             declaration = True,
-            tsconfig = "//:tsconfig.node",
+            tsconfig = NODE_TSCONFIG,
             resolve_json_module = True,
             deps = deps,
         )
@@ -33,7 +34,7 @@ def ts_compile_node(name, srcs, deps = [], data = [], skip_cjs = False, visibili
         srcs = srcs,
         declaration = True,
         out_dir = "lib_esnext",
-        tsconfig = "//:tsconfig.esm.esnext",
+        tsconfig = ESM_ESNEXT_TSCONFIG,
         resolve_json_module = True,
         deps = deps,
     )
@@ -73,7 +74,7 @@ def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_es
             srcs = srcs,
             declaration = True,
             out_dir = "lib",
-            tsconfig = "//:tsconfig.esm",
+            tsconfig = ESM_TSCONFIG,
             resolve_json_module = True,
             deps = deps,
         )
@@ -83,7 +84,7 @@ def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_es
             srcs = srcs,
             declaration = True,
             out_dir = "lib_esnext",
-            tsconfig = "//:tsconfig.esm.esnext",
+            tsconfig = ESM_ESNEXT_TSCONFIG,
             resolve_json_module = True,
             deps = deps,
         )

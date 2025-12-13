@@ -2,6 +2,7 @@
 
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
+load("//tools:tsconfig.bzl", "TEST_TSCONFIG")
 
 def vitest(
         name,
@@ -49,7 +50,7 @@ def vitest(
         ts_project(
             name = "%s_typecheck" % name,
             srcs = srcs,
-            tsconfig = "//:tsconfig.test",
+            tsconfig = TEST_TSCONFIG,
             resolve_json_module = True,
             declaration = True,
             no_emit = True,
