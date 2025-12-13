@@ -4,6 +4,7 @@
   "version": "3.14.2",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "type": "module",
   "types": "index.d.ts",
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
