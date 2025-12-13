@@ -132,7 +132,6 @@ function IntroSection({className}) {
 }
 
 function EnvSection({className}) {
-  const intl = useIntl()
   return (
     <div className={cx(className, styles.env)}>
       <div className={cx('row', styles.logos)}>

@@ -24,14 +24,14 @@ export const IcuEditor = ({defaultMessage, defaultValues}: IcuEditorProps) => {
       let opts = {}
       try {
         opts = JSON.parse(values)
-      } catch (err) {
+      } catch {
         //Ignore invalid JSON error
       }
 
       const msg = new IntlMessageFormat(message).format(opts) as string
       setError(false)
       setResult(msg)
-    } catch (err) {
+    } catch {
       if (err instanceof Error) {
         setResult(err.message)
         setError(true)

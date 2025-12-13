@@ -39,8 +39,6 @@ const collectSegments = (iterator: SegmentIterator) => {
   return collected
 }
 
-//@ts-ignore
-let curIdx = Math.floor(Math.random() * inputString.length)
 new Suite()
   .add(
     'segment_cached_grapheme_collect_all',

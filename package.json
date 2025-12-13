@@ -102,6 +102,7 @@
     "lodash": "^4.17.21",
     "make-plural-compiler": "^5.1.0",
     "minimist": "^1.2.8",
+    "oxlint": "^1.32.0",
     "prettier": "^3.7.4",
     "react": "16 || 17 || 18 || 19",
     "react-dom": "16 || 17 || 18 || 19",
@@ -130,7 +131,8 @@
     }
   },
   "lint-staged": {
-    "*": "bazel run //:format"
+    "*": "bazel run //:format",
+    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
   },
   "packageManager": "pnpm@10.12.4",
   "pnpm": {
