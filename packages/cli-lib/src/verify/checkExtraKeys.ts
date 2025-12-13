@@ -30,7 +30,9 @@ export async function checkExtraKeys(
     .reduce<boolean>((result, [locale, content]) => {
       const localeKeys = new Set(extractKeys(content))
 
-      const extraKeys = new Set(localeKeys.filter(k => !sourceKeys.includes(k)))
+      const extraKeys = new Set(
+        Array.from(localeKeys).filter(k => !sourceKeys.includes(k))
+      )
 
       if (!extraKeys.size) {
         return result
