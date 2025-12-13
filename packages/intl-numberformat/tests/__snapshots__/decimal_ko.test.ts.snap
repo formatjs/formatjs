@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=always, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=always, compactDisplay=long 1`] = `
 [
   {
     "type": "plusSign",
@@ -17,11 +17,11 @@ exports[`Intl.NumberFormat ko notation=compact, signDisplay=always, compactDispl
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1만~+2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1만~+2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=always, compactDisplay=long 3`] = `"+1만~+2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=always, compactDisplay=long 3`] = `"+1만~+2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=always, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=always, compactDisplay=short 1`] = `
 [
   {
     "type": "plusSign",
@@ -38,11 +38,11 @@ exports[`Intl.NumberFormat ko notation=compact, signDisplay=always, compactDispl
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1만~+2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1만~+2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=always, compactDisplay=short 3`] = `"+1만~+2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=always, compactDisplay=short 3`] = `"+1만~+2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=auto, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=auto, compactDisplay=long 1`] = `
 [
   {
     "type": "integer",
@@ -55,11 +55,11 @@ exports[`Intl.NumberFormat ko notation=compact, signDisplay=auto, compactDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1만~2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1만~2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=auto, compactDisplay=long 3`] = `"1만~2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=auto, compactDisplay=long 3`] = `"1만~2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=auto, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=auto, compactDisplay=short 1`] = `
 [
   {
     "type": "integer",
@@ -72,32 +72,11 @@ exports[`Intl.NumberFormat ko notation=compact, signDisplay=auto, compactDisplay
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1만~2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1만~2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=auto, compactDisplay=short 3`] = `"1만~2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=auto, compactDisplay=short 3`] = `"1만~2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=exceptZero, compactDisplay=long 1`] = `
-[
-  {
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "type": "integer",
-    "value": "1",
-  },
-  {
-    "type": "compact",
-    "value": "만",
-  },
-]
-`;
-
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1만~+2만"`;
-
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=exceptZero, compactDisplay=long 3`] = `"+1만~+2만"`;
-
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=exceptZero, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=exceptZero, compactDisplay=long 1`] = `
 [
   {
     "type": "plusSign",
@@ -114,11 +93,32 @@ exports[`Intl.NumberFormat ko notation=compact, signDisplay=exceptZero, compactD
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1만~+2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1만~+2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=exceptZero, compactDisplay=short 3`] = `"+1만~+2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=exceptZero, compactDisplay=long 3`] = `"+1만~+2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=never, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "compact",
+    "value": "만",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1만~+2만"`;
+
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=exceptZero, compactDisplay=short 3`] = `"+1만~+2만"`;
+
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=never, compactDisplay=long 1`] = `
 [
   {
     "type": "integer",
@@ -131,11 +131,11 @@ exports[`Intl.NumberFormat ko notation=compact, signDisplay=never, compactDispla
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1만~2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1만~2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=never, compactDisplay=long 3`] = `"1만~2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=never, compactDisplay=long 3`] = `"1만~2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=never, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=never, compactDisplay=short 1`] = `
 [
   {
     "type": "integer",
@@ -148,11 +148,11 @@ exports[`Intl.NumberFormat ko notation=compact, signDisplay=never, compactDispla
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1만~2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1만~2만"`;
 
-exports[`Intl.NumberFormat ko notation=compact, signDisplay=never, compactDisplay=short 3`] = `"1만~2만"`;
+exports[`Intl.NumberFormat ko > notation=compact, signDisplay=never, compactDisplay=short 3`] = `"1만~2만"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=always, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=always, compactDisplay=long 1`] = `
 [
   {
     "type": "plusSign",
@@ -173,11 +173,11 @@ exports[`Intl.NumberFormat ko notation=engineering, signDisplay=always, compactD
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=always, compactDisplay=long 2`] = `"+10E3~+20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=always, compactDisplay=long 2`] = `"+10E3~+20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=always, compactDisplay=long 3`] = `"+10E3~+20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=always, compactDisplay=long 3`] = `"+10E3~+20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=always, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=always, compactDisplay=short 1`] = `
 [
   {
     "type": "plusSign",
@@ -198,11 +198,11 @@ exports[`Intl.NumberFormat ko notation=engineering, signDisplay=always, compactD
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=always, compactDisplay=short 2`] = `"+10E3~+20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=always, compactDisplay=short 2`] = `"+10E3~+20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=always, compactDisplay=short 3`] = `"+10E3~+20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=always, compactDisplay=short 3`] = `"+10E3~+20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=auto, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=auto, compactDisplay=long 1`] = `
 [
   {
     "type": "integer",
@@ -219,11 +219,11 @@ exports[`Intl.NumberFormat ko notation=engineering, signDisplay=auto, compactDis
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=auto, compactDisplay=long 2`] = `"10E3~20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=auto, compactDisplay=long 2`] = `"10E3~20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=auto, compactDisplay=long 3`] = `"10E3~20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=auto, compactDisplay=long 3`] = `"10E3~20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=auto, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=auto, compactDisplay=short 1`] = `
 [
   {
     "type": "integer",
@@ -240,36 +240,11 @@ exports[`Intl.NumberFormat ko notation=engineering, signDisplay=auto, compactDis
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=auto, compactDisplay=short 2`] = `"10E3~20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=auto, compactDisplay=short 2`] = `"10E3~20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=auto, compactDisplay=short 3`] = `"10E3~20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=auto, compactDisplay=short 3`] = `"10E3~20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=exceptZero, compactDisplay=long 1`] = `
-[
-  {
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "type": "integer",
-    "value": "10",
-  },
-  {
-    "type": "exponentSeparator",
-    "value": "E",
-  },
-  {
-    "type": "exponentInteger",
-    "value": "3",
-  },
-]
-`;
-
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=exceptZero, compactDisplay=long 2`] = `"+10E3~+20E3"`;
-
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=exceptZero, compactDisplay=long 3`] = `"+10E3~+20E3"`;
-
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=exceptZero, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=exceptZero, compactDisplay=long 1`] = `
 [
   {
     "type": "plusSign",
@@ -290,11 +265,36 @@ exports[`Intl.NumberFormat ko notation=engineering, signDisplay=exceptZero, comp
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=exceptZero, compactDisplay=short 2`] = `"+10E3~+20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=exceptZero, compactDisplay=long 2`] = `"+10E3~+20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=exceptZero, compactDisplay=short 3`] = `"+10E3~+20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=exceptZero, compactDisplay=long 3`] = `"+10E3~+20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=never, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "10",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "3",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=exceptZero, compactDisplay=short 2`] = `"+10E3~+20E3"`;
+
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=exceptZero, compactDisplay=short 3`] = `"+10E3~+20E3"`;
+
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=never, compactDisplay=long 1`] = `
 [
   {
     "type": "integer",
@@ -311,11 +311,11 @@ exports[`Intl.NumberFormat ko notation=engineering, signDisplay=never, compactDi
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=never, compactDisplay=long 2`] = `"10E3~20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=never, compactDisplay=long 2`] = `"10E3~20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=never, compactDisplay=long 3`] = `"10E3~20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=never, compactDisplay=long 3`] = `"10E3~20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=never, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=never, compactDisplay=short 1`] = `
 [
   {
     "type": "integer",
@@ -332,11 +332,11 @@ exports[`Intl.NumberFormat ko notation=engineering, signDisplay=never, compactDi
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=never, compactDisplay=short 2`] = `"10E3~20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=never, compactDisplay=short 2`] = `"10E3~20E3"`;
 
-exports[`Intl.NumberFormat ko notation=engineering, signDisplay=never, compactDisplay=short 3`] = `"10E3~20E3"`;
+exports[`Intl.NumberFormat ko > notation=engineering, signDisplay=never, compactDisplay=short 3`] = `"10E3~20E3"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=always, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=always, compactDisplay=long 1`] = `
 [
   {
     "type": "plusSign",
@@ -357,11 +357,11 @@ exports[`Intl.NumberFormat ko notation=scientific, signDisplay=always, compactDi
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=always, compactDisplay=long 2`] = `"+1E4~+2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=always, compactDisplay=long 2`] = `"+1E4~+2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=always, compactDisplay=long 3`] = `"+1E4~+2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=always, compactDisplay=long 3`] = `"+1E4~+2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=always, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=always, compactDisplay=short 1`] = `
 [
   {
     "type": "plusSign",
@@ -382,11 +382,11 @@ exports[`Intl.NumberFormat ko notation=scientific, signDisplay=always, compactDi
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=always, compactDisplay=short 2`] = `"+1E4~+2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=always, compactDisplay=short 2`] = `"+1E4~+2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=always, compactDisplay=short 3`] = `"+1E4~+2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=always, compactDisplay=short 3`] = `"+1E4~+2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=auto, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=auto, compactDisplay=long 1`] = `
 [
   {
     "type": "integer",
@@ -403,11 +403,11 @@ exports[`Intl.NumberFormat ko notation=scientific, signDisplay=auto, compactDisp
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=auto, compactDisplay=long 2`] = `"1E4~2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=auto, compactDisplay=long 2`] = `"1E4~2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=auto, compactDisplay=long 3`] = `"1E4~2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=auto, compactDisplay=long 3`] = `"1E4~2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=auto, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=auto, compactDisplay=short 1`] = `
 [
   {
     "type": "integer",
@@ -424,11 +424,11 @@ exports[`Intl.NumberFormat ko notation=scientific, signDisplay=auto, compactDisp
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=auto, compactDisplay=short 2`] = `"1E4~2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=auto, compactDisplay=short 2`] = `"1E4~2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=auto, compactDisplay=short 3`] = `"1E4~2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=auto, compactDisplay=short 3`] = `"1E4~2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=exceptZero, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=exceptZero, compactDisplay=long 1`] = `
 [
   {
     "type": "plusSign",
@@ -449,11 +449,11 @@ exports[`Intl.NumberFormat ko notation=scientific, signDisplay=exceptZero, compa
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1E4~+2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1E4~+2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=exceptZero, compactDisplay=long 3`] = `"+1E4~+2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=exceptZero, compactDisplay=long 3`] = `"+1E4~+2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=exceptZero, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=exceptZero, compactDisplay=short 1`] = `
 [
   {
     "type": "plusSign",
@@ -474,11 +474,11 @@ exports[`Intl.NumberFormat ko notation=scientific, signDisplay=exceptZero, compa
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1E4~+2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1E4~+2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=exceptZero, compactDisplay=short 3`] = `"+1E4~+2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=exceptZero, compactDisplay=short 3`] = `"+1E4~+2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=never, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=never, compactDisplay=long 1`] = `
 [
   {
     "type": "integer",
@@ -495,11 +495,11 @@ exports[`Intl.NumberFormat ko notation=scientific, signDisplay=never, compactDis
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=never, compactDisplay=long 2`] = `"1E4~2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=never, compactDisplay=long 2`] = `"1E4~2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=never, compactDisplay=long 3`] = `"1E4~2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=never, compactDisplay=long 3`] = `"1E4~2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=never, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=never, compactDisplay=short 1`] = `
 [
   {
     "type": "integer",
@@ -516,11 +516,11 @@ exports[`Intl.NumberFormat ko notation=scientific, signDisplay=never, compactDis
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=never, compactDisplay=short 2`] = `"1E4~2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=never, compactDisplay=short 2`] = `"1E4~2E4"`;
 
-exports[`Intl.NumberFormat ko notation=scientific, signDisplay=never, compactDisplay=short 3`] = `"1E4~2E4"`;
+exports[`Intl.NumberFormat ko > notation=scientific, signDisplay=never, compactDisplay=short 3`] = `"1E4~2E4"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=always, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=always, compactDisplay=long 1`] = `
 [
   {
     "type": "plusSign",
@@ -541,11 +541,11 @@ exports[`Intl.NumberFormat ko notation=standard, signDisplay=always, compactDisp
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=always, compactDisplay=long 2`] = `"+10,000~+20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=always, compactDisplay=long 2`] = `"+10,000~+20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=always, compactDisplay=long 3`] = `"+10,000~+20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=always, compactDisplay=long 3`] = `"+10,000~+20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=always, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=always, compactDisplay=short 1`] = `
 [
   {
     "type": "plusSign",
@@ -566,11 +566,11 @@ exports[`Intl.NumberFormat ko notation=standard, signDisplay=always, compactDisp
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=always, compactDisplay=short 2`] = `"+10,000~+20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=always, compactDisplay=short 2`] = `"+10,000~+20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=always, compactDisplay=short 3`] = `"+10,000~+20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=always, compactDisplay=short 3`] = `"+10,000~+20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=auto, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=auto, compactDisplay=long 1`] = `
 [
   {
     "type": "integer",
@@ -587,11 +587,11 @@ exports[`Intl.NumberFormat ko notation=standard, signDisplay=auto, compactDispla
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=auto, compactDisplay=long 2`] = `"10,000~20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=auto, compactDisplay=long 2`] = `"10,000~20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=auto, compactDisplay=long 3`] = `"10,000~20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=auto, compactDisplay=long 3`] = `"10,000~20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=auto, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=auto, compactDisplay=short 1`] = `
 [
   {
     "type": "integer",
@@ -608,36 +608,11 @@ exports[`Intl.NumberFormat ko notation=standard, signDisplay=auto, compactDispla
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=auto, compactDisplay=short 2`] = `"10,000~20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=auto, compactDisplay=short 2`] = `"10,000~20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=auto, compactDisplay=short 3`] = `"10,000~20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=auto, compactDisplay=short 3`] = `"10,000~20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=exceptZero, compactDisplay=long 1`] = `
-[
-  {
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "type": "integer",
-    "value": "10",
-  },
-  {
-    "type": "group",
-    "value": ",",
-  },
-  {
-    "type": "integer",
-    "value": "000",
-  },
-]
-`;
-
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=exceptZero, compactDisplay=long 2`] = `"+10,000~+20,000"`;
-
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=exceptZero, compactDisplay=long 3`] = `"+10,000~+20,000"`;
-
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=exceptZero, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=exceptZero, compactDisplay=long 1`] = `
 [
   {
     "type": "plusSign",
@@ -658,11 +633,36 @@ exports[`Intl.NumberFormat ko notation=standard, signDisplay=exceptZero, compact
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=exceptZero, compactDisplay=short 2`] = `"+10,000~+20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=exceptZero, compactDisplay=long 2`] = `"+10,000~+20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=exceptZero, compactDisplay=short 3`] = `"+10,000~+20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=exceptZero, compactDisplay=long 3`] = `"+10,000~+20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=never, compactDisplay=long 1`] = `
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "10",
+  },
+  {
+    "type": "group",
+    "value": ",",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=exceptZero, compactDisplay=short 2`] = `"+10,000~+20,000"`;
+
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=exceptZero, compactDisplay=short 3`] = `"+10,000~+20,000"`;
+
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=never, compactDisplay=long 1`] = `
 [
   {
     "type": "integer",
@@ -679,11 +679,11 @@ exports[`Intl.NumberFormat ko notation=standard, signDisplay=never, compactDispl
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=never, compactDisplay=long 2`] = `"10,000~20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=never, compactDisplay=long 2`] = `"10,000~20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=never, compactDisplay=long 3`] = `"10,000~20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=never, compactDisplay=long 3`] = `"10,000~20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=never, compactDisplay=short 1`] = `
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=never, compactDisplay=short 1`] = `
 [
   {
     "type": "integer",
@@ -700,6 +700,6 @@ exports[`Intl.NumberFormat ko notation=standard, signDisplay=never, compactDispl
 ]
 `;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=never, compactDisplay=short 2`] = `"10,000~20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=never, compactDisplay=short 2`] = `"10,000~20,000"`;
 
-exports[`Intl.NumberFormat ko notation=standard, signDisplay=never, compactDisplay=short 3`] = `"10,000~20,000"`;
+exports[`Intl.NumberFormat ko > notation=standard, signDisplay=never, compactDisplay=short 3`] = `"10,000~20,000"`;

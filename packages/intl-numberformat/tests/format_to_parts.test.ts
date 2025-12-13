@@ -1,3 +1,4 @@
+import {it, expect} from 'vitest'
 import {_formatToParts} from '@formatjs/ecma402-abstract'
 import Decimal from 'decimal.js'
 
@@ -13,6 +14,7 @@ const defaultOptions = {
   style: 'decimal',
   notation: 'standard',
   roundingIncrement: 1,
+  roundingMode: 'halfExpand',
 } as const
 
 const baseNumberResult = {

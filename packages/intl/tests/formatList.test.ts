@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {formatList as formatListFn} from '../src/list'
 
 import {IntlConfig, IntlFormatters} from '../src/types'
@@ -17,10 +18,10 @@ describe('format API', () => {
       defaultLocale: 'en',
       defaultFormats: {},
 
-      onError: jest.fn(),
+      onError: vi.fn(),
     }
 
-    getListFormat = jest
+    getListFormat = vi
       .fn()
       .mockImplementation((...args) => new Intl.ListFormat(...args))
   })

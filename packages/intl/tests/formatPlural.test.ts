@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-
+import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {formatPlural as formatPluralFn} from '../src/plural'
 
 import {IntlFormatters, IntlConfig} from '../src/types'
@@ -19,10 +19,10 @@ describe('format API', () => {
       defaultLocale: 'en',
       defaultFormats: {},
 
-      onError: jest.fn(),
+      onError: vi.fn(),
     }
 
-    getPluralRules = jest
+    getPluralRules = vi
       .fn()
       .mockImplementation((...args) => new Intl.PluralRules(...args))
   })
@@ -44,7 +44,7 @@ describe('format API', () => {
     it('should warn for invalid opt', function () {
       // @ts-ignore
       expect(formatPlural(0, {type: 'invalid'})).toBe('other')
-      expect(config.onError as jest.Mock).toHaveBeenCalledTimes(1)
+      expect(config.onError).toHaveBeenCalledTimes(1)
     })
 
     it('formats falsy values', () => {

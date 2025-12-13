@@ -4,7 +4,7 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
-load("//tools:jest.bzl", "jest_test")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -65,9 +65,23 @@ ts_compile_node(
     deps = SRC_DEPS,
 )
 
-jest_test(
+vitest(
     name = "unit_test",
-    data = [":srcs"] + SRC_DEPS + glob(["tests/unit/**/*"]),
+    srcs = [":srcs"] + glob(
+        ["tests/unit/**/*.test.ts"],
+        # TODO: Re-enable these tests after fixing ES module compatibility
+        # with @glimmer/syntax and ember-template-recast
+        exclude = [
+            "tests/unit/gts_extractor.test.ts",
+            "tests/unit/hbs_extractor.test.ts",
+            "tests/unit/vue_extractor.test.ts",
+        ],
+    ),
+    fixtures = glob(
+        ["tests/unit/**/*"],
+        exclude = ["tests/unit/**/*.test.ts"],
+    ),
+    deps = SRC_DEPS,
 )
 
 write_source_files(

@@ -187,8 +187,15 @@ const formatDescriptor = {
     let boundFormat = internalSlots.boundFormat
     if (boundFormat === undefined) {
       // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
-      boundFormat = (value?: number | bigint) =>
-        FormatNumeric(internalSlots, ToIntlMathematicalValue(value))
+      boundFormat = (
+        value?:
+          | number
+          | bigint
+          | `${number}`
+          | 'Infinity'
+          | '-Infinity'
+          | '+Infinity'
+      ) => FormatNumeric(internalSlots, ToIntlMathematicalValue(value))
 
       try {
         // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js

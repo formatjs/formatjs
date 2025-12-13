@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import IntlMessageFormat from 'intl-messageformat'
 import {formatMessage as baseFormatMessage} from '../src/message'
@@ -65,31 +66,31 @@ describe('format API', () => {
       defaultLocale: 'en',
       defaultFormats: {},
 
-      onError: jest.fn(),
+      onError: vi.fn(),
     }
 
     state = {
-      getDateTimeFormat: jest
+      getDateTimeFormat: vi
         .fn()
         .mockImplementation((...args) => new Intl.DateTimeFormat(...args)),
-      getNumberFormat: jest
+      getNumberFormat: vi
         .fn()
         .mockImplementation((...args) => new Intl.NumberFormat(...args)),
-      getMessageFormat: jest
+      getMessageFormat: vi
         .fn()
         .mockImplementation(
           (msg, ...args) => new IntlMessageFormat(msg, ...args)
         ),
-      getRelativeTimeFormat: jest
+      getRelativeTimeFormat: vi
         .fn()
         .mockImplementation((...args) => new Intl.RelativeTimeFormat(...args)),
-      getPluralRules: jest
+      getPluralRules: vi
         .fn()
         .mockImplementation((...args) => new Intl.PluralRules(...args)),
-      getListFormat: jest
+      getListFormat: vi
         .fn()
         .mockImplementation((...args) => new Intl.ListFormat(...args)),
-      getDisplayNames: jest
+      getDisplayNames: vi
         .fn()
         .mockImplementation(
           (...args) => new (Intl as any).DisplayNames(...args)
@@ -109,24 +110,24 @@ describe('format API', () => {
       formatMessage = baseFormatMessage.bind(null, config, state)
     })
     it('should hot path message without values', function () {
-      ;(state.getMessageFormat as jest.Mock).mockClear()
+      ;(state.getMessageFormat as any).mockClear()
       expect(formatMessage({id: 'no_args'})).toBe('Hello, World!')
       expect(state.getMessageFormat).not.toHaveBeenCalled()
       expect(formatMessage({id: 'with_arg'}, {name: 'foo'})).toBe('Hello, foo!')
       expect(state.getMessageFormat).toHaveBeenCalled()
     })
     it('should hot path message without values', function () {
-      ;(state.getMessageFormat as jest.Mock).mockClear()
-      const err = jest.spyOn(console, 'error')
+      ;(state.getMessageFormat as any).mockClear()
+      const err = vi.spyOn(console, 'error')
       expect(formatMessage({id: 'no_args'})).toBe('Hello, World!')
       expect(err).not.toHaveBeenCalled()
     })
     it('should not crash of messages does not have Object.prototype', function () {
       const messages = Object.create(null)
       messages!.no_args = 'Hello'
-      // @ts-ignore
       formatMessage = baseFormatMessage.bind(
         null,
+        // @ts-ignore
         {
           ...config,
           messages,
@@ -304,7 +305,7 @@ describe('format API', () => {
           )
         ).toBe(mf.format(values))
 
-        expect((config.onError as jest.Mock).mock.calls.map(c => c[0].code))
+        expect((config.onError as any).mock.calls.map((c: any) => c[0].code))
           .toMatchInlineSnapshot(`
           [
             "MISSING_TRANSLATION",
@@ -327,7 +328,7 @@ describe('format API', () => {
           )
         ).toBe(id)
 
-        expect((config.onError as jest.Mock).mock.calls.map(c => c[0].code))
+        expect((config.onError as any).mock.calls.map((c: any) => c[0].code))
           .toMatchInlineSnapshot(`
           [
             "MISSING_TRANSLATION",
@@ -352,7 +353,7 @@ describe('format API', () => {
         ).toBe(mf.format(values))
 
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 
@@ -373,7 +374,7 @@ describe('format API', () => {
         ).toBe(mf.format(values))
 
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 
@@ -393,7 +394,7 @@ describe('format API', () => {
           )
         ).toBe(messages![id])
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 
@@ -411,7 +412,7 @@ describe('format API', () => {
           )
         ).toBe(messages![id])
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 
@@ -429,7 +430,7 @@ describe('format API', () => {
         ).toBe(messages!.invalid)
 
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 
@@ -439,7 +440,7 @@ describe('format API', () => {
         expect(formatMessage({id})).toBe(id)
 
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 
@@ -469,7 +470,7 @@ describe('format API', () => {
         ).toBe(id)
 
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 

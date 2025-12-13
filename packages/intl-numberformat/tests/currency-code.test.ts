@@ -1,3 +1,4 @@
+import {it, expect} from 'vitest'
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill'
 import * as en from './locale-data/en.json'

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {formatTime as formatTimeFn} from '../src/dateTime'
 import {Formatters, IntlConfig, IntlFormatters} from '../src/types'
 
@@ -29,7 +30,7 @@ describe('format API', () => {
       defaultLocale: 'en',
       defaultFormats: {},
 
-      onError: jest.fn(),
+      onError: vi.fn(),
     }
   })
 
@@ -48,7 +49,7 @@ describe('format API', () => {
       })
       // @ts-ignore
       formatTime = formatTimeFn.bind(null, config, getDateTimeFormat)
-      ;(config.onError as jest.Mock).mockClear()
+      ;(config.onError as any).mockClear()
     })
 
     it('render now if no value is provided', () => {
@@ -78,7 +79,7 @@ describe('format API', () => {
       expect(formatTime(NaN)).toBe('NaN')
       // @ts-ignore
       expect(formatTime('')).toBe(df.format(''))
-      expect(config.onError as jest.Mock).toHaveBeenCalledTimes(1)
+      expect(config.onError).toHaveBeenCalledTimes(1)
     })
 
     it('formats falsy finite values', () => {
@@ -137,7 +138,7 @@ describe('format API', () => {
         // @ts-expect-error just for test
         expect(formatTime(0, {hour: 'invalid'})).toBe('0')
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 
@@ -171,7 +172,7 @@ describe('format API', () => {
 
         expect(formatTime(date, {format})).toBe(df.format(date))
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 

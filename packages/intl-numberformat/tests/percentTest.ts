@@ -1,3 +1,4 @@
+import {describe, it, beforeAll, expect} from 'vitest'
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import '@formatjs/intl-pluralrules/polyfill'
 import {NumberFormat} from '../src/core'
@@ -30,11 +31,12 @@ const testCombos: Array<any[]> = SIGN_DISPLAYS.flatMap(signDisplay =>
   )
 )
 
-export function test(locale: string) {
+export function test(locale: string, localeData?: any): void {
   describe(`Intl.NumberFormat ${locale}`, function () {
     beforeAll(function () {
-      require(`@formatjs/intl-pluralrules/locale-data/${locale.split('-')[0]}`)
-      NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`))
+      if (localeData) {
+        NumberFormat.__addLocaleData(localeData)
+      }
     })
     it.each(testCombos)(
       'notation=%s, signDisplay=%s, compactDisplay=%s',

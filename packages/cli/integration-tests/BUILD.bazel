@@ -1,5 +1,4 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:jest.bzl", "jest_test")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -28,11 +27,10 @@ vitest(
     ],
 )
 
-jest_test(
+vitest(
     name = "extract_integration_test",
-    data = glob(
-        ["extract/**/*"],
-        exclude = ["extract/__snapshots__/*"],
+    srcs = glob(
+        ["extract/**/*.test.ts"],
     ) + [
         "formatter.js",
         ":node_modules/@formatjs/cli",
@@ -40,8 +38,14 @@ jest_test(
         "//:node_modules/fast-glob",
         "//:node_modules/fs-extra",
     ],
+    fixtures = glob(
+        ["extract/**/*"],
+        exclude = [
+            "extract/**/*.test.ts",
+            "extract/__snapshots__/*",
+        ],
+    ),
     flaky = True,
-    snapshots = glob(["extract/__snapshots__/*"]),
 )
 
 vitest(
@@ -80,16 +84,14 @@ vitest(
     ] + GLIMMER_HBS_DEPS,
 )
 
-jest_test(
+vitest(
     name = "compile_integration_test",
-    data = [
+    srcs = [
         "formatter.js",
         ":node_modules/@formatjs/cli",
     ] + glob(
         ["compile/**/*"],
-        exclude = ["compile/__snapshots__/**/*"],
     ),
-    snapshots = glob(["compile/__snapshots__/*.snap"]),
 )
 
 vitest(

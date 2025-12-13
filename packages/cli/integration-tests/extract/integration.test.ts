@@ -2,6 +2,7 @@ import {exec as nodeExec} from 'child_process'
 import {mkdirp, readJSON, remove} from 'fs-extra'
 import {join, resolve} from 'path'
 import {promisify} from 'util'
+import {beforeEach, expect, test} from 'vitest'
 const exec = promisify(nodeExec)
 
 const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
@@ -225,7 +226,7 @@ test('duplicated descriptor ids shows warning', async () => {
 }, 20000)
 
 test('duplicated descriptor ids throws', async () => {
-  expect(async () => {
+  await expect(async () => {
     await exec(
       `${BIN_PATH} extract --throws '${join(__dirname, 'duplicated/*.tsx')}'`
     )
@@ -248,7 +249,7 @@ test('non duplicated descriptors does not throw', async () => {
 }, 20000)
 
 test('invalid syntax should throw', async () => {
-  expect(async () => {
+  await expect(async () => {
     await exec(
       `${BIN_PATH} extract --throws '${join(__dirname, 'typescript/err.tsx')}'`
     )

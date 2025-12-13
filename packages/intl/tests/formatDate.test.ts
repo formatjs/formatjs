@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {formatDate as formatDateFn} from '../src/dateTime'
 import {IntlConfig, IntlFormatters} from '../src/types'
 
@@ -26,10 +27,10 @@ describe('format API', () => {
       defaultLocale: 'en',
       defaultFormats: {},
 
-      onError: jest.fn(),
+      onError: vi.fn(),
     }
 
-    getDateTimeFormat = jest
+    getDateTimeFormat = vi
       .fn()
       .mockImplementation((...args) => new Intl.DateTimeFormat(...args))
   })
@@ -56,7 +57,7 @@ describe('format API', () => {
 
     it('falls back and warns when a non-finite value is provided', () => {
       expect(formatDate(NaN)).toBe('NaN')
-      expect(config.onError as jest.Mock).toHaveBeenCalledTimes(1)
+      expect(config.onError).toHaveBeenCalledTimes(1)
     })
 
     it('formats falsy finite values', () => {
@@ -110,7 +111,7 @@ describe('format API', () => {
         // @ts-expect-error invalid year just for testing
         expect(formatDate(0, {year: 'invalid'})).toBe('0')
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 
@@ -146,7 +147,7 @@ describe('format API', () => {
 
         expect(formatDate(date, {format})).toBe(df.format(date))
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {formatDisplayName as formatDisplayNameFn} from '../src/displayName'
 import {IntlConfig, IntlFormatters} from '../src/types'
 
@@ -16,10 +17,10 @@ describe('format API', () => {
       defaultLocale: 'en',
       defaultFormats: {},
 
-      onError: jest.fn(),
+      onError: vi.fn(),
     }
 
-    getDisplayNames = jest
+    getDisplayNames = vi
       .fn()
       .mockImplementation((...args) => new (Intl as any).DisplayNames(...args))
   })
@@ -32,9 +33,9 @@ describe('format API', () => {
     let formatDisplayName!: IntlFormatters['formatDisplayName']
 
     beforeEach(() => {
-      // @ts-ignore
       formatDisplayName = formatDisplayNameFn.bind(
         null,
+        // @ts-ignore
         config,
         getDisplayNames
       )
