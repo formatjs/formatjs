@@ -219,24 +219,6 @@ copy_to_bin(
     visibility = ["//visibility:public"],
 )
 
-TSCONFIG_FILES = [
-    "tsconfig.es6.json",
-    "tsconfig.node.json",
-    "tsconfig.test.json",
-    "tsconfig.esm.json",
-    "tsconfig.esm.esnext.json",
-]
-
-[
-    ts_config(
-        name = f.replace(".json", ""),
-        src = f,
-        visibility = ["//visibility:public"],
-        deps = ["tsconfig.json"],
-    )
-    for f in TSCONFIG_FILES
-]
-
 # Symlink some workspaces to the root workspace, so scripts like benchmarks
 # can easily depend on the distributable package via target `//:node_modules/<package_name>`.
 npm_link_package(
