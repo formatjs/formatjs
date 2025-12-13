@@ -211,4 +211,4 @@ const configs: Plugin['configs'] = {
 }
 plugin.configs = configs
 
-export default plugin
+module.exports = plugin
