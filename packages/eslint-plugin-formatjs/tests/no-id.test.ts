@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/no-id'
+import {name, rule} from '../rules/no-id.js'
 import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester} from './util'
 ruleTester.run(name, rule, {

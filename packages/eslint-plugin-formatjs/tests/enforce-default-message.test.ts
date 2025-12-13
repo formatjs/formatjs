@@ -1,4 +1,4 @@
-import {rule, name, Option} from '../rules/enforce-default-message'
+import {rule, name, Option} from '../rules/enforce-default-message.js'
 import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures'
 import {ruleTester, vueRuleTester} from './util'
 

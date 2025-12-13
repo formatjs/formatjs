@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/enforce-placeholders'
+import {name, rule} from '../rules/enforce-placeholders.js'
 import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester} from './util'
 ruleTester.run(name, rule, {

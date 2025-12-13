@@ -7,8 +7,8 @@ import {
 import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import MagicString from 'magic-string'
-import {getParserServices} from '../context-compat'
-import {extractMessages, getSettings, patchMessage} from '../util'
+import {getParserServices} from '../context-compat.js'
+import {extractMessages, getSettings, patchMessage} from '../util.js'
 
 type MessageIds = 'preferPoundInPlurals' | 'parseError'
 

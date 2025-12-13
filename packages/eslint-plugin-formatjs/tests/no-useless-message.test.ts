@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/no-useless-message'
+import {name, rule} from '../rules/no-useless-message.js'
 import {ruleTester} from './util'
 import {
   dynamicMessage,
