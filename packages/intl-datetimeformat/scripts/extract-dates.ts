@@ -62,7 +62,7 @@ export function getAllLocales(): string[] {
     .filter(l => {
       try {
         return (Intl as any).getCanonicalLocales(l).length
-      } catch (e) {
+      } catch {
         console.warn(`Invalid locale ${l}`)
         return false
       }
@@ -216,7 +216,7 @@ async function loadDatesFields(
           pattern,
           parseDateTimeSkeleton(skeleton, pattern),
         ] as [string, string, Formats]
-      } catch (e) {
+      } catch {
         // ignore
       }
     })

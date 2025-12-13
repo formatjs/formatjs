@@ -248,13 +248,12 @@ export class DurationFormat implements DurationFormatType {
     return ro as any
   }
   formatToParts(duration: DurationInput): DurationFormatPart[] {
-    const df = this
     const locInternalSlots = getInternalSlots(this)
     if (locInternalSlots.initializedDurationFormat === undefined) {
       throw new TypeError('Error uninitialized locale')
     }
     const record = ToDurationRecord(duration)
-    const parts = PartitionDurationFormatPattern(df, record)
+    const parts = PartitionDurationFormatPattern(this, record)
     const result = []
     for (const {type, unit, value} of parts) {
       const obj: DurationFormatPart = {type, value}
@@ -266,13 +265,12 @@ export class DurationFormat implements DurationFormatType {
     return result
   }
   format(duration: DurationInput): string {
-    const df = this
     const locInternalSlots = getInternalSlots(this)
     if (locInternalSlots.initializedDurationFormat === undefined) {
       throw new TypeError('Error uninitialized locale')
     }
     const record = ToDurationRecord(duration)
-    const parts = PartitionDurationFormatPattern(df, record)
+    const parts = PartitionDurationFormatPattern(this, record)
     let result = ''
     for (const {value} of parts) {
       result += value

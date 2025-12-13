@@ -96,10 +96,9 @@ export class PluralRules implements Intl.PluralRules {
     return opts
   }
   public select(val: number): LDMLPluralRule {
-    const pr = this
-    validateInstance(pr, 'select')
+    validateInstance(this, 'select')
     const n = ToNumber(val)
-    return ResolvePlural(pr, n, {getInternalSlots, PluralRuleSelect})
+    return ResolvePlural(this, n, {getInternalSlots, PluralRuleSelect})
   }
   toString() {
     return '[object Intl.PluralRules]'
@@ -152,7 +151,7 @@ try {
       enumerable: false,
       configurable: true,
     })
-  } catch (error) {
+  } catch {
     // IE 11 sets Function.prototype.length to be non-configurable which will cause the
     // above Object.defineProperty to throw an error.
   }
@@ -176,6 +175,6 @@ try {
     enumerable: false,
     configurable: true,
   })
-} catch (ex) {
+} catch {
   // Meta fixes for test262
 }
