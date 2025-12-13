@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/prefer-pound-in-plural'
+import {name, rule} from '../rules/prefer-pound-in-plural.js'
 import {
   defineMessage,
   dynamicMessage,

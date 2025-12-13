@@ -1,4 +1,4 @@
-import {Option, name, rule} from '../rules/enforce-description'
+import {Option, name, rule} from '../rules/enforce-description.js'
 import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures'
 import {ruleTester} from './util'
 

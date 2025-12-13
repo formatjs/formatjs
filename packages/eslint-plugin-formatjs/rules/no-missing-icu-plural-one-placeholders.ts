@@ -9,8 +9,8 @@ import {
 import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import MagicString from 'magic-string'
-import {getParserServices} from '../context-compat'
-import {extractMessages, patchMessage} from '../util'
+import {getParserServices} from '../context-compat.js'
+import {extractMessages, patchMessage} from '../util.js'
 
 export const name = 'no-missing-icu-plural-one-placeholders'
 

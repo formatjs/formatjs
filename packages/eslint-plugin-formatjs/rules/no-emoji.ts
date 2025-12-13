@@ -8,8 +8,8 @@ import {
   isValidEmojiVersion,
   type EmojiVersion,
 } from 'unicode-emoji-utils'
-import {getParserServices} from '../context-compat'
-import {extractMessages, getSettings} from '../util'
+import {getParserServices} from '../context-compat.js'
+import {extractMessages, getSettings} from '../util.js'
 
 export const name = 'no-emoji'
 type MessageIds = 'notAllowed' | 'notAllowedAboveVersion'

@@ -1,7 +1,9 @@
 import {TSESTree} from '@typescript-eslint/utils'
 import {JSONSchema4ArraySchema} from '@typescript-eslint/utils/json-schema'
 import {RuleModule} from '@typescript-eslint/utils/ts-eslint'
-import picomatch from 'picomatch'
+import * as picomatchNs from 'picomatch'
+
+const picomatch = (picomatchNs as any).default ?? picomatchNs
 
 type PropMatcher = readonly [TagNamePattern: string, PropNamePattern: string][]
 

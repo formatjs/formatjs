@@ -1,4 +1,4 @@
-import {rule, name} from '../rules/no-literal-string-in-jsx'
+import {rule, name} from '../rules/no-literal-string-in-jsx.js'
 import {ruleTester} from './util'
 
 ruleTester.run(name, rule, {

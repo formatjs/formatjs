@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/no-multiple-plurals'
+import {name, rule} from '../rules/no-multiple-plurals.js'
 import {ruleTester} from './util'
 import {
   dynamicMessage,

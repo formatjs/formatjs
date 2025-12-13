@@ -1,4 +1,4 @@
-import {Element, name, rule} from '../rules/blocklist-elements'
+import {Element, name, rule} from '../rules/blocklist-elements.js'
 import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester, vueRuleTester} from './util'
 
