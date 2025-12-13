@@ -1,0 +1,285 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`emit asserts for > [special] extractSourceLocation 1`] = `
+"import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+export default class Foo extends Component {
+    render() {
+        return <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>;
+    }
+}
+"
+`;
+
+exports[`emit asserts for > additionalComponentNames 1`] = `
+"// @react-intl project:foo
+import React, { Component } from 'react';
+function CustomMessage() { }
+export default class Foo extends Component {
+    render() {
+        return (<CustomMessage id="greeting-world" defaultMessage="Hello World!"/>);
+    }
+}
+"
+`;
+
+exports[`emit asserts for > additionalFunctionNames 1`] = `
+"// @react-intl project:foo
+import React, { Component } from 'react';
+function CustomMessage() { }
+export default class Foo extends Component {
+    render() {
+        return (<CustomMessage id={formatMessage({ id: "rL0Y20zC+F", defaultMessage: "foo" })} description={$formatMessage({ id: "rL0Y20zC+F", defaultMessage: "foo" })} defaultMessage="Hello World!"/>);
+    }
+}
+"
+`;
+
+exports[`emit asserts for > ast 1`] = `
+"import React, { Component } from 'react';
+import { defineMessages, FormattedMessage, defineMessage } from 'react-intl';
+const msgs = defineMessages({ header: { id: "HELLO.foo.bar.baz.12.string", defaultMessage: [{ type: 0, value: "Hello World!" }] }, content: { id: "HELLO.foo.bar.biff.12.object", defaultMessage: [{ type: 0, value: "Hello Nurse!" }] } });
+defineMessage({ id: "HELLO..13.string", defaultMessage: [{ type: 0, value: "defineMessage" }] });
+export default class Foo extends Component {
+    render() {
+        const { intl } = this.props;
+        const { formatMessage } = intl;
+        this.props.intl.formatMessage({ id: "HELLO..5.string", defaultMessage: [{ type: 0, value: "no-id" }] });
+        intl.formatMessage({ id: "HELLO..18.string", defaultMessage: [{ type: 0, value: "intl.formatMessage" }] });
+        formatMessage({ id: "HELLO..13.string", defaultMessage: [{ type: 0, value: "formatMessage" }] });
+        formatMessage({ id: "HELLO..39.string", defaultMessage: [{ type: 6, value: "count", options: { "=0": { value: [{ type: 0, value: "zero" }] }, other: { value: [{ type: 0, value: "other" }] } }, offset: 0, pluralType: "cardinal" }] });
+        return (<div>
+        <h1>
+          <FormattedMessage {...msgs.header}/>
+        </h1>
+        <p>
+          <FormattedMessage {...msgs.content}/>
+        </p>
+        <FormattedMessage id="HELLO.foo.bar.zoo.18.object" defaultMessage={[{ type: 0, value: "Hello World! " }, { type: 1, value: "abc" }]} values={{ abc: 2 }}/>
+        <FormattedMessage id="HELLO..18.object" defaultMessage={[{ type: 0, value: "Hello World! " }, { type: 1, value: "abc" }]} values={{ abc: 2 }}/>
+
+        <FormattedMessage id="HELLO..15.object" defaultMessage={[{ type: 2, value: "value", style: null }]} values={{ abc: 2 }}/>
+      </div>);
+    }
+}
+"
+`;
+
+exports[`emit asserts for > descriptionsAsObjects 1`] = `
+"import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+export default class Foo extends Component {
+    render() {
+        return (<FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>);
+    }
+}
+"
+`;
+
+exports[`emit asserts for > extractFromFormatMessage 1`] = `
+"import React, { Component } from 'react';
+import { injectIntl, FormattedMessage } from 'react-intl';
+const objectPointer = {
+    id: 'foo.bar.invalid',
+    defaultMessage: 'This cannot be extracted',
+    description: 'the plugin only supports inline objects',
+};
+class Foo extends Component {
+    render() {
+        const { intl } = this.props;
+        const msgs = {
+            baz: this.props.intl.formatMessage({ id: "foo.bar.baz", defaultMessage: "Hello World!" }),
+            biff: intl.formatMessage({ id: "foo.bar.biff", defaultMessage: "Hello Nurse!" }),
+            invalid: this.props.intl.formatMessage(objectPointer),
+            invalid2: this.props.intl.formatMessage({
+                id,
+                defaultMessage,
+                description: 'asd',
+            }),
+        };
+        return (<div>
+        <h1>{msgs.header}</h1>
+        <p>{msgs.content}</p>
+        <input placeholder={intl.formatMessage({ id: "A/2tFVt1SI", defaultMessage: "inline" })}/>
+        <span>
+          <FormattedMessage id="foo" defaultMessage="bar"/>
+        </span>
+      </div>);
+    }
+}
+export default injectIntl(Foo);
+"
+`;
+
+exports[`emit asserts for > extractFromFormatMessageStateless 1`] = `
+"import { FormattedMessage, injectIntl, useIntl } from 'react-intl';
+import React from 'react';
+function myFunction(param1, { formatMessage, formatDate }) {
+    return (formatMessage({ id: "inline1", defaultMessage: "Hello params!" }) + formatDate(new Date()));
+}
+function SFC() {
+    const { formatMessage } = useIntl();
+    return formatMessage({ id: "hook", defaultMessage: "hook" });
+}
+const Foo = ({ intl: { formatMessage } }) => {
+    const msgs = {
+        qux: formatMessage({ id: "foo.bar.quux", defaultMessage: "Hello Stateless!" }),
+    };
+    return (<div>
+      <h1>{msgs.header}</h1>
+      <p>{msgs.content}</p>
+      <span>
+        <FormattedMessage id="foo" defaultMessage="bar"/>
+      </span>
+    </div>);
+};
+export default injectIntl(Foo);
+"
+`;
+
+exports[`emit asserts for > formatMessageCall 1`] = `
+"import React, { Component } from 'react';
+import { injectIntl, FormattedMessage } from 'react-intl';
+const objectPointer = {
+    id: 'foo.bar.invalid',
+    defaultMessage: 'This cannot be extracted',
+    description: 'the plugin only supports inline objects',
+};
+class Foo extends Component {
+    render() {
+        const msgs = {
+            baz: formatMessage({ id: "foo.bar.baz", defaultMessage: "Hello World!" }),
+            baz2: this.props.intl.$formatMessage({ id: "foo.bar.baz2", defaultMessage: "Hello World!" }),
+            biff: $formatMessage({ id: "foo.bar.biff", defaultMessage: "Hello Nurse!" }),
+            invalid: this.props.intl.formatMessage(objectPointer),
+        };
+        return (<div>
+        <h1>{msgs.header}</h1>
+        <p>{msgs.content}</p>
+        <input placeholder={intl.formatMessage({ id: "A/2tFVt1SI", defaultMessage: "inline" })}/>
+        <span>
+          <FormattedMessage id="foo" defaultMessage="bar"/>
+        </span>
+      </div>);
+    }
+}
+export default injectIntl(Foo);
+"
+`;
+
+exports[`emit asserts for > formattedMessage 1`] = `
+"import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+export default class Foo extends Component {
+    render() {
+        return (<p>
+        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World! {foo, number}" values={{
+                foo: 1,
+            }}/>
+        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World! {foo, number}" values={{
+                foo: 1,
+            }}/>
+        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World! {foo, number}" values={{
+                foo: 1,
+            }}/>
+      </p>);
+    }
+}
+"
+`;
+
+exports[`emit asserts for > inline 1`] = `
+"import React, { Component } from 'react';
+import { FormattedMessage, defineMessage } from 'react-intl';
+export default class Foo extends Component {
+    render() {
+        return (<div>
+        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>
+        {defineMessage({ id: "header", defaultMessage: "Hello World!" })}
+        {defineMessage({ id: "header2", defaultMessage: "Hello World!" })}
+      </div>);
+    }
+}
+"
+`;
+
+exports[`emit asserts for > nested 1`] = `
+"intl.formatMessage({ id: "HELLO..13.undefined", defaultMessage: "layer1 {name}" }, {
+    name: intl.formatMessage({ id: "HELLO..6.undefined", defaultMessage: "layer2" }),
+});
+"
+`;
+
+exports[`emit asserts for > noImport 1`] = `
+"export function foo() {
+    props.intl.formatMessage({ id: "hYpBl", defaultMessage: "props {intl}" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: "tBZlS", defaultMessage: "this props {intl}" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: "T+ycr", defaultMessage: "this props {intl}" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: "T+ycr", defaultMessage: "this props {intl}" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: "WUKCt", defaultMessage: "this props {intl}" }, { bar: 'bar' });
+    return intl.formatMessage({ id: "ALfyd", defaultMessage: "foo {bar}" }, { bar: 'bar' });
+}
+"
+`;
+
+exports[`emit asserts for > removeDefaultMessage 1`] = `
+"import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+export default class Foo extends Component {
+    render() {
+        return (<FormattedMessage id="greeting-world"/>);
+    }
+}
+"
+`;
+
+exports[`emit asserts for > removeDescription 1`] = `
+"import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+export default class Foo extends Component {
+    render() {
+        return (<FormattedMessage id="greeting-world" defaultMessage="Hello World!"/>);
+    }
+}
+"
+`;
+
+exports[`emit asserts for > resourcePath 1`] = `
+"export function foo() {
+    props.intl.formatMessage({ id: "resourcePath-hYpBl", defaultMessage: "props {intl}" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: "resourcePath-tBZlS", defaultMessage: "this props {intl}" }, { bar: 'bar' });
+    return intl.formatMessage({ id: "resourcePath-ALfyd", defaultMessage: "foo {bar}" }, { bar: 'bar' });
+}
+"
+`;
+
+exports[`emit asserts for > stringConcat 1`] = `
+"import React, { Component } from 'react';
+import { FormattedMessage, defineMessage } from 'react-intl';
+export default class Foo extends Component {
+    render() {
+        return (<div>
+        <FormattedMessage id="foo.bar.bazid" defaultMessage="Hello World!farbaz"/>
+        {intl.formatMessage({ id: "header", defaultMessage: "Hello World!foobar" })}
+        {defineMessage({ id: "header2", defaultMessage: "Hello World!" })}
+      </div>);
+    }
+}
+"
+`;
+
+exports[`emit asserts for > templateLiteral 1`] = `
+"import React, { Component } from 'react';
+import { FormattedMessage, defineMessage } from 'react-intl';
+defineMessage({ id: "template", defaultMessage: "should remove newline and extra spaces" });
+defineMessage({ id: "template dedent", defaultMessage: "dedent Hello World!" });
+export default class Foo extends Component {
+    render() {
+        return (<>
+        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>
+        <FormattedMessage id="dedent foo.bar.baz" defaultMessage="dedent Hello World!"/>
+      </>);
+    }
+}
+"
+`;

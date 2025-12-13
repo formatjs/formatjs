@@ -87,7 +87,7 @@ describe('<FormattedPlural>', () => {
   it('accepts valid IntlPluralFormat options as props', () => {
     const num = 22
     const props = {two: 'nd'} as any
-    const options = {type: 'ordinal' as 'ordinal'}
+    const options = {type: 'ordinal' as const}
 
     const {getByTestId} = mountWithProvider(
       {value: num, ...props, ...options},

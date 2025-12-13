@@ -264,7 +264,7 @@ const transformCLDRVariablesRegex = (
 
   //change unicode regex set operands to javascript format (https://github.com/tc39/proposal-regexp-v-flag)
   jsCompatibleRegex = jsCompatibleRegex.replaceAll(/-/gm, '--')
-  jsCompatibleRegex = jsCompatibleRegex.replaceAll(/\&/gm, '&&')
+  jsCompatibleRegex = jsCompatibleRegex.replaceAll(/&/gm, '&&')
 
   //handles the strange case of multiple consecutive properties treated as a single group when performing set operations by CLDR rules
   //example:
@@ -272,7 +272,7 @@ const transformCLDRVariablesRegex = (
   // needs to become
   //  `[\\\\p{Gujr}\\\\p{sc=Telu}\\\\p{sc=Mlym}\\\\p{sc=Orya}\\\\p{sc=Beng}\\\\p{sc=Deva}]&\\\\p{Indic_Syllabic_Category=Virama}`
   jsCompatibleRegex = jsCompatibleRegex.replaceAll(
-    /\\p\{[^&\-]+?\}(\\p\{[^&\-]+?\})+/gm,
+    /\\p\{[^&-]+?\}(\\p\{[^&-]+?\})+/gm,
     match => `[${match}]`
   )
 

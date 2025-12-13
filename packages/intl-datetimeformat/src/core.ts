@@ -112,7 +112,7 @@ try {
     writable: false,
     value: 'get format',
   })
-} catch (e) {
+} catch {
   // In older browser (e.g Chrome 36 like polyfill-fastly.io)
   // TypeError: Cannot redefine property: name
 }
@@ -256,6 +256,7 @@ defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
     startDate: number | Date,
     endDate: number | Date
   ) {
+    // oxlint-disable-next-line no-this-alias
     const dtf = this
     invariant(typeof dtf === 'object', 'receiver is not an object', TypeError)
     invariant(
@@ -283,6 +284,7 @@ defineProperty(DateTimeFormat.prototype, 'formatRange', {
     startDate: number | Date,
     endDate: number | Date
   ) {
+    // oxlint-disable-next-line no-this-alias
     const dtf = this
     invariant(typeof dtf === 'object', 'receiver is not an object', TypeError)
     invariant(
