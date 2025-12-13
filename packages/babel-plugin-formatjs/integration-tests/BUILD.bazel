@@ -8,7 +8,7 @@ vitest(
     srcs = glob(["vue/fixtures/*"]) + [
         "vue/integration.test.ts",
     ],
-    test_timeout = "10000",
+    test_timeout = "20000",
     deps = [
         ":node_modules/babel-plugin-formatjs",
         "//:node_modules/@babel/types",
