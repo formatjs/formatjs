@@ -1,9 +1,11 @@
 import {MessageFormatElement, parse} from '@formatjs/icu-messageformat-parser'
-import stringify from 'json-stable-stringify'
+import * as stringifyNs from 'json-stable-stringify'
 import * as typescript from 'typescript'
-import {debug} from './console_utils'
-import {interpolateName} from './interpolate-name'
-import {MessageDescriptor} from './types'
+import {debug} from './console_utils.js'
+import {interpolateName} from './interpolate-name.js'
+import {MessageDescriptor} from './types.js'
+
+const stringify = (stringifyNs as any).default || stringifyNs
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void
 export type MetaExtractor = (
   filePath: string,

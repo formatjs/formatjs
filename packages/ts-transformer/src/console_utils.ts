@@ -1,10 +1,12 @@
-import {green, red, yellow} from 'chalk'
+import * as chalkNs from 'chalk'
 import {format} from 'util'
 
+const chalk = (chalkNs as any).default ?? chalkNs
+
 const LEVEL_COLORS = {
-  debug: green,
-  warn: yellow,
-  error: red,
+  debug: chalk.green,
+  warn: chalk.yellow,
+  error: chalk.red,
 }
 
 function label(level: keyof typeof LEVEL_COLORS, message: string) {
