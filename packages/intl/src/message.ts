@@ -34,8 +34,8 @@ function deepMergeOptions(
   const keys = Object.keys({...opts1, ...opts2})
   return keys.reduce((all: Record<string, Intl.DateTimeFormatOptions>, k) => {
     all[k] = {
-      ...(opts1[k] || {}),
-      ...(opts2[k] || {}),
+      ...opts1[k],
+      ...opts2[k],
     }
     return all
   }, {})
@@ -148,7 +148,7 @@ to autofix this issue`
   }
   values = {
     ...defaultRichTextElements,
-    ...(values || {}),
+    ...values,
   }
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone)
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone)
@@ -196,7 +196,7 @@ to autofix this issue`
   try {
     const formatter = state.getMessageFormat(message, locale, formats, {
       formatters: state,
-      ...(opts || {}),
+      ...opts,
     })
 
     return formatter.format<any>(values)

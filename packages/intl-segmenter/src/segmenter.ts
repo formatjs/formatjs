@@ -473,7 +473,7 @@ try {
   }
 
   //github.com/tc39/test262/blob/main/test/intl402/Segmenter/constructor/length.js
-  https: Object.defineProperty(Segmenter.prototype.constructor, 'length', {
+  Object.defineProperty(Segmenter.prototype.constructor, 'length', {
     value: 0,
     writable: false,
     enumerable: false,
@@ -486,6 +486,6 @@ try {
     enumerable: false,
     configurable: true,
   })
-} catch (e) {
+} catch {
   // Meta fix so we're test262-compliant, not important
 }

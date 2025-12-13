@@ -30,7 +30,7 @@ function testDataFromLine(line: string) {
   }
 
   const commentMatches = Array.from(
-    trimmedComment.matchAll(/([×÷])\s(\[([0-9\.]+)\])?([^×÷]+)?/g)
+    trimmedComment.matchAll(/([×÷])\s(\[([0-9.]+)\])?([^×÷]+)?/g)
   )
   totalMatchedLength = 0
   const commentDefinition = commentMatches.map(commentPart => {

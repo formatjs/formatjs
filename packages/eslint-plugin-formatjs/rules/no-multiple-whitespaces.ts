@@ -21,7 +21,6 @@ function isAstValid(ast: MessageFormatElement[]): boolean {
         break
       case TYPE.argument:
       case TYPE.date:
-      case TYPE.literal:
       case TYPE.number:
       case TYPE.pound:
       case TYPE.time:

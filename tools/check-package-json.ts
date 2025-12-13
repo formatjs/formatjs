@@ -38,7 +38,7 @@ function main(args: Args) {
   }
   const packageJsonAllDeps = {
     ...packageJsonContent.dependencies,
-    ...(packageJsonContent.peerDependencies || {}),
+    ...packageJsonContent.peerDependencies,
   }
   internalDeps.forEach(pkg => {
     delete packageJsonAllDeps[pkg]

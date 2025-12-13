@@ -17,7 +17,7 @@ defineProperty(Date.prototype, 'toLocaleString', {
   ) {
     try {
       return _toLocaleString(this, locales, options)
-    } catch (error) {
+    } catch {
       return 'Invalid Date'
     }
   },
@@ -31,7 +31,7 @@ defineProperty(Date.prototype, 'toLocaleDateString', {
   ) {
     try {
       return _toLocaleDateString(this, locales, options)
-    } catch (error) {
+    } catch {
       return 'Invalid Date'
     }
   },
@@ -45,7 +45,7 @@ defineProperty(Date.prototype, 'toLocaleTimeString', {
   ) {
     try {
       return _toLocaleTimeString(this, locales, options)
-    } catch (error) {
+    } catch {
       return 'Invalid Date'
     }
   },

@@ -33,7 +33,7 @@ export function CollapseNumberRange(
   const internalSlots = getInternalSlots(numberFormat)
   const symbols =
     internalSlots.dataLocaleData.numbers.symbols[internalSlots.numberingSystem]
-  const rangeSignRegex = new RegExp(`\s?[${symbols.rangeSign}]\s?`)
+  const rangeSignRegex = new RegExp(`s?[${symbols.rangeSign}]s?`)
   const rangeSignIndex = result.findIndex(
     r => r.type === 'literal' && rangeSignRegex.test(r.value)
   )

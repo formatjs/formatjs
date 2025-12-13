@@ -93,6 +93,7 @@ def vitest(
         vitest_bin.vitest(
             name = snapshot_target_name,
             srcs = srcs_no_snapshots +
+                   fixtures +
                    deps,
             out_dirs = [snapshot_dir],
             args = [

@@ -691,7 +691,7 @@ test('test #2291', function () {
     minute: '2-digit',
     second: '2-digit',
     hour12: true,
-    hourCycle: 'h12' as 'h12',
+    hourCycle: 'h12' as const,
   }
   expect(BestFitFormatMatcher(opts, PROCESSED_FORMATS)).toEqual({
     day: '2-digit',
