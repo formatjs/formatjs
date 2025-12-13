@@ -22,15 +22,13 @@ export type IntlConfig = Omit<
 > &
   Partial<typeof DEFAULT_INTL_CONFIG>
 
-export interface ResolvedIntlConfig
-  extends CoreResolvedIntlConfig<React.ReactNode> {
+export interface ResolvedIntlConfig extends CoreResolvedIntlConfig<React.ReactNode> {
   textComponent?: React.ComponentType | keyof React.JSX.IntrinsicElements
   wrapRichTextChunksInFragment?: boolean
 }
 
 export interface IntlShape
-  extends ResolvedIntlConfig,
-    IntlFormatters<React.ReactNode> {
+  extends ResolvedIntlConfig, IntlFormatters<React.ReactNode> {
   formatMessage(
     this: void,
     descriptor: MessageDescriptor,

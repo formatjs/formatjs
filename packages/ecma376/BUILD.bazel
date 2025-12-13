@@ -6,7 +6,6 @@ load("//tools:vitest.bzl", "vitest")
 
 exports_files([
     "package.json",
-    "tsconfig.json",
 ])
 
 PACKAGE_NAME = "ecma376"

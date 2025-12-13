@@ -10,7 +10,6 @@ npm_link_all_packages()
 
 exports_files([
     "package.json",
-    "tsconfig.json",
 ])
 
 PACKAGE_NAME = "utils"

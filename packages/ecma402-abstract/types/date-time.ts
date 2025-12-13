@@ -161,11 +161,10 @@ export type IntervalFormatsData = {
   intervalFormatFallback: string
 } & Record<string, Record<string, string>>
 
-export interface DateTimeFormat
-  extends Omit<
-    Intl.DateTimeFormat,
-    'resolvedOptions' | 'formatRange' | 'formatRangeToParts' | 'formatToParts'
-  > {
+export interface DateTimeFormat extends Omit<
+  Intl.DateTimeFormat,
+  'resolvedOptions' | 'formatRange' | 'formatRangeToParts' | 'formatToParts'
+> {
   resolvedOptions(): ResolvedDateTimeFormatOptions
   formatToParts(date?: Date | number): IntlDateTimeFormatPart[]
   formatRange(startDate: number | Date, endDate: number | Date): string

@@ -72,8 +72,10 @@ export interface TagElement extends BaseElement<TYPE.tag> {
   children: MessageFormatElement[]
 }
 
-export interface SimpleFormatElement<T extends TYPE, S extends Skeleton>
-  extends BaseElement<T> {
+export interface SimpleFormatElement<
+  T extends TYPE,
+  S extends Skeleton,
+> extends BaseElement<T> {
   style?: string | S | null
 }
 
