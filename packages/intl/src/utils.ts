@@ -143,7 +143,7 @@ export function createFormatters(
             getDateTimeFormat,
             getPluralRules,
           },
-          ...(opts || {}),
+          ...opts,
         }),
       {
         cache: createFastMemoizeCache(cache.message),

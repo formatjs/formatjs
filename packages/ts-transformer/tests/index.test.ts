@@ -18,15 +18,7 @@ describe('emit asserts for', function () {
         pragma: 'react-intl',
       }
     )
-    expect(output.code).toBe(`// @react-intl project:foo
-import React, { Component } from 'react';
-function CustomMessage() { }
-export default class Foo extends Component {
-    render() {
-        return (<CustomMessage id="greeting-world" defaultMessage="Hello World!"/>);
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({
       project: 'foo',
     })
@@ -47,15 +39,7 @@ export default class Foo extends Component {
         pragma: 'react-intl',
       }
     )
-    expect(output.code).toBe(`// @react-intl project:foo
-import React, { Component } from 'react';
-function CustomMessage() { }
-export default class Foo extends Component {
-    render() {
-        return (<CustomMessage id={formatMessage({ id: "rL0Y20zC+F", defaultMessage: "foo" })} description={$formatMessage({ id: "rL0Y20zC+F", defaultMessage: "foo" })} defaultMessage="Hello World!"/>);
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({
       project: 'foo',
     })
@@ -131,38 +115,7 @@ export default class Foo extends Component {
         pragma: 'react-intl',
       }
     )
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
-const objectPointer = {
-    id: 'foo.bar.invalid',
-    defaultMessage: 'This cannot be extracted',
-    description: 'the plugin only supports inline objects',
-};
-class Foo extends Component {
-    render() {
-        const { intl } = this.props;
-        const msgs = {
-            baz: this.props.intl.formatMessage({ id: "foo.bar.baz", defaultMessage: "Hello World!" }),
-            biff: intl.formatMessage({ id: "foo.bar.biff", defaultMessage: "Hello Nurse!" }),
-            invalid: this.props.intl.formatMessage(objectPointer),
-            invalid2: this.props.intl.formatMessage({
-                id,
-                defaultMessage,
-                description: 'asd',
-            }),
-        };
-        return (<div>
-        <h1>{msgs.header}</h1>
-        <p>{msgs.content}</p>
-        <input placeholder={intl.formatMessage({ id: "A/2tFVt1SI", defaultMessage: "inline" })}/>
-        <span>
-          <FormattedMessage id="foo" defaultMessage="bar"/>
-        </span>
-      </div>);
-    }
-}
-export default injectIntl(Foo);
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -192,31 +145,7 @@ export default injectIntl(Foo);
       join(FIXTURES_DIR, 'extractFromFormatMessageStateless.tsx'),
       {}
     )
-    expect(output.code)
-      .toBe(`import { FormattedMessage, injectIntl, useIntl } from 'react-intl';
-import React from 'react';
-function myFunction(param1, { formatMessage, formatDate }) {
-    return (formatMessage({ id: "inline1", defaultMessage: "Hello params!" }) + formatDate(new Date()));
-}
-const child = myFunction(filterable, intl);
-function SFC() {
-    const { formatMessage } = useIntl();
-    return formatMessage({ id: "hook", defaultMessage: "hook" });
-}
-const Foo = ({ intl: { formatMessage } }) => {
-    const msgs = {
-        qux: formatMessage({ id: "foo.bar.quux", defaultMessage: "Hello Stateless!" }),
-    };
-    return (<div>
-      <h1>{msgs.header}</h1>
-      <p>{msgs.content}</p>
-      <span>
-        <FormattedMessage id="foo" defaultMessage="bar"/>
-      </span>
-    </div>);
-};
-export default injectIntl(Foo);
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -244,24 +173,7 @@ export default injectIntl(Foo);
 
   it('formattedMessage', async function () {
     const output = await compile(join(FIXTURES_DIR, 'FormattedMessage.tsx'), {})
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
-export default class Foo extends Component {
-    render() {
-        return (<p>
-        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World! {foo, number}" values={{
-                foo: 1,
-            }}/>
-        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World! {foo, number}" values={{
-                foo: 1,
-            }}/>
-        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World! {foo, number}" values={{
-                foo: 1,
-            }}/>
-      </p>);
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -284,18 +196,7 @@ export default class Foo extends Component {
 
   it('inline', async function () {
     const output = await compile(join(FIXTURES_DIR, 'inline.tsx'), {})
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { FormattedMessage, defineMessage } from 'react-intl';
-export default class Foo extends Component {
-    render() {
-        return (<div>
-        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>
-        {defineMessage({ id: "header", defaultMessage: "Hello World!" })}
-        {defineMessage({ id: "header2", defaultMessage: "Hello World!" })}
-      </div>);
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -322,11 +223,7 @@ export default class Foo extends Component {
         return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`
       },
     })
-    expect(output.code)
-      .toBe(`intl.formatMessage({ id: "HELLO..13.undefined", defaultMessage: "layer1 {name}" }, {
-    name: intl.formatMessage({ id: "HELLO..6.undefined", defaultMessage: "layer2" }),
-});
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -347,14 +244,7 @@ export default class Foo extends Component {
         extractSourceLocation: true,
       }
     )
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
-export default class Foo extends Component {
-    render() {
-        return <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>;
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.msgs).toHaveLength(1)
     expect(output.msgs[0]).toEqual({
       defaultMessage: 'Hello World!',
@@ -370,14 +260,7 @@ export default class Foo extends Component {
       join(FIXTURES_DIR, 'descriptionsAsObjects.tsx'),
       {}
     )
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
-export default class Foo extends Component {
-    render() {
-        return (<FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>);
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -396,33 +279,7 @@ export default class Foo extends Component {
       join(FIXTURES_DIR, 'formatMessageCall.tsx'),
       {}
     )
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
-const objectPointer = {
-    id: 'foo.bar.invalid',
-    defaultMessage: 'This cannot be extracted',
-    description: 'the plugin only supports inline objects',
-};
-class Foo extends Component {
-    render() {
-        const msgs = {
-            baz: formatMessage({ id: "foo.bar.baz", defaultMessage: "Hello World!" }),
-            baz2: this.props.intl.$formatMessage({ id: "foo.bar.baz2", defaultMessage: "Hello World!" }),
-            biff: $formatMessage({ id: "foo.bar.biff", defaultMessage: "Hello Nurse!" }),
-            invalid: this.props.intl.formatMessage(objectPointer),
-        };
-        return (<div>
-        <h1>{msgs.header}</h1>
-        <p>{msgs.content}</p>
-        <input placeholder={intl.formatMessage({ id: "A/2tFVt1SI", defaultMessage: "inline" })}/>
-        <span>
-          <FormattedMessage id="foo" defaultMessage="bar"/>
-        </span>
-      </div>);
-    }
-}
-export default injectIntl(Foo);
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -454,18 +311,7 @@ export default injectIntl(Foo);
 
   it('stringConcat', async function () {
     const output = await compile(join(FIXTURES_DIR, 'stringConcat.tsx'), {})
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { FormattedMessage, defineMessage } from 'react-intl';
-export default class Foo extends Component {
-    render() {
-        return (<div>
-        <FormattedMessage id="foo.bar.bazid" defaultMessage="Hello World!farbaz"/>
-        {intl.formatMessage({ id: "header", defaultMessage: "Hello World!foobar" })}
-        {defineMessage({ id: "header2", defaultMessage: "Hello World!" })}
-      </div>);
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -488,19 +334,7 @@ export default class Foo extends Component {
 
   it('templateLiteral', async function () {
     const output = await compile(join(FIXTURES_DIR, 'templateLiteral.tsx'), {})
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { FormattedMessage, defineMessage } from 'react-intl';
-defineMessage({ id: "template", defaultMessage: "should remove newline and extra spaces" });
-defineMessage({ id: "template dedent", defaultMessage: "dedent Hello World!" });
-export default class Foo extends Component {
-    render() {
-        return (<>
-        <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!"/>
-        <FormattedMessage id="dedent foo.bar.baz" defaultMessage="dedent Hello World!"/>
-      </>);
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -593,33 +427,7 @@ export default class Foo extends Component {
         return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`
       },
     })
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { defineMessages, FormattedMessage, defineMessage } from 'react-intl';
-const msgs = defineMessages({ header: { id: "HELLO.foo.bar.baz.12.string", defaultMessage: [{ type: 0, value: "Hello World!" }] }, content: { id: "HELLO.foo.bar.biff.12.object", defaultMessage: [{ type: 0, value: "Hello Nurse!" }] } });
-defineMessage({ id: "HELLO..13.string", defaultMessage: [{ type: 0, value: "defineMessage" }] });
-export default class Foo extends Component {
-    render() {
-        const { intl } = this.props;
-        const { formatMessage } = intl;
-        this.props.intl.formatMessage({ id: "HELLO..5.string", defaultMessage: [{ type: 0, value: "no-id" }] });
-        intl.formatMessage({ id: "HELLO..18.string", defaultMessage: [{ type: 0, value: "intl.formatMessage" }] });
-        formatMessage({ id: "HELLO..13.string", defaultMessage: [{ type: 0, value: "formatMessage" }] });
-        formatMessage({ id: "HELLO..39.string", defaultMessage: [{ type: 6, value: "count", options: { "=0": { value: [{ type: 0, value: "zero" }] }, other: { value: [{ type: 0, value: "other" }] } }, offset: 0, pluralType: "cardinal" }] });
-        return (<div>
-        <h1>
-          <FormattedMessage {...msgs.header}/>
-        </h1>
-        <p>
-          <FormattedMessage {...msgs.content}/>
-        </p>
-        <FormattedMessage id="HELLO.foo.bar.zoo.18.object" defaultMessage={[{ type: 0, value: "Hello World! " }, { type: 1, value: "abc" }]} values={{ abc: 2 }}/>
-        <FormattedMessage id="HELLO..18.object" defaultMessage={[{ type: 0, value: "Hello World! " }, { type: 1, value: "abc" }]} values={{ abc: 2 }}/>
-
-        <FormattedMessage id="HELLO..15.object" defaultMessage={[{ type: 2, value: "value", style: null }]} values={{ abc: 2 }}/>
-      </div>);
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -694,22 +502,9 @@ export default class Foo extends Component {
         removeDefaultMessage: true,
       }
     )
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-const messages = defineMessages({ foo: { id: "greeting-user" } });
-export default class Foo extends Component {
-    render() {
-        return (<FormattedMessage id="greeting-world"/>);
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
-      {
-        defaultMessage: 'Hello, {name}',
-        description: 'Greeting the user',
-        id: 'greeting-user',
-      },
       {
         defaultMessage: 'Hello World!',
         description: 'Greeting to the world',
@@ -722,15 +517,7 @@ export default class Foo extends Component {
     const output = await compile(join(FIXTURES_DIR, 'noImport.tsx'), {
       overrideIdFn: '[hash:base64:5]',
     })
-    expect(output.code).toBe(`export function foo() {
-    props.intl.formatMessage({ id: "hYpBl", defaultMessage: "props {intl}" }, { bar: 'bar' });
-    this.props.intl.formatMessage({ id: "tBZlS", defaultMessage: "this props {intl}" }, { bar: 'bar' });
-    this.props.intl.formatMessage({ id: "T+ycr", defaultMessage: "this props {intl}" }, { bar: 'bar' });
-    this.props.intl.formatMessage({ id: "T+ycr", defaultMessage: "this props {intl}" }, { bar: 'bar' });
-    this.props.intl.formatMessage({ id: "WUKCt", defaultMessage: "this props {intl}" }, { bar: 'bar' });
-    return intl.formatMessage({ id: "ALfyd", defaultMessage: "foo {bar}" }, { bar: 'bar' });
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -778,12 +565,7 @@ export default class Foo extends Component {
     const output = await compile(join(FIXTURES_DIR, 'resourcePath.tsx'), {
       overrideIdFn: '[name]-[hash:base64:5]',
     })
-    expect(output.code).toBe(`export function foo() {
-    props.intl.formatMessage({ id: "resourcePath-hYpBl", defaultMessage: "props {intl}" }, { bar: 'bar' });
-    this.props.intl.formatMessage({ id: "resourcePath-tBZlS", defaultMessage: "this props {intl}" }, { bar: 'bar' });
-    return intl.formatMessage({ id: "resourcePath-ALfyd", defaultMessage: "foo {bar}" }, { bar: 'bar' });
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
       {
@@ -809,22 +591,9 @@ export default class Foo extends Component {
       join(FIXTURES_DIR, 'removeDescription.tsx'),
       {}
     )
-    expect(output.code).toBe(`import React, { Component } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-const messages = defineMessages({ foo: { id: "greeting-user", defaultMessage: "Hello, {name}" } });
-export default class Foo extends Component {
-    render() {
-        return (<FormattedMessage id="greeting-world" defaultMessage="Hello World!"/>);
-    }
-}
-`)
+    expect(output.code).toMatchSnapshot()
     expect(output.meta).toEqual({})
     expect(output.msgs).toEqual([
-      {
-        defaultMessage: 'Hello, {name}',
-        description: 'Greeting the user',
-        id: 'greeting-user',
-      },
       {
         defaultMessage: 'Hello World!',
         description: 'Greeting to the world',
@@ -928,7 +697,7 @@ async function compile(filePath: string, options?: Partial<Opts>) {
           onMetaExtracted: (_, m) => {
             meta = m
           },
-          ...(options || {}),
+          ...options,
         }),
       ],
     },

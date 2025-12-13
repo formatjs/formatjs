@@ -55,7 +55,7 @@ describe('<FormattedRelativeTime>', () => {
   })
 
   it('accepts valid IntlRelativeTimeFormat options as props', () => {
-    const options = {style: 'narrow' as 'narrow'}
+    const options = {style: 'narrow' as const}
     const {getByTestId} = mountWithProvider({value: -60, ...options})
 
     expect(getByTestId('comp')).toHaveTextContent(
@@ -64,7 +64,7 @@ describe('<FormattedRelativeTime>', () => {
   })
 
   it('can render in null textComponent', () => {
-    const options = {style: 'narrow' as 'narrow'}
+    const options = {style: 'narrow' as const}
     const {getByTestId} = mountWithProvider(
       {value: -60, ...options},
       {
