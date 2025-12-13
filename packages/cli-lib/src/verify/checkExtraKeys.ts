@@ -15,7 +15,7 @@ function extractKeys(obj: any, parentKey = ''): string[] {
     .flat()
 }
 
-export async function checkMissingKeys(
+export async function checkExtraKeys(
   translationFilesContents: Record<string, any>,
   sourceLocale: string
 ): Promise<boolean> {
@@ -30,14 +30,17 @@ export async function checkMissingKeys(
     .reduce<boolean>((result, [locale, content]) => {
       const localeKeys = new Set(extractKeys(content))
 
-      const missingKeys = new Set(sourceKeys.filter(r => !localeKeys.has(r)))
-      // We're being lenient here since only missing keys are currently considered breaking
-      if (!missingKeys.size) {
+      const extraKeys = new Set(
+        Array.from(localeKeys).filter(k => !sourceKeys.includes(k))
+      )
+
+      if (!extraKeys.size) {
         return result
       }
+
       writeStderr('---------------------------------\n')
-      writeStderr(`Missing translation keys for locale ${locale}:\n`)
-      missingKeys.forEach(r => writeStderr(`${r}\n`))
+      writeStderr(`Extra translation keys for locale ${locale}:\n`)
+      extraKeys.forEach(r => writeStderr(`${r}\n`))
 
       return false
     }, true)

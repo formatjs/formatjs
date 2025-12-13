@@ -1,4 +1,5 @@
 .cache
+.claude
 bazel-out
 dist
 locale-data

@@ -262,6 +262,10 @@ This is especially useful to convert from a TMS-specific format back to react-in
       This basically guarantees that no messages are untranslated.`
     )
     .option(
+      '--extra-keys',
+      `Whether to check that target locales don't have extra keys not present in the source locale.`
+    )
+    .option(
       '--structural-equality',
       `Whether to check for structural equality of messages between source and target locale. 
       This makes sure translations are formattable and are not missing any tokens.`
