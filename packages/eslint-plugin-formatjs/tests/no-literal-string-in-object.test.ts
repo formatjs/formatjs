@@ -1,4 +1,4 @@
-import {rule, name} from '../rules/no-literal-string-in-object'
+import {rule, name} from '../rules/no-literal-string-in-object.js'
 import {ruleTester, vueRuleTester} from './util'
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 

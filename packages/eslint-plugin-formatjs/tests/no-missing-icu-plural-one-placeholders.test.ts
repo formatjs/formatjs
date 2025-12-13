@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/no-missing-icu-plural-one-placeholders'
+import {name, rule} from '../rules/no-missing-icu-plural-one-placeholders.js'
 import {ruleTester} from './util'
 
 ruleTester.run(name, rule, {

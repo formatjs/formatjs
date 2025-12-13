@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/enforce-plural-rules'
+import {name, rule} from '../rules/enforce-plural-rules.js'
 import {ruleTester} from './util'
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 ruleTester.run(name, rule, {

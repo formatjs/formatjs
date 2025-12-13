@@ -12,8 +12,8 @@ import {
 } from '@formatjs/icu-messageformat-parser'
 import {ESLintUtils, TSESTree} from '@typescript-eslint/utils'
 import {RuleContext} from '@typescript-eslint/utils/ts-eslint'
-import {getParserServices} from '../context-compat'
-import {extractMessages, getSettings} from '../util'
+import {getParserServices} from '../context-compat.js'
+import {extractMessages, getSettings} from '../util.js'
 
 type MessageIds = 'blocklist'
 
