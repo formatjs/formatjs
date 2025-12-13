@@ -14,7 +14,7 @@
     "karma:local": "bazel test :karma",
     "prepare": "husky && syncpack fix-mismatches && syncpack format",
     "prerelease": "HUSKY=0 lerna version --yes --no-private",
-    "test": "syncpack lint && bazel test //..."
+    "test": "syncpack lint && oxlint && bazel test //..."
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",

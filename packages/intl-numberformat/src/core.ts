@@ -131,7 +131,7 @@ try {
     writable: false,
     configurable: true,
   })
-} catch (e) {
+} catch {
   // In older browser (e.g Chrome 36 like polyfill-fastly.io)
   // TypeError: Cannot redefine property: name
 }
@@ -205,7 +205,7 @@ const formatDescriptor = {
           writable: false,
           value: '',
         })
-      } catch (e) {
+      } catch {
         // In older browser (e.g Chrome 36 like polyfill-fastly.io)
         // TypeError: Cannot redefine property: name
       }
@@ -222,7 +222,7 @@ try {
     writable: false,
     value: 'get format',
   })
-} catch (e) {
+} catch {
   // In older browser (e.g Chrome 36 like polyfill-fastly.io)
   // TypeError: Cannot redefine property: name
 }
@@ -318,6 +318,6 @@ try {
     writable: false,
     value: NumberFormat.prototype,
   })
-} catch (e) {
+} catch {
   // Meta fix so we're test262-compliant, not important
 }

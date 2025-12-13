@@ -13,7 +13,7 @@ async function main(args: minimist.ParsedArgs) {
   const locales = AVAILABLE_LOCALES.availableLocales.full.filter(l => {
     try {
       return (Intl as any).getCanonicalLocales(l).length
-    } catch (e) {
+    } catch {
       console.warn(`Invalid locale ${l}`)
       return false
     }

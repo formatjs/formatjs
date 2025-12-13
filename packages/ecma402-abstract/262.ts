@@ -38,7 +38,7 @@ export function ToNumber(arg: any): Decimal {
   if (typeof arg === 'string') {
     try {
       return new Decimal(arg)
-    } catch (e) {
+    } catch {
       return new Decimal(NaN)
     }
   }
@@ -118,7 +118,7 @@ export function SameValue(x: any, y: any): boolean {
  * @param len
  */
 export function ArrayCreate<T = any>(len: number): T[] {
-  return new Array(len)
+  return Array.from({length: len})
 }
 
 /**

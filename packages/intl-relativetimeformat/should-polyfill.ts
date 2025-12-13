@@ -20,7 +20,7 @@ function hasResolvedOptionsNumberingSystem(locale?: string | string[]) {
         numeric: 'auto',
       }).resolvedOptions()
     )
-  } catch (_) {
+  } catch {
     return false
   }
 }

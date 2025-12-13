@@ -32,7 +32,7 @@ export function isUnicodeLanguageSubtag(lang: string): boolean {
 export function isStructurallyValidLanguageTag(tag: string): boolean {
   try {
     parseUnicodeLanguageId(tag.split(SEPARATOR))
-  } catch (e) {
+  } catch {
     return false
   }
   return true
@@ -147,7 +147,7 @@ function parseTransformedExtension(chunks: string[]): TransformedExtension {
   let lang: UnicodeLanguageId | undefined
   try {
     lang = parseUnicodeLanguageId(chunks)
-  } catch (e) {
+  } catch {
     // Try just parsing tfield
   }
   const fields: KV[] = []
