@@ -600,7 +600,7 @@ export class Locale {
     try {
       const maximizedLocale = addLikelySubtags(locale)
       return new Locale(maximizedLocale)
-    } catch (e) {
+    } catch {
       return new Locale(locale)
     }
   }
@@ -613,7 +613,7 @@ export class Locale {
     try {
       const minimizedLocale = removeLikelySubtags(locale)
       return new Locale(minimizedLocale)
-    } catch (e) {
+    } catch {
       return new Locale(locale)
     }
   }
@@ -803,7 +803,7 @@ try {
     enumerable: false,
     configurable: true,
   })
-} catch (e) {
+} catch {
   // Meta fix so we're test262-compliant, not important
 }
 
