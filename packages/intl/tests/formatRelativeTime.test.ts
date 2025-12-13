@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {formatRelativeTime as formatRelativeTimeFn} from '../src/relativeTime'
 import {IntlConfig, IntlFormatters} from '../src/types'
 
@@ -25,10 +26,10 @@ describe('format API', () => {
       defaultLocale: 'en',
       defaultFormats: {},
 
-      onError: jest.fn(),
+      onError: vi.fn(),
     }
 
-    getRelativeTimeFormat = jest
+    getRelativeTimeFormat = vi
       .fn()
       .mockImplementation((...args) => new Intl.RelativeTimeFormat(...args))
   })
@@ -43,9 +44,9 @@ describe('format API', () => {
 
     beforeEach(() => {
       rf = new Intl.RelativeTimeFormat(config.locale, undefined)
-      // @ts-ignore
       formatRelativeTime = formatRelativeTimeFn.bind(
         null,
+        // @ts-ignore
         config,
         getRelativeTimeFormat
       )
@@ -55,13 +56,13 @@ describe('format API', () => {
       // @ts-ignore
       expect(formatRelativeTime()).toBe('undefined')
       expect(
-        (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+        (config.onError as any).mock.calls.map((c: any) => c[0].code)
       ).toMatchSnapshot()
     })
 
     it('falls back and warns when a non-finite value is provided', () => {
       expect(formatRelativeTime(NaN)).toBe('NaN')
-      expect(config.onError as jest.Mock).toHaveBeenCalledTimes(1)
+      expect(config.onError).toHaveBeenCalledTimes(1)
     })
 
     it('formats falsy finite values', () => {
@@ -97,7 +98,7 @@ describe('format API', () => {
         // @ts-ignore
         expect(formatRelativeTime(0, 'invalid')).toBe('0')
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 
@@ -137,7 +138,7 @@ describe('format API', () => {
           rf.format(-1, 'second')
         )
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
     })

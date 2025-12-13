@@ -1,6 +1,7 @@
 import {exec as nodeExec} from 'child_process'
 import {join, resolve} from 'path'
 import {promisify} from 'util'
+import {expect, test} from 'vitest'
 const exec = promisify(nodeExec)
 const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
 const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts')
@@ -151,18 +152,16 @@ test('malformed ICU message json', async () => {
 }, 20000)
 
 test('skipped malformed ICU message json', async () => {
-  await expect(
-    exec(
-      `${BIN_PATH} compile  --skip-errors ${join(
-        __dirname,
-        'lang/malformed-messages.json'
-      )}`
-    )
-  ).resolves.toMatchSnapshot({
-    stderr: expect.stringMatching(
-      /^\[@formatjs\/cli\] \[WARN\] Error validating message "my name is {name" with ID "a1dd2" in file .*\/packages\/cli\/integration-tests\/compile\/lang\/malformed-messages.json/
-    ),
-  } as Partial<any>)
+  const result = await exec(
+    `${BIN_PATH} compile  --skip-errors ${join(
+      __dirname,
+      'lang/malformed-messages.json'
+    )}`
+  )
+  expect(result.stdout).toMatchSnapshot()
+  expect(result.stderr).toMatch(
+    /^\[@formatjs\/cli\] \[WARN\] Error validating message "my name is {name" with ID "a1dd2" in file .*\/packages\/cli\/integration-tests\/compile\/lang\/malformed-messages\.json/
+  )
 }, 20000)
 
 test('AST', async () => {

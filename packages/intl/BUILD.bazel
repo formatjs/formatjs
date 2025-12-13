@@ -5,7 +5,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
 load("//tools:index.bzl", "package_json_test", "ts_compile")
-load("//tools:jest.bzl", "jest_test")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -33,10 +33,14 @@ SRC_DEPS = [
     ":node_modules/intl-messageformat",
 ]
 
-TESTS = glob([
-    "tests/*.ts*",
-    "tests/__snapshots__/*.snap",
-])
+TESTS = glob(
+    [
+        "tests/*.ts*",
+    ],
+    exclude = [
+        "tests/*.test-d.ts",
+    ],
+)
 
 ts_compile(
     name = "dist",
@@ -45,9 +49,11 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-jest_test(
+vitest(
     name = "unit_test",
-    data = [":srcs"] + TESTS + SRC_DEPS + [
+    srcs = [":srcs"] + TESTS,
+    snapshots = glob(["tests/__snapshots__/*.snap"]),
+    deps = SRC_DEPS + [
         "//:node_modules/@types/node",
     ],
 )

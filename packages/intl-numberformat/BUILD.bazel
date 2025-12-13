@@ -5,7 +5,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
-load("//tools:jest.bzl", "jest_test")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -160,28 +160,26 @@ LOCALE_TEST_TYPES = [
         name = "%s_%s_test_gen" % (type, locale),
         srcs = [],
         outs = ["tests/%s_%s.test.ts" % (type, locale)],
-        cmd = "echo 'import { test } from \"./%sTest\"; test(\"%s\");' > $@" % (type, locale),
+        cmd = "echo 'import \"@formatjs/intl-pluralrules/locale-data/%s\"; import { test } from \"./%sTest\"; import * as localeData from \"./locale-data/%s.json\"; test(\"%s\", localeData);' > $@" % (
+            locale.split("-")[0],
+            type,
+            locale,
+            locale,
+        ),
     ) for locale in UNIT_TEST_LOCALES]
     for type in LOCALE_TEST_TYPES
 ]
 
-[
-    [jest_test(
-        name = "%s_%s_test" % (type, locale),
-        data = [":srcs"] + TEST_DEPS + [
-            "tests/%sTest.ts" % type,
-            ":%s_%s_test_gen" % (type, locale),
-            "tests/locale-data/%s.json" % locale,
-        ],
-        snapshots = ["tests/__snapshots__/%s_%s.test.ts.snap" % (type, locale)],
-    ) for locale in UNIT_TEST_LOCALES]
-    for type in LOCALE_TEST_TYPES
-]
-
-[jest_test(
-    name = "%s_test" % t.split("/")[-1].removesuffix(".test.ts"),
-    data = [":srcs"] + TEST_DEPS + [t] + TEST_LOCALE_DATA,
-) for t in TESTS]
+vitest(
+    name = "all_tests",
+    srcs = [":srcs"] +
+           ["tests/%sTest.ts" % type for type in LOCALE_TEST_TYPES] +
+           [":%s_%s_test_gen" % (type, locale) for type in LOCALE_TEST_TYPES for locale in UNIT_TEST_LOCALES] +
+           TEST_LOCALE_DATA +
+           TESTS,
+    snapshots = ["tests/__snapshots__/%s_%s.test.ts.snap" % (type, locale) for type in LOCALE_TEST_TYPES for locale in UNIT_TEST_LOCALES],
+    deps = TEST_DEPS,
+)
 
 # CLDR
 ALL_LOCALES = [

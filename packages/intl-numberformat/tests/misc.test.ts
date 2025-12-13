@@ -1,3 +1,4 @@
+import {describe, it, test, expect} from 'vitest'
 import '@formatjs/intl-pluralrules/polyfill'
 import {NumberFormat} from '../src/core'
 
@@ -216,7 +217,8 @@ it('chose compact pattern with rounded number', () => {
 
 describe('For wrong options NumberFormat correctly throws exception', () => {
   it('uses an invalid value for rounding incremenet', () => {
-    const createInstance = () => new NumberFormat('en', {roundingIncrement: 3})
+    const createInstance = () =>
+      new NumberFormat('en', {roundingIncrement: 3 as any})
 
     expect(createInstance).toThrow(
       new RangeError(

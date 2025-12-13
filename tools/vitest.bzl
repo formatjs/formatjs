@@ -47,10 +47,13 @@ def vitest(
 
     deps = list(set(deps))
 
+    # Filter out snapshot files from srcs
+    srcs_no_snapshots = [src for src in srcs if "/__snapshots__/" not in src]
+
     if not skip_typecheck:
         ts_project(
             name = "%s_typecheck" % name,
-            srcs = srcs,
+            srcs = srcs_no_snapshots,
             tsconfig = TEST_TSCONFIG,
             resolve_json_module = True,
             declaration = True,
@@ -72,7 +75,7 @@ def vitest(
         **kwargs
     )
 
-    test_files = [src for src in srcs if "tests/" in src]
+    test_files = [src for src in srcs_no_snapshots if ".test.ts" in src or ".test.tsx" in src]
 
     test_file_dirs = {}
     for test_file in test_files:
@@ -84,9 +87,12 @@ def vitest(
     snapshot_targets = []
     for test_file_dir, test_files_in_dir in test_file_dirs.items():
         snapshot_dir = test_file_dir + "/__snapshots__" if test_file_dir else "__snapshots__"
+
+        # Use a unique name for the snapshot target to avoid conflicts when multiple tests share the same snapshot directory
+        snapshot_target_name = name + "_" + snapshot_dir.replace("/", "_")
         vitest_bin.vitest(
-            name = snapshot_dir,
-            srcs = srcs +
+            name = snapshot_target_name,
+            srcs = srcs_no_snapshots +
                    deps,
             out_dirs = [snapshot_dir],
             args = [
@@ -98,15 +104,15 @@ def vitest(
         )
 
         write_source_file(
-            name = snapshot_dir + ".update",
-            in_file = snapshot_dir,
+            name = snapshot_target_name + ".update",
+            in_file = snapshot_target_name,
             out_file = snapshot_dir,
             check_that_out_file_exists = False,
             diff_test = False,
             tags = ["manual"],
         )
 
-        snapshot_targets.append(snapshot_dir + ".update")
+        snapshot_targets.append(snapshot_target_name + ".update")
 
     write_source_files(
         name = "%s.update" % name,

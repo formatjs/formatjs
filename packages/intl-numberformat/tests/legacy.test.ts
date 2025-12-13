@@ -1,3 +1,4 @@
+import {test, expect} from 'vitest'
 import {NumberFormat} from '../src/core'
 NumberFormat.__addLocaleData(require(`./locale-data/en.json`))
 test('legacy constructor', function () {

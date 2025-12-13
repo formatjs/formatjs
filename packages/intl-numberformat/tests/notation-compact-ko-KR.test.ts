@@ -1,3 +1,4 @@
+import {describe, it, expect} from 'vitest'
 import {NumberFormatPart} from '@formatjs/ecma402-abstract'
 import '@formatjs/intl-pluralrules/locale-data/ko'
 import '@formatjs/intl-pluralrules/polyfill'

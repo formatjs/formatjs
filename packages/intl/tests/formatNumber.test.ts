@@ -1,3 +1,4 @@
+import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {formatNumber as formatNumberFn} from '../src/number'
 import {IntlConfig} from '../src/types'
 
@@ -48,10 +49,10 @@ describe('format API', () => {
       defaultLocale: 'en',
       defaultFormats: {},
 
-      onError: jest.fn(),
+      onError: vi.fn(),
     }
 
-    getNumberFormat = jest
+    getNumberFormat = vi
       .fn()
       .mockImplementation((...args) => new Intl.NumberFormat(...args))
   })
@@ -111,7 +112,7 @@ describe('format API', () => {
       it('falls back and warns on invalid Intl.NumberFormat options', () => {
         expect(formatNumber(0, {style: 'invalid'})).toBe(String(0))
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 
@@ -150,7 +151,7 @@ describe('format API', () => {
 
         expect(formatNumber(num, {format})).toBe(nf.format(num))
         expect(
-          (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
+          (config.onError as any).mock.calls.map((c: any) => c[0].code)
         ).toMatchSnapshot()
       })
 

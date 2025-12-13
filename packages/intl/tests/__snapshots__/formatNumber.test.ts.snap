@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`format API formatNumber() options falls back and warns on invalid Intl.NumberFormat options 1`] = `
+exports[`format API > formatNumber() > options > falls back and warns on invalid Intl.NumberFormat options 1`] = `
 [
   "FORMAT_ERROR",
 ]
 `;
 
-exports[`format API formatNumber() options handles missing named formats and warns 1`] = `
+exports[`format API > formatNumber() > options > handles missing named formats and warns 1`] = `
 [
   "UNSUPPORTED_FORMATTER",
 ]

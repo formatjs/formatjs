@@ -1,3 +1,4 @@
+import {test, expect} from 'vitest'
 import {MessageDescriptor} from '@formatjs/ts-transformer'
 import {parseScript} from '../../src/parse_script'
 import {parseFile} from '../../src/vue_extractor'

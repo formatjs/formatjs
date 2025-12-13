@@ -1,18 +1,18 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`format API formatRelativeTime() falls back and warns when no value is provided 1`] = `
+exports[`format API > formatRelativeTime() > falls back and warns when no value is provided 1`] = `
 [
   "FORMAT_ERROR",
 ]
 `;
 
-exports[`format API formatRelativeTime() options falls back and warns on invalid IntlRelativeFormat options 1`] = `
+exports[`format API > formatRelativeTime() > options > falls back and warns on invalid IntlRelativeFormat options 1`] = `
 [
   "FORMAT_ERROR",
 ]
 `;
 
-exports[`format API formatRelativeTime() options handles missing named formats and warns 1`] = `
+exports[`format API > formatRelativeTime() > options > handles missing named formats and warns 1`] = `
 [
   "UNSUPPORTED_FORMATTER",
 ]
