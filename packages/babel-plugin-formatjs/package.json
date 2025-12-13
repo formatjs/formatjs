@@ -4,6 +4,7 @@
   "version": "10.5.41",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "type": "module",
   "types": "index.d.ts",
   "dependencies": {
     "@babel/core": "^7.26.10",

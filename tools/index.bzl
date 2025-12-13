@@ -19,6 +19,8 @@ def ts_compile_node(name, srcs, deps = [], data = [], skip_cjs = False, visibili
         visibility: visibility
     """
     deps = deps + ["//:node_modules/tslib"]
+    esm_out_dir = "lib_esnext" if not skip_cjs else None
+
     if not skip_cjs:
         ts_project(
             name = "%s-base" % name,
@@ -33,8 +35,12 @@ def ts_compile_node(name, srcs, deps = [], data = [], skip_cjs = False, visibili
         name = "%s-esm-esnext" % name,
         srcs = srcs,
         declaration = True,
-        out_dir = "lib_esnext",
-        tsconfig = ESM_ESNEXT_TSCONFIG,
+        out_dir = esm_out_dir,
+        tsconfig = ESM_ESNEXT_TSCONFIG if not skip_cjs else (ESM_ESNEXT_TSCONFIG | {
+            "compilerOptions": ESM_ESNEXT_TSCONFIG["compilerOptions"] | {
+                "allowSyntheticDefaultImports": False,
+            },
+        }),
         resolve_json_module = True,
         deps = deps,
     )

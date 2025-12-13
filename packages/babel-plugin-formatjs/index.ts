@@ -1,10 +1,14 @@
 import {PluginObj, PluginPass} from '@babel/core'
 import {declare} from '@babel/helper-plugin-utils'
-import babelPluginSyntaxJsx from '@babel/plugin-syntax-jsx'
-import {ExtractedMessageDescriptor, Options, State} from './types'
-import {visitor as CallExpression} from './visitors/call-expression'
-import {visitor as JSXOpeningElement} from './visitors/jsx-opening-element'
+import babelPluginSyntaxJsxNs from '@babel/plugin-syntax-jsx'
+import {ExtractedMessageDescriptor, Options, State} from './types.js'
+import {visitor as CallExpression} from './visitors/call-expression.js'
+import {visitor as JSXOpeningElement} from './visitors/jsx-opening-element.js'
 
+const babelPluginSyntaxJsx =
+  (babelPluginSyntaxJsxNs as any).default || babelPluginSyntaxJsxNs
+
+console.log(babelPluginSyntaxJsxNs)
 export type ExtractionResult<M = Record<string, string>> = {
   messages: ExtractedMessageDescriptor[]
   meta: M

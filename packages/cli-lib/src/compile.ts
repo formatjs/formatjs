@@ -1,6 +1,6 @@
 import {MessageFormatElement, parse} from '@formatjs/icu-messageformat-parser'
 import {outputFile, readJSON} from 'fs-extra'
-import stringify from 'json-stable-stringify'
+import * as stringifyNs from 'json-stable-stringify'
 import {debug, warn, writeStdout} from './console_utils'
 import {Formatter, resolveBuiltinFormatter} from './formatters'
 import {
@@ -10,6 +10,8 @@ import {
   generateXXHA,
   generateXXLS,
 } from './pseudo_locale'
+
+const stringify = (stringifyNs as any).default || stringifyNs
 
 export type CompileFn = (msgs: any) => Record<string, string>
 

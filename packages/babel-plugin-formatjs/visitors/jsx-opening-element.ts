@@ -1,6 +1,6 @@
 import {NodePath, PluginPass} from '@babel/core'
 
-import {Options, State} from '../types'
+import {Options, State} from '../types.js'
 import * as t from '@babel/types'
 import {VisitNodeFunction} from '@babel/traverse'
 import {parse} from '@formatjs/icu-messageformat-parser'
@@ -11,7 +11,7 @@ import {
   storeMessage,
   tagAsExtracted,
   wasExtracted,
-} from '../utils'
+} from '../utils.js'
 
 export const visitor: VisitNodeFunction<
   PluginPass & State,

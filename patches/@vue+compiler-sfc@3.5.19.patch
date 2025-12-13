@@ -1,0 +1,13 @@
+diff --git a/dist/compiler-sfc.d.ts b/dist/compiler-sfc.d.ts
+index 1234567890abcdef1234567890abcdef12345678..fedcba0987654321fedcba0987654321fedcba09 100644
+--- a/dist/compiler-sfc.d.ts
++++ b/dist/compiler-sfc.d.ts
+@@ -7,7 +7,7 @@ export { parse as babelParse } from '@babel/parser';
+ import { Result, LazyResult } from 'postcss';
+ import MagicString from 'magic-string';
+ export { default as MagicString } from 'magic-string';
+-import TS from 'typescript';
++import * as TS from 'typescript';
+
+ export interface AssetURLTagConfig {
+     [name: string]: string[];

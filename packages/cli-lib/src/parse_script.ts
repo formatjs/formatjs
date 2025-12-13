@@ -1,5 +1,5 @@
 import {Opts, transformWithTs} from '@formatjs/ts-transformer'
-import ts from 'typescript'
+import * as ts from 'typescript'
 import {debug} from './console_utils'
 /**
  * Invoid TypeScript module transpilation with our TS transformer
