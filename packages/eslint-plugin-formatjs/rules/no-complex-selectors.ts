@@ -73,7 +73,7 @@ function checkNode(
 
   const config: Config = {
     limit: 20,
-    ...(context.options[0] || {}),
+    ...context.options[0],
   }
 
   for (const [

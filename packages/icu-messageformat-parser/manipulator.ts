@@ -16,7 +16,7 @@ import {
 function cloneDeep<T>(obj: T): T {
   if (Array.isArray(obj)) {
     // @ts-expect-error meh
-    return [...obj.map(cloneDeep)]
+    return obj.map(cloneDeep)
   }
   if (obj !== null && typeof obj === 'object') {
     // @ts-expect-error meh

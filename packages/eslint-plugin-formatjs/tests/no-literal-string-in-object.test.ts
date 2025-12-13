@@ -93,7 +93,7 @@ ruleTester.run(name, rule, {
     {
       code: `
             const obj = {
-              label: \`$\{intl.formatMessage({defaultMessage: 'Translated part'})\} $\{intl.formatMessage({defaultMessage: 'Translated part'})\}\`
+              label: \`$\{intl.formatMessage({defaultMessage: 'Translated part'})} $\{intl.formatMessage({defaultMessage: 'Translated part'})}\`
             }
           `,
       errors: [

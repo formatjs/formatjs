@@ -28,12 +28,12 @@ function mergeConfig(c1: Record<string, object>, c2?: Record<string, object>) {
     return c1
   }
   return {
-    ...(c1 || {}),
-    ...(c2 || {}),
+    ...c1,
+    ...c2,
     ...Object.keys(c1).reduce((all: Record<string, object>, k) => {
       all[k] = {
         ...c1[k],
-        ...(c2[k] || {}),
+        ...c2[k],
       }
       return all
     }, {}),
@@ -130,7 +130,7 @@ export class IntlMessageFormat {
           'IntlMessageFormat.__parse must be set to process `message` of type `string`'
         )
       }
-      const {formatters, ...parseOpts} = opts || {}
+      const {...parseOpts} = opts || {}
       // Parse string messages into an AST.
       this.ast = IntlMessageFormat.__parse(message, {
         ...parseOpts,

@@ -66,7 +66,7 @@ function checkProperty(
 ) {
   const config: PropertyConfig = {
     include: ['label'],
-    ...(context.options[0] || {}),
+    ...context.options[0],
   }
 
   const propertyKey =

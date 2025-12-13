@@ -12,8 +12,6 @@ function myFunction(param1, {formatMessage, formatDate}) {
   )
 }
 
-const child = myFunction(filterable, intl)
-
 function SFC() {
   const {formatMessage} = useIntl()
   return formatMessage({

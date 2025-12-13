@@ -1,7 +1,6 @@
 import {rule, name, Option} from '../rules/enforce-default-message'
 import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures'
 import {ruleTester, vueRuleTester} from './util'
-import {afterAll} from 'vitest'
 
 ruleTester.run(name, rule, {
   valid: [
