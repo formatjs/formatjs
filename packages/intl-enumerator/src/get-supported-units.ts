@@ -6,7 +6,7 @@ function isSupported(unit: Unit, locale: string = 'en'): boolean {
   try {
     const formatter = createMemoizedNumberFormat(locale, {style: 'unit', unit})
     return formatter.resolvedOptions().unit === unit
-  } catch (_err) {}
+  } catch {}
 
   return false
 }

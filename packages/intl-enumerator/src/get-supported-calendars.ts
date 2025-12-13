@@ -10,7 +10,7 @@ function isSupportedCalendar(item: Calendar, locale: string = 'en'): boolean {
     const options = dateTimeFormat.resolvedOptions().calendar
 
     if (item !== 'gregory' || options !== 'gregory') return true
-  } catch (_err) {}
+  } catch {}
 
   return false
 }

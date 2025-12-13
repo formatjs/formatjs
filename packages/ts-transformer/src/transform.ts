@@ -44,7 +44,7 @@ function isValidIdentifier(k: string): boolean {
   try {
     new Function(`return {${k}:1}`)
     return true
-  } catch (e) {
+  } catch {
     return false
   }
 }

@@ -6,7 +6,7 @@ function isSupported(timeZone: Timezone, locale: string = 'en'): boolean {
   try {
     const formatter = createMemoizedDateTimeFormat(locale, {timeZone})
     return formatter.resolvedOptions().timeZone === timeZone
-  } catch (_err) {}
+  } catch {}
 
   return false
 }

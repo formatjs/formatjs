@@ -39,7 +39,7 @@ function main(args: Args) {
     .filter(locale => {
       try {
         ;(Intl as any).getCanonicalLocales(locale)
-      } catch (e) {
+      } catch {
         console.warn(`Invalid locale ${locale}`)
         return false
       }

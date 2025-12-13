@@ -21,7 +21,7 @@ export async function getAllLocales(): Promise<string[]> {
   return fns.map(dirname).filter(l => {
     try {
       return (Intl as any).getCanonicalLocales(l).length
-    } catch (e) {
+    } catch {
       console.warn(`Invalid locale ${l}`)
       return false
     }
