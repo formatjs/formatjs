@@ -1,15 +1,15 @@
 import {MessageFormatElement, parse} from '@formatjs/icu-messageformat-parser'
 import {outputFile, readJSON} from 'fs-extra'
 import * as stringifyNs from 'json-stable-stringify'
-import {debug, warn, writeStdout} from './console_utils'
-import {Formatter, resolveBuiltinFormatter} from './formatters'
+import {debug, warn, writeStdout} from './console_utils.js'
+import {Formatter, resolveBuiltinFormatter} from './formatters/index.js'
 import {
   generateENXA,
   generateENXB,
   generateXXAC,
   generateXXHA,
   generateXXLS,
-} from './pseudo_locale'
+} from './pseudo_locale.js'
 
 const stringify = (stringifyNs as any).default || stringifyNs
 

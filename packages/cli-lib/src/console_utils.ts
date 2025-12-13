@@ -1,9 +1,11 @@
-import {green, red, supportsColor, yellow} from 'chalk'
+import * as chalkNs from 'chalk'
 import {
   clearLine as nativeClearLine,
   cursorTo as nativeCursorTo,
 } from 'readline'
 import {format, promisify} from 'util'
+
+const chalk = (chalkNs as any).default ?? chalkNs
 
 const CLEAR_WHOLE_LINE = 0
 
@@ -17,7 +19,7 @@ export const writeStdout: (arg1: string | Uint8Array) => Promise<void> =
 export async function clearLine(
   terminal: (typeof process)['stderr']
 ): Promise<void> {
-  if (!supportsColor) {
+  if (!chalk.supportsColor) {
     if (terminal.isTTY) {
       // terminal
       if (terminal.columns > 0) {
@@ -33,9 +35,9 @@ export async function clearLine(
 }
 
 const LEVEL_COLORS = {
-  debug: green,
-  warn: yellow,
-  error: red,
+  debug: chalk.green,
+  warn: chalk.yellow,
+  error: chalk.red,
 }
 
 function label(level: keyof typeof LEVEL_COLORS, message: string) {

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-'use strict'
+import cli from './src/cli.js'
 
-require('./src/cli').default(process.argv)
+cli(process.argv)
