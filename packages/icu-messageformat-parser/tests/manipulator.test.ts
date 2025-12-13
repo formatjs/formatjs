@@ -56,32 +56,7 @@ test('should hoist plural & select and tag', function () {
                 other{many cats}}`)
       )
     )
-  )
-    .toBe(`{count,plural,one{{gender,select,male{{count,plural,one{{gender,select,male{I have a male <b>dog</b>
-             and a male <strong>cat</strong>
-                } female{I have a male <b>dog</b>
-             and a female <strong>cat</strong>
-                } other{I have a male <b>dog</b>
-             and a male <strong>cat</strong>
-                }}} other{I have a male <b>dog</b>
-             and many cats}}} female{{count,plural,one{{gender,select,male{I have a female <b>dog</b>
-             and a male <strong>cat</strong>
-                } female{I have a female <b>dog</b>
-             and a female <strong>cat</strong>
-                } other{I have a female <b>dog</b>
-             and a male <strong>cat</strong>
-                }}} other{I have a female <b>dog</b>
-             and many cats}}} other{{count,plural,one{{gender,select,male{I have a male <b>dog</b>
-             and a male <strong>cat</strong>
-                } female{I have a male <b>dog</b>
-             and a female <strong>cat</strong>
-                } other{I have a male <b>dog</b>
-             and a male <strong>cat</strong>
-                }}} other{I have a male <b>dog</b>
-             and many cats}}}}} other{{count,plural,one{{gender,select,male{I have many dogs and a male <strong>cat</strong>
-                } female{I have many dogs and a female <strong>cat</strong>
-                } other{I have many dogs and a male <strong>cat</strong>
-                }}} other{I have many dogs and many cats}}}}`)
+  ).toMatchSnapshot()
 })
 
 test('should hoist 1 plural with number', function () {

@@ -1,5 +1,6 @@
 "Utility macro the vanilla aspect.dev rules_jest to supply common dependencies."
 
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file", "write_source_files")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
 load("//tools:tsconfig.bzl", "TEST_TSCONFIG")
@@ -69,4 +70,46 @@ def vitest(
             "run",
         ] + (["--dom"] if dom else []) + (["--testTimeout ", test_timeout] if test_timeout else []),
         **kwargs
+    )
+
+    test_files = [src for src in srcs if "tests/" in src]
+
+    test_file_dirs = {}
+    for test_file in test_files:
+        test_file_dir = "/".join(test_file.split("/")[:-1])
+        if test_file_dir not in test_file_dirs:
+            test_file_dirs[test_file_dir] = []
+        test_file_dirs[test_file_dir].append(test_file)
+
+    snapshot_targets = []
+    for test_file_dir, test_files_in_dir in test_file_dirs.items():
+        snapshot_dir = test_file_dir + "/__snapshots__" if test_file_dir else "__snapshots__"
+        vitest_bin.vitest(
+            name = snapshot_dir,
+            srcs = srcs +
+                   deps,
+            out_dirs = [snapshot_dir],
+            args = [
+                "run",
+                "--no-file-parallelism",
+                "--update",
+            ],
+            tags = ["manual"],
+        )
+
+        write_source_file(
+            name = snapshot_dir + ".update",
+            in_file = snapshot_dir,
+            out_file = snapshot_dir,
+            check_that_out_file_exists = False,
+            diff_test = False,
+            tags = ["manual"],
+        )
+
+        snapshot_targets.append(snapshot_dir + ".update")
+
+    write_source_files(
+        name = "%s.update" % name,
+        additional_update_targets = snapshot_targets,
+        tags = ["snapshot", "manual"],
     )
