@@ -4,7 +4,14 @@
   "version": "7.7.13",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "type": "module",
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./polyfill.js": "./polyfill.js",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
@@ -25,6 +32,5 @@
     "list",
     "listformat"
   ],
-  "main": "index.js",
   "repository": "git@github.com:formatjs/formatjs.git"
 }
