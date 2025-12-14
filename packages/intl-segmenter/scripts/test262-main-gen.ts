@@ -14,11 +14,9 @@ function main(args: Args) {
     out,
     `// @generated
 // @ts-nocheck
-import './polyfill-force';
+import './polyfill-force.js';
 `
   )
 }
 
-if (require.main === module) {
-  main(minimist<Args>(process.argv))
-}
+main(minimist<Args>(process.argv))

@@ -1,3 +1,3 @@
 // @generated
 // @ts-nocheck
-import './polyfill-force';
+import './polyfill-force.js';
