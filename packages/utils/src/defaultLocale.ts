@@ -1,4 +1,4 @@
-import {canonicalizeCountryCode} from './countryCodes'
+import {canonicalizeCountryCode} from './countryCodes.js'
 import * as data from './defaultLocaleData.generated.json'
 
 /**

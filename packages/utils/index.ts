@@ -1,8 +1,8 @@
-export {canonicalizeCountryCode} from './src/countryCodes'
+export {canonicalizeCountryCode} from './src/countryCodes.js'
 export {
   countriesUsingDefaultCurrency,
   defaultCurrency,
-} from './src/defaultCurrency'
-export {defaultLocale} from './src/defaultLocale'
-export {defaultTimezone} from './src/defaultTimezone'
-export {currencyMinorScale} from './src/iso4217'
+} from './src/defaultCurrency.js'
+export {defaultLocale} from './src/defaultLocale.js'
+export {defaultTimezone} from './src/defaultTimezone.js'
+export {currencyMinorScale} from './src/iso4217.js'
