@@ -107,12 +107,11 @@ def ts_script(name, entry_point, args = [], chdir = None, srcs = [], outs = [], 
         chdir = chdir,
         entry_point = entry_point,
         data = [
-            "//:node_modules/@swc-node/register",
-            "//:node_modules/@swc/helpers",
+            "//:node_modules/tsx",
         ],
         node_options = [
-            "-r",
-            "@swc-node/register",
+            "--import",
+            "tsx",
         ],
     )
     js_run_binary(

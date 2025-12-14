@@ -1,6 +1,6 @@
 import {readJSONSync} from 'fs-extra'
 import minimist from 'minimist'
-import {isEqual} from 'lodash'
+import {isEqual} from 'lodash-es'
 import stringify from 'json-stable-stringify'
 const unidiff = require('unidiff')
 
