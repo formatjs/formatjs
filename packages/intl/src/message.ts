@@ -1,4 +1,9 @@
-import {CustomFormats, Formatters, MessageDescriptor, OnErrorFn} from './types'
+import {
+  CustomFormats,
+  Formatters,
+  MessageDescriptor,
+  OnErrorFn,
+} from './types.js'
 
 import {MessageFormatElement, TYPE} from '@formatjs/icu-messageformat-parser'
 import {
@@ -8,8 +13,8 @@ import {
   Options,
   PrimitiveType,
 } from 'intl-messageformat'
-import {MessageFormatError, MissingTranslationError} from './error'
-import {invariant} from './utils'
+import {MessageFormatError, MissingTranslationError} from './error.js'
+import {invariant} from './utils.js'
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,

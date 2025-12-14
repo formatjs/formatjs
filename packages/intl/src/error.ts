@@ -1,4 +1,4 @@
-import {MessageDescriptor} from './types'
+import {MessageDescriptor} from './types.js'
 
 export enum IntlErrorCode {
   FORMAT_ERROR = 'FORMAT_ERROR',

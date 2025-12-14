@@ -5,16 +5,16 @@ import {
   formatDateToParts,
   formatTime,
   formatTimeToParts,
-} from './dateTime'
-import {formatDisplayName} from './displayName'
-import {InvalidConfigError, MissingDataError} from './error'
-import {formatList, formatListToParts} from './list'
-import {formatMessage} from './message'
-import {formatNumber, formatNumberToParts} from './number'
-import {formatPlural} from './plural'
-import {formatRelativeTime} from './relativeTime'
-import {IntlCache, IntlConfig, IntlShape, ResolvedIntlConfig} from './types'
-import {createFormatters, DEFAULT_INTL_CONFIG} from './utils'
+} from './dateTime.js'
+import {formatDisplayName} from './displayName.js'
+import {InvalidConfigError, MissingDataError} from './error.js'
+import {formatList, formatListToParts} from './list.js'
+import {formatMessage} from './message.js'
+import {formatNumber, formatNumberToParts} from './number.js'
+import {formatPlural} from './plural.js'
+import {formatRelativeTime} from './relativeTime.js'
+import {IntlCache, IntlConfig, IntlShape, ResolvedIntlConfig} from './types.js'
+import {createFormatters, DEFAULT_INTL_CONFIG} from './utils.js'
 
 export interface CreateIntlFn<
   T = string,
