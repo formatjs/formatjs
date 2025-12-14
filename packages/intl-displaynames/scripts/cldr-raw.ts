@@ -1,4 +1,4 @@
-import {extractDisplayNames, getAllLocales} from './extract-displaynames'
+import {extractDisplayNames, getAllLocales} from './extract-displaynames.js'
 import {join} from 'path'
 import {outputFileSync} from 'fs-extra'
 import stringify from 'json-stable-stringify'

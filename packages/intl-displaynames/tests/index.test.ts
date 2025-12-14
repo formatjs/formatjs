@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill'
-import {DisplayNames} from '..'
+import {DisplayNames} from '../index.js'
 import {describe, expect, it} from 'vitest'
 
 import * as en from './locale-data/en.json'
