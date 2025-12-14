@@ -1,8 +1,8 @@
-import {IntlFormatters, Formatters, CustomFormats, OnErrorFn} from './types'
+import {IntlFormatters, Formatters, CustomFormats, OnErrorFn} from './types.js'
 
-import {getNamedFormat, filterProps} from './utils'
+import {getNamedFormat, filterProps} from './utils.js'
 import {FormatError, ErrorCode} from 'intl-messageformat'
-import {IntlFormatError} from './error'
+import {IntlFormatError} from './error.js'
 
 const RELATIVE_TIME_FORMAT_OPTIONS: Array<
   keyof Intl.RelativeTimeFormatOptions

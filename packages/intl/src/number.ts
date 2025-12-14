@@ -1,7 +1,7 @@
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
-import {IntlFormatError} from './error'
-import {CustomFormats, Formatters, IntlFormatters, OnErrorFn} from './types'
-import {filterProps, getNamedFormat} from './utils'
+import {IntlFormatError} from './error.js'
+import {CustomFormats, Formatters, IntlFormatters, OnErrorFn} from './types.js'
+import {filterProps, getNamedFormat} from './utils.js'
 
 const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
   'style',

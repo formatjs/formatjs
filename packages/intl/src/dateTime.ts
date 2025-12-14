@@ -1,7 +1,7 @@
-import {CustomFormats, Formatters, IntlFormatters, OnErrorFn} from './types'
+import {CustomFormats, Formatters, IntlFormatters, OnErrorFn} from './types.js'
 
-import {IntlFormatError} from './error'
-import {filterProps, getNamedFormat} from './utils'
+import {IntlFormatError} from './error.js'
+import {filterProps, getNamedFormat} from './utils.js'
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'formatMatcher',
