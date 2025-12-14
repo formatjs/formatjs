@@ -15,7 +15,7 @@ import {
   PrimitiveType,
 } from 'intl-messageformat'
 import * as React from 'react'
-import {DEFAULT_INTL_CONFIG} from './utils'
+import {DEFAULT_INTL_CONFIG} from './utils.js'
 export type IntlConfig = Omit<
   ResolvedIntlConfig,
   keyof typeof DEFAULT_INTL_CONFIG
