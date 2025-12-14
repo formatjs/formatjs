@@ -16,13 +16,11 @@ function main(args: Args) {
     `/* @generated */
 // prettier-ignore
 // @ts-nocheck
-import './polyfill-force'
+import './polyfill-force.js'
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData(${allData.join(',\n')})
 }
 `
   )
 }
-if (require.main === module) {
-  main(minimist<Args>(process.argv))
-}
+main(minimist<Args>(process.argv))
