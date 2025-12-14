@@ -1,4 +1,4 @@
-import {generateNumFmtPattern} from '../index'
+import {generateNumFmtPattern} from '../index.js'
 import {expect, test} from 'vitest'
 test.each`
   locale       | result
