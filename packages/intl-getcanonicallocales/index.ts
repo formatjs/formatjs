@@ -1,6 +1,6 @@
-import {CanonicalizeUnicodeLocaleId} from './src/canonicalizer'
-import {emitUnicodeLocaleId} from './src/emitter'
-import {parseUnicodeLocaleId} from './src/parser'
+import {CanonicalizeUnicodeLocaleId} from './src/canonicalizer.js'
+import {emitUnicodeLocaleId} from './src/emitter.js'
+import {parseUnicodeLocaleId} from './src/parser.js'
 
 /**
  * https://tc39.es/ecma402/#sec-canonicalizelocalelist
@@ -29,7 +29,7 @@ export function getCanonicalLocales(locales?: string[] | string): string[] {
   return CanonicalizeLocaleList(locales)
 }
 
-export * from './src/emitter'
+export * from './src/emitter.js'
 export {
   isStructurallyValidLanguageTag,
   isUnicodeLanguageSubtag,
@@ -37,7 +37,7 @@ export {
   isUnicodeScriptSubtag,
   parseUnicodeLanguageId,
   parseUnicodeLocaleId,
-} from './src/parser'
-export * from './src/types'
+} from './src/parser.js'
+export * from './src/types.js'
 
-export * from './src/likelySubtags.generated'
+export * from './src/likelySubtags.generated.js'

@@ -1,4 +1,4 @@
-import '@formatjs/intl-getcanonicallocales/polyfill'
+import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {PluralRules} from '../'
 import {describe, expect, it} from 'vitest'

@@ -3,16 +3,16 @@ import {
   scriptAlias,
   territoryAlias,
   variantAlias,
-} from './aliases.generated'
-import {emitUnicodeLanguageId} from './emitter'
-import {likelySubtags} from './likelySubtags.generated'
+} from './aliases.generated.js'
+import {emitUnicodeLanguageId} from './emitter.js'
+import {likelySubtags} from './likelySubtags.generated.js'
 import {
   isUnicodeLanguageSubtag,
   isUnicodeVariantSubtag,
   parseUnicodeLanguageId,
   SEPARATOR,
-} from './parser'
-import {Extension, KV, UnicodeLanguageId, UnicodeLocaleId} from './types'
+} from './parser.js'
+import {Extension, KV, UnicodeLanguageId, UnicodeLocaleId} from './types.js'
 
 function canonicalizeAttrs(strs: string[]): string[] {
   return Object.keys(

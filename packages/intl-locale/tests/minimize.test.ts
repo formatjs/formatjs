@@ -1,4 +1,4 @@
-import '@formatjs/intl-getcanonicallocales/polyfill'
+import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import {Locale} from '../'
 import {describe, expect, it} from 'vitest'
 const testDataMinimal: Record<string, string> = {

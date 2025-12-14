@@ -1,4 +1,4 @@
-import {parseUnicodeLocaleId} from '../src/parser'
+import {parseUnicodeLocaleId} from '../src/parser.js'
 import {describe, expect, it} from 'vitest'
 describe('parser', () => {
   const invalidLanguageTags = [

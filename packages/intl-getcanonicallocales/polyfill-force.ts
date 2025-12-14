@@ -1,4 +1,4 @@
-import {getCanonicalLocales} from './'
+import {getCanonicalLocales} from './index.js'
 if (typeof Intl === 'undefined') {
   if (typeof window !== 'undefined') {
     Object.defineProperty(window, 'Intl', {
