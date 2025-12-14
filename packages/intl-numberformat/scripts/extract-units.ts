@@ -14,7 +14,7 @@ import {
 } from '@formatjs/ecma402-abstract'
 import * as UnitsData from 'cldr-units-full/main/en/units.json'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils'
+import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.js'
 
 export type Units = (typeof UnitsData)['main']['en']['units']
 

@@ -1,6 +1,6 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra'
-import {extractNumberingSystemNames} from './extract-numbers'
+import {extractNumberingSystemNames} from './extract-numbers.js'
 function main(args: minimist.ParsedArgs) {
   const {out} = args
 
