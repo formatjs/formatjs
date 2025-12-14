@@ -5,8 +5,8 @@
  * example: `npx ts-node debug word 1700-1701`
  */
 
-import {Segmenter} from './src/segmenter'
-import {segmentationTests} from './tests/test-utils'
+import {Segmenter} from './src/segmenter.js'
+import {segmentationTests} from './tests/test-utils.js'
 
 //parse argvs
 const lastArg = process.argv[process.argv.length - 1]

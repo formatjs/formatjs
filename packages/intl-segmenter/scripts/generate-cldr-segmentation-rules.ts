@@ -539,6 +539,4 @@ async function main({out, unicodeFiles}: Args) {
   )
 }
 
-if (require.main === module) {
-  main(minimist<Args>(process.argv))
-}
+main(minimist<Args>(process.argv))
