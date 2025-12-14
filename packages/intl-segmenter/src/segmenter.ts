@@ -8,8 +8,8 @@ import {
   setInternalSlot,
 } from '@formatjs/ecma402-abstract'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
-import {SegmentationRules} from './cldr-segmentation-rules.generated'
-import {isSurrogate, replaceVariables} from './segmentation-utils'
+import {SegmentationRules} from './cldr-segmentation-rules.generated.js'
+import {isSurrogate, replaceVariables} from './segmentation-utils.js'
 
 type SegmentationRule = {
   breaks: boolean
