@@ -21,18 +21,18 @@ import {
   parseUnicodeLanguageId,
   parseUnicodeLocaleId,
 } from '@formatjs/intl-getcanonicallocales'
-import {characterOrders} from './character-orders.generated'
-import getInternalSlots from './get_internal_slots'
-import {numberingSystems} from './numbering-systems.generated'
+import {characterOrders} from './character-orders.generated.js'
+import getInternalSlots from './get_internal_slots.js'
+import {numberingSystems} from './numbering-systems.generated.js'
 import {
   getCalendarPreferenceDataForRegion,
   getHourCyclesPreferenceDataForLocaleOrRegion,
   getTimeZonePreferenceForRegion,
   getWeekDataForRegion,
-} from './preference-data'
+} from './preference-data.js'
 
-import type {CharacterOrder} from './character-orders.generated'
-import type {WeekInfoInternal} from './preference-data'
+import type {CharacterOrder} from './character-orders.generated.js'
+import type {WeekInfoInternal} from './preference-data.js'
 
 export interface IntlLocaleOptions {
   language?: string

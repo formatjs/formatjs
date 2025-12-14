@@ -2,9 +2,9 @@ import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra'
 import stringify from 'json-stable-stringify'
 
-import {getAllLocales} from './utils'
+import {getAllLocales} from './utils.js'
 
-import type {Args} from './common-types'
+import type {Args} from './common-types.js'
 
 type CldrNumbersNumbers = {
   defaultNumberingSystem: string
