@@ -1,5 +1,5 @@
-import {Segmenter} from './src/segmenter'
-import {shouldPolyfill} from './should-polyfill'
+import {Segmenter} from './src/segmenter.js'
+import {shouldPolyfill} from './should-polyfill.js'
 
 if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'Segmenter', {

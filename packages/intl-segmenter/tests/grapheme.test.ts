@@ -1,5 +1,5 @@
-import {Segmenter} from '../src/segmenter'
-import {segmentationTests} from './test-utils'
+import {Segmenter} from '../src/segmenter.js'
+import {segmentationTests} from './test-utils.js'
 import {describe, expect, it} from 'vitest'
 const ucdTests = segmentationTests.grapheme
 describe('Granularity grapheme', () => {
