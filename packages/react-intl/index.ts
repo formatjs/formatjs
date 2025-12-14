@@ -14,21 +14,21 @@ import * as React from 'react'
 import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,
-} from './src/components/createFormattedComponent'
-import {createIntl} from './src/components/createIntl'
-import FormattedDateTimeRange from './src/components/dateTimeRange'
+} from './src/components/createFormattedComponent.js'
+import {createIntl} from './src/components/createIntl.js'
+import FormattedDateTimeRange from './src/components/dateTimeRange.js'
 import injectIntl, {
   Context as IntlContext,
   Provider as RawIntlProvider,
   WithIntlProps,
   WrappedComponentProps,
-} from './src/components/injectIntl'
-import FormattedMessage from './src/components/message'
-import FormattedPlural from './src/components/plural'
-import IntlProvider from './src/components/provider'
-import FormattedRelativeTime from './src/components/relative'
-import useIntl from './src/components/useIntl'
-import {IntlShape} from './src/types'
+} from './src/components/injectIntl.js'
+import FormattedMessage from './src/components/message.js'
+import FormattedPlural from './src/components/plural.js'
+import IntlProvider from './src/components/provider.js'
+import FormattedRelativeTime from './src/components/relative.js'
+import useIntl from './src/components/useIntl.js'
+import {IntlShape} from './src/types.js'
 export {
   createIntlCache,
   CustomFormatConfig,
@@ -51,7 +51,7 @@ export {
   IntlErrorCode as ReactIntlErrorCode,
   UnsupportedFormatterError,
 } from '@formatjs/intl'
-export {IntlConfig, IntlShape, ResolvedIntlConfig} from './src/types'
+export {IntlConfig, IntlShape, ResolvedIntlConfig} from './src/types.js'
 export {
   createIntl,
   FormattedDateTimeRange,
@@ -128,4 +128,4 @@ export type {PrimitiveType} from 'intl-messageformat'
 export {
   FormattedListParts,
   FormattedNumberParts,
-} from './src/components/createFormattedComponent'
+} from './src/components/createFormattedComponent.js'
