@@ -4,7 +4,14 @@
   "version": "4.2.13",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "type": "module",
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./polyfill.js": "./polyfill.js",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-enumerator": "workspace:*",
@@ -22,6 +29,5 @@
     "react-intl",
     "tc39"
   ],
-  "main": "index.js",
   "repository": "formatjs/formatjs.git"
 }

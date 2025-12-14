@@ -1,12 +1,12 @@
-import {timezones} from './timezones.generated'
-import {hourCycles} from './hour-cycles.generated'
-import {calendars} from './calendars.generated'
-import {weekData} from './week-data.generated'
+import {timezones} from './timezones.generated.js'
+import {hourCycles} from './hour-cycles.generated.js'
+import {calendars} from './calendars.generated.js'
+import {weekData} from './week-data.generated.js'
 
-import type {TimezonesTerritory} from './timezones.generated'
-import type {HourCyclesKey} from './hour-cycles.generated'
-import type {CalendarsKey} from './calendars.generated'
-import type {WeekDataKey, WeekInfoInternal} from './week-data.generated'
+import type {TimezonesTerritory} from './timezones.generated.js'
+import type {HourCyclesKey} from './hour-cycles.generated.js'
+import type {CalendarsKey} from './calendars.generated.js'
+import type {WeekDataKey, WeekInfoInternal} from './week-data.generated.js'
 
 export {WeekInfoInternal}
 

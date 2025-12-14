@@ -1,9 +1,9 @@
 import {outputFileSync} from 'fs-extra'
 import stringify from 'json-stable-stringify'
 import minimist from 'minimist'
-import {getAllLocales} from './utils'
+import {getAllLocales} from './utils.js'
 
-import type {Args} from './common-types'
+import type {Args} from './common-types.js'
 
 type CharacterOrder = 'left-to-right' | 'right-to-left'
 
