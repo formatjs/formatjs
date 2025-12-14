@@ -4,6 +4,11 @@
   "version": "0.3.16",
   "license": "ISC",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,7 +23,5 @@
     "intl",
     "numFmt"
   ],
-  "main": "index.js",
-  "module": "lib/index.js",
   "repository": "formatjs/formatjs.git"
 }
