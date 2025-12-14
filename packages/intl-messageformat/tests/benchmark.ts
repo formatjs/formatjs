@@ -1,5 +1,5 @@
 import {Suite, Event} from 'benchmark'
-import IntlMessageFormat, {Formatters} from '..'
+import IntlMessageFormat, {Formatters} from '../index.js'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/en'
 import {memoize} from '@formatjs/fast-memoize'

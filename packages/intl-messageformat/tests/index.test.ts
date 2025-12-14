@@ -3,9 +3,9 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import {IntlMessageFormat} from '../src/core'
-import {MissingValueError} from '../src/error'
-import {PART_TYPE} from '../src/formatters'
+import {IntlMessageFormat} from '../src/core.js'
+import {MissingValueError} from '../src/error.js'
+import {PART_TYPE} from '../src/formatters.js'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {describe, expect, it} from 'vitest'
 describe('IntlMessageFormat', function () {

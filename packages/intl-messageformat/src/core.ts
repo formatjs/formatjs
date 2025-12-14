@@ -19,7 +19,7 @@ import {
   MessageFormatPart,
   PART_TYPE,
   PrimitiveType,
-} from './formatters'
+} from './formatters.js'
 
 // -- MessageFormat --------------------------------------------------------
 
