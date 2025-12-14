@@ -4,8 +4,12 @@
   "version": "7.1.14",
   "license": "BSD-3-Clause",
   "author": "Eric Ferraiuolo <edf@ericf.me>",
+  "type": "module",
   "sideEffects": false,
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/icu-messageformat-parser": "workspace:*",
@@ -138,8 +142,6 @@
     "translate",
     "translation"
   ],
-  "main": "index.js",
-  "module": "lib/index.js",
   "peerDependenciesMeta": {
     "typescript": {
       "optional": true

@@ -1,6 +1,6 @@
 import {FormatDateTimeRangeOptions} from '@formatjs/intl'
 import * as React from 'react'
-import useIntl from './useIntl'
+import useIntl from './useIntl.js'
 
 interface Props extends FormatDateTimeRangeOptions {
   from: Parameters<Intl.DateTimeFormat['formatRange']>[0]
