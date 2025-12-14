@@ -4,8 +4,12 @@
   "version": "10.7.18",
   "license": "BSD-3-Clause",
   "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
+  "type": "module",
   "sideEffects": false,
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/fast-memoize": "workspace:*",
@@ -32,7 +36,5 @@
     "parser",
     "plural"
   ],
-  "main": "index.js",
-  "module": "lib/index.js",
   "repository": "git@github.com:formatjs/formatjs.git"
 }
