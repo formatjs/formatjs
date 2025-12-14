@@ -16,8 +16,8 @@ import '@formatjs/intl-locale/polyfill'
 import '@formatjs/intl-pluralrules/locale-data/en' // locale-data for en
 import '@formatjs/intl-pluralrules/polyfill'
 
-import '@formatjs/intl-numberformat/locale-data/en' // locale-data for en
-import '@formatjs/intl-numberformat/polyfill'
+import '@formatjs/intl-numberformat/locale-data/en.js' // locale-data for en
+import '@formatjs/intl-numberformat/polyfill.js'
 
 import '@formatjs/intl-datetimeformat/add-all-tz.js' // Add ALL tz data
 import '@formatjs/intl-datetimeformat/locale-data/en.js' // locale-data for en

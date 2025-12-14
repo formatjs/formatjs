@@ -3,7 +3,15 @@
   "description": "Ponyfill for ES2020 Intl.NumberFormat",
   "version": "8.15.6",
   "license": "MIT",
+  "type": "module",
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./polyfill.js": "./polyfill.js",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./should-polyfill.js": "./should-polyfill.js",
+    "./locale-data/*": "./locale-data/*"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
@@ -29,6 +37,5 @@
     "numberformat",
     "polyfill"
   ],
-  "main": "index.js",
   "repository": "formatjs/formatjs.git"
 }

@@ -14,7 +14,7 @@ import {
   invariant,
 } from '@formatjs/ecma402-abstract'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils'
+import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.js'
 
 export type Numbers = (typeof NumbersData)['main']['ar']['numbers']
 
