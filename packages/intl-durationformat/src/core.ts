@@ -8,12 +8,12 @@ import {
   invariant,
 } from '@formatjs/ecma402-abstract'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
-import {GetDurationUnitOptions} from './abstract/GetDurationUnitOptions'
-import {PartitionDurationFormatPattern} from './abstract/PartitionDurationFormatPattern'
-import {ToDurationRecord} from './abstract/ToDurationRecord'
-import {getInternalSlots} from './get_internal_slots'
-import {numberingSystemNames} from './numbering-systems.generated'
-import {TIME_SEPARATORS} from './time-separators.generated'
+import {GetDurationUnitOptions} from './abstract/GetDurationUnitOptions.js'
+import {PartitionDurationFormatPattern} from './abstract/PartitionDurationFormatPattern.js'
+import {ToDurationRecord} from './abstract/ToDurationRecord.js'
+import {getInternalSlots} from './get_internal_slots.js'
+import {numberingSystemNames} from './numbering-systems.generated.js'
+import {TIME_SEPARATORS} from './time-separators.generated.js'
 import type {
   DurationFormatLocaleInternalData,
   DurationFormatPart,
@@ -21,8 +21,8 @@ import type {
   DurationInput,
   IntlDurationFormatInternal,
   ResolvedDurationFormatOptions,
-} from './types'
-import {DurationFormatOptions} from './types'
+} from './types.js'
+import {DurationFormatOptions} from './types.js'
 
 const RESOLVED_OPTIONS_KEYS: Array<
   keyof Omit<IntlDurationFormatInternal, 'pattern' | 'boundFormat'>
