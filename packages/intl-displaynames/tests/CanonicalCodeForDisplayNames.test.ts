@@ -1,4 +1,4 @@
-import {CanonicalCodeForDisplayNames} from '../abstract/CanonicalCodeForDisplayNames'
+import {CanonicalCodeForDisplayNames} from '../abstract/CanonicalCodeForDisplayNames.js'
 import {describe, expect, it} from 'vitest'
 
 describe('CanonicalCodeForDisplayNames', () => {
