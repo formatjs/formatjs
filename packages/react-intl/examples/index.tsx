@@ -1,4 +1,4 @@
-import '@formatjs/intl-pluralrules/polyfill'
+import '@formatjs/intl-pluralrules/polyfill.js'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {bootstrapApplication} from './advanced/Advanced'
@@ -13,8 +13,8 @@ import Timezone from './TimeZone'
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill.js'
 
-import '@formatjs/intl-pluralrules/locale-data/en' // locale-data for en
-import '@formatjs/intl-pluralrules/polyfill'
+import '@formatjs/intl-pluralrules/locale-data/en.js' // locale-data for en
+import '@formatjs/intl-pluralrules/polyfill.js'
 
 import '@formatjs/intl-numberformat/locale-data/en.js' // locale-data for en
 import '@formatjs/intl-numberformat/polyfill.js'
