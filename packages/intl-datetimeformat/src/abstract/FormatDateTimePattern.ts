@@ -8,8 +8,8 @@ import {
 } from '@formatjs/ecma402-abstract'
 
 import Decimal from 'decimal.js'
-import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime'
-import {DATE_TIME_PROPS} from './utils'
+import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime.js'
+import {DATE_TIME_PROPS} from './utils.js'
 
 function pad(n: number): string {
   if (n < 10) {

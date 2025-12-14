@@ -1,6 +1,6 @@
 import {DateTimeFormat} from '@formatjs/ecma402-abstract'
 import Decimal from 'decimal.js'
-import {PartitionDateTimePattern} from './PartitionDateTimePattern'
+import {PartitionDateTimePattern} from './PartitionDateTimePattern.js'
 
 /**
  * https://tc39.es/ecma402/#sec-formatdatetime

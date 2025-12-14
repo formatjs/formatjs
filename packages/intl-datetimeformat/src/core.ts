@@ -14,17 +14,17 @@ import {
   invariant,
 } from '@formatjs/ecma402-abstract'
 import Decimal from 'decimal.js'
-import {FormatDateTime} from './abstract/FormatDateTime'
-import {FormatDateTimeRange} from './abstract/FormatDateTimeRange'
-import {FormatDateTimeRangeToParts} from './abstract/FormatDateTimeRangeToParts'
-import {FormatDateTimeToParts} from './abstract/FormatDateTimeToParts'
-import {InitializeDateTimeFormat} from './abstract/InitializeDateTimeFormat'
-import {parseDateTimeSkeleton} from './abstract/skeleton'
-import {DATE_TIME_PROPS} from './abstract/utils'
-import links from './data/links'
-import getInternalSlots from './get_internal_slots'
-import {unpack} from './packer'
-import {PackedData, RawDateTimeLocaleData} from './types'
+import {FormatDateTime} from './abstract/FormatDateTime.js'
+import {FormatDateTimeRange} from './abstract/FormatDateTimeRange.js'
+import {FormatDateTimeRangeToParts} from './abstract/FormatDateTimeRangeToParts.js'
+import {FormatDateTimeToParts} from './abstract/FormatDateTimeToParts.js'
+import {InitializeDateTimeFormat} from './abstract/InitializeDateTimeFormat.js'
+import {parseDateTimeSkeleton} from './abstract/skeleton.js'
+import {DATE_TIME_PROPS} from './abstract/utils.js'
+import links from './data/links.js'
+import getInternalSlots from './get_internal_slots.js'
+import {unpack} from './packer.js'
+import {PackedData, RawDateTimeLocaleData} from './types.js'
 
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {

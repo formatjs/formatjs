@@ -8,7 +8,7 @@ import {
   shortLessPenalty,
   longLessPenalty,
   offsetPenalty,
-} from './utils'
+} from './utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-basicformatmatcher

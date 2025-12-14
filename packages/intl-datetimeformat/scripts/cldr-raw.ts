@@ -1,4 +1,4 @@
-import {extractDatesFields, getAllLocales} from './extract-dates'
+import {extractDatesFields, getAllLocales} from './extract-dates.js'
 import {join} from 'path'
 import {outputJSONSync} from 'fs-extra'
 
