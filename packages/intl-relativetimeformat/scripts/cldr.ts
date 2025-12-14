@@ -24,6 +24,4 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
     outputFileSync(join(outDir, locale + '.d.ts'), 'export {}')
   })
 }
-if (require.main === module) {
-  main(minimist<Args>(process.argv))
-}
+main(minimist<Args>(process.argv))

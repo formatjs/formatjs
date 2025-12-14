@@ -5,9 +5,9 @@ import {
   SupportedLocales,
   ToString,
 } from '@formatjs/ecma402-abstract'
-import {InitializeRelativeTimeFormat} from './abstract/InitializeRelativeTimeFormat'
-import {PartitionRelativeTimePattern} from './abstract/PartitionRelativeTimePattern'
-import getInternalSlots from './get_internal_slots'
+import {InitializeRelativeTimeFormat} from './abstract/InitializeRelativeTimeFormat.js'
+import {PartitionRelativeTimePattern} from './abstract/PartitionRelativeTimePattern.js'
+import getInternalSlots from './get_internal_slots.js'
 
 export default class RelativeTimeFormat {
   constructor(
