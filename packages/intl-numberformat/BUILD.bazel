@@ -172,6 +172,7 @@ LOCALE_TEST_TYPES = [
 
 vitest(
     name = "all_tests",
+    size = "large",
     srcs = [":srcs"] +
            ["tests/%sTest.ts" % type for type in LOCALE_TEST_TYPES] +
            [":%s_%s_test_gen" % (type, locale) for type in LOCALE_TEST_TYPES for locale in UNIT_TEST_LOCALES] +
