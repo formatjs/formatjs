@@ -1,5 +1,5 @@
-import {DurationFormat} from './'
-import {shouldPolyfill} from './should-polyfill'
+import {DurationFormat} from './index.js'
+import {shouldPolyfill} from './should-polyfill.js'
 if (typeof Intl === 'undefined') {
   if (typeof window !== 'undefined') {
     Object.defineProperty(window, 'Intl', {
