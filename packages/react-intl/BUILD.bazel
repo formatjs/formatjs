@@ -51,7 +51,6 @@ TEST_DEPS = SRC_DEPS + [
     "//:node_modules/@testing-library/react",
     "//:node_modules/@types/aria-query",
     "//:node_modules/@types/node",
-    "//:node_modules/jest-environment-jsdom",
     "//:node_modules/react-dom",
     "//:node_modules/typescript",
 ]
