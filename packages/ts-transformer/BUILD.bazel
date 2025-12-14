@@ -45,10 +45,7 @@ ts_compile_node(
     name = "dist",
     srcs = [":srcs"],
     skip_cjs = True,
-    deps = SRC_DEPS + [
-        "//:node_modules/@jest/types",
-        "//:node_modules/@types/jest",
-    ],
+    deps = SRC_DEPS,
 )
 
 vitest(
