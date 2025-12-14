@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import {extractCurrencyDigits} from './extract-currencies'
+import {extractCurrencyDigits} from './extract-currencies.js'
 import {outputFileSync} from 'fs-extra'
 import stringify from 'json-stable-stringify'
 function main(args: minimist.ParsedArgs) {
