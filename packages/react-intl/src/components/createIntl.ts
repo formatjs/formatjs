@@ -16,12 +16,12 @@ import {
   isFormatXMLElementFn,
 } from 'intl-messageformat'
 import * as React from 'react'
-import type {IntlConfig, IntlShape, ResolvedIntlConfig} from '../types'
+import type {IntlConfig, IntlShape, ResolvedIntlConfig} from '../types.js'
 import {
   DEFAULT_INTL_CONFIG,
   assignUniqueKeysToParts,
   toKeyedReactNodeArray,
-} from '../utils'
+} from '../utils.js'
 
 function assignUniqueKeysToFormatXMLElementFnArgument<
   T extends Record<
