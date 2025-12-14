@@ -4,7 +4,14 @@
   "version": "6.8.13",
   "license": "MIT",
   "author": "Linjie Ding <pyrocat101@users.noreply.github.com>",
+  "type": "module",
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./polyfill.js": "./polyfill.js",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
@@ -25,6 +32,5 @@
     "localization",
     "polyfill"
   ],
-  "main": "index.js",
   "repository": "formatjs/formatjs.git"
 }
