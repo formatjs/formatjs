@@ -1,5 +1,5 @@
-import type {Collation} from './collations.generated'
-import {collations} from './collations.generated'
+import type {Collation} from './collations.generated.js'
+import {collations} from './collations.generated.js'
 
 function isSupported(collation: Collation, locale: string = 'en'): boolean {
   try {

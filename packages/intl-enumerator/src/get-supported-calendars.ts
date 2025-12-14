@@ -1,6 +1,6 @@
 import {createMemoizedDateTimeFormat} from '@formatjs/ecma402-abstract'
-import type {Calendar} from './calendars.generated'
-import {calendars} from './calendars.generated'
+import type {Calendar} from './calendars.generated.js'
+import {calendars} from './calendars.generated.js'
 
 function isSupportedCalendar(item: Calendar, locale: string = 'en'): boolean {
   try {

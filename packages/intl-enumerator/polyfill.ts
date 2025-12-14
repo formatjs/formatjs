@@ -1,4 +1,4 @@
-import {shouldPolyfill} from './should-polyfill'
+import {shouldPolyfill} from './should-polyfill.js'
 import {supportedValuesOf} from './src'
 
 if (shouldPolyfill()) {
