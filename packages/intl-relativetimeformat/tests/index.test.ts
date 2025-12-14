@@ -1,6 +1,6 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
 import '@formatjs/intl-locale/polyfill.js'
-import '@formatjs/intl-pluralrules/polyfill'
+import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/zh'
 import '@formatjs/intl-pluralrules/locale-data/en'
 import * as zh from './locale-data/zh.json'

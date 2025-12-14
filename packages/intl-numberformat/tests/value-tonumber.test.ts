@@ -1,5 +1,5 @@
 import {describe, it, expect} from 'vitest'
-import '@formatjs/intl-pluralrules/polyfill'
+import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/en'
 import * as en from './locale-data/en.json'
 import {NumberFormat} from '../src/core'
