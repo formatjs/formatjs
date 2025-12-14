@@ -2,9 +2,9 @@ import {
   IntlFormatters as CoreIntlFormatters,
   MessageDescriptor,
 } from '@formatjs/intl'
-export * from './plugin'
-export * from './provider'
-export {intlKey} from './injection-key'
+export * from './plugin.js'
+export * from './provider.js'
+export {intlKey} from './injection-key.js'
 export {
   IntlShape,
   IntlConfig,
