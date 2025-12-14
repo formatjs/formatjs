@@ -1,6 +1,6 @@
-import {DurationInput, DurationRecord} from '../types'
-import {IsValidDurationRecord} from './IsValidDurationRecord'
-import {ToIntegerIfIntegral} from './ToIntegerIfIntegral'
+import {DurationInput, DurationRecord} from '../types.js'
+import {IsValidDurationRecord} from './IsValidDurationRecord.js'
+import {ToIntegerIfIntegral} from './ToIntegerIfIntegral.js'
 
 export function ToDurationRecord(input: DurationInput): DurationRecord {
   if (typeof input !== 'object') {
