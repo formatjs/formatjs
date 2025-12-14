@@ -65,6 +65,7 @@ def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_es
         visibility: visibility
     """
     deps = deps + ["//:node_modules/tslib"]
+    esm_out_dir = "lib" if not skip_cjs else None
     if not skip_cjs:
         ts_project(
             name = "%s-base" % name,
@@ -79,7 +80,7 @@ def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_es
             name = "%s-esm" % name,
             srcs = srcs,
             declaration = True,
-            out_dir = "lib",
+            out_dir = esm_out_dir,
             tsconfig = ESM_TSCONFIG,
             resolve_json_module = True,
             deps = deps,
