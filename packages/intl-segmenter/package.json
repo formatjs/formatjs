@@ -4,7 +4,11 @@
   "version": "11.7.12",
   "license": "MIT",
   "author": "Matija Gaspar <matijagaspar@gmail.com>",
-  "types": "index.d.ts",
+  "type": "module",
+  "exports": {
+    "./polyfill.js": "./polyfill.js",
+    "./polyfill-force.js": "./polyfill-force.js"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
@@ -20,6 +24,5 @@
     "tc39",
     "unicode"
   ],
-  "main": "index.js",
   "repository": "git@github.com:formatjs/formatjs.git"
 }
