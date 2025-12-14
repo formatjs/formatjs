@@ -6,15 +6,15 @@
 
 import {IntlCache, createIntlCache} from '@formatjs/intl'
 import * as React from 'react'
-import type {IntlConfig, IntlShape} from '../types'
+import type {IntlConfig, IntlShape} from '../types.js'
 import {
   DEFAULT_INTL_CONFIG,
   DefaultIntlConfig,
   invariantIntlContext,
   shallowEqual,
-} from '../utils'
-import {createIntl} from './createIntl'
-import {Provider} from './injectIntl'
+} from '../utils.js'
+import {createIntl} from './createIntl.js'
+import {Provider} from './injectIntl.js'
 
 interface State {
   /**

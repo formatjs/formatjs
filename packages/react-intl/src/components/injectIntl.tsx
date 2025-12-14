@@ -1,7 +1,7 @@
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import * as React from 'react'
-import {IntlShape} from '../types'
-import {invariantIntlContext} from '../utils'
+import {IntlShape} from '../types.js'
+import {invariantIntlContext} from '../utils.js'
 
 function getDisplayName(Component: React.ComponentType<any>): string {
   return Component.displayName || Component.name || 'Component'
