@@ -88,6 +88,59 @@ ruleTester.run(name, rule, {
     {
       code: '<input type="text" placeholder={f("foo")} aria-label={f("bar")} />',
     },
+    // Exclude children of specific elements
+    {
+      code: '<MenubarShortcut>Ctrl+C</MenubarShortcut>',
+      options: [
+        {
+          props: {
+            exclude: [['MenubarShortcut', 'children']],
+          },
+        },
+      ],
+    },
+    {
+      code: '<MenubarShortcut>{"Ctrl+C"}</MenubarShortcut>',
+      options: [
+        {
+          props: {
+            exclude: [['MenubarShortcut', 'children']],
+          },
+        },
+      ],
+    },
+    {
+      code: '<MenubarShortcut>{`Ctrl+C`}</MenubarShortcut>',
+      options: [
+        {
+          props: {
+            exclude: [['MenubarShortcut', 'children']],
+          },
+        },
+      ],
+    },
+    // Exclude children with wildcard pattern
+    {
+      code: '<Kbd>Ctrl+C</Kbd>',
+      options: [
+        {
+          props: {
+            exclude: [['*', 'children']],
+          },
+        },
+      ],
+    },
+    // Exclude children of specific pattern
+    {
+      code: '<UI.Shortcut>Ctrl+C</UI.Shortcut>',
+      options: [
+        {
+          props: {
+            exclude: [['UI.*', 'children']],
+          },
+        },
+      ],
+    },
     {
       code: `
         <Component
@@ -283,6 +336,39 @@ ruleTester.run(name, rule, {
         {messageId: 'noLiteralStringInJsx'},
         {messageId: 'noLiteralStringInJsx'},
       ],
+    },
+    // Children are not excluded when not specified
+    {
+      code: '<MenubarShortcut>Ctrl+C</MenubarShortcut>',
+      errors: [{messageId: 'noLiteralStringInJsx'}],
+    },
+    {
+      code: '<MenubarShortcut>{"Ctrl+C"}</MenubarShortcut>',
+      errors: [{messageId: 'noLiteralStringInJsx'}],
+    },
+    // Children exclusion is specific to the element
+    {
+      code: '<OtherComponent>text</OtherComponent>',
+      options: [
+        {
+          props: {
+            exclude: [['MenubarShortcut', 'children']],
+          },
+        },
+      ],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
+    },
+    // Attributes are still checked even when children are excluded
+    {
+      code: '<MenubarShortcut aria-label="label">Ctrl+C</MenubarShortcut>',
+      options: [
+        {
+          props: {
+            exclude: [['MenubarShortcut', 'children']],
+          },
+        },
+      ],
+      errors: [{messageId: 'noLiteralStringInJsx'}],
     },
   ],
 })
