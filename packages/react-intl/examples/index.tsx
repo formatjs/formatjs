@@ -10,7 +10,7 @@ import Messages from './Messages'
 import StaticTypeSafetyAndCodeSplitting from './StaticTypeSafetyAndCodeSplitting/StaticTypeSafetyAndCodeSplitting'
 import Timezone from './TimeZone'
 //polyfills
-import '@formatjs/intl-getcanonicallocales/polyfill'
+import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 
 import '@formatjs/intl-pluralrules/locale-data/en.js' // locale-data for en

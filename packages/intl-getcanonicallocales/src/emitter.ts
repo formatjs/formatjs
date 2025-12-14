@@ -1,4 +1,4 @@
-import {UnicodeLanguageId, UnicodeLocaleId} from './types'
+import {UnicodeLanguageId, UnicodeLocaleId} from './types.js'
 
 export function emitUnicodeLanguageId(lang?: UnicodeLanguageId): string {
   if (!lang) {
