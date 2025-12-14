@@ -1,4 +1,4 @@
-import {extractLists, getAllLocales} from './extract-list'
+import {extractLists, getAllLocales} from './extract-list.js'
 import {join} from 'path'
 import {outputFileSync} from 'fs-extra'
 import stringify from 'json-stable-stringify'
