@@ -12,8 +12,8 @@ import {
   invariant,
   setInternalSlot,
 } from '@formatjs/ecma402-abstract'
-import {CanonicalCodeForDisplayNames} from './abstract/CanonicalCodeForDisplayNames'
-import {IsValidDateTimeFieldCode} from './abstract/IsValidDateTimeFieldCode'
+import {CanonicalCodeForDisplayNames} from './abstract/CanonicalCodeForDisplayNames.js'
+import {IsValidDateTimeFieldCode} from './abstract/IsValidDateTimeFieldCode.js'
 
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 
