@@ -2,9 +2,9 @@ import {Suite, Event} from 'benchmark'
 
 //@ts-ignore
 // const Segmenter = Intl.Segmenter
-import {Segmenter} from './src/segmenter'
+import {Segmenter} from './src/segmenter.js'
 
-import {SegmentIterator} from './src/segmenter'
+import {SegmentIterator} from './src/segmenter.js'
 const locale = 'en'
 let inputString = `
 
