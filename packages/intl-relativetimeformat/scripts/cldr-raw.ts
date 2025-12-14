@@ -1,4 +1,4 @@
-import {extractRelativeFields, getAllLocales} from './extract-relative'
+import {extractRelativeFields, getAllLocales} from './extract-relative.js'
 import {join} from 'path'
 import {outputFileSync} from 'fs-extra'
 import stringify from 'json-stable-stringify'
@@ -23,6 +23,4 @@ async function main(args: minimist.ParsedArgs) {
   )
 }
 
-if (require.main === module) {
-  ;(async () => main(minimist(process.argv)))()
-}
+;(async () => main(minimist(process.argv)))()
