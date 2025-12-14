@@ -1,5 +1,5 @@
 import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract'
-import {numberingSystemNames} from './numbering-systems.generated'
+import {numberingSystemNames} from './numbering-systems.generated.js'
 
 function isSupportedNumberingSystem(
   system: string,

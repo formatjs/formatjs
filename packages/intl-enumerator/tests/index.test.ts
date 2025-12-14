@@ -1,4 +1,4 @@
-import {supportedValuesOf} from '../src'
+import {supportedValuesOf} from '../src/index.js'
 import {describe, expect, it} from 'vitest'
 describe('Intl.supportedValueOf("calendar")', () => {
   it('should return an array of supported calendars', () => {

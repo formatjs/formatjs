@@ -1,9 +1,9 @@
-import {getSupportedCalendars} from './get-supported-calendars'
-import {getSupportedCollations} from './get-supported-collations'
-import {getSupportedCurrencies} from './get-supported-currencies'
-import {getSupportedNumberingSystems} from './get-supported-numbering-systems'
-import {getSupportedTimeZones} from './get-supported-timezones'
-import {getSupportedUnits} from './get-supported-units'
+import {getSupportedCalendars} from './get-supported-calendars.js'
+import {getSupportedCollations} from './get-supported-collations.js'
+import {getSupportedCurrencies} from './get-supported-currencies.js'
+import {getSupportedNumberingSystems} from './get-supported-numbering-systems.js'
+import {getSupportedTimeZones} from './get-supported-timezones.js'
+import {getSupportedUnits} from './get-supported-units.js'
 
 export type SupportedValuesOf =
   | 'calendar'

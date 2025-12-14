@@ -1,6 +1,6 @@
 import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract'
-import type {Unit} from './units.generated'
-import {units} from './units.generated'
+import type {Unit} from './units.generated.js'
+import {units} from './units.generated.js'
 
 function isSupported(unit: Unit, locale: string = 'en'): boolean {
   try {

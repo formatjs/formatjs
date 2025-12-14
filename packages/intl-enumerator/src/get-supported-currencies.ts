@@ -1,6 +1,6 @@
 import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract'
-import type {Currency} from './currencies.generated'
-import {currencies} from './currencies.generated'
+import type {Currency} from './currencies.generated.js'
+import {currencies} from './currencies.generated.js'
 
 function isSupportedCurrency(
   currency: Currency,
