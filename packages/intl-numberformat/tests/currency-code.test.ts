@@ -1,6 +1,6 @@
 import {it, expect} from 'vitest'
 import '@formatjs/intl-getcanonicallocales/polyfill'
-import '@formatjs/intl-locale/polyfill'
+import '@formatjs/intl-locale/polyfill.js'
 import * as en from './locale-data/en.json'
 import {NumberFormat} from '../src/core'
 NumberFormat.__addLocaleData(en as any)

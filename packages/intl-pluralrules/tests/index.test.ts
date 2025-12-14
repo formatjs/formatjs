@@ -1,5 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
-import '@formatjs/intl-locale/polyfill'
+import '@formatjs/intl-locale/polyfill.js'
 import {PluralRules} from '../'
 import {describe, expect, it} from 'vitest'
 // @ts-ignore

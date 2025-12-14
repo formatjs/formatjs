@@ -5,7 +5,7 @@ import * as rawTerritoryInfo from 'cldr-core/supplemental/territoryInfo.json'
 import * as rawWeekData from 'cldr-core/supplemental/weekData.json'
 
 import stringify from 'json-stable-stringify'
-import type {Args} from './common-types'
+import type {Args} from './common-types.js'
 
 type WeekInfoInternal = {
   firstDay: number

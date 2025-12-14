@@ -1,5 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
-import '@formatjs/intl-locale/polyfill'
+import '@formatjs/intl-locale/polyfill.js'
 import {DateTimeFormat} from '../src/core'
 import allData from '../src/data/all-tz'
 import * as enCA from './locale-data/en-CA.json'

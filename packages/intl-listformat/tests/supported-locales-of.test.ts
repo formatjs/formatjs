@@ -1,5 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill'
-import '@formatjs/intl-locale/polyfill'
+import '@formatjs/intl-locale/polyfill.js'
 import ListFormat from '../index.js'
 import * as en from './locale-data/en.json'
 import * as enAI from './locale-data/en-AI.json'

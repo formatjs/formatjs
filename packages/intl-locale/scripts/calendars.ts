@@ -3,7 +3,7 @@ import {outputFileSync} from 'fs-extra'
 
 import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json'
 
-import type {Args} from './common-types'
+import type {Args} from './common-types.js'
 import stringify from 'json-stable-stringify'
 
 const {calendarPreferenceData} = rawCalendarPreferenceData.supplemental

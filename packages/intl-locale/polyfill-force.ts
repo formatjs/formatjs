@@ -1,4 +1,4 @@
-import {Locale} from './'
+import {Locale} from './index.js'
 
 Object.defineProperty(Intl, 'Locale', {
   value: Locale,
