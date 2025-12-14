@@ -1,7 +1,7 @@
 import {describe, it, expect} from 'vitest'
 import {NumberFormatPart} from '@formatjs/ecma402-abstract'
 import '@formatjs/intl-pluralrules/locale-data/ko'
-import '@formatjs/intl-pluralrules/polyfill'
+import '@formatjs/intl-pluralrules/polyfill.js'
 import {NumberFormat} from '../src/core'
 import * as ko from './locale-data/ko.json'
 NumberFormat.__addLocaleData(ko as any)

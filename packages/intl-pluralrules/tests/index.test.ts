@@ -3,8 +3,8 @@ import '@formatjs/intl-locale/polyfill.js'
 import {PluralRules} from '../'
 import {describe, expect, it} from 'vitest'
 // @ts-ignore
-import en from './locale-data/en'
-import fr from './locale-data/fr'
+import en from './locale-data/en.js'
+import fr from './locale-data/fr.js'
 PluralRules.__addLocaleData(en, fr)
 
 describe('PluralRules', function () {

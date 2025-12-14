@@ -8,10 +8,10 @@ import {
   ToNumber,
 } from '@formatjs/ecma402-abstract'
 import Decimal from 'decimal.js'
-import {OperandsRecord} from './abstract/GetOperands'
-import {InitializePluralRules} from './abstract/InitializePluralRules'
-import {ResolvePlural} from './abstract/ResolvePlural'
-import getInternalSlots from './get_internal_slots'
+import {OperandsRecord} from './abstract/GetOperands.js'
+import {InitializePluralRules} from './abstract/InitializePluralRules.js'
+import {ResolvePlural} from './abstract/ResolvePlural.js'
+import getInternalSlots from './get_internal_slots.js'
 
 function validateInstance(instance: any, method: string) {
   if (!(instance instanceof PluralRules)) {

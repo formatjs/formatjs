@@ -3,7 +3,7 @@ import '@formatjs/intl-locale/polyfill.js'
 import {PluralRules} from '../'
 import {describe, expect, it} from 'vitest'
 // @ts-ignore
-import zh from './locale-data/zh'
+import zh from './locale-data/zh.js'
 // @ts-ignore
 PluralRules.__addLocaleData(zh)
 
