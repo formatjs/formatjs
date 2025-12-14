@@ -1,7 +1,7 @@
 /* @generated */
 // prettier-ignore
 // @ts-nocheck
-import './polyfill-force'
+import './polyfill-force.js'
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData({
   "data": {
