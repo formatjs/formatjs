@@ -78,6 +78,20 @@ test('Intl.DurationFormat format digital', function () {
   )
 })
 
+test('Intl.DurationFormat hours with 2-digit', function () {
+  expect(
+    new DurationFormat('en', {
+      hours: '2-digit',
+      minutes: '2-digit',
+      seconds: '2-digit',
+    }).format({
+      hours: 5,
+      minutes: 30,
+      seconds: 15,
+    })
+  ).toBe('05:30:15')
+})
+
 // TODO: even Node 18 doesn't have NFv3 yet
 test.skip('Intl.DurationFormat format with NumberFormatV3', function () {
   expect(
