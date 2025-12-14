@@ -34,10 +34,7 @@ export interface MemoizeFunc<F extends Func> {
   (fn: F, options?: Options<F>): F
 }
 
-export function memoize<F extends Func>(
-  fn: F,
-  options?: Options<F>
-): F | ((arg: any) => any) {
+export function memoize<F extends Func>(fn: F, options?: Options<F>): F {
   const cache = options && options.cache ? options.cache : cacheDefault
 
   const serializer =
@@ -112,8 +109,8 @@ function assemble<F extends Func>(
   strategy: StrategyFn,
   cache: DefaultCache<string, ReturnType<F>>,
   serialize: Serializer
-) {
-  return strategy.bind(context, fn, cache, serialize)
+): F {
+  return strategy.bind(context, fn, cache, serialize) as F
 }
 
 function strategyDefault<F extends Func>(
