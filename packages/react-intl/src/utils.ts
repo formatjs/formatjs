@@ -1,6 +1,6 @@
 import {FormatXMLElementFn} from 'intl-messageformat'
 import * as React from 'react'
-import {ResolvedIntlConfig} from './types'
+import {ResolvedIntlConfig} from './types.js'
 
 import {DEFAULT_INTL_CONFIG as CORE_DEFAULT_INTL_CONFIG} from '@formatjs/intl'
 
