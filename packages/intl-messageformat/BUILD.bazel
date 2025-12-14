@@ -93,14 +93,13 @@ js_binary(
     data = [":srcs"] + SRC_DEPS + [
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
-        "//:node_modules/@swc-node/register",
-        "//:node_modules/@swc/helpers",
         "//:node_modules/benchmark",
+        "//:node_modules/tsx",
     ],
     entry_point = "tests/benchmark.ts",
     node_options = [
-        "-r",
-        "@swc-node/register",
+        "--import",
+        "tsx",
     ],
     tags = ["manual"],
 )
