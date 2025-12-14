@@ -21,10 +21,10 @@ import {
   ListItemText,
 } from '@material-ui/core'
 import {Menu, AddAlert, NotificationsOff} from '@material-ui/icons'
-import Header from './header'
+import Header from './header.js'
 import {IntlProvider, useIntl} from 'react-intl'
-import {TranslatedMessage} from './types'
-import Messages from './messages'
+import {TranslatedMessage} from './types.js'
+import Messages from './messages.js'
 
 const MESSAGES_COUNT = 50
 async function fetchData(): Promise<TranslatedMessage[]> {
