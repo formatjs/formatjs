@@ -4,6 +4,11 @@
   "version": "6.5.27",
   "license": "ISC",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
   "dependencies": {
     "@babel/types": "^7.26.10",
     "@formatjs/icu-messageformat-parser": "workspace:*",
@@ -21,6 +26,5 @@
     "intl",
     "vue"
   ],
-  "main": "index.js",
   "repository": "formatjs/formatjs.git"
 }
