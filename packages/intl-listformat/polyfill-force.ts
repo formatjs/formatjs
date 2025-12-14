@@ -1,4 +1,4 @@
-import ListFormat from './'
+import ListFormat from './index.js'
 
 Object.defineProperty(Intl, 'ListFormat', {
   value: ListFormat,
