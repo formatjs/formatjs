@@ -21,7 +21,7 @@ packages/intl-segmenter/unicodeFiles/*
 packages/cli/integration-tests/extract/typescript/err.tsx
 # Ignore generated files
 **/*.generated.*
-# Snapshots managed by Jest
+# Snapshots managed by vitest
 **/__snapshots__/*
 # Changelog managed by Lerna
 **/CHANGELOG.md

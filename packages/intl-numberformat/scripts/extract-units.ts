@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import {fromPairs} from 'lodash'
+import {fromPairs} from 'lodash-es'
 import {
   invariant,
   LDMLPluralRuleMap,
