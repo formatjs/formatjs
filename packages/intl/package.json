@@ -4,7 +4,12 @@
   "version": "3.1.8",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "type": "module",
   "sideEffects": false,
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/fast-memoize": "workspace:*",
@@ -30,8 +35,6 @@
     "translate",
     "translation"
   ],
-  "main": "index.js",
-  "module": "lib/index.js",
   "peerDependenciesMeta": {
     "typescript": {
       "optional": true

@@ -1,7 +1,7 @@
 import {ErrorCode, FormatError} from 'intl-messageformat'
-import {IntlFormatError} from './error'
-import {Formatters, IntlFormatters, OnErrorFn, Part} from './types'
-import {filterProps} from './utils'
+import {IntlFormatError} from './error.js'
+import {Formatters, IntlFormatters, OnErrorFn, Part} from './types.js'
+import {filterProps} from './utils.js'
 
 const LIST_FORMAT_OPTIONS: Array<keyof Intl.ListFormatOptions> = [
   'type',
