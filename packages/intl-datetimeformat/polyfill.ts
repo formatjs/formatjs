@@ -1,11 +1,11 @@
-import {DateTimeFormat} from './'
+import {DateTimeFormat} from './index.js'
 import {defineProperty} from '@formatjs/ecma402-abstract'
-import {shouldPolyfill} from './should-polyfill'
+import {shouldPolyfill} from './should-polyfill.js'
 import {
   toLocaleString as _toLocaleString,
   toLocaleDateString as _toLocaleDateString,
   toLocaleTimeString as _toLocaleTimeString,
-} from './src/to_locale_string'
+} from './src/to_locale_string.js'
 
 if (shouldPolyfill()) {
   defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat})

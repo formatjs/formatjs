@@ -10,8 +10,8 @@ import Decimal from 'decimal.js'
 import {
   FormatDateTimePattern,
   FormatDateTimePatternImplDetails,
-} from './FormatDateTimePattern'
-import {ToLocalTimeImplDetails} from './ToLocalTime'
+} from './FormatDateTimePattern.js'
+import {ToLocalTimeImplDetails} from './ToLocalTime.js'
 
 /**
  * https://tc39.es/ecma402/#sec-partitiondatetimepattern

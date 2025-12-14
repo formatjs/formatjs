@@ -4,7 +4,16 @@
   "version": "6.18.2",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "type": "module",
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./polyfill.js": "./polyfill.js",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./should-polyfill.js": "./should-polyfill.js",
+    "./add-all-tz.js": "./add-all-tz.js",
+    "./locale-data/*": "./locale-data/*"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
@@ -24,6 +33,5 @@
     "intl",
     "polyfill"
   ],
-  "main": "index.js",
   "repository": "formatjs/formatjs.git"
 }

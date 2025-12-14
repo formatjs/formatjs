@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
-import {DateTimeFormat} from './core'
-import {ToDateTimeOptions} from './abstract/ToDateTimeOptions'
+import {DateTimeFormat} from './core.js'
+import {ToDateTimeOptions} from './abstract/ToDateTimeOptions.js'
 
 /**
  * Number.prototype.toLocaleString ponyfill

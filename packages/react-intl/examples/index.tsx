@@ -19,9 +19,9 @@ import '@formatjs/intl-pluralrules/polyfill'
 import '@formatjs/intl-numberformat/locale-data/en' // locale-data for en
 import '@formatjs/intl-numberformat/polyfill'
 
-import '@formatjs/intl-datetimeformat/add-all-tz' // Add ALL tz data
-import '@formatjs/intl-datetimeformat/locale-data/en' // locale-data for en
-import '@formatjs/intl-datetimeformat/polyfill'
+import '@formatjs/intl-datetimeformat/add-all-tz.js' // Add ALL tz data
+import '@formatjs/intl-datetimeformat/locale-data/en.js' // locale-data for en
+import '@formatjs/intl-datetimeformat/polyfill.js'
 
 ReactDOM.render(<Timezone />, document.getElementById('timezone'))
 

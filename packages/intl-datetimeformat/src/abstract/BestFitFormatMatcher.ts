@@ -1,5 +1,5 @@
 import {Formats, TABLE_6, invariant} from '@formatjs/ecma402-abstract'
-import {processDateTimePattern} from './skeleton'
+import {processDateTimePattern} from './skeleton.js'
 import {
   DATE_TIME_PROPS,
   additionPenalty,
@@ -9,7 +9,7 @@ import {
   removalPenalty,
   shortLessPenalty,
   shortMorePenalty,
-} from './utils'
+} from './utils.js'
 
 function isNumericType(
   t: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long'

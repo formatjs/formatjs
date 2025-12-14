@@ -1,10 +1,10 @@
 import {defineProperty} from '@formatjs/ecma402-abstract'
-import {DateTimeFormat} from './'
+import {DateTimeFormat} from './index.js'
 import {
   toLocaleDateString as _toLocaleDateString,
   toLocaleString as _toLocaleString,
   toLocaleTimeString as _toLocaleTimeString,
-} from './src/to_locale_string'
+} from './src/to_locale_string.js'
 
 defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat})
 defineProperty(Date.prototype, 'toLocaleString', {

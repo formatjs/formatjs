@@ -11,8 +11,8 @@ import Decimal from 'decimal.js'
 import {
   FormatDateTimePattern,
   FormatDateTimePatternImplDetails,
-} from './FormatDateTimePattern'
-import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime'
+} from './FormatDateTimePattern.js'
+import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime.js'
 
 const TABLE_2_FIELDS: Array<TABLE_2> = [
   'era',

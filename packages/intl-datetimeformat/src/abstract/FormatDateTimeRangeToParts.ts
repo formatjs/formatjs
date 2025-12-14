@@ -1,8 +1,8 @@
 import {IntlDateTimeFormatPart} from '@formatjs/ecma402-abstract'
 import {Decimal} from 'decimal.js'
-import {FormatDateTimePatternImplDetails} from './FormatDateTimePattern'
-import {PartitionDateTimeRangePattern} from './PartitionDateTimeRangePattern'
-import {ToLocalTimeImplDetails} from './ToLocalTime'
+import {FormatDateTimePatternImplDetails} from './FormatDateTimePattern.js'
+import {PartitionDateTimeRangePattern} from './PartitionDateTimeRangePattern.js'
+import {ToLocalTimeImplDetails} from './ToLocalTime.js'
 
 export function FormatDateTimeRangeToParts(
   dtf: Intl.DateTimeFormat,
