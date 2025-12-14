@@ -10,7 +10,7 @@ import {sync as globSync} from 'fast-glob'
 import {resolve, dirname} from 'path'
 import {CurrencyData, LDMLPluralRuleMap} from '@formatjs/ecma402-abstract'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils'
+import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.js'
 
 export type Currencies =
   (typeof CurrenciesData)['main']['en']['numbers']['currencies']
