@@ -64,7 +64,7 @@ importers:
         version: 0.25.0
       '@bazel/runfiles':
         specifier: ^6.3.1
-        version: 6.3.1
+        version: 6.5.0
       '@commitlint/cli':
         specifier: ^19.5.0
         version: 19.8.1(@types/node@22.16.0)(typescript@5.8.3)
@@ -1773,8 +1773,8 @@ packages:
   '@bazel/runfiles@5.8.1':
     resolution: {integrity: sha512-NDdfpdQ6rZlylgv++iMn5FkObC/QlBQvipinGLSOguTYpRywmieOyJ29XHvUilspwTFSILWpoE9CqMGkHXug1g==}
 
-  '@bazel/runfiles@6.3.1':
-    resolution: {integrity: sha512-1uLNT5NZsUVIGS4syuHwTzZ8HycMPyr6POA3FCE4GbMtc4rhoJk8aZKtNIRthJYfL+iioppi+rTfH3olMPr9nA==}
+  '@bazel/runfiles@6.5.0':
+    resolution: {integrity: sha512-RzahvqTkfpY2jsDxo8YItPX+/iZ6hbiikw1YhE0bA9EKBR5Og8Pa6FHn9PO9M0zaXRVsr0GFQLKbB/0rzy9SzA==}
 
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
@@ -11973,7 +11973,7 @@ snapshots:
 
   '@bazel/runfiles@5.8.1': {}
 
-  '@bazel/runfiles@6.3.1': {}
+  '@bazel/runfiles@6.5.0': {}
 
   '@bcoe/v8-coverage@0.2.3': {}
 
