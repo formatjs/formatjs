@@ -9,7 +9,8 @@
   "exports": {
     ".": "./index.js",
     "./polyfill.js": "./polyfill.js",
-    "./polyfill-force.js": "./polyfill-force.js"
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./should-polyfill.js": "./should-polyfill.js"
   },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
