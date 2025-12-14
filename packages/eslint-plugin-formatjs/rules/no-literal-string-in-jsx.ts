@@ -108,6 +108,27 @@ export const rule: RuleModule<MessageIds, Options> = {
 
     const lexicalJsxStack: (TSESTree.JSXElement | TSESTree.JSXFragment)[] = []
 
+    const shouldSkipCurrentJsxElement = () => {
+      const currentJsxNode = lexicalJsxStack[lexicalJsxStack.length - 1]!
+      if (currentJsxNode.type === 'JSXFragment') {
+        return false
+      }
+
+      const nameString = stringifyJsxTagName(currentJsxNode.openingElement.name)
+
+      // Check if children should be excluded
+      for (const [tagNamePattern, propNamePattern] of propExcludePattern) {
+        if (
+          tagNamePattern.test(nameString) &&
+          propNamePattern.test('children')
+        ) {
+          return true
+        }
+      }
+
+      return false
+    }
+
     const shouldSkipCurrentJsxAttribute = (node: TSESTree.JSXAttribute) => {
       const currentJsxNode = lexicalJsxStack[lexicalJsxStack.length - 1]!
       if (currentJsxNode.type === 'JSXFragment') {
@@ -218,6 +239,10 @@ export const rule: RuleModule<MessageIds, Options> = {
           return
         }
 
+        if (shouldSkipCurrentJsxElement()) {
+          return
+        }
+
         context.report({
           node: node,
           messageId: 'noLiteralStringInJsx',
@@ -228,6 +253,10 @@ export const rule: RuleModule<MessageIds, Options> = {
       'JSXElement > JSXExpressionContainer': (
         node: TSESTree.JSXExpressionContainer
       ) => {
+        if (shouldSkipCurrentJsxElement()) {
+          return
+        }
+
         if (node.expression.type !== 'JSXEmptyExpression') {
           checkJSXExpression(node.expression)
         }
