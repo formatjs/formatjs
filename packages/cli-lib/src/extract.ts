@@ -8,8 +8,8 @@ import {debug, getStdinAsString, warn, writeStdout} from './console_utils.js'
 import * as stringifyNs from 'json-stable-stringify'
 
 import {parse} from '@formatjs/icu-messageformat-parser'
-import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator'
-import {printAST} from '@formatjs/icu-messageformat-parser/printer'
+import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
+import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import {Formatter, resolveBuiltinFormatter} from './formatters/index.js'
 import {parseScript} from './parse_script.js'
 
