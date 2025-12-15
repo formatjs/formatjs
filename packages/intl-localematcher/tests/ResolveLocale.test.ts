@@ -1,4 +1,4 @@
-import {ResolveLocale} from '../abstract/ResolveLocale'
+import {ResolveLocale} from '../abstract/ResolveLocale.js'
 import {expect, test} from 'vitest'
 test('ResolveLocale', function () {
   expect(
