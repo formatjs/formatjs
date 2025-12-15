@@ -1,4 +1,4 @@
-import {getBestPattern} from '../date-time-pattern-generator'
+import {getBestPattern} from '../date-time-pattern-generator.js'
 import {describe, expect, it} from 'vitest'
 describe('date-time-pattern-generator', () => {
   // Test most commong 2 patterns
