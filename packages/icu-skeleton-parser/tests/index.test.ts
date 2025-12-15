@@ -1,5 +1,5 @@
-import {parseDateTimeSkeleton, parseNumberSkeleton} from '..'
-import {parseNumberSkeletonFromString} from '../number'
+import {parseDateTimeSkeleton, parseNumberSkeleton} from '../index.js'
+import {parseNumberSkeletonFromString} from '../number.js'
 import {test, expect} from 'vitest'
 
 const dateTimeSkeletonResults = {
