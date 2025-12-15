@@ -14,7 +14,8 @@
       "ignoreChanges": ["**/tests/**", "**/*.md"],
       "message": "build: publish",
       "private": false,
-      "skipBumpOnlyReleases": true
+      "skipBumpOnlyReleases": true,
+      "syncWorkspaceLock": true
     },
     "run": {
       "stream": true
