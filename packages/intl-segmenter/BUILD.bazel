@@ -63,7 +63,6 @@ TESTS = glob([
 ts_compile(
     name = "dist",
     srcs = [":srcs"],
-    skip_cjs = True,
     skip_esm = False,
     deps = SRC_DEPS,
 )

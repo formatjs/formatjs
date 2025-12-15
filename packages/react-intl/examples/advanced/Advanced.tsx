@@ -66,5 +66,5 @@ export async function bootstrapApplication(
   locale: string
 ): Promise<React.JSX.Element> {
   const messages = await loadLocaleData(locale)
-  return <App locale={locale} messages={messages.default} />
+  return <App locale={locale} messages={messages} />
 }
