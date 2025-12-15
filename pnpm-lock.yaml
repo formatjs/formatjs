@@ -10,6 +10,7 @@ overrides:
   '@vue/compiler-core': 3.5.13
   '@vue/compiler-dom': 3.5.13
   '@vue/compiler-sfc': 3.5.13
+  conventional-changelog-conventionalcommits: 9.1.0
   eslint: 9.30.1
   react: '19'
   react-dom: '19'
@@ -17,7 +18,6 @@ overrides:
   terser: 5.43.1
   typescript: 5.8.3
   vue: 3.5.13
-  conventional-changelog-conventionalcommits: 9.1.0
 
 packageExtensionsChecksum: sha256-rMdzKtpp3EwdMIL0y0DAqB8sU9O6+q8LT222xA4eNcg=
 
@@ -25,6 +25,9 @@ patchedDependencies:
   '@commitlint/rules':
     hash: 32857ba6744bdf3ab77821aa5d5d0e5f732889320b2971c9056ddb6052661302
     path: patches/@commitlint__rules.patch
+  '@lerna-lite/version':
+    hash: 4ea3deba29688aee30d551a477f760e79f1d34eccfa9cc5a3bab48d357c790ec
+    path: patches/@lerna-lite__version.patch
   '@vue/compiler-sfc@3.5.13':
     hash: cde05f2d5487992f2dfddabb7074295296cce821e45a93415fcd888e38d7d70d
     path: patches/@vue+compiler-sfc@3.5.13.patch
@@ -77,10 +80,10 @@ importers:
         version: 0.95.0
       '@lerna-lite/cli':
         specifier: ^4.10.2
-        version: 4.10.2(@lerna-lite/version@4.10.2(@types/node@22.16.0)(conventional-commits-filter@5.0.0))(@types/node@22.16.0)
+        version: 4.10.2(@lerna-lite/version@4.10.2(patch_hash=4ea3deba29688aee30d551a477f760e79f1d34eccfa9cc5a3bab48d357c790ec)(@types/node@22.16.0)(conventional-commits-filter@5.0.0))(@types/node@22.16.0)
       '@lerna-lite/version':
         specifier: ^4.10.2
-        version: 4.10.2(@types/node@22.16.0)(conventional-commits-filter@5.0.0)
+        version: 4.10.2(patch_hash=4ea3deba29688aee30d551a477f760e79f1d34eccfa9cc5a3bab48d357c790ec)(@types/node@22.16.0)(conventional-commits-filter@5.0.0)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -13646,7 +13649,7 @@ snapshots:
 
   '@leichtgewicht/ip-codec@2.0.5': {}
 
-  '@lerna-lite/cli@4.10.2(@lerna-lite/version@4.10.2(@types/node@22.16.0)(conventional-commits-filter@5.0.0))(@types/node@22.16.0)':
+  '@lerna-lite/cli@4.10.2(@lerna-lite/version@4.10.2(patch_hash=4ea3deba29688aee30d551a477f760e79f1d34eccfa9cc5a3bab48d357c790ec)(@types/node@22.16.0)(conventional-commits-filter@5.0.0))(@types/node@22.16.0)':
     dependencies:
       '@lerna-lite/core': 4.10.2(@types/node@22.16.0)
       '@lerna-lite/init': 4.10.2(@types/node@22.16.0)
@@ -13657,7 +13660,7 @@ snapshots:
       load-json-file: 7.0.1
       yargs: 18.0.0
     optionalDependencies:
-      '@lerna-lite/version': 4.10.2(@types/node@22.16.0)(conventional-commits-filter@5.0.0)
+      '@lerna-lite/version': 4.10.2(patch_hash=4ea3deba29688aee30d551a477f760e79f1d34eccfa9cc5a3bab48d357c790ec)(@types/node@22.16.0)(conventional-commits-filter@5.0.0)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -13717,10 +13720,10 @@ snapshots:
       tinyrainbow: 3.0.3
       wide-align: 1.1.5
 
-  '@lerna-lite/version@4.10.2(@types/node@22.16.0)(conventional-commits-filter@5.0.0)':
+  '@lerna-lite/version@4.10.2(patch_hash=4ea3deba29688aee30d551a477f760e79f1d34eccfa9cc5a3bab48d357c790ec)(@types/node@22.16.0)(conventional-commits-filter@5.0.0)':
     dependencies:
       '@conventional-changelog/git-client': 2.5.1(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.2.1)
-      '@lerna-lite/cli': 4.10.2(@lerna-lite/version@4.10.2(@types/node@22.16.0)(conventional-commits-filter@5.0.0))(@types/node@22.16.0)
+      '@lerna-lite/cli': 4.10.2(@lerna-lite/version@4.10.2(patch_hash=4ea3deba29688aee30d551a477f760e79f1d34eccfa9cc5a3bab48d357c790ec)(@types/node@22.16.0)(conventional-commits-filter@5.0.0))(@types/node@22.16.0)
       '@lerna-lite/core': 4.10.2(@types/node@22.16.0)
       '@lerna-lite/npmlog': 4.10.0
       '@octokit/plugin-enterprise-rest': 6.0.1
