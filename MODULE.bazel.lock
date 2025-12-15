@@ -399,7 +399,7 @@
         "bzlTransitiveDigest": "PmSFl5de9ODJbC1xCNlhwlUaInXalJ08lhcxW297GX0=",
         "usagesDigest": "tsxRjH5DN8xUnGoUELCp/xuIp04EwwlFAtYpnGb6Y+4=",
         "recordedFileInputs": {
-          "@@//package.json": "9473795a2bea762103dffe8ca5c44b0b771a9db176626f58ec2df05b6e1f16d8"
+          "@@//package.json": "0e5d746a06610e882d26dde4b53550cf3d7832d0fe6d134b97ed4944204c7a64"
         },
         "recordedDirentsInputs": {},
         "envVariables": {},
