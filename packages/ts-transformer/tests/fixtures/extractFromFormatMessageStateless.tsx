@@ -1,6 +1,6 @@
 import {FormattedMessage, injectIntl, useIntl} from 'react-intl'
 
-import React from 'react'
+import * as React from 'react'
 
 function myFunction(param1, {formatMessage, formatDate}) {
   return (

@@ -3,7 +3,7 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file", "write_source_files")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
-load("//tools:tsconfig.bzl", "TEST_TSCONFIG")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
 
 def vitest(
         name,
@@ -16,7 +16,6 @@ def vitest(
         fixtures = [],
         dom = False,
         snapshots = [],
-        skip_typecheck = False,
         test_timeout = None,
         **kwargs):
     """
@@ -33,7 +32,6 @@ def vitest(
         snapshots (list, optional): A list of snapshot files for the target. Defaults to an empty list.
         fixtures (list, optional): A list of fixture files for the target. Defaults to an empty list.
         dom (bool, optional): Whether to run the test in a DOM environment. Defaults to False.
-        skip_typecheck (bool, optional): Whether to skip typechecking. Defaults to False.
         test_timeout (str, optional): Custom timeout for the test in milliseconds. Defaults to None.
         **kwargs: Additional keyword arguments.
     """
@@ -50,17 +48,23 @@ def vitest(
     # Filter out snapshot files from srcs
     srcs_no_snapshots = [src for src in srcs if "/__snapshots__/" not in src]
 
-    if not skip_typecheck:
-        ts_project(
-            name = "%s_typecheck" % name,
-            srcs = srcs_no_snapshots,
-            tsconfig = TEST_TSCONFIG,
-            resolve_json_module = True,
-            declaration = True,
-            no_emit = True,
-            testonly = True,
-            deps = deps,
-        )
+    # Create a test-specific tsconfig that allows synthetic default imports
+    # This is needed for happy-dom and other test dependencies
+    test_tsconfig = ESNEXT_TSCONFIG | {
+        "compilerOptions": ESNEXT_TSCONFIG["compilerOptions"] | {
+            "allowSyntheticDefaultImports": True,
+        },
+    }
+    ts_project(
+        name = "%s_typecheck" % name,
+        srcs = srcs_no_snapshots,
+        tsconfig = test_tsconfig,
+        resolve_json_module = True,
+        declaration = True,
+        no_emit = True,
+        testonly = True,
+        deps = deps,
+    )
 
     vitest_bin.vitest_test(
         name = name,
