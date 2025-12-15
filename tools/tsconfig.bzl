@@ -24,7 +24,7 @@ BASE_TSCONFIG = {
         "strict": True,
         "resolveJsonModule": True,
         "noUnusedLocals": True,
-        "esModuleInterop": True,
+        "esModuleInterop": False,
         "noUnusedParameters": True,
         "preserveConstEnums": True,
         "allowSyntheticDefaultImports": False,
