@@ -17,6 +17,7 @@ overrides:
   terser: 5.43.1
   typescript: 5.8.3
   vue: 3.5.13
+  conventional-changelog-conventionalcommits: 9.1.0
 
 packageExtensionsChecksum: sha256-rMdzKtpp3EwdMIL0y0DAqB8sU9O6+q8LT222xA4eNcg=
 
@@ -198,7 +199,7 @@ importers:
         specifier: ^3.0.0
         version: 3.1.3
       conventional-changelog-conventionalcommits:
-        specifier: ^9.1.0
+        specifier: 9.1.0
         version: 9.1.0
       decimal.js:
         specifier: ^10.4.3
@@ -4819,10 +4820,6 @@ packages:
   conventional-changelog-angular@8.1.0:
     resolution: {integrity: sha512-GGf2Nipn1RUCAktxuVauVr1e3r8QrLP/B0lEUsFktmGqc3ddbQkhoJZHJctVU829U1c6mTSWftrVOCHaL85Q3w==}
     engines: {node: '>=18'}
-
-  conventional-changelog-conventionalcommits@7.0.2:
-    resolution: {integrity: sha512-NKXYmMR/Hr1DevQegFB4MwfM5Vv0m4UIxKZTTYuD98lpTknaZlSRrDOG4X7wIXpGkfsYxZTghUN+Qq+T0YQI7w==}
-    engines: {node: '>=16'}
 
   conventional-changelog-conventionalcommits@9.1.0:
     resolution: {integrity: sha512-MnbEysR8wWa8dAEvbj5xcBgJKQlX/m0lhS8DsyAAWDHdfs2faDJxTgzRYlRYpXSe7UiKrIIlB4TrBKU9q9DgkA==}
@@ -11919,7 +11916,7 @@ snapshots:
   '@commitlint/config-conventional@20.2.0':
     dependencies:
       '@commitlint/types': 20.2.0
-      conventional-changelog-conventionalcommits: 7.0.2
+      conventional-changelog-conventionalcommits: 9.1.0
 
   '@commitlint/config-validator@19.8.1':
     dependencies:
@@ -15969,10 +15966,6 @@ snapshots:
       compare-func: 2.0.0
 
   conventional-changelog-angular@8.1.0:
-    dependencies:
-      compare-func: 2.0.0
-
-  conventional-changelog-conventionalcommits@7.0.2:
     dependencies:
       compare-func: 2.0.0
 
