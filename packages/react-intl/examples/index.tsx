@@ -1,6 +1,6 @@
 import '@formatjs/intl-pluralrules/polyfill.js'
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import * as ReactDOM from 'react-dom/client'
 import {bootstrapApplication} from './advanced/Advanced'
 import {App as Bug2727} from './Bug2727'
 import HandleChange from './HandleChange'
@@ -23,21 +23,22 @@ import '@formatjs/intl-datetimeformat/add-all-tz.js' // Add ALL tz data
 import '@formatjs/intl-datetimeformat/locale-data/en.js' // locale-data for en
 import '@formatjs/intl-datetimeformat/polyfill.js'
 
-ReactDOM.render(<Timezone />, document.getElementById('timezone'))
+ReactDOM.createRoot(document.getElementById('timezone')!).render(<Timezone />)
 
-ReactDOM.render(<Messages />, document.getElementById('messages'))
-ReactDOM.render(<Hooks />, document.getElementById('hooks'))
+ReactDOM.createRoot(document.getElementById('messages')!).render(<Messages />)
+ReactDOM.createRoot(document.getElementById('hooks')!).render(<Hooks />)
 
-ReactDOM.render(<Injected />, document.getElementById('injected'))
-ReactDOM.render(<HandleChange />, document.getElementById('handlechange'))
-
-ReactDOM.render(
-  <StaticTypeSafetyAndCodeSplitting />,
-  document.getElementById('static-type-safety-and-code-splitting')
+ReactDOM.createRoot(document.getElementById('injected')!).render(<Injected />)
+ReactDOM.createRoot(document.getElementById('handlechange')!).render(
+  <HandleChange />
 )
 
-ReactDOM.render(<Bug2727 />, document.getElementById('bug2727'))
+ReactDOM.createRoot(
+  document.getElementById('static-type-safety-and-code-splitting')!
+).render(<StaticTypeSafetyAndCodeSplitting />)
+
+ReactDOM.createRoot(document.getElementById('bug2727')!).render(<Bug2727 />)
 
 bootstrapApplication('en').then(app => {
-  ReactDOM.render(app, document.getElementById('advanced'))
+  ReactDOM.createRoot(document.getElementById('advanced')!).render(app)
 })

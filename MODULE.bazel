@@ -3,6 +3,10 @@ module(
     version = "1.0",
 )
 
+######### Bazel core rules #########
+
+bazel_dep(name = "rules_shell", version = "0.6.1")
+
 ######### JS & Node.js rules #########
 
 bazel_dep(name = "aspect_rules_js", version = "2.3.7")
