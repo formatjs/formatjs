@@ -31,7 +31,7 @@ export const IcuEditor = ({defaultMessage, defaultValues}: IcuEditorProps) => {
       const msg = new IntlMessageFormat(message).format(opts) as string
       setError(false)
       setResult(msg)
-    } catch {
+    } catch (err) {
       if (err instanceof Error) {
         setResult(err.message)
         setError(true)
