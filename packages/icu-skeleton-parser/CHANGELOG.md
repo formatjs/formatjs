@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.8.16...@formatjs/icu-skeleton-parser@2.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/icu-skeleton-parser:** convert to esm (#5465)
+
+### Features
+
+* **@formatjs/icu-skeleton-parser:** convert to esm ([#5465](https://github.com/formatjs/formatjs/issues/5465)) ([e3957a6](https://github.com/formatjs/formatjs/commit/e3957a6197b3119cbe762bce3251d6b4621670ca)) - by @longlho
+
 ## [1.8.16](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@1.8.15...@formatjs/icu-skeleton-parser@1.8.16) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/icu-skeleton-parser

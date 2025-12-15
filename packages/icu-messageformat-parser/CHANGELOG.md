@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.11.4...@formatjs/icu-messageformat-parser@3.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/icu-messageformat-parser:** convert to esm (#5464)
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** convert to esm ([#5464](https://github.com/formatjs/formatjs/issues/5464)) ([32a751b](https://github.com/formatjs/formatjs/commit/32a751bbfd7056383839be1412cdaeef6a56334b)) - by @longlho
+
 ## [2.11.4](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@2.11.3...@formatjs/icu-messageformat-parser@2.11.4) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

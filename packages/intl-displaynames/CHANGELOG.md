@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.8.13...@formatjs/intl-displaynames@7.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl-getcanonicallocales:** convert to esm (#5457)
+* **@formatjs/intl-locale:** convert to esm (#5435)
+* **@formatjs/intl-displaynames:** convert to ESM
+
+### Features
+
+* **@formatjs/intl-displaynames:** convert to ESM ([33d83c6](https://github.com/formatjs/formatjs/commit/33d83c66434fbf9ac699fbf9b41dd01b875e7a21)) - by @longlho
+* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](https://github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](https://github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
+* **@formatjs/intl-locale:** convert to esm ([#5435](https://github.com/formatjs/formatjs/issues/5435)) ([fc9ae8e](https://github.com/formatjs/formatjs/commit/fc9ae8e20b556108b1b800fb930d70ffc5545041)) - by @longlho
+
+### Bug Fixes
+
+* fix exports ([#5430](https://github.com/formatjs/formatjs/issues/5430)) ([b7a9b4c](https://github.com/formatjs/formatjs/commit/b7a9b4cd7a0566c6aaa33305a9f700d639f30ddd)) - by @longlho
+
 ## [6.8.13](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@6.8.12...@formatjs/intl-displaynames@6.8.13) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

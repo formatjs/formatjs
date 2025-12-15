@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](/github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.13...@formatjs/intl-listformat@8.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl-getcanonicallocales:** convert to esm (#5457)
+* **@formatjs/intl-locale:** convert to esm (#5435)
+* **@formatjs/intl-listformat:** convert to ESM
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](/github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](/github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
+* **@formatjs/intl-listformat:** convert to ESM ([bef4a10](/github.com/formatjs/formatjs/commit/bef4a1030ccda93c863af47790b9618e5316cf40)) - by @longlho
+* **@formatjs/intl-locale:** convert to esm ([#5435](/github.com/formatjs/formatjs/issues/5435)) ([fc9ae8e](/github.com/formatjs/formatjs/commit/fc9ae8e20b556108b1b800fb930d70ffc5545041)) - by @longlho
+
+### Bug Fixes
+
+* fix exports ([#5430](/github.com/formatjs/formatjs/issues/5430)) ([b7a9b4c](/github.com/formatjs/formatjs/commit/b7a9b4cd7a0566c6aaa33305a9f700d639f30ddd)) - by @longlho
+
 ## [7.7.13](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.12...@formatjs/intl-listformat@7.7.13) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.0](/github.com/formatjs/formatjs/compare/intl-messageformat@10.7.18...intl-messageformat@11.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **intl-messageformat:** convert to esm (#5456)
+* **@formatjs/intl-pluralrules:** convert to esm (#5436)
+
+### Features
+
+* **@formatjs/intl-pluralrules:** convert to esm ([#5436](/github.com/formatjs/formatjs/issues/5436)) ([0ed2ff9](/github.com/formatjs/formatjs/commit/0ed2ff979aa24088265f953d205a1d0c0029a433)) - by @longlho
+* **intl-messageformat:** convert to esm ([#5456](/github.com/formatjs/formatjs/issues/5456)) ([e6459ea](/github.com/formatjs/formatjs/commit/e6459ea4563c4ea942ae0991317f8407ba8e1154)) - by @longlho
+
 ## [10.7.18](github.com/formatjs/formatjs/compare/intl-messageformat@10.7.17...intl-messageformat@10.7.18) (2025-10-09)
 
 **Note:** Version bump only for package intl-messageformat

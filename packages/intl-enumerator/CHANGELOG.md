@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.8.12...@formatjs/intl-enumerator@2.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl-enumerator:** convert to esm (#5458)
+
+### Features
+
+* **@formatjs/intl-enumerator:** convert to esm ([#5458](https://github.com/formatjs/formatjs/issues/5458)) ([04fdc7d](https://github.com/formatjs/formatjs/commit/04fdc7d5dd6b731e8de0c87c5a20d1df584cee96)) - by @longlho
+
 ## [1.8.12](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@1.8.11...@formatjs/intl-enumerator@1.8.12) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl-enumerator

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma376@0.3.16...@formatjs/ecma376@0.4.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/ecma376:** convert to ESM (#5432)
+
+### Features
+
+* **@formatjs/ecma376:** convert to ESM ([#5432](https://github.com/formatjs/formatjs/issues/5432)) ([d829057](https://github.com/formatjs/formatjs/commit/d8290578d5960069d32c078b373e830cb4207ad1)) - by @longlho
+
 ## [0.3.16](https://github.com/formatjs/formatjs/compare/@formatjs/ecma376@0.3.15...@formatjs/ecma376@0.3.16) (2025-03-23)
 
 **Note:** Version bump only for package @formatjs/ecma376

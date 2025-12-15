@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@2.5.6...@formatjs/intl-getcanonicallocales@3.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl-getcanonicallocales:** convert to esm (#5457)
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](https://github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](https://github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
+
 ## [2.5.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@2.5.5...@formatjs/intl-getcanonicallocales@2.5.6) (2025-10-03)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

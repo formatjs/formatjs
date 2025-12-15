@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/cli",
   "description": "A CLI for formatjs.",
-  "version": "6.7.4",
+  "version": "6.8.0",
   "license": "MIT",
   "author": "Linjie Ding <linjie@airtable.com>",
   "engines": {

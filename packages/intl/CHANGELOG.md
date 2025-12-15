@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](/github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.8...@formatjs/intl@4.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl:** convert to ESM (#5434)
+
+### Features
+
+* **@formatjs/intl:** convert to ESM ([#5434](/github.com/formatjs/formatjs/issues/5434)) ([47e75d7](/github.com/formatjs/formatjs/commit/47e75d7f5ca6fcf1fcb64088b8a5dd8a00fddadc)) - by @longlho
+
+### Bug Fixes
+
+* use global 'time' Formats override with formatTime/FormattedTimeParts 'format' config instead of 'date' Formats, add strict 'format' overrides typing to FormattedDate and FormattedTime ([#5151](/github.com/formatjs/formatjs/issues/5151)) ([3fe4b50](/github.com/formatjs/formatjs/commit/3fe4b50d4b14e04717072217adf8514c580b55b7)) - by @seanmadi
+
 ## [3.1.8](github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.7...@formatjs/intl@3.1.8) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl

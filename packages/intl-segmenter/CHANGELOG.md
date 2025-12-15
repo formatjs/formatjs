@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.0](/github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@11.7.12...@formatjs/intl-segmenter@12.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl-segmenter:** convert to ESM only
+
+### Features
+
+* **@formatjs/intl-segmenter:** convert to ESM only ([73b80a7](/github.com/formatjs/formatjs/commit/73b80a7ef45ed0e972ba3d61c4d8554f6816e99b)) - by @longlho
+
+### Bug Fixes
+
+* **@formatjs/intl-segmenter:** fix exports ([07f700d](/github.com/formatjs/formatjs/commit/07f700d44e22becc2f20526bcb10c8f5bd60a47d)) - by @longlho
+
 ## [11.7.12](github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@11.7.11...@formatjs/intl-segmenter@11.7.12) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl-segmenter

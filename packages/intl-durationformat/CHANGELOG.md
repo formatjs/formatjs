@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.7.6...@formatjs/intl-durationformat@0.8.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl-durationformat:** convert to esm only
+
+### Features
+
+* **@formatjs/intl-durationformat:** convert to esm only ([b894e8a](https://github.com/formatjs/formatjs/commit/b894e8a30eb3310c78c8144a1b3caa6e3a1f0926)) - by @longlho
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** add 2-digit to ResolvedDurationFormatOptions ([1cd96a4](https://github.com/formatjs/formatjs/commit/1cd96a437e54ed8a7852e92cd88eceb4bd3a0d8d)) - by @longlho
+* **@formatjs/intl-durationformat:** fix exports ([292b39e](https://github.com/formatjs/formatjs/commit/292b39ecddca01b6815424e0ccef521c988c94c9)) - by @longlho
+
 ## [0.7.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.7.5...@formatjs/intl-durationformat@0.7.6) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl-durationformat

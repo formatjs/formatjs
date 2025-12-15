@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.18.2...@formatjs/intl-datetimeformat@7.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **react-intl:** drop support for React 18 and below (#5485)
+* **@formatjs/intl-getcanonicallocales:** convert to esm (#5457)
+* **@formatjs/intl-locale:** convert to esm (#5435)
+* **@formatjs/intl-datetimeformat:** convert to ESM (#5429)
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** convert to ESM ([#5429](https://github.com/formatjs/formatjs/issues/5429)) ([c717c1a](https://github.com/formatjs/formatjs/commit/c717c1adee58ad9d7604c74a4bafca2628e2a0a8)) - by @longlho
+* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](https://github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](https://github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
+* **@formatjs/intl-locale:** convert to esm ([#5435](https://github.com/formatjs/formatjs/issues/5435)) ([fc9ae8e](https://github.com/formatjs/formatjs/commit/fc9ae8e20b556108b1b800fb930d70ffc5545041)) - by @longlho
+* **react-intl:** drop support for React 18 and below ([#5485](https://github.com/formatjs/formatjs/issues/5485)) ([2ea4b7e](https://github.com/formatjs/formatjs/commit/2ea4b7e4ffa7df0974632fdbeb632da6dc9c0f6c)) - by @longlho
+
 ## [6.18.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@6.18.1...@formatjs/intl-datetimeformat@6.18.2) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

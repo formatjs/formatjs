@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](/github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.80...@formatjs/editor@3.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **react-intl:** drop support for React 18 and below (#5485)
+* **@formatjs/editor:** convert to ESM (#5455)
+
+### Features
+
+* **@formatjs/editor:** convert to ESM ([#5455](/github.com/formatjs/formatjs/issues/5455)) ([5d6928e](/github.com/formatjs/formatjs/commit/5d6928e1ee25a052c3e4b4d79c36bc4983b4db9b)) - by @longlho
+* **react-intl:** drop support for React 18 and below ([#5485](/github.com/formatjs/formatjs/issues/5485)) ([2ea4b7e](/github.com/formatjs/formatjs/commit/2ea4b7e4ffa7df0974632fdbeb632da6dc9c0f6c)) - by @longlho
+
 ## [2.0.80](github.com/formatjs/formatjs/compare/@formatjs/editor@2.0.79...@formatjs/editor@2.0.80) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/editor

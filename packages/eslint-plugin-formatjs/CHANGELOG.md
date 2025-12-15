@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.4.2...eslint-plugin-formatjs@6.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **eslint-plugin-formatjs:** convert to ESM only (#5207)
+
+### Features
+
+* add `quoteStyle` option to eslint `enforce-id` rule ([#5131](https://github.com/formatjs/formatjs/issues/5131)) ([d71b0b6](https://github.com/formatjs/formatjs/commit/d71b0b6de178422e980be68887f29f25e30b6c20)) - by @vpontis
+* **eslint-plugin-formatjs:** convert to ESM only ([#5207](https://github.com/formatjs/formatjs/issues/5207)) ([029f821](https://github.com/formatjs/formatjs/commit/029f8218b3b10f0572b23d579edc6a0dc3c516a7)) - by @longlho
+* **eslint-plugin-formatjs:** support `children` for `exclude` in no-literal-string-in-jsx ([42de4e0](https://github.com/formatjs/formatjs/commit/42de4e0d01e1835e8bb72e63703c5eec9f5ec10b)) - by @longlho
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** disallow extra properties in rule options ([#5158](https://github.com/formatjs/formatjs/issues/5158)) ([71c90e2](https://github.com/formatjs/formatjs/commit/71c90e2ee5e57649a691168499534adce7b053a6)) - by @andreww2012
+* **eslint-plugin-formatjs:** fix imports to be backwards compat ([#5174](https://github.com/formatjs/formatjs/issues/5174)) ([9687cf1](https://github.com/formatjs/formatjs/commit/9687cf1be33c9ee70a34f8496b69e9fc5ec4f3e8)) - by @longlho
+* **eslint:** emit plugin types correctly ([#5153](https://github.com/formatjs/formatjs/issues/5153)) ([0e9db71](https://github.com/formatjs/formatjs/commit/0e9db7108971c8729a7fe4e1d7eabfd593711523)), closes [#5133](https://github.com/formatjs/formatjs/issues/5133) - by @sushichan044
+
 ## [5.4.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@5.4.1...eslint-plugin-formatjs@5.4.2) (2025-10-09)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

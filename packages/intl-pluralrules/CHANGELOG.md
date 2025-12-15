@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.4.6...@formatjs/intl-pluralrules@6.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl-getcanonicallocales:** convert to esm (#5457)
+* **@formatjs/intl-pluralrules:** convert to esm (#5436)
+* **@formatjs/intl-locale:** convert to esm (#5435)
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](https://github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](https://github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
+* **@formatjs/intl-locale:** convert to esm ([#5435](https://github.com/formatjs/formatjs/issues/5435)) ([fc9ae8e](https://github.com/formatjs/formatjs/commit/fc9ae8e20b556108b1b800fb930d70ffc5545041)) - by @longlho
+* **@formatjs/intl-pluralrules:** convert to esm ([#5436](https://github.com/formatjs/formatjs/issues/5436)) ([0ed2ff9](https://github.com/formatjs/formatjs/commit/0ed2ff979aa24088265f953d205a1d0c0029a433)) - by @longlho
+
 ## [5.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@5.4.5...@formatjs/intl-pluralrules@5.4.6) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

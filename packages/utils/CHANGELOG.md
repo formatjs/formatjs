@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.9.4...@formatjs/utils@2.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/utils:** convert to ESM (#5433)
+
+### Features
+
+* **@formatjs/utils:** convert to ESM ([#5433](https://github.com/formatjs/formatjs/issues/5433)) ([72b770d](https://github.com/formatjs/formatjs/commit/72b770dfd8377fa9eb080b069cffbfa601ee147b)) - by @longlho
+
 ## [1.9.4](https://github.com/formatjs/formatjs/compare/@formatjs/utils@1.9.3...@formatjs/utils@1.9.4) (2025-06-15)
 
 **Note:** Version bump only for package @formatjs/utils

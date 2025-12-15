@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/intl-getcanonicallocales",
   "description": "Intl.getCanonicalLocales polyfill",
-  "version": "2.5.6",
+  "version": "3.0.0",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",

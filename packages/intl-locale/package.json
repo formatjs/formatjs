@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/intl-locale",
   "description": "Intl.Locale polyfill",
-  "version": "4.2.13",
+  "version": "5.0.0",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",

@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](/github.com/formatjs/formatjs/compare/react-intl@7.1.14...react-intl@8.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **react-intl:** wrap rich text with Fragment instead of clone, fix #5135 (#5507)
+* **react-intl:** drop support for React 18 and below (#5485)
+* **@formatjs/intl-getcanonicallocales:** convert to esm (#5457)
+* **@formatjs/intl-pluralrules:** convert to esm (#5436)
+* **@formatjs/intl-locale:** convert to esm (#5435)
+* **@formatjs/intl-numberformat:** convert to ESM (#5431)
+* **@formatjs/intl-datetimeformat:** convert to ESM (#5429)
+* **react-intl:** convert to ESM
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** convert to ESM ([#5429](/github.com/formatjs/formatjs/issues/5429)) ([c717c1a](/github.com/formatjs/formatjs/commit/c717c1adee58ad9d7604c74a4bafca2628e2a0a8)) - by @longlho
+* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](/github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](/github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
+* **@formatjs/intl-locale:** convert to esm ([#5435](/github.com/formatjs/formatjs/issues/5435)) ([fc9ae8e](/github.com/formatjs/formatjs/commit/fc9ae8e20b556108b1b800fb930d70ffc5545041)) - by @longlho
+* **@formatjs/intl-pluralrules:** convert to esm ([#5436](/github.com/formatjs/formatjs/issues/5436)) ([0ed2ff9](/github.com/formatjs/formatjs/commit/0ed2ff979aa24088265f953d205a1d0c0029a433)) - by @longlho
+* **react-intl:** convert to ESM ([cb93e7d](/github.com/formatjs/formatjs/commit/cb93e7dc7fd1ba0b2eb697f84a8f00ae4d7f536d)) - by @longlho
+* **react-intl:** drop support for React 18 and below ([#5485](/github.com/formatjs/formatjs/issues/5485)) ([2ea4b7e](/github.com/formatjs/formatjs/commit/2ea4b7e4ffa7df0974632fdbeb632da6dc9c0f6c)) - by @longlho
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** convert to ESM ([#5431](/github.com/formatjs/formatjs/issues/5431)) ([793ae5c](/github.com/formatjs/formatjs/commit/793ae5c586cfa89e19d1a591f0c3d3c86d59ca23)) - by @longlho
+* **react-intl:** move @types/react to peerDep ([eea10ff](/github.com/formatjs/formatjs/commit/eea10ffd62f51d828b941809d31a1b39481cf362)) - by @longlho
+* **react-intl:** wrap rich text with Fragment instead of clone, fix [#5135](/github.com/formatjs/formatjs/issues/5135) ([#5507](/github.com/formatjs/formatjs/issues/5507)) ([27365e8](/github.com/formatjs/formatjs/commit/27365e847ab08828d8f0777a6c4a027b80e76c95)) - by @longlho
+* use global 'time' Formats override with formatTime/FormattedTimeParts 'format' config instead of 'date' Formats, add strict 'format' overrides typing to FormattedDate and FormattedTime ([#5151](/github.com/formatjs/formatjs/issues/5151)) ([3fe4b50](/github.com/formatjs/formatjs/commit/3fe4b50d4b14e04717072217adf8514c580b55b7)) - by @seanmadi
+
 ## [7.1.14](github.com/formatjs/formatjs/compare/react-intl@7.1.13...react-intl@7.1.14) (2025-10-09)
 
 **Note:** Version bump only for package react-intl

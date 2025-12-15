@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.15.6...@formatjs/intl-numberformat@9.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **react-intl:** drop support for React 18 and below (#5485)
+* **@formatjs/intl-getcanonicallocales:** convert to esm (#5457)
+* **@formatjs/intl-pluralrules:** convert to esm (#5436)
+* **@formatjs/intl-locale:** convert to esm (#5435)
+* **@formatjs/intl-numberformat:** convert to ESM (#5431)
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](https://github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](https://github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
+* **@formatjs/intl-locale:** convert to esm ([#5435](https://github.com/formatjs/formatjs/issues/5435)) ([fc9ae8e](https://github.com/formatjs/formatjs/commit/fc9ae8e20b556108b1b800fb930d70ffc5545041)) - by @longlho
+* **@formatjs/intl-pluralrules:** convert to esm ([#5436](https://github.com/formatjs/formatjs/issues/5436)) ([0ed2ff9](https://github.com/formatjs/formatjs/commit/0ed2ff979aa24088265f953d205a1d0c0029a433)) - by @longlho
+* **react-intl:** drop support for React 18 and below ([#5485](https://github.com/formatjs/formatjs/issues/5485)) ([2ea4b7e](https://github.com/formatjs/formatjs/commit/2ea4b7e4ffa7df0974632fdbeb632da6dc9c0f6c)) - by @longlho
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** convert to ESM ([#5431](https://github.com/formatjs/formatjs/issues/5431)) ([793ae5c](https://github.com/formatjs/formatjs/commit/793ae5c586cfa89e19d1a591f0c3d3c86d59ca23)) - by @longlho
+
 ## [8.15.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@8.15.5...@formatjs/intl-numberformat@8.15.6) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

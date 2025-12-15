@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](/github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.6...@formatjs/ecma402-abstract@3.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/ecma402-abstract:** convert to esm (#5466)
+
+### Features
+
+* **@formatjs/ecma402-abstract:** convert to esm ([#5466](/github.com/formatjs/formatjs/issues/5466)) ([0911508](/github.com/formatjs/formatjs/commit/0911508aeabd9331ded8e75cd03182d814849bbe)) - by @longlho
+
 ## [2.3.6](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.5...@formatjs/ecma402-abstract@2.3.6) (2025-10-09)
 
 ### Bug Fixes

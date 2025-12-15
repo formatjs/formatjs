@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.4.4...@formatjs/cli-lib@8.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/icu-messageformat-parser:** convert to esm (#5464)
+* **@formatjs/cli-lib:** convert to ESM only (#5204)
+* **babel-plugin-formatjs:** convert to ESM only (breaking change) (#5202)
+
+### Features
+
+* **@formatjs/cli-lib:** convert to ESM only ([#5204](https://github.com/formatjs/formatjs/issues/5204)) ([2944a84](https://github.com/formatjs/formatjs/commit/2944a84f22907cffe8a2200d9bb282fbdf557f9a)), closes [#5152](https://github.com/formatjs/formatjs/issues/5152) [#4764](https://github.com/formatjs/formatjs/issues/4764) - by @longlho
+* **@formatjs/icu-messageformat-parser:** convert to esm ([#5464](https://github.com/formatjs/formatjs/issues/5464)) ([32a751b](https://github.com/formatjs/formatjs/commit/32a751bbfd7056383839be1412cdaeef6a56334b)) - by @longlho
+* **babel-plugin-formatjs:** convert to ESM only (breaking change) ([#5202](https://github.com/formatjs/formatjs/issues/5202)) ([7e13d3a](https://github.com/formatjs/formatjs/commit/7e13d3a82810badce3390f03b46d5e502c9cf538)) - by @longlho
+* **eslint-plugin-formatjs:** add --extra-keys option to verify command ([#5160](https://github.com/formatjs/formatjs/issues/5160)) ([ea126f3](https://github.com/formatjs/formatjs/commit/ea126f3fa85dea4eec63afa1a31a28d7a9894c6e)), closes [/#diff-47c0f7d5edffe7c1402eb3f46954c530852808cb1d30aff6c4d377feef7395e8R4-R17](https://github.com/formatjs///issues/diff-47c0f7d5edffe7c1402eb3f46954c530852808cb1d30aff6c4d377feef7395e8R4-R17) [/#diff-47c0f7d5edffe7c1402eb3f46954c530852808cb1d30aff6c4d377feef7395e8R41-R47](https://github.com/formatjs///issues/diff-47c0f7d5edffe7c1402eb3f46954c530852808cb1d30aff6c4d377feef7395e8R41-R47) [/#diff-813b7398f751f0aa8ca2d019bd3e3b92d3c129bbef931e32ae5ca612997e2cbdR62-R77](https://github.com/formatjs///issues/diff-813b7398f751f0aa8ca2d019bd3e3b92d3c129bbef931e32ae5ca612997e2cbdR62-R77) [/#diff-3ff79296dd3ff364525d2c8ccfa7c2c0bbafc6e2d848abc5ab41f8332d874a3cR1-R3](https://github.com/formatjs///issues/diff-3ff79296dd3ff364525d2c8ccfa7c2c0bbafc6e2d848abc5ab41f8332d874a3cR1-R3) [/#diff-34fefbfca205e2add569021f7a47ca1491b5a0f07b4640bc438fd1df2bde307aR1-R3](https://github.com/formatjs///issues/diff-34fefbfca205e2add569021f7a47ca1491b5a0f07b4640bc438fd1df2bde307aR1-R3) [/#diff-d3081b5949345e0ca8c2afff4813eb2b104c327e43946fe086f8798bd5b8c70eR1-R4](https://github.com/formatjs///issues/diff-d3081b5949345e0ca8c2afff4813eb2b104c327e43946fe086f8798bd5b8c70eR1-R4) - by @msobiecki
+
 ## [7.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@7.4.3...@formatjs/cli-lib@7.4.4) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/cli-lib

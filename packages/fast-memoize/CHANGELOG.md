@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@2.2.7...@formatjs/fast-memoize@3.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/fast-memoize:** convert to esm (#5467)
+
+### Features
+
+* **@formatjs/fast-memoize:** convert to esm ([#5467](https://github.com/formatjs/formatjs/issues/5467)) ([fd0cd2b](https://github.com/formatjs/formatjs/commit/fd0cd2b4e898dc26d97a4381509da8c0d47829b6)) - by @longlho
+
+### Bug Fixes
+
+* **@formatjs/fast-memoize:** fix type ([b05e217](https://github.com/formatjs/formatjs/commit/b05e217c01cb89a80eefb1d26b2c3f239c7b0c82)) - by @longlho
+
 ## [2.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@2.2.6...@formatjs/fast-memoize@2.2.7) (2025-03-23)
 
 **Note:** Version bump only for package @formatjs/fast-memoize

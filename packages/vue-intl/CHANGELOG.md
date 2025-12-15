@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.0](https://github.com/formatjs/formatjs/compare/vue-intl@6.5.27...vue-intl@7.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **vue-intl:** convert to ESM
+
+### Features
+
+* **vue-intl:** convert to ESM ([3d498b5](https://github.com/formatjs/formatjs/commit/3d498b5cde188724ff0ea64701e59fbde312745c)) - by @longlho
+
 ## [6.5.27](https://github.com/formatjs/formatjs/compare/vue-intl@6.5.26...vue-intl@6.5.27) (2025-10-09)
 
 **Note:** Version bump only for package vue-intl

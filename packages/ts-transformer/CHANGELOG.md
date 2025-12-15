@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.14.2...@formatjs/ts-transformer@4.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/ts-transformer:** convert to ESM only (#5208)
+
+### Features
+
+* **@formatjs/ts-transformer:** convert to ESM only ([#5208](https://github.com/formatjs/formatjs/issues/5208)) ([c00f9f3](https://github.com/formatjs/formatjs/commit/c00f9f3199c3a21c74533175918499084bb6d0d1)) - by @longlho
+
 ## [3.14.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.14.1...@formatjs/ts-transformer@3.14.2) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

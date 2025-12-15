@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.41...babel-plugin-formatjs@11.0.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **babel-plugin-formatjs:** convert to ESM only (breaking change) (#5202)
+
+### Features
+
+* **babel-plugin-formatjs:** convert to ESM only (breaking change) ([#5202](https://github.com/formatjs/formatjs/issues/5202)) ([7e13d3a](https://github.com/formatjs/formatjs/commit/7e13d3a82810badce3390f03b46d5e502c9cf538)) - by @longlho
+
+### Bug Fixes
+
+* **babel-plugin-formatjs:** small ext miss ([#5211](https://github.com/formatjs/formatjs/issues/5211)) ([c9f4370](https://github.com/formatjs/formatjs/commit/c9f4370080a8124ca6968e223b79458e65ae242b)) - by @longlho
+
 ## [10.5.41](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@10.5.40...babel-plugin-formatjs@10.5.41) (2025-10-09)
 
 **Note:** Version bump only for package babel-plugin-formatjs

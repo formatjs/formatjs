@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.6.2...@formatjs/intl-localematcher@0.7.0) (2025-12-15)
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl-localematcher:** convert to esm (#5468)
+
+### Features
+
+* **@formatjs/intl-localematcher:** convert to esm ([#5468](https://github.com/formatjs/formatjs/issues/5468)) ([f970173](https://github.com/formatjs/formatjs/commit/f97017375f33d6eec70b322d95ee364a3e2f3b13)) - by @longlho
+
 ## [0.6.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.6.1...@formatjs/intl-localematcher@0.6.2) (2025-10-03)
 
 **Note:** Version bump only for package @formatjs/intl-localematcher
