@@ -39,11 +39,6 @@ export const DEFAULT_INTL_CONFIG: DefaultIntlConfig = {
   textComponent: React.Fragment,
 }
 
-const toKeyedReactNode = (reactNode: React.ReactNode, key: number) =>
-  React.isValidElement(reactNode)
-    ? React.cloneElement(reactNode, {key})
-    : reactNode
-
 /**
  * Builds an array of {@link React.ReactNode}s with index-based keys, similar to
  * {@link React.Children.toArray}. However, this function tells React that it
@@ -52,14 +47,21 @@ const toKeyedReactNode = (reactNode: React.ReactNode, key: number) =>
  * React doesn't recommend doing this because it makes reordering inefficient,
  * but we mostly need this for message chunks, which don't tend to reorder to
  * begin with.
+ *
  */
-export const toKeyedReactNodeArray: typeof React.Children.toArray = children =>
-  /**
-   * Note: {@link React.Children.map} will add its own index-based prefix to
-   * every key anyway, so the auto-injected one doesn't even have to be unique.
-   * This basically just tells React that it's explicit/intentional.
-   */
-  React.Children.map(children, toKeyedReactNode) ?? []
+export const toKeyedReactNodeArray: typeof React.Children.toArray =
+  children => {
+    const childrenArray = React.Children.toArray(children)
+
+    return childrenArray.map((child, index) => {
+      // For React elements, wrap in a keyed Fragment
+      // This creates a new element with a key rather than trying to add one after creation
+      if (React.isValidElement(child)) {
+        return <React.Fragment key={index}>{child}</React.Fragment>
+      }
+      return child
+    })
+  }
 
 /**
  * Takes a `formatXMLElementFn`, and composes it in function, which passes
