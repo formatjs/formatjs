@@ -1,5 +1,5 @@
 import Main from './index.js'
 import ReactDOM from 'react-dom'
-import React from 'react'
+import * as React from 'react'
 
 ReactDOM.render(<Main />, document.getElementById('main'))

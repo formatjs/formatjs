@@ -4,9 +4,9 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESM_ESNEXT_TSCONFIG", "ESM_TSCONFIG", "NODE_TSCONFIG")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG")
 
-def ts_compile_node(name, srcs, deps = [], data = [], skip_cjs = False, visibility = None):
+def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
     """Compile TS with prefilled args, specifically for Node tooling.
 
     Args:
@@ -14,74 +14,44 @@ def ts_compile_node(name, srcs, deps = [], data = [], skip_cjs = False, visibili
         srcs: src files
         deps: deps
         data: add data deps like internal transitive deps
-        skip_esm_esnext: whether to skip building esnext
-        skip_cjs: whether to skip building cjs
         visibility: visibility
     """
     deps = deps + ["//:node_modules/tslib"]
-    esm_out_dir = "lib_esnext" if not skip_cjs else None
-
-    if not skip_cjs:
-        ts_project(
-            name = "%s-base" % name,
-            srcs = srcs,
-            declaration = True,
-            tsconfig = NODE_TSCONFIG,
-            resolve_json_module = True,
-            deps = deps,
-        )
 
     ts_project(
         name = "%s-esm-esnext" % name,
         srcs = srcs,
         declaration = True,
-        out_dir = esm_out_dir,
-        tsconfig = ESM_ESNEXT_TSCONFIG if not skip_cjs else (ESM_ESNEXT_TSCONFIG | {
-            "compilerOptions": ESM_ESNEXT_TSCONFIG["compilerOptions"] | {
-                "allowSyntheticDefaultImports": False,
-            },
-        }),
+        tsconfig = ESNEXT_TSCONFIG,
         resolve_json_module = True,
         deps = deps,
     )
 
     js_library(
         name = name,
-        srcs = [":%s-esm-esnext" % name, "package.json"] + ([":%s-base" % name] if not skip_cjs else []),
+        srcs = [":%s-esm-esnext" % name, "package.json"],
         data = data,
         visibility = visibility,
     )
 
-def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_esm_esnext = True, visibility = None):
+def ts_compile(name, srcs, deps = [], skip_esm = True, skip_esm_esnext = True, visibility = None):
     """Compile TS with prefilled args.
 
     Args:
         name: target name
         srcs: src files
         deps: deps
-        skip_cjs: skip building CJS bundle
         skip_esm: skip building ESM bundle
         skip_esm_esnext: skip building the ESM ESNext bundle
         visibility: visibility
     """
     deps = deps + ["//:node_modules/tslib"]
-    esm_out_dir = "lib" if not skip_cjs else None
-    if not skip_cjs:
-        ts_project(
-            name = "%s-base" % name,
-            srcs = srcs,
-            declaration = True,
-            tsconfig = BASE_TSCONFIG,
-            resolve_json_module = True,
-            deps = deps,
-        )
     if not skip_esm:
         ts_project(
             name = "%s-esm" % name,
             srcs = srcs,
             declaration = True,
-            out_dir = esm_out_dir,
-            tsconfig = ESM_TSCONFIG,
+            tsconfig = BASE_TSCONFIG,
             resolve_json_module = True,
             deps = deps,
         )
@@ -91,14 +61,14 @@ def ts_compile(name, srcs, deps = [], skip_cjs = False, skip_esm = True, skip_es
             srcs = srcs,
             declaration = True,
             out_dir = "lib_esnext",
-            tsconfig = ESM_ESNEXT_TSCONFIG,
+            tsconfig = ESNEXT_TSCONFIG,
             resolve_json_module = True,
             deps = deps,
         )
 
     js_library(
         name = name,
-        srcs = ([":%s-base" % name] if not skip_cjs else []) + ([":%s-esm" % name] if not skip_esm else []) + ["package.json"],
+        srcs = ([":%s-esm" % name] if not skip_esm else []) + ["package.json"],
         visibility = visibility,
     )
 

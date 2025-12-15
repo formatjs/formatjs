@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import './styles.css'
 import {IntlProvider, FormattedMessage, useIntl} from 'react-intl'
 
