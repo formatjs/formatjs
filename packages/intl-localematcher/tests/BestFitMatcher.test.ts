@@ -1,4 +1,4 @@
-import {BestFitMatcher} from '../abstract/BestFitMatcher'
+import {BestFitMatcher} from '../abstract/BestFitMatcher.js'
 import {expect, test} from 'vitest'
 test('BestFitMatcher', function () {
   expect(BestFitMatcher(['fr', 'en'], ['fr-XX', 'en'], () => 'en')).toEqual({

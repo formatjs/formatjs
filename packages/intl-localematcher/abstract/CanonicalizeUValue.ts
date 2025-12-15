@@ -1,4 +1,4 @@
-import {invariant} from './utils'
+import {invariant} from './utils.js'
 
 export function CanonicalizeUValue(ukey: string, uvalue: string): string {
   // TODO: Implement algorithm for CanonicalizeUValue per https://tc39.es/ecma402/#sec-canonicalizeuvalue

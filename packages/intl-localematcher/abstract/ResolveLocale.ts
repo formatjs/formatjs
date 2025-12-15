@@ -1,10 +1,10 @@
-import {BestFitMatcher} from './BestFitMatcher'
-import {CanonicalizeUValue} from './CanonicalizeUValue'
-import {InsertUnicodeExtensionAndCanonicalize} from './InsertUnicodeExtensionAndCanonicalize'
-import {LookupMatcher} from './LookupMatcher'
-import {UnicodeExtensionComponents} from './UnicodeExtensionComponents'
-import {Keyword, LookupMatcherResult} from './types'
-import {invariant} from './utils'
+import {BestFitMatcher} from './BestFitMatcher.js'
+import {CanonicalizeUValue} from './CanonicalizeUValue.js'
+import {InsertUnicodeExtensionAndCanonicalize} from './InsertUnicodeExtensionAndCanonicalize.js'
+import {LookupMatcher} from './LookupMatcher.js'
+import {UnicodeExtensionComponents} from './UnicodeExtensionComponents.js'
+import {Keyword, LookupMatcherResult} from './types.js'
+import {invariant} from './utils.js'
 
 export interface ResolveLocaleResult {
   locale: string
