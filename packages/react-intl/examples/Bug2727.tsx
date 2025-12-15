@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import * as React from 'react'
+import {useState} from 'react'
 import {IntlProvider, FormattedRelativeTime, useIntl} from 'react-intl'
 
 const getRelativeTime = (date: Date) =>

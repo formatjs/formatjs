@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {Typography, Breadcrumbs, Link} from '@material-ui/core'
 
 function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {

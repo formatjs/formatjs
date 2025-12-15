@@ -273,7 +273,6 @@ SRC_DEPS = [
 ts_compile(
     name = "dist",
     srcs = [":srcs"],
-    skip_cjs = True,
     skip_esm = False,
     deps = SRC_DEPS,
 )
@@ -281,7 +280,6 @@ ts_compile(
 vitest(
     name = "unit_test",
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
-    skip_typecheck = True,
     deps = SRC_DEPS + [
         ":node_modules/@formatjs/intl-getcanonicallocales",
         ":node_modules/@formatjs/intl-locale",
@@ -342,7 +340,14 @@ ts_script(
     name = "tests-locale-data-%s" % locale,
     srcs = ["cldr-raw/%s.js" % locale],
     outs = ["tests-locale-data/%s.ts" % locale],
-    cmd = "printf \"%s %s\n\" \"/* @generated */\n// prettier-ignore\n// @ts-nocheck\nexport default\" \"$$(cat $<)\" > $@",
+    cmd = """
+    printf \"%s %s\nexport default data\" \"\
+/* @generated */\n\
+// prettier-ignore\n\
+// @ts-nocheck\n\
+type LocaleData = {data: {categories: {cardinal: string[]; ordinal: string[];}; fn: (n: number | string, ord?: boolean | undefined) => \"zero\" | \"one\" | \"two\" | \"few\" | \"many\" | \"other\";}; locale: string;};\n\
+const data:LocaleData = \" \"$$(cat $<)\" > $@
+    """,
 ) for locale in TEST_LOCALES]
 
 generate_src_file(
