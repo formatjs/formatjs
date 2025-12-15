@@ -157,7 +157,8 @@
     "patchedDependencies": {
       "make-plural-compiler@5.1.0": "patches/make-plural-compiler@5.1.0.patch",
       "@commitlint/rules": "patches/@commitlint__rules.patch",
-      "@vue/compiler-sfc@3.5.13": "patches/@vue+compiler-sfc@3.5.13.patch"
+      "@vue/compiler-sfc@3.5.13": "patches/@vue+compiler-sfc@3.5.13.patch",
+      "@lerna-lite/version": "patches/@lerna-lite__version.patch"
     }
   },
   "repository": "formatjs/formatjs",
