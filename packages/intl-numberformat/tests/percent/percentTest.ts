@@ -1,7 +1,7 @@
 import {describe, it, beforeAll, expect} from 'vitest'
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import '@formatjs/intl-pluralrules/polyfill.js'
-import {NumberFormat} from '../src/core'
+import {NumberFormat} from '../../src/core'
 
 const SIGN_DISPLAYS: Array<NumberFormatOptions['signDisplay']> = [
   'auto',
@@ -42,7 +42,7 @@ export function test(locale: string, localeData?: any): void {
       'notation=%s, signDisplay=%s, compactDisplay=%s',
       (notation, signDisplay, compactDisplay) => {
         const numberFormat = new NumberFormat(locale, {
-          style: 'decimal',
+          style: 'percent',
           signDisplay,
           notation,
           compactDisplay,
@@ -51,7 +51,7 @@ export function test(locale: string, localeData?: any): void {
 
         expect(numberFormat.formatRange(10000, 20000)).toMatchSnapshot()
 
-        expect(numberFormat.formatRange(10000, 20000)).toMatchSnapshot()
+        expect(numberFormat.formatRangeToParts(10000, 20000)).toMatchSnapshot()
       }
     )
   })

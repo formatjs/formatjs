@@ -81,7 +81,8 @@ SRCS = glob(
 )
 
 TESTS = glob([
-    "tests/*.test.ts",
+    "tests/**/*.test.ts",
+    "tests/**/*Test.ts",
 ])
 
 SRC_DEPS = [
@@ -160,8 +161,12 @@ LOCALE_TEST_TYPES = [
     [genrule(
         name = "%s_%s_test_gen" % (type, locale),
         srcs = [],
-        outs = ["tests/%s_%s.test.ts" % (type, locale)],
-        cmd = "echo 'import \"@formatjs/intl-pluralrules/locale-data/%s\"; import { test } from \"./%sTest\"; import * as localeData from \"./locale-data/%s.json\"; test(\"%s\", localeData);' > $@" % (
+        outs = ["%s/%s.test.ts" % (type, locale)],
+        cmd = """
+        echo 'import \"@formatjs/intl-pluralrules/locale-data/%s.js\"\n\
+import { test } from \"./%sTest\"\n\
+import * as localeData from \"../locale-data/%s.json\"\n\
+test(\"%s\", localeData);' > $@""" % (
             locale.split("-")[0],
             type,
             locale,
@@ -171,15 +176,21 @@ LOCALE_TEST_TYPES = [
     for type in LOCALE_TEST_TYPES
 ]
 
+write_source_files(
+    name = "tests_gen",
+    files = {
+        "tests/%s/%s.generated.test.ts" % (type, locale): "%s_%s_test_gen" % (type, locale)
+        for type in LOCALE_TEST_TYPES
+        for locale in UNIT_TEST_LOCALES
+    },
+)
+
 vitest(
-    name = "all_tests",
+    name = "unit_tests",
     size = "large",
     srcs = [":srcs"] +
-           ["tests/%sTest.ts" % type for type in LOCALE_TEST_TYPES] +
-           [":%s_%s_test_gen" % (type, locale) for type in LOCALE_TEST_TYPES for locale in UNIT_TEST_LOCALES] +
            TEST_LOCALE_DATA +
            TESTS,
-    snapshots = ["tests/__snapshots__/%s_%s.test.ts.snap" % (type, locale) for type in LOCALE_TEST_TYPES for locale in UNIT_TEST_LOCALES],
     deps = TEST_DEPS,
 )
 
