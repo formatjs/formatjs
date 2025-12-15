@@ -1,5 +1,5 @@
-import {LookupMatcherResult} from './types'
-import {UNICODE_EXTENSION_SEQUENCE_REGEX, findBestMatch} from './utils'
+import {LookupMatcherResult} from './types.js'
+import {UNICODE_EXTENSION_SEQUENCE_REGEX, findBestMatch} from './utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-bestfitmatcher

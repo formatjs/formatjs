@@ -1,5 +1,5 @@
-import {Keyword} from './types'
-import {invariant} from './utils'
+import {Keyword} from './types.js'
+import {invariant} from './utils.js'
 
 export function UnicodeExtensionComponents(extension: string): {
   attributes: string[]
