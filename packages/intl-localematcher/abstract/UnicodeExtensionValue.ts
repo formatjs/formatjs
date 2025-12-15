@@ -1,4 +1,4 @@
-import {invariant} from './utils'
+import {invariant} from './utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-unicodeextensionvalue

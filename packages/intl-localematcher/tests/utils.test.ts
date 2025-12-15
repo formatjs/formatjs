@@ -1,4 +1,4 @@
-import {findBestMatch, findMatchingDistance} from '../abstract/utils'
+import {findBestMatch, findMatchingDistance} from '../abstract/utils.js'
 import {expect, test} from 'vitest'
 test('findMatchingDistance', () => {
   expect(findMatchingDistance('es-CO', 'es')).toBe(49)
