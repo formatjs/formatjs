@@ -44,7 +44,6 @@ SRC_DEPS = [
 ts_compile_node(
     name = "dist",
     srcs = [":srcs"],
-    skip_cjs = True,
     deps = SRC_DEPS,
 )
 
