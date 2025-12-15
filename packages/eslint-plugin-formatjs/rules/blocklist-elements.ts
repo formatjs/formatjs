@@ -131,7 +131,7 @@ const createRule = ESLintUtils.RuleCreator(
 
 export const rule: ESLintUtils.RuleModule<
   'blocklist',
-  [],
+  Element[][],
   unknown,
   ESLintUtils.RuleListener
 > = createRule({

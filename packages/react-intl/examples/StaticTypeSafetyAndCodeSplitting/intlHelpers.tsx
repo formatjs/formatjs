@@ -26,9 +26,9 @@ export function importMessages(
 ): Promise<LocaleMessages> {
   switch (locale) {
     case 'en':
-      return import('./en.json').then(p => p.default)
+      return import('./en.json') as Promise<LocaleMessages>
     case 'it':
-      return import('./it.json').then(p => p.default)
+      return import('./it.json') as Promise<LocaleMessages>
   }
 }
 

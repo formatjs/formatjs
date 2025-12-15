@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {defineMessages, injectIntl, IntlShape, useIntl} from '../../'
 import {describe, it} from 'vitest'
 describe('types', () => {

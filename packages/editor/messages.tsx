@@ -1,7 +1,7 @@
 import {List, ListItem, Box} from '@material-ui/core'
 import {CheckCircle} from '@material-ui/icons'
 import {Skeleton} from '@material-ui/lab'
-import React from 'react'
+import * as React from 'react'
 import {TranslatedMessage} from './types.js'
 import Message from './message.js'
 export interface Props {
