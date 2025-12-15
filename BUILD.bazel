@@ -197,23 +197,9 @@ multirun(
     ],
 )
 
-CONFIG_FILES = [
-    "package.json",
-    "tsconfig.json",
-]
-
-[
-    copy_to_bin(
-        name = f.rsplit(".", 1)[0],
-        srcs = [f],
-        visibility = ["//visibility:public"],
-    )
-    for f in CONFIG_FILES
-]
-
 copy_to_bin(
-    name = "swcrc",
-    srcs = [".swcrc"],
+    name = "tsconfig",
+    srcs = ["tsconfig.json"],
     visibility = ["//visibility:public"],
 )
 
