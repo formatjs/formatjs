@@ -1,5 +1,5 @@
-import Decimal from 'decimal.js'
-import {ToPrimitive} from './262'
+import {Decimal} from 'decimal.js'
+import {ToPrimitive} from './262.js'
 
 export function ToIntlMathematicalValue(input: unknown): Decimal {
   let primValue = ToPrimitive(input, 'number')

@@ -1,4 +1,4 @@
-import {LocaleData} from './core'
+import {LocaleData} from './core.js'
 
 type LanguageTag = string
 type RegionCode = string

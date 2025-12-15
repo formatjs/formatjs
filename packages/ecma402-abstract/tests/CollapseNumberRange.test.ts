@@ -1,5 +1,5 @@
-import {CollapseNumberRange} from '../NumberFormat/CollapseNumberRange'
-import {getInternalSlots} from './utils'
+import {CollapseNumberRange} from '../NumberFormat/CollapseNumberRange.js'
+import {getInternalSlots} from './utils.js'
 import {describe, expect, test} from 'vitest'
 const numberFormat: Intl.NumberFormat = new Intl.NumberFormat('it')
 

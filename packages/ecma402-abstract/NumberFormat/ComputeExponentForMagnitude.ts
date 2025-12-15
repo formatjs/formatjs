@@ -1,6 +1,6 @@
-import Decimal from 'decimal.js'
-import {DecimalFormatNum, NumberFormatInternal} from '../types/number'
-import {invariant} from '../utils'
+import {Decimal} from 'decimal.js'
+import {DecimalFormatNum, NumberFormatInternal} from '../types/number.js'
+import {invariant} from '../utils.js'
 Decimal.set({
   toExpPos: 100,
 })

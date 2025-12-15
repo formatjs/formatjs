@@ -1,6 +1,6 @@
 import {Decimal} from 'decimal.js'
-import {ZERO} from './constants'
-import {invariant} from './utils'
+import {ZERO} from './constants.js'
+import {invariant} from './utils.js'
 /**
  * https://tc39.es/ecma262/#sec-tostring
  */

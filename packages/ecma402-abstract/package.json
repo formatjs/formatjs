@@ -4,8 +4,12 @@
   "version": "2.3.6",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com",
+  "type": "module",
   "sideEffects": false,
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
   "dependencies": {
     "@formatjs/fast-memoize": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
@@ -26,7 +30,5 @@
     "javascript",
     "relative"
   ],
-  "main": "index.js",
-  "module": "lib/index.js",
   "repository": "git@github.com:formatjs/formatjs.git"
 }

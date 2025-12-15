@@ -2,7 +2,7 @@ import {
   NumberFormatInternal,
   NumberFormatPart,
   NumberFormatPartTypes,
-} from '../types/number'
+} from '../types/number.js'
 
 const PART_TYPES_TO_COLLAPSE = new Set<NumberFormatPartTypes>([
   'unit',
