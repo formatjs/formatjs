@@ -8,7 +8,7 @@ const packages = globSync('./packages/*/package.json').map(
 )
 
 export default {
-  extends: ['@commitlint/config-conventional'],
+  extends: ['@commitlint/config-angular'],
   rules: {
     // Cheatsheet: https://commitlint.js.org/#/reference-rules
     // Sweet Jesus why is disabling a rule syntax so verbose??
