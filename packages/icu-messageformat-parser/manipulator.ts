@@ -11,7 +11,7 @@ import {
   PluralOrSelectOption,
   SelectElement,
   TYPE,
-} from './types'
+} from './types.js'
 
 function cloneDeep<T>(obj: T): T {
   if (Array.isArray(obj)) {

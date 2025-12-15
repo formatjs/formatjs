@@ -1,6 +1,6 @@
-import {parse} from '..'
-import {hoistSelectors, isStructurallySame} from '../manipulator'
-import {printAST} from '../printer'
+import {parse} from '../index.js'
+import {hoistSelectors, isStructurallySame} from '../manipulator.js'
+import {printAST} from '../printer.js'
 import {expect, test} from 'vitest'
 test('should hoist 1 plural', function () {
   expect(

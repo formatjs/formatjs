@@ -1,5 +1,5 @@
-import {ErrorKind} from './error'
-import {Parser, ParserOptions} from './parser'
+import {ErrorKind} from './error.js'
+import {Parser, ParserOptions} from './parser.js'
 import {
   isDateElement,
   isDateTimeSkeleton,
@@ -10,7 +10,7 @@ import {
   isTagElement,
   isTimeElement,
   MessageFormatElement,
-} from './types'
+} from './types.js'
 
 function pruneLocation(els: MessageFormatElement[]): void {
   els.forEach(el => {
@@ -57,8 +57,8 @@ export function parse(
   }
   return result.val
 }
-export * from './types'
+export * from './types.js'
 export type {ParserOptions}
 // only for testing
 export const _Parser: typeof Parser = Parser
-export {isStructurallySame} from './manipulator'
+export {isStructurallySame} from './manipulator.js'

@@ -1,4 +1,4 @@
-import {timeData} from './time-data.generated'
+import {timeData} from './time-data.generated.js'
 
 /**
  * Returns the best matching date time pattern if a date time skeleton
