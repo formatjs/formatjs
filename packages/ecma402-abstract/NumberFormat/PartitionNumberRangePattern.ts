@@ -1,10 +1,10 @@
-import Decimal from 'decimal.js'
-import {NumberFormatInternal, NumberFormatPart} from '../types/number'
-import {invariant} from '../utils'
-import {CollapseNumberRange} from './CollapseNumberRange'
-import {FormatApproximately} from './FormatApproximately'
-import {FormatNumeric} from './FormatNumeric'
-import {PartitionNumberPattern} from './PartitionNumberPattern'
+import {Decimal} from 'decimal.js'
+import {NumberFormatInternal, NumberFormatPart} from '../types/number.js'
+import {invariant} from '../utils.js'
+import {CollapseNumberRange} from './CollapseNumberRange.js'
+import {FormatApproximately} from './FormatApproximately.js'
+import {FormatNumeric} from './FormatNumeric.js'
+import {PartitionNumberPattern} from './PartitionNumberPattern.js'
 
 /**
  * https://tc39.es/ecma402/#sec-partitionnumberrangepattern

@@ -1,8 +1,11 @@
-import Decimal from 'decimal.js'
-import {ZERO} from '../constants'
-import {RawNumberFormatResult, UnsignedRoundingModeType} from '../types/number'
-import {invariant, repeat} from '../utils'
-import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode'
+import {Decimal} from 'decimal.js'
+import {ZERO} from '../constants.js'
+import {
+  RawNumberFormatResult,
+  UnsignedRoundingModeType,
+} from '../types/number.js'
+import {invariant, repeat} from '../utils.js'
+import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode.js'
 
 //IMPL: Helper function to find n1, e1, and r1
 function findN1E1R1(x: Decimal, p: number) {

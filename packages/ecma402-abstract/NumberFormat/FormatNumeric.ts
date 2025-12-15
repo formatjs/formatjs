@@ -1,6 +1,6 @@
-import Decimal from 'decimal.js'
-import {NumberFormatInternal} from '../types/number'
-import {PartitionNumberPattern} from './PartitionNumberPattern'
+import {Decimal} from 'decimal.js'
+import {NumberFormatInternal} from '../types/number.js'
+import {PartitionNumberPattern} from './PartitionNumberPattern.js'
 
 export function FormatNumeric(
   internalSlots: NumberFormatInternal,

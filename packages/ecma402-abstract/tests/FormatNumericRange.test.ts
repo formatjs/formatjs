@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js'
-import {FormatNumericRange} from '../NumberFormat/FormatNumericRange'
-import {getInternalSlots} from './utils'
+import {FormatNumericRange} from '../NumberFormat/FormatNumericRange.js'
+import {getInternalSlots} from './utils.js'
 import {describe, expect, it} from 'vitest'
 describe('FormatNumericRange', () => {
   const numberFormat: Intl.NumberFormat = new Intl.NumberFormat('it')

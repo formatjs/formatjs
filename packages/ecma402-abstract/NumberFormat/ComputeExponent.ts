@@ -1,7 +1,7 @@
-import Decimal from 'decimal.js'
-import {NumberFormatInternal} from '../types/number'
-import {ComputeExponentForMagnitude} from './ComputeExponentForMagnitude'
-import {FormatNumericToString} from './FormatNumericToString'
+import {Decimal} from 'decimal.js'
+import {NumberFormatInternal} from '../types/number.js'
+import {ComputeExponentForMagnitude} from './ComputeExponentForMagnitude.js'
+import {FormatNumericToString} from './FormatNumericToString.js'
 /**
  * The abstract operation ComputeExponent computes an exponent (power of ten) by which to scale x
  * according to the number formatting settings. It handles cases such as 999 rounding up to 1000,

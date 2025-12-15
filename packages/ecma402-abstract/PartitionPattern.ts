@@ -1,4 +1,4 @@
-import {invariant} from './utils'
+import {invariant} from './utils.js'
 
 /**
  * Partition a pattern into a list of literals and placeholders

@@ -1,12 +1,12 @@
-import {DefaultNumberOption} from '../DefaultNumberOption'
-import {GetNumberOption} from '../GetNumberOption'
-import {GetOption} from '../GetOption'
+import {DefaultNumberOption} from '../DefaultNumberOption.js'
+import {GetNumberOption} from '../GetNumberOption.js'
+import {GetOption} from '../GetOption.js'
 import {
   NumberFormatDigitInternalSlots,
   NumberFormatDigitOptions,
   NumberFormatNotation,
-} from '../types/number'
-import {invariant} from '../utils'
+} from '../types/number.js'
+import {invariant} from '../utils.js'
 
 //IMPL: Valid rounding increments as per implementation
 const VALID_ROUNDING_INCREMENTS = new Set([

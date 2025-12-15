@@ -1,13 +1,13 @@
-import Decimal from 'decimal.js'
-import {NEGATIVE_ZERO, ZERO} from '../constants'
+import {Decimal} from 'decimal.js'
+import {NEGATIVE_ZERO, ZERO} from '../constants.js'
 import {
   NumberFormatDigitInternalSlots,
   RawNumberFormatResult,
-} from '../types/number'
-import {invariant, repeat} from '../utils'
-import {GetUnsignedRoundingMode} from './GetUnsignedRoundingMode'
-import {ToRawFixed} from './ToRawFixed'
-import {ToRawPrecision} from './ToRawPrecision'
+} from '../types/number.js'
+import {invariant, repeat} from '../utils.js'
+import {GetUnsignedRoundingMode} from './GetUnsignedRoundingMode.js'
+import {ToRawFixed} from './ToRawFixed.js'
+import {ToRawPrecision} from './ToRawPrecision.js'
 
 /**
  * https://tc39.es/ecma402/#sec-formatnumberstring

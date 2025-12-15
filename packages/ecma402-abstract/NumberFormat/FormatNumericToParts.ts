@@ -1,7 +1,7 @@
-import Decimal from 'decimal.js'
-import {ArrayCreate} from '../262'
-import {NumberFormatInternal, NumberFormatPart} from '../types/number'
-import {PartitionNumberPattern} from './PartitionNumberPattern'
+import {Decimal} from 'decimal.js'
+import {ArrayCreate} from '../262.js'
+import {NumberFormatInternal, NumberFormatPart} from '../types/number.js'
+import {PartitionNumberPattern} from './PartitionNumberPattern.js'
 
 export function FormatNumericToParts(
   nf: Intl.NumberFormat,
