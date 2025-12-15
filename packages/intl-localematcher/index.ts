@@ -1,5 +1,5 @@
-import {CanonicalizeLocaleList} from './abstract/CanonicalizeLocaleList'
-import {ResolveLocale} from './abstract/ResolveLocale'
+import {CanonicalizeLocaleList} from './abstract/CanonicalizeLocaleList.js'
+import {ResolveLocale} from './abstract/ResolveLocale.js'
 
 export interface Opts {
   algorithm: 'lookup' | 'best fit'
@@ -23,5 +23,5 @@ export function match(
   ).locale
 }
 
-export {LookupSupportedLocales} from './abstract/LookupSupportedLocales'
-export {ResolveLocale} from './abstract/ResolveLocale'
+export {LookupSupportedLocales} from './abstract/LookupSupportedLocales.js'
+export {ResolveLocale} from './abstract/ResolveLocale.js'

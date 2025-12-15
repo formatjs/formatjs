@@ -1,4 +1,4 @@
-import {LookupMatcher} from '../abstract/LookupMatcher'
+import {LookupMatcher} from '../abstract/LookupMatcher.js'
 import {expect, test} from 'vitest'
 test('LookupMatcher', function () {
   expect(LookupMatcher(['fr', 'en'], ['fr-XX', 'en'], () => 'en')).toEqual({
