@@ -71,6 +71,7 @@
     "cldr-segments-full": "^46.0.0",
     "cldr-units-full": "^46.0.0",
     "content-tag": "^3.0.0",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "decimal.js": "^10.4.3",
     "ember-template-recast": "^6.1.5",
     "eslint": "^9.23.0",

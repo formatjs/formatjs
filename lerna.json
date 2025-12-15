@@ -1,6 +1,9 @@
 {
   "registry": "https://registry.npmjs.org/",
   "version": "independent",
+  "changelogPreset": {
+    "name": "conventionalcommits"
+  },
   "command": {
     "version": {
       "changelogIncludeCommitsClientLogin": " - by @%l",
