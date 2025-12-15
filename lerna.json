@@ -8,6 +8,7 @@
     "version": {
       "changelogIncludeCommitsClientLogin": " - by @%l",
       "conventionalCommits": true,
+      "conventionalChangelog": true,
       "createRelease": "github",
       "exact": true,
       "ignoreChanges": ["**/tests/**", "**/*.md"],
