@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest'
-import {DayFromYear} from '../262'
+import {DayFromYear} from '../262.js'
 
 describe('262', () => {
   describe('DayFromYear', () => {

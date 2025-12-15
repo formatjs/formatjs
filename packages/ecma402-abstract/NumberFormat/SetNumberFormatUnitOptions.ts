@@ -1,8 +1,8 @@
-import {GetOption} from '../GetOption'
-import {IsWellFormedCurrencyCode} from '../IsWellFormedCurrencyCode'
-import {IsWellFormedUnitIdentifier} from '../IsWellFormedUnitIdentifier'
-import {NumberFormatInternal, NumberFormatOptions} from '../types/number'
-import {invariant} from '../utils'
+import {GetOption} from '../GetOption.js'
+import {IsWellFormedCurrencyCode} from '../IsWellFormedCurrencyCode.js'
+import {IsWellFormedUnitIdentifier} from '../IsWellFormedUnitIdentifier.js'
+import {NumberFormatInternal, NumberFormatOptions} from '../types/number.js'
+import {invariant} from '../utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-setnumberformatunitoptions

@@ -1,4 +1,4 @@
-import Decimal from 'decimal.js'
+import {Decimal} from 'decimal.js'
 
 export const TEN: Decimal = new Decimal(10)
 export const ZERO: Decimal = new Decimal(0)

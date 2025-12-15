@@ -7,7 +7,7 @@
  * @param fallback
  */
 
-import {DefaultNumberOption} from './DefaultNumberOption'
+import {DefaultNumberOption} from './DefaultNumberOption.js'
 
 export function GetNumberOption<
   T extends object,

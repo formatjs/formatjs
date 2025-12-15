@@ -1,4 +1,4 @@
-import {ToString} from './262'
+import {ToString} from './262.js'
 
 /**
  * https://tc39.es/ecma402/#sec-getoption

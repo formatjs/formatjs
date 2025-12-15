@@ -1,4 +1,4 @@
-import {IsValidTimeZoneName} from '../IsValidTimeZoneName'
+import {IsValidTimeZoneName} from '../IsValidTimeZoneName.js'
 import {expect, test} from 'vitest'
 test('IsValidTimeZoneName', () => {
   expect(

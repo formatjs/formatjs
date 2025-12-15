@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js'
-import {ApplyUnsignedRoundingMode} from '../NumberFormat/ApplyUnsignedRoundingMode'
+import {ApplyUnsignedRoundingMode} from '../NumberFormat/ApplyUnsignedRoundingMode.js'
 import {describe, expect, it} from 'vitest'
 describe('ApplyUnsignedRoundingMode', () => {
   it('return r1 for x = r1', () => {

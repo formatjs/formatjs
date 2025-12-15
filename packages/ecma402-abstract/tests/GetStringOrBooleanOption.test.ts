@@ -1,4 +1,4 @@
-import {GetStringOrBooleanOption} from '../GetStringOrBooleanOption'
+import {GetStringOrBooleanOption} from '../GetStringOrBooleanOption.js'
 import {describe, expect, test} from 'vitest'
 describe('GetStringOrBooleanOption', () => {
   test('returns fallback for undefined options', () => {

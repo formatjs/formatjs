@@ -1,4 +1,4 @@
-import {RoundingModeType, UnsignedRoundingModeType} from '../types/number'
+import {RoundingModeType, UnsignedRoundingModeType} from '../types/number.js'
 
 const negativeMapping: Record<RoundingModeType, UnsignedRoundingModeType> = {
   ceil: 'zero',

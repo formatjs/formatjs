@@ -1,4 +1,4 @@
-import {IsSanctionedSimpleUnitIdentifier} from './IsSanctionedSimpleUnitIdentifier'
+import {IsSanctionedSimpleUnitIdentifier} from './IsSanctionedSimpleUnitIdentifier.js'
 
 /**
  * This follows https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
