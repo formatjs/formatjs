@@ -1,5 +1,5 @@
-import {BestAvailableLocale} from './BestAvailableLocale'
-import {UNICODE_EXTENSION_SEQUENCE_REGEX} from './utils'
+import {BestAvailableLocale} from './BestAvailableLocale.js'
+import {UNICODE_EXTENSION_SEQUENCE_REGEX} from './utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-lookupsupportedlocales
