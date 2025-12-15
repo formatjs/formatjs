@@ -1,7 +1,10 @@
-import Decimal from 'decimal.js'
-import {RawNumberFormatResult, UnsignedRoundingModeType} from '../types/number'
-import {repeat} from '../utils'
-import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode'
+import {Decimal} from 'decimal.js'
+import {
+  RawNumberFormatResult,
+  UnsignedRoundingModeType,
+} from '../types/number.js'
+import {repeat} from '../utils.js'
+import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode.js'
 
 //IMPL: Setting Decimal configuration
 Decimal.set({

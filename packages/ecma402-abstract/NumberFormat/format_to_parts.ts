@@ -1,5 +1,5 @@
-import Decimal from 'decimal.js'
-import {S_UNICODE_REGEX} from '../regex.generated'
+import {Decimal} from 'decimal.js'
+import {S_UNICODE_REGEX} from '../regex.generated.js'
 import {
   DecimalFormatNum,
   LDMLPluralRuleMap,
@@ -17,11 +17,11 @@ import {
   UnitData,
   UnsignedRoundingModeType,
   UseGroupingType,
-} from '../types/number'
-import {LDMLPluralRule} from '../types/plural-rules'
-import {digitMapping} from './digit-mapping.generated'
-import {GetUnsignedRoundingMode} from './GetUnsignedRoundingMode'
-import {ToRawFixed} from './ToRawFixed'
+} from '../types/number.js'
+import {LDMLPluralRule} from '../types/plural-rules.js'
+import {digitMapping} from './digit-mapping.generated.js'
+import {GetUnsignedRoundingMode} from './GetUnsignedRoundingMode.js'
+import {ToRawFixed} from './ToRawFixed.js'
 
 // This is from: unicode-12.1.0/General_Category/Symbol/regex.js
 // IE11 does not support unicode flag, otherwise this is just /\p{S}/u.

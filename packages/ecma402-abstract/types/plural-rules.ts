@@ -1,5 +1,5 @@
-import {LocaleData} from './core'
-import {NumberFormatDigitInternalSlots} from './number'
+import {LocaleData} from './core.js'
+import {NumberFormatDigitInternalSlots} from './number.js'
 export type LDMLPluralRule = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other'
 export interface PluralRulesData {
   categories: {

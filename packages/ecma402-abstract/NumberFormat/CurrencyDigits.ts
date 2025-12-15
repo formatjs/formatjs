@@ -1,4 +1,4 @@
-import {HasOwnProperty} from '../262'
+import {HasOwnProperty} from '../262.js'
 
 /**
  * https://tc39.es/ecma402/#sec-currencydigits

@@ -1,6 +1,6 @@
-import {FormatApproximately} from '../NumberFormat/FormatApproximately'
-import {NumberFormatPart} from '../types/number'
-import {getInternalSlots} from './utils'
+import {FormatApproximately} from '../NumberFormat/FormatApproximately.js'
+import {NumberFormatPart} from '../types/number.js'
+import {getInternalSlots} from './utils.js'
 import {describe, expect, it} from 'vitest'
 describe('FormatApproximately', () => {
   const numberFormat: Intl.NumberFormat = new Intl.NumberFormat('it')

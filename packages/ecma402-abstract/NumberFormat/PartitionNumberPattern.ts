@@ -1,9 +1,9 @@
-import Decimal from 'decimal.js'
-import {NumberFormatInternal, NumberFormatPart} from '../types/number'
-import {invariant} from '../utils'
-import {ComputeExponent} from './ComputeExponent'
-import formatToParts from './format_to_parts'
-import {FormatNumericToString} from './FormatNumericToString'
+import {Decimal} from 'decimal.js'
+import {NumberFormatInternal, NumberFormatPart} from '../types/number.js'
+import {invariant} from '../utils.js'
+import {ComputeExponent} from './ComputeExponent.js'
+import formatToParts from './format_to_parts.js'
+import {FormatNumericToString} from './FormatNumericToString.js'
 
 /**
  * https://tc39.es/ecma402/#sec-partitionnumberpattern

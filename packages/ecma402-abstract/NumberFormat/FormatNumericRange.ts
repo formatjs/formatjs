@@ -1,6 +1,6 @@
-import Decimal from 'decimal.js'
-import {NumberFormatInternal} from '../types/number'
-import {PartitionNumberRangePattern} from './PartitionNumberRangePattern'
+import {Decimal} from 'decimal.js'
+import {NumberFormatInternal} from '../types/number.js'
+import {PartitionNumberRangePattern} from './PartitionNumberRangePattern.js'
 
 /**
  * https://tc39.es/ecma402/#sec-formatnumericrange
