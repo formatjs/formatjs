@@ -20,7 +20,7 @@
     "tslib": "^2.8.0"
   },
   "peerDependencies": {
-    "@types/react": "16 || 17 || 18 || 19",
+    "@types/react": "19",
     "react": "16 || 17 || 18 || 19",
     "typescript": "^5.6.0"
   },
