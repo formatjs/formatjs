@@ -2,13 +2,15 @@
   "name": "@formatjs/icu-skeleton-parser",
   "version": "1.8.16",
   "license": "MIT",
+  "type": "module",
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
     "tslib": "^2.8.0"
   },
-  "main": "index.js",
-  "module": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/formatjs/formatjs.git",
