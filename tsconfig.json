@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "esnext",
     "moduleResolution": "bundler",
     "target": "es5",
     "lib": [
@@ -16,12 +16,11 @@
       "ES2022.Intl",
       "ESNext.Intl"
     ],
-    "baseUrl": ".",
     "declaration": true,
     "strict": true,
     "resolveJsonModule": true,
     "noUnusedLocals": true,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "noUnusedParameters": true,
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": false,
