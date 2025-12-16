@@ -24,9 +24,6 @@
     "react": "16 || 17 || 18 || 19",
     "typescript": "^5.6.0"
   },
-  "browserslist": [
-    "ie 11"
-  ],
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "contributors": [
     "Aarni Koskela <akx@iki.fi>",
