@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.0.1...@formatjs/intl-numberformat@9.0.2) (2025-12-16)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
 ## [9.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.0.0...@formatjs/intl-numberformat@9.0.1) (2025-12-15)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat
