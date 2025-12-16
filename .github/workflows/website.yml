@@ -29,7 +29,7 @@ jobs:
         run: |
           BAZEL_BIN=$(bazel info bazel-bin)
           bazel build --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //website:dist
-          echo BUILD_PATH="$BAZEL_BIN/website/dist" >> $GITHUB_OUTPUTS
+          echo BUILD_PATH="$BAZEL_BIN/website/dist" >> $GITHUB_OUTPUT
 
       # Deploy to Organization GitHub Pages Repository
       - name: Deploy
