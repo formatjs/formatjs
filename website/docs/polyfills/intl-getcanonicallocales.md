@@ -50,20 +50,20 @@ You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to cre
 ### Simple
 
 ```tsx
-import '@formatjs/intl-getcanonicallocales/polyfill'
+import '@formatjs/intl-getcanonicallocales/polyfill.js'
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-getcanonicallocales/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-getcanonicallocales/should-polyfill.js'
 async function polyfill() {
   // This platform already supports Intl.getCanonicalLocales
   if (shouldPolyfill()) {
-    await import('@formatjs/intl-getcanonicallocales/polyfill')
+    await import('@formatjs/intl-getcanonicallocales/polyfill.js')
   }
   // Alternatively, force the polyfill regardless of support
-  await import('@formatjs/intl-getcanonicallocales/polyfill-force')
+  await import('@formatjs/intl-getcanonicallocales/polyfill-force.js')
 }
 ```
 

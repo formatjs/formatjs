@@ -46,7 +46,7 @@ yarn add @formatjs/intl-localematcher
 ### Simple
 
 ```tsx
-import {match} from '@formatjs/intl-localematcher'
+import {match} from '@formatjs/intl-localematcher.js'
 
 match(['fr-XX', 'en'], ['fr', 'en'], 'en') // 'fr'
 
