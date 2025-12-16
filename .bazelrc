@@ -77,10 +77,10 @@ build:remote --remote_executor=grpcs://remote.buildbuddy.io
 build:remote --remote_timeout=10m
 build:remote --remote_upload_local_results
 
-build:docs-ci --bes_results_url=https://formatjs.buildbuddy.io/invocation/
-build:docs-ci --bes_backend=grpcs://formatjs.buildbuddy.io
-build:docs-ci --remote_cache=grpcs://formatjs.buildbuddy.io
-build:docs-ci --remote_timeout=10m
+build:gh-ci --bes_results_url=https://formatjs.buildbuddy.io/invocation/
+build:gh-ci --bes_backend=grpcs://formatjs.buildbuddy.io
+build:gh-ci --remote_cache=grpcs://formatjs.buildbuddy.io
+build:gh-ci --remote_timeout=10m
 
 
 # honor the setting of `skipLibCheck` in the tsconfig.json file
