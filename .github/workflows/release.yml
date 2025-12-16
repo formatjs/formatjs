@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -55,6 +56,22 @@ jobs:
       #   run: HUSKY=0 pnpm run prerelease
       #   env:
       #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for Clean Git State
+        working-directory: release
+        run: |
+          echo "Checking git status..."
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "⚠️  Warning: Git working directory is not clean!"
+            echo "Dirty files/changes:"
+            git status --short
+            echo ""
+            echo "Detailed changes:"
+            git diff
+            exit 1
+          else
+            echo "✓ Git working directory is clean"
+          fi
 
       - name: Publish to npm
         working-directory: release
