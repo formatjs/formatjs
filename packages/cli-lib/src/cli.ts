@@ -6,8 +6,9 @@ import compileFolder from './compile_folder.js'
 import {debug} from './console_utils.js'
 import extract, {ExtractCLIOptions} from './extract.js'
 import {verify, VerifyOpts} from './verify/index.js'
-import {readFileSync} from 'fs-extra'
+import * as fsExtra from 'fs-extra'
 import {resolve} from 'path'
+const {readFileSync} = fsExtra;
 
 const KNOWN_COMMANDS = ['extract']
 

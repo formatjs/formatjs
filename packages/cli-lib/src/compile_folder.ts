@@ -1,6 +1,7 @@
-import {outputFile} from 'fs-extra'
+import * as fsExtra from 'fs-extra'
 import {basename, join} from 'path'
 import {Opts, compile} from './compile.js'
+const {outputFile} = fsExtra;
 export default async function compileFolder(
   files: string[],
   outFolder: string,

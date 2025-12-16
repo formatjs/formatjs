@@ -3,7 +3,7 @@ import {
   Opts,
   interpolateName,
 } from '@formatjs/ts-transformer'
-import {outputFile, readFile} from 'fs-extra'
+import * as fsExtra from 'fs-extra'
 import {debug, getStdinAsString, warn, writeStdout} from './console_utils.js'
 import * as stringifyNs from 'json-stable-stringify'
 
@@ -13,6 +13,7 @@ import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import {Formatter, resolveBuiltinFormatter} from './formatters/index.js'
 import {parseScript} from './parse_script.js'
 
+const {outputFile, readFile} = fsExtra;
 const stringify = (stringifyNs as any).default || stringifyNs
 export interface ExtractionResult<M = Record<string, string>> {
   /**
