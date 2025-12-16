@@ -394,12 +394,142 @@
         ]
       }
     },
+    "@@aspect_rules_js+//npm:extensions.bzl%pnpm": {
+      "general": {
+        "bzlTransitiveDigest": "GGWWgQ+HQGPeVxgcLRNwSBKHQtF4FRLGYZZLsupTAAg=",
+        "usagesDigest": "FDCaPSatMildxttzlG2R1K6pIN3dNKZ2nRaCyQiBZfk=",
+        "recordedFileInputs": {},
+        "recordedDirentsInputs": {},
+        "envVariables": {},
+        "generatedRepoSpecs": {
+          "pnpm": {
+            "repoRuleId": "@@aspect_rules_js+//npm/private:npm_import.bzl%npm_import_rule",
+            "attributes": {
+              "package": "pnpm",
+              "version": "10.4.1",
+              "root_package": "",
+              "link_workspace": "",
+              "link_packages": {},
+              "integrity": "sha512-x1O2w616+hOvOI+m2AgDWgCOMOqZk/WMZmPivF/yFnmqg02wlJhxKapNSIuG31f3tjSYGy+CfNysxpjMDPuIrw==",
+              "url": "",
+              "commit": "",
+              "patch_args": [
+                "-p0"
+              ],
+              "patches": [],
+              "custom_postinstall": "",
+              "npm_auth": "",
+              "npm_auth_basic": "",
+              "npm_auth_username": "",
+              "npm_auth_password": "",
+              "lifecycle_hooks": [],
+              "extra_build_content": "load(\"@aspect_rules_js//js:defs.bzl\", \"js_binary\")\njs_binary(name = \"pnpm\", data = glob([\"package/**\"]), entry_point = \"package/dist/pnpm.cjs\", visibility = [\"//visibility:public\"])",
+              "generate_bzl_library_targets": false,
+              "extract_full_archive": true,
+              "exclude_package_contents": [],
+              "system_tar": "auto"
+            }
+          },
+          "pnpm__links": {
+            "repoRuleId": "@@aspect_rules_js+//npm/private:npm_import.bzl%npm_import_links",
+            "attributes": {
+              "package": "pnpm",
+              "version": "10.4.1",
+              "dev": false,
+              "root_package": "",
+              "link_packages": {},
+              "deps": {},
+              "transitive_closure": {},
+              "lifecycle_build_target": false,
+              "lifecycle_hooks_env": [],
+              "lifecycle_hooks_execution_requirements": [
+                "no-sandbox"
+              ],
+              "lifecycle_hooks_use_default_shell_env": false,
+              "bins": {},
+              "package_visibility": [
+                "//visibility:public"
+              ],
+              "replace_package": "",
+              "exclude_package_contents": []
+            }
+          }
+        },
+        "recordedRepoMappingEntries": [
+          [
+            "aspect_bazel_lib+",
+            "bazel_skylib",
+            "bazel_skylib+"
+          ],
+          [
+            "aspect_bazel_lib+",
+            "bazel_tools",
+            "bazel_tools"
+          ],
+          [
+            "aspect_bazel_lib+",
+            "tar.bzl",
+            "tar.bzl+"
+          ],
+          [
+            "aspect_rules_js+",
+            "aspect_bazel_lib",
+            "aspect_bazel_lib+"
+          ],
+          [
+            "aspect_rules_js+",
+            "aspect_rules_js",
+            "aspect_rules_js+"
+          ],
+          [
+            "aspect_rules_js+",
+            "bazel_features",
+            "bazel_features+"
+          ],
+          [
+            "aspect_rules_js+",
+            "bazel_skylib",
+            "bazel_skylib+"
+          ],
+          [
+            "aspect_rules_js+",
+            "bazel_tools",
+            "bazel_tools"
+          ],
+          [
+            "bazel_features+",
+            "bazel_features_globals",
+            "bazel_features++version_extension+bazel_features_globals"
+          ],
+          [
+            "bazel_features+",
+            "bazel_features_version",
+            "bazel_features++version_extension+bazel_features_version"
+          ],
+          [
+            "tar.bzl+",
+            "aspect_bazel_lib",
+            "aspect_bazel_lib+"
+          ],
+          [
+            "tar.bzl+",
+            "bazel_skylib",
+            "bazel_skylib+"
+          ],
+          [
+            "tar.bzl+",
+            "tar.bzl",
+            "tar.bzl+"
+          ]
+        ]
+      }
+    },
     "@@aspect_rules_ts+//ts:extensions.bzl%ext": {
       "general": {
         "bzlTransitiveDigest": "PmSFl5de9ODJbC1xCNlhwlUaInXalJ08lhcxW297GX0=",
         "usagesDigest": "tsxRjH5DN8xUnGoUELCp/xuIp04EwwlFAtYpnGb6Y+4=",
         "recordedFileInputs": {
-          "@@//package.json": "0e5d746a06610e882d26dde4b53550cf3d7832d0fe6d134b97ed4944204c7a64"
+          "@@//package.json": "c18bd02ea9df720c2d57c97b1bcd9ce3ff6acfea3351a108987a7e62bab3af5c"
         },
         "recordedDirentsInputs": {},
         "envVariables": {},

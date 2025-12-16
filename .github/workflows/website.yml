@@ -14,19 +14,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: bazel-contrib/setup-bazel@0.15.0
         with:
-          node-version: 20 # Specify the Node.js version compatible with your Docusaurus site
-
-      # Install dependencies
-      - name: Install Dependencies
-        run: bazel run --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} -- @pnpm//:pnpm --dir $PWD install --frozen-lockfile
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Store build cache per workflow.
+          disk-cache: ${{ github.workflow }}
+          # Share repository cache between workflows.
+          repository-cache: true
 
       # Build the Docusaurus site
       - name: Build Docusaurus Site
-        run: cd website; bazel run -- @pnpm//:pnpm --dir $PWD run build
+        id: build
+        run: |
+          BAZEL_BIN=$(bazel info bazel-bin)
+          bazel build --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //website:build
+          echo BUILD_PATH="$BAZEL_BIN/website/build" >> $GITHUB_OUTPUTS
 
       # Deploy to Organization GitHub Pages Repository
       - name: Deploy
@@ -35,4 +38,4 @@ jobs:
           deploy_key: ${{ secrets.WEBSITE_SECRET_KEY }}
           external_repository: formatjs/formatjs.github.io
           publish_branch: main # default: gh-pages
-          publish_dir: ./website/build
+          publish_dir: ${{ steps.build.outputs.BUILD_PATH }}
