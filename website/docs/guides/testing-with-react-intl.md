@@ -147,72 +147,78 @@ renderWithIntl(<MyElement ref={element}>);
 element.current.myClassFn();
 ```
 
-## Enzyme
+## @testing-library/react
 
-Testing with Enzyme works in a similar fashion as written above. Your `mount()`ed and `shallow()`ed components will need access to the `intl` context. Below is a helper function which you can import and use to mount your components which make use of any of React-Intl's library (either `<Formatted* />` components or `format*()` methods through `injectIntl`).
+We recommend using [`@testing-library/react`](https://testing-library.com/docs/react-testing-library/intro) for testing React components. Below is a helper function to wrap your components with `IntlProvider` for testing.
 
 ### Helper function
 
 ```tsx
-/**
- * Components using the react-intl module require access to the intl context.
- * This is not available when mounting single components in Enzyme.
- * These helper functions aim to address that and wrap a valid,
- * English-locale intl context around them.
- */
-
+// test-utils.tsx
 import React from 'react'
+import {render as rtlRender} from '@testing-library/react'
 import {IntlProvider} from 'react-intl'
-import {mount, shallow} from 'enzyme'
+import messages from '../locales/en.json' with {type: 'json'}
 
-// You can pass your messages to the IntlProvider. Optional: remove if unneeded.
-const messages = require('../locales/en') // en.json
-const defaultLocale = 'en'
-const locale = defaultLocale
-
-export function mountWithIntl(node: React.ReactElement) {
-  return mount(node, {
-    wrappingComponent: IntlProvider,
-    wrappingComponentProps: {
-      locale,
-      defaultLocale,
-      messages,
-    },
-  })
+interface RenderOptions {
+  locale?: string
+  messages?: Record<string, string>
+  [key: string]: any
 }
 
-export function shallowWithIntl(node: React.ReactElement) {
-  return shallow(node, {
-    wrappingComponent: IntlProvider,
-    wrappingComponentProps: {
-      locale,
-      defaultLocale,
-      messages,
-    },
-  })
+function render(
+  ui: React.ReactElement,
+  {
+    locale = 'en',
+    messages: customMessages,
+    ...renderOptions
+  }: RenderOptions = {}
+) {
+  function Wrapper({children}: {children: React.ReactNode}) {
+    return (
+      <IntlProvider locale={locale} messages={customMessages || messages}>
+        {children}
+      </IntlProvider>
+    )
+  }
+  return rtlRender(ui, {wrapper: Wrapper, ...renderOptions})
 }
+
+// re-export everything
+export * from '@testing-library/react'
+
+// override render method
+export {render}
 ```
 
 ### Usage
 
-Create a file with the above helper in e.g. `helpers/intl-enzyme-test-helper.js` and `import` the methods you need in your tests.
+Create a file with the above helper in e.g. `test-utils.tsx` and import the methods you need in your tests.
 
 ```tsx
-// intl-enzyme-test-helper.js
+import React from 'react'
+import {render, screen} from './test-utils'
+import {FormattedMessage} from 'react-intl'
 
-import {mountWithIntl} from 'helpers/intl-enzyme-test-helper.js'
+const Greeting = ({name}: {name: string}) => (
+  <div data-testid="greeting">
+    <FormattedMessage
+      id="greeting"
+      defaultMessage="Hello {name}!"
+      values={{name}}
+    />
+  </div>
+)
 
-const wrapper = mountWithIntl(<CustomComponent />)
-
-expect(wrapper.state('foo')).to.equal('bar') // OK
-expect(wrapper.text()).to.equal('Hello World!') // OK
+test('it should render FormattedMessage with the name', () => {
+  render(<Greeting name="World" />)
+  expect(screen.getByTestId('greeting')).toHaveTextContent('Hello World!')
+})
 ```
-
-Based on [this gist](https://gist.github.com/mirague/c05f4da0d781a9b339b501f1d5d33c37/).
 
 ## Jest
 
-Testing with Jest can be divided into two approaches: snapshot's testing and DOM testing. Snapshot's testing is a relatively new feature and works out of the box. If you'd like DOM testing you need to use Enzyme or React's TestUtils.
+Testing with Jest can be divided into two approaches: snapshot's testing and DOM testing. Snapshot's testing is a relatively new feature and works out of the box. If you'd like DOM testing you can use `@testing-library/react` as shown above or React's TestUtils.
 
 ### Snapshot Testing
 
@@ -256,51 +262,76 @@ test('app main should be rendered', () => {
 
 You can find runnable example [here](https://github.com/formatjs/formatjs/tree/master/packages/react-intl/examples/jest-snapshot-testing) and more info about Jest [here](http://facebook.github.io/jest/).
 
-#### Usage with Jest & enzyme
+### DOM Testing
 
-Jest will automatically mock react-intl, so no any extra implementation is needed, tests should work as is:
+If you want to use Jest with DOM Testing, refer to the `@testing-library/react` section above or check the official Jest [documentation](http://facebook.github.io/jest/docs/tutorial-react.html#dom-testing).
 
-```tsx
-import React from 'react'
-import {shallow} from 'enzyme'
-import AppMain from '../AppMain'
+## Vitest
 
-test('app main should be rendered', () => {
-  const wrapper = shallow(<AppMain />)
-  expect(wrapper).toMatchSnapshot()
+[Vitest](https://vitest.dev/) is a blazing fast unit test framework powered by Vite. Testing React components with `react-intl` in Vitest works similarly to Jest, and you can use the same `@testing-library/react` helper functions.
+
+### Setup
+
+First, ensure you have the necessary dependencies:
+
+```bash
+npm install -D vitest @testing-library/react @testing-library/jest-dom happy-dom
+```
+
+### Configuration
+
+Add a `vitest.config.ts` file to your project:
+
+```typescript
+import {defineConfig} from 'vitest/config'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    environment: 'happy-dom',
+    setupFiles: ['./vitest.setup.ts'],
+  },
 })
 ```
 
-### DOM Testing
+Create a `vitest.setup.ts` file to add global test utilities:
 
-If you want use Jest with DOM Testing read more info above in Enzyme section or in official Jest [documentation](http://facebook.github.io/jest/docs/tutorial-react.html#dom-testing).
+```typescript
+import '@testing-library/jest-dom/vitest'
+```
 
-## Storybook
+### Testing with Vitest
 
-### Intl
+You can use the same test helper function from the `@testing-library/react` section. Here's a complete example:
 
-If you want to use `react-intl` inside of [Storybook](https://storybooks.js.org) you can use [`storybook-addon-intl`](https://github.com/truffls/storybook-addon-intl) which provides an easy to use wrapper for `react-intl` including a locale switcher so you can test your component in all provided languages.
-
-## react-testing-library
-
-In order to use `react-intl` and [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro) together, you should provide some helper function to the testing flow.
-
-You can check the [docs](https://testing-library.com/docs/example-react-intl).
-
-To create a generic solution, We can create a custom `render` function using
-the `wrapper` option as explained in the
-[setup](https://testing-library.com/docs/react-testing-library/setup) page.  
-Our custom `render` function can look like this:
-
-```jsx
-// test-utils.js
+```tsx
+// test-utils.tsx
 import React from 'react'
 import {render as rtlRender} from '@testing-library/react'
 import {IntlProvider} from 'react-intl'
+import messages from '../locales/en.json' with {type: 'json'}
 
-function render(ui, {locale = 'pt', ...renderOptions} = {}) {
-  function Wrapper({children}) {
-    return <IntlProvider locale={locale}>{children}</IntlProvider>
+interface RenderOptions {
+  locale?: string
+  messages?: Record<string, string>
+  [key: string]: any
+}
+
+function render(
+  ui: React.ReactElement,
+  {
+    locale = 'en',
+    messages: customMessages,
+    ...renderOptions
+  }: RenderOptions = {}
+) {
+  function Wrapper({children}: {children: React.ReactNode}) {
+    return (
+      <IntlProvider locale={locale} messages={customMessages || messages}>
+        {children}
+      </IntlProvider>
+    )
   }
   return rtlRender(ui, {wrapper: Wrapper, ...renderOptions})
 }
@@ -312,29 +343,79 @@ export * from '@testing-library/react'
 export {render}
 ```
 
-```jsx
-import React from 'react'
-import '@​testing-library/jest-dom/jest-globals'
-// We're importing from our own created test-utils and not RTL's
-import {render, screen} from '../test-utils.js'
-import {FormattedDate} from 'react-intl'
+```tsx
+// MyComponent.test.tsx
+import {describe, it, expect} from 'vitest'
+import {render, screen} from './test-utils'
+import {FormattedMessage, FormattedNumber} from 'react-intl'
 
-const FormatDateView = () => {
-  return (
-    <div data-testid="date-display">
-      <FormattedDate
-        value="2019-03-11"
-        timeZone="utc"
-        day="2-digit"
-        month="2-digit"
-        year="numeric"
-      />
-    </div>
-  )
-}
+const PriceDisplay = ({amount}: {amount: number}) => (
+  <div>
+    <FormattedMessage id="price.label" defaultMessage="Price:" />{' '}
+    <FormattedNumber value={amount} style="currency" currency="USD" />
+  </div>
+)
 
-test('it should render FormattedDate and have a formated pt date', () => {
-  render(<FormatDateView />)
-  expect(screen.getByTestId('date-display')).toHaveTextContent('11/03/2019')
+describe('PriceDisplay', () => {
+  it('should render price with formatted currency', () => {
+    render(<PriceDisplay amount={99.99} />)
+    expect(screen.getByText(/Price:/i)).toBeInTheDocument()
+    expect(screen.getByText(/\$99\.99/)).toBeInTheDocument()
+  })
+
+  it('should support different locales', () => {
+    render(<PriceDisplay amount={99.99} />, {locale: 'de-DE'})
+    // German locale formatting
+    expect(screen.getByText(/99,99/)).toBeInTheDocument()
+  })
 })
 ```
+
+### Snapshot Testing with Vitest
+
+Vitest also supports snapshot testing similar to Jest:
+
+```tsx
+import {describe, it} from 'vitest'
+import {render} from './test-utils'
+import {FormattedDate} from 'react-intl'
+
+const DateDisplay = ({date}: {date: Date}) => (
+  <FormattedDate value={date} year="numeric" month="long" day="numeric" />
+)
+
+describe('DateDisplay', () => {
+  it('should match snapshot', () => {
+    const {container} = render(<DateDisplay date={new Date('2024-01-15')} />)
+    expect(container).toMatchSnapshot()
+  })
+})
+```
+
+### Running Tests
+
+Add test scripts to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
+  }
+}
+```
+
+Then run your tests:
+
+```bash
+npm run test
+```
+
+For more information, check out the [Vitest documentation](https://vitest.dev/).
+
+## Storybook
+
+### Intl
+
+If you want to use `react-intl` inside of [Storybook](https://storybooks.js.org) you can use [`storybook-addon-intl`](https://github.com/truffls/storybook-addon-intl) which provides an easy to use wrapper for `react-intl` including a locale switcher so you can test your component in all provided languages.

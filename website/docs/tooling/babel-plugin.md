@@ -67,7 +67,8 @@ The default message descriptors for the app's default language will be processed
 The extract message descriptors are available via the `metadata` property on the object returned from Babel's `transform()` API:
 
 ```javascript
-require('@babel/core').transform('code', {
+import {transform} from '@babel/core'
+transform('code', {
   plugins: ['formatjs'],
 }) // => { code, map, ast, metadata['formatjs'].messages, metadata['formatjs'].meta };
 ```

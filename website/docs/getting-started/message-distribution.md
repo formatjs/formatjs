@@ -117,7 +117,7 @@ yarn compile lang/fr.json --ast --out-file compiled-lang/fr.json --format format
 where `formatter.js` is:
 
 ```js
-exports.compile = function (msgs) {
+export function compile(msgs) {
   const results = {}
   for (const [id, msg] of Object.entries(msgs)) {
     results[id] = msg.string

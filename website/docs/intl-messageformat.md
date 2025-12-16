@@ -102,10 +102,6 @@ Either do:
 import IntlMessageFormat from 'intl-messageformat'
 ```
 
-```tsx
-const IntlMessageFormat = require('intl-messageformat').default
-```
-
 **NOTE: Your Node has to include [full ICU](https://nodejs.org/api/intl.html)**
 
 ## Public API
