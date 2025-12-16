@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.2](github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@12.0.1...@formatjs/intl-relativetimeformat@12.0.2) (2025-12-16)
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** add locale-data exports ([7c0490c](github.com/formatjs/formatjs/commits/7c0490c5ced3a87e2221d7558f3ecd5c061a1ca9)) - by @longlho
+
 ## [12.0.1](github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@12.0.0...@formatjs/intl-relativetimeformat@12.0.1) (2025-12-15)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
