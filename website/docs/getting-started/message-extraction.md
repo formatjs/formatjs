@@ -282,7 +282,7 @@ yarn extract "src/**/*.{ts,tsx,vue}" --out-file lang/en.json --id-interpolation-
 where `formatter.js` is:
 
 ```js
-exports.format = function (msgs) {
+export function format(msgs) {
   const results = {}
   for (const [id, msg] of Object.entries(msgs)) {
     results[id] = {
