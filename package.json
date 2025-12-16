@@ -178,15 +178,15 @@
   "resolutions": {
     "@glimmer/interfaces": "0.94.6",
     "@glimmer/syntax": "^0.95.0",
-    "@vue/compiler-core": "3.5.13",
-    "@vue/compiler-dom": "3.5.13",
-    "@vue/compiler-sfc": "3.5.13",
+    "@vue/compiler-core": "3.5.25",
+    "@vue/compiler-dom": "3.5.25",
+    "@vue/compiler-sfc": "3.5.25",
     "eslint": "9.39.2",
     "react": "19",
     "react-dom": "19",
     "source-map-js": "1.2.1",
     "terser": "5.43.1",
     "typescript": "5.8.3",
-    "vue": "3.5.13"
+    "vue": "3.5.25"
   }
 }
