@@ -43,7 +43,7 @@ This package requires the following capabilities:
 - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales) or [polyfill](intl-getcanonicallocales.md)
 - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) or [polyfill](intl-locale.md).
 - [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) or [polyfill](intl-pluralrules.md).
-- If you need `formatToParts` and have to support IE11- or Node 10-, you'd need to polyfill using [`@formatjs/intl-numberformat`](intl-numberformat.md).
+- If you need `formatToParts` and have to support IE11- or Node 10-, you'd need to polyfill using [`@formatjs/intl-numberformat.js`](intl-numberformat.md).
 
 ## Usage
 
@@ -59,14 +59,14 @@ You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to cre
 ### Simple
 
 ```tsx
-import '@formatjs/intl-relativetimeformat/polyfill'
-import '@formatjs/intl-relativetimeformat/locale-data/en' // locale-data for en
+import '@formatjs/intl-relativetimeformat/polyfill.js'
+import '@formatjs/intl-relativetimeformat/locale-data/en.js' // locale-data for en
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-relativetimeformat/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-relativetimeformat/should-polyfill.js'
 async function polyfill(locale: string) {
   const unsupportedLocale = shouldPolyfill(locale)
   // This locale is supported
@@ -74,9 +74,9 @@ async function polyfill(locale: string) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-relativetimeformat/polyfill-force')
+  await import('@formatjs/intl-relativetimeformat/polyfill-force.js')
   await import(
-    `@formatjs/intl-relativetimeformat/locale-data/${unsupportedLocale}`
+    `@formatjs/intl-relativetimeformat/locale-data/${unsupportedLocale}.js`
   )
 }
 ```

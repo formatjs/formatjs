@@ -72,14 +72,14 @@ Or if `Intl.PluralRules` needs to be polyfilled as well:
 ### Simple
 
 ```tsx
-import '@formatjs/intl-numberformat/polyfill'
-import '@formatjs/intl-numberformat/locale-data/en' // locale-data for en
+import '@formatjs/intl-numberformat/polyfill.js'
+import '@formatjs/intl-numberformat/locale-data/en.js' // locale-data for en
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-numberformat/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-numberformat/should-polyfill.js'
 async function polyfill(locale: string) {
   const unsupportedLocale = shouldPolyfill(locale)
   // This locale is supported
@@ -87,8 +87,10 @@ async function polyfill(locale: string) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-numberformat/polyfill-force')
-  await import(`@formatjs/intl-numberformat/locale-data/${unsupportedLocale}`)
+  await import('@formatjs/intl-numberformat/polyfill-force.js')
+  await import(
+    `@formatjs/intl-numberformat/locale-data/${unsupportedLocale}.js`
+  )
 }
 ```
 

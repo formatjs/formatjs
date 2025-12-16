@@ -55,8 +55,8 @@ You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to cre
 ### Simple
 
 ```tsx
-import '@formatjs/intl-pluralrules/polyfill'
-import '@formatjs/intl-pluralrules/locale-data/en' // locale-data for en
+import '@formatjs/intl-pluralrules/polyfill.js'
+import '@formatjs/intl-pluralrules/locale-data/en.js' // locale-data for en
 ```
 
 ### React Native
@@ -64,14 +64,14 @@ import '@formatjs/intl-pluralrules/locale-data/en' // locale-data for en
 The polyfill conditional detection code runs [very slowly on Android](https://github.com/formatjs/formatjs/issues/4463) and can slow down your app's startup time by seconds. Since React Native uses Hermes which does not support `Intl.PluralRules`, import `/polyfill-force` instead for much better performance:
 
 ```tsx
-import '@formatjs/intl-pluralrules/polyfill-force' // instead of /polyfill
-import '@formatjs/intl-pluralrules/locale-data/en'
+import '@formatjs/intl-pluralrules/polyfill-force.js' // instead of /polyfill
+import '@formatjs/intl-pluralrules/locale-data/en.js'
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-pluralrules/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-pluralrules/should-polyfill.js'
 async function polyfill(locale: string) {
   const unsupportedLocale = shouldPolyfill(locale)
   // This locale is supported
@@ -79,7 +79,7 @@ async function polyfill(locale: string) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-pluralrules/polyfill-force')
-  await import(`@formatjs/intl-pluralrules/locale-data/${unsupportedLocale}`)
+  await import('@formatjs/intl-pluralrules/polyfill-force.js')
+  await import(`@formatjs/intl-pluralrules/locale-data/${unsupportedLocale}.js`)
 }
 ```
