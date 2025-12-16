@@ -8,5 +8,4 @@ chmod -R +w release/
 # Use `--access=public` to publish new packages with `@formatjs/` scope.
 pushd release
 pnpm install
-npx pnpm -r publish --access=public
 popd
