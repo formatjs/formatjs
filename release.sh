@@ -7,5 +7,5 @@ cp -rf $(bazel cquery --output=files dist)/ release/
 chmod -R +w release/
 # Use `--access=public` to publish new packages with `@formatjs/` scope.
 pushd release
-pnpm install
+pnpm ci
 popd
