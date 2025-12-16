@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.3](github.com/formatjs/formatjs/compare/react-intl@8.0.2...react-intl@8.0.3) (2025-12-16)
+
+### Bug Fixes
+
+* **react-intl:** jiggle package.json to republish ([b93b961](github.com/formatjs/formatjs/commits/b93b961de2412cdf67b5f7ba72872f0ecb59ecf7)) - by @longlho
+
 ## [8.0.2](github.com/formatjs/formatjs/compare/react-intl@8.0.1...react-intl@8.0.2) (2025-12-16)
 
 **Note:** Version bump only for package react-intl
