@@ -45,16 +45,16 @@ Everything in [intl-segmenter proposal](https://tc39.es/proposal-intl-segmenter)
 ### Simple
 
 ```tsx
-import '@formatjs/intl-segmenter/polyfill'
+import '@formatjs/intl-segmenter/polyfill.js'
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-segmenter/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-segmenter/should-polyfill.js'
 async function polyfill(locale: string) {
   if (shouldPolyfill()) {
-    await import('@formatjs/intl-segmenter/polyfill-force')
+    await import('@formatjs/intl-segmenter/polyfill-force.js')
   }
 }
 ```

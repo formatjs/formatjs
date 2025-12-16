@@ -59,14 +59,14 @@ You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to cre
 ### Simple
 
 ```tsx
-import '@formatjs/intl-displaynames/polyfill'
-import '@formatjs/intl-displaynames/locale-data/en' // locale-data for en
+import '@formatjs/intl-displaynames/polyfill.js'
+import '@formatjs/intl-displaynames/locale-data/en.js' // locale-data for en
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-displaynames/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-displaynames/should-polyfill.js'
 async function polyfill(locale: string) {
   const unsupportedLocale = shouldPolyfill(locale)
   // This locale is supported
@@ -74,7 +74,7 @@ async function polyfill(locale: string) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-displaynames/polyfill-force')
-  await import(`@formatjs/intl-displaynames/locale-data/${locale}`)
+  await import('@formatjs/intl-displaynames/polyfill-force.js')
+  await import(`@formatjs/intl-displaynames/locale-data/${locale}.js`)
 }
 ```
