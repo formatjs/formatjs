@@ -117,8 +117,6 @@ export default {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          showLastUpdateTime: true,
-          showLastUpdateAuthor: true,
           editUrl: 'https://github.com/formatjs/formatjs/edit/main/website/',
         },
         theme: {

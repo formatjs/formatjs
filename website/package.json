@@ -2,28 +2,10 @@
   "name": "website",
   "version": "1.0.3",
   "private": true,
-  "scripts": {
-    "build": "docusaurus build"
-  },
   "devDependencies": {
-    "@docusaurus/core": "^3.7.0",
-    "@docusaurus/plugin-google-analytics": "^3.7.0",
-    "@docusaurus/preset-classic": "^3.7.0",
-    "@docusaurus/theme-common": "^3.7.0",
-    "@docusaurus/theme-live-codeblock": "^3.7.0",
-    "@docusaurus/types": "^3.7.0",
     "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@mdx-js/react": "^3.1.0",
-    "classnames": "^2",
-    "clsx": "^2",
-    "docusaurus-lunr-search": "^3.5.0",
-    "http-server": "^14.1.1",
     "intl-messageformat": "workspace:*",
-    "lunr": "^2.3.9",
-    "prism-react-renderer": "^2",
-    "react-intl": "workspace:*",
-    "react-live": "^4",
-    "typescript": "^5.6.0"
+    "react-intl": "workspace:*"
   },
   "browserslist": {
     "production": [
