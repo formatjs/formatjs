@@ -1,0 +1,62 @@
+name: Autorelease
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          cache: true
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.15.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
+      - name: Build Distribution
+        run: |
+          bazel build --config=gh-ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} :dist
+          cp -rf $(bazel cquery --output=files dist)/ release/
+          chmod -R +w release/
+
+      - name: Install Release Dependencies
+        working-directory: release
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      # - name: Version Packages
+      #   run: HUSKY=0 pnpm run prerelease
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to npm
+        working-directory: release
+        run: |
+          pnpm -r publish --access public
