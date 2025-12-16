@@ -80,11 +80,6 @@ SRCS = glob(
     exclude = ["test*.*"],
 )
 
-TESTS = glob([
-    "tests/**/*.test.ts",
-    "tests/**/*Test.ts",
-])
-
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
@@ -186,13 +181,30 @@ write_source_files(
 )
 
 vitest(
-    name = "unit_tests",
+    name = "misc_tests",
     size = "large",
-    srcs = [":srcs"] +
-           TEST_LOCALE_DATA +
-           TESTS,
+    srcs = glob([
+               "tests/*.test.ts",
+           ]) + [":srcs"] +
+           TEST_LOCALE_DATA,
     deps = TEST_DEPS,
 )
+
+[
+    vitest(
+        name = "%s_tests" % type,
+        size = "large",
+        srcs = [
+            "tests/%s/%s.generated.test.ts" % (type, locale)
+            for locale in UNIT_TEST_LOCALES
+        ] + [
+            ":srcs",
+            "tests/%s/%sTest.ts" % (type, type),
+        ] + TEST_LOCALE_DATA,
+        deps = TEST_DEPS,
+    )
+    for type in LOCALE_TEST_TYPES
+]
 
 # CLDR
 ALL_LOCALES = [
