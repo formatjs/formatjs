@@ -69,7 +69,7 @@ bazel_dep(name = "aspect_bazel_lib", version = "2.22.0")
 
 ######### Multirun rules #########
 
-bazel_dep(name = "rules_multirun", version = "0.12.0")
+bazel_dep(name = "rules_multirun", version = "0.13.0")
 
 ######### buildifier rules #########
 
