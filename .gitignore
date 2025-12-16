@@ -9,3 +9,5 @@ node_modules
 build/
 .DS_Store
 .op
+release/
+!release/BUILD.bazel
