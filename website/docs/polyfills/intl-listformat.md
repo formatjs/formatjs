@@ -55,14 +55,14 @@ You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to cre
 ### Simple
 
 ```tsx
-import '@formatjs/intl-listformat/polyfill'
-import '@formatjs/intl-listformat/locale-data/en' // locale-data for en
+import '@formatjs/intl-listformat/polyfill.js'
+import '@formatjs/intl-listformat/locale-data/en.js' // locale-data for en
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-listformat/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-listformat/should-polyfill.js'
 async function polyfill(locale: string) {
   const unsupportedLocale = shouldPolyfill(locale)
   // This locale is supported
@@ -70,8 +70,8 @@ async function polyfill(locale: string) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-listformat/polyfill-force')
-  await import(`@formatjs/intl-listformat/locale-data/${unsupportedLocale}`)
+  await import('@formatjs/intl-listformat/polyfill-force.js')
+  await import(`@formatjs/intl-listformat/locale-data/${unsupportedLocale}.js`)
 }
 ```
 

@@ -54,20 +54,20 @@ You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to cre
 ### Simple
 
 ```tsx
-import '@formatjs/intl-locale/polyfill'
+import '@formatjs/intl-locale/polyfill.js'
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-locale/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-locale/should-polyfill.js'
 async function polyfill() {
   // This platform already supports Intl.Locale
   if (shouldPolyfill()) {
-    await import('@formatjs/intl-locale/polyfill')
+    await import('@formatjs/intl-locale/polyfill.js')
   }
   // Alternatively, force the polyfill regardless of support
-  await import('@formatjs/intl-locale/polyfill-force')
+  await import('@formatjs/intl-locale/polyfill-force.js')
 }
 ```
 

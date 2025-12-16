@@ -71,15 +71,15 @@ You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to cre
 ### Simple
 
 ```tsx
-import '@formatjs/intl-datetimeformat/polyfill'
-import '@formatjs/intl-datetimeformat/locale-data/en' // locale-data for en
-import '@formatjs/intl-datetimeformat/add-all-tz' // Add ALL tz data
+import '@formatjs/intl-datetimeformat/polyfill.js'
+import '@formatjs/intl-datetimeformat/locale-data/en.js' // locale-data for en
+import '@formatjs/intl-datetimeformat/add-all-tz.js' // Add ALL tz data
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-datetimeformat/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-datetimeformat/should-polyfill.js'
 async function polyfill(locale: string) {
   const unsupportedLocale = shouldPolyfill(locale)
   // This locale is supported
@@ -87,12 +87,12 @@ async function polyfill(locale: string) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-datetimeformat/polyfill-force')
+  await import('@formatjs/intl-datetimeformat/polyfill-force.js')
 
   // Parallelize CLDR data loading
   const dataPolyfills = [
-    import('@formatjs/intl-datetimeformat/add-all-tz'),
-    import(`@formatjs/intl-datetimeformat/locale-data/${unsupportedLocale}`),
+    import('@formatjs/intl-datetimeformat/add-all-tz.js'),
+    import(`@formatjs/intl-datetimeformat/locale-data/${unsupportedLocale}.js`),
   ]
   await Promise.all(dataPolyfills)
 }
@@ -105,15 +105,15 @@ We provide 2 pre-processed IANA Timezone:
 #### Full: contains ALL Timezone from IANA database
 
 ```tsx
-import '@formatjs/intl-datetimeformat/polyfill'
-import '@formatjs/intl-datetimeformat/add-all-tz'
+import '@formatjs/intl-datetimeformat/polyfill.js'
+import '@formatjs/intl-datetimeformat/add-all-tz.js'
 ```
 
 #### Golden: contains popular set of timezones from IANA database
 
 ```tsx
-import '@formatjs/intl-datetimeformat/polyfill'
-import '@formatjs/intl-datetimeformat/add-golden-tz'
+import '@formatjs/intl-datetimeformat/polyfill.js'
+import '@formatjs/intl-datetimeformat/add-golden-tz.js'
 ```
 
 ### Default Timezone
@@ -125,7 +125,7 @@ You can change this by either calling `__setDefaultTimeZone` or always explicitl
 Since `__setDefaultTimeZone` is not in the spec, you should make sure to check for its existence before calling it & after tz data has been loaded, e.g:
 
 ```tsx
-import '@formatjs/intl-datetimeformat/polyfill'
+import '@formatjs/intl-datetimeformat/polyfill.js'
 import '@formatjs/intl-datetimeformat/add-all-tz.js'
 
 if ('__setDefaultTimeZone' in Intl.DateTimeFormat) {
