@@ -46,13 +46,13 @@ yarn add @formatjs/intl-durationformat
 ### Simple
 
 ```tsx
-import '@formatjs/intl-durationformat/polyfill'
+import '@formatjs/intl-durationformat/polyfill.js'
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-durationformat/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-durationformat/should-polyfill.js'
 async function polyfill(locale: string) {
   const unsupportedLocale = shouldPolyfill(locale)
   // This locale is supported
@@ -60,6 +60,6 @@ async function polyfill(locale: string) {
     return
   }
   // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-durationformat/polyfill-force')
+  await import('@formatjs/intl-durationformat/polyfill-force.js')
 }
 ```

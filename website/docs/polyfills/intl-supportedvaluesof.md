@@ -47,20 +47,20 @@ yarn add @formatjs/intl-enumerator
 ### Simple
 
 ```tsx
-import '@formatjs/intl-enumerator/polyfill'
+import '@formatjs/intl-enumerator/polyfill.js'
 ```
 
 ### Dynamic import + capability detection
 
 ```tsx
-import {shouldPolyfill} from '@formatjs/intl-enumerator/should-polyfill'
+import {shouldPolyfill} from '@formatjs/intl-enumerator/should-polyfill.js'
 async function polyfill() {
   // This platform already supports Intl.supportedValuesOf
   if (shouldPolyfill()) {
-    await import('@formatjs/intl-enumerator/polyfill')
+    await import('@formatjs/intl-enumerator/polyfill.js')
   }
   // Alternatively, force the polyfill regardless of support
-  await import('@formatjs/intl-enumerator/polyfill-force')
+  await import('@formatjs/intl-enumerator/polyfill-force.js')
 }
 ```
 
