@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.0.2...@formatjs/intl-numberformat@9.0.3) (2025-12-17)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** fix fs-extra imports, fix [#5569](https://github.com/formatjs/formatjs/issues/5569) ([76c8793](https://github.com/formatjs/formatjs/commit/76c8793bf8a0744ad9a7c64ab3adbe5c1434898f)) - by @longlho
+
 ## [9.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.0.1...@formatjs/intl-numberformat@9.0.2) (2025-12-16)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat
