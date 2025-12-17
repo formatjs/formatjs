@@ -53,7 +53,25 @@ echo ""
 
 cd ..
 
-echo "Step 4: Publishing to npm"
+echo "Step 4: npm authentication"
+echo "Checking npm authentication..."
+if npm whoami > /dev/null 2>&1; then
+  echo "✓ Already logged in as: $(npm whoami)"
+else
+  echo "⚠️  Not logged in to npm"
+  read -p "Run 'npm adduser' now? (y/N) " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    npm adduser
+    echo "✓ npm authentication successful"
+  else
+    echo "❌ npm authentication required for publishing"
+    exit 1
+  fi
+fi
+echo ""
+
+echo "Step 5: Publishing to npm"
 echo "⚠️  This will publish all packages to npm!"
 read -p "Continue with publishing? (y/N) " -n 1 -r
 echo
