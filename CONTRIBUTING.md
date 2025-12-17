@@ -50,12 +50,7 @@ Releases can be done with the following steps:
 # Make sure you have GH_TOKEN setup as indicated by:
 # https://github.com/lerna/lerna/blob/05ad1860e2da7fc16c9c0a072c9389e94792ab64/commands/version/README.md#--create-release-type
 GH_TOKEN=xxxxxxx npm run prerelease
-bazel build :dist
-mkdir ../formatjs2
-cp -rf bazel-bin/formatjs_dist/ ../formatjs2/
-# Use `--access=public` to publish new packages with `@formatjs/` scope.
-cd ../formatjs2
-npx pnpm -r publish --access=public
+./release.sh
 ```
 
 ### Updating tzdata version
