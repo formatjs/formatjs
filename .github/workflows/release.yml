@@ -7,7 +7,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  id-token: write
 
 jobs:
   release:
@@ -60,4 +61,4 @@ jobs:
       - name: Publish to npm
         working-directory: release
         run: |
-          pnpm -r publish --access public --no-git-checks
+          NPM_CONFIG_PROVENANCE=true pnpm -r publish --access public --no-git-checks
