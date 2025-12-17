@@ -1,3 +1,6 @@
+// Core implementation of Intl.DurationFormat polyfill
+// Follows the TC39 Intl.DurationFormat proposal specification
+
 import {
   CanonicalizeLocaleList,
   GetNumberOption,
@@ -24,6 +27,8 @@ import type {
 } from './types.js'
 import {DurationFormatOptions} from './types.js'
 
+// Keys that should be included in resolvedOptions() output
+// These represent all the configurable options for duration formatting
 const RESOLVED_OPTIONS_KEYS: Array<
   keyof Omit<IntlDurationFormatInternal, 'pattern' | 'boundFormat'>
 > = [
@@ -53,6 +58,9 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'fractionalDigits',
 ]
 
+// Configuration table for all duration units (from spec Table 3)
+// Defines the style and display options for each unit, along with their defaults
+// Units are processed in order from largest (years) to smallest (nanoseconds)
 const TABLE_3 = [
   {
     styleSlot: 'years',
@@ -126,8 +134,13 @@ const TABLE_3 = [
   },
 ] as const
 
+/**
+ * DurationFormat provides locale-sensitive duration formatting
+ * Implements the Intl.DurationFormat API from the TC39 proposal
+ */
 export class DurationFormat implements DurationFormatType {
   constructor(locales?: string | string[], options?: DurationFormatOptions) {
+    // Ensure constructor is called with 'new' keyword
     // test262/test/intl402/ListFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
     const newTarget =
@@ -135,9 +148,12 @@ export class DurationFormat implements DurationFormatType {
     if (!newTarget) {
       throw new TypeError("Intl.DurationFormat must be called with 'new'")
     }
+    // Canonicalize the requested locales into a standard format
     const requestedLocales = CanonicalizeLocaleList(locales)
     const opt: any = Object.create(null)
     const opts = options === undefined ? Object.create(null) : ToObject(options)
+
+    // Get locale matching algorithm preference ('best fit' or 'lookup')
     const matcher = GetOption(
       opts,
       'localeMatcher',
@@ -145,6 +161,8 @@ export class DurationFormat implements DurationFormatType {
       ['best fit', 'lookup'],
       'best fit'
     )
+
+    // Get numbering system (e.g., 'latn', 'arab', 'deva')
     const numberingSystem = GetOption(
       opts,
       'numberingSystem',
@@ -156,27 +174,31 @@ export class DurationFormat implements DurationFormatType {
       numberingSystem !== undefined &&
       numberingSystemNames.indexOf(numberingSystem) < 0
     ) {
-      // 8.a. If numberingSystem does not match the Unicode Locale Identifier type nonterminal,
-      // throw a RangeError exception.
+      // Validate that the numbering system is recognized
       throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
     }
     opt.nu = numberingSystem
     opt.localeMatcher = matcher
+    // Resolve the best matching locale from available locales
     const {localeData, availableLocales} = DurationFormat
     const r = ResolveLocale(
       availableLocales,
       requestedLocales,
       opt,
-      // [[RelevantExtensionKeys]] slot, which is a constant
+      // [[RelevantExtensionKeys]] slot - only 'nu' (numbering system) is supported
       ['nu'],
       localeData,
       DurationFormat.getDefaultLocale
     )
     const locale = r.locale
+
+    // Initialize internal slots for this formatter instance
     const internalSlots = getInternalSlots(this)
     internalSlots.initializedDurationFormat = true
     internalSlots.locale = locale
     internalSlots.numberingSystem = r.nu
+
+    // Get overall formatting style: 'long' (3 hours), 'short' (3 hr), 'narrow' (3h), or 'digital' (3:00:00)
     const style = GetOption(
       opts,
       'style',
@@ -186,6 +208,8 @@ export class DurationFormat implements DurationFormatType {
     )
     internalSlots.style = style
     internalSlots.dataLocale = r.dataLocale
+    // Process each duration unit (years through nanoseconds) to determine
+    // its display style and when to show it (always/auto/never)
     let prevStyle = ''
     TABLE_3.forEach(row => {
       const {
@@ -195,6 +219,7 @@ export class DurationFormat implements DurationFormatType {
         values: valueList,
         digitalDefault: digitalBase,
       } = row
+      // Get the style and display options for this unit
       const unitOptions = GetDurationUnitOptions(
         unit,
         opts,
@@ -205,6 +230,9 @@ export class DurationFormat implements DurationFormatType {
       )
       internalSlots[styleSlot] = unitOptions.style
       internalSlots[displaySlot] = unitOptions.display
+
+      // Track the previous style for time units (hours through microseconds)
+      // This is used to ensure consistent digital formatting across related units
       if (
         unit === 'hours' ||
         unit === 'minutes' ||
@@ -215,6 +243,8 @@ export class DurationFormat implements DurationFormatType {
         prevStyle = unitOptions.style
       }
     })
+
+    // Get the number of fractional digits for sub-second precision (0-9)
     internalSlots.fractionalDigits = GetNumberOption(
       opts,
       'fractionalDigits',
