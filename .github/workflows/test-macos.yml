@@ -23,4 +23,8 @@ jobs:
           repository-cache: true
 
       - name: Run Tests
-        run: bazel test --config=gh-ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //...
+        run: |
+          bazel test \
+            --config=gh-ci \
+            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+            //...
