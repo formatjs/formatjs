@@ -1,5 +1,5 @@
 import minimist, {ParsedArgs} from 'minimist'
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 
 // Generate an array of 10 characters with consecutive codepoint, starting from `starCharCode`.

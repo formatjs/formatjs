@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 interface Args extends minimist.ParsedArgs {
   zone: string[]
 }

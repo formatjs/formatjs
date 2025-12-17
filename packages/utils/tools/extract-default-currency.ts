@@ -1,5 +1,5 @@
 import {supplemental} from 'cldr-core/supplemental/currencyData.json'
-import {outputJsonSync} from 'fs-extra'
+import {outputJsonSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 
 interface Args {

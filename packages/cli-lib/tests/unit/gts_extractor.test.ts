@@ -1,6 +1,6 @@
 import {describe, test, expect} from 'vitest'
 import {MessageDescriptor, interpolateName} from '@formatjs/ts-transformer'
-import {readFile} from 'fs-extra'
+import {readFile} from 'fs-extra/esm'
 import {join} from 'path'
 import {parseFile} from '../../src/gts_extractor'
 

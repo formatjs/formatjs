@@ -1,4 +1,4 @@
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import regenerate from 'regenerate'
 import './global'

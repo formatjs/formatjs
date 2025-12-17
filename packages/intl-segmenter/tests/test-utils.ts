@@ -85,9 +85,7 @@ function testDataFromLine(line: string) {
 }
 
 const loadUCDTestFile = (filePath: string) => {
-  const testFile = readFileSync(filePath, {
-    encoding: 'utf8',
-  })
+  const testFile = readFileSync(filePath, 'utf8')
 
   return (
     testFile

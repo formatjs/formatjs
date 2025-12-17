@@ -1,5 +1,6 @@
-import {outputFileSync, readFileSync} from 'fs-extra'
+import {outputFileSync, } from 'fs-extra/esm'
 import minimist from 'minimist'
+import {readFileSync} from 'fs'
 interface Args extends minimist.ParsedArgs {
   cldrFile: string[]
   localesToGen: string[]
@@ -11,7 +12,7 @@ function main(args: Args) {
   cldrFiles.sort()
 
   // Aggregate all into ../test262-main.js
-  const allData = cldrFiles.map(f => readFileSync(f))
+  const allData = cldrFiles.map(f => readFileSync(f, 'utf-8'))
   outputFileSync(
     out,
     `// @generated

@@ -1,0 +1,14 @@
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+npm_link_all_packages()
+
+js_test(
+    name = "esm_compatibility_test",
+    size = "small",
+    timeout = "short",
+    data = [
+        ":node_modules/@formatjs/cli-lib",
+    ],
+    entry_point = "test_esm_imports.mjs",
+)

@@ -1,5 +1,5 @@
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json'
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import stringify from 'json-stable-stringify'
 

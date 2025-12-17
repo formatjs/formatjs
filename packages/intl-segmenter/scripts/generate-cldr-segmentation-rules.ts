@@ -3,7 +3,7 @@
 // @ts-ignore to ignore missing type definitions for regexpu-core
 import rewritePattern from 'regexpu-core'
 
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 import minimist, {ParsedArgs} from 'minimist'
 import {readFileSync} from 'node:fs'

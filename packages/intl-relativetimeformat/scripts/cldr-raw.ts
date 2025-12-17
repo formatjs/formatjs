@@ -1,6 +1,6 @@
 import {extractRelativeFields, getAllLocales} from './extract-relative.js'
 import {join} from 'path'
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 
 import minimist from 'minimist'

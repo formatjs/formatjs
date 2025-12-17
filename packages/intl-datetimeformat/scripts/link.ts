@@ -1,6 +1,6 @@
 import minimist from 'minimist'
 import {readFileSync} from 'fs'
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 function main(args: minimist.ParsedArgs) {
   const {input, out} = args

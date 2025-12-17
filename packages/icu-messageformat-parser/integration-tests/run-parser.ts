@@ -1,5 +1,5 @@
 import {_Parser} from '@formatjs/icu-messageformat-parser'
-import fs from 'fs'
+import {readFileSync, writeFileSync} from 'fs'
 import minimist from 'minimist'
 
 interface Args extends minimist.ParsedArgs {
@@ -9,7 +9,7 @@ interface Args extends minimist.ParsedArgs {
 
 function run({input, out}: Args) {
   console.log(__dirname)
-  const sections = fs.readFileSync(input, 'utf-8').split('\n---\n')
+  const sections = readFileSync(input, 'utf-8').split('\n---\n')
   const message = sections[0]
   const snapshotOptions = JSON.parse(sections[1])
   const options = {...snapshotOptions}
@@ -22,7 +22,7 @@ function run({input, out}: Args) {
 
   // If the mismatch is intentional, use `UPDATE_SNAPSHOT=1` env var
   // with bazel run to update the snapshot.
-  fs.writeFileSync(
+  writeFileSync(
     out,
     [
       message,

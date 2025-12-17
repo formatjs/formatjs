@@ -1,6 +1,5 @@
 import fastGlobPkg from 'fast-glob'
-import fsExtraPkg from 'fs-extra'
-const {readJSONSync} = fsExtraPkg
+import {readJSONSync} from 'fs-extra/esm'
 const {sync: globSync} = fastGlobPkg
 
 const packages = globSync('./packages/*/package.json').map(

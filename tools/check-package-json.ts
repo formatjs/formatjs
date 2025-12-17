@@ -1,4 +1,4 @@
-import {readJSONSync} from 'fs-extra'
+import {readJSONSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import {isEqual} from 'lodash-es'
 import stringify from 'json-stable-stringify'

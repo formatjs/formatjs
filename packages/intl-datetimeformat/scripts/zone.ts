@@ -1,6 +1,6 @@
 import minimist from 'minimist'
 import {readFileSync} from 'fs'
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 function main(args: minimist.ParsedArgs) {
   const {input, output} = args
   const zones = new Set(

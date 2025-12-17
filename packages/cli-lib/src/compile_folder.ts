@@ -1,4 +1,4 @@
-import {outputFile} from 'fs-extra'
+import {outputFile} from 'fs-extra/esm'
 import {basename, join} from 'path'
 import {Opts, compile} from './compile.js'
 export default async function compileFolder(

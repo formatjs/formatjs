@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import {keyword} from 'cldr-bcp47/bcp47/calendar.json'
 function main(args: minimist.ParsedArgs) {
   const {out} = args

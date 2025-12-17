@@ -1,7 +1,7 @@
 import * as ts from 'typescript'
 import {transform as intlTransformer} from '../'
 
-declare module 'fs-extra' {
+declare module 'fs-extra/esm' {
   export function outputJsonSync(file: string, data: any, opts?: {}): void
 }
 const CJS_CONFIG: ts.CompilerOptions = {

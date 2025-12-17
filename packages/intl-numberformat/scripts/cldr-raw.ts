@@ -2,7 +2,7 @@ import {generateDataForLocales as extractCurrencies} from './extract-currencies.
 import {generateDataForLocales as extractUnits} from './extract-units.js'
 import {generateDataForLocales as extractNumbers} from './extract-numbers.js'
 import {join} from 'path'
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
 import minimist from 'minimist'

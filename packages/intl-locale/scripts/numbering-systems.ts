@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 
 import {getAllLocales} from './utils.js'

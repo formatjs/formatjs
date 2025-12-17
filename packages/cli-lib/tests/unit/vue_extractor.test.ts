@@ -2,7 +2,7 @@ import {test, expect} from 'vitest'
 import {MessageDescriptor} from '@formatjs/ts-transformer'
 import {parseScript} from '../../src/parse_script'
 import {parseFile} from '../../src/vue_extractor'
-import {readFile} from 'fs-extra'
+import {readFile} from 'fs-extra/esm'
 import {join} from 'path'
 
 test('vue_extractor', async function () {

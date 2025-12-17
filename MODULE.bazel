@@ -26,6 +26,7 @@ npm.npm_translate_lock(
     name = "npm",
     data = [
         "//:patches/@commitlint__rules.patch",
+        "//:patches/@vue+compiler-sfc.patch",
         "//:patches/make-plural-compiler@5.1.0.patch",
     ],
     npmrc = "//:.npmrc",

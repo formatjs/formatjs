@@ -1,6 +1,7 @@
 import {XMLParser} from 'fast-xml-parser'
-import {outputJsonSync, readFileSync} from 'fs-extra'
+import {outputJsonSync} from 'fs-extra/esm'
 import minimist from 'minimist'
+import {readFileSync} from 'fs'
 
 interface Args {
   input: string

@@ -1,6 +1,7 @@
 import {join, basename} from 'path'
-import {outputFileSync, readFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
+import {readFileSync} from 'fs'
 
 interface Args extends minimist.ParsedArgs {
   cldrFile: string[]
@@ -11,7 +12,7 @@ function main(args: Args) {
   cldrFiles.forEach(cldrFile => {
     const locale = basename(cldrFile, '.js')
     // Dist all locale files to locale-data (JS)
-    const data = readFileSync(cldrFile)
+    const data = readFileSync(cldrFile, 'utf8')
     outputFileSync(
       join(outDir, locale + '.js'),
       `/* @generated */

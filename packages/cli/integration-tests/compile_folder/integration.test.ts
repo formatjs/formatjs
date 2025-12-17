@@ -1,7 +1,7 @@
 import {exec as nodeExec} from 'child_process'
 import {sync as globSync} from 'fast-glob'
 import {mkdtempSync} from 'fs'
-import {readJSON} from 'fs-extra'
+import {readJSON} from 'fs-extra/esm'
 import {basename, join} from 'path'
 import {expect, test} from 'vitest'
 import {promisify} from 'util'

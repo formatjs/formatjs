@@ -7,7 +7,7 @@ vi.mock('typescript')
 vi.spyOn(process, 'exit').mockImplementation((() => null) as any)
 vi.spyOn(glob, 'sync').mockImplementation(p => (Array.isArray(p) ? p : [p]))
 
-vi.mock('fs-extra', () => ({
+vi.mock('fs-extra/esm', () => ({
   outputJSONSync: () => Promise.resolve(),
   readFile: () => Promise.resolve(';'),
 }))

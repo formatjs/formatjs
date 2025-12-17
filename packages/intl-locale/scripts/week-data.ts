@@ -1,4 +1,4 @@
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 
 import * as rawTerritoryInfo from 'cldr-core/supplemental/territoryInfo.json'

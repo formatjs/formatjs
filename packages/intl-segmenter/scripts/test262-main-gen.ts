@@ -1,4 +1,4 @@
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 interface Args extends minimist.ParsedArgs {
   cldrFile: string[]

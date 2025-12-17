@@ -1,5 +1,5 @@
 import {join, basename} from 'path'
-import {copyFileSync} from 'fs-extra'
+import {copyFileSync} from 'fs-extra/esm'
 import {sync as globSync} from 'fast-glob'
 import minimist from 'minimist'
 

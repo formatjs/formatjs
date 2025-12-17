@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 import * as rawTimezones from 'cldr-bcp47/bcp47/timezone.json'
 

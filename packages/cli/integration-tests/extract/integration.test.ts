@@ -1,5 +1,5 @@
 import {exec as nodeExec} from 'child_process'
-import {mkdirp, readJSON, remove} from 'fs-extra'
+import {mkdirp, readJSON, remove} from 'fs-extra/esm'
 import {join, resolve} from 'path'
 import {promisify} from 'util'
 import {beforeEach, expect, test} from 'vitest'

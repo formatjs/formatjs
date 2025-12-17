@@ -1,4 +1,4 @@
-import {outputFileSync} from 'fs-extra'
+import {outputFileSync} from 'fs-extra/esm'
 import * as aliases from 'cldr-core/supplemental/aliases.json'
 import minimist from 'minimist'
 import stringify from 'json-stable-stringify'

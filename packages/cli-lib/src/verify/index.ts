@@ -2,7 +2,7 @@ import {basename} from 'path'
 import {debug} from '../console_utils.js'
 import {checkMissingKeys} from './checkMissingKeys.js'
 import {checkExtraKeys} from './checkExtraKeys.js'
-import {readJSON} from 'fs-extra'
+import {readJSON} from 'fs-extra/esm'
 import {checkStructuralEquality} from './checkStructuralEquality.js'
 export interface VerifyOpts {
   sourceLocale: string
