@@ -89,6 +89,50 @@
         "grudnia"
       ]
     },
+    "monthStandalone": {
+      "narrow": [
+        "S",
+        "L",
+        "M",
+        "K",
+        "M",
+        "C",
+        "L",
+        "S",
+        "W",
+        "P",
+        "L",
+        "G"
+      ],
+      "short": [
+        "sty",
+        "lut",
+        "mar",
+        "kwi",
+        "maj",
+        "cze",
+        "lip",
+        "sie",
+        "wrz",
+        "paź",
+        "lis",
+        "gru"
+      ],
+      "long": [
+        "styczeń",
+        "luty",
+        "marzec",
+        "kwiecień",
+        "maj",
+        "czerwiec",
+        "lipiec",
+        "sierpień",
+        "wrzesień",
+        "październik",
+        "listopad",
+        "grudzień"
+      ]
+    },
     "timeZoneName": {
       "Asia/Kabul": {
         "long": [
