@@ -121,7 +121,7 @@ importers:
         version: 7.10.3
       '@types/babel__traverse':
         specifier: ^7.20.6
-        version: 7.20.7
+        version: 7.28.0
       '@types/benchmark':
         specifier: ^2.1.5
         version: 2.1.5
@@ -397,7 +397,7 @@ importers:
         version: 7.10.3
       '@types/babel__traverse':
         specifier: ^7.20.6
-        version: 7.20.7
+        version: 7.28.0
       tslib:
         specifier: ^2.8.0
         version: 2.8.1
@@ -3433,9 +3433,6 @@ packages:
   '@types/babel__template@7.4.4':
     resolution: {integrity: sha512-h/NUaSyG5EyxBIp8YRxo4RMe2/qQgvyowRwVMzhYhBCONbW8PUsg4lkFMrhgZhUe5z3L3MiLDuvyJ/CaPa2A8A==}
 
-  '@types/babel__traverse@7.20.7':
-    resolution: {integrity: sha512-dkO5fhS7+/oos4ciWxyEyjWe48zmG6wbCheo/G2ZnHx4fs3EU6YC6UM8rk56gAjNJ9P3MTH2jo5jb92/K6wbng==}
-
   '@types/babel__traverse@7.28.0':
     resolution: {integrity: sha512-8PvcXf70gTDZBgt9ptxJ8elBeBjcLOAcOtoO/mPJjtji1+CdGbHgm77om1GrsPxsiE+uXIpNSK64UYaIwQXd4Q==}
 
@@ -5252,6 +5249,14 @@ packages:
 
   dedent@1.7.0:
     resolution: {integrity: sha512-HGFtf8yhuhGhqO07SV79tRp+br4MnbdjeVxotpn1QBl30pcLLCQjX5b2295ll0fv8RKDKsmWYrl05usHM9CewQ==}
+    peerDependencies:
+      babel-plugin-macros: ^3.1.0
+    peerDependenciesMeta:
+      babel-plugin-macros:
+        optional: true
+
+  dedent@1.7.1:
+    resolution: {integrity: sha512-9JmrhGZpOlEgOLdQgSm0zxFaYoQon408V1v49aqTWuXENVlnCuY9JBZcXZiCsZQWDjTm5Qf/nIvAy77mXDAjEg==}
     peerDependencies:
       babel-plugin-macros: ^3.1.0
     peerDependenciesMeta:
@@ -14379,7 +14384,7 @@ snapshots:
       '@babel/types': 7.28.5
       '@types/babel__generator': 7.6.8
       '@types/babel__template': 7.4.4
-      '@types/babel__traverse': 7.20.7
+      '@types/babel__traverse': 7.28.0
 
   '@types/babel__generator@7.6.8':
     dependencies:
@@ -14392,10 +14397,6 @@ snapshots:
   '@types/babel__template@7.4.4':
     dependencies:
       '@babel/parser': 7.25.9
-      '@babel/types': 7.28.5
-
-  '@types/babel__traverse@7.20.7':
-    dependencies:
       '@babel/types': 7.28.5
 
   '@types/babel__traverse@7.28.0':
@@ -16500,6 +16501,8 @@ snapshots:
 
   dedent@1.7.0: {}
 
+  dedent@1.7.1: {}
+
   deep-eql@5.0.2: {}
 
   deep-extend@0.6.0: {}
@@ -18572,7 +18575,7 @@ snapshots:
       '@types/node': 22.19.3
       chalk: 4.1.2
       co: 4.6.0
-      dedent: 1.7.0
+      dedent: 1.7.1
       is-generator-fn: 2.1.0
       jest-each: 29.7.0
       jest-matcher-utils: 29.7.0
