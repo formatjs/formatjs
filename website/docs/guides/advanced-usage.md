@@ -31,7 +31,7 @@ module.exports = {
   resolve: {
     alias: {
       '@formatjs/icu-messageformat-parser':
-        '@formatjs/icu-messageformat-parser/no-parser',
+        '@formatjs/icu-messageformat-parser/no-parser.js',
     },
   },
 }
@@ -48,7 +48,7 @@ module.exports = {
     alias({
       entries: {
         '@formatjs/icu-messageformat-parser':
-          '@formatjs/icu-messageformat-parser/no-parser',
+          '@formatjs/icu-messageformat-parser/no-parser.js',
       },
     }),
   ],
