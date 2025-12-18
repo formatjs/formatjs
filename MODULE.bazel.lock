@@ -439,8 +439,8 @@
     },
     "@@aspect_rules_js+//npm:extensions.bzl%pnpm": {
       "general": {
-        "bzlTransitiveDigest": "DNXkKeHxWBIEINRJKHMLsiUWBFMgmcsuzWMGgFwP2ao=",
-        "usagesDigest": "FDCaPSatMildxttzlG2R1K6pIN3dNKZ2nRaCyQiBZfk=",
+        "bzlTransitiveDigest": "10KPiO0Edd8y16/nQT0UFX51uxr18Ee4/u1O9Lm5Eos=",
+        "usagesDigest": "BnWFp7bvF/vADAYFzmNOyoQ97q3opYMcB+gZ4kkw1UA=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -469,8 +469,7 @@
               "extra_build_content": "load(\"@aspect_rules_js//js:defs.bzl\", \"js_binary\")\njs_binary(name = \"pnpm\", data = glob([\"package/**\"]), entry_point = \"package/dist/pnpm.cjs\", visibility = [\"//visibility:public\"])",
               "generate_bzl_library_targets": false,
               "extract_full_archive": true,
-              "exclude_package_contents": [],
-              "system_tar": "auto"
+              "exclude_package_contents": []
             }
           },
           "pnpm__links": {
@@ -526,8 +525,18 @@
           ],
           [
             "aspect_rules_js+",
+            "aspect_tools_telemetry_report",
+            "aspect_tools_telemetry++telemetry+aspect_tools_telemetry_report"
+          ],
+          [
+            "aspect_rules_js+",
             "bazel_features",
             "bazel_features+"
+          ],
+          [
+            "aspect_rules_js+",
+            "bazel_lib",
+            "bazel_lib+"
           ],
           [
             "aspect_rules_js+",
@@ -548,6 +557,11 @@
             "bazel_features+",
             "bazel_features_version",
             "bazel_features++version_extension+bazel_features_version"
+          ],
+          [
+            "bazel_lib+",
+            "bazel_tools",
+            "bazel_tools"
           ],
           [
             "tar.bzl+",
@@ -572,7 +586,7 @@
         "bzlTransitiveDigest": "u2i6cw9UufcXbPuESBB66WdqYKm1KTFsDORyv0HawHo=",
         "usagesDigest": "tsxRjH5DN8xUnGoUELCp/xuIp04EwwlFAtYpnGb6Y+4=",
         "recordedFileInputs": {
-          "@@//package.json": "f1957c041ec500e1f4d66f3c4e8a8dcbe26a2b3316fcdae0a6bc5c207b095232"
+          "@@//package.json": "b4fbe1b33577f20fd3f3635a4d8f1193836277121b07abb00d5eb846100fe166"
         },
         "recordedDirentsInputs": {},
         "envVariables": {},
