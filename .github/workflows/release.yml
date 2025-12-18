@@ -79,9 +79,9 @@ jobs:
       #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure npm for publishing
+        working-directory: release
         run: |
-          cp $HOME/.npmrc release/.npmrc || echo "No .npmrc in home directory"
-          cat $HOME/.npmrc || echo "Cannot read .npmrc"
+          echo "registry=https://registry.npmjs.org/" > .npmrc
 
       - name: Publish to npm
         working-directory: release
