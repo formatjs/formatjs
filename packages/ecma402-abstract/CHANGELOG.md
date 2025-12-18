@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.2...@formatjs/ecma402-abstract@3.0.3) (2025-12-18)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** support standalone months, fix [#5134](/github.com/formatjs/formatjs/issues/5134) ([#5583](/github.com/formatjs/formatjs/issues/5583)) ([3c7dd24](github.com/formatjs/formatjs/commits/3c7dd24854c42a3ff9034ef511fa2aff8efde78f)) - by @longlho
+
 ## [3.0.2](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.1...@formatjs/ecma402-abstract@3.0.2) (2025-12-17)
 
 ### Bug Fixes

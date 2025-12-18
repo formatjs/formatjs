@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.0.2...@formatjs/intl-datetimeformat@7.0.3) (2025-12-18)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** support standalone months, fix [#5134](https://github.com/formatjs/formatjs/issues/5134) ([#5583](https://github.com/formatjs/formatjs/issues/5583)) ([3c7dd24](https://github.com/formatjs/formatjs/commit/3c7dd24854c42a3ff9034ef511fa2aff8efde78f)) - by @longlho
+
 ## [7.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.0.1...@formatjs/intl-datetimeformat@7.0.2) (2025-12-17)
 
 ### Bug Fixes
