@@ -18,6 +18,7 @@ import * as metaZones from 'cldr-core/supplemental/metaZones.json'
 import IntlLocale from '@formatjs/intl-locale'
 import {Formats} from '@formatjs/ecma402-abstract'
 import {parseDateTimeSkeleton} from '../src/abstract/skeleton'
+import {isEqual} from 'lodash-es'
 const {timeData} = rawTimeData.supplemental
 const processedTimeData = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
@@ -307,6 +308,28 @@ async function loadDatesFields(
       short: Object.values(gregorian.months.format.abbreviated),
       long: Object.values(gregorian.months.format.wide),
     },
+    // Include stand-alone month forms if they differ from format forms
+    ...(gregorian.months['stand-alone'] &&
+    (!isEqual(
+      gregorian.months['stand-alone'].narrow,
+      gregorian.months.format.narrow
+    ) ||
+      !isEqual(
+        gregorian.months['stand-alone'].abbreviated,
+        gregorian.months.format.abbreviated
+      ) ||
+      !isEqual(
+        gregorian.months['stand-alone'].wide,
+        gregorian.months.format.wide
+      ))
+      ? {
+          monthStandalone: {
+            narrow: Object.values(gregorian.months['stand-alone'].narrow),
+            short: Object.values(gregorian.months['stand-alone'].abbreviated),
+            long: Object.values(gregorian.months['stand-alone'].wide),
+          },
+        }
+      : {}),
     timeZoneName,
     gmtFormat: timeZoneNames.gmtFormat,
     hourFormat: timeZoneNames.hourFormat,

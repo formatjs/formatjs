@@ -7,9 +7,10 @@ import {
 } from '../src/to_locale_string'
 import * as en from './locale-data/en.json'
 import * as ko from './locale-data/ko.json'
+import * as ru from './locale-data/ru.json'
 import {describe, expect, it} from 'vitest'
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, ko)
+DateTimeFormat.__addLocaleData(en, ko, ru)
 DateTimeFormat.__addTZData(allData)
 
 const tests: Array<{
@@ -338,5 +339,48 @@ describe('toLocaleTimeString', function () {
     expect(toLocaleTimeString(new Date(TS), 'en', {timeZone: 'UTC'})).toBe(
       '4:48:20 AM'
     )
+  })
+})
+
+// Test for issue #5134: Stand-alone month forms
+describe('stand-alone month forms (issue #5134)', function () {
+  it('Russian: stand-alone month should use nominative case', function () {
+    const date = new Date(2023, 9, 15) // October 15, 2023
+    const standAloneMonth = new DateTimeFormat('ru', {
+      month: 'long',
+    }).format(date)
+    const formatMonth = new DateTimeFormat('ru', {
+      day: 'numeric',
+      month: 'long',
+    }).format(date)
+
+    // Stand-alone month should be "октябрь" (nominative)
+    expect(standAloneMonth).toBe('октябрь')
+    // Format month (with day) should be "15 октября" (genitive)
+    expect(formatMonth).toBe('15 октября')
+  })
+
+  it('Russian: different months in stand-alone form', function () {
+    const january = new Date(2023, 0, 1)
+    const february = new Date(2023, 1, 1)
+    const march = new Date(2023, 2, 1)
+
+    const fmt = new DateTimeFormat('ru', {month: 'long'})
+
+    expect(fmt.format(january)).toBe('январь')
+    expect(fmt.format(february)).toBe('февраль')
+    expect(fmt.format(march)).toBe('март')
+  })
+
+  it('Russian: format form with day uses genitive case', function () {
+    const january = new Date(2023, 0, 15)
+    const february = new Date(2023, 1, 15)
+    const march = new Date(2023, 2, 15)
+
+    const fmt = new DateTimeFormat('ru', {day: 'numeric', month: 'long'})
+
+    expect(fmt.format(january)).toBe('15 января')
+    expect(fmt.format(february)).toBe('15 февраля')
+    expect(fmt.format(march)).toBe('15 марта')
   })
 })

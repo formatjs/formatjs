@@ -104,6 +104,17 @@ export function FormatDateTimePattern(
   )
   const result: Intl.DateTimeFormatPart[] = []
 
+  // Check if month is stand-alone (no other date fields like day, year, weekday)
+  const hasMonth = patternParts.some(part => part.type === 'month')
+  const hasOtherDateFields = patternParts.some(
+    part =>
+      part.type === 'day' ||
+      part.type === 'year' ||
+      part.type === 'weekday' ||
+      part.type === 'era'
+  )
+  const isMonthStandalone = hasMonth && !hasOtherDateFields
+
   for (const patternPart of patternParts) {
     const p = patternPart.type
     if (p === 'literal') {
@@ -183,7 +194,12 @@ export function FormatDateTimePattern(
         if (p === 'era') {
           fv = dataLocaleData[p][f][v as 'BC']
         } else if (p === 'month') {
-          fv = dataLocaleData.month[f][v - 1]
+          // Use stand-alone month form if available and month is displayed alone
+          const monthData =
+            isMonthStandalone && dataLocaleData.monthStandalone
+              ? dataLocaleData.monthStandalone
+              : dataLocaleData.month
+          fv = monthData[f][v - 1]
         } else {
           fv = dataLocaleData[p as 'weekday'][f][v]
         }

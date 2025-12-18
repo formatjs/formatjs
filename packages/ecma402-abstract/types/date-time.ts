@@ -138,6 +138,15 @@ export interface DateTimeFormatLocaleInternalData {
     long: string[]
     short: string[]
   }
+  /**
+   * Stand-alone month names (used when month appears without other date fields)
+   * Falls back to format month if not provided
+   */
+  monthStandalone?: {
+    narrow: string[]
+    long: string[]
+    short: string[]
+  }
   timeZoneName: TimeZoneNameData
   /**
    * So we can construct GMT+08:00
