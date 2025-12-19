@@ -3,7 +3,7 @@ import {NumberFormatPart} from '@formatjs/ecma402-abstract'
 import '@formatjs/intl-pluralrules/locale-data/ko'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import {NumberFormat} from '../src/core'
-import * as ko from './locale-data/ko.json'
+import * as ko from './locale-data/ko.json' with {type: 'json'}
 NumberFormat.__addLocaleData(ko as any)
 
 const tests: Array<[number, NumberFormatPart[]]> = [

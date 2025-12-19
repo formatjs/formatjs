@@ -5,16 +5,16 @@
  */
 'use strict'
 
-import * as DateFields from 'cldr-dates-full/main/en/ca-gregorian.json'
-import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json'
+import * as DateFields from 'cldr-dates-full/main/en/ca-gregorian.json' with {type: 'json'}
+import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json' with {type: 'json'}
 import {sync as globSync} from 'fast-glob'
 import {resolve, dirname} from 'path'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import {RawDateTimeLocaleInternalData, TimeZoneNameData} from '../src/types'
-import * as rawTimeData from 'cldr-core/supplemental/timeData.json'
-import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json'
-import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json'
-import * as metaZones from 'cldr-core/supplemental/metaZones.json'
+import * as rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
+import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json' with {type: 'json'}
+import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json' with {type: 'json'}
+import * as metaZones from 'cldr-core/supplemental/metaZones.json' with {type: 'json'}
 import IntlLocale from '@formatjs/intl-locale'
 import {Formats} from '@formatjs/ecma402-abstract'
 import {parseDateTimeSkeleton} from '../src/abstract/skeleton'

@@ -3,7 +3,7 @@ import * as React from 'react'
 import {IntlProvider as IntlProvider_, useIntl} from 'react-intl'
 
 // "import type" ensures en messages aren't bundled by default
-import * as sourceOfTruth from './en.json'
+import * as sourceOfTruth from './en.json' with {type: 'json'}
 // Note: in order to use "import type" you'll need Babel >= 7.9.0 and/or TypeScript >= 3.8.
 // Otherwise, you can use a normal import and accept to always bundle one language + the user required one
 

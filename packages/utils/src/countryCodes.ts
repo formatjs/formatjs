@@ -1,4 +1,4 @@
-import * as alpha3CountryCodes from './iso3166Alpha3CountryCodes.json'
+import * as alpha3CountryCodes from './iso3166Alpha3CountryCodes.json' with {type: 'json'}
 
 const COUNTRY_CODE_ALPHA2 = new Set(
   Object.keys(alpha3CountryCodes).map(

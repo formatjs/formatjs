@@ -1,5 +1,5 @@
 import {DisplayNamesData} from '@formatjs/ecma402-abstract'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import glob from 'fast-glob'
 import {dirname, resolve} from 'path'
 

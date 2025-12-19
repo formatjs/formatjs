@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict'
-import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json'
+import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json' with {type: 'json'}
 import glob from 'fast-glob'
 import {resolve, dirname} from 'path'
 import {ListPatternFieldsData, ListPattern} from '@formatjs/ecma402-abstract'

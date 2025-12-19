@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict'
-import * as CurrenciesData from 'cldr-numbers-full/main/en/currencies.json'
-import * as supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json'
+import * as CurrenciesData from 'cldr-numbers-full/main/en/currencies.json' with {type: 'json'}
+import * as supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json' with {type: 'json'}
 import {sync as globSync} from 'fast-glob'
 import {resolve, dirname} from 'path'
 import {CurrencyData, LDMLPluralRuleMap} from '@formatjs/ecma402-abstract'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.js'
 
 export type Currencies =

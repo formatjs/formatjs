@@ -158,7 +158,7 @@ We recommend using [`@testing-library/react`](https://testing-library.com/docs/r
 import React from 'react'
 import {render as rtlRender} from '@testing-library/react'
 import {IntlProvider} from 'react-intl'
-import messages from '../locales/en.json' with {type: 'json'}
+import * as messages from '../locales/en.json' with {type: 'json'}
 
 interface RenderOptions {
   locale?: string
@@ -310,7 +310,7 @@ You can use the same test helper function from the `@testing-library/react` sect
 import React from 'react'
 import {render as rtlRender} from '@testing-library/react'
 import {IntlProvider} from 'react-intl'
-import messages from '../locales/en.json' with {type: 'json'}
+import * as messages from '../locales/en.json' with {type: 'json'}
 
 interface RenderOptions {
   locale?: string

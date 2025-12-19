@@ -1,7 +1,7 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
-import * as rawTimeData from 'cldr-core/supplemental/timeData.json'
+import * as rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
 
 import type {Args} from './common-types.js'
 
