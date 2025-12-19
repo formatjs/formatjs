@@ -1,5 +1,5 @@
 import {outputFileSync} from 'fs-extra/esm'
-import * as aliases from 'cldr-core/supplemental/aliases.json'
+import * as aliases from 'cldr-core/supplemental/aliases.json' with {type: 'json'}
 import minimist from 'minimist'
 import stringify from 'json-stable-stringify'
 

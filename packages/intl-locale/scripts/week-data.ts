@@ -1,8 +1,8 @@
 import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 
-import * as rawTerritoryInfo from 'cldr-core/supplemental/territoryInfo.json'
-import * as rawWeekData from 'cldr-core/supplemental/weekData.json'
+import * as rawTerritoryInfo from 'cldr-core/supplemental/territoryInfo.json' with {type: 'json'}
+import * as rawWeekData from 'cldr-core/supplemental/weekData.json' with {type: 'json'}
 
 import stringify from 'json-stable-stringify'
 import type {Args} from './common-types.js'

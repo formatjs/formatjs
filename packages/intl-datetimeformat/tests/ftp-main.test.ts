@@ -1,7 +1,7 @@
-import * as en from './locale-data/en.json'
-import * as pl from './locale-data/pl.json'
-import * as de from './locale-data/de.json'
-import * as ar from './locale-data/ar.json'
+import * as en from './locale-data/en.json' with {type: 'json'}
+import * as pl from './locale-data/pl.json' with {type: 'json'}
+import * as de from './locale-data/de.json' with {type: 'json'}
+import * as ar from './locale-data/ar.json' with {type: 'json'}
 import allData from '../src/data/all-tz'
 import {DateTimeFormat} from '../src/core'
 import {IntlDateTimeFormatPart} from '@formatjs/ecma402-abstract'

@@ -12,8 +12,8 @@ import {
   IsWellFormedUnitIdentifier,
   UnitData,
 } from '@formatjs/ecma402-abstract'
-import * as UnitsData from 'cldr-units-full/main/en/units.json'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
+import * as UnitsData from 'cldr-units-full/main/en/units.json' with {type: 'json'}
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.js'
 
 export type Units = (typeof UnitsData)['main']['en']['units']

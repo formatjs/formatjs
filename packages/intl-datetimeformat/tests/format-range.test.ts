@@ -2,11 +2,11 @@ import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {DateTimeFormat} from '../src/core'
 import allData from '../src/data/all-tz'
-import * as enGB from './locale-data/en-GB.json'
-import * as en from './locale-data/en.json'
-import * as fa from './locale-data/fa.json'
-import * as nl from './locale-data/nl.json'
-import * as zhHans from './locale-data/zh-Hans.json'
+import * as enGB from './locale-data/en-GB.json' with {type: 'json'}
+import * as en from './locale-data/en.json' with {type: 'json'}
+import * as fa from './locale-data/fa.json' with {type: 'json'}
+import * as nl from './locale-data/nl.json' with {type: 'json'}
+import * as zhHans from './locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, test} from 'vitest'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa, nl)

@@ -160,7 +160,7 @@ LOCALE_TEST_TYPES = [
         cmd = """
         echo 'import \"@formatjs/intl-pluralrules/locale-data/%s.js\"\n\
 import { test } from \"./%sTest\"\n\
-import * as localeData from \"../locale-data/%s.json\"\n\
+import * as localeData from \"../locale-data/%s.json\" with {type: '"'"'json'"'"'}\n\
 test(\"%s\", localeData);' > $@""" % (
             locale.split("-")[0],
             type,

@@ -1,5 +1,5 @@
 import benchmark from 'benchmark'
-import * as en from './locale-data/en.json'
+import * as en from './locale-data/en.json' with {type: 'json'}
 import allData from '../src/data/all-tz'
 import {DateTimeFormat} from '../src/core'
 DateTimeFormat.__addTZData(allData)

@@ -1,7 +1,7 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra/esm'
 
-import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json'
+import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json' with {type: 'json'}
 
 import type {Args} from './common-types.js'
 import stringify from 'json-stable-stringify'

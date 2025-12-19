@@ -4,7 +4,7 @@ import {generateDataForLocales as extractNumbers} from './extract-numbers.js'
 import {join} from 'path'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import minimist from 'minimist'
 
 async function main(args: minimist.ParsedArgs) {

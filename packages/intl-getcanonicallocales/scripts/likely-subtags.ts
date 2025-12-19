@@ -1,6 +1,6 @@
 import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
-import * as likelySubtags from 'cldr-core/supplemental/likelySubtags.json'
+import * as likelySubtags from 'cldr-core/supplemental/likelySubtags.json' with {type: 'json'}
 import stringify from 'json-stable-stringify'
 function main({out}: minimist.ParsedArgs) {
   outputFileSync(

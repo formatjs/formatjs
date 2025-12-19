@@ -3,8 +3,8 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import * as NumbersData from 'cldr-numbers-full/main/ar/numbers.json'
-import * as numberingSystems from 'cldr-core/supplemental/numberingSystems.json'
+import * as NumbersData from 'cldr-numbers-full/main/ar/numbers.json' with {type: 'json'}
+import * as numberingSystems from 'cldr-core/supplemental/numberingSystems.json' with {type: 'json'}
 import {
   RawNumberData,
   SymbolsData,
@@ -13,7 +13,7 @@ import {
   RawCurrencyData,
   invariant,
 } from '@formatjs/ecma402-abstract'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json'
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.js'
 
 export type Numbers = (typeof NumbersData)['main']['ar']['numbers']
