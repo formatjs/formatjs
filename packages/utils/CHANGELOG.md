@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/utils@2.0.3...@formatjs/utils@2.0.4) (2025-12-19)
+
+### Bug Fixes
+
+* **@formatjs/utils:** fix ESM imports ([#5596](https://github.com/formatjs/formatjs/issues/5596)) ([9580a68](https://github.com/formatjs/formatjs/commit/9580a685239b972ced27d6dd2ed374764bf08b29)) - by @longlho
+
 ## [2.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/utils@2.0.2...@formatjs/utils@2.0.3) (2025-12-19)
 
 ### Bug Fixes
