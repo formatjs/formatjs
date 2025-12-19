@@ -1,6 +1,6 @@
 import type * as Preset from '@docusaurus/preset-classic'
 import type {Config} from '@docusaurus/types'
-export default {
+const config: Config = {
   title: 'Format.JS',
   tagline: 'Internationalize your web apps on the client & server.',
   url: 'https://formatjs.github.io/',
@@ -10,6 +10,10 @@ export default {
   projectName: 'formatjs.github.io', // Usually your repo name.
   themes: ['@docusaurus/theme-live-codeblock'],
   plugins: ['docusaurus-lunr-search'],
+  future: {
+    v4: true, // opt-in for Docusaurus v4 planned changes
+    experimental_faster: true, // turns Docusaurus Faster on globally
+  },
   themeConfig: {
     prism: {
       additionalLanguages: ['markup'],
@@ -110,7 +114,7 @@ export default {
        */
       playgroundPosition: 'bottom',
     },
-  } satisfies Preset.ThemeConfig,
+  },
   presets: [
     [
       'classic',
@@ -125,4 +129,6 @@ export default {
       } satisfies Preset.Options,
     ],
   ],
-} satisfies Config
+}
+
+export default config
