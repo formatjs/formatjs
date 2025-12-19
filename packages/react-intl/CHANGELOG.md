@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.6](github.com/formatjs/formatjs/compare/react-intl@8.0.5...react-intl@8.0.6) (2025-12-19)
+
+### Bug Fixes
+
+* **@formatjs/utils:** fix json ESM import ([#5594](/github.com/formatjs/formatjs/issues/5594)) ([dfd79a2](github.com/formatjs/formatjs/commits/dfd79a2d9935e0b7d06c08555ff6625d3f1c884f)) - by @longlho
+
 ## [8.0.5](github.com/formatjs/formatjs/compare/react-intl@8.0.4...react-intl@8.0.5) (2025-12-18)
 
 **Note:** Version bump only for package react-intl
