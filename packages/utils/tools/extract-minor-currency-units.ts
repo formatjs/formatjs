@@ -1,5 +1,5 @@
 import {XMLParser} from 'fast-xml-parser'
-import {outputJsonSync} from 'fs-extra/esm'
+import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import {readFileSync} from 'fs'
 
@@ -26,14 +26,17 @@ interface Data {
 function main({input, out}: Args) {
   const data: Data = parser.parse(readFileSync(input, 'utf8'))
 
-  outputJsonSync(
+  const serializedData = data.ISO_4217.CcyTbl.CcyNtry.filter(
+    k => !isNaN(Number(k.CcyMnrUnts))
+  ).reduce<Record<string, number>>((all, k) => {
+    all[k.Ccy] = +k.CcyMnrUnts
+    return all
+  }, {})
+  outputFileSync(
     out,
-    data.ISO_4217.CcyTbl.CcyNtry.filter(
-      k => !isNaN(Number(k.CcyMnrUnts))
-    ).reduce<Record<string, number>>((all, k) => {
-      all[k.Ccy] = +k.CcyMnrUnts
-      return all
-    }, {})
+    `
+      // This is a generated file. Do not edit directly.
+      export default ${JSON.stringify(serializedData, null, 2)} as const;`
   )
 }
 

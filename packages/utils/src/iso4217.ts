@@ -1,4 +1,4 @@
-import * as iso4217 from './currencyMinorUnits.generated.json' with {type: 'json'}
+import iso4217 from './currencyMinorUnits.generated.js'
 
 /**
  * Returns the number of minor units (decimal places) for a given currency code.

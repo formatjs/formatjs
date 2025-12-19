@@ -1,5 +1,5 @@
 import {canonicalizeCountryCode} from './countryCodes.js'
-import * as data from './defaultCurrencyData.generated.json' with {type: 'json'}
+import data from './defaultCurrencyData.generated.js'
 
 const COUNTRIES_BY_DEFAULT_CURRENCY = Object.keys(data).reduce<
   Record<string, string[]>
