@@ -1,6 +1,7 @@
 {
   "registry": "https://registry.npmjs.org/",
   "version": "independent",
+  "npmClient": "pnpm",
   "command": {
     "version": {
       "changelogIncludeCommitsClientLogin": " - by @%l",
