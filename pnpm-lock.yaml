@@ -330,8 +330,8 @@ importers:
         specifier: ^9.5.1
         version: 9.5.4(typescript@5.8.3)(webpack@5.99.9)
       tsd:
-        specifier: ^0.32.0
-        version: 0.32.0
+        specifier: ^0.33.0
+        version: 0.33.0
       tslib:
         specifier: ^2.8.0
         version: 2.8.1
@@ -3414,8 +3414,8 @@ packages:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
 
-  '@tsd/typescript@5.8.3':
-    resolution: {integrity: sha512-oKarNCN1QUhG148M88mtZdOlBZWWGcInquef+U8QL7gwJkRuNo5WS45Fjsd+3hM9cDJWGpqSZ4Oo097KDx4IWA==}
+  '@tsd/typescript@5.9.3':
+    resolution: {integrity: sha512-JSSdNiS0wgd8GHhBwnMAI18Y8XPhLVN+dNelPfZCXFhy9Lb3NbnFyp9JKxxr54jSUkEJPk3cidvCoHducSaRMQ==}
     engines: {node: '>=14.17'}
 
   '@types/aria-query@5.0.4':
@@ -10187,8 +10187,8 @@ packages:
   ts-toolbelt@9.6.0:
     resolution: {integrity: sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==}
 
-  tsd@0.32.0:
-    resolution: {integrity: sha512-R5lBZCbxGBowOcW0gpQaiIjGYrG5NmU+PfFDKcc3zbtzWjML1o/zAwzdDnS2ZheSlPu9GW51azpFqEPUBq9DoQ==}
+  tsd@0.33.0:
+    resolution: {integrity: sha512-/PQtykJFVw90QICG7zyPDMIyueOXKL7jOJVoX5pILnb3Ux+7QqynOxfVvarE+K+yi7BZyOSY4r+OZNWSWRiEwQ==}
     engines: {node: '>=14.16'}
     hasBin: true
 
@@ -14377,7 +14377,7 @@ snapshots:
 
   '@trysound/sax@0.2.0': {}
 
-  '@tsd/typescript@5.8.3': {}
+  '@tsd/typescript@5.9.3': {}
 
   '@types/aria-query@5.0.4': {}
 
@@ -22592,9 +22592,9 @@ snapshots:
 
   ts-toolbelt@9.6.0: {}
 
-  tsd@0.32.0:
+  tsd@0.33.0:
     dependencies:
-      '@tsd/typescript': 5.8.3
+      '@tsd/typescript': 5.9.3
       eslint-formatter-pretty: 4.1.0
       globby: 11.1.0
       jest-diff: 29.7.0
