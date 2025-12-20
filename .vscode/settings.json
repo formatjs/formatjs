@@ -35,7 +35,9 @@
   },
   "json.schemas": [
     {
-      "fileMatch": ["/lerna.json"],
+      "fileMatch": [
+        "/lerna.json"
+      ],
       "url": "http://json.schemastore.org/lerna"
     }
   ],
@@ -64,5 +66,8 @@
   },
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
   }
 }

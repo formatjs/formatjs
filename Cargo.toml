@@ -1,0 +1,2 @@
+[workspace]
+members = ["packages/icu-skeleton-parser/rust"]
