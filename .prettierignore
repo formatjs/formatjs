@@ -25,3 +25,5 @@ packages/cli/integration-tests/extract/typescript/err.tsx
 **/__snapshots__/*
 # Changelog managed by Lerna
 **/CHANGELOG.md
+target
+.vscode

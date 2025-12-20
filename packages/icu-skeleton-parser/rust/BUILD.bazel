@@ -1,0 +1,22 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "icu_skeleton_parser",
+    srcs = [
+        "lib.rs",
+        "number_format_options.rs",
+        "number_skeleton_token.rs",
+    ],
+    crate_name = "icu_skeleton_parser",
+    deps = [
+        "@crates//:once_cell",
+        "@crates//:regex",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_test(
+    name = "icu_skeleton_parser_test",
+    crate = ":icu_skeleton_parser",
+)
