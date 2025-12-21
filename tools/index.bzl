@@ -138,7 +138,8 @@ def generate_src_file(name, src, entry_point = None, tool = None, chdir = None, 
         chdir: whether to chdir to another dir
         tool: tool binary label
     """
-    tmp_filename = "%s-gen.tmp" % name
+    file_ext = src[src.rindex(".") + 1:]
+    tmp_filename = "%s.tmp.%s" % (name, file_ext)
     ts_run_binary(
         name = tmp_filename[:tmp_filename.rindex(".")],
         outs = [tmp_filename],
