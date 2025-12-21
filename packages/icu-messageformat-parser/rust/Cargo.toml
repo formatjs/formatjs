@@ -9,6 +9,7 @@ license = "MIT"
 [dependencies]
 icu = "2.1.1"
 once_cell = "1.21"
+regex = "1.11"
 
 [lib]
 name = "icu_messageformat_parser"
