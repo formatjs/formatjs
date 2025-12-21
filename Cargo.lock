@@ -94,6 +94,7 @@ version = "0.1.0"
 dependencies = [
  "icu",
  "once_cell",
+ "regex",
 ]
 
 [[package]]

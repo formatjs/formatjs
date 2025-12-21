@@ -7,18 +7,30 @@ generate_src_file(
     tool = "//packages/icu-messageformat-parser/tools:time_data_gen",
 )
 
+generate_src_file(
+    name = "regex",
+    src = "regex_generated.rs",
+    tool = "//packages/icu-messageformat-parser/tools:regex_gen",
+)
+
 rust_library(
     name = "icu_messageformat_parser",
     srcs = [
         "date_time_pattern_generator.rs",
+        "error.rs",
         "lib.rs",
+        "manipulator.rs",
+        "printer.rs",
+        "regex_generated.rs",
         "time_data_generated.rs",
+        "types.rs",
     ],
     crate_name = "icu_messageformat_parser",
     visibility = ["//visibility:public"],
     deps = [
         "@crates//:icu",
         "@crates//:once_cell",
+        "@crates//:regex",
     ],
 )
 
