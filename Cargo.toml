@@ -1,2 +1,5 @@
 [workspace]
-members = ["packages/icu-skeleton-parser/rust"]
+members = [
+    "packages/icu-skeleton-parser/rust",
+    "packages/icu-messageformat-parser/rust",
+]
