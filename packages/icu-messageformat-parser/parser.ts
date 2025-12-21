@@ -79,74 +79,9 @@ function createLocation(start: Position, end: Position): Location {
 
 // #region Ponyfills
 // Consolidate these variables up top for easier toggling during debugging
-const hasNativeStartsWith =
-  !!String.prototype.startsWith && '_a'.startsWith('a', 1)
-const hasNativeFromCodePoint = !!String.fromCodePoint
 const hasNativeFromEntries = !!(Object as any).fromEntries
-const hasNativeCodePointAt = !!String.prototype.codePointAt
 const hasTrimStart = !!(String.prototype as any).trimStart
 const hasTrimEnd = !!(String.prototype as any).trimEnd
-const hasNativeIsSafeInteger = !!Number.isSafeInteger
-
-const isSafeInteger = hasNativeIsSafeInteger
-  ? Number.isSafeInteger
-  : (n: unknown): boolean => {
-      return (
-        typeof n === 'number' &&
-        isFinite(n) &&
-        Math.floor(n) === n &&
-        Math.abs(n) <= 0x1fffffffffffff
-      )
-    }
-
-// IE11 does not support y and u.
-let REGEX_SUPPORTS_U_AND_Y = true
-try {
-  const re = RE('([^\\p{White_Space}\\p{Pattern_Syntax}]*)', 'yu')
-  /**
-   * legacy Edge or Xbox One browser
-   * Unicode flag support: supported
-   * Pattern_Syntax support: not supported
-   * See https://github.com/formatjs/formatjs/issues/2822
-   */
-  REGEX_SUPPORTS_U_AND_Y = re.exec('a')?.[0] === 'a'
-} catch {
-  REGEX_SUPPORTS_U_AND_Y = false
-}
-
-const startsWith: (s: string, search: string, position: number) => boolean =
-  hasNativeStartsWith
-    ? // Native
-      function startsWith(s, search, position) {
-        return s.startsWith(search, position)
-      }
-    : // For IE11
-      function startsWith(s, search, position) {
-        return s.slice(position, position + search.length) === search
-      }
-
-const fromCodePoint: typeof String.fromCodePoint = hasNativeFromCodePoint
-  ? String.fromCodePoint
-  : // IE11
-    function fromCodePoint(...codePoints: number[]) {
-      let elements = ''
-      let length = codePoints.length
-      let i = 0
-      let code: number
-      while (length > i) {
-        code = codePoints[i++]
-        if (code > 0x10ffff)
-          throw RangeError(code + ' is not a valid code point')
-        elements +=
-          code < 0x10000
-            ? String.fromCharCode(code)
-            : String.fromCharCode(
-                ((code -= 0x10000) >> 10) + 0xd800,
-                (code % 0x400) + 0xdc00
-              )
-      }
-      return elements
-    }
 
 const fromEntries: <T = any>(
   entries: readonly (readonly [string, T])[]
@@ -161,29 +96,6 @@ const fromEntries: <T = any>(
           obj[k] = v
         }
         return obj
-      }
-
-const codePointAt: (s: string, index: number) => number | undefined =
-  hasNativeCodePointAt
-    ? // Native
-      function codePointAt(s, index) {
-        return s.codePointAt(index)
-      }
-    : // IE 11
-      function codePointAt(s, index) {
-        let size = s.length
-        if (index < 0 || index >= size) {
-          return undefined
-        }
-        let first = s.charCodeAt(index)
-        let second
-        return first < 0xd800 ||
-          first > 0xdbff ||
-          index + 1 === size ||
-          (second = s.charCodeAt(index + 1)) < 0xdc00 ||
-          second > 0xdfff
-          ? first
-          : ((first - 0xd800) << 10) + (second - 0xdc00) + 0x10000
       }
 
 const trimStart: (s: string) => string = hasTrimStart
@@ -206,39 +118,19 @@ const trimEnd: (s: string) => string = hasTrimEnd
       return s.replace(SPACE_SEPARATOR_END_REGEX, '')
     }
 
-// Prevent minifier to translate new RegExp to literal form that might cause syntax error on IE11.
-function RE(s: string, flag: string) {
-  return new RegExp(s, flag)
-}
 // #endregion
 
-let matchIdentifierAtIndex: (s: string, index: number) => string
-if (REGEX_SUPPORTS_U_AND_Y) {
-  // Native
-  const IDENTIFIER_PREFIX_RE = RE(
-    '([^\\p{White_Space}\\p{Pattern_Syntax}]*)',
-    'yu'
-  )
-  matchIdentifierAtIndex = function matchIdentifierAtIndex(s, index) {
-    IDENTIFIER_PREFIX_RE.lastIndex = index
-    const match = IDENTIFIER_PREFIX_RE.exec(s)!
-    return match[1] ?? ''
-  }
-} else {
-  // IE11
-  matchIdentifierAtIndex = function matchIdentifierAtIndex(s, index) {
-    let match: number[] = []
-    while (true) {
-      const c = codePointAt(s, index)
-      if (c === undefined || _isWhiteSpace(c) || _isPatternSyntax(c)) {
-        break
-      }
-      match.push(c)
-      index += c >= 0x10000 ? 2 : 1
-    }
-    return fromCodePoint(...match)
-  }
+const IDENTIFIER_PREFIX_RE = new RegExp(
+  '([^\\p{White_Space}\\p{Pattern_Syntax}]*)',
+  'yu'
+)
+
+function matchIdentifierAtIndex(s: string, index: number): string {
+  IDENTIFIER_PREFIX_RE.lastIndex = index
+  const match = IDENTIFIER_PREFIX_RE.exec(s)!
+  return match[1] ?? ''
 }
+
 export class Parser {
   private message: string
   private position: Position
@@ -547,7 +439,7 @@ export class Parser {
       this.bump()
     }
 
-    return fromCodePoint(...codePoints)
+    return String.fromCodePoint(...codePoints)
   }
 
   private tryParseUnquoted(
@@ -569,7 +461,7 @@ export class Parser {
       return null
     } else {
       this.bump()
-      return fromCodePoint(ch)
+      return String.fromCodePoint(ch)
     }
   }
 
@@ -745,7 +637,7 @@ export class Parser {
         )
 
         // Extract style or skeleton
-        if (styleAndLocation && startsWith(styleAndLocation?.style, '::', 0)) {
+        if (styleAndLocation && styleAndLocation.style.startsWith('::')) {
           // Skeleton starts with `::`.
           let skeleton = trimStart(styleAndLocation.style.slice(2))
 
@@ -1153,7 +1045,7 @@ export class Parser {
     }
 
     decimal *= sign
-    if (!isSafeInteger(decimal)) {
+    if (!Number.isSafeInteger(decimal)) {
       return this.error(invalidNumberError, location)
     }
 
@@ -1186,7 +1078,7 @@ export class Parser {
     if (offset >= this.message.length) {
       throw Error('out of bound')
     }
-    const code = codePointAt(this.message, offset)
+    const code = this.message.codePointAt(offset)
     if (code === undefined) {
       throw Error(`Offset ${offset} is at invalid UTF-16 code unit boundary`)
     }
@@ -1231,7 +1123,7 @@ export class Parser {
    * and return false.
    */
   private bumpIf(prefix: string): boolean {
-    if (startsWith(this.message, prefix, this.offset())) {
+    if (this.message.startsWith(prefix, this.offset())) {
       for (let i = 0; i < prefix.length; i++) {
         this.bump()
       }
@@ -1361,262 +1253,5 @@ function _isWhiteSpace(c: number) {
     (c >= 0x200e && c <= 0x200f) ||
     c === 0x2028 ||
     c === 0x2029
-  )
-}
-
-/**
- * Code point equivalent of regex `\p{Pattern_Syntax}`.
- * See https://www.unicode.org/Public/UCD/latest/ucd/PropList.txt
- */
-function _isPatternSyntax(c: number): boolean {
-  return (
-    (c >= 0x0021 && c <= 0x0023) ||
-    c === 0x0024 ||
-    (c >= 0x0025 && c <= 0x0027) ||
-    c === 0x0028 ||
-    c === 0x0029 ||
-    c === 0x002a ||
-    c === 0x002b ||
-    c === 0x002c ||
-    c === 0x002d ||
-    (c >= 0x002e && c <= 0x002f) ||
-    (c >= 0x003a && c <= 0x003b) ||
-    (c >= 0x003c && c <= 0x003e) ||
-    (c >= 0x003f && c <= 0x0040) ||
-    c === 0x005b ||
-    c === 0x005c ||
-    c === 0x005d ||
-    c === 0x005e ||
-    c === 0x0060 ||
-    c === 0x007b ||
-    c === 0x007c ||
-    c === 0x007d ||
-    c === 0x007e ||
-    c === 0x00a1 ||
-    (c >= 0x00a2 && c <= 0x00a5) ||
-    c === 0x00a6 ||
-    c === 0x00a7 ||
-    c === 0x00a9 ||
-    c === 0x00ab ||
-    c === 0x00ac ||
-    c === 0x00ae ||
-    c === 0x00b0 ||
-    c === 0x00b1 ||
-    c === 0x00b6 ||
-    c === 0x00bb ||
-    c === 0x00bf ||
-    c === 0x00d7 ||
-    c === 0x00f7 ||
-    (c >= 0x2010 && c <= 0x2015) ||
-    (c >= 0x2016 && c <= 0x2017) ||
-    c === 0x2018 ||
-    c === 0x2019 ||
-    c === 0x201a ||
-    (c >= 0x201b && c <= 0x201c) ||
-    c === 0x201d ||
-    c === 0x201e ||
-    c === 0x201f ||
-    (c >= 0x2020 && c <= 0x2027) ||
-    (c >= 0x2030 && c <= 0x2038) ||
-    c === 0x2039 ||
-    c === 0x203a ||
-    (c >= 0x203b && c <= 0x203e) ||
-    (c >= 0x2041 && c <= 0x2043) ||
-    c === 0x2044 ||
-    c === 0x2045 ||
-    c === 0x2046 ||
-    (c >= 0x2047 && c <= 0x2051) ||
-    c === 0x2052 ||
-    c === 0x2053 ||
-    (c >= 0x2055 && c <= 0x205e) ||
-    (c >= 0x2190 && c <= 0x2194) ||
-    (c >= 0x2195 && c <= 0x2199) ||
-    (c >= 0x219a && c <= 0x219b) ||
-    (c >= 0x219c && c <= 0x219f) ||
-    c === 0x21a0 ||
-    (c >= 0x21a1 && c <= 0x21a2) ||
-    c === 0x21a3 ||
-    (c >= 0x21a4 && c <= 0x21a5) ||
-    c === 0x21a6 ||
-    (c >= 0x21a7 && c <= 0x21ad) ||
-    c === 0x21ae ||
-    (c >= 0x21af && c <= 0x21cd) ||
-    (c >= 0x21ce && c <= 0x21cf) ||
-    (c >= 0x21d0 && c <= 0x21d1) ||
-    c === 0x21d2 ||
-    c === 0x21d3 ||
-    c === 0x21d4 ||
-    (c >= 0x21d5 && c <= 0x21f3) ||
-    (c >= 0x21f4 && c <= 0x22ff) ||
-    (c >= 0x2300 && c <= 0x2307) ||
-    c === 0x2308 ||
-    c === 0x2309 ||
-    c === 0x230a ||
-    c === 0x230b ||
-    (c >= 0x230c && c <= 0x231f) ||
-    (c >= 0x2320 && c <= 0x2321) ||
-    (c >= 0x2322 && c <= 0x2328) ||
-    c === 0x2329 ||
-    c === 0x232a ||
-    (c >= 0x232b && c <= 0x237b) ||
-    c === 0x237c ||
-    (c >= 0x237d && c <= 0x239a) ||
-    (c >= 0x239b && c <= 0x23b3) ||
-    (c >= 0x23b4 && c <= 0x23db) ||
-    (c >= 0x23dc && c <= 0x23e1) ||
-    (c >= 0x23e2 && c <= 0x2426) ||
-    (c >= 0x2427 && c <= 0x243f) ||
-    (c >= 0x2440 && c <= 0x244a) ||
-    (c >= 0x244b && c <= 0x245f) ||
-    (c >= 0x2500 && c <= 0x25b6) ||
-    c === 0x25b7 ||
-    (c >= 0x25b8 && c <= 0x25c0) ||
-    c === 0x25c1 ||
-    (c >= 0x25c2 && c <= 0x25f7) ||
-    (c >= 0x25f8 && c <= 0x25ff) ||
-    (c >= 0x2600 && c <= 0x266e) ||
-    c === 0x266f ||
-    (c >= 0x2670 && c <= 0x2767) ||
-    c === 0x2768 ||
-    c === 0x2769 ||
-    c === 0x276a ||
-    c === 0x276b ||
-    c === 0x276c ||
-    c === 0x276d ||
-    c === 0x276e ||
-    c === 0x276f ||
-    c === 0x2770 ||
-    c === 0x2771 ||
-    c === 0x2772 ||
-    c === 0x2773 ||
-    c === 0x2774 ||
-    c === 0x2775 ||
-    (c >= 0x2794 && c <= 0x27bf) ||
-    (c >= 0x27c0 && c <= 0x27c4) ||
-    c === 0x27c5 ||
-    c === 0x27c6 ||
-    (c >= 0x27c7 && c <= 0x27e5) ||
-    c === 0x27e6 ||
-    c === 0x27e7 ||
-    c === 0x27e8 ||
-    c === 0x27e9 ||
-    c === 0x27ea ||
-    c === 0x27eb ||
-    c === 0x27ec ||
-    c === 0x27ed ||
-    c === 0x27ee ||
-    c === 0x27ef ||
-    (c >= 0x27f0 && c <= 0x27ff) ||
-    (c >= 0x2800 && c <= 0x28ff) ||
-    (c >= 0x2900 && c <= 0x2982) ||
-    c === 0x2983 ||
-    c === 0x2984 ||
-    c === 0x2985 ||
-    c === 0x2986 ||
-    c === 0x2987 ||
-    c === 0x2988 ||
-    c === 0x2989 ||
-    c === 0x298a ||
-    c === 0x298b ||
-    c === 0x298c ||
-    c === 0x298d ||
-    c === 0x298e ||
-    c === 0x298f ||
-    c === 0x2990 ||
-    c === 0x2991 ||
-    c === 0x2992 ||
-    c === 0x2993 ||
-    c === 0x2994 ||
-    c === 0x2995 ||
-    c === 0x2996 ||
-    c === 0x2997 ||
-    c === 0x2998 ||
-    (c >= 0x2999 && c <= 0x29d7) ||
-    c === 0x29d8 ||
-    c === 0x29d9 ||
-    c === 0x29da ||
-    c === 0x29db ||
-    (c >= 0x29dc && c <= 0x29fb) ||
-    c === 0x29fc ||
-    c === 0x29fd ||
-    (c >= 0x29fe && c <= 0x2aff) ||
-    (c >= 0x2b00 && c <= 0x2b2f) ||
-    (c >= 0x2b30 && c <= 0x2b44) ||
-    (c >= 0x2b45 && c <= 0x2b46) ||
-    (c >= 0x2b47 && c <= 0x2b4c) ||
-    (c >= 0x2b4d && c <= 0x2b73) ||
-    (c >= 0x2b74 && c <= 0x2b75) ||
-    (c >= 0x2b76 && c <= 0x2b95) ||
-    c === 0x2b96 ||
-    (c >= 0x2b97 && c <= 0x2bff) ||
-    (c >= 0x2e00 && c <= 0x2e01) ||
-    c === 0x2e02 ||
-    c === 0x2e03 ||
-    c === 0x2e04 ||
-    c === 0x2e05 ||
-    (c >= 0x2e06 && c <= 0x2e08) ||
-    c === 0x2e09 ||
-    c === 0x2e0a ||
-    c === 0x2e0b ||
-    c === 0x2e0c ||
-    c === 0x2e0d ||
-    (c >= 0x2e0e && c <= 0x2e16) ||
-    c === 0x2e17 ||
-    (c >= 0x2e18 && c <= 0x2e19) ||
-    c === 0x2e1a ||
-    c === 0x2e1b ||
-    c === 0x2e1c ||
-    c === 0x2e1d ||
-    (c >= 0x2e1e && c <= 0x2e1f) ||
-    c === 0x2e20 ||
-    c === 0x2e21 ||
-    c === 0x2e22 ||
-    c === 0x2e23 ||
-    c === 0x2e24 ||
-    c === 0x2e25 ||
-    c === 0x2e26 ||
-    c === 0x2e27 ||
-    c === 0x2e28 ||
-    c === 0x2e29 ||
-    (c >= 0x2e2a && c <= 0x2e2e) ||
-    c === 0x2e2f ||
-    (c >= 0x2e30 && c <= 0x2e39) ||
-    (c >= 0x2e3a && c <= 0x2e3b) ||
-    (c >= 0x2e3c && c <= 0x2e3f) ||
-    c === 0x2e40 ||
-    c === 0x2e41 ||
-    c === 0x2e42 ||
-    (c >= 0x2e43 && c <= 0x2e4f) ||
-    (c >= 0x2e50 && c <= 0x2e51) ||
-    c === 0x2e52 ||
-    (c >= 0x2e53 && c <= 0x2e7f) ||
-    (c >= 0x3001 && c <= 0x3003) ||
-    c === 0x3008 ||
-    c === 0x3009 ||
-    c === 0x300a ||
-    c === 0x300b ||
-    c === 0x300c ||
-    c === 0x300d ||
-    c === 0x300e ||
-    c === 0x300f ||
-    c === 0x3010 ||
-    c === 0x3011 ||
-    (c >= 0x3012 && c <= 0x3013) ||
-    c === 0x3014 ||
-    c === 0x3015 ||
-    c === 0x3016 ||
-    c === 0x3017 ||
-    c === 0x3018 ||
-    c === 0x3019 ||
-    c === 0x301a ||
-    c === 0x301b ||
-    c === 0x301c ||
-    c === 0x301d ||
-    (c >= 0x301e && c <= 0x301f) ||
-    c === 0x3020 ||
-    c === 0x3030 ||
-    c === 0xfd3e ||
-    c === 0xfd3f ||
-    (c >= 0xfe45 && c <= 0xfe46)
   )
 }
