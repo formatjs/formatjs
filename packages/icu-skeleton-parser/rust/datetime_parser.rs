@@ -511,4 +511,65 @@ mod tests {
         let result = parse_date_time_skeleton("c");
         assert!(result.is_err());
     }
+
+    // Integration tests from TypeScript test suite
+    #[test]
+    fn test_integration_complex_skeleton_1() {
+        // "yyyy.MM.dd G 'at' HH:mm:ss zzzz"
+        // Note: Quoted text is not supported in Rust version, testing without it
+        let result = parse_date_time_skeleton("yyyy.MM.dd G HH:mm:ss zzzz").unwrap();
+        assert_eq!(result.year(), Some(&DateTimeFormatYear::Numeric));
+        assert_eq!(result.month(), Some(&DateTimeFormatMonth::TwoDigit));
+        assert_eq!(result.day(), Some(&DateTimeFormatDay::TwoDigit));
+        assert_eq!(result.era(), Some(&DateTimeFormatEra::Short));
+        assert_eq!(result.hour(), Some(&DateTimeFormatHour::TwoDigit));
+        assert_eq!(result.hour_cycle(), Some(&DateTimeFormatHourCycle::H23));
+        assert_eq!(result.minute(), Some(&DateTimeFormatMinute::TwoDigit));
+        assert_eq!(result.second(), Some(&DateTimeFormatSecond::TwoDigit));
+        assert_eq!(
+            result.time_zone_name(),
+            Some(&DateTimeFormatTimeZoneName::Long)
+        );
+    }
+
+    #[test]
+    fn test_integration_skeleton_2() {
+        // "EEE, MMM d, ''yy"
+        let result = parse_date_time_skeleton("EEE, MMM d, yy").unwrap();
+        assert_eq!(result.weekday(), Some(&DateTimeFormatWeekday::Short));
+        assert_eq!(result.month(), Some(&DateTimeFormatMonth::Short));
+        assert_eq!(result.day(), Some(&DateTimeFormatDay::Numeric));
+        assert_eq!(result.year(), Some(&DateTimeFormatYear::TwoDigit));
+    }
+
+    #[test]
+    fn test_integration_skeleton_3() {
+        // "EEEE, d MMMM yyyy"
+        let result = parse_date_time_skeleton("EEEE, d MMMM yyyy").unwrap();
+        assert_eq!(result.weekday(), Some(&DateTimeFormatWeekday::Long));
+        assert_eq!(result.day(), Some(&DateTimeFormatDay::Numeric));
+        assert_eq!(result.month(), Some(&DateTimeFormatMonth::Long));
+        assert_eq!(result.year(), Some(&DateTimeFormatYear::Numeric));
+    }
+
+    #[test]
+    fn test_integration_skeleton_4() {
+        // "h:mm a"
+        let result = parse_date_time_skeleton("h:mm a").unwrap();
+        assert_eq!(result.hour(), Some(&DateTimeFormatHour::Numeric));
+        assert_eq!(result.hour12(), Some(true));
+        assert_eq!(result.hour_cycle(), Some(&DateTimeFormatHourCycle::H12));
+        assert_eq!(result.minute(), Some(&DateTimeFormatMinute::TwoDigit));
+    }
+
+    #[test]
+    fn test_integration_empty_skeleton() {
+        let result = parse_date_time_skeleton("").unwrap();
+        assert_eq!(result.year(), None);
+        assert_eq!(result.month(), None);
+        assert_eq!(result.day(), None);
+        assert_eq!(result.hour(), None);
+        assert_eq!(result.minute(), None);
+        assert_eq!(result.second(), None);
+    }
 }

@@ -7,8 +7,8 @@ rust_library(
         "datetime_parser.rs",
         "lib.rs",
         "number_format_options.rs",
+        "number_parser.rs",
         "number_skeleton_token.rs",
-        "parser.rs",
     ],
     crate_name = "icu_skeleton_parser",
     deps = [
