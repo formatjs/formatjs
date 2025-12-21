@@ -3,6 +3,8 @@ load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
 rust_library(
     name = "icu_skeleton_parser",
     srcs = [
+        "datetime_format_options.rs",
+        "datetime_parser.rs",
         "lib.rs",
         "number_format_options.rs",
         "number_skeleton_token.rs",
