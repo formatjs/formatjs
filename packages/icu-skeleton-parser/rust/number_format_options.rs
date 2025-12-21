@@ -400,6 +400,95 @@ impl ExtendedNumberFormatOptions {
         self.base.trailing_zero_display = Some(trailing_zero_display);
         self
     }
+
+    /// Set the numbering_system property
+    pub fn with_numbering_system(mut self, numbering_system: impl Into<String>) -> Self {
+        self.base.numbering_system = Some(numbering_system.into());
+        self
+    }
+
+    /// Set the rounding_increment property
+    pub fn with_rounding_increment(mut self, rounding_increment: u32) -> Self {
+        self.base.rounding_increment = Some(rounding_increment);
+        self
+    }
+
+    /// Merge another ExtendedNumberFormatOptions into this one
+    ///
+    /// Values from `other` take precedence over values in `self`.
+    /// This is useful for combining options from multiple sources.
+    ///
+    /// # Arguments
+    /// * `other` - The options to merge into this instance
+    ///
+    /// # Returns
+    /// Self with the merged options
+    pub fn merge(mut self, other: Self) -> Self {
+        if let Some(v) = other.scale() {
+            self = self.with_scale(v);
+        }
+        if let Some(v) = other.style() {
+            self = self.with_style(v.clone());
+        }
+        if let Some(v) = other.currency() {
+            self = self.with_currency(v);
+        }
+        if let Some(v) = other.unit() {
+            self = self.with_unit(v);
+        }
+        if let Some(v) = other.unit_display() {
+            self = self.with_unit_display(v.clone());
+        }
+        if let Some(v) = other.use_grouping() {
+            self = self.with_use_grouping(v.clone());
+        }
+        if let Some(v) = other.minimum_integer_digits() {
+            self = self.with_minimum_integer_digits(v);
+        }
+        if let Some(v) = other.minimum_fraction_digits() {
+            self = self.with_minimum_fraction_digits(v);
+        }
+        if let Some(v) = other.maximum_fraction_digits() {
+            self = self.with_maximum_fraction_digits(v);
+        }
+        if let Some(v) = other.minimum_significant_digits() {
+            self = self.with_minimum_significant_digits(v);
+        }
+        if let Some(v) = other.maximum_significant_digits() {
+            self = self.with_maximum_significant_digits(v);
+        }
+        if let Some(v) = other.compact_display() {
+            self = self.with_compact_display(v.clone());
+        }
+        if let Some(v) = other.currency_display() {
+            self = self.with_currency_display(v.clone());
+        }
+        if let Some(v) = other.currency_sign() {
+            self = self.with_currency_sign(v.clone());
+        }
+        if let Some(v) = other.notation() {
+            self = self.with_notation(v.clone());
+        }
+        if let Some(v) = other.sign_display() {
+            self = self.with_sign_display(v.clone());
+        }
+        if let Some(v) = other.numbering_system() {
+            self = self.with_numbering_system(v);
+        }
+        if let Some(v) = other.trailing_zero_display() {
+            self = self.with_trailing_zero_display(v.clone());
+        }
+        if let Some(v) = other.rounding_priority() {
+            self = self.with_rounding_priority(v.clone());
+        }
+        if let Some(v) = other.rounding_increment() {
+            self = self.with_rounding_increment(v);
+        }
+        if let Some(v) = other.rounding_mode() {
+            self = self.with_rounding_mode(v.clone());
+        }
+        self
+    }
 }
 
 #[cfg(test)]
