@@ -4,7 +4,7 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
+load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_run_binary")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -645,7 +645,7 @@ ALL_LOCALES = [
 
 CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 
-ts_script(
+ts_run_binary(
     name = "cldr-raw",
     srcs = [
         "scripts/extract-displaynames.ts",
@@ -675,7 +675,7 @@ genrule(
     cmd = "echo 'export const supportedLocales: string[] = %s' > $@" % ALL_LOCALES,
 )
 
-ts_script(
+ts_run_binary(
     name = "locale-data",
     srcs = CLDR_RAW_FILES + [
         "//:node_modules/fs-extra",
@@ -760,18 +760,6 @@ test262_harness_bin.test262_harness_test(
     ],
     # TODO: fix
     tags = ["manual"],
-)
-
-bundle_karma_tests(
-    name = "bundled-karma-tests",
-    srcs = [":srcs"],
-    data = TEST_LOCALE_DATA,
-    esbuild_deps = [
-        ":node_modules/@formatjs/intl-getcanonicallocales",
-        ":node_modules/@formatjs/intl-locale",
-    ],
-    tests = TESTS,
-    deps = SRC_DEPS,
 )
 
 write_source_files(

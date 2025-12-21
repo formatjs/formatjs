@@ -5,7 +5,7 @@ npm_link_all_packages()
 
 TEST_CASES = glob(["test_cases/*"])
 
-# [ts_script(
+# [ts_run_binary(
 #     name = "gen_parser_test_%s" % f.split("/")[-1],
 #     outs = ["%s.tmp" % f.split("/")[-1]],
 #     args = [
