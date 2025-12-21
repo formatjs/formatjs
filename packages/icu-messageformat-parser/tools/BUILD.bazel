@@ -1,0 +1,22 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "regex_gen",
+    data = [
+        "global.ts",
+        "//:node_modules/@unicode/unicode-13.0.0",
+        "//:node_modules/regenerate",
+    ],
+    entry_point = "regex-gen.ts",
+    visibility = ["//packages/icu-messageformat-parser:__pkg__"],
+)
+
+ts_binary(
+    name = "time_data_gen",
+    data = [
+        "//:node_modules/cldr-core",
+        "//:node_modules/json-stable-stringify",
+    ],
+    entry_point = "time-data-gen.ts",
+    visibility = ["//packages/icu-messageformat-parser:__pkg__"],
+)

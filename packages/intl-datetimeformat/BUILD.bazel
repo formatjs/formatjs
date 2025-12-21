@@ -7,7 +7,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//:index.bzl", "ZONES")
-load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_script")
+load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_run_binary")
 load("//tools:vitest.bzl", "vitest")
 load(":index.bzl", "generate_dockerfile")
 
@@ -680,7 +680,7 @@ ALL_LOCALES = [
 
 CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 
-ts_script(
+ts_run_binary(
     name = "cldr-raw",
     srcs = [
         "scripts/extract-dates.ts",
@@ -714,7 +714,7 @@ genrule(
     cmd = "echo 'export const supportedLocales: string[] = %s' > $@" % ALL_LOCALES,
 )
 
-ts_script(
+ts_run_binary(
     name = "locale-data",
     srcs = CLDR_RAW_FILES + [
         "//:node_modules/fs-extra",
@@ -804,7 +804,7 @@ generate_src_file(
 
 # "ts-node scripts/process-zdump --polyfill --output dist/add-all-tz.js --input data.zdump"
 # add-all-tz
-ts_script(
+ts_run_binary(
     name = "add-all-tz",
     srcs = [
         "src/packer.ts",
@@ -830,7 +830,7 @@ ts_script(
 )
 
 # add-golden-tz
-ts_script(
+ts_run_binary(
     name = "add-golden-tz",
     srcs = [
         "src/packer.ts",

@@ -3,7 +3,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "package_json_test", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -67,34 +67,16 @@ write_source_files(
     files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
 )
 
-bundle_karma_tests(
-    name = "bundled-karma-tests",
-    srcs = [":srcs"],
-    tests = [
-        "tests/browser-smoke.test.ts",
-    ],
-    deps = SRC_DEPS,
-)
-
 generate_src_file(
     name = "regex",
     src = "regex.generated.ts",
-    data = [
-        "scripts/global.ts",
-        "//:node_modules/@unicode/unicode-13.0.0",
-        "//:node_modules/regenerate",
-    ],
-    entry_point = "scripts/regex-gen.ts",
+    tool = "//packages/icu-messageformat-parser/tools:regex_gen",
 )
 
 generate_src_file(
     name = "time-data",
     src = "time-data.generated.ts",
-    data = [
-        "//:node_modules/cldr-core",
-        "//:node_modules/json-stable-stringify",
-    ],
-    entry_point = "scripts/time-data-gen.ts",
+    tool = "//packages/icu-messageformat-parser/tools:time_data_gen",
 )
 
 package_json_test(
