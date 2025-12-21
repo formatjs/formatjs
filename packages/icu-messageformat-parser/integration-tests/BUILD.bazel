@@ -6,16 +6,20 @@ npm_link_all_packages()
 
 TEST_CASES = glob(["test_cases/*"])
 
-# Rust integration test
-rust_test(
-    name = "rust_integration_test",
+# Generate a separate Rust test target for each test case file
+[rust_test(
+    name = "rust_test_%s" % f.split("/")[-1].replace(".txt", "").replace("-", "_"),
     srcs = ["integration_tests.rs"],
-    data = TEST_CASES,
+    data = [f],
+    env = {
+        "TEST_FILE": f.split("/")[-1],
+    },
     deps = [
         "//packages/icu-messageformat-parser/rust:icu_messageformat_parser",
+        "@crates//:pretty_assertions",
         "@crates//:serde_json",
     ],
-)
+) for f in TEST_CASES]
 
 # [ts_run_binary(
 #     name = "gen_parser_test_%s" % f.split("/")[-1],

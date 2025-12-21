@@ -1,5 +1,7 @@
+use serde::Serialize;
+
 /// Location details for error reporting
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub struct LocationDetails {
     pub offset: usize,
     pub line: usize,
@@ -7,14 +9,14 @@ pub struct LocationDetails {
 }
 
 /// Location range in the source string
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub struct Location {
     pub start: LocationDetails,
     pub end: LocationDetails,
 }
 
 /// Parser error with location information
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct ParserError {
     pub kind: ErrorKind,
     pub message: String,
@@ -135,6 +137,15 @@ impl std::fmt::Display for ErrorKind {
             ErrorKind::UnmatchedClosingTag => write!(f, "UNMATCHED_CLOSING_TAG"),
             ErrorKind::UnclosedTag => write!(f, "UNCLOSED_TAG"),
         }
+    }
+}
+
+impl Serialize for ErrorKind {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_u8(*self as u8)
     }
 }
 
