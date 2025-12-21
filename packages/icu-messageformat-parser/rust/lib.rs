@@ -5,6 +5,7 @@ pub mod error;
 pub mod types;
 pub mod printer;
 pub mod manipulator;
+pub mod parser;
 
 // Re-export time data
 pub use time_data_generated::TIME_DATA;
@@ -23,6 +24,9 @@ pub use manipulator::{
     hoist_selectors, is_structurally_same, ManipulatorError, StructuralComparisonError,
     StructuralComparisonResult,
 };
+
+// Re-export parser types and functions
+pub use parser::{Parser, ParserOptions, Position};
 
 // Re-export icu::locale::Locale for convenience
 pub use icu::locale::Locale;

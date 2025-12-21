@@ -95,6 +95,7 @@ dependencies = [
  "icu",
  "once_cell",
  "regex",
+ "serde_json",
 ]
 
 [[package]]

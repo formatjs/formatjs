@@ -1,9 +1,21 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@rules_rust//rust:defs.bzl", "rust_test")
 load("//tools:index.bzl", "generate_src_file")
 
 npm_link_all_packages()
 
 TEST_CASES = glob(["test_cases/*"])
+
+# Rust integration test
+rust_test(
+    name = "rust_integration_test",
+    srcs = ["integration_tests.rs"],
+    data = TEST_CASES,
+    deps = [
+        "//packages/icu-messageformat-parser/rust:icu_messageformat_parser",
+        "@crates//:serde_json",
+    ],
+)
 
 # [ts_run_binary(
 #     name = "gen_parser_test_%s" % f.split("/")[-1],

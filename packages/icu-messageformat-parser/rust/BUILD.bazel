@@ -20,6 +20,7 @@ rust_library(
         "error.rs",
         "lib.rs",
         "manipulator.rs",
+        "parser.rs",
         "printer.rs",
         "regex_generated.rs",
         "time_data_generated.rs",
