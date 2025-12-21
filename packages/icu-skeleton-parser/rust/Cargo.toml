@@ -1,5 +1,5 @@
 [package]
-name = "icu-skeleton-parser-rust"
+name = "icu-skeleton-parser"
 version = "0.1.0"
 edition = "2021"
 

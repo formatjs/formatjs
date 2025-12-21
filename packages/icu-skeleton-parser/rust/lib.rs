@@ -1,8 +1,8 @@
 pub mod datetime_format_options;
 pub mod datetime_parser;
 pub mod number_format_options;
+pub mod number_parser;
 pub mod number_skeleton_token;
-pub mod parser;
 
 // Re-export commonly used types
 pub use datetime_format_options::{
@@ -18,5 +18,5 @@ pub use number_format_options::{
     NumberFormatOptionsUnitDisplay, RoundingModeType, RoundingPriorityType, TrailingZeroDisplay,
     UseGroupingString, UseGroupingType,
 };
+pub use number_parser::parse_number_skeleton;
 pub use number_skeleton_token::NumberSkeletonToken;
-pub use parser::parse_number_skeleton;
