@@ -1,0 +1,15 @@
+[package]
+name = "icu-messageformat-parser"
+version = "0.1.0"
+edition = "2021"
+authors = ["FormatJS Team"]
+description = "ICU MessageFormat parser implementation in Rust"
+license = "MIT"
+
+[dependencies]
+icu = "2.1.1"
+once_cell = "1.21"
+
+[lib]
+name = "icu_messageformat_parser"
+path = "lib.rs"

@@ -1,5 +1,5 @@
 // @generated from time-data-gen.ts
-// prettier-ignore  
+// prettier-ignore
 export const timeData: Record<string, string[]> = {
   "001": [
     "H",
