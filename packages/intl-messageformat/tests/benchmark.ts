@@ -1,4 +1,4 @@
-import {Suite, Event} from 'benchmark'
+import {Bench} from 'tinybench'
 import IntlMessageFormat, {Formatters} from '../index.js'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/en'
@@ -38,66 +38,69 @@ const formatters: Formatters = {
   getPluralRules: memoize(Intl.PluralRules),
 }
 
-new Suite()
-  .add('format_cached_complex_msg', () =>
-    mf.format({
-      gender_of_host: 'male',
-      num_guests: 10,
-      host: 'Eric',
-      guest: 'Caridy',
-    })
-  )
-  .add('format_cached_string_msg', () => stringMf.format())
-  .add(
-    'new_complex_msg_preparsed',
-    () => new IntlMessageFormat(preparsedMsg, 'en-US')
-  )
-  .add('new_complex_msg', () => new IntlMessageFormat(msg, 'en-US'))
-  .add('new_string_msg', () => new IntlMessageFormat(stringMsg, 'en-US'))
-  .add('complex msg format', () =>
-    new IntlMessageFormat(msg, 'en-US').format({
-      gender_of_host: 'male',
-      num_guests: 2,
-      host: 'foo',
-      guest: 'bar',
-    })
-  )
-  .add('complex msg w/ formatters format', () =>
-    new IntlMessageFormat(msg, 'en-US', undefined, {formatters}).format({
-      gender_of_host: 'male',
-      num_guests: 2,
-      host: 'foo',
-      guest: 'bar',
-    })
-  )
-  .add('complex preparsed msg w/ formatters format', () =>
-    new IntlMessageFormat(preparsedMsg, 'en-US', undefined, {
-      formatters,
-    }).format({
-      gender_of_host: 'male',
-      num_guests: 2,
-      host: 'foo',
-      guest: 'bar',
-    })
-  )
-  .add('complex preparsed msg w/ new formatters format', () =>
-    new IntlMessageFormat(preparsedMsg, 'en-US', undefined, {
-      formatters: {
-        getNumberFormat: formatters.getNumberFormat,
-        getDateTimeFormat: formatters.getDateTimeFormat,
-        getPluralRules: formatters.getPluralRules,
-      },
-    }).format({
-      gender_of_host: 'male',
-      num_guests: 2,
-      host: 'foo',
-      guest: 'bar',
-    })
-  )
-  .on('error', function (event: Event) {
-    console.log(String(event.target))
-  })
-  .on('cycle', function (event: Event) {
-    console.log(String(event.target))
-  })
-  .run()
+async function run() {
+  const bench = new Bench({time: 1000})
+
+  bench
+    .add('format_cached_complex_msg', () =>
+      mf.format({
+        gender_of_host: 'male',
+        num_guests: 10,
+        host: 'Eric',
+        guest: 'Caridy',
+      })
+    )
+    .add('format_cached_string_msg', () => stringMf.format())
+    .add(
+      'new_complex_msg_preparsed',
+      () => new IntlMessageFormat(preparsedMsg, 'en-US')
+    )
+    .add('new_complex_msg', () => new IntlMessageFormat(msg, 'en-US'))
+    .add('new_string_msg', () => new IntlMessageFormat(stringMsg, 'en-US'))
+    .add('complex msg format', () =>
+      new IntlMessageFormat(msg, 'en-US').format({
+        gender_of_host: 'male',
+        num_guests: 2,
+        host: 'foo',
+        guest: 'bar',
+      })
+    )
+    .add('complex msg w/ formatters format', () =>
+      new IntlMessageFormat(msg, 'en-US', undefined, {formatters}).format({
+        gender_of_host: 'male',
+        num_guests: 2,
+        host: 'foo',
+        guest: 'bar',
+      })
+    )
+    .add('complex preparsed msg w/ formatters format', () =>
+      new IntlMessageFormat(preparsedMsg, 'en-US', undefined, {
+        formatters,
+      }).format({
+        gender_of_host: 'male',
+        num_guests: 2,
+        host: 'foo',
+        guest: 'bar',
+      })
+    )
+    .add('complex preparsed msg w/ new formatters format', () =>
+      new IntlMessageFormat(preparsedMsg, 'en-US', undefined, {
+        formatters: {
+          getNumberFormat: formatters.getNumberFormat,
+          getDateTimeFormat: formatters.getDateTimeFormat,
+          getPluralRules: formatters.getPluralRules,
+        },
+      }).format({
+        gender_of_host: 'male',
+        num_guests: 2,
+        host: 'foo',
+        guest: 'bar',
+      })
+    )
+
+  await bench.run()
+
+  console.table(bench.table())
+}
+
+run()

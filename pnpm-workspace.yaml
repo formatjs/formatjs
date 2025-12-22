@@ -3,5 +3,6 @@ packages:
   - 'packages/*'
   - 'packages/*/integration-tests'
   - 'packages/*/examples'
+  - 'packages/*/benchmark'
   - 'website'
   - '!packages/editor'
