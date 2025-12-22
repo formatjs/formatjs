@@ -136,7 +136,7 @@
     "*": "bazel run //:format",
     "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
   },
-  "packageManager": "pnpm@10.12.4",
+  "packageManager": "pnpm@10.26.1",
   "pnpm": {
     "onlyBuiltDependencies": [],
     "packageExtensions": {
