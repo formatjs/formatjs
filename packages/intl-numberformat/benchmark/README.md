@@ -48,49 +48,73 @@ Look for significant differences in the "time values 0-59" and "significantDigit
 
 ## Benchmark Results
 
-Results from running on macOS (Apple Silicon):
+### After ToRawPrecision Optimization (Direct Calculation)
+
+Results from running on macOS (Apple Silicon) after implementing direct calculation in `ToRawPrecision`:
 
 ```
 ┌─────────┬────────────────────────────────────────────┬───────────────────┬────────────────────┬────────────────────────┬────────────────────────┬─────────┐
 │ (index) │ Task name                                  │ Latency avg (ns)  │ Latency med (ns)   │ Throughput avg (ops/s) │ Throughput med (ops/s) │ Samples │
 ├─────────┼────────────────────────────────────────────┼───────────────────┼────────────────────┼────────────────────────┼────────────────────────┼─────────┤
-│ 0       │ 'format decimal (polyfill)'                │ '440270 ± 2.13%'  │ '397459 ± 7979.0'  │ '2398 ± 0.56%'         │ '2516 ± 51'            │ 2272    │
-│ 1       │ 'format decimal (native)'                  │ '1758.7 ± 0.19%'  │ '1709.0 ± 41.00'   │ '580691 ± 0.02%'       │ '585138 ± 13709'       │ 568613  │
-│ 2       │ 'format percent (polyfill)'                │ '400199 ± 1.18%'  │ '382625 ± 6292.0'  │ '2538 ± 0.33%'         │ '2614 ± 43'            │ 2499    │
-│ 3       │ 'format percent (native)'                  │ '1956.7 ± 0.23%'  │ '1916.0 ± 41.00'   │ '520409 ± 0.02%'       │ '521921 ± 11413'       │ 511061  │
-│ 4       │ 'format currency (polyfill)'               │ '406523 ± 0.38%'  │ '393270 ± 6437.5'  │ '2477 ± 0.29%'         │ '2543 ± 42'            │ 2460    │
-│ 5       │ 'format currency (native)'                 │ '1955.3 ± 0.10%'  │ '1916.0 ± 41.00'   │ '520413 ± 0.02%'       │ '521921 ± 11413'       │ 511418  │
-│ 6       │ 'format unit (polyfill)'                   │ '418859 ± 0.38%'  │ '404437 ± 5687.5'  │ '2404 ± 0.30%'         │ '2473 ± 35'            │ 2388    │
-│ 7       │ 'format with significantDigits (polyfill)' │ '1179043 ± 0.45%' │ '1149500 ± 27875'  │ '852 ± 0.40%'          │ '870 ± 21'             │ 849     │
-│ 8       │ 'format with fractionDigits (polyfill)'    │ '410403 ± 0.39%'  │ '396250 ± 6666.0'  │ '2455 ± 0.31%'         │ '2524 ± 43'            │ 2437    │
-│ 9       │ 'format time values 0-59 (polyfill)'       │ '5024342 ± 0.38%' │ '5017354 ± 101291' │ '199 ± 0.37%'          │ '199 ± 4'              │ 200     │
-│ 10      │ 'format time values 0-59 (native)'         │ '10885 ± 0.18%'   │ '10667 ± 250.00'   │ '92825 ± 0.05%'        │ '93747 ± 2147'         │ 91874   │
-│ 11      │ 'formatToParts decimal (polyfill)'         │ '411749 ± 0.49%'  │ '396542 ± 6500.0'  │ '2452 ± 0.33%'         │ '2522 ± 41'            │ 2429    │
-│ 12      │ 'formatToParts decimal (native)'           │ '5951.9 ± 0.23%'  │ '5792.0 ± 83.00'   │ '170772 ± 0.03%'       │ '172652 ± 2510'        │ 168013  │
+│ 0       │ 'format decimal (polyfill)'                │ '392234 ± 0.61%'  │ '371791 ± 8666.5'  │ '2591 ± 0.42%'         │ '2690 ± 64'            │ 2550    │
+│ 1       │ 'format decimal (native)'                  │ '1737.5 ± 0.30%'  │ '1667.0 ± 42.00'   │ '589316 ± 0.02%'       │ '599880 ± 15505'       │ 575545  │
+│ 2       │ 'format percent (polyfill)'                │ '396033 ± 2.51%'  │ '356770 ± 8479.5'  │ '2668 ± 0.54%'         │ '2803 ± 68'            │ 2526    │
+│ 3       │ 'format percent (native)'                  │ '1964.1 ± 0.27%'  │ '1917.0 ± 42.00'   │ '517270 ± 0.02%'       │ '521648 ± 11685'       │ 509139  │
+│ 4       │ 'format currency (polyfill)'               │ '387081 ± 0.76%'  │ '366395 ± 8186.5'  │ '2636 ± 0.42%'         │ '2729 ± 62'            │ 2584    │
+│ 5       │ 'format currency (native)'                 │ '1952.2 ± 0.53%'  │ '1875.0 ± 42.00'   │ '526284 ± 0.02%'       │ '533333 ± 11923'       │ 512251  │
+│ 6       │ 'format unit (polyfill)'                   │ '395679 ± 0.47%'  │ '379896 ± 8729.0'  │ '2554 ± 0.35%'         │ '2632 ± 61'            │ 2528    │
+│ 7       │ 'format with significantDigits (polyfill)' │ '1011253 ± 0.64%' │ '979416 ± 25082'   │ '996 ± 0.46%'          │ '1021 ± 26'            │ 989     │
+│ 8       │ 'format with fractionDigits (polyfill)'    │ '387999 ± 0.44%'  │ '373625 ± 9917.0'  │ '2603 ± 0.34%'         │ '2676 ± 72'            │ 2578    │
+│ 9       │ 'format time values 0-59 (polyfill)'       │ '4649196 ± 0.45%' │ '4629062 ± 103041' │ '215 ± 0.45%'          │ '216 ± 5'              │ 216     │
+│ 10      │ 'format time values 0-59 (native)'         │ '10834 ± 0.10%'   │ '10625 ± 167.00'   │ '93180 ± 0.05%'        │ '94118 ± 1503'         │ 92304   │
+│ 11      │ 'formatToParts decimal (polyfill)'         │ '387318 ± 0.54%'  │ '370125 ± 8042.0'  │ '2615 ± 0.37%'         │ '2702 ± 60'            │ 2583    │
+│ 12      │ 'formatToParts decimal (native)'           │ '6030.9 ± 0.24%'  │ '5833.0 ± 125.00'  │ '169098 ± 0.04%'       │ '171438 ± 3597'        │ 165813  │
 └─────────┴────────────────────────────────────────────┴───────────────────┴────────────────────┴────────────────────────┴────────────────────────┴─────────┘
 ```
+
+### Performance Improvements
+
+Comparing before/after the `ToRawPrecision` optimization:
+
+| Benchmark                         | Before (ops/s) | After (ops/s) | Improvement |
+| --------------------------------- | -------------- | ------------- | ----------- |
+| **format with significantDigits** | 852            | 996           | **+17%** 🎉 |
+| format decimal                    | 2,398          | 2,591         | +8%         |
+| format time values 0-59           | 199            | 215           | +8%         |
+
+The optimization replaced iterative `while(true)` loops with direct mathematical calculations using logarithms, reducing algorithmic complexity from O(n) to O(1) in the common case.
 
 ### Key Observations
 
 1. **Native vs Polyfill Performance Gap:**
-   - Basic decimal formatting: Native is **~242x faster** (580k ops/s vs 2.4k ops/s)
-   - The polyfill takes ~440μs per format operation vs ~1.8μs for native
+   - Basic decimal formatting: Native is **~227x faster** (589k ops/s vs 2.6k ops/s)
+   - The polyfill takes ~392μs per format operation vs ~1.7μs for native
 
-2. **Significant Digits Hotspot:**
-   - Formatting with `significantDigits` is **~2.7x slower** than basic decimal formatting (852 ops/s vs 2,398 ops/s)
-   - This confirms the `ToRawPrecision` function identified in issue #5023 as a performance bottleneck
+2. **Significant Digits Improvement:**
+   - Formatting with `significantDigits` improved from 852 to **996 ops/s** (+17%)
+   - Still **~2.6x slower** than basic decimal formatting, but the gap has narrowed
+   - The direct calculation approach in `ToRawPrecision` eliminates most iteration overhead
 
 3. **Time Values 0-59 (Issue #5023 Scenario):**
-   - Polyfill: **199 ops/s** (~5ms per batch of 60 values)
-   - Native: **92,825 ops/s** (~11μs per batch of 60 values)
-   - Native is **~466x faster** for this real-world use case
+   - Polyfill: **215 ops/s** (~4.6ms per batch of 60 values)
+   - Native: **93,180 ops/s** (~10.8μs per batch of 60 values)
+   - Native is **~433x faster** for this real-world use case
+   - The optimization provides modest improvement (+8%), but the gap remains significant
 
 4. **formatToParts Performance:**
-   - Polyfill: 2,452 ops/s (~412μs per operation)
-   - Native: 170,772 ops/s (~6μs per operation)
-   - Native is **~70x faster**
+   - Polyfill: 2,615 ops/s (~387μs per operation)
+   - Native: 169,098 ops/s (~6μs per operation)
+   - Native is **~65x faster**
 
-These results confirm the significant performance gap reported in issue #5023, particularly for repeated formatting operations with small integer values (0-59) commonly used in date/time display.
+### Optimization Details
+
+The `ToRawPrecision` function was optimized by:
+
+1. **Replacing iterative search with direct calculation**: Using `floor(log10(x))` to compute the exponent directly instead of iterating
+2. **Adding boundary adjustment logic**: Handles edge cases near powers of 10 efficiently
+3. **Keeping fallback for safety**: Rare edge cases still use the original iterative approach
+
+This change maintains full correctness while improving performance for the common path.
 
 ## Related Files
 
