@@ -93,7 +93,7 @@ js_binary(
     data = [":srcs"] + SRC_DEPS + [
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
-        "//:node_modules/benchmark",
+        "//:node_modules/tinybench",
         "//:node_modules/tsx",
     ],
     entry_point = "tests/benchmark.ts",
