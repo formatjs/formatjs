@@ -2,4 +2,8 @@
 members = [
     "packages/icu-skeleton-parser/rust",
     "packages/icu-messageformat-parser/rust",
+    "packages/icu-messageformat-parser/integration-tests",
 ]
+
+[workspace.dependencies]
+pretty_assertions = "1.4"

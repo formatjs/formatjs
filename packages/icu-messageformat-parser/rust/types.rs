@@ -1,39 +1,66 @@
 use crate::error::Location;
+use serde::Serialize;
 use std::collections::HashMap;
+
+// Re-export types from icu-skeleton-parser
+pub use icu_skeleton_parser::{
+    DateTimeFormatOptions, ExtendedNumberFormatOptions as NumberFormatOptions,
+    NumberSkeletonToken,
+};
 
 /// Element type enum
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u8)]
 pub enum Type {
     /// Raw text
-    Literal,
+    Literal = 0,
     /// Variable w/o any format, e.g `var` in `this is a {var}`
-    Argument,
+    Argument = 1,
     /// Variable w/ number format
-    Number,
+    Number = 2,
     /// Variable w/ date format
-    Date,
+    Date = 3,
     /// Variable w/ time format
-    Time,
+    Time = 4,
     /// Variable w/ select format
-    Select,
+    Select = 5,
     /// Variable w/ plural format
-    Plural,
+    Plural = 6,
     /// Only possible within plural argument.
     /// This is the `#` symbol that will be substituted with the count.
-    Pound,
+    Pound = 7,
     /// XML-like tag
-    Tag,
+    Tag = 8,
+}
+
+impl Serialize for Type {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_u8(*self as u8)
+    }
 }
 
 /// Skeleton type enum
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u8)]
 pub enum SkeletonType {
-    Number,
-    DateTime,
+    Number = 0,
+    DateTime = 1,
+}
+
+impl Serialize for SkeletonType {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_u8(*self as u8)
+    }
 }
 
 /// Valid plural rules
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize)]
 pub enum ValidPluralRule {
     Zero,
     One,
@@ -72,35 +99,36 @@ impl ValidPluralRule {
 }
 
 /// Plural type corresponding to Intl.PluralRulesOptions['type']
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub enum PluralType {
     Cardinal,
     Ordinal,
 }
 
 /// Base element with type and value
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct BaseElement {
     pub value: String,
     pub location: Option<Location>,
 }
 
 /// Literal element
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct LiteralElement {
     pub value: String,
     pub location: Option<Location>,
 }
 
 /// Argument element
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct ArgumentElement {
     pub value: String,
     pub location: Option<Location>,
 }
 
 /// Tag element with children
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct TagElement {
     pub value: String,
     pub children: Vec<MessageFormatElement>,
@@ -108,7 +136,7 @@ pub struct TagElement {
 }
 
 /// Simple format element with optional style
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct SimpleFormatElement<S> {
     pub value: String,
     pub style: Option<S>,
@@ -131,6 +159,18 @@ pub enum NumberSkeletonOrStyle {
     Skeleton(NumberSkeleton),
 }
 
+impl Serialize for NumberSkeletonOrStyle {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        match self {
+            Self::String(s) => s.serialize(serializer),
+            Self::Skeleton(skeleton) => skeleton.serialize(serializer),
+        }
+    }
+}
+
 /// Style can be either a string or a skeleton
 #[derive(Debug, Clone, PartialEq)]
 pub enum DateTimeSkeletonOrStyle {
@@ -138,15 +178,27 @@ pub enum DateTimeSkeletonOrStyle {
     Skeleton(DateTimeSkeleton),
 }
 
+impl Serialize for DateTimeSkeletonOrStyle {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        match self {
+            Self::String(s) => s.serialize(serializer),
+            Self::Skeleton(skeleton) => skeleton.serialize(serializer),
+        }
+    }
+}
+
 /// Plural or select option with message elements
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct PluralOrSelectOption {
     pub value: Vec<MessageFormatElement>,
     pub location: Option<Location>,
 }
 
 /// Select element
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct SelectElement {
     pub value: String,
     pub options: HashMap<String, PluralOrSelectOption>,
@@ -154,7 +206,7 @@ pub struct SelectElement {
 }
 
 /// Plural element
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct PluralElement {
     pub value: String,
     pub options: HashMap<ValidPluralRule, PluralOrSelectOption>,
@@ -164,7 +216,7 @@ pub struct PluralElement {
 }
 
 /// Pound element (#)
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct PoundElement {
     pub location: Option<Location>,
 }
@@ -235,6 +287,93 @@ impl MessageFormatElement {
     }
 }
 
+// Custom serialization for MessageFormatElement to match TypeScript format
+impl Serialize for MessageFormatElement {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        use serde::ser::SerializeMap;
+
+        match self {
+            Self::Literal(el) => {
+                let mut map = serializer.serialize_map(Some(3))?;
+                map.serialize_entry("type", &Type::Literal)?;
+                map.serialize_entry("value", &el.value)?;
+                map.serialize_entry("location", &el.location)?;
+                map.end()
+            }
+            Self::Argument(el) => {
+                let mut map = serializer.serialize_map(Some(3))?;
+                map.serialize_entry("type", &Type::Argument)?;
+                map.serialize_entry("value", &el.value)?;
+                map.serialize_entry("location", &el.location)?;
+                map.end()
+            }
+            Self::Number(el) => {
+                let mut map = serializer.serialize_map(Some(4))?;
+                map.serialize_entry("type", &Type::Number)?;
+                map.serialize_entry("value", &el.value)?;
+                map.serialize_entry("style", &el.style)?;
+                map.serialize_entry("location", &el.location)?;
+                map.end()
+            }
+            Self::Date(el) => {
+                let mut map = serializer.serialize_map(Some(4))?;
+                map.serialize_entry("type", &Type::Date)?;
+                map.serialize_entry("value", &el.value)?;
+                map.serialize_entry("style", &el.style)?;
+                map.serialize_entry("location", &el.location)?;
+                map.end()
+            }
+            Self::Time(el) => {
+                let mut map = serializer.serialize_map(Some(4))?;
+                map.serialize_entry("type", &Type::Time)?;
+                map.serialize_entry("value", &el.value)?;
+                map.serialize_entry("style", &el.style)?;
+                map.serialize_entry("location", &el.location)?;
+                map.end()
+            }
+            Self::Select(el) => {
+                let mut map = serializer.serialize_map(Some(4))?;
+                map.serialize_entry("type", &Type::Select)?;
+                map.serialize_entry("value", &el.value)?;
+                map.serialize_entry("options", &el.options)?;
+                map.serialize_entry("location", &el.location)?;
+                map.end()
+            }
+            Self::Plural(el) => {
+                // Convert HashMap<ValidPluralRule, ...> to HashMap<String, ...> for JSON serialization
+                let options_map: std::collections::HashMap<String, &PluralOrSelectOption> =
+                    el.options.iter().map(|(k, v)| (k.as_str().to_string(), v)).collect();
+
+                let mut map = serializer.serialize_map(Some(6))?;
+                map.serialize_entry("type", &Type::Plural)?;
+                map.serialize_entry("value", &el.value)?;
+                map.serialize_entry("options", &options_map)?;
+                map.serialize_entry("offset", &el.offset)?;
+                map.serialize_entry("pluralType", &el.plural_type)?;
+                map.serialize_entry("location", &el.location)?;
+                map.end()
+            }
+            Self::Pound(el) => {
+                let mut map = serializer.serialize_map(Some(2))?;
+                map.serialize_entry("type", &Type::Pound)?;
+                map.serialize_entry("location", &el.location)?;
+                map.end()
+            }
+            Self::Tag(el) => {
+                let mut map = serializer.serialize_map(Some(4))?;
+                map.serialize_entry("type", &Type::Tag)?;
+                map.serialize_entry("value", &el.value)?;
+                map.serialize_entry("children", &el.children)?;
+                map.serialize_entry("location", &el.location)?;
+                map.end()
+            }
+        }
+    }
+}
+
 /// Number skeleton with tokens and parsed options
 #[derive(Debug, Clone, PartialEq)]
 pub struct NumberSkeleton {
@@ -245,23 +384,22 @@ pub struct NumberSkeleton {
     pub parsed_options: NumberFormatOptions,
 }
 
-/// Placeholder for NumberFormatOptions
-/// This would need to be expanded with actual Intl.NumberFormatOptions fields
-#[derive(Debug, Clone, PartialEq)]
-pub struct NumberFormatOptions {
-    pub scale: Option<f64>,
-    // Add other options as needed
+impl Serialize for NumberSkeleton {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        use serde::ser::SerializeMap;
+        let mut map = serializer.serialize_map(Some(4))?;
+        map.serialize_entry("type", &SkeletonType::Number)?;
+        map.serialize_entry("tokens", &self.tokens)?;
+        map.serialize_entry("location", &self.location)?;
+        map.serialize_entry("parsedOptions", &self.parsed_options)?;
+        map.end()
+    }
 }
 
-/// Placeholder for NumberSkeletonToken
-/// This should be imported from the icu-skeleton-parser crate
-#[derive(Debug, Clone, PartialEq)]
-pub struct NumberSkeletonToken {
-    // This is a placeholder - actual implementation would come from
-    // the icu-skeleton-parser package
-    pub stem: String,
-    pub options: Vec<String>,
-}
+// NumberFormatOptions and NumberSkeletonToken are now imported from icu-skeleton-parser above
 
 /// Date/Time skeleton with pattern and parsed options
 #[derive(Debug, Clone, PartialEq)]
@@ -272,25 +410,27 @@ pub struct DateTimeSkeleton {
     pub parsed_options: DateTimeFormatOptions,
 }
 
-/// Placeholder for DateTimeFormatOptions
-/// This corresponds to Intl.DateTimeFormatOptions
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct DateTimeFormatOptions {
-    pub hour: Option<String>,
-    pub minute: Option<String>,
-    pub second: Option<String>,
-    pub year: Option<String>,
-    pub month: Option<String>,
-    pub day: Option<String>,
-    pub weekday: Option<String>,
-    pub era: Option<String>,
-    pub time_zone_name: Option<String>,
-    pub hour12: Option<bool>,
-    // Add other options as needed
+impl Serialize for DateTimeSkeleton {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        use serde::ser::SerializeMap;
+        let mut map = serializer.serialize_map(Some(4))?;
+        map.serialize_entry("type", &SkeletonType::DateTime)?;
+        map.serialize_entry("pattern", &self.pattern)?;
+        map.serialize_entry("location", &self.location)?;
+        map.serialize_entry("parsedOptions", &self.parsed_options)?;
+        map.end()
+    }
 }
 
+/// Placeholder for DateTimeFormatOptions
+/// This corresponds to Intl.DateTimeFormatOptions
+// DateTimeFormatOptions is now imported from icu-skeleton-parser above
+
 /// Skeleton union type
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub enum Skeleton {
     Number(NumberSkeleton),
     DateTime(DateTimeSkeleton),

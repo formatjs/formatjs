@@ -8,17 +8,20 @@ use crate::regex_generated::SPACE_SEPARATOR_REGEX;
 use crate::types::*;
 use crate::date_time_pattern_generator::get_best_pattern;
 use icu::locale::Locale;
+use icu_skeleton_parser::{parse_date_time_skeleton, parse_number_skeleton};
 use once_cell::sync::Lazy;
 use regex::Regex;
 use std::collections::{HashMap, HashSet};
 
 /// Position in the source message string.
 ///
-/// Tracks location in terms of byte offset, line number, and column number.
+/// Tracks location in terms of character offset, byte offset, line number, and column number.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Position {
-    /// Offset in terms of UTF-16 code units (for JavaScript compatibility)
+    /// Offset in terms of characters (code points) for JavaScript compatibility
     pub offset: usize,
+    /// Byte offset in the UTF-8 encoded string
+    pub byte_offset: usize,
     /// Line number (1-indexed)
     pub line: usize,
     /// Column offset in terms of Unicode code points (1-indexed)
@@ -30,6 +33,7 @@ impl Position {
     pub fn new() -> Self {
         Position {
             offset: 0,
+            byte_offset: 0,
             line: 1,
             column: 1,
         }
@@ -279,6 +283,12 @@ impl Parser {
 
     /// Returns the current byte offset in the message.
     #[inline]
+    fn byte_offset(&self) -> usize {
+        self.position.byte_offset
+    }
+
+    /// Returns the current character offset in the message.
+    #[inline]
     fn offset(&self) -> usize {
         self.position.offset
     }
@@ -286,7 +296,8 @@ impl Parser {
     /// Checks if we've reached the end of the message.
     #[inline]
     fn is_eof(&self) -> bool {
-        self.offset() >= self.message.len()
+        // FIX: Check byte_offset against byte length, not character offset
+        self.byte_offset() >= self.message.len()
     }
 
     /// Returns the current Unicode codepoint.
@@ -295,13 +306,15 @@ impl Parser {
     ///
     /// Panics if at EOF or at an invalid UTF-8 boundary.
     fn char(&self) -> u32 {
-        let offset = self.position.offset;
-        if offset >= self.message.len() {
+        // FIX: Use byte_offset for string indexing, not character offset
+        // Character offset counts Unicode code points, byte_offset is the actual position in the UTF-8 string
+        let byte_offset = self.position.byte_offset;
+        if byte_offset >= self.message.len() {
             panic!("out of bound");
         }
 
         // Get the character at this byte offset
-        let remaining = &self.message[offset..];
+        let remaining = &self.message[byte_offset..];
         let ch = remaining.chars().next()
             .expect("Offset is at invalid UTF-8 boundary");
 
@@ -350,15 +363,20 @@ impl Parser {
 
         let code = self.char();
 
+        // FIX: Track both character offset (for location reporting) and byte offset (for string indexing)
+        // JavaScript counts characters, not UTF-8 bytes, so we need separate tracking
+        let ch = std::char::from_u32(code).unwrap();
+        let char_byte_len = ch.len_utf8();
+
         if code == 10 {  // '\n'
             self.position.line += 1;
             self.position.column = 1;
             self.position.offset += 1;
+            self.position.byte_offset += char_byte_len;
         } else {
             self.position.column += 1;
-            // Advance by character byte length
-            let ch = std::char::from_u32(code).unwrap();
-            self.position.offset += ch.len_utf8();
+            self.position.offset += 1;  // Always increment by 1 character
+            self.position.byte_offset += char_byte_len;  // Increment by actual UTF-8 byte length
         }
     }
 
@@ -366,7 +384,8 @@ impl Parser {
     ///
     /// Returns true if the prefix was matched and consumed, false otherwise.
     fn bump_if(&mut self, prefix: &str) -> bool {
-        if self.message[self.offset()..].starts_with(prefix) {
+        // FIX: Use byte_offset for string slicing
+        if self.message[self.byte_offset()..].starts_with(prefix) {
             for _ in 0..prefix.chars().count() {
                 self.bump();
             }
@@ -457,12 +476,15 @@ impl Parser {
     /// and its location. Returns an empty string if no identifier is found.
     fn parse_identifier_if_possible(&mut self) -> (String, Option<Location>) {
         let starting_position = self.clone_position();
-        let start_offset = self.offset();
+        // FIX: Use byte_offset for string indexing, not character offset
+        let start_byte_offset = self.byte_offset();
 
-        let value = match_identifier_at_index(&self.message, start_offset);
-        let end_offset = start_offset + value.len();
+        let value = match_identifier_at_index(&self.message, start_byte_offset);
+        // value.len() is in bytes, and we need to bump by characters
+        let char_count = value.chars().count();
+        let target_offset = self.offset() + char_count;
 
-        self.bump_to(end_offset);
+        self.bump_to(target_offset);
 
         let end_position = self.clone_position();
         let location = if self.capture_location {
@@ -637,7 +659,8 @@ impl Parser {
     /// Tag names must start with an ASCII letter and can contain letters, digits,
     /// hyphens, underscores, and other valid element name characters.
     fn parse_tag_name(&mut self) -> String {
-        let start_offset = self.offset();
+        // FIX: Use byte_offset for string slicing
+        let start_byte_offset = self.byte_offset();
 
         self.bump();  // First character (already validated as alpha)
 
@@ -645,7 +668,7 @@ impl Parser {
             self.bump();
         }
 
-        self.message[start_offset..self.offset()].to_string()
+        self.message[start_byte_offset..self.byte_offset()].to_string()
     }
 
     /// Parses an HTML/XML-like tag element.
@@ -867,7 +890,8 @@ impl Parser {
             }
         }
 
-        Ok(self.message[start_position.offset..self.offset()].to_string())
+        // FIX: Use byte_offset for string slicing
+        Ok(self.message[start_position.byte_offset..self.byte_offset()].to_string())
     }
 
     /// Parses the main message content recursively.
@@ -1127,11 +1151,36 @@ impl Parser {
                         let skeleton = trim_start(&style[2..]);
 
                         if arg_type == ArgType::Number {
-                            // Parse number skeleton
-                            // TODO: Implement number skeleton parsing when icu-skeleton-parser is available
+                            // FIX: Always parse and validate the number skeleton tokens to catch syntax errors
+                            // This matches TypeScript behavior - validation happens regardless of shouldParseSkeletons
+                            // The shouldParseSkeletons flag only controls whether we parse the tokens into parsedOptions
+                            let tokens = NumberSkeletonToken::parse_from_string(&skeleton)
+                                .map_err(|_| {
+                                    // Use the error() method to properly format the error with the original message
+                                    self.error::<()>(ErrorKind::InvalidNumberSkeleton, style_location.clone()).unwrap_err()
+                                })?;
+
+                            // Parse tokens into options only if shouldParseSkeletons is enabled
+                            let parsed_options = if self.should_parse_skeletons {
+                                parse_number_skeleton(&tokens)
+                                    .map_err(|_| {
+                                        // Use the error() method to properly format the error with the original message
+                                        self.error::<()>(ErrorKind::InvalidNumberSkeleton, style_location.clone()).unwrap_err()
+                                    })?
+                            } else {
+                                // If not parsing skeletons, use empty options object
+                                NumberFormatOptions::default()
+                            };
+
+                            let num_skeleton = NumberSkeleton {
+                                tokens,
+                                location: style_location,
+                                parsed_options,
+                            };
+
                             return Ok(MessageFormatElement::Number(NumberElement {
                                 value,
-                                style: Some(NumberSkeletonOrStyle::String(skeleton)),
+                                style: Some(NumberSkeletonOrStyle::Skeleton(num_skeleton)),
                                 location,
                             }));
                         } else {
@@ -1146,9 +1195,11 @@ impl Parser {
                                 skeleton.clone()
                             };
 
+                            // FIX: Parse date/time skeleton when shouldParseSkeletons is enabled
                             let parsed_options = if self.should_parse_skeletons {
-                                // TODO: Implement skeleton parsing when available
-                                DateTimeFormatOptions::default()
+                                // Parse the skeleton pattern into DateTimeFormatOptions
+                                parse_date_time_skeleton(&date_time_pattern)
+                                    .unwrap_or_default()
                             } else {
                                 DateTimeFormatOptions::default()
                             };

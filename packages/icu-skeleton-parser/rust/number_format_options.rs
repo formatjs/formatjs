@@ -118,7 +118,7 @@ pub enum TrailingZeroDisplay {
 }
 
 /// NumberFormatOptions matching the ECMA-402 NumberFormatOptions interface
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct NumberFormatOptions {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -185,7 +185,7 @@ pub struct NumberFormatOptions {
 }
 
 /// ExtendedNumberFormatOptions extends NumberFormatOptions with the scale property
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct ExtendedNumberFormatOptions {
     #[serde(flatten)]

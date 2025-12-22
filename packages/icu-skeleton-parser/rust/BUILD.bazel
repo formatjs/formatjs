@@ -11,6 +11,7 @@ rust_library(
         "number_skeleton_token.rs",
     ],
     crate_name = "icu_skeleton_parser",
+    visibility = ["//visibility:public"],
     deps = [
         "@crates//:once_cell",
         "@crates//:regex",
