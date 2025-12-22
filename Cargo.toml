@@ -1,7 +1,7 @@
 [workspace]
 members = [
-    "packages/icu-skeleton-parser/rust",
-    "packages/icu-messageformat-parser/rust",
+    "rust/icu_skeleton_parser",
+    "rust/icu_messageformat_parser",
     "packages/icu-messageformat-parser/integration-tests",
 ]
 

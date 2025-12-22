@@ -5,7 +5,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
-formatjs_icu_messageformat_parser = { path = "../rust" }
+formatjs_icu_messageformat_parser = { path = "../../../rust/icu_messageformat_parser" }
 serde_json = "1.0"
 pretty_assertions = { workspace = true }
 
