@@ -773,6 +773,12 @@ importers:
         specifier: workspace:*
         version: link:../intl-pluralrules
 
+  packages/intl-numberformat/benchmark:
+    devDependencies:
+      '@formatjs/intl-numberformat':
+        specifier: workspace:*
+        version: link:..
+
   packages/intl-pluralrules:
     dependencies:
       '@formatjs/ecma402-abstract':
