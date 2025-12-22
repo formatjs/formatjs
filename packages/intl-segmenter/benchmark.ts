@@ -1,4 +1,4 @@
-import {Suite, Event} from 'benchmark'
+import {Bench} from 'tinybench'
 
 //@ts-ignore
 // const Segmenter = Intl.Segmenter
@@ -39,52 +39,59 @@ const collectSegments = (iterator: SegmentIterator) => {
   return collected
 }
 
-new Suite()
-  .add(
-    'segment_cached_grapheme_collect_all',
-    () => collectSegments(cachedSegmenters.grapheme.segment(inputString)).length
-  )
-  .add(
-    'segment_cached_word_collect_all',
-    () => collectSegments(cachedSegmenters.word.segment(inputString)).length
-  )
-  .add(
-    'segment_cached_sentence_collect_all',
-    () => collectSegments(cachedSegmenters.sentence.segment(inputString)).length
-  )
+async function run() {
+  const bench = new Bench({time: 1000})
 
-  //@ts-ignore
-  .add('segment_cached_grapheme_containing', () => {
-    return cachedSegmenters.grapheme
-      .segment(inputString)
-      .containing(Math.floor(Math.random() * inputString.length))
-  })
-  .add('segment_cached_word_containing', () =>
-    cachedSegmenters.word
-      .segment(inputString)
-      .containing(Math.floor(Math.random() * inputString.length))
-  )
-  .add('segment_cached_sentence_containing', () =>
-    cachedSegmenters.sentence
-      .segment(inputString)
-      .containing(Math.floor(Math.random() * inputString.length))
-  )
-  .add(
-    'new_segmenter_grapheme',
-    () => new Segmenter(locale, {granularity: 'grapheme'})
-  )
-  .add('new_segmenter_word', () => new Segmenter(locale, {granularity: 'word'}))
-  .add(
-    'new_segmenter_sentence',
-    () => new Segmenter(locale, {granularity: 'sentence'})
-  )
-  .on('error', function (event: Event) {
-    console.log(String(event.target))
-  })
-  .on('cycle', function (event: Event) {
-    console.log(String(event.target))
-  })
-  .run()
+  bench
+    .add(
+      'segment_cached_grapheme_collect_all',
+      () =>
+        collectSegments(cachedSegmenters.grapheme.segment(inputString)).length
+    )
+    .add(
+      'segment_cached_word_collect_all',
+      () => collectSegments(cachedSegmenters.word.segment(inputString)).length
+    )
+    .add(
+      'segment_cached_sentence_collect_all',
+      () =>
+        collectSegments(cachedSegmenters.sentence.segment(inputString)).length
+    )
+    //@ts-ignore
+    .add('segment_cached_grapheme_containing', () => {
+      return cachedSegmenters.grapheme
+        .segment(inputString)
+        .containing(Math.floor(Math.random() * inputString.length))
+    })
+    .add('segment_cached_word_containing', () =>
+      cachedSegmenters.word
+        .segment(inputString)
+        .containing(Math.floor(Math.random() * inputString.length))
+    )
+    .add('segment_cached_sentence_containing', () =>
+      cachedSegmenters.sentence
+        .segment(inputString)
+        .containing(Math.floor(Math.random() * inputString.length))
+    )
+    .add(
+      'new_segmenter_grapheme',
+      () => new Segmenter(locale, {granularity: 'grapheme'})
+    )
+    .add(
+      'new_segmenter_word',
+      () => new Segmenter(locale, {granularity: 'word'})
+    )
+    .add(
+      'new_segmenter_sentence',
+      () => new Segmenter(locale, {granularity: 'sentence'})
+    )
+
+  await bench.run()
+
+  console.table(bench.table())
+}
+
+run()
 
 // Node 18 Intl.Segmenter:
 // Locale: en
