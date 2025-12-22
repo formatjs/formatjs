@@ -21,7 +21,7 @@ rust_test(
     srcs = ["integration_tests.rs"],
     data = TEST_CASES + [":test_list.txt"],
     deps = [
-        "//packages/icu-messageformat-parser/rust:icu_messageformat_parser",
+        "//rust/icu_messageformat_parser",
         "@crates//:pretty_assertions",
         "@crates//:serde_json",
         "@rules_rust//rust/runfiles",

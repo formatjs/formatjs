@@ -10,11 +10,10 @@ homepage = "https://formatjs.io/"
 documentation = "https://docs.rs/formatjs_icu_skeleton_parser"
 keywords = ["icu", "i18n", "internationalization", "formatting", "skeleton"]
 categories = ["internationalization", "parser-implementations", "localization"]
-readme = "../README.md"
+readme = "../../packages/icu-skeleton-parser/README.md"
 rust-version = "1.70"
 
 [lib]
-name = "icu_skeleton_parser"
 path = "lib.rs"
 
 [dependencies]

@@ -29,7 +29,7 @@ rust_library(
     crate_name = "formatjs_icu_messageformat_parser",
     visibility = ["//visibility:public"],
     deps = [
-        "//packages/icu-skeleton-parser/rust:icu_skeleton_parser",
+        "//rust/icu_skeleton_parser",
         "@crates//:icu",
         "@crates//:once_cell",
         "@crates//:regex",
