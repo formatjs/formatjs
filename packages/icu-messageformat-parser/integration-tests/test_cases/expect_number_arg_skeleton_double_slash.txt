@@ -1,0 +1,23 @@
+{0, number, ::currency//USD}
+---
+{}
+---
+{
+  "val": null,
+  "err": {
+    "kind": 7,
+    "message": "{0, number, ::currency//USD}",
+    "location": {
+      "start": {
+        "offset": 12,
+        "line": 1,
+        "column": 13
+      },
+      "end": {
+        "offset": 27,
+        "line": 1,
+        "column": 28
+      }
+    }
+  }
+}
