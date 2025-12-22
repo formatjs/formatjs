@@ -20,10 +20,8 @@ export interface UnpackedData {
 }
 
 export type ZoneData = [
-  (
-    // Seconds from UTC Time, empty string if NULL
-    number | string
-  ),
+  // Seconds from UTC Time, empty string if NULL
+  number | string,
   // Index of abbreviation in abbrvs like EST/EDT
   number,
   // Index of offsets in seconds

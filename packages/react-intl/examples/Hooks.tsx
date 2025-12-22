@@ -107,8 +107,7 @@ const Hooks: React.FC<Props> = () => {
         )}
       </p>
     </>
-    /* </IntlProvider> */
-  )
+  ) /* </IntlProvider> */
 }
 
 const App: React.FC<Props> = props => {
