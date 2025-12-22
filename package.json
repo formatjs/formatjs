@@ -113,6 +113,7 @@
     "serialize-javascript": "^6.0.2",
     "syncpack": "^13.0.3",
     "test262-harness": "^10.0.0",
+    "tinybench": "^6.0.0",
     "ts-loader": "^9.5.1",
     "tsd": "^0.33.0",
     "tslib": "^2.8.0",

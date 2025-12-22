@@ -1,4 +1,4 @@
-load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
 load("//tools:index.bzl", "generate_src_file")
 
 generate_src_file(
@@ -40,4 +40,14 @@ rust_library(
 rust_test(
     name = "icu_messageformat_parser_test",
     crate = ":icu_messageformat_parser",
+)
+
+rust_binary(
+    name = "parser_bench",
+    srcs = ["benches/parser_bench.rs"],
+    crate_name = "parser_bench",
+    deps = [
+        ":icu_messageformat_parser",
+        "@crates//:criterion",
+    ],
 )

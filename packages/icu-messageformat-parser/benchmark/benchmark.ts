@@ -1,5 +1,5 @@
-const benchmark = require('benchmark')
-const {parse} = require('.')
+import {Bench} from 'tinybench'
+import {parse} from '@formatjs/icu-messageformat-parser'
 
 const complexMsg =
   '' +
@@ -40,16 +40,18 @@ console.log('normal_msg AST length', JSON.stringify(parse(normalMsg)).length)
 console.log('simple_msg AST length', JSON.stringify(parse(simpleMsg)).length)
 console.log('string_msg AST length', JSON.stringify(parse(stringMsg)).length)
 
-function run(parse) {
-  new benchmark.Suite()
+async function run() {
+  const bench = new Bench({time: 1000})
+
+  bench
     .add('complex_msg', () => parse(complexMsg))
     .add('normal_msg', () => parse(normalMsg))
     .add('simple_msg', () => parse(simpleMsg))
     .add('string_msg', () => parse(stringMsg))
-    .on('cycle', function (event) {
-      console.log(String(event.target))
-    })
-    .run()
+
+  await bench.run()
+
+  console.table(bench.table())
 }
 
-run(parse)
+run()
