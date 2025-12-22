@@ -1,5 +1,6 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{criterion_group, criterion_main, Criterion};
 use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
+use std::hint::black_box;
 
 const COMPLEX_MSG: &str = concat!(
     "{gender_of_host, select, ",
