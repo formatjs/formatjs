@@ -12,6 +12,7 @@
     "./polyfill-force.js": "./polyfill-force.js",
     "./should-polyfill.js": "./should-polyfill.js",
     "./add-all-tz.js": "./add-all-tz.js",
+    "./add-golden-tz.js": "./add-golden-tz.js",
     "./locale-data/*": "./locale-data/*"
   },
   "dependencies": {
