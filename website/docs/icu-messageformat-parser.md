@@ -16,8 +16,8 @@ This package implements a parser in JavaScript that parses the industry standard
 
 ```ts
 import {parse} from '@formatjs/icu-messageformat-parser'
-const ast = parse(`this is {count, plural, 
-  one{# dog} 
+const ast = parse(`this is {count, plural,
+  one{# dog}
   other{# dogs}
 }`)
 ```

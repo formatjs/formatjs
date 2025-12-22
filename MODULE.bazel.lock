@@ -600,7 +600,7 @@
         "bzlTransitiveDigest": "u2i6cw9UufcXbPuESBB66WdqYKm1KTFsDORyv0HawHo=",
         "usagesDigest": "tsxRjH5DN8xUnGoUELCp/xuIp04EwwlFAtYpnGb6Y+4=",
         "recordedFileInputs": {
-          "@@//package.json": "428c22716acc7c4184c261ea6b1a0b5dd5b3c85620e0753e4999718eb4ce28dd"
+          "@@//package.json": "6c8ceb1f595236e5bdd51b9dd63cc2ae509efc63228d67f6ee54844d22e666be"
         },
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -4604,7 +4604,7 @@
         "usagesDigest": "+2oxp30n7U2iCRyiQVVvn9Dm9XZaeUlnwnAuV9gqyVs=",
         "recordedFileInputs": {
           "@@//Cargo.lock": "489fabca4c65ee20756577b0ee06c55596900dac06dc61c4b921e07dddb1b51a",
-          "@@//Cargo.toml": "921df51dd8a866be32ea8ce1a1a62f6edede592e76b995cea491d0d1de0c23ba",
+          "@@//Cargo.toml": "3a9ca5288bb75e04e330f0fac77017b52c3805efea0d6aafc400e4638440a3cf",
           "@@//MODULE.bazel": "867f6a0ac6937f3ab37b84f3bdaccd2704dbd22b9bcb2bd68ebfac2c9ac37d19",
           "@@//packages/icu-messageformat-parser/integration-tests/Cargo.toml": "6fc7e620f396627d77b52ea0b54a3aefc72197750fa8f6f97e2d63f238b259bb",
           "@@//rust/icu_messageformat_parser/Cargo.toml": "3ba13c47001d4c96b792105d4ac39f3685d1bb51d2ba18f2f9ac4754721cab14",
