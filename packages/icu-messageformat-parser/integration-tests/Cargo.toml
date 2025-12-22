@@ -1,11 +1,11 @@
 [package]
-name = "icu-messageformat-parser-integration-tests"
+name = "formatjs_icu_messageformat_parser_integration_tests"
 version = "0.1.0"
 edition = "2021"
 publish = false
 
 [dependencies]
-icu-messageformat-parser = { path = "../rust" }
+formatjs_icu_messageformat_parser = { path = "../rust" }
 serde_json = "1.0"
 pretty_assertions = { workspace = true }
 

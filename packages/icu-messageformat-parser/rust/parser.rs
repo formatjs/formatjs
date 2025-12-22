@@ -8,7 +8,7 @@ use crate::regex_generated::SPACE_SEPARATOR_REGEX;
 use crate::types::*;
 use crate::date_time_pattern_generator::get_best_pattern;
 use icu::locale::Locale;
-use icu_skeleton_parser::{parse_date_time_skeleton, parse_number_skeleton};
+use formatjs_icu_skeleton_parser::{parse_date_time_skeleton, parse_number_skeleton};
 use once_cell::sync::Lazy;
 use regex::Regex;
 use std::collections::{HashMap, HashSet};

@@ -12,8 +12,9 @@
 //! <expected output JSON>
 //! ```
 
-use icu_messageformat_parser::{Parser, ParserOptions, Locale};
+use formatjs_icu_messageformat_parser::{Parser, ParserOptions, Locale};
 use pretty_assertions::assert_eq;
+use runfiles::{Runfiles, rlocation};
 use serde_json::Value;
 use std::fs;
 use std::path::Path;
@@ -180,13 +181,68 @@ fn run_integration_test(test_file_name: &str) {
     }
 }
 
-/// Single test that runs the test case specified by the TEST_FILE environment variable.
-/// This is used by Bazel to run individual test targets for each test case file.
+/// Main integration test that runs all test cases.
+/// Reads the list of test files from test_list.txt and runs each one.
 #[test]
 fn integration_test() {
-    // Get the test file from environment variable (set by Bazel)
-    let test_file = std::env::var("TEST_FILE")
-        .expect("TEST_FILE environment variable must be set");
+    // Use Bazel runfiles library to locate the test list file
+    // See: https://github.com/bazelbuild/rules_rust/blob/main/rust/runfiles/runfiles.rs
+    let runfiles = Runfiles::create().expect("Failed to create runfiles");
 
-    run_integration_test(&test_file);
+    let test_list_path = rlocation!(
+        runfiles,
+        "_main/packages/icu-messageformat-parser/integration-tests/test_list.txt"
+    )
+    .expect("Failed to locate test_list.txt in runfiles");
+
+    // Read the list of test files
+    let test_list_content = fs::read_to_string(&test_list_path)
+        .unwrap_or_else(|e| panic!("Failed to read test list file {:?}: {}", test_list_path, e));
+
+    let test_files: Vec<&str> = test_list_content
+        .lines()
+        .filter(|line| !line.trim().is_empty())
+        .collect();
+
+    eprintln!("Running {} integration tests", test_files.len());
+
+    let mut failed_tests = Vec::new();
+    let mut passed_tests = 0;
+
+    // Run each test and collect failures
+    for test_file in test_files {
+        match std::panic::catch_unwind(|| {
+            run_integration_test(test_file);
+        }) {
+            Ok(_) => {
+                passed_tests += 1;
+            }
+            Err(e) => {
+                let error_msg = if let Some(s) = e.downcast_ref::<String>() {
+                    s.clone()
+                } else if let Some(s) = e.downcast_ref::<&str>() {
+                    s.to_string()
+                } else {
+                    "Unknown error".to_string()
+                };
+                failed_tests.push((test_file.to_string(), error_msg));
+            }
+        }
+    }
+
+    // Print summary
+    eprintln!("\n{} tests run: {} passed, {} failed",
+             passed_tests + failed_tests.len(),
+             passed_tests,
+             failed_tests.len());
+
+    // If any tests failed, report them and panic
+    if !failed_tests.is_empty() {
+        eprintln!("\n❌ Failed tests:");
+        for (test_name, error) in &failed_tests {
+            eprintln!("\n  • {}", test_name);
+            eprintln!("    {}", error.lines().collect::<Vec<_>>().join("\n    "));
+        }
+        panic!("{} test(s) failed", failed_tests.len());
+    }
 }

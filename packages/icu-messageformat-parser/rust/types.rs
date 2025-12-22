@@ -3,7 +3,7 @@ use serde::Serialize;
 use std::collections::HashMap;
 
 // Re-export types from icu-skeleton-parser
-pub use icu_skeleton_parser::{
+pub use formatjs_icu_skeleton_parser::{
     DateTimeFormatOptions, ExtendedNumberFormatOptions as NumberFormatOptions,
     NumberSkeletonToken,
 };

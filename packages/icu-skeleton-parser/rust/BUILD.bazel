@@ -10,7 +10,7 @@ rust_library(
         "number_parser.rs",
         "number_skeleton_token.rs",
     ],
-    crate_name = "icu_skeleton_parser",
+    crate_name = "formatjs_icu_skeleton_parser",
     visibility = ["//visibility:public"],
     deps = [
         "@crates//:once_cell",

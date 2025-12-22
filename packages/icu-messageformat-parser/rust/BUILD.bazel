@@ -26,7 +26,7 @@ rust_library(
         "time_data_generated.rs",
         "types.rs",
     ],
-    crate_name = "icu_messageformat_parser",
+    crate_name = "formatjs_icu_messageformat_parser",
     visibility = ["//visibility:public"],
     deps = [
         "//packages/icu-skeleton-parser/rust:icu_skeleton_parser",

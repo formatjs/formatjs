@@ -1,14 +1,21 @@
 [package]
-name = "icu-messageformat-parser"
+name = "formatjs_icu_messageformat_parser"
 version = "0.1.0"
 edition = "2021"
-authors = ["FormatJS Team"]
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ICU MessageFormat parser implementation in Rust"
 license = "MIT"
+repository = "https://github.com/formatjs/formatjs"
+homepage = "https://formatjs.io/"
+documentation = "https://docs.rs/formatjs_icu_messageformat_parser"
+keywords = ["icu", "i18n", "internationalization", "messageformat", "intl"]
+categories = ["internationalization", "parser-implementations", "localization"]
+readme = "../README.md"
+rust-version = "1.70"
 
 [dependencies]
-icu = "2.1.1"
-icu-skeleton-parser = { path = "../../icu-skeleton-parser/rust" }
+icu = "2.1"
+formatjs_icu_skeleton_parser = { path = "../../icu-skeleton-parser/rust", version = "0.1.0" }
 once_cell = "1.21"
 regex = "1.11"
 serde = { version = "1.0", features = ["derive"] }
