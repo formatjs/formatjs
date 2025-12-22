@@ -6,14 +6,25 @@ npm_link_all_packages()
 
 TEST_CASES = glob(["test_cases/*"])
 
-# Rust integration test
+# Generate a file listing all test case filenames
+genrule(
+    name = "generate_test_list",
+    srcs = TEST_CASES,
+    outs = ["test_list.txt"],
+    cmd = "echo '$(SRCS)' | tr ' ' '\\n' | xargs -n1 basename > $@",
+)
+
+# Single Rust test that runs all integration test cases
 rust_test(
-    name = "rust_integration_test",
+    name = "integration_tests",
+    size = "small",
     srcs = ["integration_tests.rs"],
-    data = TEST_CASES,
+    data = TEST_CASES + [":test_list.txt"],
     deps = [
-        "//packages/icu-messageformat-parser/rust:icu_messageformat_parser",
+        "//rust/icu_messageformat_parser",
+        "@crates//:pretty_assertions",
         "@crates//:serde_json",
+        "@rules_rust//rust/runfiles",
     ],
 )
 

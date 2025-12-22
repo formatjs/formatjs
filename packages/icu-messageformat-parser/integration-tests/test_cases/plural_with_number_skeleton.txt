@@ -1,0 +1,173 @@
+{0, plural, one {You have {1, number, ::currency/USD}} other {You have {1, number, ::currency/USD}}}
+---
+{}
+---
+{
+  "val": [
+    {
+      "type": 6,
+      "value": "0",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "You have ",
+              "location": {
+                "start": {
+                  "offset": 17,
+                  "line": 1,
+                  "column": 18
+                },
+                "end": {
+                  "offset": 26,
+                  "line": 1,
+                  "column": 27
+                }
+              }
+            },
+            {
+              "type": 2,
+              "value": "1",
+              "location": {
+                "start": {
+                  "offset": 26,
+                  "line": 1,
+                  "column": 27
+                },
+                "end": {
+                  "offset": 53,
+                  "line": 1,
+                  "column": 54
+                }
+              },
+              "style": {
+                "type": 0,
+                "tokens": [
+                  {
+                    "stem": "currency",
+                    "options": [
+                      "USD"
+                    ]
+                  }
+                ],
+                "location": {
+                  "start": {
+                    "offset": 38,
+                    "line": 1,
+                    "column": 39
+                  },
+                  "end": {
+                    "offset": 52,
+                    "line": 1,
+                    "column": 53
+                  }
+                },
+                "parsedOptions": {}
+              }
+            }
+          ],
+          "location": {
+            "start": {
+              "offset": 16,
+              "line": 1,
+              "column": 17
+            },
+            "end": {
+              "offset": 54,
+              "line": 1,
+              "column": 55
+            }
+          }
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "You have ",
+              "location": {
+                "start": {
+                  "offset": 62,
+                  "line": 1,
+                  "column": 63
+                },
+                "end": {
+                  "offset": 71,
+                  "line": 1,
+                  "column": 72
+                }
+              }
+            },
+            {
+              "type": 2,
+              "value": "1",
+              "location": {
+                "start": {
+                  "offset": 71,
+                  "line": 1,
+                  "column": 72
+                },
+                "end": {
+                  "offset": 98,
+                  "line": 1,
+                  "column": 99
+                }
+              },
+              "style": {
+                "type": 0,
+                "tokens": [
+                  {
+                    "stem": "currency",
+                    "options": [
+                      "USD"
+                    ]
+                  }
+                ],
+                "location": {
+                  "start": {
+                    "offset": 83,
+                    "line": 1,
+                    "column": 84
+                  },
+                  "end": {
+                    "offset": 97,
+                    "line": 1,
+                    "column": 98
+                  }
+                },
+                "parsedOptions": {}
+              }
+            }
+          ],
+          "location": {
+            "start": {
+              "offset": 61,
+              "line": 1,
+              "column": 62
+            },
+            "end": {
+              "offset": 99,
+              "line": 1,
+              "column": 100
+            }
+          }
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal",
+      "location": {
+        "start": {
+          "offset": 0,
+          "line": 1,
+          "column": 1
+        },
+        "end": {
+          "offset": 100,
+          "line": 1,
+          "column": 101
+        }
+      }
+    }
+  ],
+  "err": null
+}

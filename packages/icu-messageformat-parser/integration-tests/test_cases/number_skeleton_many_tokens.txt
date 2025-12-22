@@ -1,0 +1,55 @@
+{0, number, ::compact-short unit-width-narrow notation-scientific}
+---
+{}
+---
+{
+  "val": [
+    {
+      "type": 2,
+      "value": "0",
+      "location": {
+        "start": {
+          "offset": 0,
+          "line": 1,
+          "column": 1
+        },
+        "end": {
+          "offset": 66,
+          "line": 1,
+          "column": 67
+        }
+      },
+      "style": {
+        "type": 0,
+        "tokens": [
+          {
+            "stem": "compact-short",
+            "options": []
+          },
+          {
+            "stem": "unit-width-narrow",
+            "options": []
+          },
+          {
+            "stem": "notation-scientific",
+            "options": []
+          }
+        ],
+        "location": {
+          "start": {
+            "offset": 12,
+            "line": 1,
+            "column": 13
+          },
+          "end": {
+            "offset": 65,
+            "line": 1,
+            "column": 66
+          }
+        },
+        "parsedOptions": {}
+      }
+    }
+  ],
+  "err": null
+}

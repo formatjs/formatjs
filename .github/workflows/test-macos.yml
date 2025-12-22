@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.16.0
@@ -26,5 +26,5 @@ jobs:
         run: |
           bazel test \
             --config=gh-ci \
-            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+            --remote_header=x-buildbuddy-api-key=${{ github.event_name == 'pull_request' && secrets.BUILDBUDDY_RO_PUBLIC_KEY || secrets.BUILDBUDDY_ORG_API_KEY }} \
             //...

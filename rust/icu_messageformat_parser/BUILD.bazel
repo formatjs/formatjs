@@ -1,4 +1,4 @@
-load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
 load("//tools:index.bzl", "generate_src_file")
 
 generate_src_file(
@@ -26,16 +26,28 @@ rust_library(
         "time_data_generated.rs",
         "types.rs",
     ],
-    crate_name = "icu_messageformat_parser",
+    crate_name = "formatjs_icu_messageformat_parser",
     visibility = ["//visibility:public"],
     deps = [
+        "//rust/icu_skeleton_parser",
         "@crates//:icu",
         "@crates//:once_cell",
         "@crates//:regex",
+        "@crates//:serde",
     ],
 )
 
 rust_test(
     name = "icu_messageformat_parser_test",
     crate = ":icu_messageformat_parser",
+)
+
+rust_binary(
+    name = "parser_bench",
+    srcs = ["benches/parser_bench.rs"],
+    crate_name = "parser_bench",
+    deps = [
+        ":icu_messageformat_parser",
+        "@crates//:criterion",
+    ],
 )

@@ -1,0 +1,19 @@
+# Repository-level ignore patterns
+# This file replaces .bazelignore (deprecated in Bazel 8.0+)
+#
+# Use ignore_directories() to exclude directories from Bazel's visibility.
+# These directories will not be scanned for BUILD files.
+#
+# Note: ignore_directories() must be called at most once per REPO.bazel file,
+# and if called, it must be the first statement in the file.
+# Supports the same wildcards as glob().
+
+ignore_directories([
+    # Common build output and dependency directories
+    "node_modules",
+    "dist",
+    "bazel-out",
+    "target",
+    # All node_modules directories recursively using glob pattern
+    "**/node_modules",
+])

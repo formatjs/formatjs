@@ -1,0 +1,8 @@
+{
+  "name": "icu-messageformat-parser-benchmark",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@formatjs/icu-messageformat-parser": "workspace:*"
+  }
+}

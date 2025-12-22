@@ -76,7 +76,8 @@ impl NumberSkeletonToken {
 
         let options: Vec<String> = parts.map(|s| s.to_string()).collect();
 
-        // Validate that no option is empty
+        // Validate that no option is empty (e.g., "currency/" or "currency//USD")
+        // Note: Empty stem is allowed by the spec (e.g., "/USD")
         if options.iter().any(|opt| opt.is_empty()) {
             return Err("Invalid number skeleton".to_string());
         }

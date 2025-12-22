@@ -32,7 +32,6 @@ npm.npm_translate_lock(
     npmrc = "//:.npmrc",
     patch_args = {"*": ["-p1"]},
     pnpm_lock = "//:pnpm-lock.yaml",
-    verify_node_modules_ignored = "//:.bazelignore",
 )
 use_repo(npm, "npm")
 
@@ -91,6 +90,8 @@ crate.from_cargo(
     manifests = ["//:Cargo.toml"],
 )
 use_repo(crate, "crates")
+
+bazel_dep(name = "rules_rust_wasm_bindgen", version = "0.68.1")
 
 ######### Lint rules #########
 

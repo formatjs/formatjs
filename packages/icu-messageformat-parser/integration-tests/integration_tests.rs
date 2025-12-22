@@ -12,7 +12,9 @@
 //! <expected output JSON>
 //! ```
 
-use icu_messageformat_parser::{Parser, ParserOptions, Locale};
+use formatjs_icu_messageformat_parser::{Parser, ParserOptions, Locale};
+use pretty_assertions::assert_eq;
+use runfiles::{Runfiles, rlocation};
 use serde_json::Value;
 use std::fs;
 use std::path::Path;
@@ -103,9 +105,21 @@ fn run_integration_test(test_file_name: &str) {
                 );
             }
 
-            // For now, we'll do a basic validation that parsing succeeded
-            // In the future, we can add full AST comparison with JSON serialization
-            // TODO: Implement Serialize for all AST types and compare JSON output
+            // Serialize the Rust AST to JSON for comparison
+            let rust_ast_json = serde_json::to_value(&ast)
+                .unwrap_or_else(|e| panic!("Failed to serialize Rust AST to JSON: {}", e));
+
+            // Get expected AST from the "val" field
+            let expected_ast = expected_output.get("val")
+                .unwrap_or_else(|| panic!("Test case {} missing 'val' field in expected output", test_file_name));
+
+            // Compare the AST structures using pretty_assertions
+            assert_eq!(
+                rust_ast_json,
+                *expected_ast,
+                "Test case {} AST mismatch",
+                test_file_name
+            );
         }
         Err(err) => {
             // Check that an error was expected
@@ -119,112 +133,116 @@ fn run_integration_test(test_file_name: &str) {
                 );
             }
 
-            // Basic error validation - just check that an error occurred
-            // TODO: Add more detailed error comparison
+            // Serialize the error to JSON for comparison
+            let rust_err_json = serde_json::to_value(&err)
+                .unwrap_or_else(|e| panic!("Failed to serialize Rust error to JSON: {}", e));
+
+            // Compare error details using pretty_assertions for nice diff output
+            if let Some(expected_err_obj) = expected_err {
+                if !expected_err_obj.is_null() {
+                    // Compare error kind if present
+                    if let Some(expected_kind) = expected_err_obj.get("kind") {
+                        let rust_kind = rust_err_json.get("kind")
+                            .expect("Rust error should have 'kind' field");
+                        assert_eq!(
+                            rust_kind,
+                            expected_kind,
+                            "Test case {} error kind mismatch",
+                            test_file_name
+                        );
+                    }
+
+                    // Compare error message if present
+                    if let Some(expected_message) = expected_err_obj.get("message") {
+                        let rust_message = rust_err_json.get("message")
+                            .expect("Rust error should have 'message' field");
+                        assert_eq!(
+                            rust_message,
+                            expected_message,
+                            "Test case {} error message mismatch",
+                            test_file_name
+                        );
+                    }
+
+                    // Compare error location if present
+                    if let Some(expected_location) = expected_err_obj.get("location") {
+                        let rust_location = rust_err_json.get("location")
+                            .expect("Rust error should have 'location' field");
+                        assert_eq!(
+                            rust_location,
+                            expected_location,
+                            "Test case {} error location mismatch",
+                            test_file_name
+                        );
+                    }
+                }
+            }
         }
     }
 }
 
-// Generate a test for each test case file
-// For now, we'll test a few key cases manually
-// In the future, we can use a build script to generate tests for all files
-
+/// Main integration test that runs all test cases.
+/// Reads the list of test files from test_list.txt and runs each one.
 #[test]
-fn test_plural_arg_with_offset_1() {
-    run_integration_test("plural_arg_with_offset_1.txt");
-}
+fn integration_test() {
+    // Use Bazel runfiles library to locate the test list file
+    // See: https://github.com/bazelbuild/rules_rust/blob/main/rust/runfiles/runfiles.rs
+    let runfiles = Runfiles::create().expect("Failed to create runfiles");
 
-#[test]
-fn test_basic_argument_1() {
-    run_integration_test("basic_argument_1.txt");
-}
+    let test_list_path = rlocation!(
+        runfiles,
+        "_main/packages/icu-messageformat-parser/integration-tests/test_list.txt"
+    )
+    .expect("Failed to locate test_list.txt in runfiles");
 
-#[test]
-fn test_basic_argument_2() {
-    run_integration_test("basic_argument_2.txt");
-}
+    // Read the list of test files
+    let test_list_content = fs::read_to_string(&test_list_path)
+        .unwrap_or_else(|e| panic!("Failed to read test list file {:?}: {}", test_list_path, e));
 
-#[test]
-fn test_simple_argument_1() {
-    run_integration_test("simple_argument_1.txt");
-}
+    let test_files: Vec<&str> = test_list_content
+        .lines()
+        .filter(|line| !line.trim().is_empty())
+        .collect();
 
-#[test]
-fn test_simple_number_arg_1() {
-    run_integration_test("simple_number_arg_1.txt");
-}
+    eprintln!("Running {} integration tests", test_files.len());
 
-#[test]
-fn test_date_arg_skeleton_1() {
-    run_integration_test("date_arg_skeleton_1.txt");
-}
+    let mut failed_tests = Vec::new();
+    let mut passed_tests = 0;
 
-#[test]
-fn test_select_arg_1() {
-    run_integration_test("select_arg_1.txt");
-}
+    // Run each test and collect failures
+    for test_file in test_files {
+        match std::panic::catch_unwind(|| {
+            run_integration_test(test_file);
+        }) {
+            Ok(_) => {
+                passed_tests += 1;
+            }
+            Err(e) => {
+                let error_msg = if let Some(s) = e.downcast_ref::<String>() {
+                    s.clone()
+                } else if let Some(s) = e.downcast_ref::<&str>() {
+                    s.to_string()
+                } else {
+                    "Unknown error".to_string()
+                };
+                failed_tests.push((test_file.to_string(), error_msg));
+            }
+        }
+    }
 
-#[test]
-fn test_plural_arg_1() {
-    run_integration_test("plural_arg_1.txt");
-}
+    // Print summary
+    eprintln!("\n{} tests run: {} passed, {} failed",
+             passed_tests + failed_tests.len(),
+             passed_tests,
+             failed_tests.len());
 
-#[test]
-fn test_selectordinal_1() {
-    run_integration_test("selectordinal_1.txt");
-}
-
-#[test]
-fn test_open_close_tag_1() {
-    run_integration_test("open_close_tag_1.txt");
-}
-
-#[test]
-fn test_quoted_tag_1() {
-    run_integration_test("quoted_tag_1.txt");
-}
-
-#[test]
-fn test_double_apostrophes_1() {
-    run_integration_test("double_apostrophes_1.txt");
-}
-
-#[test]
-fn test_escaped_pound_1() {
-    run_integration_test("escaped_pound_1.txt");
-}
-
-#[test]
-fn test_escaped_multiple_tags_1() {
-    run_integration_test("escaped_multiple_tags_1.txt");
-}
-
-#[test]
-fn test_ignore_tags_1() {
-    run_integration_test("ignore_tags_1.txt");
-}
-
-#[test]
-fn test_empty_argument_1() {
-    run_integration_test("empty_argument_1.txt");
-}
-
-#[test]
-fn test_invalid_arg_format_1() {
-    run_integration_test("invalid_arg_format_1.txt");
-}
-
-#[test]
-fn test_invalid_closing_tag_1() {
-    run_integration_test("invalid_closing_tag_1.txt");
-}
-
-#[test]
-fn test_duplicate_plural_selectors() {
-    run_integration_test("duplicate_plural_selectors.txt");
-}
-
-#[test]
-fn test_duplicate_select_selectors() {
-    run_integration_test("duplicate_select_selectors.txt");
+    // If any tests failed, report them and panic
+    if !failed_tests.is_empty() {
+        eprintln!("\n❌ Failed tests:");
+        for (test_name, error) in &failed_tests {
+            eprintln!("\n  • {}", test_name);
+            eprintln!("    {}", error.lines().collect::<Vec<_>>().join("\n    "));
+        }
+        panic!("{} test(s) failed", failed_tests.len());
+    }
 }

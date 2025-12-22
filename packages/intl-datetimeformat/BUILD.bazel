@@ -908,7 +908,7 @@ js_binary(
     name = "benchmark",
     data = [":srcs"] + SRC_DEPS + [
         "tests/locale-data/en.json",
-        "//:node_modules/benchmark",
+        "//:node_modules/tinybench",
         "//:node_modules/tsx",
     ],
     entry_point = "tests/benchmark.ts",

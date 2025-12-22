@@ -7,12 +7,51 @@ import {
 import {invariant, repeat} from '../utils.js'
 import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode.js'
 
-//IMPL: Helper function to find n1, e1, and r1
+//IMPL: Helper function to find n1, e1, and r1 using direct calculation
 function findN1E1R1(x: Decimal, p: number) {
   const maxN1 = Decimal.pow(10, p)
   const minN1 = Decimal.pow(10, p - 1)
-  const maxE1 = x.div(minN1).log(10).plus(p).minus(1).ceil()
 
+  // Direct calculation: compute e1 from logarithm
+  // e1 is the exponent such that n1 * 10^(e1-p+1) <= x
+  // Taking log: log(n1) + (e1-p+1)*log(10) <= log(x)
+  // Since n1 is between 10^(p-1) and 10^p, we have:
+  // (p-1) + (e1-p+1) <= log10(x) < p + (e1-p+1)
+  // Simplifying: e1 <= log10(x) < e1 + 1
+  // Therefore: e1 = floor(log10(x))
+  const log10x = x.log(10)
+  let e1 = log10x.floor()
+
+  // Calculate n1 and r1 from e1
+  const divisor = Decimal.pow(10, e1.minus(p).plus(1))
+  let n1 = x.div(divisor).floor()
+  let r1 = n1.times(divisor)
+
+  // Verify and adjust if n1 is out of bounds
+  // This handles edge cases near powers of 10
+  if (n1.greaterThanOrEqualTo(maxN1)) {
+    e1 = e1.plus(1)
+    const newDivisor = Decimal.pow(10, e1.minus(p).plus(1))
+    n1 = x.div(newDivisor).floor()
+    r1 = n1.times(newDivisor)
+  } else if (n1.lessThan(minN1)) {
+    e1 = e1.minus(1)
+    const newDivisor = Decimal.pow(10, e1.minus(p).plus(1))
+    n1 = x.div(newDivisor).floor()
+    r1 = n1.times(newDivisor)
+  }
+
+  // Final verification with fallback to iterative search if needed
+  if (
+    r1.lessThanOrEqualTo(x) &&
+    n1.lessThan(maxN1) &&
+    n1.greaterThanOrEqualTo(minN1)
+  ) {
+    return {n1, e1, r1}
+  }
+
+  // Fallback: iterative search (should rarely be needed)
+  const maxE1 = x.div(minN1).log(10).plus(p).minus(1).ceil()
   let currentE1 = maxE1
   while (true) {
     let currentN1 = x.div(Decimal.pow(10, currentE1.minus(p).plus(1))).floor()
@@ -32,12 +71,44 @@ function findN1E1R1(x: Decimal, p: number) {
   }
 }
 
-//IMPL: Helper function to find n2, e2, and r2
+//IMPL: Helper function to find n2, e2, and r2 using direct calculation
 function findN2E2R2(x: Decimal, p: number) {
   const maxN2 = Decimal.pow(10, p)
   const minN2 = Decimal.pow(10, p - 1)
-  const minE2 = x.div(maxN2).log(10).plus(p).minus(1).floor()
 
+  // Direct calculation: similar to findN1E1R1 but with ceiling
+  const log10x = x.log(10)
+  let e2 = log10x.floor()
+
+  // Calculate n2 and r2 from e2
+  const divisor = Decimal.pow(10, e2.minus(p).plus(1))
+  let n2 = x.div(divisor).ceil()
+  let r2 = n2.times(divisor)
+
+  // Verify and adjust if n2 is out of bounds
+  if (n2.greaterThanOrEqualTo(maxN2)) {
+    e2 = e2.plus(1)
+    const newDivisor = Decimal.pow(10, e2.minus(p).plus(1))
+    n2 = x.div(newDivisor).ceil()
+    r2 = n2.times(newDivisor)
+  } else if (n2.lessThan(minN2)) {
+    e2 = e2.minus(1)
+    const newDivisor = Decimal.pow(10, e2.minus(p).plus(1))
+    n2 = x.div(newDivisor).ceil()
+    r2 = n2.times(newDivisor)
+  }
+
+  // Final verification with fallback to iterative search if needed
+  if (
+    r2.greaterThanOrEqualTo(x) &&
+    n2.lessThan(maxN2) &&
+    n2.greaterThanOrEqualTo(minN2)
+  ) {
+    return {n2, e2, r2}
+  }
+
+  // Fallback: iterative search (should rarely be needed)
+  const minE2 = x.div(maxN2).log(10).plus(p).minus(1).floor()
   let currentE2 = minE2
   while (true) {
     let currentN2 = x.div(Decimal.pow(10, currentE2.minus(p).plus(1))).ceil()

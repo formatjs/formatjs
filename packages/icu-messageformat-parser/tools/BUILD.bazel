@@ -8,7 +8,10 @@ ts_binary(
         "//:node_modules/regenerate",
     ],
     entry_point = "regex-gen.ts",
-    visibility = ["//packages/icu-messageformat-parser:__subpackages__"],
+    visibility = [
+        "//packages/icu-messageformat-parser:__subpackages__",
+        "//rust/icu_messageformat_parser:__pkg__",
+    ],
 )
 
 ts_binary(
@@ -18,5 +21,8 @@ ts_binary(
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "time-data-gen.ts",
-    visibility = ["//packages/icu-messageformat-parser:__subpackages__"],
+    visibility = [
+        "//packages/icu-messageformat-parser:__subpackages__",
+        "//rust/icu_messageformat_parser:__pkg__",
+    ],
 )
