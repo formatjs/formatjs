@@ -1,0 +1,23 @@
+{0, number, 'unclosed}
+---
+{}
+---
+{
+  "val": null,
+  "err": {
+    "kind": 11,
+    "message": "{0, number, 'unclosed}",
+    "location": {
+      "start": {
+        "offset": 13,
+        "line": 1,
+        "column": 14
+      },
+      "end": {
+        "offset": 22,
+        "line": 1,
+        "column": 23
+      }
+    }
+  }
+}
