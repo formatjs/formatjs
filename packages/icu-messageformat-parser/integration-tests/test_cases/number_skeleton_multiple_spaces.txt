@@ -1,0 +1,53 @@
+{0, number, ::   percent   scale/100   }
+---
+{}
+---
+{
+  "val": [
+    {
+      "type": 2,
+      "value": "0",
+      "location": {
+        "start": {
+          "offset": 0,
+          "line": 1,
+          "column": 1
+        },
+        "end": {
+          "offset": 40,
+          "line": 1,
+          "column": 41
+        }
+      },
+      "style": {
+        "type": 0,
+        "tokens": [
+          {
+            "stem": "percent",
+            "options": []
+          },
+          {
+            "stem": "scale",
+            "options": [
+              "100"
+            ]
+          }
+        ],
+        "location": {
+          "start": {
+            "offset": 12,
+            "line": 1,
+            "column": 13
+          },
+          "end": {
+            "offset": 39,
+            "line": 1,
+            "column": 40
+          }
+        },
+        "parsedOptions": {}
+      }
+    }
+  ],
+  "err": null
+}

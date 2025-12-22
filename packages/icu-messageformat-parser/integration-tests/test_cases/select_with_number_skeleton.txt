@@ -1,0 +1,243 @@
+{0, select, female {{1, number, ::currency/EUR} paid} male {{1, number, ::currency/EUR} paid} other {{1, number, ::currency/EUR} paid}}
+---
+{}
+---
+{
+  "val": [
+    {
+      "type": 5,
+      "value": "0",
+      "options": {
+        "female": {
+          "value": [
+            {
+              "type": 2,
+              "value": "1",
+              "location": {
+                "start": {
+                  "offset": 20,
+                  "line": 1,
+                  "column": 21
+                },
+                "end": {
+                  "offset": 47,
+                  "line": 1,
+                  "column": 48
+                }
+              },
+              "style": {
+                "type": 0,
+                "tokens": [
+                  {
+                    "stem": "currency",
+                    "options": [
+                      "EUR"
+                    ]
+                  }
+                ],
+                "location": {
+                  "start": {
+                    "offset": 32,
+                    "line": 1,
+                    "column": 33
+                  },
+                  "end": {
+                    "offset": 46,
+                    "line": 1,
+                    "column": 47
+                  }
+                },
+                "parsedOptions": {}
+              }
+            },
+            {
+              "type": 0,
+              "value": " paid",
+              "location": {
+                "start": {
+                  "offset": 47,
+                  "line": 1,
+                  "column": 48
+                },
+                "end": {
+                  "offset": 52,
+                  "line": 1,
+                  "column": 53
+                }
+              }
+            }
+          ],
+          "location": {
+            "start": {
+              "offset": 19,
+              "line": 1,
+              "column": 20
+            },
+            "end": {
+              "offset": 53,
+              "line": 1,
+              "column": 54
+            }
+          }
+        },
+        "male": {
+          "value": [
+            {
+              "type": 2,
+              "value": "1",
+              "location": {
+                "start": {
+                  "offset": 60,
+                  "line": 1,
+                  "column": 61
+                },
+                "end": {
+                  "offset": 87,
+                  "line": 1,
+                  "column": 88
+                }
+              },
+              "style": {
+                "type": 0,
+                "tokens": [
+                  {
+                    "stem": "currency",
+                    "options": [
+                      "EUR"
+                    ]
+                  }
+                ],
+                "location": {
+                  "start": {
+                    "offset": 72,
+                    "line": 1,
+                    "column": 73
+                  },
+                  "end": {
+                    "offset": 86,
+                    "line": 1,
+                    "column": 87
+                  }
+                },
+                "parsedOptions": {}
+              }
+            },
+            {
+              "type": 0,
+              "value": " paid",
+              "location": {
+                "start": {
+                  "offset": 87,
+                  "line": 1,
+                  "column": 88
+                },
+                "end": {
+                  "offset": 92,
+                  "line": 1,
+                  "column": 93
+                }
+              }
+            }
+          ],
+          "location": {
+            "start": {
+              "offset": 59,
+              "line": 1,
+              "column": 60
+            },
+            "end": {
+              "offset": 93,
+              "line": 1,
+              "column": 94
+            }
+          }
+        },
+        "other": {
+          "value": [
+            {
+              "type": 2,
+              "value": "1",
+              "location": {
+                "start": {
+                  "offset": 101,
+                  "line": 1,
+                  "column": 102
+                },
+                "end": {
+                  "offset": 128,
+                  "line": 1,
+                  "column": 129
+                }
+              },
+              "style": {
+                "type": 0,
+                "tokens": [
+                  {
+                    "stem": "currency",
+                    "options": [
+                      "EUR"
+                    ]
+                  }
+                ],
+                "location": {
+                  "start": {
+                    "offset": 113,
+                    "line": 1,
+                    "column": 114
+                  },
+                  "end": {
+                    "offset": 127,
+                    "line": 1,
+                    "column": 128
+                  }
+                },
+                "parsedOptions": {}
+              }
+            },
+            {
+              "type": 0,
+              "value": " paid",
+              "location": {
+                "start": {
+                  "offset": 128,
+                  "line": 1,
+                  "column": 129
+                },
+                "end": {
+                  "offset": 133,
+                  "line": 1,
+                  "column": 134
+                }
+              }
+            }
+          ],
+          "location": {
+            "start": {
+              "offset": 100,
+              "line": 1,
+              "column": 101
+            },
+            "end": {
+              "offset": 134,
+              "line": 1,
+              "column": 135
+            }
+          }
+        }
+      },
+      "location": {
+        "start": {
+          "offset": 0,
+          "line": 1,
+          "column": 1
+        },
+        "end": {
+          "offset": 135,
+          "line": 1,
+          "column": 136
+        }
+      }
+    }
+  ],
+  "err": null
+}
