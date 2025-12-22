@@ -71,6 +71,37 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_icu_messageformat_parser"
+version = "0.1.0"
+dependencies = [
+ "formatjs_icu_skeleton_parser",
+ "icu",
+ "once_cell",
+ "regex",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_icu_messageformat_parser_integration_tests"
+version = "0.1.0"
+dependencies = [
+ "formatjs_icu_messageformat_parser",
+ "pretty_assertions",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_icu_skeleton_parser"
+version = "0.1.0"
+dependencies = [
+ "once_cell",
+ "regex",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "icu"
 version = "2.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -92,37 +123,6 @@ dependencies = [
  "icu_provider",
  "icu_segmenter",
  "icu_time",
-]
-
-[[package]]
-name = "icu-messageformat-parser"
-version = "0.1.0"
-dependencies = [
- "icu",
- "icu-skeleton-parser",
- "once_cell",
- "regex",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "icu-messageformat-parser-integration-tests"
-version = "0.1.0"
-dependencies = [
- "icu-messageformat-parser",
- "pretty_assertions",
- "serde_json",
-]
-
-[[package]]
-name = "icu-skeleton-parser"
-version = "0.1.0"
-dependencies = [
- "once_cell",
- "regex",
- "serde",
- "serde_json",
 ]
 
 [[package]]
