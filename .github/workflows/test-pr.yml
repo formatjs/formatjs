@@ -22,6 +22,5 @@ jobs:
       - name: Run Tests
         run: |
           bazel test \
-            --config=gh-ci \
-            --remote_header=x-buildbuddy-api-key=${{ github.event_name == 'pull_request' && secrets.BUILDBUDDY_RO_PUBLIC_KEY || secrets.BUILDBUDDY_ORG_API_KEY }} \
+            --config=pr-ci \
             //...
