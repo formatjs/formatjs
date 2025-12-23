@@ -31,7 +31,7 @@ jobs:
       - name: Build Distribution
         run: |
           bazel build \
-            --config=gh-ci \
+            --config=ci \
             --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
             :dist
           cp -rf $(bazel cquery --output=files dist)/ release/
