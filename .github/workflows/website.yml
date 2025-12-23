@@ -33,6 +33,21 @@ jobs:
             //website:dist
           echo "BUILD_PATH=$(bazel cquery --output=files //website:dist)" >> $GITHUB_OUTPUT
 
+      # Verify build folder is not empty
+      - name: Verify Build Output
+        run: |
+          BUILD_PATH="${{ steps.build.outputs.BUILD_PATH }}"
+          if [ ! -d "$BUILD_PATH" ]; then
+            echo "Error: Build path does not exist: $BUILD_PATH"
+            exit 1
+          fi
+          if [ -z "$(ls -A "$BUILD_PATH")" ]; then
+            echo "Error: Build path is empty: $BUILD_PATH"
+            exit 1
+          fi
+          echo "Build verification successful. Contents of $BUILD_PATH:"
+          ls -lh "$BUILD_PATH"
+
       # Deploy to Organization GitHub Pages Repository
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4

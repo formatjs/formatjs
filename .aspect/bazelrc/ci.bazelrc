@@ -53,7 +53,7 @@ build --terminal_columns=143
 
 # Only download remote outputs of top level targets to the local machine.
 # Docs: https://bazel.build/reference/command-line-reference#flag--remote_download_toplevel
-build --remote_download_toplevel
+# build --remote_download_toplevel
 
 # The maximum amount of time to wait for remote execution and cache calls.
 # https://bazel.build/reference/command-line-reference#flag--remote_timeout
