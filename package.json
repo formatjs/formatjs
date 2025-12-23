@@ -68,7 +68,7 @@
     "babel-loader": "^10.0.0",
     "chalk": "^4.1.2",
     "classnames": "2",
-    "cldr-bcp47": "^47.0.0",
+    "cldr-bcp47": "^48.0.0",
     "cldr-core": "^46.0.0",
     "cldr-dates-full": "^46.0.0",
     "cldr-localenames-full": "^46.0.0",
