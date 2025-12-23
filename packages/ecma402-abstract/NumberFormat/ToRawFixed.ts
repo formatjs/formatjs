@@ -5,6 +5,7 @@ import {
 } from '../types/number.js'
 import {repeat} from '../utils.js'
 import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode.js'
+import {getPowerOf10} from './decimal-cache.js'
 
 //IMPL: Setting Decimal configuration
 Decimal.set({
@@ -13,12 +14,12 @@ Decimal.set({
 
 //IMPL: Helper function to calculate raw fixed value
 function ToRawFixedFn(n: Decimal, f: number) {
-  return n.times(Decimal.pow(10, -f))
+  return n.times(getPowerOf10(-f))
 }
 
 //IMPL: Helper function to find n1 and r1
 function findN1R1(x: Decimal, f: number, roundingIncrement: number) {
-  const nx = x.times(Decimal.pow(10, f)).floor()
+  const nx = x.times(getPowerOf10(f)).floor()
   const n1 = nx.div(roundingIncrement).floor().times(roundingIncrement)
   const r1 = ToRawFixedFn(n1, f)
   return {
@@ -29,7 +30,7 @@ function findN1R1(x: Decimal, f: number, roundingIncrement: number) {
 
 //IMPL: Helper function to find n2 and r2
 function findN2R2(x: Decimal, f: number, roundingIncrement: number) {
-  const nx = x.times(Decimal.pow(10, f)).ceil()
+  const nx = x.times(getPowerOf10(f)).ceil()
   const n2 = nx.div(roundingIncrement).ceil().times(roundingIncrement)
   const r2 = ToRawFixedFn(n2, f)
   return {

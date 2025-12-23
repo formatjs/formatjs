@@ -12,3 +12,36 @@ ts_binary(
     ],
     entry_point = "benchmark.ts",
 )
+
+ts_binary(
+    name = "profile",
+    data = [
+        "en.json",
+        ":node_modules/@formatjs/intl-numberformat",
+    ],
+    entry_point = "profile.ts",
+)
+
+ts_binary(
+    name = "profile_cpu",
+    data = [
+        "en.json",
+        ":node_modules/@formatjs/intl-numberformat",
+    ],
+    entry_point = "profile.ts",
+    node_options = [
+        "--cpu-prof",
+        "--cpu-prof-interval=100",
+        "--cpu-prof-dir=/tmp",
+    ],
+)
+
+ts_binary(
+    name = "analyze_profile",
+    data = [
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "analyze-profile.ts",
+)

@@ -18,6 +18,7 @@ import {
   UnsignedRoundingModeType,
   UseGroupingType,
 } from '../types/number.js'
+import {getPowerOf10} from './decimal-cache.js'
 import {LDMLPluralRule} from '../types/plural-rules.js'
 import {digitMapping} from './digit-mapping.generated.js'
 import {GetUnsignedRoundingMode} from './GetUnsignedRoundingMode.js'
@@ -258,9 +259,7 @@ export default function formatToParts(
         if (currencyNameData) {
           unitName = selectPlural(
             pl,
-            numberResult.roundedNumber
-              .times(Decimal.pow(10, exponent))
-              .toNumber(),
+            numberResult.roundedNumber.times(getPowerOf10(exponent)).toNumber(),
             currencyNameData.displayName
           )
         } else {
@@ -302,9 +301,7 @@ export default function formatToParts(
         // Simple unit pattern
         unitPattern = selectPlural(
           pl,
-          numberResult.roundedNumber
-            .times(Decimal.pow(10, exponent))
-            .toNumber(),
+          numberResult.roundedNumber.times(getPowerOf10(exponent)).toNumber(),
           data.units.simple[unit!][unitDisplay!]
         )
       } else {
@@ -316,9 +313,7 @@ export default function formatToParts(
 
         const numeratorUnitPattern = selectPlural(
           pl,
-          numberResult.roundedNumber
-            .times(Decimal.pow(10, exponent))
-            .toNumber(),
+          numberResult.roundedNumber.times(getPowerOf10(exponent)).toNumber(),
           data.units.simple[numeratorUnit!][unitDisplay!]
         )
         const perUnitPattern =
