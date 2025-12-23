@@ -1,15 +1,12 @@
-name: Test on macOS
+name: Test on Linux
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
   workflow_dispatch:
 
 jobs:
-  test-macos:
-    runs-on: macos-latest
+  test:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository

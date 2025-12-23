@@ -1,8 +1,8 @@
 [workspace]
 members = [
-    "rust/icu_skeleton_parser",
-    "rust/icu_messageformat_parser",
-    "packages/icu-messageformat-parser/integration-tests",
+  "rust/icu_skeleton_parser",
+  "rust/icu_messageformat_parser",
+  "packages/icu-messageformat-parser/integration-tests",
 ]
 
 [workspace.dependencies]

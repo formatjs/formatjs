@@ -35,28 +35,17 @@
   },
   "json.schemas": [
     {
-      "fileMatch": [
-        "/lerna.json"
-      ],
+      "fileMatch": ["/lerna.json"],
       "url": "http://json.schemastore.org/lerna"
     }
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "npm.packageManager": "pnpm",
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "prettier.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
     "source.fixAll.eslint": "always"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "prettier.prettier-vscode"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "prettier.prettier-vscode"
   },
   "[shellscript]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
