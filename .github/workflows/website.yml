@@ -32,7 +32,8 @@ jobs:
             --remote_download_outputs=all \
             --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
             //website:dist
-          echo "BUILD_PATH=$(bazel info bazel-bin)/website/build" >> $GITHUB_OUTPUT
+          BUILD_PATH=$(readlink -f bazel-bin)/website/build
+          echo "BUILD_PATH=$BUILD_PATH" >> $GITHUB_OUTPUT
 
       # Verify build folder is not empty
       - name: Verify Build Output
