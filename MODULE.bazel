@@ -97,6 +97,16 @@ bazel_dep(name = "rules_rust_wasm_bindgen", version = "0.68.1")
 
 bazel_dep(name = "aspect_rules_lint", version = "1.10.2")
 
+########## BuildBuddy toolchain rules #########
+
+bazel_dep(name = "toolchains_buildbuddy", version = "0.0.4")
+
+use_extension("@toolchains_buildbuddy//:extensions.bzl", "buildbuddy")
+
+register_toolchains(
+    "@toolchains_buildbuddy//toolchains/cc:ubuntu_gcc_x86_64",
+)
+
 ######### test262 rules #########
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")

@@ -1,7 +1,8 @@
 import {match} from '../'
 import {expect, test} from 'vitest'
 test('zh-HK', function () {
-  expect(match(['zh-HK'], ['zh', 'zh-HANT', 'en'], 'en')).toEqual('zh-HANT')
+  // With canonicalization, zh-HANT → zh-Hant, and zh-HK matches zh-Hant better
+  expect(match(['zh-HK'], ['zh', 'zh-HANT', 'en'], 'en')).toEqual('zh-Hant')
 })
 
 test('Intl.LocaleMatcher', function () {

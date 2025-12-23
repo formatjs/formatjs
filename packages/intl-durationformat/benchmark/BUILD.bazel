@@ -1,0 +1,53 @@
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:index.bzl", "ts_binary")
+
+npm_link_all_packages()
+
+ts_binary(
+    name = "benchmark",
+    data = [
+        ":node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/tinybench",
+    ],
+    entry_point = "benchmark.ts",
+)
+
+ts_binary(
+    name = "instantiation_benchmark",
+    data = [
+        ":node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/tinybench",
+    ],
+    entry_point = "instantiation-benchmark.ts",
+)
+
+ts_binary(
+    name = "profile",
+    data = [
+        ":node_modules/@formatjs/intl-durationformat",
+    ],
+    entry_point = "profile.ts",
+)
+
+ts_binary(
+    name = "profile_cpu",
+    data = [
+        ":node_modules/@formatjs/intl-durationformat",
+    ],
+    entry_point = "profile.ts",
+    node_options = [
+        "--cpu-prof",
+        "--cpu-prof-interval=100",
+        "--cpu-prof-dir=/tmp",
+    ],
+)
+
+ts_binary(
+    name = "analyze_profile",
+    data = [
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "analyze-profile.ts",
+)
