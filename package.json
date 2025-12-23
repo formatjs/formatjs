@@ -70,7 +70,7 @@
     "classnames": "2",
     "cldr-bcp47": "^47.0.0",
     "cldr-core": "^46.0.0",
-    "cldr-dates-full": "^46.0.0",
+    "cldr-dates-full": "^48.0.0",
     "cldr-localenames-full": "^46.0.0",
     "cldr-misc-full": "^46.0.0",
     "cldr-numbers-full": "^46.0.0",
