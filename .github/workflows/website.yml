@@ -29,6 +29,7 @@ jobs:
         run: |
           bazel build \
             --config=ci \
+            --remote_download_outputs=all \
             --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
             //website:dist
           echo "BUILD_PATH=$(bazel cquery --output=files //website:dist)" >> $GITHUB_OUTPUT
