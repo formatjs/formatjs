@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.0.5...@formatjs/intl-numberformat@9.0.6) (2025-12-23)
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** optimize ToRawPrecision ([#5663](https://github.com/formatjs/formatjs/issues/5663)) ([99fc228](https://github.com/formatjs/formatjs/commit/99fc228fa43b6b7fc5a488b39cbc5269c3231738)), closes [#5023](https://github.com/formatjs/formatjs/issues/5023) [#5023](https://github.com/formatjs/formatjs/issues/5023) - by @longlho
+* **@formatjs/intl-numberformat:** optimize decimal, perf 10x, fix [#5023](https://github.com/formatjs/formatjs/issues/5023) ([51fcd21](https://github.com/formatjs/formatjs/commit/51fcd21fbe084b8bdb3fe54a23c9bd6f37b3f5e0)) - by @longlho
+
 ## [9.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.0.4...@formatjs/intl-numberformat@9.0.5) (2025-12-19)
 
 ### Bug Fixes

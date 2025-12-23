@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.0.4...@formatjs/intl-datetimeformat@7.0.5) (2025-12-23)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** export add-golden-tz.js from package.json ([#5662](https://github.com/formatjs/formatjs/issues/5662)) ([351928e](https://github.com/formatjs/formatjs/commit/351928ece629ea0758c28cc465b40ca2b2483061)) - by @Magicpig55
+
 ## [7.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.0.3...@formatjs/intl-datetimeformat@7.0.4) (2025-12-19)
 
 ### Bug Fixes

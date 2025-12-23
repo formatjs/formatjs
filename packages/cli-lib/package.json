@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/cli-lib",
   "description": "Lib for CLI for formatjs.",
-  "version": "8.0.4",
+  "version": "8.0.5",
   "license": "MIT",
   "author": "Linjie Ding <linjie@airtable.com>",
   "type": "module",

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.0.4...@formatjs/icu-messageformat-parser@3.1.0) (2025-12-23)
+
+### Features
+
+* **@formatjs/icu-messageformat-parser:** make a rust version ([#5631](https://github.com/formatjs/formatjs/issues/5631)) ([e03561a](https://github.com/formatjs/formatjs/commit/e03561a86afbbb20f7e23f6400ab4b6d10ad5c91)) - by @longlho
+* **@formatjs/icu-messageformat-parser:** remove IE11 polyfills ([#5617](https://github.com/formatjs/formatjs/issues/5617)) ([c65dac6](https://github.com/formatjs/formatjs/commit/c65dac690f067d289b8312dc33834250d5f1961c)) - by @longlho
+
 ## [3.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.0.3...@formatjs/icu-messageformat-parser@3.0.4) (2025-12-19)
 
 ### Bug Fixes

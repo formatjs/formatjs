@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.3...@formatjs/ecma402-abstract@3.0.4) (2025-12-23)
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** optimize ToRawPrecision ([#5663](/github.com/formatjs/formatjs/issues/5663)) ([99fc228](github.com/formatjs/formatjs/commits/99fc228fa43b6b7fc5a488b39cbc5269c3231738)), closes [#5023](github.com/formatjs/formatjs/issues/5023) [#5023](github.com/formatjs/formatjs/issues/5023) - by @longlho
+* **@formatjs/intl-numberformat:** optimize decimal, perf 10x, fix [#5023](/github.com/formatjs/formatjs/issues/5023) ([51fcd21](github.com/formatjs/formatjs/commits/51fcd21fbe084b8bdb3fe54a23c9bd6f37b3f5e0)) - by @longlho
+
 ## [3.0.3](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.2...@formatjs/ecma402-abstract@3.0.3) (2025-12-18)
 
 ### Bug Fixes
