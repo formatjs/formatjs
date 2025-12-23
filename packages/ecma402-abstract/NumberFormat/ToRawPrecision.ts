@@ -6,11 +6,12 @@ import {
 } from '../types/number.js'
 import {invariant, repeat} from '../utils.js'
 import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode.js'
+import {getPowerOf10} from './decimal-cache.js'
 
 //IMPL: Helper function to find n1, e1, and r1 using direct calculation
 function findN1E1R1(x: Decimal, p: number) {
-  const maxN1 = Decimal.pow(10, p)
-  const minN1 = Decimal.pow(10, p - 1)
+  const maxN1 = getPowerOf10(p)
+  const minN1 = getPowerOf10(p - 1)
 
   // Direct calculation: compute e1 from logarithm
   // e1 is the exponent such that n1 * 10^(e1-p+1) <= x
@@ -23,7 +24,7 @@ function findN1E1R1(x: Decimal, p: number) {
   let e1 = log10x.floor()
 
   // Calculate n1 and r1 from e1
-  const divisor = Decimal.pow(10, e1.minus(p).plus(1))
+  const divisor = getPowerOf10(e1.minus(p).plus(1))
   let n1 = x.div(divisor).floor()
   let r1 = n1.times(divisor)
 
@@ -31,12 +32,12 @@ function findN1E1R1(x: Decimal, p: number) {
   // This handles edge cases near powers of 10
   if (n1.greaterThanOrEqualTo(maxN1)) {
     e1 = e1.plus(1)
-    const newDivisor = Decimal.pow(10, e1.minus(p).plus(1))
+    const newDivisor = getPowerOf10(e1.minus(p).plus(1))
     n1 = x.div(newDivisor).floor()
     r1 = n1.times(newDivisor)
   } else if (n1.lessThan(minN1)) {
     e1 = e1.minus(1)
-    const newDivisor = Decimal.pow(10, e1.minus(p).plus(1))
+    const newDivisor = getPowerOf10(e1.minus(p).plus(1))
     n1 = x.div(newDivisor).floor()
     r1 = n1.times(newDivisor)
   }
@@ -54,11 +55,10 @@ function findN1E1R1(x: Decimal, p: number) {
   const maxE1 = x.div(minN1).log(10).plus(p).minus(1).ceil()
   let currentE1 = maxE1
   while (true) {
-    let currentN1 = x.div(Decimal.pow(10, currentE1.minus(p).plus(1))).floor()
+    const currentDivisor = getPowerOf10(currentE1.minus(p).plus(1))
+    let currentN1 = x.div(currentDivisor).floor()
     if (currentN1.lessThan(maxN1) && currentN1.greaterThanOrEqualTo(minN1)) {
-      const currentR1 = currentN1.times(
-        Decimal.pow(10, currentE1.minus(p).plus(1))
-      )
+      const currentR1 = currentN1.times(currentDivisor)
       if (currentR1.lessThanOrEqualTo(x)) {
         return {
           n1: currentN1,
@@ -73,27 +73,27 @@ function findN1E1R1(x: Decimal, p: number) {
 
 //IMPL: Helper function to find n2, e2, and r2 using direct calculation
 function findN2E2R2(x: Decimal, p: number) {
-  const maxN2 = Decimal.pow(10, p)
-  const minN2 = Decimal.pow(10, p - 1)
+  const maxN2 = getPowerOf10(p)
+  const minN2 = getPowerOf10(p - 1)
 
   // Direct calculation: similar to findN1E1R1 but with ceiling
   const log10x = x.log(10)
   let e2 = log10x.floor()
 
   // Calculate n2 and r2 from e2
-  const divisor = Decimal.pow(10, e2.minus(p).plus(1))
+  const divisor = getPowerOf10(e2.minus(p).plus(1))
   let n2 = x.div(divisor).ceil()
   let r2 = n2.times(divisor)
 
   // Verify and adjust if n2 is out of bounds
   if (n2.greaterThanOrEqualTo(maxN2)) {
     e2 = e2.plus(1)
-    const newDivisor = Decimal.pow(10, e2.minus(p).plus(1))
+    const newDivisor = getPowerOf10(e2.minus(p).plus(1))
     n2 = x.div(newDivisor).ceil()
     r2 = n2.times(newDivisor)
   } else if (n2.lessThan(minN2)) {
     e2 = e2.minus(1)
-    const newDivisor = Decimal.pow(10, e2.minus(p).plus(1))
+    const newDivisor = getPowerOf10(e2.minus(p).plus(1))
     n2 = x.div(newDivisor).ceil()
     r2 = n2.times(newDivisor)
   }
@@ -111,11 +111,10 @@ function findN2E2R2(x: Decimal, p: number) {
   const minE2 = x.div(maxN2).log(10).plus(p).minus(1).floor()
   let currentE2 = minE2
   while (true) {
-    let currentN2 = x.div(Decimal.pow(10, currentE2.minus(p).plus(1))).ceil()
+    const currentDivisor = getPowerOf10(currentE2.minus(p).plus(1))
+    let currentN2 = x.div(currentDivisor).ceil()
     if (currentN2.lessThan(maxN2) && currentN2.greaterThanOrEqualTo(minN2)) {
-      const currentR2 = currentN2.times(
-        Decimal.pow(10, currentE2.minus(p).plus(1))
-      )
+      const currentR2 = currentN2.times(currentDivisor)
       if (currentR2.greaterThanOrEqualTo(x)) {
         return {
           n2: currentN2,

@@ -72,7 +72,7 @@ def ts_compile(name, srcs, deps = [], skip_esm = True, skip_esm_esnext = True, v
         visibility = visibility,
     )
 
-def ts_binary(name, data = [], **kwargs):
+def ts_binary(name, data = [], node_options = [], **kwargs):
     """Create a TS binary with prefilled args.
 
     Args:
@@ -85,7 +85,7 @@ def ts_binary(name, data = [], **kwargs):
         data = data + [
             "//:node_modules/tsx",
         ],
-        node_options = [
+        node_options = node_options + [
             "--import",
             "tsx",
         ],

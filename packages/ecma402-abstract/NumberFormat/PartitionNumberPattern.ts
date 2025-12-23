@@ -4,6 +4,7 @@ import {invariant} from '../utils.js'
 import {ComputeExponent} from './ComputeExponent.js'
 import formatToParts from './format_to_parts.js'
 import {FormatNumericToString} from './FormatNumericToString.js'
+import {getPowerOf10} from './decimal-cache.js'
 
 /**
  * https://tc39.es/ecma402/#sec-partitionnumberpattern
@@ -57,7 +58,7 @@ export function PartitionNumberPattern(
       ] = ComputeExponent(internalSlots, x)
 
       // 8.d. Let x be x × 10^(-exponent).
-      x = x.times(Decimal.pow(10, -exponent))
+      x = x.times(getPowerOf10(-exponent))
     }
 
     // 8.e. Let formatNumberResult be FormatNumericToString(internalSlots, x).
