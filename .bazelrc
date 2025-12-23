@@ -82,6 +82,12 @@ build:gh-ci --bes_backend=grpcs://formatjs.buildbuddy.io
 build:gh-ci --remote_cache=grpcs://formatjs.buildbuddy.io
 build:gh-ci --remote_timeout=10m
 
+build:pr-ci --bes_results_url=https://formatjs.buildbuddy.io/invocation/
+build:pr-ci --bes_backend=grpcs://formatjs.buildbuddy.io
+build:pr-ci --remote_cache=grpcs://formatjs.buildbuddy.io
+# Uploads logs & artifacts without writing to cache
+build:pr-ci --noremote_upload_local_results 
+build:pr-ci --remote_timeout=10m
 
 # honor the setting of `skipLibCheck` in the tsconfig.json file
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
