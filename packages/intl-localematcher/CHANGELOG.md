@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.7.2...@formatjs/intl-localematcher@0.7.3) (2025-12-23)
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** speed up best fit matcher, fix [#4936](https://github.com/formatjs/formatjs/issues/4936) ([#5674](https://github.com/formatjs/formatjs/issues/5674)) ([a6ad458](https://github.com/formatjs/formatjs/commit/a6ad4589352651aa2ce4513d8a8b2f08ddf13ad9)) - by @longlho
+
 ## [0.7.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.7.1...@formatjs/intl-localematcher@0.7.2) (2025-12-17)
 
 ### Bug Fixes

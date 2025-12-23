@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.6](https://github.com/formatjs/formatjs/compare/vue-intl@7.0.5...vue-intl@7.0.6) (2025-12-23)
+
+**Note:** Version bump only for package vue-intl
+
 ## [7.0.5](https://github.com/formatjs/formatjs/compare/vue-intl@7.0.4...vue-intl@7.0.5) (2025-12-23)
 
 **Note:** Version bump only for package vue-intl

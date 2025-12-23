@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.8.5...@formatjs/intl-durationformat@0.8.6) (2025-12-23)
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** speed up best fit matcher, fix [#4936](https://github.com/formatjs/formatjs/issues/4936) ([#5674](https://github.com/formatjs/formatjs/issues/5674)) ([a6ad458](https://github.com/formatjs/formatjs/commit/a6ad4589352651aa2ce4513d8a8b2f08ddf13ad9)) - by @longlho
+
 ## [0.8.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.8.4...@formatjs/intl-durationformat@0.8.5) (2025-12-23)
 
 **Note:** Version bump only for package @formatjs/intl-durationformat
