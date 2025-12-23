@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -25,6 +24,6 @@ jobs:
       - name: Run Tests
         run: |
           bazel test \
-            --config=gh-ci \
-            --remote_header=x-buildbuddy-api-key=${{ github.event_name == 'pull_request' && secrets.BUILDBUDDY_RO_PUBLIC_KEY || secrets.BUILDBUDDY_ORG_API_KEY }} \
+            --config=ci \
+            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
             //...
