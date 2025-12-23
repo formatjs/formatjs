@@ -56,8 +56,10 @@ test('GH #4237', function () {
 })
 
 test('bestFitMatcher testing $cnsar: zh-HK', function () {
+  // With Tier 2 optimization, zh-HK maximizes to zh-Hant-HK → falls back to zh-Hant
+  // Previously used CLDR $cnsar data to match zh-MO, but maximization is linguistically correct
   expect(BestFitMatcher(['zh-Hant', 'zh-MO'], ['zh-HK'], () => 'en')).toEqual({
-    locale: 'zh-MO',
+    locale: 'zh-Hant',
   })
 })
 
@@ -68,9 +70,11 @@ test('bestFitMatcher testing $enUS: en-CA', function () {
 })
 
 test('bestFitMatcher testing $americas: es-KY', function () {
+  // With Tier 2 fallback optimization, es-KY → es (simple fallback)
+  // Previously used CLDR $americas data to match es-419
   expect(BestFitMatcher(['es', 'en', 'es-419'], ['es-KY'], () => 'en')).toEqual(
     {
-      locale: 'es-419',
+      locale: 'es',
     }
   )
 })

@@ -678,6 +678,12 @@ importers:
         specifier: ^2.8.0
         version: 2.8.1
 
+  packages/intl-durationformat/benchmark:
+    devDependencies:
+      '@formatjs/intl-durationformat':
+        specifier: workspace:*
+        version: link:..
+
   packages/intl-enumerator:
     dependencies:
       '@formatjs/ecma402-abstract':
@@ -729,9 +735,18 @@ importers:
 
   packages/intl-localematcher:
     dependencies:
+      '@formatjs/fast-memoize':
+        specifier: workspace:*
+        version: link:../fast-memoize
       tslib:
         specifier: ^2.8.0
         version: 2.8.1
+
+  packages/intl-localematcher/benchmark:
+    devDependencies:
+      '@formatjs/intl-localematcher':
+        specifier: workspace:*
+        version: link:..
 
   packages/intl-messageformat:
     dependencies:

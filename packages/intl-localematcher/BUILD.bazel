@@ -27,12 +27,14 @@ SRCS = glob(
 ) + ["index.ts"]
 
 SRC_DEPS = [
+    ":node_modules/@formatjs/fast-memoize",
 ]
 
 ts_compile(
     name = "dist",
     srcs = [":srcs"],
     skip_esm = False,
+    visibility = ["//packages/intl-localematcher/benchmark:__pkg__"],
     deps = SRC_DEPS,
 )
 

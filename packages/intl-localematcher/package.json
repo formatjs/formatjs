@@ -11,6 +11,7 @@
     ".": "./index.js"
   },
   "dependencies": {
+    "@formatjs/fast-memoize": "workspace:*",
     "tslib": "^2.8.0"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
