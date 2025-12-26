@@ -160,6 +160,11 @@ export interface DateTimeFormatLocaleInternalData {
   dateFormat: {full: Formats; long: Formats; medium: Formats; short: Formats}
   timeFormat: {full: Formats; long: Formats; medium: Formats; short: Formats}
   dateTimeFormat: {full: string; long: string; medium: string; short: string}
+  /**
+   * Interval format fallback pattern from CLDR (e.g., "{0} – {1}" for English, "{0}～{1}" for Japanese)
+   * Used when no specific interval format is available for a given skeleton
+   */
+  intervalFormatFallback: string
   formats: Record<string, Formats[]>
   nu: string[]
   hc: string[]

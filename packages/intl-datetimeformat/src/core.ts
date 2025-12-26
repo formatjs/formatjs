@@ -360,6 +360,7 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
         medium: parseDateTimeSkeleton(dateTimeFormat.medium).pattern,
         short: parseDateTimeSkeleton(dateTimeFormat.short).pattern,
       },
+      intervalFormatFallback: intervalFormats.intervalFormatFallback,
       formats: {},
     }
 

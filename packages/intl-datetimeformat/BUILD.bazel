@@ -21,6 +21,7 @@ TEST_LOCALES = [
     "en",
     "en-GB",
     "en-CA",
+    "ja",
     "ko",
     "pl",
     "ru",

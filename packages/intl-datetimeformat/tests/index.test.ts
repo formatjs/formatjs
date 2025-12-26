@@ -6,10 +6,11 @@ import * as enCA from './locale-data/en-CA.json' with {type: 'json'}
 import * as enGB from './locale-data/en-GB.json' with {type: 'json'}
 import * as en from './locale-data/en.json' with {type: 'json'}
 import * as fa from './locale-data/fa.json' with {type: 'json'}
+import * as ja from './locale-data/ja.json' with {type: 'json'}
 import * as zhHans from './locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, enGB, enCA, zhHans, fa)
+DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa)
 DateTimeFormat.__addTZData(allData)
 const DEFAULT_TIMEZONE = DateTimeFormat.getDefaultTimeZone()
 describe('Intl.DateTimeFormat', function () {
@@ -461,5 +462,65 @@ describe('Intl.DateTimeFormat', function () {
 
     // Phoenix doesn't observe DST, so should show MST year-round, not GMT-7
     expect(summerFmt).toContain('MST')
+  })
+
+  it('formatRange with dateStyle and timeStyle, GH #4168', function () {
+    // Bug: Using dateStyle/timeStyle causes "Cannot read property 'patternParts' of undefined"
+    // when calling formatRange because rangePatterns.default is undefined
+    const dtf = new DateTimeFormat('en', {
+      dateStyle: 'short',
+      timeStyle: 'short',
+      timeZone: 'UTC',
+    })
+
+    const start = new Date('2023-01-15T10:00:00Z')
+    const end = new Date('2023-01-15T14:00:00Z')
+
+    // This should not throw "Cannot read property 'patternParts' of undefined"
+    expect(() => dtf.formatRange(start, end)).not.toThrow()
+
+    // Should format as a date range with time range
+    const result = dtf.formatRange(start, end)
+    expect(result).toBeTruthy()
+    expect(result).toContain('10:00') // start time
+    expect(result).toContain('2:00') // end time (14:00 UTC = 2:00 PM)
+    expect(result).toContain('1/15/23') // date
+  })
+
+  it('formatRange with dateStyle/timeStyle different dates, GH #4168', function () {
+    // Test with different dates to trigger the fallback pattern
+    const start = new Date('2023-01-15T10:00:00Z')
+    const end = new Date('2023-02-20T14:00:00Z')
+
+    const dtfEn = new DateTimeFormat('en', {
+      dateStyle: 'short',
+      timeStyle: 'short',
+      timeZone: 'UTC',
+    })
+
+    expect(() => dtfEn.formatRange(start, end)).not.toThrow()
+    const resultEn = dtfEn.formatRange(start, end)
+
+    // Verify it formats both dates correctly with the range separator
+    // Native ICU output: "1/15/23, 6:00 AM – 2/20/23, 10:00 AM"
+    // Note: Uses narrow no-break space (\u202f) before AM/PM
+    // English uses en dash with thin spaces: "{0}\u2009–\u2009{1}" (U+2009 = thin space)
+    expect(resultEn).toBe(
+      '1/15/23, 10:00\u202fAM\u2009–\u20092/20/23, 2:00\u202fPM'
+    )
+
+    // Test Japanese locale which uses wave dash (～) instead of en dash (–)
+    const dtfJa = new DateTimeFormat('ja', {
+      dateStyle: 'short',
+      timeStyle: 'short',
+      timeZone: 'UTC',
+    })
+
+    expect(() => dtfJa.formatRange(start, end)).not.toThrow()
+    const resultJa = dtfJa.formatRange(start, end)
+
+    // Japanese uses wave dash without spaces: "{0}～{1}"
+    // Native ICU output: "2023/01/15 10:00～2023/02/20 14:00"
+    expect(resultJa).toBe('2023/01/15 10:00～2023/02/20 14:00')
   })
 })

@@ -34,13 +34,22 @@ export function DateTimeStyleFormat(
   if (dateStyle !== undefined && timeStyle !== undefined) {
     const format = {} as Formats
     for (const field in dateFormat) {
-      if (field !== 'pattern') {
+      if (
+        field !== 'pattern' &&
+        field !== 'rangePatterns' &&
+        field !== 'rangePatterns12'
+      ) {
         // @ts-ignore
         format[field] = dateFormat[field]
       }
     }
     for (const field in timeFormat) {
-      if (field !== 'pattern' && field !== 'pattern12') {
+      if (
+        field !== 'pattern' &&
+        field !== 'pattern12' &&
+        field !== 'rangePatterns' &&
+        field !== 'rangePatterns12'
+      ) {
         // @ts-ignore
         format[field] = timeFormat[field]
       }
@@ -56,6 +65,17 @@ export function DateTimeStyleFormat(
         .replace('{1}', dateFormat!.pattern)
       format.pattern12 = pattern12
     }
+
+    // Merge rangePatterns from timeFormat (for time-related differences)
+    // This is needed for formatRange to work with dateStyle/timeStyle
+    // See: https://github.com/formatjs/formatjs/issues/4168
+    if (timeFormat!.rangePatterns) {
+      format.rangePatterns = timeFormat!.rangePatterns
+    }
+    if (timeFormat!.rangePatterns12) {
+      format.rangePatterns12 = timeFormat!.rangePatterns12
+    }
+
     return format
   }
   if (timeStyle !== undefined) {

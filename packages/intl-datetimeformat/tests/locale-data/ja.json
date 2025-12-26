@@ -1,0 +1,4878 @@
+{
+  "data": {
+    "am": "午前",
+    "pm": "午後",
+    "weekday": {
+      "narrow": [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土"
+      ],
+      "short": [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土"
+      ],
+      "long": [
+        "日曜日",
+        "月曜日",
+        "火曜日",
+        "水曜日",
+        "木曜日",
+        "金曜日",
+        "土曜日"
+      ]
+    },
+    "era": {
+      "narrow": {
+        "BC": "BC",
+        "AD": "AD"
+      },
+      "short": {
+        "BC": "紀元前",
+        "AD": "西暦"
+      },
+      "long": {
+        "BC": "紀元前",
+        "AD": "西暦"
+      }
+    },
+    "month": {
+      "narrow": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
+      "short": [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月"
+      ],
+      "long": [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月"
+      ]
+    },
+    "timeZoneName": {
+      "Africa/Abidjan": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Accra": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Addis_Ababa": {
+        "long": [
+          "東アフリカ時間",
+          "東アフリカ時間"
+        ]
+      },
+      "Africa/Algiers": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Africa/Asmera": {
+        "long": [
+          "東アフリカ時間",
+          "東アフリカ時間"
+        ]
+      },
+      "Africa/Bamako": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Bangui": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/Banjul": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Bissau": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Blantyre": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "Africa/Brazzaville": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/Bujumbura": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "Africa/Cairo": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Africa/Casablanca": {
+        "long": [
+          "西ヨーロッパ標準時",
+          "西ヨーロッパ夏時間"
+        ]
+      },
+      "Africa/Ceuta": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Africa/Conakry": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Dakar": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Dar_es_Salaam": {
+        "long": [
+          "東アフリカ時間",
+          "東アフリカ時間"
+        ]
+      },
+      "Africa/Djibouti": {
+        "long": [
+          "東アフリカ時間",
+          "東アフリカ時間"
+        ]
+      },
+      "Africa/Douala": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/El_Aaiun": {
+        "long": [
+          "西ヨーロッパ標準時",
+          "西ヨーロッパ夏時間"
+        ]
+      },
+      "Africa/Freetown": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Gaborone": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "Africa/Harare": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "Africa/Johannesburg": {
+        "long": [
+          "南アフリカ標準時",
+          "南アフリカ標準時"
+        ]
+      },
+      "Africa/Juba": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "Africa/Kampala": {
+        "long": [
+          "東アフリカ時間",
+          "東アフリカ時間"
+        ]
+      },
+      "Africa/Khartoum": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "Africa/Kigali": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "Africa/Kinshasa": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/Lagos": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/Libreville": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/Lome": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Luanda": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/Lubumbashi": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "Africa/Lusaka": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "Africa/Malabo": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/Maputo": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "Africa/Maseru": {
+        "long": [
+          "南アフリカ標準時",
+          "南アフリカ標準時"
+        ]
+      },
+      "Africa/Mbabane": {
+        "long": [
+          "南アフリカ標準時",
+          "南アフリカ標準時"
+        ]
+      },
+      "Africa/Mogadishu": {
+        "long": [
+          "東アフリカ時間",
+          "東アフリカ時間"
+        ]
+      },
+      "Africa/Monrovia": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Nairobi": {
+        "long": [
+          "東アフリカ時間",
+          "東アフリカ時間"
+        ]
+      },
+      "Africa/Ndjamena": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/Niamey": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/Nouakchott": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Ouagadougou": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Porto-Novo": {
+        "long": [
+          "西アフリカ時間",
+          "西アフリカ時間"
+        ]
+      },
+      "Africa/Sao_Tome": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Africa/Tripoli": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Africa/Tunis": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Africa/Windhoek": {
+        "long": [
+          "中央アフリカ時間",
+          "中央アフリカ時間"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "ハワイ・アリューシャン標準時",
+          "ハワイ・アリューシャン夏時間"
+        ]
+      },
+      "America/Anchorage": {
+        "long": [
+          "アラスカ標準時",
+          "アラスカ夏時間"
+        ]
+      },
+      "America/Anguilla": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Antigua": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Araguaina": {
+        "long": [
+          "ブラジリア標準時",
+          "ブラジリア夏時間"
+        ]
+      },
+      "America/Aruba": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Asuncion": {
+        "long": [
+          "パラグアイ標準時",
+          "パラグアイ夏時間"
+        ]
+      },
+      "America/Bahia": {
+        "long": [
+          "ブラジリア標準時",
+          "ブラジリア夏時間"
+        ]
+      },
+      "America/Bahia_Banderas": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Barbados": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Belem": {
+        "long": [
+          "ブラジリア標準時",
+          "ブラジリア夏時間"
+        ]
+      },
+      "America/Belize": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Blanc-Sablon": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Boa_Vista": {
+        "long": [
+          "アマゾン標準時",
+          "アマゾン夏時間"
+        ]
+      },
+      "America/Bogota": {
+        "long": [
+          "コロンビア標準時",
+          "コロンビア夏時間"
+        ]
+      },
+      "America/Boise": {
+        "long": [
+          "米国山岳標準時",
+          "米国山岳夏時間"
+        ]
+      },
+      "America/Buenos_Aires": {
+        "long": [
+          "アルゼンチン標準時",
+          "アルゼンチン夏時間"
+        ]
+      },
+      "America/Cambridge_Bay": {
+        "long": [
+          "米国山岳標準時",
+          "米国山岳夏時間"
+        ]
+      },
+      "America/Campo_Grande": {
+        "long": [
+          "アマゾン標準時",
+          "アマゾン夏時間"
+        ]
+      },
+      "America/Cancun": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Caracas": {
+        "long": [
+          "ベネズエラ時間",
+          "ベネズエラ時間"
+        ]
+      },
+      "America/Catamarca": {
+        "long": [
+          "アルゼンチン標準時",
+          "アルゼンチン夏時間"
+        ]
+      },
+      "America/Cayenne": {
+        "long": [
+          "仏領ギアナ時間",
+          "仏領ギアナ時間"
+        ]
+      },
+      "America/Cayman": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Chicago": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Chihuahua": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Ciudad_Juarez": {
+        "long": [
+          "米国山岳標準時",
+          "米国山岳夏時間"
+        ]
+      },
+      "America/Coral_Harbour": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Cordoba": {
+        "long": [
+          "アルゼンチン標準時",
+          "アルゼンチン夏時間"
+        ]
+      },
+      "America/Costa_Rica": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Coyhaique": {
+        "long": [
+          "チリ標準時",
+          "チリ夏時間"
+        ]
+      },
+      "America/Creston": {
+        "long": [
+          "米国山岳標準時",
+          "米国山岳夏時間"
+        ]
+      },
+      "America/Cuiaba": {
+        "long": [
+          "アマゾン標準時",
+          "アマゾン夏時間"
+        ]
+      },
+      "America/Curacao": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Danmarkshavn": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "America/Dawson": {
+        "long": [
+          "ユーコン時間",
+          "ユーコン時間"
+        ]
+      },
+      "America/Dawson_Creek": {
+        "long": [
+          "米国山岳標準時",
+          "米国山岳夏時間"
+        ]
+      },
+      "America/Denver": {
+        "long": [
+          "米国山岳標準時",
+          "米国山岳夏時間"
+        ]
+      },
+      "America/Detroit": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Dominica": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Edmonton": {
+        "long": [
+          "米国山岳標準時",
+          "米国山岳夏時間"
+        ]
+      },
+      "America/Eirunepe": {
+        "long": [
+          "アクレ標準時",
+          "アクレ夏時間"
+        ]
+      },
+      "America/El_Salvador": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Fort_Nelson": {
+        "long": [
+          "米国山岳標準時",
+          "米国山岳夏時間"
+        ]
+      },
+      "America/Fortaleza": {
+        "long": [
+          "ブラジリア標準時",
+          "ブラジリア夏時間"
+        ]
+      },
+      "America/Glace_Bay": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Goose_Bay": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Grand_Turk": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Grenada": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Guadeloupe": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Guatemala": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Guayaquil": {
+        "long": [
+          "エクアドル時間",
+          "エクアドル時間"
+        ]
+      },
+      "America/Guyana": {
+        "long": [
+          "ガイアナ時間",
+          "ガイアナ時間"
+        ]
+      },
+      "America/Halifax": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Havana": {
+        "long": [
+          "キューバ標準時",
+          "キューバ夏時間"
+        ]
+      },
+      "America/Hermosillo": {
+        "long": [
+          "メキシコ太平洋標準時",
+          "メキシコ太平洋夏時間"
+        ]
+      },
+      "America/Indianapolis": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Inuvik": {
+        "long": [
+          "米国山岳標準時",
+          "米国山岳夏時間"
+        ]
+      },
+      "America/Iqaluit": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Jamaica": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Jujuy": {
+        "long": [
+          "アルゼンチン標準時",
+          "アルゼンチン夏時間"
+        ]
+      },
+      "America/Juneau": {
+        "long": [
+          "アラスカ標準時",
+          "アラスカ夏時間"
+        ]
+      },
+      "America/Kralendijk": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/La_Paz": {
+        "long": [
+          "ボリビア時間",
+          "ボリビア時間"
+        ]
+      },
+      "America/Lima": {
+        "long": [
+          "ペルー標準時",
+          "ペルー夏時間"
+        ]
+      },
+      "America/Los_Angeles": {
+        "long": [
+          "米国太平洋標準時",
+          "米国太平洋夏時間"
+        ]
+      },
+      "America/Louisville": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Lower_Princes": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Maceio": {
+        "long": [
+          "ブラジリア標準時",
+          "ブラジリア夏時間"
+        ]
+      },
+      "America/Managua": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Manaus": {
+        "long": [
+          "アマゾン標準時",
+          "アマゾン夏時間"
+        ]
+      },
+      "America/Marigot": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Martinique": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Matamoros": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Mazatlan": {
+        "long": [
+          "メキシコ太平洋標準時",
+          "メキシコ太平洋夏時間"
+        ]
+      },
+      "America/Mendoza": {
+        "long": [
+          "アルゼンチン標準時",
+          "アルゼンチン夏時間"
+        ]
+      },
+      "America/Menominee": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Merida": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Metlakatla": {
+        "long": [
+          "アラスカ標準時",
+          "アラスカ夏時間"
+        ]
+      },
+      "America/Mexico_City": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Miquelon": {
+        "long": [
+          "サンピエール島・ミクロン島標準時",
+          "サンピエール島・ミクロン島夏時間"
+        ]
+      },
+      "America/Moncton": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Monterrey": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Montevideo": {
+        "long": [
+          "ウルグアイ標準時",
+          "ウルグアイ夏時間"
+        ]
+      },
+      "America/Montserrat": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Nassau": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/New_York": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Nome": {
+        "long": [
+          "アラスカ標準時",
+          "アラスカ夏時間"
+        ]
+      },
+      "America/Noronha": {
+        "long": [
+          "フェルナンド・デ・ノローニャ標準時",
+          "フェルナンド・デ・ノローニャ夏時間"
+        ]
+      },
+      "America/Ojinaga": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Panama": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Paramaribo": {
+        "long": [
+          "スリナム時間",
+          "スリナム時間"
+        ]
+      },
+      "America/Phoenix": {
+        "long": [
+          "米国山岳標準時",
+          "米国山岳夏時間"
+        ]
+      },
+      "America/Port_of_Spain": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Port-au-Prince": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Porto_Velho": {
+        "long": [
+          "アマゾン標準時",
+          "アマゾン夏時間"
+        ]
+      },
+      "America/Puerto_Rico": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Punta_Arenas": {
+        "long": [
+          "チリ標準時",
+          "チリ夏時間"
+        ]
+      },
+      "America/Rankin_Inlet": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Recife": {
+        "long": [
+          "ブラジリア標準時",
+          "ブラジリア夏時間"
+        ]
+      },
+      "America/Regina": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Resolute": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Rio_Branco": {
+        "long": [
+          "アクレ標準時",
+          "アクレ夏時間"
+        ]
+      },
+      "America/Santarem": {
+        "long": [
+          "ブラジリア標準時",
+          "ブラジリア夏時間"
+        ]
+      },
+      "America/Santiago": {
+        "long": [
+          "チリ標準時",
+          "チリ夏時間"
+        ]
+      },
+      "America/Santo_Domingo": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Sao_Paulo": {
+        "long": [
+          "ブラジリア標準時",
+          "ブラジリア夏時間"
+        ]
+      },
+      "America/Sitka": {
+        "long": [
+          "アラスカ標準時",
+          "アラスカ夏時間"
+        ]
+      },
+      "America/St_Barthelemy": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/St_Johns": {
+        "long": [
+          "ニューファンドランド標準時",
+          "ニューファンドランド夏時間"
+        ]
+      },
+      "America/St_Kitts": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/St_Lucia": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/St_Thomas": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/St_Vincent": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Swift_Current": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Tegucigalpa": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Thule": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Tijuana": {
+        "long": [
+          "米国太平洋標準時",
+          "米国太平洋夏時間"
+        ]
+      },
+      "America/Toronto": {
+        "long": [
+          "米国東部標準時",
+          "米国東部夏時間"
+        ]
+      },
+      "America/Tortola": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "America/Vancouver": {
+        "long": [
+          "米国太平洋標準時",
+          "米国太平洋夏時間"
+        ]
+      },
+      "America/Whitehorse": {
+        "long": [
+          "ユーコン時間",
+          "ユーコン時間"
+        ]
+      },
+      "America/Winnipeg": {
+        "long": [
+          "米国中部標準時",
+          "米国中部夏時間"
+        ]
+      },
+      "America/Yakutat": {
+        "long": [
+          "アラスカ標準時",
+          "アラスカ夏時間"
+        ]
+      },
+      "Antarctica/Casey": {
+        "long": [
+          "オーストラリア西部標準時",
+          "オーストラリア西部夏時間"
+        ]
+      },
+      "Antarctica/Davis": {
+        "long": [
+          "デービス基地時間",
+          "デービス基地時間"
+        ]
+      },
+      "Antarctica/DumontDUrville": {
+        "long": [
+          "デュモン・デュルヴィル基地時間",
+          "デュモン・デュルヴィル基地時間"
+        ]
+      },
+      "Antarctica/Macquarie": {
+        "long": [
+          "オーストラリア東部標準時",
+          "オーストラリア東部夏時間"
+        ]
+      },
+      "Antarctica/Mawson": {
+        "long": [
+          "モーソン基地時間",
+          "モーソン基地時間"
+        ]
+      },
+      "Antarctica/McMurdo": {
+        "long": [
+          "ニュージーランド標準時",
+          "ニュージーランド夏時間"
+        ]
+      },
+      "Antarctica/Palmer": {
+        "long": [
+          "チリ標準時",
+          "チリ夏時間"
+        ]
+      },
+      "Antarctica/Rothera": {
+        "long": [
+          "ロゼラ基地時間",
+          "ロゼラ基地時間"
+        ]
+      },
+      "Antarctica/Syowa": {
+        "long": [
+          "昭和基地時間",
+          "昭和基地時間"
+        ]
+      },
+      "Antarctica/Troll": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Antarctica/Vostok": {
+        "long": [
+          "ボストーク基地時間",
+          "ボストーク基地時間"
+        ]
+      },
+      "Arctic/Longyearbyen": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Asia/Aden": {
+        "long": [
+          "アラビア標準時",
+          "アラビア夏時間"
+        ]
+      },
+      "Asia/Almaty": {
+        "long": [
+          "カザフスタン時間",
+          "カザフスタン時間"
+        ]
+      },
+      "Asia/Amman": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Asia/Anadyr": {
+        "long": [
+          "ペトロパブロフスク・カムチャツキー標準時",
+          "ペトロパブロフスク・カムチャツキー夏時間"
+        ]
+      },
+      "Asia/Aqtau": {
+        "long": [
+          "カザフスタン時間",
+          "カザフスタン時間"
+        ]
+      },
+      "Asia/Aqtobe": {
+        "long": [
+          "カザフスタン時間",
+          "カザフスタン時間"
+        ]
+      },
+      "Asia/Ashgabat": {
+        "long": [
+          "トルクメニスタン標準時",
+          "トルクメニスタン夏時間"
+        ]
+      },
+      "Asia/Atyrau": {
+        "long": [
+          "カザフスタン時間",
+          "カザフスタン時間"
+        ]
+      },
+      "Asia/Baghdad": {
+        "long": [
+          "アラビア標準時",
+          "アラビア夏時間"
+        ]
+      },
+      "Asia/Bahrain": {
+        "long": [
+          "アラビア標準時",
+          "アラビア夏時間"
+        ]
+      },
+      "Asia/Baku": {
+        "long": [
+          "アゼルバイジャン標準時",
+          "アゼルバイジャン夏時間"
+        ]
+      },
+      "Asia/Bangkok": {
+        "long": [
+          "インドシナ時間",
+          "インドシナ時間"
+        ]
+      },
+      "Asia/Barnaul": {
+        "long": [
+          "クラスノヤルスク標準時",
+          "クラスノヤルスク夏時間"
+        ]
+      },
+      "Asia/Beirut": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Asia/Bishkek": {
+        "long": [
+          "キルギス時間",
+          "キルギス時間"
+        ]
+      },
+      "Asia/Brunei": {
+        "long": [
+          "ブルネイ時間",
+          "ブルネイ時間"
+        ]
+      },
+      "Asia/Calcutta": {
+        "long": [
+          "インド標準時",
+          "インド標準時"
+        ]
+      },
+      "Asia/Chita": {
+        "long": [
+          "ヤクーツク標準時",
+          "ヤクーツク夏時間"
+        ]
+      },
+      "Asia/Colombo": {
+        "long": [
+          "インド標準時",
+          "インド標準時"
+        ]
+      },
+      "Asia/Damascus": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Asia/Dhaka": {
+        "long": [
+          "バングラデシュ標準時",
+          "バングラデシュ夏時間"
+        ]
+      },
+      "Asia/Dili": {
+        "long": [
+          "東ティモール時間",
+          "東ティモール時間"
+        ]
+      },
+      "Asia/Dubai": {
+        "long": [
+          "湾岸標準時",
+          "湾岸標準時"
+        ]
+      },
+      "Asia/Dushanbe": {
+        "long": [
+          "タジキスタン時間",
+          "タジキスタン時間"
+        ]
+      },
+      "Asia/Famagusta": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Asia/Gaza": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Asia/Hebron": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Asia/Hong_Kong": {
+        "long": [
+          "香港標準時",
+          "香港夏時間"
+        ]
+      },
+      "Asia/Hovd": {
+        "long": [
+          "ホブド標準時",
+          "ホブド夏時間"
+        ]
+      },
+      "Asia/Irkutsk": {
+        "long": [
+          "イルクーツク標準時",
+          "イルクーツク夏時間"
+        ]
+      },
+      "Asia/Jakarta": {
+        "long": [
+          "インドネシア西部時間",
+          "インドネシア西部時間"
+        ]
+      },
+      "Asia/Jayapura": {
+        "long": [
+          "インドネシア東部時間",
+          "インドネシア東部時間"
+        ]
+      },
+      "Asia/Jerusalem": {
+        "long": [
+          "イスラエル標準時",
+          "イスラエル夏時間"
+        ]
+      },
+      "Asia/Kabul": {
+        "long": [
+          "アフガニスタン時間",
+          "アフガニスタン時間"
+        ]
+      },
+      "Asia/Kamchatka": {
+        "long": [
+          "ペトロパブロフスク・カムチャツキー標準時",
+          "ペトロパブロフスク・カムチャツキー夏時間"
+        ]
+      },
+      "Asia/Karachi": {
+        "long": [
+          "パキスタン標準時",
+          "パキスタン夏時間"
+        ]
+      },
+      "Asia/Katmandu": {
+        "long": [
+          "ネパール時間",
+          "ネパール時間"
+        ]
+      },
+      "Asia/Khandyga": {
+        "long": [
+          "ヤクーツク標準時",
+          "ヤクーツク夏時間"
+        ]
+      },
+      "Asia/Krasnoyarsk": {
+        "long": [
+          "クラスノヤルスク標準時",
+          "クラスノヤルスク夏時間"
+        ]
+      },
+      "Asia/Kuala_Lumpur": {
+        "long": [
+          "マレーシア時間",
+          "マレーシア時間"
+        ]
+      },
+      "Asia/Kuching": {
+        "long": [
+          "マレーシア時間",
+          "マレーシア時間"
+        ]
+      },
+      "Asia/Kuwait": {
+        "long": [
+          "アラビア標準時",
+          "アラビア夏時間"
+        ]
+      },
+      "Asia/Macau": {
+        "long": [
+          "中国標準時",
+          "中国夏時間"
+        ]
+      },
+      "Asia/Magadan": {
+        "long": [
+          "マガダン標準時",
+          "マガダン夏時間"
+        ]
+      },
+      "Asia/Makassar": {
+        "long": [
+          "インドネシア中部時間",
+          "インドネシア中部時間"
+        ]
+      },
+      "Asia/Manila": {
+        "long": [
+          "フィリピン標準時",
+          "フィリピン夏時間"
+        ]
+      },
+      "Asia/Muscat": {
+        "long": [
+          "湾岸標準時",
+          "湾岸標準時"
+        ]
+      },
+      "Asia/Nicosia": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Asia/Novokuznetsk": {
+        "long": [
+          "クラスノヤルスク標準時",
+          "クラスノヤルスク夏時間"
+        ]
+      },
+      "Asia/Novosibirsk": {
+        "long": [
+          "クラスノヤルスク標準時",
+          "クラスノヤルスク夏時間"
+        ]
+      },
+      "Asia/Omsk": {
+        "long": [
+          "オムスク標準時",
+          "オムスク夏時間"
+        ]
+      },
+      "Asia/Oral": {
+        "long": [
+          "カザフスタン時間",
+          "カザフスタン時間"
+        ]
+      },
+      "Asia/Phnom_Penh": {
+        "long": [
+          "インドシナ時間",
+          "インドシナ時間"
+        ]
+      },
+      "Asia/Pontianak": {
+        "long": [
+          "インドネシア西部時間",
+          "インドネシア西部時間"
+        ]
+      },
+      "Asia/Pyongyang": {
+        "long": [
+          "韓国標準時",
+          "韓国夏時間"
+        ]
+      },
+      "Asia/Qatar": {
+        "long": [
+          "アラビア標準時",
+          "アラビア夏時間"
+        ]
+      },
+      "Asia/Qostanay": {
+        "long": [
+          "カザフスタン時間",
+          "カザフスタン時間"
+        ]
+      },
+      "Asia/Qyzylorda": {
+        "long": [
+          "カザフスタン時間",
+          "カザフスタン時間"
+        ]
+      },
+      "Asia/Rangoon": {
+        "long": [
+          "ミャンマー時間",
+          "ミャンマー時間"
+        ]
+      },
+      "Asia/Riyadh": {
+        "long": [
+          "アラビア標準時",
+          "アラビア夏時間"
+        ]
+      },
+      "Asia/Saigon": {
+        "long": [
+          "インドシナ時間",
+          "インドシナ時間"
+        ]
+      },
+      "Asia/Sakhalin": {
+        "long": [
+          "マガダン標準時",
+          "マガダン夏時間"
+        ]
+      },
+      "Asia/Samarkand": {
+        "long": [
+          "ウズベキスタン標準時",
+          "ウズベキスタン夏時間"
+        ]
+      },
+      "Asia/Seoul": {
+        "long": [
+          "韓国標準時",
+          "韓国夏時間"
+        ]
+      },
+      "Asia/Shanghai": {
+        "long": [
+          "中国標準時",
+          "中国夏時間"
+        ]
+      },
+      "Asia/Singapore": {
+        "long": [
+          "シンガポール標準時",
+          "シンガポール標準時"
+        ]
+      },
+      "Asia/Srednekolymsk": {
+        "long": [
+          "マガダン標準時",
+          "マガダン夏時間"
+        ]
+      },
+      "Asia/Taipei": {
+        "long": [
+          "台湾標準時",
+          "台湾夏時間"
+        ]
+      },
+      "Asia/Tashkent": {
+        "long": [
+          "ウズベキスタン標準時",
+          "ウズベキスタン夏時間"
+        ]
+      },
+      "Asia/Tbilisi": {
+        "long": [
+          "ジョージア標準時",
+          "ジョージア夏時間"
+        ]
+      },
+      "Asia/Tehran": {
+        "long": [
+          "イラン標準時",
+          "イラン夏時間"
+        ]
+      },
+      "Asia/Thimphu": {
+        "long": [
+          "ブータン時間",
+          "ブータン時間"
+        ]
+      },
+      "Asia/Tokyo": {
+        "long": [
+          "日本標準時",
+          "日本夏時間"
+        ],
+        "short": [
+          "JST",
+          "JDT"
+        ]
+      },
+      "Asia/Tomsk": {
+        "long": [
+          "クラスノヤルスク標準時",
+          "クラスノヤルスク夏時間"
+        ]
+      },
+      "Asia/Ulaanbaatar": {
+        "long": [
+          "ウランバートル標準時",
+          "ウランバートル夏時間"
+        ]
+      },
+      "Asia/Ust-Nera": {
+        "long": [
+          "ウラジオストク標準時",
+          "ウラジオストク夏時間"
+        ]
+      },
+      "Asia/Vientiane": {
+        "long": [
+          "インドシナ時間",
+          "インドシナ時間"
+        ]
+      },
+      "Asia/Vladivostok": {
+        "long": [
+          "ウラジオストク標準時",
+          "ウラジオストク夏時間"
+        ]
+      },
+      "Asia/Yakutsk": {
+        "long": [
+          "ヤクーツク標準時",
+          "ヤクーツク夏時間"
+        ]
+      },
+      "Asia/Yekaterinburg": {
+        "long": [
+          "エカテリンブルグ標準時",
+          "エカテリンブルグ夏時間"
+        ]
+      },
+      "Asia/Yerevan": {
+        "long": [
+          "アルメニア標準時",
+          "アルメニア夏時間"
+        ]
+      },
+      "Atlantic/Azores": {
+        "long": [
+          "アゾレス標準時",
+          "アゾレス夏時間"
+        ]
+      },
+      "Atlantic/Bermuda": {
+        "long": [
+          "大西洋標準時",
+          "大西洋夏時間"
+        ]
+      },
+      "Atlantic/Canary": {
+        "long": [
+          "西ヨーロッパ標準時",
+          "西ヨーロッパ夏時間"
+        ]
+      },
+      "Atlantic/Cape_Verde": {
+        "long": [
+          "カーボベルデ標準時",
+          "カーボベルデ夏時間"
+        ]
+      },
+      "Atlantic/Faeroe": {
+        "long": [
+          "西ヨーロッパ標準時",
+          "西ヨーロッパ夏時間"
+        ]
+      },
+      "Atlantic/Madeira": {
+        "long": [
+          "西ヨーロッパ標準時",
+          "西ヨーロッパ夏時間"
+        ]
+      },
+      "Atlantic/Reykjavik": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Atlantic/South_Georgia": {
+        "long": [
+          "サウスジョージア時間",
+          "サウスジョージア時間"
+        ]
+      },
+      "Atlantic/St_Helena": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Atlantic/Stanley": {
+        "long": [
+          "フォークランド諸島標準時",
+          "フォークランド諸島夏時間"
+        ]
+      },
+      "Australia/Adelaide": {
+        "long": [
+          "オーストラリア中部標準時",
+          "オーストラリア中部夏時間"
+        ]
+      },
+      "Australia/Brisbane": {
+        "long": [
+          "オーストラリア東部標準時",
+          "オーストラリア東部夏時間"
+        ]
+      },
+      "Australia/Broken_Hill": {
+        "long": [
+          "オーストラリア中部標準時",
+          "オーストラリア中部夏時間"
+        ]
+      },
+      "Australia/Darwin": {
+        "long": [
+          "オーストラリア中部標準時",
+          "オーストラリア中部夏時間"
+        ]
+      },
+      "Australia/Eucla": {
+        "long": [
+          "オーストラリア中西部標準時",
+          "オーストラリア中西部夏時間"
+        ]
+      },
+      "Australia/Hobart": {
+        "long": [
+          "オーストラリア東部標準時",
+          "オーストラリア東部夏時間"
+        ]
+      },
+      "Australia/Lindeman": {
+        "long": [
+          "オーストラリア東部標準時",
+          "オーストラリア東部夏時間"
+        ]
+      },
+      "Australia/Lord_Howe": {
+        "long": [
+          "ロードハウ標準時",
+          "ロードハウ夏時間"
+        ]
+      },
+      "Australia/Melbourne": {
+        "long": [
+          "オーストラリア東部標準時",
+          "オーストラリア東部夏時間"
+        ]
+      },
+      "Australia/Perth": {
+        "long": [
+          "オーストラリア西部標準時",
+          "オーストラリア西部夏時間"
+        ]
+      },
+      "Australia/Sydney": {
+        "long": [
+          "オーストラリア東部標準時",
+          "オーストラリア東部夏時間"
+        ]
+      },
+      "Etc/GMT": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Europe/Amsterdam": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Andorra": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Astrakhan": {
+        "long": [
+          "サマラ標準時",
+          "サマラ夏時間"
+        ]
+      },
+      "Europe/Athens": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Belgrade": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Berlin": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Bratislava": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Brussels": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Bucharest": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Budapest": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Busingen": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Chisinau": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Copenhagen": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Dublin": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Europe/Gibraltar": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Guernsey": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Europe/Helsinki": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Isle_of_Man": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Europe/Istanbul": {
+        "long": [
+          "トルコ標準時",
+          "トルコ夏時間"
+        ]
+      },
+      "Europe/Jersey": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Europe/Kaliningrad": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Kiev": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Kirov": {
+        "long": [
+          "モスクワ標準時",
+          "モスクワ夏時間"
+        ]
+      },
+      "Europe/Lisbon": {
+        "long": [
+          "西ヨーロッパ標準時",
+          "西ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Ljubljana": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/London": {
+        "long": [
+          "グリニッジ標準時",
+          "グリニッジ標準時"
+        ]
+      },
+      "Europe/Luxembourg": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Madrid": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Malta": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Mariehamn": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Minsk": {
+        "long": [
+          "モスクワ標準時",
+          "モスクワ夏時間"
+        ]
+      },
+      "Europe/Monaco": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Moscow": {
+        "long": [
+          "モスクワ標準時",
+          "モスクワ夏時間"
+        ]
+      },
+      "Europe/Oslo": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Paris": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Podgorica": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Prague": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Riga": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Rome": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Samara": {
+        "long": [
+          "サマラ標準時",
+          "サマラ夏時間"
+        ]
+      },
+      "Europe/San_Marino": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Sarajevo": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Saratov": {
+        "long": [
+          "サマラ標準時",
+          "サマラ夏時間"
+        ]
+      },
+      "Europe/Simferopol": {
+        "long": [
+          "モスクワ標準時",
+          "モスクワ夏時間"
+        ]
+      },
+      "Europe/Skopje": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Sofia": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Stockholm": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Tallinn": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Tirane": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Ulyanovsk": {
+        "long": [
+          "サマラ標準時",
+          "サマラ夏時間"
+        ]
+      },
+      "Europe/Vaduz": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Vatican": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Vienna": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Vilnius": {
+        "long": [
+          "東ヨーロッパ標準時",
+          "東ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Volgograd": {
+        "long": [
+          "モスクワ標準時",
+          "モスクワ夏時間"
+        ]
+      },
+      "Europe/Warsaw": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Zagreb": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Europe/Zurich": {
+        "long": [
+          "中央ヨーロッパ標準時",
+          "中央ヨーロッパ夏時間"
+        ]
+      },
+      "Indian/Antananarivo": {
+        "long": [
+          "東アフリカ時間",
+          "東アフリカ時間"
+        ]
+      },
+      "Indian/Chagos": {
+        "long": [
+          "インド洋時間",
+          "インド洋時間"
+        ]
+      },
+      "Indian/Christmas": {
+        "long": [
+          "クリスマス島時間",
+          "クリスマス島時間"
+        ]
+      },
+      "Indian/Cocos": {
+        "long": [
+          "ココス諸島時間",
+          "ココス諸島時間"
+        ]
+      },
+      "Indian/Comoro": {
+        "long": [
+          "東アフリカ時間",
+          "東アフリカ時間"
+        ]
+      },
+      "Indian/Kerguelen": {
+        "long": [
+          "仏領南方南極時間",
+          "仏領南方南極時間"
+        ]
+      },
+      "Indian/Mahe": {
+        "long": [
+          "セーシェル時間",
+          "セーシェル時間"
+        ]
+      },
+      "Indian/Maldives": {
+        "long": [
+          "モルディブ時間",
+          "モルディブ時間"
+        ]
+      },
+      "Indian/Mauritius": {
+        "long": [
+          "モーリシャス標準時",
+          "モーリシャス夏時間"
+        ]
+      },
+      "Indian/Mayotte": {
+        "long": [
+          "東アフリカ時間",
+          "東アフリカ時間"
+        ]
+      },
+      "Indian/Reunion": {
+        "long": [
+          "レユニオン時間",
+          "レユニオン時間"
+        ]
+      },
+      "Pacific/Apia": {
+        "long": [
+          "サモア標準時",
+          "サモア夏時間"
+        ]
+      },
+      "Pacific/Auckland": {
+        "long": [
+          "ニュージーランド標準時",
+          "ニュージーランド夏時間"
+        ]
+      },
+      "Pacific/Bougainville": {
+        "long": [
+          "パプアニューギニア時間",
+          "パプアニューギニア時間"
+        ]
+      },
+      "Pacific/Chatham": {
+        "long": [
+          "チャタム標準時",
+          "チャタム夏時間"
+        ]
+      },
+      "Pacific/Easter": {
+        "long": [
+          "イースター島標準時",
+          "イースター島夏時間"
+        ]
+      },
+      "Pacific/Efate": {
+        "long": [
+          "バヌアツ標準時",
+          "バヌアツ夏時間"
+        ]
+      },
+      "Pacific/Enderbury": {
+        "long": [
+          "フェニックス諸島時間",
+          "フェニックス諸島時間"
+        ]
+      },
+      "Pacific/Fakaofo": {
+        "long": [
+          "トケラウ時間",
+          "トケラウ時間"
+        ]
+      },
+      "Pacific/Fiji": {
+        "long": [
+          "フィジー標準時",
+          "フィジー夏時間"
+        ]
+      },
+      "Pacific/Funafuti": {
+        "long": [
+          "ツバル時間",
+          "ツバル時間"
+        ]
+      },
+      "Pacific/Galapagos": {
+        "long": [
+          "ガラパゴス時間",
+          "ガラパゴス時間"
+        ]
+      },
+      "Pacific/Gambier": {
+        "long": [
+          "ガンビエ諸島時間",
+          "ガンビエ諸島時間"
+        ]
+      },
+      "Pacific/Guadalcanal": {
+        "long": [
+          "ソロモン諸島時間",
+          "ソロモン諸島時間"
+        ]
+      },
+      "Pacific/Guam": {
+        "long": [
+          "チャモロ時間",
+          "チャモロ時間"
+        ]
+      },
+      "Pacific/Honolulu": {
+        "long": [
+          "ハワイ・アリューシャン標準時",
+          "ハワイ・アリューシャン標準時"
+        ]
+      },
+      "Pacific/Kiritimati": {
+        "long": [
+          "ライン諸島時間",
+          "ライン諸島時間"
+        ]
+      },
+      "Pacific/Kosrae": {
+        "long": [
+          "コスラエ時間",
+          "コスラエ時間"
+        ]
+      },
+      "Pacific/Kwajalein": {
+        "long": [
+          "マーシャル諸島時間",
+          "マーシャル諸島時間"
+        ]
+      },
+      "Pacific/Majuro": {
+        "long": [
+          "マーシャル諸島時間",
+          "マーシャル諸島時間"
+        ]
+      },
+      "Pacific/Marquesas": {
+        "long": [
+          "マルキーズ時間",
+          "マルキーズ時間"
+        ]
+      },
+      "Pacific/Midway": {
+        "long": [
+          "米領サモア標準時",
+          "米領サモア夏時間"
+        ]
+      },
+      "Pacific/Nauru": {
+        "long": [
+          "ナウル時間",
+          "ナウル時間"
+        ]
+      },
+      "Pacific/Niue": {
+        "long": [
+          "ニウエ時間",
+          "ニウエ時間"
+        ]
+      },
+      "Pacific/Norfolk": {
+        "long": [
+          "ノーフォーク島標準時",
+          "ノーフォーク島夏時間"
+        ]
+      },
+      "Pacific/Noumea": {
+        "long": [
+          "ニューカレドニア標準時",
+          "ニューカレドニア夏時間"
+        ]
+      },
+      "Pacific/Pago_Pago": {
+        "long": [
+          "米領サモア標準時",
+          "米領サモア夏時間"
+        ]
+      },
+      "Pacific/Palau": {
+        "long": [
+          "パラオ時間",
+          "パラオ時間"
+        ]
+      },
+      "Pacific/Pitcairn": {
+        "long": [
+          "ピトケアン時間",
+          "ピトケアン時間"
+        ]
+      },
+      "Pacific/Ponape": {
+        "long": [
+          "ポンペイ時間",
+          "ポンペイ時間"
+        ]
+      },
+      "Pacific/Port_Moresby": {
+        "long": [
+          "パプアニューギニア時間",
+          "パプアニューギニア時間"
+        ]
+      },
+      "Pacific/Rarotonga": {
+        "long": [
+          "クック諸島標準時",
+          "クック諸島夏時間"
+        ]
+      },
+      "Pacific/Saipan": {
+        "long": [
+          "チャモロ時間",
+          "チャモロ時間"
+        ]
+      },
+      "Pacific/Tahiti": {
+        "long": [
+          "タヒチ時間",
+          "タヒチ時間"
+        ]
+      },
+      "Pacific/Tarawa": {
+        "long": [
+          "ギルバート諸島時間",
+          "ギルバート諸島時間"
+        ]
+      },
+      "Pacific/Tongatapu": {
+        "long": [
+          "トンガ標準時",
+          "トンガ夏時間"
+        ]
+      },
+      "Pacific/Truk": {
+        "long": [
+          "チューク時間",
+          "チューク時間"
+        ]
+      },
+      "Pacific/Wake": {
+        "long": [
+          "ウェーク島時間",
+          "ウェーク島時間"
+        ]
+      },
+      "Pacific/Wallis": {
+        "long": [
+          "ウォリス・フツナ時間",
+          "ウォリス・フツナ時間"
+        ]
+      },
+      "UTC": {
+        "long": [
+          "協定世界時",
+          "協定世界時"
+        ],
+        "short": [
+          "UTC",
+          "UTC"
+        ]
+      }
+    },
+    "gmtFormat": "GMT{0}",
+    "hourFormat": "+HH:mm;-HH:mm",
+    "dateFormat": {
+      "full": "y年M月d日EEEE",
+      "long": "y年M月d日",
+      "medium": "y/MM/dd",
+      "short": "y/MM/dd"
+    },
+    "timeFormat": {
+      "full": "H時mm分ss秒 zzzz",
+      "long": "H:mm:ss z",
+      "medium": "H:mm:ss",
+      "short": "H:mm"
+    },
+    "dateTimeFormat": {
+      "full": "{1} {0}",
+      "long": "{1} {0}",
+      "medium": "{1} {0}",
+      "short": "{1} {0}"
+    },
+    "formats": {
+      "gregory": {
+        "Bh": "BK時",
+        "Bhm": "BK:mm",
+        "Bhms": "BK:mm:ss",
+        "d": "d日",
+        "E": "ccc",
+        "EBh": "BK時 (E)",
+        "EBhm": "BK:mm (E)",
+        "EBhms": "BK:mm:ss (E)",
+        "Ed": "d日(E)",
+        "EEEEd": "d日EEEE",
+        "Eh": "aK時 (E)",
+        "Ehm": "aK:mm (E)",
+        "EHm": "H:mm (E)",
+        "Ehms": "aK:mm:ss (E)",
+        "EHms": "H:mm:ss (E)",
+        "Gy": "Gy年",
+        "GyM": "Gy/M",
+        "GyMd": "Gy/M/d",
+        "GyMEd": "Gy/M/d(E)",
+        "GyMMM": "Gy年M月",
+        "GyMMMd": "Gy年M月d日",
+        "GyMMMEd": "Gy年M月d日(E)",
+        "GyMMMEEEEd": "Gy年M月d日EEEE",
+        "h": "aK時",
+        "H": "H時",
+        "hm": "aK:mm",
+        "Hm": "H:mm",
+        "hms": "aK:mm:ss",
+        "Hms": "H:mm:ss",
+        "hmsv": "aK:mm:ss v",
+        "Hmsv": "H:mm:ss v",
+        "hmv": "aK:mm v",
+        "Hmv": "H:mm v",
+        "hv": "aK時 v",
+        "Hv": "H時 v",
+        "M": "M月",
+        "Md": "M/d",
+        "MEd": "M/d(E)",
+        "MEEEEd": "M/dEEEE",
+        "MMM": "M月",
+        "MMMd": "M月d日",
+        "MMMEd": "M月d日(E)",
+        "MMMEEEEd": "M月d日EEEE",
+        "MMMMd": "M月d日",
+        "ms": "mm:ss",
+        "y": "y年",
+        "yM": "y/M",
+        "yMd": "y/M/d",
+        "yMEd": "y/M/d(E)",
+        "yMEEEEd": "y/M/dEEEE",
+        "yMM": "y/MM",
+        "yMMM": "y年M月",
+        "yMMMd": "y年M月d日",
+        "yMMMEd": "y年M月d日(E)",
+        "yMMMEEEEd": "y年M月d日EEEE",
+        "yMMMM": "y年M月",
+        "y年M月d日EEEE": "y年M月d日EEEE",
+        "y年M月d日": "y年M月d日",
+        "y/MM/dd": "y/MM/dd",
+        "H時mm分ss秒 zzzz": "H時mm分ss秒 zzzz",
+        "H:mm:ss z": "H:mm:ss z",
+        "H:mm:ss": "H:mm:ss",
+        "H:mm": "H:mm",
+        "y年M月d日EEEE H時mm分ss秒 zzzz": "y年M月d日EEEE H時mm分ss秒 zzzz",
+        "y年M月d日 H時mm分ss秒 zzzz": "y年M月d日 H時mm分ss秒 zzzz",
+        "y/MM/dd H時mm分ss秒 zzzz": "y/MM/dd H時mm分ss秒 zzzz",
+        "d H時mm分ss秒 zzzz": "d日 H時mm分ss秒 zzzz",
+        "E H時mm分ss秒 zzzz": "ccc H時mm分ss秒 zzzz",
+        "Ed H時mm分ss秒 zzzz": "d日(E) H時mm分ss秒 zzzz",
+        "EEEEd H時mm分ss秒 zzzz": "d日EEEE H時mm分ss秒 zzzz",
+        "Gy H時mm分ss秒 zzzz": "Gy年 H時mm分ss秒 zzzz",
+        "GyM H時mm分ss秒 zzzz": "Gy/M H時mm分ss秒 zzzz",
+        "GyMd H時mm分ss秒 zzzz": "Gy/M/d H時mm分ss秒 zzzz",
+        "GyMEd H時mm分ss秒 zzzz": "Gy/M/d(E) H時mm分ss秒 zzzz",
+        "GyMMM H時mm分ss秒 zzzz": "Gy年M月 H時mm分ss秒 zzzz",
+        "GyMMMd H時mm分ss秒 zzzz": "Gy年M月d日 H時mm分ss秒 zzzz",
+        "GyMMMEd H時mm分ss秒 zzzz": "Gy年M月d日(E) H時mm分ss秒 zzzz",
+        "GyMMMEEEEd H時mm分ss秒 zzzz": "Gy年M月d日EEEE H時mm分ss秒 zzzz",
+        "M H時mm分ss秒 zzzz": "M月 H時mm分ss秒 zzzz",
+        "Md H時mm分ss秒 zzzz": "M/d H時mm分ss秒 zzzz",
+        "MEd H時mm分ss秒 zzzz": "M/d(E) H時mm分ss秒 zzzz",
+        "MEEEEd H時mm分ss秒 zzzz": "M/dEEEE H時mm分ss秒 zzzz",
+        "MMM H時mm分ss秒 zzzz": "M月 H時mm分ss秒 zzzz",
+        "MMMd H時mm分ss秒 zzzz": "M月d日 H時mm分ss秒 zzzz",
+        "MMMEd H時mm分ss秒 zzzz": "M月d日(E) H時mm分ss秒 zzzz",
+        "MMMEEEEd H時mm分ss秒 zzzz": "M月d日EEEE H時mm分ss秒 zzzz",
+        "MMMMd H時mm分ss秒 zzzz": "M月d日 H時mm分ss秒 zzzz",
+        "y H時mm分ss秒 zzzz": "y年 H時mm分ss秒 zzzz",
+        "yM H時mm分ss秒 zzzz": "y/M H時mm分ss秒 zzzz",
+        "yMd H時mm分ss秒 zzzz": "y/M/d H時mm分ss秒 zzzz",
+        "yMEd H時mm分ss秒 zzzz": "y/M/d(E) H時mm分ss秒 zzzz",
+        "yMEEEEd H時mm分ss秒 zzzz": "y/M/dEEEE H時mm分ss秒 zzzz",
+        "yMM H時mm分ss秒 zzzz": "y/MM H時mm分ss秒 zzzz",
+        "yMMM H時mm分ss秒 zzzz": "y年M月 H時mm分ss秒 zzzz",
+        "yMMMd H時mm分ss秒 zzzz": "y年M月d日 H時mm分ss秒 zzzz",
+        "yMMMEd H時mm分ss秒 zzzz": "y年M月d日(E) H時mm分ss秒 zzzz",
+        "yMMMEEEEd H時mm分ss秒 zzzz": "y年M月d日EEEE H時mm分ss秒 zzzz",
+        "yMMMM H時mm分ss秒 zzzz": "y年M月 H時mm分ss秒 zzzz",
+        "y年M月d日EEEE H:mm:ss z": "y年M月d日EEEE H:mm:ss z",
+        "y年M月d日 H:mm:ss z": "y年M月d日 H:mm:ss z",
+        "y/MM/dd H:mm:ss z": "y/MM/dd H:mm:ss z",
+        "d H:mm:ss z": "d日 H:mm:ss z",
+        "E H:mm:ss z": "ccc H:mm:ss z",
+        "Ed H:mm:ss z": "d日(E) H:mm:ss z",
+        "EEEEd H:mm:ss z": "d日EEEE H:mm:ss z",
+        "Gy H:mm:ss z": "Gy年 H:mm:ss z",
+        "GyM H:mm:ss z": "Gy/M H:mm:ss z",
+        "GyMd H:mm:ss z": "Gy/M/d H:mm:ss z",
+        "GyMEd H:mm:ss z": "Gy/M/d(E) H:mm:ss z",
+        "GyMMM H:mm:ss z": "Gy年M月 H:mm:ss z",
+        "GyMMMd H:mm:ss z": "Gy年M月d日 H:mm:ss z",
+        "GyMMMEd H:mm:ss z": "Gy年M月d日(E) H:mm:ss z",
+        "GyMMMEEEEd H:mm:ss z": "Gy年M月d日EEEE H:mm:ss z",
+        "M H:mm:ss z": "M月 H:mm:ss z",
+        "Md H:mm:ss z": "M/d H:mm:ss z",
+        "MEd H:mm:ss z": "M/d(E) H:mm:ss z",
+        "MEEEEd H:mm:ss z": "M/dEEEE H:mm:ss z",
+        "MMM H:mm:ss z": "M月 H:mm:ss z",
+        "MMMd H:mm:ss z": "M月d日 H:mm:ss z",
+        "MMMEd H:mm:ss z": "M月d日(E) H:mm:ss z",
+        "MMMEEEEd H:mm:ss z": "M月d日EEEE H:mm:ss z",
+        "MMMMd H:mm:ss z": "M月d日 H:mm:ss z",
+        "y H:mm:ss z": "y年 H:mm:ss z",
+        "yM H:mm:ss z": "y/M H:mm:ss z",
+        "yMd H:mm:ss z": "y/M/d H:mm:ss z",
+        "yMEd H:mm:ss z": "y/M/d(E) H:mm:ss z",
+        "yMEEEEd H:mm:ss z": "y/M/dEEEE H:mm:ss z",
+        "yMM H:mm:ss z": "y/MM H:mm:ss z",
+        "yMMM H:mm:ss z": "y年M月 H:mm:ss z",
+        "yMMMd H:mm:ss z": "y年M月d日 H:mm:ss z",
+        "yMMMEd H:mm:ss z": "y年M月d日(E) H:mm:ss z",
+        "yMMMEEEEd H:mm:ss z": "y年M月d日EEEE H:mm:ss z",
+        "yMMMM H:mm:ss z": "y年M月 H:mm:ss z",
+        "y年M月d日EEEE H:mm:ss": "y年M月d日EEEE H:mm:ss",
+        "y年M月d日 H:mm:ss": "y年M月d日 H:mm:ss",
+        "y/MM/dd H:mm:ss": "y/MM/dd H:mm:ss",
+        "d H:mm:ss": "d日 H:mm:ss",
+        "E H:mm:ss": "ccc H:mm:ss",
+        "Ed H:mm:ss": "d日(E) H:mm:ss",
+        "EEEEd H:mm:ss": "d日EEEE H:mm:ss",
+        "Gy H:mm:ss": "Gy年 H:mm:ss",
+        "GyM H:mm:ss": "Gy/M H:mm:ss",
+        "GyMd H:mm:ss": "Gy/M/d H:mm:ss",
+        "GyMEd H:mm:ss": "Gy/M/d(E) H:mm:ss",
+        "GyMMM H:mm:ss": "Gy年M月 H:mm:ss",
+        "GyMMMd H:mm:ss": "Gy年M月d日 H:mm:ss",
+        "GyMMMEd H:mm:ss": "Gy年M月d日(E) H:mm:ss",
+        "GyMMMEEEEd H:mm:ss": "Gy年M月d日EEEE H:mm:ss",
+        "M H:mm:ss": "M月 H:mm:ss",
+        "Md H:mm:ss": "M/d H:mm:ss",
+        "MEd H:mm:ss": "M/d(E) H:mm:ss",
+        "MEEEEd H:mm:ss": "M/dEEEE H:mm:ss",
+        "MMM H:mm:ss": "M月 H:mm:ss",
+        "MMMd H:mm:ss": "M月d日 H:mm:ss",
+        "MMMEd H:mm:ss": "M月d日(E) H:mm:ss",
+        "MMMEEEEd H:mm:ss": "M月d日EEEE H:mm:ss",
+        "MMMMd H:mm:ss": "M月d日 H:mm:ss",
+        "y H:mm:ss": "y年 H:mm:ss",
+        "yM H:mm:ss": "y/M H:mm:ss",
+        "yMd H:mm:ss": "y/M/d H:mm:ss",
+        "yMEd H:mm:ss": "y/M/d(E) H:mm:ss",
+        "yMEEEEd H:mm:ss": "y/M/dEEEE H:mm:ss",
+        "yMM H:mm:ss": "y/MM H:mm:ss",
+        "yMMM H:mm:ss": "y年M月 H:mm:ss",
+        "yMMMd H:mm:ss": "y年M月d日 H:mm:ss",
+        "yMMMEd H:mm:ss": "y年M月d日(E) H:mm:ss",
+        "yMMMEEEEd H:mm:ss": "y年M月d日EEEE H:mm:ss",
+        "yMMMM H:mm:ss": "y年M月 H:mm:ss",
+        "y年M月d日EEEE H:mm": "y年M月d日EEEE H:mm",
+        "y年M月d日 H:mm": "y年M月d日 H:mm",
+        "y/MM/dd H:mm": "y/MM/dd H:mm",
+        "d H:mm": "d日 H:mm",
+        "E H:mm": "ccc H:mm",
+        "Ed H:mm": "d日(E) H:mm",
+        "EEEEd H:mm": "d日EEEE H:mm",
+        "Gy H:mm": "Gy年 H:mm",
+        "GyM H:mm": "Gy/M H:mm",
+        "GyMd H:mm": "Gy/M/d H:mm",
+        "GyMEd H:mm": "Gy/M/d(E) H:mm",
+        "GyMMM H:mm": "Gy年M月 H:mm",
+        "GyMMMd H:mm": "Gy年M月d日 H:mm",
+        "GyMMMEd H:mm": "Gy年M月d日(E) H:mm",
+        "GyMMMEEEEd H:mm": "Gy年M月d日EEEE H:mm",
+        "M H:mm": "M月 H:mm",
+        "Md H:mm": "M/d H:mm",
+        "MEd H:mm": "M/d(E) H:mm",
+        "MEEEEd H:mm": "M/dEEEE H:mm",
+        "MMM H:mm": "M月 H:mm",
+        "MMMd H:mm": "M月d日 H:mm",
+        "MMMEd H:mm": "M月d日(E) H:mm",
+        "MMMEEEEd H:mm": "M月d日EEEE H:mm",
+        "MMMMd H:mm": "M月d日 H:mm",
+        "y H:mm": "y年 H:mm",
+        "yM H:mm": "y/M H:mm",
+        "yMd H:mm": "y/M/d H:mm",
+        "yMEd H:mm": "y/M/d(E) H:mm",
+        "yMEEEEd H:mm": "y/M/dEEEE H:mm",
+        "yMM H:mm": "y/MM H:mm",
+        "yMMM H:mm": "y年M月 H:mm",
+        "yMMMd H:mm": "y年M月d日 H:mm",
+        "yMMMEd H:mm": "y年M月d日(E) H:mm",
+        "yMMMEEEEd H:mm": "y年M月d日EEEE H:mm",
+        "yMMMM H:mm": "y年M月 H:mm",
+        "y年M月d日EEEE Bh": "y年M月d日EEEE BK時",
+        "y年M月d日 Bh": "y年M月d日 BK時",
+        "y/MM/dd Bh": "y/MM/dd BK時",
+        "d Bh": "d日 BK時",
+        "E Bh": "ccc BK時",
+        "Ed Bh": "d日(E) BK時",
+        "EEEEd Bh": "d日EEEE BK時",
+        "Gy Bh": "Gy年 BK時",
+        "GyM Bh": "Gy/M BK時",
+        "GyMd Bh": "Gy/M/d BK時",
+        "GyMEd Bh": "Gy/M/d(E) BK時",
+        "GyMMM Bh": "Gy年M月 BK時",
+        "GyMMMd Bh": "Gy年M月d日 BK時",
+        "GyMMMEd Bh": "Gy年M月d日(E) BK時",
+        "GyMMMEEEEd Bh": "Gy年M月d日EEEE BK時",
+        "M Bh": "M月 BK時",
+        "Md Bh": "M/d BK時",
+        "MEd Bh": "M/d(E) BK時",
+        "MEEEEd Bh": "M/dEEEE BK時",
+        "MMM Bh": "M月 BK時",
+        "MMMd Bh": "M月d日 BK時",
+        "MMMEd Bh": "M月d日(E) BK時",
+        "MMMEEEEd Bh": "M月d日EEEE BK時",
+        "MMMMd Bh": "M月d日 BK時",
+        "y Bh": "y年 BK時",
+        "yM Bh": "y/M BK時",
+        "yMd Bh": "y/M/d BK時",
+        "yMEd Bh": "y/M/d(E) BK時",
+        "yMEEEEd Bh": "y/M/dEEEE BK時",
+        "yMM Bh": "y/MM BK時",
+        "yMMM Bh": "y年M月 BK時",
+        "yMMMd Bh": "y年M月d日 BK時",
+        "yMMMEd Bh": "y年M月d日(E) BK時",
+        "yMMMEEEEd Bh": "y年M月d日EEEE BK時",
+        "yMMMM Bh": "y年M月 BK時",
+        "y年M月d日EEEE Bhm": "y年M月d日EEEE BK:mm",
+        "y年M月d日 Bhm": "y年M月d日 BK:mm",
+        "y/MM/dd Bhm": "y/MM/dd BK:mm",
+        "d Bhm": "d日 BK:mm",
+        "E Bhm": "ccc BK:mm",
+        "Ed Bhm": "d日(E) BK:mm",
+        "EEEEd Bhm": "d日EEEE BK:mm",
+        "Gy Bhm": "Gy年 BK:mm",
+        "GyM Bhm": "Gy/M BK:mm",
+        "GyMd Bhm": "Gy/M/d BK:mm",
+        "GyMEd Bhm": "Gy/M/d(E) BK:mm",
+        "GyMMM Bhm": "Gy年M月 BK:mm",
+        "GyMMMd Bhm": "Gy年M月d日 BK:mm",
+        "GyMMMEd Bhm": "Gy年M月d日(E) BK:mm",
+        "GyMMMEEEEd Bhm": "Gy年M月d日EEEE BK:mm",
+        "M Bhm": "M月 BK:mm",
+        "Md Bhm": "M/d BK:mm",
+        "MEd Bhm": "M/d(E) BK:mm",
+        "MEEEEd Bhm": "M/dEEEE BK:mm",
+        "MMM Bhm": "M月 BK:mm",
+        "MMMd Bhm": "M月d日 BK:mm",
+        "MMMEd Bhm": "M月d日(E) BK:mm",
+        "MMMEEEEd Bhm": "M月d日EEEE BK:mm",
+        "MMMMd Bhm": "M月d日 BK:mm",
+        "y Bhm": "y年 BK:mm",
+        "yM Bhm": "y/M BK:mm",
+        "yMd Bhm": "y/M/d BK:mm",
+        "yMEd Bhm": "y/M/d(E) BK:mm",
+        "yMEEEEd Bhm": "y/M/dEEEE BK:mm",
+        "yMM Bhm": "y/MM BK:mm",
+        "yMMM Bhm": "y年M月 BK:mm",
+        "yMMMd Bhm": "y年M月d日 BK:mm",
+        "yMMMEd Bhm": "y年M月d日(E) BK:mm",
+        "yMMMEEEEd Bhm": "y年M月d日EEEE BK:mm",
+        "yMMMM Bhm": "y年M月 BK:mm",
+        "y年M月d日EEEE Bhms": "y年M月d日EEEE BK:mm:ss",
+        "y年M月d日 Bhms": "y年M月d日 BK:mm:ss",
+        "y/MM/dd Bhms": "y/MM/dd BK:mm:ss",
+        "d Bhms": "d日 BK:mm:ss",
+        "E Bhms": "ccc BK:mm:ss",
+        "Ed Bhms": "d日(E) BK:mm:ss",
+        "EEEEd Bhms": "d日EEEE BK:mm:ss",
+        "Gy Bhms": "Gy年 BK:mm:ss",
+        "GyM Bhms": "Gy/M BK:mm:ss",
+        "GyMd Bhms": "Gy/M/d BK:mm:ss",
+        "GyMEd Bhms": "Gy/M/d(E) BK:mm:ss",
+        "GyMMM Bhms": "Gy年M月 BK:mm:ss",
+        "GyMMMd Bhms": "Gy年M月d日 BK:mm:ss",
+        "GyMMMEd Bhms": "Gy年M月d日(E) BK:mm:ss",
+        "GyMMMEEEEd Bhms": "Gy年M月d日EEEE BK:mm:ss",
+        "M Bhms": "M月 BK:mm:ss",
+        "Md Bhms": "M/d BK:mm:ss",
+        "MEd Bhms": "M/d(E) BK:mm:ss",
+        "MEEEEd Bhms": "M/dEEEE BK:mm:ss",
+        "MMM Bhms": "M月 BK:mm:ss",
+        "MMMd Bhms": "M月d日 BK:mm:ss",
+        "MMMEd Bhms": "M月d日(E) BK:mm:ss",
+        "MMMEEEEd Bhms": "M月d日EEEE BK:mm:ss",
+        "MMMMd Bhms": "M月d日 BK:mm:ss",
+        "y Bhms": "y年 BK:mm:ss",
+        "yM Bhms": "y/M BK:mm:ss",
+        "yMd Bhms": "y/M/d BK:mm:ss",
+        "yMEd Bhms": "y/M/d(E) BK:mm:ss",
+        "yMEEEEd Bhms": "y/M/dEEEE BK:mm:ss",
+        "yMM Bhms": "y/MM BK:mm:ss",
+        "yMMM Bhms": "y年M月 BK:mm:ss",
+        "yMMMd Bhms": "y年M月d日 BK:mm:ss",
+        "yMMMEd Bhms": "y年M月d日(E) BK:mm:ss",
+        "yMMMEEEEd Bhms": "y年M月d日EEEE BK:mm:ss",
+        "yMMMM Bhms": "y年M月 BK:mm:ss",
+        "y年M月d日EEEE h": "y年M月d日EEEE aK時",
+        "y年M月d日 h": "y年M月d日 aK時",
+        "y/MM/dd h": "y/MM/dd aK時",
+        "d h": "d日 aK時",
+        "E h": "ccc aK時",
+        "Ed h": "d日(E) aK時",
+        "EEEEd h": "d日EEEE aK時",
+        "Gy h": "Gy年 aK時",
+        "GyM h": "Gy/M aK時",
+        "GyMd h": "Gy/M/d aK時",
+        "GyMEd h": "Gy/M/d(E) aK時",
+        "GyMMM h": "Gy年M月 aK時",
+        "GyMMMd h": "Gy年M月d日 aK時",
+        "GyMMMEd h": "Gy年M月d日(E) aK時",
+        "GyMMMEEEEd h": "Gy年M月d日EEEE aK時",
+        "M h": "M月 aK時",
+        "Md h": "M/d aK時",
+        "MEd h": "M/d(E) aK時",
+        "MEEEEd h": "M/dEEEE aK時",
+        "MMM h": "M月 aK時",
+        "MMMd h": "M月d日 aK時",
+        "MMMEd h": "M月d日(E) aK時",
+        "MMMEEEEd h": "M月d日EEEE aK時",
+        "MMMMd h": "M月d日 aK時",
+        "y h": "y年 aK時",
+        "yM h": "y/M aK時",
+        "yMd h": "y/M/d aK時",
+        "yMEd h": "y/M/d(E) aK時",
+        "yMEEEEd h": "y/M/dEEEE aK時",
+        "yMM h": "y/MM aK時",
+        "yMMM h": "y年M月 aK時",
+        "yMMMd h": "y年M月d日 aK時",
+        "yMMMEd h": "y年M月d日(E) aK時",
+        "yMMMEEEEd h": "y年M月d日EEEE aK時",
+        "yMMMM h": "y年M月 aK時",
+        "y年M月d日EEEE H": "y年M月d日EEEE H時",
+        "y年M月d日 H": "y年M月d日 H時",
+        "y/MM/dd H": "y/MM/dd H時",
+        "d H": "d日 H時",
+        "E H": "ccc H時",
+        "Ed H": "d日(E) H時",
+        "EEEEd H": "d日EEEE H時",
+        "Gy H": "Gy年 H時",
+        "GyM H": "Gy/M H時",
+        "GyMd H": "Gy/M/d H時",
+        "GyMEd H": "Gy/M/d(E) H時",
+        "GyMMM H": "Gy年M月 H時",
+        "GyMMMd H": "Gy年M月d日 H時",
+        "GyMMMEd H": "Gy年M月d日(E) H時",
+        "GyMMMEEEEd H": "Gy年M月d日EEEE H時",
+        "M H": "M月 H時",
+        "Md H": "M/d H時",
+        "MEd H": "M/d(E) H時",
+        "MEEEEd H": "M/dEEEE H時",
+        "MMM H": "M月 H時",
+        "MMMd H": "M月d日 H時",
+        "MMMEd H": "M月d日(E) H時",
+        "MMMEEEEd H": "M月d日EEEE H時",
+        "MMMMd H": "M月d日 H時",
+        "y H": "y年 H時",
+        "yM H": "y/M H時",
+        "yMd H": "y/M/d H時",
+        "yMEd H": "y/M/d(E) H時",
+        "yMEEEEd H": "y/M/dEEEE H時",
+        "yMM H": "y/MM H時",
+        "yMMM H": "y年M月 H時",
+        "yMMMd H": "y年M月d日 H時",
+        "yMMMEd H": "y年M月d日(E) H時",
+        "yMMMEEEEd H": "y年M月d日EEEE H時",
+        "yMMMM H": "y年M月 H時",
+        "y年M月d日EEEE hm": "y年M月d日EEEE aK:mm",
+        "y年M月d日 hm": "y年M月d日 aK:mm",
+        "y/MM/dd hm": "y/MM/dd aK:mm",
+        "d hm": "d日 aK:mm",
+        "E hm": "ccc aK:mm",
+        "Ed hm": "d日(E) aK:mm",
+        "EEEEd hm": "d日EEEE aK:mm",
+        "Gy hm": "Gy年 aK:mm",
+        "GyM hm": "Gy/M aK:mm",
+        "GyMd hm": "Gy/M/d aK:mm",
+        "GyMEd hm": "Gy/M/d(E) aK:mm",
+        "GyMMM hm": "Gy年M月 aK:mm",
+        "GyMMMd hm": "Gy年M月d日 aK:mm",
+        "GyMMMEd hm": "Gy年M月d日(E) aK:mm",
+        "GyMMMEEEEd hm": "Gy年M月d日EEEE aK:mm",
+        "M hm": "M月 aK:mm",
+        "Md hm": "M/d aK:mm",
+        "MEd hm": "M/d(E) aK:mm",
+        "MEEEEd hm": "M/dEEEE aK:mm",
+        "MMM hm": "M月 aK:mm",
+        "MMMd hm": "M月d日 aK:mm",
+        "MMMEd hm": "M月d日(E) aK:mm",
+        "MMMEEEEd hm": "M月d日EEEE aK:mm",
+        "MMMMd hm": "M月d日 aK:mm",
+        "y hm": "y年 aK:mm",
+        "yM hm": "y/M aK:mm",
+        "yMd hm": "y/M/d aK:mm",
+        "yMEd hm": "y/M/d(E) aK:mm",
+        "yMEEEEd hm": "y/M/dEEEE aK:mm",
+        "yMM hm": "y/MM aK:mm",
+        "yMMM hm": "y年M月 aK:mm",
+        "yMMMd hm": "y年M月d日 aK:mm",
+        "yMMMEd hm": "y年M月d日(E) aK:mm",
+        "yMMMEEEEd hm": "y年M月d日EEEE aK:mm",
+        "yMMMM hm": "y年M月 aK:mm",
+        "y年M月d日EEEE Hm": "y年M月d日EEEE H:mm",
+        "y年M月d日 Hm": "y年M月d日 H:mm",
+        "y/MM/dd Hm": "y/MM/dd H:mm",
+        "d Hm": "d日 H:mm",
+        "E Hm": "ccc H:mm",
+        "Ed Hm": "d日(E) H:mm",
+        "EEEEd Hm": "d日EEEE H:mm",
+        "Gy Hm": "Gy年 H:mm",
+        "GyM Hm": "Gy/M H:mm",
+        "GyMd Hm": "Gy/M/d H:mm",
+        "GyMEd Hm": "Gy/M/d(E) H:mm",
+        "GyMMM Hm": "Gy年M月 H:mm",
+        "GyMMMd Hm": "Gy年M月d日 H:mm",
+        "GyMMMEd Hm": "Gy年M月d日(E) H:mm",
+        "GyMMMEEEEd Hm": "Gy年M月d日EEEE H:mm",
+        "M Hm": "M月 H:mm",
+        "Md Hm": "M/d H:mm",
+        "MEd Hm": "M/d(E) H:mm",
+        "MEEEEd Hm": "M/dEEEE H:mm",
+        "MMM Hm": "M月 H:mm",
+        "MMMd Hm": "M月d日 H:mm",
+        "MMMEd Hm": "M月d日(E) H:mm",
+        "MMMEEEEd Hm": "M月d日EEEE H:mm",
+        "MMMMd Hm": "M月d日 H:mm",
+        "y Hm": "y年 H:mm",
+        "yM Hm": "y/M H:mm",
+        "yMd Hm": "y/M/d H:mm",
+        "yMEd Hm": "y/M/d(E) H:mm",
+        "yMEEEEd Hm": "y/M/dEEEE H:mm",
+        "yMM Hm": "y/MM H:mm",
+        "yMMM Hm": "y年M月 H:mm",
+        "yMMMd Hm": "y年M月d日 H:mm",
+        "yMMMEd Hm": "y年M月d日(E) H:mm",
+        "yMMMEEEEd Hm": "y年M月d日EEEE H:mm",
+        "yMMMM Hm": "y年M月 H:mm",
+        "y年M月d日EEEE hms": "y年M月d日EEEE aK:mm:ss",
+        "y年M月d日 hms": "y年M月d日 aK:mm:ss",
+        "y/MM/dd hms": "y/MM/dd aK:mm:ss",
+        "d hms": "d日 aK:mm:ss",
+        "E hms": "ccc aK:mm:ss",
+        "Ed hms": "d日(E) aK:mm:ss",
+        "EEEEd hms": "d日EEEE aK:mm:ss",
+        "Gy hms": "Gy年 aK:mm:ss",
+        "GyM hms": "Gy/M aK:mm:ss",
+        "GyMd hms": "Gy/M/d aK:mm:ss",
+        "GyMEd hms": "Gy/M/d(E) aK:mm:ss",
+        "GyMMM hms": "Gy年M月 aK:mm:ss",
+        "GyMMMd hms": "Gy年M月d日 aK:mm:ss",
+        "GyMMMEd hms": "Gy年M月d日(E) aK:mm:ss",
+        "GyMMMEEEEd hms": "Gy年M月d日EEEE aK:mm:ss",
+        "M hms": "M月 aK:mm:ss",
+        "Md hms": "M/d aK:mm:ss",
+        "MEd hms": "M/d(E) aK:mm:ss",
+        "MEEEEd hms": "M/dEEEE aK:mm:ss",
+        "MMM hms": "M月 aK:mm:ss",
+        "MMMd hms": "M月d日 aK:mm:ss",
+        "MMMEd hms": "M月d日(E) aK:mm:ss",
+        "MMMEEEEd hms": "M月d日EEEE aK:mm:ss",
+        "MMMMd hms": "M月d日 aK:mm:ss",
+        "y hms": "y年 aK:mm:ss",
+        "yM hms": "y/M aK:mm:ss",
+        "yMd hms": "y/M/d aK:mm:ss",
+        "yMEd hms": "y/M/d(E) aK:mm:ss",
+        "yMEEEEd hms": "y/M/dEEEE aK:mm:ss",
+        "yMM hms": "y/MM aK:mm:ss",
+        "yMMM hms": "y年M月 aK:mm:ss",
+        "yMMMd hms": "y年M月d日 aK:mm:ss",
+        "yMMMEd hms": "y年M月d日(E) aK:mm:ss",
+        "yMMMEEEEd hms": "y年M月d日EEEE aK:mm:ss",
+        "yMMMM hms": "y年M月 aK:mm:ss",
+        "y年M月d日EEEE Hms": "y年M月d日EEEE H:mm:ss",
+        "y年M月d日 Hms": "y年M月d日 H:mm:ss",
+        "y/MM/dd Hms": "y/MM/dd H:mm:ss",
+        "d Hms": "d日 H:mm:ss",
+        "E Hms": "ccc H:mm:ss",
+        "Ed Hms": "d日(E) H:mm:ss",
+        "EEEEd Hms": "d日EEEE H:mm:ss",
+        "Gy Hms": "Gy年 H:mm:ss",
+        "GyM Hms": "Gy/M H:mm:ss",
+        "GyMd Hms": "Gy/M/d H:mm:ss",
+        "GyMEd Hms": "Gy/M/d(E) H:mm:ss",
+        "GyMMM Hms": "Gy年M月 H:mm:ss",
+        "GyMMMd Hms": "Gy年M月d日 H:mm:ss",
+        "GyMMMEd Hms": "Gy年M月d日(E) H:mm:ss",
+        "GyMMMEEEEd Hms": "Gy年M月d日EEEE H:mm:ss",
+        "M Hms": "M月 H:mm:ss",
+        "Md Hms": "M/d H:mm:ss",
+        "MEd Hms": "M/d(E) H:mm:ss",
+        "MEEEEd Hms": "M/dEEEE H:mm:ss",
+        "MMM Hms": "M月 H:mm:ss",
+        "MMMd Hms": "M月d日 H:mm:ss",
+        "MMMEd Hms": "M月d日(E) H:mm:ss",
+        "MMMEEEEd Hms": "M月d日EEEE H:mm:ss",
+        "MMMMd Hms": "M月d日 H:mm:ss",
+        "y Hms": "y年 H:mm:ss",
+        "yM Hms": "y/M H:mm:ss",
+        "yMd Hms": "y/M/d H:mm:ss",
+        "yMEd Hms": "y/M/d(E) H:mm:ss",
+        "yMEEEEd Hms": "y/M/dEEEE H:mm:ss",
+        "yMM Hms": "y/MM H:mm:ss",
+        "yMMM Hms": "y年M月 H:mm:ss",
+        "yMMMd Hms": "y年M月d日 H:mm:ss",
+        "yMMMEd Hms": "y年M月d日(E) H:mm:ss",
+        "yMMMEEEEd Hms": "y年M月d日EEEE H:mm:ss",
+        "yMMMM Hms": "y年M月 H:mm:ss",
+        "y年M月d日EEEE hmsv": "y年M月d日EEEE aK:mm:ss v",
+        "y年M月d日 hmsv": "y年M月d日 aK:mm:ss v",
+        "y/MM/dd hmsv": "y/MM/dd aK:mm:ss v",
+        "d hmsv": "d日 aK:mm:ss v",
+        "E hmsv": "ccc aK:mm:ss v",
+        "Ed hmsv": "d日(E) aK:mm:ss v",
+        "EEEEd hmsv": "d日EEEE aK:mm:ss v",
+        "Gy hmsv": "Gy年 aK:mm:ss v",
+        "GyM hmsv": "Gy/M aK:mm:ss v",
+        "GyMd hmsv": "Gy/M/d aK:mm:ss v",
+        "GyMEd hmsv": "Gy/M/d(E) aK:mm:ss v",
+        "GyMMM hmsv": "Gy年M月 aK:mm:ss v",
+        "GyMMMd hmsv": "Gy年M月d日 aK:mm:ss v",
+        "GyMMMEd hmsv": "Gy年M月d日(E) aK:mm:ss v",
+        "GyMMMEEEEd hmsv": "Gy年M月d日EEEE aK:mm:ss v",
+        "M hmsv": "M月 aK:mm:ss v",
+        "Md hmsv": "M/d aK:mm:ss v",
+        "MEd hmsv": "M/d(E) aK:mm:ss v",
+        "MEEEEd hmsv": "M/dEEEE aK:mm:ss v",
+        "MMM hmsv": "M月 aK:mm:ss v",
+        "MMMd hmsv": "M月d日 aK:mm:ss v",
+        "MMMEd hmsv": "M月d日(E) aK:mm:ss v",
+        "MMMEEEEd hmsv": "M月d日EEEE aK:mm:ss v",
+        "MMMMd hmsv": "M月d日 aK:mm:ss v",
+        "y hmsv": "y年 aK:mm:ss v",
+        "yM hmsv": "y/M aK:mm:ss v",
+        "yMd hmsv": "y/M/d aK:mm:ss v",
+        "yMEd hmsv": "y/M/d(E) aK:mm:ss v",
+        "yMEEEEd hmsv": "y/M/dEEEE aK:mm:ss v",
+        "yMM hmsv": "y/MM aK:mm:ss v",
+        "yMMM hmsv": "y年M月 aK:mm:ss v",
+        "yMMMd hmsv": "y年M月d日 aK:mm:ss v",
+        "yMMMEd hmsv": "y年M月d日(E) aK:mm:ss v",
+        "yMMMEEEEd hmsv": "y年M月d日EEEE aK:mm:ss v",
+        "yMMMM hmsv": "y年M月 aK:mm:ss v",
+        "y年M月d日EEEE Hmsv": "y年M月d日EEEE H:mm:ss v",
+        "y年M月d日 Hmsv": "y年M月d日 H:mm:ss v",
+        "y/MM/dd Hmsv": "y/MM/dd H:mm:ss v",
+        "d Hmsv": "d日 H:mm:ss v",
+        "E Hmsv": "ccc H:mm:ss v",
+        "Ed Hmsv": "d日(E) H:mm:ss v",
+        "EEEEd Hmsv": "d日EEEE H:mm:ss v",
+        "Gy Hmsv": "Gy年 H:mm:ss v",
+        "GyM Hmsv": "Gy/M H:mm:ss v",
+        "GyMd Hmsv": "Gy/M/d H:mm:ss v",
+        "GyMEd Hmsv": "Gy/M/d(E) H:mm:ss v",
+        "GyMMM Hmsv": "Gy年M月 H:mm:ss v",
+        "GyMMMd Hmsv": "Gy年M月d日 H:mm:ss v",
+        "GyMMMEd Hmsv": "Gy年M月d日(E) H:mm:ss v",
+        "GyMMMEEEEd Hmsv": "Gy年M月d日EEEE H:mm:ss v",
+        "M Hmsv": "M月 H:mm:ss v",
+        "Md Hmsv": "M/d H:mm:ss v",
+        "MEd Hmsv": "M/d(E) H:mm:ss v",
+        "MEEEEd Hmsv": "M/dEEEE H:mm:ss v",
+        "MMM Hmsv": "M月 H:mm:ss v",
+        "MMMd Hmsv": "M月d日 H:mm:ss v",
+        "MMMEd Hmsv": "M月d日(E) H:mm:ss v",
+        "MMMEEEEd Hmsv": "M月d日EEEE H:mm:ss v",
+        "MMMMd Hmsv": "M月d日 H:mm:ss v",
+        "y Hmsv": "y年 H:mm:ss v",
+        "yM Hmsv": "y/M H:mm:ss v",
+        "yMd Hmsv": "y/M/d H:mm:ss v",
+        "yMEd Hmsv": "y/M/d(E) H:mm:ss v",
+        "yMEEEEd Hmsv": "y/M/dEEEE H:mm:ss v",
+        "yMM Hmsv": "y/MM H:mm:ss v",
+        "yMMM Hmsv": "y年M月 H:mm:ss v",
+        "yMMMd Hmsv": "y年M月d日 H:mm:ss v",
+        "yMMMEd Hmsv": "y年M月d日(E) H:mm:ss v",
+        "yMMMEEEEd Hmsv": "y年M月d日EEEE H:mm:ss v",
+        "yMMMM Hmsv": "y年M月 H:mm:ss v",
+        "y年M月d日EEEE hmv": "y年M月d日EEEE aK:mm v",
+        "y年M月d日 hmv": "y年M月d日 aK:mm v",
+        "y/MM/dd hmv": "y/MM/dd aK:mm v",
+        "d hmv": "d日 aK:mm v",
+        "E hmv": "ccc aK:mm v",
+        "Ed hmv": "d日(E) aK:mm v",
+        "EEEEd hmv": "d日EEEE aK:mm v",
+        "Gy hmv": "Gy年 aK:mm v",
+        "GyM hmv": "Gy/M aK:mm v",
+        "GyMd hmv": "Gy/M/d aK:mm v",
+        "GyMEd hmv": "Gy/M/d(E) aK:mm v",
+        "GyMMM hmv": "Gy年M月 aK:mm v",
+        "GyMMMd hmv": "Gy年M月d日 aK:mm v",
+        "GyMMMEd hmv": "Gy年M月d日(E) aK:mm v",
+        "GyMMMEEEEd hmv": "Gy年M月d日EEEE aK:mm v",
+        "M hmv": "M月 aK:mm v",
+        "Md hmv": "M/d aK:mm v",
+        "MEd hmv": "M/d(E) aK:mm v",
+        "MEEEEd hmv": "M/dEEEE aK:mm v",
+        "MMM hmv": "M月 aK:mm v",
+        "MMMd hmv": "M月d日 aK:mm v",
+        "MMMEd hmv": "M月d日(E) aK:mm v",
+        "MMMEEEEd hmv": "M月d日EEEE aK:mm v",
+        "MMMMd hmv": "M月d日 aK:mm v",
+        "y hmv": "y年 aK:mm v",
+        "yM hmv": "y/M aK:mm v",
+        "yMd hmv": "y/M/d aK:mm v",
+        "yMEd hmv": "y/M/d(E) aK:mm v",
+        "yMEEEEd hmv": "y/M/dEEEE aK:mm v",
+        "yMM hmv": "y/MM aK:mm v",
+        "yMMM hmv": "y年M月 aK:mm v",
+        "yMMMd hmv": "y年M月d日 aK:mm v",
+        "yMMMEd hmv": "y年M月d日(E) aK:mm v",
+        "yMMMEEEEd hmv": "y年M月d日EEEE aK:mm v",
+        "yMMMM hmv": "y年M月 aK:mm v",
+        "y年M月d日EEEE Hmv": "y年M月d日EEEE H:mm v",
+        "y年M月d日 Hmv": "y年M月d日 H:mm v",
+        "y/MM/dd Hmv": "y/MM/dd H:mm v",
+        "d Hmv": "d日 H:mm v",
+        "E Hmv": "ccc H:mm v",
+        "Ed Hmv": "d日(E) H:mm v",
+        "EEEEd Hmv": "d日EEEE H:mm v",
+        "Gy Hmv": "Gy年 H:mm v",
+        "GyM Hmv": "Gy/M H:mm v",
+        "GyMd Hmv": "Gy/M/d H:mm v",
+        "GyMEd Hmv": "Gy/M/d(E) H:mm v",
+        "GyMMM Hmv": "Gy年M月 H:mm v",
+        "GyMMMd Hmv": "Gy年M月d日 H:mm v",
+        "GyMMMEd Hmv": "Gy年M月d日(E) H:mm v",
+        "GyMMMEEEEd Hmv": "Gy年M月d日EEEE H:mm v",
+        "M Hmv": "M月 H:mm v",
+        "Md Hmv": "M/d H:mm v",
+        "MEd Hmv": "M/d(E) H:mm v",
+        "MEEEEd Hmv": "M/dEEEE H:mm v",
+        "MMM Hmv": "M月 H:mm v",
+        "MMMd Hmv": "M月d日 H:mm v",
+        "MMMEd Hmv": "M月d日(E) H:mm v",
+        "MMMEEEEd Hmv": "M月d日EEEE H:mm v",
+        "MMMMd Hmv": "M月d日 H:mm v",
+        "y Hmv": "y年 H:mm v",
+        "yM Hmv": "y/M H:mm v",
+        "yMd Hmv": "y/M/d H:mm v",
+        "yMEd Hmv": "y/M/d(E) H:mm v",
+        "yMEEEEd Hmv": "y/M/dEEEE H:mm v",
+        "yMM Hmv": "y/MM H:mm v",
+        "yMMM Hmv": "y年M月 H:mm v",
+        "yMMMd Hmv": "y年M月d日 H:mm v",
+        "yMMMEd Hmv": "y年M月d日(E) H:mm v",
+        "yMMMEEEEd Hmv": "y年M月d日EEEE H:mm v",
+        "yMMMM Hmv": "y年M月 H:mm v",
+        "y年M月d日EEEE hv": "y年M月d日EEEE aK時 v",
+        "y年M月d日 hv": "y年M月d日 aK時 v",
+        "y/MM/dd hv": "y/MM/dd aK時 v",
+        "d hv": "d日 aK時 v",
+        "E hv": "ccc aK時 v",
+        "Ed hv": "d日(E) aK時 v",
+        "EEEEd hv": "d日EEEE aK時 v",
+        "Gy hv": "Gy年 aK時 v",
+        "GyM hv": "Gy/M aK時 v",
+        "GyMd hv": "Gy/M/d aK時 v",
+        "GyMEd hv": "Gy/M/d(E) aK時 v",
+        "GyMMM hv": "Gy年M月 aK時 v",
+        "GyMMMd hv": "Gy年M月d日 aK時 v",
+        "GyMMMEd hv": "Gy年M月d日(E) aK時 v",
+        "GyMMMEEEEd hv": "Gy年M月d日EEEE aK時 v",
+        "M hv": "M月 aK時 v",
+        "Md hv": "M/d aK時 v",
+        "MEd hv": "M/d(E) aK時 v",
+        "MEEEEd hv": "M/dEEEE aK時 v",
+        "MMM hv": "M月 aK時 v",
+        "MMMd hv": "M月d日 aK時 v",
+        "MMMEd hv": "M月d日(E) aK時 v",
+        "MMMEEEEd hv": "M月d日EEEE aK時 v",
+        "MMMMd hv": "M月d日 aK時 v",
+        "y hv": "y年 aK時 v",
+        "yM hv": "y/M aK時 v",
+        "yMd hv": "y/M/d aK時 v",
+        "yMEd hv": "y/M/d(E) aK時 v",
+        "yMEEEEd hv": "y/M/dEEEE aK時 v",
+        "yMM hv": "y/MM aK時 v",
+        "yMMM hv": "y年M月 aK時 v",
+        "yMMMd hv": "y年M月d日 aK時 v",
+        "yMMMEd hv": "y年M月d日(E) aK時 v",
+        "yMMMEEEEd hv": "y年M月d日EEEE aK時 v",
+        "yMMMM hv": "y年M月 aK時 v",
+        "y年M月d日EEEE Hv": "y年M月d日EEEE H時 v",
+        "y年M月d日 Hv": "y年M月d日 H時 v",
+        "y/MM/dd Hv": "y/MM/dd H時 v",
+        "d Hv": "d日 H時 v",
+        "E Hv": "ccc H時 v",
+        "Ed Hv": "d日(E) H時 v",
+        "EEEEd Hv": "d日EEEE H時 v",
+        "Gy Hv": "Gy年 H時 v",
+        "GyM Hv": "Gy/M H時 v",
+        "GyMd Hv": "Gy/M/d H時 v",
+        "GyMEd Hv": "Gy/M/d(E) H時 v",
+        "GyMMM Hv": "Gy年M月 H時 v",
+        "GyMMMd Hv": "Gy年M月d日 H時 v",
+        "GyMMMEd Hv": "Gy年M月d日(E) H時 v",
+        "GyMMMEEEEd Hv": "Gy年M月d日EEEE H時 v",
+        "M Hv": "M月 H時 v",
+        "Md Hv": "M/d H時 v",
+        "MEd Hv": "M/d(E) H時 v",
+        "MEEEEd Hv": "M/dEEEE H時 v",
+        "MMM Hv": "M月 H時 v",
+        "MMMd Hv": "M月d日 H時 v",
+        "MMMEd Hv": "M月d日(E) H時 v",
+        "MMMEEEEd Hv": "M月d日EEEE H時 v",
+        "MMMMd Hv": "M月d日 H時 v",
+        "y Hv": "y年 H時 v",
+        "yM Hv": "y/M H時 v",
+        "yMd Hv": "y/M/d H時 v",
+        "yMEd Hv": "y/M/d(E) H時 v",
+        "yMEEEEd Hv": "y/M/dEEEE H時 v",
+        "yMM Hv": "y/MM H時 v",
+        "yMMM Hv": "y年M月 H時 v",
+        "yMMMd Hv": "y年M月d日 H時 v",
+        "yMMMEd Hv": "y年M月d日(E) H時 v",
+        "yMMMEEEEd Hv": "y年M月d日EEEE H時 v",
+        "yMMMM Hv": "y年M月 H時 v",
+        "y年M月d日EEEE ms": "y年M月d日EEEE mm:ss",
+        "y年M月d日 ms": "y年M月d日 mm:ss",
+        "y/MM/dd ms": "y/MM/dd mm:ss",
+        "d ms": "d日 mm:ss",
+        "E ms": "ccc mm:ss",
+        "Ed ms": "d日(E) mm:ss",
+        "EEEEd ms": "d日EEEE mm:ss",
+        "Gy ms": "Gy年 mm:ss",
+        "GyM ms": "Gy/M mm:ss",
+        "GyMd ms": "Gy/M/d mm:ss",
+        "GyMEd ms": "Gy/M/d(E) mm:ss",
+        "GyMMM ms": "Gy年M月 mm:ss",
+        "GyMMMd ms": "Gy年M月d日 mm:ss",
+        "GyMMMEd ms": "Gy年M月d日(E) mm:ss",
+        "GyMMMEEEEd ms": "Gy年M月d日EEEE mm:ss",
+        "M ms": "M月 mm:ss",
+        "Md ms": "M/d mm:ss",
+        "MEd ms": "M/d(E) mm:ss",
+        "MEEEEd ms": "M/dEEEE mm:ss",
+        "MMM ms": "M月 mm:ss",
+        "MMMd ms": "M月d日 mm:ss",
+        "MMMEd ms": "M月d日(E) mm:ss",
+        "MMMEEEEd ms": "M月d日EEEE mm:ss",
+        "MMMMd ms": "M月d日 mm:ss",
+        "y ms": "y年 mm:ss",
+        "yM ms": "y/M mm:ss",
+        "yMd ms": "y/M/d mm:ss",
+        "yMEd ms": "y/M/d(E) mm:ss",
+        "yMEEEEd ms": "y/M/dEEEE mm:ss",
+        "yMM ms": "y/MM mm:ss",
+        "yMMM ms": "y年M月 mm:ss",
+        "yMMMd ms": "y年M月d日 mm:ss",
+        "yMMMEd ms": "y年M月d日(E) mm:ss",
+        "yMMMEEEEd ms": "y年M月d日EEEE mm:ss",
+        "yMMMM ms": "y年M月 mm:ss"
+      }
+    },
+    "intervalFormats": {
+      "intervalFormatFallback": "{0}～{1}",
+      "Bh": {
+        "B": "BK時～BK時",
+        "h": "BK時～K時"
+      },
+      "Bhm": {
+        "B": "BK:mm～BK:mm",
+        "h": "BK:mm～K:mm",
+        "m": "BK:mm～K:mm"
+      },
+      "d": {
+        "d": "d日～d日"
+      },
+      "Gy": {
+        "G": "Gy年～Gy年",
+        "y": "Gy年～y年"
+      },
+      "GyM": {
+        "G": "Gy/MM～Gy/MM",
+        "M": "Gy/MM～y/MM",
+        "y": "Gy/MM～y/MM"
+      },
+      "GyMd": {
+        "d": "Gy/MM/dd～y/MM/dd",
+        "G": "Gy/MM/dd～Gy/MM/dd",
+        "M": "Gy/MM/dd～y/MM/dd",
+        "y": "Gy/MM/dd～y/MM/dd"
+      },
+      "GyMEd": {
+        "d": "Gy/MM/dd(E)～y/MM/dd(E)",
+        "G": "Gy/MM/dd(E)～Gy/MM/dd(E)",
+        "M": "Gy/MM/dd(E)～y/MM/dd(E)",
+        "y": "Gy/MM/dd(E)～y/MM/dd(E)"
+      },
+      "GyMMM": {
+        "G": "Gy年M月～Gy年M月",
+        "M": "Gy年M月～M月",
+        "y": "Gy年M月～y年M月"
+      },
+      "GyMMMd": {
+        "d": "Gy年M月d日～d日",
+        "G": "Gy年M月d日～Gy年M月d日",
+        "M": "Gy年M月d日～M月d日",
+        "y": "Gy年M月d日～y年M月d日"
+      },
+      "GyMMMEd": {
+        "d": "Gy年M月d日(E)～d日(E)",
+        "G": "Gy年M月d日(E)～Gy年M月d日(E)",
+        "M": "Gy年M月d日(E)～M月d日(E)",
+        "y": "Gy年M月d日(E)～y年M月d日(E)"
+      },
+      "h": {
+        "a": "aK時～aK時",
+        "h": "aK時～K時"
+      },
+      "H": {
+        "H": "H時～H時"
+      },
+      "hm": {
+        "a": "aK時mm分～aK時mm分",
+        "h": "aK時mm分～K時mm分",
+        "m": "aK時mm分～K時mm分"
+      },
+      "Hm": {
+        "H": "H時mm分～H時mm分",
+        "m": "H時mm分～H時mm分"
+      },
+      "hmv": {
+        "a": "aK時mm分～aK時mm分(v)",
+        "h": "aK時mm分～K時mm分(v)",
+        "m": "aK時mm分～K時mm分(v)"
+      },
+      "Hmv": {
+        "H": "H時mm分～H時mm分(v)",
+        "m": "H時mm分～H時mm分(v)"
+      },
+      "hv": {
+        "a": "aK時～aK時(v)",
+        "h": "aK時～K時(v)"
+      },
+      "Hv": {
+        "H": "H時～H時(v)"
+      },
+      "M": {
+        "M": "M月～M月"
+      },
+      "Md": {
+        "d": "MM/dd～MM/dd",
+        "M": "MM/dd～MM/dd"
+      },
+      "MEd": {
+        "d": "MM/dd(E)～MM/dd(E)",
+        "M": "MM/dd(E)～MM/dd(E)"
+      },
+      "MMM": {
+        "M": "M月～M月"
+      },
+      "MMMd": {
+        "d": "M月d日～d日",
+        "M": "M月d日～M月d日"
+      },
+      "MMMEd": {
+        "d": "M月d日(E)～d日(E)",
+        "M": "M月d日(E)～M月d日(E)"
+      },
+      "MMMM": {
+        "M": "M月～M月"
+      },
+      "y": {
+        "y": "y年～y年"
+      },
+      "yM": {
+        "M": "y/MM～y/MM",
+        "y": "y/MM～y/MM"
+      },
+      "yMd": {
+        "d": "y/MM/dd～y/MM/dd",
+        "M": "y/MM/dd～y/MM/dd",
+        "y": "y/MM/dd～y/MM/dd"
+      },
+      "yMEd": {
+        "d": "y/MM/dd(E)～y/MM/dd(E)",
+        "M": "y/MM/dd(E)～y/MM/dd(E)",
+        "y": "y/MM/dd(E)～y/MM/dd(E)"
+      },
+      "yMMM": {
+        "M": "y年M月～M月",
+        "y": "y年M月～y年M月"
+      },
+      "yMMMd": {
+        "d": "y年M月d日～d日",
+        "M": "y年M月d日～M月d日",
+        "y": "y年M月d日～y年M月d日"
+      },
+      "yMMMEd": {
+        "d": "y年M月d日(E)～d日(E)",
+        "M": "y年M月d日(E)～M月d日(E)",
+        "y": "y年M月d日(E)～y年M月d日(E)"
+      },
+      "yMMMM": {
+        "M": "y年M月～M月",
+        "y": "y年M月～y年M月"
+      },
+      "y年M月d日EEEE Bh": {
+        "B": "y年M月d日EEEE BK時～BK時",
+        "h": "y年M月d日EEEE BK時～K時"
+      },
+      "y年M月d日 Bh": {
+        "B": "y年M月d日 BK時～BK時",
+        "h": "y年M月d日 BK時～K時"
+      },
+      "y/MM/dd Bh": {
+        "B": "y/MM/dd BK時～BK時",
+        "h": "y/MM/dd BK時～K時"
+      },
+      "d Bh": {
+        "B": "d日 BK時～BK時",
+        "h": "d日 BK時～K時"
+      },
+      "E Bh": {
+        "B": "ccc BK時～BK時",
+        "h": "ccc BK時～K時"
+      },
+      "Ed Bh": {
+        "B": "d日(E) BK時～BK時",
+        "h": "d日(E) BK時～K時"
+      },
+      "EEEEd Bh": {
+        "B": "d日EEEE BK時～BK時",
+        "h": "d日EEEE BK時～K時"
+      },
+      "Gy Bh": {
+        "B": "Gy年 BK時～BK時",
+        "h": "Gy年 BK時～K時"
+      },
+      "GyM Bh": {
+        "B": "Gy/M BK時～BK時",
+        "h": "Gy/M BK時～K時"
+      },
+      "GyMd Bh": {
+        "B": "Gy/M/d BK時～BK時",
+        "h": "Gy/M/d BK時～K時"
+      },
+      "GyMEd Bh": {
+        "B": "Gy/M/d(E) BK時～BK時",
+        "h": "Gy/M/d(E) BK時～K時"
+      },
+      "GyMMM Bh": {
+        "B": "Gy年M月 BK時～BK時",
+        "h": "Gy年M月 BK時～K時"
+      },
+      "GyMMMd Bh": {
+        "B": "Gy年M月d日 BK時～BK時",
+        "h": "Gy年M月d日 BK時～K時"
+      },
+      "GyMMMEd Bh": {
+        "B": "Gy年M月d日(E) BK時～BK時",
+        "h": "Gy年M月d日(E) BK時～K時"
+      },
+      "GyMMMEEEEd Bh": {
+        "B": "Gy年M月d日EEEE BK時～BK時",
+        "h": "Gy年M月d日EEEE BK時～K時"
+      },
+      "M Bh": {
+        "B": "M月 BK時～BK時",
+        "h": "M月 BK時～K時"
+      },
+      "Md Bh": {
+        "B": "M/d BK時～BK時",
+        "h": "M/d BK時～K時"
+      },
+      "MEd Bh": {
+        "B": "M/d(E) BK時～BK時",
+        "h": "M/d(E) BK時～K時"
+      },
+      "MEEEEd Bh": {
+        "B": "M/dEEEE BK時～BK時",
+        "h": "M/dEEEE BK時～K時"
+      },
+      "MMM Bh": {
+        "B": "M月 BK時～BK時",
+        "h": "M月 BK時～K時"
+      },
+      "MMMd Bh": {
+        "B": "M月d日 BK時～BK時",
+        "h": "M月d日 BK時～K時"
+      },
+      "MMMEd Bh": {
+        "B": "M月d日(E) BK時～BK時",
+        "h": "M月d日(E) BK時～K時"
+      },
+      "MMMEEEEd Bh": {
+        "B": "M月d日EEEE BK時～BK時",
+        "h": "M月d日EEEE BK時～K時"
+      },
+      "MMMMd Bh": {
+        "B": "M月d日 BK時～BK時",
+        "h": "M月d日 BK時～K時"
+      },
+      "y Bh": {
+        "B": "y年 BK時～BK時",
+        "h": "y年 BK時～K時"
+      },
+      "yM Bh": {
+        "B": "y/M BK時～BK時",
+        "h": "y/M BK時～K時"
+      },
+      "yMd Bh": {
+        "B": "y/M/d BK時～BK時",
+        "h": "y/M/d BK時～K時"
+      },
+      "yMEd Bh": {
+        "B": "y/M/d(E) BK時～BK時",
+        "h": "y/M/d(E) BK時～K時"
+      },
+      "yMEEEEd Bh": {
+        "B": "y/M/dEEEE BK時～BK時",
+        "h": "y/M/dEEEE BK時～K時"
+      },
+      "yMM Bh": {
+        "B": "y/MM BK時～BK時",
+        "h": "y/MM BK時～K時"
+      },
+      "yMMM Bh": {
+        "B": "y年M月 BK時～BK時",
+        "h": "y年M月 BK時～K時"
+      },
+      "yMMMd Bh": {
+        "B": "y年M月d日 BK時～BK時",
+        "h": "y年M月d日 BK時～K時"
+      },
+      "yMMMEd Bh": {
+        "B": "y年M月d日(E) BK時～BK時",
+        "h": "y年M月d日(E) BK時～K時"
+      },
+      "yMMMEEEEd Bh": {
+        "B": "y年M月d日EEEE BK時～BK時",
+        "h": "y年M月d日EEEE BK時～K時"
+      },
+      "yMMMM Bh": {
+        "B": "y年M月 BK時～BK時",
+        "h": "y年M月 BK時～K時"
+      },
+      "y年M月d日EEEE Bhm": {
+        "B": "y年M月d日EEEE BK:mm～BK:mm",
+        "h": "y年M月d日EEEE BK:mm～K:mm",
+        "m": "y年M月d日EEEE BK:mm～K:mm"
+      },
+      "y年M月d日 Bhm": {
+        "B": "y年M月d日 BK:mm～BK:mm",
+        "h": "y年M月d日 BK:mm～K:mm",
+        "m": "y年M月d日 BK:mm～K:mm"
+      },
+      "y/MM/dd Bhm": {
+        "B": "y/MM/dd BK:mm～BK:mm",
+        "h": "y/MM/dd BK:mm～K:mm",
+        "m": "y/MM/dd BK:mm～K:mm"
+      },
+      "d Bhm": {
+        "B": "d日 BK:mm～BK:mm",
+        "h": "d日 BK:mm～K:mm",
+        "m": "d日 BK:mm～K:mm"
+      },
+      "E Bhm": {
+        "B": "ccc BK:mm～BK:mm",
+        "h": "ccc BK:mm～K:mm",
+        "m": "ccc BK:mm～K:mm"
+      },
+      "Ed Bhm": {
+        "B": "d日(E) BK:mm～BK:mm",
+        "h": "d日(E) BK:mm～K:mm",
+        "m": "d日(E) BK:mm～K:mm"
+      },
+      "EEEEd Bhm": {
+        "B": "d日EEEE BK:mm～BK:mm",
+        "h": "d日EEEE BK:mm～K:mm",
+        "m": "d日EEEE BK:mm～K:mm"
+      },
+      "Gy Bhm": {
+        "B": "Gy年 BK:mm～BK:mm",
+        "h": "Gy年 BK:mm～K:mm",
+        "m": "Gy年 BK:mm～K:mm"
+      },
+      "GyM Bhm": {
+        "B": "Gy/M BK:mm～BK:mm",
+        "h": "Gy/M BK:mm～K:mm",
+        "m": "Gy/M BK:mm～K:mm"
+      },
+      "GyMd Bhm": {
+        "B": "Gy/M/d BK:mm～BK:mm",
+        "h": "Gy/M/d BK:mm～K:mm",
+        "m": "Gy/M/d BK:mm～K:mm"
+      },
+      "GyMEd Bhm": {
+        "B": "Gy/M/d(E) BK:mm～BK:mm",
+        "h": "Gy/M/d(E) BK:mm～K:mm",
+        "m": "Gy/M/d(E) BK:mm～K:mm"
+      },
+      "GyMMM Bhm": {
+        "B": "Gy年M月 BK:mm～BK:mm",
+        "h": "Gy年M月 BK:mm～K:mm",
+        "m": "Gy年M月 BK:mm～K:mm"
+      },
+      "GyMMMd Bhm": {
+        "B": "Gy年M月d日 BK:mm～BK:mm",
+        "h": "Gy年M月d日 BK:mm～K:mm",
+        "m": "Gy年M月d日 BK:mm～K:mm"
+      },
+      "GyMMMEd Bhm": {
+        "B": "Gy年M月d日(E) BK:mm～BK:mm",
+        "h": "Gy年M月d日(E) BK:mm～K:mm",
+        "m": "Gy年M月d日(E) BK:mm～K:mm"
+      },
+      "GyMMMEEEEd Bhm": {
+        "B": "Gy年M月d日EEEE BK:mm～BK:mm",
+        "h": "Gy年M月d日EEEE BK:mm～K:mm",
+        "m": "Gy年M月d日EEEE BK:mm～K:mm"
+      },
+      "M Bhm": {
+        "B": "M月 BK:mm～BK:mm",
+        "h": "M月 BK:mm～K:mm",
+        "m": "M月 BK:mm～K:mm"
+      },
+      "Md Bhm": {
+        "B": "M/d BK:mm～BK:mm",
+        "h": "M/d BK:mm～K:mm",
+        "m": "M/d BK:mm～K:mm"
+      },
+      "MEd Bhm": {
+        "B": "M/d(E) BK:mm～BK:mm",
+        "h": "M/d(E) BK:mm～K:mm",
+        "m": "M/d(E) BK:mm～K:mm"
+      },
+      "MEEEEd Bhm": {
+        "B": "M/dEEEE BK:mm～BK:mm",
+        "h": "M/dEEEE BK:mm～K:mm",
+        "m": "M/dEEEE BK:mm～K:mm"
+      },
+      "MMM Bhm": {
+        "B": "M月 BK:mm～BK:mm",
+        "h": "M月 BK:mm～K:mm",
+        "m": "M月 BK:mm～K:mm"
+      },
+      "MMMd Bhm": {
+        "B": "M月d日 BK:mm～BK:mm",
+        "h": "M月d日 BK:mm～K:mm",
+        "m": "M月d日 BK:mm～K:mm"
+      },
+      "MMMEd Bhm": {
+        "B": "M月d日(E) BK:mm～BK:mm",
+        "h": "M月d日(E) BK:mm～K:mm",
+        "m": "M月d日(E) BK:mm～K:mm"
+      },
+      "MMMEEEEd Bhm": {
+        "B": "M月d日EEEE BK:mm～BK:mm",
+        "h": "M月d日EEEE BK:mm～K:mm",
+        "m": "M月d日EEEE BK:mm～K:mm"
+      },
+      "MMMMd Bhm": {
+        "B": "M月d日 BK:mm～BK:mm",
+        "h": "M月d日 BK:mm～K:mm",
+        "m": "M月d日 BK:mm～K:mm"
+      },
+      "y Bhm": {
+        "B": "y年 BK:mm～BK:mm",
+        "h": "y年 BK:mm～K:mm",
+        "m": "y年 BK:mm～K:mm"
+      },
+      "yM Bhm": {
+        "B": "y/M BK:mm～BK:mm",
+        "h": "y/M BK:mm～K:mm",
+        "m": "y/M BK:mm～K:mm"
+      },
+      "yMd Bhm": {
+        "B": "y/M/d BK:mm～BK:mm",
+        "h": "y/M/d BK:mm～K:mm",
+        "m": "y/M/d BK:mm～K:mm"
+      },
+      "yMEd Bhm": {
+        "B": "y/M/d(E) BK:mm～BK:mm",
+        "h": "y/M/d(E) BK:mm～K:mm",
+        "m": "y/M/d(E) BK:mm～K:mm"
+      },
+      "yMEEEEd Bhm": {
+        "B": "y/M/dEEEE BK:mm～BK:mm",
+        "h": "y/M/dEEEE BK:mm～K:mm",
+        "m": "y/M/dEEEE BK:mm～K:mm"
+      },
+      "yMM Bhm": {
+        "B": "y/MM BK:mm～BK:mm",
+        "h": "y/MM BK:mm～K:mm",
+        "m": "y/MM BK:mm～K:mm"
+      },
+      "yMMM Bhm": {
+        "B": "y年M月 BK:mm～BK:mm",
+        "h": "y年M月 BK:mm～K:mm",
+        "m": "y年M月 BK:mm～K:mm"
+      },
+      "yMMMd Bhm": {
+        "B": "y年M月d日 BK:mm～BK:mm",
+        "h": "y年M月d日 BK:mm～K:mm",
+        "m": "y年M月d日 BK:mm～K:mm"
+      },
+      "yMMMEd Bhm": {
+        "B": "y年M月d日(E) BK:mm～BK:mm",
+        "h": "y年M月d日(E) BK:mm～K:mm",
+        "m": "y年M月d日(E) BK:mm～K:mm"
+      },
+      "yMMMEEEEd Bhm": {
+        "B": "y年M月d日EEEE BK:mm～BK:mm",
+        "h": "y年M月d日EEEE BK:mm～K:mm",
+        "m": "y年M月d日EEEE BK:mm～K:mm"
+      },
+      "yMMMM Bhm": {
+        "B": "y年M月 BK:mm～BK:mm",
+        "h": "y年M月 BK:mm～K:mm",
+        "m": "y年M月 BK:mm～K:mm"
+      },
+      "y年M月d日EEEE h": {
+        "a": "y年M月d日EEEE aK時～aK時",
+        "h": "y年M月d日EEEE aK時～K時"
+      },
+      "y年M月d日 h": {
+        "a": "y年M月d日 aK時～aK時",
+        "h": "y年M月d日 aK時～K時"
+      },
+      "y/MM/dd h": {
+        "a": "y/MM/dd aK時～aK時",
+        "h": "y/MM/dd aK時～K時"
+      },
+      "d h": {
+        "a": "d日 aK時～aK時",
+        "h": "d日 aK時～K時"
+      },
+      "E h": {
+        "a": "ccc aK時～aK時",
+        "h": "ccc aK時～K時"
+      },
+      "Ed h": {
+        "a": "d日(E) aK時～aK時",
+        "h": "d日(E) aK時～K時"
+      },
+      "EEEEd h": {
+        "a": "d日EEEE aK時～aK時",
+        "h": "d日EEEE aK時～K時"
+      },
+      "Gy h": {
+        "a": "Gy年 aK時～aK時",
+        "h": "Gy年 aK時～K時"
+      },
+      "GyM h": {
+        "a": "Gy/M aK時～aK時",
+        "h": "Gy/M aK時～K時"
+      },
+      "GyMd h": {
+        "a": "Gy/M/d aK時～aK時",
+        "h": "Gy/M/d aK時～K時"
+      },
+      "GyMEd h": {
+        "a": "Gy/M/d(E) aK時～aK時",
+        "h": "Gy/M/d(E) aK時～K時"
+      },
+      "GyMMM h": {
+        "a": "Gy年M月 aK時～aK時",
+        "h": "Gy年M月 aK時～K時"
+      },
+      "GyMMMd h": {
+        "a": "Gy年M月d日 aK時～aK時",
+        "h": "Gy年M月d日 aK時～K時"
+      },
+      "GyMMMEd h": {
+        "a": "Gy年M月d日(E) aK時～aK時",
+        "h": "Gy年M月d日(E) aK時～K時"
+      },
+      "GyMMMEEEEd h": {
+        "a": "Gy年M月d日EEEE aK時～aK時",
+        "h": "Gy年M月d日EEEE aK時～K時"
+      },
+      "M h": {
+        "a": "M月 aK時～aK時",
+        "h": "M月 aK時～K時"
+      },
+      "Md h": {
+        "a": "M/d aK時～aK時",
+        "h": "M/d aK時～K時"
+      },
+      "MEd h": {
+        "a": "M/d(E) aK時～aK時",
+        "h": "M/d(E) aK時～K時"
+      },
+      "MEEEEd h": {
+        "a": "M/dEEEE aK時～aK時",
+        "h": "M/dEEEE aK時～K時"
+      },
+      "MMM h": {
+        "a": "M月 aK時～aK時",
+        "h": "M月 aK時～K時"
+      },
+      "MMMd h": {
+        "a": "M月d日 aK時～aK時",
+        "h": "M月d日 aK時～K時"
+      },
+      "MMMEd h": {
+        "a": "M月d日(E) aK時～aK時",
+        "h": "M月d日(E) aK時～K時"
+      },
+      "MMMEEEEd h": {
+        "a": "M月d日EEEE aK時～aK時",
+        "h": "M月d日EEEE aK時～K時"
+      },
+      "MMMMd h": {
+        "a": "M月d日 aK時～aK時",
+        "h": "M月d日 aK時～K時"
+      },
+      "y h": {
+        "a": "y年 aK時～aK時",
+        "h": "y年 aK時～K時"
+      },
+      "yM h": {
+        "a": "y/M aK時～aK時",
+        "h": "y/M aK時～K時"
+      },
+      "yMd h": {
+        "a": "y/M/d aK時～aK時",
+        "h": "y/M/d aK時～K時"
+      },
+      "yMEd h": {
+        "a": "y/M/d(E) aK時～aK時",
+        "h": "y/M/d(E) aK時～K時"
+      },
+      "yMEEEEd h": {
+        "a": "y/M/dEEEE aK時～aK時",
+        "h": "y/M/dEEEE aK時～K時"
+      },
+      "yMM h": {
+        "a": "y/MM aK時～aK時",
+        "h": "y/MM aK時～K時"
+      },
+      "yMMM h": {
+        "a": "y年M月 aK時～aK時",
+        "h": "y年M月 aK時～K時"
+      },
+      "yMMMd h": {
+        "a": "y年M月d日 aK時～aK時",
+        "h": "y年M月d日 aK時～K時"
+      },
+      "yMMMEd h": {
+        "a": "y年M月d日(E) aK時～aK時",
+        "h": "y年M月d日(E) aK時～K時"
+      },
+      "yMMMEEEEd h": {
+        "a": "y年M月d日EEEE aK時～aK時",
+        "h": "y年M月d日EEEE aK時～K時"
+      },
+      "yMMMM h": {
+        "a": "y年M月 aK時～aK時",
+        "h": "y年M月 aK時～K時"
+      },
+      "y年M月d日EEEE H": {
+        "H": "y年M月d日EEEE H時～H時"
+      },
+      "y年M月d日 H": {
+        "H": "y年M月d日 H時～H時"
+      },
+      "y/MM/dd H": {
+        "H": "y/MM/dd H時～H時"
+      },
+      "d H": {
+        "H": "d日 H時～H時"
+      },
+      "E H": {
+        "H": "ccc H時～H時"
+      },
+      "Ed H": {
+        "H": "d日(E) H時～H時"
+      },
+      "EEEEd H": {
+        "H": "d日EEEE H時～H時"
+      },
+      "Gy H": {
+        "H": "Gy年 H時～H時"
+      },
+      "GyM H": {
+        "H": "Gy/M H時～H時"
+      },
+      "GyMd H": {
+        "H": "Gy/M/d H時～H時"
+      },
+      "GyMEd H": {
+        "H": "Gy/M/d(E) H時～H時"
+      },
+      "GyMMM H": {
+        "H": "Gy年M月 H時～H時"
+      },
+      "GyMMMd H": {
+        "H": "Gy年M月d日 H時～H時"
+      },
+      "GyMMMEd H": {
+        "H": "Gy年M月d日(E) H時～H時"
+      },
+      "GyMMMEEEEd H": {
+        "H": "Gy年M月d日EEEE H時～H時"
+      },
+      "M H": {
+        "H": "M月 H時～H時"
+      },
+      "Md H": {
+        "H": "M/d H時～H時"
+      },
+      "MEd H": {
+        "H": "M/d(E) H時～H時"
+      },
+      "MEEEEd H": {
+        "H": "M/dEEEE H時～H時"
+      },
+      "MMM H": {
+        "H": "M月 H時～H時"
+      },
+      "MMMd H": {
+        "H": "M月d日 H時～H時"
+      },
+      "MMMEd H": {
+        "H": "M月d日(E) H時～H時"
+      },
+      "MMMEEEEd H": {
+        "H": "M月d日EEEE H時～H時"
+      },
+      "MMMMd H": {
+        "H": "M月d日 H時～H時"
+      },
+      "y H": {
+        "H": "y年 H時～H時"
+      },
+      "yM H": {
+        "H": "y/M H時～H時"
+      },
+      "yMd H": {
+        "H": "y/M/d H時～H時"
+      },
+      "yMEd H": {
+        "H": "y/M/d(E) H時～H時"
+      },
+      "yMEEEEd H": {
+        "H": "y/M/dEEEE H時～H時"
+      },
+      "yMM H": {
+        "H": "y/MM H時～H時"
+      },
+      "yMMM H": {
+        "H": "y年M月 H時～H時"
+      },
+      "yMMMd H": {
+        "H": "y年M月d日 H時～H時"
+      },
+      "yMMMEd H": {
+        "H": "y年M月d日(E) H時～H時"
+      },
+      "yMMMEEEEd H": {
+        "H": "y年M月d日EEEE H時～H時"
+      },
+      "yMMMM H": {
+        "H": "y年M月 H時～H時"
+      },
+      "y年M月d日EEEE hm": {
+        "a": "y年M月d日EEEE aK時mm分～aK時mm分",
+        "h": "y年M月d日EEEE aK時mm分～K時mm分",
+        "m": "y年M月d日EEEE aK時mm分～K時mm分"
+      },
+      "y年M月d日 hm": {
+        "a": "y年M月d日 aK時mm分～aK時mm分",
+        "h": "y年M月d日 aK時mm分～K時mm分",
+        "m": "y年M月d日 aK時mm分～K時mm分"
+      },
+      "y/MM/dd hm": {
+        "a": "y/MM/dd aK時mm分～aK時mm分",
+        "h": "y/MM/dd aK時mm分～K時mm分",
+        "m": "y/MM/dd aK時mm分～K時mm分"
+      },
+      "d hm": {
+        "a": "d日 aK時mm分～aK時mm分",
+        "h": "d日 aK時mm分～K時mm分",
+        "m": "d日 aK時mm分～K時mm分"
+      },
+      "E hm": {
+        "a": "ccc aK時mm分～aK時mm分",
+        "h": "ccc aK時mm分～K時mm分",
+        "m": "ccc aK時mm分～K時mm分"
+      },
+      "Ed hm": {
+        "a": "d日(E) aK時mm分～aK時mm分",
+        "h": "d日(E) aK時mm分～K時mm分",
+        "m": "d日(E) aK時mm分～K時mm分"
+      },
+      "EEEEd hm": {
+        "a": "d日EEEE aK時mm分～aK時mm分",
+        "h": "d日EEEE aK時mm分～K時mm分",
+        "m": "d日EEEE aK時mm分～K時mm分"
+      },
+      "Gy hm": {
+        "a": "Gy年 aK時mm分～aK時mm分",
+        "h": "Gy年 aK時mm分～K時mm分",
+        "m": "Gy年 aK時mm分～K時mm分"
+      },
+      "GyM hm": {
+        "a": "Gy/M aK時mm分～aK時mm分",
+        "h": "Gy/M aK時mm分～K時mm分",
+        "m": "Gy/M aK時mm分～K時mm分"
+      },
+      "GyMd hm": {
+        "a": "Gy/M/d aK時mm分～aK時mm分",
+        "h": "Gy/M/d aK時mm分～K時mm分",
+        "m": "Gy/M/d aK時mm分～K時mm分"
+      },
+      "GyMEd hm": {
+        "a": "Gy/M/d(E) aK時mm分～aK時mm分",
+        "h": "Gy/M/d(E) aK時mm分～K時mm分",
+        "m": "Gy/M/d(E) aK時mm分～K時mm分"
+      },
+      "GyMMM hm": {
+        "a": "Gy年M月 aK時mm分～aK時mm分",
+        "h": "Gy年M月 aK時mm分～K時mm分",
+        "m": "Gy年M月 aK時mm分～K時mm分"
+      },
+      "GyMMMd hm": {
+        "a": "Gy年M月d日 aK時mm分～aK時mm分",
+        "h": "Gy年M月d日 aK時mm分～K時mm分",
+        "m": "Gy年M月d日 aK時mm分～K時mm分"
+      },
+      "GyMMMEd hm": {
+        "a": "Gy年M月d日(E) aK時mm分～aK時mm分",
+        "h": "Gy年M月d日(E) aK時mm分～K時mm分",
+        "m": "Gy年M月d日(E) aK時mm分～K時mm分"
+      },
+      "GyMMMEEEEd hm": {
+        "a": "Gy年M月d日EEEE aK時mm分～aK時mm分",
+        "h": "Gy年M月d日EEEE aK時mm分～K時mm分",
+        "m": "Gy年M月d日EEEE aK時mm分～K時mm分"
+      },
+      "M hm": {
+        "a": "M月 aK時mm分～aK時mm分",
+        "h": "M月 aK時mm分～K時mm分",
+        "m": "M月 aK時mm分～K時mm分"
+      },
+      "Md hm": {
+        "a": "M/d aK時mm分～aK時mm分",
+        "h": "M/d aK時mm分～K時mm分",
+        "m": "M/d aK時mm分～K時mm分"
+      },
+      "MEd hm": {
+        "a": "M/d(E) aK時mm分～aK時mm分",
+        "h": "M/d(E) aK時mm分～K時mm分",
+        "m": "M/d(E) aK時mm分～K時mm分"
+      },
+      "MEEEEd hm": {
+        "a": "M/dEEEE aK時mm分～aK時mm分",
+        "h": "M/dEEEE aK時mm分～K時mm分",
+        "m": "M/dEEEE aK時mm分～K時mm分"
+      },
+      "MMM hm": {
+        "a": "M月 aK時mm分～aK時mm分",
+        "h": "M月 aK時mm分～K時mm分",
+        "m": "M月 aK時mm分～K時mm分"
+      },
+      "MMMd hm": {
+        "a": "M月d日 aK時mm分～aK時mm分",
+        "h": "M月d日 aK時mm分～K時mm分",
+        "m": "M月d日 aK時mm分～K時mm分"
+      },
+      "MMMEd hm": {
+        "a": "M月d日(E) aK時mm分～aK時mm分",
+        "h": "M月d日(E) aK時mm分～K時mm分",
+        "m": "M月d日(E) aK時mm分～K時mm分"
+      },
+      "MMMEEEEd hm": {
+        "a": "M月d日EEEE aK時mm分～aK時mm分",
+        "h": "M月d日EEEE aK時mm分～K時mm分",
+        "m": "M月d日EEEE aK時mm分～K時mm分"
+      },
+      "MMMMd hm": {
+        "a": "M月d日 aK時mm分～aK時mm分",
+        "h": "M月d日 aK時mm分～K時mm分",
+        "m": "M月d日 aK時mm分～K時mm分"
+      },
+      "y hm": {
+        "a": "y年 aK時mm分～aK時mm分",
+        "h": "y年 aK時mm分～K時mm分",
+        "m": "y年 aK時mm分～K時mm分"
+      },
+      "yM hm": {
+        "a": "y/M aK時mm分～aK時mm分",
+        "h": "y/M aK時mm分～K時mm分",
+        "m": "y/M aK時mm分～K時mm分"
+      },
+      "yMd hm": {
+        "a": "y/M/d aK時mm分～aK時mm分",
+        "h": "y/M/d aK時mm分～K時mm分",
+        "m": "y/M/d aK時mm分～K時mm分"
+      },
+      "yMEd hm": {
+        "a": "y/M/d(E) aK時mm分～aK時mm分",
+        "h": "y/M/d(E) aK時mm分～K時mm分",
+        "m": "y/M/d(E) aK時mm分～K時mm分"
+      },
+      "yMEEEEd hm": {
+        "a": "y/M/dEEEE aK時mm分～aK時mm分",
+        "h": "y/M/dEEEE aK時mm分～K時mm分",
+        "m": "y/M/dEEEE aK時mm分～K時mm分"
+      },
+      "yMM hm": {
+        "a": "y/MM aK時mm分～aK時mm分",
+        "h": "y/MM aK時mm分～K時mm分",
+        "m": "y/MM aK時mm分～K時mm分"
+      },
+      "yMMM hm": {
+        "a": "y年M月 aK時mm分～aK時mm分",
+        "h": "y年M月 aK時mm分～K時mm分",
+        "m": "y年M月 aK時mm分～K時mm分"
+      },
+      "yMMMd hm": {
+        "a": "y年M月d日 aK時mm分～aK時mm分",
+        "h": "y年M月d日 aK時mm分～K時mm分",
+        "m": "y年M月d日 aK時mm分～K時mm分"
+      },
+      "yMMMEd hm": {
+        "a": "y年M月d日(E) aK時mm分～aK時mm分",
+        "h": "y年M月d日(E) aK時mm分～K時mm分",
+        "m": "y年M月d日(E) aK時mm分～K時mm分"
+      },
+      "yMMMEEEEd hm": {
+        "a": "y年M月d日EEEE aK時mm分～aK時mm分",
+        "h": "y年M月d日EEEE aK時mm分～K時mm分",
+        "m": "y年M月d日EEEE aK時mm分～K時mm分"
+      },
+      "yMMMM hm": {
+        "a": "y年M月 aK時mm分～aK時mm分",
+        "h": "y年M月 aK時mm分～K時mm分",
+        "m": "y年M月 aK時mm分～K時mm分"
+      },
+      "y年M月d日EEEE Hm": {
+        "H": "y年M月d日EEEE H時mm分～H時mm分",
+        "m": "y年M月d日EEEE H時mm分～H時mm分"
+      },
+      "y年M月d日 Hm": {
+        "H": "y年M月d日 H時mm分～H時mm分",
+        "m": "y年M月d日 H時mm分～H時mm分"
+      },
+      "y/MM/dd Hm": {
+        "H": "y/MM/dd H時mm分～H時mm分",
+        "m": "y/MM/dd H時mm分～H時mm分"
+      },
+      "d Hm": {
+        "H": "d日 H時mm分～H時mm分",
+        "m": "d日 H時mm分～H時mm分"
+      },
+      "E Hm": {
+        "H": "ccc H時mm分～H時mm分",
+        "m": "ccc H時mm分～H時mm分"
+      },
+      "Ed Hm": {
+        "H": "d日(E) H時mm分～H時mm分",
+        "m": "d日(E) H時mm分～H時mm分"
+      },
+      "EEEEd Hm": {
+        "H": "d日EEEE H時mm分～H時mm分",
+        "m": "d日EEEE H時mm分～H時mm分"
+      },
+      "Gy Hm": {
+        "H": "Gy年 H時mm分～H時mm分",
+        "m": "Gy年 H時mm分～H時mm分"
+      },
+      "GyM Hm": {
+        "H": "Gy/M H時mm分～H時mm分",
+        "m": "Gy/M H時mm分～H時mm分"
+      },
+      "GyMd Hm": {
+        "H": "Gy/M/d H時mm分～H時mm分",
+        "m": "Gy/M/d H時mm分～H時mm分"
+      },
+      "GyMEd Hm": {
+        "H": "Gy/M/d(E) H時mm分～H時mm分",
+        "m": "Gy/M/d(E) H時mm分～H時mm分"
+      },
+      "GyMMM Hm": {
+        "H": "Gy年M月 H時mm分～H時mm分",
+        "m": "Gy年M月 H時mm分～H時mm分"
+      },
+      "GyMMMd Hm": {
+        "H": "Gy年M月d日 H時mm分～H時mm分",
+        "m": "Gy年M月d日 H時mm分～H時mm分"
+      },
+      "GyMMMEd Hm": {
+        "H": "Gy年M月d日(E) H時mm分～H時mm分",
+        "m": "Gy年M月d日(E) H時mm分～H時mm分"
+      },
+      "GyMMMEEEEd Hm": {
+        "H": "Gy年M月d日EEEE H時mm分～H時mm分",
+        "m": "Gy年M月d日EEEE H時mm分～H時mm分"
+      },
+      "M Hm": {
+        "H": "M月 H時mm分～H時mm分",
+        "m": "M月 H時mm分～H時mm分"
+      },
+      "Md Hm": {
+        "H": "M/d H時mm分～H時mm分",
+        "m": "M/d H時mm分～H時mm分"
+      },
+      "MEd Hm": {
+        "H": "M/d(E) H時mm分～H時mm分",
+        "m": "M/d(E) H時mm分～H時mm分"
+      },
+      "MEEEEd Hm": {
+        "H": "M/dEEEE H時mm分～H時mm分",
+        "m": "M/dEEEE H時mm分～H時mm分"
+      },
+      "MMM Hm": {
+        "H": "M月 H時mm分～H時mm分",
+        "m": "M月 H時mm分～H時mm分"
+      },
+      "MMMd Hm": {
+        "H": "M月d日 H時mm分～H時mm分",
+        "m": "M月d日 H時mm分～H時mm分"
+      },
+      "MMMEd Hm": {
+        "H": "M月d日(E) H時mm分～H時mm分",
+        "m": "M月d日(E) H時mm分～H時mm分"
+      },
+      "MMMEEEEd Hm": {
+        "H": "M月d日EEEE H時mm分～H時mm分",
+        "m": "M月d日EEEE H時mm分～H時mm分"
+      },
+      "MMMMd Hm": {
+        "H": "M月d日 H時mm分～H時mm分",
+        "m": "M月d日 H時mm分～H時mm分"
+      },
+      "y Hm": {
+        "H": "y年 H時mm分～H時mm分",
+        "m": "y年 H時mm分～H時mm分"
+      },
+      "yM Hm": {
+        "H": "y/M H時mm分～H時mm分",
+        "m": "y/M H時mm分～H時mm分"
+      },
+      "yMd Hm": {
+        "H": "y/M/d H時mm分～H時mm分",
+        "m": "y/M/d H時mm分～H時mm分"
+      },
+      "yMEd Hm": {
+        "H": "y/M/d(E) H時mm分～H時mm分",
+        "m": "y/M/d(E) H時mm分～H時mm分"
+      },
+      "yMEEEEd Hm": {
+        "H": "y/M/dEEEE H時mm分～H時mm分",
+        "m": "y/M/dEEEE H時mm分～H時mm分"
+      },
+      "yMM Hm": {
+        "H": "y/MM H時mm分～H時mm分",
+        "m": "y/MM H時mm分～H時mm分"
+      },
+      "yMMM Hm": {
+        "H": "y年M月 H時mm分～H時mm分",
+        "m": "y年M月 H時mm分～H時mm分"
+      },
+      "yMMMd Hm": {
+        "H": "y年M月d日 H時mm分～H時mm分",
+        "m": "y年M月d日 H時mm分～H時mm分"
+      },
+      "yMMMEd Hm": {
+        "H": "y年M月d日(E) H時mm分～H時mm分",
+        "m": "y年M月d日(E) H時mm分～H時mm分"
+      },
+      "yMMMEEEEd Hm": {
+        "H": "y年M月d日EEEE H時mm分～H時mm分",
+        "m": "y年M月d日EEEE H時mm分～H時mm分"
+      },
+      "yMMMM Hm": {
+        "H": "y年M月 H時mm分～H時mm分",
+        "m": "y年M月 H時mm分～H時mm分"
+      },
+      "y年M月d日EEEE hmv": {
+        "a": "y年M月d日EEEE aK時mm分～aK時mm分(v)",
+        "h": "y年M月d日EEEE aK時mm分～K時mm分(v)",
+        "m": "y年M月d日EEEE aK時mm分～K時mm分(v)"
+      },
+      "y年M月d日 hmv": {
+        "a": "y年M月d日 aK時mm分～aK時mm分(v)",
+        "h": "y年M月d日 aK時mm分～K時mm分(v)",
+        "m": "y年M月d日 aK時mm分～K時mm分(v)"
+      },
+      "y/MM/dd hmv": {
+        "a": "y/MM/dd aK時mm分～aK時mm分(v)",
+        "h": "y/MM/dd aK時mm分～K時mm分(v)",
+        "m": "y/MM/dd aK時mm分～K時mm分(v)"
+      },
+      "d hmv": {
+        "a": "d日 aK時mm分～aK時mm分(v)",
+        "h": "d日 aK時mm分～K時mm分(v)",
+        "m": "d日 aK時mm分～K時mm分(v)"
+      },
+      "E hmv": {
+        "a": "ccc aK時mm分～aK時mm分(v)",
+        "h": "ccc aK時mm分～K時mm分(v)",
+        "m": "ccc aK時mm分～K時mm分(v)"
+      },
+      "Ed hmv": {
+        "a": "d日(E) aK時mm分～aK時mm分(v)",
+        "h": "d日(E) aK時mm分～K時mm分(v)",
+        "m": "d日(E) aK時mm分～K時mm分(v)"
+      },
+      "EEEEd hmv": {
+        "a": "d日EEEE aK時mm分～aK時mm分(v)",
+        "h": "d日EEEE aK時mm分～K時mm分(v)",
+        "m": "d日EEEE aK時mm分～K時mm分(v)"
+      },
+      "Gy hmv": {
+        "a": "Gy年 aK時mm分～aK時mm分(v)",
+        "h": "Gy年 aK時mm分～K時mm分(v)",
+        "m": "Gy年 aK時mm分～K時mm分(v)"
+      },
+      "GyM hmv": {
+        "a": "Gy/M aK時mm分～aK時mm分(v)",
+        "h": "Gy/M aK時mm分～K時mm分(v)",
+        "m": "Gy/M aK時mm分～K時mm分(v)"
+      },
+      "GyMd hmv": {
+        "a": "Gy/M/d aK時mm分～aK時mm分(v)",
+        "h": "Gy/M/d aK時mm分～K時mm分(v)",
+        "m": "Gy/M/d aK時mm分～K時mm分(v)"
+      },
+      "GyMEd hmv": {
+        "a": "Gy/M/d(E) aK時mm分～aK時mm分(v)",
+        "h": "Gy/M/d(E) aK時mm分～K時mm分(v)",
+        "m": "Gy/M/d(E) aK時mm分～K時mm分(v)"
+      },
+      "GyMMM hmv": {
+        "a": "Gy年M月 aK時mm分～aK時mm分(v)",
+        "h": "Gy年M月 aK時mm分～K時mm分(v)",
+        "m": "Gy年M月 aK時mm分～K時mm分(v)"
+      },
+      "GyMMMd hmv": {
+        "a": "Gy年M月d日 aK時mm分～aK時mm分(v)",
+        "h": "Gy年M月d日 aK時mm分～K時mm分(v)",
+        "m": "Gy年M月d日 aK時mm分～K時mm分(v)"
+      },
+      "GyMMMEd hmv": {
+        "a": "Gy年M月d日(E) aK時mm分～aK時mm分(v)",
+        "h": "Gy年M月d日(E) aK時mm分～K時mm分(v)",
+        "m": "Gy年M月d日(E) aK時mm分～K時mm分(v)"
+      },
+      "GyMMMEEEEd hmv": {
+        "a": "Gy年M月d日EEEE aK時mm分～aK時mm分(v)",
+        "h": "Gy年M月d日EEEE aK時mm分～K時mm分(v)",
+        "m": "Gy年M月d日EEEE aK時mm分～K時mm分(v)"
+      },
+      "M hmv": {
+        "a": "M月 aK時mm分～aK時mm分(v)",
+        "h": "M月 aK時mm分～K時mm分(v)",
+        "m": "M月 aK時mm分～K時mm分(v)"
+      },
+      "Md hmv": {
+        "a": "M/d aK時mm分～aK時mm分(v)",
+        "h": "M/d aK時mm分～K時mm分(v)",
+        "m": "M/d aK時mm分～K時mm分(v)"
+      },
+      "MEd hmv": {
+        "a": "M/d(E) aK時mm分～aK時mm分(v)",
+        "h": "M/d(E) aK時mm分～K時mm分(v)",
+        "m": "M/d(E) aK時mm分～K時mm分(v)"
+      },
+      "MEEEEd hmv": {
+        "a": "M/dEEEE aK時mm分～aK時mm分(v)",
+        "h": "M/dEEEE aK時mm分～K時mm分(v)",
+        "m": "M/dEEEE aK時mm分～K時mm分(v)"
+      },
+      "MMM hmv": {
+        "a": "M月 aK時mm分～aK時mm分(v)",
+        "h": "M月 aK時mm分～K時mm分(v)",
+        "m": "M月 aK時mm分～K時mm分(v)"
+      },
+      "MMMd hmv": {
+        "a": "M月d日 aK時mm分～aK時mm分(v)",
+        "h": "M月d日 aK時mm分～K時mm分(v)",
+        "m": "M月d日 aK時mm分～K時mm分(v)"
+      },
+      "MMMEd hmv": {
+        "a": "M月d日(E) aK時mm分～aK時mm分(v)",
+        "h": "M月d日(E) aK時mm分～K時mm分(v)",
+        "m": "M月d日(E) aK時mm分～K時mm分(v)"
+      },
+      "MMMEEEEd hmv": {
+        "a": "M月d日EEEE aK時mm分～aK時mm分(v)",
+        "h": "M月d日EEEE aK時mm分～K時mm分(v)",
+        "m": "M月d日EEEE aK時mm分～K時mm分(v)"
+      },
+      "MMMMd hmv": {
+        "a": "M月d日 aK時mm分～aK時mm分(v)",
+        "h": "M月d日 aK時mm分～K時mm分(v)",
+        "m": "M月d日 aK時mm分～K時mm分(v)"
+      },
+      "y hmv": {
+        "a": "y年 aK時mm分～aK時mm分(v)",
+        "h": "y年 aK時mm分～K時mm分(v)",
+        "m": "y年 aK時mm分～K時mm分(v)"
+      },
+      "yM hmv": {
+        "a": "y/M aK時mm分～aK時mm分(v)",
+        "h": "y/M aK時mm分～K時mm分(v)",
+        "m": "y/M aK時mm分～K時mm分(v)"
+      },
+      "yMd hmv": {
+        "a": "y/M/d aK時mm分～aK時mm分(v)",
+        "h": "y/M/d aK時mm分～K時mm分(v)",
+        "m": "y/M/d aK時mm分～K時mm分(v)"
+      },
+      "yMEd hmv": {
+        "a": "y/M/d(E) aK時mm分～aK時mm分(v)",
+        "h": "y/M/d(E) aK時mm分～K時mm分(v)",
+        "m": "y/M/d(E) aK時mm分～K時mm分(v)"
+      },
+      "yMEEEEd hmv": {
+        "a": "y/M/dEEEE aK時mm分～aK時mm分(v)",
+        "h": "y/M/dEEEE aK時mm分～K時mm分(v)",
+        "m": "y/M/dEEEE aK時mm分～K時mm分(v)"
+      },
+      "yMM hmv": {
+        "a": "y/MM aK時mm分～aK時mm分(v)",
+        "h": "y/MM aK時mm分～K時mm分(v)",
+        "m": "y/MM aK時mm分～K時mm分(v)"
+      },
+      "yMMM hmv": {
+        "a": "y年M月 aK時mm分～aK時mm分(v)",
+        "h": "y年M月 aK時mm分～K時mm分(v)",
+        "m": "y年M月 aK時mm分～K時mm分(v)"
+      },
+      "yMMMd hmv": {
+        "a": "y年M月d日 aK時mm分～aK時mm分(v)",
+        "h": "y年M月d日 aK時mm分～K時mm分(v)",
+        "m": "y年M月d日 aK時mm分～K時mm分(v)"
+      },
+      "yMMMEd hmv": {
+        "a": "y年M月d日(E) aK時mm分～aK時mm分(v)",
+        "h": "y年M月d日(E) aK時mm分～K時mm分(v)",
+        "m": "y年M月d日(E) aK時mm分～K時mm分(v)"
+      },
+      "yMMMEEEEd hmv": {
+        "a": "y年M月d日EEEE aK時mm分～aK時mm分(v)",
+        "h": "y年M月d日EEEE aK時mm分～K時mm分(v)",
+        "m": "y年M月d日EEEE aK時mm分～K時mm分(v)"
+      },
+      "yMMMM hmv": {
+        "a": "y年M月 aK時mm分～aK時mm分(v)",
+        "h": "y年M月 aK時mm分～K時mm分(v)",
+        "m": "y年M月 aK時mm分～K時mm分(v)"
+      },
+      "y年M月d日EEEE Hmv": {
+        "H": "y年M月d日EEEE H時mm分～H時mm分(v)",
+        "m": "y年M月d日EEEE H時mm分～H時mm分(v)"
+      },
+      "y年M月d日 Hmv": {
+        "H": "y年M月d日 H時mm分～H時mm分(v)",
+        "m": "y年M月d日 H時mm分～H時mm分(v)"
+      },
+      "y/MM/dd Hmv": {
+        "H": "y/MM/dd H時mm分～H時mm分(v)",
+        "m": "y/MM/dd H時mm分～H時mm分(v)"
+      },
+      "d Hmv": {
+        "H": "d日 H時mm分～H時mm分(v)",
+        "m": "d日 H時mm分～H時mm分(v)"
+      },
+      "E Hmv": {
+        "H": "ccc H時mm分～H時mm分(v)",
+        "m": "ccc H時mm分～H時mm分(v)"
+      },
+      "Ed Hmv": {
+        "H": "d日(E) H時mm分～H時mm分(v)",
+        "m": "d日(E) H時mm分～H時mm分(v)"
+      },
+      "EEEEd Hmv": {
+        "H": "d日EEEE H時mm分～H時mm分(v)",
+        "m": "d日EEEE H時mm分～H時mm分(v)"
+      },
+      "Gy Hmv": {
+        "H": "Gy年 H時mm分～H時mm分(v)",
+        "m": "Gy年 H時mm分～H時mm分(v)"
+      },
+      "GyM Hmv": {
+        "H": "Gy/M H時mm分～H時mm分(v)",
+        "m": "Gy/M H時mm分～H時mm分(v)"
+      },
+      "GyMd Hmv": {
+        "H": "Gy/M/d H時mm分～H時mm分(v)",
+        "m": "Gy/M/d H時mm分～H時mm分(v)"
+      },
+      "GyMEd Hmv": {
+        "H": "Gy/M/d(E) H時mm分～H時mm分(v)",
+        "m": "Gy/M/d(E) H時mm分～H時mm分(v)"
+      },
+      "GyMMM Hmv": {
+        "H": "Gy年M月 H時mm分～H時mm分(v)",
+        "m": "Gy年M月 H時mm分～H時mm分(v)"
+      },
+      "GyMMMd Hmv": {
+        "H": "Gy年M月d日 H時mm分～H時mm分(v)",
+        "m": "Gy年M月d日 H時mm分～H時mm分(v)"
+      },
+      "GyMMMEd Hmv": {
+        "H": "Gy年M月d日(E) H時mm分～H時mm分(v)",
+        "m": "Gy年M月d日(E) H時mm分～H時mm分(v)"
+      },
+      "GyMMMEEEEd Hmv": {
+        "H": "Gy年M月d日EEEE H時mm分～H時mm分(v)",
+        "m": "Gy年M月d日EEEE H時mm分～H時mm分(v)"
+      },
+      "M Hmv": {
+        "H": "M月 H時mm分～H時mm分(v)",
+        "m": "M月 H時mm分～H時mm分(v)"
+      },
+      "Md Hmv": {
+        "H": "M/d H時mm分～H時mm分(v)",
+        "m": "M/d H時mm分～H時mm分(v)"
+      },
+      "MEd Hmv": {
+        "H": "M/d(E) H時mm分～H時mm分(v)",
+        "m": "M/d(E) H時mm分～H時mm分(v)"
+      },
+      "MEEEEd Hmv": {
+        "H": "M/dEEEE H時mm分～H時mm分(v)",
+        "m": "M/dEEEE H時mm分～H時mm分(v)"
+      },
+      "MMM Hmv": {
+        "H": "M月 H時mm分～H時mm分(v)",
+        "m": "M月 H時mm分～H時mm分(v)"
+      },
+      "MMMd Hmv": {
+        "H": "M月d日 H時mm分～H時mm分(v)",
+        "m": "M月d日 H時mm分～H時mm分(v)"
+      },
+      "MMMEd Hmv": {
+        "H": "M月d日(E) H時mm分～H時mm分(v)",
+        "m": "M月d日(E) H時mm分～H時mm分(v)"
+      },
+      "MMMEEEEd Hmv": {
+        "H": "M月d日EEEE H時mm分～H時mm分(v)",
+        "m": "M月d日EEEE H時mm分～H時mm分(v)"
+      },
+      "MMMMd Hmv": {
+        "H": "M月d日 H時mm分～H時mm分(v)",
+        "m": "M月d日 H時mm分～H時mm分(v)"
+      },
+      "y Hmv": {
+        "H": "y年 H時mm分～H時mm分(v)",
+        "m": "y年 H時mm分～H時mm分(v)"
+      },
+      "yM Hmv": {
+        "H": "y/M H時mm分～H時mm分(v)",
+        "m": "y/M H時mm分～H時mm分(v)"
+      },
+      "yMd Hmv": {
+        "H": "y/M/d H時mm分～H時mm分(v)",
+        "m": "y/M/d H時mm分～H時mm分(v)"
+      },
+      "yMEd Hmv": {
+        "H": "y/M/d(E) H時mm分～H時mm分(v)",
+        "m": "y/M/d(E) H時mm分～H時mm分(v)"
+      },
+      "yMEEEEd Hmv": {
+        "H": "y/M/dEEEE H時mm分～H時mm分(v)",
+        "m": "y/M/dEEEE H時mm分～H時mm分(v)"
+      },
+      "yMM Hmv": {
+        "H": "y/MM H時mm分～H時mm分(v)",
+        "m": "y/MM H時mm分～H時mm分(v)"
+      },
+      "yMMM Hmv": {
+        "H": "y年M月 H時mm分～H時mm分(v)",
+        "m": "y年M月 H時mm分～H時mm分(v)"
+      },
+      "yMMMd Hmv": {
+        "H": "y年M月d日 H時mm分～H時mm分(v)",
+        "m": "y年M月d日 H時mm分～H時mm分(v)"
+      },
+      "yMMMEd Hmv": {
+        "H": "y年M月d日(E) H時mm分～H時mm分(v)",
+        "m": "y年M月d日(E) H時mm分～H時mm分(v)"
+      },
+      "yMMMEEEEd Hmv": {
+        "H": "y年M月d日EEEE H時mm分～H時mm分(v)",
+        "m": "y年M月d日EEEE H時mm分～H時mm分(v)"
+      },
+      "yMMMM Hmv": {
+        "H": "y年M月 H時mm分～H時mm分(v)",
+        "m": "y年M月 H時mm分～H時mm分(v)"
+      },
+      "y年M月d日EEEE hv": {
+        "a": "y年M月d日EEEE aK時～aK時(v)",
+        "h": "y年M月d日EEEE aK時～K時(v)"
+      },
+      "y年M月d日 hv": {
+        "a": "y年M月d日 aK時～aK時(v)",
+        "h": "y年M月d日 aK時～K時(v)"
+      },
+      "y/MM/dd hv": {
+        "a": "y/MM/dd aK時～aK時(v)",
+        "h": "y/MM/dd aK時～K時(v)"
+      },
+      "d hv": {
+        "a": "d日 aK時～aK時(v)",
+        "h": "d日 aK時～K時(v)"
+      },
+      "E hv": {
+        "a": "ccc aK時～aK時(v)",
+        "h": "ccc aK時～K時(v)"
+      },
+      "Ed hv": {
+        "a": "d日(E) aK時～aK時(v)",
+        "h": "d日(E) aK時～K時(v)"
+      },
+      "EEEEd hv": {
+        "a": "d日EEEE aK時～aK時(v)",
+        "h": "d日EEEE aK時～K時(v)"
+      },
+      "Gy hv": {
+        "a": "Gy年 aK時～aK時(v)",
+        "h": "Gy年 aK時～K時(v)"
+      },
+      "GyM hv": {
+        "a": "Gy/M aK時～aK時(v)",
+        "h": "Gy/M aK時～K時(v)"
+      },
+      "GyMd hv": {
+        "a": "Gy/M/d aK時～aK時(v)",
+        "h": "Gy/M/d aK時～K時(v)"
+      },
+      "GyMEd hv": {
+        "a": "Gy/M/d(E) aK時～aK時(v)",
+        "h": "Gy/M/d(E) aK時～K時(v)"
+      },
+      "GyMMM hv": {
+        "a": "Gy年M月 aK時～aK時(v)",
+        "h": "Gy年M月 aK時～K時(v)"
+      },
+      "GyMMMd hv": {
+        "a": "Gy年M月d日 aK時～aK時(v)",
+        "h": "Gy年M月d日 aK時～K時(v)"
+      },
+      "GyMMMEd hv": {
+        "a": "Gy年M月d日(E) aK時～aK時(v)",
+        "h": "Gy年M月d日(E) aK時～K時(v)"
+      },
+      "GyMMMEEEEd hv": {
+        "a": "Gy年M月d日EEEE aK時～aK時(v)",
+        "h": "Gy年M月d日EEEE aK時～K時(v)"
+      },
+      "M hv": {
+        "a": "M月 aK時～aK時(v)",
+        "h": "M月 aK時～K時(v)"
+      },
+      "Md hv": {
+        "a": "M/d aK時～aK時(v)",
+        "h": "M/d aK時～K時(v)"
+      },
+      "MEd hv": {
+        "a": "M/d(E) aK時～aK時(v)",
+        "h": "M/d(E) aK時～K時(v)"
+      },
+      "MEEEEd hv": {
+        "a": "M/dEEEE aK時～aK時(v)",
+        "h": "M/dEEEE aK時～K時(v)"
+      },
+      "MMM hv": {
+        "a": "M月 aK時～aK時(v)",
+        "h": "M月 aK時～K時(v)"
+      },
+      "MMMd hv": {
+        "a": "M月d日 aK時～aK時(v)",
+        "h": "M月d日 aK時～K時(v)"
+      },
+      "MMMEd hv": {
+        "a": "M月d日(E) aK時～aK時(v)",
+        "h": "M月d日(E) aK時～K時(v)"
+      },
+      "MMMEEEEd hv": {
+        "a": "M月d日EEEE aK時～aK時(v)",
+        "h": "M月d日EEEE aK時～K時(v)"
+      },
+      "MMMMd hv": {
+        "a": "M月d日 aK時～aK時(v)",
+        "h": "M月d日 aK時～K時(v)"
+      },
+      "y hv": {
+        "a": "y年 aK時～aK時(v)",
+        "h": "y年 aK時～K時(v)"
+      },
+      "yM hv": {
+        "a": "y/M aK時～aK時(v)",
+        "h": "y/M aK時～K時(v)"
+      },
+      "yMd hv": {
+        "a": "y/M/d aK時～aK時(v)",
+        "h": "y/M/d aK時～K時(v)"
+      },
+      "yMEd hv": {
+        "a": "y/M/d(E) aK時～aK時(v)",
+        "h": "y/M/d(E) aK時～K時(v)"
+      },
+      "yMEEEEd hv": {
+        "a": "y/M/dEEEE aK時～aK時(v)",
+        "h": "y/M/dEEEE aK時～K時(v)"
+      },
+      "yMM hv": {
+        "a": "y/MM aK時～aK時(v)",
+        "h": "y/MM aK時～K時(v)"
+      },
+      "yMMM hv": {
+        "a": "y年M月 aK時～aK時(v)",
+        "h": "y年M月 aK時～K時(v)"
+      },
+      "yMMMd hv": {
+        "a": "y年M月d日 aK時～aK時(v)",
+        "h": "y年M月d日 aK時～K時(v)"
+      },
+      "yMMMEd hv": {
+        "a": "y年M月d日(E) aK時～aK時(v)",
+        "h": "y年M月d日(E) aK時～K時(v)"
+      },
+      "yMMMEEEEd hv": {
+        "a": "y年M月d日EEEE aK時～aK時(v)",
+        "h": "y年M月d日EEEE aK時～K時(v)"
+      },
+      "yMMMM hv": {
+        "a": "y年M月 aK時～aK時(v)",
+        "h": "y年M月 aK時～K時(v)"
+      },
+      "y年M月d日EEEE Hv": {
+        "H": "y年M月d日EEEE H時～H時(v)"
+      },
+      "y年M月d日 Hv": {
+        "H": "y年M月d日 H時～H時(v)"
+      },
+      "y/MM/dd Hv": {
+        "H": "y/MM/dd H時～H時(v)"
+      },
+      "d Hv": {
+        "H": "d日 H時～H時(v)"
+      },
+      "E Hv": {
+        "H": "ccc H時～H時(v)"
+      },
+      "Ed Hv": {
+        "H": "d日(E) H時～H時(v)"
+      },
+      "EEEEd Hv": {
+        "H": "d日EEEE H時～H時(v)"
+      },
+      "Gy Hv": {
+        "H": "Gy年 H時～H時(v)"
+      },
+      "GyM Hv": {
+        "H": "Gy/M H時～H時(v)"
+      },
+      "GyMd Hv": {
+        "H": "Gy/M/d H時～H時(v)"
+      },
+      "GyMEd Hv": {
+        "H": "Gy/M/d(E) H時～H時(v)"
+      },
+      "GyMMM Hv": {
+        "H": "Gy年M月 H時～H時(v)"
+      },
+      "GyMMMd Hv": {
+        "H": "Gy年M月d日 H時～H時(v)"
+      },
+      "GyMMMEd Hv": {
+        "H": "Gy年M月d日(E) H時～H時(v)"
+      },
+      "GyMMMEEEEd Hv": {
+        "H": "Gy年M月d日EEEE H時～H時(v)"
+      },
+      "M Hv": {
+        "H": "M月 H時～H時(v)"
+      },
+      "Md Hv": {
+        "H": "M/d H時～H時(v)"
+      },
+      "MEd Hv": {
+        "H": "M/d(E) H時～H時(v)"
+      },
+      "MEEEEd Hv": {
+        "H": "M/dEEEE H時～H時(v)"
+      },
+      "MMM Hv": {
+        "H": "M月 H時～H時(v)"
+      },
+      "MMMd Hv": {
+        "H": "M月d日 H時～H時(v)"
+      },
+      "MMMEd Hv": {
+        "H": "M月d日(E) H時～H時(v)"
+      },
+      "MMMEEEEd Hv": {
+        "H": "M月d日EEEE H時～H時(v)"
+      },
+      "MMMMd Hv": {
+        "H": "M月d日 H時～H時(v)"
+      },
+      "y Hv": {
+        "H": "y年 H時～H時(v)"
+      },
+      "yM Hv": {
+        "H": "y/M H時～H時(v)"
+      },
+      "yMd Hv": {
+        "H": "y/M/d H時～H時(v)"
+      },
+      "yMEd Hv": {
+        "H": "y/M/d(E) H時～H時(v)"
+      },
+      "yMEEEEd Hv": {
+        "H": "y/M/dEEEE H時～H時(v)"
+      },
+      "yMM Hv": {
+        "H": "y/MM H時～H時(v)"
+      },
+      "yMMM Hv": {
+        "H": "y年M月 H時～H時(v)"
+      },
+      "yMMMd Hv": {
+        "H": "y年M月d日 H時～H時(v)"
+      },
+      "yMMMEd Hv": {
+        "H": "y年M月d日(E) H時～H時(v)"
+      },
+      "yMMMEEEEd Hv": {
+        "H": "y年M月d日EEEE H時～H時(v)"
+      },
+      "yMMMM Hv": {
+        "H": "y年M月 H時～H時(v)"
+      }
+    },
+    "hourCycle": "h23",
+    "nu": [
+      "latn"
+    ],
+    "ca": [
+      "gregory",
+      "japanese"
+    ],
+    "hc": [
+      "h23",
+      "h11",
+      "h12"
+    ]
+  },
+  "locale": "ja"
+}
