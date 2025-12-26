@@ -2242,9 +2242,13 @@
       },
       "XCG": {
         "displayName": {
+          "few": "карибских гульдена",
+          "many": "карибских гульденов",
+          "one": "карибский гульден",
+          "other": "карибского гульдена"
         },
-        "narrow": "Cg.",
-        "symbol": "Cg."
+        "narrow": "Cg",
+        "symbol": "Cg"
       },
       "XDR": {
         "displayName": {
@@ -2425,6 +2429,16 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "few": "зимбабвийских золотых",
+          "many": "зимбабвийских золотых",
+          "one": "зимбабвийский золотой",
+          "other": "зимбабвийского золотого"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {

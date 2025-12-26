@@ -1069,8 +1069,8 @@
       },
       "KGS": {
         "displayName": {
-          "one": "Kyrgystani som",
-          "other": "Kyrgystani soms"
+          "one": "Kyrgyz som",
+          "other": "Kyrgyz soms"
         },
         "narrow": "⃀",
         "symbol": "KGS"
@@ -2444,40 +2444,40 @@
           },
           "short": {
             "1000": {
-              "other": "¤0K"
+              "other": "¤0k"
             },
             "10000": {
-              "other": "¤00K"
+              "other": "¤00k"
             },
             "100000": {
-              "other": "¤000K"
+              "other": "¤000k"
             },
             "1000000": {
-              "other": "¤0M"
+              "other": "¤0m"
             },
             "10000000": {
-              "other": "¤00M"
+              "other": "¤00m"
             },
             "100000000": {
-              "other": "¤000M"
+              "other": "¤000m"
             },
             "1000000000": {
-              "other": "¤0B"
+              "other": "¤0bn"
             },
             "10000000000": {
-              "other": "¤00B"
+              "other": "¤00bn"
             },
             "100000000000": {
-              "other": "¤000B"
+              "other": "¤000bn"
             },
             "1000000000000": {
-              "other": "¤0T"
+              "other": "¤0tn"
             },
             "10000000000000": {
-              "other": "¤00T"
+              "other": "¤00tn"
             },
             "100000000000000": {
-              "other": "¤000T"
+              "other": "¤000tn"
             }
           },
           "standard": "¤#,##0.00",
@@ -2526,40 +2526,40 @@
           },
           "short": {
             "1000": {
-              "other": "0K"
+              "other": "0k"
             },
             "10000": {
-              "other": "00K"
+              "other": "00k"
             },
             "100000": {
-              "other": "000K"
+              "other": "000k"
             },
             "1000000": {
-              "other": "0M"
+              "other": "0m"
             },
             "10000000": {
-              "other": "00M"
+              "other": "00m"
             },
             "100000000": {
-              "other": "000M"
+              "other": "000m"
             },
             "1000000000": {
-              "other": "0B"
+              "other": "0bn"
             },
             "10000000000": {
-              "other": "00B"
+              "other": "00bn"
             },
             "100000000000": {
-              "other": "000B"
+              "other": "000bn"
             },
             "1000000000000": {
-              "other": "0T"
+              "other": "0tn"
             },
             "10000000000000": {
-              "other": "00T"
+              "other": "00tn"
             },
             "100000000000000": {
-              "other": "000T"
+              "other": "000tn"
             }
           },
           "standard": "#,##0.###"

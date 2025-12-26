@@ -345,6 +345,10 @@ export const hourCycles = {
     "h12",
     "h23"
   ],
+  "GS": [
+    "h23",
+    "h12"
+  ],
   "GT": [
     "h12",
     "h23"
@@ -1012,6 +1016,9 @@ export const hourCycles = {
   ],
   "kn-IN": [
     "h12",
+    "h23"
+  ],
+  "ku-SY": [
     "h23"
   ],
   "ml-IN": [

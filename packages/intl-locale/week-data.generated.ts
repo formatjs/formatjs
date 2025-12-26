@@ -920,7 +920,7 @@ export const weekData = {
     ]
   },
   "IS": {
-    "firstDay": 1,
+    "firstDay": 7,
     "minimalDays": 4,
     "weekend": [
       6,

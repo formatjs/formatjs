@@ -2194,6 +2194,8 @@
       },
       "XCG": {
         "displayName": {
+          "one": "karibisk gylden",
+          "other": "karibiske gylden"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -2401,6 +2403,14 @@
         "narrow": "ZWD",
         "symbol": "ZWD"
       },
+      "ZWG": {
+        "displayName": {
+          "one": "zimbabwisk gull",
+          "other": "zimbabwiske gull"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
+      },
       "ZWL": {
         "displayName": {
           "one": "zimbabwisk dollar (2009)",
@@ -2431,40 +2441,40 @@
           },
           "short": {
             "1000": {
-              "other": "¤ 0k"
+              "other": "0k ¤"
             },
             "10000": {
-              "other": "¤ 00k"
+              "other": "00k ¤"
             },
             "100000": {
-              "other": "¤ 000k"
+              "other": "000k ¤"
             },
             "1000000": {
-              "other": "¤ 0 mill'.'"
+              "other": "0 mill'.' ¤"
             },
             "10000000": {
-              "other": "¤ 00 mill'.'"
+              "other": "00 mill'.' ¤"
             },
             "100000000": {
-              "other": "¤ 000 mill'.'"
+              "other": "000 mill'.' ¤"
             },
             "1000000000": {
-              "other": "¤ 0 mrd'.'"
+              "other": "0 mrd'.' ¤"
             },
             "10000000000": {
-              "other": "¤ 00 mrd'.'"
+              "other": "00 mrd'.' ¤"
             },
             "100000000000": {
-              "other": "¤ 000 mrd'.'"
+              "other": "000 mrd'.' ¤"
             },
             "1000000000000": {
-              "other": "¤ 0 bill'.'"
+              "other": "0 bill'.' ¤"
             },
             "10000000000000": {
-              "other": "¤ 00 bill'.'"
+              "other": "00 bill'.' ¤"
             },
             "100000000000000": {
-              "other": "¤ 000 bill'.'"
+              "other": "000 bill'.' ¤"
             }
           },
           "standard": "#,##0.00 ¤;-#,##0.00 ¤",

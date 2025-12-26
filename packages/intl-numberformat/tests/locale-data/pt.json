@@ -2193,6 +2193,8 @@
       },
       "XCG": {
         "displayName": {
+          "one": "Florim do Caribe",
+          "other": "Florins do Caribe"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -2386,6 +2388,14 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "one": "Ouro zimbabueano",
+          "other": "Ouros zimbabueanos"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {

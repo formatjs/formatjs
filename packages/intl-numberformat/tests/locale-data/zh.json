@@ -1942,6 +1942,7 @@
       },
       "XCG": {
         "displayName": {
+          "other": "加勒比盾"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -2127,6 +2128,13 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "津巴布韦金元"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {

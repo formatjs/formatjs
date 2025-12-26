@@ -1914,6 +1914,7 @@
       },
       "XCG": {
         "displayName": {
+          "other": "Guilder Karibia"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -2085,6 +2086,13 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "emas Zimbabwe"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {

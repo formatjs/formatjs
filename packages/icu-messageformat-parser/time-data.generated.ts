@@ -468,6 +468,12 @@ export const timeData: Record<string, string[]> = {
     "hb",
     "hB"
   ],
+  "GS": [
+    "H",
+    "h",
+    "hb",
+    "hB"
+  ],
   "GT": [
     "h",
     "H",
@@ -1379,6 +1385,10 @@ export const timeData: Record<string, string[]> = {
     "hB",
     "h",
     "H"
+  ],
+  "ku-SY": [
+    "H",
+    "hB"
   ],
   "ml-IN": [
     "hB",

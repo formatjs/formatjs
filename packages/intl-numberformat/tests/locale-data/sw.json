@@ -1298,6 +1298,7 @@
       },
       "XCG": {
         "displayName": {
+          "other": "Guilder ya Karibe"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -1362,6 +1363,13 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "Dhahabu ya Zimbabwe"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       }
     },
     "nu": [
@@ -1377,45 +1385,46 @@
           },
           "short": {
             "1000": {
-              "other": "¤ elfu0"
+              "other": "¤ elfu 0;¤ elfu -0"
             },
             "10000": {
-              "other": "¤ elfu00;¤elfu -00"
+              "other": "¤ elfu 00;¤ elfu -00"
             },
             "100000": {
-              "other": "¤ laki000;¤laki -000"
+              "other": "¤ elfu 000;¤ elfu -000"
             },
             "1000000": {
-              "one": "¤ 0M;¤-0M",
+              "one": "¤ 0M;¤ -0M",
               "other": "¤ 0M"
             },
             "10000000": {
-              "one": "¤ 00M;¤M-00M",
-              "other": "¤ 00M;¤-00M"
+              "one": "¤ 00M;¤ -00M",
+              "other": "¤ 00M"
             },
             "100000000": {
-              "one": "¤ 000M;¤Milioni-000",
+              "one": "¤ 000M;¤ -000M",
               "other": "¤ 000M"
             },
             "1000000000": {
-              "other": "¤ 0B;¤-0B"
+              "other": "¤ 0B;¤ -0B"
             },
             "10000000000": {
-              "other": "¤ 00B;¤-00B"
+              "other": "¤ 00B;¤ -00B"
             },
             "100000000000": {
-              "other": "¤ 000B;¤-000B"
+              "other": "¤ 000B;¤ -000B"
             },
             "1000000000000": {
-              "one": "¤ 0T;¤-0T",
+              "one": "¤ 0T;¤ -0T",
               "other": "¤ 0T"
             },
             "10000000000000": {
-              "one": "¤ 00T;¤-00T",
+              "one": "¤ 00T;¤ -00T",
               "other": "¤ 00T"
             },
             "100000000000000": {
-              "other": "¤ 000T;¤-000T"
+              "one": "¤ 000T;¤ -000T",
+              "other": "¤ 000T"
             }
           },
           "standard": "¤ #,##0.00",

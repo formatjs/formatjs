@@ -2141,6 +2141,13 @@
         "narrow": "ZWD",
         "symbol": "ZWD"
       },
+      "ZWG": {
+        "displayName": {
+          "other": "Zimbabwe Gold"
+        },
+        "narrow": "ZiG",
+        "symbol": "ZiG"
+      },
       "ZWL": {
         "displayName": {
           "other": "Zimbabwaanse dollar (2009)"

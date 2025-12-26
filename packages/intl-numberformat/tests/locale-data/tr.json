@@ -1928,6 +1928,7 @@
       },
       "XCG": {
         "displayName": {
+          "other": "Karayip guldeni"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -2114,6 +2115,13 @@
         "narrow": "ZWD",
         "symbol": "ZWD"
       },
+      "ZWG": {
+        "displayName": {
+          "other": "Zimbabve altını"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
+      },
       "ZWL": {
         "displayName": {
           "other": "Zimbabve Doları (2009)"
@@ -2142,40 +2150,40 @@
           },
           "short": {
             "1000": {
-              "other": "0 B ¤"
+              "other": "¤0 B"
             },
             "10000": {
-              "other": "00 B ¤"
+              "other": "¤00 B"
             },
             "100000": {
-              "other": "000 B ¤"
+              "other": "¤000 B"
             },
             "1000000": {
-              "other": "0 Mn ¤"
+              "other": "¤0 Mn"
             },
             "10000000": {
-              "other": "00 Mn ¤"
+              "other": "¤00 Mn"
             },
             "100000000": {
-              "other": "000 Mn ¤"
+              "other": "¤000 Mn"
             },
             "1000000000": {
-              "other": "0 Mr ¤"
+              "other": "¤0 Mr"
             },
             "10000000000": {
-              "other": "00 Mr ¤"
+              "other": "¤00 Mr"
             },
             "100000000000": {
-              "other": "000 Mr ¤"
+              "other": "¤000 Mr"
             },
             "1000000000000": {
-              "other": "0 Tn ¤"
+              "other": "¤0 Tn"
             },
             "10000000000000": {
-              "other": "00 Tn ¤"
+              "other": "¤00 Tn"
             },
             "100000000000000": {
-              "other": "000 Tn ¤"
+              "other": "¤000 Tn"
             }
           },
           "standard": "¤#,##0.00",

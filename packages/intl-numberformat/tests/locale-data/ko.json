@@ -605,7 +605,7 @@
       },
       "ERN": {
         "displayName": {
-          "other": "에리트리아 나크파"
+          "other": "에리트레아 낙파"
         },
         "narrow": "ERN",
         "symbol": "ERN"
@@ -1879,6 +1879,7 @@
       },
       "XCG": {
         "displayName": {
+          "other": "카리브 길더"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -2043,6 +2044,13 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "짐바브웨 골드"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {

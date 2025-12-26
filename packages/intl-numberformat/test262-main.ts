@@ -1703,6 +1703,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XCG": {
         "displayName": {
+          "other": "غيلدر كاريبي"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -1854,6 +1855,13 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         "narrow": "ZWD",
         "symbol": "ZWD"
       },
+      "ZWG": {
+        "displayName": {
+          "other": "ذهب زيمبابوي"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
+      },
       "ZWL": {
         "displayName": {
           "other": "دولار زمبابوي 2009"
@@ -1875,40 +1883,41 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
           },
           "short": {
             "1000": {
-              "other": "0 ألف ¤"
+              "few": "‏0 آلاف ¤",
+              "other": "‏0 ألف ¤"
             },
             "10000": {
-              "other": "00 ألف ¤"
+              "other": "‏00 ألف ¤"
             },
             "100000": {
-              "other": "000 ألف ¤"
+              "other": "‏000 ألف ¤"
             },
             "1000000": {
-              "other": "0 مليون ¤"
+              "other": "‏0 مليون ¤"
             },
             "10000000": {
-              "other": "00 مليون ¤"
+              "other": "‏00 مليون ¤"
             },
             "100000000": {
-              "other": "000 مليون ¤"
+              "other": "‏000 مليون ¤"
             },
             "1000000000": {
-              "other": "0 مليار ¤"
+              "other": "‏0 مليار ¤"
             },
             "10000000000": {
-              "other": "00 مليار ¤"
+              "other": "‏00 مليار ¤"
             },
             "100000000000": {
-              "other": "000 مليار ¤"
+              "other": "‏000 مليار ¤"
             },
             "1000000000000": {
-              "other": "0 ترليون ¤"
+              "other": "‏0 ترليون ¤"
             },
             "10000000000000": {
-              "other": "00 ترليون ¤"
+              "other": "‏00 ترليون ¤"
             },
             "100000000000000": {
-              "other": "000 ترليون ¤"
+              "other": "‏000 ترليون ¤"
             }
           },
           "standard": "‏#,##0.00 ¤;‏-#,##0.00 ¤",
@@ -4171,8 +4180,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "MVR": {
         "displayName": {
-          "one": "Malediven-Rufiyaa",
-          "other": "Malediven-Rupien"
+          "other": "Malediven-Rufiyaa"
         },
         "narrow": "MVR",
         "symbol": "MVR"
@@ -4922,6 +4930,8 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XCG": {
         "displayName": {
+          "one": "Karibischer Gulden",
+          "other": "Karibische Gulden"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -5116,6 +5126,13 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "Simbabwe-Gold"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {
@@ -5425,11 +5442,13 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
             "other": "{0} Flüssigunzen"
           },
           "narrow": {
+            "one": "{0} fl.oz.",
             "other": "{0} fl oz"
           },
           "perUnit": {
           },
           "short": {
+            "one": "{0} fl.oz.",
             "other": "{0} fl oz"
           }
         },
@@ -5529,7 +5548,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
             "other": "{0} Stunden"
           },
           "narrow": {
-            "other": "{0} Std."
+            "other": "{0}h"
           },
           "perUnit": {
             "long": "{0} pro Stunde",
@@ -5805,6 +5824,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
             "other": "{0} Millisekunden"
           },
           "narrow": {
+            "one": "{0}ms",
             "other": "{0} ms"
           },
           "perUnit": {
@@ -7090,8 +7110,8 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "KGS": {
         "displayName": {
-          "one": "Kyrgystani som",
-          "other": "Kyrgystani soms"
+          "one": "Kyrgyz som",
+          "other": "Kyrgyz soms"
         },
         "narrow": "⃀",
         "symbol": "KGS"
@@ -11287,9 +11307,10 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XCG": {
         "displayName": {
+          "other": "カリブ ギルダー"
         },
-        "narrow": "Cg.",
-        "symbol": "Cg."
+        "narrow": "Cg",
+        "symbol": "Cg"
       },
       "XDR": {
         "displayName": {
@@ -11472,6 +11493,13 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "ジンバブエ ゴールド"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {
@@ -12946,7 +12974,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "ERN": {
         "displayName": {
-          "other": "에리트리아 나크파"
+          "other": "에리트레아 낙파"
         },
         "narrow": "ERN",
         "symbol": "ERN"
@@ -14220,6 +14248,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XCG": {
         "displayName": {
+          "other": "카리브 길더"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -14384,6 +14413,13 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "짐바브웨 골드"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {
@@ -17146,6 +17182,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XCG": {
         "displayName": {
+          "other": "กิลเดอร์แคริบเบียน"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -17331,6 +17368,13 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "ทองซิมบับเว"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {
@@ -20142,6 +20186,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XCG": {
         "displayName": {
+          "other": "加勒比盾"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -20327,6 +20372,13 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "津巴布韦金元"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {
@@ -21808,7 +21860,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "ERN": {
         "displayName": {
-          "other": "厄立特里亞納克法"
+          "other": "厄利垂亞納可法"
         },
         "narrow": "ERN",
         "symbol": "ERN"
@@ -22319,7 +22371,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "MDL": {
         "displayName": {
-          "other": "摩杜雲列伊"
+          "other": "摩爾多瓦列伊"
         },
         "narrow": "MDL",
         "symbol": "MDL"
@@ -22508,7 +22560,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "NIO": {
         "displayName": {
-          "other": "尼加拉瓜金科多巴"
+          "other": "尼加拉瓜科多巴"
         },
         "narrow": "C$",
         "symbol": "NIO"
@@ -23061,7 +23113,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XAF": {
         "displayName": {
-          "other": "法郎 (CFA–BEAC)"
+          "other": "中非法郎"
         },
         "narrow": "FCFA",
         "symbol": "FCFA"
@@ -23117,6 +23169,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XCG": {
         "displayName": {
+          "other": "加勒比盾"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -23151,7 +23204,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XOF": {
         "displayName": {
-          "other": "法郎 (CFA–BCEAO)"
+          "other": "西非法郎"
         },
         "narrow": "F CFA",
         "symbol": "F CFA"
@@ -23165,7 +23218,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XPF": {
         "displayName": {
-          "other": "法郎 (CFP)"
+          "other": "太平洋法郎"
         },
         "narrow": "CFPF",
         "symbol": "CFPF"
@@ -23302,6 +23355,13 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "辛巴威金"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {
@@ -23614,15 +23674,15 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
             "other": "{0} 英尺"
           },
           "narrow": {
-            "other": "{0}呎"
+            "other": "{0}英尺"
           },
           "perUnit": {
             "long": "每英尺 {0}",
-            "narrow": "{0}/呎",
-            "short": "{0}/呎"
+            "narrow": "{0}/英尺",
+            "short": "{0}/英尺"
           },
           "short": {
-            "other": "{0} 呎"
+            "other": "{0}英尺"
           }
         },
         "gallon": {
@@ -26113,6 +26173,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       },
       "XCG": {
         "displayName": {
+          "other": "加勒比盾"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -26298,6 +26359,13 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "津巴布韦金元"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {

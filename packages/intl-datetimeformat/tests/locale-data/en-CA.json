@@ -100,10 +100,6 @@
         "long": [
           "Afghanistan Time",
           "Afghanistan Time"
-        ],
-        "short": [
-          "AFT",
-          "AFT"
         ]
       },
       "Africa/Maputo": {
@@ -234,68 +230,68 @@
       },
       "Africa/Lagos": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Asia/Aqtobe": {
@@ -307,7 +303,7 @@
       "America/Juneau": {
         "long": [
           "Alaska Standard Time",
-          "Alaska Daylight Saving Time"
+          "Alaska Daylight Time"
         ],
         "short": [
           "AKST",
@@ -329,7 +325,7 @@
       "America/Chicago": {
         "long": [
           "Central Standard Time",
-          "Central Daylight Saving Time"
+          "Central Daylight Time"
         ],
         "short": [
           "CST",
@@ -339,7 +335,7 @@
       "America/Belize": {
         "long": [
           "Central Standard Time",
-          "Central Daylight Saving Time"
+          "Central Daylight Time"
         ],
         "short": [
           "CST",
@@ -349,7 +345,7 @@
       "America/Winnipeg": {
         "long": [
           "Central Standard Time",
-          "Central Daylight Saving Time"
+          "Central Daylight Time"
         ],
         "short": [
           "CST",
@@ -359,7 +355,7 @@
       "America/Costa_Rica": {
         "long": [
           "Central Standard Time",
-          "Central Daylight Saving Time"
+          "Central Daylight Time"
         ],
         "short": [
           "CST",
@@ -369,7 +365,7 @@
       "America/Guatemala": {
         "long": [
           "Central Standard Time",
-          "Central Daylight Saving Time"
+          "Central Daylight Time"
         ],
         "short": [
           "CST",
@@ -379,7 +375,7 @@
       "America/Tegucigalpa": {
         "long": [
           "Central Standard Time",
-          "Central Daylight Saving Time"
+          "Central Daylight Time"
         ],
         "short": [
           "CST",
@@ -389,7 +385,7 @@
       "America/Mexico_City": {
         "long": [
           "Central Standard Time",
-          "Central Daylight Saving Time"
+          "Central Daylight Time"
         ],
         "short": [
           "CST",
@@ -399,7 +395,7 @@
       "America/El_Salvador": {
         "long": [
           "Central Standard Time",
-          "Central Daylight Saving Time"
+          "Central Daylight Time"
         ],
         "short": [
           "CST",
@@ -409,7 +405,7 @@
       "America/New_York": {
         "long": [
           "Eastern Standard Time",
-          "Eastern Daylight Saving Time"
+          "Eastern Daylight Time"
         ],
         "short": [
           "EST",
@@ -419,7 +415,7 @@
       "America/Nassau": {
         "long": [
           "Eastern Standard Time",
-          "Eastern Daylight Saving Time"
+          "Eastern Daylight Time"
         ],
         "short": [
           "EST",
@@ -429,7 +425,7 @@
       "America/Toronto": {
         "long": [
           "Eastern Standard Time",
-          "Eastern Daylight Saving Time"
+          "Eastern Daylight Time"
         ],
         "short": [
           "EST",
@@ -439,7 +435,7 @@
       "America/Port-au-Prince": {
         "long": [
           "Eastern Standard Time",
-          "Eastern Daylight Saving Time"
+          "Eastern Daylight Time"
         ],
         "short": [
           "EST",
@@ -449,7 +445,7 @@
       "America/Jamaica": {
         "long": [
           "Eastern Standard Time",
-          "Eastern Daylight Saving Time"
+          "Eastern Daylight Time"
         ],
         "short": [
           "EST",
@@ -459,7 +455,7 @@
       "America/Cayman": {
         "long": [
           "Eastern Standard Time",
-          "Eastern Daylight Saving Time"
+          "Eastern Daylight Time"
         ],
         "short": [
           "EST",
@@ -469,7 +465,7 @@
       "America/Panama": {
         "long": [
           "Eastern Standard Time",
-          "Eastern Daylight Saving Time"
+          "Eastern Daylight Time"
         ],
         "short": [
           "EST",
@@ -534,8 +530,8 @@
       },
       "Pacific/Apia": {
         "long": [
-          "Apia Standard Time",
-          "Apia Daylight Time"
+          "Samoa Standard Time",
+          "Samoa Daylight Time"
         ]
       },
       "Asia/Riyadh": {
@@ -578,10 +574,6 @@
         "long": [
           "Argentina Standard Time",
           "Argentina Summer Time"
-        ],
-        "short": [
-          null,
-          null
         ]
       },
       "America/Argentina/San_Luis": {
@@ -836,30 +828,18 @@
         "long": [
           "Australian Central Western Standard Time",
           "Australian Central Western Daylight Time"
-        ],
-        "short": [
-          "ACWST",
-          "ACWDT"
         ]
       },
       "Australia/Sydney": {
         "long": [
           "Australian Eastern Standard Time",
           "Australian Eastern Daylight Time"
-        ],
-        "short": [
-          "AEST",
-          "AEDT"
         ]
       },
       "Australia/Perth": {
         "long": [
           "Australian Western Standard Time",
           "Australian Western Daylight Time"
-        ],
-        "short": [
-          "AWST",
-          "AWDT"
         ]
       },
       "Atlantic/Azores": {
@@ -868,14 +848,20 @@
           "Azores Summer Time"
         ]
       },
+      "America/Adak": {
+        "long": [
+          "Hawaii-Aleutian Standard Time",
+          "Hawaii-Aleutian Daylight Time"
+        ],
+        "short": [
+          "HAST",
+          "HADT"
+        ]
+      },
       "Asia/Thimphu": {
         "long": [
           "Bhutan Time",
           "Bhutan Time"
-        ],
-        "short": [
-          "BTT",
-          "BTT"
         ]
       },
       "America/La_Paz": {
@@ -888,20 +874,12 @@
         "long": [
           "Malaysia Time",
           "Malaysia Time"
-        ],
-        "short": [
-          "MYT",
-          "MYT"
         ]
       },
       "America/Sao_Paulo": {
         "long": [
           "Brasilia Standard Time",
           "Brasilia Summer Time"
-        ],
-        "short": [
-          null,
-          "BRST"
         ]
       },
       "Europe/London": {
@@ -916,12 +894,8 @@
       },
       "Asia/Brunei": {
         "long": [
-          "Brunei Darussalam Time",
-          "Brunei Darussalam Time"
-        ],
-        "short": [
-          "BNT",
-          "BNT"
+          "Brunei Time",
+          "Brunei Time"
         ]
       },
       "Atlantic/Cape_Verde": {
@@ -938,8 +912,8 @@
       },
       "Pacific/Saipan": {
         "long": [
-          "North Mariana Islands Time",
-          "North Mariana Islands Time"
+          "Northern Mariana Islands Time",
+          "Northern Mariana Islands Time"
         ]
       },
       "Pacific/Guam": {
@@ -952,10 +926,6 @@
         "long": [
           "Chatham Standard Time",
           "Chatham Daylight Time"
-        ],
-        "short": [
-          "CHAST",
-          "CHADT"
         ]
       },
       "America/Santiago": {
@@ -974,36 +944,24 @@
         "long": [
           "Christmas Island Time",
           "Christmas Island Time"
-        ],
-        "short": [
-          "CXT",
-          "CXT"
         ]
       },
       "Indian/Cocos": {
         "long": [
           "Cocos Islands Time",
           "Cocos Islands Time"
-        ],
-        "short": [
-          "CCT",
-          "CCT"
         ]
       },
       "America/Bogota": {
         "long": [
           "Colombia Standard Time",
           "Colombia Summer Time"
-        ],
-        "short": [
-          null,
-          "COST"
         ]
       },
       "Pacific/Rarotonga": {
         "long": [
           "Cook Islands Standard Time",
-          "Cook Islands Half Summer Time"
+          "Cook Islands Summer Time"
         ]
       },
       "America/Havana": {
@@ -1020,8 +978,8 @@
       },
       "Antarctica/DumontDUrville": {
         "long": [
-          "Dumont-d’Urville Time",
-          "Dumont-d’Urville Time"
+          "Dumont d’Urville Time",
+          "Dumont d’Urville Time"
         ]
       },
       "Asia/Dushanbe": {
@@ -1038,32 +996,20 @@
       },
       "Asia/Dili": {
         "long": [
-          "East Timor Time",
-          "East Timor Time"
-        ],
-        "short": [
-          "TLT",
-          "TLT"
+          "Timor-Leste Time",
+          "Timor-Leste Time"
         ]
       },
       "Pacific/Easter": {
         "long": [
           "Easter Island Standard Time",
           "Easter Island Summer Time"
-        ],
-        "short": [
-          "EAST",
-          "EASST"
         ]
       },
       "America/Guayaquil": {
         "long": [
           "Ecuador Time",
           "Ecuador Time"
-        ],
-        "short": [
-          "ECT",
-          "ECT"
         ]
       },
       "Europe/Paris": {
@@ -1334,10 +1280,6 @@
         "long": [
           "Falkland Islands Standard Time",
           "Falkland Islands Summer Time"
-        ],
-        "short": [
-          null,
-          "FKST"
         ]
       },
       "Pacific/Fiji": {
@@ -1368,10 +1310,6 @@
         "long": [
           "Galapagos Time",
           "Galapagos Time"
-        ],
-        "short": [
-          "GALT",
-          "GALT"
         ]
       },
       "Pacific/Gambier": {
@@ -1516,50 +1454,34 @@
         "long": [
           "East Greenland Standard Time",
           "East Greenland Summer Time"
-        ],
-        "short": [
-          null,
-          null
         ]
       },
       "Asia/Dubai": {
         "long": [
           "Gulf Standard Time",
           "Gulf Standard Time"
-        ],
-        "short": [
-          "Gulf Time",
-          "Gulf Time"
         ]
       },
       "Asia/Muscat": {
         "long": [
           "Gulf Standard Time",
           "Gulf Standard Time"
-        ],
-        "short": [
-          "Gulf Time",
-          "Gulf Time"
         ]
       },
       "America/Guyana": {
         "long": [
           "Guyana Time",
           "Guyana Time"
-        ],
-        "short": [
-          "GYT",
-          "GYT"
         ]
       },
       "Pacific/Honolulu": {
         "long": [
           "Hawaii-Aleutian Standard Time",
-          "Hawaii-Aleutian Daylight Time"
+          "Hawaii-Aleutian Standard Time"
         ],
         "short": [
-          "HAST",
-          "HADT"
+          "HST",
+          "HST"
         ]
       },
       "Asia/Hong_Kong": {
@@ -1570,18 +1492,14 @@
       },
       "Asia/Hovd": {
         "long": [
-          "Hovd Standard Time",
-          "Hovd Summer Time"
+          "Khovd Standard Time",
+          "Khovd Summer Time"
         ]
       },
       "Asia/Calcutta": {
         "long": [
           "India Standard Time",
           "India Standard Time"
-        ],
-        "short": [
-          "IST",
-          "IST"
         ]
       },
       "Asia/Colombo": {
@@ -1600,70 +1518,42 @@
         "long": [
           "Indochina Time",
           "Indochina Time"
-        ],
-        "short": [
-          "ICT",
-          "ICT"
         ]
       },
       "Asia/Phnom_Penh": {
         "long": [
           "Indochina Time",
           "Indochina Time"
-        ],
-        "short": [
-          "ICT",
-          "ICT"
         ]
       },
       "Asia/Vientiane": {
         "long": [
           "Indochina Time",
           "Indochina Time"
-        ],
-        "short": [
-          "ICT",
-          "ICT"
         ]
       },
       "Asia/Makassar": {
         "long": [
           "Central Indonesia Time",
           "Central Indonesia Time"
-        ],
-        "short": [
-          "WITA",
-          "WITA"
         ]
       },
       "Asia/Jayapura": {
         "long": [
           "Eastern Indonesia Time",
           "Eastern Indonesia Time"
-        ],
-        "short": [
-          "WIT",
-          "WIT"
         ]
       },
       "Asia/Jakarta": {
         "long": [
           "Western Indonesia Time",
           "Western Indonesia Time"
-        ],
-        "short": [
-          "WIB",
-          "WIB"
         ]
       },
       "Asia/Tehran": {
         "long": [
           "Iran Standard Time",
-          "Iran Daylight Saving Time"
-        ],
-        "short": [
-          "IRST",
-          "IRDT"
+          "Iran Daylight Time"
         ]
       },
       "Asia/Irkutsk": {
@@ -1686,24 +1576,20 @@
       },
       "Asia/Kamchatka": {
         "long": [
-          "Petropavlovsk-Kamchatski Standard Time",
-          "Petropavlovsk-Kamchatski Summer Time"
+          "Kamchatka Standard Time",
+          "Kamchatka Summer Time"
         ]
       },
       "Asia/Karachi": {
         "long": [
           "Pakistan Standard Time",
           "Pakistan Summer Time"
-        ],
-        "short": [
-          "PKT",
-          "PKT"
         ]
       },
       "Asia/Qyzylorda": {
         "long": [
-          "Qyzylorda Standard Time",
-          "Qyzylorda Summer Time"
+          "Kyzylorda Standard Time",
+          "Kyzylorda Summer Time"
         ]
       },
       "Asia/Seoul": {
@@ -1758,10 +1644,6 @@
         "long": [
           "Maldives Time",
           "Maldives Time"
-        ],
-        "short": [
-          "MVT",
-          "MVT"
         ]
       },
       "Pacific/Marquesas": {
@@ -1822,10 +1704,6 @@
         "long": [
           "Nepal Time",
           "Nepal Time"
-        ],
-        "short": [
-          "NPT",
-          "NPT"
         ]
       },
       "Pacific/Noumea": {
@@ -1872,10 +1750,6 @@
         "long": [
           "Fernando de Noronha Standard Time",
           "Fernando de Noronha Summer Time"
-        ],
-        "short": [
-          null,
-          null
         ]
       },
       "Asia/Novosibirsk": {
@@ -1906,20 +1780,12 @@
         "long": [
           "Paraguay Standard Time",
           "Paraguay Summer Time"
-        ],
-        "short": [
-          null,
-          "PYST"
         ]
       },
       "America/Lima": {
         "long": [
           "Peru Standard Time",
           "Peru Summer Time"
-        ],
-        "short": [
-          null,
-          null
         ]
       },
       "Asia/Manila": {
@@ -1937,7 +1803,7 @@
       "America/Miquelon": {
         "long": [
           "Saint-Pierre-et-Miquelon Standard Time",
-          "Saint-Pierre-et-Miquelon Daylight Saving Time"
+          "Saint-Pierre-et-Miquelon Daylight Time"
         ],
         "short": [
           "PMST",
@@ -1952,14 +1818,14 @@
       },
       "Pacific/Ponape": {
         "long": [
-          "Ponape Time",
-          "Ponape Time"
+          "Pohnpei Time",
+          "Pohnpei Time"
         ]
       },
       "Asia/Pyongyang": {
         "long": [
-          "Pyongyang Time",
-          "Pyongyang Time"
+          "North Korea Time",
+          "North Korea Time"
         ]
       },
       "Indian/Reunion": {
@@ -1982,8 +1848,8 @@
       },
       "Pacific/Pago_Pago": {
         "long": [
-          "Samoa Standard Time",
-          "Samoan Time"
+          "American Samoa Standard Time",
+          "American Samoa Daylight Time"
         ]
       },
       "Indian/Mahe": {
@@ -2030,8 +1896,8 @@
       },
       "Asia/Taipei": {
         "long": [
-          "Taipei Standard Time",
-          "Taipei Daylight Time"
+          "Taiwan Standard Time",
+          "Taiwan Daylight Time"
         ]
       },
       "Asia/Tashkent": {
@@ -2058,6 +1924,12 @@
           "Chuuk Time"
         ]
       },
+      "Europe/Istanbul": {
+        "long": [
+          "Türkiye Standard Time",
+          "Türkiye Summer Time"
+        ]
+      },
       "Pacific/Funafuti": {
         "long": [
           "Tuvalu Time",
@@ -2068,10 +1940,6 @@
         "long": [
           "Uruguay Standard Time",
           "Uruguay Summer Time"
-        ],
-        "short": [
-          "UYT",
-          "UYST"
         ]
       },
       "Pacific/Efate": {
@@ -2084,10 +1952,6 @@
         "long": [
           "Venezuela Time",
           "Venezuela Time"
-        ],
-        "short": [
-          "VET",
-          "VET"
         ]
       },
       "Asia/Vladivostok": {
@@ -2170,9 +2034,12 @@
         "Bhms": "h:mm:ss B",
         "d": "d",
         "E": "ccc",
+        "EBh": "E h B",
         "EBhm": "E h:mm B",
         "EBhms": "E h:mm:ss B",
         "Ed": "E d",
+        "Eh": "E h a",
+        "Eh-alt-ascii": "E h a",
         "Ehm": "E h:mm a",
         "Ehm-alt-ascii": "E h:mm a",
         "EHm": "E HH:mm",
@@ -2180,7 +2047,9 @@
         "Ehms-alt-ascii": "E h:mm:ss a",
         "EHms": "E HH:mm:ss",
         "Gy": "y G",
+        "GyM": "M/y G",
         "GyMd": "M/d/y G",
+        "GyMEd": "E, M/d/y G",
         "GyMMM": "MMM y G",
         "GyMMMd": "MMM d, y G",
         "GyMMMEd": "E, MMM d, y G",
@@ -2199,6 +2068,9 @@
         "hmv": "h:mm a v",
         "hmv-alt-ascii": "h:mm a v",
         "Hmv": "HH:mm v",
+        "hv": "h a v",
+        "hv-alt-ascii": "h a v",
+        "Hv": "HH'h' v",
         "M": "L",
         "Md": "MM-dd",
         "MEd": "E, MM-dd",
@@ -2238,7 +2110,9 @@
         "E, h:mm:ss a zzzz": "ccc, h:mm:ss a zzzz",
         "Ed, h:mm:ss a zzzz": "E d, h:mm:ss a zzzz",
         "Gy, h:mm:ss a zzzz": "y G, h:mm:ss a zzzz",
+        "GyM, h:mm:ss a zzzz": "M/y G, h:mm:ss a zzzz",
         "GyMd, h:mm:ss a zzzz": "M/d/y G, h:mm:ss a zzzz",
+        "GyMEd, h:mm:ss a zzzz": "E, M/d/y G, h:mm:ss a zzzz",
         "GyMMM, h:mm:ss a zzzz": "MMM y G, h:mm:ss a zzzz",
         "GyMMMd, h:mm:ss a zzzz": "MMM d, y G, h:mm:ss a zzzz",
         "GyMMMEd, h:mm:ss a zzzz": "E, MMM d, y G, h:mm:ss a zzzz",
@@ -2267,7 +2141,9 @@
         "E, h:mm:ss a zzzz": "ccc, h:mm:ss a zzzz",
         "Ed, h:mm:ss a zzzz": "E d, h:mm:ss a zzzz",
         "Gy, h:mm:ss a zzzz": "y G, h:mm:ss a zzzz",
+        "GyM, h:mm:ss a zzzz": "M/y G, h:mm:ss a zzzz",
         "GyMd, h:mm:ss a zzzz": "M/d/y G, h:mm:ss a zzzz",
+        "GyMEd, h:mm:ss a zzzz": "E, M/d/y G, h:mm:ss a zzzz",
         "GyMMM, h:mm:ss a zzzz": "MMM y G, h:mm:ss a zzzz",
         "GyMMMd, h:mm:ss a zzzz": "MMM d, y G, h:mm:ss a zzzz",
         "GyMMMEd, h:mm:ss a zzzz": "E, MMM d, y G, h:mm:ss a zzzz",
@@ -2296,7 +2172,9 @@
         "E, h:mm:ss a z": "ccc, h:mm:ss a z",
         "Ed, h:mm:ss a z": "E d, h:mm:ss a z",
         "Gy, h:mm:ss a z": "y G, h:mm:ss a z",
+        "GyM, h:mm:ss a z": "M/y G, h:mm:ss a z",
         "GyMd, h:mm:ss a z": "M/d/y G, h:mm:ss a z",
+        "GyMEd, h:mm:ss a z": "E, M/d/y G, h:mm:ss a z",
         "GyMMM, h:mm:ss a z": "MMM y G, h:mm:ss a z",
         "GyMMMd, h:mm:ss a z": "MMM d, y G, h:mm:ss a z",
         "GyMMMEd, h:mm:ss a z": "E, MMM d, y G, h:mm:ss a z",
@@ -2325,7 +2203,9 @@
         "E, h:mm:ss a z": "ccc, h:mm:ss a z",
         "Ed, h:mm:ss a z": "E d, h:mm:ss a z",
         "Gy, h:mm:ss a z": "y G, h:mm:ss a z",
+        "GyM, h:mm:ss a z": "M/y G, h:mm:ss a z",
         "GyMd, h:mm:ss a z": "M/d/y G, h:mm:ss a z",
+        "GyMEd, h:mm:ss a z": "E, M/d/y G, h:mm:ss a z",
         "GyMMM, h:mm:ss a z": "MMM y G, h:mm:ss a z",
         "GyMMMd, h:mm:ss a z": "MMM d, y G, h:mm:ss a z",
         "GyMMMEd, h:mm:ss a z": "E, MMM d, y G, h:mm:ss a z",
@@ -2354,7 +2234,9 @@
         "E, h:mm:ss a": "ccc, h:mm:ss a",
         "Ed, h:mm:ss a": "E d, h:mm:ss a",
         "Gy, h:mm:ss a": "y G, h:mm:ss a",
+        "GyM, h:mm:ss a": "M/y G, h:mm:ss a",
         "GyMd, h:mm:ss a": "M/d/y G, h:mm:ss a",
+        "GyMEd, h:mm:ss a": "E, M/d/y G, h:mm:ss a",
         "GyMMM, h:mm:ss a": "MMM y G, h:mm:ss a",
         "GyMMMd, h:mm:ss a": "MMM d, y G, h:mm:ss a",
         "GyMMMEd, h:mm:ss a": "E, MMM d, y G, h:mm:ss a",
@@ -2383,7 +2265,9 @@
         "E, h:mm:ss a": "ccc, h:mm:ss a",
         "Ed, h:mm:ss a": "E d, h:mm:ss a",
         "Gy, h:mm:ss a": "y G, h:mm:ss a",
+        "GyM, h:mm:ss a": "M/y G, h:mm:ss a",
         "GyMd, h:mm:ss a": "M/d/y G, h:mm:ss a",
+        "GyMEd, h:mm:ss a": "E, M/d/y G, h:mm:ss a",
         "GyMMM, h:mm:ss a": "MMM y G, h:mm:ss a",
         "GyMMMd, h:mm:ss a": "MMM d, y G, h:mm:ss a",
         "GyMMMEd, h:mm:ss a": "E, MMM d, y G, h:mm:ss a",
@@ -2412,7 +2296,9 @@
         "E, h:mm a": "ccc, h:mm a",
         "Ed, h:mm a": "E d, h:mm a",
         "Gy, h:mm a": "y G, h:mm a",
+        "GyM, h:mm a": "M/y G, h:mm a",
         "GyMd, h:mm a": "M/d/y G, h:mm a",
+        "GyMEd, h:mm a": "E, M/d/y G, h:mm a",
         "GyMMM, h:mm a": "MMM y G, h:mm a",
         "GyMMMd, h:mm a": "MMM d, y G, h:mm a",
         "GyMMMEd, h:mm a": "E, MMM d, y G, h:mm a",
@@ -2441,7 +2327,9 @@
         "E, h:mm a": "ccc, h:mm a",
         "Ed, h:mm a": "E d, h:mm a",
         "Gy, h:mm a": "y G, h:mm a",
+        "GyM, h:mm a": "M/y G, h:mm a",
         "GyMd, h:mm a": "M/d/y G, h:mm a",
+        "GyMEd, h:mm a": "E, M/d/y G, h:mm a",
         "GyMMM, h:mm a": "MMM y G, h:mm a",
         "GyMMMd, h:mm a": "MMM d, y G, h:mm a",
         "GyMMMEd, h:mm a": "E, MMM d, y G, h:mm a",
@@ -2470,7 +2358,9 @@
         "E, Bh": "ccc, h B",
         "Ed, Bh": "E d, h B",
         "Gy, Bh": "y G, h B",
+        "GyM, Bh": "M/y G, h B",
         "GyMd, Bh": "M/d/y G, h B",
+        "GyMEd, Bh": "E, M/d/y G, h B",
         "GyMMM, Bh": "MMM y G, h B",
         "GyMMMd, Bh": "MMM d, y G, h B",
         "GyMMMEd, Bh": "E, MMM d, y G, h B",
@@ -2499,7 +2389,9 @@
         "E, Bhm": "ccc, h:mm B",
         "Ed, Bhm": "E d, h:mm B",
         "Gy, Bhm": "y G, h:mm B",
+        "GyM, Bhm": "M/y G, h:mm B",
         "GyMd, Bhm": "M/d/y G, h:mm B",
+        "GyMEd, Bhm": "E, M/d/y G, h:mm B",
         "GyMMM, Bhm": "MMM y G, h:mm B",
         "GyMMMd, Bhm": "MMM d, y G, h:mm B",
         "GyMMMEd, Bhm": "E, MMM d, y G, h:mm B",
@@ -2528,7 +2420,9 @@
         "E, Bhms": "ccc, h:mm:ss B",
         "Ed, Bhms": "E d, h:mm:ss B",
         "Gy, Bhms": "y G, h:mm:ss B",
+        "GyM, Bhms": "M/y G, h:mm:ss B",
         "GyMd, Bhms": "M/d/y G, h:mm:ss B",
+        "GyMEd, Bhms": "E, M/d/y G, h:mm:ss B",
         "GyMMM, Bhms": "MMM y G, h:mm:ss B",
         "GyMMMd, Bhms": "MMM d, y G, h:mm:ss B",
         "GyMMMEd, Bhms": "E, MMM d, y G, h:mm:ss B",
@@ -2557,7 +2451,9 @@
         "E, h": "ccc, h a",
         "Ed, h": "E d, h a",
         "Gy, h": "y G, h a",
+        "GyM, h": "M/y G, h a",
         "GyMd, h": "M/d/y G, h a",
+        "GyMEd, h": "E, M/d/y G, h a",
         "GyMMM, h": "MMM y G, h a",
         "GyMMMd, h": "MMM d, y G, h a",
         "GyMMMEd, h": "E, MMM d, y G, h a",
@@ -2586,7 +2482,9 @@
         "E, H": "ccc, HH",
         "Ed, H": "E d, HH",
         "Gy, H": "y G, HH",
+        "GyM, H": "M/y G, HH",
         "GyMd, H": "M/d/y G, HH",
+        "GyMEd, H": "E, M/d/y G, HH",
         "GyMMM, H": "MMM y G, HH",
         "GyMMMd, H": "MMM d, y G, HH",
         "GyMMMEd, H": "E, MMM d, y G, HH",
@@ -2615,7 +2513,9 @@
         "E, hm": "ccc, h:mm a",
         "Ed, hm": "E d, h:mm a",
         "Gy, hm": "y G, h:mm a",
+        "GyM, hm": "M/y G, h:mm a",
         "GyMd, hm": "M/d/y G, h:mm a",
+        "GyMEd, hm": "E, M/d/y G, h:mm a",
         "GyMMM, hm": "MMM y G, h:mm a",
         "GyMMMd, hm": "MMM d, y G, h:mm a",
         "GyMMMEd, hm": "E, MMM d, y G, h:mm a",
@@ -2644,7 +2544,9 @@
         "E, Hm": "ccc, HH:mm",
         "Ed, Hm": "E d, HH:mm",
         "Gy, Hm": "y G, HH:mm",
+        "GyM, Hm": "M/y G, HH:mm",
         "GyMd, Hm": "M/d/y G, HH:mm",
+        "GyMEd, Hm": "E, M/d/y G, HH:mm",
         "GyMMM, Hm": "MMM y G, HH:mm",
         "GyMMMd, Hm": "MMM d, y G, HH:mm",
         "GyMMMEd, Hm": "E, MMM d, y G, HH:mm",
@@ -2673,7 +2575,9 @@
         "E, hms": "ccc, h:mm:ss a",
         "Ed, hms": "E d, h:mm:ss a",
         "Gy, hms": "y G, h:mm:ss a",
+        "GyM, hms": "M/y G, h:mm:ss a",
         "GyMd, hms": "M/d/y G, h:mm:ss a",
+        "GyMEd, hms": "E, M/d/y G, h:mm:ss a",
         "GyMMM, hms": "MMM y G, h:mm:ss a",
         "GyMMMd, hms": "MMM d, y G, h:mm:ss a",
         "GyMMMEd, hms": "E, MMM d, y G, h:mm:ss a",
@@ -2702,7 +2606,9 @@
         "E, Hms": "ccc, HH:mm:ss",
         "Ed, Hms": "E d, HH:mm:ss",
         "Gy, Hms": "y G, HH:mm:ss",
+        "GyM, Hms": "M/y G, HH:mm:ss",
         "GyMd, Hms": "M/d/y G, HH:mm:ss",
+        "GyMEd, Hms": "E, M/d/y G, HH:mm:ss",
         "GyMMM, Hms": "MMM y G, HH:mm:ss",
         "GyMMMd, Hms": "MMM d, y G, HH:mm:ss",
         "GyMMMEd, Hms": "E, MMM d, y G, HH:mm:ss",
@@ -2731,7 +2637,9 @@
         "E, hmsv": "ccc, h:mm:ss a v",
         "Ed, hmsv": "E d, h:mm:ss a v",
         "Gy, hmsv": "y G, h:mm:ss a v",
+        "GyM, hmsv": "M/y G, h:mm:ss a v",
         "GyMd, hmsv": "M/d/y G, h:mm:ss a v",
+        "GyMEd, hmsv": "E, M/d/y G, h:mm:ss a v",
         "GyMMM, hmsv": "MMM y G, h:mm:ss a v",
         "GyMMMd, hmsv": "MMM d, y G, h:mm:ss a v",
         "GyMMMEd, hmsv": "E, MMM d, y G, h:mm:ss a v",
@@ -2760,7 +2668,9 @@
         "E, Hmsv": "ccc, HH:mm:ss v",
         "Ed, Hmsv": "E d, HH:mm:ss v",
         "Gy, Hmsv": "y G, HH:mm:ss v",
+        "GyM, Hmsv": "M/y G, HH:mm:ss v",
         "GyMd, Hmsv": "M/d/y G, HH:mm:ss v",
+        "GyMEd, Hmsv": "E, M/d/y G, HH:mm:ss v",
         "GyMMM, Hmsv": "MMM y G, HH:mm:ss v",
         "GyMMMd, Hmsv": "MMM d, y G, HH:mm:ss v",
         "GyMMMEd, Hmsv": "E, MMM d, y G, HH:mm:ss v",
@@ -2789,7 +2699,9 @@
         "E, hmv": "ccc, h:mm a v",
         "Ed, hmv": "E d, h:mm a v",
         "Gy, hmv": "y G, h:mm a v",
+        "GyM, hmv": "M/y G, h:mm a v",
         "GyMd, hmv": "M/d/y G, h:mm a v",
+        "GyMEd, hmv": "E, M/d/y G, h:mm a v",
         "GyMMM, hmv": "MMM y G, h:mm a v",
         "GyMMMd, hmv": "MMM d, y G, h:mm a v",
         "GyMMMEd, hmv": "E, MMM d, y G, h:mm a v",
@@ -2818,7 +2730,9 @@
         "E, Hmv": "ccc, HH:mm v",
         "Ed, Hmv": "E d, HH:mm v",
         "Gy, Hmv": "y G, HH:mm v",
+        "GyM, Hmv": "M/y G, HH:mm v",
         "GyMd, Hmv": "M/d/y G, HH:mm v",
+        "GyMEd, Hmv": "E, M/d/y G, HH:mm v",
         "GyMMM, Hmv": "MMM y G, HH:mm v",
         "GyMMMd, Hmv": "MMM d, y G, HH:mm v",
         "GyMMMEd, Hmv": "E, MMM d, y G, HH:mm v",
@@ -2838,6 +2752,68 @@
         "yMMMd, Hmv": "MMM d, y, HH:mm v",
         "yMMMEd, Hmv": "E, MMM d, y, HH:mm v",
         "yMMMM, Hmv": "MMMM y, HH:mm v",
+        "EEEE, MMMM d, y, hv": "EEEE, MMMM d, y, h a v",
+        "MMMM d, y, hv": "MMMM d, y, h a v",
+        "MMM d, y, hv": "MMM d, y, h a v",
+        "y-MM-dd, hv": "y-MM-dd, h a v",
+        "d/M/yy, hv": "d/M/yy, h a v",
+        "d, hv": "d, h a v",
+        "E, hv": "ccc, h a v",
+        "Ed, hv": "E d, h a v",
+        "Gy, hv": "y G, h a v",
+        "GyM, hv": "M/y G, h a v",
+        "GyMd, hv": "M/d/y G, h a v",
+        "GyMEd, hv": "E, M/d/y G, h a v",
+        "GyMMM, hv": "MMM y G, h a v",
+        "GyMMMd, hv": "MMM d, y G, h a v",
+        "GyMMMEd, hv": "E, MMM d, y G, h a v",
+        "M, hv": "L, h a v",
+        "Md, hv": "MM-dd, h a v",
+        "MEd, hv": "E, MM-dd, h a v",
+        "MMdd, hv": "MM-dd, h a v",
+        "MMM, hv": "LLL, h a v",
+        "MMMd, hv": "MMM d, h a v",
+        "MMMEd, hv": "E, MMM d, h a v",
+        "MMMMd, hv": "MMMM d, h a v",
+        "y, hv": "y, h a v",
+        "yM, hv": "y-MM, h a v",
+        "yMd, hv": "y-MM-dd, h a v",
+        "yMEd, hv": "E, y-MM-dd, h a v",
+        "yMMM, hv": "MMM y, h a v",
+        "yMMMd, hv": "MMM d, y, h a v",
+        "yMMMEd, hv": "E, MMM d, y, h a v",
+        "yMMMM, hv": "MMMM y, h a v",
+        "EEEE, MMMM d, y, Hv": "EEEE, MMMM d, y, HH'h' v",
+        "MMMM d, y, Hv": "MMMM d, y, HH'h' v",
+        "MMM d, y, Hv": "MMM d, y, HH'h' v",
+        "y-MM-dd, Hv": "y-MM-dd, HH'h' v",
+        "d/M/yy, Hv": "d/M/yy, HH'h' v",
+        "d, Hv": "d, HH'h' v",
+        "E, Hv": "ccc, HH'h' v",
+        "Ed, Hv": "E d, HH'h' v",
+        "Gy, Hv": "y G, HH'h' v",
+        "GyM, Hv": "M/y G, HH'h' v",
+        "GyMd, Hv": "M/d/y G, HH'h' v",
+        "GyMEd, Hv": "E, M/d/y G, HH'h' v",
+        "GyMMM, Hv": "MMM y G, HH'h' v",
+        "GyMMMd, Hv": "MMM d, y G, HH'h' v",
+        "GyMMMEd, Hv": "E, MMM d, y G, HH'h' v",
+        "M, Hv": "L, HH'h' v",
+        "Md, Hv": "MM-dd, HH'h' v",
+        "MEd, Hv": "E, MM-dd, HH'h' v",
+        "MMdd, Hv": "MM-dd, HH'h' v",
+        "MMM, Hv": "LLL, HH'h' v",
+        "MMMd, Hv": "MMM d, HH'h' v",
+        "MMMEd, Hv": "E, MMM d, HH'h' v",
+        "MMMMd, Hv": "MMMM d, HH'h' v",
+        "y, Hv": "y, HH'h' v",
+        "yM, Hv": "y-MM, HH'h' v",
+        "yMd, Hv": "y-MM-dd, HH'h' v",
+        "yMEd, Hv": "E, y-MM-dd, HH'h' v",
+        "yMMM, Hv": "MMM y, HH'h' v",
+        "yMMMd, Hv": "MMM d, y, HH'h' v",
+        "yMMMEd, Hv": "E, MMM d, y, HH'h' v",
+        "yMMMM, Hv": "MMMM y, HH'h' v",
         "EEEE, MMMM d, y, ms": "EEEE, MMMM d, y, mm:ss",
         "MMMM d, y, ms": "MMMM d, y, mm:ss",
         "MMM d, y, ms": "MMM d, y, mm:ss",
@@ -2847,7 +2823,9 @@
         "E, ms": "ccc, mm:ss",
         "Ed, ms": "E d, mm:ss",
         "Gy, ms": "y G, mm:ss",
+        "GyM, ms": "M/y G, mm:ss",
         "GyMd, ms": "M/d/y G, mm:ss",
+        "GyMEd, ms": "E, M/d/y G, mm:ss",
         "GyMMM, ms": "MMM y G, mm:ss",
         "GyMMMd, ms": "MMM d, y G, mm:ss",
         "GyMMMEd, ms": "E, MMM d, y G, mm:ss",

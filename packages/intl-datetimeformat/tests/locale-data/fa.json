@@ -268,68 +268,68 @@
       },
       "Africa/Lagos": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "وقت عادی غرب افریقا",
-          "وقت تابستانی غرب افریقا"
+          "وقت غرب افریقا",
+          "وقت غرب افریقا"
         ]
       },
       "Asia/Aqtobe": {
@@ -708,6 +708,12 @@
         "long": [
           "وقت عادی آزور",
           "وقت تابستانی آزور"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "وقت عادی هاوایی‐الوشن",
+          "وقت تابستانی هاوایی‐الوشن"
         ]
       },
       "Asia/Thimphu": {
@@ -1271,7 +1277,7 @@
       "Pacific/Honolulu": {
         "long": [
           "وقت عادی هاوایی‐الوشن",
-          "وقت تابستانی هاوایی‐الوشن"
+          "وقت عادی هاوایی‐الوشن"
         ]
       },
       "Asia/Hong_Kong": {
@@ -1706,6 +1712,12 @@
           "وقت چوئوک"
         ]
       },
+      "Europe/Istanbul": {
+        "long": [
+          "وقت عادی ترکیه",
+          "وقت تابستانی ترکیه"
+        ]
+      },
       "Pacific/Funafuti": {
         "long": [
           "وقت تووالو",
@@ -1810,15 +1822,19 @@
         "Bhms": "h:mm:ss B",
         "d": "d",
         "E": "ccc",
+        "EBh": "E h B",
         "EBhm": "E h:mm B",
         "EBhms": "E h:mm:ss B",
         "Ed": "E d",
+        "Eh": "E h a",
         "Ehm": "E h:mm a",
         "EHm": "E H:mm",
         "Ehms": "E h:mm:ss a",
         "EHms": "E H:mm:ss",
         "Gy": "y G",
+        "GyM": "y/M G",
         "GyMd": "y/M/d GGGGG",
+        "GyMEd": "E، y/M/d G",
         "GyMMM": "MMM y G",
         "GyMMMd": "d MMM y G",
         "GyMMMEd": "E d MMM y G",
@@ -1833,6 +1849,8 @@
         "Hmsv": "H:mm:ss v",
         "hmv": "h:mm a v",
         "Hmv": "H:mm v",
+        "hv": "h a v",
+        "Hv": "سHH v",
         "M": "L",
         "Md": "M/d",
         "MEd": "E M/d",
@@ -1868,7 +1886,9 @@
         "E،‏ H:mm:ss (zzzz)": "ccc،‏ H:mm:ss (zzzz)",
         "Ed،‏ H:mm:ss (zzzz)": "E d،‏ H:mm:ss (zzzz)",
         "Gy،‏ H:mm:ss (zzzz)": "y G،‏ H:mm:ss (zzzz)",
+        "GyM،‏ H:mm:ss (zzzz)": "y/M G،‏ H:mm:ss (zzzz)",
         "GyMd،‏ H:mm:ss (zzzz)": "y/M/d GGGGG،‏ H:mm:ss (zzzz)",
+        "GyMEd،‏ H:mm:ss (zzzz)": "E، y/M/d G،‏ H:mm:ss (zzzz)",
         "GyMMM،‏ H:mm:ss (zzzz)": "MMM y G،‏ H:mm:ss (zzzz)",
         "GyMMMd،‏ H:mm:ss (zzzz)": "d MMM y G،‏ H:mm:ss (zzzz)",
         "GyMMMEd،‏ H:mm:ss (zzzz)": "E d MMM y G،‏ H:mm:ss (zzzz)",
@@ -1897,7 +1917,9 @@
         "E،‏ H:mm:ss (z)": "ccc،‏ H:mm:ss (z)",
         "Ed،‏ H:mm:ss (z)": "E d،‏ H:mm:ss (z)",
         "Gy،‏ H:mm:ss (z)": "y G،‏ H:mm:ss (z)",
+        "GyM،‏ H:mm:ss (z)": "y/M G،‏ H:mm:ss (z)",
         "GyMd،‏ H:mm:ss (z)": "y/M/d GGGGG،‏ H:mm:ss (z)",
+        "GyMEd،‏ H:mm:ss (z)": "E، y/M/d G،‏ H:mm:ss (z)",
         "GyMMM،‏ H:mm:ss (z)": "MMM y G،‏ H:mm:ss (z)",
         "GyMMMd،‏ H:mm:ss (z)": "d MMM y G،‏ H:mm:ss (z)",
         "GyMMMEd،‏ H:mm:ss (z)": "E d MMM y G،‏ H:mm:ss (z)",
@@ -1926,7 +1948,9 @@
         "E،‏ H:mm:ss": "ccc،‏ H:mm:ss",
         "Ed،‏ H:mm:ss": "E d،‏ H:mm:ss",
         "Gy،‏ H:mm:ss": "y G،‏ H:mm:ss",
+        "GyM،‏ H:mm:ss": "y/M G،‏ H:mm:ss",
         "GyMd،‏ H:mm:ss": "y/M/d GGGGG،‏ H:mm:ss",
+        "GyMEd،‏ H:mm:ss": "E، y/M/d G،‏ H:mm:ss",
         "GyMMM،‏ H:mm:ss": "MMM y G،‏ H:mm:ss",
         "GyMMMd،‏ H:mm:ss": "d MMM y G،‏ H:mm:ss",
         "GyMMMEd،‏ H:mm:ss": "E d MMM y G،‏ H:mm:ss",
@@ -1955,7 +1979,9 @@
         "E،‏ H:mm": "ccc،‏ H:mm",
         "Ed،‏ H:mm": "E d،‏ H:mm",
         "Gy،‏ H:mm": "y G،‏ H:mm",
+        "GyM،‏ H:mm": "y/M G،‏ H:mm",
         "GyMd،‏ H:mm": "y/M/d GGGGG،‏ H:mm",
+        "GyMEd،‏ H:mm": "E، y/M/d G،‏ H:mm",
         "GyMMM،‏ H:mm": "MMM y G،‏ H:mm",
         "GyMMMd،‏ H:mm": "d MMM y G،‏ H:mm",
         "GyMMMEd،‏ H:mm": "E d MMM y G،‏ H:mm",
@@ -1984,7 +2010,9 @@
         "E،‏ Bh": "ccc،‏ h B",
         "Ed،‏ Bh": "E d،‏ h B",
         "Gy،‏ Bh": "y G،‏ h B",
+        "GyM،‏ Bh": "y/M G،‏ h B",
         "GyMd،‏ Bh": "y/M/d GGGGG،‏ h B",
+        "GyMEd،‏ Bh": "E، y/M/d G،‏ h B",
         "GyMMM،‏ Bh": "MMM y G،‏ h B",
         "GyMMMd،‏ Bh": "d MMM y G،‏ h B",
         "GyMMMEd،‏ Bh": "E d MMM y G،‏ h B",
@@ -2013,7 +2041,9 @@
         "E،‏ Bhm": "ccc،‏ h:mm B",
         "Ed،‏ Bhm": "E d،‏ h:mm B",
         "Gy،‏ Bhm": "y G،‏ h:mm B",
+        "GyM،‏ Bhm": "y/M G،‏ h:mm B",
         "GyMd،‏ Bhm": "y/M/d GGGGG،‏ h:mm B",
+        "GyMEd،‏ Bhm": "E، y/M/d G،‏ h:mm B",
         "GyMMM،‏ Bhm": "MMM y G،‏ h:mm B",
         "GyMMMd،‏ Bhm": "d MMM y G،‏ h:mm B",
         "GyMMMEd،‏ Bhm": "E d MMM y G،‏ h:mm B",
@@ -2042,7 +2072,9 @@
         "E،‏ Bhms": "ccc،‏ h:mm:ss B",
         "Ed،‏ Bhms": "E d،‏ h:mm:ss B",
         "Gy،‏ Bhms": "y G،‏ h:mm:ss B",
+        "GyM،‏ Bhms": "y/M G،‏ h:mm:ss B",
         "GyMd،‏ Bhms": "y/M/d GGGGG،‏ h:mm:ss B",
+        "GyMEd،‏ Bhms": "E، y/M/d G،‏ h:mm:ss B",
         "GyMMM،‏ Bhms": "MMM y G،‏ h:mm:ss B",
         "GyMMMd،‏ Bhms": "d MMM y G،‏ h:mm:ss B",
         "GyMMMEd،‏ Bhms": "E d MMM y G،‏ h:mm:ss B",
@@ -2071,7 +2103,9 @@
         "E،‏ h": "ccc،‏ h a",
         "Ed،‏ h": "E d،‏ h a",
         "Gy،‏ h": "y G،‏ h a",
+        "GyM،‏ h": "y/M G،‏ h a",
         "GyMd،‏ h": "y/M/d GGGGG،‏ h a",
+        "GyMEd،‏ h": "E، y/M/d G،‏ h a",
         "GyMMM،‏ h": "MMM y G،‏ h a",
         "GyMMMd،‏ h": "d MMM y G،‏ h a",
         "GyMMMEd،‏ h": "E d MMM y G،‏ h a",
@@ -2100,7 +2134,9 @@
         "E،‏ H": "ccc،‏ H",
         "Ed،‏ H": "E d،‏ H",
         "Gy،‏ H": "y G،‏ H",
+        "GyM،‏ H": "y/M G،‏ H",
         "GyMd،‏ H": "y/M/d GGGGG،‏ H",
+        "GyMEd،‏ H": "E، y/M/d G،‏ H",
         "GyMMM،‏ H": "MMM y G،‏ H",
         "GyMMMd،‏ H": "d MMM y G،‏ H",
         "GyMMMEd،‏ H": "E d MMM y G،‏ H",
@@ -2129,7 +2165,9 @@
         "E،‏ HHmmZ": "ccc،‏ HH:mm (Z)",
         "Ed،‏ HHmmZ": "E d،‏ HH:mm (Z)",
         "Gy،‏ HHmmZ": "y G،‏ HH:mm (Z)",
+        "GyM،‏ HHmmZ": "y/M G،‏ HH:mm (Z)",
         "GyMd،‏ HHmmZ": "y/M/d GGGGG،‏ HH:mm (Z)",
+        "GyMEd،‏ HHmmZ": "E، y/M/d G،‏ HH:mm (Z)",
         "GyMMM،‏ HHmmZ": "MMM y G،‏ HH:mm (Z)",
         "GyMMMd،‏ HHmmZ": "d MMM y G،‏ HH:mm (Z)",
         "GyMMMEd،‏ HHmmZ": "E d MMM y G،‏ HH:mm (Z)",
@@ -2158,7 +2196,9 @@
         "E،‏ hm": "ccc،‏ h:mm a",
         "Ed،‏ hm": "E d،‏ h:mm a",
         "Gy،‏ hm": "y G،‏ h:mm a",
+        "GyM،‏ hm": "y/M G،‏ h:mm a",
         "GyMd،‏ hm": "y/M/d GGGGG،‏ h:mm a",
+        "GyMEd،‏ hm": "E، y/M/d G،‏ h:mm a",
         "GyMMM،‏ hm": "MMM y G،‏ h:mm a",
         "GyMMMd،‏ hm": "d MMM y G،‏ h:mm a",
         "GyMMMEd،‏ hm": "E d MMM y G،‏ h:mm a",
@@ -2187,7 +2227,9 @@
         "E،‏ Hm": "ccc،‏ H:mm",
         "Ed،‏ Hm": "E d،‏ H:mm",
         "Gy،‏ Hm": "y G،‏ H:mm",
+        "GyM،‏ Hm": "y/M G،‏ H:mm",
         "GyMd،‏ Hm": "y/M/d GGGGG،‏ H:mm",
+        "GyMEd،‏ Hm": "E، y/M/d G،‏ H:mm",
         "GyMMM،‏ Hm": "MMM y G،‏ H:mm",
         "GyMMMd،‏ Hm": "d MMM y G،‏ H:mm",
         "GyMMMEd،‏ Hm": "E d MMM y G،‏ H:mm",
@@ -2216,7 +2258,9 @@
         "E،‏ hms": "ccc،‏ h:mm:ss a",
         "Ed،‏ hms": "E d،‏ h:mm:ss a",
         "Gy،‏ hms": "y G،‏ h:mm:ss a",
+        "GyM،‏ hms": "y/M G،‏ h:mm:ss a",
         "GyMd،‏ hms": "y/M/d GGGGG،‏ h:mm:ss a",
+        "GyMEd،‏ hms": "E، y/M/d G،‏ h:mm:ss a",
         "GyMMM،‏ hms": "MMM y G،‏ h:mm:ss a",
         "GyMMMd،‏ hms": "d MMM y G،‏ h:mm:ss a",
         "GyMMMEd،‏ hms": "E d MMM y G،‏ h:mm:ss a",
@@ -2245,7 +2289,9 @@
         "E،‏ Hms": "ccc،‏ H:mm:ss",
         "Ed،‏ Hms": "E d،‏ H:mm:ss",
         "Gy،‏ Hms": "y G،‏ H:mm:ss",
+        "GyM،‏ Hms": "y/M G،‏ H:mm:ss",
         "GyMd،‏ Hms": "y/M/d GGGGG،‏ H:mm:ss",
+        "GyMEd،‏ Hms": "E، y/M/d G،‏ H:mm:ss",
         "GyMMM،‏ Hms": "MMM y G،‏ H:mm:ss",
         "GyMMMd،‏ Hms": "d MMM y G،‏ H:mm:ss",
         "GyMMMEd،‏ Hms": "E d MMM y G،‏ H:mm:ss",
@@ -2274,7 +2320,9 @@
         "E،‏ hmsv": "ccc،‏ h:mm:ss a v",
         "Ed،‏ hmsv": "E d،‏ h:mm:ss a v",
         "Gy،‏ hmsv": "y G،‏ h:mm:ss a v",
+        "GyM،‏ hmsv": "y/M G،‏ h:mm:ss a v",
         "GyMd،‏ hmsv": "y/M/d GGGGG،‏ h:mm:ss a v",
+        "GyMEd،‏ hmsv": "E، y/M/d G،‏ h:mm:ss a v",
         "GyMMM،‏ hmsv": "MMM y G،‏ h:mm:ss a v",
         "GyMMMd،‏ hmsv": "d MMM y G،‏ h:mm:ss a v",
         "GyMMMEd،‏ hmsv": "E d MMM y G،‏ h:mm:ss a v",
@@ -2303,7 +2351,9 @@
         "E،‏ Hmsv": "ccc،‏ H:mm:ss v",
         "Ed،‏ Hmsv": "E d،‏ H:mm:ss v",
         "Gy،‏ Hmsv": "y G،‏ H:mm:ss v",
+        "GyM،‏ Hmsv": "y/M G،‏ H:mm:ss v",
         "GyMd،‏ Hmsv": "y/M/d GGGGG،‏ H:mm:ss v",
+        "GyMEd،‏ Hmsv": "E، y/M/d G،‏ H:mm:ss v",
         "GyMMM،‏ Hmsv": "MMM y G،‏ H:mm:ss v",
         "GyMMMd،‏ Hmsv": "d MMM y G،‏ H:mm:ss v",
         "GyMMMEd،‏ Hmsv": "E d MMM y G،‏ H:mm:ss v",
@@ -2332,7 +2382,9 @@
         "E،‏ hmv": "ccc،‏ h:mm a v",
         "Ed،‏ hmv": "E d،‏ h:mm a v",
         "Gy،‏ hmv": "y G،‏ h:mm a v",
+        "GyM،‏ hmv": "y/M G،‏ h:mm a v",
         "GyMd،‏ hmv": "y/M/d GGGGG،‏ h:mm a v",
+        "GyMEd،‏ hmv": "E، y/M/d G،‏ h:mm a v",
         "GyMMM،‏ hmv": "MMM y G،‏ h:mm a v",
         "GyMMMd،‏ hmv": "d MMM y G،‏ h:mm a v",
         "GyMMMEd،‏ hmv": "E d MMM y G،‏ h:mm a v",
@@ -2361,7 +2413,9 @@
         "E،‏ Hmv": "ccc،‏ H:mm v",
         "Ed،‏ Hmv": "E d،‏ H:mm v",
         "Gy،‏ Hmv": "y G،‏ H:mm v",
+        "GyM،‏ Hmv": "y/M G،‏ H:mm v",
         "GyMd،‏ Hmv": "y/M/d GGGGG،‏ H:mm v",
+        "GyMEd،‏ Hmv": "E، y/M/d G،‏ H:mm v",
         "GyMMM،‏ Hmv": "MMM y G،‏ H:mm v",
         "GyMMMd،‏ Hmv": "d MMM y G،‏ H:mm v",
         "GyMMMEd،‏ Hmv": "E d MMM y G،‏ H:mm v",
@@ -2382,6 +2436,68 @@
         "yMMMEd،‏ Hmv": "E d MMM y،‏ H:mm v",
         "yMMMM، ساعت Hmv": "MMMM y، ساعت H:mm v",
         "yMMMMEEEEd، ساعت Hmv": "EEEE d MMMM y، ساعت H:mm v",
+        "EEEE d MMMM y، ساعت hv": "EEEE d MMMM y، ساعت h a v",
+        "d MMMM y، ساعت hv": "d MMMM y، ساعت h a v",
+        "d MMM y،‏ hv": "d MMM y،‏ h a v",
+        "y/M/d،‏ hv": "y/M/d،‏ h a v",
+        "d،‏ hv": "d،‏ h a v",
+        "E،‏ hv": "ccc،‏ h a v",
+        "Ed،‏ hv": "E d،‏ h a v",
+        "Gy،‏ hv": "y G،‏ h a v",
+        "GyM،‏ hv": "y/M G،‏ h a v",
+        "GyMd،‏ hv": "y/M/d GGGGG،‏ h a v",
+        "GyMEd،‏ hv": "E، y/M/d G،‏ h a v",
+        "GyMMM،‏ hv": "MMM y G،‏ h a v",
+        "GyMMMd،‏ hv": "d MMM y G،‏ h a v",
+        "GyMMMEd،‏ hv": "E d MMM y G،‏ h a v",
+        "M،‏ hv": "L،‏ h a v",
+        "Md،‏ hv": "M/d،‏ h a v",
+        "MEd،‏ hv": "E M/d،‏ h a v",
+        "MMM،‏ hv": "LLL،‏ h a v",
+        "MMMd،‏ hv": "d LLL،‏ h a v",
+        "MMMEd،‏ hv": "E d LLL،‏ h a v",
+        "MMMMd، ساعت hv": "d LLLL، ساعت h a v",
+        "MMMMEd، ساعت hv": "E d LLLL، ساعت h a v",
+        "y،‏ hv": "y،‏ h a v",
+        "yM،‏ hv": "y/M،‏ h a v",
+        "yMd،‏ hv": "y/M/d،‏ h a v",
+        "yMEd،‏ hv": "E y/M/d،‏ h a v",
+        "yMMM،‏ hv": "MMM y،‏ h a v",
+        "yMMMd،‏ hv": "d MMM y،‏ h a v",
+        "yMMMEd،‏ hv": "E d MMM y،‏ h a v",
+        "yMMMM، ساعت hv": "MMMM y، ساعت h a v",
+        "yMMMMEEEEd، ساعت hv": "EEEE d MMMM y، ساعت h a v",
+        "EEEE d MMMM y، ساعت Hv": "EEEE d MMMM y، ساعت سHH v",
+        "d MMMM y، ساعت Hv": "d MMMM y، ساعت سHH v",
+        "d MMM y،‏ Hv": "d MMM y،‏ سHH v",
+        "y/M/d،‏ Hv": "y/M/d،‏ سHH v",
+        "d،‏ Hv": "d،‏ سHH v",
+        "E،‏ Hv": "ccc،‏ سHH v",
+        "Ed،‏ Hv": "E d،‏ سHH v",
+        "Gy،‏ Hv": "y G،‏ سHH v",
+        "GyM،‏ Hv": "y/M G،‏ سHH v",
+        "GyMd،‏ Hv": "y/M/d GGGGG،‏ سHH v",
+        "GyMEd،‏ Hv": "E، y/M/d G،‏ سHH v",
+        "GyMMM،‏ Hv": "MMM y G،‏ سHH v",
+        "GyMMMd،‏ Hv": "d MMM y G،‏ سHH v",
+        "GyMMMEd،‏ Hv": "E d MMM y G،‏ سHH v",
+        "M،‏ Hv": "L،‏ سHH v",
+        "Md،‏ Hv": "M/d،‏ سHH v",
+        "MEd،‏ Hv": "E M/d،‏ سHH v",
+        "MMM،‏ Hv": "LLL،‏ سHH v",
+        "MMMd،‏ Hv": "d LLL،‏ سHH v",
+        "MMMEd،‏ Hv": "E d LLL،‏ سHH v",
+        "MMMMd، ساعت Hv": "d LLLL، ساعت سHH v",
+        "MMMMEd، ساعت Hv": "E d LLLL، ساعت سHH v",
+        "y،‏ Hv": "y،‏ سHH v",
+        "yM،‏ Hv": "y/M،‏ سHH v",
+        "yMd،‏ Hv": "y/M/d،‏ سHH v",
+        "yMEd،‏ Hv": "E y/M/d،‏ سHH v",
+        "yMMM،‏ Hv": "MMM y،‏ سHH v",
+        "yMMMd،‏ Hv": "d MMM y،‏ سHH v",
+        "yMMMEd،‏ Hv": "E d MMM y،‏ سHH v",
+        "yMMMM، ساعت Hv": "MMMM y، ساعت سHH v",
+        "yMMMMEEEEd، ساعت Hv": "EEEE d MMMM y، ساعت سHH v",
         "EEEE d MMMM y، ساعت mmss": "EEEE d MMMM y، ساعت mm:ss",
         "d MMMM y، ساعت mmss": "d MMMM y، ساعت mm:ss",
         "d MMM y،‏ mmss": "d MMM y،‏ mm:ss",
@@ -2390,7 +2506,9 @@
         "E،‏ mmss": "ccc،‏ mm:ss",
         "Ed،‏ mmss": "E d،‏ mm:ss",
         "Gy،‏ mmss": "y G،‏ mm:ss",
+        "GyM،‏ mmss": "y/M G،‏ mm:ss",
         "GyMd،‏ mmss": "y/M/d GGGGG،‏ mm:ss",
+        "GyMEd،‏ mmss": "E، y/M/d G،‏ mm:ss",
         "GyMMM،‏ mmss": "MMM y G،‏ mm:ss",
         "GyMMMd،‏ mmss": "d MMM y G،‏ mm:ss",
         "GyMMMEd،‏ mmss": "E d MMM y G،‏ mm:ss",
@@ -2419,7 +2537,9 @@
         "E،‏ ms": "ccc،‏ m:ss",
         "Ed،‏ ms": "E d،‏ m:ss",
         "Gy،‏ ms": "y G،‏ m:ss",
+        "GyM،‏ ms": "y/M G،‏ m:ss",
         "GyMd،‏ ms": "y/M/d GGGGG،‏ m:ss",
+        "GyMEd،‏ ms": "E، y/M/d G،‏ m:ss",
         "GyMMM،‏ ms": "MMM y G،‏ m:ss",
         "GyMMMd،‏ ms": "d MMM y G،‏ m:ss",
         "GyMMMEd،‏ ms": "E d MMM y G،‏ m:ss",
@@ -2566,7 +2686,7 @@
         "y": "E y/M/d تا E y/M/d"
       },
       "yMMM": {
-        "M": "LLL تا MMM y",
+        "M": "MMM تا MMM y",
         "y": "MMM y تا MMM y"
       },
       "yMMMd": {
@@ -2580,7 +2700,7 @@
         "y": "E d MMM y تا E d MMM y"
       },
       "yMMMM": {
-        "M": "LLLL تا MMMM y",
+        "M": "MMMM تا MMMM y",
         "y": "MMMM y تا MMMM y"
       }
     },

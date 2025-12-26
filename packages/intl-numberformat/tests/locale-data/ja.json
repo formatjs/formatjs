@@ -1928,9 +1928,10 @@
       },
       "XCG": {
         "displayName": {
+          "other": "カリブ ギルダー"
         },
-        "narrow": "Cg.",
-        "symbol": "Cg."
+        "narrow": "Cg",
+        "symbol": "Cg"
       },
       "XDR": {
         "displayName": {
@@ -2113,6 +2114,13 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "ジンバブエ ゴールド"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {

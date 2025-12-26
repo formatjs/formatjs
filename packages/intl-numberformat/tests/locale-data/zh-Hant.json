@@ -612,7 +612,7 @@
       },
       "ERN": {
         "displayName": {
-          "other": "厄立特里亞納克法"
+          "other": "厄利垂亞納可法"
         },
         "narrow": "ERN",
         "symbol": "ERN"
@@ -1123,7 +1123,7 @@
       },
       "MDL": {
         "displayName": {
-          "other": "摩杜雲列伊"
+          "other": "摩爾多瓦列伊"
         },
         "narrow": "MDL",
         "symbol": "MDL"
@@ -1312,7 +1312,7 @@
       },
       "NIO": {
         "displayName": {
-          "other": "尼加拉瓜金科多巴"
+          "other": "尼加拉瓜科多巴"
         },
         "narrow": "C$",
         "symbol": "NIO"
@@ -1865,7 +1865,7 @@
       },
       "XAF": {
         "displayName": {
-          "other": "法郎 (CFA–BEAC)"
+          "other": "中非法郎"
         },
         "narrow": "FCFA",
         "symbol": "FCFA"
@@ -1921,6 +1921,7 @@
       },
       "XCG": {
         "displayName": {
+          "other": "加勒比盾"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -1955,7 +1956,7 @@
       },
       "XOF": {
         "displayName": {
-          "other": "法郎 (CFA–BCEAO)"
+          "other": "西非法郎"
         },
         "narrow": "F CFA",
         "symbol": "F CFA"
@@ -1969,7 +1970,7 @@
       },
       "XPF": {
         "displayName": {
-          "other": "法郎 (CFP)"
+          "other": "太平洋法郎"
         },
         "narrow": "CFPF",
         "symbol": "CFPF"
@@ -2106,6 +2107,13 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "辛巴威金"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {
@@ -2418,15 +2426,15 @@
             "other": "{0} 英尺"
           },
           "narrow": {
-            "other": "{0}呎"
+            "other": "{0}英尺"
           },
           "perUnit": {
             "long": "每英尺 {0}",
-            "narrow": "{0}/呎",
-            "short": "{0}/呎"
+            "narrow": "{0}/英尺",
+            "short": "{0}/英尺"
           },
           "short": {
-            "other": "{0} 呎"
+            "other": "{0}英尺"
           }
         },
         "gallon": {

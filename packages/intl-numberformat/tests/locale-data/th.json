@@ -1893,6 +1893,7 @@
       },
       "XCG": {
         "displayName": {
+          "other": "กิลเดอร์แคริบเบียน"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -2078,6 +2079,13 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "ทองซิมบับเว"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {

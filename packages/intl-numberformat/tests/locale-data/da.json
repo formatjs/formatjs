@@ -1967,6 +1967,7 @@
       },
       "XCG": {
         "displayName": {
+          "other": "caribiske gylden"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -2145,6 +2146,13 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "Zimbabwe Gold"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {

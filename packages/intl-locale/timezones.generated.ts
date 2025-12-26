@@ -29,7 +29,7 @@ export const timezones = {
     "Africa/Luanda"
   ],
   "aq": [
-    "Pacific/Auckland",
+    "Antarctica/McMurdo",
     "Antarctica/Casey",
     "Antarctica/Davis",
     "Antarctica/DumontDUrville",
@@ -208,6 +208,7 @@ export const timezones = {
     "Pacific/Rarotonga"
   ],
   "cl": [
+    "America/Coyhaique",
     "Pacific/Easter",
     "America/Punta_Arenas",
     "America/Santiago"

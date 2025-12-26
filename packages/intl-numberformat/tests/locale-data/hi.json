@@ -1288,6 +1288,7 @@
       },
       "XCG": {
         "displayName": {
+          "other": "कैरीबियन गिल्डर"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -1348,6 +1349,13 @@
         },
         "narrow": "ZK",
         "symbol": "ZMW"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "ज़िंबाब्वियन गोल्ड"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       }
     },
     "nu": [
@@ -1909,8 +1917,7 @@
             "other": "{0} मीटर प्रति सेकंड"
           },
           "narrow": {
-            "one": "{0} मी/से",
-            "other": "{0}मी॰/से॰"
+            "other": "{0} मी॰/से॰"
           },
           "perUnit": {
           },

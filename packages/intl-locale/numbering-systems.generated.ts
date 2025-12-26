@@ -242,6 +242,9 @@ export const numberingSystems = {
     "latn",
     "tibt"
   ],
+  "bqi": [
+    "latn"
+  ],
   "br": [
     "latn"
   ],
@@ -259,6 +262,9 @@ export const numberingSystems = {
     "latn"
   ],
   "bss": [
+    "latn"
+  ],
+  "bua": [
     "latn"
   ],
   "byn": [
@@ -317,6 +323,9 @@ export const numberingSystems = {
     "arab"
   ],
   "co": [
+    "latn"
+  ],
+  "cop": [
     "latn"
   ],
   "cs": [
@@ -478,6 +487,9 @@ export const numberingSystems = {
   "en-CY": [
     "latn"
   ],
+  "en-CZ": [
+    "latn"
+  ],
   "en-DE": [
     "latn"
   ],
@@ -493,7 +505,13 @@ export const numberingSystems = {
   "en-Dsrt": [
     "latn"
   ],
+  "en-EE": [
+    "latn"
+  ],
   "en-ER": [
+    "latn"
+  ],
+  "en-ES": [
     "latn"
   ],
   "en-FI": [
@@ -508,10 +526,16 @@ export const numberingSystems = {
   "en-FM": [
     "latn"
   ],
+  "en-FR": [
+    "latn"
+  ],
   "en-GB": [
     "latn"
   ],
   "en-GD": [
+    "latn"
+  ],
+  "en-GE": [
     "latn"
   ],
   "en-GG": [
@@ -526,6 +550,9 @@ export const numberingSystems = {
   "en-GM": [
     "latn"
   ],
+  "en-GS": [
+    "latn"
+  ],
   "en-GU": [
     "latn"
   ],
@@ -533,6 +560,9 @@ export const numberingSystems = {
     "latn"
   ],
   "en-HK": [
+    "latn"
+  ],
+  "en-HU": [
     "latn"
   ],
   "en-ID": [
@@ -553,10 +583,16 @@ export const numberingSystems = {
   "en-IO": [
     "latn"
   ],
+  "en-IT": [
+    "latn"
+  ],
   "en-JE": [
     "latn"
   ],
   "en-JM": [
+    "latn"
+  ],
+  "en-JP": [
     "latn"
   ],
   "en-KE": [
@@ -578,6 +614,12 @@ export const numberingSystems = {
     "latn"
   ],
   "en-LS": [
+    "latn"
+  ],
+  "en-LT": [
+    "latn"
+  ],
+  "en-LV": [
     "latn"
   ],
   "en-MG": [
@@ -622,6 +664,9 @@ export const numberingSystems = {
   "en-NL": [
     "latn"
   ],
+  "en-NO": [
+    "latn"
+  ],
   "en-NR": [
     "latn"
   ],
@@ -640,13 +685,22 @@ export const numberingSystems = {
   "en-PK": [
     "latn"
   ],
+  "en-PL": [
+    "latn"
+  ],
   "en-PN": [
     "latn"
   ],
   "en-PR": [
     "latn"
   ],
+  "en-PT": [
+    "latn"
+  ],
   "en-PW": [
+    "latn"
+  ],
+  "en-RO": [
     "latn"
   ],
   "en-RW": [
@@ -671,6 +725,9 @@ export const numberingSystems = {
     "latn"
   ],
   "en-SI": [
+    "latn"
+  ],
+  "en-SK": [
     "latn"
   ],
   "en-SL": [
@@ -704,6 +761,9 @@ export const numberingSystems = {
     "latn"
   ],
   "en-TZ": [
+    "latn"
+  ],
+  "en-UA": [
     "latn"
   ],
   "en-UG": [
@@ -1163,6 +1223,9 @@ export const numberingSystems = {
   "hsb": [
     "latn"
   ],
+  "ht": [
+    "latn"
+  ],
   "hu": [
     "latn"
   ],
@@ -1258,6 +1321,9 @@ export const numberingSystems = {
   "kea": [
     "latn"
   ],
+  "kek": [
+    "latn"
+  ],
   "ken": [
     "latn"
   ],
@@ -1346,6 +1412,24 @@ export const numberingSystems = {
   "ku": [
     "latn"
   ],
+  "ku-Arab": [
+    "latn"
+  ],
+  "ku-Arab-IR": [
+    "latn"
+  ],
+  "ku-Latn": [
+    "latn"
+  ],
+  "ku-Latn-IQ": [
+    "latn"
+  ],
+  "ku-Latn-SY": [
+    "latn"
+  ],
+  "ku-TR": [
+    "latn"
+  ],
   "kw": [
     "latn"
   ],
@@ -1432,6 +1516,9 @@ export const numberingSystems = {
     "latn"
   ],
   "lv": [
+    "latn"
+  ],
+  "lzz": [
     "latn"
   ],
   "mai": [
@@ -1534,6 +1621,14 @@ export const numberingSystems = {
   "mus": [
     "latn"
   ],
+  "mww": [
+    "hmnp",
+    "latn"
+  ],
+  "mww-Hmnp": [
+    "hmnp",
+    "latn"
+  ],
   "my": [
     "mymr"
   ],
@@ -1627,6 +1722,12 @@ export const numberingSystems = {
   "oc-ES": [
     "latn"
   ],
+  "oka": [
+    "latn"
+  ],
+  "oka-US": [
+    "latn"
+  ],
   "om": [
     "latn",
     "ethi"
@@ -1668,10 +1769,19 @@ export const numberingSystems = {
   "pcm": [
     "latn"
   ],
+  "pi": [
+    "latn"
+  ],
+  "pi-Latn": [
+    "latn"
+  ],
   "pis": [
     "latn"
   ],
   "pl": [
+    "latn"
+  ],
+  "pms": [
     "latn"
   ],
   "prg": [
@@ -1849,6 +1959,9 @@ export const numberingSystems = {
   "sg": [
     "latn"
   ],
+  "sgs": [
+    "latn"
+  ],
   "shi": [
     "latn"
   ],
@@ -1967,6 +2080,15 @@ export const numberingSystems = {
     "latn"
   ],
   "su-Latn": [
+    "latn"
+  ],
+  "suz": [
+    "latn"
+  ],
+  "suz-Deva": [
+    "latn"
+  ],
+  "suz-Sunu": [
     "latn"
   ],
   "sv": [
@@ -2209,8 +2331,8 @@ export const numberingSystems = {
   "yue-Hans": [
     "latn",
     "hanidec",
-    "hans",
-    "hansfin"
+    "hant",
+    "hantfin"
   ],
   "yue-Hant": [
     "latn",
@@ -2219,6 +2341,12 @@ export const numberingSystems = {
     "hantfin"
   ],
   "yue-Hant-CN": [
+    "latn",
+    "hanidec",
+    "hant",
+    "hantfin"
+  ],
+  "yue-Hant-MO": [
     "latn",
     "hanidec",
     "hant",
