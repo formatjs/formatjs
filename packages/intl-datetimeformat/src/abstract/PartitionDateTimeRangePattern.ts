@@ -42,8 +42,10 @@ export function PartitionDateTimeRangePattern(
     throw new RangeError('Invalid end time')
   }
   /** IMPL START */
-  const {getInternalSlots, tzData} = implDetails
+  const {getInternalSlots, tzData, localeData} = implDetails
   const internalSlots = getInternalSlots(dtf)
+  const dataLocale = internalSlots.dataLocale
+  const dataLocaleData = localeData[dataLocale]
   /** IMPL END */
   const tm1 = ToLocalTime(
     x,
@@ -119,6 +121,52 @@ export function PartitionDateTimeRangePattern(
   if (rangePattern === undefined) {
     rangePattern = rangePatterns.default
     /** IMPL DETAILS */
+    // If rangePatterns.default is also undefined (e.g., when using dateStyle/timeStyle),
+    // create a fallback range pattern using the locale's intervalFormatFallback from CLDR
+    //
+    // SPEC COMPLIANCE:
+    // - ECMA-402: https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+    //   Delegates to CLDR for interval format patterns
+    // - Unicode LDML UTS #35 Part 4: Dates: https://unicode-org.github.io/cldr/ldml/tr35-dates.html#intervalFormats
+    //   Defines intervalFormatFallback pattern (e.g., "{0} – {1}" or "{1} – {0}")
+    //   where {0} is start datetime and {1} is end datetime
+    // - ICU4J DateIntervalFormat: Uses setFallbackIntervalPattern() to set locale-specific fallback
+    // - Firefox SpiderMonkey & WebKit JSC: Both use ICU's UDateIntervalFormat which reads
+    //   intervalFormatFallback from CLDR data internally
+    //
+    // LOCALE EXAMPLES from CLDR:
+    // - English (en): "{0}\u2009–\u2009{1}" (en dash with thin spaces U+2009)
+    // - Japanese (ja): "{0}～{1}" (wave dash U+301C, no spaces)
+    // - German (de): "{0}\u2009–\u2009{1}" (en dash with thin spaces)
+    // - Arabic (ar): "{0}\u2009–\u2009{1}" (en dash with thin spaces)
+    //
+    // See: https://github.com/formatjs/formatjs/issues/4168
+    if (!rangePattern) {
+      const fallback = dataLocaleData.intervalFormatFallback
+      // Parse the fallback pattern (e.g., "{0} – {1}" for English, "{0}～{1}" for Japanese)
+      // to extract the separator between {0} and {1}
+      const start0 = fallback.indexOf('{0}')
+      const start1 = fallback.indexOf('{1}')
+      const separator =
+        start0 < start1
+          ? fallback.substring(start0 + 3, start1)
+          : fallback.substring(start1 + 3, start0)
+
+      rangePattern = {
+        patternParts:
+          start0 < start1
+            ? [
+                {source: RangePatternType.startRange, pattern: '{0}'},
+                {source: RangePatternType.shared, pattern: separator},
+                {source: RangePatternType.endRange, pattern: '{1}'},
+              ]
+            : [
+                {source: RangePatternType.endRange, pattern: '{1}'},
+                {source: RangePatternType.shared, pattern: separator},
+                {source: RangePatternType.startRange, pattern: '{0}'},
+              ],
+      }
+    }
     // Now we have to replace {0} & {1} with actual pattern
     for (const patternPart of rangePattern.patternParts) {
       if (patternPart.pattern === '{0}' || patternPart.pattern === '{1}') {
