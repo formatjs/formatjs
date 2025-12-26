@@ -2769,6 +2769,1482 @@
       "yMMMM": {
         "M": "y년 MMMM~MMMM",
         "y": "y년 MMMM~y년 MMMM"
+      },
+      "y년 MMMM d일 EEEE Bh": {
+        "B": "y년 MMMM d일 EEEE B h시 ~ B h시",
+        "h": "y년 MMMM d일 EEEE B h시~h시"
+      },
+      "y년 MMMM d일 Bh": {
+        "B": "y년 MMMM d일 B h시 ~ B h시",
+        "h": "y년 MMMM d일 B h시~h시"
+      },
+      "y. M. d. Bh": {
+        "B": "y. M. d. B h시 ~ B h시",
+        "h": "y. M. d. B h시~h시"
+      },
+      "yy. M. d. Bh": {
+        "B": "yy. M. d. B h시 ~ B h시",
+        "h": "yy. M. d. B h시~h시"
+      },
+      "d Bh": {
+        "B": "d일 B h시 ~ B h시",
+        "h": "d일 B h시~h시"
+      },
+      "E Bh": {
+        "B": "ccc B h시 ~ B h시",
+        "h": "ccc B h시~h시"
+      },
+      "Ed Bh": {
+        "B": "d일 (E) B h시 ~ B h시",
+        "h": "d일 (E) B h시~h시"
+      },
+      "EEEEd Bh": {
+        "B": "d일 EEEE B h시 ~ B h시",
+        "h": "d일 EEEE B h시~h시"
+      },
+      "Gy Bh": {
+        "B": "G y년 B h시 ~ B h시",
+        "h": "G y년 B h시~h시"
+      },
+      "GyM Bh": {
+        "B": "G y/M B h시 ~ B h시",
+        "h": "G y/M B h시~h시"
+      },
+      "GyMd Bh": {
+        "B": "GGGGG y/M/d B h시 ~ B h시",
+        "h": "GGGGG y/M/d B h시~h시"
+      },
+      "GyMEd Bh": {
+        "B": "G y/M/d (E) B h시 ~ B h시",
+        "h": "G y/M/d (E) B h시~h시"
+      },
+      "GyMMM Bh": {
+        "B": "G y년 MMM B h시 ~ B h시",
+        "h": "G y년 MMM B h시~h시"
+      },
+      "GyMMMd Bh": {
+        "B": "G y년 MMM d일 B h시 ~ B h시",
+        "h": "G y년 MMM d일 B h시~h시"
+      },
+      "GyMMMEd Bh": {
+        "B": "G y년 MMM d일 (E) B h시 ~ B h시",
+        "h": "G y년 MMM d일 (E) B h시~h시"
+      },
+      "GyMMMEEEEd Bh": {
+        "B": "G y년 MMM d일 EEEE B h시 ~ B h시",
+        "h": "G y년 MMM d일 EEEE B h시~h시"
+      },
+      "M Bh": {
+        "B": "M월 B h시 ~ B h시",
+        "h": "M월 B h시~h시"
+      },
+      "Md Bh": {
+        "B": "M. d. B h시 ~ B h시",
+        "h": "M. d. B h시~h시"
+      },
+      "MEd Bh": {
+        "B": "M. d. (E) B h시 ~ B h시",
+        "h": "M. d. (E) B h시~h시"
+      },
+      "MEEEEd Bh": {
+        "B": "M. d. EEEE B h시 ~ B h시",
+        "h": "M. d. EEEE B h시~h시"
+      },
+      "MMM Bh": {
+        "B": "LLL B h시 ~ B h시",
+        "h": "LLL B h시~h시"
+      },
+      "MMMd Bh": {
+        "B": "MMM d일 B h시 ~ B h시",
+        "h": "MMM d일 B h시~h시"
+      },
+      "MMMEd Bh": {
+        "B": "MMM d일 (E) B h시 ~ B h시",
+        "h": "MMM d일 (E) B h시~h시"
+      },
+      "MMMEEEEd Bh": {
+        "B": "MMM d일 EEEE B h시 ~ B h시",
+        "h": "MMM d일 EEEE B h시~h시"
+      },
+      "MMMMd Bh": {
+        "B": "MMMM d일 B h시 ~ B h시",
+        "h": "MMMM d일 B h시~h시"
+      },
+      "y Bh": {
+        "B": "y년 B h시 ~ B h시",
+        "h": "y년 B h시~h시"
+      },
+      "yM Bh": {
+        "B": "y. M. B h시 ~ B h시",
+        "h": "y. M. B h시~h시"
+      },
+      "yMd Bh": {
+        "B": "y. M. d. B h시 ~ B h시",
+        "h": "y. M. d. B h시~h시"
+      },
+      "yMEd Bh": {
+        "B": "y. M. d. (E) B h시 ~ B h시",
+        "h": "y. M. d. (E) B h시~h시"
+      },
+      "yMEEEEd Bh": {
+        "B": "y. M. d. EEEE B h시 ~ B h시",
+        "h": "y. M. d. EEEE B h시~h시"
+      },
+      "yMM Bh": {
+        "B": "y. M. B h시 ~ B h시",
+        "h": "y. M. B h시~h시"
+      },
+      "yMMM Bh": {
+        "B": "y년 MMM B h시 ~ B h시",
+        "h": "y년 MMM B h시~h시"
+      },
+      "yMMMd Bh": {
+        "B": "y년 MMM d일 B h시 ~ B h시",
+        "h": "y년 MMM d일 B h시~h시"
+      },
+      "yMMMEd Bh": {
+        "B": "y년 MMM d일 (E) B h시 ~ B h시",
+        "h": "y년 MMM d일 (E) B h시~h시"
+      },
+      "yMMMEEEEd Bh": {
+        "B": "y년 MMM d일 EEEE B h시 ~ B h시",
+        "h": "y년 MMM d일 EEEE B h시~h시"
+      },
+      "yMMMM Bh": {
+        "B": "y년 MMMM B h시 ~ B h시",
+        "h": "y년 MMMM B h시~h시"
+      },
+      "y년 MMMM d일 EEEE Bhm": {
+        "B": "y년 MMMM d일 EEEE B h:mm~B h:mm",
+        "h": "y년 MMMM d일 EEEE B h:mm ~ h:mm",
+        "m": "y년 MMMM d일 EEEE B h:mm ~ h:mm"
+      },
+      "y년 MMMM d일 Bhm": {
+        "B": "y년 MMMM d일 B h:mm~B h:mm",
+        "h": "y년 MMMM d일 B h:mm ~ h:mm",
+        "m": "y년 MMMM d일 B h:mm ~ h:mm"
+      },
+      "y. M. d. Bhm": {
+        "B": "y. M. d. B h:mm~B h:mm",
+        "h": "y. M. d. B h:mm ~ h:mm",
+        "m": "y. M. d. B h:mm ~ h:mm"
+      },
+      "yy. M. d. Bhm": {
+        "B": "yy. M. d. B h:mm~B h:mm",
+        "h": "yy. M. d. B h:mm ~ h:mm",
+        "m": "yy. M. d. B h:mm ~ h:mm"
+      },
+      "d Bhm": {
+        "B": "d일 B h:mm~B h:mm",
+        "h": "d일 B h:mm ~ h:mm",
+        "m": "d일 B h:mm ~ h:mm"
+      },
+      "E Bhm": {
+        "B": "ccc B h:mm~B h:mm",
+        "h": "ccc B h:mm ~ h:mm",
+        "m": "ccc B h:mm ~ h:mm"
+      },
+      "Ed Bhm": {
+        "B": "d일 (E) B h:mm~B h:mm",
+        "h": "d일 (E) B h:mm ~ h:mm",
+        "m": "d일 (E) B h:mm ~ h:mm"
+      },
+      "EEEEd Bhm": {
+        "B": "d일 EEEE B h:mm~B h:mm",
+        "h": "d일 EEEE B h:mm ~ h:mm",
+        "m": "d일 EEEE B h:mm ~ h:mm"
+      },
+      "Gy Bhm": {
+        "B": "G y년 B h:mm~B h:mm",
+        "h": "G y년 B h:mm ~ h:mm",
+        "m": "G y년 B h:mm ~ h:mm"
+      },
+      "GyM Bhm": {
+        "B": "G y/M B h:mm~B h:mm",
+        "h": "G y/M B h:mm ~ h:mm",
+        "m": "G y/M B h:mm ~ h:mm"
+      },
+      "GyMd Bhm": {
+        "B": "GGGGG y/M/d B h:mm~B h:mm",
+        "h": "GGGGG y/M/d B h:mm ~ h:mm",
+        "m": "GGGGG y/M/d B h:mm ~ h:mm"
+      },
+      "GyMEd Bhm": {
+        "B": "G y/M/d (E) B h:mm~B h:mm",
+        "h": "G y/M/d (E) B h:mm ~ h:mm",
+        "m": "G y/M/d (E) B h:mm ~ h:mm"
+      },
+      "GyMMM Bhm": {
+        "B": "G y년 MMM B h:mm~B h:mm",
+        "h": "G y년 MMM B h:mm ~ h:mm",
+        "m": "G y년 MMM B h:mm ~ h:mm"
+      },
+      "GyMMMd Bhm": {
+        "B": "G y년 MMM d일 B h:mm~B h:mm",
+        "h": "G y년 MMM d일 B h:mm ~ h:mm",
+        "m": "G y년 MMM d일 B h:mm ~ h:mm"
+      },
+      "GyMMMEd Bhm": {
+        "B": "G y년 MMM d일 (E) B h:mm~B h:mm",
+        "h": "G y년 MMM d일 (E) B h:mm ~ h:mm",
+        "m": "G y년 MMM d일 (E) B h:mm ~ h:mm"
+      },
+      "GyMMMEEEEd Bhm": {
+        "B": "G y년 MMM d일 EEEE B h:mm~B h:mm",
+        "h": "G y년 MMM d일 EEEE B h:mm ~ h:mm",
+        "m": "G y년 MMM d일 EEEE B h:mm ~ h:mm"
+      },
+      "M Bhm": {
+        "B": "M월 B h:mm~B h:mm",
+        "h": "M월 B h:mm ~ h:mm",
+        "m": "M월 B h:mm ~ h:mm"
+      },
+      "Md Bhm": {
+        "B": "M. d. B h:mm~B h:mm",
+        "h": "M. d. B h:mm ~ h:mm",
+        "m": "M. d. B h:mm ~ h:mm"
+      },
+      "MEd Bhm": {
+        "B": "M. d. (E) B h:mm~B h:mm",
+        "h": "M. d. (E) B h:mm ~ h:mm",
+        "m": "M. d. (E) B h:mm ~ h:mm"
+      },
+      "MEEEEd Bhm": {
+        "B": "M. d. EEEE B h:mm~B h:mm",
+        "h": "M. d. EEEE B h:mm ~ h:mm",
+        "m": "M. d. EEEE B h:mm ~ h:mm"
+      },
+      "MMM Bhm": {
+        "B": "LLL B h:mm~B h:mm",
+        "h": "LLL B h:mm ~ h:mm",
+        "m": "LLL B h:mm ~ h:mm"
+      },
+      "MMMd Bhm": {
+        "B": "MMM d일 B h:mm~B h:mm",
+        "h": "MMM d일 B h:mm ~ h:mm",
+        "m": "MMM d일 B h:mm ~ h:mm"
+      },
+      "MMMEd Bhm": {
+        "B": "MMM d일 (E) B h:mm~B h:mm",
+        "h": "MMM d일 (E) B h:mm ~ h:mm",
+        "m": "MMM d일 (E) B h:mm ~ h:mm"
+      },
+      "MMMEEEEd Bhm": {
+        "B": "MMM d일 EEEE B h:mm~B h:mm",
+        "h": "MMM d일 EEEE B h:mm ~ h:mm",
+        "m": "MMM d일 EEEE B h:mm ~ h:mm"
+      },
+      "MMMMd Bhm": {
+        "B": "MMMM d일 B h:mm~B h:mm",
+        "h": "MMMM d일 B h:mm ~ h:mm",
+        "m": "MMMM d일 B h:mm ~ h:mm"
+      },
+      "y Bhm": {
+        "B": "y년 B h:mm~B h:mm",
+        "h": "y년 B h:mm ~ h:mm",
+        "m": "y년 B h:mm ~ h:mm"
+      },
+      "yM Bhm": {
+        "B": "y. M. B h:mm~B h:mm",
+        "h": "y. M. B h:mm ~ h:mm",
+        "m": "y. M. B h:mm ~ h:mm"
+      },
+      "yMd Bhm": {
+        "B": "y. M. d. B h:mm~B h:mm",
+        "h": "y. M. d. B h:mm ~ h:mm",
+        "m": "y. M. d. B h:mm ~ h:mm"
+      },
+      "yMEd Bhm": {
+        "B": "y. M. d. (E) B h:mm~B h:mm",
+        "h": "y. M. d. (E) B h:mm ~ h:mm",
+        "m": "y. M. d. (E) B h:mm ~ h:mm"
+      },
+      "yMEEEEd Bhm": {
+        "B": "y. M. d. EEEE B h:mm~B h:mm",
+        "h": "y. M. d. EEEE B h:mm ~ h:mm",
+        "m": "y. M. d. EEEE B h:mm ~ h:mm"
+      },
+      "yMM Bhm": {
+        "B": "y. M. B h:mm~B h:mm",
+        "h": "y. M. B h:mm ~ h:mm",
+        "m": "y. M. B h:mm ~ h:mm"
+      },
+      "yMMM Bhm": {
+        "B": "y년 MMM B h:mm~B h:mm",
+        "h": "y년 MMM B h:mm ~ h:mm",
+        "m": "y년 MMM B h:mm ~ h:mm"
+      },
+      "yMMMd Bhm": {
+        "B": "y년 MMM d일 B h:mm~B h:mm",
+        "h": "y년 MMM d일 B h:mm ~ h:mm",
+        "m": "y년 MMM d일 B h:mm ~ h:mm"
+      },
+      "yMMMEd Bhm": {
+        "B": "y년 MMM d일 (E) B h:mm~B h:mm",
+        "h": "y년 MMM d일 (E) B h:mm ~ h:mm",
+        "m": "y년 MMM d일 (E) B h:mm ~ h:mm"
+      },
+      "yMMMEEEEd Bhm": {
+        "B": "y년 MMM d일 EEEE B h:mm~B h:mm",
+        "h": "y년 MMM d일 EEEE B h:mm ~ h:mm",
+        "m": "y년 MMM d일 EEEE B h:mm ~ h:mm"
+      },
+      "yMMMM Bhm": {
+        "B": "y년 MMMM B h:mm~B h:mm",
+        "h": "y년 MMMM B h:mm ~ h:mm",
+        "m": "y년 MMMM B h:mm ~ h:mm"
+      },
+      "y년 MMMM d일 EEEE h": {
+        "a": "y년 MMMM d일 EEEE a h시 ~ a h시",
+        "h": "y년 MMMM d일 EEEE a h시 ~ h시"
+      },
+      "y년 MMMM d일 h": {
+        "a": "y년 MMMM d일 a h시 ~ a h시",
+        "h": "y년 MMMM d일 a h시 ~ h시"
+      },
+      "y. M. d. h": {
+        "a": "y. M. d. a h시 ~ a h시",
+        "h": "y. M. d. a h시 ~ h시"
+      },
+      "yy. M. d. h": {
+        "a": "yy. M. d. a h시 ~ a h시",
+        "h": "yy. M. d. a h시 ~ h시"
+      },
+      "d h": {
+        "a": "d일 a h시 ~ a h시",
+        "h": "d일 a h시 ~ h시"
+      },
+      "E h": {
+        "a": "ccc a h시 ~ a h시",
+        "h": "ccc a h시 ~ h시"
+      },
+      "Ed h": {
+        "a": "d일 (E) a h시 ~ a h시",
+        "h": "d일 (E) a h시 ~ h시"
+      },
+      "EEEEd h": {
+        "a": "d일 EEEE a h시 ~ a h시",
+        "h": "d일 EEEE a h시 ~ h시"
+      },
+      "Gy h": {
+        "a": "G y년 a h시 ~ a h시",
+        "h": "G y년 a h시 ~ h시"
+      },
+      "GyM h": {
+        "a": "G y/M a h시 ~ a h시",
+        "h": "G y/M a h시 ~ h시"
+      },
+      "GyMd h": {
+        "a": "GGGGG y/M/d a h시 ~ a h시",
+        "h": "GGGGG y/M/d a h시 ~ h시"
+      },
+      "GyMEd h": {
+        "a": "G y/M/d (E) a h시 ~ a h시",
+        "h": "G y/M/d (E) a h시 ~ h시"
+      },
+      "GyMMM h": {
+        "a": "G y년 MMM a h시 ~ a h시",
+        "h": "G y년 MMM a h시 ~ h시"
+      },
+      "GyMMMd h": {
+        "a": "G y년 MMM d일 a h시 ~ a h시",
+        "h": "G y년 MMM d일 a h시 ~ h시"
+      },
+      "GyMMMEd h": {
+        "a": "G y년 MMM d일 (E) a h시 ~ a h시",
+        "h": "G y년 MMM d일 (E) a h시 ~ h시"
+      },
+      "GyMMMEEEEd h": {
+        "a": "G y년 MMM d일 EEEE a h시 ~ a h시",
+        "h": "G y년 MMM d일 EEEE a h시 ~ h시"
+      },
+      "M h": {
+        "a": "M월 a h시 ~ a h시",
+        "h": "M월 a h시 ~ h시"
+      },
+      "Md h": {
+        "a": "M. d. a h시 ~ a h시",
+        "h": "M. d. a h시 ~ h시"
+      },
+      "MEd h": {
+        "a": "M. d. (E) a h시 ~ a h시",
+        "h": "M. d. (E) a h시 ~ h시"
+      },
+      "MEEEEd h": {
+        "a": "M. d. EEEE a h시 ~ a h시",
+        "h": "M. d. EEEE a h시 ~ h시"
+      },
+      "MMM h": {
+        "a": "LLL a h시 ~ a h시",
+        "h": "LLL a h시 ~ h시"
+      },
+      "MMMd h": {
+        "a": "MMM d일 a h시 ~ a h시",
+        "h": "MMM d일 a h시 ~ h시"
+      },
+      "MMMEd h": {
+        "a": "MMM d일 (E) a h시 ~ a h시",
+        "h": "MMM d일 (E) a h시 ~ h시"
+      },
+      "MMMEEEEd h": {
+        "a": "MMM d일 EEEE a h시 ~ a h시",
+        "h": "MMM d일 EEEE a h시 ~ h시"
+      },
+      "MMMMd h": {
+        "a": "MMMM d일 a h시 ~ a h시",
+        "h": "MMMM d일 a h시 ~ h시"
+      },
+      "y h": {
+        "a": "y년 a h시 ~ a h시",
+        "h": "y년 a h시 ~ h시"
+      },
+      "yM h": {
+        "a": "y. M. a h시 ~ a h시",
+        "h": "y. M. a h시 ~ h시"
+      },
+      "yMd h": {
+        "a": "y. M. d. a h시 ~ a h시",
+        "h": "y. M. d. a h시 ~ h시"
+      },
+      "yMEd h": {
+        "a": "y. M. d. (E) a h시 ~ a h시",
+        "h": "y. M. d. (E) a h시 ~ h시"
+      },
+      "yMEEEEd h": {
+        "a": "y. M. d. EEEE a h시 ~ a h시",
+        "h": "y. M. d. EEEE a h시 ~ h시"
+      },
+      "yMM h": {
+        "a": "y. M. a h시 ~ a h시",
+        "h": "y. M. a h시 ~ h시"
+      },
+      "yMMM h": {
+        "a": "y년 MMM a h시 ~ a h시",
+        "h": "y년 MMM a h시 ~ h시"
+      },
+      "yMMMd h": {
+        "a": "y년 MMM d일 a h시 ~ a h시",
+        "h": "y년 MMM d일 a h시 ~ h시"
+      },
+      "yMMMEd h": {
+        "a": "y년 MMM d일 (E) a h시 ~ a h시",
+        "h": "y년 MMM d일 (E) a h시 ~ h시"
+      },
+      "yMMMEEEEd h": {
+        "a": "y년 MMM d일 EEEE a h시 ~ a h시",
+        "h": "y년 MMM d일 EEEE a h시 ~ h시"
+      },
+      "yMMMM h": {
+        "a": "y년 MMMM a h시 ~ a h시",
+        "h": "y년 MMMM a h시 ~ h시"
+      },
+      "y년 MMMM d일 EEEE H": {
+        "H": "y년 MMMM d일 EEEE H ~ H시"
+      },
+      "y년 MMMM d일 H": {
+        "H": "y년 MMMM d일 H ~ H시"
+      },
+      "y. M. d. H": {
+        "H": "y. M. d. H ~ H시"
+      },
+      "yy. M. d. H": {
+        "H": "yy. M. d. H ~ H시"
+      },
+      "d H": {
+        "H": "d일 H ~ H시"
+      },
+      "E H": {
+        "H": "ccc H ~ H시"
+      },
+      "Ed H": {
+        "H": "d일 (E) H ~ H시"
+      },
+      "EEEEd H": {
+        "H": "d일 EEEE H ~ H시"
+      },
+      "Gy H": {
+        "H": "G y년 H ~ H시"
+      },
+      "GyM H": {
+        "H": "G y/M H ~ H시"
+      },
+      "GyMd H": {
+        "H": "GGGGG y/M/d H ~ H시"
+      },
+      "GyMEd H": {
+        "H": "G y/M/d (E) H ~ H시"
+      },
+      "GyMMM H": {
+        "H": "G y년 MMM H ~ H시"
+      },
+      "GyMMMd H": {
+        "H": "G y년 MMM d일 H ~ H시"
+      },
+      "GyMMMEd H": {
+        "H": "G y년 MMM d일 (E) H ~ H시"
+      },
+      "GyMMMEEEEd H": {
+        "H": "G y년 MMM d일 EEEE H ~ H시"
+      },
+      "M H": {
+        "H": "M월 H ~ H시"
+      },
+      "Md H": {
+        "H": "M. d. H ~ H시"
+      },
+      "MEd H": {
+        "H": "M. d. (E) H ~ H시"
+      },
+      "MEEEEd H": {
+        "H": "M. d. EEEE H ~ H시"
+      },
+      "MMM H": {
+        "H": "LLL H ~ H시"
+      },
+      "MMMd H": {
+        "H": "MMM d일 H ~ H시"
+      },
+      "MMMEd H": {
+        "H": "MMM d일 (E) H ~ H시"
+      },
+      "MMMEEEEd H": {
+        "H": "MMM d일 EEEE H ~ H시"
+      },
+      "MMMMd H": {
+        "H": "MMMM d일 H ~ H시"
+      },
+      "y H": {
+        "H": "y년 H ~ H시"
+      },
+      "yM H": {
+        "H": "y. M. H ~ H시"
+      },
+      "yMd H": {
+        "H": "y. M. d. H ~ H시"
+      },
+      "yMEd H": {
+        "H": "y. M. d. (E) H ~ H시"
+      },
+      "yMEEEEd H": {
+        "H": "y. M. d. EEEE H ~ H시"
+      },
+      "yMM H": {
+        "H": "y. M. H ~ H시"
+      },
+      "yMMM H": {
+        "H": "y년 MMM H ~ H시"
+      },
+      "yMMMd H": {
+        "H": "y년 MMM d일 H ~ H시"
+      },
+      "yMMMEd H": {
+        "H": "y년 MMM d일 (E) H ~ H시"
+      },
+      "yMMMEEEEd H": {
+        "H": "y년 MMM d일 EEEE H ~ H시"
+      },
+      "yMMMM H": {
+        "H": "y년 MMMM H ~ H시"
+      },
+      "y년 MMMM d일 EEEE hm": {
+        "a": "y년 MMMM d일 EEEE a h:mm ~ a h:mm",
+        "h": "y년 MMMM d일 EEEE a h:mm~h:mm",
+        "m": "y년 MMMM d일 EEEE a h:mm~h:mm"
+      },
+      "y년 MMMM d일 hm": {
+        "a": "y년 MMMM d일 a h:mm ~ a h:mm",
+        "h": "y년 MMMM d일 a h:mm~h:mm",
+        "m": "y년 MMMM d일 a h:mm~h:mm"
+      },
+      "y. M. d. hm": {
+        "a": "y. M. d. a h:mm ~ a h:mm",
+        "h": "y. M. d. a h:mm~h:mm",
+        "m": "y. M. d. a h:mm~h:mm"
+      },
+      "yy. M. d. hm": {
+        "a": "yy. M. d. a h:mm ~ a h:mm",
+        "h": "yy. M. d. a h:mm~h:mm",
+        "m": "yy. M. d. a h:mm~h:mm"
+      },
+      "d hm": {
+        "a": "d일 a h:mm ~ a h:mm",
+        "h": "d일 a h:mm~h:mm",
+        "m": "d일 a h:mm~h:mm"
+      },
+      "E hm": {
+        "a": "ccc a h:mm ~ a h:mm",
+        "h": "ccc a h:mm~h:mm",
+        "m": "ccc a h:mm~h:mm"
+      },
+      "Ed hm": {
+        "a": "d일 (E) a h:mm ~ a h:mm",
+        "h": "d일 (E) a h:mm~h:mm",
+        "m": "d일 (E) a h:mm~h:mm"
+      },
+      "EEEEd hm": {
+        "a": "d일 EEEE a h:mm ~ a h:mm",
+        "h": "d일 EEEE a h:mm~h:mm",
+        "m": "d일 EEEE a h:mm~h:mm"
+      },
+      "Gy hm": {
+        "a": "G y년 a h:mm ~ a h:mm",
+        "h": "G y년 a h:mm~h:mm",
+        "m": "G y년 a h:mm~h:mm"
+      },
+      "GyM hm": {
+        "a": "G y/M a h:mm ~ a h:mm",
+        "h": "G y/M a h:mm~h:mm",
+        "m": "G y/M a h:mm~h:mm"
+      },
+      "GyMd hm": {
+        "a": "GGGGG y/M/d a h:mm ~ a h:mm",
+        "h": "GGGGG y/M/d a h:mm~h:mm",
+        "m": "GGGGG y/M/d a h:mm~h:mm"
+      },
+      "GyMEd hm": {
+        "a": "G y/M/d (E) a h:mm ~ a h:mm",
+        "h": "G y/M/d (E) a h:mm~h:mm",
+        "m": "G y/M/d (E) a h:mm~h:mm"
+      },
+      "GyMMM hm": {
+        "a": "G y년 MMM a h:mm ~ a h:mm",
+        "h": "G y년 MMM a h:mm~h:mm",
+        "m": "G y년 MMM a h:mm~h:mm"
+      },
+      "GyMMMd hm": {
+        "a": "G y년 MMM d일 a h:mm ~ a h:mm",
+        "h": "G y년 MMM d일 a h:mm~h:mm",
+        "m": "G y년 MMM d일 a h:mm~h:mm"
+      },
+      "GyMMMEd hm": {
+        "a": "G y년 MMM d일 (E) a h:mm ~ a h:mm",
+        "h": "G y년 MMM d일 (E) a h:mm~h:mm",
+        "m": "G y년 MMM d일 (E) a h:mm~h:mm"
+      },
+      "GyMMMEEEEd hm": {
+        "a": "G y년 MMM d일 EEEE a h:mm ~ a h:mm",
+        "h": "G y년 MMM d일 EEEE a h:mm~h:mm",
+        "m": "G y년 MMM d일 EEEE a h:mm~h:mm"
+      },
+      "M hm": {
+        "a": "M월 a h:mm ~ a h:mm",
+        "h": "M월 a h:mm~h:mm",
+        "m": "M월 a h:mm~h:mm"
+      },
+      "Md hm": {
+        "a": "M. d. a h:mm ~ a h:mm",
+        "h": "M. d. a h:mm~h:mm",
+        "m": "M. d. a h:mm~h:mm"
+      },
+      "MEd hm": {
+        "a": "M. d. (E) a h:mm ~ a h:mm",
+        "h": "M. d. (E) a h:mm~h:mm",
+        "m": "M. d. (E) a h:mm~h:mm"
+      },
+      "MEEEEd hm": {
+        "a": "M. d. EEEE a h:mm ~ a h:mm",
+        "h": "M. d. EEEE a h:mm~h:mm",
+        "m": "M. d. EEEE a h:mm~h:mm"
+      },
+      "MMM hm": {
+        "a": "LLL a h:mm ~ a h:mm",
+        "h": "LLL a h:mm~h:mm",
+        "m": "LLL a h:mm~h:mm"
+      },
+      "MMMd hm": {
+        "a": "MMM d일 a h:mm ~ a h:mm",
+        "h": "MMM d일 a h:mm~h:mm",
+        "m": "MMM d일 a h:mm~h:mm"
+      },
+      "MMMEd hm": {
+        "a": "MMM d일 (E) a h:mm ~ a h:mm",
+        "h": "MMM d일 (E) a h:mm~h:mm",
+        "m": "MMM d일 (E) a h:mm~h:mm"
+      },
+      "MMMEEEEd hm": {
+        "a": "MMM d일 EEEE a h:mm ~ a h:mm",
+        "h": "MMM d일 EEEE a h:mm~h:mm",
+        "m": "MMM d일 EEEE a h:mm~h:mm"
+      },
+      "MMMMd hm": {
+        "a": "MMMM d일 a h:mm ~ a h:mm",
+        "h": "MMMM d일 a h:mm~h:mm",
+        "m": "MMMM d일 a h:mm~h:mm"
+      },
+      "y hm": {
+        "a": "y년 a h:mm ~ a h:mm",
+        "h": "y년 a h:mm~h:mm",
+        "m": "y년 a h:mm~h:mm"
+      },
+      "yM hm": {
+        "a": "y. M. a h:mm ~ a h:mm",
+        "h": "y. M. a h:mm~h:mm",
+        "m": "y. M. a h:mm~h:mm"
+      },
+      "yMd hm": {
+        "a": "y. M. d. a h:mm ~ a h:mm",
+        "h": "y. M. d. a h:mm~h:mm",
+        "m": "y. M. d. a h:mm~h:mm"
+      },
+      "yMEd hm": {
+        "a": "y. M. d. (E) a h:mm ~ a h:mm",
+        "h": "y. M. d. (E) a h:mm~h:mm",
+        "m": "y. M. d. (E) a h:mm~h:mm"
+      },
+      "yMEEEEd hm": {
+        "a": "y. M. d. EEEE a h:mm ~ a h:mm",
+        "h": "y. M. d. EEEE a h:mm~h:mm",
+        "m": "y. M. d. EEEE a h:mm~h:mm"
+      },
+      "yMM hm": {
+        "a": "y. M. a h:mm ~ a h:mm",
+        "h": "y. M. a h:mm~h:mm",
+        "m": "y. M. a h:mm~h:mm"
+      },
+      "yMMM hm": {
+        "a": "y년 MMM a h:mm ~ a h:mm",
+        "h": "y년 MMM a h:mm~h:mm",
+        "m": "y년 MMM a h:mm~h:mm"
+      },
+      "yMMMd hm": {
+        "a": "y년 MMM d일 a h:mm ~ a h:mm",
+        "h": "y년 MMM d일 a h:mm~h:mm",
+        "m": "y년 MMM d일 a h:mm~h:mm"
+      },
+      "yMMMEd hm": {
+        "a": "y년 MMM d일 (E) a h:mm ~ a h:mm",
+        "h": "y년 MMM d일 (E) a h:mm~h:mm",
+        "m": "y년 MMM d일 (E) a h:mm~h:mm"
+      },
+      "yMMMEEEEd hm": {
+        "a": "y년 MMM d일 EEEE a h:mm ~ a h:mm",
+        "h": "y년 MMM d일 EEEE a h:mm~h:mm",
+        "m": "y년 MMM d일 EEEE a h:mm~h:mm"
+      },
+      "yMMMM hm": {
+        "a": "y년 MMMM a h:mm ~ a h:mm",
+        "h": "y년 MMMM a h:mm~h:mm",
+        "m": "y년 MMMM a h:mm~h:mm"
+      },
+      "y년 MMMM d일 EEEE Hm": {
+        "H": "y년 MMMM d일 EEEE HH:mm ~ HH:mm",
+        "m": "y년 MMMM d일 EEEE HH:mm ~ HH:mm"
+      },
+      "y년 MMMM d일 Hm": {
+        "H": "y년 MMMM d일 HH:mm ~ HH:mm",
+        "m": "y년 MMMM d일 HH:mm ~ HH:mm"
+      },
+      "y. M. d. Hm": {
+        "H": "y. M. d. HH:mm ~ HH:mm",
+        "m": "y. M. d. HH:mm ~ HH:mm"
+      },
+      "yy. M. d. Hm": {
+        "H": "yy. M. d. HH:mm ~ HH:mm",
+        "m": "yy. M. d. HH:mm ~ HH:mm"
+      },
+      "d Hm": {
+        "H": "d일 HH:mm ~ HH:mm",
+        "m": "d일 HH:mm ~ HH:mm"
+      },
+      "E Hm": {
+        "H": "ccc HH:mm ~ HH:mm",
+        "m": "ccc HH:mm ~ HH:mm"
+      },
+      "Ed Hm": {
+        "H": "d일 (E) HH:mm ~ HH:mm",
+        "m": "d일 (E) HH:mm ~ HH:mm"
+      },
+      "EEEEd Hm": {
+        "H": "d일 EEEE HH:mm ~ HH:mm",
+        "m": "d일 EEEE HH:mm ~ HH:mm"
+      },
+      "Gy Hm": {
+        "H": "G y년 HH:mm ~ HH:mm",
+        "m": "G y년 HH:mm ~ HH:mm"
+      },
+      "GyM Hm": {
+        "H": "G y/M HH:mm ~ HH:mm",
+        "m": "G y/M HH:mm ~ HH:mm"
+      },
+      "GyMd Hm": {
+        "H": "GGGGG y/M/d HH:mm ~ HH:mm",
+        "m": "GGGGG y/M/d HH:mm ~ HH:mm"
+      },
+      "GyMEd Hm": {
+        "H": "G y/M/d (E) HH:mm ~ HH:mm",
+        "m": "G y/M/d (E) HH:mm ~ HH:mm"
+      },
+      "GyMMM Hm": {
+        "H": "G y년 MMM HH:mm ~ HH:mm",
+        "m": "G y년 MMM HH:mm ~ HH:mm"
+      },
+      "GyMMMd Hm": {
+        "H": "G y년 MMM d일 HH:mm ~ HH:mm",
+        "m": "G y년 MMM d일 HH:mm ~ HH:mm"
+      },
+      "GyMMMEd Hm": {
+        "H": "G y년 MMM d일 (E) HH:mm ~ HH:mm",
+        "m": "G y년 MMM d일 (E) HH:mm ~ HH:mm"
+      },
+      "GyMMMEEEEd Hm": {
+        "H": "G y년 MMM d일 EEEE HH:mm ~ HH:mm",
+        "m": "G y년 MMM d일 EEEE HH:mm ~ HH:mm"
+      },
+      "M Hm": {
+        "H": "M월 HH:mm ~ HH:mm",
+        "m": "M월 HH:mm ~ HH:mm"
+      },
+      "Md Hm": {
+        "H": "M. d. HH:mm ~ HH:mm",
+        "m": "M. d. HH:mm ~ HH:mm"
+      },
+      "MEd Hm": {
+        "H": "M. d. (E) HH:mm ~ HH:mm",
+        "m": "M. d. (E) HH:mm ~ HH:mm"
+      },
+      "MEEEEd Hm": {
+        "H": "M. d. EEEE HH:mm ~ HH:mm",
+        "m": "M. d. EEEE HH:mm ~ HH:mm"
+      },
+      "MMM Hm": {
+        "H": "LLL HH:mm ~ HH:mm",
+        "m": "LLL HH:mm ~ HH:mm"
+      },
+      "MMMd Hm": {
+        "H": "MMM d일 HH:mm ~ HH:mm",
+        "m": "MMM d일 HH:mm ~ HH:mm"
+      },
+      "MMMEd Hm": {
+        "H": "MMM d일 (E) HH:mm ~ HH:mm",
+        "m": "MMM d일 (E) HH:mm ~ HH:mm"
+      },
+      "MMMEEEEd Hm": {
+        "H": "MMM d일 EEEE HH:mm ~ HH:mm",
+        "m": "MMM d일 EEEE HH:mm ~ HH:mm"
+      },
+      "MMMMd Hm": {
+        "H": "MMMM d일 HH:mm ~ HH:mm",
+        "m": "MMMM d일 HH:mm ~ HH:mm"
+      },
+      "y Hm": {
+        "H": "y년 HH:mm ~ HH:mm",
+        "m": "y년 HH:mm ~ HH:mm"
+      },
+      "yM Hm": {
+        "H": "y. M. HH:mm ~ HH:mm",
+        "m": "y. M. HH:mm ~ HH:mm"
+      },
+      "yMd Hm": {
+        "H": "y. M. d. HH:mm ~ HH:mm",
+        "m": "y. M. d. HH:mm ~ HH:mm"
+      },
+      "yMEd Hm": {
+        "H": "y. M. d. (E) HH:mm ~ HH:mm",
+        "m": "y. M. d. (E) HH:mm ~ HH:mm"
+      },
+      "yMEEEEd Hm": {
+        "H": "y. M. d. EEEE HH:mm ~ HH:mm",
+        "m": "y. M. d. EEEE HH:mm ~ HH:mm"
+      },
+      "yMM Hm": {
+        "H": "y. M. HH:mm ~ HH:mm",
+        "m": "y. M. HH:mm ~ HH:mm"
+      },
+      "yMMM Hm": {
+        "H": "y년 MMM HH:mm ~ HH:mm",
+        "m": "y년 MMM HH:mm ~ HH:mm"
+      },
+      "yMMMd Hm": {
+        "H": "y년 MMM d일 HH:mm ~ HH:mm",
+        "m": "y년 MMM d일 HH:mm ~ HH:mm"
+      },
+      "yMMMEd Hm": {
+        "H": "y년 MMM d일 (E) HH:mm ~ HH:mm",
+        "m": "y년 MMM d일 (E) HH:mm ~ HH:mm"
+      },
+      "yMMMEEEEd Hm": {
+        "H": "y년 MMM d일 EEEE HH:mm ~ HH:mm",
+        "m": "y년 MMM d일 EEEE HH:mm ~ HH:mm"
+      },
+      "yMMMM Hm": {
+        "H": "y년 MMMM HH:mm ~ HH:mm",
+        "m": "y년 MMMM HH:mm ~ HH:mm"
+      },
+      "y년 MMMM d일 EEEE hmv": {
+        "a": "y년 MMMM d일 EEEE a h:mm ~ a h:mm v",
+        "h": "y년 MMMM d일 EEEE a h:mm~h:mm v",
+        "m": "y년 MMMM d일 EEEE a h:mm~h:mm v"
+      },
+      "y년 MMMM d일 hmv": {
+        "a": "y년 MMMM d일 a h:mm ~ a h:mm v",
+        "h": "y년 MMMM d일 a h:mm~h:mm v",
+        "m": "y년 MMMM d일 a h:mm~h:mm v"
+      },
+      "y. M. d. hmv": {
+        "a": "y. M. d. a h:mm ~ a h:mm v",
+        "h": "y. M. d. a h:mm~h:mm v",
+        "m": "y. M. d. a h:mm~h:mm v"
+      },
+      "yy. M. d. hmv": {
+        "a": "yy. M. d. a h:mm ~ a h:mm v",
+        "h": "yy. M. d. a h:mm~h:mm v",
+        "m": "yy. M. d. a h:mm~h:mm v"
+      },
+      "d hmv": {
+        "a": "d일 a h:mm ~ a h:mm v",
+        "h": "d일 a h:mm~h:mm v",
+        "m": "d일 a h:mm~h:mm v"
+      },
+      "E hmv": {
+        "a": "ccc a h:mm ~ a h:mm v",
+        "h": "ccc a h:mm~h:mm v",
+        "m": "ccc a h:mm~h:mm v"
+      },
+      "Ed hmv": {
+        "a": "d일 (E) a h:mm ~ a h:mm v",
+        "h": "d일 (E) a h:mm~h:mm v",
+        "m": "d일 (E) a h:mm~h:mm v"
+      },
+      "EEEEd hmv": {
+        "a": "d일 EEEE a h:mm ~ a h:mm v",
+        "h": "d일 EEEE a h:mm~h:mm v",
+        "m": "d일 EEEE a h:mm~h:mm v"
+      },
+      "Gy hmv": {
+        "a": "G y년 a h:mm ~ a h:mm v",
+        "h": "G y년 a h:mm~h:mm v",
+        "m": "G y년 a h:mm~h:mm v"
+      },
+      "GyM hmv": {
+        "a": "G y/M a h:mm ~ a h:mm v",
+        "h": "G y/M a h:mm~h:mm v",
+        "m": "G y/M a h:mm~h:mm v"
+      },
+      "GyMd hmv": {
+        "a": "GGGGG y/M/d a h:mm ~ a h:mm v",
+        "h": "GGGGG y/M/d a h:mm~h:mm v",
+        "m": "GGGGG y/M/d a h:mm~h:mm v"
+      },
+      "GyMEd hmv": {
+        "a": "G y/M/d (E) a h:mm ~ a h:mm v",
+        "h": "G y/M/d (E) a h:mm~h:mm v",
+        "m": "G y/M/d (E) a h:mm~h:mm v"
+      },
+      "GyMMM hmv": {
+        "a": "G y년 MMM a h:mm ~ a h:mm v",
+        "h": "G y년 MMM a h:mm~h:mm v",
+        "m": "G y년 MMM a h:mm~h:mm v"
+      },
+      "GyMMMd hmv": {
+        "a": "G y년 MMM d일 a h:mm ~ a h:mm v",
+        "h": "G y년 MMM d일 a h:mm~h:mm v",
+        "m": "G y년 MMM d일 a h:mm~h:mm v"
+      },
+      "GyMMMEd hmv": {
+        "a": "G y년 MMM d일 (E) a h:mm ~ a h:mm v",
+        "h": "G y년 MMM d일 (E) a h:mm~h:mm v",
+        "m": "G y년 MMM d일 (E) a h:mm~h:mm v"
+      },
+      "GyMMMEEEEd hmv": {
+        "a": "G y년 MMM d일 EEEE a h:mm ~ a h:mm v",
+        "h": "G y년 MMM d일 EEEE a h:mm~h:mm v",
+        "m": "G y년 MMM d일 EEEE a h:mm~h:mm v"
+      },
+      "M hmv": {
+        "a": "M월 a h:mm ~ a h:mm v",
+        "h": "M월 a h:mm~h:mm v",
+        "m": "M월 a h:mm~h:mm v"
+      },
+      "Md hmv": {
+        "a": "M. d. a h:mm ~ a h:mm v",
+        "h": "M. d. a h:mm~h:mm v",
+        "m": "M. d. a h:mm~h:mm v"
+      },
+      "MEd hmv": {
+        "a": "M. d. (E) a h:mm ~ a h:mm v",
+        "h": "M. d. (E) a h:mm~h:mm v",
+        "m": "M. d. (E) a h:mm~h:mm v"
+      },
+      "MEEEEd hmv": {
+        "a": "M. d. EEEE a h:mm ~ a h:mm v",
+        "h": "M. d. EEEE a h:mm~h:mm v",
+        "m": "M. d. EEEE a h:mm~h:mm v"
+      },
+      "MMM hmv": {
+        "a": "LLL a h:mm ~ a h:mm v",
+        "h": "LLL a h:mm~h:mm v",
+        "m": "LLL a h:mm~h:mm v"
+      },
+      "MMMd hmv": {
+        "a": "MMM d일 a h:mm ~ a h:mm v",
+        "h": "MMM d일 a h:mm~h:mm v",
+        "m": "MMM d일 a h:mm~h:mm v"
+      },
+      "MMMEd hmv": {
+        "a": "MMM d일 (E) a h:mm ~ a h:mm v",
+        "h": "MMM d일 (E) a h:mm~h:mm v",
+        "m": "MMM d일 (E) a h:mm~h:mm v"
+      },
+      "MMMEEEEd hmv": {
+        "a": "MMM d일 EEEE a h:mm ~ a h:mm v",
+        "h": "MMM d일 EEEE a h:mm~h:mm v",
+        "m": "MMM d일 EEEE a h:mm~h:mm v"
+      },
+      "MMMMd hmv": {
+        "a": "MMMM d일 a h:mm ~ a h:mm v",
+        "h": "MMMM d일 a h:mm~h:mm v",
+        "m": "MMMM d일 a h:mm~h:mm v"
+      },
+      "y hmv": {
+        "a": "y년 a h:mm ~ a h:mm v",
+        "h": "y년 a h:mm~h:mm v",
+        "m": "y년 a h:mm~h:mm v"
+      },
+      "yM hmv": {
+        "a": "y. M. a h:mm ~ a h:mm v",
+        "h": "y. M. a h:mm~h:mm v",
+        "m": "y. M. a h:mm~h:mm v"
+      },
+      "yMd hmv": {
+        "a": "y. M. d. a h:mm ~ a h:mm v",
+        "h": "y. M. d. a h:mm~h:mm v",
+        "m": "y. M. d. a h:mm~h:mm v"
+      },
+      "yMEd hmv": {
+        "a": "y. M. d. (E) a h:mm ~ a h:mm v",
+        "h": "y. M. d. (E) a h:mm~h:mm v",
+        "m": "y. M. d. (E) a h:mm~h:mm v"
+      },
+      "yMEEEEd hmv": {
+        "a": "y. M. d. EEEE a h:mm ~ a h:mm v",
+        "h": "y. M. d. EEEE a h:mm~h:mm v",
+        "m": "y. M. d. EEEE a h:mm~h:mm v"
+      },
+      "yMM hmv": {
+        "a": "y. M. a h:mm ~ a h:mm v",
+        "h": "y. M. a h:mm~h:mm v",
+        "m": "y. M. a h:mm~h:mm v"
+      },
+      "yMMM hmv": {
+        "a": "y년 MMM a h:mm ~ a h:mm v",
+        "h": "y년 MMM a h:mm~h:mm v",
+        "m": "y년 MMM a h:mm~h:mm v"
+      },
+      "yMMMd hmv": {
+        "a": "y년 MMM d일 a h:mm ~ a h:mm v",
+        "h": "y년 MMM d일 a h:mm~h:mm v",
+        "m": "y년 MMM d일 a h:mm~h:mm v"
+      },
+      "yMMMEd hmv": {
+        "a": "y년 MMM d일 (E) a h:mm ~ a h:mm v",
+        "h": "y년 MMM d일 (E) a h:mm~h:mm v",
+        "m": "y년 MMM d일 (E) a h:mm~h:mm v"
+      },
+      "yMMMEEEEd hmv": {
+        "a": "y년 MMM d일 EEEE a h:mm ~ a h:mm v",
+        "h": "y년 MMM d일 EEEE a h:mm~h:mm v",
+        "m": "y년 MMM d일 EEEE a h:mm~h:mm v"
+      },
+      "yMMMM hmv": {
+        "a": "y년 MMMM a h:mm ~ a h:mm v",
+        "h": "y년 MMMM a h:mm~h:mm v",
+        "m": "y년 MMMM a h:mm~h:mm v"
+      },
+      "y년 MMMM d일 EEEE Hmv": {
+        "H": "y년 MMMM d일 EEEE HH:mm ~ HH:mm v",
+        "m": "y년 MMMM d일 EEEE HH:mm ~ HH:mm v"
+      },
+      "y년 MMMM d일 Hmv": {
+        "H": "y년 MMMM d일 HH:mm ~ HH:mm v",
+        "m": "y년 MMMM d일 HH:mm ~ HH:mm v"
+      },
+      "y. M. d. Hmv": {
+        "H": "y. M. d. HH:mm ~ HH:mm v",
+        "m": "y. M. d. HH:mm ~ HH:mm v"
+      },
+      "yy. M. d. Hmv": {
+        "H": "yy. M. d. HH:mm ~ HH:mm v",
+        "m": "yy. M. d. HH:mm ~ HH:mm v"
+      },
+      "d Hmv": {
+        "H": "d일 HH:mm ~ HH:mm v",
+        "m": "d일 HH:mm ~ HH:mm v"
+      },
+      "E Hmv": {
+        "H": "ccc HH:mm ~ HH:mm v",
+        "m": "ccc HH:mm ~ HH:mm v"
+      },
+      "Ed Hmv": {
+        "H": "d일 (E) HH:mm ~ HH:mm v",
+        "m": "d일 (E) HH:mm ~ HH:mm v"
+      },
+      "EEEEd Hmv": {
+        "H": "d일 EEEE HH:mm ~ HH:mm v",
+        "m": "d일 EEEE HH:mm ~ HH:mm v"
+      },
+      "Gy Hmv": {
+        "H": "G y년 HH:mm ~ HH:mm v",
+        "m": "G y년 HH:mm ~ HH:mm v"
+      },
+      "GyM Hmv": {
+        "H": "G y/M HH:mm ~ HH:mm v",
+        "m": "G y/M HH:mm ~ HH:mm v"
+      },
+      "GyMd Hmv": {
+        "H": "GGGGG y/M/d HH:mm ~ HH:mm v",
+        "m": "GGGGG y/M/d HH:mm ~ HH:mm v"
+      },
+      "GyMEd Hmv": {
+        "H": "G y/M/d (E) HH:mm ~ HH:mm v",
+        "m": "G y/M/d (E) HH:mm ~ HH:mm v"
+      },
+      "GyMMM Hmv": {
+        "H": "G y년 MMM HH:mm ~ HH:mm v",
+        "m": "G y년 MMM HH:mm ~ HH:mm v"
+      },
+      "GyMMMd Hmv": {
+        "H": "G y년 MMM d일 HH:mm ~ HH:mm v",
+        "m": "G y년 MMM d일 HH:mm ~ HH:mm v"
+      },
+      "GyMMMEd Hmv": {
+        "H": "G y년 MMM d일 (E) HH:mm ~ HH:mm v",
+        "m": "G y년 MMM d일 (E) HH:mm ~ HH:mm v"
+      },
+      "GyMMMEEEEd Hmv": {
+        "H": "G y년 MMM d일 EEEE HH:mm ~ HH:mm v",
+        "m": "G y년 MMM d일 EEEE HH:mm ~ HH:mm v"
+      },
+      "M Hmv": {
+        "H": "M월 HH:mm ~ HH:mm v",
+        "m": "M월 HH:mm ~ HH:mm v"
+      },
+      "Md Hmv": {
+        "H": "M. d. HH:mm ~ HH:mm v",
+        "m": "M. d. HH:mm ~ HH:mm v"
+      },
+      "MEd Hmv": {
+        "H": "M. d. (E) HH:mm ~ HH:mm v",
+        "m": "M. d. (E) HH:mm ~ HH:mm v"
+      },
+      "MEEEEd Hmv": {
+        "H": "M. d. EEEE HH:mm ~ HH:mm v",
+        "m": "M. d. EEEE HH:mm ~ HH:mm v"
+      },
+      "MMM Hmv": {
+        "H": "LLL HH:mm ~ HH:mm v",
+        "m": "LLL HH:mm ~ HH:mm v"
+      },
+      "MMMd Hmv": {
+        "H": "MMM d일 HH:mm ~ HH:mm v",
+        "m": "MMM d일 HH:mm ~ HH:mm v"
+      },
+      "MMMEd Hmv": {
+        "H": "MMM d일 (E) HH:mm ~ HH:mm v",
+        "m": "MMM d일 (E) HH:mm ~ HH:mm v"
+      },
+      "MMMEEEEd Hmv": {
+        "H": "MMM d일 EEEE HH:mm ~ HH:mm v",
+        "m": "MMM d일 EEEE HH:mm ~ HH:mm v"
+      },
+      "MMMMd Hmv": {
+        "H": "MMMM d일 HH:mm ~ HH:mm v",
+        "m": "MMMM d일 HH:mm ~ HH:mm v"
+      },
+      "y Hmv": {
+        "H": "y년 HH:mm ~ HH:mm v",
+        "m": "y년 HH:mm ~ HH:mm v"
+      },
+      "yM Hmv": {
+        "H": "y. M. HH:mm ~ HH:mm v",
+        "m": "y. M. HH:mm ~ HH:mm v"
+      },
+      "yMd Hmv": {
+        "H": "y. M. d. HH:mm ~ HH:mm v",
+        "m": "y. M. d. HH:mm ~ HH:mm v"
+      },
+      "yMEd Hmv": {
+        "H": "y. M. d. (E) HH:mm ~ HH:mm v",
+        "m": "y. M. d. (E) HH:mm ~ HH:mm v"
+      },
+      "yMEEEEd Hmv": {
+        "H": "y. M. d. EEEE HH:mm ~ HH:mm v",
+        "m": "y. M. d. EEEE HH:mm ~ HH:mm v"
+      },
+      "yMM Hmv": {
+        "H": "y. M. HH:mm ~ HH:mm v",
+        "m": "y. M. HH:mm ~ HH:mm v"
+      },
+      "yMMM Hmv": {
+        "H": "y년 MMM HH:mm ~ HH:mm v",
+        "m": "y년 MMM HH:mm ~ HH:mm v"
+      },
+      "yMMMd Hmv": {
+        "H": "y년 MMM d일 HH:mm ~ HH:mm v",
+        "m": "y년 MMM d일 HH:mm ~ HH:mm v"
+      },
+      "yMMMEd Hmv": {
+        "H": "y년 MMM d일 (E) HH:mm ~ HH:mm v",
+        "m": "y년 MMM d일 (E) HH:mm ~ HH:mm v"
+      },
+      "yMMMEEEEd Hmv": {
+        "H": "y년 MMM d일 EEEE HH:mm ~ HH:mm v",
+        "m": "y년 MMM d일 EEEE HH:mm ~ HH:mm v"
+      },
+      "yMMMM Hmv": {
+        "H": "y년 MMMM HH:mm ~ HH:mm v",
+        "m": "y년 MMMM HH:mm ~ HH:mm v"
+      },
+      "y년 MMMM d일 EEEE hv": {
+        "a": "y년 MMMM d일 EEEE a h시 ~ a h시(v)",
+        "h": "y년 MMMM d일 EEEE a h시 ~ h시(v)"
+      },
+      "y년 MMMM d일 hv": {
+        "a": "y년 MMMM d일 a h시 ~ a h시(v)",
+        "h": "y년 MMMM d일 a h시 ~ h시(v)"
+      },
+      "y. M. d. hv": {
+        "a": "y. M. d. a h시 ~ a h시(v)",
+        "h": "y. M. d. a h시 ~ h시(v)"
+      },
+      "yy. M. d. hv": {
+        "a": "yy. M. d. a h시 ~ a h시(v)",
+        "h": "yy. M. d. a h시 ~ h시(v)"
+      },
+      "d hv": {
+        "a": "d일 a h시 ~ a h시(v)",
+        "h": "d일 a h시 ~ h시(v)"
+      },
+      "E hv": {
+        "a": "ccc a h시 ~ a h시(v)",
+        "h": "ccc a h시 ~ h시(v)"
+      },
+      "Ed hv": {
+        "a": "d일 (E) a h시 ~ a h시(v)",
+        "h": "d일 (E) a h시 ~ h시(v)"
+      },
+      "EEEEd hv": {
+        "a": "d일 EEEE a h시 ~ a h시(v)",
+        "h": "d일 EEEE a h시 ~ h시(v)"
+      },
+      "Gy hv": {
+        "a": "G y년 a h시 ~ a h시(v)",
+        "h": "G y년 a h시 ~ h시(v)"
+      },
+      "GyM hv": {
+        "a": "G y/M a h시 ~ a h시(v)",
+        "h": "G y/M a h시 ~ h시(v)"
+      },
+      "GyMd hv": {
+        "a": "GGGGG y/M/d a h시 ~ a h시(v)",
+        "h": "GGGGG y/M/d a h시 ~ h시(v)"
+      },
+      "GyMEd hv": {
+        "a": "G y/M/d (E) a h시 ~ a h시(v)",
+        "h": "G y/M/d (E) a h시 ~ h시(v)"
+      },
+      "GyMMM hv": {
+        "a": "G y년 MMM a h시 ~ a h시(v)",
+        "h": "G y년 MMM a h시 ~ h시(v)"
+      },
+      "GyMMMd hv": {
+        "a": "G y년 MMM d일 a h시 ~ a h시(v)",
+        "h": "G y년 MMM d일 a h시 ~ h시(v)"
+      },
+      "GyMMMEd hv": {
+        "a": "G y년 MMM d일 (E) a h시 ~ a h시(v)",
+        "h": "G y년 MMM d일 (E) a h시 ~ h시(v)"
+      },
+      "GyMMMEEEEd hv": {
+        "a": "G y년 MMM d일 EEEE a h시 ~ a h시(v)",
+        "h": "G y년 MMM d일 EEEE a h시 ~ h시(v)"
+      },
+      "M hv": {
+        "a": "M월 a h시 ~ a h시(v)",
+        "h": "M월 a h시 ~ h시(v)"
+      },
+      "Md hv": {
+        "a": "M. d. a h시 ~ a h시(v)",
+        "h": "M. d. a h시 ~ h시(v)"
+      },
+      "MEd hv": {
+        "a": "M. d. (E) a h시 ~ a h시(v)",
+        "h": "M. d. (E) a h시 ~ h시(v)"
+      },
+      "MEEEEd hv": {
+        "a": "M. d. EEEE a h시 ~ a h시(v)",
+        "h": "M. d. EEEE a h시 ~ h시(v)"
+      },
+      "MMM hv": {
+        "a": "LLL a h시 ~ a h시(v)",
+        "h": "LLL a h시 ~ h시(v)"
+      },
+      "MMMd hv": {
+        "a": "MMM d일 a h시 ~ a h시(v)",
+        "h": "MMM d일 a h시 ~ h시(v)"
+      },
+      "MMMEd hv": {
+        "a": "MMM d일 (E) a h시 ~ a h시(v)",
+        "h": "MMM d일 (E) a h시 ~ h시(v)"
+      },
+      "MMMEEEEd hv": {
+        "a": "MMM d일 EEEE a h시 ~ a h시(v)",
+        "h": "MMM d일 EEEE a h시 ~ h시(v)"
+      },
+      "MMMMd hv": {
+        "a": "MMMM d일 a h시 ~ a h시(v)",
+        "h": "MMMM d일 a h시 ~ h시(v)"
+      },
+      "y hv": {
+        "a": "y년 a h시 ~ a h시(v)",
+        "h": "y년 a h시 ~ h시(v)"
+      },
+      "yM hv": {
+        "a": "y. M. a h시 ~ a h시(v)",
+        "h": "y. M. a h시 ~ h시(v)"
+      },
+      "yMd hv": {
+        "a": "y. M. d. a h시 ~ a h시(v)",
+        "h": "y. M. d. a h시 ~ h시(v)"
+      },
+      "yMEd hv": {
+        "a": "y. M. d. (E) a h시 ~ a h시(v)",
+        "h": "y. M. d. (E) a h시 ~ h시(v)"
+      },
+      "yMEEEEd hv": {
+        "a": "y. M. d. EEEE a h시 ~ a h시(v)",
+        "h": "y. M. d. EEEE a h시 ~ h시(v)"
+      },
+      "yMM hv": {
+        "a": "y. M. a h시 ~ a h시(v)",
+        "h": "y. M. a h시 ~ h시(v)"
+      },
+      "yMMM hv": {
+        "a": "y년 MMM a h시 ~ a h시(v)",
+        "h": "y년 MMM a h시 ~ h시(v)"
+      },
+      "yMMMd hv": {
+        "a": "y년 MMM d일 a h시 ~ a h시(v)",
+        "h": "y년 MMM d일 a h시 ~ h시(v)"
+      },
+      "yMMMEd hv": {
+        "a": "y년 MMM d일 (E) a h시 ~ a h시(v)",
+        "h": "y년 MMM d일 (E) a h시 ~ h시(v)"
+      },
+      "yMMMEEEEd hv": {
+        "a": "y년 MMM d일 EEEE a h시 ~ a h시(v)",
+        "h": "y년 MMM d일 EEEE a h시 ~ h시(v)"
+      },
+      "yMMMM hv": {
+        "a": "y년 MMMM a h시 ~ a h시(v)",
+        "h": "y년 MMMM a h시 ~ h시(v)"
+      },
+      "y년 MMMM d일 EEEE Hv": {
+        "H": "y년 MMMM d일 EEEE HH ~ HH시 v"
+      },
+      "y년 MMMM d일 Hv": {
+        "H": "y년 MMMM d일 HH ~ HH시 v"
+      },
+      "y. M. d. Hv": {
+        "H": "y. M. d. HH ~ HH시 v"
+      },
+      "yy. M. d. Hv": {
+        "H": "yy. M. d. HH ~ HH시 v"
+      },
+      "d Hv": {
+        "H": "d일 HH ~ HH시 v"
+      },
+      "E Hv": {
+        "H": "ccc HH ~ HH시 v"
+      },
+      "Ed Hv": {
+        "H": "d일 (E) HH ~ HH시 v"
+      },
+      "EEEEd Hv": {
+        "H": "d일 EEEE HH ~ HH시 v"
+      },
+      "Gy Hv": {
+        "H": "G y년 HH ~ HH시 v"
+      },
+      "GyM Hv": {
+        "H": "G y/M HH ~ HH시 v"
+      },
+      "GyMd Hv": {
+        "H": "GGGGG y/M/d HH ~ HH시 v"
+      },
+      "GyMEd Hv": {
+        "H": "G y/M/d (E) HH ~ HH시 v"
+      },
+      "GyMMM Hv": {
+        "H": "G y년 MMM HH ~ HH시 v"
+      },
+      "GyMMMd Hv": {
+        "H": "G y년 MMM d일 HH ~ HH시 v"
+      },
+      "GyMMMEd Hv": {
+        "H": "G y년 MMM d일 (E) HH ~ HH시 v"
+      },
+      "GyMMMEEEEd Hv": {
+        "H": "G y년 MMM d일 EEEE HH ~ HH시 v"
+      },
+      "M Hv": {
+        "H": "M월 HH ~ HH시 v"
+      },
+      "Md Hv": {
+        "H": "M. d. HH ~ HH시 v"
+      },
+      "MEd Hv": {
+        "H": "M. d. (E) HH ~ HH시 v"
+      },
+      "MEEEEd Hv": {
+        "H": "M. d. EEEE HH ~ HH시 v"
+      },
+      "MMM Hv": {
+        "H": "LLL HH ~ HH시 v"
+      },
+      "MMMd Hv": {
+        "H": "MMM d일 HH ~ HH시 v"
+      },
+      "MMMEd Hv": {
+        "H": "MMM d일 (E) HH ~ HH시 v"
+      },
+      "MMMEEEEd Hv": {
+        "H": "MMM d일 EEEE HH ~ HH시 v"
+      },
+      "MMMMd Hv": {
+        "H": "MMMM d일 HH ~ HH시 v"
+      },
+      "y Hv": {
+        "H": "y년 HH ~ HH시 v"
+      },
+      "yM Hv": {
+        "H": "y. M. HH ~ HH시 v"
+      },
+      "yMd Hv": {
+        "H": "y. M. d. HH ~ HH시 v"
+      },
+      "yMEd Hv": {
+        "H": "y. M. d. (E) HH ~ HH시 v"
+      },
+      "yMEEEEd Hv": {
+        "H": "y. M. d. EEEE HH ~ HH시 v"
+      },
+      "yMM Hv": {
+        "H": "y. M. HH ~ HH시 v"
+      },
+      "yMMM Hv": {
+        "H": "y년 MMM HH ~ HH시 v"
+      },
+      "yMMMd Hv": {
+        "H": "y년 MMM d일 HH ~ HH시 v"
+      },
+      "yMMMEd Hv": {
+        "H": "y년 MMM d일 (E) HH ~ HH시 v"
+      },
+      "yMMMEEEEd Hv": {
+        "H": "y년 MMM d일 EEEE HH ~ HH시 v"
+      },
+      "yMMMM Hv": {
+        "H": "y년 MMMM HH ~ HH시 v"
       }
     },
     "hourCycle": "h12",

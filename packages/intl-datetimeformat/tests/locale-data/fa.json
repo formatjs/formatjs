@@ -2702,6 +2702,1277 @@
       "yMMMM": {
         "M": "MMMM تا MMMM y",
         "y": "MMMM y تا MMMM y"
+      },
+      "EEEE d MMMM y، ساعت Bh": {
+        "B": "EEEE d MMMM y، ساعت h B تا h B",
+        "h": "EEEE d MMMM y، ساعت h تا h B"
+      },
+      "d MMMM y، ساعت Bh": {
+        "B": "d MMMM y، ساعت h B تا h B",
+        "h": "d MMMM y، ساعت h تا h B"
+      },
+      "d MMM y،‏ Bh": {
+        "B": "d MMM y،‏ h B تا h B",
+        "h": "d MMM y،‏ h تا h B"
+      },
+      "y/M/d،‏ Bh": {
+        "B": "y/M/d،‏ h B تا h B",
+        "h": "y/M/d،‏ h تا h B"
+      },
+      "d،‏ Bh": {
+        "B": "d،‏ h B تا h B",
+        "h": "d،‏ h تا h B"
+      },
+      "E،‏ Bh": {
+        "B": "ccc،‏ h B تا h B",
+        "h": "ccc،‏ h تا h B"
+      },
+      "Ed،‏ Bh": {
+        "B": "E d،‏ h B تا h B",
+        "h": "E d،‏ h تا h B"
+      },
+      "Gy،‏ Bh": {
+        "B": "y G،‏ h B تا h B",
+        "h": "y G،‏ h تا h B"
+      },
+      "GyM،‏ Bh": {
+        "B": "y/M G،‏ h B تا h B",
+        "h": "y/M G،‏ h تا h B"
+      },
+      "GyMd،‏ Bh": {
+        "B": "y/M/d GGGGG،‏ h B تا h B",
+        "h": "y/M/d GGGGG،‏ h تا h B"
+      },
+      "GyMEd،‏ Bh": {
+        "B": "E، y/M/d G،‏ h B تا h B",
+        "h": "E، y/M/d G،‏ h تا h B"
+      },
+      "GyMMM،‏ Bh": {
+        "B": "MMM y G،‏ h B تا h B",
+        "h": "MMM y G،‏ h تا h B"
+      },
+      "GyMMMd،‏ Bh": {
+        "B": "d MMM y G،‏ h B تا h B",
+        "h": "d MMM y G،‏ h تا h B"
+      },
+      "GyMMMEd،‏ Bh": {
+        "B": "E d MMM y G،‏ h B تا h B",
+        "h": "E d MMM y G،‏ h تا h B"
+      },
+      "M،‏ Bh": {
+        "B": "L،‏ h B تا h B",
+        "h": "L،‏ h تا h B"
+      },
+      "Md،‏ Bh": {
+        "B": "M/d،‏ h B تا h B",
+        "h": "M/d،‏ h تا h B"
+      },
+      "MEd،‏ Bh": {
+        "B": "E M/d،‏ h B تا h B",
+        "h": "E M/d،‏ h تا h B"
+      },
+      "MMM،‏ Bh": {
+        "B": "LLL،‏ h B تا h B",
+        "h": "LLL،‏ h تا h B"
+      },
+      "MMMd،‏ Bh": {
+        "B": "d LLL،‏ h B تا h B",
+        "h": "d LLL،‏ h تا h B"
+      },
+      "MMMEd،‏ Bh": {
+        "B": "E d LLL،‏ h B تا h B",
+        "h": "E d LLL،‏ h تا h B"
+      },
+      "MMMMd، ساعت Bh": {
+        "B": "d LLLL، ساعت h B تا h B",
+        "h": "d LLLL، ساعت h تا h B"
+      },
+      "MMMMEd، ساعت Bh": {
+        "B": "E d LLLL، ساعت h B تا h B",
+        "h": "E d LLLL، ساعت h تا h B"
+      },
+      "y،‏ Bh": {
+        "B": "y،‏ h B تا h B",
+        "h": "y،‏ h تا h B"
+      },
+      "yM،‏ Bh": {
+        "B": "y/M،‏ h B تا h B",
+        "h": "y/M،‏ h تا h B"
+      },
+      "yMd،‏ Bh": {
+        "B": "y/M/d،‏ h B تا h B",
+        "h": "y/M/d،‏ h تا h B"
+      },
+      "yMEd،‏ Bh": {
+        "B": "E y/M/d،‏ h B تا h B",
+        "h": "E y/M/d،‏ h تا h B"
+      },
+      "yMMM،‏ Bh": {
+        "B": "MMM y،‏ h B تا h B",
+        "h": "MMM y،‏ h تا h B"
+      },
+      "yMMMd،‏ Bh": {
+        "B": "d MMM y،‏ h B تا h B",
+        "h": "d MMM y،‏ h تا h B"
+      },
+      "yMMMEd،‏ Bh": {
+        "B": "E d MMM y،‏ h B تا h B",
+        "h": "E d MMM y،‏ h تا h B"
+      },
+      "yMMMM، ساعت Bh": {
+        "B": "MMMM y، ساعت h B تا h B",
+        "h": "MMMM y، ساعت h تا h B"
+      },
+      "yMMMMEEEEd، ساعت Bh": {
+        "B": "EEEE d MMMM y، ساعت h B تا h B",
+        "h": "EEEE d MMMM y، ساعت h تا h B"
+      },
+      "EEEE d MMMM y، ساعت Bhm": {
+        "B": "EEEE d MMMM y، ساعت h:mm B تا h:mm B",
+        "h": "EEEE d MMMM y، ساعت h:mm تا h:mm B",
+        "m": "EEEE d MMMM y، ساعت h:mm تا h:mm B"
+      },
+      "d MMMM y، ساعت Bhm": {
+        "B": "d MMMM y، ساعت h:mm B تا h:mm B",
+        "h": "d MMMM y، ساعت h:mm تا h:mm B",
+        "m": "d MMMM y، ساعت h:mm تا h:mm B"
+      },
+      "d MMM y،‏ Bhm": {
+        "B": "d MMM y،‏ h:mm B تا h:mm B",
+        "h": "d MMM y،‏ h:mm تا h:mm B",
+        "m": "d MMM y،‏ h:mm تا h:mm B"
+      },
+      "y/M/d،‏ Bhm": {
+        "B": "y/M/d،‏ h:mm B تا h:mm B",
+        "h": "y/M/d،‏ h:mm تا h:mm B",
+        "m": "y/M/d،‏ h:mm تا h:mm B"
+      },
+      "d،‏ Bhm": {
+        "B": "d،‏ h:mm B تا h:mm B",
+        "h": "d،‏ h:mm تا h:mm B",
+        "m": "d،‏ h:mm تا h:mm B"
+      },
+      "E،‏ Bhm": {
+        "B": "ccc،‏ h:mm B تا h:mm B",
+        "h": "ccc،‏ h:mm تا h:mm B",
+        "m": "ccc،‏ h:mm تا h:mm B"
+      },
+      "Ed،‏ Bhm": {
+        "B": "E d،‏ h:mm B تا h:mm B",
+        "h": "E d،‏ h:mm تا h:mm B",
+        "m": "E d،‏ h:mm تا h:mm B"
+      },
+      "Gy،‏ Bhm": {
+        "B": "y G،‏ h:mm B تا h:mm B",
+        "h": "y G،‏ h:mm تا h:mm B",
+        "m": "y G،‏ h:mm تا h:mm B"
+      },
+      "GyM،‏ Bhm": {
+        "B": "y/M G،‏ h:mm B تا h:mm B",
+        "h": "y/M G،‏ h:mm تا h:mm B",
+        "m": "y/M G،‏ h:mm تا h:mm B"
+      },
+      "GyMd،‏ Bhm": {
+        "B": "y/M/d GGGGG،‏ h:mm B تا h:mm B",
+        "h": "y/M/d GGGGG،‏ h:mm تا h:mm B",
+        "m": "y/M/d GGGGG،‏ h:mm تا h:mm B"
+      },
+      "GyMEd،‏ Bhm": {
+        "B": "E، y/M/d G،‏ h:mm B تا h:mm B",
+        "h": "E، y/M/d G،‏ h:mm تا h:mm B",
+        "m": "E، y/M/d G،‏ h:mm تا h:mm B"
+      },
+      "GyMMM،‏ Bhm": {
+        "B": "MMM y G،‏ h:mm B تا h:mm B",
+        "h": "MMM y G،‏ h:mm تا h:mm B",
+        "m": "MMM y G،‏ h:mm تا h:mm B"
+      },
+      "GyMMMd،‏ Bhm": {
+        "B": "d MMM y G،‏ h:mm B تا h:mm B",
+        "h": "d MMM y G،‏ h:mm تا h:mm B",
+        "m": "d MMM y G،‏ h:mm تا h:mm B"
+      },
+      "GyMMMEd،‏ Bhm": {
+        "B": "E d MMM y G،‏ h:mm B تا h:mm B",
+        "h": "E d MMM y G،‏ h:mm تا h:mm B",
+        "m": "E d MMM y G،‏ h:mm تا h:mm B"
+      },
+      "M،‏ Bhm": {
+        "B": "L،‏ h:mm B تا h:mm B",
+        "h": "L،‏ h:mm تا h:mm B",
+        "m": "L،‏ h:mm تا h:mm B"
+      },
+      "Md،‏ Bhm": {
+        "B": "M/d،‏ h:mm B تا h:mm B",
+        "h": "M/d،‏ h:mm تا h:mm B",
+        "m": "M/d،‏ h:mm تا h:mm B"
+      },
+      "MEd،‏ Bhm": {
+        "B": "E M/d،‏ h:mm B تا h:mm B",
+        "h": "E M/d،‏ h:mm تا h:mm B",
+        "m": "E M/d،‏ h:mm تا h:mm B"
+      },
+      "MMM،‏ Bhm": {
+        "B": "LLL،‏ h:mm B تا h:mm B",
+        "h": "LLL،‏ h:mm تا h:mm B",
+        "m": "LLL،‏ h:mm تا h:mm B"
+      },
+      "MMMd،‏ Bhm": {
+        "B": "d LLL،‏ h:mm B تا h:mm B",
+        "h": "d LLL،‏ h:mm تا h:mm B",
+        "m": "d LLL،‏ h:mm تا h:mm B"
+      },
+      "MMMEd،‏ Bhm": {
+        "B": "E d LLL،‏ h:mm B تا h:mm B",
+        "h": "E d LLL،‏ h:mm تا h:mm B",
+        "m": "E d LLL،‏ h:mm تا h:mm B"
+      },
+      "MMMMd، ساعت Bhm": {
+        "B": "d LLLL، ساعت h:mm B تا h:mm B",
+        "h": "d LLLL، ساعت h:mm تا h:mm B",
+        "m": "d LLLL، ساعت h:mm تا h:mm B"
+      },
+      "MMMMEd، ساعت Bhm": {
+        "B": "E d LLLL، ساعت h:mm B تا h:mm B",
+        "h": "E d LLLL، ساعت h:mm تا h:mm B",
+        "m": "E d LLLL، ساعت h:mm تا h:mm B"
+      },
+      "y،‏ Bhm": {
+        "B": "y،‏ h:mm B تا h:mm B",
+        "h": "y،‏ h:mm تا h:mm B",
+        "m": "y،‏ h:mm تا h:mm B"
+      },
+      "yM،‏ Bhm": {
+        "B": "y/M،‏ h:mm B تا h:mm B",
+        "h": "y/M،‏ h:mm تا h:mm B",
+        "m": "y/M،‏ h:mm تا h:mm B"
+      },
+      "yMd،‏ Bhm": {
+        "B": "y/M/d،‏ h:mm B تا h:mm B",
+        "h": "y/M/d،‏ h:mm تا h:mm B",
+        "m": "y/M/d،‏ h:mm تا h:mm B"
+      },
+      "yMEd،‏ Bhm": {
+        "B": "E y/M/d،‏ h:mm B تا h:mm B",
+        "h": "E y/M/d،‏ h:mm تا h:mm B",
+        "m": "E y/M/d،‏ h:mm تا h:mm B"
+      },
+      "yMMM،‏ Bhm": {
+        "B": "MMM y،‏ h:mm B تا h:mm B",
+        "h": "MMM y،‏ h:mm تا h:mm B",
+        "m": "MMM y،‏ h:mm تا h:mm B"
+      },
+      "yMMMd،‏ Bhm": {
+        "B": "d MMM y،‏ h:mm B تا h:mm B",
+        "h": "d MMM y،‏ h:mm تا h:mm B",
+        "m": "d MMM y،‏ h:mm تا h:mm B"
+      },
+      "yMMMEd،‏ Bhm": {
+        "B": "E d MMM y،‏ h:mm B تا h:mm B",
+        "h": "E d MMM y،‏ h:mm تا h:mm B",
+        "m": "E d MMM y،‏ h:mm تا h:mm B"
+      },
+      "yMMMM، ساعت Bhm": {
+        "B": "MMMM y، ساعت h:mm B تا h:mm B",
+        "h": "MMMM y، ساعت h:mm تا h:mm B",
+        "m": "MMMM y، ساعت h:mm تا h:mm B"
+      },
+      "yMMMMEEEEd، ساعت Bhm": {
+        "B": "EEEE d MMMM y، ساعت h:mm B تا h:mm B",
+        "h": "EEEE d MMMM y، ساعت h:mm تا h:mm B",
+        "m": "EEEE d MMMM y، ساعت h:mm تا h:mm B"
+      },
+      "EEEE d MMMM y، ساعت h": {
+        "a": "EEEE d MMMM y، ساعت h a تا h a",
+        "h": "EEEE d MMMM y، ساعت h تا h a"
+      },
+      "d MMMM y، ساعت h": {
+        "a": "d MMMM y، ساعت h a تا h a",
+        "h": "d MMMM y، ساعت h تا h a"
+      },
+      "d MMM y،‏ h": {
+        "a": "d MMM y،‏ h a تا h a",
+        "h": "d MMM y،‏ h تا h a"
+      },
+      "y/M/d،‏ h": {
+        "a": "y/M/d،‏ h a تا h a",
+        "h": "y/M/d،‏ h تا h a"
+      },
+      "d،‏ h": {
+        "a": "d،‏ h a تا h a",
+        "h": "d،‏ h تا h a"
+      },
+      "E،‏ h": {
+        "a": "ccc،‏ h a تا h a",
+        "h": "ccc،‏ h تا h a"
+      },
+      "Ed،‏ h": {
+        "a": "E d،‏ h a تا h a",
+        "h": "E d،‏ h تا h a"
+      },
+      "Gy،‏ h": {
+        "a": "y G،‏ h a تا h a",
+        "h": "y G،‏ h تا h a"
+      },
+      "GyM،‏ h": {
+        "a": "y/M G،‏ h a تا h a",
+        "h": "y/M G،‏ h تا h a"
+      },
+      "GyMd،‏ h": {
+        "a": "y/M/d GGGGG،‏ h a تا h a",
+        "h": "y/M/d GGGGG،‏ h تا h a"
+      },
+      "GyMEd،‏ h": {
+        "a": "E، y/M/d G،‏ h a تا h a",
+        "h": "E، y/M/d G،‏ h تا h a"
+      },
+      "GyMMM،‏ h": {
+        "a": "MMM y G،‏ h a تا h a",
+        "h": "MMM y G،‏ h تا h a"
+      },
+      "GyMMMd،‏ h": {
+        "a": "d MMM y G،‏ h a تا h a",
+        "h": "d MMM y G،‏ h تا h a"
+      },
+      "GyMMMEd،‏ h": {
+        "a": "E d MMM y G،‏ h a تا h a",
+        "h": "E d MMM y G،‏ h تا h a"
+      },
+      "M،‏ h": {
+        "a": "L،‏ h a تا h a",
+        "h": "L،‏ h تا h a"
+      },
+      "Md،‏ h": {
+        "a": "M/d،‏ h a تا h a",
+        "h": "M/d،‏ h تا h a"
+      },
+      "MEd،‏ h": {
+        "a": "E M/d،‏ h a تا h a",
+        "h": "E M/d،‏ h تا h a"
+      },
+      "MMM،‏ h": {
+        "a": "LLL،‏ h a تا h a",
+        "h": "LLL،‏ h تا h a"
+      },
+      "MMMd،‏ h": {
+        "a": "d LLL،‏ h a تا h a",
+        "h": "d LLL،‏ h تا h a"
+      },
+      "MMMEd،‏ h": {
+        "a": "E d LLL،‏ h a تا h a",
+        "h": "E d LLL،‏ h تا h a"
+      },
+      "MMMMd، ساعت h": {
+        "a": "d LLLL، ساعت h a تا h a",
+        "h": "d LLLL، ساعت h تا h a"
+      },
+      "MMMMEd، ساعت h": {
+        "a": "E d LLLL، ساعت h a تا h a",
+        "h": "E d LLLL، ساعت h تا h a"
+      },
+      "y،‏ h": {
+        "a": "y،‏ h a تا h a",
+        "h": "y،‏ h تا h a"
+      },
+      "yM،‏ h": {
+        "a": "y/M،‏ h a تا h a",
+        "h": "y/M،‏ h تا h a"
+      },
+      "yMd،‏ h": {
+        "a": "y/M/d،‏ h a تا h a",
+        "h": "y/M/d،‏ h تا h a"
+      },
+      "yMEd،‏ h": {
+        "a": "E y/M/d،‏ h a تا h a",
+        "h": "E y/M/d،‏ h تا h a"
+      },
+      "yMMM،‏ h": {
+        "a": "MMM y،‏ h a تا h a",
+        "h": "MMM y،‏ h تا h a"
+      },
+      "yMMMd،‏ h": {
+        "a": "d MMM y،‏ h a تا h a",
+        "h": "d MMM y،‏ h تا h a"
+      },
+      "yMMMEd،‏ h": {
+        "a": "E d MMM y،‏ h a تا h a",
+        "h": "E d MMM y،‏ h تا h a"
+      },
+      "yMMMM، ساعت h": {
+        "a": "MMMM y، ساعت h a تا h a",
+        "h": "MMMM y، ساعت h تا h a"
+      },
+      "yMMMMEEEEd، ساعت h": {
+        "a": "EEEE d MMMM y، ساعت h a تا h a",
+        "h": "EEEE d MMMM y، ساعت h تا h a"
+      },
+      "EEEE d MMMM y، ساعت H": {
+        "H": "EEEE d MMMM y، ساعت H تا H"
+      },
+      "d MMMM y، ساعت H": {
+        "H": "d MMMM y، ساعت H تا H"
+      },
+      "d MMM y،‏ H": {
+        "H": "d MMM y،‏ H تا H"
+      },
+      "y/M/d،‏ H": {
+        "H": "y/M/d،‏ H تا H"
+      },
+      "d،‏ H": {
+        "H": "d،‏ H تا H"
+      },
+      "E،‏ H": {
+        "H": "ccc،‏ H تا H"
+      },
+      "Ed،‏ H": {
+        "H": "E d،‏ H تا H"
+      },
+      "Gy،‏ H": {
+        "H": "y G،‏ H تا H"
+      },
+      "GyM،‏ H": {
+        "H": "y/M G،‏ H تا H"
+      },
+      "GyMd،‏ H": {
+        "H": "y/M/d GGGGG،‏ H تا H"
+      },
+      "GyMEd،‏ H": {
+        "H": "E، y/M/d G،‏ H تا H"
+      },
+      "GyMMM،‏ H": {
+        "H": "MMM y G،‏ H تا H"
+      },
+      "GyMMMd،‏ H": {
+        "H": "d MMM y G،‏ H تا H"
+      },
+      "GyMMMEd،‏ H": {
+        "H": "E d MMM y G،‏ H تا H"
+      },
+      "M،‏ H": {
+        "H": "L،‏ H تا H"
+      },
+      "Md،‏ H": {
+        "H": "M/d،‏ H تا H"
+      },
+      "MEd،‏ H": {
+        "H": "E M/d،‏ H تا H"
+      },
+      "MMM،‏ H": {
+        "H": "LLL،‏ H تا H"
+      },
+      "MMMd،‏ H": {
+        "H": "d LLL،‏ H تا H"
+      },
+      "MMMEd،‏ H": {
+        "H": "E d LLL،‏ H تا H"
+      },
+      "MMMMd، ساعت H": {
+        "H": "d LLLL، ساعت H تا H"
+      },
+      "MMMMEd، ساعت H": {
+        "H": "E d LLLL، ساعت H تا H"
+      },
+      "y،‏ H": {
+        "H": "y،‏ H تا H"
+      },
+      "yM،‏ H": {
+        "H": "y/M،‏ H تا H"
+      },
+      "yMd،‏ H": {
+        "H": "y/M/d،‏ H تا H"
+      },
+      "yMEd،‏ H": {
+        "H": "E y/M/d،‏ H تا H"
+      },
+      "yMMM،‏ H": {
+        "H": "MMM y،‏ H تا H"
+      },
+      "yMMMd،‏ H": {
+        "H": "d MMM y،‏ H تا H"
+      },
+      "yMMMEd،‏ H": {
+        "H": "E d MMM y،‏ H تا H"
+      },
+      "yMMMM، ساعت H": {
+        "H": "MMMM y، ساعت H تا H"
+      },
+      "yMMMMEEEEd، ساعت H": {
+        "H": "EEEE d MMMM y، ساعت H تا H"
+      },
+      "EEEE d MMMM y، ساعت hm": {
+        "a": "EEEE d MMMM y، ساعت h:mm a تا h:mm a",
+        "h": "EEEE d MMMM y، ساعت h:mm تا h:mm a",
+        "m": "EEEE d MMMM y، ساعت h:mm تا h:mm a"
+      },
+      "d MMMM y، ساعت hm": {
+        "a": "d MMMM y، ساعت h:mm a تا h:mm a",
+        "h": "d MMMM y، ساعت h:mm تا h:mm a",
+        "m": "d MMMM y، ساعت h:mm تا h:mm a"
+      },
+      "d MMM y،‏ hm": {
+        "a": "d MMM y،‏ h:mm a تا h:mm a",
+        "h": "d MMM y،‏ h:mm تا h:mm a",
+        "m": "d MMM y،‏ h:mm تا h:mm a"
+      },
+      "y/M/d،‏ hm": {
+        "a": "y/M/d،‏ h:mm a تا h:mm a",
+        "h": "y/M/d،‏ h:mm تا h:mm a",
+        "m": "y/M/d،‏ h:mm تا h:mm a"
+      },
+      "d،‏ hm": {
+        "a": "d،‏ h:mm a تا h:mm a",
+        "h": "d،‏ h:mm تا h:mm a",
+        "m": "d،‏ h:mm تا h:mm a"
+      },
+      "E،‏ hm": {
+        "a": "ccc،‏ h:mm a تا h:mm a",
+        "h": "ccc،‏ h:mm تا h:mm a",
+        "m": "ccc،‏ h:mm تا h:mm a"
+      },
+      "Ed،‏ hm": {
+        "a": "E d،‏ h:mm a تا h:mm a",
+        "h": "E d،‏ h:mm تا h:mm a",
+        "m": "E d،‏ h:mm تا h:mm a"
+      },
+      "Gy،‏ hm": {
+        "a": "y G،‏ h:mm a تا h:mm a",
+        "h": "y G،‏ h:mm تا h:mm a",
+        "m": "y G،‏ h:mm تا h:mm a"
+      },
+      "GyM،‏ hm": {
+        "a": "y/M G،‏ h:mm a تا h:mm a",
+        "h": "y/M G،‏ h:mm تا h:mm a",
+        "m": "y/M G،‏ h:mm تا h:mm a"
+      },
+      "GyMd،‏ hm": {
+        "a": "y/M/d GGGGG،‏ h:mm a تا h:mm a",
+        "h": "y/M/d GGGGG،‏ h:mm تا h:mm a",
+        "m": "y/M/d GGGGG،‏ h:mm تا h:mm a"
+      },
+      "GyMEd،‏ hm": {
+        "a": "E، y/M/d G،‏ h:mm a تا h:mm a",
+        "h": "E، y/M/d G،‏ h:mm تا h:mm a",
+        "m": "E، y/M/d G،‏ h:mm تا h:mm a"
+      },
+      "GyMMM،‏ hm": {
+        "a": "MMM y G،‏ h:mm a تا h:mm a",
+        "h": "MMM y G،‏ h:mm تا h:mm a",
+        "m": "MMM y G،‏ h:mm تا h:mm a"
+      },
+      "GyMMMd،‏ hm": {
+        "a": "d MMM y G،‏ h:mm a تا h:mm a",
+        "h": "d MMM y G،‏ h:mm تا h:mm a",
+        "m": "d MMM y G،‏ h:mm تا h:mm a"
+      },
+      "GyMMMEd،‏ hm": {
+        "a": "E d MMM y G،‏ h:mm a تا h:mm a",
+        "h": "E d MMM y G،‏ h:mm تا h:mm a",
+        "m": "E d MMM y G،‏ h:mm تا h:mm a"
+      },
+      "M،‏ hm": {
+        "a": "L،‏ h:mm a تا h:mm a",
+        "h": "L،‏ h:mm تا h:mm a",
+        "m": "L،‏ h:mm تا h:mm a"
+      },
+      "Md،‏ hm": {
+        "a": "M/d،‏ h:mm a تا h:mm a",
+        "h": "M/d،‏ h:mm تا h:mm a",
+        "m": "M/d،‏ h:mm تا h:mm a"
+      },
+      "MEd،‏ hm": {
+        "a": "E M/d،‏ h:mm a تا h:mm a",
+        "h": "E M/d،‏ h:mm تا h:mm a",
+        "m": "E M/d،‏ h:mm تا h:mm a"
+      },
+      "MMM،‏ hm": {
+        "a": "LLL،‏ h:mm a تا h:mm a",
+        "h": "LLL،‏ h:mm تا h:mm a",
+        "m": "LLL،‏ h:mm تا h:mm a"
+      },
+      "MMMd،‏ hm": {
+        "a": "d LLL،‏ h:mm a تا h:mm a",
+        "h": "d LLL،‏ h:mm تا h:mm a",
+        "m": "d LLL،‏ h:mm تا h:mm a"
+      },
+      "MMMEd،‏ hm": {
+        "a": "E d LLL،‏ h:mm a تا h:mm a",
+        "h": "E d LLL،‏ h:mm تا h:mm a",
+        "m": "E d LLL،‏ h:mm تا h:mm a"
+      },
+      "MMMMd، ساعت hm": {
+        "a": "d LLLL، ساعت h:mm a تا h:mm a",
+        "h": "d LLLL، ساعت h:mm تا h:mm a",
+        "m": "d LLLL، ساعت h:mm تا h:mm a"
+      },
+      "MMMMEd، ساعت hm": {
+        "a": "E d LLLL، ساعت h:mm a تا h:mm a",
+        "h": "E d LLLL، ساعت h:mm تا h:mm a",
+        "m": "E d LLLL، ساعت h:mm تا h:mm a"
+      },
+      "y،‏ hm": {
+        "a": "y،‏ h:mm a تا h:mm a",
+        "h": "y،‏ h:mm تا h:mm a",
+        "m": "y،‏ h:mm تا h:mm a"
+      },
+      "yM،‏ hm": {
+        "a": "y/M،‏ h:mm a تا h:mm a",
+        "h": "y/M،‏ h:mm تا h:mm a",
+        "m": "y/M،‏ h:mm تا h:mm a"
+      },
+      "yMd،‏ hm": {
+        "a": "y/M/d،‏ h:mm a تا h:mm a",
+        "h": "y/M/d،‏ h:mm تا h:mm a",
+        "m": "y/M/d،‏ h:mm تا h:mm a"
+      },
+      "yMEd،‏ hm": {
+        "a": "E y/M/d،‏ h:mm a تا h:mm a",
+        "h": "E y/M/d،‏ h:mm تا h:mm a",
+        "m": "E y/M/d،‏ h:mm تا h:mm a"
+      },
+      "yMMM،‏ hm": {
+        "a": "MMM y،‏ h:mm a تا h:mm a",
+        "h": "MMM y،‏ h:mm تا h:mm a",
+        "m": "MMM y،‏ h:mm تا h:mm a"
+      },
+      "yMMMd،‏ hm": {
+        "a": "d MMM y،‏ h:mm a تا h:mm a",
+        "h": "d MMM y،‏ h:mm تا h:mm a",
+        "m": "d MMM y،‏ h:mm تا h:mm a"
+      },
+      "yMMMEd،‏ hm": {
+        "a": "E d MMM y،‏ h:mm a تا h:mm a",
+        "h": "E d MMM y،‏ h:mm تا h:mm a",
+        "m": "E d MMM y،‏ h:mm تا h:mm a"
+      },
+      "yMMMM، ساعت hm": {
+        "a": "MMMM y، ساعت h:mm a تا h:mm a",
+        "h": "MMMM y، ساعت h:mm تا h:mm a",
+        "m": "MMMM y، ساعت h:mm تا h:mm a"
+      },
+      "yMMMMEEEEd، ساعت hm": {
+        "a": "EEEE d MMMM y، ساعت h:mm a تا h:mm a",
+        "h": "EEEE d MMMM y، ساعت h:mm تا h:mm a",
+        "m": "EEEE d MMMM y، ساعت h:mm تا h:mm a"
+      },
+      "EEEE d MMMM y، ساعت Hm": {
+        "H": "EEEE d MMMM y، ساعت H:mm تا H:mm",
+        "m": "EEEE d MMMM y، ساعت H:mm تا H:mm"
+      },
+      "d MMMM y، ساعت Hm": {
+        "H": "d MMMM y، ساعت H:mm تا H:mm",
+        "m": "d MMMM y، ساعت H:mm تا H:mm"
+      },
+      "d MMM y،‏ Hm": {
+        "H": "d MMM y،‏ H:mm تا H:mm",
+        "m": "d MMM y،‏ H:mm تا H:mm"
+      },
+      "y/M/d،‏ Hm": {
+        "H": "y/M/d،‏ H:mm تا H:mm",
+        "m": "y/M/d،‏ H:mm تا H:mm"
+      },
+      "d،‏ Hm": {
+        "H": "d،‏ H:mm تا H:mm",
+        "m": "d،‏ H:mm تا H:mm"
+      },
+      "E،‏ Hm": {
+        "H": "ccc،‏ H:mm تا H:mm",
+        "m": "ccc،‏ H:mm تا H:mm"
+      },
+      "Ed،‏ Hm": {
+        "H": "E d،‏ H:mm تا H:mm",
+        "m": "E d،‏ H:mm تا H:mm"
+      },
+      "Gy،‏ Hm": {
+        "H": "y G،‏ H:mm تا H:mm",
+        "m": "y G،‏ H:mm تا H:mm"
+      },
+      "GyM،‏ Hm": {
+        "H": "y/M G،‏ H:mm تا H:mm",
+        "m": "y/M G،‏ H:mm تا H:mm"
+      },
+      "GyMd،‏ Hm": {
+        "H": "y/M/d GGGGG،‏ H:mm تا H:mm",
+        "m": "y/M/d GGGGG،‏ H:mm تا H:mm"
+      },
+      "GyMEd،‏ Hm": {
+        "H": "E، y/M/d G،‏ H:mm تا H:mm",
+        "m": "E، y/M/d G،‏ H:mm تا H:mm"
+      },
+      "GyMMM،‏ Hm": {
+        "H": "MMM y G،‏ H:mm تا H:mm",
+        "m": "MMM y G،‏ H:mm تا H:mm"
+      },
+      "GyMMMd،‏ Hm": {
+        "H": "d MMM y G،‏ H:mm تا H:mm",
+        "m": "d MMM y G،‏ H:mm تا H:mm"
+      },
+      "GyMMMEd،‏ Hm": {
+        "H": "E d MMM y G،‏ H:mm تا H:mm",
+        "m": "E d MMM y G،‏ H:mm تا H:mm"
+      },
+      "M،‏ Hm": {
+        "H": "L،‏ H:mm تا H:mm",
+        "m": "L،‏ H:mm تا H:mm"
+      },
+      "Md،‏ Hm": {
+        "H": "M/d،‏ H:mm تا H:mm",
+        "m": "M/d،‏ H:mm تا H:mm"
+      },
+      "MEd،‏ Hm": {
+        "H": "E M/d،‏ H:mm تا H:mm",
+        "m": "E M/d،‏ H:mm تا H:mm"
+      },
+      "MMM،‏ Hm": {
+        "H": "LLL،‏ H:mm تا H:mm",
+        "m": "LLL،‏ H:mm تا H:mm"
+      },
+      "MMMd،‏ Hm": {
+        "H": "d LLL،‏ H:mm تا H:mm",
+        "m": "d LLL،‏ H:mm تا H:mm"
+      },
+      "MMMEd،‏ Hm": {
+        "H": "E d LLL،‏ H:mm تا H:mm",
+        "m": "E d LLL،‏ H:mm تا H:mm"
+      },
+      "MMMMd، ساعت Hm": {
+        "H": "d LLLL، ساعت H:mm تا H:mm",
+        "m": "d LLLL، ساعت H:mm تا H:mm"
+      },
+      "MMMMEd، ساعت Hm": {
+        "H": "E d LLLL، ساعت H:mm تا H:mm",
+        "m": "E d LLLL، ساعت H:mm تا H:mm"
+      },
+      "y،‏ Hm": {
+        "H": "y،‏ H:mm تا H:mm",
+        "m": "y،‏ H:mm تا H:mm"
+      },
+      "yM،‏ Hm": {
+        "H": "y/M،‏ H:mm تا H:mm",
+        "m": "y/M،‏ H:mm تا H:mm"
+      },
+      "yMd،‏ Hm": {
+        "H": "y/M/d،‏ H:mm تا H:mm",
+        "m": "y/M/d،‏ H:mm تا H:mm"
+      },
+      "yMEd،‏ Hm": {
+        "H": "E y/M/d،‏ H:mm تا H:mm",
+        "m": "E y/M/d،‏ H:mm تا H:mm"
+      },
+      "yMMM،‏ Hm": {
+        "H": "MMM y،‏ H:mm تا H:mm",
+        "m": "MMM y،‏ H:mm تا H:mm"
+      },
+      "yMMMd،‏ Hm": {
+        "H": "d MMM y،‏ H:mm تا H:mm",
+        "m": "d MMM y،‏ H:mm تا H:mm"
+      },
+      "yMMMEd،‏ Hm": {
+        "H": "E d MMM y،‏ H:mm تا H:mm",
+        "m": "E d MMM y،‏ H:mm تا H:mm"
+      },
+      "yMMMM، ساعت Hm": {
+        "H": "MMMM y، ساعت H:mm تا H:mm",
+        "m": "MMMM y، ساعت H:mm تا H:mm"
+      },
+      "yMMMMEEEEd، ساعت Hm": {
+        "H": "EEEE d MMMM y، ساعت H:mm تا H:mm",
+        "m": "EEEE d MMMM y، ساعت H:mm تا H:mm"
+      },
+      "EEEE d MMMM y، ساعت hmv": {
+        "a": "EEEE d MMMM y، ساعت h:mm a تا h:mm a v",
+        "h": "EEEE d MMMM y، ساعت h:mm تا h:mm a v",
+        "m": "EEEE d MMMM y، ساعت h:mm تا h:mm a v"
+      },
+      "d MMMM y، ساعت hmv": {
+        "a": "d MMMM y، ساعت h:mm a تا h:mm a v",
+        "h": "d MMMM y، ساعت h:mm تا h:mm a v",
+        "m": "d MMMM y، ساعت h:mm تا h:mm a v"
+      },
+      "d MMM y،‏ hmv": {
+        "a": "d MMM y،‏ h:mm a تا h:mm a v",
+        "h": "d MMM y،‏ h:mm تا h:mm a v",
+        "m": "d MMM y،‏ h:mm تا h:mm a v"
+      },
+      "y/M/d،‏ hmv": {
+        "a": "y/M/d،‏ h:mm a تا h:mm a v",
+        "h": "y/M/d،‏ h:mm تا h:mm a v",
+        "m": "y/M/d،‏ h:mm تا h:mm a v"
+      },
+      "d،‏ hmv": {
+        "a": "d،‏ h:mm a تا h:mm a v",
+        "h": "d،‏ h:mm تا h:mm a v",
+        "m": "d،‏ h:mm تا h:mm a v"
+      },
+      "E،‏ hmv": {
+        "a": "ccc،‏ h:mm a تا h:mm a v",
+        "h": "ccc،‏ h:mm تا h:mm a v",
+        "m": "ccc،‏ h:mm تا h:mm a v"
+      },
+      "Ed،‏ hmv": {
+        "a": "E d،‏ h:mm a تا h:mm a v",
+        "h": "E d،‏ h:mm تا h:mm a v",
+        "m": "E d،‏ h:mm تا h:mm a v"
+      },
+      "Gy،‏ hmv": {
+        "a": "y G،‏ h:mm a تا h:mm a v",
+        "h": "y G،‏ h:mm تا h:mm a v",
+        "m": "y G،‏ h:mm تا h:mm a v"
+      },
+      "GyM،‏ hmv": {
+        "a": "y/M G،‏ h:mm a تا h:mm a v",
+        "h": "y/M G،‏ h:mm تا h:mm a v",
+        "m": "y/M G،‏ h:mm تا h:mm a v"
+      },
+      "GyMd،‏ hmv": {
+        "a": "y/M/d GGGGG،‏ h:mm a تا h:mm a v",
+        "h": "y/M/d GGGGG،‏ h:mm تا h:mm a v",
+        "m": "y/M/d GGGGG،‏ h:mm تا h:mm a v"
+      },
+      "GyMEd،‏ hmv": {
+        "a": "E، y/M/d G،‏ h:mm a تا h:mm a v",
+        "h": "E، y/M/d G،‏ h:mm تا h:mm a v",
+        "m": "E، y/M/d G،‏ h:mm تا h:mm a v"
+      },
+      "GyMMM،‏ hmv": {
+        "a": "MMM y G،‏ h:mm a تا h:mm a v",
+        "h": "MMM y G،‏ h:mm تا h:mm a v",
+        "m": "MMM y G،‏ h:mm تا h:mm a v"
+      },
+      "GyMMMd،‏ hmv": {
+        "a": "d MMM y G،‏ h:mm a تا h:mm a v",
+        "h": "d MMM y G،‏ h:mm تا h:mm a v",
+        "m": "d MMM y G،‏ h:mm تا h:mm a v"
+      },
+      "GyMMMEd،‏ hmv": {
+        "a": "E d MMM y G،‏ h:mm a تا h:mm a v",
+        "h": "E d MMM y G،‏ h:mm تا h:mm a v",
+        "m": "E d MMM y G،‏ h:mm تا h:mm a v"
+      },
+      "M،‏ hmv": {
+        "a": "L،‏ h:mm a تا h:mm a v",
+        "h": "L،‏ h:mm تا h:mm a v",
+        "m": "L،‏ h:mm تا h:mm a v"
+      },
+      "Md،‏ hmv": {
+        "a": "M/d،‏ h:mm a تا h:mm a v",
+        "h": "M/d،‏ h:mm تا h:mm a v",
+        "m": "M/d،‏ h:mm تا h:mm a v"
+      },
+      "MEd،‏ hmv": {
+        "a": "E M/d،‏ h:mm a تا h:mm a v",
+        "h": "E M/d،‏ h:mm تا h:mm a v",
+        "m": "E M/d،‏ h:mm تا h:mm a v"
+      },
+      "MMM،‏ hmv": {
+        "a": "LLL،‏ h:mm a تا h:mm a v",
+        "h": "LLL،‏ h:mm تا h:mm a v",
+        "m": "LLL،‏ h:mm تا h:mm a v"
+      },
+      "MMMd،‏ hmv": {
+        "a": "d LLL،‏ h:mm a تا h:mm a v",
+        "h": "d LLL،‏ h:mm تا h:mm a v",
+        "m": "d LLL،‏ h:mm تا h:mm a v"
+      },
+      "MMMEd،‏ hmv": {
+        "a": "E d LLL،‏ h:mm a تا h:mm a v",
+        "h": "E d LLL،‏ h:mm تا h:mm a v",
+        "m": "E d LLL،‏ h:mm تا h:mm a v"
+      },
+      "MMMMd، ساعت hmv": {
+        "a": "d LLLL، ساعت h:mm a تا h:mm a v",
+        "h": "d LLLL، ساعت h:mm تا h:mm a v",
+        "m": "d LLLL، ساعت h:mm تا h:mm a v"
+      },
+      "MMMMEd، ساعت hmv": {
+        "a": "E d LLLL، ساعت h:mm a تا h:mm a v",
+        "h": "E d LLLL، ساعت h:mm تا h:mm a v",
+        "m": "E d LLLL، ساعت h:mm تا h:mm a v"
+      },
+      "y،‏ hmv": {
+        "a": "y،‏ h:mm a تا h:mm a v",
+        "h": "y،‏ h:mm تا h:mm a v",
+        "m": "y،‏ h:mm تا h:mm a v"
+      },
+      "yM،‏ hmv": {
+        "a": "y/M،‏ h:mm a تا h:mm a v",
+        "h": "y/M،‏ h:mm تا h:mm a v",
+        "m": "y/M،‏ h:mm تا h:mm a v"
+      },
+      "yMd،‏ hmv": {
+        "a": "y/M/d،‏ h:mm a تا h:mm a v",
+        "h": "y/M/d،‏ h:mm تا h:mm a v",
+        "m": "y/M/d،‏ h:mm تا h:mm a v"
+      },
+      "yMEd،‏ hmv": {
+        "a": "E y/M/d،‏ h:mm a تا h:mm a v",
+        "h": "E y/M/d،‏ h:mm تا h:mm a v",
+        "m": "E y/M/d،‏ h:mm تا h:mm a v"
+      },
+      "yMMM،‏ hmv": {
+        "a": "MMM y،‏ h:mm a تا h:mm a v",
+        "h": "MMM y،‏ h:mm تا h:mm a v",
+        "m": "MMM y،‏ h:mm تا h:mm a v"
+      },
+      "yMMMd،‏ hmv": {
+        "a": "d MMM y،‏ h:mm a تا h:mm a v",
+        "h": "d MMM y،‏ h:mm تا h:mm a v",
+        "m": "d MMM y،‏ h:mm تا h:mm a v"
+      },
+      "yMMMEd،‏ hmv": {
+        "a": "E d MMM y،‏ h:mm a تا h:mm a v",
+        "h": "E d MMM y،‏ h:mm تا h:mm a v",
+        "m": "E d MMM y،‏ h:mm تا h:mm a v"
+      },
+      "yMMMM، ساعت hmv": {
+        "a": "MMMM y، ساعت h:mm a تا h:mm a v",
+        "h": "MMMM y، ساعت h:mm تا h:mm a v",
+        "m": "MMMM y، ساعت h:mm تا h:mm a v"
+      },
+      "yMMMMEEEEd، ساعت hmv": {
+        "a": "EEEE d MMMM y، ساعت h:mm a تا h:mm a v",
+        "h": "EEEE d MMMM y، ساعت h:mm تا h:mm a v",
+        "m": "EEEE d MMMM y، ساعت h:mm تا h:mm a v"
+      },
+      "EEEE d MMMM y، ساعت Hmv": {
+        "H": "EEEE d MMMM y، ساعت H:mm تا H:mm v",
+        "m": "EEEE d MMMM y، ساعت H:mm تا H:mm v"
+      },
+      "d MMMM y، ساعت Hmv": {
+        "H": "d MMMM y، ساعت H:mm تا H:mm v",
+        "m": "d MMMM y، ساعت H:mm تا H:mm v"
+      },
+      "d MMM y،‏ Hmv": {
+        "H": "d MMM y،‏ H:mm تا H:mm v",
+        "m": "d MMM y،‏ H:mm تا H:mm v"
+      },
+      "y/M/d،‏ Hmv": {
+        "H": "y/M/d،‏ H:mm تا H:mm v",
+        "m": "y/M/d،‏ H:mm تا H:mm v"
+      },
+      "d،‏ Hmv": {
+        "H": "d،‏ H:mm تا H:mm v",
+        "m": "d،‏ H:mm تا H:mm v"
+      },
+      "E،‏ Hmv": {
+        "H": "ccc،‏ H:mm تا H:mm v",
+        "m": "ccc،‏ H:mm تا H:mm v"
+      },
+      "Ed،‏ Hmv": {
+        "H": "E d،‏ H:mm تا H:mm v",
+        "m": "E d،‏ H:mm تا H:mm v"
+      },
+      "Gy،‏ Hmv": {
+        "H": "y G،‏ H:mm تا H:mm v",
+        "m": "y G،‏ H:mm تا H:mm v"
+      },
+      "GyM،‏ Hmv": {
+        "H": "y/M G،‏ H:mm تا H:mm v",
+        "m": "y/M G،‏ H:mm تا H:mm v"
+      },
+      "GyMd،‏ Hmv": {
+        "H": "y/M/d GGGGG،‏ H:mm تا H:mm v",
+        "m": "y/M/d GGGGG،‏ H:mm تا H:mm v"
+      },
+      "GyMEd،‏ Hmv": {
+        "H": "E، y/M/d G،‏ H:mm تا H:mm v",
+        "m": "E، y/M/d G،‏ H:mm تا H:mm v"
+      },
+      "GyMMM،‏ Hmv": {
+        "H": "MMM y G،‏ H:mm تا H:mm v",
+        "m": "MMM y G،‏ H:mm تا H:mm v"
+      },
+      "GyMMMd،‏ Hmv": {
+        "H": "d MMM y G،‏ H:mm تا H:mm v",
+        "m": "d MMM y G،‏ H:mm تا H:mm v"
+      },
+      "GyMMMEd،‏ Hmv": {
+        "H": "E d MMM y G،‏ H:mm تا H:mm v",
+        "m": "E d MMM y G،‏ H:mm تا H:mm v"
+      },
+      "M،‏ Hmv": {
+        "H": "L،‏ H:mm تا H:mm v",
+        "m": "L،‏ H:mm تا H:mm v"
+      },
+      "Md،‏ Hmv": {
+        "H": "M/d،‏ H:mm تا H:mm v",
+        "m": "M/d،‏ H:mm تا H:mm v"
+      },
+      "MEd،‏ Hmv": {
+        "H": "E M/d،‏ H:mm تا H:mm v",
+        "m": "E M/d،‏ H:mm تا H:mm v"
+      },
+      "MMM،‏ Hmv": {
+        "H": "LLL،‏ H:mm تا H:mm v",
+        "m": "LLL،‏ H:mm تا H:mm v"
+      },
+      "MMMd،‏ Hmv": {
+        "H": "d LLL،‏ H:mm تا H:mm v",
+        "m": "d LLL،‏ H:mm تا H:mm v"
+      },
+      "MMMEd،‏ Hmv": {
+        "H": "E d LLL،‏ H:mm تا H:mm v",
+        "m": "E d LLL،‏ H:mm تا H:mm v"
+      },
+      "MMMMd، ساعت Hmv": {
+        "H": "d LLLL، ساعت H:mm تا H:mm v",
+        "m": "d LLLL، ساعت H:mm تا H:mm v"
+      },
+      "MMMMEd، ساعت Hmv": {
+        "H": "E d LLLL، ساعت H:mm تا H:mm v",
+        "m": "E d LLLL، ساعت H:mm تا H:mm v"
+      },
+      "y،‏ Hmv": {
+        "H": "y،‏ H:mm تا H:mm v",
+        "m": "y،‏ H:mm تا H:mm v"
+      },
+      "yM،‏ Hmv": {
+        "H": "y/M،‏ H:mm تا H:mm v",
+        "m": "y/M،‏ H:mm تا H:mm v"
+      },
+      "yMd،‏ Hmv": {
+        "H": "y/M/d،‏ H:mm تا H:mm v",
+        "m": "y/M/d،‏ H:mm تا H:mm v"
+      },
+      "yMEd،‏ Hmv": {
+        "H": "E y/M/d،‏ H:mm تا H:mm v",
+        "m": "E y/M/d،‏ H:mm تا H:mm v"
+      },
+      "yMMM،‏ Hmv": {
+        "H": "MMM y،‏ H:mm تا H:mm v",
+        "m": "MMM y،‏ H:mm تا H:mm v"
+      },
+      "yMMMd،‏ Hmv": {
+        "H": "d MMM y،‏ H:mm تا H:mm v",
+        "m": "d MMM y،‏ H:mm تا H:mm v"
+      },
+      "yMMMEd،‏ Hmv": {
+        "H": "E d MMM y،‏ H:mm تا H:mm v",
+        "m": "E d MMM y،‏ H:mm تا H:mm v"
+      },
+      "yMMMM، ساعت Hmv": {
+        "H": "MMMM y، ساعت H:mm تا H:mm v",
+        "m": "MMMM y، ساعت H:mm تا H:mm v"
+      },
+      "yMMMMEEEEd، ساعت Hmv": {
+        "H": "EEEE d MMMM y، ساعت H:mm تا H:mm v",
+        "m": "EEEE d MMMM y، ساعت H:mm تا H:mm v"
+      },
+      "EEEE d MMMM y، ساعت hv": {
+        "a": "EEEE d MMMM y، ساعت h a تا h a v",
+        "h": "EEEE d MMMM y، ساعت h تا h a v"
+      },
+      "d MMMM y، ساعت hv": {
+        "a": "d MMMM y، ساعت h a تا h a v",
+        "h": "d MMMM y، ساعت h تا h a v"
+      },
+      "d MMM y،‏ hv": {
+        "a": "d MMM y،‏ h a تا h a v",
+        "h": "d MMM y،‏ h تا h a v"
+      },
+      "y/M/d،‏ hv": {
+        "a": "y/M/d،‏ h a تا h a v",
+        "h": "y/M/d،‏ h تا h a v"
+      },
+      "d،‏ hv": {
+        "a": "d،‏ h a تا h a v",
+        "h": "d،‏ h تا h a v"
+      },
+      "E،‏ hv": {
+        "a": "ccc،‏ h a تا h a v",
+        "h": "ccc،‏ h تا h a v"
+      },
+      "Ed،‏ hv": {
+        "a": "E d،‏ h a تا h a v",
+        "h": "E d،‏ h تا h a v"
+      },
+      "Gy،‏ hv": {
+        "a": "y G،‏ h a تا h a v",
+        "h": "y G،‏ h تا h a v"
+      },
+      "GyM،‏ hv": {
+        "a": "y/M G،‏ h a تا h a v",
+        "h": "y/M G،‏ h تا h a v"
+      },
+      "GyMd،‏ hv": {
+        "a": "y/M/d GGGGG،‏ h a تا h a v",
+        "h": "y/M/d GGGGG،‏ h تا h a v"
+      },
+      "GyMEd،‏ hv": {
+        "a": "E، y/M/d G،‏ h a تا h a v",
+        "h": "E، y/M/d G،‏ h تا h a v"
+      },
+      "GyMMM،‏ hv": {
+        "a": "MMM y G،‏ h a تا h a v",
+        "h": "MMM y G،‏ h تا h a v"
+      },
+      "GyMMMd،‏ hv": {
+        "a": "d MMM y G،‏ h a تا h a v",
+        "h": "d MMM y G،‏ h تا h a v"
+      },
+      "GyMMMEd،‏ hv": {
+        "a": "E d MMM y G،‏ h a تا h a v",
+        "h": "E d MMM y G،‏ h تا h a v"
+      },
+      "M،‏ hv": {
+        "a": "L،‏ h a تا h a v",
+        "h": "L،‏ h تا h a v"
+      },
+      "Md،‏ hv": {
+        "a": "M/d،‏ h a تا h a v",
+        "h": "M/d،‏ h تا h a v"
+      },
+      "MEd،‏ hv": {
+        "a": "E M/d،‏ h a تا h a v",
+        "h": "E M/d،‏ h تا h a v"
+      },
+      "MMM،‏ hv": {
+        "a": "LLL،‏ h a تا h a v",
+        "h": "LLL،‏ h تا h a v"
+      },
+      "MMMd،‏ hv": {
+        "a": "d LLL،‏ h a تا h a v",
+        "h": "d LLL،‏ h تا h a v"
+      },
+      "MMMEd،‏ hv": {
+        "a": "E d LLL،‏ h a تا h a v",
+        "h": "E d LLL،‏ h تا h a v"
+      },
+      "MMMMd، ساعت hv": {
+        "a": "d LLLL، ساعت h a تا h a v",
+        "h": "d LLLL، ساعت h تا h a v"
+      },
+      "MMMMEd، ساعت hv": {
+        "a": "E d LLLL، ساعت h a تا h a v",
+        "h": "E d LLLL، ساعت h تا h a v"
+      },
+      "y،‏ hv": {
+        "a": "y،‏ h a تا h a v",
+        "h": "y،‏ h تا h a v"
+      },
+      "yM،‏ hv": {
+        "a": "y/M،‏ h a تا h a v",
+        "h": "y/M،‏ h تا h a v"
+      },
+      "yMd،‏ hv": {
+        "a": "y/M/d،‏ h a تا h a v",
+        "h": "y/M/d،‏ h تا h a v"
+      },
+      "yMEd،‏ hv": {
+        "a": "E y/M/d،‏ h a تا h a v",
+        "h": "E y/M/d،‏ h تا h a v"
+      },
+      "yMMM،‏ hv": {
+        "a": "MMM y،‏ h a تا h a v",
+        "h": "MMM y،‏ h تا h a v"
+      },
+      "yMMMd،‏ hv": {
+        "a": "d MMM y،‏ h a تا h a v",
+        "h": "d MMM y،‏ h تا h a v"
+      },
+      "yMMMEd،‏ hv": {
+        "a": "E d MMM y،‏ h a تا h a v",
+        "h": "E d MMM y،‏ h تا h a v"
+      },
+      "yMMMM، ساعت hv": {
+        "a": "MMMM y، ساعت h a تا h a v",
+        "h": "MMMM y، ساعت h تا h a v"
+      },
+      "yMMMMEEEEd، ساعت hv": {
+        "a": "EEEE d MMMM y، ساعت h a تا h a v",
+        "h": "EEEE d MMMM y، ساعت h تا h a v"
+      },
+      "EEEE d MMMM y، ساعت Hv": {
+        "H": "EEEE d MMMM y، ساعت H تا H v"
+      },
+      "d MMMM y، ساعت Hv": {
+        "H": "d MMMM y، ساعت H تا H v"
+      },
+      "d MMM y،‏ Hv": {
+        "H": "d MMM y،‏ H تا H v"
+      },
+      "y/M/d،‏ Hv": {
+        "H": "y/M/d،‏ H تا H v"
+      },
+      "d،‏ Hv": {
+        "H": "d،‏ H تا H v"
+      },
+      "E،‏ Hv": {
+        "H": "ccc،‏ H تا H v"
+      },
+      "Ed،‏ Hv": {
+        "H": "E d،‏ H تا H v"
+      },
+      "Gy،‏ Hv": {
+        "H": "y G،‏ H تا H v"
+      },
+      "GyM،‏ Hv": {
+        "H": "y/M G،‏ H تا H v"
+      },
+      "GyMd،‏ Hv": {
+        "H": "y/M/d GGGGG،‏ H تا H v"
+      },
+      "GyMEd،‏ Hv": {
+        "H": "E، y/M/d G،‏ H تا H v"
+      },
+      "GyMMM،‏ Hv": {
+        "H": "MMM y G،‏ H تا H v"
+      },
+      "GyMMMd،‏ Hv": {
+        "H": "d MMM y G،‏ H تا H v"
+      },
+      "GyMMMEd،‏ Hv": {
+        "H": "E d MMM y G،‏ H تا H v"
+      },
+      "M،‏ Hv": {
+        "H": "L،‏ H تا H v"
+      },
+      "Md،‏ Hv": {
+        "H": "M/d،‏ H تا H v"
+      },
+      "MEd،‏ Hv": {
+        "H": "E M/d،‏ H تا H v"
+      },
+      "MMM،‏ Hv": {
+        "H": "LLL،‏ H تا H v"
+      },
+      "MMMd،‏ Hv": {
+        "H": "d LLL،‏ H تا H v"
+      },
+      "MMMEd،‏ Hv": {
+        "H": "E d LLL،‏ H تا H v"
+      },
+      "MMMMd، ساعت Hv": {
+        "H": "d LLLL، ساعت H تا H v"
+      },
+      "MMMMEd، ساعت Hv": {
+        "H": "E d LLLL، ساعت H تا H v"
+      },
+      "y،‏ Hv": {
+        "H": "y،‏ H تا H v"
+      },
+      "yM،‏ Hv": {
+        "H": "y/M،‏ H تا H v"
+      },
+      "yMd،‏ Hv": {
+        "H": "y/M/d،‏ H تا H v"
+      },
+      "yMEd،‏ Hv": {
+        "H": "E y/M/d،‏ H تا H v"
+      },
+      "yMMM،‏ Hv": {
+        "H": "MMM y،‏ H تا H v"
+      },
+      "yMMMd،‏ Hv": {
+        "H": "d MMM y،‏ H تا H v"
+      },
+      "yMMMEd،‏ Hv": {
+        "H": "E d MMM y،‏ H تا H v"
+      },
+      "yMMMM، ساعت Hv": {
+        "H": "MMMM y، ساعت H تا H v"
+      },
+      "yMMMMEEEEd، ساعت Hv": {
+        "H": "EEEE d MMMM y، ساعت H تا H v"
       }
     },
     "hourCycle": "",
