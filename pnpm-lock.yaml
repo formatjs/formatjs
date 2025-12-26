@@ -219,8 +219,8 @@ importers:
         specifier: '2'
         version: 2.1.1
       content-tag:
-        specifier: ^3.0.0
-        version: 3.1.3
+        specifier: ^4.0.0
+        version: 4.1.0
       conventional-changelog-angular:
         specifier: ^8.1.0
         version: 8.1.0
@@ -414,8 +414,8 @@ importers:
         specifier: 3.5.26
         version: 3.5.26
       content-tag:
-        specifier: ^3.0.0
-        version: 3.1.1
+        specifier: ^3.0.0 || ^4.0.0
+        version: 4.1.0
       ember-template-recast:
         specifier: ^6.1.5
         version: 6.1.5
@@ -460,8 +460,8 @@ importers:
         specifier: ^13
         version: 13.1.0
       content-tag:
-        specifier: ^3.0.0
-        version: 3.1.1
+        specifier: ^3.0.0 || ^4.0.0
+        version: 4.1.0
       ember-template-recast:
         specifier: ^6.1.5
         version: 6.1.5
@@ -4867,11 +4867,8 @@ packages:
     resolution: {integrity: sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==}
     engines: {node: '>= 0.6'}
 
-  content-tag@3.1.1:
-    resolution: {integrity: sha512-94puwVk6X8oJcbRIEY03UM80zWzA3dYgGkOiRJzeY1vXgwrFUh3OolDDi/D7YBa6Vsx+CgAvuk4uXlB8loZ1FA==}
-
-  content-tag@3.1.3:
-    resolution: {integrity: sha512-4Kiv9mEroxuMXfWUNUHcljVJgxThCNk7eEswdHMXdzJnkBBaYDqDwzHkoh3F74JJhfU3taJOsgpR6oEGIDg17g==}
+  content-tag@4.1.0:
+    resolution: {integrity: sha512-On6gUuvI1l5MScHO+Xbwjeq1Pk9H6HOipDWkzqGGUGmKpq6K5TRmQuCl1LGSHbdIo2l+lSsgLKrLgCl5kKYA+A==}
 
   content-type@1.0.5:
     resolution: {integrity: sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==}
@@ -16108,9 +16105,7 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  content-tag@3.1.1: {}
-
-  content-tag@3.1.3: {}
+  content-tag@4.1.0: {}
 
   content-type@1.0.5: {}
 
