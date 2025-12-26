@@ -420,3 +420,32 @@ test('GH issue #4168', function () {
     )
   ).toBe('16 okt 2023, 10:00:00 – 16 okt 2023, 14:00:00')
 })
+
+test('GH issue #4535 - same day range should not duplicate date', function () {
+  // Fixed: When formatting a date range on the same day with different times,
+  // the date should only appear once, not twice
+  const dtf = new DateTimeFormat('en-GB', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  })
+
+  // Same day (Sept 22, 2024), different times (14:00 to 16:00)
+  const result = dtf.formatRange(
+    new Date('2024-09-22T14:00:00'),
+    new Date('2024-09-22T16:00:00')
+  )
+
+  // Expected behavior: show date once with time range
+  // The date "Sun, 22 Sept 2024" should only appear once
+  // Note: CLDR uses en dash (–) without spaces for time intervals
+  expect(result).toBe('Sun, 22 Sept 2024, 14:00–16:00')
+
+  // Verify the date appears only once
+  const dateString = 'Sun, 22 Sept 2024'
+  const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
+  expect(occurrences).toBe(1)
+})

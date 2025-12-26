@@ -2606,6 +2606,1277 @@
       "yMMMM": {
         "M": "y年M月 – M月",
         "y": "y年M月 – y年M月"
+      },
+      "y年M月d日EEEE Bh": {
+        "B": "y年M月d日EEEE Bh时至Bh时",
+        "h": "y年M月d日EEEE Bh时至h时"
+      },
+      "y年M月d日 Bh": {
+        "B": "y年M月d日 Bh时至Bh时",
+        "h": "y年M月d日 Bh时至h时"
+      },
+      "y/M/d Bh": {
+        "B": "y/M/d Bh时至Bh时",
+        "h": "y/M/d Bh时至h时"
+      },
+      "d Bh": {
+        "B": "d日 Bh时至Bh时",
+        "h": "d日 Bh时至h时"
+      },
+      "E Bh": {
+        "B": "ccc Bh时至Bh时",
+        "h": "ccc Bh时至h时"
+      },
+      "Ed Bh": {
+        "B": "d日E Bh时至Bh时",
+        "h": "d日E Bh时至h时"
+      },
+      "Gy Bh": {
+        "B": "Gy年 Bh时至Bh时",
+        "h": "Gy年 Bh时至h时"
+      },
+      "GyM Bh": {
+        "B": "Gy年M月 Bh时至Bh时",
+        "h": "Gy年M月 Bh时至h时"
+      },
+      "GyMd Bh": {
+        "B": "Gy-MM-dd Bh时至Bh时",
+        "h": "Gy-MM-dd Bh时至h时"
+      },
+      "GyMEd Bh": {
+        "B": "Gy-MM-ddE Bh时至Bh时",
+        "h": "Gy-MM-ddE Bh时至h时"
+      },
+      "GyMMM Bh": {
+        "B": "Gy年M月 Bh时至Bh时",
+        "h": "Gy年M月 Bh时至h时"
+      },
+      "GyMMMd Bh": {
+        "B": "Gy年M月d日 Bh时至Bh时",
+        "h": "Gy年M月d日 Bh时至h时"
+      },
+      "GyMMMEd Bh": {
+        "B": "Gy年M月d日E Bh时至Bh时",
+        "h": "Gy年M月d日E Bh时至h时"
+      },
+      "M Bh": {
+        "B": "M月 Bh时至Bh时",
+        "h": "M月 Bh时至h时"
+      },
+      "Md Bh": {
+        "B": "M/d Bh时至Bh时",
+        "h": "M/d Bh时至h时"
+      },
+      "MEd Bh": {
+        "B": "M/dE Bh时至Bh时",
+        "h": "M/dE Bh时至h时"
+      },
+      "MMdd Bh": {
+        "B": "MM/dd Bh时至Bh时",
+        "h": "MM/dd Bh时至h时"
+      },
+      "MMM Bh": {
+        "B": "LLL Bh时至Bh时",
+        "h": "LLL Bh时至h时"
+      },
+      "MMMd Bh": {
+        "B": "M月d日 Bh时至Bh时",
+        "h": "M月d日 Bh时至h时"
+      },
+      "MMMEd Bh": {
+        "B": "M月d日E Bh时至Bh时",
+        "h": "M月d日E Bh时至h时"
+      },
+      "MMMMd Bh": {
+        "B": "M月d日 Bh时至Bh时",
+        "h": "M月d日 Bh时至h时"
+      },
+      "y Bh": {
+        "B": "y年 Bh时至Bh时",
+        "h": "y年 Bh时至h时"
+      },
+      "yM Bh": {
+        "B": "y/M Bh时至Bh时",
+        "h": "y/M Bh时至h时"
+      },
+      "yMd Bh": {
+        "B": "y/M/d Bh时至Bh时",
+        "h": "y/M/d Bh时至h时"
+      },
+      "yMEd Bh": {
+        "B": "y/M/dE Bh时至Bh时",
+        "h": "y/M/dE Bh时至h时"
+      },
+      "yMEEEEd Bh": {
+        "B": "y年M月d日EEEE Bh时至Bh时",
+        "h": "y年M月d日EEEE Bh时至h时"
+      },
+      "yMM Bh": {
+        "B": "y年M月 Bh时至Bh时",
+        "h": "y年M月 Bh时至h时"
+      },
+      "yMMM Bh": {
+        "B": "y年M月 Bh时至Bh时",
+        "h": "y年M月 Bh时至h时"
+      },
+      "yMMMd Bh": {
+        "B": "y年M月d日 Bh时至Bh时",
+        "h": "y年M月d日 Bh时至h时"
+      },
+      "yMMMEd Bh": {
+        "B": "y年M月d日E Bh时至Bh时",
+        "h": "y年M月d日E Bh时至h时"
+      },
+      "yMMMM Bh": {
+        "B": "y年M月 Bh时至Bh时",
+        "h": "y年M月 Bh时至h时"
+      },
+      "y年M月d日EEEE Bhm": {
+        "B": "y年M月d日EEEE Bh:mm至Bh:mm",
+        "h": "y年M月d日EEEE Bh:mm至h:mm",
+        "m": "y年M月d日EEEE Bh:mm至h:mm"
+      },
+      "y年M月d日 Bhm": {
+        "B": "y年M月d日 Bh:mm至Bh:mm",
+        "h": "y年M月d日 Bh:mm至h:mm",
+        "m": "y年M月d日 Bh:mm至h:mm"
+      },
+      "y/M/d Bhm": {
+        "B": "y/M/d Bh:mm至Bh:mm",
+        "h": "y/M/d Bh:mm至h:mm",
+        "m": "y/M/d Bh:mm至h:mm"
+      },
+      "d Bhm": {
+        "B": "d日 Bh:mm至Bh:mm",
+        "h": "d日 Bh:mm至h:mm",
+        "m": "d日 Bh:mm至h:mm"
+      },
+      "E Bhm": {
+        "B": "ccc Bh:mm至Bh:mm",
+        "h": "ccc Bh:mm至h:mm",
+        "m": "ccc Bh:mm至h:mm"
+      },
+      "Ed Bhm": {
+        "B": "d日E Bh:mm至Bh:mm",
+        "h": "d日E Bh:mm至h:mm",
+        "m": "d日E Bh:mm至h:mm"
+      },
+      "Gy Bhm": {
+        "B": "Gy年 Bh:mm至Bh:mm",
+        "h": "Gy年 Bh:mm至h:mm",
+        "m": "Gy年 Bh:mm至h:mm"
+      },
+      "GyM Bhm": {
+        "B": "Gy年M月 Bh:mm至Bh:mm",
+        "h": "Gy年M月 Bh:mm至h:mm",
+        "m": "Gy年M月 Bh:mm至h:mm"
+      },
+      "GyMd Bhm": {
+        "B": "Gy-MM-dd Bh:mm至Bh:mm",
+        "h": "Gy-MM-dd Bh:mm至h:mm",
+        "m": "Gy-MM-dd Bh:mm至h:mm"
+      },
+      "GyMEd Bhm": {
+        "B": "Gy-MM-ddE Bh:mm至Bh:mm",
+        "h": "Gy-MM-ddE Bh:mm至h:mm",
+        "m": "Gy-MM-ddE Bh:mm至h:mm"
+      },
+      "GyMMM Bhm": {
+        "B": "Gy年M月 Bh:mm至Bh:mm",
+        "h": "Gy年M月 Bh:mm至h:mm",
+        "m": "Gy年M月 Bh:mm至h:mm"
+      },
+      "GyMMMd Bhm": {
+        "B": "Gy年M月d日 Bh:mm至Bh:mm",
+        "h": "Gy年M月d日 Bh:mm至h:mm",
+        "m": "Gy年M月d日 Bh:mm至h:mm"
+      },
+      "GyMMMEd Bhm": {
+        "B": "Gy年M月d日E Bh:mm至Bh:mm",
+        "h": "Gy年M月d日E Bh:mm至h:mm",
+        "m": "Gy年M月d日E Bh:mm至h:mm"
+      },
+      "M Bhm": {
+        "B": "M月 Bh:mm至Bh:mm",
+        "h": "M月 Bh:mm至h:mm",
+        "m": "M月 Bh:mm至h:mm"
+      },
+      "Md Bhm": {
+        "B": "M/d Bh:mm至Bh:mm",
+        "h": "M/d Bh:mm至h:mm",
+        "m": "M/d Bh:mm至h:mm"
+      },
+      "MEd Bhm": {
+        "B": "M/dE Bh:mm至Bh:mm",
+        "h": "M/dE Bh:mm至h:mm",
+        "m": "M/dE Bh:mm至h:mm"
+      },
+      "MMdd Bhm": {
+        "B": "MM/dd Bh:mm至Bh:mm",
+        "h": "MM/dd Bh:mm至h:mm",
+        "m": "MM/dd Bh:mm至h:mm"
+      },
+      "MMM Bhm": {
+        "B": "LLL Bh:mm至Bh:mm",
+        "h": "LLL Bh:mm至h:mm",
+        "m": "LLL Bh:mm至h:mm"
+      },
+      "MMMd Bhm": {
+        "B": "M月d日 Bh:mm至Bh:mm",
+        "h": "M月d日 Bh:mm至h:mm",
+        "m": "M月d日 Bh:mm至h:mm"
+      },
+      "MMMEd Bhm": {
+        "B": "M月d日E Bh:mm至Bh:mm",
+        "h": "M月d日E Bh:mm至h:mm",
+        "m": "M月d日E Bh:mm至h:mm"
+      },
+      "MMMMd Bhm": {
+        "B": "M月d日 Bh:mm至Bh:mm",
+        "h": "M月d日 Bh:mm至h:mm",
+        "m": "M月d日 Bh:mm至h:mm"
+      },
+      "y Bhm": {
+        "B": "y年 Bh:mm至Bh:mm",
+        "h": "y年 Bh:mm至h:mm",
+        "m": "y年 Bh:mm至h:mm"
+      },
+      "yM Bhm": {
+        "B": "y/M Bh:mm至Bh:mm",
+        "h": "y/M Bh:mm至h:mm",
+        "m": "y/M Bh:mm至h:mm"
+      },
+      "yMd Bhm": {
+        "B": "y/M/d Bh:mm至Bh:mm",
+        "h": "y/M/d Bh:mm至h:mm",
+        "m": "y/M/d Bh:mm至h:mm"
+      },
+      "yMEd Bhm": {
+        "B": "y/M/dE Bh:mm至Bh:mm",
+        "h": "y/M/dE Bh:mm至h:mm",
+        "m": "y/M/dE Bh:mm至h:mm"
+      },
+      "yMEEEEd Bhm": {
+        "B": "y年M月d日EEEE Bh:mm至Bh:mm",
+        "h": "y年M月d日EEEE Bh:mm至h:mm",
+        "m": "y年M月d日EEEE Bh:mm至h:mm"
+      },
+      "yMM Bhm": {
+        "B": "y年M月 Bh:mm至Bh:mm",
+        "h": "y年M月 Bh:mm至h:mm",
+        "m": "y年M月 Bh:mm至h:mm"
+      },
+      "yMMM Bhm": {
+        "B": "y年M月 Bh:mm至Bh:mm",
+        "h": "y年M月 Bh:mm至h:mm",
+        "m": "y年M月 Bh:mm至h:mm"
+      },
+      "yMMMd Bhm": {
+        "B": "y年M月d日 Bh:mm至Bh:mm",
+        "h": "y年M月d日 Bh:mm至h:mm",
+        "m": "y年M月d日 Bh:mm至h:mm"
+      },
+      "yMMMEd Bhm": {
+        "B": "y年M月d日E Bh:mm至Bh:mm",
+        "h": "y年M月d日E Bh:mm至h:mm",
+        "m": "y年M月d日E Bh:mm至h:mm"
+      },
+      "yMMMM Bhm": {
+        "B": "y年M月 Bh:mm至Bh:mm",
+        "h": "y年M月 Bh:mm至h:mm",
+        "m": "y年M月 Bh:mm至h:mm"
+      },
+      "y年M月d日EEEE h": {
+        "a": "y年M月d日EEEE ah时至ah时",
+        "h": "y年M月d日EEEE ah时至h时"
+      },
+      "y年M月d日 h": {
+        "a": "y年M月d日 ah时至ah时",
+        "h": "y年M月d日 ah时至h时"
+      },
+      "y/M/d h": {
+        "a": "y/M/d ah时至ah时",
+        "h": "y/M/d ah时至h时"
+      },
+      "d h": {
+        "a": "d日 ah时至ah时",
+        "h": "d日 ah时至h时"
+      },
+      "E h": {
+        "a": "ccc ah时至ah时",
+        "h": "ccc ah时至h时"
+      },
+      "Ed h": {
+        "a": "d日E ah时至ah时",
+        "h": "d日E ah时至h时"
+      },
+      "Gy h": {
+        "a": "Gy年 ah时至ah时",
+        "h": "Gy年 ah时至h时"
+      },
+      "GyM h": {
+        "a": "Gy年M月 ah时至ah时",
+        "h": "Gy年M月 ah时至h时"
+      },
+      "GyMd h": {
+        "a": "Gy-MM-dd ah时至ah时",
+        "h": "Gy-MM-dd ah时至h时"
+      },
+      "GyMEd h": {
+        "a": "Gy-MM-ddE ah时至ah时",
+        "h": "Gy-MM-ddE ah时至h时"
+      },
+      "GyMMM h": {
+        "a": "Gy年M月 ah时至ah时",
+        "h": "Gy年M月 ah时至h时"
+      },
+      "GyMMMd h": {
+        "a": "Gy年M月d日 ah时至ah时",
+        "h": "Gy年M月d日 ah时至h时"
+      },
+      "GyMMMEd h": {
+        "a": "Gy年M月d日E ah时至ah时",
+        "h": "Gy年M月d日E ah时至h时"
+      },
+      "M h": {
+        "a": "M月 ah时至ah时",
+        "h": "M月 ah时至h时"
+      },
+      "Md h": {
+        "a": "M/d ah时至ah时",
+        "h": "M/d ah时至h时"
+      },
+      "MEd h": {
+        "a": "M/dE ah时至ah时",
+        "h": "M/dE ah时至h时"
+      },
+      "MMdd h": {
+        "a": "MM/dd ah时至ah时",
+        "h": "MM/dd ah时至h时"
+      },
+      "MMM h": {
+        "a": "LLL ah时至ah时",
+        "h": "LLL ah时至h时"
+      },
+      "MMMd h": {
+        "a": "M月d日 ah时至ah时",
+        "h": "M月d日 ah时至h时"
+      },
+      "MMMEd h": {
+        "a": "M月d日E ah时至ah时",
+        "h": "M月d日E ah时至h时"
+      },
+      "MMMMd h": {
+        "a": "M月d日 ah时至ah时",
+        "h": "M月d日 ah时至h时"
+      },
+      "y h": {
+        "a": "y年 ah时至ah时",
+        "h": "y年 ah时至h时"
+      },
+      "yM h": {
+        "a": "y/M ah时至ah时",
+        "h": "y/M ah时至h时"
+      },
+      "yMd h": {
+        "a": "y/M/d ah时至ah时",
+        "h": "y/M/d ah时至h时"
+      },
+      "yMEd h": {
+        "a": "y/M/dE ah时至ah时",
+        "h": "y/M/dE ah时至h时"
+      },
+      "yMEEEEd h": {
+        "a": "y年M月d日EEEE ah时至ah时",
+        "h": "y年M月d日EEEE ah时至h时"
+      },
+      "yMM h": {
+        "a": "y年M月 ah时至ah时",
+        "h": "y年M月 ah时至h时"
+      },
+      "yMMM h": {
+        "a": "y年M月 ah时至ah时",
+        "h": "y年M月 ah时至h时"
+      },
+      "yMMMd h": {
+        "a": "y年M月d日 ah时至ah时",
+        "h": "y年M月d日 ah时至h时"
+      },
+      "yMMMEd h": {
+        "a": "y年M月d日E ah时至ah时",
+        "h": "y年M月d日E ah时至h时"
+      },
+      "yMMMM h": {
+        "a": "y年M月 ah时至ah时",
+        "h": "y年M月 ah时至h时"
+      },
+      "y年M月d日EEEE H": {
+        "H": "y年M月d日EEEE HH–HH"
+      },
+      "y年M月d日 H": {
+        "H": "y年M月d日 HH–HH"
+      },
+      "y/M/d H": {
+        "H": "y/M/d HH–HH"
+      },
+      "d H": {
+        "H": "d日 HH–HH"
+      },
+      "E H": {
+        "H": "ccc HH–HH"
+      },
+      "Ed H": {
+        "H": "d日E HH–HH"
+      },
+      "Gy H": {
+        "H": "Gy年 HH–HH"
+      },
+      "GyM H": {
+        "H": "Gy年M月 HH–HH"
+      },
+      "GyMd H": {
+        "H": "Gy-MM-dd HH–HH"
+      },
+      "GyMEd H": {
+        "H": "Gy-MM-ddE HH–HH"
+      },
+      "GyMMM H": {
+        "H": "Gy年M月 HH–HH"
+      },
+      "GyMMMd H": {
+        "H": "Gy年M月d日 HH–HH"
+      },
+      "GyMMMEd H": {
+        "H": "Gy年M月d日E HH–HH"
+      },
+      "M H": {
+        "H": "M月 HH–HH"
+      },
+      "Md H": {
+        "H": "M/d HH–HH"
+      },
+      "MEd H": {
+        "H": "M/dE HH–HH"
+      },
+      "MMdd H": {
+        "H": "MM/dd HH–HH"
+      },
+      "MMM H": {
+        "H": "LLL HH–HH"
+      },
+      "MMMd H": {
+        "H": "M月d日 HH–HH"
+      },
+      "MMMEd H": {
+        "H": "M月d日E HH–HH"
+      },
+      "MMMMd H": {
+        "H": "M月d日 HH–HH"
+      },
+      "y H": {
+        "H": "y年 HH–HH"
+      },
+      "yM H": {
+        "H": "y/M HH–HH"
+      },
+      "yMd H": {
+        "H": "y/M/d HH–HH"
+      },
+      "yMEd H": {
+        "H": "y/M/dE HH–HH"
+      },
+      "yMEEEEd H": {
+        "H": "y年M月d日EEEE HH–HH"
+      },
+      "yMM H": {
+        "H": "y年M月 HH–HH"
+      },
+      "yMMM H": {
+        "H": "y年M月 HH–HH"
+      },
+      "yMMMd H": {
+        "H": "y年M月d日 HH–HH"
+      },
+      "yMMMEd H": {
+        "H": "y年M月d日E HH–HH"
+      },
+      "yMMMM H": {
+        "H": "y年M月 HH–HH"
+      },
+      "y年M月d日EEEE hm": {
+        "a": "y年M月d日EEEE ah:mm至ah:mm",
+        "h": "y年M月d日EEEE ah:mm至h:mm",
+        "m": "y年M月d日EEEE ah:mm至h:mm"
+      },
+      "y年M月d日 hm": {
+        "a": "y年M月d日 ah:mm至ah:mm",
+        "h": "y年M月d日 ah:mm至h:mm",
+        "m": "y年M月d日 ah:mm至h:mm"
+      },
+      "y/M/d hm": {
+        "a": "y/M/d ah:mm至ah:mm",
+        "h": "y/M/d ah:mm至h:mm",
+        "m": "y/M/d ah:mm至h:mm"
+      },
+      "d hm": {
+        "a": "d日 ah:mm至ah:mm",
+        "h": "d日 ah:mm至h:mm",
+        "m": "d日 ah:mm至h:mm"
+      },
+      "E hm": {
+        "a": "ccc ah:mm至ah:mm",
+        "h": "ccc ah:mm至h:mm",
+        "m": "ccc ah:mm至h:mm"
+      },
+      "Ed hm": {
+        "a": "d日E ah:mm至ah:mm",
+        "h": "d日E ah:mm至h:mm",
+        "m": "d日E ah:mm至h:mm"
+      },
+      "Gy hm": {
+        "a": "Gy年 ah:mm至ah:mm",
+        "h": "Gy年 ah:mm至h:mm",
+        "m": "Gy年 ah:mm至h:mm"
+      },
+      "GyM hm": {
+        "a": "Gy年M月 ah:mm至ah:mm",
+        "h": "Gy年M月 ah:mm至h:mm",
+        "m": "Gy年M月 ah:mm至h:mm"
+      },
+      "GyMd hm": {
+        "a": "Gy-MM-dd ah:mm至ah:mm",
+        "h": "Gy-MM-dd ah:mm至h:mm",
+        "m": "Gy-MM-dd ah:mm至h:mm"
+      },
+      "GyMEd hm": {
+        "a": "Gy-MM-ddE ah:mm至ah:mm",
+        "h": "Gy-MM-ddE ah:mm至h:mm",
+        "m": "Gy-MM-ddE ah:mm至h:mm"
+      },
+      "GyMMM hm": {
+        "a": "Gy年M月 ah:mm至ah:mm",
+        "h": "Gy年M月 ah:mm至h:mm",
+        "m": "Gy年M月 ah:mm至h:mm"
+      },
+      "GyMMMd hm": {
+        "a": "Gy年M月d日 ah:mm至ah:mm",
+        "h": "Gy年M月d日 ah:mm至h:mm",
+        "m": "Gy年M月d日 ah:mm至h:mm"
+      },
+      "GyMMMEd hm": {
+        "a": "Gy年M月d日E ah:mm至ah:mm",
+        "h": "Gy年M月d日E ah:mm至h:mm",
+        "m": "Gy年M月d日E ah:mm至h:mm"
+      },
+      "M hm": {
+        "a": "M月 ah:mm至ah:mm",
+        "h": "M月 ah:mm至h:mm",
+        "m": "M月 ah:mm至h:mm"
+      },
+      "Md hm": {
+        "a": "M/d ah:mm至ah:mm",
+        "h": "M/d ah:mm至h:mm",
+        "m": "M/d ah:mm至h:mm"
+      },
+      "MEd hm": {
+        "a": "M/dE ah:mm至ah:mm",
+        "h": "M/dE ah:mm至h:mm",
+        "m": "M/dE ah:mm至h:mm"
+      },
+      "MMdd hm": {
+        "a": "MM/dd ah:mm至ah:mm",
+        "h": "MM/dd ah:mm至h:mm",
+        "m": "MM/dd ah:mm至h:mm"
+      },
+      "MMM hm": {
+        "a": "LLL ah:mm至ah:mm",
+        "h": "LLL ah:mm至h:mm",
+        "m": "LLL ah:mm至h:mm"
+      },
+      "MMMd hm": {
+        "a": "M月d日 ah:mm至ah:mm",
+        "h": "M月d日 ah:mm至h:mm",
+        "m": "M月d日 ah:mm至h:mm"
+      },
+      "MMMEd hm": {
+        "a": "M月d日E ah:mm至ah:mm",
+        "h": "M月d日E ah:mm至h:mm",
+        "m": "M月d日E ah:mm至h:mm"
+      },
+      "MMMMd hm": {
+        "a": "M月d日 ah:mm至ah:mm",
+        "h": "M月d日 ah:mm至h:mm",
+        "m": "M月d日 ah:mm至h:mm"
+      },
+      "y hm": {
+        "a": "y年 ah:mm至ah:mm",
+        "h": "y年 ah:mm至h:mm",
+        "m": "y年 ah:mm至h:mm"
+      },
+      "yM hm": {
+        "a": "y/M ah:mm至ah:mm",
+        "h": "y/M ah:mm至h:mm",
+        "m": "y/M ah:mm至h:mm"
+      },
+      "yMd hm": {
+        "a": "y/M/d ah:mm至ah:mm",
+        "h": "y/M/d ah:mm至h:mm",
+        "m": "y/M/d ah:mm至h:mm"
+      },
+      "yMEd hm": {
+        "a": "y/M/dE ah:mm至ah:mm",
+        "h": "y/M/dE ah:mm至h:mm",
+        "m": "y/M/dE ah:mm至h:mm"
+      },
+      "yMEEEEd hm": {
+        "a": "y年M月d日EEEE ah:mm至ah:mm",
+        "h": "y年M月d日EEEE ah:mm至h:mm",
+        "m": "y年M月d日EEEE ah:mm至h:mm"
+      },
+      "yMM hm": {
+        "a": "y年M月 ah:mm至ah:mm",
+        "h": "y年M月 ah:mm至h:mm",
+        "m": "y年M月 ah:mm至h:mm"
+      },
+      "yMMM hm": {
+        "a": "y年M月 ah:mm至ah:mm",
+        "h": "y年M月 ah:mm至h:mm",
+        "m": "y年M月 ah:mm至h:mm"
+      },
+      "yMMMd hm": {
+        "a": "y年M月d日 ah:mm至ah:mm",
+        "h": "y年M月d日 ah:mm至h:mm",
+        "m": "y年M月d日 ah:mm至h:mm"
+      },
+      "yMMMEd hm": {
+        "a": "y年M月d日E ah:mm至ah:mm",
+        "h": "y年M月d日E ah:mm至h:mm",
+        "m": "y年M月d日E ah:mm至h:mm"
+      },
+      "yMMMM hm": {
+        "a": "y年M月 ah:mm至ah:mm",
+        "h": "y年M月 ah:mm至h:mm",
+        "m": "y年M月 ah:mm至h:mm"
+      },
+      "y年M月d日EEEE Hm": {
+        "H": "y年M月d日EEEE HH:mm–HH:mm",
+        "m": "y年M月d日EEEE HH:mm–HH:mm"
+      },
+      "y年M月d日 Hm": {
+        "H": "y年M月d日 HH:mm–HH:mm",
+        "m": "y年M月d日 HH:mm–HH:mm"
+      },
+      "y/M/d Hm": {
+        "H": "y/M/d HH:mm–HH:mm",
+        "m": "y/M/d HH:mm–HH:mm"
+      },
+      "d Hm": {
+        "H": "d日 HH:mm–HH:mm",
+        "m": "d日 HH:mm–HH:mm"
+      },
+      "E Hm": {
+        "H": "ccc HH:mm–HH:mm",
+        "m": "ccc HH:mm–HH:mm"
+      },
+      "Ed Hm": {
+        "H": "d日E HH:mm–HH:mm",
+        "m": "d日E HH:mm–HH:mm"
+      },
+      "Gy Hm": {
+        "H": "Gy年 HH:mm–HH:mm",
+        "m": "Gy年 HH:mm–HH:mm"
+      },
+      "GyM Hm": {
+        "H": "Gy年M月 HH:mm–HH:mm",
+        "m": "Gy年M月 HH:mm–HH:mm"
+      },
+      "GyMd Hm": {
+        "H": "Gy-MM-dd HH:mm–HH:mm",
+        "m": "Gy-MM-dd HH:mm–HH:mm"
+      },
+      "GyMEd Hm": {
+        "H": "Gy-MM-ddE HH:mm–HH:mm",
+        "m": "Gy-MM-ddE HH:mm–HH:mm"
+      },
+      "GyMMM Hm": {
+        "H": "Gy年M月 HH:mm–HH:mm",
+        "m": "Gy年M月 HH:mm–HH:mm"
+      },
+      "GyMMMd Hm": {
+        "H": "Gy年M月d日 HH:mm–HH:mm",
+        "m": "Gy年M月d日 HH:mm–HH:mm"
+      },
+      "GyMMMEd Hm": {
+        "H": "Gy年M月d日E HH:mm–HH:mm",
+        "m": "Gy年M月d日E HH:mm–HH:mm"
+      },
+      "M Hm": {
+        "H": "M月 HH:mm–HH:mm",
+        "m": "M月 HH:mm–HH:mm"
+      },
+      "Md Hm": {
+        "H": "M/d HH:mm–HH:mm",
+        "m": "M/d HH:mm–HH:mm"
+      },
+      "MEd Hm": {
+        "H": "M/dE HH:mm–HH:mm",
+        "m": "M/dE HH:mm–HH:mm"
+      },
+      "MMdd Hm": {
+        "H": "MM/dd HH:mm–HH:mm",
+        "m": "MM/dd HH:mm–HH:mm"
+      },
+      "MMM Hm": {
+        "H": "LLL HH:mm–HH:mm",
+        "m": "LLL HH:mm–HH:mm"
+      },
+      "MMMd Hm": {
+        "H": "M月d日 HH:mm–HH:mm",
+        "m": "M月d日 HH:mm–HH:mm"
+      },
+      "MMMEd Hm": {
+        "H": "M月d日E HH:mm–HH:mm",
+        "m": "M月d日E HH:mm–HH:mm"
+      },
+      "MMMMd Hm": {
+        "H": "M月d日 HH:mm–HH:mm",
+        "m": "M月d日 HH:mm–HH:mm"
+      },
+      "y Hm": {
+        "H": "y年 HH:mm–HH:mm",
+        "m": "y年 HH:mm–HH:mm"
+      },
+      "yM Hm": {
+        "H": "y/M HH:mm–HH:mm",
+        "m": "y/M HH:mm–HH:mm"
+      },
+      "yMd Hm": {
+        "H": "y/M/d HH:mm–HH:mm",
+        "m": "y/M/d HH:mm–HH:mm"
+      },
+      "yMEd Hm": {
+        "H": "y/M/dE HH:mm–HH:mm",
+        "m": "y/M/dE HH:mm–HH:mm"
+      },
+      "yMEEEEd Hm": {
+        "H": "y年M月d日EEEE HH:mm–HH:mm",
+        "m": "y年M月d日EEEE HH:mm–HH:mm"
+      },
+      "yMM Hm": {
+        "H": "y年M月 HH:mm–HH:mm",
+        "m": "y年M月 HH:mm–HH:mm"
+      },
+      "yMMM Hm": {
+        "H": "y年M月 HH:mm–HH:mm",
+        "m": "y年M月 HH:mm–HH:mm"
+      },
+      "yMMMd Hm": {
+        "H": "y年M月d日 HH:mm–HH:mm",
+        "m": "y年M月d日 HH:mm–HH:mm"
+      },
+      "yMMMEd Hm": {
+        "H": "y年M月d日E HH:mm–HH:mm",
+        "m": "y年M月d日E HH:mm–HH:mm"
+      },
+      "yMMMM Hm": {
+        "H": "y年M月 HH:mm–HH:mm",
+        "m": "y年M月 HH:mm–HH:mm"
+      },
+      "y年M月d日EEEE hmv": {
+        "a": "y年M月d日EEEE vah:mm至ah:mm",
+        "h": "y年M月d日EEEE vah:mm至h:mm",
+        "m": "y年M月d日EEEE vah:mm至h:mm"
+      },
+      "y年M月d日 hmv": {
+        "a": "y年M月d日 vah:mm至ah:mm",
+        "h": "y年M月d日 vah:mm至h:mm",
+        "m": "y年M月d日 vah:mm至h:mm"
+      },
+      "y/M/d hmv": {
+        "a": "y/M/d vah:mm至ah:mm",
+        "h": "y/M/d vah:mm至h:mm",
+        "m": "y/M/d vah:mm至h:mm"
+      },
+      "d hmv": {
+        "a": "d日 vah:mm至ah:mm",
+        "h": "d日 vah:mm至h:mm",
+        "m": "d日 vah:mm至h:mm"
+      },
+      "E hmv": {
+        "a": "ccc vah:mm至ah:mm",
+        "h": "ccc vah:mm至h:mm",
+        "m": "ccc vah:mm至h:mm"
+      },
+      "Ed hmv": {
+        "a": "d日E vah:mm至ah:mm",
+        "h": "d日E vah:mm至h:mm",
+        "m": "d日E vah:mm至h:mm"
+      },
+      "Gy hmv": {
+        "a": "Gy年 vah:mm至ah:mm",
+        "h": "Gy年 vah:mm至h:mm",
+        "m": "Gy年 vah:mm至h:mm"
+      },
+      "GyM hmv": {
+        "a": "Gy年M月 vah:mm至ah:mm",
+        "h": "Gy年M月 vah:mm至h:mm",
+        "m": "Gy年M月 vah:mm至h:mm"
+      },
+      "GyMd hmv": {
+        "a": "Gy-MM-dd vah:mm至ah:mm",
+        "h": "Gy-MM-dd vah:mm至h:mm",
+        "m": "Gy-MM-dd vah:mm至h:mm"
+      },
+      "GyMEd hmv": {
+        "a": "Gy-MM-ddE vah:mm至ah:mm",
+        "h": "Gy-MM-ddE vah:mm至h:mm",
+        "m": "Gy-MM-ddE vah:mm至h:mm"
+      },
+      "GyMMM hmv": {
+        "a": "Gy年M月 vah:mm至ah:mm",
+        "h": "Gy年M月 vah:mm至h:mm",
+        "m": "Gy年M月 vah:mm至h:mm"
+      },
+      "GyMMMd hmv": {
+        "a": "Gy年M月d日 vah:mm至ah:mm",
+        "h": "Gy年M月d日 vah:mm至h:mm",
+        "m": "Gy年M月d日 vah:mm至h:mm"
+      },
+      "GyMMMEd hmv": {
+        "a": "Gy年M月d日E vah:mm至ah:mm",
+        "h": "Gy年M月d日E vah:mm至h:mm",
+        "m": "Gy年M月d日E vah:mm至h:mm"
+      },
+      "M hmv": {
+        "a": "M月 vah:mm至ah:mm",
+        "h": "M月 vah:mm至h:mm",
+        "m": "M月 vah:mm至h:mm"
+      },
+      "Md hmv": {
+        "a": "M/d vah:mm至ah:mm",
+        "h": "M/d vah:mm至h:mm",
+        "m": "M/d vah:mm至h:mm"
+      },
+      "MEd hmv": {
+        "a": "M/dE vah:mm至ah:mm",
+        "h": "M/dE vah:mm至h:mm",
+        "m": "M/dE vah:mm至h:mm"
+      },
+      "MMdd hmv": {
+        "a": "MM/dd vah:mm至ah:mm",
+        "h": "MM/dd vah:mm至h:mm",
+        "m": "MM/dd vah:mm至h:mm"
+      },
+      "MMM hmv": {
+        "a": "LLL vah:mm至ah:mm",
+        "h": "LLL vah:mm至h:mm",
+        "m": "LLL vah:mm至h:mm"
+      },
+      "MMMd hmv": {
+        "a": "M月d日 vah:mm至ah:mm",
+        "h": "M月d日 vah:mm至h:mm",
+        "m": "M月d日 vah:mm至h:mm"
+      },
+      "MMMEd hmv": {
+        "a": "M月d日E vah:mm至ah:mm",
+        "h": "M月d日E vah:mm至h:mm",
+        "m": "M月d日E vah:mm至h:mm"
+      },
+      "MMMMd hmv": {
+        "a": "M月d日 vah:mm至ah:mm",
+        "h": "M月d日 vah:mm至h:mm",
+        "m": "M月d日 vah:mm至h:mm"
+      },
+      "y hmv": {
+        "a": "y年 vah:mm至ah:mm",
+        "h": "y年 vah:mm至h:mm",
+        "m": "y年 vah:mm至h:mm"
+      },
+      "yM hmv": {
+        "a": "y/M vah:mm至ah:mm",
+        "h": "y/M vah:mm至h:mm",
+        "m": "y/M vah:mm至h:mm"
+      },
+      "yMd hmv": {
+        "a": "y/M/d vah:mm至ah:mm",
+        "h": "y/M/d vah:mm至h:mm",
+        "m": "y/M/d vah:mm至h:mm"
+      },
+      "yMEd hmv": {
+        "a": "y/M/dE vah:mm至ah:mm",
+        "h": "y/M/dE vah:mm至h:mm",
+        "m": "y/M/dE vah:mm至h:mm"
+      },
+      "yMEEEEd hmv": {
+        "a": "y年M月d日EEEE vah:mm至ah:mm",
+        "h": "y年M月d日EEEE vah:mm至h:mm",
+        "m": "y年M月d日EEEE vah:mm至h:mm"
+      },
+      "yMM hmv": {
+        "a": "y年M月 vah:mm至ah:mm",
+        "h": "y年M月 vah:mm至h:mm",
+        "m": "y年M月 vah:mm至h:mm"
+      },
+      "yMMM hmv": {
+        "a": "y年M月 vah:mm至ah:mm",
+        "h": "y年M月 vah:mm至h:mm",
+        "m": "y年M月 vah:mm至h:mm"
+      },
+      "yMMMd hmv": {
+        "a": "y年M月d日 vah:mm至ah:mm",
+        "h": "y年M月d日 vah:mm至h:mm",
+        "m": "y年M月d日 vah:mm至h:mm"
+      },
+      "yMMMEd hmv": {
+        "a": "y年M月d日E vah:mm至ah:mm",
+        "h": "y年M月d日E vah:mm至h:mm",
+        "m": "y年M月d日E vah:mm至h:mm"
+      },
+      "yMMMM hmv": {
+        "a": "y年M月 vah:mm至ah:mm",
+        "h": "y年M月 vah:mm至h:mm",
+        "m": "y年M月 vah:mm至h:mm"
+      },
+      "y年M月d日EEEE Hmv": {
+        "H": "y年M月d日EEEE v HH:mm–HH:mm",
+        "m": "y年M月d日EEEE v HH:mm–HH:mm"
+      },
+      "y年M月d日 Hmv": {
+        "H": "y年M月d日 v HH:mm–HH:mm",
+        "m": "y年M月d日 v HH:mm–HH:mm"
+      },
+      "y/M/d Hmv": {
+        "H": "y/M/d v HH:mm–HH:mm",
+        "m": "y/M/d v HH:mm–HH:mm"
+      },
+      "d Hmv": {
+        "H": "d日 v HH:mm–HH:mm",
+        "m": "d日 v HH:mm–HH:mm"
+      },
+      "E Hmv": {
+        "H": "ccc v HH:mm–HH:mm",
+        "m": "ccc v HH:mm–HH:mm"
+      },
+      "Ed Hmv": {
+        "H": "d日E v HH:mm–HH:mm",
+        "m": "d日E v HH:mm–HH:mm"
+      },
+      "Gy Hmv": {
+        "H": "Gy年 v HH:mm–HH:mm",
+        "m": "Gy年 v HH:mm–HH:mm"
+      },
+      "GyM Hmv": {
+        "H": "Gy年M月 v HH:mm–HH:mm",
+        "m": "Gy年M月 v HH:mm–HH:mm"
+      },
+      "GyMd Hmv": {
+        "H": "Gy-MM-dd v HH:mm–HH:mm",
+        "m": "Gy-MM-dd v HH:mm–HH:mm"
+      },
+      "GyMEd Hmv": {
+        "H": "Gy-MM-ddE v HH:mm–HH:mm",
+        "m": "Gy-MM-ddE v HH:mm–HH:mm"
+      },
+      "GyMMM Hmv": {
+        "H": "Gy年M月 v HH:mm–HH:mm",
+        "m": "Gy年M月 v HH:mm–HH:mm"
+      },
+      "GyMMMd Hmv": {
+        "H": "Gy年M月d日 v HH:mm–HH:mm",
+        "m": "Gy年M月d日 v HH:mm–HH:mm"
+      },
+      "GyMMMEd Hmv": {
+        "H": "Gy年M月d日E v HH:mm–HH:mm",
+        "m": "Gy年M月d日E v HH:mm–HH:mm"
+      },
+      "M Hmv": {
+        "H": "M月 v HH:mm–HH:mm",
+        "m": "M月 v HH:mm–HH:mm"
+      },
+      "Md Hmv": {
+        "H": "M/d v HH:mm–HH:mm",
+        "m": "M/d v HH:mm–HH:mm"
+      },
+      "MEd Hmv": {
+        "H": "M/dE v HH:mm–HH:mm",
+        "m": "M/dE v HH:mm–HH:mm"
+      },
+      "MMdd Hmv": {
+        "H": "MM/dd v HH:mm–HH:mm",
+        "m": "MM/dd v HH:mm–HH:mm"
+      },
+      "MMM Hmv": {
+        "H": "LLL v HH:mm–HH:mm",
+        "m": "LLL v HH:mm–HH:mm"
+      },
+      "MMMd Hmv": {
+        "H": "M月d日 v HH:mm–HH:mm",
+        "m": "M月d日 v HH:mm–HH:mm"
+      },
+      "MMMEd Hmv": {
+        "H": "M月d日E v HH:mm–HH:mm",
+        "m": "M月d日E v HH:mm–HH:mm"
+      },
+      "MMMMd Hmv": {
+        "H": "M月d日 v HH:mm–HH:mm",
+        "m": "M月d日 v HH:mm–HH:mm"
+      },
+      "y Hmv": {
+        "H": "y年 v HH:mm–HH:mm",
+        "m": "y年 v HH:mm–HH:mm"
+      },
+      "yM Hmv": {
+        "H": "y/M v HH:mm–HH:mm",
+        "m": "y/M v HH:mm–HH:mm"
+      },
+      "yMd Hmv": {
+        "H": "y/M/d v HH:mm–HH:mm",
+        "m": "y/M/d v HH:mm–HH:mm"
+      },
+      "yMEd Hmv": {
+        "H": "y/M/dE v HH:mm–HH:mm",
+        "m": "y/M/dE v HH:mm–HH:mm"
+      },
+      "yMEEEEd Hmv": {
+        "H": "y年M月d日EEEE v HH:mm–HH:mm",
+        "m": "y年M月d日EEEE v HH:mm–HH:mm"
+      },
+      "yMM Hmv": {
+        "H": "y年M月 v HH:mm–HH:mm",
+        "m": "y年M月 v HH:mm–HH:mm"
+      },
+      "yMMM Hmv": {
+        "H": "y年M月 v HH:mm–HH:mm",
+        "m": "y年M月 v HH:mm–HH:mm"
+      },
+      "yMMMd Hmv": {
+        "H": "y年M月d日 v HH:mm–HH:mm",
+        "m": "y年M月d日 v HH:mm–HH:mm"
+      },
+      "yMMMEd Hmv": {
+        "H": "y年M月d日E v HH:mm–HH:mm",
+        "m": "y年M月d日E v HH:mm–HH:mm"
+      },
+      "yMMMM Hmv": {
+        "H": "y年M月 v HH:mm–HH:mm",
+        "m": "y年M月 v HH:mm–HH:mm"
+      },
+      "y年M月d日EEEE hv": {
+        "a": "y年M月d日EEEE vah时至ah时",
+        "h": "y年M月d日EEEE vah时至h时"
+      },
+      "y年M月d日 hv": {
+        "a": "y年M月d日 vah时至ah时",
+        "h": "y年M月d日 vah时至h时"
+      },
+      "y/M/d hv": {
+        "a": "y/M/d vah时至ah时",
+        "h": "y/M/d vah时至h时"
+      },
+      "d hv": {
+        "a": "d日 vah时至ah时",
+        "h": "d日 vah时至h时"
+      },
+      "E hv": {
+        "a": "ccc vah时至ah时",
+        "h": "ccc vah时至h时"
+      },
+      "Ed hv": {
+        "a": "d日E vah时至ah时",
+        "h": "d日E vah时至h时"
+      },
+      "Gy hv": {
+        "a": "Gy年 vah时至ah时",
+        "h": "Gy年 vah时至h时"
+      },
+      "GyM hv": {
+        "a": "Gy年M月 vah时至ah时",
+        "h": "Gy年M月 vah时至h时"
+      },
+      "GyMd hv": {
+        "a": "Gy-MM-dd vah时至ah时",
+        "h": "Gy-MM-dd vah时至h时"
+      },
+      "GyMEd hv": {
+        "a": "Gy-MM-ddE vah时至ah时",
+        "h": "Gy-MM-ddE vah时至h时"
+      },
+      "GyMMM hv": {
+        "a": "Gy年M月 vah时至ah时",
+        "h": "Gy年M月 vah时至h时"
+      },
+      "GyMMMd hv": {
+        "a": "Gy年M月d日 vah时至ah时",
+        "h": "Gy年M月d日 vah时至h时"
+      },
+      "GyMMMEd hv": {
+        "a": "Gy年M月d日E vah时至ah时",
+        "h": "Gy年M月d日E vah时至h时"
+      },
+      "M hv": {
+        "a": "M月 vah时至ah时",
+        "h": "M月 vah时至h时"
+      },
+      "Md hv": {
+        "a": "M/d vah时至ah时",
+        "h": "M/d vah时至h时"
+      },
+      "MEd hv": {
+        "a": "M/dE vah时至ah时",
+        "h": "M/dE vah时至h时"
+      },
+      "MMdd hv": {
+        "a": "MM/dd vah时至ah时",
+        "h": "MM/dd vah时至h时"
+      },
+      "MMM hv": {
+        "a": "LLL vah时至ah时",
+        "h": "LLL vah时至h时"
+      },
+      "MMMd hv": {
+        "a": "M月d日 vah时至ah时",
+        "h": "M月d日 vah时至h时"
+      },
+      "MMMEd hv": {
+        "a": "M月d日E vah时至ah时",
+        "h": "M月d日E vah时至h时"
+      },
+      "MMMMd hv": {
+        "a": "M月d日 vah时至ah时",
+        "h": "M月d日 vah时至h时"
+      },
+      "y hv": {
+        "a": "y年 vah时至ah时",
+        "h": "y年 vah时至h时"
+      },
+      "yM hv": {
+        "a": "y/M vah时至ah时",
+        "h": "y/M vah时至h时"
+      },
+      "yMd hv": {
+        "a": "y/M/d vah时至ah时",
+        "h": "y/M/d vah时至h时"
+      },
+      "yMEd hv": {
+        "a": "y/M/dE vah时至ah时",
+        "h": "y/M/dE vah时至h时"
+      },
+      "yMEEEEd hv": {
+        "a": "y年M月d日EEEE vah时至ah时",
+        "h": "y年M月d日EEEE vah时至h时"
+      },
+      "yMM hv": {
+        "a": "y年M月 vah时至ah时",
+        "h": "y年M月 vah时至h时"
+      },
+      "yMMM hv": {
+        "a": "y年M月 vah时至ah时",
+        "h": "y年M月 vah时至h时"
+      },
+      "yMMMd hv": {
+        "a": "y年M月d日 vah时至ah时",
+        "h": "y年M月d日 vah时至h时"
+      },
+      "yMMMEd hv": {
+        "a": "y年M月d日E vah时至ah时",
+        "h": "y年M月d日E vah时至h时"
+      },
+      "yMMMM hv": {
+        "a": "y年M月 vah时至ah时",
+        "h": "y年M月 vah时至h时"
+      },
+      "y年M月d日EEEE Hv": {
+        "H": "y年M月d日EEEE v HH–HH"
+      },
+      "y年M月d日 Hv": {
+        "H": "y年M月d日 v HH–HH"
+      },
+      "y/M/d Hv": {
+        "H": "y/M/d v HH–HH"
+      },
+      "d Hv": {
+        "H": "d日 v HH–HH"
+      },
+      "E Hv": {
+        "H": "ccc v HH–HH"
+      },
+      "Ed Hv": {
+        "H": "d日E v HH–HH"
+      },
+      "Gy Hv": {
+        "H": "Gy年 v HH–HH"
+      },
+      "GyM Hv": {
+        "H": "Gy年M月 v HH–HH"
+      },
+      "GyMd Hv": {
+        "H": "Gy-MM-dd v HH–HH"
+      },
+      "GyMEd Hv": {
+        "H": "Gy-MM-ddE v HH–HH"
+      },
+      "GyMMM Hv": {
+        "H": "Gy年M月 v HH–HH"
+      },
+      "GyMMMd Hv": {
+        "H": "Gy年M月d日 v HH–HH"
+      },
+      "GyMMMEd Hv": {
+        "H": "Gy年M月d日E v HH–HH"
+      },
+      "M Hv": {
+        "H": "M月 v HH–HH"
+      },
+      "Md Hv": {
+        "H": "M/d v HH–HH"
+      },
+      "MEd Hv": {
+        "H": "M/dE v HH–HH"
+      },
+      "MMdd Hv": {
+        "H": "MM/dd v HH–HH"
+      },
+      "MMM Hv": {
+        "H": "LLL v HH–HH"
+      },
+      "MMMd Hv": {
+        "H": "M月d日 v HH–HH"
+      },
+      "MMMEd Hv": {
+        "H": "M月d日E v HH–HH"
+      },
+      "MMMMd Hv": {
+        "H": "M月d日 v HH–HH"
+      },
+      "y Hv": {
+        "H": "y年 v HH–HH"
+      },
+      "yM Hv": {
+        "H": "y/M v HH–HH"
+      },
+      "yMd Hv": {
+        "H": "y/M/d v HH–HH"
+      },
+      "yMEd Hv": {
+        "H": "y/M/dE v HH–HH"
+      },
+      "yMEEEEd Hv": {
+        "H": "y年M月d日EEEE v HH–HH"
+      },
+      "yMM Hv": {
+        "H": "y年M月 v HH–HH"
+      },
+      "yMMM Hv": {
+        "H": "y年M月 v HH–HH"
+      },
+      "yMMMd Hv": {
+        "H": "y年M月d日 v HH–HH"
+      },
+      "yMMMEd Hv": {
+        "H": "y年M月d日E v HH–HH"
+      },
+      "yMMMM Hv": {
+        "H": "y年M月 v HH–HH"
       }
     },
     "hourCycle": "h23",

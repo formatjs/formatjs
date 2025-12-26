@@ -211,11 +211,25 @@ async function loadDatesFields(
     .filter(hasAltVariant)
     .map(skeleton => {
       const pattern = availableFormats[skeleton as 'Bh']
+      const skeletonIntervalFormats = intervalFormats[skeleton]
+      const rangePatterns =
+        typeof skeletonIntervalFormats === 'object'
+          ? skeletonIntervalFormats
+          : undefined
+      const intervalFormatFallback =
+        typeof intervalFormats.intervalFormatFallback === 'string'
+          ? intervalFormats.intervalFormatFallback
+          : undefined
       try {
         return [
           skeleton,
           pattern,
-          parseDateTimeSkeleton(skeleton, pattern),
+          parseDateTimeSkeleton(
+            skeleton,
+            pattern,
+            rangePatterns,
+            intervalFormatFallback
+          ),
         ] as [string, string, Formats]
       } catch {
         // ignore
@@ -279,6 +293,44 @@ async function loadDatesFields(
         .replace('{0}', timeSkeleton)
         .replace('{1}', dateSkeleton)
       allFormats[skeleton] = pattern
+
+      // Synthesize interval formats for combined date+time skeletons per TR35 spec
+      // See: https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
+      // "For greatestDifference values corresponding to the time fields in the skeleton,
+      // separate the skeleton into a date fields part and a time fields part... [and]
+      // combine [them] using the dateTimeFormat"
+      //
+      // This matches the approach in ICU4J's DateIntervalFormat.concatSingleDate2TimeInterval()
+      // See: https://android.googlesource.com/platform/external/icu/+/refs/heads/o-iot-preview-5/android_icu4j/src/main/java/android/icu/text/DateIntervalFormat.java
+      //
+      // When a skeleton combines date and time fields (e.g., "EyMMMdHm") and CLDR doesn't
+      // provide interval formats for it, synthesize by combining the date pattern with time
+      // interval patterns. This produces output like "Sun, 22 Sept 2024, 14:00 – 16:00"
+      // instead of "Sun, 22 Sept 2024, 14:00 – Sun, 22 Sept 2024, 16:00"
+      const combinedIntervalFormats = intervalFormats[skeleton]
+      const timeIntervalFormats = intervalFormats[timeSkeleton]
+      if (
+        !combinedIntervalFormats &&
+        timeIntervalFormats &&
+        typeof timeIntervalFormats === 'object'
+      ) {
+        // Synthesize interval formats for each time field difference
+        const synthesizedFormats: Record<string, string> = {}
+        for (const [field, timeIntervalPattern] of Object.entries(
+          timeIntervalFormats
+        )) {
+          if (typeof timeIntervalPattern === 'string') {
+            // Combine date pattern with time interval pattern using dateTimeFormat
+            const synthesizedPattern = rawPattern
+              .replace('{0}', timeIntervalPattern)
+              .replace('{1}', datePattern)
+            synthesizedFormats[field] = synthesizedPattern
+          }
+        }
+        if (Object.keys(synthesizedFormats).length > 0) {
+          intervalFormats[skeleton] = synthesizedFormats
+        }
+      }
     }
   }
   return {
