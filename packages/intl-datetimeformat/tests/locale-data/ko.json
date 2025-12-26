@@ -90,40 +90,58 @@
       ]
     },
     "timeZoneName": {
-      "America/Rio_Branco": {
+      "Africa/Abidjan": {
         "long": [
-          "아크레 표준시",
-          "아크레 하계 표준시"
+          "그리니치 표준시",
+          "그리니치 표준시"
         ]
       },
-      "Asia/Kabul": {
+      "Africa/Accra": {
         "long": [
-          "아프가니스탄 시간",
-          "아프가니스탄 시간"
+          "그리니치 표준시",
+          "그리니치 표준시"
         ]
       },
-      "Africa/Maputo": {
+      "Africa/Addis_Ababa": {
         "long": [
-          "중앙아프리카 시간",
-          "중앙아프리카 시간"
+          "동아프리카 시간",
+          "동아프리카 시간"
         ]
       },
-      "Africa/Bujumbura": {
+      "Africa/Algiers": {
         "long": [
-          "중앙아프리카 시간",
-          "중앙아프리카 시간"
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
         ]
       },
-      "Africa/Gaborone": {
+      "Africa/Asmera": {
         "long": [
-          "중앙아프리카 시간",
-          "중앙아프리카 시간"
+          "동아프리카 시간",
+          "동아프리카 시간"
         ]
       },
-      "Africa/Lubumbashi": {
+      "Africa/Bamako": {
         "long": [
-          "중앙아프리카 시간",
-          "중앙아프리카 시간"
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Africa/Bangui": {
+        "long": [
+          "서아프리카 시간",
+          "서아프리카 시간"
+        ]
+      },
+      "Africa/Banjul": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Africa/Bissau": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
         ]
       },
       "Africa/Blantyre": {
@@ -132,25 +150,49 @@
           "중앙아프리카 시간"
         ]
       },
-      "Africa/Kigali": {
+      "Africa/Brazzaville": {
+        "long": [
+          "서아프리카 시간",
+          "서아프리카 시간"
+        ]
+      },
+      "Africa/Bujumbura": {
         "long": [
           "중앙아프리카 시간",
           "중앙아프리카 시간"
         ]
       },
-      "Africa/Lusaka": {
+      "Africa/Cairo": {
         "long": [
-          "중앙아프리카 시간",
-          "중앙아프리카 시간"
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
         ]
       },
-      "Africa/Harare": {
+      "Africa/Casablanca": {
         "long": [
-          "중앙아프리카 시간",
-          "중앙아프리카 시간"
+          "서유럽 표준시",
+          "서유럽 하계 표준시"
         ]
       },
-      "Africa/Nairobi": {
+      "Africa/Ceuta": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Africa/Conakry": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Africa/Dakar": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Africa/Dar_es_Salaam": {
         "long": [
           "동아프리카 시간",
           "동아프리카 시간"
@@ -162,40 +204,46 @@
           "동아프리카 시간"
         ]
       },
-      "Africa/Asmera": {
+      "Africa/Douala": {
         "long": [
-          "동아프리카 시간",
-          "동아프리카 시간"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
-      "Africa/Addis_Ababa": {
+      "Africa/El_Aaiun": {
         "long": [
-          "동아프리카 시간",
-          "동아프리카 시간"
+          "서유럽 표준시",
+          "서유럽 하계 표준시"
         ]
       },
-      "Indian/Comoro": {
+      "Africa/Freetown": {
         "long": [
-          "동아프리카 시간",
-          "동아프리카 시간"
+          "그리니치 표준시",
+          "그리니치 표준시"
         ]
       },
-      "Indian/Antananarivo": {
+      "Africa/Gaborone": {
         "long": [
-          "동아프리카 시간",
-          "동아프리카 시간"
+          "중앙아프리카 시간",
+          "중앙아프리카 시간"
         ]
       },
-      "Africa/Mogadishu": {
+      "Africa/Harare": {
         "long": [
-          "동아프리카 시간",
-          "동아프리카 시간"
+          "중앙아프리카 시간",
+          "중앙아프리카 시간"
         ]
       },
-      "Africa/Dar_es_Salaam": {
+      "Africa/Johannesburg": {
         "long": [
-          "동아프리카 시간",
-          "동아프리카 시간"
+          "남아프리카 시간",
+          "남아프리카 시간"
+        ]
+      },
+      "Africa/Juba": {
+        "long": [
+          "중앙아프리카 시간",
+          "중앙아프리카 시간"
         ]
       },
       "Africa/Kampala": {
@@ -204,16 +252,70 @@
           "동아프리카 시간"
         ]
       },
-      "Indian/Mayotte": {
+      "Africa/Khartoum": {
         "long": [
-          "동아프리카 시간",
-          "동아프리카 시간"
+          "중앙아프리카 시간",
+          "중앙아프리카 시간"
         ]
       },
-      "Africa/Johannesburg": {
+      "Africa/Kigali": {
         "long": [
-          "남아프리카 시간",
-          "남아프리카 시간"
+          "중앙아프리카 시간",
+          "중앙아프리카 시간"
+        ]
+      },
+      "Africa/Kinshasa": {
+        "long": [
+          "서아프리카 시간",
+          "서아프리카 시간"
+        ]
+      },
+      "Africa/Lagos": {
+        "long": [
+          "서아프리카 시간",
+          "서아프리카 시간"
+        ]
+      },
+      "Africa/Libreville": {
+        "long": [
+          "서아프리카 시간",
+          "서아프리카 시간"
+        ]
+      },
+      "Africa/Lome": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Africa/Luanda": {
+        "long": [
+          "서아프리카 시간",
+          "서아프리카 시간"
+        ]
+      },
+      "Africa/Lubumbashi": {
+        "long": [
+          "중앙아프리카 시간",
+          "중앙아프리카 시간"
+        ]
+      },
+      "Africa/Lusaka": {
+        "long": [
+          "중앙아프리카 시간",
+          "중앙아프리카 시간"
+        ]
+      },
+      "Africa/Malabo": {
+        "long": [
+          "서아프리카 시간",
+          "서아프리카 시간"
+        ]
+      },
+      "Africa/Maputo": {
+        "long": [
+          "중앙아프리카 시간",
+          "중앙아프리카 시간"
         ]
       },
       "Africa/Maseru": {
@@ -228,55 +330,25 @@
           "남아프리카 시간"
         ]
       },
-      "Africa/Lagos": {
+      "Africa/Mogadishu": {
         "long": [
-          "서아프리카 시간",
-          "서아프리카 시간"
+          "동아프리카 시간",
+          "동아프리카 시간"
         ]
       },
-      "Africa/Luanda": {
+      "Africa/Monrovia": {
         "long": [
-          "서아프리카 시간",
-          "서아프리카 시간"
+          "그리니치 표준시",
+          "그리니치 표준시"
         ]
       },
-      "Africa/Porto-Novo": {
+      "Africa/Nairobi": {
         "long": [
-          "서아프리카 시간",
-          "서아프리카 시간"
+          "동아프리카 시간",
+          "동아프리카 시간"
         ]
       },
-      "Africa/Kinshasa": {
-        "long": [
-          "서아프리카 시간",
-          "서아프리카 시간"
-        ]
-      },
-      "Africa/Bangui": {
-        "long": [
-          "서아프리카 시간",
-          "서아프리카 시간"
-        ]
-      },
-      "Africa/Brazzaville": {
-        "long": [
-          "서아프리카 시간",
-          "서아프리카 시간"
-        ]
-      },
-      "Africa/Douala": {
-        "long": [
-          "서아프리카 시간",
-          "서아프리카 시간"
-        ]
-      },
-      "Africa/Libreville": {
-        "long": [
-          "서아프리카 시간",
-          "서아프리카 시간"
-        ]
-      },
-      "Africa/Malabo": {
+      "Africa/Ndjamena": {
         "long": [
           "서아프리카 시간",
           "서아프리카 시간"
@@ -288,223 +360,61 @@
           "서아프리카 시간"
         ]
       },
-      "Africa/Ndjamena": {
+      "Africa/Nouakchott": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Africa/Ouagadougou": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Africa/Porto-Novo": {
         "long": [
           "서아프리카 시간",
           "서아프리카 시간"
         ]
       },
-      "Asia/Aqtobe": {
+      "Africa/Sao_Tome": {
         "long": [
-          "서부 카자흐스탄 시간",
-          "서부 카자흐스탄 시간"
+          "그리니치 표준시",
+          "그리니치 표준시"
         ]
       },
-      "America/Juneau": {
+      "Africa/Tripoli": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Africa/Tunis": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Africa/Windhoek": {
+        "long": [
+          "중앙아프리카 시간",
+          "중앙아프리카 시간"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "하와이 알류샨 표준시",
+          "하와이 알류샨 하계 표준시"
+        ]
+      },
+      "America/Anchorage": {
         "long": [
           "알래스카 표준시",
           "알래스카 하계 표준시"
         ]
       },
-      "Asia/Almaty": {
-        "long": [
-          "동부 카자흐스탄 시간",
-          "동부 카자흐스탄 시간"
-        ]
-      },
-      "America/Manaus": {
-        "long": [
-          "아마존 표준시",
-          "아마존 하계 표준시"
-        ]
-      },
-      "America/Chicago": {
-        "long": [
-          "미 중부 표준시",
-          "미 중부 하계 표준시"
-        ]
-      },
-      "America/Belize": {
-        "long": [
-          "미 중부 표준시",
-          "미 중부 하계 표준시"
-        ]
-      },
-      "America/Winnipeg": {
-        "long": [
-          "미 중부 표준시",
-          "미 중부 하계 표준시"
-        ]
-      },
-      "America/Costa_Rica": {
-        "long": [
-          "미 중부 표준시",
-          "미 중부 하계 표준시"
-        ]
-      },
-      "America/Guatemala": {
-        "long": [
-          "미 중부 표준시",
-          "미 중부 하계 표준시"
-        ]
-      },
-      "America/Tegucigalpa": {
-        "long": [
-          "미 중부 표준시",
-          "미 중부 하계 표준시"
-        ]
-      },
-      "America/Mexico_City": {
-        "long": [
-          "미 중부 표준시",
-          "미 중부 하계 표준시"
-        ]
-      },
-      "America/El_Salvador": {
-        "long": [
-          "미 중부 표준시",
-          "미 중부 하계 표준시"
-        ]
-      },
-      "America/New_York": {
-        "long": [
-          "미 동부 표준시",
-          "미 동부 하계 표준시"
-        ]
-      },
-      "America/Nassau": {
-        "long": [
-          "미 동부 표준시",
-          "미 동부 하계 표준시"
-        ]
-      },
-      "America/Toronto": {
-        "long": [
-          "미 동부 표준시",
-          "미 동부 하계 표준시"
-        ]
-      },
-      "America/Port-au-Prince": {
-        "long": [
-          "미 동부 표준시",
-          "미 동부 하계 표준시"
-        ]
-      },
-      "America/Jamaica": {
-        "long": [
-          "미 동부 표준시",
-          "미 동부 하계 표준시"
-        ]
-      },
-      "America/Cayman": {
-        "long": [
-          "미 동부 표준시",
-          "미 동부 하계 표준시"
-        ]
-      },
-      "America/Panama": {
-        "long": [
-          "미 동부 표준시",
-          "미 동부 하계 표준시"
-        ]
-      },
-      "America/Denver": {
-        "long": [
-          "미 산악 표준시",
-          "미 산지 하계 표준시"
-        ]
-      },
-      "America/Edmonton": {
-        "long": [
-          "미 산악 표준시",
-          "미 산지 하계 표준시"
-        ]
-      },
-      "America/Los_Angeles": {
-        "long": [
-          "미 태평양 표준시",
-          "미 태평양 하계 표준시"
-        ]
-      },
-      "America/Vancouver": {
-        "long": [
-          "미 태평양 표준시",
-          "미 태평양 하계 표준시"
-        ]
-      },
-      "America/Tijuana": {
-        "long": [
-          "미 태평양 표준시",
-          "미 태평양 하계 표준시"
-        ]
-      },
-      "Asia/Anadyr": {
-        "long": [
-          "아나디리 표준시",
-          "아나디리 하계 표준시"
-        ]
-      },
-      "Pacific/Apia": {
-        "long": [
-          "아피아 표준시",
-          "아피아 하계 표준시"
-        ]
-      },
-      "Asia/Riyadh": {
-        "long": [
-          "아라비아 표준시",
-          "아라비아 하계 표준시"
-        ]
-      },
-      "Asia/Bahrain": {
-        "long": [
-          "아라비아 표준시",
-          "아라비아 하계 표준시"
-        ]
-      },
-      "Asia/Baghdad": {
-        "long": [
-          "아라비아 표준시",
-          "아라비아 하계 표준시"
-        ]
-      },
-      "Asia/Kuwait": {
-        "long": [
-          "아라비아 표준시",
-          "아라비아 하계 표준시"
-        ]
-      },
-      "Asia/Qatar": {
-        "long": [
-          "아라비아 표준시",
-          "아라비아 하계 표준시"
-        ]
-      },
-      "Asia/Aden": {
-        "long": [
-          "아라비아 표준시",
-          "아라비아 하계 표준시"
-        ]
-      },
-      "America/Buenos_Aires": {
-        "long": [
-          "아르헨티나 표준시",
-          "아르헨티나 하계 표준시"
-        ]
-      },
-      "America/Argentina/San_Luis": {
-        "long": [
-          "아르헨티나 서부 표준시",
-          "아르헨티나 서부 하계 표준시"
-        ]
-      },
-      "Asia/Ashgabat": {
-        "long": [
-          "투르크메니스탄 표준시",
-          "투르크메니스탄 하계 표준시"
-        ]
-      },
-      "America/Halifax": {
+      "America/Anguilla": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
@@ -516,10 +426,10 @@
           "대서양 하계 표준시"
         ]
       },
-      "America/Anguilla": {
+      "America/Araguaina": {
         "long": [
-          "대서양 표준시",
-          "대서양 하계 표준시"
+          "브라질리아 표준시",
+          "브라질리아 하계 표준시"
         ]
       },
       "America/Aruba": {
@@ -528,22 +438,166 @@
           "대서양 하계 표준시"
         ]
       },
+      "America/Asuncion": {
+        "long": [
+          "파라과이 표준시",
+          "파라과이 하계 표준시"
+        ]
+      },
+      "America/Bahia": {
+        "long": [
+          "브라질리아 표준시",
+          "브라질리아 하계 표준시"
+        ]
+      },
+      "America/Bahia_Banderas": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
       "America/Barbados": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
         ]
       },
-      "Atlantic/Bermuda": {
+      "America/Belem": {
+        "long": [
+          "브라질리아 표준시",
+          "브라질리아 하계 표준시"
+        ]
+      },
+      "America/Belize": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Blanc-Sablon": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
         ]
       },
-      "America/Kralendijk": {
+      "America/Boa_Vista": {
         "long": [
-          "대서양 표준시",
-          "대서양 하계 표준시"
+          "아마존 표준시",
+          "아마존 하계 표준시"
+        ]
+      },
+      "America/Bogota": {
+        "long": [
+          "콜롬비아 표준시",
+          "콜롬비아 하계 표준시"
+        ]
+      },
+      "America/Boise": {
+        "long": [
+          "미 산악 표준시",
+          "미 산지 하계 표준시"
+        ]
+      },
+      "America/Buenos_Aires": {
+        "long": [
+          "아르헨티나 표준시",
+          "아르헨티나 하계 표준시"
+        ]
+      },
+      "America/Cambridge_Bay": {
+        "long": [
+          "미 산악 표준시",
+          "미 산지 하계 표준시"
+        ]
+      },
+      "America/Campo_Grande": {
+        "long": [
+          "아마존 표준시",
+          "아마존 하계 표준시"
+        ]
+      },
+      "America/Cancun": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Caracas": {
+        "long": [
+          "베네수엘라 시간",
+          "베네수엘라 시간"
+        ]
+      },
+      "America/Catamarca": {
+        "long": [
+          "아르헨티나 표준시",
+          "아르헨티나 하계 표준시"
+        ]
+      },
+      "America/Cayenne": {
+        "long": [
+          "프랑스령 가이아나 시간",
+          "프랑스령 가이아나 시간"
+        ]
+      },
+      "America/Cayman": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Chicago": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Chihuahua": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Ciudad_Juarez": {
+        "long": [
+          "미 산악 표준시",
+          "미 산지 하계 표준시"
+        ]
+      },
+      "America/Coral_Harbour": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Cordoba": {
+        "long": [
+          "아르헨티나 표준시",
+          "아르헨티나 하계 표준시"
+        ]
+      },
+      "America/Costa_Rica": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Coyhaique": {
+        "long": [
+          "칠레 표준시",
+          "칠레 하계 표준시"
+        ]
+      },
+      "America/Creston": {
+        "long": [
+          "미 산악 표준시",
+          "미 산지 하계 표준시"
+        ]
+      },
+      "America/Cuiaba": {
+        "long": [
+          "아마존 표준시",
+          "아마존 하계 표준시"
         ]
       },
       "America/Curacao": {
@@ -552,19 +606,91 @@
           "대서양 하계 표준시"
         ]
       },
+      "America/Danmarkshavn": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "America/Dawson": {
+        "long": [
+          "유콘 시간",
+          "유콘 시간"
+        ]
+      },
+      "America/Dawson_Creek": {
+        "long": [
+          "미 산악 표준시",
+          "미 산지 하계 표준시"
+        ]
+      },
+      "America/Denver": {
+        "long": [
+          "미 산악 표준시",
+          "미 산지 하계 표준시"
+        ]
+      },
+      "America/Detroit": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
       "America/Dominica": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
         ]
       },
-      "America/Grenada": {
+      "America/Edmonton": {
+        "long": [
+          "미 산악 표준시",
+          "미 산지 하계 표준시"
+        ]
+      },
+      "America/Eirunepe": {
+        "long": [
+          "아크레 표준시",
+          "아크레 하계 표준시"
+        ]
+      },
+      "America/El_Salvador": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Fort_Nelson": {
+        "long": [
+          "미 산악 표준시",
+          "미 산지 하계 표준시"
+        ]
+      },
+      "America/Fortaleza": {
+        "long": [
+          "브라질리아 표준시",
+          "브라질리아 하계 표준시"
+        ]
+      },
+      "America/Glace_Bay": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
         ]
       },
-      "America/Thule": {
+      "America/Goose_Bay": {
+        "long": [
+          "대서양 표준시",
+          "대서양 하계 표준시"
+        ]
+      },
+      "America/Grand_Turk": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Grenada": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
@@ -576,16 +702,130 @@
           "대서양 하계 표준시"
         ]
       },
-      "America/St_Kitts": {
+      "America/Guatemala": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Guayaquil": {
+        "long": [
+          "에콰도르 시간",
+          "에콰도르 시간"
+        ]
+      },
+      "America/Guyana": {
+        "long": [
+          "가이아나 시간",
+          "가이아나 시간"
+        ]
+      },
+      "America/Halifax": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
         ]
       },
-      "America/St_Lucia": {
+      "America/Havana": {
+        "long": [
+          "쿠바 표준시",
+          "쿠바 하계 표준시"
+        ]
+      },
+      "America/Hermosillo": {
+        "long": [
+          "멕시코 태평양 표준시",
+          "멕시코 태평양 하계 표준시"
+        ]
+      },
+      "America/Indianapolis": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Inuvik": {
+        "long": [
+          "미 산악 표준시",
+          "미 산지 하계 표준시"
+        ]
+      },
+      "America/Iqaluit": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Jamaica": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Jujuy": {
+        "long": [
+          "아르헨티나 표준시",
+          "아르헨티나 하계 표준시"
+        ]
+      },
+      "America/Juneau": {
+        "long": [
+          "알래스카 표준시",
+          "알래스카 하계 표준시"
+        ]
+      },
+      "America/Kralendijk": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
+        ]
+      },
+      "America/La_Paz": {
+        "long": [
+          "볼리비아 시간",
+          "볼리비아 시간"
+        ]
+      },
+      "America/Lima": {
+        "long": [
+          "페루 표준시",
+          "페루 하계 표준시"
+        ]
+      },
+      "America/Los_Angeles": {
+        "long": [
+          "미 태평양 표준시",
+          "미 태평양 하계 표준시"
+        ]
+      },
+      "America/Louisville": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Lower_Princes": {
+        "long": [
+          "대서양 표준시",
+          "대서양 하계 표준시"
+        ]
+      },
+      "America/Maceio": {
+        "long": [
+          "브라질리아 표준시",
+          "브라질리아 하계 표준시"
+        ]
+      },
+      "America/Managua": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Manaus": {
+        "long": [
+          "아마존 표준시",
+          "아마존 하계 표준시"
         ]
       },
       "America/Marigot": {
@@ -600,22 +840,124 @@
           "대서양 하계 표준시"
         ]
       },
+      "America/Matamoros": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Mazatlan": {
+        "long": [
+          "멕시코 태평양 표준시",
+          "멕시코 태평양 하계 표준시"
+        ]
+      },
+      "America/Mendoza": {
+        "long": [
+          "아르헨티나 표준시",
+          "아르헨티나 하계 표준시"
+        ]
+      },
+      "America/Menominee": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Merida": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Metlakatla": {
+        "long": [
+          "알래스카 표준시",
+          "알래스카 하계 표준시"
+        ]
+      },
+      "America/Mexico_City": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Miquelon": {
+        "long": [
+          "세인트피에르 미클롱 표준시",
+          "세인트피에르 미클롱 하계 표준시"
+        ]
+      },
+      "America/Moncton": {
+        "long": [
+          "대서양 표준시",
+          "대서양 하계 표준시"
+        ]
+      },
+      "America/Monterrey": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Montevideo": {
+        "long": [
+          "우루과이 표준시",
+          "우루과이 하계 표준시"
+        ]
+      },
       "America/Montserrat": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
         ]
       },
-      "America/Puerto_Rico": {
+      "America/Nassau": {
         "long": [
-          "대서양 표준시",
-          "대서양 하계 표준시"
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
         ]
       },
-      "America/Lower_Princes": {
+      "America/New_York": {
         "long": [
-          "대서양 표준시",
-          "대서양 하계 표준시"
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Nome": {
+        "long": [
+          "알래스카 표준시",
+          "알래스카 하계 표준시"
+        ]
+      },
+      "America/Noronha": {
+        "long": [
+          "페르난도 데 노로냐 표준시",
+          "페르난도 데 노로냐 하계 표준시"
+        ]
+      },
+      "America/Ojinaga": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Panama": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Paramaribo": {
+        "long": [
+          "수리남 시간",
+          "수리남 시간"
+        ]
+      },
+      "America/Phoenix": {
+        "long": [
+          "미 산악 표준시",
+          "미 산지 하계 표준시"
         ]
       },
       "America/Port_of_Spain": {
@@ -624,13 +966,109 @@
           "대서양 하계 표준시"
         ]
       },
-      "America/St_Vincent": {
+      "America/Port-au-Prince": {
+        "long": [
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
+        ]
+      },
+      "America/Porto_Velho": {
+        "long": [
+          "아마존 표준시",
+          "아마존 하계 표준시"
+        ]
+      },
+      "America/Puerto_Rico": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
         ]
       },
-      "America/Tortola": {
+      "America/Punta_Arenas": {
+        "long": [
+          "칠레 표준시",
+          "칠레 하계 표준시"
+        ]
+      },
+      "America/Rankin_Inlet": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Recife": {
+        "long": [
+          "브라질리아 표준시",
+          "브라질리아 하계 표준시"
+        ]
+      },
+      "America/Regina": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Resolute": {
+        "long": [
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
+        ]
+      },
+      "America/Rio_Branco": {
+        "long": [
+          "아크레 표준시",
+          "아크레 하계 표준시"
+        ]
+      },
+      "America/Santarem": {
+        "long": [
+          "브라질리아 표준시",
+          "브라질리아 하계 표준시"
+        ]
+      },
+      "America/Santiago": {
+        "long": [
+          "칠레 표준시",
+          "칠레 하계 표준시"
+        ]
+      },
+      "America/Santo_Domingo": {
+        "long": [
+          "대서양 표준시",
+          "대서양 하계 표준시"
+        ]
+      },
+      "America/Sao_Paulo": {
+        "long": [
+          "브라질리아 표준시",
+          "브라질리아 하계 표준시"
+        ]
+      },
+      "America/Sitka": {
+        "long": [
+          "알래스카 표준시",
+          "알래스카 하계 표준시"
+        ]
+      },
+      "America/St_Barthelemy": {
+        "long": [
+          "대서양 표준시",
+          "대서양 하계 표준시"
+        ]
+      },
+      "America/St_Johns": {
+        "long": [
+          "뉴펀들랜드 표준시",
+          "뉴펀들랜드 하계 표준시"
+        ]
+      },
+      "America/St_Kitts": {
+        "long": [
+          "대서양 표준시",
+          "대서양 하계 표준시"
+        ]
+      },
+      "America/St_Lucia": {
         "long": [
           "대서양 표준시",
           "대서양 하계 표준시"
@@ -642,136 +1080,76 @@
           "대서양 하계 표준시"
         ]
       },
-      "Australia/Adelaide": {
+      "America/St_Vincent": {
         "long": [
-          "호주 중부 표준시",
-          "호주 중부 하계 표준시"
+          "대서양 표준시",
+          "대서양 하계 표준시"
         ]
       },
-      "Australia/Eucla": {
+      "America/Swift_Current": {
         "long": [
-          "호주 중서부 표준시",
-          "호주 중서부 하계 표준시"
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
         ]
       },
-      "Australia/Sydney": {
+      "America/Tegucigalpa": {
         "long": [
-          "호주 동부 표준시",
-          "호주 동부 하계 표준시"
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
         ]
       },
-      "Australia/Perth": {
+      "America/Thule": {
         "long": [
-          "호주 서부 표준시",
-          "호주 서부 하계 표준시"
+          "대서양 표준시",
+          "대서양 하계 표준시"
         ]
       },
-      "Atlantic/Azores": {
+      "America/Tijuana": {
         "long": [
-          "아조레스 표준시",
-          "아조레스 하계 표준시"
+          "미 태평양 표준시",
+          "미 태평양 하계 표준시"
         ]
       },
-      "America/Adak": {
+      "America/Toronto": {
         "long": [
-          "하와이 알류샨 표준시",
-          "하와이 알류샨 하계 표준시"
+          "미 동부 표준시",
+          "미 동부 하계 표준시"
         ]
       },
-      "Asia/Thimphu": {
+      "America/Tortola": {
         "long": [
-          "부탄 시간",
-          "부탄 시간"
+          "대서양 표준시",
+          "대서양 하계 표준시"
         ]
       },
-      "America/La_Paz": {
+      "America/Vancouver": {
         "long": [
-          "볼리비아 시간",
-          "볼리비아 시간"
+          "미 태평양 표준시",
+          "미 태평양 하계 표준시"
         ]
       },
-      "Asia/Kuching": {
+      "America/Whitehorse": {
         "long": [
-          "말레이시아 시간",
-          "말레이시아 시간"
+          "유콘 시간",
+          "유콘 시간"
         ]
       },
-      "America/Sao_Paulo": {
+      "America/Winnipeg": {
         "long": [
-          "브라질리아 표준시",
-          "브라질리아 하계 표준시"
+          "미 중부 표준시",
+          "미 중부 하계 표준시"
         ]
       },
-      "Europe/London": {
+      "America/Yakutat": {
         "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
-        ]
-      },
-      "Asia/Brunei": {
-        "long": [
-          "브루나이 시간",
-          "브루나이 시간"
-        ]
-      },
-      "Atlantic/Cape_Verde": {
-        "long": [
-          "카보 베르데 표준시",
-          "카보 베르데 하계 표준시"
+          "알래스카 표준시",
+          "알래스카 하계 표준시"
         ]
       },
       "Antarctica/Casey": {
         "long": [
-          "케이시 시간",
-          "케이시 시간"
-        ]
-      },
-      "Pacific/Chatham": {
-        "long": [
-          "채텀 표준시",
-          "채텀 하계 표준시"
-        ]
-      },
-      "America/Santiago": {
-        "long": [
-          "칠레 표준시",
-          "칠레 하계 표준시"
-        ]
-      },
-      "Asia/Shanghai": {
-        "long": [
-          "중국 표준시",
-          "중국 하계 표준시"
-        ]
-      },
-      "Indian/Christmas": {
-        "long": [
-          "크리스마스섬 시간",
-          "크리스마스섬 시간"
-        ]
-      },
-      "Indian/Cocos": {
-        "long": [
-          "코코스 제도 시간",
-          "코코스 제도 시간"
-        ]
-      },
-      "America/Bogota": {
-        "long": [
-          "콜롬비아 표준시",
-          "콜롬비아 하계 표준시"
-        ]
-      },
-      "Pacific/Rarotonga": {
-        "long": [
-          "쿡 제도 표준시",
-          "쿡 제도 절반 하계 표준시"
-        ]
-      },
-      "America/Havana": {
-        "long": [
-          "쿠바 표준시",
-          "쿠바 하계 표준시"
+          "호주 서부 표준시",
+          "호주 서부 하계 표준시"
         ]
       },
       "Antarctica/Davis": {
@@ -786,196 +1164,52 @@
           "뒤몽뒤르빌 시간"
         ]
       },
-      "Asia/Dushanbe": {
+      "Antarctica/Macquarie": {
         "long": [
-          "타지키스탄 시간",
-          "타지키스탄 시간"
+          "호주 동부 표준시",
+          "호주 동부 하계 표준시"
         ]
       },
-      "America/Paramaribo": {
+      "Antarctica/Mawson": {
         "long": [
-          "수리남 시간",
-          "수리남 시간"
+          "모슨 시간",
+          "모슨 시간"
         ]
       },
-      "Asia/Dili": {
+      "Antarctica/McMurdo": {
         "long": [
-          "동티모르 시간",
-          "동티모르 시간"
+          "뉴질랜드 표준시",
+          "뉴질랜드 하계 표준시"
         ]
       },
-      "Pacific/Easter": {
+      "Antarctica/Palmer": {
         "long": [
-          "이스터섬 표준시",
-          "이스터섬 하계 표준시"
+          "칠레 표준시",
+          "칠레 하계 표준시"
         ]
       },
-      "America/Guayaquil": {
+      "Antarctica/Rothera": {
         "long": [
-          "에콰도르 시간",
-          "에콰도르 시간"
+          "로데라 시간",
+          "로데라 시간"
         ]
       },
-      "Europe/Paris": {
+      "Antarctica/Syowa": {
         "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
+          "쇼와 시간",
+          "쇼와 시간"
         ]
       },
-      "Europe/Andorra": {
+      "Antarctica/Troll": {
         "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
+          "그리니치 표준시",
+          "그리니치 표준시"
         ]
       },
-      "Europe/Tirane": {
+      "Antarctica/Vostok": {
         "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Vienna": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Sarajevo": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Brussels": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Zurich": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Prague": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Berlin": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Copenhagen": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Madrid": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Gibraltar": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Zagreb": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Budapest": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Rome": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Vaduz": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Luxembourg": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Monaco": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Podgorica": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Skopje": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Malta": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Amsterdam": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Oslo": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Warsaw": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Belgrade": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Stockholm": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Ljubljana": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
+          "보스톡 시간",
+          "보스톡 시간"
         ]
       },
       "Arctic/Longyearbyen": {
@@ -984,70 +1218,82 @@
           "중부유럽 하계 표준시"
         ]
       },
-      "Europe/Bratislava": {
+      "Asia/Aden": {
         "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
+          "아라비아 표준시",
+          "아라비아 하계 표준시"
         ]
       },
-      "Europe/San_Marino": {
+      "Asia/Almaty": {
         "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
+          "카자흐스탄 시간",
+          "카자흐스탄 시간"
         ]
       },
-      "Africa/Tunis": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Vatican": {
-        "long": [
-          "중부유럽 표준시",
-          "중부유럽 하계 표준시"
-        ]
-      },
-      "Europe/Bucharest": {
+      "Asia/Amman": {
         "long": [
           "동유럽 표준시",
           "동유럽 하계 표준시"
         ]
       },
-      "Europe/Mariehamn": {
+      "Asia/Anadyr": {
         "long": [
-          "동유럽 표준시",
-          "동유럽 하계 표준시"
+          "페트로파블롭스크-캄차츠키 표준시",
+          "페트로파블롭스크-캄차츠키 하계 표준시"
         ]
       },
-      "Europe/Sofia": {
+      "Asia/Aqtau": {
         "long": [
-          "동유럽 표준시",
-          "동유럽 하계 표준시"
+          "카자흐스탄 시간",
+          "카자흐스탄 시간"
         ]
       },
-      "Asia/Nicosia": {
+      "Asia/Aqtobe": {
         "long": [
-          "동유럽 표준시",
-          "동유럽 하계 표준시"
+          "카자흐스탄 시간",
+          "카자흐스탄 시간"
         ]
       },
-      "Africa/Cairo": {
+      "Asia/Ashgabat": {
         "long": [
-          "동유럽 표준시",
-          "동유럽 하계 표준시"
+          "투르크메니스탄 표준시",
+          "투르크메니스탄 하계 표준시"
         ]
       },
-      "Europe/Helsinki": {
+      "Asia/Atyrau": {
         "long": [
-          "동유럽 표준시",
-          "동유럽 하계 표준시"
+          "카자흐스탄 시간",
+          "카자흐스탄 시간"
         ]
       },
-      "Europe/Athens": {
+      "Asia/Baghdad": {
         "long": [
-          "동유럽 표준시",
-          "동유럽 하계 표준시"
+          "아라비아 표준시",
+          "아라비아 하계 표준시"
+        ]
+      },
+      "Asia/Bahrain": {
+        "long": [
+          "아라비아 표준시",
+          "아라비아 하계 표준시"
+        ]
+      },
+      "Asia/Baku": {
+        "long": [
+          "아제르바이잔 표준시",
+          "아제르바이잔 하계 표준시"
+        ]
+      },
+      "Asia/Bangkok": {
+        "long": [
+          "인도차이나 시간",
+          "인도차이나 시간"
+        ]
+      },
+      "Asia/Barnaul": {
+        "long": [
+          "크라스노야르스크 표준시",
+          "크라스노야르스크 하계 표준시"
         ]
       },
       "Asia/Beirut": {
@@ -1056,160 +1302,52 @@
           "동유럽 하계 표준시"
         ]
       },
-      "Europe/Minsk": {
-        "long": [
-          "극동유럽 표준시",
-          "극동유럽 표준시"
-        ]
-      },
-      "Europe/Kaliningrad": {
-        "long": [
-          "극동유럽 표준시",
-          "극동유럽 표준시"
-        ]
-      },
-      "Atlantic/Canary": {
-        "long": [
-          "서유럽 표준시",
-          "서유럽 하계 표준시"
-        ]
-      },
-      "Atlantic/Faeroe": {
-        "long": [
-          "서유럽 표준시",
-          "서유럽 하계 표준시"
-        ]
-      },
-      "Atlantic/Stanley": {
-        "long": [
-          "포클랜드 제도 표준시",
-          "포클랜드 제도 하계 표준시"
-        ]
-      },
-      "Pacific/Fiji": {
-        "long": [
-          "피지 표준시",
-          "피지 하계 표준시"
-        ]
-      },
-      "America/Cayenne": {
-        "long": [
-          "프랑스령 가이아나 시간",
-          "프랑스령 가이아나 시간"
-        ]
-      },
-      "Indian/Kerguelen": {
-        "long": [
-          "프랑스령 남부 식민지 및 남극 시간",
-          "프랑스령 남부 식민지 및 남극 시간"
-        ]
-      },
       "Asia/Bishkek": {
         "long": [
           "키르기스스탄 시간",
           "키르기스스탄 시간"
         ]
       },
-      "Pacific/Galapagos": {
+      "Asia/Brunei": {
         "long": [
-          "갈라파고스 시간",
-          "갈라파고스 시간"
+          "브루나이 시간",
+          "브루나이 시간"
         ]
       },
-      "Pacific/Gambier": {
+      "Asia/Calcutta": {
         "long": [
-          "감비에 시간",
-          "감비에 시간"
+          "인도 표준시",
+          "인도 표준시"
         ]
       },
-      "Pacific/Tarawa": {
+      "Asia/Chita": {
         "long": [
-          "길버트 제도 시간",
-          "길버트 제도 시간"
+          "야쿠츠크 표준시",
+          "야쿠츠크 하계 표준시"
         ]
       },
-      "Atlantic/Reykjavik": {
+      "Asia/Colombo": {
         "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
+          "인도 표준시",
+          "인도 표준시"
         ]
       },
-      "Africa/Ouagadougou": {
+      "Asia/Damascus": {
         "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
         ]
       },
-      "Africa/Abidjan": {
+      "Asia/Dhaka": {
         "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
+          "방글라데시 표준시",
+          "방글라데시 하계 표준시"
         ]
       },
-      "Africa/Accra": {
+      "Asia/Dili": {
         "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
-        ]
-      },
-      "Africa/Banjul": {
-        "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
-        ]
-      },
-      "Africa/Conakry": {
-        "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
-        ]
-      },
-      "Africa/Bamako": {
-        "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
-        ]
-      },
-      "Africa/Nouakchott": {
-        "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
-        ]
-      },
-      "Atlantic/St_Helena": {
-        "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
-        ]
-      },
-      "Africa/Freetown": {
-        "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
-        ]
-      },
-      "Africa/Dakar": {
-        "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
-        ]
-      },
-      "Africa/Lome": {
-        "long": [
-          "그리니치 표준시",
-          "그리니치 표준시"
-        ]
-      },
-      "America/Godthab": {
-        "long": [
-          "그린란드 서부 표준시",
-          "그린란드 서부 하계 표준시"
-        ]
-      },
-      "America/Scoresbysund": {
-        "long": [
-          "그린란드 동부 표준시",
-          "그린란드 동부 하계 표준시"
+          "동티모르 시간",
+          "동티모르 시간"
         ]
       },
       "Asia/Dubai": {
@@ -1218,22 +1356,28 @@
           "걸프만 표준시"
         ]
       },
-      "Asia/Muscat": {
+      "Asia/Dushanbe": {
         "long": [
-          "걸프만 표준시",
-          "걸프만 표준시"
+          "타지키스탄 시간",
+          "타지키스탄 시간"
         ]
       },
-      "America/Guyana": {
+      "Asia/Famagusta": {
         "long": [
-          "가이아나 시간",
-          "가이아나 시간"
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
         ]
       },
-      "Pacific/Honolulu": {
+      "Asia/Gaza": {
         "long": [
-          "하와이 알류샨 표준시",
-          "하와이 알류샨 표준시"
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Asia/Hebron": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
         ]
       },
       "Asia/Hong_Kong": {
@@ -1248,46 +1392,10 @@
           "호브드 하계 표준시"
         ]
       },
-      "Asia/Calcutta": {
+      "Asia/Irkutsk": {
         "long": [
-          "인도 표준시",
-          "인도 표준시"
-        ]
-      },
-      "Indian/Chagos": {
-        "long": [
-          "인도양 시간",
-          "인도양 시간"
-        ]
-      },
-      "Asia/Bangkok": {
-        "long": [
-          "인도차이나 시간",
-          "인도차이나 시간"
-        ]
-      },
-      "Asia/Phnom_Penh": {
-        "long": [
-          "인도차이나 시간",
-          "인도차이나 시간"
-        ]
-      },
-      "Asia/Vientiane": {
-        "long": [
-          "인도차이나 시간",
-          "인도차이나 시간"
-        ]
-      },
-      "Asia/Makassar": {
-        "long": [
-          "중부 인도네시아 시간",
-          "중부 인도네시아 시간"
-        ]
-      },
-      "Asia/Jayapura": {
-        "long": [
-          "동부 인도네시아 시간",
-          "동부 인도네시아 시간"
+          "이르쿠츠크 표준시",
+          "이르쿠츠크 하계 표준시"
         ]
       },
       "Asia/Jakarta": {
@@ -1296,16 +1404,10 @@
           "서부 인도네시아 시간"
         ]
       },
-      "Asia/Tehran": {
+      "Asia/Jayapura": {
         "long": [
-          "이란 표준시",
-          "이란 하계 표준시"
-        ]
-      },
-      "Asia/Irkutsk": {
-        "long": [
-          "이르쿠츠크 표준시",
-          "이르쿠츠크 하계 표준시"
+          "동부 인도네시아 시간",
+          "동부 인도네시아 시간"
         ]
       },
       "Asia/Jerusalem": {
@@ -1314,10 +1416,10 @@
           "이스라엘 하계 표준시"
         ]
       },
-      "Asia/Tokyo": {
+      "Asia/Kabul": {
         "long": [
-          "일본 표준시",
-          "일본 하계 표준시"
+          "아프가니스탄 시간",
+          "아프가니스탄 시간"
         ]
       },
       "Asia/Kamchatka": {
@@ -1332,22 +1434,16 @@
           "파키스탄 하계 표준시"
         ]
       },
-      "Asia/Qyzylorda": {
+      "Asia/Katmandu": {
         "long": [
-          "키질로르다 표준 시간",
-          "키질로르다 하계 표준시"
+          "네팔 시간",
+          "네팔 시간"
         ]
       },
-      "Asia/Seoul": {
+      "Asia/Khandyga": {
         "long": [
-          "한국 표준시",
-          "한국 하계 표준시"
-        ]
-      },
-      "Pacific/Kosrae": {
-        "long": [
-          "코스라에섬 시간",
-          "코스라에섬 시간"
+          "야쿠츠크 표준시",
+          "야쿠츠크 하계 표준시"
         ]
       },
       "Asia/Krasnoyarsk": {
@@ -1356,28 +1452,28 @@
           "크라스노야르스크 하계 표준시"
         ]
       },
-      "Europe/Samara": {
+      "Asia/Kuala_Lumpur": {
         "long": [
-          "사마라 표준시",
-          "사마라 하계 표준시"
+          "말레이시아 시간",
+          "말레이시아 시간"
         ]
       },
-      "Pacific/Kiritimati": {
+      "Asia/Kuching": {
         "long": [
-          "라인 제도 시간",
-          "라인 제도 시간"
+          "말레이시아 시간",
+          "말레이시아 시간"
         ]
       },
-      "Australia/Lord_Howe": {
+      "Asia/Kuwait": {
         "long": [
-          "로드 하우 표준시",
-          "로드 하우 하계 표준시"
+          "아라비아 표준시",
+          "아라비아 하계 표준시"
         ]
       },
       "Asia/Macau": {
         "long": [
-          "마카오 표준 시간",
-          "마카오 하계 표준시"
+          "중국 표준시",
+          "중국 하계 표준시"
         ]
       },
       "Asia/Magadan": {
@@ -1386,148 +1482,10 @@
           "마가단 하계 표준시"
         ]
       },
-      "Indian/Maldives": {
+      "Asia/Makassar": {
         "long": [
-          "몰디브 시간",
-          "몰디브 시간"
-        ]
-      },
-      "Pacific/Marquesas": {
-        "long": [
-          "마르키즈 제도 시간",
-          "마르키즈 제도 시간"
-        ]
-      },
-      "Pacific/Majuro": {
-        "long": [
-          "마셜 제도 시간",
-          "마셜 제도 시간"
-        ]
-      },
-      "Indian/Mauritius": {
-        "long": [
-          "모리셔스 표준시",
-          "모리셔스 하계 표준시"
-        ]
-      },
-      "Antarctica/Mawson": {
-        "long": [
-          "모슨 시간",
-          "모슨 시간"
-        ]
-      },
-      "America/Mazatlan": {
-        "long": [
-          "멕시코 태평양 표준시",
-          "멕시코 태평양 하계 표준시"
-        ]
-      },
-      "Asia/Ulaanbaatar": {
-        "long": [
-          "울란바토르 표준시",
-          "울란바토르 하계 표준시"
-        ]
-      },
-      "Europe/Moscow": {
-        "long": [
-          "모스크바 표준시",
-          "모스크바 하계 표준시"
-        ]
-      },
-      "Asia/Rangoon": {
-        "long": [
-          "미얀마 시간",
-          "미얀마 시간"
-        ]
-      },
-      "Pacific/Nauru": {
-        "long": [
-          "나우루 시간",
-          "나우루 시간"
-        ]
-      },
-      "Asia/Katmandu": {
-        "long": [
-          "네팔 시간",
-          "네팔 시간"
-        ]
-      },
-      "Pacific/Noumea": {
-        "long": [
-          "뉴칼레도니아 표준시",
-          "뉴칼레도니아 하계 표준시"
-        ]
-      },
-      "Pacific/Auckland": {
-        "long": [
-          "뉴질랜드 표준시",
-          "뉴질랜드 하계 표준시"
-        ]
-      },
-      "Antarctica/McMurdo": {
-        "long": [
-          "뉴질랜드 표준시",
-          "뉴질랜드 하계 표준시"
-        ]
-      },
-      "America/St_Johns": {
-        "long": [
-          "뉴펀들랜드 표준시",
-          "뉴펀들랜드 하계 표준시"
-        ]
-      },
-      "Pacific/Niue": {
-        "long": [
-          "니우에 시간",
-          "니우에 시간"
-        ]
-      },
-      "Pacific/Norfolk": {
-        "long": [
-          "노퍽섬 표준시",
-          "노퍽섬 하계 표준시"
-        ]
-      },
-      "America/Noronha": {
-        "long": [
-          "페르난도 데 노로냐 표준시",
-          "페르난도 데 노로냐 하계 표준시"
-        ]
-      },
-      "Asia/Novosibirsk": {
-        "long": [
-          "노보시비르스크 표준시",
-          "노보시비르스크 하계 표준시"
-        ]
-      },
-      "Asia/Omsk": {
-        "long": [
-          "옴스크 표준시",
-          "옴스크 하계 표준시"
-        ]
-      },
-      "Pacific/Palau": {
-        "long": [
-          "팔라우 시간",
-          "팔라우 시간"
-        ]
-      },
-      "Pacific/Port_Moresby": {
-        "long": [
-          "파푸아뉴기니 시간",
-          "파푸아뉴기니 시간"
-        ]
-      },
-      "America/Asuncion": {
-        "long": [
-          "파라과이 표준시",
-          "파라과이 하계 표준시"
-        ]
-      },
-      "America/Lima": {
-        "long": [
-          "페루 표준시",
-          "페루 하계 표준시"
+          "중부 인도네시아 시간",
+          "중부 인도네시아 시간"
         ]
       },
       "Asia/Manila": {
@@ -1536,64 +1494,118 @@
           "필리핀 하계 표준시"
         ]
       },
-      "Pacific/Enderbury": {
+      "Asia/Muscat": {
         "long": [
-          "피닉스 제도 시간",
-          "피닉스 제도 시간"
+          "걸프만 표준시",
+          "걸프만 표준시"
         ]
       },
-      "America/Miquelon": {
+      "Asia/Nicosia": {
         "long": [
-          "세인트피에르 미클롱 표준시",
-          "세인트피에르 미클롱 하계 표준시"
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
         ]
       },
-      "Pacific/Pitcairn": {
+      "Asia/Novokuznetsk": {
         "long": [
-          "핏케언 시간",
-          "핏케언 시간"
+          "크라스노야르스크 표준시",
+          "크라스노야르스크 하계 표준시"
         ]
       },
-      "Pacific/Ponape": {
+      "Asia/Novosibirsk": {
         "long": [
-          "포나페 시간",
-          "포나페 시간"
+          "크라스노야르스크 표준시",
+          "크라스노야르스크 하계 표준시"
+        ]
+      },
+      "Asia/Omsk": {
+        "long": [
+          "옴스크 표준시",
+          "옴스크 하계 표준시"
+        ]
+      },
+      "Asia/Oral": {
+        "long": [
+          "카자흐스탄 시간",
+          "카자흐스탄 시간"
+        ]
+      },
+      "Asia/Phnom_Penh": {
+        "long": [
+          "인도차이나 시간",
+          "인도차이나 시간"
+        ]
+      },
+      "Asia/Pontianak": {
+        "long": [
+          "서부 인도네시아 시간",
+          "서부 인도네시아 시간"
         ]
       },
       "Asia/Pyongyang": {
         "long": [
-          "평양 시간",
-          "평양 시간"
+          "한국 표준시",
+          "한국 하계 표준시"
         ]
       },
-      "Indian/Reunion": {
+      "Asia/Qatar": {
         "long": [
-          "레위니옹 시간",
-          "레위니옹 시간"
+          "아라비아 표준시",
+          "아라비아 하계 표준시"
         ]
       },
-      "Antarctica/Rothera": {
+      "Asia/Qostanay": {
         "long": [
-          "로데라 시간",
-          "로데라 시간"
+          "카자흐스탄 시간",
+          "카자흐스탄 시간"
+        ]
+      },
+      "Asia/Qyzylorda": {
+        "long": [
+          "카자흐스탄 시간",
+          "카자흐스탄 시간"
+        ]
+      },
+      "Asia/Rangoon": {
+        "long": [
+          "미얀마 시간",
+          "미얀마 시간"
+        ]
+      },
+      "Asia/Riyadh": {
+        "long": [
+          "아라비아 표준시",
+          "아라비아 하계 표준시"
+        ]
+      },
+      "Asia/Saigon": {
+        "long": [
+          "인도차이나 시간",
+          "인도차이나 시간"
         ]
       },
       "Asia/Sakhalin": {
         "long": [
-          "사할린 표준시",
-          "사할린 하계 표준시"
+          "마가단 표준시",
+          "마가단 하계 표준시"
         ]
       },
-      "Pacific/Pago_Pago": {
+      "Asia/Samarkand": {
         "long": [
-          "사모아 표준시",
-          "사모아 하계 표준시"
+          "우즈베키스탄 표준시",
+          "우즈베키스탄 하계 표준시"
         ]
       },
-      "Indian/Mahe": {
+      "Asia/Seoul": {
         "long": [
-          "세이셸 시간",
-          "세이셸 시간"
+          "한국 표준시",
+          "한국 하계 표준시"
+        ]
+      },
+      "Asia/Shanghai": {
+        "long": [
+          "중국 표준시",
+          "중국 하계 표준시"
         ]
       },
       "Asia/Singapore": {
@@ -1602,34 +1614,10 @@
           "싱가포르 표준시"
         ]
       },
-      "Pacific/Guadalcanal": {
+      "Asia/Srednekolymsk": {
         "long": [
-          "솔로몬 제도 시간",
-          "솔로몬 제도 시간"
-        ]
-      },
-      "Atlantic/South_Georgia": {
-        "long": [
-          "사우스 조지아 시간",
-          "사우스 조지아 시간"
-        ]
-      },
-      "Asia/Yekaterinburg": {
-        "long": [
-          "예카테린부르크 표준시",
-          "예카테린부르크 하계 표준시"
-        ]
-      },
-      "Antarctica/Syowa": {
-        "long": [
-          "쇼와 시간",
-          "쇼와 시간"
-        ]
-      },
-      "Pacific/Tahiti": {
-        "long": [
-          "타히티 시간",
-          "타히티 시간"
+          "마가단 표준시",
+          "마가단 하계 표준시"
         ]
       },
       "Asia/Taipei": {
@@ -1644,10 +1632,820 @@
           "우즈베키스탄 하계 표준시"
         ]
       },
+      "Asia/Tbilisi": {
+        "long": [
+          "조지아 표준시",
+          "조지아 하계 표준시"
+        ]
+      },
+      "Asia/Tehran": {
+        "long": [
+          "이란 표준시",
+          "이란 하계 표준시"
+        ]
+      },
+      "Asia/Thimphu": {
+        "long": [
+          "부탄 시간",
+          "부탄 시간"
+        ]
+      },
+      "Asia/Tokyo": {
+        "long": [
+          "일본 표준시",
+          "일본 하계 표준시"
+        ]
+      },
+      "Asia/Tomsk": {
+        "long": [
+          "크라스노야르스크 표준시",
+          "크라스노야르스크 하계 표준시"
+        ]
+      },
+      "Asia/Ulaanbaatar": {
+        "long": [
+          "울란바토르 표준시",
+          "울란바토르 하계 표준시"
+        ]
+      },
+      "Asia/Ust-Nera": {
+        "long": [
+          "블라디보스토크 표준시",
+          "블라디보스토크 하계 표준시"
+        ]
+      },
+      "Asia/Vientiane": {
+        "long": [
+          "인도차이나 시간",
+          "인도차이나 시간"
+        ]
+      },
+      "Asia/Vladivostok": {
+        "long": [
+          "블라디보스토크 표준시",
+          "블라디보스토크 하계 표준시"
+        ]
+      },
+      "Asia/Yakutsk": {
+        "long": [
+          "야쿠츠크 표준시",
+          "야쿠츠크 하계 표준시"
+        ]
+      },
+      "Asia/Yekaterinburg": {
+        "long": [
+          "예카테린부르크 표준시",
+          "예카테린부르크 하계 표준시"
+        ]
+      },
+      "Asia/Yerevan": {
+        "long": [
+          "아르메니아 표준시",
+          "아르메니아 하계 표준시"
+        ]
+      },
+      "Atlantic/Azores": {
+        "long": [
+          "아조레스 표준시",
+          "아조레스 하계 표준시"
+        ]
+      },
+      "Atlantic/Bermuda": {
+        "long": [
+          "대서양 표준시",
+          "대서양 하계 표준시"
+        ]
+      },
+      "Atlantic/Canary": {
+        "long": [
+          "서유럽 표준시",
+          "서유럽 하계 표준시"
+        ]
+      },
+      "Atlantic/Cape_Verde": {
+        "long": [
+          "카보 베르데 표준시",
+          "카보 베르데 하계 표준시"
+        ]
+      },
+      "Atlantic/Faeroe": {
+        "long": [
+          "서유럽 표준시",
+          "서유럽 하계 표준시"
+        ]
+      },
+      "Atlantic/Madeira": {
+        "long": [
+          "서유럽 표준시",
+          "서유럽 하계 표준시"
+        ]
+      },
+      "Atlantic/Reykjavik": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Atlantic/South_Georgia": {
+        "long": [
+          "사우스 조지아 시간",
+          "사우스 조지아 시간"
+        ]
+      },
+      "Atlantic/St_Helena": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Atlantic/Stanley": {
+        "long": [
+          "포클랜드 제도 표준시",
+          "포클랜드 제도 하계 표준시"
+        ]
+      },
+      "Australia/Adelaide": {
+        "long": [
+          "호주 중부 표준시",
+          "호주 중부 하계 표준시"
+        ]
+      },
+      "Australia/Brisbane": {
+        "long": [
+          "호주 동부 표준시",
+          "호주 동부 하계 표준시"
+        ]
+      },
+      "Australia/Broken_Hill": {
+        "long": [
+          "호주 중부 표준시",
+          "호주 중부 하계 표준시"
+        ]
+      },
+      "Australia/Darwin": {
+        "long": [
+          "호주 중부 표준시",
+          "호주 중부 하계 표준시"
+        ]
+      },
+      "Australia/Eucla": {
+        "long": [
+          "호주 중서부 표준시",
+          "호주 중서부 하계 표준시"
+        ]
+      },
+      "Australia/Hobart": {
+        "long": [
+          "호주 동부 표준시",
+          "호주 동부 하계 표준시"
+        ]
+      },
+      "Australia/Lindeman": {
+        "long": [
+          "호주 동부 표준시",
+          "호주 동부 하계 표준시"
+        ]
+      },
+      "Australia/Lord_Howe": {
+        "long": [
+          "로드 하우 표준시",
+          "로드 하우 하계 표준시"
+        ]
+      },
+      "Australia/Melbourne": {
+        "long": [
+          "호주 동부 표준시",
+          "호주 동부 하계 표준시"
+        ]
+      },
+      "Australia/Perth": {
+        "long": [
+          "호주 서부 표준시",
+          "호주 서부 하계 표준시"
+        ]
+      },
+      "Australia/Sydney": {
+        "long": [
+          "호주 동부 표준시",
+          "호주 동부 하계 표준시"
+        ]
+      },
+      "Etc/GMT": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Europe/Amsterdam": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Andorra": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Astrakhan": {
+        "long": [
+          "사마라 표준시",
+          "사마라 하계 표준시"
+        ]
+      },
+      "Europe/Athens": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Belgrade": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Berlin": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Bratislava": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Brussels": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Bucharest": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Budapest": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Busingen": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Chisinau": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Copenhagen": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Dublin": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Europe/Gibraltar": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Guernsey": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Europe/Helsinki": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Isle_of_Man": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Europe/Jersey": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Europe/Kaliningrad": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Kiev": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Kirov": {
+        "long": [
+          "모스크바 표준시",
+          "모스크바 하계 표준시"
+        ]
+      },
+      "Europe/Lisbon": {
+        "long": [
+          "서유럽 표준시",
+          "서유럽 하계 표준시"
+        ]
+      },
+      "Europe/Ljubljana": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/London": {
+        "long": [
+          "그리니치 표준시",
+          "그리니치 표준시"
+        ]
+      },
+      "Europe/Luxembourg": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Madrid": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Malta": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Mariehamn": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Minsk": {
+        "long": [
+          "모스크바 표준시",
+          "모스크바 하계 표준시"
+        ]
+      },
+      "Europe/Monaco": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Moscow": {
+        "long": [
+          "모스크바 표준시",
+          "모스크바 하계 표준시"
+        ]
+      },
+      "Europe/Oslo": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Paris": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Podgorica": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Prague": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Riga": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Rome": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Samara": {
+        "long": [
+          "사마라 표준시",
+          "사마라 하계 표준시"
+        ]
+      },
+      "Europe/San_Marino": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Sarajevo": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Saratov": {
+        "long": [
+          "사마라 표준시",
+          "사마라 하계 표준시"
+        ]
+      },
+      "Europe/Simferopol": {
+        "long": [
+          "모스크바 표준시",
+          "모스크바 하계 표준시"
+        ]
+      },
+      "Europe/Skopje": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Sofia": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Stockholm": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Tallinn": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Tirane": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Ulyanovsk": {
+        "long": [
+          "사마라 표준시",
+          "사마라 하계 표준시"
+        ]
+      },
+      "Europe/Vaduz": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Vatican": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Vienna": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Vilnius": {
+        "long": [
+          "동유럽 표준시",
+          "동유럽 하계 표준시"
+        ]
+      },
+      "Europe/Volgograd": {
+        "long": [
+          "모스크바 표준시",
+          "모스크바 하계 표준시"
+        ]
+      },
+      "Europe/Warsaw": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Zagreb": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Europe/Zurich": {
+        "long": [
+          "중부유럽 표준시",
+          "중부유럽 하계 표준시"
+        ]
+      },
+      "Indian/Antananarivo": {
+        "long": [
+          "동아프리카 시간",
+          "동아프리카 시간"
+        ]
+      },
+      "Indian/Chagos": {
+        "long": [
+          "인도양 시간",
+          "인도양 시간"
+        ]
+      },
+      "Indian/Christmas": {
+        "long": [
+          "크리스마스섬 시간",
+          "크리스마스섬 시간"
+        ]
+      },
+      "Indian/Cocos": {
+        "long": [
+          "코코스 제도 시간",
+          "코코스 제도 시간"
+        ]
+      },
+      "Indian/Comoro": {
+        "long": [
+          "동아프리카 시간",
+          "동아프리카 시간"
+        ]
+      },
+      "Indian/Kerguelen": {
+        "long": [
+          "프랑스령 남부 식민지 및 남극 시간",
+          "프랑스령 남부 식민지 및 남극 시간"
+        ]
+      },
+      "Indian/Mahe": {
+        "long": [
+          "세이셸 시간",
+          "세이셸 시간"
+        ]
+      },
+      "Indian/Maldives": {
+        "long": [
+          "몰디브 시간",
+          "몰디브 시간"
+        ]
+      },
+      "Indian/Mauritius": {
+        "long": [
+          "모리셔스 표준시",
+          "모리셔스 하계 표준시"
+        ]
+      },
+      "Indian/Mayotte": {
+        "long": [
+          "동아프리카 시간",
+          "동아프리카 시간"
+        ]
+      },
+      "Indian/Reunion": {
+        "long": [
+          "레위니옹 시간",
+          "레위니옹 시간"
+        ]
+      },
+      "Pacific/Apia": {
+        "long": [
+          "아피아 표준시",
+          "아피아 하계 표준시"
+        ]
+      },
+      "Pacific/Auckland": {
+        "long": [
+          "뉴질랜드 표준시",
+          "뉴질랜드 하계 표준시"
+        ]
+      },
+      "Pacific/Bougainville": {
+        "long": [
+          "파푸아뉴기니 시간",
+          "파푸아뉴기니 시간"
+        ]
+      },
+      "Pacific/Chatham": {
+        "long": [
+          "채텀 표준시",
+          "채텀 하계 표준시"
+        ]
+      },
+      "Pacific/Easter": {
+        "long": [
+          "이스터섬 표준시",
+          "이스터섬 하계 표준시"
+        ]
+      },
+      "Pacific/Efate": {
+        "long": [
+          "바누아투 표준시",
+          "바누아투 하계 표준시"
+        ]
+      },
+      "Pacific/Enderbury": {
+        "long": [
+          "피닉스 제도 시간",
+          "피닉스 제도 시간"
+        ]
+      },
       "Pacific/Fakaofo": {
         "long": [
           "토켈라우 시간",
           "토켈라우 시간"
+        ]
+      },
+      "Pacific/Fiji": {
+        "long": [
+          "피지 표준시",
+          "피지 하계 표준시"
+        ]
+      },
+      "Pacific/Funafuti": {
+        "long": [
+          "투발루 시간",
+          "투발루 시간"
+        ]
+      },
+      "Pacific/Galapagos": {
+        "long": [
+          "갈라파고스 시간",
+          "갈라파고스 시간"
+        ]
+      },
+      "Pacific/Gambier": {
+        "long": [
+          "감비에 시간",
+          "감비에 시간"
+        ]
+      },
+      "Pacific/Guadalcanal": {
+        "long": [
+          "솔로몬 제도 시간",
+          "솔로몬 제도 시간"
+        ]
+      },
+      "Pacific/Guam": {
+        "long": [
+          "차모로 시간",
+          "차모로 시간"
+        ]
+      },
+      "Pacific/Honolulu": {
+        "long": [
+          "하와이 알류샨 표준시",
+          "하와이 알류샨 표준시"
+        ]
+      },
+      "Pacific/Kiritimati": {
+        "long": [
+          "라인 제도 시간",
+          "라인 제도 시간"
+        ]
+      },
+      "Pacific/Kosrae": {
+        "long": [
+          "코스라에섬 시간",
+          "코스라에섬 시간"
+        ]
+      },
+      "Pacific/Kwajalein": {
+        "long": [
+          "마셜 제도 시간",
+          "마셜 제도 시간"
+        ]
+      },
+      "Pacific/Majuro": {
+        "long": [
+          "마셜 제도 시간",
+          "마셜 제도 시간"
+        ]
+      },
+      "Pacific/Marquesas": {
+        "long": [
+          "마르키즈 제도 시간",
+          "마르키즈 제도 시간"
+        ]
+      },
+      "Pacific/Midway": {
+        "long": [
+          "사모아 표준시",
+          "사모아 하계 표준시"
+        ]
+      },
+      "Pacific/Nauru": {
+        "long": [
+          "나우루 시간",
+          "나우루 시간"
+        ]
+      },
+      "Pacific/Niue": {
+        "long": [
+          "니우에 시간",
+          "니우에 시간"
+        ]
+      },
+      "Pacific/Norfolk": {
+        "long": [
+          "노퍽섬 표준시",
+          "노퍽섬 하계 표준시"
+        ]
+      },
+      "Pacific/Noumea": {
+        "long": [
+          "뉴칼레도니아 표준시",
+          "뉴칼레도니아 하계 표준시"
+        ]
+      },
+      "Pacific/Pago_Pago": {
+        "long": [
+          "사모아 표준시",
+          "사모아 하계 표준시"
+        ]
+      },
+      "Pacific/Palau": {
+        "long": [
+          "팔라우 시간",
+          "팔라우 시간"
+        ]
+      },
+      "Pacific/Pitcairn": {
+        "long": [
+          "핏케언 시간",
+          "핏케언 시간"
+        ]
+      },
+      "Pacific/Ponape": {
+        "long": [
+          "포나페 시간",
+          "포나페 시간"
+        ]
+      },
+      "Pacific/Port_Moresby": {
+        "long": [
+          "파푸아뉴기니 시간",
+          "파푸아뉴기니 시간"
+        ]
+      },
+      "Pacific/Rarotonga": {
+        "long": [
+          "쿡 제도 표준시",
+          "쿡 제도 절반 하계 표준시"
+        ]
+      },
+      "Pacific/Saipan": {
+        "long": [
+          "차모로 시간",
+          "차모로 시간"
+        ]
+      },
+      "Pacific/Tahiti": {
+        "long": [
+          "타히티 시간",
+          "타히티 시간"
+        ]
+      },
+      "Pacific/Tarawa": {
+        "long": [
+          "길버트 제도 시간",
+          "길버트 제도 시간"
         ]
       },
       "Pacific/Tongatapu": {
@@ -1662,48 +2460,6 @@
           "추크 시간"
         ]
       },
-      "Pacific/Funafuti": {
-        "long": [
-          "투발루 시간",
-          "투발루 시간"
-        ]
-      },
-      "America/Montevideo": {
-        "long": [
-          "우루과이 표준시",
-          "우루과이 하계 표준시"
-        ]
-      },
-      "Pacific/Efate": {
-        "long": [
-          "바누아투 표준시",
-          "바누아투 하계 표준시"
-        ]
-      },
-      "America/Caracas": {
-        "long": [
-          "베네수엘라 시간",
-          "베네수엘라 시간"
-        ]
-      },
-      "Asia/Vladivostok": {
-        "long": [
-          "블라디보스토크 표준시",
-          "블라디보스토크 하계 표준시"
-        ]
-      },
-      "Europe/Volgograd": {
-        "long": [
-          "볼고그라드 표준시",
-          "볼고그라드 하계 표준시"
-        ]
-      },
-      "Antarctica/Vostok": {
-        "long": [
-          "보스톡 시간",
-          "보스톡 시간"
-        ]
-      },
       "Pacific/Wake": {
         "long": [
           "웨이크섬 시간",
@@ -1714,18 +2470,6 @@
         "long": [
           "월리스푸투나 제도 시간",
           "월리스푸투나 제도 시간"
-        ]
-      },
-      "Asia/Yakutsk": {
-        "long": [
-          "야쿠츠크 표준시",
-          "야쿠츠크 하계 표준시"
-        ]
-      },
-      "America/Whitehorse": {
-        "long": [
-          "유콘 시간",
-          "유콘 시간"
         ]
       },
       "UTC": {

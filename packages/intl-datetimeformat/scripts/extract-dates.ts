@@ -103,16 +103,59 @@ function hasAltVariant(k: string): boolean {
 const {calendarPreferenceData} = rawCalendarPreferenceData.supplemental
 
 /**
- * TODO: There's a bug here bc a timezone can link to multiple metazone
- * since a place can change zone during course of history which is dumb
+ * Extract timezone-to-metazone mappings from CLDR data.
+ *
+ * CLDR provides timezone-to-metazone mappings in two structures:
+ * 1. `metazones` array: Contains only "golden zones" (territory="001") - one reference
+ *    zone per metazone (~322 entries). These are the canonical exemplar zones.
+ * 2. `metazoneInfo.timezone`: Contains ALL IANA timezone mappings organized by
+ *    continent (~418 entries). This is what ICU4J uses.
+ *
+ * This implementation matches ICU4J's approach by parsing the complete metazoneInfo
+ * structure to get all timezone-to-metazone mappings. This ensures that zones like
+ * America/Detroit and America/Phoenix get proper timezone abbreviations (EDT/EST/MST)
+ * instead of falling back to "GMT-4" or "GMT-7".
+ *
+ * Example mappings from metazoneInfo:
+ * - America/Detroit → America_Eastern (shows EDT/EST)
+ * - America/Phoenix → America_Mountain (shows MST)
+ * - America/New_York → America_Eastern (shows EDT/EST)
+ *
+ * See: https://unicode-org.github.io/icu-docs/apidoc/dev/icu4j/com/ibm/icu/text/TimeZoneNames.html
+ * See: https://github.com/formatjs/formatjs/issues/4456
+ *
+ * Note: Some timezones can map to multiple metazones over time due to historical
+ * changes. We currently use the most recent mapping.
  */
-const tzToMetaZoneMap = metaZones.supplemental.metaZones.metazones.reduce(
-  (all: Record<string, string>, z) => {
-    all[z.mapZone._type] = z.mapZone._other
-    return all
-  },
-  {}
-)
+function extractTimezoneToMetazoneMap(): Record<string, string> {
+  const map: Record<string, string> = {}
+  const metazoneInfo = metaZones.supplemental.metaZones.metazoneInfo.timezone
+
+  // Iterate through all continents (Africa, America, Antarctica, etc.)
+  for (const continent of Object.keys(metazoneInfo)) {
+    const zones = metazoneInfo[continent as keyof typeof metazoneInfo]
+    if (typeof zones !== 'object' || zones === null) continue
+
+    // Iterate through all zones in this continent
+    for (const zone of Object.keys(zones)) {
+      const fullZoneName = `${continent}/${zone}`
+      const zoneData = zones[zone as keyof typeof zones]
+
+      // zoneData is an array of metazone usage entries with date ranges
+      if (Array.isArray(zoneData) && zoneData.length > 0) {
+        // Use the most recent metazone mapping (last entry in the array)
+        const latestMapping = zoneData[zoneData.length - 1]
+        if (latestMapping?.usesMetazone?._mzone) {
+          map[fullZoneName] = latestMapping.usesMetazone._mzone
+        }
+      }
+    }
+  }
+
+  return map
+}
+
+const tzToMetaZoneMap = extractTimezoneToMetazoneMap()
 
 async function loadDatesFields(
   locale: string
