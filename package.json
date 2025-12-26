@@ -74,7 +74,7 @@
     "cldr-localenames-full": "48",
     "cldr-misc-full": "48",
     "cldr-numbers-full": "48",
-    "cldr-segments-full": "48",
+    "cldr-segments-full": "46",
     "cldr-units-full": "48",
     "clsx": "2",
     "content-tag": "^3.0.0",

@@ -653,7 +653,7 @@
       },
       "MMK": {
         "displayName": {
-          "other": "Kyat Myanma"
+          "other": "Kyat Myanmar"
         },
         "narrow": "K",
         "symbol": "MMK"
@@ -1150,6 +1150,7 @@
       },
       "XCG": {
         "displayName": {
+          "other": "Guilder Caribbean"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -1209,6 +1210,13 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "Emas Zimbabwe"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {

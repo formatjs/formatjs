@@ -1345,8 +1345,7 @@
       },
       "MVR": {
         "displayName": {
-          "one": "Malediven-Rufiyaa",
-          "other": "Malediven-Rupien"
+          "other": "Malediven-Rufiyaa"
         },
         "narrow": "MVR",
         "symbol": "MVR"
@@ -2096,6 +2095,8 @@
       },
       "XCG": {
         "displayName": {
+          "one": "Karibischer Gulden",
+          "other": "Karibische Gulden"
         },
         "narrow": "Cg.",
         "symbol": "Cg."
@@ -2290,6 +2291,13 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "other": "Simbabwe-Gold"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {
@@ -2599,11 +2607,13 @@
             "other": "{0} Flüssigunzen"
           },
           "narrow": {
+            "one": "{0} fl.oz.",
             "other": "{0} fl oz"
           },
           "perUnit": {
           },
           "short": {
+            "one": "{0} fl.oz.",
             "other": "{0} fl oz"
           }
         },
@@ -2703,7 +2713,7 @@
             "other": "{0} Stunden"
           },
           "narrow": {
-            "other": "{0} Std."
+            "other": "{0}h"
           },
           "perUnit": {
             "long": "{0} pro Stunde",
@@ -2979,6 +2989,7 @@
             "other": "{0} Millisekunden"
           },
           "narrow": {
+            "one": "{0}ms",
             "other": "{0} ms"
           },
           "perUnit": {

@@ -229,68 +229,68 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Africa/Lagos": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "توقيت غرب أفريقيا الرسمي",
-          "توقيت غرب أفريقيا الصيفي"
+          "توقيت غرب أفريقيا",
+          "توقيت غرب أفريقيا"
         ]
       },
       "Asia/Aqtobe": {
@@ -669,6 +669,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "توقيت أزورس الرسمي",
           "توقيت أزورس الصيفي"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "توقيت هاواي ألوتيان الرسمي",
+          "توقيت هاواي ألوتيان الصيفي"
         ]
       },
       "Asia/Thimphu": {
@@ -1215,20 +1221,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "توقيت الخليج",
           "توقيت الخليج"
-        ],
-        "short": [
-          "GST",
-          "GST"
         ]
       },
       "Asia/Muscat": {
         "long": [
           "توقيت الخليج",
           "توقيت الخليج"
-        ],
-        "short": [
-          "GST",
-          "GST"
         ]
       },
       "America/Guyana": {
@@ -1240,7 +1238,7 @@ Intl.DateTimeFormat.__addLocaleData({
       "Pacific/Honolulu": {
         "long": [
           "توقيت هاواي ألوتيان الرسمي",
-          "توقيت هاواي ألوتيان الصيفي"
+          "توقيت هاواي ألوتيان الرسمي"
         ]
       },
       "Asia/Hong_Kong": {
@@ -1761,15 +1759,19 @@ Intl.DateTimeFormat.__addLocaleData({
         "Bhms": "h:mm:ss B",
         "d": "d",
         "E": "ccc",
+        "EBh": "E h B",
         "EBhm": "E h:mm B",
         "EBhms": "E h:mm:ss B",
         "Ed": "E، d",
+        "Eh": "E h a",
         "Ehm": "E h:mm a",
         "EHm": "E HH:mm",
         "Ehms": "E h:mm:ss a",
         "EHms": "E HH:mm:ss",
         "Gy": "y G",
+        "GyM": "MM، y G",
         "GyMd": "dd-MM-y GGGGG",
+        "GyMEd": "E d/M/y G",
         "GyMMM": "MMM y G",
         "GyMMMd": "d MMM y G",
         "GyMMMEd": "E، d MMM y G",
@@ -1783,6 +1785,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "Hmsv": "HH:mm:ss v",
         "hmv": "h:mm a v",
         "Hmv": "HH:mm v",
+        "hv": "h a v",
+        "Hv": "HH'h' v",
         "M": "L",
         "Md": "d‏/M",
         "MEd": "E، d‏/M",
@@ -1818,7 +1822,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، h:mm:ss a zzzz": "ccc، h:mm:ss a zzzz",
         "Ed، h:mm:ss a zzzz": "E، d، h:mm:ss a zzzz",
         "Gy، h:mm:ss a zzzz": "y G، h:mm:ss a zzzz",
+        "GyM، h:mm:ss a zzzz": "MM، y G، h:mm:ss a zzzz",
         "GyMd، h:mm:ss a zzzz": "dd-MM-y GGGGG، h:mm:ss a zzzz",
+        "GyMEd، h:mm:ss a zzzz": "E d/M/y G، h:mm:ss a zzzz",
         "GyMMM، h:mm:ss a zzzz": "MMM y G، h:mm:ss a zzzz",
         "GyMMMd، h:mm:ss a zzzz": "d MMM y G، h:mm:ss a zzzz",
         "GyMMMEd، h:mm:ss a zzzz": "E، d MMM y G، h:mm:ss a zzzz",
@@ -1848,7 +1854,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، h:mm:ss a z": "ccc، h:mm:ss a z",
         "Ed، h:mm:ss a z": "E، d، h:mm:ss a z",
         "Gy، h:mm:ss a z": "y G، h:mm:ss a z",
+        "GyM، h:mm:ss a z": "MM، y G، h:mm:ss a z",
         "GyMd، h:mm:ss a z": "dd-MM-y GGGGG، h:mm:ss a z",
+        "GyMEd، h:mm:ss a z": "E d/M/y G، h:mm:ss a z",
         "GyMMM، h:mm:ss a z": "MMM y G، h:mm:ss a z",
         "GyMMMd، h:mm:ss a z": "d MMM y G، h:mm:ss a z",
         "GyMMMEd، h:mm:ss a z": "E، d MMM y G، h:mm:ss a z",
@@ -1878,7 +1886,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، h:mm:ss a": "ccc، h:mm:ss a",
         "Ed، h:mm:ss a": "E، d، h:mm:ss a",
         "Gy، h:mm:ss a": "y G، h:mm:ss a",
+        "GyM، h:mm:ss a": "MM، y G، h:mm:ss a",
         "GyMd، h:mm:ss a": "dd-MM-y GGGGG، h:mm:ss a",
+        "GyMEd، h:mm:ss a": "E d/M/y G، h:mm:ss a",
         "GyMMM، h:mm:ss a": "MMM y G، h:mm:ss a",
         "GyMMMd، h:mm:ss a": "d MMM y G، h:mm:ss a",
         "GyMMMEd، h:mm:ss a": "E، d MMM y G، h:mm:ss a",
@@ -1908,7 +1918,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، h:mm a": "ccc، h:mm a",
         "Ed، h:mm a": "E، d، h:mm a",
         "Gy، h:mm a": "y G، h:mm a",
+        "GyM، h:mm a": "MM، y G، h:mm a",
         "GyMd، h:mm a": "dd-MM-y GGGGG، h:mm a",
+        "GyMEd، h:mm a": "E d/M/y G، h:mm a",
         "GyMMM، h:mm a": "MMM y G، h:mm a",
         "GyMMMd، h:mm a": "d MMM y G، h:mm a",
         "GyMMMEd، h:mm a": "E، d MMM y G، h:mm a",
@@ -1938,7 +1950,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، Bh": "ccc، h B",
         "Ed، Bh": "E، d، h B",
         "Gy، Bh": "y G، h B",
+        "GyM، Bh": "MM، y G، h B",
         "GyMd، Bh": "dd-MM-y GGGGG، h B",
+        "GyMEd، Bh": "E d/M/y G، h B",
         "GyMMM، Bh": "MMM y G، h B",
         "GyMMMd، Bh": "d MMM y G، h B",
         "GyMMMEd، Bh": "E، d MMM y G، h B",
@@ -1968,7 +1982,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، Bhm": "ccc، h:mm B",
         "Ed، Bhm": "E، d، h:mm B",
         "Gy، Bhm": "y G، h:mm B",
+        "GyM، Bhm": "MM، y G، h:mm B",
         "GyMd، Bhm": "dd-MM-y GGGGG، h:mm B",
+        "GyMEd، Bhm": "E d/M/y G، h:mm B",
         "GyMMM، Bhm": "MMM y G، h:mm B",
         "GyMMMd، Bhm": "d MMM y G، h:mm B",
         "GyMMMEd، Bhm": "E، d MMM y G، h:mm B",
@@ -1998,7 +2014,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، Bhms": "ccc، h:mm:ss B",
         "Ed، Bhms": "E، d، h:mm:ss B",
         "Gy، Bhms": "y G، h:mm:ss B",
+        "GyM، Bhms": "MM، y G، h:mm:ss B",
         "GyMd، Bhms": "dd-MM-y GGGGG، h:mm:ss B",
+        "GyMEd، Bhms": "E d/M/y G، h:mm:ss B",
         "GyMMM، Bhms": "MMM y G، h:mm:ss B",
         "GyMMMd، Bhms": "d MMM y G، h:mm:ss B",
         "GyMMMEd، Bhms": "E، d MMM y G، h:mm:ss B",
@@ -2028,7 +2046,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، h": "ccc، h a",
         "Ed، h": "E، d، h a",
         "Gy، h": "y G، h a",
+        "GyM، h": "MM، y G، h a",
         "GyMd، h": "dd-MM-y GGGGG، h a",
+        "GyMEd، h": "E d/M/y G، h a",
         "GyMMM، h": "MMM y G، h a",
         "GyMMMd، h": "d MMM y G، h a",
         "GyMMMEd، h": "E، d MMM y G، h a",
@@ -2058,7 +2078,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، H": "ccc، HH",
         "Ed، H": "E، d، HH",
         "Gy، H": "y G، HH",
+        "GyM، H": "MM، y G، HH",
         "GyMd، H": "dd-MM-y GGGGG، HH",
+        "GyMEd، H": "E d/M/y G، HH",
         "GyMMM، H": "MMM y G، HH",
         "GyMMMd، H": "d MMM y G، HH",
         "GyMMMEd، H": "E، d MMM y G، HH",
@@ -2088,7 +2110,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، hm": "ccc، h:mm a",
         "Ed، hm": "E، d، h:mm a",
         "Gy، hm": "y G، h:mm a",
+        "GyM، hm": "MM، y G، h:mm a",
         "GyMd، hm": "dd-MM-y GGGGG، h:mm a",
+        "GyMEd، hm": "E d/M/y G، h:mm a",
         "GyMMM، hm": "MMM y G، h:mm a",
         "GyMMMd، hm": "d MMM y G، h:mm a",
         "GyMMMEd، hm": "E، d MMM y G، h:mm a",
@@ -2118,7 +2142,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، Hm": "ccc، HH:mm",
         "Ed، Hm": "E، d، HH:mm",
         "Gy، Hm": "y G، HH:mm",
+        "GyM، Hm": "MM، y G، HH:mm",
         "GyMd، Hm": "dd-MM-y GGGGG، HH:mm",
+        "GyMEd، Hm": "E d/M/y G، HH:mm",
         "GyMMM، Hm": "MMM y G، HH:mm",
         "GyMMMd، Hm": "d MMM y G، HH:mm",
         "GyMMMEd، Hm": "E، d MMM y G، HH:mm",
@@ -2148,7 +2174,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، hms": "ccc، h:mm:ss a",
         "Ed، hms": "E، d، h:mm:ss a",
         "Gy، hms": "y G، h:mm:ss a",
+        "GyM، hms": "MM، y G، h:mm:ss a",
         "GyMd، hms": "dd-MM-y GGGGG، h:mm:ss a",
+        "GyMEd، hms": "E d/M/y G، h:mm:ss a",
         "GyMMM، hms": "MMM y G، h:mm:ss a",
         "GyMMMd، hms": "d MMM y G، h:mm:ss a",
         "GyMMMEd، hms": "E، d MMM y G، h:mm:ss a",
@@ -2178,7 +2206,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، Hms": "ccc، HH:mm:ss",
         "Ed، Hms": "E، d، HH:mm:ss",
         "Gy، Hms": "y G، HH:mm:ss",
+        "GyM، Hms": "MM، y G، HH:mm:ss",
         "GyMd، Hms": "dd-MM-y GGGGG، HH:mm:ss",
+        "GyMEd، Hms": "E d/M/y G، HH:mm:ss",
         "GyMMM، Hms": "MMM y G، HH:mm:ss",
         "GyMMMd، Hms": "d MMM y G، HH:mm:ss",
         "GyMMMEd، Hms": "E، d MMM y G، HH:mm:ss",
@@ -2208,7 +2238,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، hmsv": "ccc، h:mm:ss a v",
         "Ed، hmsv": "E، d، h:mm:ss a v",
         "Gy، hmsv": "y G، h:mm:ss a v",
+        "GyM، hmsv": "MM، y G، h:mm:ss a v",
         "GyMd، hmsv": "dd-MM-y GGGGG، h:mm:ss a v",
+        "GyMEd، hmsv": "E d/M/y G، h:mm:ss a v",
         "GyMMM، hmsv": "MMM y G، h:mm:ss a v",
         "GyMMMd، hmsv": "d MMM y G، h:mm:ss a v",
         "GyMMMEd، hmsv": "E، d MMM y G، h:mm:ss a v",
@@ -2238,7 +2270,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، Hmsv": "ccc، HH:mm:ss v",
         "Ed، Hmsv": "E، d، HH:mm:ss v",
         "Gy، Hmsv": "y G، HH:mm:ss v",
+        "GyM، Hmsv": "MM، y G، HH:mm:ss v",
         "GyMd، Hmsv": "dd-MM-y GGGGG، HH:mm:ss v",
+        "GyMEd، Hmsv": "E d/M/y G، HH:mm:ss v",
         "GyMMM، Hmsv": "MMM y G، HH:mm:ss v",
         "GyMMMd، Hmsv": "d MMM y G، HH:mm:ss v",
         "GyMMMEd، Hmsv": "E، d MMM y G، HH:mm:ss v",
@@ -2268,7 +2302,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، hmv": "ccc، h:mm a v",
         "Ed، hmv": "E، d، h:mm a v",
         "Gy، hmv": "y G، h:mm a v",
+        "GyM، hmv": "MM، y G، h:mm a v",
         "GyMd، hmv": "dd-MM-y GGGGG، h:mm a v",
+        "GyMEd، hmv": "E d/M/y G، h:mm a v",
         "GyMMM، hmv": "MMM y G، h:mm a v",
         "GyMMMd، hmv": "d MMM y G، h:mm a v",
         "GyMMMEd، hmv": "E، d MMM y G، h:mm a v",
@@ -2298,7 +2334,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، Hmv": "ccc، HH:mm v",
         "Ed، Hmv": "E، d، HH:mm v",
         "Gy، Hmv": "y G، HH:mm v",
+        "GyM، Hmv": "MM، y G، HH:mm v",
         "GyMd، Hmv": "dd-MM-y GGGGG، HH:mm v",
+        "GyMEd، Hmv": "E d/M/y G، HH:mm v",
         "GyMMM، Hmv": "MMM y G، HH:mm v",
         "GyMMMd، Hmv": "d MMM y G، HH:mm v",
         "GyMMMEd، Hmv": "E، d MMM y G، HH:mm v",
@@ -2320,6 +2358,70 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMd، Hmv": "d MMM y، HH:mm v",
         "yMMMEd، Hmv": "E، d MMM y، HH:mm v",
         "yMMMM، Hmv": "MMMM y، HH:mm v",
+        "EEEE، d MMMM y، hv": "EEEE، d MMMM y، h a v",
+        "d MMMM y، hv": "d MMMM y، h a v",
+        "dd‏/MM‏/y، hv": "dd‏/MM‏/y، h a v",
+        "d‏/M‏/y، hv": "d‏/M‏/y، h a v",
+        "d، hv": "d، h a v",
+        "E، hv": "ccc، h a v",
+        "Ed، hv": "E، d، h a v",
+        "Gy، hv": "y G، h a v",
+        "GyM، hv": "MM، y G، h a v",
+        "GyMd، hv": "dd-MM-y GGGGG، h a v",
+        "GyMEd، hv": "E d/M/y G، h a v",
+        "GyMMM، hv": "MMM y G، h a v",
+        "GyMMMd، hv": "d MMM y G، h a v",
+        "GyMMMEd، hv": "E، d MMM y G، h a v",
+        "M، hv": "L، h a v",
+        "Md، hv": "d‏/M، h a v",
+        "MEd، hv": "E، d‏/M، h a v",
+        "MMdd، hv": "dd‏/MM، h a v",
+        "MMM، hv": "LLL، h a v",
+        "MMMd، hv": "d MMM، h a v",
+        "MMMEd، hv": "E، d MMM، h a v",
+        "MMMMd، hv": "d MMMM، h a v",
+        "MMMMEd، hv": "E، d MMMM، h a v",
+        "y، hv": "y، h a v",
+        "yM، hv": "M‏/y، h a v",
+        "yMd، hv": "d‏/M‏/y، h a v",
+        "yMEd، hv": "E، d‏/M‏/y، h a v",
+        "yMM، hv": "MM‏/y، h a v",
+        "yMMM، hv": "MMM y، h a v",
+        "yMMMd، hv": "d MMM y، h a v",
+        "yMMMEd، hv": "E، d MMM y، h a v",
+        "yMMMM، hv": "MMMM y، h a v",
+        "EEEE، d MMMM y، Hv": "EEEE، d MMMM y، HH'h' v",
+        "d MMMM y، Hv": "d MMMM y، HH'h' v",
+        "dd‏/MM‏/y، Hv": "dd‏/MM‏/y، HH'h' v",
+        "d‏/M‏/y، Hv": "d‏/M‏/y، HH'h' v",
+        "d، Hv": "d، HH'h' v",
+        "E، Hv": "ccc، HH'h' v",
+        "Ed، Hv": "E، d، HH'h' v",
+        "Gy، Hv": "y G، HH'h' v",
+        "GyM، Hv": "MM، y G، HH'h' v",
+        "GyMd، Hv": "dd-MM-y GGGGG، HH'h' v",
+        "GyMEd، Hv": "E d/M/y G، HH'h' v",
+        "GyMMM، Hv": "MMM y G، HH'h' v",
+        "GyMMMd، Hv": "d MMM y G، HH'h' v",
+        "GyMMMEd، Hv": "E، d MMM y G، HH'h' v",
+        "M، Hv": "L، HH'h' v",
+        "Md، Hv": "d‏/M، HH'h' v",
+        "MEd، Hv": "E، d‏/M، HH'h' v",
+        "MMdd، Hv": "dd‏/MM، HH'h' v",
+        "MMM، Hv": "LLL، HH'h' v",
+        "MMMd، Hv": "d MMM، HH'h' v",
+        "MMMEd، Hv": "E، d MMM، HH'h' v",
+        "MMMMd، Hv": "d MMMM، HH'h' v",
+        "MMMMEd، Hv": "E، d MMMM، HH'h' v",
+        "y، Hv": "y، HH'h' v",
+        "yM، Hv": "M‏/y، HH'h' v",
+        "yMd، Hv": "d‏/M‏/y، HH'h' v",
+        "yMEd، Hv": "E، d‏/M‏/y، HH'h' v",
+        "yMM، Hv": "MM‏/y، HH'h' v",
+        "yMMM، Hv": "MMM y، HH'h' v",
+        "yMMMd، Hv": "d MMM y، HH'h' v",
+        "yMMMEd، Hv": "E، d MMM y، HH'h' v",
+        "yMMMM، Hv": "MMMM y، HH'h' v",
         "EEEE، d MMMM y، ms": "EEEE، d MMMM y، mm:ss",
         "d MMMM y، ms": "d MMMM y، mm:ss",
         "dd‏/MM‏/y، ms": "dd‏/MM‏/y، mm:ss",
@@ -2328,7 +2430,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E، ms": "ccc، mm:ss",
         "Ed، ms": "E، d، mm:ss",
         "Gy، ms": "y G، mm:ss",
+        "GyM، ms": "MM، y G، mm:ss",
         "GyMd، ms": "dd-MM-y GGGGG، mm:ss",
+        "GyMEd، ms": "E d/M/y G، mm:ss",
         "GyMMM، ms": "MMM y G، mm:ss",
         "GyMMMd، ms": "d MMM y G، mm:ss",
         "GyMMMEd، ms": "E، d MMM y G، mm:ss",
@@ -2794,68 +2898,68 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Africa/Lagos": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "Westafrikanische Normalzeit",
-          "Westafrikanische Sommerzeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
       "Asia/Aqtobe": {
@@ -3234,6 +3338,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "Azoren-Normalzeit",
           "Azoren-Sommerzeit"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "Hawaii-Aleuten-Normalzeit",
+          "Hawaii-Aleuten-Sommerzeit"
         ]
       },
       "Asia/Thimphu": {
@@ -3971,7 +4081,7 @@ Intl.DateTimeFormat.__addLocaleData({
       "Pacific/Honolulu": {
         "long": [
           "Hawaii-Aleuten-Normalzeit",
-          "Hawaii-Aleuten-Sommerzeit"
+          "Hawaii-Aleuten-Normalzeit"
         ]
       },
       "Asia/Hong_Kong": {
@@ -4300,8 +4410,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Pacific/Ponape": {
         "long": [
-          "Ponape-Zeit",
-          "Ponape-Zeit"
+          "Pohnpei-Zeit",
+          "Pohnpei-Zeit"
         ]
       },
       "Asia/Pyongyang": {
@@ -4406,6 +4516,12 @@ Intl.DateTimeFormat.__addLocaleData({
           "Chuuk-Zeit"
         ]
       },
+      "Europe/Istanbul": {
+        "long": [
+          "Türkische Normalzeit",
+          "Türkische Sommerzeit"
+        ]
+      },
       "Pacific/Funafuti": {
         "long": [
           "Tuvalu-Zeit",
@@ -4505,24 +4621,28 @@ Intl.DateTimeFormat.__addLocaleData({
     },
     "formats": {
       "gregory": {
-        "Bh": "h B",
+        "Bh": "h 'Uhr' B",
         "Bhm": "h:mm B",
         "Bhms": "h:mm:ss B",
         "d": "d",
         "E": "ccc",
-        "EBhm": "E h:mm B",
-        "EBhms": "E h:mm:ss B",
+        "EBh": "E, h 'Uhr' B",
+        "EBhm": "E, h:mm 'Uhr' B",
+        "EBhms": "E, h:mm:ss 'Uhr' B",
         "Ed": "E, d.",
+        "Eh": "E, h a",
         "Ehm": "E h:mm a",
         "EHm": "E, HH:mm",
         "Ehms": "E, h:mm:ss a",
         "EHms": "E, HH:mm:ss",
         "Gy": "y G",
+        "GyM": "MM/y G",
         "GyMd": "dd.MM.y G",
+        "GyMEd": "E, dd.MM.y G",
         "GyMMM": "MMM y G",
         "GyMMMd": "d. MMM y G",
         "GyMMMEd": "E, d. MMM y G",
-        "h": "h 'Uhr' a",
+        "h": "h a",
         "H": "HH 'Uhr'",
         "hm": "h:mm a",
         "Hm": "HH:mm",
@@ -4532,10 +4652,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "Hmsv": "HH:mm:ss v",
         "hmv": "h:mm a v",
         "Hmv": "HH:mm v",
+        "hv": "h a v",
+        "Hv": "HH 'Uhr' v",
         "M": "L",
         "Md": "d.M.",
         "MEd": "E, d.M.",
-        "MMd": "d.MM.",
+        "MMd": "dd.MM.",
         "MMdd": "dd.MM.",
         "MMM": "LLL",
         "MMMd": "d. MMM",
@@ -4547,7 +4669,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM": "M/y",
         "yMd": "d.M.y",
         "yMEd": "E, d.M.y",
-        "yMM": "MM.y",
+        "yMM": "MM/y",
         "yMMdd": "dd.MM.y",
         "yMMM": "MMM y",
         "yMMMd": "d. MMM y",
@@ -4569,14 +4691,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, HH:mm:ss zzzz": "ccc, HH:mm:ss zzzz",
         "Ed, HH:mm:ss zzzz": "E, d., HH:mm:ss zzzz",
         "Gy, HH:mm:ss zzzz": "y G, HH:mm:ss zzzz",
+        "GyM, HH:mm:ss zzzz": "MM/y G, HH:mm:ss zzzz",
         "GyMd, HH:mm:ss zzzz": "dd.MM.y G, HH:mm:ss zzzz",
+        "GyMEd, HH:mm:ss zzzz": "E, dd.MM.y G, HH:mm:ss zzzz",
         "GyMMM, HH:mm:ss zzzz": "MMM y G, HH:mm:ss zzzz",
         "GyMMMd, HH:mm:ss zzzz": "d. MMM y G, HH:mm:ss zzzz",
         "GyMMMEd, HH:mm:ss zzzz": "E, d. MMM y G, HH:mm:ss zzzz",
         "M, HH:mm:ss zzzz": "L, HH:mm:ss zzzz",
         "Md, HH:mm:ss zzzz": "d.M., HH:mm:ss zzzz",
         "MEd, HH:mm:ss zzzz": "E, d.M., HH:mm:ss zzzz",
-        "MMd, HH:mm:ss zzzz": "d.MM., HH:mm:ss zzzz",
+        "MMd, HH:mm:ss zzzz": "dd.MM., HH:mm:ss zzzz",
         "MMdd, HH:mm:ss zzzz": "dd.MM., HH:mm:ss zzzz",
         "MMM, HH:mm:ss zzzz": "LLL, HH:mm:ss zzzz",
         "MMMd, HH:mm:ss zzzz": "d. MMM, HH:mm:ss zzzz",
@@ -4587,7 +4711,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, HH:mm:ss zzzz": "M/y, HH:mm:ss zzzz",
         "yMd, HH:mm:ss zzzz": "d.M.y, HH:mm:ss zzzz",
         "yMEd, HH:mm:ss zzzz": "E, d.M.y, HH:mm:ss zzzz",
-        "yMM, HH:mm:ss zzzz": "MM.y, HH:mm:ss zzzz",
+        "yMM, HH:mm:ss zzzz": "MM/y, HH:mm:ss zzzz",
         "yMMdd, HH:mm:ss zzzz": "dd.MM.y, HH:mm:ss zzzz",
         "yMMM, HH:mm:ss zzzz": "MMM y, HH:mm:ss zzzz",
         "yMMMd, HH:mm:ss zzzz": "d. MMM y, HH:mm:ss zzzz",
@@ -4601,14 +4725,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, HH:mm:ss z": "ccc, HH:mm:ss z",
         "Ed, HH:mm:ss z": "E, d., HH:mm:ss z",
         "Gy, HH:mm:ss z": "y G, HH:mm:ss z",
+        "GyM, HH:mm:ss z": "MM/y G, HH:mm:ss z",
         "GyMd, HH:mm:ss z": "dd.MM.y G, HH:mm:ss z",
+        "GyMEd, HH:mm:ss z": "E, dd.MM.y G, HH:mm:ss z",
         "GyMMM, HH:mm:ss z": "MMM y G, HH:mm:ss z",
         "GyMMMd, HH:mm:ss z": "d. MMM y G, HH:mm:ss z",
         "GyMMMEd, HH:mm:ss z": "E, d. MMM y G, HH:mm:ss z",
         "M, HH:mm:ss z": "L, HH:mm:ss z",
         "Md, HH:mm:ss z": "d.M., HH:mm:ss z",
         "MEd, HH:mm:ss z": "E, d.M., HH:mm:ss z",
-        "MMd, HH:mm:ss z": "d.MM., HH:mm:ss z",
+        "MMd, HH:mm:ss z": "dd.MM., HH:mm:ss z",
         "MMdd, HH:mm:ss z": "dd.MM., HH:mm:ss z",
         "MMM, HH:mm:ss z": "LLL, HH:mm:ss z",
         "MMMd, HH:mm:ss z": "d. MMM, HH:mm:ss z",
@@ -4619,7 +4745,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, HH:mm:ss z": "M/y, HH:mm:ss z",
         "yMd, HH:mm:ss z": "d.M.y, HH:mm:ss z",
         "yMEd, HH:mm:ss z": "E, d.M.y, HH:mm:ss z",
-        "yMM, HH:mm:ss z": "MM.y, HH:mm:ss z",
+        "yMM, HH:mm:ss z": "MM/y, HH:mm:ss z",
         "yMMdd, HH:mm:ss z": "dd.MM.y, HH:mm:ss z",
         "yMMM, HH:mm:ss z": "MMM y, HH:mm:ss z",
         "yMMMd, HH:mm:ss z": "d. MMM y, HH:mm:ss z",
@@ -4633,14 +4759,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, HH:mm:ss": "ccc, HH:mm:ss",
         "Ed, HH:mm:ss": "E, d., HH:mm:ss",
         "Gy, HH:mm:ss": "y G, HH:mm:ss",
+        "GyM, HH:mm:ss": "MM/y G, HH:mm:ss",
         "GyMd, HH:mm:ss": "dd.MM.y G, HH:mm:ss",
+        "GyMEd, HH:mm:ss": "E, dd.MM.y G, HH:mm:ss",
         "GyMMM, HH:mm:ss": "MMM y G, HH:mm:ss",
         "GyMMMd, HH:mm:ss": "d. MMM y G, HH:mm:ss",
         "GyMMMEd, HH:mm:ss": "E, d. MMM y G, HH:mm:ss",
         "M, HH:mm:ss": "L, HH:mm:ss",
         "Md, HH:mm:ss": "d.M., HH:mm:ss",
         "MEd, HH:mm:ss": "E, d.M., HH:mm:ss",
-        "MMd, HH:mm:ss": "d.MM., HH:mm:ss",
+        "MMd, HH:mm:ss": "dd.MM., HH:mm:ss",
         "MMdd, HH:mm:ss": "dd.MM., HH:mm:ss",
         "MMM, HH:mm:ss": "LLL, HH:mm:ss",
         "MMMd, HH:mm:ss": "d. MMM, HH:mm:ss",
@@ -4651,7 +4779,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, HH:mm:ss": "M/y, HH:mm:ss",
         "yMd, HH:mm:ss": "d.M.y, HH:mm:ss",
         "yMEd, HH:mm:ss": "E, d.M.y, HH:mm:ss",
-        "yMM, HH:mm:ss": "MM.y, HH:mm:ss",
+        "yMM, HH:mm:ss": "MM/y, HH:mm:ss",
         "yMMdd, HH:mm:ss": "dd.MM.y, HH:mm:ss",
         "yMMM, HH:mm:ss": "MMM y, HH:mm:ss",
         "yMMMd, HH:mm:ss": "d. MMM y, HH:mm:ss",
@@ -4665,14 +4793,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, HH:mm": "ccc, HH:mm",
         "Ed, HH:mm": "E, d., HH:mm",
         "Gy, HH:mm": "y G, HH:mm",
+        "GyM, HH:mm": "MM/y G, HH:mm",
         "GyMd, HH:mm": "dd.MM.y G, HH:mm",
+        "GyMEd, HH:mm": "E, dd.MM.y G, HH:mm",
         "GyMMM, HH:mm": "MMM y G, HH:mm",
         "GyMMMd, HH:mm": "d. MMM y G, HH:mm",
         "GyMMMEd, HH:mm": "E, d. MMM y G, HH:mm",
         "M, HH:mm": "L, HH:mm",
         "Md, HH:mm": "d.M., HH:mm",
         "MEd, HH:mm": "E, d.M., HH:mm",
-        "MMd, HH:mm": "d.MM., HH:mm",
+        "MMd, HH:mm": "dd.MM., HH:mm",
         "MMdd, HH:mm": "dd.MM., HH:mm",
         "MMM, HH:mm": "LLL, HH:mm",
         "MMMd, HH:mm": "d. MMM, HH:mm",
@@ -4683,44 +4813,46 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, HH:mm": "M/y, HH:mm",
         "yMd, HH:mm": "d.M.y, HH:mm",
         "yMEd, HH:mm": "E, d.M.y, HH:mm",
-        "yMM, HH:mm": "MM.y, HH:mm",
+        "yMM, HH:mm": "MM/y, HH:mm",
         "yMMdd, HH:mm": "dd.MM.y, HH:mm",
         "yMMM, HH:mm": "MMM y, HH:mm",
         "yMMMd, HH:mm": "d. MMM y, HH:mm",
         "yMMMEd, HH:mm": "E, d. MMM y, HH:mm",
         "yMMMM, HH:mm": "MMMM y, HH:mm",
-        "EEEE, d. MMMM y, Bh": "EEEE, d. MMMM y, h B",
-        "d. MMMM y, Bh": "d. MMMM y, h B",
-        "dd.MM.y, Bh": "dd.MM.y, h B",
-        "dd.MM.yy, Bh": "dd.MM.yy, h B",
-        "d, Bh": "d, h B",
-        "E, Bh": "ccc, h B",
-        "Ed, Bh": "E, d., h B",
-        "Gy, Bh": "y G, h B",
-        "GyMd, Bh": "dd.MM.y G, h B",
-        "GyMMM, Bh": "MMM y G, h B",
-        "GyMMMd, Bh": "d. MMM y G, h B",
-        "GyMMMEd, Bh": "E, d. MMM y G, h B",
-        "M, Bh": "L, h B",
-        "Md, Bh": "d.M., h B",
-        "MEd, Bh": "E, d.M., h B",
-        "MMd, Bh": "d.MM., h B",
-        "MMdd, Bh": "dd.MM., h B",
-        "MMM, Bh": "LLL, h B",
-        "MMMd, Bh": "d. MMM, h B",
-        "MMMEd, Bh": "E, d. MMM, h B",
-        "MMMMd, Bh": "d. MMMM, h B",
-        "MMMMEd, Bh": "E, d. MMMM, h B",
-        "y, Bh": "y, h B",
-        "yM, Bh": "M/y, h B",
-        "yMd, Bh": "d.M.y, h B",
-        "yMEd, Bh": "E, d.M.y, h B",
-        "yMM, Bh": "MM.y, h B",
-        "yMMdd, Bh": "dd.MM.y, h B",
-        "yMMM, Bh": "MMM y, h B",
-        "yMMMd, Bh": "d. MMM y, h B",
-        "yMMMEd, Bh": "E, d. MMM y, h B",
-        "yMMMM, Bh": "MMMM y, h B",
+        "EEEE, d. MMMM y, Bh": "EEEE, d. MMMM y, h 'Uhr' B",
+        "d. MMMM y, Bh": "d. MMMM y, h 'Uhr' B",
+        "dd.MM.y, Bh": "dd.MM.y, h 'Uhr' B",
+        "dd.MM.yy, Bh": "dd.MM.yy, h 'Uhr' B",
+        "d, Bh": "d, h 'Uhr' B",
+        "E, Bh": "ccc, h 'Uhr' B",
+        "Ed, Bh": "E, d., h 'Uhr' B",
+        "Gy, Bh": "y G, h 'Uhr' B",
+        "GyM, Bh": "MM/y G, h 'Uhr' B",
+        "GyMd, Bh": "dd.MM.y G, h 'Uhr' B",
+        "GyMEd, Bh": "E, dd.MM.y G, h 'Uhr' B",
+        "GyMMM, Bh": "MMM y G, h 'Uhr' B",
+        "GyMMMd, Bh": "d. MMM y G, h 'Uhr' B",
+        "GyMMMEd, Bh": "E, d. MMM y G, h 'Uhr' B",
+        "M, Bh": "L, h 'Uhr' B",
+        "Md, Bh": "d.M., h 'Uhr' B",
+        "MEd, Bh": "E, d.M., h 'Uhr' B",
+        "MMd, Bh": "dd.MM., h 'Uhr' B",
+        "MMdd, Bh": "dd.MM., h 'Uhr' B",
+        "MMM, Bh": "LLL, h 'Uhr' B",
+        "MMMd, Bh": "d. MMM, h 'Uhr' B",
+        "MMMEd, Bh": "E, d. MMM, h 'Uhr' B",
+        "MMMMd, Bh": "d. MMMM, h 'Uhr' B",
+        "MMMMEd, Bh": "E, d. MMMM, h 'Uhr' B",
+        "y, Bh": "y, h 'Uhr' B",
+        "yM, Bh": "M/y, h 'Uhr' B",
+        "yMd, Bh": "d.M.y, h 'Uhr' B",
+        "yMEd, Bh": "E, d.M.y, h 'Uhr' B",
+        "yMM, Bh": "MM/y, h 'Uhr' B",
+        "yMMdd, Bh": "dd.MM.y, h 'Uhr' B",
+        "yMMM, Bh": "MMM y, h 'Uhr' B",
+        "yMMMd, Bh": "d. MMM y, h 'Uhr' B",
+        "yMMMEd, Bh": "E, d. MMM y, h 'Uhr' B",
+        "yMMMM, Bh": "MMMM y, h 'Uhr' B",
         "EEEE, d. MMMM y, Bhm": "EEEE, d. MMMM y, h:mm B",
         "d. MMMM y, Bhm": "d. MMMM y, h:mm B",
         "dd.MM.y, Bhm": "dd.MM.y, h:mm B",
@@ -4729,14 +4861,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Bhm": "ccc, h:mm B",
         "Ed, Bhm": "E, d., h:mm B",
         "Gy, Bhm": "y G, h:mm B",
+        "GyM, Bhm": "MM/y G, h:mm B",
         "GyMd, Bhm": "dd.MM.y G, h:mm B",
+        "GyMEd, Bhm": "E, dd.MM.y G, h:mm B",
         "GyMMM, Bhm": "MMM y G, h:mm B",
         "GyMMMd, Bhm": "d. MMM y G, h:mm B",
         "GyMMMEd, Bhm": "E, d. MMM y G, h:mm B",
         "M, Bhm": "L, h:mm B",
         "Md, Bhm": "d.M., h:mm B",
         "MEd, Bhm": "E, d.M., h:mm B",
-        "MMd, Bhm": "d.MM., h:mm B",
+        "MMd, Bhm": "dd.MM., h:mm B",
         "MMdd, Bhm": "dd.MM., h:mm B",
         "MMM, Bhm": "LLL, h:mm B",
         "MMMd, Bhm": "d. MMM, h:mm B",
@@ -4747,7 +4881,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, Bhm": "M/y, h:mm B",
         "yMd, Bhm": "d.M.y, h:mm B",
         "yMEd, Bhm": "E, d.M.y, h:mm B",
-        "yMM, Bhm": "MM.y, h:mm B",
+        "yMM, Bhm": "MM/y, h:mm B",
         "yMMdd, Bhm": "dd.MM.y, h:mm B",
         "yMMM, Bhm": "MMM y, h:mm B",
         "yMMMd, Bhm": "d. MMM y, h:mm B",
@@ -4761,14 +4895,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Bhms": "ccc, h:mm:ss B",
         "Ed, Bhms": "E, d., h:mm:ss B",
         "Gy, Bhms": "y G, h:mm:ss B",
+        "GyM, Bhms": "MM/y G, h:mm:ss B",
         "GyMd, Bhms": "dd.MM.y G, h:mm:ss B",
+        "GyMEd, Bhms": "E, dd.MM.y G, h:mm:ss B",
         "GyMMM, Bhms": "MMM y G, h:mm:ss B",
         "GyMMMd, Bhms": "d. MMM y G, h:mm:ss B",
         "GyMMMEd, Bhms": "E, d. MMM y G, h:mm:ss B",
         "M, Bhms": "L, h:mm:ss B",
         "Md, Bhms": "d.M., h:mm:ss B",
         "MEd, Bhms": "E, d.M., h:mm:ss B",
-        "MMd, Bhms": "d.MM., h:mm:ss B",
+        "MMd, Bhms": "dd.MM., h:mm:ss B",
         "MMdd, Bhms": "dd.MM., h:mm:ss B",
         "MMM, Bhms": "LLL, h:mm:ss B",
         "MMMd, Bhms": "d. MMM, h:mm:ss B",
@@ -4779,44 +4915,46 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, Bhms": "M/y, h:mm:ss B",
         "yMd, Bhms": "d.M.y, h:mm:ss B",
         "yMEd, Bhms": "E, d.M.y, h:mm:ss B",
-        "yMM, Bhms": "MM.y, h:mm:ss B",
+        "yMM, Bhms": "MM/y, h:mm:ss B",
         "yMMdd, Bhms": "dd.MM.y, h:mm:ss B",
         "yMMM, Bhms": "MMM y, h:mm:ss B",
         "yMMMd, Bhms": "d. MMM y, h:mm:ss B",
         "yMMMEd, Bhms": "E, d. MMM y, h:mm:ss B",
         "yMMMM, Bhms": "MMMM y, h:mm:ss B",
-        "EEEE, d. MMMM y, h": "EEEE, d. MMMM y, h 'Uhr' a",
-        "d. MMMM y, h": "d. MMMM y, h 'Uhr' a",
-        "dd.MM.y, h": "dd.MM.y, h 'Uhr' a",
-        "dd.MM.yy, h": "dd.MM.yy, h 'Uhr' a",
-        "d, h": "d, h 'Uhr' a",
-        "E, h": "ccc, h 'Uhr' a",
-        "Ed, h": "E, d., h 'Uhr' a",
-        "Gy, h": "y G, h 'Uhr' a",
-        "GyMd, h": "dd.MM.y G, h 'Uhr' a",
-        "GyMMM, h": "MMM y G, h 'Uhr' a",
-        "GyMMMd, h": "d. MMM y G, h 'Uhr' a",
-        "GyMMMEd, h": "E, d. MMM y G, h 'Uhr' a",
-        "M, h": "L, h 'Uhr' a",
-        "Md, h": "d.M., h 'Uhr' a",
-        "MEd, h": "E, d.M., h 'Uhr' a",
-        "MMd, h": "d.MM., h 'Uhr' a",
-        "MMdd, h": "dd.MM., h 'Uhr' a",
-        "MMM, h": "LLL, h 'Uhr' a",
-        "MMMd, h": "d. MMM, h 'Uhr' a",
-        "MMMEd, h": "E, d. MMM, h 'Uhr' a",
-        "MMMMd, h": "d. MMMM, h 'Uhr' a",
-        "MMMMEd, h": "E, d. MMMM, h 'Uhr' a",
-        "y, h": "y, h 'Uhr' a",
-        "yM, h": "M/y, h 'Uhr' a",
-        "yMd, h": "d.M.y, h 'Uhr' a",
-        "yMEd, h": "E, d.M.y, h 'Uhr' a",
-        "yMM, h": "MM.y, h 'Uhr' a",
-        "yMMdd, h": "dd.MM.y, h 'Uhr' a",
-        "yMMM, h": "MMM y, h 'Uhr' a",
-        "yMMMd, h": "d. MMM y, h 'Uhr' a",
-        "yMMMEd, h": "E, d. MMM y, h 'Uhr' a",
-        "yMMMM, h": "MMMM y, h 'Uhr' a",
+        "EEEE, d. MMMM y, h": "EEEE, d. MMMM y, h a",
+        "d. MMMM y, h": "d. MMMM y, h a",
+        "dd.MM.y, h": "dd.MM.y, h a",
+        "dd.MM.yy, h": "dd.MM.yy, h a",
+        "d, h": "d, h a",
+        "E, h": "ccc, h a",
+        "Ed, h": "E, d., h a",
+        "Gy, h": "y G, h a",
+        "GyM, h": "MM/y G, h a",
+        "GyMd, h": "dd.MM.y G, h a",
+        "GyMEd, h": "E, dd.MM.y G, h a",
+        "GyMMM, h": "MMM y G, h a",
+        "GyMMMd, h": "d. MMM y G, h a",
+        "GyMMMEd, h": "E, d. MMM y G, h a",
+        "M, h": "L, h a",
+        "Md, h": "d.M., h a",
+        "MEd, h": "E, d.M., h a",
+        "MMd, h": "dd.MM., h a",
+        "MMdd, h": "dd.MM., h a",
+        "MMM, h": "LLL, h a",
+        "MMMd, h": "d. MMM, h a",
+        "MMMEd, h": "E, d. MMM, h a",
+        "MMMMd, h": "d. MMMM, h a",
+        "MMMMEd, h": "E, d. MMMM, h a",
+        "y, h": "y, h a",
+        "yM, h": "M/y, h a",
+        "yMd, h": "d.M.y, h a",
+        "yMEd, h": "E, d.M.y, h a",
+        "yMM, h": "MM/y, h a",
+        "yMMdd, h": "dd.MM.y, h a",
+        "yMMM, h": "MMM y, h a",
+        "yMMMd, h": "d. MMM y, h a",
+        "yMMMEd, h": "E, d. MMM y, h a",
+        "yMMMM, h": "MMMM y, h a",
         "EEEE, d. MMMM y, H": "EEEE, d. MMMM y, HH 'Uhr'",
         "d. MMMM y, H": "d. MMMM y, HH 'Uhr'",
         "dd.MM.y, H": "dd.MM.y, HH 'Uhr'",
@@ -4825,14 +4963,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, H": "ccc, HH 'Uhr'",
         "Ed, H": "E, d., HH 'Uhr'",
         "Gy, H": "y G, HH 'Uhr'",
+        "GyM, H": "MM/y G, HH 'Uhr'",
         "GyMd, H": "dd.MM.y G, HH 'Uhr'",
+        "GyMEd, H": "E, dd.MM.y G, HH 'Uhr'",
         "GyMMM, H": "MMM y G, HH 'Uhr'",
         "GyMMMd, H": "d. MMM y G, HH 'Uhr'",
         "GyMMMEd, H": "E, d. MMM y G, HH 'Uhr'",
         "M, H": "L, HH 'Uhr'",
         "Md, H": "d.M., HH 'Uhr'",
         "MEd, H": "E, d.M., HH 'Uhr'",
-        "MMd, H": "d.MM., HH 'Uhr'",
+        "MMd, H": "dd.MM., HH 'Uhr'",
         "MMdd, H": "dd.MM., HH 'Uhr'",
         "MMM, H": "LLL, HH 'Uhr'",
         "MMMd, H": "d. MMM, HH 'Uhr'",
@@ -4843,7 +4983,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, H": "M/y, HH 'Uhr'",
         "yMd, H": "d.M.y, HH 'Uhr'",
         "yMEd, H": "E, d.M.y, HH 'Uhr'",
-        "yMM, H": "MM.y, HH 'Uhr'",
+        "yMM, H": "MM/y, HH 'Uhr'",
         "yMMdd, H": "dd.MM.y, HH 'Uhr'",
         "yMMM, H": "MMM y, HH 'Uhr'",
         "yMMMd, H": "d. MMM y, HH 'Uhr'",
@@ -4857,14 +4997,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, hm": "ccc, h:mm a",
         "Ed, hm": "E, d., h:mm a",
         "Gy, hm": "y G, h:mm a",
+        "GyM, hm": "MM/y G, h:mm a",
         "GyMd, hm": "dd.MM.y G, h:mm a",
+        "GyMEd, hm": "E, dd.MM.y G, h:mm a",
         "GyMMM, hm": "MMM y G, h:mm a",
         "GyMMMd, hm": "d. MMM y G, h:mm a",
         "GyMMMEd, hm": "E, d. MMM y G, h:mm a",
         "M, hm": "L, h:mm a",
         "Md, hm": "d.M., h:mm a",
         "MEd, hm": "E, d.M., h:mm a",
-        "MMd, hm": "d.MM., h:mm a",
+        "MMd, hm": "dd.MM., h:mm a",
         "MMdd, hm": "dd.MM., h:mm a",
         "MMM, hm": "LLL, h:mm a",
         "MMMd, hm": "d. MMM, h:mm a",
@@ -4875,7 +5017,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, hm": "M/y, h:mm a",
         "yMd, hm": "d.M.y, h:mm a",
         "yMEd, hm": "E, d.M.y, h:mm a",
-        "yMM, hm": "MM.y, h:mm a",
+        "yMM, hm": "MM/y, h:mm a",
         "yMMdd, hm": "dd.MM.y, h:mm a",
         "yMMM, hm": "MMM y, h:mm a",
         "yMMMd, hm": "d. MMM y, h:mm a",
@@ -4889,14 +5031,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Hm": "ccc, HH:mm",
         "Ed, Hm": "E, d., HH:mm",
         "Gy, Hm": "y G, HH:mm",
+        "GyM, Hm": "MM/y G, HH:mm",
         "GyMd, Hm": "dd.MM.y G, HH:mm",
+        "GyMEd, Hm": "E, dd.MM.y G, HH:mm",
         "GyMMM, Hm": "MMM y G, HH:mm",
         "GyMMMd, Hm": "d. MMM y G, HH:mm",
         "GyMMMEd, Hm": "E, d. MMM y G, HH:mm",
         "M, Hm": "L, HH:mm",
         "Md, Hm": "d.M., HH:mm",
         "MEd, Hm": "E, d.M., HH:mm",
-        "MMd, Hm": "d.MM., HH:mm",
+        "MMd, Hm": "dd.MM., HH:mm",
         "MMdd, Hm": "dd.MM., HH:mm",
         "MMM, Hm": "LLL, HH:mm",
         "MMMd, Hm": "d. MMM, HH:mm",
@@ -4907,7 +5051,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, Hm": "M/y, HH:mm",
         "yMd, Hm": "d.M.y, HH:mm",
         "yMEd, Hm": "E, d.M.y, HH:mm",
-        "yMM, Hm": "MM.y, HH:mm",
+        "yMM, Hm": "MM/y, HH:mm",
         "yMMdd, Hm": "dd.MM.y, HH:mm",
         "yMMM, Hm": "MMM y, HH:mm",
         "yMMMd, Hm": "d. MMM y, HH:mm",
@@ -4921,14 +5065,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, hms": "ccc, h:mm:ss a",
         "Ed, hms": "E, d., h:mm:ss a",
         "Gy, hms": "y G, h:mm:ss a",
+        "GyM, hms": "MM/y G, h:mm:ss a",
         "GyMd, hms": "dd.MM.y G, h:mm:ss a",
+        "GyMEd, hms": "E, dd.MM.y G, h:mm:ss a",
         "GyMMM, hms": "MMM y G, h:mm:ss a",
         "GyMMMd, hms": "d. MMM y G, h:mm:ss a",
         "GyMMMEd, hms": "E, d. MMM y G, h:mm:ss a",
         "M, hms": "L, h:mm:ss a",
         "Md, hms": "d.M., h:mm:ss a",
         "MEd, hms": "E, d.M., h:mm:ss a",
-        "MMd, hms": "d.MM., h:mm:ss a",
+        "MMd, hms": "dd.MM., h:mm:ss a",
         "MMdd, hms": "dd.MM., h:mm:ss a",
         "MMM, hms": "LLL, h:mm:ss a",
         "MMMd, hms": "d. MMM, h:mm:ss a",
@@ -4939,7 +5085,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, hms": "M/y, h:mm:ss a",
         "yMd, hms": "d.M.y, h:mm:ss a",
         "yMEd, hms": "E, d.M.y, h:mm:ss a",
-        "yMM, hms": "MM.y, h:mm:ss a",
+        "yMM, hms": "MM/y, h:mm:ss a",
         "yMMdd, hms": "dd.MM.y, h:mm:ss a",
         "yMMM, hms": "MMM y, h:mm:ss a",
         "yMMMd, hms": "d. MMM y, h:mm:ss a",
@@ -4953,14 +5099,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Hms": "ccc, HH:mm:ss",
         "Ed, Hms": "E, d., HH:mm:ss",
         "Gy, Hms": "y G, HH:mm:ss",
+        "GyM, Hms": "MM/y G, HH:mm:ss",
         "GyMd, Hms": "dd.MM.y G, HH:mm:ss",
+        "GyMEd, Hms": "E, dd.MM.y G, HH:mm:ss",
         "GyMMM, Hms": "MMM y G, HH:mm:ss",
         "GyMMMd, Hms": "d. MMM y G, HH:mm:ss",
         "GyMMMEd, Hms": "E, d. MMM y G, HH:mm:ss",
         "M, Hms": "L, HH:mm:ss",
         "Md, Hms": "d.M., HH:mm:ss",
         "MEd, Hms": "E, d.M., HH:mm:ss",
-        "MMd, Hms": "d.MM., HH:mm:ss",
+        "MMd, Hms": "dd.MM., HH:mm:ss",
         "MMdd, Hms": "dd.MM., HH:mm:ss",
         "MMM, Hms": "LLL, HH:mm:ss",
         "MMMd, Hms": "d. MMM, HH:mm:ss",
@@ -4971,7 +5119,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, Hms": "M/y, HH:mm:ss",
         "yMd, Hms": "d.M.y, HH:mm:ss",
         "yMEd, Hms": "E, d.M.y, HH:mm:ss",
-        "yMM, Hms": "MM.y, HH:mm:ss",
+        "yMM, Hms": "MM/y, HH:mm:ss",
         "yMMdd, Hms": "dd.MM.y, HH:mm:ss",
         "yMMM, Hms": "MMM y, HH:mm:ss",
         "yMMMd, Hms": "d. MMM y, HH:mm:ss",
@@ -4985,14 +5133,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, hmsv": "ccc, h:mm:ss a v",
         "Ed, hmsv": "E, d., h:mm:ss a v",
         "Gy, hmsv": "y G, h:mm:ss a v",
+        "GyM, hmsv": "MM/y G, h:mm:ss a v",
         "GyMd, hmsv": "dd.MM.y G, h:mm:ss a v",
+        "GyMEd, hmsv": "E, dd.MM.y G, h:mm:ss a v",
         "GyMMM, hmsv": "MMM y G, h:mm:ss a v",
         "GyMMMd, hmsv": "d. MMM y G, h:mm:ss a v",
         "GyMMMEd, hmsv": "E, d. MMM y G, h:mm:ss a v",
         "M, hmsv": "L, h:mm:ss a v",
         "Md, hmsv": "d.M., h:mm:ss a v",
         "MEd, hmsv": "E, d.M., h:mm:ss a v",
-        "MMd, hmsv": "d.MM., h:mm:ss a v",
+        "MMd, hmsv": "dd.MM., h:mm:ss a v",
         "MMdd, hmsv": "dd.MM., h:mm:ss a v",
         "MMM, hmsv": "LLL, h:mm:ss a v",
         "MMMd, hmsv": "d. MMM, h:mm:ss a v",
@@ -5003,7 +5153,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, hmsv": "M/y, h:mm:ss a v",
         "yMd, hmsv": "d.M.y, h:mm:ss a v",
         "yMEd, hmsv": "E, d.M.y, h:mm:ss a v",
-        "yMM, hmsv": "MM.y, h:mm:ss a v",
+        "yMM, hmsv": "MM/y, h:mm:ss a v",
         "yMMdd, hmsv": "dd.MM.y, h:mm:ss a v",
         "yMMM, hmsv": "MMM y, h:mm:ss a v",
         "yMMMd, hmsv": "d. MMM y, h:mm:ss a v",
@@ -5017,14 +5167,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Hmsv": "ccc, HH:mm:ss v",
         "Ed, Hmsv": "E, d., HH:mm:ss v",
         "Gy, Hmsv": "y G, HH:mm:ss v",
+        "GyM, Hmsv": "MM/y G, HH:mm:ss v",
         "GyMd, Hmsv": "dd.MM.y G, HH:mm:ss v",
+        "GyMEd, Hmsv": "E, dd.MM.y G, HH:mm:ss v",
         "GyMMM, Hmsv": "MMM y G, HH:mm:ss v",
         "GyMMMd, Hmsv": "d. MMM y G, HH:mm:ss v",
         "GyMMMEd, Hmsv": "E, d. MMM y G, HH:mm:ss v",
         "M, Hmsv": "L, HH:mm:ss v",
         "Md, Hmsv": "d.M., HH:mm:ss v",
         "MEd, Hmsv": "E, d.M., HH:mm:ss v",
-        "MMd, Hmsv": "d.MM., HH:mm:ss v",
+        "MMd, Hmsv": "dd.MM., HH:mm:ss v",
         "MMdd, Hmsv": "dd.MM., HH:mm:ss v",
         "MMM, Hmsv": "LLL, HH:mm:ss v",
         "MMMd, Hmsv": "d. MMM, HH:mm:ss v",
@@ -5035,7 +5187,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, Hmsv": "M/y, HH:mm:ss v",
         "yMd, Hmsv": "d.M.y, HH:mm:ss v",
         "yMEd, Hmsv": "E, d.M.y, HH:mm:ss v",
-        "yMM, Hmsv": "MM.y, HH:mm:ss v",
+        "yMM, Hmsv": "MM/y, HH:mm:ss v",
         "yMMdd, Hmsv": "dd.MM.y, HH:mm:ss v",
         "yMMM, Hmsv": "MMM y, HH:mm:ss v",
         "yMMMd, Hmsv": "d. MMM y, HH:mm:ss v",
@@ -5049,14 +5201,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, hmv": "ccc, h:mm a v",
         "Ed, hmv": "E, d., h:mm a v",
         "Gy, hmv": "y G, h:mm a v",
+        "GyM, hmv": "MM/y G, h:mm a v",
         "GyMd, hmv": "dd.MM.y G, h:mm a v",
+        "GyMEd, hmv": "E, dd.MM.y G, h:mm a v",
         "GyMMM, hmv": "MMM y G, h:mm a v",
         "GyMMMd, hmv": "d. MMM y G, h:mm a v",
         "GyMMMEd, hmv": "E, d. MMM y G, h:mm a v",
         "M, hmv": "L, h:mm a v",
         "Md, hmv": "d.M., h:mm a v",
         "MEd, hmv": "E, d.M., h:mm a v",
-        "MMd, hmv": "d.MM., h:mm a v",
+        "MMd, hmv": "dd.MM., h:mm a v",
         "MMdd, hmv": "dd.MM., h:mm a v",
         "MMM, hmv": "LLL, h:mm a v",
         "MMMd, hmv": "d. MMM, h:mm a v",
@@ -5067,7 +5221,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, hmv": "M/y, h:mm a v",
         "yMd, hmv": "d.M.y, h:mm a v",
         "yMEd, hmv": "E, d.M.y, h:mm a v",
-        "yMM, hmv": "MM.y, h:mm a v",
+        "yMM, hmv": "MM/y, h:mm a v",
         "yMMdd, hmv": "dd.MM.y, h:mm a v",
         "yMMM, hmv": "MMM y, h:mm a v",
         "yMMMd, hmv": "d. MMM y, h:mm a v",
@@ -5081,14 +5235,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Hmv": "ccc, HH:mm v",
         "Ed, Hmv": "E, d., HH:mm v",
         "Gy, Hmv": "y G, HH:mm v",
+        "GyM, Hmv": "MM/y G, HH:mm v",
         "GyMd, Hmv": "dd.MM.y G, HH:mm v",
+        "GyMEd, Hmv": "E, dd.MM.y G, HH:mm v",
         "GyMMM, Hmv": "MMM y G, HH:mm v",
         "GyMMMd, Hmv": "d. MMM y G, HH:mm v",
         "GyMMMEd, Hmv": "E, d. MMM y G, HH:mm v",
         "M, Hmv": "L, HH:mm v",
         "Md, Hmv": "d.M., HH:mm v",
         "MEd, Hmv": "E, d.M., HH:mm v",
-        "MMd, Hmv": "d.MM., HH:mm v",
+        "MMd, Hmv": "dd.MM., HH:mm v",
         "MMdd, Hmv": "dd.MM., HH:mm v",
         "MMM, Hmv": "LLL, HH:mm v",
         "MMMd, Hmv": "d. MMM, HH:mm v",
@@ -5099,12 +5255,80 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, Hmv": "M/y, HH:mm v",
         "yMd, Hmv": "d.M.y, HH:mm v",
         "yMEd, Hmv": "E, d.M.y, HH:mm v",
-        "yMM, Hmv": "MM.y, HH:mm v",
+        "yMM, Hmv": "MM/y, HH:mm v",
         "yMMdd, Hmv": "dd.MM.y, HH:mm v",
         "yMMM, Hmv": "MMM y, HH:mm v",
         "yMMMd, Hmv": "d. MMM y, HH:mm v",
         "yMMMEd, Hmv": "E, d. MMM y, HH:mm v",
         "yMMMM, Hmv": "MMMM y, HH:mm v",
+        "EEEE, d. MMMM y, hv": "EEEE, d. MMMM y, h a v",
+        "d. MMMM y, hv": "d. MMMM y, h a v",
+        "dd.MM.y, hv": "dd.MM.y, h a v",
+        "dd.MM.yy, hv": "dd.MM.yy, h a v",
+        "d, hv": "d, h a v",
+        "E, hv": "ccc, h a v",
+        "Ed, hv": "E, d., h a v",
+        "Gy, hv": "y G, h a v",
+        "GyM, hv": "MM/y G, h a v",
+        "GyMd, hv": "dd.MM.y G, h a v",
+        "GyMEd, hv": "E, dd.MM.y G, h a v",
+        "GyMMM, hv": "MMM y G, h a v",
+        "GyMMMd, hv": "d. MMM y G, h a v",
+        "GyMMMEd, hv": "E, d. MMM y G, h a v",
+        "M, hv": "L, h a v",
+        "Md, hv": "d.M., h a v",
+        "MEd, hv": "E, d.M., h a v",
+        "MMd, hv": "dd.MM., h a v",
+        "MMdd, hv": "dd.MM., h a v",
+        "MMM, hv": "LLL, h a v",
+        "MMMd, hv": "d. MMM, h a v",
+        "MMMEd, hv": "E, d. MMM, h a v",
+        "MMMMd, hv": "d. MMMM, h a v",
+        "MMMMEd, hv": "E, d. MMMM, h a v",
+        "y, hv": "y, h a v",
+        "yM, hv": "M/y, h a v",
+        "yMd, hv": "d.M.y, h a v",
+        "yMEd, hv": "E, d.M.y, h a v",
+        "yMM, hv": "MM/y, h a v",
+        "yMMdd, hv": "dd.MM.y, h a v",
+        "yMMM, hv": "MMM y, h a v",
+        "yMMMd, hv": "d. MMM y, h a v",
+        "yMMMEd, hv": "E, d. MMM y, h a v",
+        "yMMMM, hv": "MMMM y, h a v",
+        "EEEE, d. MMMM y, Hv": "EEEE, d. MMMM y, HH 'Uhr' v",
+        "d. MMMM y, Hv": "d. MMMM y, HH 'Uhr' v",
+        "dd.MM.y, Hv": "dd.MM.y, HH 'Uhr' v",
+        "dd.MM.yy, Hv": "dd.MM.yy, HH 'Uhr' v",
+        "d, Hv": "d, HH 'Uhr' v",
+        "E, Hv": "ccc, HH 'Uhr' v",
+        "Ed, Hv": "E, d., HH 'Uhr' v",
+        "Gy, Hv": "y G, HH 'Uhr' v",
+        "GyM, Hv": "MM/y G, HH 'Uhr' v",
+        "GyMd, Hv": "dd.MM.y G, HH 'Uhr' v",
+        "GyMEd, Hv": "E, dd.MM.y G, HH 'Uhr' v",
+        "GyMMM, Hv": "MMM y G, HH 'Uhr' v",
+        "GyMMMd, Hv": "d. MMM y G, HH 'Uhr' v",
+        "GyMMMEd, Hv": "E, d. MMM y G, HH 'Uhr' v",
+        "M, Hv": "L, HH 'Uhr' v",
+        "Md, Hv": "d.M., HH 'Uhr' v",
+        "MEd, Hv": "E, d.M., HH 'Uhr' v",
+        "MMd, Hv": "dd.MM., HH 'Uhr' v",
+        "MMdd, Hv": "dd.MM., HH 'Uhr' v",
+        "MMM, Hv": "LLL, HH 'Uhr' v",
+        "MMMd, Hv": "d. MMM, HH 'Uhr' v",
+        "MMMEd, Hv": "E, d. MMM, HH 'Uhr' v",
+        "MMMMd, Hv": "d. MMMM, HH 'Uhr' v",
+        "MMMMEd, Hv": "E, d. MMMM, HH 'Uhr' v",
+        "y, Hv": "y, HH 'Uhr' v",
+        "yM, Hv": "M/y, HH 'Uhr' v",
+        "yMd, Hv": "d.M.y, HH 'Uhr' v",
+        "yMEd, Hv": "E, d.M.y, HH 'Uhr' v",
+        "yMM, Hv": "MM/y, HH 'Uhr' v",
+        "yMMdd, Hv": "dd.MM.y, HH 'Uhr' v",
+        "yMMM, Hv": "MMM y, HH 'Uhr' v",
+        "yMMMd, Hv": "d. MMM y, HH 'Uhr' v",
+        "yMMMEd, Hv": "E, d. MMM y, HH 'Uhr' v",
+        "yMMMM, Hv": "MMMM y, HH 'Uhr' v",
         "EEEE, d. MMMM y, ms": "EEEE, d. MMMM y, mm:ss",
         "d. MMMM y, ms": "d. MMMM y, mm:ss",
         "dd.MM.y, ms": "dd.MM.y, mm:ss",
@@ -5113,14 +5337,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, ms": "ccc, mm:ss",
         "Ed, ms": "E, d., mm:ss",
         "Gy, ms": "y G, mm:ss",
+        "GyM, ms": "MM/y G, mm:ss",
         "GyMd, ms": "dd.MM.y G, mm:ss",
+        "GyMEd, ms": "E, dd.MM.y G, mm:ss",
         "GyMMM, ms": "MMM y G, mm:ss",
         "GyMMMd, ms": "d. MMM y G, mm:ss",
         "GyMMMEd, ms": "E, d. MMM y G, mm:ss",
         "M, ms": "L, mm:ss",
         "Md, ms": "d.M., mm:ss",
         "MEd, ms": "E, d.M., mm:ss",
-        "MMd, ms": "d.MM., mm:ss",
+        "MMd, ms": "dd.MM., mm:ss",
         "MMdd, ms": "dd.MM., mm:ss",
         "MMM, ms": "LLL, mm:ss",
         "MMMd, ms": "d. MMM, mm:ss",
@@ -5131,7 +5357,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yM, ms": "M/y, mm:ss",
         "yMd, ms": "d.M.y, mm:ss",
         "yMEd, ms": "E, d.M.y, mm:ss",
-        "yMM, ms": "MM.y, mm:ss",
+        "yMM, ms": "MM/y, mm:ss",
         "yMMdd, ms": "dd.MM.y, mm:ss",
         "yMMM, ms": "MMM y, mm:ss",
         "yMMMd, ms": "d. MMM y, mm:ss",
@@ -5192,8 +5418,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "y": "E, d. MMM y – E, d. MMM y G"
       },
       "h": {
-        "a": "h 'Uhr' a – h 'Uhr' a",
-        "h": "h – h 'Uhr' a"
+        "a": "h a – h a",
+        "h": "h – h a"
       },
       "H": {
         "H": "HH–HH 'Uhr'"
@@ -5531,68 +5757,68 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Africa/Lagos": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "West Africa Standard Time",
-          "West Africa Summer Time"
+          "West Africa Time",
+          "West Africa Time"
         ]
       },
       "Asia/Aqtobe": {
@@ -5831,8 +6057,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Pacific/Apia": {
         "long": [
-          "Apia Standard Time",
-          "Apia Daylight Time"
+          "Samoa Standard Time",
+          "Samoa Daylight Time"
         ]
       },
       "Asia/Riyadh": {
@@ -6149,6 +6375,16 @@ Intl.DateTimeFormat.__addLocaleData({
           "Azores Summer Time"
         ]
       },
+      "America/Adak": {
+        "long": [
+          "Hawaii-Aleutian Standard Time",
+          "Hawaii-Aleutian Daylight Time"
+        ],
+        "short": [
+          "HAST",
+          "HADT"
+        ]
+      },
       "Asia/Thimphu": {
         "long": [
           "Bhutan Time",
@@ -6185,8 +6421,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Brunei": {
         "long": [
-          "Brunei Darussalam Time",
-          "Brunei Darussalam Time"
+          "Brunei Time",
+          "Brunei Time"
         ]
       },
       "Atlantic/Cape_Verde": {
@@ -6203,8 +6439,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Pacific/Saipan": {
         "long": [
-          "North Mariana Islands Time",
-          "North Mariana Islands Time"
+          "Northern Mariana Islands Time",
+          "Northern Mariana Islands Time"
         ]
       },
       "Pacific/Guam": {
@@ -6252,7 +6488,7 @@ Intl.DateTimeFormat.__addLocaleData({
       "Pacific/Rarotonga": {
         "long": [
           "Cook Islands Standard Time",
-          "Cook Islands Half Summer Time"
+          "Cook Islands Summer Time"
         ]
       },
       "America/Havana": {
@@ -6269,8 +6505,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Antarctica/DumontDUrville": {
         "long": [
-          "Dumont-d’Urville Time",
-          "Dumont-d’Urville Time"
+          "Dumont d’Urville Time",
+          "Dumont d’Urville Time"
         ]
       },
       "Asia/Dushanbe": {
@@ -6287,8 +6523,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Dili": {
         "long": [
-          "East Timor Time",
-          "East Timor Time"
+          "Timor-Leste Time",
+          "Timor-Leste Time"
         ]
       },
       "Pacific/Easter": {
@@ -6768,11 +7004,11 @@ Intl.DateTimeFormat.__addLocaleData({
       "Pacific/Honolulu": {
         "long": [
           "Hawaii-Aleutian Standard Time",
-          "Hawaii-Aleutian Daylight Time"
+          "Hawaii-Aleutian Standard Time"
         ],
         "short": [
-          "HAST",
-          "HADT"
+          "HST",
+          "HST"
         ]
       },
       "Asia/Hong_Kong": {
@@ -6783,8 +7019,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Hovd": {
         "long": [
-          "Hovd Standard Time",
-          "Hovd Summer Time"
+          "Khovd Standard Time",
+          "Khovd Summer Time"
         ]
       },
       "Asia/Calcutta": {
@@ -6867,8 +7103,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Kamchatka": {
         "long": [
-          "Petropavlovsk-Kamchatski Standard Time",
-          "Petropavlovsk-Kamchatski Summer Time"
+          "Kamchatka Standard Time",
+          "Kamchatka Summer Time"
         ]
       },
       "Asia/Karachi": {
@@ -6879,8 +7115,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Qyzylorda": {
         "long": [
-          "Qyzylorda Standard Time",
-          "Qyzylorda Summer Time"
+          "Kyzylorda Standard Time",
+          "Kyzylorda Summer Time"
         ]
       },
       "Asia/Seoul": {
@@ -7101,14 +7337,14 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Pacific/Ponape": {
         "long": [
-          "Ponape Time",
-          "Ponape Time"
+          "Pohnpei Time",
+          "Pohnpei Time"
         ]
       },
       "Asia/Pyongyang": {
         "long": [
-          "Pyongyang Time",
-          "Pyongyang Time"
+          "North Korea Time",
+          "North Korea Time"
         ]
       },
       "Indian/Reunion": {
@@ -7131,8 +7367,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Pacific/Pago_Pago": {
         "long": [
-          "Samoa Standard Time",
-          "Samoa Daylight Time"
+          "American Samoa Standard Time",
+          "American Samoa Daylight Time"
         ]
       },
       "Indian/Mahe": {
@@ -7179,8 +7415,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Taipei": {
         "long": [
-          "Taipei Standard Time",
-          "Taipei Daylight Time"
+          "Taiwan Standard Time",
+          "Taiwan Daylight Time"
         ]
       },
       "Asia/Tashkent": {
@@ -7205,6 +7441,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "Chuuk Time",
           "Chuuk Time"
+        ]
+      },
+      "Europe/Istanbul": {
+        "long": [
+          "Türkiye Standard Time",
+          "Türkiye Summer Time"
         ]
       },
       "Pacific/Funafuti": {
@@ -7311,9 +7553,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "Bhms": "h:mm:ss B",
         "d": "d",
         "E": "ccc",
+        "EBh": "E h B",
         "EBhm": "E h:mm B",
         "EBhms": "E h:mm:ss B",
         "Ed": "d E",
+        "Eh": "E h a",
+        "Eh-alt-ascii": "E h a",
         "Ehm": "E h:mm a",
         "Ehm-alt-ascii": "E h:mm a",
         "EHm": "E HH:mm",
@@ -7321,7 +7566,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ehms-alt-ascii": "E h:mm:ss a",
         "EHms": "E HH:mm:ss",
         "Gy": "y G",
+        "GyM": "M/y G",
         "GyMd": "M/d/y G",
+        "GyMEd": "E, M/d/y G",
         "GyMMM": "MMM y G",
         "GyMMMd": "MMM d, y G",
         "GyMMMEd": "E, MMM d, y G",
@@ -7340,6 +7587,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "hmv": "h:mm a v",
         "hmv-alt-ascii": "h:mm a v",
         "Hmv": "HH:mm v",
+        "hv": "h a v",
+        "hv-alt-ascii": "h a v",
+        "Hv": "HH'h' v",
         "M": "L",
         "Md": "M/d",
         "MEd": "E, M/d",
@@ -7376,7 +7626,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, h:mm:ss a zzzz": "ccc, h:mm:ss a zzzz",
         "Ed, h:mm:ss a zzzz": "d E, h:mm:ss a zzzz",
         "Gy, h:mm:ss a zzzz": "y G, h:mm:ss a zzzz",
+        "GyM, h:mm:ss a zzzz": "M/y G, h:mm:ss a zzzz",
         "GyMd, h:mm:ss a zzzz": "M/d/y G, h:mm:ss a zzzz",
+        "GyMEd, h:mm:ss a zzzz": "E, M/d/y G, h:mm:ss a zzzz",
         "GyMMM, h:mm:ss a zzzz": "MMM y G, h:mm:ss a zzzz",
         "GyMMMd, h:mm:ss a zzzz": "MMM d, y G, h:mm:ss a zzzz",
         "GyMMMEd, h:mm:ss a zzzz": "E, MMM d, y G, h:mm:ss a zzzz",
@@ -7403,7 +7655,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, h:mm:ss a zzzz": "ccc, h:mm:ss a zzzz",
         "Ed, h:mm:ss a zzzz": "d E, h:mm:ss a zzzz",
         "Gy, h:mm:ss a zzzz": "y G, h:mm:ss a zzzz",
+        "GyM, h:mm:ss a zzzz": "M/y G, h:mm:ss a zzzz",
         "GyMd, h:mm:ss a zzzz": "M/d/y G, h:mm:ss a zzzz",
+        "GyMEd, h:mm:ss a zzzz": "E, M/d/y G, h:mm:ss a zzzz",
         "GyMMM, h:mm:ss a zzzz": "MMM y G, h:mm:ss a zzzz",
         "GyMMMd, h:mm:ss a zzzz": "MMM d, y G, h:mm:ss a zzzz",
         "GyMMMEd, h:mm:ss a zzzz": "E, MMM d, y G, h:mm:ss a zzzz",
@@ -7430,7 +7684,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, h:mm:ss a z": "ccc, h:mm:ss a z",
         "Ed, h:mm:ss a z": "d E, h:mm:ss a z",
         "Gy, h:mm:ss a z": "y G, h:mm:ss a z",
+        "GyM, h:mm:ss a z": "M/y G, h:mm:ss a z",
         "GyMd, h:mm:ss a z": "M/d/y G, h:mm:ss a z",
+        "GyMEd, h:mm:ss a z": "E, M/d/y G, h:mm:ss a z",
         "GyMMM, h:mm:ss a z": "MMM y G, h:mm:ss a z",
         "GyMMMd, h:mm:ss a z": "MMM d, y G, h:mm:ss a z",
         "GyMMMEd, h:mm:ss a z": "E, MMM d, y G, h:mm:ss a z",
@@ -7457,7 +7713,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, h:mm:ss a z": "ccc, h:mm:ss a z",
         "Ed, h:mm:ss a z": "d E, h:mm:ss a z",
         "Gy, h:mm:ss a z": "y G, h:mm:ss a z",
+        "GyM, h:mm:ss a z": "M/y G, h:mm:ss a z",
         "GyMd, h:mm:ss a z": "M/d/y G, h:mm:ss a z",
+        "GyMEd, h:mm:ss a z": "E, M/d/y G, h:mm:ss a z",
         "GyMMM, h:mm:ss a z": "MMM y G, h:mm:ss a z",
         "GyMMMd, h:mm:ss a z": "MMM d, y G, h:mm:ss a z",
         "GyMMMEd, h:mm:ss a z": "E, MMM d, y G, h:mm:ss a z",
@@ -7484,7 +7742,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, h:mm:ss a": "ccc, h:mm:ss a",
         "Ed, h:mm:ss a": "d E, h:mm:ss a",
         "Gy, h:mm:ss a": "y G, h:mm:ss a",
+        "GyM, h:mm:ss a": "M/y G, h:mm:ss a",
         "GyMd, h:mm:ss a": "M/d/y G, h:mm:ss a",
+        "GyMEd, h:mm:ss a": "E, M/d/y G, h:mm:ss a",
         "GyMMM, h:mm:ss a": "MMM y G, h:mm:ss a",
         "GyMMMd, h:mm:ss a": "MMM d, y G, h:mm:ss a",
         "GyMMMEd, h:mm:ss a": "E, MMM d, y G, h:mm:ss a",
@@ -7511,7 +7771,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, h:mm:ss a": "ccc, h:mm:ss a",
         "Ed, h:mm:ss a": "d E, h:mm:ss a",
         "Gy, h:mm:ss a": "y G, h:mm:ss a",
+        "GyM, h:mm:ss a": "M/y G, h:mm:ss a",
         "GyMd, h:mm:ss a": "M/d/y G, h:mm:ss a",
+        "GyMEd, h:mm:ss a": "E, M/d/y G, h:mm:ss a",
         "GyMMM, h:mm:ss a": "MMM y G, h:mm:ss a",
         "GyMMMd, h:mm:ss a": "MMM d, y G, h:mm:ss a",
         "GyMMMEd, h:mm:ss a": "E, MMM d, y G, h:mm:ss a",
@@ -7538,7 +7800,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, h:mm a": "ccc, h:mm a",
         "Ed, h:mm a": "d E, h:mm a",
         "Gy, h:mm a": "y G, h:mm a",
+        "GyM, h:mm a": "M/y G, h:mm a",
         "GyMd, h:mm a": "M/d/y G, h:mm a",
+        "GyMEd, h:mm a": "E, M/d/y G, h:mm a",
         "GyMMM, h:mm a": "MMM y G, h:mm a",
         "GyMMMd, h:mm a": "MMM d, y G, h:mm a",
         "GyMMMEd, h:mm a": "E, MMM d, y G, h:mm a",
@@ -7565,7 +7829,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, h:mm a": "ccc, h:mm a",
         "Ed, h:mm a": "d E, h:mm a",
         "Gy, h:mm a": "y G, h:mm a",
+        "GyM, h:mm a": "M/y G, h:mm a",
         "GyMd, h:mm a": "M/d/y G, h:mm a",
+        "GyMEd, h:mm a": "E, M/d/y G, h:mm a",
         "GyMMM, h:mm a": "MMM y G, h:mm a",
         "GyMMMd, h:mm a": "MMM d, y G, h:mm a",
         "GyMMMEd, h:mm a": "E, MMM d, y G, h:mm a",
@@ -7592,7 +7858,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Bh": "ccc, h B",
         "Ed, Bh": "d E, h B",
         "Gy, Bh": "y G, h B",
+        "GyM, Bh": "M/y G, h B",
         "GyMd, Bh": "M/d/y G, h B",
+        "GyMEd, Bh": "E, M/d/y G, h B",
         "GyMMM, Bh": "MMM y G, h B",
         "GyMMMd, Bh": "MMM d, y G, h B",
         "GyMMMEd, Bh": "E, MMM d, y G, h B",
@@ -7619,7 +7887,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Bhm": "ccc, h:mm B",
         "Ed, Bhm": "d E, h:mm B",
         "Gy, Bhm": "y G, h:mm B",
+        "GyM, Bhm": "M/y G, h:mm B",
         "GyMd, Bhm": "M/d/y G, h:mm B",
+        "GyMEd, Bhm": "E, M/d/y G, h:mm B",
         "GyMMM, Bhm": "MMM y G, h:mm B",
         "GyMMMd, Bhm": "MMM d, y G, h:mm B",
         "GyMMMEd, Bhm": "E, MMM d, y G, h:mm B",
@@ -7646,7 +7916,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Bhms": "ccc, h:mm:ss B",
         "Ed, Bhms": "d E, h:mm:ss B",
         "Gy, Bhms": "y G, h:mm:ss B",
+        "GyM, Bhms": "M/y G, h:mm:ss B",
         "GyMd, Bhms": "M/d/y G, h:mm:ss B",
+        "GyMEd, Bhms": "E, M/d/y G, h:mm:ss B",
         "GyMMM, Bhms": "MMM y G, h:mm:ss B",
         "GyMMMd, Bhms": "MMM d, y G, h:mm:ss B",
         "GyMMMEd, Bhms": "E, MMM d, y G, h:mm:ss B",
@@ -7673,7 +7945,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, h": "ccc, h a",
         "Ed, h": "d E, h a",
         "Gy, h": "y G, h a",
+        "GyM, h": "M/y G, h a",
         "GyMd, h": "M/d/y G, h a",
+        "GyMEd, h": "E, M/d/y G, h a",
         "GyMMM, h": "MMM y G, h a",
         "GyMMMd, h": "MMM d, y G, h a",
         "GyMMMEd, h": "E, MMM d, y G, h a",
@@ -7700,7 +7974,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, H": "ccc, HH",
         "Ed, H": "d E, HH",
         "Gy, H": "y G, HH",
+        "GyM, H": "M/y G, HH",
         "GyMd, H": "M/d/y G, HH",
+        "GyMEd, H": "E, M/d/y G, HH",
         "GyMMM, H": "MMM y G, HH",
         "GyMMMd, H": "MMM d, y G, HH",
         "GyMMMEd, H": "E, MMM d, y G, HH",
@@ -7727,7 +8003,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, hm": "ccc, h:mm a",
         "Ed, hm": "d E, h:mm a",
         "Gy, hm": "y G, h:mm a",
+        "GyM, hm": "M/y G, h:mm a",
         "GyMd, hm": "M/d/y G, h:mm a",
+        "GyMEd, hm": "E, M/d/y G, h:mm a",
         "GyMMM, hm": "MMM y G, h:mm a",
         "GyMMMd, hm": "MMM d, y G, h:mm a",
         "GyMMMEd, hm": "E, MMM d, y G, h:mm a",
@@ -7754,7 +8032,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Hm": "ccc, HH:mm",
         "Ed, Hm": "d E, HH:mm",
         "Gy, Hm": "y G, HH:mm",
+        "GyM, Hm": "M/y G, HH:mm",
         "GyMd, Hm": "M/d/y G, HH:mm",
+        "GyMEd, Hm": "E, M/d/y G, HH:mm",
         "GyMMM, Hm": "MMM y G, HH:mm",
         "GyMMMd, Hm": "MMM d, y G, HH:mm",
         "GyMMMEd, Hm": "E, MMM d, y G, HH:mm",
@@ -7781,7 +8061,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, hms": "ccc, h:mm:ss a",
         "Ed, hms": "d E, h:mm:ss a",
         "Gy, hms": "y G, h:mm:ss a",
+        "GyM, hms": "M/y G, h:mm:ss a",
         "GyMd, hms": "M/d/y G, h:mm:ss a",
+        "GyMEd, hms": "E, M/d/y G, h:mm:ss a",
         "GyMMM, hms": "MMM y G, h:mm:ss a",
         "GyMMMd, hms": "MMM d, y G, h:mm:ss a",
         "GyMMMEd, hms": "E, MMM d, y G, h:mm:ss a",
@@ -7808,7 +8090,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Hms": "ccc, HH:mm:ss",
         "Ed, Hms": "d E, HH:mm:ss",
         "Gy, Hms": "y G, HH:mm:ss",
+        "GyM, Hms": "M/y G, HH:mm:ss",
         "GyMd, Hms": "M/d/y G, HH:mm:ss",
+        "GyMEd, Hms": "E, M/d/y G, HH:mm:ss",
         "GyMMM, Hms": "MMM y G, HH:mm:ss",
         "GyMMMd, Hms": "MMM d, y G, HH:mm:ss",
         "GyMMMEd, Hms": "E, MMM d, y G, HH:mm:ss",
@@ -7835,7 +8119,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, hmsv": "ccc, h:mm:ss a v",
         "Ed, hmsv": "d E, h:mm:ss a v",
         "Gy, hmsv": "y G, h:mm:ss a v",
+        "GyM, hmsv": "M/y G, h:mm:ss a v",
         "GyMd, hmsv": "M/d/y G, h:mm:ss a v",
+        "GyMEd, hmsv": "E, M/d/y G, h:mm:ss a v",
         "GyMMM, hmsv": "MMM y G, h:mm:ss a v",
         "GyMMMd, hmsv": "MMM d, y G, h:mm:ss a v",
         "GyMMMEd, hmsv": "E, MMM d, y G, h:mm:ss a v",
@@ -7862,7 +8148,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Hmsv": "ccc, HH:mm:ss v",
         "Ed, Hmsv": "d E, HH:mm:ss v",
         "Gy, Hmsv": "y G, HH:mm:ss v",
+        "GyM, Hmsv": "M/y G, HH:mm:ss v",
         "GyMd, Hmsv": "M/d/y G, HH:mm:ss v",
+        "GyMEd, Hmsv": "E, M/d/y G, HH:mm:ss v",
         "GyMMM, Hmsv": "MMM y G, HH:mm:ss v",
         "GyMMMd, Hmsv": "MMM d, y G, HH:mm:ss v",
         "GyMMMEd, Hmsv": "E, MMM d, y G, HH:mm:ss v",
@@ -7889,7 +8177,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, hmv": "ccc, h:mm a v",
         "Ed, hmv": "d E, h:mm a v",
         "Gy, hmv": "y G, h:mm a v",
+        "GyM, hmv": "M/y G, h:mm a v",
         "GyMd, hmv": "M/d/y G, h:mm a v",
+        "GyMEd, hmv": "E, M/d/y G, h:mm a v",
         "GyMMM, hmv": "MMM y G, h:mm a v",
         "GyMMMd, hmv": "MMM d, y G, h:mm a v",
         "GyMMMEd, hmv": "E, MMM d, y G, h:mm a v",
@@ -7916,7 +8206,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, Hmv": "ccc, HH:mm v",
         "Ed, Hmv": "d E, HH:mm v",
         "Gy, Hmv": "y G, HH:mm v",
+        "GyM, Hmv": "M/y G, HH:mm v",
         "GyMd, Hmv": "M/d/y G, HH:mm v",
+        "GyMEd, Hmv": "E, M/d/y G, HH:mm v",
         "GyMMM, Hmv": "MMM y G, HH:mm v",
         "GyMMMd, Hmv": "MMM d, y G, HH:mm v",
         "GyMMMEd, Hmv": "E, MMM d, y G, HH:mm v",
@@ -7935,6 +8227,64 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMd, Hmv": "MMM d, y, HH:mm v",
         "yMMMEd, Hmv": "E, MMM d, y, HH:mm v",
         "yMMMM, Hmv": "MMMM y, HH:mm v",
+        "EEEE, MMMM d, y, hv": "EEEE, MMMM d, y, h a v",
+        "MMMM d, y, hv": "MMMM d, y, h a v",
+        "MMM d, y, hv": "MMM d, y, h a v",
+        "M/d/yy, hv": "M/d/yy, h a v",
+        "d, hv": "d, h a v",
+        "E, hv": "ccc, h a v",
+        "Ed, hv": "d E, h a v",
+        "Gy, hv": "y G, h a v",
+        "GyM, hv": "M/y G, h a v",
+        "GyMd, hv": "M/d/y G, h a v",
+        "GyMEd, hv": "E, M/d/y G, h a v",
+        "GyMMM, hv": "MMM y G, h a v",
+        "GyMMMd, hv": "MMM d, y G, h a v",
+        "GyMMMEd, hv": "E, MMM d, y G, h a v",
+        "M, hv": "L, h a v",
+        "Md, hv": "M/d, h a v",
+        "MEd, hv": "E, M/d, h a v",
+        "MMM, hv": "LLL, h a v",
+        "MMMd, hv": "MMM d, h a v",
+        "MMMEd, hv": "E, MMM d, h a v",
+        "MMMMd, hv": "MMMM d, h a v",
+        "y, hv": "y, h a v",
+        "yM, hv": "M/y, h a v",
+        "yMd, hv": "M/d/y, h a v",
+        "yMEd, hv": "E, M/d/y, h a v",
+        "yMMM, hv": "MMM y, h a v",
+        "yMMMd, hv": "MMM d, y, h a v",
+        "yMMMEd, hv": "E, MMM d, y, h a v",
+        "yMMMM, hv": "MMMM y, h a v",
+        "EEEE, MMMM d, y, Hv": "EEEE, MMMM d, y, HH'h' v",
+        "MMMM d, y, Hv": "MMMM d, y, HH'h' v",
+        "MMM d, y, Hv": "MMM d, y, HH'h' v",
+        "M/d/yy, Hv": "M/d/yy, HH'h' v",
+        "d, Hv": "d, HH'h' v",
+        "E, Hv": "ccc, HH'h' v",
+        "Ed, Hv": "d E, HH'h' v",
+        "Gy, Hv": "y G, HH'h' v",
+        "GyM, Hv": "M/y G, HH'h' v",
+        "GyMd, Hv": "M/d/y G, HH'h' v",
+        "GyMEd, Hv": "E, M/d/y G, HH'h' v",
+        "GyMMM, Hv": "MMM y G, HH'h' v",
+        "GyMMMd, Hv": "MMM d, y G, HH'h' v",
+        "GyMMMEd, Hv": "E, MMM d, y G, HH'h' v",
+        "M, Hv": "L, HH'h' v",
+        "Md, Hv": "M/d, HH'h' v",
+        "MEd, Hv": "E, M/d, HH'h' v",
+        "MMM, Hv": "LLL, HH'h' v",
+        "MMMd, Hv": "MMM d, HH'h' v",
+        "MMMEd, Hv": "E, MMM d, HH'h' v",
+        "MMMMd, Hv": "MMMM d, HH'h' v",
+        "y, Hv": "y, HH'h' v",
+        "yM, Hv": "M/y, HH'h' v",
+        "yMd, Hv": "M/d/y, HH'h' v",
+        "yMEd, Hv": "E, M/d/y, HH'h' v",
+        "yMMM, Hv": "MMM y, HH'h' v",
+        "yMMMd, Hv": "MMM d, y, HH'h' v",
+        "yMMMEd, Hv": "E, MMM d, y, HH'h' v",
+        "yMMMM, Hv": "MMMM y, HH'h' v",
         "EEEE, MMMM d, y, ms": "EEEE, MMMM d, y, mm:ss",
         "MMMM d, y, ms": "MMMM d, y, mm:ss",
         "MMM d, y, ms": "MMM d, y, mm:ss",
@@ -7943,7 +8293,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E, ms": "ccc, mm:ss",
         "Ed, ms": "d E, mm:ss",
         "Gy, ms": "y G, mm:ss",
+        "GyM, ms": "M/y G, mm:ss",
         "GyMd, ms": "M/d/y G, mm:ss",
+        "GyMEd, ms": "E, M/d/y G, mm:ss",
         "GyMMM, ms": "MMM y G, mm:ss",
         "GyMMMd, ms": "MMM d, y G, mm:ss",
         "GyMMMEd, ms": "E, MMM d, y G, mm:ss",
@@ -8355,68 +8707,68 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Africa/Lagos": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "西アフリカ標準時",
-          "西アフリカ夏時間"
+          "西アフリカ時間",
+          "西アフリカ時間"
         ]
       },
       "Asia/Aqtobe": {
@@ -8445,122 +8797,122 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "America/Chicago": {
         "long": [
-          "アメリカ中部標準時",
-          "アメリカ中部夏時間"
+          "米国中部標準時",
+          "米国中部夏時間"
         ]
       },
       "America/Belize": {
         "long": [
-          "アメリカ中部標準時",
-          "アメリカ中部夏時間"
+          "米国中部標準時",
+          "米国中部夏時間"
         ]
       },
       "America/Winnipeg": {
         "long": [
-          "アメリカ中部標準時",
-          "アメリカ中部夏時間"
+          "米国中部標準時",
+          "米国中部夏時間"
         ]
       },
       "America/Costa_Rica": {
         "long": [
-          "アメリカ中部標準時",
-          "アメリカ中部夏時間"
+          "米国中部標準時",
+          "米国中部夏時間"
         ]
       },
       "America/Guatemala": {
         "long": [
-          "アメリカ中部標準時",
-          "アメリカ中部夏時間"
+          "米国中部標準時",
+          "米国中部夏時間"
         ]
       },
       "America/Tegucigalpa": {
         "long": [
-          "アメリカ中部標準時",
-          "アメリカ中部夏時間"
+          "米国中部標準時",
+          "米国中部夏時間"
         ]
       },
       "America/Mexico_City": {
         "long": [
-          "アメリカ中部標準時",
-          "アメリカ中部夏時間"
+          "米国中部標準時",
+          "米国中部夏時間"
         ]
       },
       "America/El_Salvador": {
         "long": [
-          "アメリカ中部標準時",
-          "アメリカ中部夏時間"
+          "米国中部標準時",
+          "米国中部夏時間"
         ]
       },
       "America/New_York": {
         "long": [
-          "アメリカ東部標準時",
-          "アメリカ東部夏時間"
+          "米国東部標準時",
+          "米国東部夏時間"
         ]
       },
       "America/Nassau": {
         "long": [
-          "アメリカ東部標準時",
-          "アメリカ東部夏時間"
+          "米国東部標準時",
+          "米国東部夏時間"
         ]
       },
       "America/Toronto": {
         "long": [
-          "アメリカ東部標準時",
-          "アメリカ東部夏時間"
+          "米国東部標準時",
+          "米国東部夏時間"
         ]
       },
       "America/Port-au-Prince": {
         "long": [
-          "アメリカ東部標準時",
-          "アメリカ東部夏時間"
+          "米国東部標準時",
+          "米国東部夏時間"
         ]
       },
       "America/Jamaica": {
         "long": [
-          "アメリカ東部標準時",
-          "アメリカ東部夏時間"
+          "米国東部標準時",
+          "米国東部夏時間"
         ]
       },
       "America/Cayman": {
         "long": [
-          "アメリカ東部標準時",
-          "アメリカ東部夏時間"
+          "米国東部標準時",
+          "米国東部夏時間"
         ]
       },
       "America/Panama": {
         "long": [
-          "アメリカ東部標準時",
-          "アメリカ東部夏時間"
+          "米国東部標準時",
+          "米国東部夏時間"
         ]
       },
       "America/Denver": {
         "long": [
-          "アメリカ山地標準時",
-          "アメリカ山地夏時間"
+          "米国山岳標準時",
+          "米国山岳夏時間"
         ]
       },
       "America/Edmonton": {
         "long": [
-          "アメリカ山地標準時",
-          "アメリカ山地夏時間"
+          "米国山岳標準時",
+          "米国山岳夏時間"
         ]
       },
       "America/Los_Angeles": {
         "long": [
-          "アメリカ太平洋標準時",
-          "アメリカ太平洋夏時間"
+          "米国太平洋標準時",
+          "米国太平洋夏時間"
         ]
       },
       "America/Vancouver": {
         "long": [
-          "アメリカ太平洋標準時",
-          "アメリカ太平洋夏時間"
+          "米国太平洋標準時",
+          "米国太平洋夏時間"
         ]
       },
       "America/Tijuana": {
         "long": [
-          "アメリカ太平洋標準時",
-          "アメリカ太平洋夏時間"
+          "米国太平洋標準時",
+          "米国太平洋夏時間"
         ]
       },
       "Asia/Anadyr": {
@@ -8571,8 +8923,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Pacific/Apia": {
         "long": [
-          "アピア標準時",
-          "アピア夏時間"
+          "サモア標準時",
+          "サモア夏時間"
         ]
       },
       "Asia/Riyadh": {
@@ -8797,6 +9149,12 @@ Intl.DateTimeFormat.__addLocaleData({
           "アゾレス夏時間"
         ]
       },
+      "America/Adak": {
+        "long": [
+          "ハワイ・アリューシャン標準時",
+          "ハワイ・アリューシャン夏時間"
+        ]
+      },
       "Asia/Thimphu": {
         "long": [
           "ブータン時間",
@@ -8829,8 +9187,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Brunei": {
         "long": [
-          "ブルネイ・ダルサラーム時間",
-          "ブルネイ・ダルサラーム時間"
+          "ブルネイ時間",
+          "ブルネイ時間"
         ]
       },
       "Atlantic/Cape_Verde": {
@@ -9364,7 +9722,7 @@ Intl.DateTimeFormat.__addLocaleData({
       "Pacific/Honolulu": {
         "long": [
           "ハワイ・アリューシャン標準時",
-          "ハワイ・アリューシャン夏時間"
+          "ハワイ・アリューシャン標準時"
         ]
       },
       "Asia/Hong_Kong": {
@@ -9697,14 +10055,14 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Pacific/Ponape": {
         "long": [
-          "ポナペ時間",
-          "ポナペ時間"
+          "ポンペイ時間",
+          "ポンペイ時間"
         ]
       },
       "Asia/Pyongyang": {
         "long": [
-          "平壌時間",
-          "平壌時間"
+          "北朝鮮時間",
+          "北朝鮮時間"
         ]
       },
       "Indian/Reunion": {
@@ -9727,8 +10085,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Pacific/Pago_Pago": {
         "long": [
-          "サモア標準時",
-          "サモア夏時間"
+          "米領サモア標準時",
+          "米領サモア夏時間"
         ]
       },
       "Indian/Mahe": {
@@ -9775,8 +10133,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Taipei": {
         "long": [
-          "台北標準時",
-          "台北夏時間"
+          "台湾標準時",
+          "台湾夏時間"
         ]
       },
       "Asia/Tashkent": {
@@ -9801,6 +10159,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "チューク時間",
           "チューク時間"
+        ]
+      },
+      "Europe/Istanbul": {
+        "long": [
+          "トルコ標準時",
+          "トルコ夏時間"
         ]
       },
       "Pacific/Funafuti": {
@@ -9907,16 +10271,20 @@ Intl.DateTimeFormat.__addLocaleData({
         "Bhms": "BK:mm:ss",
         "d": "d日",
         "E": "ccc",
+        "EBh": "BK時 (E)",
         "EBhm": "BK:mm (E)",
         "EBhms": "BK:mm:ss (E)",
         "Ed": "d日(E)",
         "EEEEd": "d日EEEE",
+        "Eh": "aK時 (E)",
         "Ehm": "aK:mm (E)",
         "EHm": "H:mm (E)",
         "Ehms": "aK:mm:ss (E)",
         "EHms": "H:mm:ss (E)",
         "Gy": "Gy年",
+        "GyM": "Gy/M",
         "GyMd": "Gy/M/d",
+        "GyMEd": "Gy/M/d(E)",
         "GyMMM": "Gy年M月",
         "GyMMMd": "Gy年M月d日",
         "GyMMMEd": "Gy年M月d日(E)",
@@ -9931,6 +10299,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "Hmsv": "H:mm:ss v",
         "hmv": "aK:mm v",
         "Hmv": "H:mm v",
+        "hv": "aK時 v",
+        "Hv": "H時 v",
         "M": "M月",
         "Md": "M/d",
         "MEd": "M/d(E)",
@@ -9967,7 +10337,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed H時mm分ss秒 zzzz": "d日(E) H時mm分ss秒 zzzz",
         "EEEEd H時mm分ss秒 zzzz": "d日EEEE H時mm分ss秒 zzzz",
         "Gy H時mm分ss秒 zzzz": "Gy年 H時mm分ss秒 zzzz",
+        "GyM H時mm分ss秒 zzzz": "Gy/M H時mm分ss秒 zzzz",
         "GyMd H時mm分ss秒 zzzz": "Gy/M/d H時mm分ss秒 zzzz",
+        "GyMEd H時mm分ss秒 zzzz": "Gy/M/d(E) H時mm分ss秒 zzzz",
         "GyMMM H時mm分ss秒 zzzz": "Gy年M月 H時mm分ss秒 zzzz",
         "GyMMMd H時mm分ss秒 zzzz": "Gy年M月d日 H時mm分ss秒 zzzz",
         "GyMMMEd H時mm分ss秒 zzzz": "Gy年M月d日(E) H時mm分ss秒 zzzz",
@@ -10000,7 +10372,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed H:mm:ss z": "d日(E) H:mm:ss z",
         "EEEEd H:mm:ss z": "d日EEEE H:mm:ss z",
         "Gy H:mm:ss z": "Gy年 H:mm:ss z",
+        "GyM H:mm:ss z": "Gy/M H:mm:ss z",
         "GyMd H:mm:ss z": "Gy/M/d H:mm:ss z",
+        "GyMEd H:mm:ss z": "Gy/M/d(E) H:mm:ss z",
         "GyMMM H:mm:ss z": "Gy年M月 H:mm:ss z",
         "GyMMMd H:mm:ss z": "Gy年M月d日 H:mm:ss z",
         "GyMMMEd H:mm:ss z": "Gy年M月d日(E) H:mm:ss z",
@@ -10033,7 +10407,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed H:mm:ss": "d日(E) H:mm:ss",
         "EEEEd H:mm:ss": "d日EEEE H:mm:ss",
         "Gy H:mm:ss": "Gy年 H:mm:ss",
+        "GyM H:mm:ss": "Gy/M H:mm:ss",
         "GyMd H:mm:ss": "Gy/M/d H:mm:ss",
+        "GyMEd H:mm:ss": "Gy/M/d(E) H:mm:ss",
         "GyMMM H:mm:ss": "Gy年M月 H:mm:ss",
         "GyMMMd H:mm:ss": "Gy年M月d日 H:mm:ss",
         "GyMMMEd H:mm:ss": "Gy年M月d日(E) H:mm:ss",
@@ -10066,7 +10442,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed H:mm": "d日(E) H:mm",
         "EEEEd H:mm": "d日EEEE H:mm",
         "Gy H:mm": "Gy年 H:mm",
+        "GyM H:mm": "Gy/M H:mm",
         "GyMd H:mm": "Gy/M/d H:mm",
+        "GyMEd H:mm": "Gy/M/d(E) H:mm",
         "GyMMM H:mm": "Gy年M月 H:mm",
         "GyMMMd H:mm": "Gy年M月d日 H:mm",
         "GyMMMEd H:mm": "Gy年M月d日(E) H:mm",
@@ -10099,7 +10477,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Bh": "d日(E) BK時",
         "EEEEd Bh": "d日EEEE BK時",
         "Gy Bh": "Gy年 BK時",
+        "GyM Bh": "Gy/M BK時",
         "GyMd Bh": "Gy/M/d BK時",
+        "GyMEd Bh": "Gy/M/d(E) BK時",
         "GyMMM Bh": "Gy年M月 BK時",
         "GyMMMd Bh": "Gy年M月d日 BK時",
         "GyMMMEd Bh": "Gy年M月d日(E) BK時",
@@ -10132,7 +10512,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Bhm": "d日(E) BK:mm",
         "EEEEd Bhm": "d日EEEE BK:mm",
         "Gy Bhm": "Gy年 BK:mm",
+        "GyM Bhm": "Gy/M BK:mm",
         "GyMd Bhm": "Gy/M/d BK:mm",
+        "GyMEd Bhm": "Gy/M/d(E) BK:mm",
         "GyMMM Bhm": "Gy年M月 BK:mm",
         "GyMMMd Bhm": "Gy年M月d日 BK:mm",
         "GyMMMEd Bhm": "Gy年M月d日(E) BK:mm",
@@ -10165,7 +10547,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Bhms": "d日(E) BK:mm:ss",
         "EEEEd Bhms": "d日EEEE BK:mm:ss",
         "Gy Bhms": "Gy年 BK:mm:ss",
+        "GyM Bhms": "Gy/M BK:mm:ss",
         "GyMd Bhms": "Gy/M/d BK:mm:ss",
+        "GyMEd Bhms": "Gy/M/d(E) BK:mm:ss",
         "GyMMM Bhms": "Gy年M月 BK:mm:ss",
         "GyMMMd Bhms": "Gy年M月d日 BK:mm:ss",
         "GyMMMEd Bhms": "Gy年M月d日(E) BK:mm:ss",
@@ -10198,7 +10582,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed h": "d日(E) aK時",
         "EEEEd h": "d日EEEE aK時",
         "Gy h": "Gy年 aK時",
+        "GyM h": "Gy/M aK時",
         "GyMd h": "Gy/M/d aK時",
+        "GyMEd h": "Gy/M/d(E) aK時",
         "GyMMM h": "Gy年M月 aK時",
         "GyMMMd h": "Gy年M月d日 aK時",
         "GyMMMEd h": "Gy年M月d日(E) aK時",
@@ -10231,7 +10617,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed H": "d日(E) H時",
         "EEEEd H": "d日EEEE H時",
         "Gy H": "Gy年 H時",
+        "GyM H": "Gy/M H時",
         "GyMd H": "Gy/M/d H時",
+        "GyMEd H": "Gy/M/d(E) H時",
         "GyMMM H": "Gy年M月 H時",
         "GyMMMd H": "Gy年M月d日 H時",
         "GyMMMEd H": "Gy年M月d日(E) H時",
@@ -10264,7 +10652,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed hm": "d日(E) aK:mm",
         "EEEEd hm": "d日EEEE aK:mm",
         "Gy hm": "Gy年 aK:mm",
+        "GyM hm": "Gy/M aK:mm",
         "GyMd hm": "Gy/M/d aK:mm",
+        "GyMEd hm": "Gy/M/d(E) aK:mm",
         "GyMMM hm": "Gy年M月 aK:mm",
         "GyMMMd hm": "Gy年M月d日 aK:mm",
         "GyMMMEd hm": "Gy年M月d日(E) aK:mm",
@@ -10297,7 +10687,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Hm": "d日(E) H:mm",
         "EEEEd Hm": "d日EEEE H:mm",
         "Gy Hm": "Gy年 H:mm",
+        "GyM Hm": "Gy/M H:mm",
         "GyMd Hm": "Gy/M/d H:mm",
+        "GyMEd Hm": "Gy/M/d(E) H:mm",
         "GyMMM Hm": "Gy年M月 H:mm",
         "GyMMMd Hm": "Gy年M月d日 H:mm",
         "GyMMMEd Hm": "Gy年M月d日(E) H:mm",
@@ -10330,7 +10722,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed hms": "d日(E) aK:mm:ss",
         "EEEEd hms": "d日EEEE aK:mm:ss",
         "Gy hms": "Gy年 aK:mm:ss",
+        "GyM hms": "Gy/M aK:mm:ss",
         "GyMd hms": "Gy/M/d aK:mm:ss",
+        "GyMEd hms": "Gy/M/d(E) aK:mm:ss",
         "GyMMM hms": "Gy年M月 aK:mm:ss",
         "GyMMMd hms": "Gy年M月d日 aK:mm:ss",
         "GyMMMEd hms": "Gy年M月d日(E) aK:mm:ss",
@@ -10363,7 +10757,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Hms": "d日(E) H:mm:ss",
         "EEEEd Hms": "d日EEEE H:mm:ss",
         "Gy Hms": "Gy年 H:mm:ss",
+        "GyM Hms": "Gy/M H:mm:ss",
         "GyMd Hms": "Gy/M/d H:mm:ss",
+        "GyMEd Hms": "Gy/M/d(E) H:mm:ss",
         "GyMMM Hms": "Gy年M月 H:mm:ss",
         "GyMMMd Hms": "Gy年M月d日 H:mm:ss",
         "GyMMMEd Hms": "Gy年M月d日(E) H:mm:ss",
@@ -10396,7 +10792,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed hmsv": "d日(E) aK:mm:ss v",
         "EEEEd hmsv": "d日EEEE aK:mm:ss v",
         "Gy hmsv": "Gy年 aK:mm:ss v",
+        "GyM hmsv": "Gy/M aK:mm:ss v",
         "GyMd hmsv": "Gy/M/d aK:mm:ss v",
+        "GyMEd hmsv": "Gy/M/d(E) aK:mm:ss v",
         "GyMMM hmsv": "Gy年M月 aK:mm:ss v",
         "GyMMMd hmsv": "Gy年M月d日 aK:mm:ss v",
         "GyMMMEd hmsv": "Gy年M月d日(E) aK:mm:ss v",
@@ -10429,7 +10827,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Hmsv": "d日(E) H:mm:ss v",
         "EEEEd Hmsv": "d日EEEE H:mm:ss v",
         "Gy Hmsv": "Gy年 H:mm:ss v",
+        "GyM Hmsv": "Gy/M H:mm:ss v",
         "GyMd Hmsv": "Gy/M/d H:mm:ss v",
+        "GyMEd Hmsv": "Gy/M/d(E) H:mm:ss v",
         "GyMMM Hmsv": "Gy年M月 H:mm:ss v",
         "GyMMMd Hmsv": "Gy年M月d日 H:mm:ss v",
         "GyMMMEd Hmsv": "Gy年M月d日(E) H:mm:ss v",
@@ -10462,7 +10862,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed hmv": "d日(E) aK:mm v",
         "EEEEd hmv": "d日EEEE aK:mm v",
         "Gy hmv": "Gy年 aK:mm v",
+        "GyM hmv": "Gy/M aK:mm v",
         "GyMd hmv": "Gy/M/d aK:mm v",
+        "GyMEd hmv": "Gy/M/d(E) aK:mm v",
         "GyMMM hmv": "Gy年M月 aK:mm v",
         "GyMMMd hmv": "Gy年M月d日 aK:mm v",
         "GyMMMEd hmv": "Gy年M月d日(E) aK:mm v",
@@ -10495,7 +10897,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Hmv": "d日(E) H:mm v",
         "EEEEd Hmv": "d日EEEE H:mm v",
         "Gy Hmv": "Gy年 H:mm v",
+        "GyM Hmv": "Gy/M H:mm v",
         "GyMd Hmv": "Gy/M/d H:mm v",
+        "GyMEd Hmv": "Gy/M/d(E) H:mm v",
         "GyMMM Hmv": "Gy年M月 H:mm v",
         "GyMMMd Hmv": "Gy年M月d日 H:mm v",
         "GyMMMEd Hmv": "Gy年M月d日(E) H:mm v",
@@ -10520,6 +10924,76 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMEd Hmv": "y年M月d日(E) H:mm v",
         "yMMMEEEEd Hmv": "y年M月d日EEEE H:mm v",
         "yMMMM Hmv": "y年M月 H:mm v",
+        "y年M月d日EEEE hv": "y年M月d日EEEE aK時 v",
+        "y年M月d日 hv": "y年M月d日 aK時 v",
+        "y/MM/dd hv": "y/MM/dd aK時 v",
+        "d hv": "d日 aK時 v",
+        "E hv": "ccc aK時 v",
+        "Ed hv": "d日(E) aK時 v",
+        "EEEEd hv": "d日EEEE aK時 v",
+        "Gy hv": "Gy年 aK時 v",
+        "GyM hv": "Gy/M aK時 v",
+        "GyMd hv": "Gy/M/d aK時 v",
+        "GyMEd hv": "Gy/M/d(E) aK時 v",
+        "GyMMM hv": "Gy年M月 aK時 v",
+        "GyMMMd hv": "Gy年M月d日 aK時 v",
+        "GyMMMEd hv": "Gy年M月d日(E) aK時 v",
+        "GyMMMEEEEd hv": "Gy年M月d日EEEE aK時 v",
+        "M hv": "M月 aK時 v",
+        "Md hv": "M/d aK時 v",
+        "MEd hv": "M/d(E) aK時 v",
+        "MEEEEd hv": "M/dEEEE aK時 v",
+        "MMM hv": "M月 aK時 v",
+        "MMMd hv": "M月d日 aK時 v",
+        "MMMEd hv": "M月d日(E) aK時 v",
+        "MMMEEEEd hv": "M月d日EEEE aK時 v",
+        "MMMMd hv": "M月d日 aK時 v",
+        "y hv": "y年 aK時 v",
+        "yM hv": "y/M aK時 v",
+        "yMd hv": "y/M/d aK時 v",
+        "yMEd hv": "y/M/d(E) aK時 v",
+        "yMEEEEd hv": "y/M/dEEEE aK時 v",
+        "yMM hv": "y/MM aK時 v",
+        "yMMM hv": "y年M月 aK時 v",
+        "yMMMd hv": "y年M月d日 aK時 v",
+        "yMMMEd hv": "y年M月d日(E) aK時 v",
+        "yMMMEEEEd hv": "y年M月d日EEEE aK時 v",
+        "yMMMM hv": "y年M月 aK時 v",
+        "y年M月d日EEEE Hv": "y年M月d日EEEE H時 v",
+        "y年M月d日 Hv": "y年M月d日 H時 v",
+        "y/MM/dd Hv": "y/MM/dd H時 v",
+        "d Hv": "d日 H時 v",
+        "E Hv": "ccc H時 v",
+        "Ed Hv": "d日(E) H時 v",
+        "EEEEd Hv": "d日EEEE H時 v",
+        "Gy Hv": "Gy年 H時 v",
+        "GyM Hv": "Gy/M H時 v",
+        "GyMd Hv": "Gy/M/d H時 v",
+        "GyMEd Hv": "Gy/M/d(E) H時 v",
+        "GyMMM Hv": "Gy年M月 H時 v",
+        "GyMMMd Hv": "Gy年M月d日 H時 v",
+        "GyMMMEd Hv": "Gy年M月d日(E) H時 v",
+        "GyMMMEEEEd Hv": "Gy年M月d日EEEE H時 v",
+        "M Hv": "M月 H時 v",
+        "Md Hv": "M/d H時 v",
+        "MEd Hv": "M/d(E) H時 v",
+        "MEEEEd Hv": "M/dEEEE H時 v",
+        "MMM Hv": "M月 H時 v",
+        "MMMd Hv": "M月d日 H時 v",
+        "MMMEd Hv": "M月d日(E) H時 v",
+        "MMMEEEEd Hv": "M月d日EEEE H時 v",
+        "MMMMd Hv": "M月d日 H時 v",
+        "y Hv": "y年 H時 v",
+        "yM Hv": "y/M H時 v",
+        "yMd Hv": "y/M/d H時 v",
+        "yMEd Hv": "y/M/d(E) H時 v",
+        "yMEEEEd Hv": "y/M/dEEEE H時 v",
+        "yMM Hv": "y/MM H時 v",
+        "yMMM Hv": "y年M月 H時 v",
+        "yMMMd Hv": "y年M月d日 H時 v",
+        "yMMMEd Hv": "y年M月d日(E) H時 v",
+        "yMMMEEEEd Hv": "y年M月d日EEEE H時 v",
+        "yMMMM Hv": "y年M月 H時 v",
         "y年M月d日EEEE ms": "y年M月d日EEEE mm:ss",
         "y年M月d日 ms": "y年M月d日 mm:ss",
         "y/MM/dd ms": "y/MM/dd mm:ss",
@@ -10528,7 +11002,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed ms": "d日(E) mm:ss",
         "EEEEd ms": "d日EEEE mm:ss",
         "Gy ms": "Gy年 mm:ss",
+        "GyM ms": "Gy/M mm:ss",
         "GyMd ms": "Gy/M/d mm:ss",
+        "GyMEd ms": "Gy/M/d(E) mm:ss",
         "GyMMM ms": "Gy年M月 mm:ss",
         "GyMMMd ms": "Gy年M月d日 mm:ss",
         "GyMMMEd ms": "Gy年M月d日(E) mm:ss",
@@ -10949,68 +11425,68 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Africa/Lagos": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "서아프리카 표준시",
-          "서아프리카 하계 표준시"
+          "서아프리카 시간",
+          "서아프리카 시간"
         ]
       },
       "Asia/Aqtobe": {
@@ -11363,32 +11839,38 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Australia/Adelaide": {
         "long": [
-          "오스트레일리아 중부 표준시",
-          "오스트레일리아 중부 하계 표준시"
+          "호주 중부 표준시",
+          "호주 중부 하계 표준시"
         ]
       },
       "Australia/Eucla": {
         "long": [
-          "오스트레일리아 중서부 표준시",
-          "오스트레일리아 중서부 하계 표준시"
+          "호주 중서부 표준시",
+          "호주 중서부 하계 표준시"
         ]
       },
       "Australia/Sydney": {
         "long": [
-          "오스트레일리아 동부 표준시",
-          "오스트레일리아 동부 하계 표준시"
+          "호주 동부 표준시",
+          "호주 동부 하계 표준시"
         ]
       },
       "Australia/Perth": {
         "long": [
-          "오스트레일리아 서부 표준시",
-          "오스트레일리아 서부 하계 표준시"
+          "호주 서부 표준시",
+          "호주 서부 하계 표준시"
         ]
       },
       "Atlantic/Azores": {
         "long": [
           "아조레스 표준시",
           "아조레스 하계 표준시"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "하와이 알류샨 표준시",
+          "하와이 알류샨 하계 표준시"
         ]
       },
       "Asia/Thimphu": {
@@ -11946,7 +12428,7 @@ Intl.DateTimeFormat.__addLocaleData({
       "Pacific/Honolulu": {
         "long": [
           "하와이 알류샨 표준시",
-          "하와이 알류샨 하계 표준시"
+          "하와이 알류샨 표준시"
         ]
       },
       "Asia/Hong_Kong": {
@@ -12053,8 +12535,8 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Asia/Seoul": {
         "long": [
-          "대한민국 표준시",
-          "대한민국 하계 표준시"
+          "한국 표준시",
+          "한국 하계 표준시"
         ]
       },
       "Pacific/Kosrae": {
@@ -12479,16 +12961,20 @@ Intl.DateTimeFormat.__addLocaleData({
         "Bhms": "B h:mm:ss",
         "d": "d일",
         "E": "ccc",
+        "EBh": "(E) B h시",
         "EBhm": "(E) B h:mm",
         "EBhms": "(E) B h:mm:ss",
         "Ed": "d일 (E)",
         "EEEEd": "d일 EEEE",
+        "Eh": "(E) a h",
         "Ehm": "(E) a h:mm",
         "EHm": "(E) HH:mm",
         "Ehms": "(E) a h:mm:ss",
         "EHms": "(E) HH:mm:ss",
         "Gy": "G y년",
+        "GyM": "G y/M",
         "GyMd": "GGGGG y/M/d",
+        "GyMEd": "G y/M/d (E)",
         "GyMMM": "G y년 MMM",
         "GyMMMd": "G y년 MMM d일",
         "GyMMMEd": "G y년 MMM d일 (E)",
@@ -12504,6 +12990,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "Hmsv": "H시 m분 s초 v",
         "hmv": "a h:mm v",
         "Hmv": "HH:mm v",
+        "hv": "a h시 v",
+        "Hv": "H시 v",
         "M": "M월",
         "Md": "M. d.",
         "MEd": "M. d. (E)",
@@ -12543,7 +13031,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed a h시 m분 s초 zzzz": "d일 (E) a h시 m분 s초 zzzz",
         "EEEEd a h시 m분 s초 zzzz": "d일 EEEE a h시 m분 s초 zzzz",
         "Gy a h시 m분 s초 zzzz": "G y년 a h시 m분 s초 zzzz",
+        "GyM a h시 m분 s초 zzzz": "G y/M a h시 m분 s초 zzzz",
         "GyMd a h시 m분 s초 zzzz": "GGGGG y/M/d a h시 m분 s초 zzzz",
+        "GyMEd a h시 m분 s초 zzzz": "G y/M/d (E) a h시 m분 s초 zzzz",
         "GyMMM a h시 m분 s초 zzzz": "G y년 MMM a h시 m분 s초 zzzz",
         "GyMMMd a h시 m분 s초 zzzz": "G y년 MMM d일 a h시 m분 s초 zzzz",
         "GyMMMEd a h시 m분 s초 zzzz": "G y년 MMM d일 (E) a h시 m분 s초 zzzz",
@@ -12577,7 +13067,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed a h시 m분 s초 z": "d일 (E) a h시 m분 s초 z",
         "EEEEd a h시 m분 s초 z": "d일 EEEE a h시 m분 s초 z",
         "Gy a h시 m분 s초 z": "G y년 a h시 m분 s초 z",
+        "GyM a h시 m분 s초 z": "G y/M a h시 m분 s초 z",
         "GyMd a h시 m분 s초 z": "GGGGG y/M/d a h시 m분 s초 z",
+        "GyMEd a h시 m분 s초 z": "G y/M/d (E) a h시 m분 s초 z",
         "GyMMM a h시 m분 s초 z": "G y년 MMM a h시 m분 s초 z",
         "GyMMMd a h시 m분 s초 z": "G y년 MMM d일 a h시 m분 s초 z",
         "GyMMMEd a h시 m분 s초 z": "G y년 MMM d일 (E) a h시 m분 s초 z",
@@ -12611,7 +13103,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed a h:mm:ss": "d일 (E) a h:mm:ss",
         "EEEEd a h:mm:ss": "d일 EEEE a h:mm:ss",
         "Gy a h:mm:ss": "G y년 a h:mm:ss",
+        "GyM a h:mm:ss": "G y/M a h:mm:ss",
         "GyMd a h:mm:ss": "GGGGG y/M/d a h:mm:ss",
+        "GyMEd a h:mm:ss": "G y/M/d (E) a h:mm:ss",
         "GyMMM a h:mm:ss": "G y년 MMM a h:mm:ss",
         "GyMMMd a h:mm:ss": "G y년 MMM d일 a h:mm:ss",
         "GyMMMEd a h:mm:ss": "G y년 MMM d일 (E) a h:mm:ss",
@@ -12645,7 +13139,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed a h:mm": "d일 (E) a h:mm",
         "EEEEd a h:mm": "d일 EEEE a h:mm",
         "Gy a h:mm": "G y년 a h:mm",
+        "GyM a h:mm": "G y/M a h:mm",
         "GyMd a h:mm": "GGGGG y/M/d a h:mm",
+        "GyMEd a h:mm": "G y/M/d (E) a h:mm",
         "GyMMM a h:mm": "G y년 MMM a h:mm",
         "GyMMMd a h:mm": "G y년 MMM d일 a h:mm",
         "GyMMMEd a h:mm": "G y년 MMM d일 (E) a h:mm",
@@ -12679,7 +13175,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Bh": "d일 (E) B h시",
         "EEEEd Bh": "d일 EEEE B h시",
         "Gy Bh": "G y년 B h시",
+        "GyM Bh": "G y/M B h시",
         "GyMd Bh": "GGGGG y/M/d B h시",
+        "GyMEd Bh": "G y/M/d (E) B h시",
         "GyMMM Bh": "G y년 MMM B h시",
         "GyMMMd Bh": "G y년 MMM d일 B h시",
         "GyMMMEd Bh": "G y년 MMM d일 (E) B h시",
@@ -12713,7 +13211,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Bhm": "d일 (E) B h:mm",
         "EEEEd Bhm": "d일 EEEE B h:mm",
         "Gy Bhm": "G y년 B h:mm",
+        "GyM Bhm": "G y/M B h:mm",
         "GyMd Bhm": "GGGGG y/M/d B h:mm",
+        "GyMEd Bhm": "G y/M/d (E) B h:mm",
         "GyMMM Bhm": "G y년 MMM B h:mm",
         "GyMMMd Bhm": "G y년 MMM d일 B h:mm",
         "GyMMMEd Bhm": "G y년 MMM d일 (E) B h:mm",
@@ -12747,7 +13247,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Bhms": "d일 (E) B h:mm:ss",
         "EEEEd Bhms": "d일 EEEE B h:mm:ss",
         "Gy Bhms": "G y년 B h:mm:ss",
+        "GyM Bhms": "G y/M B h:mm:ss",
         "GyMd Bhms": "GGGGG y/M/d B h:mm:ss",
+        "GyMEd Bhms": "G y/M/d (E) B h:mm:ss",
         "GyMMM Bhms": "G y년 MMM B h:mm:ss",
         "GyMMMd Bhms": "G y년 MMM d일 B h:mm:ss",
         "GyMMMEd Bhms": "G y년 MMM d일 (E) B h:mm:ss",
@@ -12781,7 +13283,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed h": "d일 (E) a h시",
         "EEEEd h": "d일 EEEE a h시",
         "Gy h": "G y년 a h시",
+        "GyM h": "G y/M a h시",
         "GyMd h": "GGGGG y/M/d a h시",
+        "GyMEd h": "G y/M/d (E) a h시",
         "GyMMM h": "G y년 MMM a h시",
         "GyMMMd h": "G y년 MMM d일 a h시",
         "GyMMMEd h": "G y년 MMM d일 (E) a h시",
@@ -12815,7 +13319,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed H": "d일 (E) H시",
         "EEEEd H": "d일 EEEE H시",
         "Gy H": "G y년 H시",
+        "GyM H": "G y/M H시",
         "GyMd H": "GGGGG y/M/d H시",
+        "GyMEd H": "G y/M/d (E) H시",
         "GyMMM H": "G y년 MMM H시",
         "GyMMMd H": "G y년 MMM d일 H시",
         "GyMMMEd H": "G y년 MMM d일 (E) H시",
@@ -12849,7 +13355,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed HHmmss": "d일 (E) HH:mm:ss",
         "EEEEd HHmmss": "d일 EEEE HH:mm:ss",
         "Gy HHmmss": "G y년 HH:mm:ss",
+        "GyM HHmmss": "G y/M HH:mm:ss",
         "GyMd HHmmss": "GGGGG y/M/d HH:mm:ss",
+        "GyMEd HHmmss": "G y/M/d (E) HH:mm:ss",
         "GyMMM HHmmss": "G y년 MMM HH:mm:ss",
         "GyMMMd HHmmss": "G y년 MMM d일 HH:mm:ss",
         "GyMMMEd HHmmss": "G y년 MMM d일 (E) HH:mm:ss",
@@ -12883,7 +13391,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed hm": "d일 (E) a h:mm",
         "EEEEd hm": "d일 EEEE a h:mm",
         "Gy hm": "G y년 a h:mm",
+        "GyM hm": "G y/M a h:mm",
         "GyMd hm": "GGGGG y/M/d a h:mm",
+        "GyMEd hm": "G y/M/d (E) a h:mm",
         "GyMMM hm": "G y년 MMM a h:mm",
         "GyMMMd hm": "G y년 MMM d일 a h:mm",
         "GyMMMEd hm": "G y년 MMM d일 (E) a h:mm",
@@ -12917,7 +13427,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Hm": "d일 (E) HH:mm",
         "EEEEd Hm": "d일 EEEE HH:mm",
         "Gy Hm": "G y년 HH:mm",
+        "GyM Hm": "G y/M HH:mm",
         "GyMd Hm": "GGGGG y/M/d HH:mm",
+        "GyMEd Hm": "G y/M/d (E) HH:mm",
         "GyMMM Hm": "G y년 MMM HH:mm",
         "GyMMMd Hm": "G y년 MMM d일 HH:mm",
         "GyMMMEd Hm": "G y년 MMM d일 (E) HH:mm",
@@ -12951,7 +13463,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed hms": "d일 (E) a h:mm:ss",
         "EEEEd hms": "d일 EEEE a h:mm:ss",
         "Gy hms": "G y년 a h:mm:ss",
+        "GyM hms": "G y/M a h:mm:ss",
         "GyMd hms": "GGGGG y/M/d a h:mm:ss",
+        "GyMEd hms": "G y/M/d (E) a h:mm:ss",
         "GyMMM hms": "G y년 MMM a h:mm:ss",
         "GyMMMd hms": "G y년 MMM d일 a h:mm:ss",
         "GyMMMEd hms": "G y년 MMM d일 (E) a h:mm:ss",
@@ -12985,7 +13499,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Hms": "d일 (E) H시 m분 s초",
         "EEEEd Hms": "d일 EEEE H시 m분 s초",
         "Gy Hms": "G y년 H시 m분 s초",
+        "GyM Hms": "G y/M H시 m분 s초",
         "GyMd Hms": "GGGGG y/M/d H시 m분 s초",
+        "GyMEd Hms": "G y/M/d (E) H시 m분 s초",
         "GyMMM Hms": "G y년 MMM H시 m분 s초",
         "GyMMMd Hms": "G y년 MMM d일 H시 m분 s초",
         "GyMMMEd Hms": "G y년 MMM d일 (E) H시 m분 s초",
@@ -13019,7 +13535,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed hmsv": "d일 (E) a h:mm:ss v",
         "EEEEd hmsv": "d일 EEEE a h:mm:ss v",
         "Gy hmsv": "G y년 a h:mm:ss v",
+        "GyM hmsv": "G y/M a h:mm:ss v",
         "GyMd hmsv": "GGGGG y/M/d a h:mm:ss v",
+        "GyMEd hmsv": "G y/M/d (E) a h:mm:ss v",
         "GyMMM hmsv": "G y년 MMM a h:mm:ss v",
         "GyMMMd hmsv": "G y년 MMM d일 a h:mm:ss v",
         "GyMMMEd hmsv": "G y년 MMM d일 (E) a h:mm:ss v",
@@ -13053,7 +13571,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Hmsv": "d일 (E) H시 m분 s초 v",
         "EEEEd Hmsv": "d일 EEEE H시 m분 s초 v",
         "Gy Hmsv": "G y년 H시 m분 s초 v",
+        "GyM Hmsv": "G y/M H시 m분 s초 v",
         "GyMd Hmsv": "GGGGG y/M/d H시 m분 s초 v",
+        "GyMEd Hmsv": "G y/M/d (E) H시 m분 s초 v",
         "GyMMM Hmsv": "G y년 MMM H시 m분 s초 v",
         "GyMMMd Hmsv": "G y년 MMM d일 H시 m분 s초 v",
         "GyMMMEd Hmsv": "G y년 MMM d일 (E) H시 m분 s초 v",
@@ -13087,7 +13607,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed hmv": "d일 (E) a h:mm v",
         "EEEEd hmv": "d일 EEEE a h:mm v",
         "Gy hmv": "G y년 a h:mm v",
+        "GyM hmv": "G y/M a h:mm v",
         "GyMd hmv": "GGGGG y/M/d a h:mm v",
+        "GyMEd hmv": "G y/M/d (E) a h:mm v",
         "GyMMM hmv": "G y년 MMM a h:mm v",
         "GyMMMd hmv": "G y년 MMM d일 a h:mm v",
         "GyMMMEd hmv": "G y년 MMM d일 (E) a h:mm v",
@@ -13121,7 +13643,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed Hmv": "d일 (E) HH:mm v",
         "EEEEd Hmv": "d일 EEEE HH:mm v",
         "Gy Hmv": "G y년 HH:mm v",
+        "GyM Hmv": "G y/M HH:mm v",
         "GyMd Hmv": "GGGGG y/M/d HH:mm v",
+        "GyMEd Hmv": "G y/M/d (E) HH:mm v",
         "GyMMM Hmv": "G y년 MMM HH:mm v",
         "GyMMMd Hmv": "G y년 MMM d일 HH:mm v",
         "GyMMMEd Hmv": "G y년 MMM d일 (E) HH:mm v",
@@ -13146,6 +13670,78 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMEd Hmv": "y년 MMM d일 (E) HH:mm v",
         "yMMMEEEEd Hmv": "y년 MMM d일 EEEE HH:mm v",
         "yMMMM Hmv": "y년 MMMM HH:mm v",
+        "y년 MMMM d일 EEEE hv": "y년 MMMM d일 EEEE a h시 v",
+        "y년 MMMM d일 hv": "y년 MMMM d일 a h시 v",
+        "y. M. d. hv": "y. M. d. a h시 v",
+        "yy. M. d. hv": "yy. M. d. a h시 v",
+        "d hv": "d일 a h시 v",
+        "E hv": "ccc a h시 v",
+        "Ed hv": "d일 (E) a h시 v",
+        "EEEEd hv": "d일 EEEE a h시 v",
+        "Gy hv": "G y년 a h시 v",
+        "GyM hv": "G y/M a h시 v",
+        "GyMd hv": "GGGGG y/M/d a h시 v",
+        "GyMEd hv": "G y/M/d (E) a h시 v",
+        "GyMMM hv": "G y년 MMM a h시 v",
+        "GyMMMd hv": "G y년 MMM d일 a h시 v",
+        "GyMMMEd hv": "G y년 MMM d일 (E) a h시 v",
+        "GyMMMEEEEd hv": "G y년 MMM d일 EEEE a h시 v",
+        "M hv": "M월 a h시 v",
+        "Md hv": "M. d. a h시 v",
+        "MEd hv": "M. d. (E) a h시 v",
+        "MEEEEd hv": "M. d. EEEE a h시 v",
+        "MMM hv": "LLL a h시 v",
+        "MMMd hv": "MMM d일 a h시 v",
+        "MMMEd hv": "MMM d일 (E) a h시 v",
+        "MMMEEEEd hv": "MMM d일 EEEE a h시 v",
+        "MMMMd hv": "MMMM d일 a h시 v",
+        "y hv": "y년 a h시 v",
+        "yM hv": "y. M. a h시 v",
+        "yMd hv": "y. M. d. a h시 v",
+        "yMEd hv": "y. M. d. (E) a h시 v",
+        "yMEEEEd hv": "y. M. d. EEEE a h시 v",
+        "yMM hv": "y. M. a h시 v",
+        "yMMM hv": "y년 MMM a h시 v",
+        "yMMMd hv": "y년 MMM d일 a h시 v",
+        "yMMMEd hv": "y년 MMM d일 (E) a h시 v",
+        "yMMMEEEEd hv": "y년 MMM d일 EEEE a h시 v",
+        "yMMMM hv": "y년 MMMM a h시 v",
+        "y년 MMMM d일 EEEE Hv": "y년 MMMM d일 EEEE H시 v",
+        "y년 MMMM d일 Hv": "y년 MMMM d일 H시 v",
+        "y. M. d. Hv": "y. M. d. H시 v",
+        "yy. M. d. Hv": "yy. M. d. H시 v",
+        "d Hv": "d일 H시 v",
+        "E Hv": "ccc H시 v",
+        "Ed Hv": "d일 (E) H시 v",
+        "EEEEd Hv": "d일 EEEE H시 v",
+        "Gy Hv": "G y년 H시 v",
+        "GyM Hv": "G y/M H시 v",
+        "GyMd Hv": "GGGGG y/M/d H시 v",
+        "GyMEd Hv": "G y/M/d (E) H시 v",
+        "GyMMM Hv": "G y년 MMM H시 v",
+        "GyMMMd Hv": "G y년 MMM d일 H시 v",
+        "GyMMMEd Hv": "G y년 MMM d일 (E) H시 v",
+        "GyMMMEEEEd Hv": "G y년 MMM d일 EEEE H시 v",
+        "M Hv": "M월 H시 v",
+        "Md Hv": "M. d. H시 v",
+        "MEd Hv": "M. d. (E) H시 v",
+        "MEEEEd Hv": "M. d. EEEE H시 v",
+        "MMM Hv": "LLL H시 v",
+        "MMMd Hv": "MMM d일 H시 v",
+        "MMMEd Hv": "MMM d일 (E) H시 v",
+        "MMMEEEEd Hv": "MMM d일 EEEE H시 v",
+        "MMMMd Hv": "MMMM d일 H시 v",
+        "y Hv": "y년 H시 v",
+        "yM Hv": "y. M. H시 v",
+        "yMd Hv": "y. M. d. H시 v",
+        "yMEd Hv": "y. M. d. (E) H시 v",
+        "yMEEEEd Hv": "y. M. d. EEEE H시 v",
+        "yMM Hv": "y. M. H시 v",
+        "yMMM Hv": "y년 MMM H시 v",
+        "yMMMd Hv": "y년 MMM d일 H시 v",
+        "yMMMEd Hv": "y년 MMM d일 (E) H시 v",
+        "yMMMEEEEd Hv": "y년 MMM d일 EEEE H시 v",
+        "yMMMM Hv": "y년 MMMM H시 v",
         "y년 MMMM d일 EEEE mmss": "y년 MMMM d일 EEEE mm:ss",
         "y년 MMMM d일 mmss": "y년 MMMM d일 mm:ss",
         "y. M. d. mmss": "y. M. d. mm:ss",
@@ -13155,7 +13751,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed mmss": "d일 (E) mm:ss",
         "EEEEd mmss": "d일 EEEE mm:ss",
         "Gy mmss": "G y년 mm:ss",
+        "GyM mmss": "G y/M mm:ss",
         "GyMd mmss": "GGGGG y/M/d mm:ss",
+        "GyMEd mmss": "G y/M/d (E) mm:ss",
         "GyMMM mmss": "G y년 MMM mm:ss",
         "GyMMMd mmss": "G y년 MMM d일 mm:ss",
         "GyMMMEd mmss": "G y년 MMM d일 (E) mm:ss",
@@ -13189,7 +13787,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "Ed ms": "d일 (E) mm:ss",
         "EEEEd ms": "d일 EEEE mm:ss",
         "Gy ms": "G y년 mm:ss",
+        "GyM ms": "G y/M mm:ss",
         "GyMd ms": "GGGGG y/M/d mm:ss",
+        "GyMEd ms": "G y/M/d (E) mm:ss",
         "GyMMM ms": "G y년 MMM mm:ss",
         "GyMMMd ms": "G y년 MMM d일 mm:ss",
         "GyMMMEd ms": "G y년 MMM d일 (E) mm:ss",
@@ -13316,11 +13916,11 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "MMMd": {
         "d": "MMM d일~d일",
-        "M": "M월 d일 ~ M월 d일"
+        "M": "MMM d일~MMM d일"
       },
       "MMMEd": {
-        "d": "M월 d일 (E) ~ d일 (E)",
-        "M": "M월 d일 (E) ~ M월 d일 (E)"
+        "d": "MMM d일 (E)~d일 (E)",
+        "M": "MMM d일 (E)~MMM d일 (E)"
       },
       "MMMM": {
         "M": "LLLL–LLLL"
@@ -13344,17 +13944,17 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "yMMM": {
         "M": "y년 M월~M월",
-        "y": "y년 M월 ~ y년 M월"
+        "y": "y년 MMM~y년 MMM"
       },
       "yMMMd": {
         "d": "y년 M월 d일~d일",
-        "M": "y년 M월 d일 ~ M월 d일",
-        "y": "y년 M월 d일 ~ y년 M월 d일"
+        "M": "y년 MMM d일~MMM d일",
+        "y": "y년 MMM d일~y년 MMM d일"
       },
       "yMMMEd": {
-        "d": "y년 M월 d일 (E) ~ d일 (E)",
-        "M": "y년 M월 d일 (E) ~ M월 d일 (E)",
-        "y": "y년 M월 d일 (E) ~ y년 M월 d일 (E)"
+        "d": "y년 MMM d일 (E)~d일 (E)",
+        "M": "y년 MMM d일 (E)~MMM d일 (E)",
+        "y": "y년 MMM d일 (E)~y년 MMM d일 (E)"
       },
       "yMMMEEEEd": {
         "d": "y년 M월 d일 EEEE ~ d일 EEEE",
@@ -13362,8 +13962,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "y": "y년 M월 d일 EEEE ~ y년 M월 d일 EEEE"
       },
       "yMMMM": {
-        "M": "y년 MMMM ~ MMMM",
-        "y": "y년 MMMM ~ y년 MMMM"
+        "M": "y년 MMMM~MMMM",
+        "y": "y년 MMMM~y년 MMMM"
       }
     },
     "hourCycle": "h12",
@@ -13399,13 +13999,13 @@ Intl.DateTimeFormat.__addLocaleData({
         "ส"
       ],
       "short": [
-        "อา.",
-        "จ.",
-        "อ.",
-        "พ.",
-        "พฤ.",
-        "ศ.",
-        "ส."
+        "อาทิตย์",
+        "จันทร์",
+        "อังคาร",
+        "พุธ",
+        "พฤหัส",
+        "ศุกร์",
+        "เสาร์"
       ],
       "long": [
         "วันอาทิตย์",
@@ -13616,68 +14216,68 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Africa/Lagos": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "เวลามาตรฐานแอฟริกาตะวันตก",
-          "เวลาฤดูร้อนแอฟริกาตะวันตก"
+          "เวลาแอฟริกาตะวันตก",
+          "เวลาแอฟริกาตะวันตก"
         ]
       },
       "Asia/Aqtobe": {
@@ -14056,6 +14656,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "เวลามาตรฐานอะโซร์ส",
           "เวลาฤดูร้อนอะโซร์ส"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "เวลามาตรฐานฮาวาย-อะลูเชียน",
+          "เวลาออมแสงฮาวาย-อะลูเชียน"
         ]
       },
       "Asia/Thimphu": {
@@ -14625,7 +15231,7 @@ Intl.DateTimeFormat.__addLocaleData({
       "Pacific/Honolulu": {
         "long": [
           "เวลามาตรฐานฮาวาย-อะลูเชียน",
-          "เวลาออมแสงฮาวาย-อะลูเชียน"
+          "เวลามาตรฐานฮาวาย-อะลูเชียน"
         ]
       },
       "Asia/Hong_Kong": {
@@ -15060,6 +15666,12 @@ Intl.DateTimeFormat.__addLocaleData({
           "เวลาชุก"
         ]
       },
+      "Europe/Istanbul": {
+        "long": [
+          "เวลามาตรฐานตุรกี",
+          "เวลาฤดูร้อนตุรกี"
+        ]
+      },
       "Pacific/Funafuti": {
         "long": [
           "เวลาตูวาลู",
@@ -15164,15 +15776,19 @@ Intl.DateTimeFormat.__addLocaleData({
         "Bhms": "h:mm:ss B",
         "d": "d",
         "E": "ccc",
+        "EBh": "E h B",
         "EBhm": "E h:mm B",
         "EBhms": "E h:mm:ss B",
         "Ed": "E d",
+        "Eh": "E h a",
         "Ehm": "E h:mm a",
         "EHm": "E HH:mm น.",
         "Ehms": "E h:mm:ss a",
         "EHms": "E HH:mm:ss",
         "Gy": "G y",
+        "GyM": "G y-MM",
         "GyMd": "d/M/GGGGG y",
+        "GyMEd": "E d/M/G y",
         "GyMMM": "MMM G y",
         "GyMMMd": "d MMM G y",
         "GyMMMEd": "E d MMM G y",
@@ -15187,6 +15803,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "Hmsv": "HH:mm:ss v",
         "hmv": "h:mm น. a v",
         "Hmv": "HH:mm v",
+        "hv": "h a v",
+        "Hv": "HH'h' v",
         "M": "L",
         "Md": "d/M",
         "MEd": "E d/M",
@@ -15227,7 +15845,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E H นาฬิกา mm นาที ss วินาที zzzz": "ccc H นาฬิกา mm นาที ss วินาที zzzz",
         "Ed H นาฬิกา mm นาที ss วินาที zzzz": "E d H นาฬิกา mm นาที ss วินาที zzzz",
         "Gy H นาฬิกา mm นาที ss วินาที zzzz": "G y H นาฬิกา mm นาที ss วินาที zzzz",
+        "GyM H นาฬิกา mm นาที ss วินาที zzzz": "G y-MM H นาฬิกา mm นาที ss วินาที zzzz",
         "GyMd H นาฬิกา mm นาที ss วินาที zzzz": "d/M/GGGGG y H นาฬิกา mm นาที ss วินาที zzzz",
+        "GyMEd H นาฬิกา mm นาที ss วินาที zzzz": "E d/M/G y H นาฬิกา mm นาที ss วินาที zzzz",
         "GyMMM H นาฬิกา mm นาที ss วินาที zzzz": "MMM G y H นาฬิกา mm นาที ss วินาที zzzz",
         "GyMMMd H นาฬิกา mm นาที ss วินาที zzzz": "d MMM G y H นาฬิกา mm นาที ss วินาที zzzz",
         "GyMMMEd H นาฬิกา mm นาที ss วินาที zzzz": "E d MMM G y H นาฬิกา mm นาที ss วินาที zzzz",
@@ -15262,7 +15882,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E H นาฬิกา mm นาที ss วินาที z": "ccc H นาฬิกา mm นาที ss วินาที z",
         "Ed H นาฬิกา mm นาที ss วินาที z": "E d H นาฬิกา mm นาที ss วินาที z",
         "Gy H นาฬิกา mm นาที ss วินาที z": "G y H นาฬิกา mm นาที ss วินาที z",
+        "GyM H นาฬิกา mm นาที ss วินาที z": "G y-MM H นาฬิกา mm นาที ss วินาที z",
         "GyMd H นาฬิกา mm นาที ss วินาที z": "d/M/GGGGG y H นาฬิกา mm นาที ss วินาที z",
+        "GyMEd H นาฬิกา mm นาที ss วินาที z": "E d/M/G y H นาฬิกา mm นาที ss วินาที z",
         "GyMMM H นาฬิกา mm นาที ss วินาที z": "MMM G y H นาฬิกา mm นาที ss วินาที z",
         "GyMMMd H นาฬิกา mm นาที ss วินาที z": "d MMM G y H นาฬิกา mm นาที ss วินาที z",
         "GyMMMEd H นาฬิกา mm นาที ss วินาที z": "E d MMM G y H นาฬิกา mm นาที ss วินาที z",
@@ -15297,7 +15919,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E HH:mm:ss": "ccc HH:mm:ss",
         "Ed HH:mm:ss": "E d HH:mm:ss",
         "Gy HH:mm:ss": "G y HH:mm:ss",
+        "GyM HH:mm:ss": "G y-MM HH:mm:ss",
         "GyMd HH:mm:ss": "d/M/GGGGG y HH:mm:ss",
+        "GyMEd HH:mm:ss": "E d/M/G y HH:mm:ss",
         "GyMMM HH:mm:ss": "MMM G y HH:mm:ss",
         "GyMMMd HH:mm:ss": "d MMM G y HH:mm:ss",
         "GyMMMEd HH:mm:ss": "E d MMM G y HH:mm:ss",
@@ -15332,7 +15956,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E HH:mm": "ccc HH:mm",
         "Ed HH:mm": "E d HH:mm",
         "Gy HH:mm": "G y HH:mm",
+        "GyM HH:mm": "G y-MM HH:mm",
         "GyMd HH:mm": "d/M/GGGGG y HH:mm",
+        "GyMEd HH:mm": "E d/M/G y HH:mm",
         "GyMMM HH:mm": "MMM G y HH:mm",
         "GyMMMd HH:mm": "d MMM G y HH:mm",
         "GyMMMEd HH:mm": "E d MMM G y HH:mm",
@@ -15367,7 +15993,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Bh": "ccc h B",
         "Ed Bh": "E d h B",
         "Gy Bh": "G y h B",
+        "GyM Bh": "G y-MM h B",
         "GyMd Bh": "d/M/GGGGG y h B",
+        "GyMEd Bh": "E d/M/G y h B",
         "GyMMM Bh": "MMM G y h B",
         "GyMMMd Bh": "d MMM G y h B",
         "GyMMMEd Bh": "E d MMM G y h B",
@@ -15402,7 +16030,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Bhm": "ccc h:mm B",
         "Ed Bhm": "E d h:mm B",
         "Gy Bhm": "G y h:mm B",
+        "GyM Bhm": "G y-MM h:mm B",
         "GyMd Bhm": "d/M/GGGGG y h:mm B",
+        "GyMEd Bhm": "E d/M/G y h:mm B",
         "GyMMM Bhm": "MMM G y h:mm B",
         "GyMMMd Bhm": "d MMM G y h:mm B",
         "GyMMMEd Bhm": "E d MMM G y h:mm B",
@@ -15437,7 +16067,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Bhms": "ccc h:mm:ss B",
         "Ed Bhms": "E d h:mm:ss B",
         "Gy Bhms": "G y h:mm:ss B",
+        "GyM Bhms": "G y-MM h:mm:ss B",
         "GyMd Bhms": "d/M/GGGGG y h:mm:ss B",
+        "GyMEd Bhms": "E d/M/G y h:mm:ss B",
         "GyMMM Bhms": "MMM G y h:mm:ss B",
         "GyMMMd Bhms": "d MMM G y h:mm:ss B",
         "GyMMMEd Bhms": "E d MMM G y h:mm:ss B",
@@ -15472,7 +16104,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E h": "ccc h a",
         "Ed h": "E d h a",
         "Gy h": "G y h a",
+        "GyM h": "G y-MM h a",
         "GyMd h": "d/M/GGGGG y h a",
+        "GyMEd h": "E d/M/G y h a",
         "GyMMM h": "MMM G y h a",
         "GyMMMd h": "d MMM G y h a",
         "GyMMMEd h": "E d MMM G y h a",
@@ -15507,7 +16141,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E H": "ccc HH",
         "Ed H": "E d HH",
         "Gy H": "G y HH",
+        "GyM H": "G y-MM HH",
         "GyMd H": "d/M/GGGGG y HH",
+        "GyMEd H": "E d/M/G y HH",
         "GyMMM H": "MMM G y HH",
         "GyMMMd H": "d MMM G y HH",
         "GyMMMEd H": "E d MMM G y HH",
@@ -15542,7 +16178,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E hm": "ccc h:mm a",
         "Ed hm": "E d h:mm a",
         "Gy hm": "G y h:mm a",
+        "GyM hm": "G y-MM h:mm a",
         "GyMd hm": "d/M/GGGGG y h:mm a",
+        "GyMEd hm": "E d/M/G y h:mm a",
         "GyMMM hm": "MMM G y h:mm a",
         "GyMMMd hm": "d MMM G y h:mm a",
         "GyMMMEd hm": "E d MMM G y h:mm a",
@@ -15577,7 +16215,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Hm": "ccc HH:mm น.",
         "Ed Hm": "E d HH:mm น.",
         "Gy Hm": "G y HH:mm น.",
+        "GyM Hm": "G y-MM HH:mm น.",
         "GyMd Hm": "d/M/GGGGG y HH:mm น.",
+        "GyMEd Hm": "E d/M/G y HH:mm น.",
         "GyMMM Hm": "MMM G y HH:mm น.",
         "GyMMMd Hm": "d MMM G y HH:mm น.",
         "GyMMMEd Hm": "E d MMM G y HH:mm น.",
@@ -15612,7 +16252,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E hms": "ccc h:mm:ss a",
         "Ed hms": "E d h:mm:ss a",
         "Gy hms": "G y h:mm:ss a",
+        "GyM hms": "G y-MM h:mm:ss a",
         "GyMd hms": "d/M/GGGGG y h:mm:ss a",
+        "GyMEd hms": "E d/M/G y h:mm:ss a",
         "GyMMM hms": "MMM G y h:mm:ss a",
         "GyMMMd hms": "d MMM G y h:mm:ss a",
         "GyMMMEd hms": "E d MMM G y h:mm:ss a",
@@ -15647,7 +16289,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Hms": "ccc HH:mm:ss",
         "Ed Hms": "E d HH:mm:ss",
         "Gy Hms": "G y HH:mm:ss",
+        "GyM Hms": "G y-MM HH:mm:ss",
         "GyMd Hms": "d/M/GGGGG y HH:mm:ss",
+        "GyMEd Hms": "E d/M/G y HH:mm:ss",
         "GyMMM Hms": "MMM G y HH:mm:ss",
         "GyMMMd Hms": "d MMM G y HH:mm:ss",
         "GyMMMEd Hms": "E d MMM G y HH:mm:ss",
@@ -15682,7 +16326,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E hmsv": "ccc h:mm:ss a v",
         "Ed hmsv": "E d h:mm:ss a v",
         "Gy hmsv": "G y h:mm:ss a v",
+        "GyM hmsv": "G y-MM h:mm:ss a v",
         "GyMd hmsv": "d/M/GGGGG y h:mm:ss a v",
+        "GyMEd hmsv": "E d/M/G y h:mm:ss a v",
         "GyMMM hmsv": "MMM G y h:mm:ss a v",
         "GyMMMd hmsv": "d MMM G y h:mm:ss a v",
         "GyMMMEd hmsv": "E d MMM G y h:mm:ss a v",
@@ -15717,7 +16363,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Hmsv": "ccc HH:mm:ss v",
         "Ed Hmsv": "E d HH:mm:ss v",
         "Gy Hmsv": "G y HH:mm:ss v",
+        "GyM Hmsv": "G y-MM HH:mm:ss v",
         "GyMd Hmsv": "d/M/GGGGG y HH:mm:ss v",
+        "GyMEd Hmsv": "E d/M/G y HH:mm:ss v",
         "GyMMM Hmsv": "MMM G y HH:mm:ss v",
         "GyMMMd Hmsv": "d MMM G y HH:mm:ss v",
         "GyMMMEd Hmsv": "E d MMM G y HH:mm:ss v",
@@ -15752,7 +16400,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E hmv": "ccc h:mm น. a v",
         "Ed hmv": "E d h:mm น. a v",
         "Gy hmv": "G y h:mm น. a v",
+        "GyM hmv": "G y-MM h:mm น. a v",
         "GyMd hmv": "d/M/GGGGG y h:mm น. a v",
+        "GyMEd hmv": "E d/M/G y h:mm น. a v",
         "GyMMM hmv": "MMM G y h:mm น. a v",
         "GyMMMd hmv": "d MMM G y h:mm น. a v",
         "GyMMMEd hmv": "E d MMM G y h:mm น. a v",
@@ -15787,7 +16437,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Hmv": "ccc HH:mm v",
         "Ed Hmv": "E d HH:mm v",
         "Gy Hmv": "G y HH:mm v",
+        "GyM Hmv": "G y-MM HH:mm v",
         "GyMd Hmv": "d/M/GGGGG y HH:mm v",
+        "GyMEd Hmv": "E d/M/G y HH:mm v",
         "GyMMM Hmv": "MMM G y HH:mm v",
         "GyMMMd Hmv": "d MMM G y HH:mm v",
         "GyMMMEd Hmv": "E d MMM G y HH:mm v",
@@ -15814,6 +16466,80 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMMd Hmv": "d MMMM y HH:mm v",
         "yMMMMEd Hmv": "E d MMMM y HH:mm v",
         "yMMMMEEEEd Hmv": "EEEEที่ d MMMM y HH:mm v",
+        "EEEEที่ d MMMM G y hv": "EEEEที่ d MMMM G y h a v",
+        "d MMMM G y hv": "d MMMM G y h a v",
+        "d MMM y hv": "d MMM y h a v",
+        "d/M/yy hv": "d/M/yy h a v",
+        "d hv": "d h a v",
+        "E hv": "ccc h a v",
+        "Ed hv": "E d h a v",
+        "Gy hv": "G y h a v",
+        "GyM hv": "G y-MM h a v",
+        "GyMd hv": "d/M/GGGGG y h a v",
+        "GyMEd hv": "E d/M/G y h a v",
+        "GyMMM hv": "MMM G y h a v",
+        "GyMMMd hv": "d MMM G y h a v",
+        "GyMMMEd hv": "E d MMM G y h a v",
+        "GyMMMEEEEd hv": "EEEEที่ d MMM G y h a v",
+        "M hv": "L h a v",
+        "Md hv": "d/M h a v",
+        "MEd hv": "E d/M h a v",
+        "MMM hv": "LLL h a v",
+        "MMMd hv": "d MMM h a v",
+        "MMMEd hv": "E d MMM h a v",
+        "MMMEEEEd hv": "EEEEที่ d MMM h a v",
+        "MMMMd hv": "d MMMM h a v",
+        "MMMMEd hv": "E d MMMM h a v",
+        "MMMMEEEEd hv": "EEEEที่ d MMMM h a v",
+        "y hv": "y h a v",
+        "yM hv": "M/y h a v",
+        "yMd hv": "d/M/y h a v",
+        "yMEd hv": "E d/M/y h a v",
+        "yMMM hv": "MMM y h a v",
+        "yMMMd hv": "d MMM y h a v",
+        "yMMMEd hv": "E d MMM y h a v",
+        "yMMMEEEEd hv": "EEEEที่ d MMM y h a v",
+        "yMMMM hv": "MMMM y h a v",
+        "yMMMMd hv": "d MMMM y h a v",
+        "yMMMMEd hv": "E d MMMM y h a v",
+        "yMMMMEEEEd hv": "EEEEที่ d MMMM y h a v",
+        "EEEEที่ d MMMM G y Hv": "EEEEที่ d MMMM G y HH'h' v",
+        "d MMMM G y Hv": "d MMMM G y HH'h' v",
+        "d MMM y Hv": "d MMM y HH'h' v",
+        "d/M/yy Hv": "d/M/yy HH'h' v",
+        "d Hv": "d HH'h' v",
+        "E Hv": "ccc HH'h' v",
+        "Ed Hv": "E d HH'h' v",
+        "Gy Hv": "G y HH'h' v",
+        "GyM Hv": "G y-MM HH'h' v",
+        "GyMd Hv": "d/M/GGGGG y HH'h' v",
+        "GyMEd Hv": "E d/M/G y HH'h' v",
+        "GyMMM Hv": "MMM G y HH'h' v",
+        "GyMMMd Hv": "d MMM G y HH'h' v",
+        "GyMMMEd Hv": "E d MMM G y HH'h' v",
+        "GyMMMEEEEd Hv": "EEEEที่ d MMM G y HH'h' v",
+        "M Hv": "L HH'h' v",
+        "Md Hv": "d/M HH'h' v",
+        "MEd Hv": "E d/M HH'h' v",
+        "MMM Hv": "LLL HH'h' v",
+        "MMMd Hv": "d MMM HH'h' v",
+        "MMMEd Hv": "E d MMM HH'h' v",
+        "MMMEEEEd Hv": "EEEEที่ d MMM HH'h' v",
+        "MMMMd Hv": "d MMMM HH'h' v",
+        "MMMMEd Hv": "E d MMMM HH'h' v",
+        "MMMMEEEEd Hv": "EEEEที่ d MMMM HH'h' v",
+        "y Hv": "y HH'h' v",
+        "yM Hv": "M/y HH'h' v",
+        "yMd Hv": "d/M/y HH'h' v",
+        "yMEd Hv": "E d/M/y HH'h' v",
+        "yMMM Hv": "MMM y HH'h' v",
+        "yMMMd Hv": "d MMM y HH'h' v",
+        "yMMMEd Hv": "E d MMM y HH'h' v",
+        "yMMMEEEEd Hv": "EEEEที่ d MMM y HH'h' v",
+        "yMMMM Hv": "MMMM y HH'h' v",
+        "yMMMMd Hv": "d MMMM y HH'h' v",
+        "yMMMMEd Hv": "E d MMMM y HH'h' v",
+        "yMMMMEEEEd Hv": "EEEEที่ d MMMM y HH'h' v",
         "EEEEที่ d MMMM G y mmss": "EEEEที่ d MMMM G y mm:ss",
         "d MMMM G y mmss": "d MMMM G y mm:ss",
         "d MMM y mmss": "d MMM y mm:ss",
@@ -15822,7 +16548,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E mmss": "ccc mm:ss",
         "Ed mmss": "E d mm:ss",
         "Gy mmss": "G y mm:ss",
+        "GyM mmss": "G y-MM mm:ss",
         "GyMd mmss": "d/M/GGGGG y mm:ss",
+        "GyMEd mmss": "E d/M/G y mm:ss",
         "GyMMM mmss": "MMM G y mm:ss",
         "GyMMMd mmss": "d MMM G y mm:ss",
         "GyMMMEd mmss": "E d MMM G y mm:ss",
@@ -15857,7 +16585,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E ms": "ccc mm:ss",
         "Ed ms": "E d mm:ss",
         "Gy ms": "G y mm:ss",
+        "GyM ms": "G y-MM mm:ss",
         "GyMd ms": "d/M/GGGGG y mm:ss",
+        "GyMEd ms": "E d/M/G y mm:ss",
         "GyMMM ms": "MMM G y mm:ss",
         "GyMMMd ms": "d MMM G y mm:ss",
         "GyMMMEd ms": "E d MMM G y mm:ss",
@@ -16300,68 +17030,68 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Africa/Lagos": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Asia/Aqtobe": {
@@ -16740,6 +17470,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "亚速尔群岛标准时间",
           "亚速尔群岛夏令时间"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "夏威夷-阿留申标准时间",
+          "夏威夷-阿留申夏令时间"
         ]
       },
       "Asia/Thimphu": {
@@ -17309,7 +18045,7 @@ Intl.DateTimeFormat.__addLocaleData({
       "Pacific/Honolulu": {
         "long": [
           "夏威夷-阿留申标准时间",
-          "夏威夷-阿留申夏令时间"
+          "夏威夷-阿留申标准时间"
         ]
       },
       "Asia/Hong_Kong": {
@@ -17744,6 +18480,12 @@ Intl.DateTimeFormat.__addLocaleData({
           "楚克时间"
         ]
       },
+      "Europe/Istanbul": {
+        "long": [
+          "土耳其标准时间",
+          "土耳其夏令时间"
+        ]
+      },
       "Pacific/Funafuti": {
         "long": [
           "图瓦卢时间",
@@ -17848,15 +18590,19 @@ Intl.DateTimeFormat.__addLocaleData({
         "Bhms": "Bh:mm:ss",
         "d": "d日",
         "E": "ccc",
+        "EBh": "EBh时",
         "EBhm": "EBh:mm",
         "EBhms": "EBh:mm:ss",
         "Ed": "d日E",
+        "Eh": "Eah时",
         "Ehm": "Eah:mm",
         "EHm": "EHH:mm",
         "Ehms": "Eah:mm:ss",
         "EHms": "EHH:mm:ss",
         "Gy": "Gy年",
-        "GyMd": "GGGGG y-MM-dd",
+        "GyM": "Gy年M月",
+        "GyMd": "Gy-MM-dd",
+        "GyMEd": "Gy-MM-ddE",
         "GyMMM": "Gy年M月",
         "GyMMMd": "Gy年M月d日",
         "GyMMMEd": "Gy年M月d日E",
@@ -17866,10 +18612,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "Hm": "HH:mm",
         "hms": "ah:mm:ss",
         "Hms": "HH:mm:ss",
-        "hmsv": "v ah:mm:ss",
-        "Hmsv": "v HH:mm:ss",
-        "hmv": "v ah:mm",
+        "hmsv": "vah:mm:ss",
+        "Hmsv": "vHH:mm:ss",
+        "hmv": "vah:mm",
         "Hmv": "v HH:mm",
+        "hv": "vah时",
+        "Hv": "vH时",
         "M": "M月",
         "Md": "M/d",
         "MEd": "M/dE",
@@ -17903,7 +18651,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E zzzz HH:mm:ss": "ccc zzzz HH:mm:ss",
         "Ed zzzz HH:mm:ss": "d日E zzzz HH:mm:ss",
         "Gy zzzz HH:mm:ss": "Gy年 zzzz HH:mm:ss",
-        "GyMd zzzz HH:mm:ss": "GGGGG y-MM-dd zzzz HH:mm:ss",
+        "GyM zzzz HH:mm:ss": "Gy年M月 zzzz HH:mm:ss",
+        "GyMd zzzz HH:mm:ss": "Gy-MM-dd zzzz HH:mm:ss",
+        "GyMEd zzzz HH:mm:ss": "Gy-MM-ddE zzzz HH:mm:ss",
         "GyMMM zzzz HH:mm:ss": "Gy年M月 zzzz HH:mm:ss",
         "GyMMMd zzzz HH:mm:ss": "Gy年M月d日 zzzz HH:mm:ss",
         "GyMMMEd zzzz HH:mm:ss": "Gy年M月d日E zzzz HH:mm:ss",
@@ -17932,7 +18682,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E z HH:mm:ss": "ccc z HH:mm:ss",
         "Ed z HH:mm:ss": "d日E z HH:mm:ss",
         "Gy z HH:mm:ss": "Gy年 z HH:mm:ss",
-        "GyMd z HH:mm:ss": "GGGGG y-MM-dd z HH:mm:ss",
+        "GyM z HH:mm:ss": "Gy年M月 z HH:mm:ss",
+        "GyMd z HH:mm:ss": "Gy-MM-dd z HH:mm:ss",
+        "GyMEd z HH:mm:ss": "Gy-MM-ddE z HH:mm:ss",
         "GyMMM z HH:mm:ss": "Gy年M月 z HH:mm:ss",
         "GyMMMd z HH:mm:ss": "Gy年M月d日 z HH:mm:ss",
         "GyMMMEd z HH:mm:ss": "Gy年M月d日E z HH:mm:ss",
@@ -17961,7 +18713,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E HH:mm:ss": "ccc HH:mm:ss",
         "Ed HH:mm:ss": "d日E HH:mm:ss",
         "Gy HH:mm:ss": "Gy年 HH:mm:ss",
-        "GyMd HH:mm:ss": "GGGGG y-MM-dd HH:mm:ss",
+        "GyM HH:mm:ss": "Gy年M月 HH:mm:ss",
+        "GyMd HH:mm:ss": "Gy-MM-dd HH:mm:ss",
+        "GyMEd HH:mm:ss": "Gy-MM-ddE HH:mm:ss",
         "GyMMM HH:mm:ss": "Gy年M月 HH:mm:ss",
         "GyMMMd HH:mm:ss": "Gy年M月d日 HH:mm:ss",
         "GyMMMEd HH:mm:ss": "Gy年M月d日E HH:mm:ss",
@@ -17990,7 +18744,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E HH:mm": "ccc HH:mm",
         "Ed HH:mm": "d日E HH:mm",
         "Gy HH:mm": "Gy年 HH:mm",
-        "GyMd HH:mm": "GGGGG y-MM-dd HH:mm",
+        "GyM HH:mm": "Gy年M月 HH:mm",
+        "GyMd HH:mm": "Gy-MM-dd HH:mm",
+        "GyMEd HH:mm": "Gy-MM-ddE HH:mm",
         "GyMMM HH:mm": "Gy年M月 HH:mm",
         "GyMMMd HH:mm": "Gy年M月d日 HH:mm",
         "GyMMMEd HH:mm": "Gy年M月d日E HH:mm",
@@ -18019,7 +18775,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Bh": "ccc Bh时",
         "Ed Bh": "d日E Bh时",
         "Gy Bh": "Gy年 Bh时",
-        "GyMd Bh": "GGGGG y-MM-dd Bh时",
+        "GyM Bh": "Gy年M月 Bh时",
+        "GyMd Bh": "Gy-MM-dd Bh时",
+        "GyMEd Bh": "Gy-MM-ddE Bh时",
         "GyMMM Bh": "Gy年M月 Bh时",
         "GyMMMd Bh": "Gy年M月d日 Bh时",
         "GyMMMEd Bh": "Gy年M月d日E Bh时",
@@ -18048,7 +18806,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Bhm": "ccc Bh:mm",
         "Ed Bhm": "d日E Bh:mm",
         "Gy Bhm": "Gy年 Bh:mm",
-        "GyMd Bhm": "GGGGG y-MM-dd Bh:mm",
+        "GyM Bhm": "Gy年M月 Bh:mm",
+        "GyMd Bhm": "Gy-MM-dd Bh:mm",
+        "GyMEd Bhm": "Gy-MM-ddE Bh:mm",
         "GyMMM Bhm": "Gy年M月 Bh:mm",
         "GyMMMd Bhm": "Gy年M月d日 Bh:mm",
         "GyMMMEd Bhm": "Gy年M月d日E Bh:mm",
@@ -18077,7 +18837,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Bhms": "ccc Bh:mm:ss",
         "Ed Bhms": "d日E Bh:mm:ss",
         "Gy Bhms": "Gy年 Bh:mm:ss",
-        "GyMd Bhms": "GGGGG y-MM-dd Bh:mm:ss",
+        "GyM Bhms": "Gy年M月 Bh:mm:ss",
+        "GyMd Bhms": "Gy-MM-dd Bh:mm:ss",
+        "GyMEd Bhms": "Gy-MM-ddE Bh:mm:ss",
         "GyMMM Bhms": "Gy年M月 Bh:mm:ss",
         "GyMMMd Bhms": "Gy年M月d日 Bh:mm:ss",
         "GyMMMEd Bhms": "Gy年M月d日E Bh:mm:ss",
@@ -18106,7 +18868,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E h": "ccc ah时",
         "Ed h": "d日E ah时",
         "Gy h": "Gy年 ah时",
-        "GyMd h": "GGGGG y-MM-dd ah时",
+        "GyM h": "Gy年M月 ah时",
+        "GyMd h": "Gy-MM-dd ah时",
+        "GyMEd h": "Gy-MM-ddE ah时",
         "GyMMM h": "Gy年M月 ah时",
         "GyMMMd h": "Gy年M月d日 ah时",
         "GyMMMEd h": "Gy年M月d日E ah时",
@@ -18135,7 +18899,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E H": "ccc H时",
         "Ed H": "d日E H时",
         "Gy H": "Gy年 H时",
-        "GyMd H": "GGGGG y-MM-dd H时",
+        "GyM H": "Gy年M月 H时",
+        "GyMd H": "Gy-MM-dd H时",
+        "GyMEd H": "Gy-MM-ddE H时",
         "GyMMM H": "Gy年M月 H时",
         "GyMMMd H": "Gy年M月d日 H时",
         "GyMMMEd H": "Gy年M月d日E H时",
@@ -18164,7 +18930,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E hm": "ccc ah:mm",
         "Ed hm": "d日E ah:mm",
         "Gy hm": "Gy年 ah:mm",
-        "GyMd hm": "GGGGG y-MM-dd ah:mm",
+        "GyM hm": "Gy年M月 ah:mm",
+        "GyMd hm": "Gy-MM-dd ah:mm",
+        "GyMEd hm": "Gy-MM-ddE ah:mm",
         "GyMMM hm": "Gy年M月 ah:mm",
         "GyMMMd hm": "Gy年M月d日 ah:mm",
         "GyMMMEd hm": "Gy年M月d日E ah:mm",
@@ -18193,7 +18961,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Hm": "ccc HH:mm",
         "Ed Hm": "d日E HH:mm",
         "Gy Hm": "Gy年 HH:mm",
-        "GyMd Hm": "GGGGG y-MM-dd HH:mm",
+        "GyM Hm": "Gy年M月 HH:mm",
+        "GyMd Hm": "Gy-MM-dd HH:mm",
+        "GyMEd Hm": "Gy-MM-ddE HH:mm",
         "GyMMM Hm": "Gy年M月 HH:mm",
         "GyMMMd Hm": "Gy年M月d日 HH:mm",
         "GyMMMEd Hm": "Gy年M月d日E HH:mm",
@@ -18222,7 +18992,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E hms": "ccc ah:mm:ss",
         "Ed hms": "d日E ah:mm:ss",
         "Gy hms": "Gy年 ah:mm:ss",
-        "GyMd hms": "GGGGG y-MM-dd ah:mm:ss",
+        "GyM hms": "Gy年M月 ah:mm:ss",
+        "GyMd hms": "Gy-MM-dd ah:mm:ss",
+        "GyMEd hms": "Gy-MM-ddE ah:mm:ss",
         "GyMMM hms": "Gy年M月 ah:mm:ss",
         "GyMMMd hms": "Gy年M月d日 ah:mm:ss",
         "GyMMMEd hms": "Gy年M月d日E ah:mm:ss",
@@ -18251,7 +19023,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Hms": "ccc HH:mm:ss",
         "Ed Hms": "d日E HH:mm:ss",
         "Gy Hms": "Gy年 HH:mm:ss",
-        "GyMd Hms": "GGGGG y-MM-dd HH:mm:ss",
+        "GyM Hms": "Gy年M月 HH:mm:ss",
+        "GyMd Hms": "Gy-MM-dd HH:mm:ss",
+        "GyMEd Hms": "Gy-MM-ddE HH:mm:ss",
         "GyMMM Hms": "Gy年M月 HH:mm:ss",
         "GyMMMd Hms": "Gy年M月d日 HH:mm:ss",
         "GyMMMEd Hms": "Gy年M月d日E HH:mm:ss",
@@ -18273,93 +19047,99 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMd Hms": "y年M月d日 HH:mm:ss",
         "yMMMEd Hms": "y年M月d日E HH:mm:ss",
         "yMMMM Hms": "y年M月 HH:mm:ss",
-        "y年M月d日EEEE hmsv": "y年M月d日EEEE v ah:mm:ss",
-        "y年M月d日 hmsv": "y年M月d日 v ah:mm:ss",
-        "y/M/d hmsv": "y/M/d v ah:mm:ss",
-        "d hmsv": "d日 v ah:mm:ss",
-        "E hmsv": "ccc v ah:mm:ss",
-        "Ed hmsv": "d日E v ah:mm:ss",
-        "Gy hmsv": "Gy年 v ah:mm:ss",
-        "GyMd hmsv": "GGGGG y-MM-dd v ah:mm:ss",
-        "GyMMM hmsv": "Gy年M月 v ah:mm:ss",
-        "GyMMMd hmsv": "Gy年M月d日 v ah:mm:ss",
-        "GyMMMEd hmsv": "Gy年M月d日E v ah:mm:ss",
-        "M hmsv": "M月 v ah:mm:ss",
-        "Md hmsv": "M/d v ah:mm:ss",
-        "MEd hmsv": "M/dE v ah:mm:ss",
-        "MMdd hmsv": "MM/dd v ah:mm:ss",
-        "MMM hmsv": "LLL v ah:mm:ss",
-        "MMMd hmsv": "M月d日 v ah:mm:ss",
-        "MMMEd hmsv": "M月d日E v ah:mm:ss",
-        "MMMMd hmsv": "M月d日 v ah:mm:ss",
-        "y hmsv": "y年 v ah:mm:ss",
-        "yM hmsv": "y/M v ah:mm:ss",
-        "yMd hmsv": "y/M/d v ah:mm:ss",
-        "yMEd hmsv": "y/M/dE v ah:mm:ss",
-        "yMEEEEd hmsv": "y年M月d日EEEE v ah:mm:ss",
-        "yMM hmsv": "y年M月 v ah:mm:ss",
-        "yMMM hmsv": "y年M月 v ah:mm:ss",
-        "yMMMd hmsv": "y年M月d日 v ah:mm:ss",
-        "yMMMEd hmsv": "y年M月d日E v ah:mm:ss",
-        "yMMMM hmsv": "y年M月 v ah:mm:ss",
-        "y年M月d日EEEE Hmsv": "y年M月d日EEEE v HH:mm:ss",
-        "y年M月d日 Hmsv": "y年M月d日 v HH:mm:ss",
-        "y/M/d Hmsv": "y/M/d v HH:mm:ss",
-        "d Hmsv": "d日 v HH:mm:ss",
-        "E Hmsv": "ccc v HH:mm:ss",
-        "Ed Hmsv": "d日E v HH:mm:ss",
-        "Gy Hmsv": "Gy年 v HH:mm:ss",
-        "GyMd Hmsv": "GGGGG y-MM-dd v HH:mm:ss",
-        "GyMMM Hmsv": "Gy年M月 v HH:mm:ss",
-        "GyMMMd Hmsv": "Gy年M月d日 v HH:mm:ss",
-        "GyMMMEd Hmsv": "Gy年M月d日E v HH:mm:ss",
-        "M Hmsv": "M月 v HH:mm:ss",
-        "Md Hmsv": "M/d v HH:mm:ss",
-        "MEd Hmsv": "M/dE v HH:mm:ss",
-        "MMdd Hmsv": "MM/dd v HH:mm:ss",
-        "MMM Hmsv": "LLL v HH:mm:ss",
-        "MMMd Hmsv": "M月d日 v HH:mm:ss",
-        "MMMEd Hmsv": "M月d日E v HH:mm:ss",
-        "MMMMd Hmsv": "M月d日 v HH:mm:ss",
-        "y Hmsv": "y年 v HH:mm:ss",
-        "yM Hmsv": "y/M v HH:mm:ss",
-        "yMd Hmsv": "y/M/d v HH:mm:ss",
-        "yMEd Hmsv": "y/M/dE v HH:mm:ss",
-        "yMEEEEd Hmsv": "y年M月d日EEEE v HH:mm:ss",
-        "yMM Hmsv": "y年M月 v HH:mm:ss",
-        "yMMM Hmsv": "y年M月 v HH:mm:ss",
-        "yMMMd Hmsv": "y年M月d日 v HH:mm:ss",
-        "yMMMEd Hmsv": "y年M月d日E v HH:mm:ss",
-        "yMMMM Hmsv": "y年M月 v HH:mm:ss",
-        "y年M月d日EEEE hmv": "y年M月d日EEEE v ah:mm",
-        "y年M月d日 hmv": "y年M月d日 v ah:mm",
-        "y/M/d hmv": "y/M/d v ah:mm",
-        "d hmv": "d日 v ah:mm",
-        "E hmv": "ccc v ah:mm",
-        "Ed hmv": "d日E v ah:mm",
-        "Gy hmv": "Gy年 v ah:mm",
-        "GyMd hmv": "GGGGG y-MM-dd v ah:mm",
-        "GyMMM hmv": "Gy年M月 v ah:mm",
-        "GyMMMd hmv": "Gy年M月d日 v ah:mm",
-        "GyMMMEd hmv": "Gy年M月d日E v ah:mm",
-        "M hmv": "M月 v ah:mm",
-        "Md hmv": "M/d v ah:mm",
-        "MEd hmv": "M/dE v ah:mm",
-        "MMdd hmv": "MM/dd v ah:mm",
-        "MMM hmv": "LLL v ah:mm",
-        "MMMd hmv": "M月d日 v ah:mm",
-        "MMMEd hmv": "M月d日E v ah:mm",
-        "MMMMd hmv": "M月d日 v ah:mm",
-        "y hmv": "y年 v ah:mm",
-        "yM hmv": "y/M v ah:mm",
-        "yMd hmv": "y/M/d v ah:mm",
-        "yMEd hmv": "y/M/dE v ah:mm",
-        "yMEEEEd hmv": "y年M月d日EEEE v ah:mm",
-        "yMM hmv": "y年M月 v ah:mm",
-        "yMMM hmv": "y年M月 v ah:mm",
-        "yMMMd hmv": "y年M月d日 v ah:mm",
-        "yMMMEd hmv": "y年M月d日E v ah:mm",
-        "yMMMM hmv": "y年M月 v ah:mm",
+        "y年M月d日EEEE hmsv": "y年M月d日EEEE vah:mm:ss",
+        "y年M月d日 hmsv": "y年M月d日 vah:mm:ss",
+        "y/M/d hmsv": "y/M/d vah:mm:ss",
+        "d hmsv": "d日 vah:mm:ss",
+        "E hmsv": "ccc vah:mm:ss",
+        "Ed hmsv": "d日E vah:mm:ss",
+        "Gy hmsv": "Gy年 vah:mm:ss",
+        "GyM hmsv": "Gy年M月 vah:mm:ss",
+        "GyMd hmsv": "Gy-MM-dd vah:mm:ss",
+        "GyMEd hmsv": "Gy-MM-ddE vah:mm:ss",
+        "GyMMM hmsv": "Gy年M月 vah:mm:ss",
+        "GyMMMd hmsv": "Gy年M月d日 vah:mm:ss",
+        "GyMMMEd hmsv": "Gy年M月d日E vah:mm:ss",
+        "M hmsv": "M月 vah:mm:ss",
+        "Md hmsv": "M/d vah:mm:ss",
+        "MEd hmsv": "M/dE vah:mm:ss",
+        "MMdd hmsv": "MM/dd vah:mm:ss",
+        "MMM hmsv": "LLL vah:mm:ss",
+        "MMMd hmsv": "M月d日 vah:mm:ss",
+        "MMMEd hmsv": "M月d日E vah:mm:ss",
+        "MMMMd hmsv": "M月d日 vah:mm:ss",
+        "y hmsv": "y年 vah:mm:ss",
+        "yM hmsv": "y/M vah:mm:ss",
+        "yMd hmsv": "y/M/d vah:mm:ss",
+        "yMEd hmsv": "y/M/dE vah:mm:ss",
+        "yMEEEEd hmsv": "y年M月d日EEEE vah:mm:ss",
+        "yMM hmsv": "y年M月 vah:mm:ss",
+        "yMMM hmsv": "y年M月 vah:mm:ss",
+        "yMMMd hmsv": "y年M月d日 vah:mm:ss",
+        "yMMMEd hmsv": "y年M月d日E vah:mm:ss",
+        "yMMMM hmsv": "y年M月 vah:mm:ss",
+        "y年M月d日EEEE Hmsv": "y年M月d日EEEE vHH:mm:ss",
+        "y年M月d日 Hmsv": "y年M月d日 vHH:mm:ss",
+        "y/M/d Hmsv": "y/M/d vHH:mm:ss",
+        "d Hmsv": "d日 vHH:mm:ss",
+        "E Hmsv": "ccc vHH:mm:ss",
+        "Ed Hmsv": "d日E vHH:mm:ss",
+        "Gy Hmsv": "Gy年 vHH:mm:ss",
+        "GyM Hmsv": "Gy年M月 vHH:mm:ss",
+        "GyMd Hmsv": "Gy-MM-dd vHH:mm:ss",
+        "GyMEd Hmsv": "Gy-MM-ddE vHH:mm:ss",
+        "GyMMM Hmsv": "Gy年M月 vHH:mm:ss",
+        "GyMMMd Hmsv": "Gy年M月d日 vHH:mm:ss",
+        "GyMMMEd Hmsv": "Gy年M月d日E vHH:mm:ss",
+        "M Hmsv": "M月 vHH:mm:ss",
+        "Md Hmsv": "M/d vHH:mm:ss",
+        "MEd Hmsv": "M/dE vHH:mm:ss",
+        "MMdd Hmsv": "MM/dd vHH:mm:ss",
+        "MMM Hmsv": "LLL vHH:mm:ss",
+        "MMMd Hmsv": "M月d日 vHH:mm:ss",
+        "MMMEd Hmsv": "M月d日E vHH:mm:ss",
+        "MMMMd Hmsv": "M月d日 vHH:mm:ss",
+        "y Hmsv": "y年 vHH:mm:ss",
+        "yM Hmsv": "y/M vHH:mm:ss",
+        "yMd Hmsv": "y/M/d vHH:mm:ss",
+        "yMEd Hmsv": "y/M/dE vHH:mm:ss",
+        "yMEEEEd Hmsv": "y年M月d日EEEE vHH:mm:ss",
+        "yMM Hmsv": "y年M月 vHH:mm:ss",
+        "yMMM Hmsv": "y年M月 vHH:mm:ss",
+        "yMMMd Hmsv": "y年M月d日 vHH:mm:ss",
+        "yMMMEd Hmsv": "y年M月d日E vHH:mm:ss",
+        "yMMMM Hmsv": "y年M月 vHH:mm:ss",
+        "y年M月d日EEEE hmv": "y年M月d日EEEE vah:mm",
+        "y年M月d日 hmv": "y年M月d日 vah:mm",
+        "y/M/d hmv": "y/M/d vah:mm",
+        "d hmv": "d日 vah:mm",
+        "E hmv": "ccc vah:mm",
+        "Ed hmv": "d日E vah:mm",
+        "Gy hmv": "Gy年 vah:mm",
+        "GyM hmv": "Gy年M月 vah:mm",
+        "GyMd hmv": "Gy-MM-dd vah:mm",
+        "GyMEd hmv": "Gy-MM-ddE vah:mm",
+        "GyMMM hmv": "Gy年M月 vah:mm",
+        "GyMMMd hmv": "Gy年M月d日 vah:mm",
+        "GyMMMEd hmv": "Gy年M月d日E vah:mm",
+        "M hmv": "M月 vah:mm",
+        "Md hmv": "M/d vah:mm",
+        "MEd hmv": "M/dE vah:mm",
+        "MMdd hmv": "MM/dd vah:mm",
+        "MMM hmv": "LLL vah:mm",
+        "MMMd hmv": "M月d日 vah:mm",
+        "MMMEd hmv": "M月d日E vah:mm",
+        "MMMMd hmv": "M月d日 vah:mm",
+        "y hmv": "y年 vah:mm",
+        "yM hmv": "y/M vah:mm",
+        "yMd hmv": "y/M/d vah:mm",
+        "yMEd hmv": "y/M/dE vah:mm",
+        "yMEEEEd hmv": "y年M月d日EEEE vah:mm",
+        "yMM hmv": "y年M月 vah:mm",
+        "yMMM hmv": "y年M月 vah:mm",
+        "yMMMd hmv": "y年M月d日 vah:mm",
+        "yMMMEd hmv": "y年M月d日E vah:mm",
+        "yMMMM hmv": "y年M月 vah:mm",
         "y年M月d日EEEE Hmv": "y年M月d日EEEE v HH:mm",
         "y年M月d日 Hmv": "y年M月d日 v HH:mm",
         "y/M/d Hmv": "y/M/d v HH:mm",
@@ -18367,7 +19147,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Hmv": "ccc v HH:mm",
         "Ed Hmv": "d日E v HH:mm",
         "Gy Hmv": "Gy年 v HH:mm",
-        "GyMd Hmv": "GGGGG y-MM-dd v HH:mm",
+        "GyM Hmv": "Gy年M月 v HH:mm",
+        "GyMd Hmv": "Gy-MM-dd v HH:mm",
+        "GyMEd Hmv": "Gy-MM-ddE v HH:mm",
         "GyMMM Hmv": "Gy年M月 v HH:mm",
         "GyMMMd Hmv": "Gy年M月d日 v HH:mm",
         "GyMMMEd Hmv": "Gy年M月d日E v HH:mm",
@@ -18389,6 +19171,68 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMd Hmv": "y年M月d日 v HH:mm",
         "yMMMEd Hmv": "y年M月d日E v HH:mm",
         "yMMMM Hmv": "y年M月 v HH:mm",
+        "y年M月d日EEEE hv": "y年M月d日EEEE vah时",
+        "y年M月d日 hv": "y年M月d日 vah时",
+        "y/M/d hv": "y/M/d vah时",
+        "d hv": "d日 vah时",
+        "E hv": "ccc vah时",
+        "Ed hv": "d日E vah时",
+        "Gy hv": "Gy年 vah时",
+        "GyM hv": "Gy年M月 vah时",
+        "GyMd hv": "Gy-MM-dd vah时",
+        "GyMEd hv": "Gy-MM-ddE vah时",
+        "GyMMM hv": "Gy年M月 vah时",
+        "GyMMMd hv": "Gy年M月d日 vah时",
+        "GyMMMEd hv": "Gy年M月d日E vah时",
+        "M hv": "M月 vah时",
+        "Md hv": "M/d vah时",
+        "MEd hv": "M/dE vah时",
+        "MMdd hv": "MM/dd vah时",
+        "MMM hv": "LLL vah时",
+        "MMMd hv": "M月d日 vah时",
+        "MMMEd hv": "M月d日E vah时",
+        "MMMMd hv": "M月d日 vah时",
+        "y hv": "y年 vah时",
+        "yM hv": "y/M vah时",
+        "yMd hv": "y/M/d vah时",
+        "yMEd hv": "y/M/dE vah时",
+        "yMEEEEd hv": "y年M月d日EEEE vah时",
+        "yMM hv": "y年M月 vah时",
+        "yMMM hv": "y年M月 vah时",
+        "yMMMd hv": "y年M月d日 vah时",
+        "yMMMEd hv": "y年M月d日E vah时",
+        "yMMMM hv": "y年M月 vah时",
+        "y年M月d日EEEE Hv": "y年M月d日EEEE vH时",
+        "y年M月d日 Hv": "y年M月d日 vH时",
+        "y/M/d Hv": "y/M/d vH时",
+        "d Hv": "d日 vH时",
+        "E Hv": "ccc vH时",
+        "Ed Hv": "d日E vH时",
+        "Gy Hv": "Gy年 vH时",
+        "GyM Hv": "Gy年M月 vH时",
+        "GyMd Hv": "Gy-MM-dd vH时",
+        "GyMEd Hv": "Gy-MM-ddE vH时",
+        "GyMMM Hv": "Gy年M月 vH时",
+        "GyMMMd Hv": "Gy年M月d日 vH时",
+        "GyMMMEd Hv": "Gy年M月d日E vH时",
+        "M Hv": "M月 vH时",
+        "Md Hv": "M/d vH时",
+        "MEd Hv": "M/dE vH时",
+        "MMdd Hv": "MM/dd vH时",
+        "MMM Hv": "LLL vH时",
+        "MMMd Hv": "M月d日 vH时",
+        "MMMEd Hv": "M月d日E vH时",
+        "MMMMd Hv": "M月d日 vH时",
+        "y Hv": "y年 vH时",
+        "yM Hv": "y/M vH时",
+        "yMd Hv": "y/M/d vH时",
+        "yMEd Hv": "y/M/dE vH时",
+        "yMEEEEd Hv": "y年M月d日EEEE vH时",
+        "yMM Hv": "y年M月 vH时",
+        "yMMM Hv": "y年M月 vH时",
+        "yMMMd Hv": "y年M月d日 vH时",
+        "yMMMEd Hv": "y年M月d日E vH时",
+        "yMMMM Hv": "y年M月 vH时",
         "y年M月d日EEEE ms": "y年M月d日EEEE mm:ss",
         "y年M月d日 ms": "y年M月d日 mm:ss",
         "y/M/d ms": "y/M/d mm:ss",
@@ -18396,7 +19240,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E ms": "ccc mm:ss",
         "Ed ms": "d日E mm:ss",
         "Gy ms": "Gy年 mm:ss",
-        "GyMd ms": "GGGGG y-MM-dd mm:ss",
+        "GyM ms": "Gy年M月 mm:ss",
+        "GyMd ms": "Gy-MM-dd mm:ss",
+        "GyMEd ms": "Gy-MM-ddE mm:ss",
         "GyMMM ms": "Gy年M月 mm:ss",
         "GyMMMd ms": "Gy年M月d日 mm:ss",
         "GyMMMEd ms": "Gy年M月d日E mm:ss",
@@ -18530,8 +19376,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "y": "y–y年"
       },
       "yM": {
-        "M": "y年M月至M月",
-        "y": "y年M月至y年M月"
+        "M": "y/M – y/M",
+        "y": "y/M – y/M"
       },
       "yMd": {
         "d": "y/M/d – y/M/d",
@@ -18541,25 +19387,25 @@ Intl.DateTimeFormat.__addLocaleData({
       "yMEd": {
         "d": "y/M/dE至y/M/dE",
         "M": "y/M/dE至y/M/dE",
-        "y": "y/M/dE至y/M/dE"
+        "y": "y/M/dE – y/M/dE"
       },
       "yMMM": {
-        "M": "y年M月至M月",
-        "y": "y年M月至y年M月"
+        "M": "y年MMM – MMM",
+        "y": "y年MMM – y年MMM"
       },
       "yMMMd": {
-        "d": "y年M月d日至d日",
-        "M": "y年M月d日至M月d日",
-        "y": "y年M月d日至y年M月d日"
+        "d": "y年MMMd日 – d日",
+        "M": "y年MMMd日 – MMMd日",
+        "y": "y年MMMd日 – y年MMMd日"
       },
       "yMMMEd": {
-        "d": "y年M月d日E至d日E",
+        "d": "y年MMMd日E – MMMd日E",
         "M": "y年M月d日E至M月d日E",
         "y": "y年M月d日E至y年M月d日E"
       },
       "yMMMM": {
-        "M": "y年M月至M月",
-        "y": "y年M月至y年M月"
+        "M": "y年M月 – M月",
+        "y": "y年M月 – y年M月"
       }
     },
     "hourCycle": "h23",
@@ -18812,68 +19658,68 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Africa/Lagos": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "西非標準時間",
-          "西非夏令時間"
+          "西非時間",
+          "西非時間"
         ]
       },
       "Asia/Aqtobe": {
@@ -19428,6 +20274,16 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "亞速爾群島標準時間",
           "亞速爾群島夏令時間"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "夏威夷-阿留申標準時間",
+          "夏威夷-阿留申夏令時間"
+        ],
+        "short": [
+          "HAST",
+          "HADT"
         ]
       },
       "Asia/Thimphu": {
@@ -20049,11 +20905,11 @@ Intl.DateTimeFormat.__addLocaleData({
       "Pacific/Honolulu": {
         "long": [
           "夏威夷-阿留申標準時間",
-          "夏威夷-阿留申夏令時間"
+          "夏威夷-阿留申標準時間"
         ],
         "short": [
           "HAST",
-          "HADT"
+          "HAST"
         ]
       },
       "Asia/Hong_Kong": {
@@ -20488,6 +21344,12 @@ Intl.DateTimeFormat.__addLocaleData({
           "楚克島時間"
         ]
       },
+      "Europe/Istanbul": {
+        "long": [
+          "土耳其標準時間",
+          "土耳其夏令時間"
+        ]
+      },
       "Pacific/Funafuti": {
         "long": [
           "吐瓦魯時間",
@@ -20580,10 +21442,10 @@ Intl.DateTimeFormat.__addLocaleData({
       "short": "Bh:mm"
     },
     "dateTimeFormat": {
-      "full": "{1} {0}",
-      "long": "{1} {0}",
-      "medium": "{1} {0}",
-      "short": "{1} {0}"
+      "full": "{1}{0}",
+      "long": "{1}{0}",
+      "medium": "{1}{0}",
+      "short": "{1}{0}"
     },
     "formats": {
       "gregory": {
@@ -20592,15 +21454,19 @@ Intl.DateTimeFormat.__addLocaleData({
         "Bhms": "Bh:mm:ss",
         "d": "d日",
         "E": "ccc",
-        "EBhm": "E Bh:mm",
-        "EBhms": "E Bh:mm:ss",
+        "EBh": "cccBh時",
+        "EBhm": "cccBh:mm",
+        "EBhms": "cccBh:mm:ss",
         "Ed": "d E",
-        "Ehm": "E Bh:mm",
-        "EHm": "E HH:mm",
-        "Ehms": "E Bh:mm:ss",
-        "EHms": "E HH:mm:ss",
+        "Eh": "cccBh時",
+        "Ehm": "cccBh:mm",
+        "EHm": "cccHH:mm",
+        "Ehms": "cccBh:mm:ss",
+        "EHms": "cccHH:mm:ss",
         "Gy": "Gy年",
+        "GyM": "Gy/M",
         "GyMd": "G y/M/d",
+        "GyMEd": "Gy/M/d（E）",
         "GyMMM": "Gy年M月",
         "GyMMMd": "Gy年M月d日",
         "GyMMMEd": "Gy年M月d日 E",
@@ -20614,13 +21480,15 @@ Intl.DateTimeFormat.__addLocaleData({
         "Hmsv": "HH:mm:ss [v]",
         "hmv": "Bh:mm [v]",
         "Hmv": "HH:mm [v]",
+        "hv": "ah v",
+        "Hv": "HH'h' v",
         "M": "M月",
         "Md": "M/d",
         "MEd": "M/d（E）",
         "MMdd": "MM/dd",
         "MMM": "LLL",
         "MMMd": "M月d日",
-        "MMMEd": "M月d日 E",
+        "MMMEd": "M月d日E",
         "MMMMd": "M月d日",
         "ms": "mm:ss",
         "y": "y年",
@@ -20631,7 +21499,7 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMM": "y/MM",
         "yMMM": "y年M月",
         "yMMMd": "y年M月d日",
-        "yMMMEd": "y年M月d日 E",
+        "yMMMEd": "y年M月d日E",
         "yMMMM": "y年M月",
         "y年M月d日 EEEE": "y年M月d日 EEEE",
         "y年M月d日": "y年M月d日",
@@ -20640,528 +21508,618 @@ Intl.DateTimeFormat.__addLocaleData({
         "Bh:mm:ss [z]": "Bh:mm:ss [z]",
         "Bh:mm:ss": "Bh:mm:ss",
         "Bh:mm": "Bh:mm",
-        "y年M月d日 EEEE Bh:mm:ss [zzzz]": "y年M月d日 EEEE Bh:mm:ss [zzzz]",
-        "y年M月d日 Bh:mm:ss [zzzz]": "y年M月d日 Bh:mm:ss [zzzz]",
-        "y/M/d Bh:mm:ss [zzzz]": "y/M/d Bh:mm:ss [zzzz]",
-        "d Bh:mm:ss [zzzz]": "d日 Bh:mm:ss [zzzz]",
-        "E Bh:mm:ss [zzzz]": "ccc Bh:mm:ss [zzzz]",
-        "Ed Bh:mm:ss [zzzz]": "d E Bh:mm:ss [zzzz]",
-        "Gy Bh:mm:ss [zzzz]": "Gy年 Bh:mm:ss [zzzz]",
-        "GyMd Bh:mm:ss [zzzz]": "G y/M/d Bh:mm:ss [zzzz]",
-        "GyMMM Bh:mm:ss [zzzz]": "Gy年M月 Bh:mm:ss [zzzz]",
-        "GyMMMd Bh:mm:ss [zzzz]": "Gy年M月d日 Bh:mm:ss [zzzz]",
-        "GyMMMEd Bh:mm:ss [zzzz]": "Gy年M月d日 E Bh:mm:ss [zzzz]",
-        "M Bh:mm:ss [zzzz]": "M月 Bh:mm:ss [zzzz]",
-        "Md Bh:mm:ss [zzzz]": "M/d Bh:mm:ss [zzzz]",
-        "MEd Bh:mm:ss [zzzz]": "M/d（E） Bh:mm:ss [zzzz]",
-        "MMdd Bh:mm:ss [zzzz]": "MM/dd Bh:mm:ss [zzzz]",
-        "MMM Bh:mm:ss [zzzz]": "LLL Bh:mm:ss [zzzz]",
-        "MMMd Bh:mm:ss [zzzz]": "M月d日 Bh:mm:ss [zzzz]",
-        "MMMEd Bh:mm:ss [zzzz]": "M月d日 E Bh:mm:ss [zzzz]",
-        "MMMMd Bh:mm:ss [zzzz]": "M月d日 Bh:mm:ss [zzzz]",
-        "y Bh:mm:ss [zzzz]": "y年 Bh:mm:ss [zzzz]",
-        "yM Bh:mm:ss [zzzz]": "y/M Bh:mm:ss [zzzz]",
-        "yMd Bh:mm:ss [zzzz]": "y/M/d Bh:mm:ss [zzzz]",
-        "yMEd Bh:mm:ss [zzzz]": "y/M/d（E） Bh:mm:ss [zzzz]",
-        "yMEEEEd Bh:mm:ss [zzzz]": "y年M月d日 EEEE Bh:mm:ss [zzzz]",
-        "yMM Bh:mm:ss [zzzz]": "y/MM Bh:mm:ss [zzzz]",
-        "yMMM Bh:mm:ss [zzzz]": "y年M月 Bh:mm:ss [zzzz]",
-        "yMMMd Bh:mm:ss [zzzz]": "y年M月d日 Bh:mm:ss [zzzz]",
-        "yMMMEd Bh:mm:ss [zzzz]": "y年M月d日 E Bh:mm:ss [zzzz]",
-        "yMMMM Bh:mm:ss [zzzz]": "y年M月 Bh:mm:ss [zzzz]",
-        "y年M月d日 EEEE Bh:mm:ss [z]": "y年M月d日 EEEE Bh:mm:ss [z]",
-        "y年M月d日 Bh:mm:ss [z]": "y年M月d日 Bh:mm:ss [z]",
-        "y/M/d Bh:mm:ss [z]": "y/M/d Bh:mm:ss [z]",
-        "d Bh:mm:ss [z]": "d日 Bh:mm:ss [z]",
-        "E Bh:mm:ss [z]": "ccc Bh:mm:ss [z]",
-        "Ed Bh:mm:ss [z]": "d E Bh:mm:ss [z]",
-        "Gy Bh:mm:ss [z]": "Gy年 Bh:mm:ss [z]",
-        "GyMd Bh:mm:ss [z]": "G y/M/d Bh:mm:ss [z]",
-        "GyMMM Bh:mm:ss [z]": "Gy年M月 Bh:mm:ss [z]",
-        "GyMMMd Bh:mm:ss [z]": "Gy年M月d日 Bh:mm:ss [z]",
-        "GyMMMEd Bh:mm:ss [z]": "Gy年M月d日 E Bh:mm:ss [z]",
-        "M Bh:mm:ss [z]": "M月 Bh:mm:ss [z]",
-        "Md Bh:mm:ss [z]": "M/d Bh:mm:ss [z]",
-        "MEd Bh:mm:ss [z]": "M/d（E） Bh:mm:ss [z]",
-        "MMdd Bh:mm:ss [z]": "MM/dd Bh:mm:ss [z]",
-        "MMM Bh:mm:ss [z]": "LLL Bh:mm:ss [z]",
-        "MMMd Bh:mm:ss [z]": "M月d日 Bh:mm:ss [z]",
-        "MMMEd Bh:mm:ss [z]": "M月d日 E Bh:mm:ss [z]",
-        "MMMMd Bh:mm:ss [z]": "M月d日 Bh:mm:ss [z]",
-        "y Bh:mm:ss [z]": "y年 Bh:mm:ss [z]",
-        "yM Bh:mm:ss [z]": "y/M Bh:mm:ss [z]",
-        "yMd Bh:mm:ss [z]": "y/M/d Bh:mm:ss [z]",
-        "yMEd Bh:mm:ss [z]": "y/M/d（E） Bh:mm:ss [z]",
-        "yMEEEEd Bh:mm:ss [z]": "y年M月d日 EEEE Bh:mm:ss [z]",
-        "yMM Bh:mm:ss [z]": "y/MM Bh:mm:ss [z]",
-        "yMMM Bh:mm:ss [z]": "y年M月 Bh:mm:ss [z]",
-        "yMMMd Bh:mm:ss [z]": "y年M月d日 Bh:mm:ss [z]",
-        "yMMMEd Bh:mm:ss [z]": "y年M月d日 E Bh:mm:ss [z]",
-        "yMMMM Bh:mm:ss [z]": "y年M月 Bh:mm:ss [z]",
-        "y年M月d日 EEEE Bh:mm:ss": "y年M月d日 EEEE Bh:mm:ss",
-        "y年M月d日 Bh:mm:ss": "y年M月d日 Bh:mm:ss",
-        "y/M/d Bh:mm:ss": "y/M/d Bh:mm:ss",
-        "d Bh:mm:ss": "d日 Bh:mm:ss",
-        "E Bh:mm:ss": "ccc Bh:mm:ss",
-        "Ed Bh:mm:ss": "d E Bh:mm:ss",
-        "Gy Bh:mm:ss": "Gy年 Bh:mm:ss",
-        "GyMd Bh:mm:ss": "G y/M/d Bh:mm:ss",
-        "GyMMM Bh:mm:ss": "Gy年M月 Bh:mm:ss",
-        "GyMMMd Bh:mm:ss": "Gy年M月d日 Bh:mm:ss",
-        "GyMMMEd Bh:mm:ss": "Gy年M月d日 E Bh:mm:ss",
-        "M Bh:mm:ss": "M月 Bh:mm:ss",
-        "Md Bh:mm:ss": "M/d Bh:mm:ss",
-        "MEd Bh:mm:ss": "M/d（E） Bh:mm:ss",
-        "MMdd Bh:mm:ss": "MM/dd Bh:mm:ss",
-        "MMM Bh:mm:ss": "LLL Bh:mm:ss",
-        "MMMd Bh:mm:ss": "M月d日 Bh:mm:ss",
-        "MMMEd Bh:mm:ss": "M月d日 E Bh:mm:ss",
-        "MMMMd Bh:mm:ss": "M月d日 Bh:mm:ss",
-        "y Bh:mm:ss": "y年 Bh:mm:ss",
-        "yM Bh:mm:ss": "y/M Bh:mm:ss",
-        "yMd Bh:mm:ss": "y/M/d Bh:mm:ss",
-        "yMEd Bh:mm:ss": "y/M/d（E） Bh:mm:ss",
-        "yMEEEEd Bh:mm:ss": "y年M月d日 EEEE Bh:mm:ss",
-        "yMM Bh:mm:ss": "y/MM Bh:mm:ss",
-        "yMMM Bh:mm:ss": "y年M月 Bh:mm:ss",
-        "yMMMd Bh:mm:ss": "y年M月d日 Bh:mm:ss",
-        "yMMMEd Bh:mm:ss": "y年M月d日 E Bh:mm:ss",
-        "yMMMM Bh:mm:ss": "y年M月 Bh:mm:ss",
-        "y年M月d日 EEEE Bh:mm": "y年M月d日 EEEE Bh:mm",
-        "y年M月d日 Bh:mm": "y年M月d日 Bh:mm",
-        "y/M/d Bh:mm": "y/M/d Bh:mm",
-        "d Bh:mm": "d日 Bh:mm",
-        "E Bh:mm": "ccc Bh:mm",
-        "Ed Bh:mm": "d E Bh:mm",
-        "Gy Bh:mm": "Gy年 Bh:mm",
-        "GyMd Bh:mm": "G y/M/d Bh:mm",
-        "GyMMM Bh:mm": "Gy年M月 Bh:mm",
-        "GyMMMd Bh:mm": "Gy年M月d日 Bh:mm",
-        "GyMMMEd Bh:mm": "Gy年M月d日 E Bh:mm",
-        "M Bh:mm": "M月 Bh:mm",
-        "Md Bh:mm": "M/d Bh:mm",
-        "MEd Bh:mm": "M/d（E） Bh:mm",
-        "MMdd Bh:mm": "MM/dd Bh:mm",
-        "MMM Bh:mm": "LLL Bh:mm",
-        "MMMd Bh:mm": "M月d日 Bh:mm",
-        "MMMEd Bh:mm": "M月d日 E Bh:mm",
-        "MMMMd Bh:mm": "M月d日 Bh:mm",
-        "y Bh:mm": "y年 Bh:mm",
-        "yM Bh:mm": "y/M Bh:mm",
-        "yMd Bh:mm": "y/M/d Bh:mm",
-        "yMEd Bh:mm": "y/M/d（E） Bh:mm",
-        "yMEEEEd Bh:mm": "y年M月d日 EEEE Bh:mm",
-        "yMM Bh:mm": "y/MM Bh:mm",
-        "yMMM Bh:mm": "y年M月 Bh:mm",
-        "yMMMd Bh:mm": "y年M月d日 Bh:mm",
-        "yMMMEd Bh:mm": "y年M月d日 E Bh:mm",
-        "yMMMM Bh:mm": "y年M月 Bh:mm",
-        "y年M月d日 EEEE Bh": "y年M月d日 EEEE Bh時",
-        "y年M月d日 Bh": "y年M月d日 Bh時",
-        "y/M/d Bh": "y/M/d Bh時",
-        "d Bh": "d日 Bh時",
-        "E Bh": "ccc Bh時",
-        "Ed Bh": "d E Bh時",
-        "Gy Bh": "Gy年 Bh時",
-        "GyMd Bh": "G y/M/d Bh時",
-        "GyMMM Bh": "Gy年M月 Bh時",
-        "GyMMMd Bh": "Gy年M月d日 Bh時",
-        "GyMMMEd Bh": "Gy年M月d日 E Bh時",
-        "M Bh": "M月 Bh時",
-        "Md Bh": "M/d Bh時",
-        "MEd Bh": "M/d（E） Bh時",
-        "MMdd Bh": "MM/dd Bh時",
-        "MMM Bh": "LLL Bh時",
-        "MMMd Bh": "M月d日 Bh時",
-        "MMMEd Bh": "M月d日 E Bh時",
-        "MMMMd Bh": "M月d日 Bh時",
-        "y Bh": "y年 Bh時",
-        "yM Bh": "y/M Bh時",
-        "yMd Bh": "y/M/d Bh時",
-        "yMEd Bh": "y/M/d（E） Bh時",
-        "yMEEEEd Bh": "y年M月d日 EEEE Bh時",
-        "yMM Bh": "y/MM Bh時",
-        "yMMM Bh": "y年M月 Bh時",
-        "yMMMd Bh": "y年M月d日 Bh時",
-        "yMMMEd Bh": "y年M月d日 E Bh時",
-        "yMMMM Bh": "y年M月 Bh時",
-        "y年M月d日 EEEE Bhm": "y年M月d日 EEEE Bh:mm",
-        "y年M月d日 Bhm": "y年M月d日 Bh:mm",
-        "y/M/d Bhm": "y/M/d Bh:mm",
-        "d Bhm": "d日 Bh:mm",
-        "E Bhm": "ccc Bh:mm",
-        "Ed Bhm": "d E Bh:mm",
-        "Gy Bhm": "Gy年 Bh:mm",
-        "GyMd Bhm": "G y/M/d Bh:mm",
-        "GyMMM Bhm": "Gy年M月 Bh:mm",
-        "GyMMMd Bhm": "Gy年M月d日 Bh:mm",
-        "GyMMMEd Bhm": "Gy年M月d日 E Bh:mm",
-        "M Bhm": "M月 Bh:mm",
-        "Md Bhm": "M/d Bh:mm",
-        "MEd Bhm": "M/d（E） Bh:mm",
-        "MMdd Bhm": "MM/dd Bh:mm",
-        "MMM Bhm": "LLL Bh:mm",
-        "MMMd Bhm": "M月d日 Bh:mm",
-        "MMMEd Bhm": "M月d日 E Bh:mm",
-        "MMMMd Bhm": "M月d日 Bh:mm",
-        "y Bhm": "y年 Bh:mm",
-        "yM Bhm": "y/M Bh:mm",
-        "yMd Bhm": "y/M/d Bh:mm",
-        "yMEd Bhm": "y/M/d（E） Bh:mm",
-        "yMEEEEd Bhm": "y年M月d日 EEEE Bh:mm",
-        "yMM Bhm": "y/MM Bh:mm",
-        "yMMM Bhm": "y年M月 Bh:mm",
-        "yMMMd Bhm": "y年M月d日 Bh:mm",
-        "yMMMEd Bhm": "y年M月d日 E Bh:mm",
-        "yMMMM Bhm": "y年M月 Bh:mm",
-        "y年M月d日 EEEE Bhms": "y年M月d日 EEEE Bh:mm:ss",
-        "y年M月d日 Bhms": "y年M月d日 Bh:mm:ss",
-        "y/M/d Bhms": "y/M/d Bh:mm:ss",
-        "d Bhms": "d日 Bh:mm:ss",
-        "E Bhms": "ccc Bh:mm:ss",
-        "Ed Bhms": "d E Bh:mm:ss",
-        "Gy Bhms": "Gy年 Bh:mm:ss",
-        "GyMd Bhms": "G y/M/d Bh:mm:ss",
-        "GyMMM Bhms": "Gy年M月 Bh:mm:ss",
-        "GyMMMd Bhms": "Gy年M月d日 Bh:mm:ss",
-        "GyMMMEd Bhms": "Gy年M月d日 E Bh:mm:ss",
-        "M Bhms": "M月 Bh:mm:ss",
-        "Md Bhms": "M/d Bh:mm:ss",
-        "MEd Bhms": "M/d（E） Bh:mm:ss",
-        "MMdd Bhms": "MM/dd Bh:mm:ss",
-        "MMM Bhms": "LLL Bh:mm:ss",
-        "MMMd Bhms": "M月d日 Bh:mm:ss",
-        "MMMEd Bhms": "M月d日 E Bh:mm:ss",
-        "MMMMd Bhms": "M月d日 Bh:mm:ss",
-        "y Bhms": "y年 Bh:mm:ss",
-        "yM Bhms": "y/M Bh:mm:ss",
-        "yMd Bhms": "y/M/d Bh:mm:ss",
-        "yMEd Bhms": "y/M/d（E） Bh:mm:ss",
-        "yMEEEEd Bhms": "y年M月d日 EEEE Bh:mm:ss",
-        "yMM Bhms": "y/MM Bh:mm:ss",
-        "yMMM Bhms": "y年M月 Bh:mm:ss",
-        "yMMMd Bhms": "y年M月d日 Bh:mm:ss",
-        "yMMMEd Bhms": "y年M月d日 E Bh:mm:ss",
-        "yMMMM Bhms": "y年M月 Bh:mm:ss",
-        "y年M月d日 EEEE h": "y年M月d日 EEEE Bh時",
-        "y年M月d日 h": "y年M月d日 Bh時",
-        "y/M/d h": "y/M/d Bh時",
-        "d h": "d日 Bh時",
-        "E h": "ccc Bh時",
-        "Ed h": "d E Bh時",
-        "Gy h": "Gy年 Bh時",
-        "GyMd h": "G y/M/d Bh時",
-        "GyMMM h": "Gy年M月 Bh時",
-        "GyMMMd h": "Gy年M月d日 Bh時",
-        "GyMMMEd h": "Gy年M月d日 E Bh時",
-        "M h": "M月 Bh時",
-        "Md h": "M/d Bh時",
-        "MEd h": "M/d（E） Bh時",
-        "MMdd h": "MM/dd Bh時",
-        "MMM h": "LLL Bh時",
-        "MMMd h": "M月d日 Bh時",
-        "MMMEd h": "M月d日 E Bh時",
-        "MMMMd h": "M月d日 Bh時",
-        "y h": "y年 Bh時",
-        "yM h": "y/M Bh時",
-        "yMd h": "y/M/d Bh時",
-        "yMEd h": "y/M/d（E） Bh時",
-        "yMEEEEd h": "y年M月d日 EEEE Bh時",
-        "yMM h": "y/MM Bh時",
-        "yMMM h": "y年M月 Bh時",
-        "yMMMd h": "y年M月d日 Bh時",
-        "yMMMEd h": "y年M月d日 E Bh時",
-        "yMMMM h": "y年M月 Bh時",
-        "y年M月d日 EEEE H": "y年M月d日 EEEE H時",
-        "y年M月d日 H": "y年M月d日 H時",
-        "y/M/d H": "y/M/d H時",
-        "d H": "d日 H時",
-        "E H": "ccc H時",
-        "Ed H": "d E H時",
-        "Gy H": "Gy年 H時",
-        "GyMd H": "G y/M/d H時",
-        "GyMMM H": "Gy年M月 H時",
-        "GyMMMd H": "Gy年M月d日 H時",
-        "GyMMMEd H": "Gy年M月d日 E H時",
-        "M H": "M月 H時",
-        "Md H": "M/d H時",
-        "MEd H": "M/d（E） H時",
-        "MMdd H": "MM/dd H時",
-        "MMM H": "LLL H時",
-        "MMMd H": "M月d日 H時",
-        "MMMEd H": "M月d日 E H時",
-        "MMMMd H": "M月d日 H時",
-        "y H": "y年 H時",
-        "yM H": "y/M H時",
-        "yMd H": "y/M/d H時",
-        "yMEd H": "y/M/d（E） H時",
-        "yMEEEEd H": "y年M月d日 EEEE H時",
-        "yMM H": "y/MM H時",
-        "yMMM H": "y年M月 H時",
-        "yMMMd H": "y年M月d日 H時",
-        "yMMMEd H": "y年M月d日 E H時",
-        "yMMMM H": "y年M月 H時",
-        "y年M月d日 EEEE hm": "y年M月d日 EEEE Bh:mm",
-        "y年M月d日 hm": "y年M月d日 Bh:mm",
-        "y/M/d hm": "y/M/d Bh:mm",
-        "d hm": "d日 Bh:mm",
-        "E hm": "ccc Bh:mm",
-        "Ed hm": "d E Bh:mm",
-        "Gy hm": "Gy年 Bh:mm",
-        "GyMd hm": "G y/M/d Bh:mm",
-        "GyMMM hm": "Gy年M月 Bh:mm",
-        "GyMMMd hm": "Gy年M月d日 Bh:mm",
-        "GyMMMEd hm": "Gy年M月d日 E Bh:mm",
-        "M hm": "M月 Bh:mm",
-        "Md hm": "M/d Bh:mm",
-        "MEd hm": "M/d（E） Bh:mm",
-        "MMdd hm": "MM/dd Bh:mm",
-        "MMM hm": "LLL Bh:mm",
-        "MMMd hm": "M月d日 Bh:mm",
-        "MMMEd hm": "M月d日 E Bh:mm",
-        "MMMMd hm": "M月d日 Bh:mm",
-        "y hm": "y年 Bh:mm",
-        "yM hm": "y/M Bh:mm",
-        "yMd hm": "y/M/d Bh:mm",
-        "yMEd hm": "y/M/d（E） Bh:mm",
-        "yMEEEEd hm": "y年M月d日 EEEE Bh:mm",
-        "yMM hm": "y/MM Bh:mm",
-        "yMMM hm": "y年M月 Bh:mm",
-        "yMMMd hm": "y年M月d日 Bh:mm",
-        "yMMMEd hm": "y年M月d日 E Bh:mm",
-        "yMMMM hm": "y年M月 Bh:mm",
-        "y年M月d日 EEEE Hm": "y年M月d日 EEEE HH:mm",
-        "y年M月d日 Hm": "y年M月d日 HH:mm",
-        "y/M/d Hm": "y/M/d HH:mm",
-        "d Hm": "d日 HH:mm",
-        "E Hm": "ccc HH:mm",
-        "Ed Hm": "d E HH:mm",
-        "Gy Hm": "Gy年 HH:mm",
-        "GyMd Hm": "G y/M/d HH:mm",
-        "GyMMM Hm": "Gy年M月 HH:mm",
-        "GyMMMd Hm": "Gy年M月d日 HH:mm",
-        "GyMMMEd Hm": "Gy年M月d日 E HH:mm",
-        "M Hm": "M月 HH:mm",
-        "Md Hm": "M/d HH:mm",
-        "MEd Hm": "M/d（E） HH:mm",
-        "MMdd Hm": "MM/dd HH:mm",
-        "MMM Hm": "LLL HH:mm",
-        "MMMd Hm": "M月d日 HH:mm",
-        "MMMEd Hm": "M月d日 E HH:mm",
-        "MMMMd Hm": "M月d日 HH:mm",
-        "y Hm": "y年 HH:mm",
-        "yM Hm": "y/M HH:mm",
-        "yMd Hm": "y/M/d HH:mm",
-        "yMEd Hm": "y/M/d（E） HH:mm",
-        "yMEEEEd Hm": "y年M月d日 EEEE HH:mm",
-        "yMM Hm": "y/MM HH:mm",
-        "yMMM Hm": "y年M月 HH:mm",
-        "yMMMd Hm": "y年M月d日 HH:mm",
-        "yMMMEd Hm": "y年M月d日 E HH:mm",
-        "yMMMM Hm": "y年M月 HH:mm",
-        "y年M月d日 EEEE hms": "y年M月d日 EEEE Bh:mm:ss",
-        "y年M月d日 hms": "y年M月d日 Bh:mm:ss",
-        "y/M/d hms": "y/M/d Bh:mm:ss",
-        "d hms": "d日 Bh:mm:ss",
-        "E hms": "ccc Bh:mm:ss",
-        "Ed hms": "d E Bh:mm:ss",
-        "Gy hms": "Gy年 Bh:mm:ss",
-        "GyMd hms": "G y/M/d Bh:mm:ss",
-        "GyMMM hms": "Gy年M月 Bh:mm:ss",
-        "GyMMMd hms": "Gy年M月d日 Bh:mm:ss",
-        "GyMMMEd hms": "Gy年M月d日 E Bh:mm:ss",
-        "M hms": "M月 Bh:mm:ss",
-        "Md hms": "M/d Bh:mm:ss",
-        "MEd hms": "M/d（E） Bh:mm:ss",
-        "MMdd hms": "MM/dd Bh:mm:ss",
-        "MMM hms": "LLL Bh:mm:ss",
-        "MMMd hms": "M月d日 Bh:mm:ss",
-        "MMMEd hms": "M月d日 E Bh:mm:ss",
-        "MMMMd hms": "M月d日 Bh:mm:ss",
-        "y hms": "y年 Bh:mm:ss",
-        "yM hms": "y/M Bh:mm:ss",
-        "yMd hms": "y/M/d Bh:mm:ss",
-        "yMEd hms": "y/M/d（E） Bh:mm:ss",
-        "yMEEEEd hms": "y年M月d日 EEEE Bh:mm:ss",
-        "yMM hms": "y/MM Bh:mm:ss",
-        "yMMM hms": "y年M月 Bh:mm:ss",
-        "yMMMd hms": "y年M月d日 Bh:mm:ss",
-        "yMMMEd hms": "y年M月d日 E Bh:mm:ss",
-        "yMMMM hms": "y年M月 Bh:mm:ss",
-        "y年M月d日 EEEE Hms": "y年M月d日 EEEE HH:mm:ss",
-        "y年M月d日 Hms": "y年M月d日 HH:mm:ss",
-        "y/M/d Hms": "y/M/d HH:mm:ss",
-        "d Hms": "d日 HH:mm:ss",
-        "E Hms": "ccc HH:mm:ss",
-        "Ed Hms": "d E HH:mm:ss",
-        "Gy Hms": "Gy年 HH:mm:ss",
-        "GyMd Hms": "G y/M/d HH:mm:ss",
-        "GyMMM Hms": "Gy年M月 HH:mm:ss",
-        "GyMMMd Hms": "Gy年M月d日 HH:mm:ss",
-        "GyMMMEd Hms": "Gy年M月d日 E HH:mm:ss",
-        "M Hms": "M月 HH:mm:ss",
-        "Md Hms": "M/d HH:mm:ss",
-        "MEd Hms": "M/d（E） HH:mm:ss",
-        "MMdd Hms": "MM/dd HH:mm:ss",
-        "MMM Hms": "LLL HH:mm:ss",
-        "MMMd Hms": "M月d日 HH:mm:ss",
-        "MMMEd Hms": "M月d日 E HH:mm:ss",
-        "MMMMd Hms": "M月d日 HH:mm:ss",
-        "y Hms": "y年 HH:mm:ss",
-        "yM Hms": "y/M HH:mm:ss",
-        "yMd Hms": "y/M/d HH:mm:ss",
-        "yMEd Hms": "y/M/d（E） HH:mm:ss",
-        "yMEEEEd Hms": "y年M月d日 EEEE HH:mm:ss",
-        "yMM Hms": "y/MM HH:mm:ss",
-        "yMMM Hms": "y年M月 HH:mm:ss",
-        "yMMMd Hms": "y年M月d日 HH:mm:ss",
-        "yMMMEd Hms": "y年M月d日 E HH:mm:ss",
-        "yMMMM Hms": "y年M月 HH:mm:ss",
-        "y年M月d日 EEEE hmsv": "y年M月d日 EEEE Bh:mm:ss [v]",
-        "y年M月d日 hmsv": "y年M月d日 Bh:mm:ss [v]",
-        "y/M/d hmsv": "y/M/d Bh:mm:ss [v]",
-        "d hmsv": "d日 Bh:mm:ss [v]",
-        "E hmsv": "ccc Bh:mm:ss [v]",
-        "Ed hmsv": "d E Bh:mm:ss [v]",
-        "Gy hmsv": "Gy年 Bh:mm:ss [v]",
-        "GyMd hmsv": "G y/M/d Bh:mm:ss [v]",
-        "GyMMM hmsv": "Gy年M月 Bh:mm:ss [v]",
-        "GyMMMd hmsv": "Gy年M月d日 Bh:mm:ss [v]",
-        "GyMMMEd hmsv": "Gy年M月d日 E Bh:mm:ss [v]",
-        "M hmsv": "M月 Bh:mm:ss [v]",
-        "Md hmsv": "M/d Bh:mm:ss [v]",
-        "MEd hmsv": "M/d（E） Bh:mm:ss [v]",
-        "MMdd hmsv": "MM/dd Bh:mm:ss [v]",
-        "MMM hmsv": "LLL Bh:mm:ss [v]",
-        "MMMd hmsv": "M月d日 Bh:mm:ss [v]",
-        "MMMEd hmsv": "M月d日 E Bh:mm:ss [v]",
-        "MMMMd hmsv": "M月d日 Bh:mm:ss [v]",
-        "y hmsv": "y年 Bh:mm:ss [v]",
-        "yM hmsv": "y/M Bh:mm:ss [v]",
-        "yMd hmsv": "y/M/d Bh:mm:ss [v]",
-        "yMEd hmsv": "y/M/d（E） Bh:mm:ss [v]",
-        "yMEEEEd hmsv": "y年M月d日 EEEE Bh:mm:ss [v]",
-        "yMM hmsv": "y/MM Bh:mm:ss [v]",
-        "yMMM hmsv": "y年M月 Bh:mm:ss [v]",
-        "yMMMd hmsv": "y年M月d日 Bh:mm:ss [v]",
-        "yMMMEd hmsv": "y年M月d日 E Bh:mm:ss [v]",
-        "yMMMM hmsv": "y年M月 Bh:mm:ss [v]",
-        "y年M月d日 EEEE Hmsv": "y年M月d日 EEEE HH:mm:ss [v]",
-        "y年M月d日 Hmsv": "y年M月d日 HH:mm:ss [v]",
-        "y/M/d Hmsv": "y/M/d HH:mm:ss [v]",
-        "d Hmsv": "d日 HH:mm:ss [v]",
-        "E Hmsv": "ccc HH:mm:ss [v]",
-        "Ed Hmsv": "d E HH:mm:ss [v]",
-        "Gy Hmsv": "Gy年 HH:mm:ss [v]",
-        "GyMd Hmsv": "G y/M/d HH:mm:ss [v]",
-        "GyMMM Hmsv": "Gy年M月 HH:mm:ss [v]",
-        "GyMMMd Hmsv": "Gy年M月d日 HH:mm:ss [v]",
-        "GyMMMEd Hmsv": "Gy年M月d日 E HH:mm:ss [v]",
-        "M Hmsv": "M月 HH:mm:ss [v]",
-        "Md Hmsv": "M/d HH:mm:ss [v]",
-        "MEd Hmsv": "M/d（E） HH:mm:ss [v]",
-        "MMdd Hmsv": "MM/dd HH:mm:ss [v]",
-        "MMM Hmsv": "LLL HH:mm:ss [v]",
-        "MMMd Hmsv": "M月d日 HH:mm:ss [v]",
-        "MMMEd Hmsv": "M月d日 E HH:mm:ss [v]",
-        "MMMMd Hmsv": "M月d日 HH:mm:ss [v]",
-        "y Hmsv": "y年 HH:mm:ss [v]",
-        "yM Hmsv": "y/M HH:mm:ss [v]",
-        "yMd Hmsv": "y/M/d HH:mm:ss [v]",
-        "yMEd Hmsv": "y/M/d（E） HH:mm:ss [v]",
-        "yMEEEEd Hmsv": "y年M月d日 EEEE HH:mm:ss [v]",
-        "yMM Hmsv": "y/MM HH:mm:ss [v]",
-        "yMMM Hmsv": "y年M月 HH:mm:ss [v]",
-        "yMMMd Hmsv": "y年M月d日 HH:mm:ss [v]",
-        "yMMMEd Hmsv": "y年M月d日 E HH:mm:ss [v]",
-        "yMMMM Hmsv": "y年M月 HH:mm:ss [v]",
-        "y年M月d日 EEEE hmv": "y年M月d日 EEEE Bh:mm [v]",
-        "y年M月d日 hmv": "y年M月d日 Bh:mm [v]",
-        "y/M/d hmv": "y/M/d Bh:mm [v]",
-        "d hmv": "d日 Bh:mm [v]",
-        "E hmv": "ccc Bh:mm [v]",
-        "Ed hmv": "d E Bh:mm [v]",
-        "Gy hmv": "Gy年 Bh:mm [v]",
-        "GyMd hmv": "G y/M/d Bh:mm [v]",
-        "GyMMM hmv": "Gy年M月 Bh:mm [v]",
-        "GyMMMd hmv": "Gy年M月d日 Bh:mm [v]",
-        "GyMMMEd hmv": "Gy年M月d日 E Bh:mm [v]",
-        "M hmv": "M月 Bh:mm [v]",
-        "Md hmv": "M/d Bh:mm [v]",
-        "MEd hmv": "M/d（E） Bh:mm [v]",
-        "MMdd hmv": "MM/dd Bh:mm [v]",
-        "MMM hmv": "LLL Bh:mm [v]",
-        "MMMd hmv": "M月d日 Bh:mm [v]",
-        "MMMEd hmv": "M月d日 E Bh:mm [v]",
-        "MMMMd hmv": "M月d日 Bh:mm [v]",
-        "y hmv": "y年 Bh:mm [v]",
-        "yM hmv": "y/M Bh:mm [v]",
-        "yMd hmv": "y/M/d Bh:mm [v]",
-        "yMEd hmv": "y/M/d（E） Bh:mm [v]",
-        "yMEEEEd hmv": "y年M月d日 EEEE Bh:mm [v]",
-        "yMM hmv": "y/MM Bh:mm [v]",
-        "yMMM hmv": "y年M月 Bh:mm [v]",
-        "yMMMd hmv": "y年M月d日 Bh:mm [v]",
-        "yMMMEd hmv": "y年M月d日 E Bh:mm [v]",
-        "yMMMM hmv": "y年M月 Bh:mm [v]",
-        "y年M月d日 EEEE Hmv": "y年M月d日 EEEE HH:mm [v]",
-        "y年M月d日 Hmv": "y年M月d日 HH:mm [v]",
-        "y/M/d Hmv": "y/M/d HH:mm [v]",
-        "d Hmv": "d日 HH:mm [v]",
-        "E Hmv": "ccc HH:mm [v]",
-        "Ed Hmv": "d E HH:mm [v]",
-        "Gy Hmv": "Gy年 HH:mm [v]",
-        "GyMd Hmv": "G y/M/d HH:mm [v]",
-        "GyMMM Hmv": "Gy年M月 HH:mm [v]",
-        "GyMMMd Hmv": "Gy年M月d日 HH:mm [v]",
-        "GyMMMEd Hmv": "Gy年M月d日 E HH:mm [v]",
-        "M Hmv": "M月 HH:mm [v]",
-        "Md Hmv": "M/d HH:mm [v]",
-        "MEd Hmv": "M/d（E） HH:mm [v]",
-        "MMdd Hmv": "MM/dd HH:mm [v]",
-        "MMM Hmv": "LLL HH:mm [v]",
-        "MMMd Hmv": "M月d日 HH:mm [v]",
-        "MMMEd Hmv": "M月d日 E HH:mm [v]",
-        "MMMMd Hmv": "M月d日 HH:mm [v]",
-        "y Hmv": "y年 HH:mm [v]",
-        "yM Hmv": "y/M HH:mm [v]",
-        "yMd Hmv": "y/M/d HH:mm [v]",
-        "yMEd Hmv": "y/M/d（E） HH:mm [v]",
-        "yMEEEEd Hmv": "y年M月d日 EEEE HH:mm [v]",
-        "yMM Hmv": "y/MM HH:mm [v]",
-        "yMMM Hmv": "y年M月 HH:mm [v]",
-        "yMMMd Hmv": "y年M月d日 HH:mm [v]",
-        "yMMMEd Hmv": "y年M月d日 E HH:mm [v]",
-        "yMMMM Hmv": "y年M月 HH:mm [v]",
-        "y年M月d日 EEEE ms": "y年M月d日 EEEE mm:ss",
-        "y年M月d日 ms": "y年M月d日 mm:ss",
-        "y/M/d ms": "y/M/d mm:ss",
-        "d ms": "d日 mm:ss",
-        "E ms": "ccc mm:ss",
-        "Ed ms": "d E mm:ss",
-        "Gy ms": "Gy年 mm:ss",
-        "GyMd ms": "G y/M/d mm:ss",
-        "GyMMM ms": "Gy年M月 mm:ss",
-        "GyMMMd ms": "Gy年M月d日 mm:ss",
-        "GyMMMEd ms": "Gy年M月d日 E mm:ss",
-        "M ms": "M月 mm:ss",
-        "Md ms": "M/d mm:ss",
-        "MEd ms": "M/d（E） mm:ss",
-        "MMdd ms": "MM/dd mm:ss",
-        "MMM ms": "LLL mm:ss",
-        "MMMd ms": "M月d日 mm:ss",
-        "MMMEd ms": "M月d日 E mm:ss",
-        "MMMMd ms": "M月d日 mm:ss",
-        "y ms": "y年 mm:ss",
-        "yM ms": "y/M mm:ss",
-        "yMd ms": "y/M/d mm:ss",
-        "yMEd ms": "y/M/d（E） mm:ss",
-        "yMEEEEd ms": "y年M月d日 EEEE mm:ss",
-        "yMM ms": "y/MM mm:ss",
-        "yMMM ms": "y年M月 mm:ss",
-        "yMMMd ms": "y年M月d日 mm:ss",
-        "yMMMEd ms": "y年M月d日 E mm:ss",
-        "yMMMM ms": "y年M月 mm:ss"
+        "y年M月d日 EEEEBh:mm:ss [zzzz]": "y年M月d日 EEEEBh:mm:ss [zzzz]",
+        "y年M月d日Bh:mm:ss [zzzz]": "y年M月d日Bh:mm:ss [zzzz]",
+        "y/M/dBh:mm:ss [zzzz]": "y/M/dBh:mm:ss [zzzz]",
+        "dBh:mm:ss [zzzz]": "d日Bh:mm:ss [zzzz]",
+        "EBh:mm:ss [zzzz]": "cccBh:mm:ss [zzzz]",
+        "EdBh:mm:ss [zzzz]": "d EBh:mm:ss [zzzz]",
+        "GyBh:mm:ss [zzzz]": "Gy年Bh:mm:ss [zzzz]",
+        "GyMBh:mm:ss [zzzz]": "Gy/MBh:mm:ss [zzzz]",
+        "GyMdBh:mm:ss [zzzz]": "G y/M/dBh:mm:ss [zzzz]",
+        "GyMEdBh:mm:ss [zzzz]": "Gy/M/d（E）Bh:mm:ss [zzzz]",
+        "GyMMMBh:mm:ss [zzzz]": "Gy年M月Bh:mm:ss [zzzz]",
+        "GyMMMdBh:mm:ss [zzzz]": "Gy年M月d日Bh:mm:ss [zzzz]",
+        "GyMMMEdBh:mm:ss [zzzz]": "Gy年M月d日 EBh:mm:ss [zzzz]",
+        "MBh:mm:ss [zzzz]": "M月Bh:mm:ss [zzzz]",
+        "MdBh:mm:ss [zzzz]": "M/dBh:mm:ss [zzzz]",
+        "MEdBh:mm:ss [zzzz]": "M/d（E）Bh:mm:ss [zzzz]",
+        "MMddBh:mm:ss [zzzz]": "MM/ddBh:mm:ss [zzzz]",
+        "MMMBh:mm:ss [zzzz]": "LLLBh:mm:ss [zzzz]",
+        "MMMdBh:mm:ss [zzzz]": "M月d日Bh:mm:ss [zzzz]",
+        "MMMEdBh:mm:ss [zzzz]": "M月d日EBh:mm:ss [zzzz]",
+        "MMMMdBh:mm:ss [zzzz]": "M月d日Bh:mm:ss [zzzz]",
+        "yBh:mm:ss [zzzz]": "y年Bh:mm:ss [zzzz]",
+        "yMBh:mm:ss [zzzz]": "y/MBh:mm:ss [zzzz]",
+        "yMdBh:mm:ss [zzzz]": "y/M/dBh:mm:ss [zzzz]",
+        "yMEdBh:mm:ss [zzzz]": "y/M/d（E）Bh:mm:ss [zzzz]",
+        "yMEEEEdBh:mm:ss [zzzz]": "y年M月d日 EEEEBh:mm:ss [zzzz]",
+        "yMMBh:mm:ss [zzzz]": "y/MMBh:mm:ss [zzzz]",
+        "yMMMBh:mm:ss [zzzz]": "y年M月Bh:mm:ss [zzzz]",
+        "yMMMdBh:mm:ss [zzzz]": "y年M月d日Bh:mm:ss [zzzz]",
+        "yMMMEdBh:mm:ss [zzzz]": "y年M月d日EBh:mm:ss [zzzz]",
+        "yMMMMBh:mm:ss [zzzz]": "y年M月Bh:mm:ss [zzzz]",
+        "y年M月d日 EEEEBh:mm:ss [z]": "y年M月d日 EEEEBh:mm:ss [z]",
+        "y年M月d日Bh:mm:ss [z]": "y年M月d日Bh:mm:ss [z]",
+        "y/M/dBh:mm:ss [z]": "y/M/dBh:mm:ss [z]",
+        "dBh:mm:ss [z]": "d日Bh:mm:ss [z]",
+        "EBh:mm:ss [z]": "cccBh:mm:ss [z]",
+        "EdBh:mm:ss [z]": "d EBh:mm:ss [z]",
+        "GyBh:mm:ss [z]": "Gy年Bh:mm:ss [z]",
+        "GyMBh:mm:ss [z]": "Gy/MBh:mm:ss [z]",
+        "GyMdBh:mm:ss [z]": "G y/M/dBh:mm:ss [z]",
+        "GyMEdBh:mm:ss [z]": "Gy/M/d（E）Bh:mm:ss [z]",
+        "GyMMMBh:mm:ss [z]": "Gy年M月Bh:mm:ss [z]",
+        "GyMMMdBh:mm:ss [z]": "Gy年M月d日Bh:mm:ss [z]",
+        "GyMMMEdBh:mm:ss [z]": "Gy年M月d日 EBh:mm:ss [z]",
+        "MBh:mm:ss [z]": "M月Bh:mm:ss [z]",
+        "MdBh:mm:ss [z]": "M/dBh:mm:ss [z]",
+        "MEdBh:mm:ss [z]": "M/d（E）Bh:mm:ss [z]",
+        "MMddBh:mm:ss [z]": "MM/ddBh:mm:ss [z]",
+        "MMMBh:mm:ss [z]": "LLLBh:mm:ss [z]",
+        "MMMdBh:mm:ss [z]": "M月d日Bh:mm:ss [z]",
+        "MMMEdBh:mm:ss [z]": "M月d日EBh:mm:ss [z]",
+        "MMMMdBh:mm:ss [z]": "M月d日Bh:mm:ss [z]",
+        "yBh:mm:ss [z]": "y年Bh:mm:ss [z]",
+        "yMBh:mm:ss [z]": "y/MBh:mm:ss [z]",
+        "yMdBh:mm:ss [z]": "y/M/dBh:mm:ss [z]",
+        "yMEdBh:mm:ss [z]": "y/M/d（E）Bh:mm:ss [z]",
+        "yMEEEEdBh:mm:ss [z]": "y年M月d日 EEEEBh:mm:ss [z]",
+        "yMMBh:mm:ss [z]": "y/MMBh:mm:ss [z]",
+        "yMMMBh:mm:ss [z]": "y年M月Bh:mm:ss [z]",
+        "yMMMdBh:mm:ss [z]": "y年M月d日Bh:mm:ss [z]",
+        "yMMMEdBh:mm:ss [z]": "y年M月d日EBh:mm:ss [z]",
+        "yMMMMBh:mm:ss [z]": "y年M月Bh:mm:ss [z]",
+        "y年M月d日 EEEEBh:mm:ss": "y年M月d日 EEEEBh:mm:ss",
+        "y年M月d日Bh:mm:ss": "y年M月d日Bh:mm:ss",
+        "y/M/dBh:mm:ss": "y/M/dBh:mm:ss",
+        "dBh:mm:ss": "d日Bh:mm:ss",
+        "EBh:mm:ss": "cccBh:mm:ss",
+        "EdBh:mm:ss": "d EBh:mm:ss",
+        "GyBh:mm:ss": "Gy年Bh:mm:ss",
+        "GyMBh:mm:ss": "Gy/MBh:mm:ss",
+        "GyMdBh:mm:ss": "G y/M/dBh:mm:ss",
+        "GyMEdBh:mm:ss": "Gy/M/d（E）Bh:mm:ss",
+        "GyMMMBh:mm:ss": "Gy年M月Bh:mm:ss",
+        "GyMMMdBh:mm:ss": "Gy年M月d日Bh:mm:ss",
+        "GyMMMEdBh:mm:ss": "Gy年M月d日 EBh:mm:ss",
+        "MBh:mm:ss": "M月Bh:mm:ss",
+        "MdBh:mm:ss": "M/dBh:mm:ss",
+        "MEdBh:mm:ss": "M/d（E）Bh:mm:ss",
+        "MMddBh:mm:ss": "MM/ddBh:mm:ss",
+        "MMMBh:mm:ss": "LLLBh:mm:ss",
+        "MMMdBh:mm:ss": "M月d日Bh:mm:ss",
+        "MMMEdBh:mm:ss": "M月d日EBh:mm:ss",
+        "MMMMdBh:mm:ss": "M月d日Bh:mm:ss",
+        "yBh:mm:ss": "y年Bh:mm:ss",
+        "yMBh:mm:ss": "y/MBh:mm:ss",
+        "yMdBh:mm:ss": "y/M/dBh:mm:ss",
+        "yMEdBh:mm:ss": "y/M/d（E）Bh:mm:ss",
+        "yMEEEEdBh:mm:ss": "y年M月d日 EEEEBh:mm:ss",
+        "yMMBh:mm:ss": "y/MMBh:mm:ss",
+        "yMMMBh:mm:ss": "y年M月Bh:mm:ss",
+        "yMMMdBh:mm:ss": "y年M月d日Bh:mm:ss",
+        "yMMMEdBh:mm:ss": "y年M月d日EBh:mm:ss",
+        "yMMMMBh:mm:ss": "y年M月Bh:mm:ss",
+        "y年M月d日 EEEEBh:mm": "y年M月d日 EEEEBh:mm",
+        "y年M月d日Bh:mm": "y年M月d日Bh:mm",
+        "y/M/dBh:mm": "y/M/dBh:mm",
+        "dBh:mm": "d日Bh:mm",
+        "EBh:mm": "cccBh:mm",
+        "EdBh:mm": "d EBh:mm",
+        "GyBh:mm": "Gy年Bh:mm",
+        "GyMBh:mm": "Gy/MBh:mm",
+        "GyMdBh:mm": "G y/M/dBh:mm",
+        "GyMEdBh:mm": "Gy/M/d（E）Bh:mm",
+        "GyMMMBh:mm": "Gy年M月Bh:mm",
+        "GyMMMdBh:mm": "Gy年M月d日Bh:mm",
+        "GyMMMEdBh:mm": "Gy年M月d日 EBh:mm",
+        "MBh:mm": "M月Bh:mm",
+        "MdBh:mm": "M/dBh:mm",
+        "MEdBh:mm": "M/d（E）Bh:mm",
+        "MMddBh:mm": "MM/ddBh:mm",
+        "MMMBh:mm": "LLLBh:mm",
+        "MMMdBh:mm": "M月d日Bh:mm",
+        "MMMEdBh:mm": "M月d日EBh:mm",
+        "MMMMdBh:mm": "M月d日Bh:mm",
+        "yBh:mm": "y年Bh:mm",
+        "yMBh:mm": "y/MBh:mm",
+        "yMdBh:mm": "y/M/dBh:mm",
+        "yMEdBh:mm": "y/M/d（E）Bh:mm",
+        "yMEEEEdBh:mm": "y年M月d日 EEEEBh:mm",
+        "yMMBh:mm": "y/MMBh:mm",
+        "yMMMBh:mm": "y年M月Bh:mm",
+        "yMMMdBh:mm": "y年M月d日Bh:mm",
+        "yMMMEdBh:mm": "y年M月d日EBh:mm",
+        "yMMMMBh:mm": "y年M月Bh:mm",
+        "y年M月d日 EEEEBh": "y年M月d日 EEEEBh時",
+        "y年M月d日Bh": "y年M月d日Bh時",
+        "y/M/dBh": "y/M/dBh時",
+        "dBh": "d日Bh時",
+        "EdBh": "d EBh時",
+        "GyBh": "Gy年Bh時",
+        "GyMBh": "Gy/MBh時",
+        "GyMdBh": "G y/M/dBh時",
+        "GyMEdBh": "Gy/M/d（E）Bh時",
+        "GyMMMBh": "Gy年M月Bh時",
+        "GyMMMdBh": "Gy年M月d日Bh時",
+        "GyMMMEdBh": "Gy年M月d日 EBh時",
+        "MBh": "M月Bh時",
+        "MdBh": "M/dBh時",
+        "MEdBh": "M/d（E）Bh時",
+        "MMddBh": "MM/ddBh時",
+        "MMMBh": "LLLBh時",
+        "MMMdBh": "M月d日Bh時",
+        "MMMEdBh": "M月d日EBh時",
+        "MMMMdBh": "M月d日Bh時",
+        "yBh": "y年Bh時",
+        "yMBh": "y/MBh時",
+        "yMdBh": "y/M/dBh時",
+        "yMEdBh": "y/M/d（E）Bh時",
+        "yMEEEEdBh": "y年M月d日 EEEEBh時",
+        "yMMBh": "y/MMBh時",
+        "yMMMBh": "y年M月Bh時",
+        "yMMMdBh": "y年M月d日Bh時",
+        "yMMMEdBh": "y年M月d日EBh時",
+        "yMMMMBh": "y年M月Bh時",
+        "y年M月d日 EEEEBhm": "y年M月d日 EEEEBh:mm",
+        "y年M月d日Bhm": "y年M月d日Bh:mm",
+        "y/M/dBhm": "y/M/dBh:mm",
+        "dBhm": "d日Bh:mm",
+        "EdBhm": "d EBh:mm",
+        "GyBhm": "Gy年Bh:mm",
+        "GyMBhm": "Gy/MBh:mm",
+        "GyMdBhm": "G y/M/dBh:mm",
+        "GyMEdBhm": "Gy/M/d（E）Bh:mm",
+        "GyMMMBhm": "Gy年M月Bh:mm",
+        "GyMMMdBhm": "Gy年M月d日Bh:mm",
+        "GyMMMEdBhm": "Gy年M月d日 EBh:mm",
+        "MBhm": "M月Bh:mm",
+        "MdBhm": "M/dBh:mm",
+        "MEdBhm": "M/d（E）Bh:mm",
+        "MMddBhm": "MM/ddBh:mm",
+        "MMMBhm": "LLLBh:mm",
+        "MMMdBhm": "M月d日Bh:mm",
+        "MMMEdBhm": "M月d日EBh:mm",
+        "MMMMdBhm": "M月d日Bh:mm",
+        "yBhm": "y年Bh:mm",
+        "yMBhm": "y/MBh:mm",
+        "yMdBhm": "y/M/dBh:mm",
+        "yMEdBhm": "y/M/d（E）Bh:mm",
+        "yMEEEEdBhm": "y年M月d日 EEEEBh:mm",
+        "yMMBhm": "y/MMBh:mm",
+        "yMMMBhm": "y年M月Bh:mm",
+        "yMMMdBhm": "y年M月d日Bh:mm",
+        "yMMMEdBhm": "y年M月d日EBh:mm",
+        "yMMMMBhm": "y年M月Bh:mm",
+        "y年M月d日 EEEEBhms": "y年M月d日 EEEEBh:mm:ss",
+        "y年M月d日Bhms": "y年M月d日Bh:mm:ss",
+        "y/M/dBhms": "y/M/dBh:mm:ss",
+        "dBhms": "d日Bh:mm:ss",
+        "EdBhms": "d EBh:mm:ss",
+        "GyBhms": "Gy年Bh:mm:ss",
+        "GyMBhms": "Gy/MBh:mm:ss",
+        "GyMdBhms": "G y/M/dBh:mm:ss",
+        "GyMEdBhms": "Gy/M/d（E）Bh:mm:ss",
+        "GyMMMBhms": "Gy年M月Bh:mm:ss",
+        "GyMMMdBhms": "Gy年M月d日Bh:mm:ss",
+        "GyMMMEdBhms": "Gy年M月d日 EBh:mm:ss",
+        "MBhms": "M月Bh:mm:ss",
+        "MdBhms": "M/dBh:mm:ss",
+        "MEdBhms": "M/d（E）Bh:mm:ss",
+        "MMddBhms": "MM/ddBh:mm:ss",
+        "MMMBhms": "LLLBh:mm:ss",
+        "MMMdBhms": "M月d日Bh:mm:ss",
+        "MMMEdBhms": "M月d日EBh:mm:ss",
+        "MMMMdBhms": "M月d日Bh:mm:ss",
+        "yBhms": "y年Bh:mm:ss",
+        "yMBhms": "y/MBh:mm:ss",
+        "yMdBhms": "y/M/dBh:mm:ss",
+        "yMEdBhms": "y/M/d（E）Bh:mm:ss",
+        "yMEEEEdBhms": "y年M月d日 EEEEBh:mm:ss",
+        "yMMBhms": "y/MMBh:mm:ss",
+        "yMMMBhms": "y年M月Bh:mm:ss",
+        "yMMMdBhms": "y年M月d日Bh:mm:ss",
+        "yMMMEdBhms": "y年M月d日EBh:mm:ss",
+        "yMMMMBhms": "y年M月Bh:mm:ss",
+        "y年M月d日 EEEEh": "y年M月d日 EEEEBh時",
+        "y年M月d日h": "y年M月d日Bh時",
+        "y/M/dh": "y/M/dBh時",
+        "dh": "d日Bh時",
+        "Edh": "d EBh時",
+        "Gyh": "Gy年Bh時",
+        "GyMh": "Gy/MBh時",
+        "GyMdh": "G y/M/dBh時",
+        "GyMEdh": "Gy/M/d（E）Bh時",
+        "GyMMMh": "Gy年M月Bh時",
+        "GyMMMdh": "Gy年M月d日Bh時",
+        "GyMMMEdh": "Gy年M月d日 EBh時",
+        "Mh": "M月Bh時",
+        "Mdh": "M/dBh時",
+        "MEdh": "M/d（E）Bh時",
+        "MMddh": "MM/ddBh時",
+        "MMMh": "LLLBh時",
+        "MMMdh": "M月d日Bh時",
+        "MMMEdh": "M月d日EBh時",
+        "MMMMdh": "M月d日Bh時",
+        "yh": "y年Bh時",
+        "yMh": "y/MBh時",
+        "yMdh": "y/M/dBh時",
+        "yMEdh": "y/M/d（E）Bh時",
+        "yMEEEEdh": "y年M月d日 EEEEBh時",
+        "yMMh": "y/MMBh時",
+        "yMMMh": "y年M月Bh時",
+        "yMMMdh": "y年M月d日Bh時",
+        "yMMMEdh": "y年M月d日EBh時",
+        "yMMMMh": "y年M月Bh時",
+        "y年M月d日 EEEEH": "y年M月d日 EEEEH時",
+        "y年M月d日H": "y年M月d日H時",
+        "y/M/dH": "y/M/dH時",
+        "dH": "d日H時",
+        "EH": "cccH時",
+        "EdH": "d EH時",
+        "GyH": "Gy年H時",
+        "GyMH": "Gy/MH時",
+        "GyMdH": "G y/M/dH時",
+        "GyMEdH": "Gy/M/d（E）H時",
+        "GyMMMH": "Gy年M月H時",
+        "GyMMMdH": "Gy年M月d日H時",
+        "GyMMMEdH": "Gy年M月d日 EH時",
+        "MH": "M月H時",
+        "MdH": "M/dH時",
+        "MEdH": "M/d（E）H時",
+        "MMddH": "MM/ddH時",
+        "MMMH": "LLLH時",
+        "MMMdH": "M月d日H時",
+        "MMMEdH": "M月d日EH時",
+        "MMMMdH": "M月d日H時",
+        "yH": "y年H時",
+        "yMH": "y/MH時",
+        "yMdH": "y/M/dH時",
+        "yMEdH": "y/M/d（E）H時",
+        "yMEEEEdH": "y年M月d日 EEEEH時",
+        "yMMH": "y/MMH時",
+        "yMMMH": "y年M月H時",
+        "yMMMdH": "y年M月d日H時",
+        "yMMMEdH": "y年M月d日EH時",
+        "yMMMMH": "y年M月H時",
+        "y年M月d日 EEEEhm": "y年M月d日 EEEEBh:mm",
+        "y年M月d日hm": "y年M月d日Bh:mm",
+        "y/M/dhm": "y/M/dBh:mm",
+        "dhm": "d日Bh:mm",
+        "Edhm": "d EBh:mm",
+        "Gyhm": "Gy年Bh:mm",
+        "GyMhm": "Gy/MBh:mm",
+        "GyMdhm": "G y/M/dBh:mm",
+        "GyMEdhm": "Gy/M/d（E）Bh:mm",
+        "GyMMMhm": "Gy年M月Bh:mm",
+        "GyMMMdhm": "Gy年M月d日Bh:mm",
+        "GyMMMEdhm": "Gy年M月d日 EBh:mm",
+        "Mhm": "M月Bh:mm",
+        "Mdhm": "M/dBh:mm",
+        "MEdhm": "M/d（E）Bh:mm",
+        "MMddhm": "MM/ddBh:mm",
+        "MMMhm": "LLLBh:mm",
+        "MMMdhm": "M月d日Bh:mm",
+        "MMMEdhm": "M月d日EBh:mm",
+        "MMMMdhm": "M月d日Bh:mm",
+        "yhm": "y年Bh:mm",
+        "yMhm": "y/MBh:mm",
+        "yMdhm": "y/M/dBh:mm",
+        "yMEdhm": "y/M/d（E）Bh:mm",
+        "yMEEEEdhm": "y年M月d日 EEEEBh:mm",
+        "yMMhm": "y/MMBh:mm",
+        "yMMMhm": "y年M月Bh:mm",
+        "yMMMdhm": "y年M月d日Bh:mm",
+        "yMMMEdhm": "y年M月d日EBh:mm",
+        "yMMMMhm": "y年M月Bh:mm",
+        "y年M月d日 EEEEHm": "y年M月d日 EEEEHH:mm",
+        "y年M月d日Hm": "y年M月d日HH:mm",
+        "y/M/dHm": "y/M/dHH:mm",
+        "dHm": "d日HH:mm",
+        "EdHm": "d EHH:mm",
+        "GyHm": "Gy年HH:mm",
+        "GyMHm": "Gy/MHH:mm",
+        "GyMdHm": "G y/M/dHH:mm",
+        "GyMEdHm": "Gy/M/d（E）HH:mm",
+        "GyMMMHm": "Gy年M月HH:mm",
+        "GyMMMdHm": "Gy年M月d日HH:mm",
+        "GyMMMEdHm": "Gy年M月d日 EHH:mm",
+        "MHm": "M月HH:mm",
+        "MdHm": "M/dHH:mm",
+        "MEdHm": "M/d（E）HH:mm",
+        "MMddHm": "MM/ddHH:mm",
+        "MMMHm": "LLLHH:mm",
+        "MMMdHm": "M月d日HH:mm",
+        "MMMEdHm": "M月d日EHH:mm",
+        "MMMMdHm": "M月d日HH:mm",
+        "yHm": "y年HH:mm",
+        "yMHm": "y/MHH:mm",
+        "yMdHm": "y/M/dHH:mm",
+        "yMEdHm": "y/M/d（E）HH:mm",
+        "yMEEEEdHm": "y年M月d日 EEEEHH:mm",
+        "yMMHm": "y/MMHH:mm",
+        "yMMMHm": "y年M月HH:mm",
+        "yMMMdHm": "y年M月d日HH:mm",
+        "yMMMEdHm": "y年M月d日EHH:mm",
+        "yMMMMHm": "y年M月HH:mm",
+        "y年M月d日 EEEEhms": "y年M月d日 EEEEBh:mm:ss",
+        "y年M月d日hms": "y年M月d日Bh:mm:ss",
+        "y/M/dhms": "y/M/dBh:mm:ss",
+        "dhms": "d日Bh:mm:ss",
+        "Edhms": "d EBh:mm:ss",
+        "Gyhms": "Gy年Bh:mm:ss",
+        "GyMhms": "Gy/MBh:mm:ss",
+        "GyMdhms": "G y/M/dBh:mm:ss",
+        "GyMEdhms": "Gy/M/d（E）Bh:mm:ss",
+        "GyMMMhms": "Gy年M月Bh:mm:ss",
+        "GyMMMdhms": "Gy年M月d日Bh:mm:ss",
+        "GyMMMEdhms": "Gy年M月d日 EBh:mm:ss",
+        "Mhms": "M月Bh:mm:ss",
+        "Mdhms": "M/dBh:mm:ss",
+        "MEdhms": "M/d（E）Bh:mm:ss",
+        "MMddhms": "MM/ddBh:mm:ss",
+        "MMMhms": "LLLBh:mm:ss",
+        "MMMdhms": "M月d日Bh:mm:ss",
+        "MMMEdhms": "M月d日EBh:mm:ss",
+        "MMMMdhms": "M月d日Bh:mm:ss",
+        "yhms": "y年Bh:mm:ss",
+        "yMhms": "y/MBh:mm:ss",
+        "yMdhms": "y/M/dBh:mm:ss",
+        "yMEdhms": "y/M/d（E）Bh:mm:ss",
+        "yMEEEEdhms": "y年M月d日 EEEEBh:mm:ss",
+        "yMMhms": "y/MMBh:mm:ss",
+        "yMMMhms": "y年M月Bh:mm:ss",
+        "yMMMdhms": "y年M月d日Bh:mm:ss",
+        "yMMMEdhms": "y年M月d日EBh:mm:ss",
+        "yMMMMhms": "y年M月Bh:mm:ss",
+        "y年M月d日 EEEEHms": "y年M月d日 EEEEHH:mm:ss",
+        "y年M月d日Hms": "y年M月d日HH:mm:ss",
+        "y/M/dHms": "y/M/dHH:mm:ss",
+        "dHms": "d日HH:mm:ss",
+        "EdHms": "d EHH:mm:ss",
+        "GyHms": "Gy年HH:mm:ss",
+        "GyMHms": "Gy/MHH:mm:ss",
+        "GyMdHms": "G y/M/dHH:mm:ss",
+        "GyMEdHms": "Gy/M/d（E）HH:mm:ss",
+        "GyMMMHms": "Gy年M月HH:mm:ss",
+        "GyMMMdHms": "Gy年M月d日HH:mm:ss",
+        "GyMMMEdHms": "Gy年M月d日 EHH:mm:ss",
+        "MHms": "M月HH:mm:ss",
+        "MdHms": "M/dHH:mm:ss",
+        "MEdHms": "M/d（E）HH:mm:ss",
+        "MMddHms": "MM/ddHH:mm:ss",
+        "MMMHms": "LLLHH:mm:ss",
+        "MMMdHms": "M月d日HH:mm:ss",
+        "MMMEdHms": "M月d日EHH:mm:ss",
+        "MMMMdHms": "M月d日HH:mm:ss",
+        "yHms": "y年HH:mm:ss",
+        "yMHms": "y/MHH:mm:ss",
+        "yMdHms": "y/M/dHH:mm:ss",
+        "yMEdHms": "y/M/d（E）HH:mm:ss",
+        "yMEEEEdHms": "y年M月d日 EEEEHH:mm:ss",
+        "yMMHms": "y/MMHH:mm:ss",
+        "yMMMHms": "y年M月HH:mm:ss",
+        "yMMMdHms": "y年M月d日HH:mm:ss",
+        "yMMMEdHms": "y年M月d日EHH:mm:ss",
+        "yMMMMHms": "y年M月HH:mm:ss",
+        "y年M月d日 EEEEhmsv": "y年M月d日 EEEEBh:mm:ss [v]",
+        "y年M月d日hmsv": "y年M月d日Bh:mm:ss [v]",
+        "y/M/dhmsv": "y/M/dBh:mm:ss [v]",
+        "dhmsv": "d日Bh:mm:ss [v]",
+        "Ehmsv": "cccBh:mm:ss [v]",
+        "Edhmsv": "d EBh:mm:ss [v]",
+        "Gyhmsv": "Gy年Bh:mm:ss [v]",
+        "GyMhmsv": "Gy/MBh:mm:ss [v]",
+        "GyMdhmsv": "G y/M/dBh:mm:ss [v]",
+        "GyMEdhmsv": "Gy/M/d（E）Bh:mm:ss [v]",
+        "GyMMMhmsv": "Gy年M月Bh:mm:ss [v]",
+        "GyMMMdhmsv": "Gy年M月d日Bh:mm:ss [v]",
+        "GyMMMEdhmsv": "Gy年M月d日 EBh:mm:ss [v]",
+        "Mhmsv": "M月Bh:mm:ss [v]",
+        "Mdhmsv": "M/dBh:mm:ss [v]",
+        "MEdhmsv": "M/d（E）Bh:mm:ss [v]",
+        "MMddhmsv": "MM/ddBh:mm:ss [v]",
+        "MMMhmsv": "LLLBh:mm:ss [v]",
+        "MMMdhmsv": "M月d日Bh:mm:ss [v]",
+        "MMMEdhmsv": "M月d日EBh:mm:ss [v]",
+        "MMMMdhmsv": "M月d日Bh:mm:ss [v]",
+        "yhmsv": "y年Bh:mm:ss [v]",
+        "yMhmsv": "y/MBh:mm:ss [v]",
+        "yMdhmsv": "y/M/dBh:mm:ss [v]",
+        "yMEdhmsv": "y/M/d（E）Bh:mm:ss [v]",
+        "yMEEEEdhmsv": "y年M月d日 EEEEBh:mm:ss [v]",
+        "yMMhmsv": "y/MMBh:mm:ss [v]",
+        "yMMMhmsv": "y年M月Bh:mm:ss [v]",
+        "yMMMdhmsv": "y年M月d日Bh:mm:ss [v]",
+        "yMMMEdhmsv": "y年M月d日EBh:mm:ss [v]",
+        "yMMMMhmsv": "y年M月Bh:mm:ss [v]",
+        "y年M月d日 EEEEHmsv": "y年M月d日 EEEEHH:mm:ss [v]",
+        "y年M月d日Hmsv": "y年M月d日HH:mm:ss [v]",
+        "y/M/dHmsv": "y/M/dHH:mm:ss [v]",
+        "dHmsv": "d日HH:mm:ss [v]",
+        "EHmsv": "cccHH:mm:ss [v]",
+        "EdHmsv": "d EHH:mm:ss [v]",
+        "GyHmsv": "Gy年HH:mm:ss [v]",
+        "GyMHmsv": "Gy/MHH:mm:ss [v]",
+        "GyMdHmsv": "G y/M/dHH:mm:ss [v]",
+        "GyMEdHmsv": "Gy/M/d（E）HH:mm:ss [v]",
+        "GyMMMHmsv": "Gy年M月HH:mm:ss [v]",
+        "GyMMMdHmsv": "Gy年M月d日HH:mm:ss [v]",
+        "GyMMMEdHmsv": "Gy年M月d日 EHH:mm:ss [v]",
+        "MHmsv": "M月HH:mm:ss [v]",
+        "MdHmsv": "M/dHH:mm:ss [v]",
+        "MEdHmsv": "M/d（E）HH:mm:ss [v]",
+        "MMddHmsv": "MM/ddHH:mm:ss [v]",
+        "MMMHmsv": "LLLHH:mm:ss [v]",
+        "MMMdHmsv": "M月d日HH:mm:ss [v]",
+        "MMMEdHmsv": "M月d日EHH:mm:ss [v]",
+        "MMMMdHmsv": "M月d日HH:mm:ss [v]",
+        "yHmsv": "y年HH:mm:ss [v]",
+        "yMHmsv": "y/MHH:mm:ss [v]",
+        "yMdHmsv": "y/M/dHH:mm:ss [v]",
+        "yMEdHmsv": "y/M/d（E）HH:mm:ss [v]",
+        "yMEEEEdHmsv": "y年M月d日 EEEEHH:mm:ss [v]",
+        "yMMHmsv": "y/MMHH:mm:ss [v]",
+        "yMMMHmsv": "y年M月HH:mm:ss [v]",
+        "yMMMdHmsv": "y年M月d日HH:mm:ss [v]",
+        "yMMMEdHmsv": "y年M月d日EHH:mm:ss [v]",
+        "yMMMMHmsv": "y年M月HH:mm:ss [v]",
+        "y年M月d日 EEEEhmv": "y年M月d日 EEEEBh:mm [v]",
+        "y年M月d日hmv": "y年M月d日Bh:mm [v]",
+        "y/M/dhmv": "y/M/dBh:mm [v]",
+        "dhmv": "d日Bh:mm [v]",
+        "Ehmv": "cccBh:mm [v]",
+        "Edhmv": "d EBh:mm [v]",
+        "Gyhmv": "Gy年Bh:mm [v]",
+        "GyMhmv": "Gy/MBh:mm [v]",
+        "GyMdhmv": "G y/M/dBh:mm [v]",
+        "GyMEdhmv": "Gy/M/d（E）Bh:mm [v]",
+        "GyMMMhmv": "Gy年M月Bh:mm [v]",
+        "GyMMMdhmv": "Gy年M月d日Bh:mm [v]",
+        "GyMMMEdhmv": "Gy年M月d日 EBh:mm [v]",
+        "Mhmv": "M月Bh:mm [v]",
+        "Mdhmv": "M/dBh:mm [v]",
+        "MEdhmv": "M/d（E）Bh:mm [v]",
+        "MMddhmv": "MM/ddBh:mm [v]",
+        "MMMhmv": "LLLBh:mm [v]",
+        "MMMdhmv": "M月d日Bh:mm [v]",
+        "MMMEdhmv": "M月d日EBh:mm [v]",
+        "MMMMdhmv": "M月d日Bh:mm [v]",
+        "yhmv": "y年Bh:mm [v]",
+        "yMhmv": "y/MBh:mm [v]",
+        "yMdhmv": "y/M/dBh:mm [v]",
+        "yMEdhmv": "y/M/d（E）Bh:mm [v]",
+        "yMEEEEdhmv": "y年M月d日 EEEEBh:mm [v]",
+        "yMMhmv": "y/MMBh:mm [v]",
+        "yMMMhmv": "y年M月Bh:mm [v]",
+        "yMMMdhmv": "y年M月d日Bh:mm [v]",
+        "yMMMEdhmv": "y年M月d日EBh:mm [v]",
+        "yMMMMhmv": "y年M月Bh:mm [v]",
+        "y年M月d日 EEEEHmv": "y年M月d日 EEEEHH:mm [v]",
+        "y年M月d日Hmv": "y年M月d日HH:mm [v]",
+        "y/M/dHmv": "y/M/dHH:mm [v]",
+        "dHmv": "d日HH:mm [v]",
+        "EHmv": "cccHH:mm [v]",
+        "EdHmv": "d EHH:mm [v]",
+        "GyHmv": "Gy年HH:mm [v]",
+        "GyMHmv": "Gy/MHH:mm [v]",
+        "GyMdHmv": "G y/M/dHH:mm [v]",
+        "GyMEdHmv": "Gy/M/d（E）HH:mm [v]",
+        "GyMMMHmv": "Gy年M月HH:mm [v]",
+        "GyMMMdHmv": "Gy年M月d日HH:mm [v]",
+        "GyMMMEdHmv": "Gy年M月d日 EHH:mm [v]",
+        "MHmv": "M月HH:mm [v]",
+        "MdHmv": "M/dHH:mm [v]",
+        "MEdHmv": "M/d（E）HH:mm [v]",
+        "MMddHmv": "MM/ddHH:mm [v]",
+        "MMMHmv": "LLLHH:mm [v]",
+        "MMMdHmv": "M月d日HH:mm [v]",
+        "MMMEdHmv": "M月d日EHH:mm [v]",
+        "MMMMdHmv": "M月d日HH:mm [v]",
+        "yHmv": "y年HH:mm [v]",
+        "yMHmv": "y/MHH:mm [v]",
+        "yMdHmv": "y/M/dHH:mm [v]",
+        "yMEdHmv": "y/M/d（E）HH:mm [v]",
+        "yMEEEEdHmv": "y年M月d日 EEEEHH:mm [v]",
+        "yMMHmv": "y/MMHH:mm [v]",
+        "yMMMHmv": "y年M月HH:mm [v]",
+        "yMMMdHmv": "y年M月d日HH:mm [v]",
+        "yMMMEdHmv": "y年M月d日EHH:mm [v]",
+        "yMMMMHmv": "y年M月HH:mm [v]",
+        "y年M月d日 EEEEhv": "y年M月d日 EEEEah v",
+        "y年M月d日hv": "y年M月d日ah v",
+        "y/M/dhv": "y/M/dah v",
+        "dhv": "d日ah v",
+        "Ehv": "cccah v",
+        "Edhv": "d Eah v",
+        "Gyhv": "Gy年ah v",
+        "GyMhv": "Gy/Mah v",
+        "GyMdhv": "G y/M/dah v",
+        "GyMEdhv": "Gy/M/d（E）ah v",
+        "GyMMMhv": "Gy年M月ah v",
+        "GyMMMdhv": "Gy年M月d日ah v",
+        "GyMMMEdhv": "Gy年M月d日 Eah v",
+        "Mhv": "M月ah v",
+        "Mdhv": "M/dah v",
+        "MEdhv": "M/d（E）ah v",
+        "MMddhv": "MM/ddah v",
+        "MMMhv": "LLLah v",
+        "MMMdhv": "M月d日ah v",
+        "MMMEdhv": "M月d日Eah v",
+        "MMMMdhv": "M月d日ah v",
+        "yhv": "y年ah v",
+        "yMhv": "y/Mah v",
+        "yMdhv": "y/M/dah v",
+        "yMEdhv": "y/M/d（E）ah v",
+        "yMEEEEdhv": "y年M月d日 EEEEah v",
+        "yMMhv": "y/MMah v",
+        "yMMMhv": "y年M月ah v",
+        "yMMMdhv": "y年M月d日ah v",
+        "yMMMEdhv": "y年M月d日Eah v",
+        "yMMMMhv": "y年M月ah v",
+        "y年M月d日 EEEEHv": "y年M月d日 EEEEHH'h' v",
+        "y年M月d日Hv": "y年M月d日HH'h' v",
+        "y/M/dHv": "y/M/dHH'h' v",
+        "dHv": "d日HH'h' v",
+        "EHv": "cccHH'h' v",
+        "EdHv": "d EHH'h' v",
+        "GyHv": "Gy年HH'h' v",
+        "GyMHv": "Gy/MHH'h' v",
+        "GyMdHv": "G y/M/dHH'h' v",
+        "GyMEdHv": "Gy/M/d（E）HH'h' v",
+        "GyMMMHv": "Gy年M月HH'h' v",
+        "GyMMMdHv": "Gy年M月d日HH'h' v",
+        "GyMMMEdHv": "Gy年M月d日 EHH'h' v",
+        "MHv": "M月HH'h' v",
+        "MdHv": "M/dHH'h' v",
+        "MEdHv": "M/d（E）HH'h' v",
+        "MMddHv": "MM/ddHH'h' v",
+        "MMMHv": "LLLHH'h' v",
+        "MMMdHv": "M月d日HH'h' v",
+        "MMMEdHv": "M月d日EHH'h' v",
+        "MMMMdHv": "M月d日HH'h' v",
+        "yHv": "y年HH'h' v",
+        "yMHv": "y/MHH'h' v",
+        "yMdHv": "y/M/dHH'h' v",
+        "yMEdHv": "y/M/d（E）HH'h' v",
+        "yMEEEEdHv": "y年M月d日 EEEEHH'h' v",
+        "yMMHv": "y/MMHH'h' v",
+        "yMMMHv": "y年M月HH'h' v",
+        "yMMMdHv": "y年M月d日HH'h' v",
+        "yMMMEdHv": "y年M月d日EHH'h' v",
+        "yMMMMHv": "y年M月HH'h' v",
+        "y年M月d日 EEEEms": "y年M月d日 EEEEmm:ss",
+        "y年M月d日ms": "y年M月d日mm:ss",
+        "y/M/dms": "y/M/dmm:ss",
+        "dms": "d日mm:ss",
+        "Ems": "cccmm:ss",
+        "Edms": "d Emm:ss",
+        "Gyms": "Gy年mm:ss",
+        "GyMms": "Gy/Mmm:ss",
+        "GyMdms": "G y/M/dmm:ss",
+        "GyMEdms": "Gy/M/d（E）mm:ss",
+        "GyMMMms": "Gy年M月mm:ss",
+        "GyMMMdms": "Gy年M月d日mm:ss",
+        "GyMMMEdms": "Gy年M月d日 Emm:ss",
+        "Mms": "M月mm:ss",
+        "Mdms": "M/dmm:ss",
+        "MEdms": "M/d（E）mm:ss",
+        "MMddms": "MM/ddmm:ss",
+        "MMMms": "LLLmm:ss",
+        "MMMdms": "M月d日mm:ss",
+        "MMMEdms": "M月d日Emm:ss",
+        "MMMMdms": "M月d日mm:ss",
+        "yms": "y年mm:ss",
+        "yMms": "y/Mmm:ss",
+        "yMdms": "y/M/dmm:ss",
+        "yMEdms": "y/M/d（E）mm:ss",
+        "yMEEEEdms": "y年M月d日 EEEEmm:ss",
+        "yMMms": "y/MMmm:ss",
+        "yMMMms": "y年M月mm:ss",
+        "yMMMdms": "y年M月d日mm:ss",
+        "yMMMEdms": "y年M月d日Emm:ss",
+        "yMMMMms": "y年M月mm:ss"
       }
     },
     "intervalFormats": {
@@ -21564,68 +22522,68 @@ Intl.DateTimeFormat.__addLocaleData({
       },
       "Africa/Lagos": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "西部非洲标准时间",
-          "西部非洲夏令时间"
+          "西部非洲时间",
+          "西部非洲时间"
         ]
       },
       "Asia/Aqtobe": {
@@ -22004,6 +22962,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "long": [
           "亚速尔群岛标准时间",
           "亚速尔群岛夏令时间"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "夏威夷-阿留申标准时间",
+          "夏威夷-阿留申夏令时间"
         ]
       },
       "Asia/Thimphu": {
@@ -22573,7 +23537,7 @@ Intl.DateTimeFormat.__addLocaleData({
       "Pacific/Honolulu": {
         "long": [
           "夏威夷-阿留申标准时间",
-          "夏威夷-阿留申夏令时间"
+          "夏威夷-阿留申标准时间"
         ]
       },
       "Asia/Hong_Kong": {
@@ -23008,6 +23972,12 @@ Intl.DateTimeFormat.__addLocaleData({
           "楚克时间"
         ]
       },
+      "Europe/Istanbul": {
+        "long": [
+          "土耳其标准时间",
+          "土耳其夏令时间"
+        ]
+      },
       "Pacific/Funafuti": {
         "long": [
           "图瓦卢时间",
@@ -23112,15 +24082,19 @@ Intl.DateTimeFormat.__addLocaleData({
         "Bhms": "Bh:mm:ss",
         "d": "d日",
         "E": "ccc",
+        "EBh": "EBh时",
         "EBhm": "EBh:mm",
         "EBhms": "EBh:mm:ss",
         "Ed": "d日E",
+        "Eh": "Eah时",
         "Ehm": "Eah:mm",
         "EHm": "EHH:mm",
         "Ehms": "Eah:mm:ss",
         "EHms": "EHH:mm:ss",
         "Gy": "Gy年",
-        "GyMd": "GGGGG y-MM-dd",
+        "GyM": "Gy年M月",
+        "GyMd": "Gy-MM-dd",
+        "GyMEd": "Gy-MM-ddE",
         "GyMMM": "Gy年M月",
         "GyMMMd": "Gy年M月d日",
         "GyMMMEd": "Gy年M月d日E",
@@ -23130,10 +24104,12 @@ Intl.DateTimeFormat.__addLocaleData({
         "Hm": "HH:mm",
         "hms": "ah:mm:ss",
         "Hms": "HH:mm:ss",
-        "hmsv": "v ah:mm:ss",
-        "Hmsv": "v HH:mm:ss",
-        "hmv": "v ah:mm",
+        "hmsv": "vah:mm:ss",
+        "Hmsv": "vHH:mm:ss",
+        "hmv": "vah:mm",
         "Hmv": "v HH:mm",
+        "hv": "vah时",
+        "Hv": "vH时",
         "M": "M月",
         "Md": "M/d",
         "MEd": "M/dE",
@@ -23167,7 +24143,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E zzzz HH:mm:ss": "ccc zzzz HH:mm:ss",
         "Ed zzzz HH:mm:ss": "d日E zzzz HH:mm:ss",
         "Gy zzzz HH:mm:ss": "Gy年 zzzz HH:mm:ss",
-        "GyMd zzzz HH:mm:ss": "GGGGG y-MM-dd zzzz HH:mm:ss",
+        "GyM zzzz HH:mm:ss": "Gy年M月 zzzz HH:mm:ss",
+        "GyMd zzzz HH:mm:ss": "Gy-MM-dd zzzz HH:mm:ss",
+        "GyMEd zzzz HH:mm:ss": "Gy-MM-ddE zzzz HH:mm:ss",
         "GyMMM zzzz HH:mm:ss": "Gy年M月 zzzz HH:mm:ss",
         "GyMMMd zzzz HH:mm:ss": "Gy年M月d日 zzzz HH:mm:ss",
         "GyMMMEd zzzz HH:mm:ss": "Gy年M月d日E zzzz HH:mm:ss",
@@ -23196,7 +24174,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E z HH:mm:ss": "ccc z HH:mm:ss",
         "Ed z HH:mm:ss": "d日E z HH:mm:ss",
         "Gy z HH:mm:ss": "Gy年 z HH:mm:ss",
-        "GyMd z HH:mm:ss": "GGGGG y-MM-dd z HH:mm:ss",
+        "GyM z HH:mm:ss": "Gy年M月 z HH:mm:ss",
+        "GyMd z HH:mm:ss": "Gy-MM-dd z HH:mm:ss",
+        "GyMEd z HH:mm:ss": "Gy-MM-ddE z HH:mm:ss",
         "GyMMM z HH:mm:ss": "Gy年M月 z HH:mm:ss",
         "GyMMMd z HH:mm:ss": "Gy年M月d日 z HH:mm:ss",
         "GyMMMEd z HH:mm:ss": "Gy年M月d日E z HH:mm:ss",
@@ -23225,7 +24205,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E HH:mm:ss": "ccc HH:mm:ss",
         "Ed HH:mm:ss": "d日E HH:mm:ss",
         "Gy HH:mm:ss": "Gy年 HH:mm:ss",
-        "GyMd HH:mm:ss": "GGGGG y-MM-dd HH:mm:ss",
+        "GyM HH:mm:ss": "Gy年M月 HH:mm:ss",
+        "GyMd HH:mm:ss": "Gy-MM-dd HH:mm:ss",
+        "GyMEd HH:mm:ss": "Gy-MM-ddE HH:mm:ss",
         "GyMMM HH:mm:ss": "Gy年M月 HH:mm:ss",
         "GyMMMd HH:mm:ss": "Gy年M月d日 HH:mm:ss",
         "GyMMMEd HH:mm:ss": "Gy年M月d日E HH:mm:ss",
@@ -23254,7 +24236,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E HH:mm": "ccc HH:mm",
         "Ed HH:mm": "d日E HH:mm",
         "Gy HH:mm": "Gy年 HH:mm",
-        "GyMd HH:mm": "GGGGG y-MM-dd HH:mm",
+        "GyM HH:mm": "Gy年M月 HH:mm",
+        "GyMd HH:mm": "Gy-MM-dd HH:mm",
+        "GyMEd HH:mm": "Gy-MM-ddE HH:mm",
         "GyMMM HH:mm": "Gy年M月 HH:mm",
         "GyMMMd HH:mm": "Gy年M月d日 HH:mm",
         "GyMMMEd HH:mm": "Gy年M月d日E HH:mm",
@@ -23283,7 +24267,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Bh": "ccc Bh时",
         "Ed Bh": "d日E Bh时",
         "Gy Bh": "Gy年 Bh时",
-        "GyMd Bh": "GGGGG y-MM-dd Bh时",
+        "GyM Bh": "Gy年M月 Bh时",
+        "GyMd Bh": "Gy-MM-dd Bh时",
+        "GyMEd Bh": "Gy-MM-ddE Bh时",
         "GyMMM Bh": "Gy年M月 Bh时",
         "GyMMMd Bh": "Gy年M月d日 Bh时",
         "GyMMMEd Bh": "Gy年M月d日E Bh时",
@@ -23312,7 +24298,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Bhm": "ccc Bh:mm",
         "Ed Bhm": "d日E Bh:mm",
         "Gy Bhm": "Gy年 Bh:mm",
-        "GyMd Bhm": "GGGGG y-MM-dd Bh:mm",
+        "GyM Bhm": "Gy年M月 Bh:mm",
+        "GyMd Bhm": "Gy-MM-dd Bh:mm",
+        "GyMEd Bhm": "Gy-MM-ddE Bh:mm",
         "GyMMM Bhm": "Gy年M月 Bh:mm",
         "GyMMMd Bhm": "Gy年M月d日 Bh:mm",
         "GyMMMEd Bhm": "Gy年M月d日E Bh:mm",
@@ -23341,7 +24329,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Bhms": "ccc Bh:mm:ss",
         "Ed Bhms": "d日E Bh:mm:ss",
         "Gy Bhms": "Gy年 Bh:mm:ss",
-        "GyMd Bhms": "GGGGG y-MM-dd Bh:mm:ss",
+        "GyM Bhms": "Gy年M月 Bh:mm:ss",
+        "GyMd Bhms": "Gy-MM-dd Bh:mm:ss",
+        "GyMEd Bhms": "Gy-MM-ddE Bh:mm:ss",
         "GyMMM Bhms": "Gy年M月 Bh:mm:ss",
         "GyMMMd Bhms": "Gy年M月d日 Bh:mm:ss",
         "GyMMMEd Bhms": "Gy年M月d日E Bh:mm:ss",
@@ -23370,7 +24360,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E h": "ccc ah时",
         "Ed h": "d日E ah时",
         "Gy h": "Gy年 ah时",
-        "GyMd h": "GGGGG y-MM-dd ah时",
+        "GyM h": "Gy年M月 ah时",
+        "GyMd h": "Gy-MM-dd ah时",
+        "GyMEd h": "Gy-MM-ddE ah时",
         "GyMMM h": "Gy年M月 ah时",
         "GyMMMd h": "Gy年M月d日 ah时",
         "GyMMMEd h": "Gy年M月d日E ah时",
@@ -23399,7 +24391,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E H": "ccc H时",
         "Ed H": "d日E H时",
         "Gy H": "Gy年 H时",
-        "GyMd H": "GGGGG y-MM-dd H时",
+        "GyM H": "Gy年M月 H时",
+        "GyMd H": "Gy-MM-dd H时",
+        "GyMEd H": "Gy-MM-ddE H时",
         "GyMMM H": "Gy年M月 H时",
         "GyMMMd H": "Gy年M月d日 H时",
         "GyMMMEd H": "Gy年M月d日E H时",
@@ -23428,7 +24422,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E hm": "ccc ah:mm",
         "Ed hm": "d日E ah:mm",
         "Gy hm": "Gy年 ah:mm",
-        "GyMd hm": "GGGGG y-MM-dd ah:mm",
+        "GyM hm": "Gy年M月 ah:mm",
+        "GyMd hm": "Gy-MM-dd ah:mm",
+        "GyMEd hm": "Gy-MM-ddE ah:mm",
         "GyMMM hm": "Gy年M月 ah:mm",
         "GyMMMd hm": "Gy年M月d日 ah:mm",
         "GyMMMEd hm": "Gy年M月d日E ah:mm",
@@ -23457,7 +24453,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Hm": "ccc HH:mm",
         "Ed Hm": "d日E HH:mm",
         "Gy Hm": "Gy年 HH:mm",
-        "GyMd Hm": "GGGGG y-MM-dd HH:mm",
+        "GyM Hm": "Gy年M月 HH:mm",
+        "GyMd Hm": "Gy-MM-dd HH:mm",
+        "GyMEd Hm": "Gy-MM-ddE HH:mm",
         "GyMMM Hm": "Gy年M月 HH:mm",
         "GyMMMd Hm": "Gy年M月d日 HH:mm",
         "GyMMMEd Hm": "Gy年M月d日E HH:mm",
@@ -23486,7 +24484,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E hms": "ccc ah:mm:ss",
         "Ed hms": "d日E ah:mm:ss",
         "Gy hms": "Gy年 ah:mm:ss",
-        "GyMd hms": "GGGGG y-MM-dd ah:mm:ss",
+        "GyM hms": "Gy年M月 ah:mm:ss",
+        "GyMd hms": "Gy-MM-dd ah:mm:ss",
+        "GyMEd hms": "Gy-MM-ddE ah:mm:ss",
         "GyMMM hms": "Gy年M月 ah:mm:ss",
         "GyMMMd hms": "Gy年M月d日 ah:mm:ss",
         "GyMMMEd hms": "Gy年M月d日E ah:mm:ss",
@@ -23515,7 +24515,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Hms": "ccc HH:mm:ss",
         "Ed Hms": "d日E HH:mm:ss",
         "Gy Hms": "Gy年 HH:mm:ss",
-        "GyMd Hms": "GGGGG y-MM-dd HH:mm:ss",
+        "GyM Hms": "Gy年M月 HH:mm:ss",
+        "GyMd Hms": "Gy-MM-dd HH:mm:ss",
+        "GyMEd Hms": "Gy-MM-ddE HH:mm:ss",
         "GyMMM Hms": "Gy年M月 HH:mm:ss",
         "GyMMMd Hms": "Gy年M月d日 HH:mm:ss",
         "GyMMMEd Hms": "Gy年M月d日E HH:mm:ss",
@@ -23537,93 +24539,99 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMd Hms": "y年M月d日 HH:mm:ss",
         "yMMMEd Hms": "y年M月d日E HH:mm:ss",
         "yMMMM Hms": "y年M月 HH:mm:ss",
-        "y年M月d日EEEE hmsv": "y年M月d日EEEE v ah:mm:ss",
-        "y年M月d日 hmsv": "y年M月d日 v ah:mm:ss",
-        "y/M/d hmsv": "y/M/d v ah:mm:ss",
-        "d hmsv": "d日 v ah:mm:ss",
-        "E hmsv": "ccc v ah:mm:ss",
-        "Ed hmsv": "d日E v ah:mm:ss",
-        "Gy hmsv": "Gy年 v ah:mm:ss",
-        "GyMd hmsv": "GGGGG y-MM-dd v ah:mm:ss",
-        "GyMMM hmsv": "Gy年M月 v ah:mm:ss",
-        "GyMMMd hmsv": "Gy年M月d日 v ah:mm:ss",
-        "GyMMMEd hmsv": "Gy年M月d日E v ah:mm:ss",
-        "M hmsv": "M月 v ah:mm:ss",
-        "Md hmsv": "M/d v ah:mm:ss",
-        "MEd hmsv": "M/dE v ah:mm:ss",
-        "MMdd hmsv": "MM/dd v ah:mm:ss",
-        "MMM hmsv": "LLL v ah:mm:ss",
-        "MMMd hmsv": "M月d日 v ah:mm:ss",
-        "MMMEd hmsv": "M月d日E v ah:mm:ss",
-        "MMMMd hmsv": "M月d日 v ah:mm:ss",
-        "y hmsv": "y年 v ah:mm:ss",
-        "yM hmsv": "y/M v ah:mm:ss",
-        "yMd hmsv": "y/M/d v ah:mm:ss",
-        "yMEd hmsv": "y/M/dE v ah:mm:ss",
-        "yMEEEEd hmsv": "y年M月d日EEEE v ah:mm:ss",
-        "yMM hmsv": "y年M月 v ah:mm:ss",
-        "yMMM hmsv": "y年M月 v ah:mm:ss",
-        "yMMMd hmsv": "y年M月d日 v ah:mm:ss",
-        "yMMMEd hmsv": "y年M月d日E v ah:mm:ss",
-        "yMMMM hmsv": "y年M月 v ah:mm:ss",
-        "y年M月d日EEEE Hmsv": "y年M月d日EEEE v HH:mm:ss",
-        "y年M月d日 Hmsv": "y年M月d日 v HH:mm:ss",
-        "y/M/d Hmsv": "y/M/d v HH:mm:ss",
-        "d Hmsv": "d日 v HH:mm:ss",
-        "E Hmsv": "ccc v HH:mm:ss",
-        "Ed Hmsv": "d日E v HH:mm:ss",
-        "Gy Hmsv": "Gy年 v HH:mm:ss",
-        "GyMd Hmsv": "GGGGG y-MM-dd v HH:mm:ss",
-        "GyMMM Hmsv": "Gy年M月 v HH:mm:ss",
-        "GyMMMd Hmsv": "Gy年M月d日 v HH:mm:ss",
-        "GyMMMEd Hmsv": "Gy年M月d日E v HH:mm:ss",
-        "M Hmsv": "M月 v HH:mm:ss",
-        "Md Hmsv": "M/d v HH:mm:ss",
-        "MEd Hmsv": "M/dE v HH:mm:ss",
-        "MMdd Hmsv": "MM/dd v HH:mm:ss",
-        "MMM Hmsv": "LLL v HH:mm:ss",
-        "MMMd Hmsv": "M月d日 v HH:mm:ss",
-        "MMMEd Hmsv": "M月d日E v HH:mm:ss",
-        "MMMMd Hmsv": "M月d日 v HH:mm:ss",
-        "y Hmsv": "y年 v HH:mm:ss",
-        "yM Hmsv": "y/M v HH:mm:ss",
-        "yMd Hmsv": "y/M/d v HH:mm:ss",
-        "yMEd Hmsv": "y/M/dE v HH:mm:ss",
-        "yMEEEEd Hmsv": "y年M月d日EEEE v HH:mm:ss",
-        "yMM Hmsv": "y年M月 v HH:mm:ss",
-        "yMMM Hmsv": "y年M月 v HH:mm:ss",
-        "yMMMd Hmsv": "y年M月d日 v HH:mm:ss",
-        "yMMMEd Hmsv": "y年M月d日E v HH:mm:ss",
-        "yMMMM Hmsv": "y年M月 v HH:mm:ss",
-        "y年M月d日EEEE hmv": "y年M月d日EEEE v ah:mm",
-        "y年M月d日 hmv": "y年M月d日 v ah:mm",
-        "y/M/d hmv": "y/M/d v ah:mm",
-        "d hmv": "d日 v ah:mm",
-        "E hmv": "ccc v ah:mm",
-        "Ed hmv": "d日E v ah:mm",
-        "Gy hmv": "Gy年 v ah:mm",
-        "GyMd hmv": "GGGGG y-MM-dd v ah:mm",
-        "GyMMM hmv": "Gy年M月 v ah:mm",
-        "GyMMMd hmv": "Gy年M月d日 v ah:mm",
-        "GyMMMEd hmv": "Gy年M月d日E v ah:mm",
-        "M hmv": "M月 v ah:mm",
-        "Md hmv": "M/d v ah:mm",
-        "MEd hmv": "M/dE v ah:mm",
-        "MMdd hmv": "MM/dd v ah:mm",
-        "MMM hmv": "LLL v ah:mm",
-        "MMMd hmv": "M月d日 v ah:mm",
-        "MMMEd hmv": "M月d日E v ah:mm",
-        "MMMMd hmv": "M月d日 v ah:mm",
-        "y hmv": "y年 v ah:mm",
-        "yM hmv": "y/M v ah:mm",
-        "yMd hmv": "y/M/d v ah:mm",
-        "yMEd hmv": "y/M/dE v ah:mm",
-        "yMEEEEd hmv": "y年M月d日EEEE v ah:mm",
-        "yMM hmv": "y年M月 v ah:mm",
-        "yMMM hmv": "y年M月 v ah:mm",
-        "yMMMd hmv": "y年M月d日 v ah:mm",
-        "yMMMEd hmv": "y年M月d日E v ah:mm",
-        "yMMMM hmv": "y年M月 v ah:mm",
+        "y年M月d日EEEE hmsv": "y年M月d日EEEE vah:mm:ss",
+        "y年M月d日 hmsv": "y年M月d日 vah:mm:ss",
+        "y/M/d hmsv": "y/M/d vah:mm:ss",
+        "d hmsv": "d日 vah:mm:ss",
+        "E hmsv": "ccc vah:mm:ss",
+        "Ed hmsv": "d日E vah:mm:ss",
+        "Gy hmsv": "Gy年 vah:mm:ss",
+        "GyM hmsv": "Gy年M月 vah:mm:ss",
+        "GyMd hmsv": "Gy-MM-dd vah:mm:ss",
+        "GyMEd hmsv": "Gy-MM-ddE vah:mm:ss",
+        "GyMMM hmsv": "Gy年M月 vah:mm:ss",
+        "GyMMMd hmsv": "Gy年M月d日 vah:mm:ss",
+        "GyMMMEd hmsv": "Gy年M月d日E vah:mm:ss",
+        "M hmsv": "M月 vah:mm:ss",
+        "Md hmsv": "M/d vah:mm:ss",
+        "MEd hmsv": "M/dE vah:mm:ss",
+        "MMdd hmsv": "MM/dd vah:mm:ss",
+        "MMM hmsv": "LLL vah:mm:ss",
+        "MMMd hmsv": "M月d日 vah:mm:ss",
+        "MMMEd hmsv": "M月d日E vah:mm:ss",
+        "MMMMd hmsv": "M月d日 vah:mm:ss",
+        "y hmsv": "y年 vah:mm:ss",
+        "yM hmsv": "y/M vah:mm:ss",
+        "yMd hmsv": "y/M/d vah:mm:ss",
+        "yMEd hmsv": "y/M/dE vah:mm:ss",
+        "yMEEEEd hmsv": "y年M月d日EEEE vah:mm:ss",
+        "yMM hmsv": "y年M月 vah:mm:ss",
+        "yMMM hmsv": "y年M月 vah:mm:ss",
+        "yMMMd hmsv": "y年M月d日 vah:mm:ss",
+        "yMMMEd hmsv": "y年M月d日E vah:mm:ss",
+        "yMMMM hmsv": "y年M月 vah:mm:ss",
+        "y年M月d日EEEE Hmsv": "y年M月d日EEEE vHH:mm:ss",
+        "y年M月d日 Hmsv": "y年M月d日 vHH:mm:ss",
+        "y/M/d Hmsv": "y/M/d vHH:mm:ss",
+        "d Hmsv": "d日 vHH:mm:ss",
+        "E Hmsv": "ccc vHH:mm:ss",
+        "Ed Hmsv": "d日E vHH:mm:ss",
+        "Gy Hmsv": "Gy年 vHH:mm:ss",
+        "GyM Hmsv": "Gy年M月 vHH:mm:ss",
+        "GyMd Hmsv": "Gy-MM-dd vHH:mm:ss",
+        "GyMEd Hmsv": "Gy-MM-ddE vHH:mm:ss",
+        "GyMMM Hmsv": "Gy年M月 vHH:mm:ss",
+        "GyMMMd Hmsv": "Gy年M月d日 vHH:mm:ss",
+        "GyMMMEd Hmsv": "Gy年M月d日E vHH:mm:ss",
+        "M Hmsv": "M月 vHH:mm:ss",
+        "Md Hmsv": "M/d vHH:mm:ss",
+        "MEd Hmsv": "M/dE vHH:mm:ss",
+        "MMdd Hmsv": "MM/dd vHH:mm:ss",
+        "MMM Hmsv": "LLL vHH:mm:ss",
+        "MMMd Hmsv": "M月d日 vHH:mm:ss",
+        "MMMEd Hmsv": "M月d日E vHH:mm:ss",
+        "MMMMd Hmsv": "M月d日 vHH:mm:ss",
+        "y Hmsv": "y年 vHH:mm:ss",
+        "yM Hmsv": "y/M vHH:mm:ss",
+        "yMd Hmsv": "y/M/d vHH:mm:ss",
+        "yMEd Hmsv": "y/M/dE vHH:mm:ss",
+        "yMEEEEd Hmsv": "y年M月d日EEEE vHH:mm:ss",
+        "yMM Hmsv": "y年M月 vHH:mm:ss",
+        "yMMM Hmsv": "y年M月 vHH:mm:ss",
+        "yMMMd Hmsv": "y年M月d日 vHH:mm:ss",
+        "yMMMEd Hmsv": "y年M月d日E vHH:mm:ss",
+        "yMMMM Hmsv": "y年M月 vHH:mm:ss",
+        "y年M月d日EEEE hmv": "y年M月d日EEEE vah:mm",
+        "y年M月d日 hmv": "y年M月d日 vah:mm",
+        "y/M/d hmv": "y/M/d vah:mm",
+        "d hmv": "d日 vah:mm",
+        "E hmv": "ccc vah:mm",
+        "Ed hmv": "d日E vah:mm",
+        "Gy hmv": "Gy年 vah:mm",
+        "GyM hmv": "Gy年M月 vah:mm",
+        "GyMd hmv": "Gy-MM-dd vah:mm",
+        "GyMEd hmv": "Gy-MM-ddE vah:mm",
+        "GyMMM hmv": "Gy年M月 vah:mm",
+        "GyMMMd hmv": "Gy年M月d日 vah:mm",
+        "GyMMMEd hmv": "Gy年M月d日E vah:mm",
+        "M hmv": "M月 vah:mm",
+        "Md hmv": "M/d vah:mm",
+        "MEd hmv": "M/dE vah:mm",
+        "MMdd hmv": "MM/dd vah:mm",
+        "MMM hmv": "LLL vah:mm",
+        "MMMd hmv": "M月d日 vah:mm",
+        "MMMEd hmv": "M月d日E vah:mm",
+        "MMMMd hmv": "M月d日 vah:mm",
+        "y hmv": "y年 vah:mm",
+        "yM hmv": "y/M vah:mm",
+        "yMd hmv": "y/M/d vah:mm",
+        "yMEd hmv": "y/M/dE vah:mm",
+        "yMEEEEd hmv": "y年M月d日EEEE vah:mm",
+        "yMM hmv": "y年M月 vah:mm",
+        "yMMM hmv": "y年M月 vah:mm",
+        "yMMMd hmv": "y年M月d日 vah:mm",
+        "yMMMEd hmv": "y年M月d日E vah:mm",
+        "yMMMM hmv": "y年M月 vah:mm",
         "y年M月d日EEEE Hmv": "y年M月d日EEEE v HH:mm",
         "y年M月d日 Hmv": "y年M月d日 v HH:mm",
         "y/M/d Hmv": "y/M/d v HH:mm",
@@ -23631,7 +24639,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E Hmv": "ccc v HH:mm",
         "Ed Hmv": "d日E v HH:mm",
         "Gy Hmv": "Gy年 v HH:mm",
-        "GyMd Hmv": "GGGGG y-MM-dd v HH:mm",
+        "GyM Hmv": "Gy年M月 v HH:mm",
+        "GyMd Hmv": "Gy-MM-dd v HH:mm",
+        "GyMEd Hmv": "Gy-MM-ddE v HH:mm",
         "GyMMM Hmv": "Gy年M月 v HH:mm",
         "GyMMMd Hmv": "Gy年M月d日 v HH:mm",
         "GyMMMEd Hmv": "Gy年M月d日E v HH:mm",
@@ -23653,6 +24663,68 @@ Intl.DateTimeFormat.__addLocaleData({
         "yMMMd Hmv": "y年M月d日 v HH:mm",
         "yMMMEd Hmv": "y年M月d日E v HH:mm",
         "yMMMM Hmv": "y年M月 v HH:mm",
+        "y年M月d日EEEE hv": "y年M月d日EEEE vah时",
+        "y年M月d日 hv": "y年M月d日 vah时",
+        "y/M/d hv": "y/M/d vah时",
+        "d hv": "d日 vah时",
+        "E hv": "ccc vah时",
+        "Ed hv": "d日E vah时",
+        "Gy hv": "Gy年 vah时",
+        "GyM hv": "Gy年M月 vah时",
+        "GyMd hv": "Gy-MM-dd vah时",
+        "GyMEd hv": "Gy-MM-ddE vah时",
+        "GyMMM hv": "Gy年M月 vah时",
+        "GyMMMd hv": "Gy年M月d日 vah时",
+        "GyMMMEd hv": "Gy年M月d日E vah时",
+        "M hv": "M月 vah时",
+        "Md hv": "M/d vah时",
+        "MEd hv": "M/dE vah时",
+        "MMdd hv": "MM/dd vah时",
+        "MMM hv": "LLL vah时",
+        "MMMd hv": "M月d日 vah时",
+        "MMMEd hv": "M月d日E vah时",
+        "MMMMd hv": "M月d日 vah时",
+        "y hv": "y年 vah时",
+        "yM hv": "y/M vah时",
+        "yMd hv": "y/M/d vah时",
+        "yMEd hv": "y/M/dE vah时",
+        "yMEEEEd hv": "y年M月d日EEEE vah时",
+        "yMM hv": "y年M月 vah时",
+        "yMMM hv": "y年M月 vah时",
+        "yMMMd hv": "y年M月d日 vah时",
+        "yMMMEd hv": "y年M月d日E vah时",
+        "yMMMM hv": "y年M月 vah时",
+        "y年M月d日EEEE Hv": "y年M月d日EEEE vH时",
+        "y年M月d日 Hv": "y年M月d日 vH时",
+        "y/M/d Hv": "y/M/d vH时",
+        "d Hv": "d日 vH时",
+        "E Hv": "ccc vH时",
+        "Ed Hv": "d日E vH时",
+        "Gy Hv": "Gy年 vH时",
+        "GyM Hv": "Gy年M月 vH时",
+        "GyMd Hv": "Gy-MM-dd vH时",
+        "GyMEd Hv": "Gy-MM-ddE vH时",
+        "GyMMM Hv": "Gy年M月 vH时",
+        "GyMMMd Hv": "Gy年M月d日 vH时",
+        "GyMMMEd Hv": "Gy年M月d日E vH时",
+        "M Hv": "M月 vH时",
+        "Md Hv": "M/d vH时",
+        "MEd Hv": "M/dE vH时",
+        "MMdd Hv": "MM/dd vH时",
+        "MMM Hv": "LLL vH时",
+        "MMMd Hv": "M月d日 vH时",
+        "MMMEd Hv": "M月d日E vH时",
+        "MMMMd Hv": "M月d日 vH时",
+        "y Hv": "y年 vH时",
+        "yM Hv": "y/M vH时",
+        "yMd Hv": "y/M/d vH时",
+        "yMEd Hv": "y/M/dE vH时",
+        "yMEEEEd Hv": "y年M月d日EEEE vH时",
+        "yMM Hv": "y年M月 vH时",
+        "yMMM Hv": "y年M月 vH时",
+        "yMMMd Hv": "y年M月d日 vH时",
+        "yMMMEd Hv": "y年M月d日E vH时",
+        "yMMMM Hv": "y年M月 vH时",
         "y年M月d日EEEE ms": "y年M月d日EEEE mm:ss",
         "y年M月d日 ms": "y年M月d日 mm:ss",
         "y/M/d ms": "y/M/d mm:ss",
@@ -23660,7 +24732,9 @@ Intl.DateTimeFormat.__addLocaleData({
         "E ms": "ccc mm:ss",
         "Ed ms": "d日E mm:ss",
         "Gy ms": "Gy年 mm:ss",
-        "GyMd ms": "GGGGG y-MM-dd mm:ss",
+        "GyM ms": "Gy年M月 mm:ss",
+        "GyMd ms": "Gy-MM-dd mm:ss",
+        "GyMEd ms": "Gy-MM-ddE mm:ss",
         "GyMMM ms": "Gy年M月 mm:ss",
         "GyMMMd ms": "Gy年M月d日 mm:ss",
         "GyMMMEd ms": "Gy年M月d日E mm:ss",
@@ -23794,8 +24868,8 @@ Intl.DateTimeFormat.__addLocaleData({
         "y": "y–y年"
       },
       "yM": {
-        "M": "y年M月至M月",
-        "y": "y年M月至y年M月"
+        "M": "y/M – y/M",
+        "y": "y/M – y/M"
       },
       "yMd": {
         "d": "y/M/d – y/M/d",
@@ -23805,25 +24879,25 @@ Intl.DateTimeFormat.__addLocaleData({
       "yMEd": {
         "d": "y/M/dE至y/M/dE",
         "M": "y/M/dE至y/M/dE",
-        "y": "y/M/dE至y/M/dE"
+        "y": "y/M/dE – y/M/dE"
       },
       "yMMM": {
-        "M": "y年M月至M月",
-        "y": "y年M月至y年M月"
+        "M": "y年MMM – MMM",
+        "y": "y年MMM – y年MMM"
       },
       "yMMMd": {
-        "d": "y年M月d日至d日",
-        "M": "y年M月d日至M月d日",
-        "y": "y年M月d日至y年M月d日"
+        "d": "y年MMMd日 – d日",
+        "M": "y年MMMd日 – MMMd日",
+        "y": "y年MMMd日 – y年MMMd日"
       },
       "yMMMEd": {
-        "d": "y年M月d日E至d日E",
+        "d": "y年MMMd日E – MMMd日E",
         "M": "y年M月d日E至M月d日E",
         "y": "y年M月d日E至y年M月d日E"
       },
       "yMMMM": {
-        "M": "y年M月至M月",
-        "y": "y年M月至y年M月"
+        "M": "y年M月 – M月",
+        "y": "y年M月 – y年M月"
       }
     },
     "hourCycle": "h23",

@@ -411,6 +411,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "bqi": {
+      "nu": [
+        "latn"
+      ]
+    },
     "br": {
       "nu": [
         "latn"
@@ -437,6 +442,11 @@ export const TIME_SEPARATORS = {
       ]
     },
     "bss": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "bua": {
       "nu": [
         "latn"
       ]
@@ -532,6 +542,11 @@ export const TIME_SEPARATORS = {
       ]
     },
     "co": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "cop": {
       "nu": [
         "latn"
       ]
@@ -797,6 +812,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "en-CZ": {
+      "nu": [
+        "latn"
+      ]
+    },
     "en-DE": {
       "nu": [
         "latn"
@@ -825,7 +845,17 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "en-EE": {
+      "nu": [
+        "latn"
+      ]
+    },
     "en-ER": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "en-ES": {
       "nu": [
         "latn"
       ]
@@ -853,12 +883,22 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "en-FR": {
+      "nu": [
+        "latn"
+      ]
+    },
     "en-GB": {
       "nu": [
         "latn"
       ]
     },
     "en-GD": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "en-GE": {
       "nu": [
         "latn"
       ]
@@ -883,6 +923,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "en-GS": {
+      "nu": [
+        "latn"
+      ]
+    },
     "en-GU": {
       "nu": [
         "latn"
@@ -894,6 +939,11 @@ export const TIME_SEPARATORS = {
       ]
     },
     "en-HK": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "en-HU": {
       "nu": [
         "latn"
       ]
@@ -928,12 +978,22 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "en-IT": {
+      "nu": [
+        "latn"
+      ]
+    },
     "en-JE": {
       "nu": [
         "latn"
       ]
     },
     "en-JM": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "en-JP": {
       "nu": [
         "latn"
       ]
@@ -969,6 +1029,16 @@ export const TIME_SEPARATORS = {
       ]
     },
     "en-LS": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "en-LT": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "en-LV": {
       "nu": [
         "latn"
       ]
@@ -1043,6 +1113,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "en-NO": {
+      "nu": [
+        "latn"
+      ]
+    },
     "en-NR": {
       "nu": [
         "latn"
@@ -1073,6 +1148,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "en-PL": {
+      "nu": [
+        "latn"
+      ]
+    },
     "en-PN": {
       "nu": [
         "latn"
@@ -1083,7 +1163,17 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "en-PT": {
+      "nu": [
+        "latn"
+      ]
+    },
     "en-PW": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "en-RO": {
       "nu": [
         "latn"
       ]
@@ -1124,6 +1214,11 @@ export const TIME_SEPARATORS = {
       ]
     },
     "en-SI": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "en-SK": {
       "nu": [
         "latn"
       ]
@@ -1179,6 +1274,11 @@ export const TIME_SEPARATORS = {
       ]
     },
     "en-TZ": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "en-UA": {
       "nu": [
         "latn"
       ]
@@ -1938,6 +2038,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "ht": {
+      "nu": [
+        "latn"
+      ]
+    },
     "hu": {
       "nu": [
         "latn"
@@ -2091,6 +2196,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "kek": {
+      "nu": [
+        "latn"
+      ]
+    },
     "ken": {
       "nu": [
         "latn"
@@ -2231,6 +2341,36 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "ku-Arab": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "ku-Arab-IR": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "ku-Latn": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "ku-Latn-IQ": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "ku-Latn-SY": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "ku-TR": {
+      "nu": [
+        "latn"
+      ]
+    },
     "kw": {
       "nu": [
         "latn"
@@ -2367,6 +2507,11 @@ export const TIME_SEPARATORS = {
       ]
     },
     "lv": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "lzz": {
       "nu": [
         "latn"
       ]
@@ -2529,6 +2674,18 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "mww": {
+      "nu": [
+        "hmnp",
+        "latn"
+      ]
+    },
+    "mww-Hmnp": {
+      "nu": [
+        "hmnp",
+        "latn"
+      ]
+    },
     "my": {
       "nu": [
         "mymr"
@@ -2684,6 +2841,16 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "oka": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "oka-US": {
+      "nu": [
+        "latn"
+      ]
+    },
     "om": {
       "nu": [
         "latn"
@@ -2744,12 +2911,27 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "pi": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "pi-Latn": {
+      "nu": [
+        "latn"
+      ]
+    },
     "pis": {
       "nu": [
         "latn"
       ]
     },
     "pl": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "pms": {
       "nu": [
         "latn"
       ]
@@ -3039,6 +3221,11 @@ export const TIME_SEPARATORS = {
         "latn"
       ]
     },
+    "sgs": {
+      "nu": [
+        "latn"
+      ]
+    },
     "shi": {
       "nu": [
         "latn"
@@ -3250,6 +3437,21 @@ export const TIME_SEPARATORS = {
       "separator": {
         "latn": "."
       }
+    },
+    "suz": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "suz-Deva": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "suz-Sunu": {
+      "nu": [
+        "latn"
+      ]
     },
     "sv": {
       "nu": [
@@ -3623,6 +3825,11 @@ export const TIME_SEPARATORS = {
       ]
     },
     "yue-Hant-CN": {
+      "nu": [
+        "latn"
+      ]
+    },
+    "yue-Hant-MO": {
       "nu": [
         "latn"
       ]

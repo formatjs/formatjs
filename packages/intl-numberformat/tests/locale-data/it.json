@@ -1919,9 +1919,11 @@
       },
       "XCG": {
         "displayName": {
+          "one": "fiorino caraibico",
+          "other": "fiorini caraibici"
         },
-        "narrow": "Cg.",
-        "symbol": "Cg."
+        "narrow": "Cf",
+        "symbol": "Cf"
       },
       "XDR": {
         "displayName": {
@@ -2084,6 +2086,13 @@
         "narrow": "ZWD",
         "symbol": "ZWD"
       },
+      "ZWG": {
+        "displayName": {
+          "other": "Zimbabwe Gold"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
+      },
       "ZWL": {
         "displayName": {
           "other": "dollaro zimbabwiano (2009)"
@@ -2105,13 +2114,13 @@
           },
           "short": {
             "1000": {
-              "other": "0"
+              "other": "0K ¤"
             },
             "10000": {
-              "other": "0"
+              "other": "00K ¤"
             },
             "100000": {
-              "other": "0"
+              "other": "000K ¤"
             },
             "1000000": {
               "other": "0 Mln ¤"
@@ -2191,13 +2200,13 @@
           },
           "short": {
             "1000": {
-              "other": "0"
+              "other": "0K"
             },
             "10000": {
-              "other": "0"
+              "other": "00K"
             },
             "100000": {
-              "other": "0"
+              "other": "000K"
             },
             "1000000": {
               "other": "0 Mln"

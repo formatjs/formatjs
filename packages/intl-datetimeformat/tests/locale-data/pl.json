@@ -268,68 +268,68 @@
       },
       "Africa/Lagos": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Africa/Luanda": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Africa/Porto-Novo": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Africa/Kinshasa": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Africa/Bangui": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Africa/Brazzaville": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Africa/Douala": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Africa/Libreville": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Africa/Malabo": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Africa/Niamey": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Africa/Ndjamena": {
         "long": [
-          "czas zachodnioafrykański standardowy",
-          "czas zachodnioafrykański letni"
+          "czas zachodnioafrykański",
+          "czas zachodnioafrykański"
         ]
       },
       "Asia/Aqtobe": {
@@ -708,6 +708,12 @@
         "long": [
           "Azory (czas standardowy)",
           "Azory (czas letni)"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "Hawaje-Aleuty (czas standardowy)",
+          "Hawaje-Aleuty (czas letni)"
         ]
       },
       "Asia/Thimphu": {
@@ -1427,7 +1433,7 @@
       "Pacific/Honolulu": {
         "long": [
           "Hawaje-Aleuty (czas standardowy)",
-          "Hawaje-Aleuty (czas letni)"
+          "Hawaje-Aleuty (czas standardowy)"
         ]
       },
       "Asia/Hong_Kong": {
@@ -1948,15 +1954,19 @@
         "Bhms": "h:mm:ss B",
         "d": "d",
         "E": "ccc",
+        "EBh": "E h B",
         "EBhm": "E h:mm B",
         "EBhms": "E h:mm:ss B",
         "Ed": "E, d",
+        "Eh": "E h a",
         "Ehm": "E, h:mm a",
         "EHm": "E, HH:mm",
         "Ehms": "E, h:mm:ss a",
         "EHms": "E, HH:mm:ss",
         "Gy": "y G",
+        "GyM": "MM.y G",
         "GyMd": "d.MM.y GGGGG",
+        "GyMEd": "E, d.MM.y G",
         "GyMMM": "MMM y G",
         "GyMMMd": "d MMM y G",
         "GyMMMEd": "E, d MMM y G",
@@ -1973,6 +1983,8 @@
         "Hmsv": "HH:mm:ss v",
         "hmv": "h:mm a v",
         "Hmv": "HH:mm v",
+        "hv": "h a v",
+        "Hv": "HH'h' v",
         "M": "L",
         "Md": "d.MM",
         "MEd": "E, d.MM",
@@ -2008,7 +2020,9 @@
         "E, HH:mm:ss zzzz": "ccc, HH:mm:ss zzzz",
         "Ed, HH:mm:ss zzzz": "E, d, HH:mm:ss zzzz",
         "Gy, HH:mm:ss zzzz": "y G, HH:mm:ss zzzz",
+        "GyM, HH:mm:ss zzzz": "MM.y G, HH:mm:ss zzzz",
         "GyMd, HH:mm:ss zzzz": "d.MM.y GGGGG, HH:mm:ss zzzz",
+        "GyMEd, HH:mm:ss zzzz": "E, d.MM.y G, HH:mm:ss zzzz",
         "GyMMM, HH:mm:ss zzzz": "MMM y G, HH:mm:ss zzzz",
         "GyMMMd, HH:mm:ss zzzz": "d MMM y G, HH:mm:ss zzzz",
         "GyMMMEd, HH:mm:ss zzzz": "E, d MMM y G, HH:mm:ss zzzz",
@@ -2041,7 +2055,9 @@
         "E, HH:mm:ss z": "ccc, HH:mm:ss z",
         "Ed, HH:mm:ss z": "E, d, HH:mm:ss z",
         "Gy, HH:mm:ss z": "y G, HH:mm:ss z",
+        "GyM, HH:mm:ss z": "MM.y G, HH:mm:ss z",
         "GyMd, HH:mm:ss z": "d.MM.y GGGGG, HH:mm:ss z",
+        "GyMEd, HH:mm:ss z": "E, d.MM.y G, HH:mm:ss z",
         "GyMMM, HH:mm:ss z": "MMM y G, HH:mm:ss z",
         "GyMMMd, HH:mm:ss z": "d MMM y G, HH:mm:ss z",
         "GyMMMEd, HH:mm:ss z": "E, d MMM y G, HH:mm:ss z",
@@ -2074,7 +2090,9 @@
         "E, HH:mm:ss": "ccc, HH:mm:ss",
         "Ed, HH:mm:ss": "E, d, HH:mm:ss",
         "Gy, HH:mm:ss": "y G, HH:mm:ss",
+        "GyM, HH:mm:ss": "MM.y G, HH:mm:ss",
         "GyMd, HH:mm:ss": "d.MM.y GGGGG, HH:mm:ss",
+        "GyMEd, HH:mm:ss": "E, d.MM.y G, HH:mm:ss",
         "GyMMM, HH:mm:ss": "MMM y G, HH:mm:ss",
         "GyMMMd, HH:mm:ss": "d MMM y G, HH:mm:ss",
         "GyMMMEd, HH:mm:ss": "E, d MMM y G, HH:mm:ss",
@@ -2107,7 +2125,9 @@
         "E, HH:mm": "ccc, HH:mm",
         "Ed, HH:mm": "E, d, HH:mm",
         "Gy, HH:mm": "y G, HH:mm",
+        "GyM, HH:mm": "MM.y G, HH:mm",
         "GyMd, HH:mm": "d.MM.y GGGGG, HH:mm",
+        "GyMEd, HH:mm": "E, d.MM.y G, HH:mm",
         "GyMMM, HH:mm": "MMM y G, HH:mm",
         "GyMMMd, HH:mm": "d MMM y G, HH:mm",
         "GyMMMEd, HH:mm": "E, d MMM y G, HH:mm",
@@ -2140,7 +2160,9 @@
         "E, Bh": "ccc, h B",
         "Ed, Bh": "E, d, h B",
         "Gy, Bh": "y G, h B",
+        "GyM, Bh": "MM.y G, h B",
         "GyMd, Bh": "d.MM.y GGGGG, h B",
+        "GyMEd, Bh": "E, d.MM.y G, h B",
         "GyMMM, Bh": "MMM y G, h B",
         "GyMMMd, Bh": "d MMM y G, h B",
         "GyMMMEd, Bh": "E, d MMM y G, h B",
@@ -2173,7 +2195,9 @@
         "E, Bhm": "ccc, h:mm B",
         "Ed, Bhm": "E, d, h:mm B",
         "Gy, Bhm": "y G, h:mm B",
+        "GyM, Bhm": "MM.y G, h:mm B",
         "GyMd, Bhm": "d.MM.y GGGGG, h:mm B",
+        "GyMEd, Bhm": "E, d.MM.y G, h:mm B",
         "GyMMM, Bhm": "MMM y G, h:mm B",
         "GyMMMd, Bhm": "d MMM y G, h:mm B",
         "GyMMMEd, Bhm": "E, d MMM y G, h:mm B",
@@ -2206,7 +2230,9 @@
         "E, Bhms": "ccc, h:mm:ss B",
         "Ed, Bhms": "E, d, h:mm:ss B",
         "Gy, Bhms": "y G, h:mm:ss B",
+        "GyM, Bhms": "MM.y G, h:mm:ss B",
         "GyMd, Bhms": "d.MM.y GGGGG, h:mm:ss B",
+        "GyMEd, Bhms": "E, d.MM.y G, h:mm:ss B",
         "GyMMM, Bhms": "MMM y G, h:mm:ss B",
         "GyMMMd, Bhms": "d MMM y G, h:mm:ss B",
         "GyMMMEd, Bhms": "E, d MMM y G, h:mm:ss B",
@@ -2239,7 +2265,9 @@
         "E, h": "ccc, h a",
         "Ed, h": "E, d, h a",
         "Gy, h": "y G, h a",
+        "GyM, h": "MM.y G, h a",
         "GyMd, h": "d.MM.y GGGGG, h a",
+        "GyMEd, h": "E, d.MM.y G, h a",
         "GyMMM, h": "MMM y G, h a",
         "GyMMMd, h": "d MMM y G, h a",
         "GyMMMEd, h": "E, d MMM y G, h a",
@@ -2272,7 +2300,9 @@
         "E, H": "ccc, HH",
         "Ed, H": "E, d, HH",
         "Gy, H": "y G, HH",
+        "GyM, H": "MM.y G, HH",
         "GyMd, H": "d.MM.y GGGGG, HH",
+        "GyMEd, H": "E, d.MM.y G, HH",
         "GyMMM, H": "MMM y G, HH",
         "GyMMMd, H": "d MMM y G, HH",
         "GyMMMEd, H": "E, d MMM y G, HH",
@@ -2305,7 +2335,9 @@
         "E, hm": "ccc, h:mm a",
         "Ed, hm": "E, d, h:mm a",
         "Gy, hm": "y G, h:mm a",
+        "GyM, hm": "MM.y G, h:mm a",
         "GyMd, hm": "d.MM.y GGGGG, h:mm a",
+        "GyMEd, hm": "E, d.MM.y G, h:mm a",
         "GyMMM, hm": "MMM y G, h:mm a",
         "GyMMMd, hm": "d MMM y G, h:mm a",
         "GyMMMEd, hm": "E, d MMM y G, h:mm a",
@@ -2338,7 +2370,9 @@
         "E, Hm": "ccc, HH:mm",
         "Ed, Hm": "E, d, HH:mm",
         "Gy, Hm": "y G, HH:mm",
+        "GyM, Hm": "MM.y G, HH:mm",
         "GyMd, Hm": "d.MM.y GGGGG, HH:mm",
+        "GyMEd, Hm": "E, d.MM.y G, HH:mm",
         "GyMMM, Hm": "MMM y G, HH:mm",
         "GyMMMd, Hm": "d MMM y G, HH:mm",
         "GyMMMEd, Hm": "E, d MMM y G, HH:mm",
@@ -2371,7 +2405,9 @@
         "E, hms": "ccc, h:mm:ss a",
         "Ed, hms": "E, d, h:mm:ss a",
         "Gy, hms": "y G, h:mm:ss a",
+        "GyM, hms": "MM.y G, h:mm:ss a",
         "GyMd, hms": "d.MM.y GGGGG, h:mm:ss a",
+        "GyMEd, hms": "E, d.MM.y G, h:mm:ss a",
         "GyMMM, hms": "MMM y G, h:mm:ss a",
         "GyMMMd, hms": "d MMM y G, h:mm:ss a",
         "GyMMMEd, hms": "E, d MMM y G, h:mm:ss a",
@@ -2404,7 +2440,9 @@
         "E, Hms": "ccc, HH:mm:ss",
         "Ed, Hms": "E, d, HH:mm:ss",
         "Gy, Hms": "y G, HH:mm:ss",
+        "GyM, Hms": "MM.y G, HH:mm:ss",
         "GyMd, Hms": "d.MM.y GGGGG, HH:mm:ss",
+        "GyMEd, Hms": "E, d.MM.y G, HH:mm:ss",
         "GyMMM, Hms": "MMM y G, HH:mm:ss",
         "GyMMMd, Hms": "d MMM y G, HH:mm:ss",
         "GyMMMEd, Hms": "E, d MMM y G, HH:mm:ss",
@@ -2437,7 +2475,9 @@
         "E, hmsv": "ccc, h:mm:ss a v",
         "Ed, hmsv": "E, d, h:mm:ss a v",
         "Gy, hmsv": "y G, h:mm:ss a v",
+        "GyM, hmsv": "MM.y G, h:mm:ss a v",
         "GyMd, hmsv": "d.MM.y GGGGG, h:mm:ss a v",
+        "GyMEd, hmsv": "E, d.MM.y G, h:mm:ss a v",
         "GyMMM, hmsv": "MMM y G, h:mm:ss a v",
         "GyMMMd, hmsv": "d MMM y G, h:mm:ss a v",
         "GyMMMEd, hmsv": "E, d MMM y G, h:mm:ss a v",
@@ -2470,7 +2510,9 @@
         "E, Hmsv": "ccc, HH:mm:ss v",
         "Ed, Hmsv": "E, d, HH:mm:ss v",
         "Gy, Hmsv": "y G, HH:mm:ss v",
+        "GyM, Hmsv": "MM.y G, HH:mm:ss v",
         "GyMd, Hmsv": "d.MM.y GGGGG, HH:mm:ss v",
+        "GyMEd, Hmsv": "E, d.MM.y G, HH:mm:ss v",
         "GyMMM, Hmsv": "MMM y G, HH:mm:ss v",
         "GyMMMd, Hmsv": "d MMM y G, HH:mm:ss v",
         "GyMMMEd, Hmsv": "E, d MMM y G, HH:mm:ss v",
@@ -2503,7 +2545,9 @@
         "E, hmv": "ccc, h:mm a v",
         "Ed, hmv": "E, d, h:mm a v",
         "Gy, hmv": "y G, h:mm a v",
+        "GyM, hmv": "MM.y G, h:mm a v",
         "GyMd, hmv": "d.MM.y GGGGG, h:mm a v",
+        "GyMEd, hmv": "E, d.MM.y G, h:mm a v",
         "GyMMM, hmv": "MMM y G, h:mm a v",
         "GyMMMd, hmv": "d MMM y G, h:mm a v",
         "GyMMMEd, hmv": "E, d MMM y G, h:mm a v",
@@ -2536,7 +2580,9 @@
         "E, Hmv": "ccc, HH:mm v",
         "Ed, Hmv": "E, d, HH:mm v",
         "Gy, Hmv": "y G, HH:mm v",
+        "GyM, Hmv": "MM.y G, HH:mm v",
         "GyMd, Hmv": "d.MM.y GGGGG, HH:mm v",
+        "GyMEd, Hmv": "E, d.MM.y G, HH:mm v",
         "GyMMM, Hmv": "MMM y G, HH:mm v",
         "GyMMMd, Hmv": "d MMM y G, HH:mm v",
         "GyMMMEd, Hmv": "E, d MMM y G, HH:mm v",
@@ -2561,6 +2607,76 @@
         "yMMMM Hmv": "LLLL y HH:mm v",
         "yMMMMd Hmv": "d MMMM y HH:mm v",
         "yMMMMEd Hmv": "E, d MMMM y HH:mm v",
+        "EEEE, d MMMM y hv": "EEEE, d MMMM y h a v",
+        "d MMMM y hv": "d MMMM y h a v",
+        "d MMM y, hv": "d MMM y, h a v",
+        "d.MM.y, hv": "d.MM.y, h a v",
+        "d, hv": "d, h a v",
+        "E, hv": "ccc, h a v",
+        "Ed, hv": "E, d, h a v",
+        "Gy, hv": "y G, h a v",
+        "GyM, hv": "MM.y G, h a v",
+        "GyMd, hv": "d.MM.y GGGGG, h a v",
+        "GyMEd, hv": "E, d.MM.y G, h a v",
+        "GyMMM, hv": "MMM y G, h a v",
+        "GyMMMd, hv": "d MMM y G, h a v",
+        "GyMMMEd, hv": "E, d MMM y G, h a v",
+        "GyMMMM hv": "LLLL y G h a v",
+        "GyMMMMd hv": "d MMMM y G h a v",
+        "GyMMMMEd hv": "E, d MMMM y G h a v",
+        "M, hv": "L, h a v",
+        "Md, hv": "d.MM, h a v",
+        "MEd, hv": "E, d.MM, h a v",
+        "MMM, hv": "LLL, h a v",
+        "MMMd, hv": "d MMM, h a v",
+        "MMMEd, hv": "E, d MMM, h a v",
+        "MMMMd hv": "d MMMM h a v",
+        "MMMMEd hv": "E, d MMMM h a v",
+        "y, hv": "y, h a v",
+        "yM, hv": "MM.y, h a v",
+        "yMd, hv": "d.MM.y, h a v",
+        "yMEd, hv": "E, d.MM.y, h a v",
+        "yMMM, hv": "LLL y, h a v",
+        "yMMMd, hv": "d MMM y, h a v",
+        "yMMMEd, hv": "E, d MMM y, h a v",
+        "yMMMM hv": "LLLL y h a v",
+        "yMMMMd hv": "d MMMM y h a v",
+        "yMMMMEd hv": "E, d MMMM y h a v",
+        "EEEE, d MMMM y Hv": "EEEE, d MMMM y HH'h' v",
+        "d MMMM y Hv": "d MMMM y HH'h' v",
+        "d MMM y, Hv": "d MMM y, HH'h' v",
+        "d.MM.y, Hv": "d.MM.y, HH'h' v",
+        "d, Hv": "d, HH'h' v",
+        "E, Hv": "ccc, HH'h' v",
+        "Ed, Hv": "E, d, HH'h' v",
+        "Gy, Hv": "y G, HH'h' v",
+        "GyM, Hv": "MM.y G, HH'h' v",
+        "GyMd, Hv": "d.MM.y GGGGG, HH'h' v",
+        "GyMEd, Hv": "E, d.MM.y G, HH'h' v",
+        "GyMMM, Hv": "MMM y G, HH'h' v",
+        "GyMMMd, Hv": "d MMM y G, HH'h' v",
+        "GyMMMEd, Hv": "E, d MMM y G, HH'h' v",
+        "GyMMMM Hv": "LLLL y G HH'h' v",
+        "GyMMMMd Hv": "d MMMM y G HH'h' v",
+        "GyMMMMEd Hv": "E, d MMMM y G HH'h' v",
+        "M, Hv": "L, HH'h' v",
+        "Md, Hv": "d.MM, HH'h' v",
+        "MEd, Hv": "E, d.MM, HH'h' v",
+        "MMM, Hv": "LLL, HH'h' v",
+        "MMMd, Hv": "d MMM, HH'h' v",
+        "MMMEd, Hv": "E, d MMM, HH'h' v",
+        "MMMMd Hv": "d MMMM HH'h' v",
+        "MMMMEd Hv": "E, d MMMM HH'h' v",
+        "y, Hv": "y, HH'h' v",
+        "yM, Hv": "MM.y, HH'h' v",
+        "yMd, Hv": "d.MM.y, HH'h' v",
+        "yMEd, Hv": "E, d.MM.y, HH'h' v",
+        "yMMM, Hv": "LLL y, HH'h' v",
+        "yMMMd, Hv": "d MMM y, HH'h' v",
+        "yMMMEd, Hv": "E, d MMM y, HH'h' v",
+        "yMMMM Hv": "LLLL y HH'h' v",
+        "yMMMMd Hv": "d MMMM y HH'h' v",
+        "yMMMMEd Hv": "E, d MMMM y HH'h' v",
         "EEEE, d MMMM y ms": "EEEE, d MMMM y mm:ss",
         "d MMMM y ms": "d MMMM y mm:ss",
         "d MMM y, ms": "d MMM y, mm:ss",
@@ -2569,7 +2685,9 @@
         "E, ms": "ccc, mm:ss",
         "Ed, ms": "E, d, mm:ss",
         "Gy, ms": "y G, mm:ss",
+        "GyM, ms": "MM.y G, mm:ss",
         "GyMd, ms": "d.MM.y GGGGG, mm:ss",
+        "GyMEd, ms": "E, d.MM.y G, mm:ss",
         "GyMMM, ms": "MMM y G, mm:ss",
         "GyMMMd, ms": "d MMM y G, mm:ss",
         "GyMMMEd, ms": "E, d MMM y G, mm:ss",

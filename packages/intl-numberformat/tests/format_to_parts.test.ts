@@ -272,11 +272,13 @@ it('formats compact notation that is currency and sign dependent', () => {
     currencyDisplay: 'symbol',
     currencySign: 'standard',
   } as const
-  expect(format(n, data, pl, options2)).toEqual('US$\xa0laki100')
+  expect(format(n, data, pl, options2)).toEqual('US$\xa0elfu\xa0100')
   expect(format({...n, sign: -1}, data, pl, options2)).toEqual(
-    'US$laki\xa0-100'
+    'US$\xa0elfu\xa0-100'
   )
-  expect(format({...n, sign: 1}, data, pl, options2)).toEqual('US$laki\xa0+100')
+  expect(format({...n, sign: 1}, data, pl, options2)).toEqual(
+    'US$\xa0elfu\xa0+100'
+  )
 })
 
 // bn locale's compact part contains quoted period character.
@@ -344,7 +346,7 @@ it('determines the plurality of the currency in the compact notation based on th
     magnitude: 3,
     exponent: 3,
   }
-  expect(format(n, data, pl, options)).toEqual('1K US dollars')
+  expect(format(n, data, pl, options)).toEqual('1k US dollars')
 })
 
 it('determines plurality of currency based on the number value of scientific notation', () => {

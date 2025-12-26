@@ -2216,6 +2216,13 @@
         "narrow": "ZWD",
         "symbol": "ZWD"
       },
+      "ZWG": {
+        "displayName": {
+          "other": "oro zimbabuense"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
+      },
       "ZWL": {
         "displayName": {
           "other": "dólar zimbabuense"
@@ -2246,31 +2253,31 @@
               "other": "000 mil ¤"
             },
             "1000000": {
-              "other": "0 M¤"
+              "other": "0 M ¤"
             },
             "10000000": {
-              "other": "00 M¤"
+              "other": "00 M ¤"
             },
             "100000000": {
-              "other": "000 M¤"
+              "other": "000 M ¤"
             },
             "1000000000": {
-              "other": "0000 M¤"
+              "other": "0000 M ¤"
             },
             "10000000000": {
-              "other": "00 mil M¤"
+              "other": "00 mil M ¤"
             },
             "100000000000": {
-              "other": "000 mil M¤"
+              "other": "000 mil M ¤"
             },
             "1000000000000": {
-              "other": "0 B¤"
+              "other": "0 B ¤"
             },
             "10000000000000": {
-              "other": "00 B¤"
+              "other": "00 B ¤"
             },
             "100000000000000": {
-              "other": "000 B¤"
+              "other": "000 B ¤"
             }
           },
           "standard": "#,##0.00 ¤",

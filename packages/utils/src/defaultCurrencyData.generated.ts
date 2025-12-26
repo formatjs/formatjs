@@ -22,7 +22,7 @@
   "BD": "BDT",
   "BE": "EUR",
   "BF": "XOF",
-  "BG": "BGN",
+  "BG": "EUR",
   "BH": "BHD",
   "BI": "BIF",
   "BJ": "XOF",
@@ -48,7 +48,7 @@
   "CK": "NZD",
   "CL": "CLP",
   "CM": "XAF",
-  "CN": "CNY",
+  "CN": "CNH",
   "CO": "COP",
   "CR": "CRC",
   "CU": "CUP",
@@ -136,7 +136,7 @@
   "LI": "CHF",
   "LK": "LKR",
   "LR": "LRD",
-  "LS": "ZAR",
+  "LS": "LSL",
   "LT": "EUR",
   "LU": "EUR",
   "LV": "EUR",
@@ -255,5 +255,6 @@
   "YT": "EUR",
   "ZA": "ZAR",
   "ZM": "ZMW",
-  "ZW": "ZWG"
+  "ZW": "USD",
+  "ZZ": "XAD"
 } as const;

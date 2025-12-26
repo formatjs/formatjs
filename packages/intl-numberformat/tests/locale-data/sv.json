@@ -2196,9 +2196,10 @@
       },
       "XCG": {
         "displayName": {
+          "other": "karibisk gulden"
         },
-        "narrow": "Cg.",
-        "symbol": "Cg."
+        "narrow": "XCG",
+        "symbol": "XCG"
       },
       "XDR": {
         "displayName": {
@@ -2404,6 +2405,13 @@
         "narrow": "ZWD",
         "symbol": "ZWD"
       },
+      "ZWG": {
+        "displayName": {
+          "other": "zimbabwiskt guld"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
+      },
       "ZWL": {
         "displayName": {
           "other": "Zimbabwe-dollar (2009)"
@@ -2576,7 +2584,7 @@
           "perMille": "‰",
           "percentSign": "%",
           "plusSign": "+",
-          "rangeSign": "‒",
+          "rangeSign": "–",
           "superscriptingExponent": "×",
           "timeSeparator": ":",
           "timeSeparator-alt-variant": "."
@@ -2708,7 +2716,7 @@
         },
         "fluid-ounce": {
           "long": {
-            "one": "{0} flytande uns",
+            "one": "{0} fluid ounce",
             "other": "{0} fluid ounces"
           },
           "narrow": {
@@ -2817,8 +2825,8 @@
           },
           "perUnit": {
             "long": "{0} per timme",
-            "narrow": "{0}/h",
-            "short": "{0}/h"
+            "narrow": "{0}/tim",
+            "short": "{0}/tim"
           },
           "short": {
             "other": "{0} tim"
@@ -2829,8 +2837,7 @@
             "other": "{0} tum"
           },
           "narrow": {
-            "one": "{0} tum",
-            "other": "{0}\""
+            "other": "{0}″"
           },
           "perUnit": {
             "long": "{0} per tum",
@@ -3116,7 +3123,7 @@
           },
           "perUnit": {
             "long": "{0} per månad",
-            "narrow": "{0}/mån",
+            "narrow": "{0}/m",
             "short": "{0}/mån"
           },
           "short": {

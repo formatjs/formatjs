@@ -1846,10 +1846,10 @@
       },
       "SLL": {
         "displayName": {
-          "few": "leone sierraleońskie (1964—2022)",
-          "many": "leone sierraleońskich (1964—2022)",
+          "few": "leone sierraleońskie (1964–2022)",
+          "many": "leone sierraleońskich (1964–2022)",
           "one": "leone sierraleoński (1964—2022)",
-          "other": "leone sierraleońskiego (1964—2022)"
+          "other": "leone sierraleońskiego (1964–2022)"
         },
         "narrow": "SLL",
         "symbol": "SLL"
@@ -2250,9 +2250,13 @@
       },
       "XCG": {
         "displayName": {
+          "few": "guldeny karaibskie",
+          "many": "guldenów karaibskich",
+          "one": "gulden karaibski",
+          "other": "guldena karaibskiego"
         },
-        "narrow": "Cg.",
-        "symbol": "Cg."
+        "narrow": "XCG",
+        "symbol": "XCG"
       },
       "XDR": {
         "displayName": {
@@ -2418,6 +2422,15 @@
         },
         "narrow": "ZWD",
         "symbol": "ZWD"
+      },
+      "ZWG": {
+        "displayName": {
+          "many": "złot Zimbabwe",
+          "one": "złoto Zimbabwe",
+          "other": "złota Zimbabwe"
+        },
+        "narrow": "ZWG",
+        "symbol": "ZWG"
       },
       "ZWL": {
         "displayName": {
