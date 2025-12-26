@@ -95,7 +95,7 @@
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-matchers": "^5.0.0",
     "karma-sauce-launcher": "^4.3.6",
-    "lint-staged": "^15.2.10",
+    "lint-staged": "^16.0.0",
     "lodash-es": "^4.17.21",
     "lunr": "^2.3.9",
     "make-plural-compiler": "^5.1.0",
