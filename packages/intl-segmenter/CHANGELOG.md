@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.6](github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.0.5...@formatjs/intl-segmenter@12.0.6) (2025-12-26)
+
+**Note:** Version bump only for package @formatjs/intl-segmenter
+
 ## [12.0.5](github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.0.4...@formatjs/intl-segmenter@12.0.5) (2025-12-23)
 
 **Note:** Version bump only for package @formatjs/intl-segmenter

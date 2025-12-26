@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.1.1...@formatjs/icu-messageformat-parser@3.2.0) (2025-12-26)
+
+### Features
+
+* upgrade cldr to v48 ([#5678](https://github.com/formatjs/formatjs/issues/5678)) ([54ef319](https://github.com/formatjs/formatjs/commit/54ef31940172467889be64907e9fbbf567ea3f4b)) - by @longlho
+
 ## [3.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.1.0...@formatjs/icu-messageformat-parser@3.1.1) (2025-12-23)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

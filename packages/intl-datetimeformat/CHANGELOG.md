@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.0.6...@formatjs/intl-datetimeformat@7.1.0) (2025-12-26)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** add synthetic range, fix [#4535](https://github.com/formatjs/formatjs/issues/4535) ([#5682](https://github.com/formatjs/formatjs/issues/5682)) ([3d3c57a](https://github.com/formatjs/formatjs/commit/3d3c57ae2c8acb6826006573dfd5abcff9c00b19)) - by @longlho
+* **@formatjs/intl-datetimeformat:** extract tz mapping from metazoneInfo, fix [#4456](https://github.com/formatjs/formatjs/issues/4456) ([#5684](https://github.com/formatjs/formatjs/issues/5684)) ([ba0e281](https://github.com/formatjs/formatjs/commit/ba0e281919dc5d78d790d2b85bbc489f8e745128)) - by @longlho
+* **@formatjs/intl-datetimeformat:** handle interval format fallback, fix [#4168](https://github.com/formatjs/formatjs/issues/4168) ([#5685](https://github.com/formatjs/formatjs/issues/5685)) ([55cb0f6](https://github.com/formatjs/formatjs/commit/55cb0f61a85f7bf6cddd1949cb9ce0c049b43817)) - by @longlho
+
+### Features
+
+* upgrade cldr to v48 ([#5678](https://github.com/formatjs/formatjs/issues/5678)) ([54ef319](https://github.com/formatjs/formatjs/commit/54ef31940172467889be64907e9fbbf567ea3f4b)) - by @longlho
+
 ## [7.0.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.0.5...@formatjs/intl-datetimeformat@7.0.6) (2025-12-23)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/utils@2.0.4...@formatjs/utils@2.1.0) (2025-12-26)
+
+### Features
+
+* upgrade cldr to v48 ([#5678](https://github.com/formatjs/formatjs/issues/5678)) ([54ef319](https://github.com/formatjs/formatjs/commit/54ef31940172467889be64907e9fbbf567ea3f4b)) - by @longlho
+
 ## [2.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/utils@2.0.3...@formatjs/utils@2.0.4) (2025-12-19)
 
 ### Bug Fixes

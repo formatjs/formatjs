@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.6](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.5...@formatjs/ecma402-abstract@3.0.6) (2025-12-26)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** handle interval format fallback, fix [#4168](/github.com/formatjs/formatjs/issues/4168) ([#5685](/github.com/formatjs/formatjs/issues/5685)) ([55cb0f6](github.com/formatjs/formatjs/commits/55cb0f61a85f7bf6cddd1949cb9ce0c049b43817)) - by @longlho
+
 ## [3.0.5](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.4...@formatjs/ecma402-abstract@3.0.5) (2025-12-23)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract
