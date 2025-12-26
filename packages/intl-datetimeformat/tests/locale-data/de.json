@@ -134,40 +134,62 @@
       ]
     },
     "timeZoneName": {
-      "America/Rio_Branco": {
+      "Africa/Abidjan": {
         "long": [
-          "Acre-Normalzeit",
-          "Acre-Sommerzeit"
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
         ]
       },
-      "Asia/Kabul": {
+      "Africa/Accra": {
         "long": [
-          "Afghanistan-Zeit",
-          "Afghanistan-Zeit"
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
         ]
       },
-      "Africa/Maputo": {
+      "Africa/Addis_Ababa": {
         "long": [
-          "Zentralafrikanische Zeit",
-          "Zentralafrikanische Zeit"
+          "Ostafrikanische Zeit",
+          "Ostafrikanische Zeit"
         ]
       },
-      "Africa/Bujumbura": {
+      "Africa/Algiers": {
         "long": [
-          "Zentralafrikanische Zeit",
-          "Zentralafrikanische Zeit"
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
         ]
       },
-      "Africa/Gaborone": {
+      "Africa/Asmera": {
         "long": [
-          "Zentralafrikanische Zeit",
-          "Zentralafrikanische Zeit"
+          "Ostafrikanische Zeit",
+          "Ostafrikanische Zeit"
         ]
       },
-      "Africa/Lubumbashi": {
+      "Africa/Bamako": {
         "long": [
-          "Zentralafrikanische Zeit",
-          "Zentralafrikanische Zeit"
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Africa/Bangui": {
+        "long": [
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
+        ]
+      },
+      "Africa/Banjul": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Africa/Bissau": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
         ]
       },
       "Africa/Blantyre": {
@@ -176,25 +198,61 @@
           "Zentralafrikanische Zeit"
         ]
       },
-      "Africa/Kigali": {
+      "Africa/Brazzaville": {
+        "long": [
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
+        ]
+      },
+      "Africa/Bujumbura": {
         "long": [
           "Zentralafrikanische Zeit",
           "Zentralafrikanische Zeit"
         ]
       },
-      "Africa/Lusaka": {
+      "Africa/Cairo": {
         "long": [
-          "Zentralafrikanische Zeit",
-          "Zentralafrikanische Zeit"
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
         ]
       },
-      "Africa/Harare": {
+      "Africa/Casablanca": {
         "long": [
-          "Zentralafrikanische Zeit",
-          "Zentralafrikanische Zeit"
+          "Westeuropäische Normalzeit",
+          "Westeuropäische Sommerzeit"
+        ],
+        "short": [
+          "WEZ",
+          "WESZ"
         ]
       },
-      "Africa/Nairobi": {
+      "Africa/Ceuta": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Africa/Conakry": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Africa/Dakar": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Africa/Dar_es_Salaam": {
         "long": [
           "Ostafrikanische Zeit",
           "Ostafrikanische Zeit"
@@ -206,40 +264,50 @@
           "Ostafrikanische Zeit"
         ]
       },
-      "Africa/Asmera": {
+      "Africa/Douala": {
         "long": [
-          "Ostafrikanische Zeit",
-          "Ostafrikanische Zeit"
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
         ]
       },
-      "Africa/Addis_Ababa": {
+      "Africa/El_Aaiun": {
         "long": [
-          "Ostafrikanische Zeit",
-          "Ostafrikanische Zeit"
+          "Westeuropäische Normalzeit",
+          "Westeuropäische Sommerzeit"
+        ],
+        "short": [
+          "WEZ",
+          "WESZ"
         ]
       },
-      "Indian/Comoro": {
+      "Africa/Freetown": {
         "long": [
-          "Ostafrikanische Zeit",
-          "Ostafrikanische Zeit"
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
         ]
       },
-      "Indian/Antananarivo": {
+      "Africa/Gaborone": {
         "long": [
-          "Ostafrikanische Zeit",
-          "Ostafrikanische Zeit"
+          "Zentralafrikanische Zeit",
+          "Zentralafrikanische Zeit"
         ]
       },
-      "Africa/Mogadishu": {
+      "Africa/Harare": {
         "long": [
-          "Ostafrikanische Zeit",
-          "Ostafrikanische Zeit"
+          "Zentralafrikanische Zeit",
+          "Zentralafrikanische Zeit"
         ]
       },
-      "Africa/Dar_es_Salaam": {
+      "Africa/Johannesburg": {
         "long": [
-          "Ostafrikanische Zeit",
-          "Ostafrikanische Zeit"
+          "Südafrikanische Zeit",
+          "Südafrikanische Zeit"
+        ]
+      },
+      "Africa/Juba": {
+        "long": [
+          "Zentralafrikanische Zeit",
+          "Zentralafrikanische Zeit"
         ]
       },
       "Africa/Kampala": {
@@ -248,16 +316,70 @@
           "Ostafrikanische Zeit"
         ]
       },
-      "Indian/Mayotte": {
+      "Africa/Khartoum": {
         "long": [
-          "Ostafrikanische Zeit",
-          "Ostafrikanische Zeit"
+          "Zentralafrikanische Zeit",
+          "Zentralafrikanische Zeit"
         ]
       },
-      "Africa/Johannesburg": {
+      "Africa/Kigali": {
         "long": [
-          "Südafrikanische Zeit",
-          "Südafrikanische Zeit"
+          "Zentralafrikanische Zeit",
+          "Zentralafrikanische Zeit"
+        ]
+      },
+      "Africa/Kinshasa": {
+        "long": [
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
+        ]
+      },
+      "Africa/Lagos": {
+        "long": [
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
+        ]
+      },
+      "Africa/Libreville": {
+        "long": [
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
+        ]
+      },
+      "Africa/Lome": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Africa/Luanda": {
+        "long": [
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
+        ]
+      },
+      "Africa/Lubumbashi": {
+        "long": [
+          "Zentralafrikanische Zeit",
+          "Zentralafrikanische Zeit"
+        ]
+      },
+      "Africa/Lusaka": {
+        "long": [
+          "Zentralafrikanische Zeit",
+          "Zentralafrikanische Zeit"
+        ]
+      },
+      "Africa/Malabo": {
+        "long": [
+          "Westafrikanische Zeit",
+          "Westafrikanische Zeit"
+        ]
+      },
+      "Africa/Maputo": {
+        "long": [
+          "Zentralafrikanische Zeit",
+          "Zentralafrikanische Zeit"
         ]
       },
       "Africa/Maseru": {
@@ -272,55 +394,25 @@
           "Südafrikanische Zeit"
         ]
       },
-      "Africa/Lagos": {
+      "Africa/Mogadishu": {
         "long": [
-          "Westafrikanische Zeit",
-          "Westafrikanische Zeit"
+          "Ostafrikanische Zeit",
+          "Ostafrikanische Zeit"
         ]
       },
-      "Africa/Luanda": {
+      "Africa/Monrovia": {
         "long": [
-          "Westafrikanische Zeit",
-          "Westafrikanische Zeit"
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
         ]
       },
-      "Africa/Porto-Novo": {
+      "Africa/Nairobi": {
         "long": [
-          "Westafrikanische Zeit",
-          "Westafrikanische Zeit"
+          "Ostafrikanische Zeit",
+          "Ostafrikanische Zeit"
         ]
       },
-      "Africa/Kinshasa": {
-        "long": [
-          "Westafrikanische Zeit",
-          "Westafrikanische Zeit"
-        ]
-      },
-      "Africa/Bangui": {
-        "long": [
-          "Westafrikanische Zeit",
-          "Westafrikanische Zeit"
-        ]
-      },
-      "Africa/Brazzaville": {
-        "long": [
-          "Westafrikanische Zeit",
-          "Westafrikanische Zeit"
-        ]
-      },
-      "Africa/Douala": {
-        "long": [
-          "Westafrikanische Zeit",
-          "Westafrikanische Zeit"
-        ]
-      },
-      "Africa/Libreville": {
-        "long": [
-          "Westafrikanische Zeit",
-          "Westafrikanische Zeit"
-        ]
-      },
-      "Africa/Malabo": {
+      "Africa/Ndjamena": {
         "long": [
           "Westafrikanische Zeit",
           "Westafrikanische Zeit"
@@ -332,223 +424,69 @@
           "Westafrikanische Zeit"
         ]
       },
-      "Africa/Ndjamena": {
+      "Africa/Nouakchott": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Africa/Ouagadougou": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Africa/Porto-Novo": {
         "long": [
           "Westafrikanische Zeit",
           "Westafrikanische Zeit"
         ]
       },
-      "Asia/Aqtobe": {
+      "Africa/Sao_Tome": {
         "long": [
-          "Westkasachische Zeit",
-          "Westkasachische Zeit"
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
         ]
       },
-      "America/Juneau": {
+      "Africa/Tripoli": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Africa/Tunis": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Africa/Windhoek": {
+        "long": [
+          "Zentralafrikanische Zeit",
+          "Zentralafrikanische Zeit"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "Hawaii-Aleuten-Normalzeit",
+          "Hawaii-Aleuten-Sommerzeit"
+        ]
+      },
+      "America/Anchorage": {
         "long": [
           "Alaska-Normalzeit",
           "Alaska-Sommerzeit"
         ]
       },
-      "Asia/Almaty": {
-        "long": [
-          "Ostkasachische Zeit",
-          "Ostkasachische Zeit"
-        ]
-      },
-      "America/Manaus": {
-        "long": [
-          "Amazonas-Normalzeit",
-          "Amazonas-Sommerzeit"
-        ]
-      },
-      "America/Chicago": {
-        "long": [
-          "Nordamerikanische Zentral-Normalzeit",
-          "Nordamerikanische Zentral-Sommerzeit"
-        ]
-      },
-      "America/Belize": {
-        "long": [
-          "Nordamerikanische Zentral-Normalzeit",
-          "Nordamerikanische Zentral-Sommerzeit"
-        ]
-      },
-      "America/Winnipeg": {
-        "long": [
-          "Nordamerikanische Zentral-Normalzeit",
-          "Nordamerikanische Zentral-Sommerzeit"
-        ]
-      },
-      "America/Costa_Rica": {
-        "long": [
-          "Nordamerikanische Zentral-Normalzeit",
-          "Nordamerikanische Zentral-Sommerzeit"
-        ]
-      },
-      "America/Guatemala": {
-        "long": [
-          "Nordamerikanische Zentral-Normalzeit",
-          "Nordamerikanische Zentral-Sommerzeit"
-        ]
-      },
-      "America/Tegucigalpa": {
-        "long": [
-          "Nordamerikanische Zentral-Normalzeit",
-          "Nordamerikanische Zentral-Sommerzeit"
-        ]
-      },
-      "America/Mexico_City": {
-        "long": [
-          "Nordamerikanische Zentral-Normalzeit",
-          "Nordamerikanische Zentral-Sommerzeit"
-        ]
-      },
-      "America/El_Salvador": {
-        "long": [
-          "Nordamerikanische Zentral-Normalzeit",
-          "Nordamerikanische Zentral-Sommerzeit"
-        ]
-      },
-      "America/New_York": {
-        "long": [
-          "Nordamerikanische Ostküsten-Normalzeit",
-          "Nordamerikanische Ostküsten-Sommerzeit"
-        ]
-      },
-      "America/Nassau": {
-        "long": [
-          "Nordamerikanische Ostküsten-Normalzeit",
-          "Nordamerikanische Ostküsten-Sommerzeit"
-        ]
-      },
-      "America/Toronto": {
-        "long": [
-          "Nordamerikanische Ostküsten-Normalzeit",
-          "Nordamerikanische Ostküsten-Sommerzeit"
-        ]
-      },
-      "America/Port-au-Prince": {
-        "long": [
-          "Nordamerikanische Ostküsten-Normalzeit",
-          "Nordamerikanische Ostküsten-Sommerzeit"
-        ]
-      },
-      "America/Jamaica": {
-        "long": [
-          "Nordamerikanische Ostküsten-Normalzeit",
-          "Nordamerikanische Ostküsten-Sommerzeit"
-        ]
-      },
-      "America/Cayman": {
-        "long": [
-          "Nordamerikanische Ostküsten-Normalzeit",
-          "Nordamerikanische Ostküsten-Sommerzeit"
-        ]
-      },
-      "America/Panama": {
-        "long": [
-          "Nordamerikanische Ostküsten-Normalzeit",
-          "Nordamerikanische Ostküsten-Sommerzeit"
-        ]
-      },
-      "America/Denver": {
-        "long": [
-          "Rocky-Mountains-Normalzeit",
-          "Rocky-Mountains-Sommerzeit"
-        ]
-      },
-      "America/Edmonton": {
-        "long": [
-          "Rocky-Mountains-Normalzeit",
-          "Rocky-Mountains-Sommerzeit"
-        ]
-      },
-      "America/Los_Angeles": {
-        "long": [
-          "Nordamerikanische Westküsten-Normalzeit",
-          "Nordamerikanische Westküsten-Sommerzeit"
-        ]
-      },
-      "America/Vancouver": {
-        "long": [
-          "Nordamerikanische Westküsten-Normalzeit",
-          "Nordamerikanische Westküsten-Sommerzeit"
-        ]
-      },
-      "America/Tijuana": {
-        "long": [
-          "Nordamerikanische Westküsten-Normalzeit",
-          "Nordamerikanische Westküsten-Sommerzeit"
-        ]
-      },
-      "Asia/Anadyr": {
-        "long": [
-          "Anadyr Normalzeit",
-          "Anadyr Sommerzeit"
-        ]
-      },
-      "Pacific/Apia": {
-        "long": [
-          "Apia-Normalzeit",
-          "Apia-Sommerzeit"
-        ]
-      },
-      "Asia/Riyadh": {
-        "long": [
-          "Arabische Normalzeit",
-          "Arabische Sommerzeit"
-        ]
-      },
-      "Asia/Bahrain": {
-        "long": [
-          "Arabische Normalzeit",
-          "Arabische Sommerzeit"
-        ]
-      },
-      "Asia/Baghdad": {
-        "long": [
-          "Arabische Normalzeit",
-          "Arabische Sommerzeit"
-        ]
-      },
-      "Asia/Kuwait": {
-        "long": [
-          "Arabische Normalzeit",
-          "Arabische Sommerzeit"
-        ]
-      },
-      "Asia/Qatar": {
-        "long": [
-          "Arabische Normalzeit",
-          "Arabische Sommerzeit"
-        ]
-      },
-      "Asia/Aden": {
-        "long": [
-          "Arabische Normalzeit",
-          "Arabische Sommerzeit"
-        ]
-      },
-      "America/Buenos_Aires": {
-        "long": [
-          "Argentinische Normalzeit",
-          "Argentinische Sommerzeit"
-        ]
-      },
-      "America/Argentina/San_Luis": {
-        "long": [
-          "Westargentinische Normalzeit",
-          "Westargentinische Sommerzeit"
-        ]
-      },
-      "Asia/Ashgabat": {
-        "long": [
-          "Turkmenische Normalzeit",
-          "Turkmenische Sommerzeit"
-        ]
-      },
-      "America/Halifax": {
+      "America/Anguilla": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
@@ -560,10 +498,10 @@
           "Atlantik-Sommerzeit"
         ]
       },
-      "America/Anguilla": {
+      "America/Araguaina": {
         "long": [
-          "Atlantik-Normalzeit",
-          "Atlantik-Sommerzeit"
+          "Brasília-Normalzeit",
+          "Brasília-Sommerzeit"
         ]
       },
       "America/Aruba": {
@@ -572,22 +510,166 @@
           "Atlantik-Sommerzeit"
         ]
       },
+      "America/Asuncion": {
+        "long": [
+          "Paraguayische Normalzeit",
+          "Paraguayische Sommerzeit"
+        ]
+      },
+      "America/Bahia": {
+        "long": [
+          "Brasília-Normalzeit",
+          "Brasília-Sommerzeit"
+        ]
+      },
+      "America/Bahia_Banderas": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
       "America/Barbados": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
         ]
       },
-      "Atlantic/Bermuda": {
+      "America/Belem": {
+        "long": [
+          "Brasília-Normalzeit",
+          "Brasília-Sommerzeit"
+        ]
+      },
+      "America/Belize": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Blanc-Sablon": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
         ]
       },
-      "America/Kralendijk": {
+      "America/Boa_Vista": {
         "long": [
-          "Atlantik-Normalzeit",
-          "Atlantik-Sommerzeit"
+          "Amazonas-Normalzeit",
+          "Amazonas-Sommerzeit"
+        ]
+      },
+      "America/Bogota": {
+        "long": [
+          "Kolumbianische Normalzeit",
+          "Kolumbianische Sommerzeit"
+        ]
+      },
+      "America/Boise": {
+        "long": [
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
+        ]
+      },
+      "America/Buenos_Aires": {
+        "long": [
+          "Argentinische Normalzeit",
+          "Argentinische Sommerzeit"
+        ]
+      },
+      "America/Cambridge_Bay": {
+        "long": [
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
+        ]
+      },
+      "America/Campo_Grande": {
+        "long": [
+          "Amazonas-Normalzeit",
+          "Amazonas-Sommerzeit"
+        ]
+      },
+      "America/Cancun": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Caracas": {
+        "long": [
+          "Venezuela-Zeit",
+          "Venezuela-Zeit"
+        ]
+      },
+      "America/Catamarca": {
+        "long": [
+          "Argentinische Normalzeit",
+          "Argentinische Sommerzeit"
+        ]
+      },
+      "America/Cayenne": {
+        "long": [
+          "Französisch-Guayana-Zeit",
+          "Französisch-Guayana-Zeit"
+        ]
+      },
+      "America/Cayman": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Chicago": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Chihuahua": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Ciudad_Juarez": {
+        "long": [
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
+        ]
+      },
+      "America/Coral_Harbour": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Cordoba": {
+        "long": [
+          "Argentinische Normalzeit",
+          "Argentinische Sommerzeit"
+        ]
+      },
+      "America/Costa_Rica": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Coyhaique": {
+        "long": [
+          "Chilenische Normalzeit",
+          "Chilenische Sommerzeit"
+        ]
+      },
+      "America/Creston": {
+        "long": [
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
+        ]
+      },
+      "America/Cuiaba": {
+        "long": [
+          "Amazonas-Normalzeit",
+          "Amazonas-Sommerzeit"
         ]
       },
       "America/Curacao": {
@@ -596,19 +678,91 @@
           "Atlantik-Sommerzeit"
         ]
       },
+      "America/Danmarkshavn": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "America/Dawson": {
+        "long": [
+          "Yukon-Zeit",
+          "Yukon-Zeit"
+        ]
+      },
+      "America/Dawson_Creek": {
+        "long": [
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
+        ]
+      },
+      "America/Denver": {
+        "long": [
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
+        ]
+      },
+      "America/Detroit": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
       "America/Dominica": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
         ]
       },
-      "America/Grenada": {
+      "America/Edmonton": {
+        "long": [
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
+        ]
+      },
+      "America/Eirunepe": {
+        "long": [
+          "Acre-Normalzeit",
+          "Acre-Sommerzeit"
+        ]
+      },
+      "America/El_Salvador": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Fort_Nelson": {
+        "long": [
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
+        ]
+      },
+      "America/Fortaleza": {
+        "long": [
+          "Brasília-Normalzeit",
+          "Brasília-Sommerzeit"
+        ]
+      },
+      "America/Glace_Bay": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
         ]
       },
-      "America/Thule": {
+      "America/Goose_Bay": {
+        "long": [
+          "Atlantik-Normalzeit",
+          "Atlantik-Sommerzeit"
+        ]
+      },
+      "America/Grand_Turk": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Grenada": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
@@ -620,16 +774,130 @@
           "Atlantik-Sommerzeit"
         ]
       },
-      "America/St_Kitts": {
+      "America/Guatemala": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Guayaquil": {
+        "long": [
+          "Ecuadorianische Zeit",
+          "Ecuadorianische Zeit"
+        ]
+      },
+      "America/Guyana": {
+        "long": [
+          "Guyana-Zeit",
+          "Guyana-Zeit"
+        ]
+      },
+      "America/Halifax": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
         ]
       },
-      "America/St_Lucia": {
+      "America/Havana": {
+        "long": [
+          "Kubanische Normalzeit",
+          "Kubanische Sommerzeit"
+        ]
+      },
+      "America/Hermosillo": {
+        "long": [
+          "Mexikanische Pazifik-Normalzeit",
+          "Mexikanische Pazifik-Sommerzeit"
+        ]
+      },
+      "America/Indianapolis": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Inuvik": {
+        "long": [
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
+        ]
+      },
+      "America/Iqaluit": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Jamaica": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Jujuy": {
+        "long": [
+          "Argentinische Normalzeit",
+          "Argentinische Sommerzeit"
+        ]
+      },
+      "America/Juneau": {
+        "long": [
+          "Alaska-Normalzeit",
+          "Alaska-Sommerzeit"
+        ]
+      },
+      "America/Kralendijk": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
+        ]
+      },
+      "America/La_Paz": {
+        "long": [
+          "Bolivianische Zeit",
+          "Bolivianische Zeit"
+        ]
+      },
+      "America/Lima": {
+        "long": [
+          "Peruanische Normalzeit",
+          "Peruanische Sommerzeit"
+        ]
+      },
+      "America/Los_Angeles": {
+        "long": [
+          "Nordamerikanische Westküsten-Normalzeit",
+          "Nordamerikanische Westküsten-Sommerzeit"
+        ]
+      },
+      "America/Louisville": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Lower_Princes": {
+        "long": [
+          "Atlantik-Normalzeit",
+          "Atlantik-Sommerzeit"
+        ]
+      },
+      "America/Maceio": {
+        "long": [
+          "Brasília-Normalzeit",
+          "Brasília-Sommerzeit"
+        ]
+      },
+      "America/Managua": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Manaus": {
+        "long": [
+          "Amazonas-Normalzeit",
+          "Amazonas-Sommerzeit"
         ]
       },
       "America/Marigot": {
@@ -644,22 +912,124 @@
           "Atlantik-Sommerzeit"
         ]
       },
+      "America/Matamoros": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Mazatlan": {
+        "long": [
+          "Mexikanische Pazifik-Normalzeit",
+          "Mexikanische Pazifik-Sommerzeit"
+        ]
+      },
+      "America/Mendoza": {
+        "long": [
+          "Argentinische Normalzeit",
+          "Argentinische Sommerzeit"
+        ]
+      },
+      "America/Menominee": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Merida": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Metlakatla": {
+        "long": [
+          "Alaska-Normalzeit",
+          "Alaska-Sommerzeit"
+        ]
+      },
+      "America/Mexico_City": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Miquelon": {
+        "long": [
+          "St.-Pierre-und-Miquelon-Normalzeit",
+          "St.-Pierre-und-Miquelon-Sommerzeit"
+        ]
+      },
+      "America/Moncton": {
+        "long": [
+          "Atlantik-Normalzeit",
+          "Atlantik-Sommerzeit"
+        ]
+      },
+      "America/Monterrey": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Montevideo": {
+        "long": [
+          "Uruguayische Normalzeit",
+          "Uruguayische Sommerzeit"
+        ]
+      },
       "America/Montserrat": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
         ]
       },
-      "America/Puerto_Rico": {
+      "America/Nassau": {
         "long": [
-          "Atlantik-Normalzeit",
-          "Atlantik-Sommerzeit"
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
         ]
       },
-      "America/Lower_Princes": {
+      "America/New_York": {
         "long": [
-          "Atlantik-Normalzeit",
-          "Atlantik-Sommerzeit"
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Nome": {
+        "long": [
+          "Alaska-Normalzeit",
+          "Alaska-Sommerzeit"
+        ]
+      },
+      "America/Noronha": {
+        "long": [
+          "Fernando-de-Noronha-Normalzeit",
+          "Fernando-de-Noronha-Sommerzeit"
+        ]
+      },
+      "America/Ojinaga": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Panama": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Paramaribo": {
+        "long": [
+          "Suriname-Zeit",
+          "Suriname-Zeit"
+        ]
+      },
+      "America/Phoenix": {
+        "long": [
+          "Rocky-Mountains-Normalzeit",
+          "Rocky-Mountains-Sommerzeit"
         ]
       },
       "America/Port_of_Spain": {
@@ -668,13 +1038,109 @@
           "Atlantik-Sommerzeit"
         ]
       },
-      "America/St_Vincent": {
+      "America/Port-au-Prince": {
+        "long": [
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
+        ]
+      },
+      "America/Porto_Velho": {
+        "long": [
+          "Amazonas-Normalzeit",
+          "Amazonas-Sommerzeit"
+        ]
+      },
+      "America/Puerto_Rico": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
         ]
       },
-      "America/Tortola": {
+      "America/Punta_Arenas": {
+        "long": [
+          "Chilenische Normalzeit",
+          "Chilenische Sommerzeit"
+        ]
+      },
+      "America/Rankin_Inlet": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Recife": {
+        "long": [
+          "Brasília-Normalzeit",
+          "Brasília-Sommerzeit"
+        ]
+      },
+      "America/Regina": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Resolute": {
+        "long": [
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
+        ]
+      },
+      "America/Rio_Branco": {
+        "long": [
+          "Acre-Normalzeit",
+          "Acre-Sommerzeit"
+        ]
+      },
+      "America/Santarem": {
+        "long": [
+          "Brasília-Normalzeit",
+          "Brasília-Sommerzeit"
+        ]
+      },
+      "America/Santiago": {
+        "long": [
+          "Chilenische Normalzeit",
+          "Chilenische Sommerzeit"
+        ]
+      },
+      "America/Santo_Domingo": {
+        "long": [
+          "Atlantik-Normalzeit",
+          "Atlantik-Sommerzeit"
+        ]
+      },
+      "America/Sao_Paulo": {
+        "long": [
+          "Brasília-Normalzeit",
+          "Brasília-Sommerzeit"
+        ]
+      },
+      "America/Sitka": {
+        "long": [
+          "Alaska-Normalzeit",
+          "Alaska-Sommerzeit"
+        ]
+      },
+      "America/St_Barthelemy": {
+        "long": [
+          "Atlantik-Normalzeit",
+          "Atlantik-Sommerzeit"
+        ]
+      },
+      "America/St_Johns": {
+        "long": [
+          "Neufundland-Normalzeit",
+          "Neufundland-Sommerzeit"
+        ]
+      },
+      "America/St_Kitts": {
+        "long": [
+          "Atlantik-Normalzeit",
+          "Atlantik-Sommerzeit"
+        ]
+      },
+      "America/St_Lucia": {
         "long": [
           "Atlantik-Normalzeit",
           "Atlantik-Sommerzeit"
@@ -686,148 +1152,76 @@
           "Atlantik-Sommerzeit"
         ]
       },
-      "Australia/Adelaide": {
+      "America/St_Vincent": {
         "long": [
-          "Zentralaustralische Normalzeit",
-          "Zentralaustralische Sommerzeit"
+          "Atlantik-Normalzeit",
+          "Atlantik-Sommerzeit"
         ]
       },
-      "Australia/Eucla": {
+      "America/Swift_Current": {
         "long": [
-          "Zentral-/Westaustralische Normalzeit",
-          "Zentral-/Westaustralische Sommerzeit"
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
         ]
       },
-      "Australia/Sydney": {
+      "America/Tegucigalpa": {
         "long": [
-          "Ostaustralische Normalzeit",
-          "Ostaustralische Sommerzeit"
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
         ]
       },
-      "Australia/Perth": {
+      "America/Thule": {
         "long": [
-          "Westaustralische Normalzeit",
-          "Westaustralische Sommerzeit"
+          "Atlantik-Normalzeit",
+          "Atlantik-Sommerzeit"
         ]
       },
-      "Atlantic/Azores": {
+      "America/Tijuana": {
         "long": [
-          "Azoren-Normalzeit",
-          "Azoren-Sommerzeit"
+          "Nordamerikanische Westküsten-Normalzeit",
+          "Nordamerikanische Westküsten-Sommerzeit"
         ]
       },
-      "America/Adak": {
+      "America/Toronto": {
         "long": [
-          "Hawaii-Aleuten-Normalzeit",
-          "Hawaii-Aleuten-Sommerzeit"
+          "Nordamerikanische Ostküsten-Normalzeit",
+          "Nordamerikanische Ostküsten-Sommerzeit"
         ]
       },
-      "Asia/Thimphu": {
+      "America/Tortola": {
         "long": [
-          "Bhutan-Zeit",
-          "Bhutan-Zeit"
+          "Atlantik-Normalzeit",
+          "Atlantik-Sommerzeit"
         ]
       },
-      "America/La_Paz": {
+      "America/Vancouver": {
         "long": [
-          "Bolivianische Zeit",
-          "Bolivianische Zeit"
+          "Nordamerikanische Westküsten-Normalzeit",
+          "Nordamerikanische Westküsten-Sommerzeit"
         ]
       },
-      "Asia/Kuching": {
+      "America/Whitehorse": {
         "long": [
-          "Malaysische Zeit",
-          "Malaysische Zeit"
+          "Yukon-Zeit",
+          "Yukon-Zeit"
         ]
       },
-      "America/Sao_Paulo": {
+      "America/Winnipeg": {
         "long": [
-          "Brasília-Normalzeit",
-          "Brasília-Sommerzeit"
+          "Nordamerikanische Zentral-Normalzeit",
+          "Nordamerikanische Zentral-Sommerzeit"
         ]
       },
-      "Europe/London": {
+      "America/Yakutat": {
         "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Asia/Brunei": {
-        "long": [
-          "Brunei-Darussalam-Zeit",
-          "Brunei-Darussalam-Zeit"
-        ]
-      },
-      "Atlantic/Cape_Verde": {
-        "long": [
-          "Cabo-Verde-Normalzeit",
-          "Cabo-Verde-Sommerzeit"
+          "Alaska-Normalzeit",
+          "Alaska-Sommerzeit"
         ]
       },
       "Antarctica/Casey": {
         "long": [
-          "Casey-Zeit",
-          "Casey-Zeit"
-        ]
-      },
-      "Pacific/Saipan": {
-        "long": [
-          "Nördliche-Marianen-Zeit",
-          "Nördliche-Marianen-Zeit"
-        ]
-      },
-      "Pacific/Guam": {
-        "long": [
-          "Guam-Zeit",
-          "Guam-Zeit"
-        ]
-      },
-      "Pacific/Chatham": {
-        "long": [
-          "Chatham-Normalzeit",
-          "Chatham-Sommerzeit"
-        ]
-      },
-      "America/Santiago": {
-        "long": [
-          "Chilenische Normalzeit",
-          "Chilenische Sommerzeit"
-        ]
-      },
-      "Asia/Shanghai": {
-        "long": [
-          "Chinesische Normalzeit",
-          "Chinesische Sommerzeit"
-        ]
-      },
-      "Indian/Christmas": {
-        "long": [
-          "Weihnachtsinsel-Zeit",
-          "Weihnachtsinsel-Zeit"
-        ]
-      },
-      "Indian/Cocos": {
-        "long": [
-          "Kokosinseln-Zeit",
-          "Kokosinseln-Zeit"
-        ]
-      },
-      "America/Bogota": {
-        "long": [
-          "Kolumbianische Normalzeit",
-          "Kolumbianische Sommerzeit"
-        ]
-      },
-      "Pacific/Rarotonga": {
-        "long": [
-          "Cookinseln-Normalzeit",
-          "Cookinseln-Sommerzeit"
-        ]
-      },
-      "America/Havana": {
-        "long": [
-          "Kubanische Normalzeit",
-          "Kubanische Sommerzeit"
+          "Westaustralische Normalzeit",
+          "Westaustralische Sommerzeit"
         ]
       },
       "Antarctica/Davis": {
@@ -842,16 +1236,200 @@
           "Dumont-d’Urville-Zeit"
         ]
       },
-      "Asia/Dushanbe": {
+      "Antarctica/Macquarie": {
         "long": [
-          "Tadschikische Zeit",
-          "Tadschikische Zeit"
+          "Ostaustralische Normalzeit",
+          "Ostaustralische Sommerzeit"
         ]
       },
-      "America/Paramaribo": {
+      "Antarctica/Mawson": {
         "long": [
-          "Suriname-Zeit",
-          "Suriname-Zeit"
+          "Mawson-Zeit",
+          "Mawson-Zeit"
+        ]
+      },
+      "Antarctica/McMurdo": {
+        "long": [
+          "Neuseeland-Normalzeit",
+          "Neuseeland-Sommerzeit"
+        ]
+      },
+      "Antarctica/Palmer": {
+        "long": [
+          "Chilenische Normalzeit",
+          "Chilenische Sommerzeit"
+        ]
+      },
+      "Antarctica/Rothera": {
+        "long": [
+          "Rothera-Zeit",
+          "Rothera-Zeit"
+        ]
+      },
+      "Antarctica/Syowa": {
+        "long": [
+          "Syowa-Zeit",
+          "Syowa-Zeit"
+        ]
+      },
+      "Antarctica/Troll": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Antarctica/Vostok": {
+        "long": [
+          "Wostok-Zeit",
+          "Wostok-Zeit"
+        ]
+      },
+      "Arctic/Longyearbyen": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Asia/Aden": {
+        "long": [
+          "Arabische Normalzeit",
+          "Arabische Sommerzeit"
+        ]
+      },
+      "Asia/Almaty": {
+        "long": [
+          "Kasachische Zeit",
+          "Kasachische Zeit"
+        ]
+      },
+      "Asia/Amman": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Asia/Anadyr": {
+        "long": [
+          "Kamtschatka-Normalzeit",
+          "Kamtschatka-Sommerzeit"
+        ]
+      },
+      "Asia/Aqtau": {
+        "long": [
+          "Kasachische Zeit",
+          "Kasachische Zeit"
+        ]
+      },
+      "Asia/Aqtobe": {
+        "long": [
+          "Kasachische Zeit",
+          "Kasachische Zeit"
+        ]
+      },
+      "Asia/Ashgabat": {
+        "long": [
+          "Turkmenische Normalzeit",
+          "Turkmenische Sommerzeit"
+        ]
+      },
+      "Asia/Atyrau": {
+        "long": [
+          "Kasachische Zeit",
+          "Kasachische Zeit"
+        ]
+      },
+      "Asia/Baghdad": {
+        "long": [
+          "Arabische Normalzeit",
+          "Arabische Sommerzeit"
+        ]
+      },
+      "Asia/Bahrain": {
+        "long": [
+          "Arabische Normalzeit",
+          "Arabische Sommerzeit"
+        ]
+      },
+      "Asia/Baku": {
+        "long": [
+          "Aserbeidschanische Normalzeit",
+          "Aserbaidschanische Sommerzeit"
+        ]
+      },
+      "Asia/Bangkok": {
+        "long": [
+          "Indochina-Zeit",
+          "Indochina-Zeit"
+        ]
+      },
+      "Asia/Barnaul": {
+        "long": [
+          "Krasnojarsker Normalzeit",
+          "Krasnojarsker Sommerzeit"
+        ]
+      },
+      "Asia/Beirut": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Asia/Bishkek": {
+        "long": [
+          "Kirgisische Zeit",
+          "Kirgisische Zeit"
+        ]
+      },
+      "Asia/Brunei": {
+        "long": [
+          "Brunei-Darussalam-Zeit",
+          "Brunei-Darussalam-Zeit"
+        ]
+      },
+      "Asia/Calcutta": {
+        "long": [
+          "Indische Normalzeit",
+          "Indische Normalzeit"
+        ]
+      },
+      "Asia/Chita": {
+        "long": [
+          "Jakutsker Normalzeit",
+          "Jakutsker Sommerzeit"
+        ]
+      },
+      "Asia/Colombo": {
+        "long": [
+          "Indische Normalzeit",
+          "Indische Normalzeit"
+        ]
+      },
+      "Asia/Damascus": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Asia/Dhaka": {
+        "long": [
+          "Bangladesch-Normalzeit",
+          "Bangladesch-Sommerzeit"
         ]
       },
       "Asia/Dili": {
@@ -860,19 +1438,521 @@
           "Osttimor-Zeit"
         ]
       },
-      "Pacific/Easter": {
+      "Asia/Dubai": {
         "long": [
-          "Osterinsel-Normalzeit",
-          "Osterinsel-Sommerzeit"
+          "Golf-Zeit",
+          "Golf-Zeit"
         ]
       },
-      "America/Guayaquil": {
+      "Asia/Dushanbe": {
         "long": [
-          "Ecuadorianische Zeit",
-          "Ecuadorianische Zeit"
+          "Tadschikische Zeit",
+          "Tadschikische Zeit"
         ]
       },
-      "Europe/Paris": {
+      "Asia/Famagusta": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Asia/Gaza": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Asia/Hebron": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Asia/Hong_Kong": {
+        "long": [
+          "Hongkong-Normalzeit",
+          "Hongkong-Sommerzeit"
+        ]
+      },
+      "Asia/Hovd": {
+        "long": [
+          "Chowd-Normalzeit",
+          "Chowd-Sommerzeit"
+        ]
+      },
+      "Asia/Irkutsk": {
+        "long": [
+          "Irkutsker Normalzeit",
+          "Irkutsker Sommerzeit"
+        ]
+      },
+      "Asia/Jakarta": {
+        "long": [
+          "Westindonesische Zeit",
+          "Westindonesische Zeit"
+        ]
+      },
+      "Asia/Jayapura": {
+        "long": [
+          "Ostindonesische Zeit",
+          "Ostindonesische Zeit"
+        ]
+      },
+      "Asia/Jerusalem": {
+        "long": [
+          "Israelische Normalzeit",
+          "Israelische Sommerzeit"
+        ]
+      },
+      "Asia/Kabul": {
+        "long": [
+          "Afghanistan-Zeit",
+          "Afghanistan-Zeit"
+        ]
+      },
+      "Asia/Kamchatka": {
+        "long": [
+          "Kamtschatka-Normalzeit",
+          "Kamtschatka-Sommerzeit"
+        ]
+      },
+      "Asia/Karachi": {
+        "long": [
+          "Pakistanische Normalzeit",
+          "Pakistanische Sommerzeit"
+        ]
+      },
+      "Asia/Katmandu": {
+        "long": [
+          "Nepalesische Zeit",
+          "Nepalesische Zeit"
+        ]
+      },
+      "Asia/Khandyga": {
+        "long": [
+          "Jakutsker Normalzeit",
+          "Jakutsker Sommerzeit"
+        ]
+      },
+      "Asia/Krasnoyarsk": {
+        "long": [
+          "Krasnojarsker Normalzeit",
+          "Krasnojarsker Sommerzeit"
+        ]
+      },
+      "Asia/Kuala_Lumpur": {
+        "long": [
+          "Malaysische Zeit",
+          "Malaysische Zeit"
+        ]
+      },
+      "Asia/Kuching": {
+        "long": [
+          "Malaysische Zeit",
+          "Malaysische Zeit"
+        ]
+      },
+      "Asia/Kuwait": {
+        "long": [
+          "Arabische Normalzeit",
+          "Arabische Sommerzeit"
+        ]
+      },
+      "Asia/Macau": {
+        "long": [
+          "Chinesische Normalzeit",
+          "Chinesische Sommerzeit"
+        ]
+      },
+      "Asia/Magadan": {
+        "long": [
+          "Magadan-Normalzeit",
+          "Magadan-Sommerzeit"
+        ]
+      },
+      "Asia/Makassar": {
+        "long": [
+          "Zentralindonesische Zeit",
+          "Zentralindonesische Zeit"
+        ]
+      },
+      "Asia/Manila": {
+        "long": [
+          "Philippinische Normalzeit",
+          "Philippinische Sommerzeit"
+        ]
+      },
+      "Asia/Muscat": {
+        "long": [
+          "Golf-Zeit",
+          "Golf-Zeit"
+        ]
+      },
+      "Asia/Nicosia": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Asia/Novokuznetsk": {
+        "long": [
+          "Krasnojarsker Normalzeit",
+          "Krasnojarsker Sommerzeit"
+        ]
+      },
+      "Asia/Novosibirsk": {
+        "long": [
+          "Krasnojarsker Normalzeit",
+          "Krasnojarsker Sommerzeit"
+        ]
+      },
+      "Asia/Omsk": {
+        "long": [
+          "Omsker Normalzeit",
+          "Omsker Sommerzeit"
+        ]
+      },
+      "Asia/Oral": {
+        "long": [
+          "Kasachische Zeit",
+          "Kasachische Zeit"
+        ]
+      },
+      "Asia/Phnom_Penh": {
+        "long": [
+          "Indochina-Zeit",
+          "Indochina-Zeit"
+        ]
+      },
+      "Asia/Pontianak": {
+        "long": [
+          "Westindonesische Zeit",
+          "Westindonesische Zeit"
+        ]
+      },
+      "Asia/Pyongyang": {
+        "long": [
+          "Koreanische Normalzeit",
+          "Koreanische Sommerzeit"
+        ]
+      },
+      "Asia/Qatar": {
+        "long": [
+          "Arabische Normalzeit",
+          "Arabische Sommerzeit"
+        ]
+      },
+      "Asia/Qostanay": {
+        "long": [
+          "Kasachische Zeit",
+          "Kasachische Zeit"
+        ]
+      },
+      "Asia/Qyzylorda": {
+        "long": [
+          "Kasachische Zeit",
+          "Kasachische Zeit"
+        ]
+      },
+      "Asia/Rangoon": {
+        "long": [
+          "Myanmar-Zeit",
+          "Myanmar-Zeit"
+        ]
+      },
+      "Asia/Riyadh": {
+        "long": [
+          "Arabische Normalzeit",
+          "Arabische Sommerzeit"
+        ]
+      },
+      "Asia/Saigon": {
+        "long": [
+          "Indochina-Zeit",
+          "Indochina-Zeit"
+        ]
+      },
+      "Asia/Sakhalin": {
+        "long": [
+          "Magadan-Normalzeit",
+          "Magadan-Sommerzeit"
+        ]
+      },
+      "Asia/Samarkand": {
+        "long": [
+          "Usbekische Normalzeit",
+          "Usbekische Sommerzeit"
+        ]
+      },
+      "Asia/Seoul": {
+        "long": [
+          "Koreanische Normalzeit",
+          "Koreanische Sommerzeit"
+        ]
+      },
+      "Asia/Shanghai": {
+        "long": [
+          "Chinesische Normalzeit",
+          "Chinesische Sommerzeit"
+        ]
+      },
+      "Asia/Singapore": {
+        "long": [
+          "Singapurische Normalzeit",
+          "Singapurische Normalzeit"
+        ]
+      },
+      "Asia/Srednekolymsk": {
+        "long": [
+          "Magadan-Normalzeit",
+          "Magadan-Sommerzeit"
+        ]
+      },
+      "Asia/Taipei": {
+        "long": [
+          "Taipeh-Normalzeit",
+          "Taipeh-Sommerzeit"
+        ]
+      },
+      "Asia/Tashkent": {
+        "long": [
+          "Usbekische Normalzeit",
+          "Usbekische Sommerzeit"
+        ]
+      },
+      "Asia/Tbilisi": {
+        "long": [
+          "Georgische Normalzeit",
+          "Georgische Sommerzeit"
+        ]
+      },
+      "Asia/Tehran": {
+        "long": [
+          "Iranische Normalzeit",
+          "Iranische Sommerzeit"
+        ]
+      },
+      "Asia/Thimphu": {
+        "long": [
+          "Bhutan-Zeit",
+          "Bhutan-Zeit"
+        ]
+      },
+      "Asia/Tokyo": {
+        "long": [
+          "Japanische Normalzeit",
+          "Japanische Sommerzeit"
+        ]
+      },
+      "Asia/Tomsk": {
+        "long": [
+          "Krasnojarsker Normalzeit",
+          "Krasnojarsker Sommerzeit"
+        ]
+      },
+      "Asia/Ulaanbaatar": {
+        "long": [
+          "Ulaanbaatar-Normalzeit",
+          "Ulaanbaatar-Sommerzeit"
+        ]
+      },
+      "Asia/Ust-Nera": {
+        "long": [
+          "Wladiwostoker Normalzeit",
+          "Wladiwostoker Sommerzeit"
+        ]
+      },
+      "Asia/Vientiane": {
+        "long": [
+          "Indochina-Zeit",
+          "Indochina-Zeit"
+        ]
+      },
+      "Asia/Vladivostok": {
+        "long": [
+          "Wladiwostoker Normalzeit",
+          "Wladiwostoker Sommerzeit"
+        ]
+      },
+      "Asia/Yakutsk": {
+        "long": [
+          "Jakutsker Normalzeit",
+          "Jakutsker Sommerzeit"
+        ]
+      },
+      "Asia/Yekaterinburg": {
+        "long": [
+          "Jekaterinburger Normalzeit",
+          "Jekaterinburger Sommerzeit"
+        ]
+      },
+      "Asia/Yerevan": {
+        "long": [
+          "Armenische Normalzeit",
+          "Armenische Sommerzeit"
+        ]
+      },
+      "Atlantic/Azores": {
+        "long": [
+          "Azoren-Normalzeit",
+          "Azoren-Sommerzeit"
+        ]
+      },
+      "Atlantic/Bermuda": {
+        "long": [
+          "Atlantik-Normalzeit",
+          "Atlantik-Sommerzeit"
+        ]
+      },
+      "Atlantic/Canary": {
+        "long": [
+          "Westeuropäische Normalzeit",
+          "Westeuropäische Sommerzeit"
+        ],
+        "short": [
+          "WEZ",
+          "WESZ"
+        ]
+      },
+      "Atlantic/Cape_Verde": {
+        "long": [
+          "Cabo-Verde-Normalzeit",
+          "Cabo-Verde-Sommerzeit"
+        ]
+      },
+      "Atlantic/Faeroe": {
+        "long": [
+          "Westeuropäische Normalzeit",
+          "Westeuropäische Sommerzeit"
+        ],
+        "short": [
+          "WEZ",
+          "WESZ"
+        ]
+      },
+      "Atlantic/Madeira": {
+        "long": [
+          "Westeuropäische Normalzeit",
+          "Westeuropäische Sommerzeit"
+        ],
+        "short": [
+          "WEZ",
+          "WESZ"
+        ]
+      },
+      "Atlantic/Reykjavik": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Atlantic/South_Georgia": {
+        "long": [
+          "Südgeorgische Zeit",
+          "Südgeorgische Zeit"
+        ]
+      },
+      "Atlantic/St_Helena": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Atlantic/Stanley": {
+        "long": [
+          "Falklandinseln-Normalzeit",
+          "Falklandinseln-Sommerzeit"
+        ]
+      },
+      "Australia/Adelaide": {
+        "long": [
+          "Zentralaustralische Normalzeit",
+          "Zentralaustralische Sommerzeit"
+        ]
+      },
+      "Australia/Brisbane": {
+        "long": [
+          "Ostaustralische Normalzeit",
+          "Ostaustralische Sommerzeit"
+        ]
+      },
+      "Australia/Broken_Hill": {
+        "long": [
+          "Zentralaustralische Normalzeit",
+          "Zentralaustralische Sommerzeit"
+        ]
+      },
+      "Australia/Darwin": {
+        "long": [
+          "Zentralaustralische Normalzeit",
+          "Zentralaustralische Sommerzeit"
+        ]
+      },
+      "Australia/Eucla": {
+        "long": [
+          "Zentral-/Westaustralische Normalzeit",
+          "Zentral-/Westaustralische Sommerzeit"
+        ]
+      },
+      "Australia/Hobart": {
+        "long": [
+          "Ostaustralische Normalzeit",
+          "Ostaustralische Sommerzeit"
+        ]
+      },
+      "Australia/Lindeman": {
+        "long": [
+          "Ostaustralische Normalzeit",
+          "Ostaustralische Sommerzeit"
+        ]
+      },
+      "Australia/Lord_Howe": {
+        "long": [
+          "Lord-Howe-Normalzeit",
+          "Lord-Howe-Sommerzeit"
+        ]
+      },
+      "Australia/Melbourne": {
+        "long": [
+          "Ostaustralische Normalzeit",
+          "Ostaustralische Sommerzeit"
+        ]
+      },
+      "Australia/Perth": {
+        "long": [
+          "Westaustralische Normalzeit",
+          "Westaustralische Sommerzeit"
+        ]
+      },
+      "Australia/Sydney": {
+        "long": [
+          "Ostaustralische Normalzeit",
+          "Ostaustralische Sommerzeit"
+        ]
+      },
+      "Etc/GMT": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Europe/Amsterdam": {
         "long": [
           "Mitteleuropäische Normalzeit",
           "Mitteleuropäische Sommerzeit"
@@ -892,57 +1972,23 @@
           "MESZ"
         ]
       },
-      "Europe/Tirane": {
+      "Europe/Astrakhan": {
         "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
+          "Samara-Normalzeit",
+          "Samara-Sommerzeit"
         ]
       },
-      "Europe/Vienna": {
+      "Europe/Athens": {
         "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
         ],
         "short": [
-          "MEZ",
-          "MESZ"
+          "OEZ",
+          "OESZ"
         ]
       },
-      "Europe/Sarajevo": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Brussels": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Zurich": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Prague": {
+      "Europe/Belgrade": {
         "long": [
           "Mitteleuropäische Normalzeit",
           "Mitteleuropäische Sommerzeit"
@@ -962,196 +2008,6 @@
           "MESZ"
         ]
       },
-      "Europe/Copenhagen": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Madrid": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Gibraltar": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Zagreb": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Budapest": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Rome": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Vaduz": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Luxembourg": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Monaco": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Podgorica": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Skopje": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Malta": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Amsterdam": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Oslo": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Warsaw": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Belgrade": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Stockholm": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Ljubljana": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Arctic/Longyearbyen": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
       "Europe/Bratislava": {
         "long": [
           "Mitteleuropäische Normalzeit",
@@ -1162,27 +2018,7 @@
           "MESZ"
         ]
       },
-      "Europe/San_Marino": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Africa/Tunis": {
-        "long": [
-          "Mitteleuropäische Normalzeit",
-          "Mitteleuropäische Sommerzeit"
-        ],
-        "short": [
-          "MEZ",
-          "MESZ"
-        ]
-      },
-      "Europe/Vatican": {
+      "Europe/Brussels": {
         "long": [
           "Mitteleuropäische Normalzeit",
           "Mitteleuropäische Sommerzeit"
@@ -1202,7 +2038,27 @@
           "OESZ"
         ]
       },
-      "Europe/Mariehamn": {
+      "Europe/Budapest": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Busingen": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Chisinau": {
         "long": [
           "Osteuropäische Normalzeit",
           "Osteuropäische Sommerzeit"
@@ -1212,34 +2068,36 @@
           "OESZ"
         ]
       },
-      "Europe/Sofia": {
+      "Europe/Copenhagen": {
         "long": [
-          "Osteuropäische Normalzeit",
-          "Osteuropäische Sommerzeit"
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
         ],
         "short": [
-          "OEZ",
-          "OESZ"
+          "MEZ",
+          "MESZ"
         ]
       },
-      "Asia/Nicosia": {
+      "Europe/Dublin": {
         "long": [
-          "Osteuropäische Normalzeit",
-          "Osteuropäische Sommerzeit"
-        ],
-        "short": [
-          "OEZ",
-          "OESZ"
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
         ]
       },
-      "Africa/Cairo": {
+      "Europe/Gibraltar": {
         "long": [
-          "Osteuropäische Normalzeit",
-          "Osteuropäische Sommerzeit"
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
         ],
         "short": [
-          "OEZ",
-          "OESZ"
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Guernsey": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
         ]
       },
       "Europe/Helsinki": {
@@ -1252,7 +2110,25 @@
           "OESZ"
         ]
       },
-      "Europe/Athens": {
+      "Europe/Isle_of_Man": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Europe/Istanbul": {
+        "long": [
+          "Türkische Normalzeit",
+          "Türkische Sommerzeit"
+        ]
+      },
+      "Europe/Jersey": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Europe/Kaliningrad": {
         "long": [
           "Osteuropäische Normalzeit",
           "Osteuropäische Sommerzeit"
@@ -1262,7 +2138,79 @@
           "OESZ"
         ]
       },
-      "Asia/Beirut": {
+      "Europe/Kiev": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Europe/Kirov": {
+        "long": [
+          "Moskauer Normalzeit",
+          "Moskauer Sommerzeit"
+        ]
+      },
+      "Europe/Lisbon": {
+        "long": [
+          "Westeuropäische Normalzeit",
+          "Westeuropäische Sommerzeit"
+        ],
+        "short": [
+          "WEZ",
+          "WESZ"
+        ]
+      },
+      "Europe/Ljubljana": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/London": {
+        "long": [
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      },
+      "Europe/Luxembourg": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Madrid": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Malta": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Mariehamn": {
         "long": [
           "Osteuropäische Normalzeit",
           "Osteuropäische Sommerzeit"
@@ -1274,52 +2222,284 @@
       },
       "Europe/Minsk": {
         "long": [
-          "Kaliningrader Zeit",
-          "Kaliningrader Zeit"
+          "Moskauer Normalzeit",
+          "Moskauer Sommerzeit"
         ]
       },
-      "Europe/Kaliningrad": {
+      "Europe/Monaco": {
         "long": [
-          "Kaliningrader Zeit",
-          "Kaliningrader Zeit"
-        ]
-      },
-      "Atlantic/Canary": {
-        "long": [
-          "Westeuropäische Normalzeit",
-          "Westeuropäische Sommerzeit"
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
         ],
         "short": [
-          "WEZ",
-          "WESZ"
+          "MEZ",
+          "MESZ"
         ]
       },
-      "Atlantic/Faeroe": {
+      "Europe/Moscow": {
         "long": [
-          "Westeuropäische Normalzeit",
-          "Westeuropäische Sommerzeit"
+          "Moskauer Normalzeit",
+          "Moskauer Sommerzeit"
+        ]
+      },
+      "Europe/Oslo": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
         ],
         "short": [
-          "WEZ",
-          "WESZ"
+          "MEZ",
+          "MESZ"
         ]
       },
-      "Atlantic/Stanley": {
+      "Europe/Paris": {
         "long": [
-          "Falklandinseln-Normalzeit",
-          "Falklandinseln-Sommerzeit"
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
         ]
       },
-      "Pacific/Fiji": {
+      "Europe/Podgorica": {
         "long": [
-          "Fidschi-Normalzeit",
-          "Fidschi-Sommerzeit"
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
         ]
       },
-      "America/Cayenne": {
+      "Europe/Prague": {
         "long": [
-          "Französisch-Guayana-Zeit",
-          "Französisch-Guayana-Zeit"
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Riga": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Europe/Rome": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Samara": {
+        "long": [
+          "Samara-Normalzeit",
+          "Samara-Sommerzeit"
+        ]
+      },
+      "Europe/San_Marino": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Sarajevo": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Saratov": {
+        "long": [
+          "Samara-Normalzeit",
+          "Samara-Sommerzeit"
+        ]
+      },
+      "Europe/Simferopol": {
+        "long": [
+          "Moskauer Normalzeit",
+          "Moskauer Sommerzeit"
+        ]
+      },
+      "Europe/Skopje": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Sofia": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Europe/Stockholm": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Tallinn": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Europe/Tirane": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Ulyanovsk": {
+        "long": [
+          "Samara-Normalzeit",
+          "Samara-Sommerzeit"
+        ]
+      },
+      "Europe/Vaduz": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Vatican": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Vienna": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Vilnius": {
+        "long": [
+          "Osteuropäische Normalzeit",
+          "Osteuropäische Sommerzeit"
+        ],
+        "short": [
+          "OEZ",
+          "OESZ"
+        ]
+      },
+      "Europe/Volgograd": {
+        "long": [
+          "Moskauer Normalzeit",
+          "Moskauer Sommerzeit"
+        ]
+      },
+      "Europe/Warsaw": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Zagreb": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Europe/Zurich": {
+        "long": [
+          "Mitteleuropäische Normalzeit",
+          "Mitteleuropäische Sommerzeit"
+        ],
+        "short": [
+          "MEZ",
+          "MESZ"
+        ]
+      },
+      "Indian/Antananarivo": {
+        "long": [
+          "Ostafrikanische Zeit",
+          "Ostafrikanische Zeit"
+        ]
+      },
+      "Indian/Chagos": {
+        "long": [
+          "Indischer-Ozean-Zeit",
+          "Indischer-Ozean-Zeit"
+        ]
+      },
+      "Indian/Christmas": {
+        "long": [
+          "Weihnachtsinsel-Zeit",
+          "Weihnachtsinsel-Zeit"
+        ]
+      },
+      "Indian/Cocos": {
+        "long": [
+          "Kokosinseln-Zeit",
+          "Kokosinseln-Zeit"
+        ]
+      },
+      "Indian/Comoro": {
+        "long": [
+          "Ostafrikanische Zeit",
+          "Ostafrikanische Zeit"
         ]
       },
       "Indian/Kerguelen": {
@@ -1328,10 +2508,94 @@
           "Französische-Süd-und-Antarktisgebiete-Zeit"
         ]
       },
-      "Asia/Bishkek": {
+      "Indian/Mahe": {
         "long": [
-          "Kirgisische Zeit",
-          "Kirgisische Zeit"
+          "Seychellen-Zeit",
+          "Seychellen-Zeit"
+        ]
+      },
+      "Indian/Maldives": {
+        "long": [
+          "Malediven-Zeit",
+          "Malediven-Zeit"
+        ]
+      },
+      "Indian/Mauritius": {
+        "long": [
+          "Mauritius-Normalzeit",
+          "Mauritius-Sommerzeit"
+        ]
+      },
+      "Indian/Mayotte": {
+        "long": [
+          "Ostafrikanische Zeit",
+          "Ostafrikanische Zeit"
+        ]
+      },
+      "Indian/Reunion": {
+        "long": [
+          "Réunion-Zeit",
+          "Réunion-Zeit"
+        ]
+      },
+      "Pacific/Apia": {
+        "long": [
+          "Apia-Normalzeit",
+          "Apia-Sommerzeit"
+        ]
+      },
+      "Pacific/Auckland": {
+        "long": [
+          "Neuseeland-Normalzeit",
+          "Neuseeland-Sommerzeit"
+        ]
+      },
+      "Pacific/Bougainville": {
+        "long": [
+          "Papua-Neuguinea-Zeit",
+          "Papua-Neuguinea-Zeit"
+        ]
+      },
+      "Pacific/Chatham": {
+        "long": [
+          "Chatham-Normalzeit",
+          "Chatham-Sommerzeit"
+        ]
+      },
+      "Pacific/Easter": {
+        "long": [
+          "Osterinsel-Normalzeit",
+          "Osterinsel-Sommerzeit"
+        ]
+      },
+      "Pacific/Efate": {
+        "long": [
+          "Vanuatu-Normalzeit",
+          "Vanuatu-Sommerzeit"
+        ]
+      },
+      "Pacific/Enderbury": {
+        "long": [
+          "Phoenixinseln-Zeit",
+          "Phoenixinseln-Zeit"
+        ]
+      },
+      "Pacific/Fakaofo": {
+        "long": [
+          "Tokelau-Zeit",
+          "Tokelau-Zeit"
+        ]
+      },
+      "Pacific/Fiji": {
+        "long": [
+          "Fidschi-Normalzeit",
+          "Fidschi-Sommerzeit"
+        ]
+      },
+      "Pacific/Funafuti": {
+        "long": [
+          "Tuvalu-Zeit",
+          "Tuvalu-Zeit"
         ]
       },
       "Pacific/Galapagos": {
@@ -1346,112 +2610,16 @@
           "Gambier-Zeit"
         ]
       },
-      "Pacific/Tarawa": {
+      "Pacific/Guadalcanal": {
         "long": [
-          "Gilbert-Inseln-Zeit",
-          "Gilbert-Inseln-Zeit"
+          "Salomonen-Zeit",
+          "Salomonen-Zeit"
         ]
       },
-      "Atlantic/Reykjavik": {
+      "Pacific/Guam": {
         "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Africa/Ouagadougou": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Africa/Abidjan": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Africa/Accra": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Africa/Banjul": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Africa/Conakry": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Africa/Bamako": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Africa/Nouakchott": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Atlantic/St_Helena": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Africa/Freetown": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Africa/Dakar": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "Africa/Lome": {
-        "long": [
-          "Mittlere Greenwich-Zeit",
-          "Mittlere Greenwich-Zeit"
-        ]
-      },
-      "America/Godthab": {
-        "long": [
-          "Westgrönland-Normalzeit",
-          "Westgrönland-Sommerzeit"
-        ]
-      },
-      "America/Scoresbysund": {
-        "long": [
-          "Ostgrönland-Normalzeit",
-          "Ostgrönland-Sommerzeit"
-        ]
-      },
-      "Asia/Dubai": {
-        "long": [
-          "Golf-Zeit",
-          "Golf-Zeit"
-        ]
-      },
-      "Asia/Muscat": {
-        "long": [
-          "Golf-Zeit",
-          "Golf-Zeit"
-        ]
-      },
-      "America/Guyana": {
-        "long": [
-          "Guyana-Zeit",
-          "Guyana-Zeit"
+          "Chamorro-Zeit",
+          "Chamorro-Zeit"
         ]
       },
       "Pacific/Honolulu": {
@@ -1460,118 +2628,10 @@
           "Hawaii-Aleuten-Normalzeit"
         ]
       },
-      "Asia/Hong_Kong": {
+      "Pacific/Kiritimati": {
         "long": [
-          "Hongkong-Normalzeit",
-          "Hongkong-Sommerzeit"
-        ]
-      },
-      "Asia/Hovd": {
-        "long": [
-          "Chowd-Normalzeit",
-          "Chowd-Sommerzeit"
-        ]
-      },
-      "Asia/Calcutta": {
-        "long": [
-          "Indische Normalzeit",
-          "Indische Normalzeit"
-        ]
-      },
-      "Asia/Colombo": {
-        "long": [
-          "Sri-Lanka-Zeit",
-          "Sri-Lanka-Zeit"
-        ]
-      },
-      "Indian/Chagos": {
-        "long": [
-          "Indischer-Ozean-Zeit",
-          "Indischer-Ozean-Zeit"
-        ]
-      },
-      "Asia/Bangkok": {
-        "long": [
-          "Indochina-Zeit",
-          "Indochina-Zeit"
-        ]
-      },
-      "Asia/Phnom_Penh": {
-        "long": [
-          "Indochina-Zeit",
-          "Indochina-Zeit"
-        ]
-      },
-      "Asia/Vientiane": {
-        "long": [
-          "Indochina-Zeit",
-          "Indochina-Zeit"
-        ]
-      },
-      "Asia/Makassar": {
-        "long": [
-          "Zentralindonesische Zeit",
-          "Zentralindonesische Zeit"
-        ]
-      },
-      "Asia/Jayapura": {
-        "long": [
-          "Ostindonesische Zeit",
-          "Ostindonesische Zeit"
-        ]
-      },
-      "Asia/Jakarta": {
-        "long": [
-          "Westindonesische Zeit",
-          "Westindonesische Zeit"
-        ]
-      },
-      "Asia/Tehran": {
-        "long": [
-          "Iranische Normalzeit",
-          "Iranische Sommerzeit"
-        ]
-      },
-      "Asia/Irkutsk": {
-        "long": [
-          "Irkutsker Normalzeit",
-          "Irkutsker Sommerzeit"
-        ]
-      },
-      "Asia/Jerusalem": {
-        "long": [
-          "Israelische Normalzeit",
-          "Israelische Sommerzeit"
-        ]
-      },
-      "Asia/Tokyo": {
-        "long": [
-          "Japanische Normalzeit",
-          "Japanische Sommerzeit"
-        ]
-      },
-      "Asia/Kamchatka": {
-        "long": [
-          "Kamtschatka-Normalzeit",
-          "Kamtschatka-Sommerzeit"
-        ]
-      },
-      "Asia/Karachi": {
-        "long": [
-          "Pakistanische Normalzeit",
-          "Pakistanische Sommerzeit"
-        ]
-      },
-      "Asia/Qyzylorda": {
-        "long": [
-          "Quysylorda-Normalzeit",
-          "Qysylorda-Sommerzeit"
-        ]
-      },
-      "Asia/Seoul": {
-        "long": [
-          "Koreanische Normalzeit",
-          "Koreanische Sommerzeit"
+          "Linieninseln-Zeit",
+          "Linieninseln-Zeit"
         ]
       },
       "Pacific/Kosrae": {
@@ -1580,52 +2640,10 @@
           "Kosrae-Zeit"
         ]
       },
-      "Asia/Krasnoyarsk": {
+      "Pacific/Kwajalein": {
         "long": [
-          "Krasnojarsker Normalzeit",
-          "Krasnojarsker Sommerzeit"
-        ]
-      },
-      "Europe/Samara": {
-        "long": [
-          "Samara-Normalzeit",
-          "Samara-Sommerzeit"
-        ]
-      },
-      "Pacific/Kiritimati": {
-        "long": [
-          "Linieninseln-Zeit",
-          "Linieninseln-Zeit"
-        ]
-      },
-      "Australia/Lord_Howe": {
-        "long": [
-          "Lord-Howe-Normalzeit",
-          "Lord-Howe-Sommerzeit"
-        ]
-      },
-      "Asia/Macau": {
-        "long": [
-          "Macau-Normalzeit",
-          "Macau-Sommerzeit"
-        ]
-      },
-      "Asia/Magadan": {
-        "long": [
-          "Magadan-Normalzeit",
-          "Magadan-Sommerzeit"
-        ]
-      },
-      "Indian/Maldives": {
-        "long": [
-          "Malediven-Zeit",
-          "Malediven-Zeit"
-        ]
-      },
-      "Pacific/Marquesas": {
-        "long": [
-          "Marquesas-Zeit",
-          "Marquesas-Zeit"
+          "Marshallinseln-Zeit",
+          "Marshallinseln-Zeit"
         ]
       },
       "Pacific/Majuro": {
@@ -1634,76 +2652,22 @@
           "Marshallinseln-Zeit"
         ]
       },
-      "Indian/Mauritius": {
+      "Pacific/Marquesas": {
         "long": [
-          "Mauritius-Normalzeit",
-          "Mauritius-Sommerzeit"
+          "Marquesas-Zeit",
+          "Marquesas-Zeit"
         ]
       },
-      "Antarctica/Mawson": {
+      "Pacific/Midway": {
         "long": [
-          "Mawson-Zeit",
-          "Mawson-Zeit"
-        ]
-      },
-      "America/Mazatlan": {
-        "long": [
-          "Mexikanische Pazifik-Normalzeit",
-          "Mexikanische Pazifik-Sommerzeit"
-        ]
-      },
-      "Asia/Ulaanbaatar": {
-        "long": [
-          "Ulaanbaatar-Normalzeit",
-          "Ulaanbaatar-Sommerzeit"
-        ]
-      },
-      "Europe/Moscow": {
-        "long": [
-          "Moskauer Normalzeit",
-          "Moskauer Sommerzeit"
-        ]
-      },
-      "Asia/Rangoon": {
-        "long": [
-          "Myanmar-Zeit",
-          "Myanmar-Zeit"
+          "Samoa-Normalzeit",
+          "Samoa-Sommerzeit"
         ]
       },
       "Pacific/Nauru": {
         "long": [
           "Nauru-Zeit",
           "Nauru-Zeit"
-        ]
-      },
-      "Asia/Katmandu": {
-        "long": [
-          "Nepalesische Zeit",
-          "Nepalesische Zeit"
-        ]
-      },
-      "Pacific/Noumea": {
-        "long": [
-          "Neukaledonische Normalzeit",
-          "Neukaledonische Sommerzeit"
-        ]
-      },
-      "Pacific/Auckland": {
-        "long": [
-          "Neuseeland-Normalzeit",
-          "Neuseeland-Sommerzeit"
-        ]
-      },
-      "Antarctica/McMurdo": {
-        "long": [
-          "Neuseeland-Normalzeit",
-          "Neuseeland-Sommerzeit"
-        ]
-      },
-      "America/St_Johns": {
-        "long": [
-          "Neufundland-Normalzeit",
-          "Neufundland-Sommerzeit"
         ]
       },
       "Pacific/Niue": {
@@ -1718,64 +2682,22 @@
           "Norfolkinsel-Sommerzeit"
         ]
       },
-      "America/Noronha": {
+      "Pacific/Noumea": {
         "long": [
-          "Fernando-de-Noronha-Normalzeit",
-          "Fernando-de-Noronha-Sommerzeit"
+          "Neukaledonische Normalzeit",
+          "Neukaledonische Sommerzeit"
         ]
       },
-      "Asia/Novosibirsk": {
+      "Pacific/Pago_Pago": {
         "long": [
-          "Nowosibirsker Normalzeit",
-          "Nowosibirsker Sommerzeit"
-        ]
-      },
-      "Asia/Omsk": {
-        "long": [
-          "Omsker Normalzeit",
-          "Omsker Sommerzeit"
+          "Samoa-Normalzeit",
+          "Samoa-Sommerzeit"
         ]
       },
       "Pacific/Palau": {
         "long": [
           "Palau-Zeit",
           "Palau-Zeit"
-        ]
-      },
-      "Pacific/Port_Moresby": {
-        "long": [
-          "Papua-Neuguinea-Zeit",
-          "Papua-Neuguinea-Zeit"
-        ]
-      },
-      "America/Asuncion": {
-        "long": [
-          "Paraguayische Normalzeit",
-          "Paraguayische Sommerzeit"
-        ]
-      },
-      "America/Lima": {
-        "long": [
-          "Peruanische Normalzeit",
-          "Peruanische Sommerzeit"
-        ]
-      },
-      "Asia/Manila": {
-        "long": [
-          "Philippinische Normalzeit",
-          "Philippinische Sommerzeit"
-        ]
-      },
-      "Pacific/Enderbury": {
-        "long": [
-          "Phoenixinseln-Zeit",
-          "Phoenixinseln-Zeit"
-        ]
-      },
-      "America/Miquelon": {
-        "long": [
-          "St.-Pierre-und-Miquelon-Normalzeit",
-          "St.-Pierre-und-Miquelon-Sommerzeit"
         ]
       },
       "Pacific/Pitcairn": {
@@ -1790,70 +2712,22 @@
           "Pohnpei-Zeit"
         ]
       },
-      "Asia/Pyongyang": {
+      "Pacific/Port_Moresby": {
         "long": [
-          "Pjöngjang-Zeit",
-          "Pjöngjang-Zeit"
+          "Papua-Neuguinea-Zeit",
+          "Papua-Neuguinea-Zeit"
         ]
       },
-      "Indian/Reunion": {
+      "Pacific/Rarotonga": {
         "long": [
-          "Réunion-Zeit",
-          "Réunion-Zeit"
+          "Cookinseln-Normalzeit",
+          "Cookinseln-Sommerzeit"
         ]
       },
-      "Antarctica/Rothera": {
+      "Pacific/Saipan": {
         "long": [
-          "Rothera-Zeit",
-          "Rothera-Zeit"
-        ]
-      },
-      "Asia/Sakhalin": {
-        "long": [
-          "Sachalin-Normalzeit",
-          "Sachalin-Sommerzeit"
-        ]
-      },
-      "Pacific/Pago_Pago": {
-        "long": [
-          "Samoa-Normalzeit",
-          "Samoa-Sommerzeit"
-        ]
-      },
-      "Indian/Mahe": {
-        "long": [
-          "Seychellen-Zeit",
-          "Seychellen-Zeit"
-        ]
-      },
-      "Asia/Singapore": {
-        "long": [
-          "Singapurische Normalzeit",
-          "Singapurische Normalzeit"
-        ]
-      },
-      "Pacific/Guadalcanal": {
-        "long": [
-          "Salomonen-Zeit",
-          "Salomonen-Zeit"
-        ]
-      },
-      "Atlantic/South_Georgia": {
-        "long": [
-          "Südgeorgische Zeit",
-          "Südgeorgische Zeit"
-        ]
-      },
-      "Asia/Yekaterinburg": {
-        "long": [
-          "Jekaterinburger Normalzeit",
-          "Jekaterinburger Sommerzeit"
-        ]
-      },
-      "Antarctica/Syowa": {
-        "long": [
-          "Syowa-Zeit",
-          "Syowa-Zeit"
+          "Chamorro-Zeit",
+          "Chamorro-Zeit"
         ]
       },
       "Pacific/Tahiti": {
@@ -1862,22 +2736,10 @@
           "Tahiti-Zeit"
         ]
       },
-      "Asia/Taipei": {
+      "Pacific/Tarawa": {
         "long": [
-          "Taipeh-Normalzeit",
-          "Taipeh-Sommerzeit"
-        ]
-      },
-      "Asia/Tashkent": {
-        "long": [
-          "Usbekische Normalzeit",
-          "Usbekische Sommerzeit"
-        ]
-      },
-      "Pacific/Fakaofo": {
-        "long": [
-          "Tokelau-Zeit",
-          "Tokelau-Zeit"
+          "Gilbert-Inseln-Zeit",
+          "Gilbert-Inseln-Zeit"
         ]
       },
       "Pacific/Tongatapu": {
@@ -1892,54 +2754,6 @@
           "Chuuk-Zeit"
         ]
       },
-      "Europe/Istanbul": {
-        "long": [
-          "Türkische Normalzeit",
-          "Türkische Sommerzeit"
-        ]
-      },
-      "Pacific/Funafuti": {
-        "long": [
-          "Tuvalu-Zeit",
-          "Tuvalu-Zeit"
-        ]
-      },
-      "America/Montevideo": {
-        "long": [
-          "Uruguayische Normalzeit",
-          "Uruguayische Sommerzeit"
-        ]
-      },
-      "Pacific/Efate": {
-        "long": [
-          "Vanuatu-Normalzeit",
-          "Vanuatu-Sommerzeit"
-        ]
-      },
-      "America/Caracas": {
-        "long": [
-          "Venezuela-Zeit",
-          "Venezuela-Zeit"
-        ]
-      },
-      "Asia/Vladivostok": {
-        "long": [
-          "Wladiwostoker Normalzeit",
-          "Wladiwostoker Sommerzeit"
-        ]
-      },
-      "Europe/Volgograd": {
-        "long": [
-          "Wolgograder Normalzeit",
-          "Wolgograder Sommerzeit"
-        ]
-      },
-      "Antarctica/Vostok": {
-        "long": [
-          "Wostok-Zeit",
-          "Wostok-Zeit"
-        ]
-      },
       "Pacific/Wake": {
         "long": [
           "Wake-Insel-Zeit",
@@ -1950,18 +2764,6 @@
         "long": [
           "Wallis-und-Futuna-Zeit",
           "Wallis-und-Futuna-Zeit"
-        ]
-      },
-      "Asia/Yakutsk": {
-        "long": [
-          "Jakutsker Normalzeit",
-          "Jakutsker Sommerzeit"
-        ]
-      },
-      "America/Whitehorse": {
-        "long": [
-          "Yukon-Zeit",
-          "Yukon-Zeit"
         ]
       },
       "UTC": {

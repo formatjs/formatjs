@@ -421,4 +421,45 @@ describe('Intl.DateTimeFormat', function () {
     const date1 = new Date('')
     expect(date1.toLocaleDateString('en-US')).toBe('Invalid Date')
   })
+  it('America/Detroit shows EDT/EST abbreviations, GH #4456', function () {
+    const summer = new Date('2024-07-01T12:00:00Z')
+    const winter = new Date('2024-01-01T12:00:00Z')
+
+    const summerFmt = new DateTimeFormat('en', {
+      timeZone: 'America/Detroit',
+      timeZoneName: 'short',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+    }).format(summer)
+
+    const winterFmt = new DateTimeFormat('en', {
+      timeZone: 'America/Detroit',
+      timeZoneName: 'short',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+    }).format(winter)
+
+    // Should show EDT in summer and EST in winter, not GMT-4 or GMT-5
+    expect(summerFmt).toContain('EDT')
+    expect(winterFmt).toContain('EST')
+  })
+  it('America/Phoenix shows MST abbreviation, GH #4456', function () {
+    const summer = new Date('2024-07-01T12:00:00Z')
+
+    const summerFmt = new DateTimeFormat('en', {
+      timeZone: 'America/Phoenix',
+      timeZoneName: 'short',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+    }).format(summer)
+
+    // Phoenix doesn't observe DST, so should show MST year-round, not GMT-7
+    expect(summerFmt).toContain('MST')
+  })
 })

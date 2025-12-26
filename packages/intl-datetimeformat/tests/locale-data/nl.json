@@ -90,40 +90,82 @@
       ]
     },
     "timeZoneName": {
-      "America/Rio_Branco": {
+      "Africa/Abidjan": {
         "long": [
-          "Acre-standaardtijd",
-          "Acre-zomertijd"
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
         ]
       },
-      "Asia/Kabul": {
+      "Africa/Accra": {
         "long": [
-          "Afghaanse tijd",
-          "Afghaanse tijd"
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
         ]
       },
-      "Africa/Maputo": {
+      "Africa/Addis_Ababa": {
         "long": [
-          "Centraal-Afrikaanse tijd",
-          "Centraal-Afrikaanse tijd"
+          "Oost-Afrikaanse tijd",
+          "Oost-Afrikaanse tijd"
         ]
       },
-      "Africa/Bujumbura": {
+      "Africa/Algiers": {
         "long": [
-          "Centraal-Afrikaanse tijd",
-          "Centraal-Afrikaanse tijd"
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
         ]
       },
-      "Africa/Gaborone": {
+      "Africa/Asmera": {
         "long": [
-          "Centraal-Afrikaanse tijd",
-          "Centraal-Afrikaanse tijd"
+          "Oost-Afrikaanse tijd",
+          "Oost-Afrikaanse tijd"
         ]
       },
-      "Africa/Lubumbashi": {
+      "Africa/Bamako": {
         "long": [
-          "Centraal-Afrikaanse tijd",
-          "Centraal-Afrikaanse tijd"
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Africa/Bangui": {
+        "long": [
+          "West-Afrikaanse tijd",
+          "West-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Banjul": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Africa/Bissau": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
         ]
       },
       "Africa/Blantyre": {
@@ -132,25 +174,69 @@
           "Centraal-Afrikaanse tijd"
         ]
       },
-      "Africa/Kigali": {
+      "Africa/Brazzaville": {
+        "long": [
+          "West-Afrikaanse tijd",
+          "West-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Bujumbura": {
         "long": [
           "Centraal-Afrikaanse tijd",
           "Centraal-Afrikaanse tijd"
         ]
       },
-      "Africa/Lusaka": {
+      "Africa/Cairo": {
         "long": [
-          "Centraal-Afrikaanse tijd",
-          "Centraal-Afrikaanse tijd"
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
         ]
       },
-      "Africa/Harare": {
+      "Africa/Casablanca": {
         "long": [
-          "Centraal-Afrikaanse tijd",
-          "Centraal-Afrikaanse tijd"
+          "West-Europese standaardtijd",
+          "West-Europese zomertijd"
+        ],
+        "short": [
+          "WET",
+          "WEST"
         ]
       },
-      "Africa/Nairobi": {
+      "Africa/Ceuta": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Africa/Conakry": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Africa/Dakar": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Africa/Dar_es_Salaam": {
         "long": [
           "Oost-Afrikaanse tijd",
           "Oost-Afrikaanse tijd"
@@ -162,40 +248,54 @@
           "Oost-Afrikaanse tijd"
         ]
       },
-      "Africa/Asmera": {
+      "Africa/Douala": {
         "long": [
-          "Oost-Afrikaanse tijd",
-          "Oost-Afrikaanse tijd"
+          "West-Afrikaanse tijd",
+          "West-Afrikaanse tijd"
         ]
       },
-      "Africa/Addis_Ababa": {
+      "Africa/El_Aaiun": {
         "long": [
-          "Oost-Afrikaanse tijd",
-          "Oost-Afrikaanse tijd"
+          "West-Europese standaardtijd",
+          "West-Europese zomertijd"
+        ],
+        "short": [
+          "WET",
+          "WEST"
         ]
       },
-      "Indian/Comoro": {
+      "Africa/Freetown": {
         "long": [
-          "Oost-Afrikaanse tijd",
-          "Oost-Afrikaanse tijd"
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
         ]
       },
-      "Indian/Antananarivo": {
+      "Africa/Gaborone": {
         "long": [
-          "Oost-Afrikaanse tijd",
-          "Oost-Afrikaanse tijd"
+          "Centraal-Afrikaanse tijd",
+          "Centraal-Afrikaanse tijd"
         ]
       },
-      "Africa/Mogadishu": {
+      "Africa/Harare": {
         "long": [
-          "Oost-Afrikaanse tijd",
-          "Oost-Afrikaanse tijd"
+          "Centraal-Afrikaanse tijd",
+          "Centraal-Afrikaanse tijd"
         ]
       },
-      "Africa/Dar_es_Salaam": {
+      "Africa/Johannesburg": {
         "long": [
-          "Oost-Afrikaanse tijd",
-          "Oost-Afrikaanse tijd"
+          "Zuid-Afrikaanse tijd",
+          "Zuid-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Juba": {
+        "long": [
+          "Centraal-Afrikaanse tijd",
+          "Centraal-Afrikaanse tijd"
         ]
       },
       "Africa/Kampala": {
@@ -204,16 +304,74 @@
           "Oost-Afrikaanse tijd"
         ]
       },
-      "Indian/Mayotte": {
+      "Africa/Khartoum": {
         "long": [
-          "Oost-Afrikaanse tijd",
-          "Oost-Afrikaanse tijd"
+          "Centraal-Afrikaanse tijd",
+          "Centraal-Afrikaanse tijd"
         ]
       },
-      "Africa/Johannesburg": {
+      "Africa/Kigali": {
         "long": [
-          "Zuid-Afrikaanse tijd",
-          "Zuid-Afrikaanse tijd"
+          "Centraal-Afrikaanse tijd",
+          "Centraal-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Kinshasa": {
+        "long": [
+          "West-Afrikaanse tijd",
+          "West-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Lagos": {
+        "long": [
+          "West-Afrikaanse tijd",
+          "West-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Libreville": {
+        "long": [
+          "West-Afrikaanse tijd",
+          "West-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Lome": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Africa/Luanda": {
+        "long": [
+          "West-Afrikaanse tijd",
+          "West-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Lubumbashi": {
+        "long": [
+          "Centraal-Afrikaanse tijd",
+          "Centraal-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Lusaka": {
+        "long": [
+          "Centraal-Afrikaanse tijd",
+          "Centraal-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Malabo": {
+        "long": [
+          "West-Afrikaanse tijd",
+          "West-Afrikaanse tijd"
+        ]
+      },
+      "Africa/Maputo": {
+        "long": [
+          "Centraal-Afrikaanse tijd",
+          "Centraal-Afrikaanse tijd"
         ]
       },
       "Africa/Maseru": {
@@ -228,55 +386,29 @@
           "Zuid-Afrikaanse tijd"
         ]
       },
-      "Africa/Lagos": {
+      "Africa/Mogadishu": {
         "long": [
-          "West-Afrikaanse tijd",
-          "West-Afrikaanse tijd"
+          "Oost-Afrikaanse tijd",
+          "Oost-Afrikaanse tijd"
         ]
       },
-      "Africa/Luanda": {
+      "Africa/Monrovia": {
         "long": [
-          "West-Afrikaanse tijd",
-          "West-Afrikaanse tijd"
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
         ]
       },
-      "Africa/Porto-Novo": {
+      "Africa/Nairobi": {
         "long": [
-          "West-Afrikaanse tijd",
-          "West-Afrikaanse tijd"
+          "Oost-Afrikaanse tijd",
+          "Oost-Afrikaanse tijd"
         ]
       },
-      "Africa/Kinshasa": {
-        "long": [
-          "West-Afrikaanse tijd",
-          "West-Afrikaanse tijd"
-        ]
-      },
-      "Africa/Bangui": {
-        "long": [
-          "West-Afrikaanse tijd",
-          "West-Afrikaanse tijd"
-        ]
-      },
-      "Africa/Brazzaville": {
-        "long": [
-          "West-Afrikaanse tijd",
-          "West-Afrikaanse tijd"
-        ]
-      },
-      "Africa/Douala": {
-        "long": [
-          "West-Afrikaanse tijd",
-          "West-Afrikaanse tijd"
-        ]
-      },
-      "Africa/Libreville": {
-        "long": [
-          "West-Afrikaanse tijd",
-          "West-Afrikaanse tijd"
-        ]
-      },
-      "Africa/Malabo": {
+      "Africa/Ndjamena": {
         "long": [
           "West-Afrikaanse tijd",
           "West-Afrikaanse tijd"
@@ -288,19 +420,79 @@
           "West-Afrikaanse tijd"
         ]
       },
-      "Africa/Ndjamena": {
+      "Africa/Nouakchott": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Africa/Ouagadougou": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Africa/Porto-Novo": {
         "long": [
           "West-Afrikaanse tijd",
           "West-Afrikaanse tijd"
         ]
       },
-      "Asia/Aqtobe": {
+      "Africa/Sao_Tome": {
         "long": [
-          "West-Kazachse tijd",
-          "West-Kazachse tijd"
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
         ]
       },
-      "America/Juneau": {
+      "Africa/Tripoli": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Africa/Tunis": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Africa/Windhoek": {
+        "long": [
+          "Centraal-Afrikaanse tijd",
+          "Centraal-Afrikaanse tijd"
+        ]
+      },
+      "America/Adak": {
+        "long": [
+          "Hawaii-Aleoetische standaardtijd",
+          "Hawaii-Aleoetische zomertijd"
+        ],
+        "short": [
+          "HAST",
+          "HADT"
+        ]
+      },
+      "America/Anchorage": {
         "long": [
           "Alaska-standaardtijd",
           "Alaska-zomertijd"
@@ -310,285 +502,7 @@
           "AKDT"
         ]
       },
-      "Asia/Almaty": {
-        "long": [
-          "Oost-Kazachse tijd",
-          "Oost-Kazachse tijd"
-        ]
-      },
-      "America/Manaus": {
-        "long": [
-          "Amazone-standaardtijd",
-          "Amazone-zomertijd"
-        ]
-      },
-      "America/Chicago": {
-        "long": [
-          "Central-standaardtijd",
-          "Central-zomertijd"
-        ],
-        "short": [
-          "CST",
-          "CDT"
-        ]
-      },
-      "America/Belize": {
-        "long": [
-          "Central-standaardtijd",
-          "Central-zomertijd"
-        ],
-        "short": [
-          "CST",
-          "CDT"
-        ]
-      },
-      "America/Winnipeg": {
-        "long": [
-          "Central-standaardtijd",
-          "Central-zomertijd"
-        ],
-        "short": [
-          "CST",
-          "CDT"
-        ]
-      },
-      "America/Costa_Rica": {
-        "long": [
-          "Central-standaardtijd",
-          "Central-zomertijd"
-        ],
-        "short": [
-          "CST",
-          "CDT"
-        ]
-      },
-      "America/Guatemala": {
-        "long": [
-          "Central-standaardtijd",
-          "Central-zomertijd"
-        ],
-        "short": [
-          "CST",
-          "CDT"
-        ]
-      },
-      "America/Tegucigalpa": {
-        "long": [
-          "Central-standaardtijd",
-          "Central-zomertijd"
-        ],
-        "short": [
-          "CST",
-          "CDT"
-        ]
-      },
-      "America/Mexico_City": {
-        "long": [
-          "Central-standaardtijd",
-          "Central-zomertijd"
-        ],
-        "short": [
-          "CST",
-          "CDT"
-        ]
-      },
-      "America/El_Salvador": {
-        "long": [
-          "Central-standaardtijd",
-          "Central-zomertijd"
-        ],
-        "short": [
-          "CST",
-          "CDT"
-        ]
-      },
-      "America/New_York": {
-        "long": [
-          "Eastern-standaardtijd",
-          "Eastern-zomertijd"
-        ],
-        "short": [
-          "EST",
-          "EDT"
-        ]
-      },
-      "America/Nassau": {
-        "long": [
-          "Eastern-standaardtijd",
-          "Eastern-zomertijd"
-        ],
-        "short": [
-          "EST",
-          "EDT"
-        ]
-      },
-      "America/Toronto": {
-        "long": [
-          "Eastern-standaardtijd",
-          "Eastern-zomertijd"
-        ],
-        "short": [
-          "EST",
-          "EDT"
-        ]
-      },
-      "America/Port-au-Prince": {
-        "long": [
-          "Eastern-standaardtijd",
-          "Eastern-zomertijd"
-        ],
-        "short": [
-          "EST",
-          "EDT"
-        ]
-      },
-      "America/Jamaica": {
-        "long": [
-          "Eastern-standaardtijd",
-          "Eastern-zomertijd"
-        ],
-        "short": [
-          "EST",
-          "EDT"
-        ]
-      },
-      "America/Cayman": {
-        "long": [
-          "Eastern-standaardtijd",
-          "Eastern-zomertijd"
-        ],
-        "short": [
-          "EST",
-          "EDT"
-        ]
-      },
-      "America/Panama": {
-        "long": [
-          "Eastern-standaardtijd",
-          "Eastern-zomertijd"
-        ],
-        "short": [
-          "EST",
-          "EDT"
-        ]
-      },
-      "America/Denver": {
-        "long": [
-          "Mountain-standaardtijd",
-          "Mountain-zomertijd"
-        ],
-        "short": [
-          "MST",
-          "MDT"
-        ]
-      },
-      "America/Edmonton": {
-        "long": [
-          "Mountain-standaardtijd",
-          "Mountain-zomertijd"
-        ],
-        "short": [
-          "MST",
-          "MDT"
-        ]
-      },
-      "America/Los_Angeles": {
-        "long": [
-          "Pacific-standaardtijd",
-          "Pacific-zomertijd"
-        ],
-        "short": [
-          "PST",
-          "PDT"
-        ]
-      },
-      "America/Vancouver": {
-        "long": [
-          "Pacific-standaardtijd",
-          "Pacific-zomertijd"
-        ],
-        "short": [
-          "PST",
-          "PDT"
-        ]
-      },
-      "America/Tijuana": {
-        "long": [
-          "Pacific-standaardtijd",
-          "Pacific-zomertijd"
-        ],
-        "short": [
-          "PST",
-          "PDT"
-        ]
-      },
-      "Asia/Anadyr": {
-        "long": [
-          "Anadyr-standaardtijd",
-          "Anadyr-zomertijd"
-        ]
-      },
-      "Pacific/Apia": {
-        "long": [
-          "Apia-standaardtijd",
-          "Apia-zomertijd"
-        ]
-      },
-      "Asia/Riyadh": {
-        "long": [
-          "Arabische standaardtijd",
-          "Arabische zomertijd"
-        ]
-      },
-      "Asia/Bahrain": {
-        "long": [
-          "Arabische standaardtijd",
-          "Arabische zomertijd"
-        ]
-      },
-      "Asia/Baghdad": {
-        "long": [
-          "Arabische standaardtijd",
-          "Arabische zomertijd"
-        ]
-      },
-      "Asia/Kuwait": {
-        "long": [
-          "Arabische standaardtijd",
-          "Arabische zomertijd"
-        ]
-      },
-      "Asia/Qatar": {
-        "long": [
-          "Arabische standaardtijd",
-          "Arabische zomertijd"
-        ]
-      },
-      "Asia/Aden": {
-        "long": [
-          "Arabische standaardtijd",
-          "Arabische zomertijd"
-        ]
-      },
-      "America/Buenos_Aires": {
-        "long": [
-          "Argentijnse standaardtijd",
-          "Argentijnse zomertijd"
-        ]
-      },
-      "America/Argentina/San_Luis": {
-        "long": [
-          "West-Argentijnse standaardtijd",
-          "West-Argentijnse zomertijd"
-        ]
-      },
-      "Asia/Ashgabat": {
-        "long": [
-          "Turkmeense standaardtijd",
-          "Turkmeense zomertijd"
-        ]
-      },
-      "America/Halifax": {
+      "America/Anguilla": {
         "long": [
           "Atlantic-standaardtijd",
           "Atlantic-zomertijd"
@@ -608,14 +522,10 @@
           "ADT"
         ]
       },
-      "America/Anguilla": {
+      "America/Araguaina": {
         "long": [
-          "Atlantic-standaardtijd",
-          "Atlantic-zomertijd"
-        ],
-        "short": [
-          "AST",
-          "ADT"
+          "Braziliaanse standaardtijd",
+          "Braziliaanse zomertijd"
         ]
       },
       "America/Aruba": {
@@ -628,6 +538,28 @@
           "ADT"
         ]
       },
+      "America/Asuncion": {
+        "long": [
+          "Paraguayaanse standaardtijd",
+          "Paraguayaanse zomertijd"
+        ]
+      },
+      "America/Bahia": {
+        "long": [
+          "Braziliaanse standaardtijd",
+          "Braziliaanse zomertijd"
+        ]
+      },
+      "America/Bahia_Banderas": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
       "America/Barbados": {
         "long": [
           "Atlantic-standaardtijd",
@@ -638,7 +570,23 @@
           "ADT"
         ]
       },
-      "Atlantic/Bermuda": {
+      "America/Belem": {
+        "long": [
+          "Braziliaanse standaardtijd",
+          "Braziliaanse zomertijd"
+        ]
+      },
+      "America/Belize": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Blanc-Sablon": {
         "long": [
           "Atlantic-standaardtijd",
           "Atlantic-zomertijd"
@@ -648,14 +596,164 @@
           "ADT"
         ]
       },
-      "America/Kralendijk": {
+      "America/Boa_Vista": {
         "long": [
-          "Atlantic-standaardtijd",
-          "Atlantic-zomertijd"
+          "Amazone-standaardtijd",
+          "Amazone-zomertijd"
+        ]
+      },
+      "America/Bogota": {
+        "long": [
+          "Colombiaanse standaardtijd",
+          "Colombiaanse zomertijd"
+        ]
+      },
+      "America/Boise": {
+        "long": [
+          "Mountain-standaardtijd",
+          "Mountain-zomertijd"
         ],
         "short": [
-          "AST",
-          "ADT"
+          "MST",
+          "MDT"
+        ]
+      },
+      "America/Buenos_Aires": {
+        "long": [
+          "Argentijnse standaardtijd",
+          "Argentijnse zomertijd"
+        ]
+      },
+      "America/Cambridge_Bay": {
+        "long": [
+          "Mountain-standaardtijd",
+          "Mountain-zomertijd"
+        ],
+        "short": [
+          "MST",
+          "MDT"
+        ]
+      },
+      "America/Campo_Grande": {
+        "long": [
+          "Amazone-standaardtijd",
+          "Amazone-zomertijd"
+        ]
+      },
+      "America/Cancun": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Caracas": {
+        "long": [
+          "Venezolaanse tijd",
+          "Venezolaanse tijd"
+        ]
+      },
+      "America/Catamarca": {
+        "long": [
+          "Argentijnse standaardtijd",
+          "Argentijnse zomertijd"
+        ]
+      },
+      "America/Cayenne": {
+        "long": [
+          "Frans-Guyaanse tijd",
+          "Frans-Guyaanse tijd"
+        ]
+      },
+      "America/Cayman": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Chicago": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Chihuahua": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Ciudad_Juarez": {
+        "long": [
+          "Mountain-standaardtijd",
+          "Mountain-zomertijd"
+        ],
+        "short": [
+          "MST",
+          "MDT"
+        ]
+      },
+      "America/Coral_Harbour": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Cordoba": {
+        "long": [
+          "Argentijnse standaardtijd",
+          "Argentijnse zomertijd"
+        ]
+      },
+      "America/Costa_Rica": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Coyhaique": {
+        "long": [
+          "Chileense standaardtijd",
+          "Chileense zomertijd"
+        ]
+      },
+      "America/Creston": {
+        "long": [
+          "Mountain-standaardtijd",
+          "Mountain-zomertijd"
+        ],
+        "short": [
+          "MST",
+          "MDT"
+        ]
+      },
+      "America/Cuiaba": {
+        "long": [
+          "Amazone-standaardtijd",
+          "Amazone-zomertijd"
         ]
       },
       "America/Curacao": {
@@ -668,6 +766,52 @@
           "ADT"
         ]
       },
+      "America/Danmarkshavn": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "America/Dawson": {
+        "long": [
+          "Yukon-tijd",
+          "Yukon-tijd"
+        ]
+      },
+      "America/Dawson_Creek": {
+        "long": [
+          "Mountain-standaardtijd",
+          "Mountain-zomertijd"
+        ],
+        "short": [
+          "MST",
+          "MDT"
+        ]
+      },
+      "America/Denver": {
+        "long": [
+          "Mountain-standaardtijd",
+          "Mountain-zomertijd"
+        ],
+        "short": [
+          "MST",
+          "MDT"
+        ]
+      },
+      "America/Detroit": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
       "America/Dominica": {
         "long": [
           "Atlantic-standaardtijd",
@@ -678,7 +822,49 @@
           "ADT"
         ]
       },
-      "America/Grenada": {
+      "America/Edmonton": {
+        "long": [
+          "Mountain-standaardtijd",
+          "Mountain-zomertijd"
+        ],
+        "short": [
+          "MST",
+          "MDT"
+        ]
+      },
+      "America/Eirunepe": {
+        "long": [
+          "Acre-standaardtijd",
+          "Acre-zomertijd"
+        ]
+      },
+      "America/El_Salvador": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Fort_Nelson": {
+        "long": [
+          "Mountain-standaardtijd",
+          "Mountain-zomertijd"
+        ],
+        "short": [
+          "MST",
+          "MDT"
+        ]
+      },
+      "America/Fortaleza": {
+        "long": [
+          "Braziliaanse standaardtijd",
+          "Braziliaanse zomertijd"
+        ]
+      },
+      "America/Glace_Bay": {
         "long": [
           "Atlantic-standaardtijd",
           "Atlantic-zomertijd"
@@ -688,7 +874,33 @@
           "ADT"
         ]
       },
-      "America/Thule": {
+      "America/Godthab": {
+        "long": [
+          "Groenlandse standaardtijd",
+          "Groenlandse zomertijd"
+        ]
+      },
+      "America/Goose_Bay": {
+        "long": [
+          "Atlantic-standaardtijd",
+          "Atlantic-zomertijd"
+        ],
+        "short": [
+          "AST",
+          "ADT"
+        ]
+      },
+      "America/Grand_Turk": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Grenada": {
         "long": [
           "Atlantic-standaardtijd",
           "Atlantic-zomertijd"
@@ -708,7 +920,29 @@
           "ADT"
         ]
       },
-      "America/St_Kitts": {
+      "America/Guatemala": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Guayaquil": {
+        "long": [
+          "Ecuadoraanse tijd",
+          "Ecuadoraanse tijd"
+        ]
+      },
+      "America/Guyana": {
+        "long": [
+          "Guyaanse tijd",
+          "Guyaanse tijd"
+        ]
+      },
+      "America/Halifax": {
         "long": [
           "Atlantic-standaardtijd",
           "Atlantic-zomertijd"
@@ -718,7 +952,75 @@
           "ADT"
         ]
       },
-      "America/St_Lucia": {
+      "America/Havana": {
+        "long": [
+          "Cubaanse standaardtijd",
+          "Cubaanse zomertijd"
+        ]
+      },
+      "America/Hermosillo": {
+        "long": [
+          "Mexicaanse Pacific-standaardtijd",
+          "Mexicaanse Pacific-zomertijd"
+        ]
+      },
+      "America/Indianapolis": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Inuvik": {
+        "long": [
+          "Mountain-standaardtijd",
+          "Mountain-zomertijd"
+        ],
+        "short": [
+          "MST",
+          "MDT"
+        ]
+      },
+      "America/Iqaluit": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Jamaica": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Jujuy": {
+        "long": [
+          "Argentijnse standaardtijd",
+          "Argentijnse zomertijd"
+        ]
+      },
+      "America/Juneau": {
+        "long": [
+          "Alaska-standaardtijd",
+          "Alaska-zomertijd"
+        ],
+        "short": [
+          "AKST",
+          "AKDT"
+        ]
+      },
+      "America/Kralendijk": {
         "long": [
           "Atlantic-standaardtijd",
           "Atlantic-zomertijd"
@@ -726,6 +1028,70 @@
         "short": [
           "AST",
           "ADT"
+        ]
+      },
+      "America/La_Paz": {
+        "long": [
+          "Boliviaanse tijd",
+          "Boliviaanse tijd"
+        ]
+      },
+      "America/Lima": {
+        "long": [
+          "Peruaanse standaardtijd",
+          "Peruaanse zomertijd"
+        ]
+      },
+      "America/Los_Angeles": {
+        "long": [
+          "Pacific-standaardtijd",
+          "Pacific-zomertijd"
+        ],
+        "short": [
+          "PST",
+          "PDT"
+        ]
+      },
+      "America/Louisville": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Lower_Princes": {
+        "long": [
+          "Atlantic-standaardtijd",
+          "Atlantic-zomertijd"
+        ],
+        "short": [
+          "AST",
+          "ADT"
+        ]
+      },
+      "America/Maceio": {
+        "long": [
+          "Braziliaanse standaardtijd",
+          "Braziliaanse zomertijd"
+        ]
+      },
+      "America/Managua": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Manaus": {
+        "long": [
+          "Amazone-standaardtijd",
+          "Amazone-zomertijd"
         ]
       },
       "America/Marigot": {
@@ -748,6 +1114,100 @@
           "ADT"
         ]
       },
+      "America/Matamoros": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Mazatlan": {
+        "long": [
+          "Mexicaanse Pacific-standaardtijd",
+          "Mexicaanse Pacific-zomertijd"
+        ]
+      },
+      "America/Mendoza": {
+        "long": [
+          "Argentijnse standaardtijd",
+          "Argentijnse zomertijd"
+        ]
+      },
+      "America/Menominee": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Merida": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Metlakatla": {
+        "long": [
+          "Alaska-standaardtijd",
+          "Alaska-zomertijd"
+        ],
+        "short": [
+          "AKST",
+          "AKDT"
+        ]
+      },
+      "America/Mexico_City": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Miquelon": {
+        "long": [
+          "Saint Pierre en Miquelon-standaardtijd",
+          "Saint Pierre en Miquelon-zomertijd"
+        ]
+      },
+      "America/Moncton": {
+        "long": [
+          "Atlantic-standaardtijd",
+          "Atlantic-zomertijd"
+        ],
+        "short": [
+          "AST",
+          "ADT"
+        ]
+      },
+      "America/Monterrey": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Montevideo": {
+        "long": [
+          "Uruguayaanse standaardtijd",
+          "Uruguayaanse zomertijd"
+        ]
+      },
       "America/Montserrat": {
         "long": [
           "Atlantic-standaardtijd",
@@ -758,24 +1218,76 @@
           "ADT"
         ]
       },
-      "America/Puerto_Rico": {
+      "America/Nassau": {
         "long": [
-          "Atlantic-standaardtijd",
-          "Atlantic-zomertijd"
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
         ],
         "short": [
-          "AST",
-          "ADT"
+          "EST",
+          "EDT"
         ]
       },
-      "America/Lower_Princes": {
+      "America/New_York": {
         "long": [
-          "Atlantic-standaardtijd",
-          "Atlantic-zomertijd"
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
         ],
         "short": [
-          "AST",
-          "ADT"
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Nome": {
+        "long": [
+          "Alaska-standaardtijd",
+          "Alaska-zomertijd"
+        ],
+        "short": [
+          "AKST",
+          "AKDT"
+        ]
+      },
+      "America/Noronha": {
+        "long": [
+          "Fernando de Noronha-standaardtijd",
+          "Fernando de Noronha-zomertijd"
+        ]
+      },
+      "America/Ojinaga": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Panama": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Paramaribo": {
+        "long": [
+          "Surinaamse tijd",
+          "Surinaamse tijd"
+        ]
+      },
+      "America/Phoenix": {
+        "long": [
+          "Mountain-standaardtijd",
+          "Mountain-zomertijd"
+        ],
+        "short": [
+          "MST",
+          "MDT"
         ]
       },
       "America/Port_of_Spain": {
@@ -788,7 +1300,23 @@
           "ADT"
         ]
       },
-      "America/St_Vincent": {
+      "America/Port-au-Prince": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Porto_Velho": {
+        "long": [
+          "Amazone-standaardtijd",
+          "Amazone-zomertijd"
+        ]
+      },
+      "America/Puerto_Rico": {
         "long": [
           "Atlantic-standaardtijd",
           "Atlantic-zomertijd"
@@ -798,7 +1326,125 @@
           "ADT"
         ]
       },
-      "America/Tortola": {
+      "America/Punta_Arenas": {
+        "long": [
+          "Chileense standaardtijd",
+          "Chileense zomertijd"
+        ]
+      },
+      "America/Rankin_Inlet": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Recife": {
+        "long": [
+          "Braziliaanse standaardtijd",
+          "Braziliaanse zomertijd"
+        ]
+      },
+      "America/Regina": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Resolute": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Rio_Branco": {
+        "long": [
+          "Acre-standaardtijd",
+          "Acre-zomertijd"
+        ]
+      },
+      "America/Santarem": {
+        "long": [
+          "Braziliaanse standaardtijd",
+          "Braziliaanse zomertijd"
+        ]
+      },
+      "America/Santiago": {
+        "long": [
+          "Chileense standaardtijd",
+          "Chileense zomertijd"
+        ]
+      },
+      "America/Santo_Domingo": {
+        "long": [
+          "Atlantic-standaardtijd",
+          "Atlantic-zomertijd"
+        ],
+        "short": [
+          "AST",
+          "ADT"
+        ]
+      },
+      "America/Sao_Paulo": {
+        "long": [
+          "Braziliaanse standaardtijd",
+          "Braziliaanse zomertijd"
+        ]
+      },
+      "America/Scoresbysund": {
+        "long": [
+          "Groenlandse standaardtijd",
+          "Groenlandse zomertijd"
+        ]
+      },
+      "America/Sitka": {
+        "long": [
+          "Alaska-standaardtijd",
+          "Alaska-zomertijd"
+        ],
+        "short": [
+          "AKST",
+          "AKDT"
+        ]
+      },
+      "America/St_Barthelemy": {
+        "long": [
+          "Atlantic-standaardtijd",
+          "Atlantic-zomertijd"
+        ],
+        "short": [
+          "AST",
+          "ADT"
+        ]
+      },
+      "America/St_Johns": {
+        "long": [
+          "Newfoundland-standaardtijd",
+          "Newfoundland-zomertijd"
+        ]
+      },
+      "America/St_Kitts": {
+        "long": [
+          "Atlantic-standaardtijd",
+          "Atlantic-zomertijd"
+        ],
+        "short": [
+          "AST",
+          "ADT"
+        ]
+      },
+      "America/St_Lucia": {
         "long": [
           "Atlantic-standaardtijd",
           "Atlantic-zomertijd"
@@ -818,156 +1464,116 @@
           "ADT"
         ]
       },
-      "Australia/Adelaide": {
+      "America/St_Vincent": {
         "long": [
-          "Midden-Australische standaardtijd",
-          "Midden-Australische zomertijd"
-        ]
-      },
-      "Australia/Eucla": {
-        "long": [
-          "Midden-Australische westelijke standaardtijd",
-          "Midden-Australische westelijke zomertijd"
-        ]
-      },
-      "Australia/Sydney": {
-        "long": [
-          "Oost-Australische standaardtijd",
-          "Oost-Australische zomertijd"
-        ]
-      },
-      "Australia/Perth": {
-        "long": [
-          "West-Australische standaardtijd",
-          "West-Australische zomertijd"
-        ]
-      },
-      "Atlantic/Azores": {
-        "long": [
-          "Azoren-standaardtijd",
-          "Azoren-zomertijd"
-        ]
-      },
-      "America/Adak": {
-        "long": [
-          "Hawaii-Aleoetische standaardtijd",
-          "Hawaii-Aleoetische zomertijd"
+          "Atlantic-standaardtijd",
+          "Atlantic-zomertijd"
         ],
         "short": [
-          "HAST",
-          "HADT"
+          "AST",
+          "ADT"
         ]
       },
-      "Asia/Thimphu": {
+      "America/Swift_Current": {
         "long": [
-          "Bhutaanse tijd",
-          "Bhutaanse tijd"
-        ]
-      },
-      "America/La_Paz": {
-        "long": [
-          "Boliviaanse tijd",
-          "Boliviaanse tijd"
-        ]
-      },
-      "Asia/Kuching": {
-        "long": [
-          "Maleisische tijd",
-          "Maleisische tijd"
-        ]
-      },
-      "America/Sao_Paulo": {
-        "long": [
-          "Braziliaanse standaardtijd",
-          "Braziliaanse zomertijd"
-        ]
-      },
-      "Europe/London": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
+          "Central-standaardtijd",
+          "Central-zomertijd"
         ],
         "short": [
-          "GMT",
-          "GMT"
+          "CST",
+          "CDT"
         ]
       },
-      "Asia/Brunei": {
+      "America/Tegucigalpa": {
         "long": [
-          "Bruneise tijd",
-          "Bruneise tijd"
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
         ]
       },
-      "Atlantic/Cape_Verde": {
+      "America/Thule": {
         "long": [
-          "Kaapverdische standaardtijd",
-          "Kaapverdische zomertijd"
+          "Atlantic-standaardtijd",
+          "Atlantic-zomertijd"
+        ],
+        "short": [
+          "AST",
+          "ADT"
+        ]
+      },
+      "America/Tijuana": {
+        "long": [
+          "Pacific-standaardtijd",
+          "Pacific-zomertijd"
+        ],
+        "short": [
+          "PST",
+          "PDT"
+        ]
+      },
+      "America/Toronto": {
+        "long": [
+          "Eastern-standaardtijd",
+          "Eastern-zomertijd"
+        ],
+        "short": [
+          "EST",
+          "EDT"
+        ]
+      },
+      "America/Tortola": {
+        "long": [
+          "Atlantic-standaardtijd",
+          "Atlantic-zomertijd"
+        ],
+        "short": [
+          "AST",
+          "ADT"
+        ]
+      },
+      "America/Vancouver": {
+        "long": [
+          "Pacific-standaardtijd",
+          "Pacific-zomertijd"
+        ],
+        "short": [
+          "PST",
+          "PDT"
+        ]
+      },
+      "America/Whitehorse": {
+        "long": [
+          "Yukon-tijd",
+          "Yukon-tijd"
+        ]
+      },
+      "America/Winnipeg": {
+        "long": [
+          "Central-standaardtijd",
+          "Central-zomertijd"
+        ],
+        "short": [
+          "CST",
+          "CDT"
+        ]
+      },
+      "America/Yakutat": {
+        "long": [
+          "Alaska-standaardtijd",
+          "Alaska-zomertijd"
+        ],
+        "short": [
+          "AKST",
+          "AKDT"
         ]
       },
       "Antarctica/Casey": {
         "long": [
-          "Casey tijd",
-          "Casey tijd"
-        ]
-      },
-      "Pacific/Saipan": {
-        "long": [
-          "Noordelijk Mariaanse tijd",
-          "Noordelijk Mariaanse tijd"
-        ]
-      },
-      "Pacific/Guam": {
-        "long": [
-          "Guamese standaardtijd",
-          "Guamese standaardtijd"
-        ]
-      },
-      "Pacific/Chatham": {
-        "long": [
-          "Chatham-standaardtijd",
-          "Chatham-zomertijd"
-        ]
-      },
-      "America/Santiago": {
-        "long": [
-          "Chileense standaardtijd",
-          "Chileense zomertijd"
-        ]
-      },
-      "Asia/Shanghai": {
-        "long": [
-          "Chinese standaardtijd",
-          "Chinese zomertijd"
-        ]
-      },
-      "Indian/Christmas": {
-        "long": [
-          "Christmaseilandse tijd",
-          "Christmaseilandse tijd"
-        ]
-      },
-      "Indian/Cocos": {
-        "long": [
-          "Cocoseilandse tijd",
-          "Cocoseilandse tijd"
-        ]
-      },
-      "America/Bogota": {
-        "long": [
-          "Colombiaanse standaardtijd",
-          "Colombiaanse zomertijd"
-        ]
-      },
-      "Pacific/Rarotonga": {
-        "long": [
-          "Cookeilandse standaardtijd",
-          "Cookeilandse halve zomertijd"
-        ]
-      },
-      "America/Havana": {
-        "long": [
-          "Cubaanse standaardtijd",
-          "Cubaanse zomertijd"
+          "West-Australische standaardtijd",
+          "West-Australische zomertijd"
         ]
       },
       "Antarctica/Davis": {
@@ -982,16 +1588,204 @@
           "Dumont-d’Urville-tijd"
         ]
       },
-      "Asia/Dushanbe": {
+      "Antarctica/Macquarie": {
         "long": [
-          "Tadzjiekse tijd",
-          "Tadzjiekse tijd"
+          "Oost-Australische standaardtijd",
+          "Oost-Australische zomertijd"
         ]
       },
-      "America/Paramaribo": {
+      "Antarctica/Mawson": {
         "long": [
-          "Surinaamse tijd",
-          "Surinaamse tijd"
+          "Mawson-tijd",
+          "Mawson-tijd"
+        ]
+      },
+      "Antarctica/McMurdo": {
+        "long": [
+          "Nieuw-Zeelandse standaardtijd",
+          "Nieuw-Zeelandse zomertijd"
+        ]
+      },
+      "Antarctica/Palmer": {
+        "long": [
+          "Chileense standaardtijd",
+          "Chileense zomertijd"
+        ]
+      },
+      "Antarctica/Rothera": {
+        "long": [
+          "Rothera-tijd",
+          "Rothera-tijd"
+        ]
+      },
+      "Antarctica/Syowa": {
+        "long": [
+          "Syowa-tijd",
+          "Syowa-tijd"
+        ]
+      },
+      "Antarctica/Troll": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Antarctica/Vostok": {
+        "long": [
+          "Vostok-tijd",
+          "Vostok-tijd"
+        ]
+      },
+      "Arctic/Longyearbyen": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Asia/Aden": {
+        "long": [
+          "Arabische standaardtijd",
+          "Arabische zomertijd"
+        ]
+      },
+      "Asia/Almaty": {
+        "long": [
+          "Kazachse tijd",
+          "Kazachse tijd"
+        ]
+      },
+      "Asia/Amman": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Asia/Anadyr": {
+        "long": [
+          "Petropavlovsk-Kamtsjatski-standaardtijd",
+          "Petropavlovsk-Kamtsjatski-zomertijd"
+        ]
+      },
+      "Asia/Aqtau": {
+        "long": [
+          "Kazachse tijd",
+          "Kazachse tijd"
+        ]
+      },
+      "Asia/Aqtobe": {
+        "long": [
+          "Kazachse tijd",
+          "Kazachse tijd"
+        ]
+      },
+      "Asia/Ashgabat": {
+        "long": [
+          "Turkmeense standaardtijd",
+          "Turkmeense zomertijd"
+        ]
+      },
+      "Asia/Atyrau": {
+        "long": [
+          "Kazachse tijd",
+          "Kazachse tijd"
+        ]
+      },
+      "Asia/Baghdad": {
+        "long": [
+          "Arabische standaardtijd",
+          "Arabische zomertijd"
+        ]
+      },
+      "Asia/Bahrain": {
+        "long": [
+          "Arabische standaardtijd",
+          "Arabische zomertijd"
+        ]
+      },
+      "Asia/Baku": {
+        "long": [
+          "Azerbeidzjaanse standaardtijd",
+          "Azerbeidzjaanse zomertijd"
+        ]
+      },
+      "Asia/Bangkok": {
+        "long": [
+          "Indochinese tijd",
+          "Indochinese tijd"
+        ]
+      },
+      "Asia/Barnaul": {
+        "long": [
+          "Krasnojarsk-standaardtijd",
+          "Krasnojarsk-zomertijd"
+        ]
+      },
+      "Asia/Beirut": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Asia/Bishkek": {
+        "long": [
+          "Kirgizische tijd",
+          "Kirgizische tijd"
+        ]
+      },
+      "Asia/Brunei": {
+        "long": [
+          "Bruneise tijd",
+          "Bruneise tijd"
+        ]
+      },
+      "Asia/Calcutta": {
+        "long": [
+          "Indiase tijd",
+          "Indiase tijd"
+        ]
+      },
+      "Asia/Chita": {
+        "long": [
+          "Jakoetsk-standaardtijd",
+          "Jakoetsk-zomertijd"
+        ]
+      },
+      "Asia/Colombo": {
+        "long": [
+          "Indiase tijd",
+          "Indiase tijd"
+        ]
+      },
+      "Asia/Damascus": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Asia/Dhaka": {
+        "long": [
+          "Bengalese standaardtijd",
+          "Bengalese zomertijd"
         ]
       },
       "Asia/Dili": {
@@ -1000,19 +1794,537 @@
           "Oost-Timorese tijd"
         ]
       },
-      "Pacific/Easter": {
+      "Asia/Dubai": {
         "long": [
-          "Paaseilandse standaardtijd",
-          "Paaseilandse zomertijd"
+          "Golf-standaardtijd",
+          "Golf-standaardtijd"
         ]
       },
-      "America/Guayaquil": {
+      "Asia/Dushanbe": {
         "long": [
-          "Ecuadoraanse tijd",
-          "Ecuadoraanse tijd"
+          "Tadzjiekse tijd",
+          "Tadzjiekse tijd"
         ]
       },
-      "Europe/Paris": {
+      "Asia/Famagusta": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Asia/Gaza": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Asia/Hebron": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Asia/Hong_Kong": {
+        "long": [
+          "Hongkongse standaardtijd",
+          "Hongkongse zomertijd"
+        ]
+      },
+      "Asia/Hovd": {
+        "long": [
+          "Hovd-standaardtijd",
+          "Hovd-zomertijd"
+        ]
+      },
+      "Asia/Irkutsk": {
+        "long": [
+          "Irkoetsk-standaardtijd",
+          "Irkoetsk-zomertijd"
+        ]
+      },
+      "Asia/Jakarta": {
+        "long": [
+          "West-Indonesische tijd",
+          "West-Indonesische tijd"
+        ]
+      },
+      "Asia/Jayapura": {
+        "long": [
+          "Oost-Indonesische tijd",
+          "Oost-Indonesische tijd"
+        ]
+      },
+      "Asia/Jerusalem": {
+        "long": [
+          "Israëlische standaardtijd",
+          "Israëlische zomertijd"
+        ]
+      },
+      "Asia/Kabul": {
+        "long": [
+          "Afghaanse tijd",
+          "Afghaanse tijd"
+        ]
+      },
+      "Asia/Kamchatka": {
+        "long": [
+          "Petropavlovsk-Kamtsjatski-standaardtijd",
+          "Petropavlovsk-Kamtsjatski-zomertijd"
+        ]
+      },
+      "Asia/Karachi": {
+        "long": [
+          "Pakistaanse standaardtijd",
+          "Pakistaanse zomertijd"
+        ]
+      },
+      "Asia/Katmandu": {
+        "long": [
+          "Nepalese tijd",
+          "Nepalese tijd"
+        ]
+      },
+      "Asia/Khandyga": {
+        "long": [
+          "Jakoetsk-standaardtijd",
+          "Jakoetsk-zomertijd"
+        ]
+      },
+      "Asia/Krasnoyarsk": {
+        "long": [
+          "Krasnojarsk-standaardtijd",
+          "Krasnojarsk-zomertijd"
+        ]
+      },
+      "Asia/Kuala_Lumpur": {
+        "long": [
+          "Maleisische tijd",
+          "Maleisische tijd"
+        ]
+      },
+      "Asia/Kuching": {
+        "long": [
+          "Maleisische tijd",
+          "Maleisische tijd"
+        ]
+      },
+      "Asia/Kuwait": {
+        "long": [
+          "Arabische standaardtijd",
+          "Arabische zomertijd"
+        ]
+      },
+      "Asia/Macau": {
+        "long": [
+          "Chinese standaardtijd",
+          "Chinese zomertijd"
+        ]
+      },
+      "Asia/Magadan": {
+        "long": [
+          "Magadan-standaardtijd",
+          "Magadan-zomertijd"
+        ]
+      },
+      "Asia/Makassar": {
+        "long": [
+          "Centraal-Indonesische tijd",
+          "Centraal-Indonesische tijd"
+        ]
+      },
+      "Asia/Manila": {
+        "long": [
+          "Filipijnse standaardtijd",
+          "Filipijnse zomertijd"
+        ]
+      },
+      "Asia/Muscat": {
+        "long": [
+          "Golf-standaardtijd",
+          "Golf-standaardtijd"
+        ]
+      },
+      "Asia/Nicosia": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Asia/Novokuznetsk": {
+        "long": [
+          "Krasnojarsk-standaardtijd",
+          "Krasnojarsk-zomertijd"
+        ]
+      },
+      "Asia/Novosibirsk": {
+        "long": [
+          "Krasnojarsk-standaardtijd",
+          "Krasnojarsk-zomertijd"
+        ]
+      },
+      "Asia/Omsk": {
+        "long": [
+          "Omsk-standaardtijd",
+          "Omsk-zomertijd"
+        ]
+      },
+      "Asia/Oral": {
+        "long": [
+          "Kazachse tijd",
+          "Kazachse tijd"
+        ]
+      },
+      "Asia/Phnom_Penh": {
+        "long": [
+          "Indochinese tijd",
+          "Indochinese tijd"
+        ]
+      },
+      "Asia/Pontianak": {
+        "long": [
+          "West-Indonesische tijd",
+          "West-Indonesische tijd"
+        ]
+      },
+      "Asia/Pyongyang": {
+        "long": [
+          "Koreaanse standaardtijd",
+          "Koreaanse zomertijd"
+        ]
+      },
+      "Asia/Qatar": {
+        "long": [
+          "Arabische standaardtijd",
+          "Arabische zomertijd"
+        ]
+      },
+      "Asia/Qostanay": {
+        "long": [
+          "Kazachse tijd",
+          "Kazachse tijd"
+        ]
+      },
+      "Asia/Qyzylorda": {
+        "long": [
+          "Kazachse tijd",
+          "Kazachse tijd"
+        ]
+      },
+      "Asia/Rangoon": {
+        "long": [
+          "Myanmarese tijd",
+          "Myanmarese tijd"
+        ]
+      },
+      "Asia/Riyadh": {
+        "long": [
+          "Arabische standaardtijd",
+          "Arabische zomertijd"
+        ]
+      },
+      "Asia/Saigon": {
+        "long": [
+          "Indochinese tijd",
+          "Indochinese tijd"
+        ]
+      },
+      "Asia/Sakhalin": {
+        "long": [
+          "Magadan-standaardtijd",
+          "Magadan-zomertijd"
+        ]
+      },
+      "Asia/Samarkand": {
+        "long": [
+          "Oezbeekse standaardtijd",
+          "Oezbeekse zomertijd"
+        ]
+      },
+      "Asia/Seoul": {
+        "long": [
+          "Koreaanse standaardtijd",
+          "Koreaanse zomertijd"
+        ]
+      },
+      "Asia/Shanghai": {
+        "long": [
+          "Chinese standaardtijd",
+          "Chinese zomertijd"
+        ]
+      },
+      "Asia/Singapore": {
+        "long": [
+          "Singaporese standaardtijd",
+          "Singaporese standaardtijd"
+        ]
+      },
+      "Asia/Srednekolymsk": {
+        "long": [
+          "Magadan-standaardtijd",
+          "Magadan-zomertijd"
+        ]
+      },
+      "Asia/Taipei": {
+        "long": [
+          "Taipei-standaardtijd",
+          "Taipei-zomertijd"
+        ]
+      },
+      "Asia/Tashkent": {
+        "long": [
+          "Oezbeekse standaardtijd",
+          "Oezbeekse zomertijd"
+        ]
+      },
+      "Asia/Tbilisi": {
+        "long": [
+          "Georgische standaardtijd",
+          "Georgische zomertijd"
+        ]
+      },
+      "Asia/Tehran": {
+        "long": [
+          "Iraanse standaardtijd",
+          "Iraanse zomertijd"
+        ]
+      },
+      "Asia/Thimphu": {
+        "long": [
+          "Bhutaanse tijd",
+          "Bhutaanse tijd"
+        ]
+      },
+      "Asia/Tokyo": {
+        "long": [
+          "Japanse standaardtijd",
+          "Japanse zomertijd"
+        ]
+      },
+      "Asia/Tomsk": {
+        "long": [
+          "Krasnojarsk-standaardtijd",
+          "Krasnojarsk-zomertijd"
+        ]
+      },
+      "Asia/Ulaanbaatar": {
+        "long": [
+          "Ulaanbaatar-standaardtijd",
+          "Ulaanbaatar-zomertijd"
+        ]
+      },
+      "Asia/Ust-Nera": {
+        "long": [
+          "Vladivostok-standaardtijd",
+          "Vladivostok-zomertijd"
+        ]
+      },
+      "Asia/Vientiane": {
+        "long": [
+          "Indochinese tijd",
+          "Indochinese tijd"
+        ]
+      },
+      "Asia/Vladivostok": {
+        "long": [
+          "Vladivostok-standaardtijd",
+          "Vladivostok-zomertijd"
+        ]
+      },
+      "Asia/Yakutsk": {
+        "long": [
+          "Jakoetsk-standaardtijd",
+          "Jakoetsk-zomertijd"
+        ]
+      },
+      "Asia/Yekaterinburg": {
+        "long": [
+          "Jekaterinenburg-standaardtijd",
+          "Jekaterinenburg-zomertijd"
+        ]
+      },
+      "Asia/Yerevan": {
+        "long": [
+          "Armeense standaardtijd",
+          "Armeense zomertijd"
+        ]
+      },
+      "Atlantic/Azores": {
+        "long": [
+          "Azoren-standaardtijd",
+          "Azoren-zomertijd"
+        ]
+      },
+      "Atlantic/Bermuda": {
+        "long": [
+          "Atlantic-standaardtijd",
+          "Atlantic-zomertijd"
+        ],
+        "short": [
+          "AST",
+          "ADT"
+        ]
+      },
+      "Atlantic/Canary": {
+        "long": [
+          "West-Europese standaardtijd",
+          "West-Europese zomertijd"
+        ],
+        "short": [
+          "WET",
+          "WEST"
+        ]
+      },
+      "Atlantic/Cape_Verde": {
+        "long": [
+          "Kaapverdische standaardtijd",
+          "Kaapverdische zomertijd"
+        ]
+      },
+      "Atlantic/Faeroe": {
+        "long": [
+          "West-Europese standaardtijd",
+          "West-Europese zomertijd"
+        ],
+        "short": [
+          "WET",
+          "WEST"
+        ]
+      },
+      "Atlantic/Madeira": {
+        "long": [
+          "West-Europese standaardtijd",
+          "West-Europese zomertijd"
+        ],
+        "short": [
+          "WET",
+          "WEST"
+        ]
+      },
+      "Atlantic/Reykjavik": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Atlantic/South_Georgia": {
+        "long": [
+          "Zuid-Georgische tijd",
+          "Zuid-Georgische tijd"
+        ]
+      },
+      "Atlantic/St_Helena": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Atlantic/Stanley": {
+        "long": [
+          "Falklandeilandse standaardtijd",
+          "Falklandeilandse zomertijd"
+        ]
+      },
+      "Australia/Adelaide": {
+        "long": [
+          "Midden-Australische standaardtijd",
+          "Midden-Australische zomertijd"
+        ]
+      },
+      "Australia/Brisbane": {
+        "long": [
+          "Oost-Australische standaardtijd",
+          "Oost-Australische zomertijd"
+        ]
+      },
+      "Australia/Broken_Hill": {
+        "long": [
+          "Midden-Australische standaardtijd",
+          "Midden-Australische zomertijd"
+        ]
+      },
+      "Australia/Darwin": {
+        "long": [
+          "Midden-Australische standaardtijd",
+          "Midden-Australische zomertijd"
+        ]
+      },
+      "Australia/Eucla": {
+        "long": [
+          "Midden-Australische westelijke standaardtijd",
+          "Midden-Australische westelijke zomertijd"
+        ]
+      },
+      "Australia/Hobart": {
+        "long": [
+          "Oost-Australische standaardtijd",
+          "Oost-Australische zomertijd"
+        ]
+      },
+      "Australia/Lindeman": {
+        "long": [
+          "Oost-Australische standaardtijd",
+          "Oost-Australische zomertijd"
+        ]
+      },
+      "Australia/Lord_Howe": {
+        "long": [
+          "Lord Howe-eilandse standaardtijd",
+          "Lord Howe-eilandse zomertijd"
+        ]
+      },
+      "Australia/Melbourne": {
+        "long": [
+          "Oost-Australische standaardtijd",
+          "Oost-Australische zomertijd"
+        ]
+      },
+      "Australia/Perth": {
+        "long": [
+          "West-Australische standaardtijd",
+          "West-Australische zomertijd"
+        ]
+      },
+      "Australia/Sydney": {
+        "long": [
+          "Oost-Australische standaardtijd",
+          "Oost-Australische zomertijd"
+        ]
+      },
+      "Etc/GMT": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Europe/Amsterdam": {
         "long": [
           "Midden-Europese standaardtijd",
           "Midden-Europese zomertijd"
@@ -1032,57 +2344,23 @@
           "CEST"
         ]
       },
-      "Europe/Tirane": {
+      "Europe/Astrakhan": {
         "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
+          "Samara-standaardtijd",
+          "Samara-zomertijd"
         ]
       },
-      "Europe/Vienna": {
+      "Europe/Athens": {
         "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
         ],
         "short": [
-          "CET",
-          "CEST"
+          "EET",
+          "EEST"
         ]
       },
-      "Europe/Sarajevo": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Brussels": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Zurich": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Prague": {
+      "Europe/Belgrade": {
         "long": [
           "Midden-Europese standaardtijd",
           "Midden-Europese zomertijd"
@@ -1102,196 +2380,6 @@
           "CEST"
         ]
       },
-      "Europe/Copenhagen": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Madrid": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Gibraltar": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Zagreb": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Budapest": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Rome": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Vaduz": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Luxembourg": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Monaco": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Podgorica": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Skopje": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Malta": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Amsterdam": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Oslo": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Warsaw": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Belgrade": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Stockholm": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Ljubljana": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Arctic/Longyearbyen": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
       "Europe/Bratislava": {
         "long": [
           "Midden-Europese standaardtijd",
@@ -1302,27 +2390,7 @@
           "CEST"
         ]
       },
-      "Europe/San_Marino": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Africa/Tunis": {
-        "long": [
-          "Midden-Europese standaardtijd",
-          "Midden-Europese zomertijd"
-        ],
-        "short": [
-          "CET",
-          "CEST"
-        ]
-      },
-      "Europe/Vatican": {
+      "Europe/Brussels": {
         "long": [
           "Midden-Europese standaardtijd",
           "Midden-Europese zomertijd"
@@ -1342,7 +2410,27 @@
           "EEST"
         ]
       },
-      "Europe/Mariehamn": {
+      "Europe/Budapest": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Busingen": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Chisinau": {
         "long": [
           "Oost-Europese standaardtijd",
           "Oost-Europese zomertijd"
@@ -1352,34 +2440,44 @@
           "EEST"
         ]
       },
-      "Europe/Sofia": {
+      "Europe/Copenhagen": {
         "long": [
-          "Oost-Europese standaardtijd",
-          "Oost-Europese zomertijd"
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
         ],
         "short": [
-          "EET",
-          "EEST"
+          "CET",
+          "CEST"
         ]
       },
-      "Asia/Nicosia": {
+      "Europe/Dublin": {
         "long": [
-          "Oost-Europese standaardtijd",
-          "Oost-Europese zomertijd"
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
         ],
         "short": [
-          "EET",
-          "EEST"
+          "GMT",
+          "GMT"
         ]
       },
-      "Africa/Cairo": {
+      "Europe/Gibraltar": {
         "long": [
-          "Oost-Europese standaardtijd",
-          "Oost-Europese zomertijd"
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
         ],
         "short": [
-          "EET",
-          "EEST"
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Guernsey": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
         ]
       },
       "Europe/Helsinki": {
@@ -1392,7 +2490,33 @@
           "EEST"
         ]
       },
-      "Europe/Athens": {
+      "Europe/Isle_of_Man": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Europe/Istanbul": {
+        "long": [
+          "Turkse standaardtijd",
+          "Turkse zomertijd"
+        ]
+      },
+      "Europe/Jersey": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Europe/Kaliningrad": {
         "long": [
           "Oost-Europese standaardtijd",
           "Oost-Europese zomertijd"
@@ -1402,7 +2526,83 @@
           "EEST"
         ]
       },
-      "Asia/Beirut": {
+      "Europe/Kiev": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Europe/Kirov": {
+        "long": [
+          "Moskou-standaardtijd",
+          "Moskou-zomertijd"
+        ]
+      },
+      "Europe/Lisbon": {
+        "long": [
+          "West-Europese standaardtijd",
+          "West-Europese zomertijd"
+        ],
+        "short": [
+          "WET",
+          "WEST"
+        ]
+      },
+      "Europe/Ljubljana": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/London": {
+        "long": [
+          "Greenwich Mean Time",
+          "Greenwich Mean Time"
+        ],
+        "short": [
+          "GMT",
+          "GMT"
+        ]
+      },
+      "Europe/Luxembourg": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Madrid": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Malta": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Mariehamn": {
         "long": [
           "Oost-Europese standaardtijd",
           "Oost-Europese zomertijd"
@@ -1414,52 +2614,284 @@
       },
       "Europe/Minsk": {
         "long": [
-          "Verder-oostelijk-Europese tijd",
-          "Verder-oostelijk-Europese tijd"
+          "Moskou-standaardtijd",
+          "Moskou-zomertijd"
         ]
       },
-      "Europe/Kaliningrad": {
+      "Europe/Monaco": {
         "long": [
-          "Verder-oostelijk-Europese tijd",
-          "Verder-oostelijk-Europese tijd"
-        ]
-      },
-      "Atlantic/Canary": {
-        "long": [
-          "West-Europese standaardtijd",
-          "West-Europese zomertijd"
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
         ],
         "short": [
-          "WET",
-          "WEST"
+          "CET",
+          "CEST"
         ]
       },
-      "Atlantic/Faeroe": {
+      "Europe/Moscow": {
         "long": [
-          "West-Europese standaardtijd",
-          "West-Europese zomertijd"
+          "Moskou-standaardtijd",
+          "Moskou-zomertijd"
+        ]
+      },
+      "Europe/Oslo": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
         ],
         "short": [
-          "WET",
-          "WEST"
+          "CET",
+          "CEST"
         ]
       },
-      "Atlantic/Stanley": {
+      "Europe/Paris": {
         "long": [
-          "Falklandeilandse standaardtijd",
-          "Falklandeilandse zomertijd"
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
         ]
       },
-      "Pacific/Fiji": {
+      "Europe/Podgorica": {
         "long": [
-          "Fijische standaardtijd",
-          "Fijische zomertijd"
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
         ]
       },
-      "America/Cayenne": {
+      "Europe/Prague": {
         "long": [
-          "Frans-Guyaanse tijd",
-          "Frans-Guyaanse tijd"
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Riga": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Europe/Rome": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Samara": {
+        "long": [
+          "Samara-standaardtijd",
+          "Samara-zomertijd"
+        ]
+      },
+      "Europe/San_Marino": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Sarajevo": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Saratov": {
+        "long": [
+          "Samara-standaardtijd",
+          "Samara-zomertijd"
+        ]
+      },
+      "Europe/Simferopol": {
+        "long": [
+          "Moskou-standaardtijd",
+          "Moskou-zomertijd"
+        ]
+      },
+      "Europe/Skopje": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Sofia": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Europe/Stockholm": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Tallinn": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Europe/Tirane": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Ulyanovsk": {
+        "long": [
+          "Samara-standaardtijd",
+          "Samara-zomertijd"
+        ]
+      },
+      "Europe/Vaduz": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Vatican": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Vienna": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Vilnius": {
+        "long": [
+          "Oost-Europese standaardtijd",
+          "Oost-Europese zomertijd"
+        ],
+        "short": [
+          "EET",
+          "EEST"
+        ]
+      },
+      "Europe/Volgograd": {
+        "long": [
+          "Moskou-standaardtijd",
+          "Moskou-zomertijd"
+        ]
+      },
+      "Europe/Warsaw": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Zagreb": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Europe/Zurich": {
+        "long": [
+          "Midden-Europese standaardtijd",
+          "Midden-Europese zomertijd"
+        ],
+        "short": [
+          "CET",
+          "CEST"
+        ]
+      },
+      "Indian/Antananarivo": {
+        "long": [
+          "Oost-Afrikaanse tijd",
+          "Oost-Afrikaanse tijd"
+        ]
+      },
+      "Indian/Chagos": {
+        "long": [
+          "Indische Oceaan-tijd",
+          "Indische Oceaan-tijd"
+        ]
+      },
+      "Indian/Christmas": {
+        "long": [
+          "Christmaseilandse tijd",
+          "Christmaseilandse tijd"
+        ]
+      },
+      "Indian/Cocos": {
+        "long": [
+          "Cocoseilandse tijd",
+          "Cocoseilandse tijd"
+        ]
+      },
+      "Indian/Comoro": {
+        "long": [
+          "Oost-Afrikaanse tijd",
+          "Oost-Afrikaanse tijd"
         ]
       },
       "Indian/Kerguelen": {
@@ -1468,10 +2900,94 @@
           "Franse zuidelijke en Antarctische tijd"
         ]
       },
-      "Asia/Bishkek": {
+      "Indian/Mahe": {
         "long": [
-          "Kirgizische tijd",
-          "Kirgizische tijd"
+          "Seychelse tijd",
+          "Seychelse tijd"
+        ]
+      },
+      "Indian/Maldives": {
+        "long": [
+          "Maldivische tijd",
+          "Maldivische tijd"
+        ]
+      },
+      "Indian/Mauritius": {
+        "long": [
+          "Mauritiaanse standaardtijd",
+          "Mauritiaanse zomertijd"
+        ]
+      },
+      "Indian/Mayotte": {
+        "long": [
+          "Oost-Afrikaanse tijd",
+          "Oost-Afrikaanse tijd"
+        ]
+      },
+      "Indian/Reunion": {
+        "long": [
+          "Réunionse tijd",
+          "Réunionse tijd"
+        ]
+      },
+      "Pacific/Apia": {
+        "long": [
+          "Apia-standaardtijd",
+          "Apia-zomertijd"
+        ]
+      },
+      "Pacific/Auckland": {
+        "long": [
+          "Nieuw-Zeelandse standaardtijd",
+          "Nieuw-Zeelandse zomertijd"
+        ]
+      },
+      "Pacific/Bougainville": {
+        "long": [
+          "Papoea-Nieuw-Guineese tijd",
+          "Papoea-Nieuw-Guineese tijd"
+        ]
+      },
+      "Pacific/Chatham": {
+        "long": [
+          "Chatham-standaardtijd",
+          "Chatham-zomertijd"
+        ]
+      },
+      "Pacific/Easter": {
+        "long": [
+          "Paaseilandse standaardtijd",
+          "Paaseilandse zomertijd"
+        ]
+      },
+      "Pacific/Efate": {
+        "long": [
+          "Vanuatuaanse standaardtijd",
+          "Vanuatuaanse zomertijd"
+        ]
+      },
+      "Pacific/Enderbury": {
+        "long": [
+          "Phoenixeilandse tijd",
+          "Phoenixeilandse tijd"
+        ]
+      },
+      "Pacific/Fakaofo": {
+        "long": [
+          "Tokelau-eilandse tijd",
+          "Tokelau-eilandse tijd"
+        ]
+      },
+      "Pacific/Fiji": {
+        "long": [
+          "Fijische standaardtijd",
+          "Fijische zomertijd"
+        ]
+      },
+      "Pacific/Funafuti": {
+        "long": [
+          "Tuvaluaanse tijd",
+          "Tuvaluaanse tijd"
         ]
       },
       "Pacific/Galapagos": {
@@ -1486,160 +3002,16 @@
           "Gambiereilandse tijd"
         ]
       },
-      "Pacific/Tarawa": {
+      "Pacific/Guadalcanal": {
         "long": [
-          "Gilberteilandse tijd",
-          "Gilberteilandse tijd"
+          "Salomonseilandse tijd",
+          "Salomonseilandse tijd"
         ]
       },
-      "Atlantic/Reykjavik": {
+      "Pacific/Guam": {
         "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Africa/Ouagadougou": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Africa/Abidjan": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Africa/Accra": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Africa/Banjul": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Africa/Conakry": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Africa/Bamako": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Africa/Nouakchott": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Atlantic/St_Helena": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Africa/Freetown": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Africa/Dakar": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "Africa/Lome": {
-        "long": [
-          "Greenwich Mean Time",
-          "Greenwich Mean Time"
-        ],
-        "short": [
-          "GMT",
-          "GMT"
-        ]
-      },
-      "America/Godthab": {
-        "long": [
-          "West-Groenlandse standaardtijd",
-          "West-Groenlandse zomertijd"
-        ]
-      },
-      "America/Scoresbysund": {
-        "long": [
-          "Oost-Groenlandse standaardtijd",
-          "Oost-Groenlandse zomertijd"
-        ]
-      },
-      "Asia/Dubai": {
-        "long": [
-          "Golf-standaardtijd",
-          "Golf-standaardtijd"
-        ]
-      },
-      "Asia/Muscat": {
-        "long": [
-          "Golf-standaardtijd",
-          "Golf-standaardtijd"
-        ]
-      },
-      "America/Guyana": {
-        "long": [
-          "Guyaanse tijd",
-          "Guyaanse tijd"
+          "Chamorro-tijd",
+          "Chamorro-tijd"
         ]
       },
       "Pacific/Honolulu": {
@@ -1652,118 +3024,10 @@
           "HAST"
         ]
       },
-      "Asia/Hong_Kong": {
+      "Pacific/Kiritimati": {
         "long": [
-          "Hongkongse standaardtijd",
-          "Hongkongse zomertijd"
-        ]
-      },
-      "Asia/Hovd": {
-        "long": [
-          "Hovd-standaardtijd",
-          "Hovd-zomertijd"
-        ]
-      },
-      "Asia/Calcutta": {
-        "long": [
-          "Indiase tijd",
-          "Indiase tijd"
-        ]
-      },
-      "Asia/Colombo": {
-        "long": [
-          "Lanka-tijd",
-          "Lanka-tijd"
-        ]
-      },
-      "Indian/Chagos": {
-        "long": [
-          "Indische Oceaan-tijd",
-          "Indische Oceaan-tijd"
-        ]
-      },
-      "Asia/Bangkok": {
-        "long": [
-          "Indochinese tijd",
-          "Indochinese tijd"
-        ]
-      },
-      "Asia/Phnom_Penh": {
-        "long": [
-          "Indochinese tijd",
-          "Indochinese tijd"
-        ]
-      },
-      "Asia/Vientiane": {
-        "long": [
-          "Indochinese tijd",
-          "Indochinese tijd"
-        ]
-      },
-      "Asia/Makassar": {
-        "long": [
-          "Centraal-Indonesische tijd",
-          "Centraal-Indonesische tijd"
-        ]
-      },
-      "Asia/Jayapura": {
-        "long": [
-          "Oost-Indonesische tijd",
-          "Oost-Indonesische tijd"
-        ]
-      },
-      "Asia/Jakarta": {
-        "long": [
-          "West-Indonesische tijd",
-          "West-Indonesische tijd"
-        ]
-      },
-      "Asia/Tehran": {
-        "long": [
-          "Iraanse standaardtijd",
-          "Iraanse zomertijd"
-        ]
-      },
-      "Asia/Irkutsk": {
-        "long": [
-          "Irkoetsk-standaardtijd",
-          "Irkoetsk-zomertijd"
-        ]
-      },
-      "Asia/Jerusalem": {
-        "long": [
-          "Israëlische standaardtijd",
-          "Israëlische zomertijd"
-        ]
-      },
-      "Asia/Tokyo": {
-        "long": [
-          "Japanse standaardtijd",
-          "Japanse zomertijd"
-        ]
-      },
-      "Asia/Kamchatka": {
-        "long": [
-          "Petropavlovsk-Kamtsjatski-standaardtijd",
-          "Petropavlovsk-Kamtsjatski-zomertijd"
-        ]
-      },
-      "Asia/Karachi": {
-        "long": [
-          "Pakistaanse standaardtijd",
-          "Pakistaanse zomertijd"
-        ]
-      },
-      "Asia/Qyzylorda": {
-        "long": [
-          "Qyzylorda-standaardtijd",
-          "Qyzylorda-zomertijd"
-        ]
-      },
-      "Asia/Seoul": {
-        "long": [
-          "Koreaanse standaardtijd",
-          "Koreaanse zomertijd"
+          "Line-eilandse tijd",
+          "Line-eilandse tijd"
         ]
       },
       "Pacific/Kosrae": {
@@ -1772,52 +3036,10 @@
           "Kosraese tijd"
         ]
       },
-      "Asia/Krasnoyarsk": {
+      "Pacific/Kwajalein": {
         "long": [
-          "Krasnojarsk-standaardtijd",
-          "Krasnojarsk-zomertijd"
-        ]
-      },
-      "Europe/Samara": {
-        "long": [
-          "Samara-standaardtijd",
-          "Samara-zomertijd"
-        ]
-      },
-      "Pacific/Kiritimati": {
-        "long": [
-          "Line-eilandse tijd",
-          "Line-eilandse tijd"
-        ]
-      },
-      "Australia/Lord_Howe": {
-        "long": [
-          "Lord Howe-eilandse standaardtijd",
-          "Lord Howe-eilandse zomertijd"
-        ]
-      },
-      "Asia/Macau": {
-        "long": [
-          "Macause standaardtijd",
-          "Macause zomertijd"
-        ]
-      },
-      "Asia/Magadan": {
-        "long": [
-          "Magadan-standaardtijd",
-          "Magadan-zomertijd"
-        ]
-      },
-      "Indian/Maldives": {
-        "long": [
-          "Maldivische tijd",
-          "Maldivische tijd"
-        ]
-      },
-      "Pacific/Marquesas": {
-        "long": [
-          "Marquesaseilandse tijd",
-          "Marquesaseilandse tijd"
+          "Marshalleilandse tijd",
+          "Marshalleilandse tijd"
         ]
       },
       "Pacific/Majuro": {
@@ -1826,76 +3048,22 @@
           "Marshalleilandse tijd"
         ]
       },
-      "Indian/Mauritius": {
+      "Pacific/Marquesas": {
         "long": [
-          "Mauritiaanse standaardtijd",
-          "Mauritiaanse zomertijd"
+          "Marquesaseilandse tijd",
+          "Marquesaseilandse tijd"
         ]
       },
-      "Antarctica/Mawson": {
+      "Pacific/Midway": {
         "long": [
-          "Mawson-tijd",
-          "Mawson-tijd"
-        ]
-      },
-      "America/Mazatlan": {
-        "long": [
-          "Mexicaanse Pacific-standaardtijd",
-          "Mexicaanse Pacific-zomertijd"
-        ]
-      },
-      "Asia/Ulaanbaatar": {
-        "long": [
-          "Ulaanbaatar-standaardtijd",
-          "Ulaanbaatar-zomertijd"
-        ]
-      },
-      "Europe/Moscow": {
-        "long": [
-          "Moskou-standaardtijd",
-          "Moskou-zomertijd"
-        ]
-      },
-      "Asia/Rangoon": {
-        "long": [
-          "Myanmarese tijd",
-          "Myanmarese tijd"
+          "Samoaanse standaardtijd",
+          "Samoaanse zomertijd"
         ]
       },
       "Pacific/Nauru": {
         "long": [
           "Nauruaanse tijd",
           "Nauruaanse tijd"
-        ]
-      },
-      "Asia/Katmandu": {
-        "long": [
-          "Nepalese tijd",
-          "Nepalese tijd"
-        ]
-      },
-      "Pacific/Noumea": {
-        "long": [
-          "Nieuw-Caledonische standaardtijd",
-          "Nieuw-Caledonische zomertijd"
-        ]
-      },
-      "Pacific/Auckland": {
-        "long": [
-          "Nieuw-Zeelandse standaardtijd",
-          "Nieuw-Zeelandse zomertijd"
-        ]
-      },
-      "Antarctica/McMurdo": {
-        "long": [
-          "Nieuw-Zeelandse standaardtijd",
-          "Nieuw-Zeelandse zomertijd"
-        ]
-      },
-      "America/St_Johns": {
-        "long": [
-          "Newfoundland-standaardtijd",
-          "Newfoundland-zomertijd"
         ]
       },
       "Pacific/Niue": {
@@ -1910,64 +3078,22 @@
           "Norfolkeilandse zomertijd"
         ]
       },
-      "America/Noronha": {
+      "Pacific/Noumea": {
         "long": [
-          "Fernando de Noronha-standaardtijd",
-          "Fernando de Noronha-zomertijd"
+          "Nieuw-Caledonische standaardtijd",
+          "Nieuw-Caledonische zomertijd"
         ]
       },
-      "Asia/Novosibirsk": {
+      "Pacific/Pago_Pago": {
         "long": [
-          "Novosibirsk-standaardtijd",
-          "Novosibirsk-zomertijd"
-        ]
-      },
-      "Asia/Omsk": {
-        "long": [
-          "Omsk-standaardtijd",
-          "Omsk-zomertijd"
+          "Samoaanse standaardtijd",
+          "Samoaanse zomertijd"
         ]
       },
       "Pacific/Palau": {
         "long": [
           "Belause tijd",
           "Belause tijd"
-        ]
-      },
-      "Pacific/Port_Moresby": {
-        "long": [
-          "Papoea-Nieuw-Guineese tijd",
-          "Papoea-Nieuw-Guineese tijd"
-        ]
-      },
-      "America/Asuncion": {
-        "long": [
-          "Paraguayaanse standaardtijd",
-          "Paraguayaanse zomertijd"
-        ]
-      },
-      "America/Lima": {
-        "long": [
-          "Peruaanse standaardtijd",
-          "Peruaanse zomertijd"
-        ]
-      },
-      "Asia/Manila": {
-        "long": [
-          "Filipijnse standaardtijd",
-          "Filipijnse zomertijd"
-        ]
-      },
-      "Pacific/Enderbury": {
-        "long": [
-          "Phoenixeilandse tijd",
-          "Phoenixeilandse tijd"
-        ]
-      },
-      "America/Miquelon": {
-        "long": [
-          "Saint Pierre en Miquelon-standaardtijd",
-          "Saint Pierre en Miquelon-zomertijd"
         ]
       },
       "Pacific/Pitcairn": {
@@ -1982,70 +3108,22 @@
           "Pohnpei-tijd"
         ]
       },
-      "Asia/Pyongyang": {
+      "Pacific/Port_Moresby": {
         "long": [
-          "Pyongyang-tijd",
-          "Pyongyang-tijd"
+          "Papoea-Nieuw-Guineese tijd",
+          "Papoea-Nieuw-Guineese tijd"
         ]
       },
-      "Indian/Reunion": {
+      "Pacific/Rarotonga": {
         "long": [
-          "Réunionse tijd",
-          "Réunionse tijd"
+          "Cookeilandse standaardtijd",
+          "Cookeilandse halve zomertijd"
         ]
       },
-      "Antarctica/Rothera": {
+      "Pacific/Saipan": {
         "long": [
-          "Rothera-tijd",
-          "Rothera-tijd"
-        ]
-      },
-      "Asia/Sakhalin": {
-        "long": [
-          "Sachalin-standaardtijd",
-          "Sachalin-zomertijd"
-        ]
-      },
-      "Pacific/Pago_Pago": {
-        "long": [
-          "Samoaanse standaardtijd",
-          "Samoaanse zomertijd"
-        ]
-      },
-      "Indian/Mahe": {
-        "long": [
-          "Seychelse tijd",
-          "Seychelse tijd"
-        ]
-      },
-      "Asia/Singapore": {
-        "long": [
-          "Singaporese standaardtijd",
-          "Singaporese standaardtijd"
-        ]
-      },
-      "Pacific/Guadalcanal": {
-        "long": [
-          "Salomonseilandse tijd",
-          "Salomonseilandse tijd"
-        ]
-      },
-      "Atlantic/South_Georgia": {
-        "long": [
-          "Zuid-Georgische tijd",
-          "Zuid-Georgische tijd"
-        ]
-      },
-      "Asia/Yekaterinburg": {
-        "long": [
-          "Jekaterinenburg-standaardtijd",
-          "Jekaterinenburg-zomertijd"
-        ]
-      },
-      "Antarctica/Syowa": {
-        "long": [
-          "Syowa-tijd",
-          "Syowa-tijd"
+          "Chamorro-tijd",
+          "Chamorro-tijd"
         ]
       },
       "Pacific/Tahiti": {
@@ -2054,22 +3132,10 @@
           "Tahitiaanse tijd"
         ]
       },
-      "Asia/Taipei": {
+      "Pacific/Tarawa": {
         "long": [
-          "Taipei-standaardtijd",
-          "Taipei-zomertijd"
-        ]
-      },
-      "Asia/Tashkent": {
-        "long": [
-          "Oezbeekse standaardtijd",
-          "Oezbeekse zomertijd"
-        ]
-      },
-      "Pacific/Fakaofo": {
-        "long": [
-          "Tokelau-eilandse tijd",
-          "Tokelau-eilandse tijd"
+          "Gilberteilandse tijd",
+          "Gilberteilandse tijd"
         ]
       },
       "Pacific/Tongatapu": {
@@ -2084,54 +3150,6 @@
           "Chuukse tijd"
         ]
       },
-      "Europe/Istanbul": {
-        "long": [
-          "Turkse standaardtijd",
-          "Turkse zomertijd"
-        ]
-      },
-      "Pacific/Funafuti": {
-        "long": [
-          "Tuvaluaanse tijd",
-          "Tuvaluaanse tijd"
-        ]
-      },
-      "America/Montevideo": {
-        "long": [
-          "Uruguayaanse standaardtijd",
-          "Uruguayaanse zomertijd"
-        ]
-      },
-      "Pacific/Efate": {
-        "long": [
-          "Vanuatuaanse standaardtijd",
-          "Vanuatuaanse zomertijd"
-        ]
-      },
-      "America/Caracas": {
-        "long": [
-          "Venezolaanse tijd",
-          "Venezolaanse tijd"
-        ]
-      },
-      "Asia/Vladivostok": {
-        "long": [
-          "Vladivostok-standaardtijd",
-          "Vladivostok-zomertijd"
-        ]
-      },
-      "Europe/Volgograd": {
-        "long": [
-          "Wolgograd-standaardtijd",
-          "Wolgograd-zomertijd"
-        ]
-      },
-      "Antarctica/Vostok": {
-        "long": [
-          "Vostok-tijd",
-          "Vostok-tijd"
-        ]
-      },
       "Pacific/Wake": {
         "long": [
           "Wake-eilandse tijd",
@@ -2142,18 +3160,6 @@
         "long": [
           "Wallis en Futunase tijd",
           "Wallis en Futunase tijd"
-        ]
-      },
-      "Asia/Yakutsk": {
-        "long": [
-          "Jakoetsk-standaardtijd",
-          "Jakoetsk-zomertijd"
-        ]
-      },
-      "America/Whitehorse": {
-        "long": [
-          "Yukon-tijd",
-          "Yukon-tijd"
         ]
       },
       "UTC": {
