@@ -108,7 +108,7 @@
     "react-live": "^4.1.8",
     "regenerate": "^1.4.2",
     "regexpu-core": "^6.1.1",
-    "serialize-javascript": "^6.0.2",
+    "serialize-javascript": "^7.0.0",
     "syncpack": "^13.0.4",
     "test262-harness": "^10.0.0",
     "tinybench": "^6.0.0",
