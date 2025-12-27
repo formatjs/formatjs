@@ -38,7 +38,7 @@ jobs:
           chmod -R +w release/
 
       - name: Upload Release Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: release-dist
           path: release/
@@ -64,7 +64,7 @@ jobs:
           scope: "@formatjs"
 
       - name: Download Release Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: release-dist
           path: release/
