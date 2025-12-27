@@ -77,7 +77,7 @@
     "cldr-segments-full": "46",
     "cldr-units-full": "48",
     "clsx": "2",
-    "content-tag": "^4.0.0",
+    "content-tag": "4",
     "conventional-changelog-angular": "^8.1.0",
     "decimal.js": "^10.4.3",
     "docusaurus-lunr-search": "^3.6.0",
