@@ -457,8 +457,8 @@ importers:
         specifier: ^4.1.2
         version: 4.1.2
       commander:
-        specifier: ^13
-        version: 13.1.0
+        specifier: ^14.0.0
+        version: 14.0.2
       content-tag:
         specifier: '4'
         version: 4.1.0
