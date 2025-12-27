@@ -10,7 +10,7 @@
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
     "@types/eslint": "^9.6.1",
-    "@types/picomatch": "^3",
+    "@types/picomatch": "^4.0.0",
     "@typescript-eslint/utils": "^8.27.0",
     "magic-string": "^0.30.0",
     "picomatch": "2 || 3 || 4",

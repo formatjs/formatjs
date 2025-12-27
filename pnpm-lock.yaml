@@ -532,8 +532,8 @@ importers:
         specifier: ^9.6.1
         version: 9.6.1
       '@types/picomatch':
-        specifier: ^3
-        version: 3.0.2
+        specifier: ^4.0.0
+        version: 4.0.2
       '@typescript-eslint/utils':
         specifier: ^8.27.0
         version: 8.50.1(eslint@9.39.2(jiti@2.4.2))(typescript@5.8.3)
@@ -3497,8 +3497,8 @@ packages:
   '@types/parse5@5.0.3':
     resolution: {integrity: sha512-kUNnecmtkunAoQ3CnjmMkzNU/gtxG8guhi+Fk2U/kOpIKjIMKnXGp4IJCgQJrXSgMsWYimYG4TGjz/UzbGEBTw==}
 
-  '@types/picomatch@3.0.2':
-    resolution: {integrity: sha512-n0i8TD3UDB7paoMMxA3Y65vUncFJXjcUf7lQY7YyKGl6031FNjfsLs6pdLFCy2GNFxItPJG8GvvpbZc2skH7WA==}
+  '@types/picomatch@4.0.2':
+    resolution: {integrity: sha512-qHHxQ+P9PysNEGbALT8f8YOSHW0KJu6l2xU8DYY0fu/EmGxXdVnuTLvFUvBgPJMSqXq29SYHveejeAha+4AYgA==}
 
   '@types/prismjs@1.26.5':
     resolution: {integrity: sha512-AUZTa7hQ2KY5L7AmtSiqxlhWxb4ina0yd8hNbl4TWuqnv/pFP0nDMb3YrfSBf4hJVGLh2YEIBfKaBW/9UEl6IQ==}
@@ -14386,7 +14386,7 @@ snapshots:
 
   '@types/parse5@5.0.3': {}
 
-  '@types/picomatch@3.0.2': {}
+  '@types/picomatch@4.0.2': {}
 
   '@types/prismjs@1.26.5': {}
 
