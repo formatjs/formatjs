@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.8](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.0.7...eslint-plugin-formatjs@6.0.8) (2025-12-28)
+
+### Bug Fixes
+
+* **deps:** update dependency @types/picomatch to v4 ([#5703](https://github.com/formatjs/formatjs/issues/5703)) ([ad4d273](https://github.com/formatjs/formatjs/commit/ad4d2735829b3f7b43e880b5c3fdb0f168d6cb5e)) - by @renovate[bot]
+* **eslint-plugin-formatjs:** make err node reporting more accurate ([#5709](https://github.com/formatjs/formatjs/issues/5709)) ([f54d058](https://github.com/formatjs/formatjs/commit/f54d058ac6633d031209b11c771e7b8f403e802b)) - by @longlho
+
 ## [6.0.7](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.0.6...eslint-plugin-formatjs@6.0.7) (2025-12-26)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

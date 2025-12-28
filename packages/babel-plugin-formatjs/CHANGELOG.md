@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.8](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@11.0.7...babel-plugin-formatjs@11.0.8) (2025-12-28)
+
+### Bug Fixes
+
+* **babel-plugin-formatjs:** remove stray `console.log` ([#5712](https://github.com/formatjs/formatjs/issues/5712)) ([da45180](https://github.com/formatjs/formatjs/commit/da45180c1733d41e983ff49d295d878dd5c86f98)) - by @andersk
+
 ## [11.0.7](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@11.0.6...babel-plugin-formatjs@11.0.7) (2025-12-26)
 
 **Note:** Version bump only for package babel-plugin-formatjs

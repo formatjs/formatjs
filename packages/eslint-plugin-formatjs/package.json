@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-formatjs",
   "description": "ESLint plugin for formatjs",
-  "version": "6.0.7",
+  "version": "6.0.8",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",
