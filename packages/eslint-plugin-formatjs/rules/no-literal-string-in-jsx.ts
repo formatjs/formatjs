@@ -177,7 +177,7 @@ export const rule: RuleModule<MessageIds, Options> = {
           (node.quasis.length > 1 || node.quasis[0].value.raw.length > 0))
       ) {
         context.report({
-          node: node,
+          node,
           messageId: 'noLiteralStringInJsx',
         })
       } else if (node.type === 'BinaryExpression' && node.operator === '+') {

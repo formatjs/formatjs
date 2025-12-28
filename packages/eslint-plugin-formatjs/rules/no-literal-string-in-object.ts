@@ -97,7 +97,7 @@ function checkPropertyValue(
       (node.quasis.length > 1 || node.quasis[0].value.raw.length > 0))
   ) {
     context.report({
-      node: node,
+      node,
       messageId: 'untranslatedProperty',
       data: {
         propertyKey: propertyKey,

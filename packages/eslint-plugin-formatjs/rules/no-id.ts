@@ -28,7 +28,7 @@ function checkNode(
         node: idPropNode,
         messageId: 'noId',
         fix(fixer) {
-          const src = context.getSourceCode()
+          const src = context.sourceCode
           const token = src.getTokenAfter(idPropNode)
           const fixes = [fixer.remove(idPropNode)]
           if (token && !isComment(token) && token?.value === ',') {

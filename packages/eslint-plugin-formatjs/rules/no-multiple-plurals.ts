@@ -7,8 +7,9 @@ import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
+import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
 
-type MessageIds = 'noMultiplePlurals'
+type MessageIds = 'noMultiplePlurals' | CoreMessageIds
 
 function verifyAst(ast: MessageFormatElement[], pluralCount = {count: 0}) {
   const errors: {messageId: MessageIds; data: Record<string, unknown>}[] = []
@@ -44,11 +45,22 @@ function checkNode(
     if (!defaultMessage || !messageNode) {
       continue
     }
-    const errors = verifyAst(
-      parse(defaultMessage, {
+    let ast: MessageFormatElement[]
+    try {
+      ast = parse(defaultMessage, {
         ignoreTag: settings.ignoreTag,
       })
-    )
+    } catch (e) {
+      context.report({
+        node: messageNode,
+        messageId: 'parseError',
+        data: {
+          error: (e as Error).message,
+        },
+      })
+      continue
+    }
+    const errors = verifyAst(ast)
     for (const error of errors) {
       context.report({
         node,
@@ -70,6 +82,7 @@ export const rule: RuleModule<MessageIds> = {
     fixable: 'code',
     schema: [],
     messages: {
+      ...CORE_MESSAGES,
       noMultiplePlurals: 'Multiple plural rules in the same message',
     },
   },

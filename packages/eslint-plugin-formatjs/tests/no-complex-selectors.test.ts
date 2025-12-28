@@ -39,8 +39,8 @@ ruleTester.run(name, rule, {
       options: [{limit: 1}],
       errors: [
         {
-          messageId: 'parserError',
-          data: {message: 'EXPECT_ARGUMENT_CLOSING_BRACE'},
+          messageId: 'parseError',
+          data: {error: 'EXPECT_ARGUMENT_CLOSING_BRACE'},
         },
       ],
     },

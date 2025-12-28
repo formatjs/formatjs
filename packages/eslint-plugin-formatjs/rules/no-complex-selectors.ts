@@ -7,12 +7,13 @@ import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
+import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
 
 interface Config {
   limit: number
 }
 
-type MessageIds = 'tooComplex' | 'parserError'
+type MessageIds = 'tooComplex' | CoreMessageIds
 type Options = [Config?]
 
 function calculateComplexity(ast: MessageFormatElement[]): number {
@@ -94,8 +95,8 @@ function checkNode(
     } catch (e) {
       context.report({
         node: messageNode,
-        messageId: 'parserError',
-        data: {message: e instanceof Error ? e.message : String(e)},
+        messageId: 'parseError',
+        data: {error: e instanceof Error ? e.message : String(e)},
       })
       return
     }
@@ -145,8 +146,8 @@ Default complexity limit is 20
     ],
     fixable: 'code',
     messages: {
+      ...CORE_MESSAGES,
       tooComplex: `Message complexity is too high ({{complexity}} vs limit at {{limit}})`,
-      parserError: '{{message}}',
     },
   },
   defaultOptions: [{limit: 20}],

@@ -111,10 +111,9 @@ ruleTester.run(name, rule, {
         })`,
       errors: [
         {
-          messageId: 'icuError',
+          messageId: 'parseError',
           data: {
-            message:
-              'Error parsing ICU string: EXPECT_PLURAL_ARGUMENT_SELECTOR',
+            error: 'EXPECT_PLURAL_ARGUMENT_SELECTOR',
           },
         },
       ],
@@ -128,8 +127,8 @@ ruleTester.run(name, rule, {
         )`,
       errors: [
         {
-          messageId: 'icuError',
-          data: {message: 'Error parsing ICU string: INVALID_ARGUMENT_TYPE'},
+          messageId: 'parseError',
+          data: {error: 'INVALID_ARGUMENT_TYPE'},
         },
       ],
     },
@@ -142,8 +141,8 @@ ruleTester.run(name, rule, {
         )`,
       errors: [
         {
-          messageId: 'icuError',
-          data: {message: 'Error parsing ICU string: INVALID_ARGUMENT_TYPE'},
+          messageId: 'parseError',
+          data: {error: 'INVALID_ARGUMENT_TYPE'},
         },
       ],
     },
@@ -156,8 +155,8 @@ ruleTester.run(name, rule, {
         )`,
       errors: [
         {
-          messageId: 'icuError',
-          data: {message: 'Error parsing ICU string: INVALID_ARGUMENT_TYPE'},
+          messageId: 'parseError',
+          data: {error: 'INVALID_ARGUMENT_TYPE'},
         },
       ],
     },

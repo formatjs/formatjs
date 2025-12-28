@@ -3,13 +3,12 @@ import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
-
-type MessageIds = 'icuError'
+import {CoreMessageIds, CORE_MESSAGES} from '../messages.js'
 
 export const name = 'no-invalid-icu'
 
 function checkNode(
-  context: RuleContext<MessageIds, unknown[]>,
+  context: RuleContext<CoreMessageIds, unknown[]>,
   node: TSESTree.Node
 ) {
   const settings = getSettings(context)
@@ -34,17 +33,18 @@ function checkNode(
         ignoreTag: settings.ignoreTag,
       })
     } catch (e) {
-      const msg = e instanceof Error ? e.message : e
       context.report({
         node: messageNode,
-        messageId: 'icuError',
-        data: {message: `Error parsing ICU string: ${msg}`},
+        messageId: 'parseError',
+        data: {
+          error: (e as Error).message,
+        },
       })
     }
   }
 }
 
-export const rule: RuleModule<MessageIds> = {
+export const rule: RuleModule<CoreMessageIds> = {
   meta: {
     type: 'problem',
     docs: {
@@ -52,9 +52,7 @@ export const rule: RuleModule<MessageIds> = {
     },
     fixable: 'code',
     schema: [],
-    messages: {
-      icuError: 'Invalid ICU Message format: {{message}}',
-    },
+    messages: CORE_MESSAGES,
   },
   defaultOptions: [],
   create(context) {

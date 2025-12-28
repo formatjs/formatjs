@@ -11,10 +11,11 @@ import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import MagicString from 'magic-string'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, patchMessage} from '../util.js'
+import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
 
 export const name = 'no-missing-icu-plural-one-placeholders'
 
-export type MessageIds = 'noMissingIcuPluralOnePlaceholders'
+export type MessageIds = 'noMissingIcuPluralOnePlaceholders' | CoreMessageIds
 type Options = []
 
 type MessagePatch =
@@ -101,11 +102,21 @@ function checkNode(
       continue
     }
 
-    verifyAst(
-      context,
-      messageNode,
-      parse(defaultMessage, {captureLocation: true})
-    )
+    let ast: MessageFormatElement[]
+    try {
+      ast = parse(defaultMessage, {captureLocation: true})
+    } catch (e) {
+      context.report({
+        node: messageNode,
+        messageId: 'parseError',
+        data: {
+          error: (e as Error).message,
+        },
+      })
+      continue
+    }
+
+    verifyAst(context, messageNode, ast)
   }
 }
 
@@ -119,6 +130,7 @@ export const rule: RuleModule<MessageIds, Options> = {
     },
     fixable: 'code',
     messages: {
+      ...CORE_MESSAGES,
       noMissingIcuPluralOnePlaceholders:
         'Use `one {# item}` instead of `one {1 item}` in ICU messages.',
     },

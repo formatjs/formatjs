@@ -210,9 +210,9 @@ ruleTester.run(name, rule, {
       `,
       errors: [
         {
-          messageId: 'parserError',
+          messageId: 'parseError',
           data: {
-            message: 'EXPECT_ARGUMENT_CLOSING_BRACE',
+            error: 'EXPECT_ARGUMENT_CLOSING_BRACE',
           },
         },
       ],

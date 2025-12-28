@@ -1,0 +1,44 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "jsPlugins": ["eslint-plugin-formatjs"],
+  "rules": {
+    "formatjs/enforce-id": [
+      "error",
+      {
+        "idInterpolationPattern": "[sha512:contenthash:base64:10]"
+      }
+    ],
+    "formatjs/no-offset": "error",
+    "formatjs/enforce-default-message": ["error", "literal"],
+    "formatjs/enforce-description": ["error", "literal"],
+    "formatjs/enforce-placeholders": "error",
+    "formatjs/no-emoji": "error",
+    "formatjs/no-multiple-whitespaces": "error",
+    "formatjs/no-multiple-plurals": "error",
+    "formatjs/no-complex-selectors": [
+      "error",
+      {
+        "limit": 20
+      }
+    ],
+    "formatjs/no-useless-message": "error",
+    "formatjs/prefer-pound-in-plural": "error",
+    "formatjs/no-missing-icu-plural-one-placeholders": "error",
+    "formatjs/enforce-plural-rules": [
+      "error",
+      {
+        "one": true,
+        "other": true
+      }
+    ],
+    "formatjs/no-literal-string-in-jsx": [
+      "warn",
+      {
+        "props": {
+          "include": [["*", "{label,placeholder,title}"]]
+        }
+      }
+    ],
+    "formatjs/blocklist-elements": ["error", ["selectordinal"]]
+  }
+}

@@ -25,6 +25,7 @@ function checkNode(
     {
       message: {defaultMessage},
       messageNode,
+      messageDescriptorNode,
     },
   ] of msgs) {
     if (!defaultMessage) {
@@ -35,7 +36,7 @@ function checkNode(
         })
       } else if (!messageNode) {
         context.report({
-          node: node,
+          node: messageDescriptorNode,
           messageId: 'defaultMessage',
         })
       }
