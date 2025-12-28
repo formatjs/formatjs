@@ -1,0 +1,79 @@
+name: Verify Commit Hooks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify-hooks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 100
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.16.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
+      - name: Get Changed Files
+        id: changed-files
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch origin ${{ github.base_ref }}
+            echo "files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          else
+            # For push events, check the last commit
+            echo "files=$(git diff --name-only HEAD~1 HEAD | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run Lefthook on Changed Files
+        if: steps.changed-files.outputs.files != ''
+        run: |
+          # Only stage files that exist (not deleted files)
+          for file in ${{ steps.changed-files.outputs.files }}; do
+            if [ -f "$file" ]; then
+              git add "$file"
+            fi
+          done
+          pnpm lefthook run pre-commit
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Error: Pre-commit hooks would have made changes. Please run the hooks locally and commit the changes."
+            git diff
+            exit 1
+          fi
+
+      - name: Validate Commit Messages
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          commits=$(git rev-list origin/${{ github.base_ref }}..HEAD)
+
+          for commit in $commits; do
+            echo "Validating commit: $(git log -1 --oneline $commit)"
+            msg_file=$(mktemp)
+            git log -1 --format=%B $commit > "$msg_file"
+            pnpm lefthook run commit-msg "$msg_file"
+            rm "$msg_file"
+          done
