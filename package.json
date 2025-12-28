@@ -13,7 +13,7 @@
     "karma:local": "bazel test :karma",
     "prepare": "husky && syncpack fix-mismatches && syncpack format",
     "prerelease": "HUSKY=0 lerna version --yes --no-private",
-    "test": "syncpack lint && oxlint && bazel test //...",
+    "test": "syncpack lint && oxlint --config .oxlintrc.json && bazel test //...",
     "website": "NO_UPDATE_NOTIFIER=1 bazel run //website:serve"
   },
   "devDependencies": {
@@ -133,7 +133,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
+    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint --config .oxlintrc.json"
   },
   "packageManager": "pnpm@10.26.2",
   "pnpm": {

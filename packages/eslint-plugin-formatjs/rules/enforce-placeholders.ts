@@ -7,8 +7,9 @@ import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
+import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
 
-type MessageIds = 'parserError' | 'missingValue' | 'unusedValue'
+type MessageIds = 'missingValue' | 'unusedValue' | CoreMessageIds
 type Options = [{ignoreList: string[]}?]
 
 function collectPlaceholderNames(ast: MessageFormatElement[]): Set<string> {
@@ -99,8 +100,8 @@ function checkNode(
     } catch (e) {
       context.report({
         node: messageNode,
-        messageId: 'parserError',
-        data: {message: e instanceof Error ? e.message : String(e)},
+        messageId: 'parseError',
+        data: {error: e instanceof Error ? e.message : String(e)},
       })
       continue
     }
@@ -160,7 +161,7 @@ export const rule: RuleModule<MessageIds, Options> = {
       },
     ],
     messages: {
-      parserError: '{{message}}',
+      ...CORE_MESSAGES,
       missingValue:
         'Missing value(s) for the following placeholder(s): {{list}}.',
       unusedValue: 'Value not used by the message.',

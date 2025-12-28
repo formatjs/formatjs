@@ -46,22 +46,26 @@ function checkNode(
       idPropNode,
       descriptionNode,
       messagePropNode,
+      messageDescriptorNode,
     },
   ] of msgs) {
     if (!idInterpolationPattern && !idPropNode) {
       context.report({
-        node,
+        node: messageDescriptorNode ?? node,
         messageId: 'enforceId',
       })
-    } else if (idInterpolationPattern) {
+      return
+    }
+
+    if (idInterpolationPattern) {
       if (!defaultMessage) {
         context.report({
-          node,
+          node: messageDescriptorNode ?? node,
           messageId: 'enforceIdDefaultMessage',
         })
       } else if (!description && descriptionNode) {
         context.report({
-          node,
+          node: messageDescriptorNode ?? node,
           messageId: 'enforceIdDescription',
         })
       } else {
@@ -76,7 +80,7 @@ function checkNode(
 
         const correctId = interpolateName(
           {
-            resourcePath: context.getFilename(),
+            resourcePath: context.filename,
           },
           idInterpolationPattern,
           {
@@ -104,7 +108,7 @@ function checkNode(
 
           const quote = quoteStyle === 'double' ? '"' : "'"
           context.report({
-            node,
+            node: idPropNode ?? messageDescriptorNode ?? node,
             messageId,
             data: messageData,
             fix(fixer) {

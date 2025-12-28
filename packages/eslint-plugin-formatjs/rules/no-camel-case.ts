@@ -8,8 +8,8 @@ import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
-
-type MessageIds = 'camelcase'
+import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
+type MessageIds = 'camelcase' | CoreMessageIds
 
 export const name = 'no-camel-case'
 
@@ -54,11 +54,22 @@ function checkNode(
     if (!defaultMessage || !messageNode) {
       continue
     }
-    const errors = verifyAst(
-      parse(defaultMessage, {
+    let ast: MessageFormatElement[]
+    try {
+      ast = parse(defaultMessage, {
         ignoreTag: settings.ignoreTag,
       })
-    )
+    } catch (e) {
+      context.report({
+        node: messageNode,
+        messageId: 'parseError',
+        data: {
+          error: (e as Error).message,
+        },
+      })
+      continue
+    }
+    const errors = verifyAst(ast)
     for (const error of errors) {
       context.report({
         node: messageNode,
@@ -78,6 +89,7 @@ export const rule: RuleModule<MessageIds> = {
     fixable: 'code',
     schema: [],
     messages: {
+      ...CORE_MESSAGES,
       camelcase: 'Camel case arguments are not allowed',
     },
   },

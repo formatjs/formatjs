@@ -23,6 +23,7 @@ function checkNode(
     {
       message: {description},
       descriptionNode,
+      messageDescriptorNode,
     },
   ] of msgs) {
     if (!description) {
@@ -33,7 +34,7 @@ function checkNode(
         })
       } else if (!descriptionNode) {
         context.report({
-          node: node,
+          node: messageDescriptorNode,
           messageId: 'enforceDescription',
         })
       }

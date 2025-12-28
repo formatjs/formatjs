@@ -14,8 +14,9 @@ import {ESLintUtils, TSESTree} from '@typescript-eslint/utils'
 import {RuleContext} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
+import {CoreMessageIds, CORE_MESSAGES} from '../messages.js'
 
-type MessageIds = 'blocklist'
+type MessageIds = 'blocklist' | CoreMessageIds
 
 export const name = 'blocklist-elements'
 
@@ -110,15 +111,25 @@ function checkNode(
     if (!defaultMessage || !messageNode) {
       continue
     }
-    const errors = verifyAst(
-      blocklist,
-      parse(defaultMessage, {
+    let ast: MessageFormatElement[]
+    try {
+      ast = parse(defaultMessage, {
         ignoreTag: settings.ignoreTag,
       })
-    )
+    } catch (e) {
+      context.report({
+        node: messageNode,
+        messageId: 'parseError',
+        data: {
+          error: (e as Error).message,
+        },
+      })
+      continue
+    }
+    const errors = verifyAst(blocklist, ast)
     for (const error of errors) {
       context.report({
-        node,
+        node: messageNode,
         ...error,
       })
     }
@@ -130,7 +141,7 @@ const createRule = ESLintUtils.RuleCreator(
 )
 
 export const rule: ESLintUtils.RuleModule<
-  'blocklist',
+  MessageIds,
   Element[][],
   unknown,
   ESLintUtils.RuleListener
@@ -153,6 +164,7 @@ export const rule: ESLintUtils.RuleModule<
       },
     ],
     messages: {
+      ...CORE_MESSAGES,
       blocklist: `{{type}} element is blocklisted`,
     },
   },

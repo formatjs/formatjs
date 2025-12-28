@@ -7,6 +7,7 @@ import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
+import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
 
 enum LDML {
   zero = 'zero',
@@ -19,7 +20,8 @@ enum LDML {
 
 type PluralConfig = {[key in LDML]?: boolean}
 export type Options = [PluralConfig?]
-type MessageIds = 'missingPlural' | 'forbidden'
+
+type MessageIds = 'missingPlural' | 'forbidden' | CoreMessageIds
 
 function verifyAst(plConfig: PluralConfig, ast: MessageFormatElement[]) {
   const errors: {messageId: MessageIds; data: Record<string, unknown>}[] = []
@@ -67,12 +69,22 @@ function checkNode(
     if (!defaultMessage || !messageNode) {
       continue
     }
-    const errors = verifyAst(
-      plConfig,
-      parse(defaultMessage, {
+    let ast: MessageFormatElement[]
+    try {
+      ast = parse(defaultMessage, {
         ignoreTag: settings.ignoreTag,
       })
-    )
+    } catch (e) {
+      context.report({
+        node: messageNode,
+        messageId: 'parseError',
+        data: {
+          error: (e as Error).message,
+        },
+      })
+      continue
+    }
+    const errors = verifyAst(plConfig, ast)
     for (const error of errors) {
       context.report({
         node: messageNode,
@@ -109,6 +121,7 @@ export const rule: RuleModule<MessageIds, Options> = {
       },
     ],
     messages: {
+      ...CORE_MESSAGES,
       missingPlural: `Missing plural rule "{{rule}}"`,
       forbidden: `Plural rule "{{rule}}" is forbidden`,
     },

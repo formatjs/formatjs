@@ -24,6 +24,7 @@ npm_package(
 SRCS = glob(["rules/*.ts"]) + [
     "index.ts",
     "util.ts",
+    "messages.ts",
     "context-compat.ts",
     "package.json",
 ]

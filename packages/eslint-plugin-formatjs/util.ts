@@ -1,4 +1,4 @@
-import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+import type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import {TSESTree} from '@typescript-eslint/utils'
 import {RuleContext} from '@typescript-eslint/utils/ts-eslint'
 
@@ -20,6 +20,7 @@ export interface Settings {
 }
 export interface MessageDescriptorNodeInfo {
   message: MessageDescriptor
+  messageDescriptorNode: TSESTree.ObjectExpression | TSESTree.JSXOpeningElement
   messageNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
   messagePropNode?: TSESTree.Property | TSESTree.JSXAttribute
   descriptionNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
@@ -107,6 +108,7 @@ export function extractMessageDescriptor(
     return
   }
   const result: MessageDescriptorNodeInfo = {
+    messageDescriptorNode: node,
     message: {},
     messageNode: undefined,
     messagePropNode: undefined,
@@ -172,6 +174,7 @@ function extractMessageDescriptorFromJSXElement(
   }
   let values: TSESTree.ObjectExpression | undefined
   const result: MessageDescriptorNodeInfo = {
+    messageDescriptorNode: node,
     message: {},
     messageNode: undefined,
     messagePropNode: undefined,

@@ -9,8 +9,9 @@ import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
 import MagicString from 'magic-string'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings, patchMessage} from '../util.js'
+import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
 
-type MessageIds = 'preferPoundInPlurals' | 'parseError'
+type MessageIds = 'preferPoundInPlurals' | CoreMessageIds
 
 function verifyAst(
   context: RuleContext<MessageIds, unknown[]>,
@@ -208,7 +209,7 @@ function checkNode(
       context.report({
         node: messageNode,
         messageId: 'parseError',
-        data: {message: e instanceof Error ? e.message : String(e)},
+        data: {error: e instanceof Error ? e.message : String(e)},
       })
       return
     }
@@ -228,9 +229,9 @@ export const rule: RuleModule<MessageIds> = {
       url: 'https://formatjs.github.io/docs/tooling/linter#prefer-pound-in-plurals',
     },
     messages: {
+      ...CORE_MESSAGES,
       preferPoundInPlurals:
         'Prefer using # to reference the count in the plural argument instead of repeating the argument.',
-      parseError: '{{message}}',
     },
     fixable: 'code',
     schema: [],
