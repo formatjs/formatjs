@@ -1,0 +1,24 @@
+# Lefthook configuration
+# Docs: https://github.com/evilmartians/lefthook
+
+# Skip lefthook when LEFTHOOK=0 environment variable is set
+# This is equivalent to husky's HUSKY=0 for CI/CD pipelines
+skip_output:
+  - meta
+  - summary
+
+pre-commit:
+  parallel: false
+  commands:
+    format:
+      run: bazel run format -- {staged_files}
+      stage_fixed: true
+    lint-staged:
+      glob: "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}"
+      run: oxlint --config .oxlintrc.json {staged_files}
+      stage_fixed: true
+
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm commitlint --edit {1}
