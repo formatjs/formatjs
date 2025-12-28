@@ -8,7 +8,6 @@ import {visitor as JSXOpeningElement} from './visitors/jsx-opening-element.js'
 const babelPluginSyntaxJsx =
   (babelPluginSyntaxJsxNs as any).default || babelPluginSyntaxJsxNs
 
-console.log(babelPluginSyntaxJsxNs)
 export type ExtractionResult<M = Record<string, string>> = {
   messages: ExtractedMessageDescriptor[]
   meta: M
