@@ -170,6 +170,48 @@ def generate_src_file(name, src, entry_point = None, tool = None, chdir = None, 
         suggested_update_target = "//%s:%s" % (native.package_name(), tmp_filename[:tmp_filename.rindex(".")]),
     )
 
+def generate_ide_tsconfig_json(name = "tsconfig_json"):
+    """Generate a tsconfig.json file with the correct extends path based on package depth.
+
+    This macro calculates the correct relative path to the root tsconfig.json
+    based on the package's location in the repository.
+
+    Args:
+        name: target name (default: "tsconfig_json")
+    """
+    package = native.package_name()
+
+    # Calculate depth: count number of directory levels
+    # Empty string (root) = 0, "docs" = 1, "packages/foo" = 2
+    depth = len(package.split("/")) if package else 0
+
+    # Generate the extends path: one "../" per level to reach root
+    # For packages/foo (depth=2): ../../tsconfig.json
+    # For docs (depth=1): ../tsconfig.json
+    extends_path = ("../" * depth) + "tsconfig.json"
+
+    # Create tsconfig as a dict
+    tsconfig = {
+        "extends": extends_path,
+    }
+
+    # Encode to JSON
+    json_content = json.encode_indent(tsconfig, indent = "  ")
+
+    # Add comment header
+    content = "// @generated\n{\n  // This is purely for IDE, not for compilation\n  \"extends\": \"%s\"\n}\n" % extends_path
+
+    native.genrule(
+        name = name + "_generated",
+        outs = [name + ".generated.json"],
+        cmd = "printf '%s' > $@" % content,
+    )
+
+    write_source_files(
+        name = name,
+        files = {"tsconfig.json": name + "_generated"},
+    )
+
 def is_internal_dep(s):
     return s.startswith("//:node_modules/@formatjs") or s in [
         "//:node_modules/babel-plugin-formatjs",

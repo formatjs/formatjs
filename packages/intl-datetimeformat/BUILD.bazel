@@ -7,7 +7,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//:index.bzl", "ZONES")
-load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile", "ts_run_binary")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile", "ts_run_binary")
 load("//tools:vitest.bzl", "vitest")
 load(":index.bzl", "generate_dockerfile")
 
@@ -865,11 +865,13 @@ genrule(
     cmd = "echo 'export {}' > $@",
 )
 
+# Generate tsconfig.json with correct extends path
+generate_ide_tsconfig_json()
+
 write_source_files(
     name = "generated-files",
     files = {
         "supported-locales.generated.ts": ":supported-locales-gen",
-        "tsconfig.json": "//tools:tsconfig.golden.json",
     },
     visibility = ["//:__pkg__"],
 )
