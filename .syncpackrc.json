@@ -62,6 +62,12 @@
       "pinVersion": "^5.6.0"
     },
     {
+      "label": "ESLint",
+      "dependencies": ["eslint", "@types/eslint"],
+      "packages": ["eslint-plugin-formatjs"],
+      "pinVersion": "9"
+    },
+    {
       "label": "Typescript root",
       "dependencies": ["typescript"],
       "packages": ["formatjs-repo"],
