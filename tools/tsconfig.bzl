@@ -1,10 +1,11 @@
 """TypeScript configuration maps for different build targets."""
 
 # Base tsconfig configuration (tsconfig.json)
+# This is the source of truth - tsconfig.json is generated from this
 BASE_TSCONFIG = {
     "compilerOptions": {
-        "module": "ESNext",
-        "moduleResolution": "Bundler",
+        "module": "esnext",
+        "moduleResolution": "bundler",
         "target": "es5",
         "lib": [
             "dom",
@@ -19,7 +20,6 @@ BASE_TSCONFIG = {
             "ES2022.Intl",
             "ESNext.Intl",
         ],
-        "baseUrl": ".",
         "declaration": True,
         "strict": True,
         "resolveJsonModule": True,
@@ -31,7 +31,7 @@ BASE_TSCONFIG = {
         "noFallthroughCasesInSwitch": True,
         "importHelpers": True,
         "isolatedDeclarations": True,
-        "jsx": "react",
+        "jsx": "react-jsx",
     },
     "exclude": [
         "packages/react-intl/example-sandboxes",

@@ -17,6 +17,7 @@ def vitest(
         dom = False,
         snapshots = [],
         test_timeout = None,
+        config = None,
         **kwargs):
     """
     A rule to define a vitest target.
@@ -68,14 +69,14 @@ def vitest(
 
     vitest_bin.vitest_test(
         name = name,
-        data = srcs + deps + snapshots + fixtures,
+        data = srcs + deps + snapshots + fixtures + ([config] if config else []),
         size = size,
         flaky = flaky,
         tags = tags,
         no_copy_to_bin = no_copy_to_bin,
         args = [
             "run",
-        ] + (["--dom"] if dom else []) + (["--testTimeout ", test_timeout] if test_timeout else []),
+        ] + (["--config", "$(rootpath %s)" % config] if config else []) + (["--dom"] if dom else []) + (["--testTimeout ", test_timeout] if test_timeout else []),
         **kwargs
     )
 
