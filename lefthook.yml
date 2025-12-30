@@ -10,8 +10,13 @@ skip_output:
 pre-commit:
   parallel: false
   commands:
-    format:
-      run: bazel run format -- {staged_files}
+    format-oxfmt:
+      glob: "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte,css,scss,sass,less,html,htm,md,mdx}"
+      run: pnpm oxfmt {staged_files}
+      stage_fixed: true
+    format-starlark:
+      glob: "**/*.{bazel,bzl,BUILD}"
+      run: bazel run @buildifier_prebuilt//:buildifier -- -mode=fix {staged_files}
       stage_fixed: true
     lint-staged:
       glob: "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}"
