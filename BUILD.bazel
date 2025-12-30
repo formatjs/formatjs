@@ -1,11 +1,13 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
 npm_link_all_packages()
 
@@ -200,6 +202,33 @@ copy_to_bin(
     name = "tsconfig",
     srcs = ["tsconfig.json"],
     visibility = ["//visibility:public"],
+)
+
+# Generate tsconfig.json from BASE_TSCONFIG in tools/tsconfig.bzl
+genrule(
+    name = "tsconfig_generated",
+    outs = ["tsconfig.generated.json"],
+    cmd = "echo '%s' > $@" % json.encode_indent(
+        BASE_TSCONFIG,
+        indent = "  ",
+    ),
+)
+
+# Format the generated tsconfig.json with oxfmt
+genrule(
+    name = "tsconfig_formatted",
+    srcs = [":tsconfig_generated"],
+    outs = ["tsconfig.formatted.json"],
+    cmd = "cat $< | $(location :oxfmt) --stdin-filepath=$(location :tsconfig_generated) > $@",
+    tools = [":oxfmt"],
+)
+
+# Ensure tsconfig.json stays in sync with BASE_TSCONFIG
+write_source_files(
+    name = "tsconfig_sync",
+    files = {
+        "tsconfig.json": ":tsconfig_formatted",
+    },
 )
 
 # Symlink some workspaces to the root workspace, so scripts like benchmarks

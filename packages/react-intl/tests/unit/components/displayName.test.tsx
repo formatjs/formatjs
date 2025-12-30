@@ -1,4 +1,3 @@
-import * as React from 'react'
 import {describe, expect, it, vi, beforeEach} from 'vitest'
 import {cleanup, render} from '@testing-library/react'
 import {FormattedDisplayName} from '../../..'

@@ -1,5 +1,4 @@
 import {act, cleanup, render} from '@testing-library/react'
-import * as React from 'react'
 import {createIntl} from '../../../src/components/createIntl'
 import FormattedRelativeTime from '../../../src/components/relative'
 import type {IntlConfig} from '../../../src/types'

@@ -1,5 +1,4 @@
 import '@formatjs/intl-pluralrules/polyfill.js'
-import * as React from 'react'
 import * as ReactDOM from 'react-dom/client'
 import {bootstrapApplication} from './advanced/Advanced'
 import {App as Bug2727} from './Bug2727'

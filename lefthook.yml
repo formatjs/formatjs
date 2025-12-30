@@ -15,7 +15,7 @@ pre-commit:
       stage_fixed: true
     lint-staged:
       glob: "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}"
-      run: oxlint --config .oxlintrc.json {staged_files}
+      run: pnpm oxlint --config .oxlintrc.json {staged_files}
       stage_fixed: true
 
 commit-msg:

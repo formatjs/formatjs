@@ -1,5 +1,4 @@
 import {cleanup, render} from '@testing-library/react'
-import * as React from 'react'
 import {IntlProvider} from '../../..'
 import useIntl from '../../../src/components/useIntl'
 import {describe, expect, it, vi, beforeEach} from 'vitest'

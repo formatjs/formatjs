@@ -85,6 +85,7 @@ vitest(
     name = "unit_test",
     srcs = SRCS +
            TESTS,
+    config = "vitest.config.mjs",
     dom = True,
     deps = TEST_DEPS,
 )
