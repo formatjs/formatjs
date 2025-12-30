@@ -26,6 +26,8 @@ npm.npm_translate_lock(
     name = "npm",
     data = [
         "//:patches/@commitlint__rules.patch",
+        "//:patches/@mdx-js__react.patch",
+        "//:patches/@types__mdx.patch",
         "//:patches/@vue+compiler-sfc.patch",
         "//:patches/make-plural-compiler@5.1.0.patch",
     ],

@@ -1,75 +1,27 @@
-load("@npm//:@docusaurus/core/package_json.bzl", docusaurus_bin = "bin")
+# Temporarily disabled - Docusaurus has been removed in favor of new docs site
+# load("@npm//:@docusaurus/core/package_json.bzl", docusaurus_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 
 npm_link_all_packages()
 
-docusaurus_bin.docusaurus(
-    name = "dist",
-    srcs = [
-        "docusaurus.config.ts",
-        "package.json",
-        "sidebars.ts",
-        ":node_modules/@formatjs/icu-messageformat-parser",
-        ":node_modules/intl-messageformat",
-        ":node_modules/react-intl",
-        "//:node_modules/@docusaurus/core",
-        "//:node_modules/@docusaurus/plugin-google-analytics",
-        "//:node_modules/@docusaurus/preset-classic",
-        "//:node_modules/@docusaurus/theme-common",
-        "//:node_modules/@docusaurus/theme-live-codeblock",
-        "//:node_modules/@docusaurus/types",
-        "//:node_modules/@mdx-js/react",
-        "//:node_modules/classnames",
-        "//:node_modules/clsx",
-        "//:node_modules/docusaurus-lunr-search",
-        "//:node_modules/lunr",
-        "//:node_modules/prism-react-renderer",
-        "//:node_modules/react",
-        "//:node_modules/react-dom",
-        "//:node_modules/react-live",
-        "//:node_modules/typescript",
-    ] + glob([
-        "docs/**/*",
-        "src/**/*",
-        "static/**/*",
-        "lang/**/*",
-    ]),
-    args = ["build"],
-    chdir = package_name(),
-    out_dirs = ["build"],
-)
+# docusaurus_bin.docusaurus(
+#     name = "dist",
+#     srcs = [...],
+#     args = ["build"],
+#     chdir = package_name(),
+#     out_dirs = ["build"],
+# )
 
-docusaurus_bin.docusaurus_binary(
-    name = "serve",
-    args = ["start"],
-    chdir = package_name(),
-    data = [
-        "docusaurus.config.ts",
-        "package.json",
-        "sidebars.ts",
-        ":node_modules/@formatjs/icu-messageformat-parser",
-        ":node_modules/intl-messageformat",
-        ":node_modules/react-intl",
-        "//:node_modules/@docusaurus/core",
-        "//:node_modules/@docusaurus/plugin-google-analytics",
-        "//:node_modules/@docusaurus/preset-classic",
-        "//:node_modules/@docusaurus/theme-common",
-        "//:node_modules/@docusaurus/theme-live-codeblock",
-        "//:node_modules/@docusaurus/types",
-        "//:node_modules/@mdx-js/react",
-        "//:node_modules/classnames",
-        "//:node_modules/clsx",
-        "//:node_modules/docusaurus-lunr-search",
-        "//:node_modules/lunr",
-        "//:node_modules/prism-react-renderer",
-        "//:node_modules/react",
-        "//:node_modules/react-dom",
-        "//:node_modules/react-live",
-        "//:node_modules/typescript",
-    ] + glob([
-        "docs/**/*",
-        "src/**/*",
-        "static/**/*",
-        "lang/**/*",
-    ]),
-)
+# docusaurus_bin.docusaurus_binary(
+#     name = "serve",
+#     args = ["start"],
+#     chdir = package_name(),
+#     data = [...],
+# )
+
+# docusaurus_bin.docusaurus_binary(
+#     name = "deploy",
+#     args = ["deploy"],
+#     chdir = package_name(),
+#     data = [...],
+# )

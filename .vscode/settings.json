@@ -61,5 +61,8 @@
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "TypeScriptTeam.native-preview"
   }
 }

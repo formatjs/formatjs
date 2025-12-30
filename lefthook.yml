@@ -16,10 +16,12 @@ pre-commit:
       stage_fixed: true
     format-starlark:
       glob: "**/*.{bazel,bzl,BUILD}"
-      run: bazel run @buildifier_prebuilt//:buildifier -- -mode=fix {staged_files}
+      run: |
+        set -- {staged_files}
+        bazel run @buildifier_prebuilt//:buildifier -- -mode=fix $(printf "$PWD/%s " "$@")
       stage_fixed: true
     lint-staged:
-      glob: "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}"
+      glob: '**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}'
       run: pnpm oxlint --config .oxlintrc.json {staged_files}
       stage_fixed: true
 
