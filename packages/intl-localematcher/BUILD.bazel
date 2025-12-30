@@ -2,7 +2,7 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "generate_src_file", "package_json_test", "ts_compile")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -44,11 +44,8 @@ vitest(
     deps = SRC_DEPS,
 )
 
-# Test262
-write_source_files(
-    name = "tsconfig_json",
-    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
-)
+# Generate tsconfig.json with correct extends path
+generate_ide_tsconfig_json()
 
 package_json_test(
     name = "package_json_test",

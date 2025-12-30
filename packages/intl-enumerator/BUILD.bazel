@@ -4,7 +4,7 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//:index.bzl", "ZONES")
-load("//tools:index.bzl", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -52,10 +52,8 @@ vitest(
 )
 
 # Test262
-write_source_files(
-    name = "tsconfig_json",
-    files = {"tsconfig.json": "//tools:tsconfig.golden.json"},
-)
+# Generate tsconfig.json with correct extends path
+generate_ide_tsconfig_json()
 
 # calendars
 generate_src_file(
