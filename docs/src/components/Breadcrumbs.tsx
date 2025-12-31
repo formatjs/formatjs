@@ -24,10 +24,15 @@ export default function Breadcrumbs(): React.ReactNode {
   const pathParts = location.split('/').filter(Boolean)
 
   return (
-    <Breadcrumb className="mb-4">
-      <BreadcrumbList>
+    <Breadcrumb className="mb-6 pb-4 border-b border-purple-500/10">
+      <BreadcrumbList className="text-sm">
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink
+            href="/"
+            className="text-purple-400 hover:text-purple-300 transition-colors"
+          >
+            Home
+          </BreadcrumbLink>
         </BreadcrumbItem>
         {pathParts.map((part, index) => {
           const path = `/${pathParts.slice(0, index + 1).join('/')}`
@@ -36,12 +41,19 @@ export default function Breadcrumbs(): React.ReactNode {
 
           return (
             <React.Fragment key={path}>
-              <BreadcrumbSeparator />
+              <BreadcrumbSeparator className="text-purple-500/50" />
               <BreadcrumbItem>
                 {isLast ? (
-                  <BreadcrumbPage>{label}</BreadcrumbPage>
+                  <BreadcrumbPage className="text-white font-medium">
+                    {label}
+                  </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink href={path}>{label}</BreadcrumbLink>
+                  <BreadcrumbLink
+                    href={path}
+                    className="text-gray-400 hover:text-purple-300 transition-colors"
+                  >
+                    {label}
+                  </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
             </React.Fragment>

@@ -41,17 +41,18 @@ const scope = {
   }),
 }
 
-// Dark theme matching prism-tomorrow
+// Modern dark theme with purple accents
 const darkTheme = {
   plain: {
-    color: '#ccc',
-    backgroundColor: '#2d2d2d',
+    color: '#e2e8f0',
+    backgroundColor: 'transparent',
   },
   styles: [
     {
       types: ['comment', 'prolog', 'doctype', 'cdata'],
       style: {
-        color: '#999',
+        color: '#64748b',
+        fontStyle: 'italic' as const,
       },
     },
     {
@@ -63,13 +64,13 @@ const darkTheme = {
     {
       types: ['string', 'attr-value'],
       style: {
-        color: '#e6db74',
+        color: '#a78bfa',
       },
     },
     {
       types: ['punctuation', 'operator'],
       style: {
-        color: '#ccc',
+        color: '#94a3b8',
       },
     },
     {
@@ -86,31 +87,31 @@ const darkTheme = {
         'inserted',
       ],
       style: {
-        color: '#ae81ff',
+        color: '#c084fc',
       },
     },
     {
       types: ['atrule', 'keyword', 'attr-name', 'selector'],
       style: {
-        color: '#66d9ef',
+        color: '#60a5fa',
       },
     },
     {
       types: ['function', 'deleted', 'tag'],
       style: {
-        color: '#fd971f',
+        color: '#f472b6',
       },
     },
     {
       types: ['function-variable'],
       style: {
-        color: '#fd971f',
+        color: '#f472b6',
       },
     },
     {
       types: ['tag', 'selector', 'keyword'],
       style: {
-        color: '#f92672',
+        color: '#fb7185',
       },
     },
   ],
@@ -140,25 +141,58 @@ export function LiveCodeBlock({
       language={language}
       theme={darkTheme}
     >
-      <div className="my-6 space-y-2">
+      <div className="my-6 rounded-lg border border-purple-500/20 overflow-hidden bg-gradient-to-br from-gray-900 to-gray-950 shadow-xl">
         <Accordion type="multiple" defaultValue={['editor', 'result']}>
-          <AccordionItem value="editor">
-            <AccordionTrigger className="text-base font-medium">
-              Live Editor
+          <AccordionItem
+            value="editor"
+            className="border-b border-purple-500/20"
+          >
+            <AccordionTrigger className="px-5 py-3 text-base font-semibold text-purple-300 hover:text-purple-200 hover:bg-purple-900/10 transition-colors">
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                  />
+                </svg>
+                Live Editor
+              </div>
             </AccordionTrigger>
             <AccordionContent className="p-0">
-              <div className="bg-[#2d2d2d] [&>div]:m-0 [&_textarea]:font-mono [&_textarea]:text-sm [&_textarea]:p-4 [&_textarea]:m-0 [&_textarea]:bg-[#2d2d2d] [&_textarea]:text-[#ccc] [&_pre]:font-mono [&_pre]:text-sm [&_pre]:p-4 [&_pre]:m-0 [&_pre]:bg-[#2d2d2d] [&_pre]:text-[#ccc]">
+              <div className="bg-gradient-to-br from-gray-950 to-gray-900 [&>div]:m-0 [&_textarea]:font-mono [&_textarea]:text-sm [&_textarea]:p-5 [&_textarea]:m-0 [&_textarea]:bg-transparent [&_textarea]:text-gray-200 [&_pre]:font-mono [&_pre]:text-sm [&_pre]:p-5 [&_pre]:m-0 [&_pre]:bg-transparent [&_pre]:text-gray-200">
                 <LiveEditor />
               </div>
             </AccordionContent>
           </AccordionItem>
 
-          <AccordionItem value="result">
-            <AccordionTrigger className="text-base font-medium">
-              Result
+          <AccordionItem value="result" className="border-0">
+            <AccordionTrigger className="px-5 py-3 text-base font-semibold text-purple-300 hover:text-purple-200 hover:bg-purple-900/10 transition-colors">
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Result
+              </div>
             </AccordionTrigger>
-            <AccordionContent>
-              <div className="text-foreground">
+            <AccordionContent className="px-5 py-4 bg-purple-900/10">
+              <div className="text-gray-200">
                 <ReactIntl.IntlProvider
                   locale={
                     typeof navigator !== 'undefined' ? navigator.language : 'en'
@@ -170,12 +204,12 @@ export function LiveCodeBlock({
                   style={{
                     fontFamily: 'Consolas, Monaco, "Courier New", monospace',
                     fontSize: '0.875em',
-                    margin: '8px 0 0 0',
-                    padding: '8px',
-                    backgroundColor: 'rgba(211, 47, 47, 0.2)',
-                    color: '#f44336',
-                    borderRadius: '4px',
-                    border: '1px solid rgba(211, 47, 47, 0.5)',
+                    margin: '12px 0 0 0',
+                    padding: '12px',
+                    backgroundColor: 'rgba(220, 38, 38, 0.15)',
+                    color: '#fca5a5',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(220, 38, 38, 0.3)',
                   }}
                 />
               </div>
