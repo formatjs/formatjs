@@ -1,0 +1,170 @@
+{
+  "core-concepts/basic-internationalization-principles": {
+    "title": "Basic Internationalization Principles",
+    "description": "Internationalized software supports the languages and cultural customs of people throughout the world. The Web reaches all parts of the world. Internati..."
+  },
+  "core-concepts/icu-syntax": {
+    "title": "Icu Syntax",
+    "description": "If you are translating text you'll need a way for your translators to express the subtleties of spelling, grammar, and conjugation inherent in each lang..."
+  },
+  "getting-started/application-workflow": {
+    "title": "Application Workflow",
+    "description": "While our Installation guide can help you get started, this guide gives you an overview how your daily translation workflow might look like."
+  },
+  "getting-started/installation": {
+    "title": "Installation",
+    "description": "formatjs is a set of libraries that help you setup internationalization in any project whether it's React or not."
+  },
+  "getting-started/message-declaration": {
+    "title": "Message Declaration",
+    "description": "While you can declare your messages using only ids, we highly recommend declaring defaultMessages inline along with their usages because of the followin..."
+  },
+  "getting-started/message-distribution": {
+    "title": "Message Distribution",
+    "description": "Now that you've declared your messages, extracted them, sent them to your translation vendor and they have given you back the translated JSON of the sam..."
+  },
+  "getting-started/message-extraction": {
+    "title": "Message Extraction",
+    "description": "Now that you've declared some messages, it's time to extract them."
+  },
+  "guides/advanced-usage": {
+    "title": "Advanced Usage",
+    "description": "react-intl is optimized for both runtime & compile time rendering. Below are a few guidelines you can follow if you have a strict performance budget."
+  },
+  "guides/bundler-plugins": {
+    "title": "Bundler Plugins",
+    "description": "Now that you've had a working pipeline. It's time to dive deeper on how to optimize the build with formatjs. From Message Extraction guide, we explicitl..."
+  },
+  "guides/develop": {
+    "title": "Develop",
+    "description": "Aside from a strong focus on facilitating i18n production pipeline, formatjs also aims to improve i18n DevEx with our eslint-plugin-formatjs."
+  },
+  "guides/distribute-libraries": {
+    "title": "Distribute Libraries",
+    "description": "In larger scale applications/monorepos, not all components/libraries live within the same repo/project and they might get distributed differently. While..."
+  },
+  "guides/runtime-requirements": {
+    "title": "Runtime Requirements",
+    "description": "We support IE11 & 2 most recent versions of Edge, Chrome, Firefox & Safari. If you need older browser support, take a look at polyfill-library that also..."
+  },
+  "guides/testing-with-react-intl": {
+    "title": "Testing With React Intl",
+    "description": "React Intl uses the built-in Intl APIs in JavaScript. Make sure your environment satisfy the requirements listed in Intl APIs requirements"
+  },
+  "icu-messageformat-parser": {
+    "title": "Icu Messageformat Parser",
+    "description": "Parses ICU Message strings into an AST via JavaScript."
+  },
+  "intl-messageformat": {
+    "title": "Intl Messageformat",
+    "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages."
+  },
+  "intl": {
+    "title": "Intl",
+    "description": "This library contains core intl API that is used by react-intl."
+  },
+  "polyfills": {
+    "title": "Polyfills",
+    "description": "One of our goals is to provide developers with access to newest ECMA-402 Intl APIs. Therefore, FormatJS suite also provide multiple high quality polyfil..."
+  },
+  "polyfills/intl-datetimeformat": {
+    "title": "Intl Datetimeformat",
+    "description": "A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the official ECMAScript Conformance test suite"
+  },
+  "polyfills/intl-displaynames": {
+    "title": "Intl Displaynames",
+    "description": "A polyfill for Intl.DisplayNames."
+  },
+  "polyfills/intl-durationformat": {
+    "title": "Intl Durationformat",
+    "description": "A spec-compliant polyfill for Intl.DurationFormat"
+  },
+  "polyfills/intl-getcanonicallocales": {
+    "title": "Intl Getcanonicallocales",
+    "description": "A spec-compliant polyfill/ponyfill for Intl.getCanonicalLocales tested by the official ECMAScript Conformance test suite"
+  },
+  "polyfills/intl-listformat": {
+    "title": "Intl Listformat",
+    "description": "A spec-compliant polyfill for Intl.ListFormat fully tested by the official ECMAScript Conformance test suite"
+  },
+  "polyfills/intl-locale": {
+    "title": "Intl Locale",
+    "description": "A spec-compliant polyfill/ponyfill for Intl.Locale tested by the official ECMAScript Conformance test suite"
+  },
+  "polyfills/intl-localematcher": {
+    "title": "Intl Localematcher",
+    "description": "A spec-compliant ponyfill for Intl.LocaleMatcher. Since this is only stage-1 this package is a ponyfill instead of polyfill."
+  },
+  "polyfills/intl-numberformat": {
+    "title": "Intl Numberformat",
+    "description": "A polyfill for ESNext Intl.NumberFormat and Number.prototype.toLocaleString."
+  },
+  "polyfills/intl-pluralrules": {
+    "title": "Intl Pluralrules",
+    "description": "A spec-compliant polyfill for Intl.PluralRules fully tested by the official ECMAScript Conformance test suite"
+  },
+  "polyfills/intl-relativetimeformat": {
+    "title": "Intl Relativetimeformat",
+    "description": "A spec-compliant polyfill for Intl.RelativeTimeFormat fully tested by the official ECMAScript Conformance test suite"
+  },
+  "polyfills/intl-segmenter": {
+    "title": "Intl Segmenter",
+    "description": "A polyfill for Intl.Segmenter."
+  },
+  "polyfills/intl-supportedvaluesof": {
+    "title": "Intl Supportedvaluesof",
+    "description": "A spec-compliant polyfill/ponyfill for Intl.supportedValuesOf."
+  },
+  "react-intl": {
+    "title": "React Intl",
+    "description": "Welcome to React Intl's docs! This is the place to find React Intl's docs. Feel free to open a pull request and contribute to the docs to make them better."
+  },
+  "react-intl/api": {
+    "title": "Api",
+    "description": "There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its ..."
+  },
+  "react-intl/components": {
+    "title": "Components",
+    "description": "React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a..."
+  },
+  "react-intl/upgrade-guide-2.x": {
+    "title": "Upgrade Guide 2.x",
+    "description": "React Intl v2 has a peer dependency on react@^0.14.0 || ^15.0.0-0 and now takes advantage of features and changes in React 0.14 and also works with Reac..."
+  },
+  "react-intl/upgrade-guide-3.x": {
+    "title": "Upgrade Guide 3.x",
+    "description": "- addLocaleData has been removed. See Migrate to using native Intl APIs for more details."
+  },
+  "react-intl/upgrade-guide-4.x": {
+    "title": "Upgrade Guide 4.x",
+    "description": "- All tags specified must have corresponding values and will throw error if it's missing, e.g:"
+  },
+  "react-intl/upgrade-guide-5.x": {
+    "title": "Upgrade Guide 5.x",
+    "description": "- Rich text formatting callback function is no longer variadic."
+  },
+  "tooling/babel-plugin": {
+    "title": "Babel Plugin",
+    "description": "Process string messages for translation from modules that use react-intl, specifically:"
+  },
+  "tooling/cli": {
+    "title": "Cli",
+    "description": "groupId=\"npm\""
+  },
+  "tooling/linter": {
+    "title": "Linter",
+    "description": "This eslint plugin allows you to enforce certain rules in your ICU message."
+  },
+  "tooling/swc-plugin": {
+    "title": "Swc Plugin",
+    "description": "This has been migrated over to the swc repo itself. You can find the plugin here."
+  },
+  "tooling/ts-transformer": {
+    "title": "Ts Transformer",
+    "description": "Process string messages for translation from modules that use react-intl, specifically:"
+  },
+  "vue-intl": {
+    "title": "Vue Intl",
+    "description": "This library contains our plugin for Vue."
+  }
+}

@@ -22,7 +22,9 @@ ts_project(
             "src/**/*.test.ts",
             "src/**/*.test.tsx",
         ],
-    ),
+    ) + [
+        "src/docs-metadata.generated.json",
+    ],
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
@@ -89,6 +91,26 @@ ts_run_binary(
     tool = ":build_search_index_tool",
 )
 
+# Extract metadata tool
+ts_binary(
+    name = "extract_metadata_tool",
+    data = [
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/fast-glob",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "scripts/extract-metadata.ts",
+)
+
+# Extract metadata from MDX docs
+generate_src_file(
+    name = "docs_metadata",
+    src = "src/docs-metadata.generated.json",
+    data = glob(["src/docs/**/*.mdx"]),
+    tool = ":extract_metadata_tool",
+)
+
 # Copy HTML entry point to bin
 copy_to_bin(
     name = "index_html",
@@ -110,6 +132,7 @@ vite_bin.vite(
     name = "dist",
     srcs = [
         ":config_files",
+        ":docs_metadata",
         ":index_html",
         ":node_modules/intl-messageformat",
         ":node_modules/react-intl",
@@ -170,6 +193,7 @@ vite_bin.vite_binary(
     chdir = package_name(),
     data = [
         ":config_files",
+        ":docs_metadata",
         ":index_html",
         ":node_modules/intl-messageformat",
         ":node_modules/react-intl",

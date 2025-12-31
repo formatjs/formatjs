@@ -12,3 +12,6 @@ build/
 release/
 !release/BUILD.bazel
 target
+
+# Generated files
+docs/src/search-index.generated.json
