@@ -128,18 +128,21 @@ export function LiveCodeBlock({
 }: LiveCodeBlockProps): React.ReactNode {
   const trimmedCode = code.trim()
 
-  // Check if code is already JSX (starts with <)
-  const isJSX = trimmedCode.startsWith('<')
+  const transformCode = React.useCallback((code: string) => {
+    // Check if code is already JSX (starts with <)
+    const isJSX = code.startsWith('<')
 
-  // Wrap non-JSX code in a fragment to render the result
-  const transformedCode = isJSX ? trimmedCode : `<>{${trimmedCode}}</>`
+    // Wrap non-JSX code in a fragment to render the result
+    return isJSX ? code : `<>{${code}}</>`
+  }, [])
 
   return (
     <LiveProvider
-      code={transformedCode}
+      code={trimmedCode}
       scope={scope}
       language={language}
       theme={darkTheme}
+      transformCode={transformCode}
     >
       <div className="my-6 rounded-lg border border-purple-500/20 overflow-hidden bg-gradient-to-br from-gray-900 to-gray-950 shadow-xl">
         <Accordion type="multiple" defaultValue={['editor', 'result']}>

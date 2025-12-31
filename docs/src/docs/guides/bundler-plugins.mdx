@@ -1,4 +1,4 @@
-Now that you've had a working pipeline. It's time to dive deeper on how to optimize the build with `formatjs`. From [Message Extraction](../getting-started/message-extraction.md) guide, we explicitly recommend against explicit ID due to potential collision in large application. While our extractor can insert IDs in the extracted JSON file, you'd need to also insert those IDs into the compiled JS output. This guide will cover how to do that.
+Now that you've had a working pipeline. It's time to dive deeper on how to optimize the build with `formatjs`. From [Message Extraction](../getting-started/message-extraction) guide, we explicitly recommend against explicit ID due to potential collision in large application. While our extractor can insert IDs in the extracted JSON file, you'd need to also insert those IDs into the compiled JS output. This guide will cover how to do that.
 
 ## Using babel-plugin-formatjs
 
@@ -46,7 +46,7 @@ Let's take this simple example:
 />
 ```
 
-During runtime this will throw an `Error` saying `ID is required`. In order to inject an ID in the transpiled JS, you can use our [babel-plugin-formatjs](../tooling/babel-plugin.md) similarly as below:
+During runtime this will throw an `Error` saying `ID is required`. In order to inject an ID in the transpiled JS, you can use our [babel-plugin-formatjs](../tooling/babel-plugin) similarly as below:
 
 **babel.config.json**
 

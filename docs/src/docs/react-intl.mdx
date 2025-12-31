@@ -10,37 +10,25 @@ React Intl relies on these `Intl` APIs:
 
 - [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat): Available on IE11+
 - [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat): Available on IE11+
-- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](polyfills/intl-pluralrules.md).
-- [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](polyfills/intl-relativetimeformat.md).
-- (Optional) [Intl.DisplayNames](https://tc39.es/proposal-intl-displaynames/): Required if you use [`formatDisplayName`](react-intl/api.md#formatdisplayname)
-  or [`FormattedDisplayName`](react-intl/components.md#formatteddisplayname). This can be polyfilled using [this package](polyfills/intl-displaynames.md).
+- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](polyfills/intl-pluralrules).
+- [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](polyfills/intl-relativetimeformat).
+- (Optional) [Intl.DisplayNames](https://tc39.es/proposal-intl-displaynames/): Required if you use [`formatDisplayName`](react-intl/api#formatdisplayname)
+  or [`FormattedDisplayName`](react-intl/components#formatteddisplayname). This can be polyfilled using [this package](polyfills/intl-displaynames).
 
 If you need to support older browsers, we recommend you do the following:
 
-1. If you're supporting browsers that do not have `Intl`, include this [polyfill](polyfills/intl-getcanonicallocales.md) in your build.
-2. Polyfill `Intl.NumberFormat` with [`@formatjs/intl-numberformat`](polyfills/intl-numberformat.md).
-3. Polyfill `Intl.DateTimeFormat` with [`@formatjs/intl-datetimeformat`](polyfills/intl-datetimeformat.md)
-4. If you're supporting browsers that do not have [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](polyfills/intl-pluralrules.md) in your build.
+1. If you're supporting browsers that do not have `Intl`, include this [polyfill](polyfills/intl-getcanonicallocales) in your build.
+2. Polyfill `Intl.NumberFormat` with [`@formatjs/intl-numberformat`](polyfills/intl-numberformat).
+3. Polyfill `Intl.DateTimeFormat` with [`@formatjs/intl-datetimeformat`](polyfills/intl-datetimeformat)
+4. If you're supporting browsers that do not have [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](polyfills/intl-pluralrules) in your build.
 
-5. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](polyfills/intl-relativetimeformat.md) in your build along with individual CLDR data for each locale you support.
+5. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](polyfills/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
 
-6. If you need `Intl.DisplayNames`, include this [polyfill](polyfills/intl-displaynames.md) in your build along with individual CLDR data for each locale you support.
+6. If you need `Intl.DisplayNames`, include this [polyfill](polyfills/intl-displaynames) in your build along with individual CLDR data for each locale you support.
 
 ### Node.js
 
-#### full-icu
-
-Starting with Node.js 13.0.0 full-icu is supported by default.
-
-If using React Intl in an earlier version of Node.js, your `node` binary has to either:
-
-- Get compiled with `full-icu` using these [instructions](https://nodejs.org/api/intl.html)
-
-**OR**
-
-- Uses [`full-icu` npm package](https://www.npmjs.com/package/full-icu)
-
-If your `node` version is missing any of the `Intl` APIs above, you'd have to polyfill them accordingly.
+React Intl requires **Node.js 16 or later**, which includes full internationalization support by default. If your Node.js version is missing any of the `Intl` APIs above, you'd have to polyfill them accordingly.
 
 ### React Native
 
@@ -109,15 +97,15 @@ We've made React Intl work well with module bundlers like: Browserify, Webpack, 
 
 Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provide the same named exports:
 
-- [`injectIntl`](react-intl/api.md#injectintl)
-- [`defineMessages`](react-intl/api.md#definemessages)
-- [`IntlProvider`](react-intl/components.md#intlprovider)
-- [`FormattedDate`](react-intl/components.md#formatteddate)
-- [`FormattedTime`](react-intl/components.md#formattedtime)
-- [`FormattedRelativeTime`](react-intl/components.md#formattedrelativetime)
-- [`FormattedNumber`](react-intl/components.md#formattednumber)
-- [`FormattedPlural`](react-intl/components.md#formattedplural)
-- [`FormattedMessage`](react-intl/components.md#formattedmessage)
+- [`injectIntl`](react-intl/api#injectintl)
+- [`defineMessages`](react-intl/api#definemessages)
+- [`IntlProvider`](react-intl/components#intlprovider)
+- [`FormattedDate`](react-intl/components#formatteddate)
+- [`FormattedTime`](react-intl/components#formattedtime)
+- [`FormattedRelativeTime`](react-intl/components#formattedrelativetime)
+- [`FormattedNumber`](react-intl/components#formattednumber)
+- [`FormattedPlural`](react-intl/components#formattedplural)
+- [`FormattedMessage`](react-intl/components#formattedmessage)
 
 <Admonition type="danger" title="react">
 When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: **`React`**, and put the above named exports on the global variable: **`ReactIntl`**.
@@ -129,7 +117,7 @@ Now with React Intl and its locale data loaded an i18n context can be created fo
 
 React Intl uses the provider pattern to scope an i18n context to a tree of components. This allows configuration like the current locale and set of translated strings/messages to be provided at the root of a component tree and made available to the `<Formatted*>` components. This is the same concept as what Flux frameworks like [Redux](http://redux.js.org/) use to provide access to a store within a component tree.
 
-**All apps using React Intl must use the [`<IntlProvider>` component](react-intl/components.md#intlprovider).**
+**All apps using React Intl must use the [`<IntlProvider>` component](react-intl/components#intlprovider).**
 
 The most common usage is to wrap your root React component with `<IntlProvider>` and configure it with the user's current locale and the corresponding translated strings/messages:
 
@@ -142,13 +130,13 @@ ReactDOM.render(
 )
 ```
 
-**See:** The [**`<IntlProvider>` docs**](react-intl/components.md#intlprovider) for more details.
+**See:** The [**`<IntlProvider>` docs**](react-intl/components#intlprovider) for more details.
 
 ## Formatting Data
 
-React Intl has two ways to format data, through [React components](react-intl/components.md) and its [API](react-intl/api.md). The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](react-intl/components.md#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
+React Intl has two ways to format data, through [React components](react-intl/components) and its [API](react-intl/api). The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](react-intl/components#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
-React Intl's imperative API is accessed via [**`injectIntl`**](react-intl/api.md#injectintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
+React Intl's imperative API is accessed via [**`injectIntl`**](react-intl/api#injectintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
 
 Here's an example using `<IntlProvider>`, `<Formatted*>` components, and the imperative API to setup an i18n context and format data:
 
@@ -199,7 +187,7 @@ Assuming `navigator.language` is `"en-us"`:
 </div>
 ```
 
-**See:** The [**API docs**](react-intl/api.md) and [**Component docs**](react-intl/components.md) for more details.
+**See:** The [**API docs**](react-intl/api) and [**Component docs**](react-intl/components) for more details.
 
 # ESM Build
 
@@ -260,8 +248,8 @@ There are several [**runnable example apps**](https://github.com/formatjs/format
 There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with `Intl` built-ins, React Intl's API, and its React components:
 
 - [ECMAScript Internationalization API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
-- [React Intl API](react-intl/api.md)
-- [React Intl Components](react-intl/components.md)
+- [React Intl API](react-intl/api)
+- [React Intl Components](react-intl/components)
 
 # TypeScript Usage
 
@@ -342,13 +330,13 @@ const customFormats = {
 
 # Advanced Usage
 
-Our [Advanced Usage](guides/advanced-usage.md) has further guides for production setup in environments where performance is important.
+Our [Advanced Usage](guides/advanced-usage) has further guides for production setup in environments where performance is important.
 
 # Supported Tooling
 
 ## Message extraction
 
-We've built [@formatjs/cli](tooling/cli.md) that helps you extract messages from a list of files. It uses [babel-plugin-formatjs](tooling/babel-plugin.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
+We've built [@formatjs/cli](tooling/cli) that helps you extract messages from a list of files. It uses [babel-plugin-formatjs](tooling/babel-plugin) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
 
@@ -362,7 +350,7 @@ defineMessages({
 ```
 
 ```tsx
-;<FormattedMessage id="foo" defaultMessage="foo" description="bar" />
+<FormattedMessage id="foo" defaultMessage="foo" description="bar" />
 ```
 
 ```tsx
@@ -379,4 +367,4 @@ function Comp(props) {
 
 ## ESLint Plugin
 
-We've also built [eslint-plugin-formatjs](tooling/linter.md) that helps enforcing specific rules on your messages if your translation vendor has restrictions.
+We've also built [eslint-plugin-formatjs](tooling/linter) that helps enforcing specific rules on your messages if your translation vendor has restrictions.

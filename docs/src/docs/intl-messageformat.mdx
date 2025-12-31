@@ -17,7 +17,7 @@ This `IntlMessageFormat` API may change to stay in sync with ECMA-402, but this 
 
 ### How It Works
 
-Messages are provided into the constructor as a `String` message, or a [pre-parsed AST](./icu-messageformat-parser.md) object.
+Messages are provided into the constructor as a `String` message, or a [pre-parsed AST](./icu-messageformat-parser) object.
 
 ```tsx
 const msg = new IntlMessageFormat(message, locales, [formats], [opts])
@@ -79,9 +79,9 @@ The message syntax that this package uses is not proprietary, in fact it's a com
 
 This package assumes that the [`Intl`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) global object exists in the runtime. `Intl` is present in all modern browsers (IE11+) and Node (with full ICU). The `Intl` methods we rely on are:
 
-1. `Intl.NumberFormat` for number formatting (can be polyfilled using [@formatjs/intl-numberformat](./polyfills/intl-numberformat.md))
-2. `Intl.DateTimeFormat` for date time formatting (can be polyfilled using [@formatjs/intl-datetimeformat](./polyfills/intl-datetimeformat.md))
-3. `Intl.PluralRules` for plural/ordinal formatting (can be polyfilled using [@formatjs/intl-pluralrules](./polyfills/intl-pluralrules.md))
+1. `Intl.NumberFormat` for number formatting (can be polyfilled using [@formatjs/intl-numberformat](./polyfills/intl-numberformat))
+2. `Intl.DateTimeFormat` for date time formatting (can be polyfilled using [@formatjs/intl-datetimeformat](./polyfills/intl-datetimeformat))
+3. `Intl.PluralRules` for plural/ordinal formatting (can be polyfilled using [@formatjs/intl-pluralrules](./polyfills/intl-pluralrules))
 
 ### Loading Intl MessageFormat in a browser
 

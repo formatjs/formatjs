@@ -209,7 +209,7 @@ intl.formatTime(Date.now()) // "4:03 PM"
 ## formatRelativeTime
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](./polyfills/intl-relativetimeformat.md) if you plan to support them.
+This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](./polyfills/intl-relativetimeformat) if you plan to support them.
 </Admonition>
 
 ```tsx
@@ -267,8 +267,8 @@ intl.formatNumber(1000, {style: 'currency', currency: 'USD'})
 **Formatting Number using `unit`**
 
 Currently this is part of ES2020 [NumberFormat](https://tc39.es/ecma402/#numberformat-objects).
-We've provided a polyfill [here](./polyfills/intl-numberformat.md) and `@formatjs/intl` types allow users to pass
-in a [sanctioned unit](./polyfills/intl-numberformat.md#SupportedUnits):
+We've provided a polyfill [here](./polyfills/intl-numberformat) and `@formatjs/intl` types allow users to pass
+in a [sanctioned unit](./polyfills/intl-numberformat#SupportedUnits):
 
 ```tsx live
 intl.formatNumber(1000, {
@@ -322,7 +322,7 @@ This function should only be used in apps that only need to support one language
 ## formatList
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](./polyfills/intl-listformat.md) if you plan to support them.
+This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](./polyfills/intl-listformat) if you plan to support them.
 </Admonition>
 
 ```ts
@@ -350,7 +350,7 @@ intl.formatList(['5 hours', '3 minutes'], {type: 'unit'})
 ## formatDisplayName
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](./polyfills/intl-displaynames.md) if you plan to support them.
+This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](./polyfills/intl-displaynames) if you plan to support them.
 </Admonition>
 
 ```ts
@@ -428,7 +428,7 @@ type MessageDescriptor = {
 ```
 
 <Admonition type="info" title="Extracting Message Descriptor">
-You can extract inline-declared messages from source files using [our CLI](./getting-started/message-extraction.md).
+You can extract inline-declared messages from source files using [our CLI](./getting-started/message-extraction).
 </Admonition>
 
 ### Message Formatting Fallbacks

@@ -1,4 +1,4 @@
-React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a web UI. The components render React elements by building on React Intl's imperative [API](api.md).
+React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a web UI. The components render React elements by building on React Intl's imperative [API](api).
 
 ## Why Components?
 
@@ -44,7 +44,7 @@ Default locale & formats for when a message is not translated (missing from `mes
 
 ### textComponent
 
-Provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](upgrade-guide-3.x.md) for more info.
+Provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](upgrade-guide-3.x) for more info.
 
 ### onError
 
@@ -125,7 +125,7 @@ const intl = createIntl({
 
 ## FormattedDate
 
-This component uses the [`formatDate`](api.md#formatdate) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above.
+This component uses the [`formatDate`](api#formatdate) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above.
 
 **Props:**
 
@@ -160,7 +160,7 @@ By default `<FormattedDate>` will render the formatted date into a `<React.Fragm
 ## FormattedDateParts
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.DateTimeFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-datetimeformat.md) if you plan to support IE11.
+This requires [Intl.DateTimeFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-datetimeformat) if you plan to support IE11.
 </Admonition>
 
 This component provides more customization to `FormattedDate` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts)
@@ -195,7 +195,7 @@ props: Intl.DateTimeFormatOptions &
 
 ## FormattedTime
 
-This component uses the [`formatTime`](api.md#formattime) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above, with the following defaults:
+This component uses the [`formatTime`](api#formattime) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above, with the following defaults:
 
 ```tsx
 {
@@ -226,7 +226,7 @@ By default `<FormattedTime>` will render the formatted time into a `React.Fragme
 ## FormattedTimeParts
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.DateTimeFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-datetimeformat.md) if you plan to support IE11.
+This requires [Intl.DateTimeFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-datetimeformat) if you plan to support IE11.
 </Admonition>
 
 This component provides more customization to `FormattedTime` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts)
@@ -257,10 +257,10 @@ props: Intl.DateTimeFormatOptions &
 ## FormattedDateTimeRange
 
 <Admonition type="caution" title="browser support">
-This requires stage-3 API [Intl.RelativeTimeFormat.prototype.formatRange](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange) which has limited browser support. Please use our [polyfill](../polyfills/intl-datetimeformat.md) if you plan to support them.
+This requires stage-3 API [Intl.RelativeTimeFormat.prototype.formatRange](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange) which has limited browser support. Please use our [polyfill](../polyfills/intl-datetimeformat) if you plan to support them.
 </Admonition>
 
-This component uses the [`formatDateTimeRange`](api.md#formatdatetimerange) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above
+This component uses the [`formatDateTimeRange`](api#formatdatetimerange) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above
 
 **Props:**
 
@@ -287,10 +287,10 @@ By default `<FormattedDateTimeRange>` will render the formatted time into a `Rea
 ## FormattedRelativeTime
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-relativetimeformat.md) if you plan to support them.
+This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-relativetimeformat) if you plan to support them.
 </Admonition>
 
-This component uses the [`formatRelativeTime`](api.md#formatrelativetime) API and has `props` that correspond to the following relative formatting options:
+This component uses the [`formatRelativeTime`](api#formatrelativetime) API and has `props` that correspond to the following relative formatting options:
 
 ```ts
 type RelativeTimeFormatOptions = {
@@ -338,7 +338,7 @@ This will initially renders `59 seconds ago`, after 1 second, will render `1 min
 
 ## FormattedNumber
 
-This component uses the [`formatNumber`](api.md#formatnumber) and [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) APIs and has `props` that correspond to `Intl.NumberFormatOptions`.
+This component uses the [`formatNumber`](api#formatnumber) and [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) APIs and has `props` that correspond to `Intl.NumberFormatOptions`.
 
 **Props:**
 
@@ -368,8 +368,8 @@ By default `<FormattedNumber>` will render the formatted number into a `React.Fr
 **Formatting Number using `unit`**
 
 Currently this is part of ES2020 [NumberFormat](https://tc39.es/ecma402/#numberformat-objects).
-We've provided a polyfill [here](../polyfills/intl-numberformat.md) and `react-intl` types allow users to pass
-in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits). For example:
+We've provided a polyfill [here](../polyfills/intl-numberformat) and `react-intl` types allow users to pass
+in a [sanctioned unit](../polyfills/intl-numberformat#SupportedUnits). For example:
 
 ```tsx live
 <FormattedNumber
@@ -392,7 +392,7 @@ in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits). For ex
 ## FormattedNumberParts
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.NumberFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-numberformat.md) if you plan to support IE11.
+This requires [Intl.NumberFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-numberformat) if you plan to support IE11.
 </Admonition>
 
 This component provides more customization to `FormattedNumber` by allowing children function to have access to underlying parts of the formatted number. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat/formatToParts).
@@ -424,7 +424,7 @@ props: NumberFormatOptions &
 
 ## FormattedPlural
 
-This component uses the [`formatPlural`](api.md#formatplural) API and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) has `props` that correspond to `Intl.PluralRulesOptions`.
+This component uses the [`formatPlural`](api#formatplural) API and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) has `props` that correspond to `Intl.PluralRulesOptions`.
 
 **Props:**
 
@@ -455,10 +455,10 @@ By default `<FormattedPlural>` will select a [plural category](http://www.unicod
 ## FormattedList
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat.md) if you plan to support them.
+This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat) if you plan to support them.
 </Admonition>
 
-This component uses [`formatList`](api.md#formatlist) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
+This component uses [`formatList`](api#formatlist) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
 
 **Props:**
 
@@ -484,10 +484,10 @@ When the locale is `en`:
 ## FormattedListParts
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat.md) if you plan to support them.
+This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat) if you plan to support them.
 </Admonition>
 
-This component uses [`formatListToParts`](api.md#formatlisttoparts) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
+This component uses [`formatListToParts`](api#formatlisttoparts) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
 
 **Props:**
 
@@ -519,11 +519,11 @@ When the locale is `en`:
 ## FormattedDisplayName
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames.md) if you plan to support them.
+This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames) if you plan to support them.
 </Admonition>
 
-This component uses [`formatDisplayName`](api.md#formatdisplayname) and [`Intl.DisplayNames`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames)
-has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill](../polyfills/intl-displaynames.md).
+This component uses [`formatDisplayName`](api#formatdisplayname) and [`Intl.DisplayNames`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames)
+has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill](../polyfills/intl-displaynames).
 
 **Props:**
 
@@ -548,7 +548,7 @@ When the locale is `en`:
 
 ## FormattedMessage
 
-This component uses the [`formatMessage`](api.md#formatmessage) API and has `props` that correspond to a [Message Descriptor](#message-descriptor).
+This component uses the [`formatMessage`](api#formatmessage) API and has `props` that correspond to a [Message Descriptor](#message-descriptor).
 
 **Props:**
 
@@ -600,7 +600,7 @@ type MessageDescriptor = {
 ```
 
 <Admonition type="info" title="compile message descriptors">
-The [babel-plugin-formatjs](../tooling/babel-plugin.md) and [@formatjs/ts-transformer](../tooling/ts-transformer.md) packages can be used to compile Message Descriptors defined in JavaScript source files into AST for performance.
+The [babel-plugin-formatjs](../tooling/babel-plugin) and [@formatjs/ts-transformer](../tooling/ts-transformer) packages can be used to compile Message Descriptors defined in JavaScript source files into AST for performance.
 </Admonition>
 
 ### Message Formatting Fallbacks
