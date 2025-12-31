@@ -1,17 +1,5 @@
 import * as React from 'react'
 import type {MDXProvider} from '@mdx-js/react'
-import {
-  Typography,
-  Link,
-  Paper,
-  Box,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableContainer,
-} from '@mui/material'
 import Tabs from '../theme/Tabs'
 import TabItem from '../theme/TabItem'
 import Admonition from './Admonition'
@@ -32,77 +20,39 @@ export const mdxComponents: MDXComponents = {
   IcuEditor,
   LiveCodeBlock,
   h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <Typography
-      variant="h3"
-      component="h1"
-      gutterBottom
+    <h1
       id={props.id}
-      sx={{
-        mt: 4,
-        mb: 2,
-        '&:hover .header-link': {
-          visibility: 'visible !important',
-        },
-      }}
+      className="text-3xl font-bold mt-8 mb-4 hover:[&_.header-link]:visible"
     >
       {props.children}
-    </Typography>
+    </h1>
   ),
   h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <Typography
-      variant="h4"
-      component="h2"
-      gutterBottom
+    <h2
       id={props.id}
-      sx={{
-        mt: 3,
-        mb: 2,
-        '&:hover .header-link': {
-          visibility: 'visible !important',
-        },
-      }}
+      className="text-2xl font-bold mt-6 mb-3 hover:[&_.header-link]:visible"
     >
       {props.children}
-    </Typography>
+    </h2>
   ),
   h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <Typography
-      variant="h5"
-      component="h3"
-      gutterBottom
+    <h3
       id={props.id}
-      sx={{
-        mt: 2,
-        mb: 1,
-        '&:hover .header-link': {
-          visibility: 'visible !important',
-        },
-      }}
+      className="text-xl font-semibold mt-4 mb-2 hover:[&_.header-link]:visible"
     >
       {props.children}
-    </Typography>
+    </h3>
   ),
   h4: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <Typography
-      variant="h6"
-      component="h4"
-      gutterBottom
+    <h4
       id={props.id}
-      sx={{
-        mt: 2,
-        mb: 1,
-        '&:hover .header-link': {
-          visibility: 'visible !important',
-        },
-      }}
+      className="text-lg font-semibold mt-4 mb-2 hover:[&_.header-link]:visible"
     >
       {props.children}
-    </Typography>
+    </h4>
   ),
   p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
-    <Typography variant="body1" paragraph>
-      {props.children}
-    </Typography>
+    <p className="mb-4 leading-7">{props.children}</p>
   ),
   code: (
     props: React.HTMLAttributes<HTMLElement> & {live?: boolean | string}
@@ -112,35 +62,15 @@ export const mdxComponents: MDXComponents = {
 
     if (isInline) {
       return (
-        <Box
-          component="code"
-          sx={{
-            px: 0.75,
-            py: 0.25,
-            borderRadius: 0.5,
-            bgcolor: 'rgba(255, 255, 255, 0.05)',
-            color: 'grey.300',
-            fontFamily: 'Consolas, Monaco, "Courier New", monospace',
-            fontSize: '0.875em',
-          }}
-        >
+        <code className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-mono text-sm">
           {children}
-        </Box>
+        </code>
       )
     }
 
     // Non-inline code blocks are handled by the pre component
     // which checks for the live prop and renders LiveCodeBlock if needed
-    return (
-      <code
-        style={{
-          fontFamily: 'Consolas, Monaco, "Courier New", monospace',
-          fontSize: '0.875em',
-        }}
-      >
-        {children}
-      </code>
-    )
+    return <code className="font-mono text-sm">{children}</code>
   },
   pre: (props: React.HTMLAttributes<HTMLPreElement> & {live?: boolean}) => {
     // Check if the code block is a live block
@@ -166,20 +96,9 @@ export const mdxComponents: MDXComponents = {
     }
 
     return (
-      <Paper
-        component="pre"
-        elevation={0}
-        sx={{
-          p: 2,
-          mb: 2,
-          overflow: 'auto',
-          bgcolor: 'grey.900',
-          color: 'grey.50',
-          borderRadius: 1,
-        }}
-      >
+      <pre className="p-4 mb-4 overflow-auto bg-[#2d2d2d] text-gray-200 rounded-md">
         {props.children}
-      </Paper>
+      </pre>
     )
   },
   a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
@@ -188,80 +107,57 @@ export const mdxComponents: MDXComponents = {
 
     if (isHeaderLink) {
       return (
-        <Box
-          component="a"
+        <a
           href={props.href}
-          className="header-link"
-          sx={{
-            visibility: 'hidden',
-            ml: 0.5,
-            color: 'primary.main',
-            textDecoration: 'none',
-            fontSize: '0.8em',
-          }}
+          className="header-link invisible ml-2 text-primary no-underline text-sm"
         >
           {props.children}
-        </Box>
+        </a>
       )
     }
 
     return (
-      <Link href={props.href} color="primary">
+      <a href={props.href} className="text-primary hover:underline">
         {props.children}
-      </Link>
+      </a>
     )
   },
   ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
-    <Typography component="ul" sx={{pl: 3, mb: 2}}>
-      {props.children}
-    </Typography>
+    <ul className="pl-6 mb-4 list-disc">{props.children}</ul>
   ),
   ol: (props: React.HTMLAttributes<HTMLOListElement>) => (
-    <Typography component="ol" sx={{pl: 3, mb: 2}}>
-      {props.children}
-    </Typography>
+    <ol className="pl-6 mb-4 list-decimal">{props.children}</ol>
   ),
   li: (props: React.HTMLAttributes<HTMLLIElement>) => (
-    <Typography component="li" sx={{mb: 0.5}}>
-      {props.children}
-    </Typography>
+    <li className="mb-2">{props.children}</li>
   ),
   blockquote: (props: React.HTMLAttributes<HTMLQuoteElement>) => (
-    <Paper
-      component="blockquote"
-      elevation={0}
-      sx={{
-        borderLeft: 4,
-        borderColor: 'primary.main',
-        pl: 2,
-        py: 1,
-        my: 2,
-        bgcolor: 'grey.50',
-      }}
-    >
+    <blockquote className="border-l-4 border-primary pl-4 py-2 my-4 bg-muted">
       {props.children}
-    </Paper>
+    </blockquote>
   ),
   table: (props: React.TableHTMLAttributes<HTMLTableElement>) => (
-    <TableContainer component={Paper} elevation={0} sx={{my: 3}}>
-      <Table sx={{minWidth: 650}}>{props.children}</Table>
-    </TableContainer>
+    <div className="my-6 overflow-x-auto">
+      <table className="min-w-full border-collapse border border-border">
+        {props.children}
+      </table>
+    </div>
   ),
   thead: (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
-    <TableHead>{props.children}</TableHead>
+    <thead className="bg-muted">{props.children}</thead>
   ),
   tbody: (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
-    <TableBody>{props.children}</TableBody>
+    <tbody>{props.children}</tbody>
   ),
   tr: (props: React.HTMLAttributes<HTMLTableRowElement>) => (
-    <TableRow>{props.children}</TableRow>
+    <tr className="border-b border-border">{props.children}</tr>
   ),
   th: (props: React.ThHTMLAttributes<HTMLTableCellElement>) => (
-    <TableCell component="th" sx={{fontWeight: 'bold'}}>
+    <th className="px-4 py-2 text-left font-bold border border-border">
       {props.children}
-    </TableCell>
+    </th>
   ),
   td: (props: React.TdHTMLAttributes<HTMLTableCellElement>) => (
-    <TableCell>{props.children}</TableCell>
+    <td className="px-4 py-2 border border-border">{props.children}</td>
   ),
 }

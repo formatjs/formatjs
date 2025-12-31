@@ -1,5 +1,4 @@
 import * as React from 'react'
-import {Box} from '@mui/material'
 
 interface TabItemProps {
   children: React.ReactNode
@@ -8,5 +7,5 @@ interface TabItemProps {
 }
 
 export default function TabItem({children}: TabItemProps): React.ReactNode {
-  return <Box>{children}</Box>
+  return <div>{children}</div>
 }

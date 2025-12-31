@@ -1,3 +1,33 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Dark theme colors - matching FormatJS brand #6F3C97 */
+  --color-primary: #6f3c97;
+  --color-primary-foreground: #fafafa;
+  --color-secondary: #8b5fc7;
+  --color-secondary-foreground: #fafafa;
+  --color-background: #0a0a0b;
+  --color-foreground: #fafafa;
+  --color-border: #27272a;
+  --color-input: #27272a;
+  --color-ring: #8b5fc7;
+  --color-muted: #18181b;
+  --color-muted-foreground: #a1a1aa;
+  --color-accent: #27272a;
+  --color-accent-foreground: #fafafa;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #fafafa;
+  --color-card: #18181b;
+  --color-card-foreground: #fafafa;
+  --color-popover: #18181b;
+  --color-popover-foreground: #fafafa;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
 /* Dark theme scrollbar */
 * {
   scrollbar-color: #424242 #1e1e1e;

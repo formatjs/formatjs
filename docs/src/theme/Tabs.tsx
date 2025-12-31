@@ -1,6 +1,10 @@
 import * as React from 'react'
-import {useState} from 'react'
-import {Tabs as MuiTabs, Tab, Box} from '@mui/material'
+import {
+  Tabs as ShadcnTabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '../components/ui/tabs'
 
 interface TabsProps {
   children: React.ReactNode
@@ -22,36 +26,25 @@ export default function Tabs({
       value: child.props?.value || String(index),
     }))
 
-  const [selectedTab, setSelectedTab] = useState(
-    defaultValue || tabLabels[0]?.value || '0'
-  )
-
-  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
-    setSelectedTab(newValue)
-  }
+  const initialValue = defaultValue || tabLabels[0]?.value || '0'
 
   return (
-    <Box sx={{width: '100%', mb: 2}}>
-      <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-        <MuiTabs value={selectedTab} onChange={handleChange}>
-          {tabLabels.map(tab => (
-            <Tab key={tab.value} label={tab.label} value={tab.value} />
-          ))}
-        </MuiTabs>
-      </Box>
+    <ShadcnTabs defaultValue={initialValue} className="w-full mb-4">
+      <TabsList>
+        {tabLabels.map(tab => (
+          <TabsTrigger key={tab.value} value={tab.value}>
+            {tab.label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
       {childrenArray.map((child: any, index) => {
         const value = child.props?.value || String(index)
         return (
-          <Box
-            key={value}
-            role="tabpanel"
-            hidden={selectedTab !== value}
-            sx={{pt: 2}}
-          >
-            {selectedTab === value && child}
-          </Box>
+          <TabsContent key={value} value={value}>
+            {child}
+          </TabsContent>
         )
       })}
-    </Box>
+    </ShadcnTabs>
   )
 }

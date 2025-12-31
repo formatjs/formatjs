@@ -1,7 +1,13 @@
 import * as React from 'react'
-import {Link as WouterLink, useLocation} from 'wouter'
-import {Breadcrumbs as MuiBreadcrumbs, Link, Typography} from '@mui/material'
-import NavigateNextIcon from '@mui/icons-material/NavigateNext'
+import {usePageContext} from 'vike-react/usePageContext'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from './ui/breadcrumb'
 
 // Convert kebab-case to Title Case
 function toTitleCase(str: string): string {
@@ -13,42 +19,35 @@ function toTitleCase(str: string): string {
 }
 
 export default function Breadcrumbs(): React.ReactNode {
-  const [location] = useLocation()
+  const pageContext = usePageContext()
+  const location = pageContext.urlPathname
   const pathParts = location.split('/').filter(Boolean)
 
   return (
-    <MuiBreadcrumbs
-      separator={<NavigateNextIcon fontSize="small" />}
-      sx={{mb: 2}}
-    >
-      <Link component={WouterLink} href="/" color="inherit" underline="hover">
-        Home
-      </Link>
-      {pathParts.map((part, index) => {
-        const path = `/${pathParts.slice(0, index + 1).join('/')}`
-        const label = toTitleCase(part)
-        const isLast = index === pathParts.length - 1
+    <Breadcrumb className="mb-4">
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        {pathParts.map((part, index) => {
+          const path = `/${pathParts.slice(0, index + 1).join('/')}`
+          const label = toTitleCase(part)
+          const isLast = index === pathParts.length - 1
 
-        if (isLast) {
           return (
-            <Typography key={path} color="text.primary">
-              {label}
-            </Typography>
+            <React.Fragment key={path}>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                {isLast ? (
+                  <BreadcrumbPage>{label}</BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink href={path}>{label}</BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+            </React.Fragment>
           )
-        }
-
-        return (
-          <Link
-            key={path}
-            component={WouterLink}
-            href={path}
-            color="inherit"
-            underline="hover"
-          >
-            {label}
-          </Link>
-        )
-      })}
-    </MuiBreadcrumbs>
+        })}
+      </BreadcrumbList>
+    </Breadcrumb>
   )
 }

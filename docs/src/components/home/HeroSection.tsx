@@ -1,17 +1,4 @@
 import * as React from 'react'
-import {Link as WouterLink} from 'wouter'
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  Grid2,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from '@mui/material'
 import {
   defineMessage,
   IntlProvider,
@@ -19,6 +6,8 @@ import {
   MessageDescriptor,
   useIntl,
 } from 'react-intl'
+import {Button} from '../ui/button'
+import {Input} from '../ui/input'
 
 const LOCALES = [
   {code: 'en-US', label: 'English (US)'},
@@ -69,12 +58,14 @@ function ExampleMessage({
 }): React.ReactNode {
   const intl = useIntl()
   return (
-    <TextField
-      label="Example"
-      value={intl.formatMessage(MESSAGE, values)}
-      aria-readonly
-      fullWidth
-    />
+    <div className="w-full">
+      <label className="block text-sm font-medium mb-2">Example</label>
+      <Input
+        value={intl.formatMessage(MESSAGE, values)}
+        readOnly
+        className="w-full"
+      />
+    </div>
   )
 }
 
@@ -83,36 +74,26 @@ export default function HeroSection(): React.ReactNode {
   const [numPhotos, setNumPhotos] = React.useState(0)
 
   return (
-    <Box
-      sx={{
-        backgroundImage: 'url(/img/splash-head.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        position: 'relative',
-        py: {xs: 3, md: 6},
-        px: 2,
-      }}
+    <div
+      className="relative bg-cover bg-center py-6 px-4 md:py-12"
+      style={{backgroundImage: 'url(/img/splash-head.jpg)'}}
     >
-      <Container maxWidth="lg">
-        <Box sx={{textAlign: 'center', mb: {xs: 1, md: 2}}}>
-          <Box
-            component="img"
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-4 md:mb-8">
+          <img
             src="/img/logo-header.svg"
             alt="FormatJS"
-            sx={{
-              height: {xs: 60, sm: 80, md: 100},
-              mb: 1,
-            }}
+            className="h-[60px] sm:h-[80px] md:h-[100px] mb-4 mx-auto"
           />
-          <Typography variant="h5">
+          <h1 className="text-xl md:text-2xl">
             Internationalize your web apps on the client & server.
-          </Typography>
-        </Box>
+          </h1>
+        </div>
 
         {/* Interactive Example */}
-        <Grid2 container>
-          <Grid2 size={12}>
-            <Box sx={{mb: 4}}>
+        <div className="grid grid-cols-1 gap-4">
+          <div>
+            <div className="mb-8">
               <IntlProvider
                 locale={selectedLocale}
                 messages={
@@ -127,56 +108,43 @@ export default function HeroSection(): React.ReactNode {
                   }}
                 />
               </IntlProvider>
-            </Box>
+            </div>
 
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 2,
-                mb: 2,
-                flexWrap: 'wrap',
-                alignItems: 'center',
-              }}
-            >
-              <TextField
-                type="number"
-                label="# Photos"
-                value={numPhotos}
-                onChange={e => setNumPhotos(Number(e.target.value))}
-                size="small"
-                sx={{width: 150}}
-              />
-              <FormControl size="small" sx={{minWidth: 150}}>
-                <InputLabel id="locale-select-label">Locale</InputLabel>
-                <Select
-                  labelId="locale-select-label"
-                  label="Locale"
+            <div className="flex flex-wrap gap-4 mb-4 items-center">
+              <div className="w-full sm:w-auto">
+                <label className="block text-sm font-medium mb-2">
+                  # Photos
+                </label>
+                <Input
+                  type="number"
+                  value={numPhotos}
+                  onChange={e => setNumPhotos(Number(e.target.value))}
+                  className="w-full sm:w-[150px]"
+                />
+              </div>
+              <div className="w-full sm:w-auto">
+                <label className="block text-sm font-medium mb-2">Locale</label>
+                <select
                   value={selectedLocale}
                   onChange={e => setSelectedLocale(e.target.value)}
+                  className="flex h-9 w-full sm:w-[150px] rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                 >
                   {LOCALES.map(locale => (
-                    <MenuItem key={locale.code} value={locale.code}>
+                    <option key={locale.code} value={locale.code}>
                       {locale.code}
-                    </MenuItem>
+                    </option>
                   ))}
-                </Select>
-              </FormControl>
-            </Box>
-          </Grid2>
-          <Grid2
-            size={12}
-            sx={{
-              textAlign: 'center',
-            }}
-          >
-            <WouterLink href="/docs/getting-started/installation">
-              <Button variant="contained" size="large">
-                Get Started
-              </Button>
-            </WouterLink>
-          </Grid2>
-        </Grid2>
-      </Container>
-    </Box>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div className="text-center">
+            <Button asChild size="lg">
+              <a href="/docs/getting-started/installation">Get Started</a>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

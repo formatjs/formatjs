@@ -1,16 +1,12 @@
 import * as React from 'react'
-import {Link as WouterLink} from 'wouter'
+import {Menu as MenuIcon, ExternalLink} from 'lucide-react'
 import {
-  AppBar,
-  Box,
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from '@mui/material'
-import {Menu as MenuIcon, OpenInNew as OpenInNewIcon} from '@mui/icons-material'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu'
+import {Button} from '../ui/button'
 import {SearchBar} from '../SearchBar'
 
 const navLinks = [
@@ -21,136 +17,82 @@ const navLinks = [
 ]
 
 export default function HomeHeader(): React.ReactNode {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget)
-  }
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
-
   return (
-    <AppBar position="sticky">
-      <Toolbar>
-        <Box
-          component={WouterLink}
-          href="/"
-          sx={{height: 40, mr: 2, display: 'flex'}}
-        >
-          <Box
-            component="img"
+    <nav className="sticky top-0 z-50 bg-primary text-primary-foreground shadow-md">
+      <div className="flex items-center h-16 px-4">
+        <a href="/" className="flex h-10 mr-4">
+          <img
             src="/img/logo-icon.svg"
             alt="FormatJS"
-            sx={{height: 40, cursor: 'pointer'}}
+            className="h-10 cursor-pointer"
           />
-        </Box>
+        </a>
 
         {/* Mobile Menu */}
-        <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
-          <IconButton
-            size="large"
-            aria-label="navigation menu"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleOpenNavMenu}
-            color="inherit"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorElNav}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            open={Boolean(anchorElNav)}
-            onClose={handleCloseNavMenu}
-            sx={{
-              display: {xs: 'block', md: 'none'},
-            }}
-          >
-            {navLinks.map(link => (
-              <MenuItem
-                key={link.label}
-                component={WouterLink}
-                href={link.href}
-                onClick={handleCloseNavMenu}
+        <div className="flex flex-1 md:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="navigation menu"
+                className="text-primary-foreground hover:bg-primary/90"
               >
-                <Typography>{link.label}</Typography>
-              </MenuItem>
-            ))}
-            <MenuItem
-              onClick={() => {
-                handleCloseNavMenu()
-                window.open('https://github.com/formatjs/formatjs', '_blank')
-              }}
-            >
-              <Typography
-                sx={{display: 'flex', alignItems: 'center', gap: 0.5}}
-              >
-                GitHub
-                <OpenInNewIcon sx={{fontSize: 16}} />
-              </Typography>
-            </MenuItem>
-          </Menu>
-        </Box>
+                <MenuIcon className="h-6 w-6" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-56">
+              {navLinks.map(link => (
+                <DropdownMenuItem key={link.label} asChild>
+                  <a href={link.href} className="cursor-pointer">
+                    {link.label}
+                  </a>
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuItem asChild>
+                <a
+                  href="https://github.com/formatjs/formatjs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  GitHub
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
 
         {/* Desktop Navigation */}
-        <Box
-          sx={{
-            flexGrow: 1,
-            display: {xs: 'none', md: 'flex'},
-            gap: 3,
-            alignItems: 'center',
-          }}
-        >
+        <div className="hidden md:flex flex-1 gap-6 items-center">
           {navLinks.map(link => (
-            <Typography
+            <a
               key={link.label}
-              component={WouterLink}
               href={link.href}
-              color="inherit"
-              sx={{
-                textDecoration: 'none',
-                cursor: 'pointer',
-                '&:hover': {textDecoration: 'underline'},
-              }}
+              className="text-primary-foreground no-underline cursor-pointer hover:underline"
             >
               {link.label}
-            </Typography>
+            </a>
           ))}
-        </Box>
+        </div>
 
         {/* Search */}
-        <Box sx={{mr: 2, flexGrow: {xs: 1, sm: 0}}}>
+        <div className="mr-4 flex-1 sm:flex-initial">
           <SearchBar />
-        </Box>
+        </div>
 
         {/* GitHub Link */}
-        <Typography
-          component="a"
+        <a
           href="https://github.com/formatjs/formatjs"
           target="_blank"
-          color="inherit"
-          sx={{
-            display: {xs: 'none', md: 'flex'},
-            alignItems: 'center',
-            gap: 0.5,
-            textDecoration: 'none',
-          }}
+          rel="noopener noreferrer"
+          className="hidden md:flex items-center gap-2 text-primary-foreground no-underline"
         >
           GitHub
-          <OpenInNewIcon sx={{fontSize: 16}} />
-        </Typography>
-      </Toolbar>
-    </AppBar>
+          <ExternalLink className="h-4 w-4" />
+        </a>
+      </div>
+    </nav>
   )
 }

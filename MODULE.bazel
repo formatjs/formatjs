@@ -17,7 +17,7 @@ bazel_dep(name = "aspect_rules_js", version = "2.8.3")
 bazel_dep(name = "rules_nodejs", version = "6.6.2")
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node", dev_dependency = True)
-node.toolchain(node_version = "20.17.0")
+node.toolchain(node_version = "22.12.0")
 
 #################################
 

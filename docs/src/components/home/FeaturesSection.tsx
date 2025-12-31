@@ -1,228 +1,131 @@
 import * as React from 'react'
-import {Box, Container, Link, Typography, useTheme} from '@mui/material'
-import Grid from '@mui/material/Grid2'
 
 export default function FeaturesSection(): React.ReactNode {
-  const theme = useTheme()
-
   return (
-    <Box
-      sx={{
-        bgcolor: 'background.default',
-        pt: {xs: 6, md: 8},
-        pb: {xs: 4, md: 6},
-      }}
-    >
-      <Container maxWidth="xl">
-        <Grid container spacing={4}>
+    <div className="bg-background pt-12 pb-8 md:pt-16 md:pb-12">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* First column - Stacked colored boxes on top, text below */}
-          <Grid size={{xs: 12, md: 4}}>
-            <Grid container spacing={0} sx={{mb: 3}}>
-              <Grid
-                size={12}
-                sx={{
-                  bgcolor: 'primary.main',
-                  p: 1.5,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: 50,
-                }}
-              >
-                <Typography
-                  sx={{
-                    textTransform: 'uppercase',
-                  }}
-                  variant="body2"
-                >
+          <div>
+            <div className="grid grid-cols-1 mb-6">
+              <div className="bg-primary p-3 flex items-center justify-center min-h-[50px]">
+                <p className="uppercase text-sm text-primary-foreground">
                   FormatJS Integrations
-                </Typography>
-              </Grid>
-              <Grid
-                size={12}
-                sx={{
-                  bgcolor: '#8339c2',
-                  p: 1.5,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: 50,
-                }}
+                </p>
+              </div>
+              <div
+                className="p-3 flex items-center justify-center min-h-[50px]"
+                style={{backgroundColor: '#8339c2'}}
               >
-                <Typography
-                  sx={{
-                    textTransform: 'uppercase',
-                  }}
-                  variant="body2"
-                >
+                <p className="uppercase text-sm text-white">
                   FormatJS Core Libs
-                </Typography>
-              </Grid>
-              <Grid
-                size={12}
-                sx={{
-                  bgcolor: 'warning.main',
-                  p: 1.5,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: 50,
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: 'black',
-                    textTransform: 'uppercase',
-                  }}
-                  variant="body2"
-                >
+                </p>
+              </div>
+              <div className="bg-yellow-400 p-3 flex items-center justify-center min-h-[50px]">
+                <p className="uppercase text-sm text-black">
                   ECMA-402 + FormatJS Polyfills
-                </Typography>
-              </Grid>
-            </Grid>
+                </p>
+              </div>
+            </div>
 
-            <Typography
-              variant="h5"
-              gutterBottom
-              sx={{fontWeight: 600, fontSize: {xs: '1.25rem', md: '1.5rem'}}}
-            >
+            <h2 className="text-xl md:text-2xl font-semibold mb-4">
               FormatJS is a set of JavaScript libraries.
-            </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              component="p"
-              sx={{fontSize: {xs: '0.9rem', md: '1rem'}}}
-            >
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground">
               FormatJS is a modular collection of JavaScript libraries for
               internationalization that are focused on formatting numbers,
               dates, and strings for displaying to people. It includes a set of
               core libraries that build on the JavaScript Intl built-ins and
               industry-wide i18n standards, plus a set of integrations for
               common template and component libraries.
-            </Typography>
-          </Grid>
+            </p>
+          </div>
 
           {/* Middle-Right - Integrations with logos */}
-          <Grid size={{xs: 12, md: 4}}>
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 3,
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: 150,
-                mb: 3,
-                flexWrap: 'nowrap',
-              }}
-            >
-              <Box
-                component="img"
+          <div>
+            <div className="flex gap-6 items-center justify-center min-h-[150px] mb-6">
+              <img
                 src="/img/react.svg"
                 alt="React"
-                sx={{maxHeight: 150, maxWidth: '30%', objectFit: 'contain'}}
+                className="max-h-[150px] max-w-[30%] object-contain"
               />
-              <Box
-                component="img"
+              <img
                 src="/img/ember.svg"
                 alt="Ember"
-                sx={{maxHeight: 150, maxWidth: '30%', objectFit: 'contain'}}
+                className="max-h-[150px] max-w-[30%] object-contain"
               />
-              <Box
-                component="img"
+              <img
                 src="/img/vue-logo.svg"
                 alt="Vue"
-                sx={{maxHeight: 150, maxWidth: '30%', objectFit: 'contain'}}
+                className="max-h-[150px] max-w-[30%] object-contain"
               />
-            </Box>
-            <Typography
-              variant="h5"
-              gutterBottom
-              sx={{fontWeight: 600, fontSize: {xs: '1.25rem', md: '1.5rem'}}}
-            >
+            </div>
+            <h2 className="text-xl md:text-2xl font-semibold mb-4">
               Integrates with other libraries.
-            </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              component="p"
-              sx={{fontSize: {xs: '0.9rem', md: '1rem'}}}
-            >
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground">
               For most web projects, internationalization happens in the
               template or view layer, so we've built integrations with React &
               Vue.
-            </Typography>
-          </Grid>
+            </p>
+          </div>
 
           {/* Right - JS logo and Built on standards */}
-          <Grid size={{xs: 12, md: 4}}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: 150,
-                mb: 3,
-              }}
-            >
-              <Box
-                component="img"
+          <div>
+            <div className="flex items-center justify-center min-h-[150px] mb-6">
+              <img
                 src="/img/js.svg"
                 alt="JavaScript"
-                sx={{height: 150, width: 150}}
+                className="h-[150px] w-[150px]"
               />
-            </Box>
-            <Typography
-              variant="h5"
-              gutterBottom
-              sx={{fontWeight: 600, fontSize: {xs: '1.25rem', md: '1.5rem'}}}
-            >
+            </div>
+            <h2 className="text-xl md:text-2xl font-semibold mb-4">
               Built on standards.
-            </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{fontSize: {xs: '0.9rem', md: '1rem'}}}
-            >
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground">
               FormatJS is aligned with:{' '}
-              <Link
+              <a
                 href="https://tc39.es/ecma402/"
                 target="_blank"
-                color="primary"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
               >
                 ECMAScript
-              </Link>
+              </a>
               ,{' '}
-              <Link
+              <a
                 href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl"
                 target="_blank"
-                color="primary"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
               >
                 Internationalization API (ECMA-402)
-              </Link>
+              </a>
               ,{' '}
-              <Link
+              <a
                 href="http://cldr.unicode.org/"
                 target="_blank"
-                color="primary"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
               >
                 Unicode CLDR
-              </Link>
+              </a>
               , and{' '}
-              <Link
+              <a
                 href="https://unicode-org.github.io/icu/userguide/format_parse/messages/"
                 target="_blank"
-                color="primary"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
               >
                 ICU Message syntax
-              </Link>
+              </a>
               . By building on these industry standards, FormatJS works on the
               web and works in modern browsers and works with the message syntax
               used by professional translators.
-            </Typography>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

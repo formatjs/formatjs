@@ -1,91 +1,45 @@
 import * as React from 'react'
-import {Box, Container, Typography} from '@mui/material'
 
 export default function TrustedBySection(): React.ReactNode {
   return (
-    <Box
-      sx={{
-        bgcolor: 'grey.900',
-        py: {xs: 4, md: 8},
-      }}
-    >
-      <Container maxWidth="xl">
-        <Typography
-          variant="h5"
-          gutterBottom
-          sx={{
-            fontWeight: 600,
-            textAlign: 'center',
-            mb: 4,
-            fontSize: {xs: '1.25rem', md: '1.5rem'},
-          }}
-        >
+    <div className="bg-gray-900 py-8 md:py-16">
+      <div className="max-w-7xl mx-auto px-4">
+        <h2 className="text-xl md:text-2xl font-semibold text-center mb-8">
           Trusted by industry leaders.
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: {xs: 4, md: 6},
-          }}
-        >
-          <Box
-            component="img"
+        </h2>
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+          <img
             src="/img/yahoo.svg"
             alt="Yahoo"
-            sx={{
-              height: {xs: 30, md: 40},
-              filter: 'brightness(0.8)',
-            }}
+            className="h-[30px] md:h-10 brightness-75"
           />
-          <Box
-            component="img"
+          <img
             src="/img/dropbox.svg"
             alt="Dropbox"
-            sx={{
-              height: {xs: 30, md: 40},
-              filter: 'brightness(0.8)',
-            }}
+            className="h-[30px] md:h-10 brightness-75"
           />
-          <Box
-            component="img"
+          <img
             src="/img/tinder.svg"
             alt="Tinder"
-            sx={{
-              height: {xs: 30, md: 40},
-              filter: 'brightness(0.8)',
-            }}
+            className="h-[30px] md:h-10 brightness-75"
           />
-          <Box
-            component="img"
+          <img
             src="/img/ethereum.svg"
             alt="Ethereum"
-            sx={{
-              height: {xs: 30, md: 40},
-              filter: 'brightness(0.8)',
-            }}
+            className="h-[30px] md:h-10 brightness-75"
           />
-          <Box
-            component="img"
+          <img
             src="/img/mozilla.svg"
             alt="Mozilla"
-            sx={{
-              height: {xs: 30, md: 40},
-              filter: 'brightness(0.8)',
-            }}
+            className="h-[30px] md:h-10 brightness-75"
           />
-          <Box
-            component="img"
+          <img
             src="/img/coinbase_white.svg"
             alt="Coinbase"
-            sx={{
-              height: {xs: 30, md: 40},
-            }}
+            className="h-[30px] md:h-10"
           />
-        </Box>
-      </Container>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }

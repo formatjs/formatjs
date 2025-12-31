@@ -1,13 +1,11 @@
 import * as React from 'react'
 import {LiveProvider, LiveEditor, LiveError, LivePreview} from 'react-live'
 import {
-  Box,
   Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-} from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from './ui/accordion'
 import * as ReactIntl from 'react-intl'
 import IntlMessageFormat from 'intl-messageformat'
 
@@ -142,67 +140,49 @@ export function LiveCodeBlock({
       language={language}
       theme={darkTheme}
     >
-      <Box sx={{my: 3}}>
-        <Accordion defaultExpanded disableGutters>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Live Editor</Typography>
-          </AccordionSummary>
-          <AccordionDetails sx={{p: 0}}>
-            <Box
-              sx={{
-                bgcolor: '#2d2d2d',
-                '& > div': {
-                  margin: 0,
-                },
-                '& textarea, & pre': {
-                  fontFamily:
-                    'Consolas, Monaco, "Courier New", monospace !important',
-                  fontSize: '0.875em',
-                  padding: '16px',
-                  margin: 0,
-                  backgroundColor: '#2d2d2d !important',
-                  color: '#ccc',
-                },
-              }}
-            >
-              <LiveEditor />
-            </Box>
-          </AccordionDetails>
-        </Accordion>
+      <div className="my-6 space-y-2">
+        <Accordion type="multiple" defaultValue={['editor', 'result']}>
+          <AccordionItem value="editor">
+            <AccordionTrigger className="text-base font-medium">
+              Live Editor
+            </AccordionTrigger>
+            <AccordionContent className="p-0">
+              <div className="bg-[#2d2d2d] [&>div]:m-0 [&_textarea]:font-mono [&_textarea]:text-sm [&_textarea]:p-4 [&_textarea]:m-0 [&_textarea]:bg-[#2d2d2d] [&_textarea]:text-[#ccc] [&_pre]:font-mono [&_pre]:text-sm [&_pre]:p-4 [&_pre]:m-0 [&_pre]:bg-[#2d2d2d] [&_pre]:text-[#ccc]">
+                <LiveEditor />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
 
-        <Accordion defaultExpanded disableGutters>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Result</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Box
-              sx={{
-                color: 'grey.100',
-              }}
-            >
-              <ReactIntl.IntlProvider
-                locale={
-                  typeof navigator !== 'undefined' ? navigator.language : 'en'
-                }
-              >
-                <LivePreview />
-              </ReactIntl.IntlProvider>
-              <LiveError
-                style={{
-                  fontFamily: 'Consolas, Monaco, "Courier New", monospace',
-                  fontSize: '0.875em',
-                  margin: '8px 0 0 0',
-                  padding: '8px',
-                  backgroundColor: 'rgba(211, 47, 47, 0.2)',
-                  color: '#f44336',
-                  borderRadius: '4px',
-                  border: '1px solid rgba(211, 47, 47, 0.5)',
-                }}
-              />
-            </Box>
-          </AccordionDetails>
+          <AccordionItem value="result">
+            <AccordionTrigger className="text-base font-medium">
+              Result
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="text-foreground">
+                <ReactIntl.IntlProvider
+                  locale={
+                    typeof navigator !== 'undefined' ? navigator.language : 'en'
+                  }
+                >
+                  <LivePreview />
+                </ReactIntl.IntlProvider>
+                <LiveError
+                  style={{
+                    fontFamily: 'Consolas, Monaco, "Courier New", monospace',
+                    fontSize: '0.875em',
+                    margin: '8px 0 0 0',
+                    padding: '8px',
+                    backgroundColor: 'rgba(211, 47, 47, 0.2)',
+                    color: '#f44336',
+                    borderRadius: '4px',
+                    border: '1px solid rgba(211, 47, 47, 0.5)',
+                  }}
+                />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
         </Accordion>
-      </Box>
+      </div>
     </LiveProvider>
   )
 }

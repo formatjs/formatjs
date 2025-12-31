@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useEffect, useState} from 'react'
-import {Box, TextField, Paper} from '@mui/material'
+import {Input} from './ui/input'
 import IntlMessageFormat from 'intl-messageformat'
 
 export interface IcuEditorProps {
@@ -38,49 +38,44 @@ export function IcuEditor({
   }, [values, message])
 
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        my: 3,
-        p: 2,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 1,
-      }}
-    >
-      <Box
-        component="form"
-        sx={{display: 'flex', flexDirection: 'column', gap: 2}}
-      >
-        <TextField
-          label="ICU Message"
-          multiline
-          fullWidth
-          minRows={3}
-          value={message}
-          onChange={e => setMessage(e.target.value)}
-          placeholder="Enter ICU message format..."
-        />
+    <div className="my-6 p-4 border border-border rounded-md">
+      <form className="flex flex-col gap-4">
+        <div>
+          <label className="block text-sm font-medium mb-2">ICU Message</label>
+          <textarea
+            className="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm min-h-[80px]"
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+            placeholder="Enter ICU message format..."
+            rows={3}
+          />
+        </div>
 
-        <TextField
-          label="Values as JSON"
-          fullWidth
-          value={values}
-          onChange={e => setValues(e.target.value)}
-          placeholder="{}"
-        />
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Values as JSON
+          </label>
+          <Input
+            value={values}
+            onChange={e => setValues(e.target.value)}
+            placeholder="{}"
+          />
+        </div>
 
-        <TextField
-          label="Result"
-          fullWidth
-          value={error || result}
-          error={!!error}
-          helperText={error ? 'Error in ICU message format' : ''}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-      </Box>
-    </Paper>
+        <div>
+          <label className="block text-sm font-medium mb-2">Result</label>
+          <Input
+            value={error || result}
+            readOnly
+            className={error ? 'border-destructive' : ''}
+          />
+          {error && (
+            <p className="text-sm text-destructive mt-1">
+              Error in ICU message format
+            </p>
+          )}
+        </div>
+      </form>
+    </div>
   )
 }

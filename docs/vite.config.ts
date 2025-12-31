@@ -1,5 +1,6 @@
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
+import vike from 'vike/plugin'
 import mdx from '@mdx-js/rollup'
 import remarkGfm from 'remark-gfm'
 import remarkFrontmatter from 'remark-frontmatter'
@@ -7,10 +8,18 @@ import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypePrismPlus from 'rehype-prism-plus'
 import rehypeMdxCodeProps from 'rehype-mdx-code-props'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   publicDir: 'public',
+  css: {
+    transformer: 'lightningcss',
+  },
   plugins: [
+    tailwindcss(),
+    vike({
+      prerender: true,
+    }),
     {
       enforce: 'pre',
       ...mdx({

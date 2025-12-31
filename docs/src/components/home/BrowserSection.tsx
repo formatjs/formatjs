@@ -1,74 +1,30 @@
 import * as React from 'react'
-import {Box, Container, Typography} from '@mui/material'
 
 export default function BrowserSection(): React.ReactNode {
   return (
-    <Container maxWidth="xl" sx={{py: {xs: 4, md: 8}}}>
-      <Typography
-        variant="h5"
-        gutterBottom
-        sx={{fontWeight: 600, fontSize: {xs: '1.25rem', md: '1.5rem'}}}
-      >
+    <div className="max-w-7xl mx-auto px-4 py-8 md:py-16">
+      <h2 className="text-xl md:text-2xl font-semibold mb-4">
         Runs in the browser and Node.js.
-      </Typography>
-      <Typography
-        variant="body1"
-        color="text.secondary"
-        paragraph
-        sx={{fontSize: {xs: '0.9rem', md: '1rem'}}}
-      >
+      </h2>
+      <p className="text-sm md:text-base text-muted-foreground mb-4">
         FormatJS has been tested in all the major browsers (IE11, Chrome, FF &
         Safari) on both desktop and mobile devices. For many web apps rendering
         happens on the server, so we made sure FormatJS works perfectly in
         Node.js. This allows developers to use FormatJS on both the server and
         client-side of their apps.
-      </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          gap: {xs: 2, md: 4},
-          my: 4,
-          alignItems: 'center',
-          flexWrap: 'wrap',
-        }}
-      >
-        <Box
-          component="img"
-          src="/img/chrome.png"
-          alt="Chrome"
-          sx={{height: {xs: 40, md: 60}}}
-        />
-        <Box
-          component="img"
+      </p>
+      <div className="flex flex-wrap gap-4 md:gap-8 my-8 items-center">
+        <img src="/img/chrome.png" alt="Chrome" className="h-10 md:h-[60px]" />
+        <img
           src="/img/firefox.png"
           alt="Firefox"
-          sx={{height: {xs: 40, md: 60}}}
+          className="h-10 md:h-[60px]"
         />
-        <Box
-          component="img"
-          src="/img/safari.png"
-          alt="Safari"
-          sx={{height: {xs: 40, md: 60}}}
-        />
-        <Box
-          component="img"
-          src="/img/edge.png"
-          alt="Edge"
-          sx={{height: {xs: 40, md: 60}}}
-        />
-        <Box
-          component="img"
-          src="/img/ie11.png"
-          alt="IE11"
-          sx={{height: {xs: 40, md: 60}}}
-        />
-        <Box
-          component="img"
-          src="/img/node.svg"
-          alt="Node.js"
-          sx={{height: {xs: 40, md: 60}}}
-        />
-      </Box>
-    </Container>
+        <img src="/img/safari.png" alt="Safari" className="h-10 md:h-[60px]" />
+        <img src="/img/edge.png" alt="Edge" className="h-10 md:h-[60px]" />
+        <img src="/img/ie11.png" alt="IE11" className="h-10 md:h-[60px]" />
+        <img src="/img/node.svg" alt="Node.js" className="h-10 md:h-[60px]" />
+      </div>
+    </div>
   )
 }
