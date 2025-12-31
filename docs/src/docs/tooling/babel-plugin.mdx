@@ -100,7 +100,7 @@ parse specific additional custom pragma. This allows you to tag certain file wit
 
 ```tsx
 // @intl-meta project:my-custom-project
-;<FormattedMessage defaultMessage="foo" id="bar" />
+<FormattedMessage defaultMessage="foo" id="bar" />
 ```
 
 and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.

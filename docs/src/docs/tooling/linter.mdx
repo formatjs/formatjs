@@ -69,7 +69,7 @@ defineMessage({
 ```
 
 ```tsx
-;<FormattedMessage defaultMessage="foo" description="bar" />
+<FormattedMessage defaultMessage="foo" description="bar" />
 ```
 
 ```tsx
@@ -102,11 +102,11 @@ These settings are applied globally to all formatjs rules once specified. See [S
 
 ### `formatjs.additionalFunctionNames`
 
-Similar to [babel-plugin-formatjs](./babel-plugin.md#additionalfunctionnames) & [@formatjs/ts-transformer](./ts-transformer.md#additionalfunctionnames), this allows you to specify additional function names to check besides `formatMessage` & `$formatMessage`.
+Similar to [babel-plugin-formatjs](./babel-plugin#additionalfunctionnames) & [@formatjs/ts-transformer](./ts-transformer#additionalfunctionnames), this allows you to specify additional function names to check besides `formatMessage` & `$formatMessage`.
 
 ### `formatjs.additionalComponentNames`
 
-Similar to [babel-plugin-formatjs](./babel-plugin.md#additionalcomponentnames) & [@formatjs/ts-transformer](./ts-transformer.md#additionalcomponentnames), this allows you to specify additional component names to check besides `FormattedMessage`.
+Similar to [babel-plugin-formatjs](./babel-plugin#additionalcomponentnames) & [@formatjs/ts-transformer](./ts-transformer#additionalcomponentnames), this allows you to specify additional component names to check besides `FormattedMessage`.
 
 ## Shareable Configs
 
@@ -846,38 +846,64 @@ Consistent coding style in JSX and less syntax clutter.
 
 Use `#` in the plural argument to reference the count instead of repeating the argument.
 
-```
-// Bad
+**Bad:**
+
+```icu-message-format
 I have {count} {
   count, plural,
     one {apple}
     other {apples}
   }
 }
-// Good
+```
+
+**Bad:**
+
+```icu-message-format
+I have {count} {
+  count, plural,
+    one {apple}
+    other {apples}
+  }
+}
+```
+
+**Good:**
+
+```icu-message-format
 I have {
   count, plural,
     one {# apple}
     other {# apples}
   }
 }
+```
 
-// Bad
+**Bad:**
+
+```icu-message-format
 I have {
   count, plural,
     one {{count} apple}
     other {{count} apples}
   }
 }
-// Good
+```
+
+**Good:**
+
+```icu-message-format
 I have {
   count, plural,
     one {# apple}
     other {# apples}
   }
 }
+```
 
-// Bad
+**Bad:**
+
+```icu-message-format
 I won the {ranking}{
   count, selectordinal,
     one {st}
@@ -885,7 +911,11 @@ I won the {ranking}{
     few {rd}
     other {th}
 } place.
-// Good
+```
+
+**Good:**
+
+```icu-message-format
 I won the {ranking}{
   count, selectordinal,
     one {#st}

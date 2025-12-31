@@ -129,13 +129,7 @@ require('@formatjs/intl-relativetimeformat/polyfill')
 require('@formatjs/intl-relativetimeformat/locale-data/de') // Add locale data for de
 ```
 
-When using React Intl in Node.js, your `node` binary has to either:
-
-- Get compiled with `full-icu` using these [instructions](https://nodejs.org/api/intl.html)
-
-**OR**
-
-- Uses [`full-icu` npm package](https://www.npmjs.com/package/full-icu)
+When using React Intl in Node.js, you need **Node.js 16 or later**, which includes full internationalization support by default.
 
 ## TypeScript Support
 
@@ -217,7 +211,7 @@ You can use `@formatjs/intl-utils` to get close to the previous behavior like th
 ```tsx
 const {value, unit} = selectUnit(Date.now() - 48 * 3600 * 1000)
 // render
-;<FormattedRelativeTime value={value} unit={unit} />
+<FormattedRelativeTime value={value} unit={unit} />
 ```
 
 ## Enhanced `FormattedMessage` & `formatMessage` rich text formatting
@@ -363,4 +357,4 @@ Placeholder argument can no longer have `-` (e.g: `this is a {placeholder-var}` 
 
 ## Testing
 
-We've removed `IntlProvider.getChildContext` for testing and now you can use `createIntl` to create a standalone `intl` object outside of React and use that for testing purposes. See [Testing with React Intl](../guides/testing-with-react-intl.md) for more details.
+We've removed `IntlProvider.getChildContext` for testing and now you can use `createIntl` to create a standalone `intl` object outside of React and use that for testing purposes. See [Testing with React Intl](../guides/testing-with-react-intl) for more details.

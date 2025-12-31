@@ -1,8 +1,8 @@
-There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its React [components](./components.md).
+There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its React [components](./components).
 
 ## Why Imperative API?
 
-While our [components](./components.md) provide a seamless integration with React, the imperative API are recommended (sometimes required) in several use cases:
+While our [components](./components) provide a seamless integration with React, the imperative API are recommended (sometimes required) in several use cases:
 
 - Setting text attributes such as `title`, `aria-label` and the like where a React component cannot be used (e.g `<img title/>`)
 - Formatting text/datetime... in non-React environment such as Node, Server API, Redux store, testing...
@@ -198,7 +198,7 @@ Default locale & formats for when a message is not translated (missing from `mes
 
 ### textComponent
 
-Provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](upgrade-guide-3.x.md) for more info.
+Provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](upgrade-guide-3.x) for more info.
 
 ### onError
 
@@ -223,11 +223,11 @@ function formatDate(
 
 This function will return a formatted date string. It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
 
-<LiveCodeBlock code={`() => <div>{intl.formatDate(Date.now(), {
+<LiveCodeBlock code={`intl.formatDate(Date.now(), {
   year: 'numeric',
   month: 'numeric',
   day: 'numeric',
-})}</div>
+})
 `} />
 
 ## formatTime
@@ -250,13 +250,13 @@ This function will return a formatted date string, but it differs from [`formatD
 
 It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
 
-<LiveCodeBlock code={`() => <div>{intl.formatTime(Date.now())}</div>
+<LiveCodeBlock code={`intl.formatTime(Date.now())
 `} />
 
 ## formatDateTimeRange
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.DateTimeFormat.prototype.formatRange](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatRange) which has limited browser support. Please use our [polyfill](../polyfills/intl-datetimeformat.md) if you plan to support them.
+This requires [Intl.DateTimeFormat.prototype.formatRange](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatRange) which has limited browser support. Please use our [polyfill](../polyfills/intl-datetimeformat) if you plan to support them.
 </Admonition>
 
 ```tsx
@@ -271,13 +271,13 @@ This function will return a formatted date/time range string. Both `from` & `to`
 
 It expects 2 values (a `from` Date & a `to` Date) and accepts `options` that conform to `DateTimeFormatOptions`.
 
-<LiveCodeBlock code={`() => <div>{intl.formatDateTimeRange(new Date('2020-1-1'), new Date('2020-1-15'))}</div>
+<LiveCodeBlock code={`intl.formatDateTimeRange(new Date('2020-1-1'), new Date('2020-1-15'))
 `} />
 
 ## formatRelativeTime
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-relativetimeformat.md) if you plan to support them.
+This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-relativetimeformat) if you plan to support them.
 </Admonition>
 
 ```tsx
@@ -307,10 +307,10 @@ function formatRelativeTime(
 
 This function will return a formatted relative time string (e.g., "1 hour ago"). It expects a `value` which is a number, a `unit` and `options` that conform to `Intl.RelativeTimeFormatOptions`.
 
-<LiveCodeBlock code={`() => <div>{intl.formatRelativeTime(0)}</div>
+<LiveCodeBlock code={`intl.formatRelativeTime(0)
 `} />
 
-<LiveCodeBlock code={`() => <div>{intl.formatRelativeTime(-24, 'hour', {style: 'narrow'})}</div>
+<LiveCodeBlock code={`intl.formatRelativeTime(-24, 'hour', {style: 'narrow'})
 `} />
 
 ## formatNumber
@@ -326,27 +326,27 @@ function formatNumber(
 
 This function will return a formatted number string. It expects a `value` which can be parsed as a number, and accepts `options` that conform to `NumberFormatOptions`.
 
-<LiveCodeBlock code={`() => <div>{intl.formatNumber(1000, {style: 'currency', currency: 'USD'})}</div>
+<LiveCodeBlock code={`intl.formatNumber(1000, {style: 'currency', currency: 'USD'})
 `} />
 
 **Formatting Number using `unit`**
 
 Currently this is part of ES2020 [NumberFormat](https://tc39.es/ecma402/#numberformat-objects).
-We've provided a polyfill [here](../polyfills/intl-numberformat.md) and `react-intl` types allow users to pass
-in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits):
+We've provided a polyfill [here](../polyfills/intl-numberformat) and `react-intl` types allow users to pass
+in a [sanctioned unit](../polyfills/intl-numberformat#SupportedUnits):
 
-<LiveCodeBlock code={`() => <div>{intl.formatNumber(1000, {
+<LiveCodeBlock code={`intl.formatNumber(1000, {
   style: 'unit',
   unit: 'kilobyte',
   unitDisplay: 'narrow',
-})}</div>
+})
 `} />
 
-<LiveCodeBlock code={`() => <div>{intl.formatNumber(1000, {
+<LiveCodeBlock code={`intl.formatNumber(1000, {
   unit: 'fahrenheit',
   unitDisplay: 'long',
   style: 'unit',
-})}</div>
+})
 `} />
 
 ## formatPlural
@@ -366,13 +366,13 @@ This function will return a plural category string: `"zero"`, `"one"`, `"two"`, 
 
 This is a low-level utility whose output could be provided to a `switch` statement to select a particular string to display.
 
-<LiveCodeBlock code={`() => <div>{intl.formatPlural(1)}</div>
+<LiveCodeBlock code={`intl.formatPlural(1)
 `} />
 
-<LiveCodeBlock code={`() => <div>{intl.formatPlural(3, {style: 'ordinal'})}</div>
+<LiveCodeBlock code={`intl.formatPlural(3, {style: 'ordinal'})
 `} />
 
-<LiveCodeBlock code={`() => <div>{intl.formatPlural(4, {style: 'ordinal'})}</div>
+<LiveCodeBlock code={`intl.formatPlural(4, {style: 'ordinal'})
 `} />
 
 <Admonition type="danger" title="multiple language support">
@@ -382,7 +382,7 @@ This function should only be used in apps that only need to support one language
 ## formatList
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat.md) if you plan to support them.
+This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat) if you plan to support them.
 </Admonition>
 
 ```ts
@@ -399,16 +399,16 @@ function formatList(
 
 This function allows you to join list of things together in an i18n-safe way. For example, when the locale is `en`:
 
-<LiveCodeBlock code={`() => <div>{intl.formatList(['Me', 'myself', 'I'], {type: 'conjunction'})}</div>
+<LiveCodeBlock code={`intl.formatList(['Me', 'myself', 'I'], {type: 'conjunction'})
 `} />
 
-<LiveCodeBlock code={`() => <div>{intl.formatList(['5 hours', '3 minutes'], {type: 'unit'})}</div>
+<LiveCodeBlock code={`intl.formatList(['5 hours', '3 minutes'], {type: 'unit'})
 `} />
 
 ## formatDisplayName
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames.md) if you plan to support them.
+This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames) if you plan to support them.
 </Admonition>
 
 ```ts
@@ -426,16 +426,16 @@ function formatDisplayName(
 
 Usage examples:
 
-<LiveCodeBlock code={`() => <div>{intl.formatDisplayName('zh-Hans-SG', {type: 'language'})}</div>
+<LiveCodeBlock code={`intl.formatDisplayName('zh-Hans-SG', {type: 'language'})
 `} />
 
-<LiveCodeBlock code={`() => <div>{intl.formatDisplayName('Deva', {type: 'script'})}</div>
+<LiveCodeBlock code={`intl.formatDisplayName('Deva', {type: 'script'})
 `} />
 
-<LiveCodeBlock code={`() => <div>{intl.formatDisplayName('CNY', {type: 'currency'})}</div>
+<LiveCodeBlock code={`intl.formatDisplayName('CNY', {type: 'currency'})
 `} />
 
-<LiveCodeBlock code={`() => <div>{intl.formatDisplayName('UN', {type: 'region'})}</div>
+<LiveCodeBlock code={`intl.formatDisplayName('UN', {type: 'region'})
 `} />
 
 ## formatMessage
@@ -479,7 +479,7 @@ type MessageDescriptor = {
 ```
 
 <Admonition type="info" title="Extracting Message Descriptor">
-You can extract inline-declared messages from source files using [our CLI](../getting-started/message-extraction.md).
+You can extract inline-declared messages from source files using [our CLI](../getting-started/message-extraction).
 </Admonition>
 
 ### Message Formatting Fallbacks
