@@ -639,7 +639,7 @@
         "bzlTransitiveDigest": "u2i6cw9UufcXbPuESBB66WdqYKm1KTFsDORyv0HawHo=",
         "usagesDigest": "tsxRjH5DN8xUnGoUELCp/xuIp04EwwlFAtYpnGb6Y+4=",
         "recordedFileInputs": {
-          "@@//package.json": "b0edd9de9d1103ee9868f5b2e7ad76ce945ab4a73f77e7d5346cee18d0065f6b"
+          "@@//package.json": "804fcb6fbf7fa9a9f2e1a224a7bcc799d1c12eff5418dd9501e0337dce4c6a18"
         },
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -1765,7 +1765,7 @@
     "@@rules_nodejs+//nodejs:extensions.bzl%node": {
       "general": {
         "bzlTransitiveDigest": "NwcLXHrbh2hoorA/Ybmcpjxsn/6avQmewDglodkDrgo=",
-        "usagesDigest": "0zb2KlWhDDFycEzyI4VEqn8Cf35WVnuxrCLYvo/77Dw=",
+        "usagesDigest": "V9rWepvFHwNmBrpldeW3UcBgw+gfkdeFJgqGOjXPXfo=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -1778,7 +1778,7 @@
               "node_urls": [
                 "https://nodejs.org/dist/v{version}/{filename}"
               ],
-              "node_version": "20.17.0",
+              "node_version": "22.12.0",
               "include_headers": false,
               "platform": "linux_amd64"
             }
@@ -1791,7 +1791,7 @@
               "node_urls": [
                 "https://nodejs.org/dist/v{version}/{filename}"
               ],
-              "node_version": "20.17.0",
+              "node_version": "22.12.0",
               "include_headers": false,
               "platform": "linux_arm64"
             }
@@ -1804,7 +1804,7 @@
               "node_urls": [
                 "https://nodejs.org/dist/v{version}/{filename}"
               ],
-              "node_version": "20.17.0",
+              "node_version": "22.12.0",
               "include_headers": false,
               "platform": "linux_s390x"
             }
@@ -1817,7 +1817,7 @@
               "node_urls": [
                 "https://nodejs.org/dist/v{version}/{filename}"
               ],
-              "node_version": "20.17.0",
+              "node_version": "22.12.0",
               "include_headers": false,
               "platform": "linux_ppc64le"
             }
@@ -1830,7 +1830,7 @@
               "node_urls": [
                 "https://nodejs.org/dist/v{version}/{filename}"
               ],
-              "node_version": "20.17.0",
+              "node_version": "22.12.0",
               "include_headers": false,
               "platform": "darwin_amd64"
             }
@@ -1843,7 +1843,7 @@
               "node_urls": [
                 "https://nodejs.org/dist/v{version}/{filename}"
               ],
-              "node_version": "20.17.0",
+              "node_version": "22.12.0",
               "include_headers": false,
               "platform": "darwin_arm64"
             }
@@ -1856,7 +1856,7 @@
               "node_urls": [
                 "https://nodejs.org/dist/v{version}/{filename}"
               ],
-              "node_version": "20.17.0",
+              "node_version": "22.12.0",
               "include_headers": false,
               "platform": "windows_amd64"
             }
@@ -1869,7 +1869,7 @@
               "node_urls": [
                 "https://nodejs.org/dist/v{version}/{filename}"
               ],
-              "node_version": "20.17.0",
+              "node_version": "22.12.0",
               "include_headers": false,
               "platform": "windows_arm64"
             }
@@ -4681,7 +4681,7 @@
         "recordedFileInputs": {
           "@@//Cargo.lock": "b857b5504423c75a350c4a9563f2949e240d60362e89ae392cf34c2a16ce5cce",
           "@@//Cargo.toml": "3a9ca5288bb75e04e330f0fac77017b52c3805efea0d6aafc400e4638440a3cf",
-          "@@//MODULE.bazel": "454a4e78bc3393a66e561e969368e61a81e50098675dc3f1d6002e29bfaef0ee",
+          "@@//MODULE.bazel": "1be98b9d9fd0e814393cd1ff21b41c14a50ee5dbef4103867611ff18806821a4",
           "@@//packages/icu-messageformat-parser/integration-tests/Cargo.toml": "6fc7e620f396627d77b52ea0b54a3aefc72197750fa8f6f97e2d63f238b259bb",
           "@@//rust/icu_messageformat_parser/Cargo.toml": "3ba13c47001d4c96b792105d4ac39f3685d1bb51d2ba18f2f9ac4754721cab14",
           "@@//rust/icu_skeleton_parser/Cargo.toml": "66f457798db7f12f6d4df94fbca319b3bdeceed1aef74d1c6999c70eeee4946c",

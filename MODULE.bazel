@@ -17,7 +17,7 @@ bazel_dep(name = "aspect_rules_js", version = "2.8.3")
 bazel_dep(name = "rules_nodejs", version = "6.6.2")
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node", dev_dependency = True)
-node.toolchain(node_version = "20.17.0")
+node.toolchain(node_version = "22.12.0")
 
 #################################
 
@@ -25,7 +25,9 @@ npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependenc
 npm.npm_translate_lock(
     name = "npm",
     data = [
+        "//:patches/@brillout__vite-plugin-server-entry@0.7.16.patch",
         "//:patches/@commitlint__rules.patch",
+        "//:patches/@types__mdx.patch",
         "//:patches/@vue+compiler-sfc.patch",
         "//:patches/make-plural-compiler@5.1.0.patch",
     ],

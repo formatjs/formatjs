@@ -1,16 +1,16 @@
 actions:
-  - name: "Test all targets"
-    container_image: "ubuntu-20.04"
+  - name: 'Test all targets'
+    container_image: 'ubuntu-20.04'
     triggers:
       push:
         branches:
-          - "main"
-          - "gh-readonly-queue/*"
+          - 'main'
+          - 'gh-readonly-queue/*'
       pull_request:
         branches:
-          - "*"
+          - '*'
     resource_requests:
       memory: 10GB
       disk: 16GB
     bazel_commands:
-      - "test //..."
+      - 'test //...'

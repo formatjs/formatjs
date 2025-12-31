@@ -56,3 +56,10 @@ NODE_TSCONFIG = BASE_TSCONFIG | {
         "target": "ES2021",
     },
 }
+
+# Docs configuration - merges with base, adds skipLibCheck for MUI compatibility
+DOCS_TSCONFIG = BASE_TSCONFIG | {
+    "compilerOptions": BASE_TSCONFIG["compilerOptions"] | {
+        "skipLibCheck": True,
+    },
+}

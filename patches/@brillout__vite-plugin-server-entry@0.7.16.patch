@@ -1,0 +1,51 @@
+diff --git a/dist/esm/plugin/index.js b/dist/esm/plugin/index.js
+index da91709c3815c24a0c1cdc083e426d4aac819f2b..d5294e021179a32d70f0009d5d608238c3070436 100644
+--- a/dist/esm/plugin/index.js
++++ b/dist/esm/plugin/index.js
+@@ -383,11 +383,43 @@ function writeAutoImporterFile(getFileContent) {
+     [autoImporterFilePathEsm, autoImporterFilePathCjs].forEach((autoImporterFilePathResolved) => {
+         const { exportStatement, isCJS } = analyzeDistPath(autoImporterFilePathResolved);
+         const fileContentNew = getFileContent({ autoImporterFilePathResolved, exportStatement, isCJS });
+-        const fileContentOld = readFileSync(autoImporterFilePathResolved, 'utf8');
++        console.log('[PATCH DEBUG] Checking file:', autoImporterFilePathResolved);
++        console.log('[PATCH DEBUG] New content length:', fileContentNew.length);
++        console.log('[PATCH DEBUG] New content (first 200 chars):', fileContentNew.substring(0, 200));
++
++        let fileContentOld;
++        try {
++            fileContentOld = readFileSync(autoImporterFilePathResolved, 'utf8');
++            console.log('[PATCH DEBUG] Old content exists, length:', fileContentOld.length);
++            console.log('[PATCH DEBUG] Old content (first 200 chars):', fileContentOld.substring(0, 200));
++        } catch (err) {
++            console.log('[PATCH DEBUG] Could not read old file:', err.code || err.message);
++            fileContentOld = '';
++        }
++
+         // Write to filesystem only if required
+         // https://github.com/vikejs/vike/issues/3006
+-        if (fileContentNew.trim() !== fileContentOld.trim()) {
+-            writeFileSync(autoImporterFilePathResolved, fileContentNew);
++        const newTrimmed = fileContentNew.trim();
++        const oldTrimmed = fileContentOld.trim();
++        const isDifferent = newTrimmed !== oldTrimmed;
++        console.log('[PATCH DEBUG] Content different?', isDifferent);
++        console.log('[PATCH DEBUG] New trimmed length:', newTrimmed.length, 'Old trimmed length:', oldTrimmed.length);
++
++        if (isDifferent) {
++            console.log('[PATCH DEBUG] Content changed, attempting write...');
++            try {
++                writeFileSync(autoImporterFilePathResolved, fileContentNew);
++                console.log('[PATCH DEBUG] Write succeeded');
++            } catch (err) {
++                if (err.code === 'EACCES' || err.code === 'EROFS') {
++                    console.warn('[PATCH] Cannot write to read-only file system (Bazel/Yarn PnP). Skipping write:', autoImporterFilePathResolved);
++                    console.warn('[PATCH] This is expected in hermetic build environments. The build will use the existing file.');
++                } else {
++                    throw err;
++                }
++            }
++        } else {
++            console.log('[PATCH DEBUG] Skipping write - content unchanged');
+         }
+     });
+ }

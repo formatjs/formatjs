@@ -1,0 +1,235 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//:http-server/package_json.bzl", http_server_bin = "bin")
+load("@npm//:vike/package_json.bzl", vike_bin = "bin")
+load("@npm//:vite/package_json.bzl", vite_bin = "bin")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_binary", "ts_run_binary")
+load("//tools:tsconfig.bzl", "DOCS_TSCONFIG")
+
+npm_link_all_packages()
+
+# TypeScript type checking
+ts_project(
+    name = "typecheck",
+    srcs = glob(
+        [
+            "src/**/*.ts",
+            "src/**/*.tsx",
+        ],
+        exclude = [
+            "src/**/*.test.ts",
+            "src/**/*.test.tsx",
+        ],
+    ),
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    tsconfig = DOCS_TSCONFIG,
+    deps = [
+        ":node_modules/intl-messageformat",
+        ":node_modules/react-intl",
+        "//:node_modules/@mdx-js/react",
+        "//:node_modules/@radix-ui/react-accordion",
+        "//:node_modules/@radix-ui/react-alert-dialog",
+        "//:node_modules/@radix-ui/react-dialog",
+        "//:node_modules/@radix-ui/react-dropdown-menu",
+        "//:node_modules/@radix-ui/react-icons",
+        "//:node_modules/@radix-ui/react-navigation-menu",
+        "//:node_modules/@radix-ui/react-popover",
+        "//:node_modules/@radix-ui/react-separator",
+        "//:node_modules/@radix-ui/react-slot",
+        "//:node_modules/@radix-ui/react-tabs",
+        "//:node_modules/@types/lunr",
+        "//:node_modules/@types/react",
+        "//:node_modules/@types/react-dom",
+        "//:node_modules/class-variance-authority",
+        "//:node_modules/clsx",
+        "//:node_modules/fast-glob",
+        "//:node_modules/lucide-react",
+        "//:node_modules/lunr",
+        "//:node_modules/react",
+        "//:node_modules/react-dom",
+        "//:node_modules/react-live",
+        "//:node_modules/tailwind-merge",
+        "//:node_modules/tslib",
+        "//:node_modules/vike",
+        "//:node_modules/vike-react",
+        "//:node_modules/vite",
+    ],
+)
+
+# Generate tsconfig.json with correct extends path
+generate_ide_tsconfig_json()
+
+# Build search index tool
+ts_binary(
+    name = "build_search_index_tool",
+    data = [
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/fast-glob",
+        "//:node_modules/gray-matter",
+        "//:node_modules/lunr",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "scripts/build-search-index.ts",
+)
+
+# Build search index from MDX docs
+ts_run_binary(
+    name = "search_index",
+    srcs = glob(["src/docs/**/*.mdx"]),
+    outs = ["src/search-index.generated.json"],
+    args = [
+        "--out",
+        "$(rootpath src/search-index.generated.json)",
+    ],
+    tool = ":build_search_index_tool",
+)
+
+# Copy HTML entry point to bin
+copy_to_bin(
+    name = "index_html",
+    srcs = ["index.html"],
+)
+
+# Copy config files to bin (tsconfig.json is for IDE only, not for build)
+copy_to_bin(
+    name = "config_files",
+    srcs = [
+        "package.json",
+        "tailwind.config.ts",
+        "vite.config.ts",
+    ],
+)
+
+# Build production bundle with Vite (Vike plugin handles SSR)
+vite_bin.vite(
+    name = "dist",
+    srcs = [
+        ":config_files",
+        ":index_html",
+        ":node_modules/intl-messageformat",
+        ":node_modules/react-intl",
+        ":search_index",
+        "//:node_modules/@mdx-js/react",
+        "//:node_modules/@mdx-js/rollup",
+        "//:node_modules/@radix-ui/react-accordion",
+        "//:node_modules/@radix-ui/react-alert-dialog",
+        "//:node_modules/@radix-ui/react-dialog",
+        "//:node_modules/@radix-ui/react-dropdown-menu",
+        "//:node_modules/@radix-ui/react-icons",
+        "//:node_modules/@radix-ui/react-navigation-menu",
+        "//:node_modules/@radix-ui/react-popover",
+        "//:node_modules/@radix-ui/react-separator",
+        "//:node_modules/@radix-ui/react-slot",
+        "//:node_modules/@radix-ui/react-tabs",
+        "//:node_modules/@tailwindcss/vite",
+        "//:node_modules/@vitejs/plugin-react",
+        "//:node_modules/class-variance-authority",
+        "//:node_modules/clsx",
+        "//:node_modules/fast-glob",
+        "//:node_modules/gray-matter",
+        "//:node_modules/lucide-react",
+        "//:node_modules/lunr",
+        "//:node_modules/prismjs",
+        "//:node_modules/react",
+        "//:node_modules/react-dom",
+        "//:node_modules/react-live",
+        "//:node_modules/rehype-autolink-headings",
+        "//:node_modules/rehype-mdx-code-props",
+        "//:node_modules/rehype-prism-plus",
+        "//:node_modules/rehype-slug",
+        "//:node_modules/remark-frontmatter",
+        "//:node_modules/remark-gfm",
+        "//:node_modules/tailwind-merge",
+        "//:node_modules/tailwindcss",
+        "//:node_modules/typescript",
+        "//:node_modules/vike",
+        "//:node_modules/vike-react",
+        "//:node_modules/vite",
+    ] + glob([
+        "src/**/*",
+        "public/**/*",
+    ]),
+    args = ["build"],
+    chdir = package_name(),
+    env = {
+        "VITE_PLUGIN_SERVER_ENTRY_DISABLE_AUTO_IMPORT": "true",
+    },
+    out_dirs = ["dist"],
+    tags = ["no-sandbox"],
+)
+
+# Development server
+vite_bin.vite_binary(
+    name = "serve",
+    args = ["dev"],
+    chdir = package_name(),
+    data = [
+        ":config_files",
+        ":index_html",
+        ":node_modules/intl-messageformat",
+        ":node_modules/react-intl",
+        ":search_index",
+        "//:node_modules/@mdx-js/react",
+        "//:node_modules/@mdx-js/rollup",
+        "//:node_modules/@radix-ui/react-accordion",
+        "//:node_modules/@radix-ui/react-alert-dialog",
+        "//:node_modules/@radix-ui/react-dialog",
+        "//:node_modules/@radix-ui/react-dropdown-menu",
+        "//:node_modules/@radix-ui/react-icons",
+        "//:node_modules/@radix-ui/react-navigation-menu",
+        "//:node_modules/@radix-ui/react-popover",
+        "//:node_modules/@radix-ui/react-separator",
+        "//:node_modules/@radix-ui/react-slot",
+        "//:node_modules/@radix-ui/react-tabs",
+        "//:node_modules/@tailwindcss/vite",
+        "//:node_modules/@vitejs/plugin-react",
+        "//:node_modules/class-variance-authority",
+        "//:node_modules/clsx",
+        "//:node_modules/fast-glob",
+        "//:node_modules/gray-matter",
+        "//:node_modules/lucide-react",
+        "//:node_modules/lunr",
+        "//:node_modules/prismjs",
+        "//:node_modules/react",
+        "//:node_modules/react-dom",
+        "//:node_modules/react-live",
+        "//:node_modules/rehype-autolink-headings",
+        "//:node_modules/rehype-mdx-code-props",
+        "//:node_modules/rehype-prism-plus",
+        "//:node_modules/rehype-slug",
+        "//:node_modules/remark-frontmatter",
+        "//:node_modules/remark-gfm",
+        "//:node_modules/tailwind-merge",
+        "//:node_modules/tailwindcss",
+        "//:node_modules/typescript",
+        "//:node_modules/vike",
+        "//:node_modules/vike-react",
+        "//:node_modules/vite",
+    ] + glob([
+        "src/**/*",
+        "public/**/*",
+    ]),
+)
+
+# Preview production build (serves static files from dist/client)
+# Uses http-server since we're serving static prerendered HTML
+http_server_bin.http_server_binary(
+    name = "preview",
+    args = [
+        "dist/client",
+        "-p",
+        "4173",
+        "-c-1",
+        "--cors",
+        "-o",
+    ],
+    chdir = package_name(),
+    data = [
+        ":dist",
+    ],
+)

@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Dark theme colors - matching FormatJS brand #6F3C97 */
+  --color-primary: #6f3c97;
+  --color-primary-foreground: #fafafa;
+  --color-secondary: #8b5fc7;
+  --color-secondary-foreground: #fafafa;
+  --color-background: #0a0a0b;
+  --color-foreground: #fafafa;
+  --color-border: #27272a;
+  --color-input: #27272a;
+  --color-ring: #8b5fc7;
+  --color-muted: #18181b;
+  --color-muted-foreground: #a1a1aa;
+  --color-accent: #27272a;
+  --color-accent-foreground: #fafafa;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #fafafa;
+  --color-card: #18181b;
+  --color-card-foreground: #fafafa;
+  --color-popover: #18181b;
+  --color-popover-foreground: #fafafa;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* Dark theme scrollbar */
+* {
+  scrollbar-color: #424242 #1e1e1e;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #424242;
+  border-radius: 6px;
+  border: 3px solid #1e1e1e;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #616161;
+}
+
+/* Header anchor links - hide by default, show on hover */
+.header-link {
+  visibility: hidden;
+  margin-left: 0.5rem;
+  color: #f4511e;
+  text-decoration: none;
+  font-size: 0.8em;
+}
+
+h1:hover .header-link,
+h2:hover .header-link,
+h3:hover .header-link,
+h4:hover .header-link,
+h5:hover .header-link,
+h6:hover .header-link {
+  visibility: visible;
+}
