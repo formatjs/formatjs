@@ -32,8 +32,8 @@
     "@glimmer/syntax": "^0.95.0",
     "@lerna-lite/cli": "^4.10.2",
     "@lerna-lite/version": "^4.10.2",
-    "@mdx-js/react": "^3.1.0",
-    "@mdx-js/rollup": "^3.1.0",
+    "@mdx-js/react": "^3.1.1",
+    "@mdx-js/rollup": "^3.1.1",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.4",
     "@radix-ui/react-dialog": "^1.1.4",
@@ -56,6 +56,7 @@
     "@types/estree": "^1.0.6",
     "@types/fs-extra": "^11.0.4",
     "@types/lodash-es": "^4.17.12",
+    "@types/lunr": "^2.3.7",
     "@types/minimist": "^1.2.5",
     "@types/node": "^22.0.0",
     "@types/react": "19",
@@ -128,7 +129,7 @@
     "serialize-javascript": "^7.0.0",
     "syncpack": "^13.0.4",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss": "^4.0.0-beta.10",
+    "tailwindcss": "^4.1.18",
     "test262-harness": "^10.0.0",
     "tinybench": "^6.0.0",
     "ts-loader": "^9.5.1",
@@ -187,16 +188,16 @@
       }
     },
     "patchedDependencies": {
-      "make-plural-compiler@5.1.0": "patches/make-plural-compiler@5.1.0.patch",
+      "@brillout/vite-plugin-server-entry@0.7.16": "patches/@brillout__vite-plugin-server-entry@0.7.16.patch",
       "@commitlint/rules": "patches/@commitlint__rules.patch",
+      "@types/mdx": "patches/@types__mdx.patch",
       "@vue/compiler-sfc": "patches/@vue+compiler-sfc.patch",
-      "@lerna-lite/version": "patches/@lerna-lite__version.patch",
-      "@mdx-js/react": "patches/@mdx-js__react.patch",
-      "@types/mdx": "patches/@types__mdx.patch"
+      "make-plural-compiler@5.1.0": "patches/make-plural-compiler@5.1.0.patch"
     }
   },
   "repository": "formatjs/formatjs",
   "resolutions": {
+    "@brillout/vite-plugin-server-entry": ">=0.7.16",
     "@glimmer/interfaces": "0.94.6",
     "@glimmer/syntax": "^0.95.0",
     "@vue/compiler-core": "3.5.26",

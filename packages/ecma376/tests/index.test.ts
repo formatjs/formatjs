@@ -23,7 +23,7 @@ test.each`
   ${'fr'}      | ${'#\u202f##0\xa0"₩";-#\u202f##0\xa0"₩"'}
   ${'ko'}      | ${'"₩"#,##0;-"₩"#,##0'}
   ${'zh-Hant'} | ${'"￦"#,##0;-"￦"#,##0'}
-  ${'zh-Hans'} | ${'"￦"#,##0;-"￦"#,##0'}
+  ${'zh-Hans'} | ${'"₩"#,##0;-"₩"#,##0'}
   ${'ja'}      | ${'"₩"#,##0;-"₩"#,##0'}
 `('format KRW in $locale to pattern $result', function ({locale, result}) {
   expect(

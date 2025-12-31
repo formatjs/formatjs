@@ -1,7 +1,8 @@
 export {Page}
 
+import * as React from 'react'
 import Home from '../Home'
 
-function Page() {
+function Page(): React.ReactNode {
   return <Home />
 }

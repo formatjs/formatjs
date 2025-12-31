@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
   defineMessage,
   IntlProvider,
-  FormattedMessage,
   MessageDescriptor,
   useIntl,
 } from 'react-intl'

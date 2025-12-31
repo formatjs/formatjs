@@ -1,4 +1,4 @@
-name: Deploy Docusaurus to Organization GitHub Pages
+name: Deploy Docs to Organization GitHub Pages
 
 on:
   push:
@@ -23,16 +23,16 @@ jobs:
           # Share repository cache between workflows.
           repository-cache: true
 
-      # Build the Docusaurus site
-      - name: Build Docusaurus Site
+      # Build the docs site
+      - name: Build Docs Site
         id: build
         run: |
           bazel build \
             --config=ci \
             --remote_download_outputs=all \
             --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
-            //website:dist
-          BUILD_PATH=$(readlink -f bazel-bin)/website/build
+            //docs:dist
+          BUILD_PATH=$(readlink -f bazel-bin)/docs/dist/client
           echo "BUILD_PATH=$BUILD_PATH" >> $GITHUB_OUTPUT
 
       # Verify build folder is not empty

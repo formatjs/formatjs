@@ -15,6 +15,9 @@ export default defineConfig({
   css: {
     transformer: 'lightningcss',
   },
+  ssr: {
+    noExternal: ['@mui/material', '@mui/utils'],
+  },
   plugins: [
     tailwindcss(),
     vike({
@@ -47,10 +50,6 @@ export default defineConfig({
     },
     react(),
   ],
-  build: {
-    outDir: 'dist',
-    sourcemap: true,
-  },
   server: {
     port: 3000,
     open: true,

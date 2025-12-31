@@ -57,7 +57,7 @@ export const mdxComponents: MDXComponents = {
   code: (
     props: React.HTMLAttributes<HTMLElement> & {live?: boolean | string}
   ) => {
-    const {className, children, live, ...rest} = props
+    const {className, children} = props
     const isInline = !className
 
     if (isInline) {
@@ -88,8 +88,10 @@ export const mdxComponents: MDXComponents = {
         return ''
       }
 
-      const code = extractText(child?.props?.children).replace(/\n$/, '')
-      const className = child?.props?.className || ''
+      const code = extractText(
+        (child?.props as {children?: any})?.children
+      ).replace(/\n$/, '')
+      const className = (child?.props as {className?: string})?.className || ''
       const language = className.replace(/language-/g, '').trim() || 'tsx'
 
       return <LiveCodeBlock code={code} language={language} />

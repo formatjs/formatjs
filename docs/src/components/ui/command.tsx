@@ -3,22 +3,26 @@ import * as DialogPrimitive from '@radix-ui/react-dialog'
 
 import {cn} from '../../lib/utils'
 
-const Command = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({className, ...props}, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground',
-      className
-    )}
-    {...props}
-  />
-))
+const Command: React.ForwardRefExoticComponent<
+  React.HTMLAttributes<HTMLDivElement> & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({className, ...props}, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        'flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground',
+        className
+      )}
+      {...props}
+    />
+  )
+)
 Command.displayName = 'Command'
 
-const CommandDialog = ({children, ...props}: DialogPrimitive.DialogProps) => {
+const CommandDialog = ({
+  children,
+  ...props
+}: DialogPrimitive.DialogProps): React.JSX.Element => {
   return (
     <DialogPrimitive.Root {...props}>
       <DialogPrimitive.Portal>
@@ -33,7 +37,10 @@ const CommandDialog = ({children, ...props}: DialogPrimitive.DialogProps) => {
   )
 }
 
-const CommandInput = React.forwardRef<
+const CommandInput: React.ForwardRefExoticComponent<
+  React.InputHTMLAttributes<HTMLInputElement> &
+    React.RefAttributes<HTMLInputElement>
+> = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement>
 >(({className, ...props}, ref) => (
@@ -66,95 +73,110 @@ const CommandInput = React.forwardRef<
 
 CommandInput.displayName = 'CommandInput'
 
-const CommandList = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({className, ...props}, ref) => (
-  <div
-    ref={ref}
-    className={cn('max-h-[300px] overflow-y-auto overflow-x-hidden', className)}
-    {...props}
-  />
-))
-
-CommandList.displayName = 'CommandList'
-
-const CommandEmpty = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->((props, ref) => (
-  <div
-    ref={ref}
-    className="py-6 text-center text-sm"
-    cmdk-empty=""
-    {...props}
-  />
-))
-
-CommandEmpty.displayName = 'CommandEmpty'
-
-const CommandGroup = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({className, ...props}, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground',
-      className
-    )}
-    cmdk-group=""
-    {...props}
-  />
-))
-
-CommandGroup.displayName = 'CommandGroup'
-
-const CommandSeparator = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({className, ...props}, ref) => (
-  <div
-    ref={ref}
-    className={cn('-mx-1 h-px bg-border', className)}
-    cmdk-separator=""
-    {...props}
-  />
-))
-CommandSeparator.displayName = 'CommandSeparator'
-
-const CommandItem = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({className, ...props}, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50',
-      className
-    )}
-    cmdk-item=""
-    {...props}
-  />
-))
-
-CommandItem.displayName = 'CommandItem'
-
-const CommandShortcut = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLSpanElement>) => {
-  return (
-    <span
+const CommandList: React.ForwardRefExoticComponent<
+  React.HTMLAttributes<HTMLDivElement> & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({className, ...props}, ref) => (
+    <div
+      ref={ref}
       className={cn(
-        'ml-auto text-xs tracking-widest text-muted-foreground',
+        'max-h-[300px] overflow-y-auto overflow-x-hidden',
         className
       )}
       {...props}
     />
   )
+)
+
+CommandList.displayName = 'CommandList'
+
+const CommandEmpty: React.ForwardRefExoticComponent<
+  React.HTMLAttributes<HTMLDivElement> & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  (props, ref) => (
+    <div
+      ref={ref}
+      className="py-6 text-center text-sm"
+      cmdk-empty=""
+      {...props}
+    />
+  )
+)
+
+CommandEmpty.displayName = 'CommandEmpty'
+
+const CommandGroup: React.ForwardRefExoticComponent<
+  React.HTMLAttributes<HTMLDivElement> & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({className, ...props}, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        'overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground',
+        className
+      )}
+      cmdk-group=""
+      {...props}
+    />
+  )
+)
+
+CommandGroup.displayName = 'CommandGroup'
+
+const CommandSeparator: React.ForwardRefExoticComponent<
+  React.HTMLAttributes<HTMLDivElement> & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({className, ...props}, ref) => (
+    <div
+      ref={ref}
+      className={cn('-mx-1 h-px bg-border', className)}
+      cmdk-separator=""
+      {...props}
+    />
+  )
+)
+CommandSeparator.displayName = 'CommandSeparator'
+
+const CommandItem: React.ForwardRefExoticComponent<
+  React.HTMLAttributes<HTMLDivElement> & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({className, ...props}, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50',
+        className
+      )}
+      cmdk-item=""
+      {...props}
+    />
+  )
+)
+
+CommandItem.displayName = 'CommandItem'
+
+interface CommandShortcutComponent {
+  (props: React.HTMLAttributes<HTMLSpanElement>): React.JSX.Element
+  displayName: string
 }
-CommandShortcut.displayName = 'CommandShortcut'
+
+const CommandShortcut: CommandShortcutComponent = Object.assign(
+  ({
+    className,
+    ...props
+  }: React.HTMLAttributes<HTMLSpanElement>): React.JSX.Element => {
+    return (
+      <span
+        className={cn(
+          'ml-auto text-xs tracking-widest text-muted-foreground',
+          className
+        )}
+        {...props}
+      />
+    )
+  },
+  {displayName: 'CommandShortcut'}
+)
 
 export {
   Command,

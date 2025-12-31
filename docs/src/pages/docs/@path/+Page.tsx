@@ -1,10 +1,8 @@
 export {Page}
 
 import * as React from 'react'
-import {useState, useEffect, Suspense} from 'react'
 import {MDXProvider} from '@mdx-js/react'
 import {usePageContext} from 'vike-react/usePageContext'
-import {Loader2} from 'lucide-react'
 import Layout from '../../../components/Layout'
 import {mdxComponents} from '../../../components/MDXComponents'
 
@@ -14,10 +12,9 @@ const modules = import.meta.glob<{default: React.ComponentType}>(
   {eager: true}
 )
 
-function Page() {
+function Page(): React.ReactNode {
   const pageContext = usePageContext()
-  // @ts-expect-error - routeParams from custom route
-  const path = pageContext.routeParams?.path
+  const path = (pageContext.routeParams as {path?: string})?.path
 
   const modulePath = `../../../docs/${path}.mdx`
   const module = modules[modulePath]

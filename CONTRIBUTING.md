@@ -110,16 +110,22 @@ bazel run //packages/cli/integration-tests:compile_folder_integration_test_updat
 
 ### Working on `formatjs.github.io` website
 
-We use [docusaurus](https://docusaurus.io/) for documentation. To run the website locally:
+The documentation website is built with Vike (React framework with SSR). To run the website locally:
 
 ```sh
-cd website
-npx docusaurus start
+bazel run //docs:serve
 ```
 
-To deploy:
+Or using npm scripts:
 
 ```sh
-cd website
-GIT_PASS="<your_personal_token>" GIT_USER="your_username" DEPLOYMENT_BRANCH=main npx docusaurus deploy
+npm run docs
 ```
+
+To build the production site:
+
+```sh
+bazel build //docs:dist
+```
+
+The documentation is automatically deployed to GitHub Pages when changes are pushed to the `main` branch via the GitHub Actions workflow.

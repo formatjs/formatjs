@@ -2,6 +2,8 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//:http-server/package_json.bzl", http_server_bin = "bin")
+load("@npm//:vike/package_json.bzl", vike_bin = "bin")
 load("@npm//:vite/package_json.bzl", vite_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_binary", "ts_run_binary")
 load("//tools:tsconfig.bzl", "DOCS_TSCONFIG")
@@ -39,12 +41,14 @@ ts_project(
         "//:node_modules/@radix-ui/react-separator",
         "//:node_modules/@radix-ui/react-slot",
         "//:node_modules/@radix-ui/react-tabs",
+        "//:node_modules/@types/lunr",
         "//:node_modules/@types/react",
         "//:node_modules/@types/react-dom",
         "//:node_modules/class-variance-authority",
         "//:node_modules/clsx",
         "//:node_modules/fast-glob",
         "//:node_modules/lucide-react",
+        "//:node_modules/lunr",
         "//:node_modules/react",
         "//:node_modules/react-dom",
         "//:node_modules/react-live",
@@ -101,7 +105,7 @@ copy_to_bin(
     ],
 )
 
-# Build production bundle with Vite
+# Build production bundle with Vite (Vike plugin handles SSR)
 vite_bin.vite(
     name = "dist",
     srcs = [
@@ -152,7 +156,11 @@ vite_bin.vite(
     ]),
     args = ["build"],
     chdir = package_name(),
+    env = {
+        "VITE_PLUGIN_SERVER_ENTRY_DISABLE_AUTO_IMPORT": "true",
+    },
     out_dirs = ["dist"],
+    tags = ["no-sandbox"],
 )
 
 # Development server
@@ -208,13 +216,20 @@ vite_bin.vite_binary(
     ]),
 )
 
-# Preview production build
-vite_bin.vite_binary(
+# Preview production build (serves static files from dist/client)
+# Uses http-server since we're serving static prerendered HTML
+http_server_bin.http_server_binary(
     name = "preview",
-    args = ["preview"],
+    args = [
+        "dist/client",
+        "-p",
+        "4173",
+        "-c-1",
+        "--cors",
+        "-o",
+    ],
     chdir = package_name(),
     data = [
-        ":config_files",
         ":dist",
     ],
 )

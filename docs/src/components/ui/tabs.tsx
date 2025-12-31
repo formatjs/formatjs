@@ -3,9 +3,12 @@ import * as TabsPrimitive from '@radix-ui/react-tabs'
 
 import {cn} from '../../lib/utils'
 
-const Tabs = TabsPrimitive.Root
+const Tabs: typeof TabsPrimitive.Root = TabsPrimitive.Root
 
-const TabsList = React.forwardRef<
+const TabsList: React.ForwardRefExoticComponent<
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> &
+    React.RefAttributes<React.ElementRef<typeof TabsPrimitive.List>>
+> = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
 >(({className, ...props}, ref) => (
@@ -20,7 +23,10 @@ const TabsList = React.forwardRef<
 ))
 TabsList.displayName = TabsPrimitive.List.displayName
 
-const TabsTrigger = React.forwardRef<
+const TabsTrigger: React.ForwardRefExoticComponent<
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> &
+    React.RefAttributes<React.ElementRef<typeof TabsPrimitive.Trigger>>
+> = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
 >(({className, ...props}, ref) => (
@@ -35,7 +41,10 @@ const TabsTrigger = React.forwardRef<
 ))
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 
-const TabsContent = React.forwardRef<
+const TabsContent: React.ForwardRefExoticComponent<
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content> &
+    React.RefAttributes<React.ElementRef<typeof TabsPrimitive.Content>>
+> = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 >(({className, ...props}, ref) => (

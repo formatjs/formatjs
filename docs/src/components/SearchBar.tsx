@@ -3,7 +3,7 @@ import {useState, useEffect, useRef} from 'react'
 import {navigate} from 'vike/client/router'
 import {Search, Loader2} from 'lucide-react'
 import {Dialog, DialogContent} from './ui/dialog'
-import lunr from 'lunr'
+import * as lunr from 'lunr'
 
 interface DocEntry {
   id: string
@@ -87,7 +87,7 @@ function highlightMatches(text: string, query: string): React.ReactNode {
   })
 }
 
-export function SearchBar() {
+export function SearchBar(): React.ReactNode {
   const [open, setOpen] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [options, setOptions] = useState<SearchResultWithSnippet[]>([])
@@ -99,11 +99,15 @@ export function SearchBar() {
   useEffect(() => {
     const loadIndex = async () => {
       try {
+        // @ts-expect-error - generated JSON module
         const module = await import('../search-index.generated.json')
-        const data = module.default
+        const data = module.default as {
+          index: any
+          documents: DocEntry[]
+        }
 
         // Load Lunr index from JSON
-        indexRef.current = lunr.Index.load(data.index)
+        indexRef.current = (lunr as any).Index.load(data.index)
 
         // Store documents by ID for lookup
         documentsRef.current = data.documents.reduce(
@@ -136,15 +140,17 @@ export function SearchBar() {
       const searchResults = indexRef.current.search(inputValue)
 
       // Map results to documents with snippets
-      const mappedResults = searchResults.slice(0, 10).map(result => {
-        const doc = documentsRef.current[result.ref]
-        const snippet = extractSnippet(doc.content, inputValue)
+      const mappedResults = searchResults
+        .slice(0, 10)
+        .map((result: {ref: string; score: number}) => {
+          const doc = documentsRef.current[result.ref]
+          const snippet = extractSnippet(doc.content, inputValue)
 
-        return {
-          ...doc,
-          snippet,
-        }
-      })
+          return {
+            ...doc,
+            snippet,
+          }
+        })
 
       setOptions(mappedResults)
     } catch (error) {
@@ -211,13 +217,13 @@ export function SearchBar() {
             )}
           </div>
 
-          <div className="max-h-[400px] overflow-y-auto">
+          <div className="h-[400px] overflow-y-auto">
             {!inputValue ? (
-              <div className="py-12 text-center text-sm text-muted-foreground">
+              <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
                 Start typing to search documentation
               </div>
             ) : options.length === 0 ? (
-              <div className="py-12 text-center text-sm text-muted-foreground">
+              <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
                 No results found for "{inputValue}"
               </div>
             ) : (

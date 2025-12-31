@@ -3,9 +3,12 @@ import * as AccordionPrimitive from '@radix-ui/react-accordion'
 
 import {cn} from '../../lib/utils'
 
-const Accordion = AccordionPrimitive.Root
+const Accordion: typeof AccordionPrimitive.Root = AccordionPrimitive.Root
 
-const AccordionItem = React.forwardRef<
+const AccordionItem: React.ForwardRefExoticComponent<
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> &
+    React.RefAttributes<React.ElementRef<typeof AccordionPrimitive.Item>>
+> = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
 >(({className, ...props}, ref) => (
@@ -17,7 +20,10 @@ const AccordionItem = React.forwardRef<
 ))
 AccordionItem.displayName = 'AccordionItem'
 
-const AccordionTrigger = React.forwardRef<
+const AccordionTrigger: React.ForwardRefExoticComponent<
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> &
+    React.RefAttributes<React.ElementRef<typeof AccordionPrimitive.Trigger>>
+> = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
 >(({className, children, ...props}, ref) => (
@@ -50,7 +56,10 @@ const AccordionTrigger = React.forwardRef<
 ))
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
 
-const AccordionContent = React.forwardRef<
+const AccordionContent: React.ForwardRefExoticComponent<
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> &
+    React.RefAttributes<React.ElementRef<typeof AccordionPrimitive.Content>>
+> = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
 >(({className, children, ...props}, ref) => (

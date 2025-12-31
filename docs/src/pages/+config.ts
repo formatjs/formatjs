@@ -1,8 +1,11 @@
 import vikeReact from 'vike-react/config'
 import type {Config} from 'vike/types'
 
-export default {
+const config: Config = {
   extends: vikeReact,
-  // SSR enabled - MUI has been replaced with shadcn/ui which supports SSR
-  ssr: true,
-} satisfies Config
+  // Enable SSR for prerendering to generate full HTML
+  // At runtime, we only serve static files (no server needed)
+  prerender: true,
+}
+
+export default config

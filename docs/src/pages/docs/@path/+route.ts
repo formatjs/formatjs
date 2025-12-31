@@ -1,7 +1,6 @@
-import {resolveRoute} from 'vike/routing'
 import type {RouteSync} from 'vike/types'
 
-export default (pageContext => {
+const route: RouteSync = (pageContext): ReturnType<RouteSync> => {
   // Match /docs/* with any number of segments (e.g., /docs/getting-started/installation)
   const match = pageContext.urlPathname.match(/^\/docs\/(.+)$/)
   if (!match) return false
@@ -11,4 +10,6 @@ export default (pageContext => {
       path: match[1], // e.g., "getting-started/installation"
     },
   }
-}) satisfies RouteSync
+}
+
+export default route

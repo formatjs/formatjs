@@ -1,3 +1,0 @@
-{
-  "demo": "{name} {numPhotos, plural, =0 {hat am {takenDate, date, long} keine Fotos aufgenommen} =1 {nahm am {takenDate, date, long} ein Foto auf} other {nahm am {takenDate, date, long} # Fotos auf}}."
-}

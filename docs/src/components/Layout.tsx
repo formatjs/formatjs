@@ -11,8 +11,6 @@ interface LayoutProps {
   children: React.ReactNode
 }
 
-const drawerWidth = 280
-
 export default function Layout({children}: LayoutProps): React.ReactNode {
   const [mobileOpen, setMobileOpen] = useState(false)
 
