@@ -311,7 +311,17 @@ function extractMessageDescriptor(
         }
       }
       // {id: dedent`id`}
+      // GH #5069: Only check for substitutions on message-related props
       else if (ts.isTaggedTemplateExpression(initializer)) {
+        const isMessageProp =
+          name.text === 'id' ||
+          name.text === 'defaultMessage' ||
+          name.text === 'description'
+        if (!isMessageProp) {
+          // Skip non-message props (like tagName, values, etc.)
+          return
+        }
+
         const {template} = initializer
         if (!ts.isNoSubstitutionTemplateLiteral(template)) {
           throw new Error('Tagged template expression must be no substitution')
@@ -369,7 +379,17 @@ function extractMessageDescriptor(
           }
         }
         // <FormattedMessage foo={dedent`dedent Hello World!`} />
+        // GH #5069: Only check for substitutions on message-related props
         else if (ts.isTaggedTemplateExpression(initializer.expression)) {
+          const isMessageProp =
+            name.text === 'id' ||
+            name.text === 'defaultMessage' ||
+            name.text === 'description'
+          if (!isMessageProp) {
+            // Skip non-message props (like tagName, values, etc.)
+            return
+          }
+
           const {
             expression: {template},
           } = initializer
