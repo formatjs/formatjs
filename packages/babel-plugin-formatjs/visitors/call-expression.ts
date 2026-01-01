@@ -32,7 +32,9 @@ function isFormatMessageCall(
     return true
   }
 
-  if (callee.isMemberExpression()) {
+  // GH #4471: Handle both MemberExpression and OptionalMemberExpression
+  // (e.g., intl.formatMessage() and intl.formatMessage?.())
+  if (callee.isMemberExpression() || callee.isOptionalMemberExpression()) {
     const property = callee.get('property') as NodePath<t.MemberExpression>
     return !!functionNames.find(name => property.isIdentifier({name}))
   }

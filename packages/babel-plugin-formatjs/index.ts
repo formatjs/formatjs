@@ -93,6 +93,8 @@ const plugin: (
         },
         JSXOpeningElement,
         CallExpression,
+        // GH #4471: Handle optional chaining calls (e.g., intl.formatMessage?.())
+        OptionalCallExpression: CallExpression,
       },
     }
   })
