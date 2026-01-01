@@ -358,6 +358,120 @@ describe('Intl.DateTimeFormat', function () {
     })
     expect(dtf.format(date)).toContain('GMT+14:00')
   })
+
+  describe('UTC offset timezones (issue #4804)', function () {
+    it('should accept +01:00 offset timezone', function () {
+      const dtf = new DateTimeFormat('en-GB', {
+        timeZone: '+01:00',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+      })
+      // Unix epoch (Jan 1, 1970 00:00:00 UTC) should be 01:00:00 at +01:00
+      expect(dtf.format(new Date(0))).toBe('01/01/1970, 01:00')
+    })
+
+    it('should accept -05:00 offset timezone', function () {
+      const dtf = new DateTimeFormat('en-GB', {
+        timeZone: '-05:00',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+      })
+      // Unix epoch should be Dec 31, 1969 19:00:00 at -05:00
+      expect(dtf.format(new Date(0))).toBe('31/12/1969, 19:00')
+    })
+
+    it('should handle half-hour offset +05:30', function () {
+      const dtf = new DateTimeFormat('en-GB', {
+        timeZone: '+05:30',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+      })
+      // Unix epoch should be 05:30:00 at +05:30
+      expect(dtf.format(new Date(0))).toBe('05:30')
+    })
+
+    it('should canonicalize offset formats in resolvedOptions', function () {
+      // Test that various input formats are canonicalized to ±HH:MM
+      const tests = [
+        {input: '+01', expected: '+01:00'},
+        {input: '+0100', expected: '+01:00'},
+        {input: '+01:00', expected: '+01:00'},
+        {input: '-05:30', expected: '-05:30'},
+      ]
+
+      tests.forEach(({input, expected}) => {
+        const dtf = new DateTimeFormat('en-GB', {timeZone: input})
+        expect(dtf.resolvedOptions().timeZone).toBe(expected)
+      })
+    })
+
+    it('should reject invalid offset formats', function () {
+      const invalidFormats = ['+24:00', '+01:60', '+1:00', '01:00']
+
+      invalidFormats.forEach(timeZone => {
+        expect(() => new DateTimeFormat('en-GB', {timeZone})).toThrow(
+          RangeError
+        )
+      })
+    })
+
+    it('should work with @date-fns/tz pattern', function () {
+      // This is the exact use case from issue #4804
+      const dtf = new DateTimeFormat('en-GB', {
+        timeZone: '+01:00',
+        hour: 'numeric',
+        timeZoneName: 'longOffset',
+      })
+      expect(() => dtf.format(new Date('2024-01-01T00:00:00Z'))).not.toThrow()
+    })
+
+    it('should handle UTC +00:00 offset', function () {
+      const dtf = new DateTimeFormat('en-GB', {
+        timeZone: '+00:00',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+      })
+      // Unix epoch should be Jan 1, 1970 00:00:00 at +00:00 (same as UTC)
+      expect(dtf.format(new Date(0))).toBe('01/01/1970, 00:00')
+    })
+
+    it('should produce same output as UTC for +00:00', function () {
+      const date = new Date('2024-01-01T12:00:00Z')
+      const dtfOffset = new DateTimeFormat('en-GB', {
+        timeZone: '+00:00',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+      })
+      const dtfUTC = new DateTimeFormat('en-GB', {
+        timeZone: 'UTC',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+      })
+      expect(dtfOffset.format(date)).toBe(dtfUTC.format(date))
+    })
+  })
+
   it('range with ymdhM', function () {
     const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
     const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
