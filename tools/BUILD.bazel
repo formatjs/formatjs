@@ -1,4 +1,5 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("//tools:index.bzl", "ts_binary")
 
 exports_files([
     "supported-locales-gen.ts",
@@ -7,5 +8,15 @@ exports_files([
 copy_to_bin(
     name = "check-package-json",
     srcs = ["check-package-json.ts"],
+    visibility = ["//visibility:public"],
+)
+
+ts_binary(
+    name = "generate-supported-locales",
+    data = [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "generate-supported-locales.ts",
     visibility = ["//visibility:public"],
 )

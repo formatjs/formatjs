@@ -814,11 +814,12 @@ ts_run_binary(
     ],
 )
 
-genrule(
-    name = "supported-locales-gen",
-    srcs = [],
-    outs = ["supported-locales.tmp"],
-    cmd = "echo 'export const supportedLocales: string[] = %s' > $@" % ALL_LOCALES,
+generate_src_file(
+    name = "supported-locales",
+    src = "supported-locales.generated.ts",
+    args = ALL_LOCALES,
+    tool = "//tools:generate-supported-locales",
+    visibility = ["//:__pkg__"],
 )
 
 ts_run_binary(
@@ -951,14 +952,6 @@ test262_harness_bin.test262_harness_test(
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-numberformat-copy",
     ],
-)
-
-write_source_files(
-    name = "generated-files",
-    files = {
-        "supported-locales.generated.ts": ":supported-locales-gen",
-    },
-    visibility = ["//:__pkg__"],
 )
 
 write_source_files(

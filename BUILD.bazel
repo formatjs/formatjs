@@ -2,7 +2,6 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
-load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:karma/package_json.bzl", karma_bin = "bin")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
@@ -165,12 +164,12 @@ multirun(
     name = "generated-files",
     testonly = True,
     commands = [
-        "//packages/intl-datetimeformat:generated-files",
-        "//packages/intl-displaynames:generated-files",
-        "//packages/intl-listformat:generated-files",
-        "//packages/intl-numberformat:generated-files",
-        "//packages/intl-pluralrules:generated-files",
-        "//packages/intl-relativetimeformat:generated-files",
+        "//packages/intl-datetimeformat:supported-locales",
+        "//packages/intl-displaynames:supported-locales",
+        "//packages/intl-listformat:supported-locales",
+        "//packages/intl-numberformat:supported-locales",
+        "//packages/intl-pluralrules:supported-locales",
+        "//packages/intl-relativetimeformat:supported-locales",
         "//packages/intl-segmenter:generated-files",
     ],
 )
@@ -215,12 +214,16 @@ genrule(
 )
 
 # Format the generated tsconfig.json with oxfmt
+# Use genrule with proper BAZEL_BINDIR set, and include oxfmt's config in srcs
 genrule(
     name = "tsconfig_formatted",
-    srcs = [":tsconfig_generated"],
+    srcs = [
+        ":tsconfig_generated",
+        ":oxfmtrc",
+    ],
     outs = ["tsconfig.formatted.json"],
-    cmd = "cat $< | $(location :oxfmt) --stdin-filepath=$(location :tsconfig_generated) > $@",
-    tools = [":oxfmt"],
+    cmd = "cat $(location :tsconfig_generated) | $(location //:oxfmt) --stdin-filepath=$(location :tsconfig_generated) > $@",
+    tools = ["//:oxfmt"],
 )
 
 # Ensure tsconfig.json stays in sync with BASE_TSCONFIG
@@ -243,21 +246,20 @@ npm_link_package(
     src = "//packages/intl-localematcher",
 )
 
+copy_to_bin(
+    name = "oxfmtrc",
+    srcs = [".oxfmtrc.json"],
+    visibility = ["//visibility:public"],
+)
+
 oxfmt.oxfmt_binary(
     name = "oxfmt",
     data = [
-        ".oxfmtrc.json",
+        ":oxfmtrc",
     ],
-    # Allow the binary to be run outside bazel
     env = {"BAZEL_BINDIR": "."},
-)
-
-format_multirun(
-    name = "format",
-    css = ":oxfmt",
-    html = ":oxfmt",
-    javascript = ":oxfmt",
-    markdown = ":oxfmt",
-    starlark = "@buildifier_prebuilt//:buildifier",
+    fixed_args = [
+        "--config=\"$$JS_BINARY__RUNFILES\"/$(rlocationpath //:oxfmtrc)",
+    ],
     visibility = ["//visibility:public"],
 )
