@@ -115,6 +115,55 @@ import '@formatjs/intl-datetimeformat/polyfill.js'
 import '@formatjs/intl-datetimeformat/add-golden-tz.js'
 ```
 
+### UTC Offset Timezones
+
+This polyfill supports UTC offset timezone identifiers as specified in [ECMA-402](https://tc39.es/ecma402/) (ES2026). You can use offset-based timezone strings in addition to IANA timezone names.
+
+#### Supported Formats
+
+The following UTC offset formats are supported:
+
+- `±HH:MM` - e.g., `"+01:00"`, `"-05:00"` (recommended format)
+- `±HHMM` - e.g., `"+0100"`, `"-0500"`
+- `±HH` - e.g., `"+01"`, `"-05"`
+- `±HH:MM:SS` - e.g., `"+01:30:45"` (with seconds)
+- `±HH:MM:SS.sss` - e.g., `"+01:30:45.123"` (with fractional seconds)
+
+All offset formats are automatically canonicalized to `±HH:MM` format (with seconds/fractional seconds preserved if non-zero).
+
+#### Usage Example
+
+```tsx
+import '@formatjs/intl-datetimeformat/polyfill.js'
+import '@formatjs/intl-datetimeformat/locale-data/en.js'
+
+// Using UTC offset timezone
+const formatter = new Intl.DateTimeFormat('en-GB', {
+  timeZone: '+01:00',
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+})
+
+console.log(formatter.format(new Date('2024-01-01T00:00:00Z')))
+// Output: "01/01/2024, 01:00"
+
+// Works with @date-fns/tz and other libraries
+const dtf = new Intl.DateTimeFormat('en-GB', {
+  timeZone: '+01:00',
+  hour: 'numeric',
+  timeZoneName: 'longOffset',
+})
+```
+
+#### Compatibility
+
+- UTC offset timezones work without loading any timezone data (`add-all-tz.js` or `add-golden-tz.js`)
+- Compatible with libraries like `@date-fns/tz` in React Native/Hermes environments
+- Follows the same behavior as Chrome and Node.js 22+ native implementations
+
 ### Default Timezone
 
 Since JS Engines do not expose default timezone, there's currently no way for us to detect local timezone that a browser is in. Therefore, the default timezone in this polyfill is `UTC`.
