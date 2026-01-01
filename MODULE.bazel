@@ -97,7 +97,7 @@ bazel_dep(name = "rules_rust_wasm_bindgen", version = "0.68.1")
 
 ######### Lint rules #########
 
-bazel_dep(name = "aspect_rules_lint", version = "1.10.2")
+bazel_dep(name = "aspect_rules_lint", version = "1.13.0")
 
 ########## BuildBuddy toolchain rules #########
 
