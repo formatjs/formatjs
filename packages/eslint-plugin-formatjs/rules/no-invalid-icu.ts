@@ -12,7 +12,20 @@ function checkNode(
   node: TSESTree.Node
 ) {
   const settings = getSettings(context)
-  const msgs = extractMessages(node, settings)
+  let msgs
+  try {
+    msgs = extractMessages(node, settings)
+  } catch (e) {
+    // GH #5069: Handle errors from extractMessages (e.g., tagged templates with substitutions)
+    context.report({
+      node,
+      messageId: 'parseError',
+      data: {
+        error: (e as Error).message,
+      },
+    })
+    return
+  }
 
   if (!msgs.length) {
     return

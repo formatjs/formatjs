@@ -303,3 +303,19 @@ test('import meta', async () => {
     await readJSON(join(ARTIFACT_PATH, 'typescript/importMeta.json'))
   ).toMatchSnapshot()
 })
+
+// https://github.com/formatjs/formatjs/issues/5069
+test('GH #5069: Tagged template expressions with substitutions in non-message props', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} extract --throws '${join(
+        __dirname,
+        'taggedTemplates/actual.tsx'
+      )}' --out-file ${ARTIFACT_PATH}/taggedTemplates/actual.json`
+    )
+  ).resolves.toMatchSnapshot()
+
+  expect(
+    await readJSON(join(ARTIFACT_PATH, 'taggedTemplates/actual.json'))
+  ).toMatchSnapshot()
+})

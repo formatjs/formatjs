@@ -119,6 +119,18 @@ export function extractMessageDescriptor(
     if (prop.type !== 'Property' || prop.key.type !== 'Identifier') {
       continue
     }
+
+    // Only extract values for message-related props
+    // GH #5069: Don't process other props like tagName, values, etc.
+    const propName = prop.key.name
+    if (
+      propName !== 'id' &&
+      propName !== 'defaultMessage' &&
+      propName !== 'description'
+    ) {
+      continue
+    }
+
     const valueNode = prop.value
     let value: string | undefined = undefined
     if (isStringLiteral(valueNode)) {
@@ -144,7 +156,7 @@ export function extractMessageDescriptor(
       }
     }
 
-    switch (prop.key.name) {
+    switch (propName) {
       case 'defaultMessage':
         result.messagePropNode = prop
         result.messageNode = valueNode
@@ -192,9 +204,19 @@ function extractMessageDescriptorFromJSXElement(
       continue
     }
     const key = prop.name
+    const keyName = key.name
+
+    // Only extract values for message-related props
+    // GH #5069: Don't process other props like tagName, values, etc.
+    // Allow them to have tagged templates with substitutions
+    const isMessageProp =
+      keyName === 'id' ||
+      keyName === 'defaultMessage' ||
+      keyName === 'description'
+
     let valueNode = prop.value
     let value: string | undefined = undefined
-    if (valueNode) {
+    if (valueNode && isMessageProp) {
       if (isStringLiteral(valueNode)) {
         value = valueNode.value
       } else if (valueNode?.type === 'JSXExpressionContainer') {
@@ -222,7 +244,7 @@ function extractMessageDescriptorFromJSXElement(
       }
     }
 
-    switch (key.name) {
+    switch (keyName) {
       case 'defaultMessage':
         result.messagePropNode = prop
         result.messageNode = valueNode
