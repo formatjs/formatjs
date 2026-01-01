@@ -15,6 +15,7 @@ BASE_TSCONFIG = {
             "ES2018.Intl",
             "ES2019.Intl",
             "ES2020.Intl",
+            "ES2020.BigInt",
             "ES2021.intl",
             "ES2021.String",
             "ES2022.Intl",
