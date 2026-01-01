@@ -12,7 +12,6 @@
     ".claude",
     ".vscode",
     "**/__snapshots__/*",
-    "**/*.generated.*",
     "**/CHANGELOG.md",
     "**/package.json",
     "bazel-out",
@@ -23,7 +22,5 @@
     "packages/cli-lib/tests/extract/typescript/err.tsx",
     "packages/cli/integration-tests/extract/typescript/err.tsx",
     "target",
-    "test262*",
-    "test262/"
   ]
 }

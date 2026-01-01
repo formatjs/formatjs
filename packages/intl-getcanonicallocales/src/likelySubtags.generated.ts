@@ -1,5 +1,5 @@
-/* @generated */	
-// prettier-ignore  
+/* @generated */
+// prettier-ignore
 export const likelySubtags: Record<string, string> = {
   "aa": "aa-Latn-ET",
   "aaa": "aaa-Latn-NG",

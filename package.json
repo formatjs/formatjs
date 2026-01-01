@@ -8,7 +8,7 @@
     "build": "bazel build //...",
     "deploy": "NO_UPDATE_NOTIFIER=1 DEPLOYMENT_BRANCH=main USE_SSH=true bazel run //website:deploy",
     "examples": "bazel run //packages/react-intl/examples",
-    "format": "bazel run //:format",
+    "format": "lefthook run pre-commit --all-files",
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
     "prepare": "lefthook install && syncpack fix-mismatches && syncpack format",

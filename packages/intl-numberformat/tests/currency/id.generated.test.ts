@@ -1,4 +1,4 @@
-import "@formatjs/intl-pluralrules/locale-data/id.js"
-import { test } from "./currencyTest"
-import * as localeData from "../locale-data/id.json" with {type: 'json'}
-test("id", localeData);
+import '@formatjs/intl-pluralrules/locale-data/id.js'
+import {test} from './currencyTest'
+import * as localeData from '../locale-data/id.json' with {type: 'json'}
+test('id', localeData)

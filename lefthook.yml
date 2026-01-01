@@ -14,6 +14,12 @@ pre-commit:
       glob: "**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,vue,html,mjml,css,scss,less,md,mdx,graphql,gql,yaml,yml,toml,json,jsonc,json5}"
       run: pnpm oxfmt {staged_files}
       stage_fixed: true
+      exclude:
+        - '**/locale-data/**'
+        - '**/package.json'
+        - '**/CHANGELOG.md'
+        - 'packages/cli-lib/tests/extract/typescript/err.tsx'
+        - 'packages/cli/integration-tests/extract/typescript/err.tsx'
     format-starlark:
       glob: "**/*.{bazel,bzl,BUILD}"
       run: |

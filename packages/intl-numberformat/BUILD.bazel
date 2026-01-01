@@ -4,8 +4,9 @@ load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
+load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile", "ts_run_binary")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_binary", "ts_compile", "ts_run_binary")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -21,6 +22,15 @@ exports_files(
 )
 
 PACKAGE_NAME = "intl-numberformat"
+
+ts_binary(
+    name = "generate-locale-test",
+    data = [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "scripts/generate-locale-test.ts",
+)
 
 TEST_LOCALES = [
     "ar-SS",
@@ -153,31 +163,28 @@ LOCALE_TEST_TYPES = [
 ) for type in LOCALE_TEST_TYPES]
 
 [
-    [genrule(
-        name = "%s_%s_test_gen" % (type, locale),
-        srcs = [],
-        outs = ["%s/%s.test.ts" % (type, locale)],
-        cmd = """
-        echo 'import \"@formatjs/intl-pluralrules/locale-data/%s.js\"\n\
-import { test } from \"./%sTest\"\n\
-import * as localeData from \"../locale-data/%s.json\" with {type: '"'"'json'"'"'}\n\
-test(\"%s\", localeData);' > $@""" % (
-            locale.split("-")[0],
+    [generate_src_file(
+        name = "%s_%s_test" % (type, locale),
+        src = "tests/%s/%s.generated.test.ts" % (type, locale),
+        args = [
+            "--locale",
+            locale,
+            "--type",
             type,
-            locale,
-            locale,
-        ),
+        ],
+        tool = ":generate-locale-test",
     ) for locale in UNIT_TEST_LOCALES]
     for type in LOCALE_TEST_TYPES
 ]
 
-write_source_files(
+multirun(
     name = "tests_gen",
-    files = {
-        "tests/%s/%s.generated.test.ts" % (type, locale): "%s_%s_test_gen" % (type, locale)
+    testonly = True,
+    commands = [
+        ":%s_%s_test" % (type, locale)
         for type in LOCALE_TEST_TYPES
         for locale in UNIT_TEST_LOCALES
-    },
+    ],
 )
 
 vitest(
