@@ -973,4 +973,127 @@ describe('IntlMessageFormat', function () {
       })
     })
   })
+
+  describe('BigInt support (GH #5081)', function () {
+    it('should format bigint as a simple argument', function () {
+      const msg = new IntlMessageFormat('Value: {value}', 'en-US')
+      // Use string to avoid precision loss when creating bigint
+      const result = msg.format({value: BigInt('12345678901234567890')})
+      expect(result).toBe('Value: 12345678901234567890')
+    })
+
+    it('should format bigint with number formatter', function () {
+      const msg = new IntlMessageFormat('Price: {price, number}', 'en-US')
+      const result = msg.format({price: BigInt(9007199254740991)})
+      // BigInt should be formatted with proper separators
+      expect(result).toMatch(/Price: 9,007,199,254,740,991/)
+    })
+
+    it('should format bigint with number formatter and style', function () {
+      const msg = new IntlMessageFormat(
+        'Total: {total, number, ::currency/USD}',
+        'en-US'
+      )
+      const result = msg.format({total: BigInt(1234567890)})
+      expect(result).toMatch(/Total: \$1,234,567,890\.00/)
+    })
+
+    it('should handle bigint with scale option', function () {
+      const msg = new IntlMessageFormat(
+        'Percentage: {pct, number, ::scale/100}',
+        'en-US'
+      )
+      const result = msg.format({pct: BigInt(50)})
+      // 50 * 100 = 5000
+      expect(result).toBe('Percentage: 5,000')
+    })
+
+    it('should throw error with fractional scale for bigint', function () {
+      const msg = new IntlMessageFormat(
+        'Value: {value, number, ::scale/1.5}',
+        'en-US'
+      )
+      // BigInt can only be multiplied by integers, so fractional scale should throw
+      expect(() => msg.format({value: BigInt(10)})).toThrow(TypeError)
+      expect(() => msg.format({value: BigInt(10)})).toThrow(
+        /Cannot apply fractional scale.*to bigint/
+      )
+    })
+
+    it('should handle bigint in plural rules', function () {
+      const msg = new IntlMessageFormat(
+        '{count, plural, =0 {No items} one {One item} other {# items}}',
+        'en-US'
+      )
+
+      expect(msg.format({count: BigInt(0)})).toBe('No items')
+      expect(msg.format({count: BigInt(1)})).toBe('One item')
+      expect(msg.format({count: BigInt(5)})).toBe('5 items')
+    })
+
+    it('should handle bigint in plural rules with offset', function () {
+      const msg = new IntlMessageFormat(
+        '{count, plural, offset:1 =0 {No items} =1 {One item} other {# items}}',
+        'en-US'
+      )
+
+      expect(msg.format({count: BigInt(0)})).toBe('No items')
+      expect(msg.format({count: BigInt(1)})).toBe('One item')
+      // With offset:1, # displays count - offset = 5 - 1 = 4
+      expect(msg.format({count: BigInt(5)})).toBe('4 items')
+    })
+
+    it('should handle bigint in selectordinal', function () {
+      const msg = new IntlMessageFormat(
+        '{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}',
+        'en-US'
+      )
+
+      expect(msg.format({place: BigInt(1)})).toBe('1st')
+      expect(msg.format({place: BigInt(2)})).toBe('2nd')
+      expect(msg.format({place: BigInt(3)})).toBe('3rd')
+      expect(msg.format({place: BigInt(4)})).toBe('4th')
+      expect(msg.format({place: BigInt(21)})).toBe('21st')
+    })
+
+    it('should handle bigint in formatToParts', function () {
+      const msg = new IntlMessageFormat('{value, number}', 'en-US')
+      const parts = msg.formatToParts({value: BigInt(123456)})
+
+      expect(parts).toHaveLength(1)
+      expect(parts[0]).toEqual({
+        type: PART_TYPE.literal,
+        value: '123,456',
+      })
+    })
+
+    it('should handle very large bigint values', function () {
+      const msg = new IntlMessageFormat('Value: {value, number}', 'en-US')
+      // Number.MAX_SAFE_INTEGER is 9007199254740991
+      // This is larger than that
+      const largeValue = BigInt('99999999999999999999999999')
+      const result = msg.format({value: largeValue})
+      expect(result).toBe('Value: 99,999,999,999,999,999,999,999,999')
+    })
+
+    it('should handle bigint with mixed types in same message', function () {
+      const msg = new IntlMessageFormat(
+        'Regular: {regular, number}, Big: {big, number}',
+        'en-US'
+      )
+      const result = msg.format({
+        regular: 123,
+        big: BigInt(9007199254740991),
+      })
+      expect(result).toBe('Regular: 123, Big: 9,007,199,254,740,991')
+    })
+
+    it('should reproduce GH #5081 example', function () {
+      // Original issue example
+      const msg = new IntlMessageFormat('{value}', 'en-US')
+      const value = BigInt(10)
+      const result = msg.format({value})
+      expect(result).toBe('10')
+    })
+  })
 })

@@ -76,7 +76,14 @@ export interface ObjectPart<T = any> {
 
 export type MessageFormatPart<T> = LiteralPart | ObjectPart<T>
 
-export type PrimitiveType = string | number | boolean | null | undefined | Date
+export type PrimitiveType =
+  | string
+  | number
+  | bigint
+  | boolean
+  | null
+  | undefined
+  | Date
 
 function mergeLiteral<T>(
   parts: MessageFormatPart<T>[]
@@ -156,9 +163,16 @@ export function formatToParts<T>(
 
     let value = values[varName]
     if (isArgumentElement(el)) {
-      if (!value || typeof value === 'string' || typeof value === 'number') {
+      if (
+        !value ||
+        typeof value === 'string' ||
+        typeof value === 'number' ||
+        typeof value === 'bigint'
+      ) {
         value =
-          typeof value === 'string' || typeof value === 'number'
+          typeof value === 'string' ||
+          typeof value === 'number' ||
+          typeof value === 'bigint'
             ? String(value)
             : ''
       }
@@ -211,15 +225,26 @@ export function formatToParts<T>(
             : undefined
 
       if (style && (style as ExtendedNumberFormatOptions).scale) {
-        value =
-          (value as number) *
-          ((style as ExtendedNumberFormatOptions).scale || 1)
+        const scale = (style as ExtendedNumberFormatOptions).scale || 1
+        // Handle bigint scale multiplication
+        // BigInt can only be multiplied by BigInt
+        if (typeof value === 'bigint') {
+          // Check if scale is a safe integer that can be converted to BigInt
+          if (!Number.isInteger(scale)) {
+            throw new TypeError(
+              `Cannot apply fractional scale ${scale} to bigint value. Scale must be an integer when formatting bigint.`
+            )
+          }
+          value = value * BigInt(scale)
+        } else {
+          value = (value as number) * scale
+        }
       }
       result.push({
         type: PART_TYPE.literal,
         value: formatters
           .getNumberFormat(locales, style)
-          .format(value as number),
+          .format(value as number | bigint),
       })
       continue
     }
@@ -277,9 +302,12 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
             originalMessage
           )
         }
+        // Convert bigint to number for PluralRules (which only accepts number)
+        const numericValue =
+          typeof value === 'bigint' ? Number(value) : (value as number)
         const rule = formatters
           .getPluralRules(locales, {type: el.pluralType})
-          .select((value as number) - (el.offset || 0))
+          .select(numericValue - (el.offset || 0))
         opt = el.options[rule] || el.options.other
       }
       if (!opt) {
@@ -290,6 +318,9 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
           originalMessage
         )
       }
+      // Convert bigint to number for currentPluralValue
+      const numericValue =
+        typeof value === 'bigint' ? Number(value) : (value as number)
       result.push(
         ...formatToParts(
           opt.value,
@@ -297,7 +328,7 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
           formatters,
           formats,
           values,
-          (value as number) - (el.offset || 0)
+          numericValue - (el.offset || 0)
         )
       )
       continue
