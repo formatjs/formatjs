@@ -1096,4 +1096,64 @@ describe('IntlMessageFormat', function () {
       expect(result).toBe('10')
     })
   })
+
+  describe('GH #4490 - "constructor" and other prototype properties in select/plural', function () {
+    it('should handle "constructor" in select statement', function () {
+      const msg = new IntlMessageFormat(
+        '{gender, select, constructor {Constructor case} male {Male} female {Female} other {Other}}',
+        'en-US'
+      )
+      expect(msg.format({gender: 'constructor'})).toBe('Constructor case')
+      expect(msg.format({gender: 'male'})).toBe('Male')
+      expect(msg.format({gender: 'unknown'})).toBe('Other')
+    })
+
+    it('should handle "__proto__" in select statement', function () {
+      const msg = new IntlMessageFormat(
+        '{type, select, __proto__ {Proto case} other {Other}}',
+        'en-US'
+      )
+      expect(msg.format({type: '__proto__'})).toBe('Proto case')
+      expect(msg.format({type: 'unknown'})).toBe('Other')
+    })
+
+    it('should handle "toString" in select statement', function () {
+      const msg = new IntlMessageFormat(
+        '{method, select, toString {ToString case} other {Other}}',
+        'en-US'
+      )
+      expect(msg.format({method: 'toString'})).toBe('ToString case')
+      expect(msg.format({method: 'unknown'})).toBe('Other')
+    })
+
+    it('should handle "hasOwnProperty" in select statement', function () {
+      const msg = new IntlMessageFormat(
+        '{method, select, hasOwnProperty {HasOwnProperty case} other {Other}}',
+        'en-US'
+      )
+      expect(msg.format({method: 'hasOwnProperty'})).toBe('HasOwnProperty case')
+      expect(msg.format({method: 'unknown'})).toBe('Other')
+    })
+
+    it('should handle plural rules that could match prototype properties', function () {
+      // Test that plural rules work correctly even with rules that could conflict with prototype properties
+      const msg = new IntlMessageFormat(
+        '{count, plural, one {# item} other {# items}}',
+        'en-US'
+      )
+      // Verify normal operation still works after our prototype-safe changes
+      expect(msg.format({count: 1})).toBe('1 item')
+      expect(msg.format({count: 5})).toBe('5 items')
+    })
+
+    it('should not crash when select value is "constructor"', function () {
+      const msg = new IntlMessageFormat(
+        '{value, select, constructor {Found} other {Not found}}',
+        'en-US'
+      )
+      // This should not throw an error
+      expect(() => msg.format({value: 'constructor'})).not.toThrow()
+      expect(msg.format({value: 'constructor'})).toBe('Found')
+    })
+  })
 })
