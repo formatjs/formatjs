@@ -347,7 +347,7 @@ importers:
         version: 1.4.2
       regexpu-core:
         specifier: ^6.1.1
-        version: 6.2.0
+        version: 6.4.0
       rehype-autolink-headings:
         specifier: ^7.1.0
         version: 7.1.0
@@ -3545,8 +3545,8 @@ packages:
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
 
-  '@types/yargs@17.0.33':
-    resolution: {integrity: sha512-WpxBCKWPLr4xSsHgz511rFJAM+wS28w2zEO1QDNY5zM/S8ok70NNfztH0xwhqKyaK0OHCbN98LDAZuy1ctxDkA==}
+  '@types/yargs@17.0.35':
+    resolution: {integrity: sha512-qUHkeCyQFxMXg79wQfTtfndEC+N9ZZg76HJftDJp+qH2tV7Gj4OJi7l+PiWwJ+pWtW8GwSmqsDj/oymhrTWXjg==}
 
   '@types/yauzl@2.10.3':
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
@@ -6224,11 +6224,6 @@ packages:
       canvas:
         optional: true
 
-  jsesc@3.0.2:
-    resolution: {integrity: sha512-xKqzzWXDttJuOcawBt4KnKHHIf5oQ/Cxax+0PWFG+DFDgHNAdi+TXECADI+RYiFUMmx8792xsMbbgXj4CwnP4g==}
-    engines: {node: '>=6'}
-    hasBin: true
-
   jsesc@3.1.0:
     resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
     engines: {node: '>=6'}
@@ -7755,10 +7750,6 @@ packages:
   refractor@4.9.0:
     resolution: {integrity: sha512-nEG1SPXFoGGx+dcjftjv8cAjEusIh6ED1xhf5DG3C0x/k+rmZ2duKnc3QLpt6qeHv5fPb8uwN3VWN2BT7fr3Og==}
 
-  regenerate-unicode-properties@10.2.0:
-    resolution: {integrity: sha512-DqHn3DwbmmPVzeKj9woBadqmXxLvQoQIwu7nopMc72ztvxVmVk2SBhSnx67zuye5TP+lJsb/TBQsjLKhnDf3MA==}
-    engines: {node: '>=4'}
-
   regenerate-unicode-properties@10.2.2:
     resolution: {integrity: sha512-m03P+zhBeQd1RGnYxrGyDAPpWX/epKirLrp8e3qevZdVkKtnCrjjWczIbYc8+xd6vcTStVlqfycTx1KR4LOr0g==}
     engines: {node: '>=4'}
@@ -7770,20 +7761,12 @@ packages:
     resolution: {integrity: sha512-RSYAtP31mvYLkAHrOlh25pCNQ5hWnT106VukGaaFfuJrZFkGRX5GhUAdPqpSDXxOhA2c4akmRuplv1mRqnBn6Q==}
     engines: {node: '>=8'}
 
-  regexpu-core@6.2.0:
-    resolution: {integrity: sha512-H66BPQMrv+V16t8xtmq+UC0CBpiTBA60V8ibS1QVReIp8T1z8hwFxqcGzm9K6lgsN7sB5edVH8a+ze6Fqm4weA==}
-    engines: {node: '>=4'}
-
   regexpu-core@6.4.0:
     resolution: {integrity: sha512-0ghuzq67LI9bLXpOX/ISfve/Mq33a4aFRzoQYhnnok1JOFpmE/A2TBGkNVenOGEeSBCjIiWcc6MVOG5HEQv0sA==}
     engines: {node: '>=4'}
 
   regjsgen@0.8.0:
     resolution: {integrity: sha512-RvwtGe3d7LvWiDQXeQw8p5asZUmfU1G/l6WbUXeHta7Y2PEIvBTwH6E2EfmYUK8pxcxEdEmaomqyp0vZZ7C+3Q==}
-
-  regjsparser@0.12.0:
-    resolution: {integrity: sha512-cnE+y8bz4NhMjISKbgeVJtqNbtf5QpjZP+Bslo+UqkIt9QPnX9q095eiRRASJG1/tz6dlNr6Z5NsBiWYokp6EQ==}
-    hasBin: true
 
   regjsparser@0.13.0:
     resolution: {integrity: sha512-NZQZdC5wOE/H3UT28fVGL+ikOZcEzfMGk/c3iN9UGxzWHMa1op7274oyiUVrAG4B2EuFhus8SvkaYnhvW92p9Q==}
@@ -8691,16 +8674,12 @@ packages:
     resolution: {integrity: sha512-5kaZCrbp5mmbz5ulBkDkbY0SsPOjKqVS35VpL9ulMPfSl0J0Xsm+9Evphv9CoIZFwre7aJoa94AY6seMKGVN5Q==}
     engines: {node: '>=4'}
 
-  unicode-match-property-value-ecmascript@2.2.0:
-    resolution: {integrity: sha512-4IehN3V/+kkr5YeSSDDQG8QLqO26XpL2XP3GQtqwlT/QYSECAwFztxVHjlbh0+gjJ3XmNLS0zDsbgs9jWKExLg==}
-    engines: {node: '>=4'}
-
   unicode-match-property-value-ecmascript@2.2.1:
     resolution: {integrity: sha512-JQ84qTuMg4nVkx8ga4A16a1epI9H6uTXAknqxkGF/aFfRLw1xC/Bp24HNLaZhHSkWd3+84t8iXnp1J0kYcZHhg==}
     engines: {node: '>=4'}
 
-  unicode-property-aliases-ecmascript@2.1.0:
-    resolution: {integrity: sha512-6t3foTQI9qne+OZoVQB/8x8rk2k1eVy1gRXhV3oFQ5T6R1dqQ1xtin3XqSlx3+ATBkliTaR/hHyJBm+LVPNM8w==}
+  unicode-property-aliases-ecmascript@2.2.0:
+    resolution: {integrity: sha512-hpbDzxUY9BFwX+UeBnxv3Sh1q7HFxj48DTmXchNgRa46lO8uj3/1iEn3MiNUYTg1g9ctIqXCCERn8gYZhHC5lQ==}
     engines: {node: '>=4'}
 
   unicorn-magic@0.1.0:
@@ -10742,7 +10721,7 @@ snapshots:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
       '@types/node': 22.19.3
-      '@types/yargs': 17.0.33
+      '@types/yargs': 17.0.35
       chalk: 4.1.2
 
   '@jridgewell/gen-mapping@0.3.13':
@@ -12073,7 +12052,7 @@ snapshots:
 
   '@types/yargs-parser@21.0.3': {}
 
-  '@types/yargs@17.0.33':
+  '@types/yargs@17.0.35':
     dependencies:
       '@types/yargs-parser': 21.0.3
 
@@ -15401,8 +15380,6 @@ snapshots:
       - utf-8-validate
     optional: true
 
-  jsesc@3.0.2: {}
-
   jsesc@3.1.0: {}
 
   json-buffer@3.0.0: {}
@@ -17279,10 +17256,6 @@ snapshots:
       hastscript: 7.2.0
       parse-entities: 4.0.2
 
-  regenerate-unicode-properties@10.2.0:
-    dependencies:
-      regenerate: 1.4.2
-
   regenerate-unicode-properties@10.2.2:
     dependencies:
       regenerate: 1.4.2
@@ -17290,15 +17263,6 @@ snapshots:
   regenerate@1.4.2: {}
 
   regexparam@3.0.0: {}
-
-  regexpu-core@6.2.0:
-    dependencies:
-      regenerate: 1.4.2
-      regenerate-unicode-properties: 10.2.0
-      regjsgen: 0.8.0
-      regjsparser: 0.12.0
-      unicode-match-property-ecmascript: 2.0.0
-      unicode-match-property-value-ecmascript: 2.2.0
 
   regexpu-core@6.4.0:
     dependencies:
@@ -17310,10 +17274,6 @@ snapshots:
       unicode-match-property-value-ecmascript: 2.2.1
 
   regjsgen@0.8.0: {}
-
-  regjsparser@0.12.0:
-    dependencies:
-      jsesc: 3.0.2
 
   regjsparser@0.13.0:
     dependencies:
@@ -18342,13 +18302,11 @@ snapshots:
   unicode-match-property-ecmascript@2.0.0:
     dependencies:
       unicode-canonical-property-names-ecmascript: 2.0.1
-      unicode-property-aliases-ecmascript: 2.1.0
-
-  unicode-match-property-value-ecmascript@2.2.0: {}
+      unicode-property-aliases-ecmascript: 2.2.0
 
   unicode-match-property-value-ecmascript@2.2.1: {}
 
-  unicode-property-aliases-ecmascript@2.1.0: {}
+  unicode-property-aliases-ecmascript@2.2.0: {}
 
   unicorn-magic@0.1.0: {}
 
