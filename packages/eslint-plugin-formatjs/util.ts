@@ -66,20 +66,39 @@ function staticallyEvaluateStringConcat(
 export function isIntlFormatMessageCall(
   node: TSESTree.Node
 ): node is TSESTree.CallExpression {
-  return (
-    node.type === 'CallExpression' &&
-    node.callee.type === 'MemberExpression' &&
-    ((node.callee.object.type === 'Identifier' &&
-      node.callee.object.name === 'intl') ||
-      (node.callee.object.type === 'MemberExpression' &&
-        node.callee.object.property.type === 'Identifier' &&
-        node.callee.object.property.name === 'intl')) &&
-    node.callee.property.type === 'Identifier' &&
-    (node.callee.property.name === 'formatMessage' ||
-      node.callee.property.name === '$t') &&
-    node.arguments.length >= 1 &&
-    node.arguments[0].type === 'ObjectExpression'
-  )
+  // GH #4890: Check for both MemberExpression (intl.formatMessage) and Identifier (formatMessage) patterns
+  if (node.type !== 'CallExpression') {
+    return false
+  }
+
+  // Check if call has at least one argument that is an object expression
+  if (
+    node.arguments.length < 1 ||
+    node.arguments[0].type !== 'ObjectExpression'
+  ) {
+    return false
+  }
+
+  // Pattern 1: intl.formatMessage() or something.intl.formatMessage()
+  if (node.callee.type === 'MemberExpression') {
+    return (
+      ((node.callee.object.type === 'Identifier' &&
+        node.callee.object.name === 'intl') ||
+        (node.callee.object.type === 'MemberExpression' &&
+          node.callee.object.property.type === 'Identifier' &&
+          node.callee.object.property.name === 'intl')) &&
+      node.callee.property.type === 'Identifier' &&
+      (node.callee.property.name === 'formatMessage' ||
+        node.callee.property.name === '$t')
+    )
+  }
+
+  // Pattern 2: formatMessage() (destructured from useIntl)
+  if (node.callee.type === 'Identifier') {
+    return FORMAT_FUNCTION_NAMES.has(node.callee.name)
+  }
+
+  return false
 }
 
 function isSingleMessageDescriptorDeclaration(
