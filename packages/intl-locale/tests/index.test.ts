@@ -124,3 +124,54 @@ test('GH #4575', function () {
     direction: 'rtl',
   })
 })
+
+test('GH #5112 - getWeekInfo should be available for week calculations', function () {
+  // Issue #5112: Firefox has incomplete Intl.Locale implementation
+  // missing getWeekInfo() which breaks Luxon's localWeekNumber calculation
+  // This test ensures the polyfill provides getWeekInfo() for all locales
+
+  const locale = new Locale('en-US')
+
+  // getWeekInfo() must exist and return proper structure
+  expect(typeof locale.getWeekInfo).toBe('function')
+
+  const weekInfo = locale.getWeekInfo()
+  expect(weekInfo).toHaveProperty('firstDay')
+  expect(weekInfo).toHaveProperty('weekend')
+  expect(weekInfo).toHaveProperty('minimalDays')
+
+  // en-US uses Sunday (7) as first day of week
+  expect(weekInfo.firstDay).toBe(7)
+  expect(weekInfo.minimalDays).toBe(1)
+
+  // Test other locales that might have different week info
+  const localeDe = new Locale('de-DE')
+  const weekInfoDe = localeDe.getWeekInfo()
+  // Germany uses Monday (1) as first day of week
+  expect(weekInfoDe.firstDay).toBe(1)
+  expect(weekInfoDe.minimalDays).toBe(4)
+})
+
+test('GH #5112 - All Intl Locale Info methods should be available', function () {
+  // Issue #5112: Incomplete implementations may be missing multiple methods
+  // from the Intl Locale Info proposal. Ensure all are present.
+
+  const locale = new Locale('en-US')
+
+  // All these methods must exist (part of Intl Locale Info proposal)
+  expect(typeof locale.getWeekInfo).toBe('function')
+  expect(typeof locale.getCalendars).toBe('function')
+  expect(typeof locale.getCollations).toBe('function')
+  expect(typeof locale.getHourCycles).toBe('function')
+  expect(typeof locale.getNumberingSystems).toBe('function')
+  expect(typeof locale.getTimeZones).toBe('function')
+  expect(typeof locale.getTextInfo).toBe('function')
+
+  // Verify they return proper data
+  expect(Array.isArray(locale.getCalendars())).toBe(true)
+  expect(Array.isArray(locale.getCollations())).toBe(true)
+  expect(Array.isArray(locale.getHourCycles())).toBe(true)
+  expect(Array.isArray(locale.getNumberingSystems())).toBe(true)
+  expect(typeof locale.getTextInfo()).toBe('object')
+  expect(typeof locale.getWeekInfo()).toBe('object')
+})
