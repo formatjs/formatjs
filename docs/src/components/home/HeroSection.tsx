@@ -169,7 +169,7 @@ export default function HeroSection(): React.ReactNode {
                   type="number"
                   value={numPhotos}
                   onChange={e => setNumPhotos(Number(e.target.value))}
-                  className="w-full h-11 text-base"
+                  className="w-full h-11 text-base text-gray-900"
                 />
               </div>
               <div>
