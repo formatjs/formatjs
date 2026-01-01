@@ -11,6 +11,14 @@ import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {SegmentationRules} from './cldr-segmentation-rules.generated.js'
 import {isSurrogate, replaceVariables} from './segmentation-utils.js'
 
+// Cached regex patterns for word character detection
+// Note: Unicode property escape regex is created at runtime in try-catch
+// to avoid compile-time errors when targeting ES5
+const WORD_CHARACTERS_BASIC_REGEX = /\w/
+
+// Lazy-initialized Unicode word character regex (null if not supported)
+let WORD_CHARACTERS_UNICODE_REGEX: RegExp | null | undefined = undefined
+
 type SegmentationRule = {
   breaks: boolean
   before?: RegExp
@@ -282,6 +290,81 @@ export class Segmenter {
   public static readonly polyfilled = true
 }
 
+/**
+ * Determines if a segment is word-like according to Unicode Word Break rules.
+ *
+ * A segment is considered word-like if it contains alphabetic characters,
+ * numbers, or ideographs. Segments containing only whitespace, punctuation,
+ * or symbols are not word-like.
+ *
+ * Per Unicode Word Break (UAX #29) and native Intl.Segmenter implementations,
+ * this matches segments that contain characters from word character classes:
+ * ALetter, Hebrew_Letter, Numeric, Katakana, Hiragana, and Ideographic.
+ *
+ * @param segment - The text segment to check
+ * @param matchingRule - The word break rule that created this segment
+ * @returns true if the segment is word-like
+ */
+function isSegmentWordLike(segment: string, matchingRule: string): boolean {
+  // Primary check: Does the segment contain word characters?
+  // Word-like segments contain letters (including ideographs), numbers,
+  // or connecting characters like apostrophes within words
+  //
+  // Regex matches:
+  // - Letters: \p{L} (all Unicode letters)
+  // - Numbers: \p{N} (all Unicode numbers)
+  // - Marks: \p{M} (combining marks, typically part of letters)
+  //
+  // Note: Using Unicode property escapes which work in modern JS engines
+  // and are necessary for proper internationalization
+
+  // Lazy-initialize Unicode regex on first use
+  if (WORD_CHARACTERS_UNICODE_REGEX === undefined) {
+    try {
+      // Create Unicode property escape regex at runtime to avoid compile-time TS1501 error
+      WORD_CHARACTERS_UNICODE_REGEX = new RegExp('[\\p{L}\\p{N}\\p{M}]', 'u')
+    } catch {
+      // Environment doesn't support Unicode property escapes
+      WORD_CHARACTERS_UNICODE_REGEX = null
+    }
+  }
+
+  let hasWordCharacters: boolean
+  if (WORD_CHARACTERS_UNICODE_REGEX) {
+    // Check if segment contains word characters using Unicode property escapes
+    // This matches the behavior of native Intl.Segmenter in Chrome/Firefox
+    hasWordCharacters = WORD_CHARACTERS_UNICODE_REGEX.test(segment)
+  } else {
+    // Fallback for environments without Unicode property escapes
+    // Match basic word characters: letters, numbers, underscores
+    hasWordCharacters = WORD_CHARACTERS_BASIC_REGEX.test(segment)
+  }
+
+  // If segment contains word characters, it's word-like
+  if (hasWordCharacters) {
+    return true
+  }
+
+  // If no word characters, check if it's definitely not word-like via rules
+  // Non-word-like rules per Unicode Word Break specification (UAX #29):
+  // https://unicode.org/reports/tr29/#Word_Boundaries
+  //
+  // WB3a (3.1): Break before newlines (sot ÷ (Newline | CR | LF))
+  // WB3b (3.2): Break after newlines ((Newline | CR | LF) ÷ eot)
+  // WB3d (3.4): Keep horizontal whitespace together (WSegSpace × WSegSpace)
+  //
+  // These rules specifically identify non-word segments like line breaks and whitespace
+  const definitelyNotWordLikeRules = ['3.1', '3.2', '3.4']
+
+  if (definitelyNotWordLikeRules.includes(matchingRule)) {
+    return false
+  }
+
+  // For segments without word characters and not matching specific non-word rules,
+  // return false (e.g., punctuation, symbols, whitespace via rule 999)
+  return false
+}
+
 const createSegmentDataObject = (
   segmenter: Segmenter,
   segment: string,
@@ -300,7 +383,7 @@ const createSegmentDataObject = (
     input,
   }
   if (getSlot(segmenter, 'granularity') === 'word') {
-    returnValue.isWordLike = matchingRule !== '3.1' && matchingRule !== '3.2'
+    returnValue.isWordLike = isSegmentWordLike(segment, matchingRule)
   }
   return returnValue
 }
