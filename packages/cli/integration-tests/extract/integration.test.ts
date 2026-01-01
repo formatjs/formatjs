@@ -319,3 +319,19 @@ test('GH #5069: Tagged template expressions with substitutions in non-message pr
     await readJSON(join(ARTIFACT_PATH, 'taggedTemplates/actual.json'))
   ).toMatchSnapshot()
 })
+
+// https://github.com/formatjs/formatjs/issues/4471
+test('GH #4471: Optional chaining with generics in formatMessage', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} extract --throws '${join(
+        __dirname,
+        'optionalChaining/actual.tsx'
+      )}' --out-file ${ARTIFACT_PATH}/optionalChaining/actual.json`
+    )
+  ).resolves.toMatchSnapshot()
+
+  expect(
+    await readJSON(join(ARTIFACT_PATH, 'optionalChaining/actual.json'))
+  ).toMatchSnapshot()
+})

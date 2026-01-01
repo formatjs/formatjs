@@ -674,6 +674,40 @@ describe('emit asserts for', function () {
       },
     ])
   })
+
+  it('GH #4471 - formatMessage with optional chaining and generics', async function () {
+    const output = await compile(join(FIXTURES_DIR, 'optionalChaining.tsx'), {
+      pragma: 'react-intl',
+    })
+    expect(output.msgs).toEqual([
+      {
+        defaultMessage: 'Normal call',
+        description: 'Test normal formatMessage call',
+        id: '26SK+TP317',
+      },
+      {
+        defaultMessage: 'With generics',
+        description: 'Test formatMessage with generic type',
+        id: '9jq8ZKiO6S',
+      },
+      {
+        defaultMessage: 'With optional chaining',
+        description: 'Test formatMessage with optional chaining',
+        id: 'LmkGiv2APV',
+      },
+      {
+        defaultMessage: 'With both generics and optional chaining',
+        description:
+          'Test formatMessage with both generic type and optional chaining',
+        id: 'ZhR+Lzge+R',
+      },
+      {
+        defaultMessage: 'Nested optional chaining',
+        description: 'Test nested optional chaining',
+        id: 'DZ/55FDtO6',
+      },
+    ])
+  })
 })
 
 async function compile(filePath: string, options?: Partial<Opts>) {

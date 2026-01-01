@@ -525,6 +525,18 @@ function isMemberMethodFormatMessageCall(
     return fnNames.has(method.name.text)
   }
 
+  // GH #4471: Handle foo.formatMessage<T>?.() - when both generics and optional chaining are used
+  // TypeScript represents this as ExpressionWithTypeArguments containing a PropertyAccessExpression
+  if (
+    ts.isExpressionWithTypeArguments &&
+    ts.isExpressionWithTypeArguments(method)
+  ) {
+    const expr = method.expression
+    if (ts.isPropertyAccessExpression(expr)) {
+      return fnNames.has(expr.name.text)
+    }
+  }
+
   // Handle formatMessage()
   return ts.isIdentifier(method) && fnNames.has(method.text)
 }

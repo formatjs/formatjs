@@ -209,6 +209,28 @@ test('jsxNestedInCallExpr', () => {
   transformAndCheck('jsxNestedInCallExpr')
 })
 
+// GH #4471: Test optional chaining with formatMessage
+test('optionalChaining', () => {
+  const result = transformAndCheck('optionalChaining')
+  expect(result.data.messages).toEqual([
+    {
+      defaultMessage: 'Normal call',
+      description: 'Test normal formatMessage call',
+      id: 'YWtvBT',
+    },
+    {
+      defaultMessage: 'With optional chaining',
+      description: 'Test formatMessage with optional chaining',
+      id: 'vB3haT',
+    },
+    {
+      defaultMessage: 'Nested optional chaining',
+      description: 'Test nested optional chaining',
+      id: 'vfvOrL',
+    },
+  ])
+})
+
 let cacheBust = 1
 
 function transform(
