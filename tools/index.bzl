@@ -140,6 +140,35 @@ def generate_src_file(name, src, entry_point = None, tool = None, chdir = None, 
     """
     file_ext = src[src.rindex(".") + 1:]
     tmp_filename = "%s.tmp.%s" % (name, file_ext)
+
+    # File extensions supported by oxfmt
+    oxfmt_extensions = [
+        "js",
+        "jsx",
+        "ts",
+        "tsx",
+        "mjs",
+        "cjs",
+        "mts",
+        "cts",
+        "vue",
+        "html",
+        "mjml",
+        "css",
+        "scss",
+        "less",
+        "md",
+        "mdx",
+        "graphql",
+        "gql",
+        "yaml",
+        "yml",
+        "toml",
+        "json",
+        "jsonc",
+        "json5",
+    ]
+
     ts_run_binary(
         name = tmp_filename[:tmp_filename.rindex(".")],
         outs = [tmp_filename],
@@ -158,8 +187,22 @@ def generate_src_file(name, src, entry_point = None, tool = None, chdir = None, 
         ],
     )
 
+    # Format the generated file if oxfmt supports this file type
+    if file_ext in oxfmt_extensions:
+        formatted_filename = "%s.formatted.%s" % (name, file_ext)
+        native.genrule(
+            name = "%s_format" % name,
+            srcs = [tmp_filename],
+            outs = [formatted_filename],
+            cmd = "cat $(location %s) | $(location //:oxfmt) --stdin-filepath=$(location %s) > $@" % (tmp_filename, tmp_filename),
+            tools = ["//:oxfmt"],
+        )
+        final_file = formatted_filename
+    else:
+        final_file = tmp_filename
+
     files = {}
-    files[src] = tmp_filename
+    files[src] = final_file
 
     write_source_files(
         name = name,

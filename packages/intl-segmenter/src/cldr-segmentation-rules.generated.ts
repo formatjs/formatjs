@@ -1,6 +1,6 @@
 /* @generated */
-    // prettier-ignore
-    export const SegmentationRules = {
+// prettier-ignore
+export const SegmentationRules = {
   "de": {
     "sentence": {
       "segmentRules": {
@@ -1285,5 +1285,3 @@
   "zh": {
   }
 } as const
-
-    

@@ -1,4 +1,4 @@
-import {outputFileSync, } from 'fs-extra/esm'
+import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import {readFileSync} from 'fs'
 

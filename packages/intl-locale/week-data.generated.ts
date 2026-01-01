@@ -2072,4 +2072,4 @@ export const weekData = {
   }
 } as const
 export type WeekDataKey = keyof typeof weekData
-export type WeekInfoInternal = typeof weekData[WeekDataKey]
+export type WeekInfoInternal = (typeof weekData)[WeekDataKey]
