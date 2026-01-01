@@ -2,9 +2,10 @@ import fastGlobPkg from 'fast-glob'
 import {readJSONSync} from 'fs-extra/esm'
 const {sync: globSync} = fastGlobPkg
 
-const packages = globSync('./packages/*/package.json').map(
-  fn => readJSONSync(fn).name
-)
+const packages = [
+  ...globSync('./packages/*/package.json').map(fn => readJSONSync(fn).name),
+  'rules_formatjs',
+]
 
 export default {
   extends: ['@commitlint/config-angular'],

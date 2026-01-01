@@ -1,0 +1,30 @@
+"""
+Message Aggregation Example Workspace
+
+This is a standalone Bazel workspace demonstrating the formatjs_aggregate_aspect.
+"""
+
+module(
+    name = "aggregate_example",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "rules_formatjs", version = "0.0.0")
+local_path_override(
+    module_name = "rules_formatjs",
+    path = "../..",
+)
+
+bazel_dep(name = "aspect_bazel_lib", version = "2.22.2")
+bazel_dep(name = "aspect_rules_js", version = "2.8.3")
+bazel_dep(name = "rules_nodejs", version = "6.3.0")
+
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+node.toolchain(node_version = "20.11.1")
+
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm")
+npm.npm_translate_lock(
+    name = "npm",
+    pnpm_lock = "//:pnpm-lock.yaml",
+)
+use_repo(npm, "npm")

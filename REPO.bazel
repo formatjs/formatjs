@@ -16,4 +16,5 @@ ignore_directories([
     "target",
     # All node_modules directories recursively using glob pattern
     "**/node_modules",
+    "rules_formatjs",
 ])

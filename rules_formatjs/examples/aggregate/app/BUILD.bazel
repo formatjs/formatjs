@@ -1,0 +1,32 @@
+"""Application that aggregates messages from all modules"""
+
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_aggregate")
+
+# Aggregate messages from module2 and module3
+# Module3 depends on module1, so module1's messages should be included transitively
+# This demonstrates that the aspect properly traverses the dependency graph
+formatjs_aggregate(
+    name = "all_messages",
+    deps = [
+        "//module2:messages",
+        "//module3:messages",
+    ],
+)
+
+# Snapshot test - verifies that aggregated messages match the expected fixture
+# Run `bazel run //app:update_all_messages_fixture` to update the snapshot
+write_source_files(
+    name = "update_all_messages_fixture",
+    files = {
+        "all_messages.fixture.json": ":all_messages",
+    },
+)
+
+# Test target - verifies the snapshot hasn't changed
+write_source_files(
+    name = "aggregation_test",
+    files = {
+        "all_messages.fixture.json": ":all_messages",
+    },
+)

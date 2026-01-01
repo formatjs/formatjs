@@ -1,0 +1,8 @@
+# Repository-level ignore patterns
+# This file replaces .bazelignore (deprecated in Bazel 8.0+)
+#
+# Ignore example workspaces - they are independent Bazel workspaces with their own MODULE.bazel
+
+ignore_directories([
+    "examples",
+])

@@ -1,0 +1,56 @@
+name: Test rules_formatjs
+
+on:
+  pull_request:
+    paths:
+      - 'rules_formatjs/**'
+      - '.github/workflows/test-rules-formatjs.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.16.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
+      - name: Build rules_formatjs
+        working-directory: rules_formatjs
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            echo "Running with BuildBuddy CI config"
+            bazel build --config=ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //...
+          else
+            echo "Running without BuildBuddy (no API key)"
+            bazel build //...
+          fi
+
+      - name: Test Simple Example
+        working-directory: rules_formatjs/examples/simple
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            echo "Running with BuildBuddy CI config"
+            bazel test --config=ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //...
+          else
+            echo "Running without BuildBuddy (no API key)"
+            bazel test //...
+          fi
+
+      - name: Test Aggregate Example
+        working-directory: rules_formatjs/examples/aggregate
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            echo "Running with BuildBuddy CI config"
+            bazel test --config=ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //...
+          else
+            echo "Running without BuildBuddy (no API key)"
+            bazel test //...
+          fi

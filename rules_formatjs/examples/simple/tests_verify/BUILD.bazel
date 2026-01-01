@@ -1,0 +1,118 @@
+"""Tests for formatjs_verify_test rule"""
+
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_verify_test")
+
+# Test 1: Valid translations should pass
+formatjs_verify_test(
+    name = "test_valid_translations",
+    formatjs_cli = "//:formatjs_cli",
+    source_locale = "en",
+    translations = [
+        "en.json",
+        "es.json",
+        "fr.json",
+    ],
+)
+
+# Test 2: Missing keys should fail (negative test)
+formatjs_verify_test(
+    name = "test_missing_keys_fails",
+    expected_exit_code = 1,  # Expect failure
+    formatjs_cli = "//:formatjs_cli",
+    source_locale = "en",
+    translations = [
+        "en.json",
+        "de_missing_keys.json",
+    ],
+)
+
+# Test 3: Extra keys should fail (negative test)
+formatjs_verify_test(
+    name = "test_extra_keys_fails",
+    expected_exit_code = 1,  # Expect failure
+    formatjs_cli = "//:formatjs_cli",
+    source_locale = "en",
+    translations = [
+        "en.json",
+        "it_extra_keys.json",
+    ],
+)
+
+# Test 4: Invalid format should fail (negative test)
+formatjs_verify_test(
+    name = "test_invalid_format_fails",
+    expected_exit_code = 1,  # Expect failure
+    formatjs_cli = "//:formatjs_cli",
+    source_locale = "en",
+    translations = [
+        "en.json",
+        "ja_invalid_format.json",
+    ],
+)
+
+# Test 5: Only check missing keys
+formatjs_verify_test(
+    name = "test_only_missing_keys",
+    check_extra_keys = False,
+    check_missing_keys = True,
+    check_structural_equality = False,
+    formatjs_cli = "//:formatjs_cli",
+    source_locale = "en",
+    translations = [
+        "en.json",
+        "it_extra_keys.json",  # Has extra keys but should pass because we're not checking
+    ],
+)
+
+# Test 6: Only check extra keys (expected to fail)
+formatjs_verify_test(
+    name = "test_only_extra_keys",
+    check_extra_keys = True,
+    check_missing_keys = False,
+    check_structural_equality = False,
+    formatjs_cli = "//:formatjs_cli",
+    source_locale = "en",
+    translations = [
+        "en.json",
+        "de_missing_keys.json",  # Missing keys but we're only checking for extra keys
+    ],
+)
+
+# Test 7: Disable all checks (should always pass)
+formatjs_verify_test(
+    name = "test_no_checks",
+    check_extra_keys = False,
+    check_missing_keys = False,
+    check_structural_equality = False,
+    formatjs_cli = "//:formatjs_cli",
+    source_locale = "en",
+    translations = [
+        "en.json",
+        "de_missing_keys.json",
+        "it_extra_keys.json",
+    ],
+)
+
+# Test 8: Multiple translations at once
+formatjs_verify_test(
+    name = "test_multiple_translations",
+    formatjs_cli = "//:formatjs_cli",
+    source_locale = "en",
+    translations = [
+        "en.json",
+        "es.json",
+        "fr.json",
+    ],
+)
+
+# Test 9: Explicitly provide source_locale to ensure proper verification
+formatjs_verify_test(
+    name = "test_with_source_locale",
+    formatjs_cli = "//:formatjs_cli",
+    source_locale = "en",
+    translations = [
+        "en.json",
+        "es.json",
+        "fr.json",
+    ],
+)
