@@ -15,6 +15,9 @@ type MessageIds =
   | 'unnecessaryFormatTime'
   | CoreMessageIds
 
+type NoUselessMessageConfig = {allowWithDescription: boolean}
+export type Options = [NoUselessMessageConfig?]
+
 function verifyAst(ast: MessageFormatElement[]): MessageIds | undefined {
   if (ast.length !== 1) {
     return
@@ -33,15 +36,16 @@ function verifyAst(ast: MessageFormatElement[]): MessageIds | undefined {
 }
 
 function checkNode(
-  context: RuleContext<MessageIds, unknown[]>,
+  context: RuleContext<MessageIds, Options>,
   node: TSESTree.Node
 ) {
   const settings = getSettings(context)
   const msgs = extractMessages(node, settings)
+  const [config] = context.options
 
   for (const [
     {
-      message: {defaultMessage},
+      message: {defaultMessage, description},
       messageNode,
     },
   ] of msgs) {
@@ -65,17 +69,22 @@ function checkNode(
     }
     const messageId = verifyAst(ast)
 
-    if (messageId)
+    if (messageId) {
+      if (config?.allowWithDescription && description) {
+        continue
+      }
+
       context.report({
         node: messageNode,
         messageId,
       })
+    }
   }
 }
 
 export const name = 'no-useless-message'
 
-export const rule: RuleModule<MessageIds> = {
+export const rule: RuleModule<MessageIds, Options> = {
   meta: {
     type: 'problem',
     docs: {
@@ -83,7 +92,15 @@ export const rule: RuleModule<MessageIds> = {
       url: 'https://formatjs.github.io/docs/tooling/linter#no-useless-message',
     },
     fixable: 'code',
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowWithDescription: {type: 'boolean'},
+        },
+        additionalProperties: false,
+      },
+    ],
     messages: {
       ...CORE_MESSAGES,
       unnecessaryFormat: 'Unnecessary formatted message.',
