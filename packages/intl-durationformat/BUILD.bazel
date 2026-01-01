@@ -74,6 +74,7 @@ generate_src_file(
         "//:node_modules/lodash-es",
     ],
     entry_point = "scripts/time-separators.ts",
+    tags = ["cldr"],
 )
 
 copy_to_bin(

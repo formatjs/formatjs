@@ -82,6 +82,7 @@ generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",
     entry_point = "scripts/test262-main-gen.ts",
+    tags = ["cldr"],
     visibility = [
         "//:__pkg__",
     ],
@@ -166,6 +167,7 @@ generate_src_file(
             "//:node_modules/regexpu-core",
         ],
     entry_point = "scripts/generate-cldr-segmentation-rules.ts",
+    tags = ["cldr"],
 )
 
 copy_to_bin(

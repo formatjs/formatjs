@@ -3,7 +3,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//:index.bzl", "ZONES")
+load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
@@ -63,6 +63,7 @@ generate_src_file(
         "//:node_modules/cldr-bcp47",
     ],
     entry_point = "scripts/calendars.ts",
+    tags = ["cldr"],
 )
 
 # timezones
@@ -73,6 +74,7 @@ generate_src_file(
     data = [
     ],
     entry_point = "scripts/timezones.ts",
+    tags = ["cldr"],
 )
 
 # numbering-systems
@@ -92,6 +94,7 @@ generate_src_file(
         "//:node_modules/cldr-numbers-full",
     ],
     entry_point = "scripts/currencies.ts",
+    tags = ["cldr"],
 )
 
 # collations
@@ -102,6 +105,7 @@ generate_src_file(
         "//:node_modules/cldr-bcp47",
     ],
     entry_point = "scripts/collations.ts",
+    tags = ["cldr"],
 )
 
 # units
@@ -113,6 +117,7 @@ generate_src_file(
         "//:node_modules/cldr-bcp47",
     ],
     entry_point = "scripts/units.ts",
+    tags = ["cldr"],
 )
 
 esbuild(

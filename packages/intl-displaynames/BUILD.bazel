@@ -672,6 +672,7 @@ generate_src_file(
     name = "supported-locales",
     src = "supported-locales.generated.ts",
     args = ALL_LOCALES,
+    tags = ["cldr"],
     tool = "//tools:generate-supported-locales",
     visibility = ["//:__pkg__"],
 )
@@ -726,6 +727,7 @@ generate_src_file(
     ],
     data = [":cldr-raw"],
     entry_point = "scripts/test262-main-gen.ts",
+    tags = ["cldr"],
     visibility = [
         "//:__pkg__",
     ],

@@ -125,7 +125,7 @@ def ts_run_binary(name, entry_point = None, args = [], tool = None, chdir = None
         **kwargs
     )
 
-def generate_src_file(name, src, entry_point = None, tool = None, chdir = None, args = [], data = [], visibility = []):
+def generate_src_file(name, src, entry_point = None, tool = None, chdir = None, args = [], data = [], visibility = [], tags = []):
     """Generate a source file.
 
     Args:
@@ -137,6 +137,7 @@ def generate_src_file(name, src, entry_point = None, tool = None, chdir = None, 
         visibility: target visibility
         chdir: whether to chdir to another dir
         tool: tool binary label
+        tags: tags to apply to the target
     """
     file_ext = src[src.rindex(".") + 1:]
     tmp_filename = "%s.tmp.%s" % (name, file_ext)
@@ -211,6 +212,7 @@ def generate_src_file(name, src, entry_point = None, tool = None, chdir = None, 
             "//:__pkg__",
         ],
         suggested_update_target = "//%s:%s" % (native.package_name(), tmp_filename[:tmp_filename.rindex(".")]),
+        tags = tags + ["codegen"],
     )
 
 def generate_ide_tsconfig_json(name = "tsconfig_json"):

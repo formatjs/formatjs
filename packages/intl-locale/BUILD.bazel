@@ -113,6 +113,7 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/character-orders.ts",
+    tags = ["cldr"],
 )
 
 # numbering systems
@@ -128,6 +129,7 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/numbering-systems.ts",
+    tags = ["cldr"],
 )
 
 # timezones
@@ -140,6 +142,7 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/timezones.ts",
+    tags = ["cldr"],
 )
 
 # hour cycles
@@ -152,6 +155,7 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/hour-cycles.ts",
+    tags = ["cldr"],
 )
 
 # calendars
@@ -164,6 +168,7 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/calendars.ts",
+    tags = ["cldr"],
 )
 
 # week data
@@ -176,6 +181,7 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/week-data.ts",
+    tags = ["cldr"],
 )
 
 copy_to_bin(

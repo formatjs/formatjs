@@ -65,6 +65,7 @@ generate_src_file(
         "//:node_modules/cldr-core",
     ],
     entry_point = "tools/extract-default-currency.ts",
+    tags = ["cldr"],
 )
 
 generate_src_file(
@@ -74,6 +75,7 @@ generate_src_file(
         "//:node_modules/cldr-core",
     ],
     entry_point = "tools/extract-default-locale.ts",
+    tags = ["cldr"],
 )
 
 copy_file(

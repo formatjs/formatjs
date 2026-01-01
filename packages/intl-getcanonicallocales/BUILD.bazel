@@ -68,6 +68,7 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/aliases.ts",
+    tags = ["cldr"],
     visibility = ["//:__pkg__"],
 )
 
@@ -79,6 +80,7 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "scripts/likely-subtags.ts",
+    tags = ["cldr"],
     visibility = ["//:__pkg__"],
 )
 
