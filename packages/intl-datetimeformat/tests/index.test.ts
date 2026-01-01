@@ -1,7 +1,7 @@
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {DateTimeFormat} from '../src/core'
-import allData from '../src/data/all-tz'
+import allData from '../src/data/all-tz.generated'
 import * as enCA from './locale-data/en-CA.json' with {type: 'json'}
 import * as enGB from './locale-data/en-GB.json' with {type: 'json'}
 import * as en from './locale-data/en.json' with {type: 'json'}
@@ -691,5 +691,39 @@ describe('Intl.DateTimeFormat', function () {
     // With long format, should show GMT+01:00 (since no localized daylight name)
     // This matches native browser behavior (Firefox, Safari, Chrome all use offset)
     expect(summerLong).toBe('15 Jul 2025, 13:00 GMT+01:00') // Correct: shows offset format
+  })
+
+  it('should support America/Coyhaique timezone from IANA 2025c, GH #5111', function () {
+    // Issue #5111: IANA 2025c introduced new timezone America/Coyhaique
+    // Chile's Aysén Region moves from -04/-03 to -03 year-round
+    // This test will fail until timezone data is regenerated with IANA 2025c+
+
+    // This should not throw RangeError: Invalid timeZoneName
+    expect(() => {
+      new DateTimeFormat('en-US', {
+        timeZone: 'America/Coyhaique',
+        dateStyle: 'full',
+        timeStyle: 'full',
+      })
+    }).not.toThrow()
+
+    // Test actual formatting
+    const dtf = new DateTimeFormat('en-US', {
+      timeZone: 'America/Coyhaique',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
+
+    // Test a date after the timezone was created (March 2025)
+    const testDate = new Date('2025-04-01T12:00:00Z')
+    const result = dtf.format(testDate)
+
+    // America/Coyhaique is UTC-3 year-round after 2025-03-20
+    // 12:00 UTC = 09:00 in Coyhaique (-03:00)
+    expect(result).toBe('04/01/2025, 09:00')
   })
 })

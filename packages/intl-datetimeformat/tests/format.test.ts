@@ -1,5 +1,5 @@
 import {DateTimeFormat} from '../src/core'
-import allData from '../src/data/all-tz'
+import allData from '../src/data/all-tz.generated'
 import {
   toLocaleDateString,
   toLocaleString,

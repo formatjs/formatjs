@@ -93,6 +93,7 @@ ZONES = [
     "America/Chihuahua",
     "America/Ciudad_Juarez",
     "America/Costa_Rica",
+    "America/Coyhaique",
     "America/Creston",
     "America/Cuiaba",
     "America/Curacao",
