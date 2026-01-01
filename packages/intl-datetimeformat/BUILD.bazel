@@ -774,7 +774,7 @@ generate_src_file(
 # links
 generate_src_file(
     name = "links",
-    src = "src/data/links.ts",
+    src = "src/data/links.generated.ts",
     args = [
         "--input",
         package_name() + "/tz_data_generated/backward",
@@ -789,7 +789,7 @@ generate_src_file(
 # data.ts
 generate_src_file(
     name = "all-tz",
-    src = "src/data/all-tz.ts",
+    src = "src/data/all-tz.generated.ts",
     args = [
         "$(rootpaths :zdumps)",
     ],
