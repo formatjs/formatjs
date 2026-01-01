@@ -276,7 +276,12 @@ export function formatToParts<T>(
       )
     }
     if (isSelectElement(el)) {
-      const opt = el.options[value as string] || el.options.other
+      // GH #4490: Use hasOwnProperty to avoid prototype chain issues with keys like "constructor"
+      const key = value as string
+      const opt =
+        (Object.prototype.hasOwnProperty.call(el.options, key)
+          ? el.options[key]
+          : undefined) || el.options.other
       if (!opt) {
         throw new InvalidValueError(
           el.value,
@@ -291,7 +296,11 @@ export function formatToParts<T>(
       continue
     }
     if (isPluralElement(el)) {
-      let opt = el.options[`=${value}`]
+      // GH #4490: Use hasOwnProperty to avoid prototype chain issues
+      const exactKey = `=${value}`
+      let opt = Object.prototype.hasOwnProperty.call(el.options, exactKey)
+        ? el.options[exactKey]
+        : undefined
       if (!opt) {
         if (!Intl.PluralRules) {
           throw new FormatError(
@@ -308,7 +317,10 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
         const rule = formatters
           .getPluralRules(locales, {type: el.pluralType})
           .select(numericValue - (el.offset || 0))
-        opt = el.options[rule] || el.options.other
+        opt =
+          (Object.prototype.hasOwnProperty.call(el.options, rule)
+            ? el.options[rule]
+            : undefined) || el.options.other
       }
       if (!opt) {
         throw new InvalidValueError(
