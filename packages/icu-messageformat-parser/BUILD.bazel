@@ -62,6 +62,7 @@ generate_src_file(
 generate_src_file(
     name = "time-data",
     src = "time-data.generated.ts",
+    tags = ["cldr"],
     tool = "//packages/icu-messageformat-parser/tools:time_data_gen",
 )
 

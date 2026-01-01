@@ -38,12 +38,6 @@ You can build & test with `pnpm`. At the moment version >= 9 is not supported:
 pnpm i && pnpm t
 ```
 
-To run examples:
-
-```sh
-npm run examples
-```
-
 Releases can be done with the following steps:
 
 ```sh
@@ -81,7 +75,19 @@ bazel run //packages/cli/integration-tests:compile_folder_integration_test_updat
 
 ### Generating CLDR data
 
-1. Check out `./BUILD` file for generatable data — which are identifiable via `generate_src_file()` call
+#### Regenerate all CLDR data at once
+
+To regenerate all CLDR-related data files across all packages:
+
+```sh
+bazel run //:cldr-gen
+```
+
+This will run all CLDR generation targets in parallel (identified by the `cldr` tag).
+
+#### Regenerate specific CLDR data
+
+1. Check out `./BUILD.bazel` file for generatable data — which are identifiable via `generate_src_file()` call
 
 ```starlark
    generate_src_file(
@@ -90,19 +96,13 @@ bazel run //packages/cli/integration-tests:compile_folder_integration_test_updat
    )
 ```
 
-2. Create an empty file with the given `src` attribute — path is relative to module root
-
-```sh
-   touch packages/icu-messageformat-parser/regex.generated.ts
-```
-
-3. Run update script
+2. Run update script
 
 ```sh
    bazel run //packages/icu-messageformat-parser:regex.update
 ```
 
-4. Verify
+3. Verify
 
 ```sh
    bazel run //packages/icu-messageformat-parser:regex

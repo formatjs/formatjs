@@ -1,6 +1,7 @@
 """
-List of zone files we expect to extract
+List of timezone files for intl-datetimeformat
 """
+
 ZONES = [
     "Africa/Abidjan",
     "Africa/Accra",

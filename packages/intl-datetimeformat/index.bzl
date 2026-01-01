@@ -1,4 +1,6 @@
-load("//:index.bzl", "ZONES")
+"""Build definitions for intl-datetimeformat package."""
+
+load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 
 # Pre-compile tzdata
 ZIC_FILES = [
