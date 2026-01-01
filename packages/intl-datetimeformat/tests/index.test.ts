@@ -637,4 +637,59 @@ describe('Intl.DateTimeFormat', function () {
     // Native ICU output: "2023/01/15 10:00～2023/02/20 14:00"
     expect(resultJa).toBe('2023/01/15 10:00～2023/02/20 14:00')
   })
+
+  it('Europe/London should show BST during daylight savings time, GH #5114', function () {
+    // Issue #5114: DST timezone names not showing correctly for Europe/London
+    // During British Summer Time (Mar-Oct), should show "BST" or "GMT+1", not "GMT"
+    // This affects multiple locales including cy (Welsh) and en-GB
+
+    DateTimeFormat.__setDefaultTimeZone('Europe/London')
+
+    // Date during British Summer Time (July)
+    const summerDate = new Date('2025-07-15T12:00:00Z')
+
+    // Date during standard time (January)
+    const winterDate = new Date('2025-01-15T12:00:00Z')
+
+    // Test with en-GB locale
+    const summerFmt = new DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'short',
+    }).format(summerDate)
+
+    const winterFmt = new DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'short',
+    }).format(winterDate)
+
+    // FIXED: Issue #5114 resolved by falling back to GMT offset format
+    // when CLDR doesn't provide a daylight name
+
+    // Summer should show GMT+1 (offset fallback since no localized DST name)
+    // Winter should show GMT
+    expect(summerFmt).toBe('15 Jul 2025, 13:00 GMT+1') // Correct: shows offset during DST
+    expect(winterFmt).toBe('15 Jan 2025, 12:00 GMT') // Correct: shows GMT for standard time
+
+    // Test with long timezone names
+    const summerLong = new DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'long',
+    }).format(summerDate)
+
+    // With long format, should show GMT+01:00 (since no localized daylight name)
+    // This matches native browser behavior (Firefox, Safari, Chrome all use offset)
+    expect(summerLong).toBe('15 Jul 2025, 13:00 GMT+01:00') // Correct: shows offset format
+  })
 })

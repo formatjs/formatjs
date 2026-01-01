@@ -144,7 +144,22 @@ export function FormatDateTimePattern(
       const timeZone = internalSlots.timeZone || getDefaultTimeZone()
       const timeZoneData = timeZoneName[timeZone]
       if (timeZoneData && timeZoneData[f as 'short']) {
-        fv = timeZoneData[f as 'short']![+tm.inDST]
+        const names = timeZoneData[f as 'short']!
+        // GH #5114: If in DST and both standard/daylight names are the same,
+        // fall back to GMT offset format (matches native browser behavior).
+        // This handles locales where CLDR doesn't provide a daylight name.
+        // NOTE: This is a formatjs implementation detail - ECMA-402 doesn't
+        // explicitly specify behavior for missing DST names in locale data.
+        if (tm.inDST && names.length >= 2 && names[0] === names[1]) {
+          fv = offsetToGmtString(
+            gmtFormat,
+            hourFormat,
+            tm.timeZoneOffset,
+            f as 'long'
+          )
+        } else {
+          fv = names[+tm.inDST]
+        }
       } else {
         // Fallback to gmtFormat
         fv = offsetToGmtString(
