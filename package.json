@@ -68,7 +68,7 @@
     "@typescript-eslint/rule-tester": "^8.27.0",
     "@typescript-eslint/utils": "^8.27.0",
     "@unicode/unicode-13.0.0": "^1.6.0",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^5.0.0",
     "@vue/compiler-core": "^3.5.12",
     "@vue/compiler-dom": "^3.5.12",
     "@vue/server-renderer": "^3.5.12",
