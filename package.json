@@ -128,7 +128,7 @@
     "remark-gfm": "^4.0.0",
     "serialize-javascript": "^7.0.0",
     "syncpack": "^13.0.4",
-    "tailwind-merge": "^2.6.0",
+    "tailwind-merge": "^3.0.0",
     "tailwindcss": "^4.1.18",
     "test262-harness": "^10.0.0",
     "tinybench": "^6.0.0",
