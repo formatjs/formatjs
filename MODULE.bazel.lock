@@ -4681,7 +4681,7 @@
         "recordedFileInputs": {
           "@@//Cargo.lock": "8b03b5254d00273a07e42bd36856a32e8844ae207bad59453ed0d8969bae1b4c",
           "@@//Cargo.toml": "3a9ca5288bb75e04e330f0fac77017b52c3805efea0d6aafc400e4638440a3cf",
-          "@@//MODULE.bazel": "2b7821d16bbf01936029c7071cdc4e70686a5f20d18726e47b834a93f2978ac1",
+          "@@//MODULE.bazel": "348af749dd9777a622459d840856af4ca296cc6cea7f6b1e8efa9a239855e332",
           "@@//packages/icu-messageformat-parser/integration-tests/Cargo.toml": "6fc7e620f396627d77b52ea0b54a3aefc72197750fa8f6f97e2d63f238b259bb",
           "@@//rust/icu_messageformat_parser/Cargo.toml": "de044b80b0371d28db9c8dfc9d111928be1e84fb43fe483882a833a6ca60480c",
           "@@//rust/icu_skeleton_parser/Cargo.toml": "66f457798db7f12f6d4df94fbca319b3bdeceed1aef74d1c6999c70eeee4946c",
