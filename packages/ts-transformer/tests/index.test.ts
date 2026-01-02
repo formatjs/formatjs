@@ -708,6 +708,12 @@ describe('emit asserts for', function () {
       },
     ])
   })
+
+  it('GH #4235 - non-static defaultMessage should throw', async function () {
+    await expect(
+      compile(join(FIXTURES_DIR, 'nonStaticMessages.tsx'), {})
+    ).rejects.toThrow(/\[FormatJS\] `defaultMessage` must be a string literal/)
+  })
 })
 
 async function compile(filePath: string, options?: Partial<Opts>) {
