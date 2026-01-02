@@ -38,14 +38,21 @@ You can build & test with `pnpm`. At the moment version >= 9 is not supported:
 pnpm i && pnpm t
 ```
 
-Releases can be done with the following steps:
+### Releases
+
+Releases are automated via GitHub Actions. To publish a new release:
+
+1. Bump package versions by running the prerelease script locally:
 
 ```sh
 # Make sure you have GH_TOKEN setup as indicated by:
 # https://github.com/lerna/lerna/blob/05ad1860e2da7fc16c9c0a072c9389e94792ab64/commands/version/README.md#--create-release-type
 GH_TOKEN=xxxxxxx npm run prerelease
-./release.sh
 ```
+
+2. Commit and push the version changes to the `main` branch
+
+3. GitHub Actions will automatically build and publish all packages to npm using [Trusted Publishing (OIDC)](https://docs.npmjs.com/trusted-publishers/)
 
 ### Updating tzdata version
 
