@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.1.0...@formatjs/intl-locale@5.1.1) (2026-01-02)
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** add FF lack of feature detection, fix [#5112](https://github.com/formatjs/formatjs/issues/5112) ([#5742](https://github.com/formatjs/formatjs/issues/5742)) ([0026c30](https://github.com/formatjs/formatjs/commit/0026c306c7d0d7a08d557209f882972eb0ffb748)) - by @longlho
+
 # [5.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.0.6...@formatjs/intl-locale@5.1.0) (2025-12-26)
 
 ### Features

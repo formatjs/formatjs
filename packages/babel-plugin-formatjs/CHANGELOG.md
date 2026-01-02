@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.1.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@11.0.8...babel-plugin-formatjs@11.1.0) (2026-01-02)
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix optional chaining extraction, fix [#4471](https://github.com/formatjs/formatjs/issues/4471) ([#5755](https://github.com/formatjs/formatjs/issues/5755)) ([13b729e](https://github.com/formatjs/formatjs/commit/13b729ea1f486986a1d66127998ff4638a4a7213)) - by @longlho
+
+### Features
+
+* **@formatjs/ts-transformer:** flatten before id generation, fix [#3537](https://github.com/formatjs/formatjs/issues/3537) ([#5790](https://github.com/formatjs/formatjs/issues/5790)) ([ea3a9d7](https://github.com/formatjs/formatjs/commit/ea3a9d7ba811a7f24ac1495295a07ae2db653f99)) - by @longlho
+
 ## [11.0.8](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@11.0.7...babel-plugin-formatjs@11.0.8) (2025-12-28)
 
 ### Bug Fixes

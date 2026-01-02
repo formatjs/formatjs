@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.0.7...@formatjs/ts-transformer@4.1.0) (2026-01-02)
+
+### Bug Fixes
+
+* **@formatjs/cli:** don't try to parse non core fields ([#5747](https://github.com/formatjs/formatjs/issues/5747)) ([6395940](https://github.com/formatjs/formatjs/commit/63959400061f6e573efa828b4e113559f11c9146)), closes [#5069](https://github.com/formatjs/formatjs/issues/5069) [#5069](https://github.com/formatjs/formatjs/issues/5069) [#5069](https://github.com/formatjs/formatjs/issues/5069) - by @longlho
+* **@formatjs/ts-transformer:** fix optional chaining extraction, fix [#4471](https://github.com/formatjs/formatjs/issues/4471) ([#5755](https://github.com/formatjs/formatjs/issues/5755)) ([13b729e](https://github.com/formatjs/formatjs/commit/13b729ea1f486986a1d66127998ff4638a4a7213)) - by @longlho
+* **@formatjs/ts-transformer:** throws when message desc values are not statically analyzable, fix [#4235](https://github.com/formatjs/formatjs/issues/4235) ([#5775](https://github.com/formatjs/formatjs/issues/5775)) ([16fdf64](https://github.com/formatjs/formatjs/commit/16fdf64951e5b9f09e65d6ee92507cf3eab456bd)) - by @longlho
+
+### Features
+
+* **@formatjs/ts-transformer:** flatten before id generation, fix [#3537](https://github.com/formatjs/formatjs/issues/3537) ([#5790](https://github.com/formatjs/formatjs/issues/5790)) ([ea3a9d7](https://github.com/formatjs/formatjs/commit/ea3a9d7ba811a7f24ac1495295a07ae2db653f99)) - by @longlho
+
 ## [4.0.7](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.0.6...@formatjs/ts-transformer@4.0.7) (2025-12-26)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

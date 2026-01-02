@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.1.0...@formatjs/intl-numberformat@9.1.1) (2026-01-02)
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** handle massive numbers, fix [#4236](https://github.com/formatjs/formatjs/issues/4236) ([#5782](https://github.com/formatjs/formatjs/issues/5782)) ([3464284](https://github.com/formatjs/formatjs/commit/3464284d983070b9b0f307f5f1d1709be829f14c)) - by @longlho
+
 # [9.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.0.7...@formatjs/intl-numberformat@9.1.0) (2025-12-26)
 
 ### Features

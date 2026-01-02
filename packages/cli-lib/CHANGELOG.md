@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.0.8...@formatjs/cli-lib@8.1.0) (2026-01-02)
+
+### Bug Fixes
+
+* **deps:** update dependency commander to v14 ([#5705](https://github.com/formatjs/formatjs/issues/5705)) ([7e9aab2](https://github.com/formatjs/formatjs/commit/7e9aab26705d26e3bc9c96029b39ba59fbe584cc)) - by @renovate[bot]
+
+### Features
+
+* **@formatjs/ts-transformer:** flatten before id generation, fix [#3537](https://github.com/formatjs/formatjs/issues/3537) ([#5790](https://github.com/formatjs/formatjs/issues/5790)) ([ea3a9d7](https://github.com/formatjs/formatjs/commit/ea3a9d7ba811a7f24ac1495295a07ae2db653f99)) - by @longlho
+
 ## [8.0.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.0.7...@formatjs/cli-lib@8.0.8) (2025-12-28)
 
 **Note:** Version bump only for package @formatjs/cli-lib

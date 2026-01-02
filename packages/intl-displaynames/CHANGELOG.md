@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@7.1.0...@formatjs/intl-displaynames@7.1.1) (2026-01-02)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
 # [7.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@7.0.6...@formatjs/intl-displaynames@7.1.0) (2025-12-26)
 
 ### Features

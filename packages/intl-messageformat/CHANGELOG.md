@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.8](github.com/formatjs/formatjs/compare/intl-messageformat@11.0.7...intl-messageformat@11.0.8) (2026-01-02)
+
+### Bug Fixes
+
+* **intl-messageformat:** fix value having special key like constructor, fix #[#4490](/github.com/formatjs/formatjs/issues/4490) ([#5751](/github.com/formatjs/formatjs/issues/5751)) ([83d24fe](github.com/formatjs/formatjs/commits/83d24fe00c3eedac8d8a298abb1d1d93509fef80)) - by @longlho
+* **intl-messageformat:** handle bigint, fix [#5081](/github.com/formatjs/formatjs/issues/5081) ([#5743](/github.com/formatjs/formatjs/issues/5743)) ([aa40318](github.com/formatjs/formatjs/commits/aa4031838aa136db882d1f6ba6101480094014ff)) - by @longlho
+
 ## [11.0.7](github.com/formatjs/formatjs/compare/intl-messageformat@11.0.6...intl-messageformat@11.0.7) (2025-12-26)
 
 **Note:** Version bump only for package intl-messageformat

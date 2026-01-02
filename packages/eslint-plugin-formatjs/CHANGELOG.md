@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.9](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.0.8...eslint-plugin-formatjs@6.0.9) (2026-01-02)
+
+### Bug Fixes
+
+* **@formatjs/cli:** don't try to parse non core fields ([#5747](https://github.com/formatjs/formatjs/issues/5747)) ([6395940](https://github.com/formatjs/formatjs/commit/63959400061f6e573efa828b4e113559f11c9146)), closes [#5069](https://github.com/formatjs/formatjs/issues/5069) [#5069](https://github.com/formatjs/formatjs/issues/5069) [#5069](https://github.com/formatjs/formatjs/issues/5069) - by @longlho
+* **eslint-plugin-formatjs:** handle formatMessage when it's being destructured, fix [#4890](https://github.com/formatjs/formatjs/issues/4890) ([#5749](https://github.com/formatjs/formatjs/issues/5749)) ([fcd87fd](https://github.com/formatjs/formatjs/commit/fcd87fdd7b5378f8dc976ef3aa8eb2e4a2fd3404)) - by @longlho
+* **eslint-plugin-formatjs:** relax eslint dep req ([#5715](https://github.com/formatjs/formatjs/issues/5715)) ([a2965e7](https://github.com/formatjs/formatjs/commit/a2965e70dec9167d524ed709881bd5fc1094c6c7)) - by @longlho
+
 ## [6.0.8](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.0.7...eslint-plugin-formatjs@6.0.8) (2025-12-28)
 
 ### Bug Fixes

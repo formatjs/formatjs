@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@2.1.0...@formatjs/intl-enumerator@2.1.1) (2026-01-02)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** add America/Coyhaique, fix [#5111](https://github.com/formatjs/formatjs/issues/5111) ([#5741](https://github.com/formatjs/formatjs/issues/5741)) ([edd2f94](https://github.com/formatjs/formatjs/commit/edd2f94ab780e82702a1017e3ca38d41bde325ed)) - by @longlho
+
 # [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-enumerator@2.0.5...@formatjs/intl-enumerator@2.1.0) (2025-12-26)
 
 ### Features

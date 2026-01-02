@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.1.0...@formatjs/intl-datetimeformat@7.1.1) (2026-01-02)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** add America/Coyhaique, fix [#5111](https://github.com/formatjs/formatjs/issues/5111) ([#5741](https://github.com/formatjs/formatjs/issues/5741)) ([edd2f94](https://github.com/formatjs/formatjs/commit/edd2f94ab780e82702a1017e3ca38d41bde325ed)) - by @longlho
+* **@formatjs/intl-datetimeformat:** add support for offset tz, fix [#4804](https://github.com/formatjs/formatjs/issues/4804) ([#5735](https://github.com/formatjs/formatjs/issues/5735)) ([0e835b0](https://github.com/formatjs/formatjs/commit/0e835b016068e1d3ffd22070be0ad9493eab5323)) - by @longlho
+* **@formatjs/intl-datetimeformat:** fix DST bug for Welsh, fix [#5114](https://github.com/formatjs/formatjs/issues/5114) ([#5739](https://github.com/formatjs/formatjs/issues/5739)) ([cf8cc43](https://github.com/formatjs/formatjs/commit/cf8cc43d201d4108a800a3929ee7816e2d994d24)) - by @longlho
+
 # [7.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.0.6...@formatjs/intl-datetimeformat@7.1.0) (2025-12-26)
 
 ### Bug Fixes

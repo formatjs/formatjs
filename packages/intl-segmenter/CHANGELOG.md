@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.7](github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.0.6...@formatjs/intl-segmenter@12.0.7) (2026-01-02)
+
+### Bug Fixes
+
+* **@formatjs/intl-segmenter:** fix isWordLike, fix [#4370](/github.com/formatjs/formatjs/issues/4370) ([#5737](/github.com/formatjs/formatjs/issues/5737)) ([2a06016](github.com/formatjs/formatjs/commits/2a06016a3f2ada063bf22ad174186d61f5632372)), closes [#29](github.com/formatjs/formatjs/issues/29) - by @longlho
+
 ## [12.0.6](github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.0.5...@formatjs/intl-segmenter@12.0.6) (2025-12-26)
 
 **Note:** Version bump only for package @formatjs/intl-segmenter

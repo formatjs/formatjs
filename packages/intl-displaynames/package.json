@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/intl-displaynames",
   "description": "Polyfill for: https://tc39.es/proposal-intl-displaynames",
-  "version": "7.1.0",
+  "version": "7.1.1",
   "license": "MIT",
   "author": "Linjie Ding <pyrocat101@users.noreply.github.com>",
   "type": "module",

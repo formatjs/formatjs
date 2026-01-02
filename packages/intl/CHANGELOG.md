@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.8](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.7...@formatjs/intl@4.0.8) (2026-01-02)
+
+**Note:** Version bump only for package @formatjs/intl
+
 ## [4.0.7](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.6...@formatjs/intl@4.0.7) (2025-12-26)
 
 **Note:** Version bump only for package @formatjs/intl

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.7](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.6...@formatjs/ecma402-abstract@3.0.7) (2026-01-02)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** add support for offset tz, fix [#4804](/github.com/formatjs/formatjs/issues/4804) ([#5735](/github.com/formatjs/formatjs/issues/5735)) ([0e835b0](github.com/formatjs/formatjs/commits/0e835b016068e1d3ffd22070be0ad9493eab5323)) - by @longlho
+* **@formatjs/intl-numberformat:** handle massive numbers, fix [#4236](/github.com/formatjs/formatjs/issues/4236) ([#5782](/github.com/formatjs/formatjs/issues/5782)) ([3464284](github.com/formatjs/formatjs/commits/3464284d983070b9b0f307f5f1d1709be829f14c)) - by @longlho
+
 ## [3.0.6](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.5...@formatjs/ecma402-abstract@3.0.6) (2025-12-26)
 
 ### Bug Fixes

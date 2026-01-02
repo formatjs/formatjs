@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/intl-relativetimeformat",
   "description": "Formats JavaScript dates to relative time strings.",
-  "version": "12.1.0",
+  "version": "12.1.1",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",
