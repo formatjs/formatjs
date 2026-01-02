@@ -106,7 +106,7 @@
     "karma-sauce-launcher": "^4.3.6",
     "lefthook": "^2.0.13",
     "lodash-es": "^4.17.21",
-    "lucide-react": "^0.468.0",
+    "lucide-react": "^0.562.0",
     "lunr": "^2.3.9",
     "make-plural-compiler": "^5.1.0",
     "minimist": "^1.2.8",
