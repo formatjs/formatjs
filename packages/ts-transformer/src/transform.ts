@@ -426,7 +426,24 @@ function extractMessageDescriptor(
                 msg.description = result
                 break
             }
+          } else if (
+            MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
+            name.text !== 'description'
+          ) {
+            // Non-static expression for defaultMessage or id
+            throw new Error(
+              `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`
+            )
           }
+        }
+        // Non-static JSX expression for defaultMessage or id
+        else if (
+          MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
+          name.text !== 'description'
+        ) {
+          throw new Error(
+            `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`
+          )
         }
       }
       // {defaultMessage: 'asd' + bar'}
@@ -444,6 +461,14 @@ function extractMessageDescriptor(
               msg.description = result
               break
           }
+        } else if (
+          MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
+          name.text !== 'description'
+        ) {
+          // Non-static expression for defaultMessage or id
+          throw new Error(
+            `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`
+          )
         }
       }
       // description: {custom: 1}
@@ -452,6 +477,15 @@ function extractMessageDescriptor(
         name.text === 'description'
       ) {
         msg.description = objectLiteralExpressionToObj(ts, initializer)
+      }
+      // Non-static value for defaultMessage or id
+      else if (
+        MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
+        name.text !== 'description'
+      ) {
+        throw new Error(
+          `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`
+        )
       }
     }
   })

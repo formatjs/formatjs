@@ -256,6 +256,15 @@ test('invalid syntax should throw', async () => {
   }).rejects.toThrowError('TS1005')
 }, 20000)
 
+// https://github.com/formatjs/formatjs/issues/4235
+test('#4235: non-static defaultMessage should throw with --throws', async () => {
+  await expect(async () => {
+    await exec(
+      `${BIN_PATH} extract --throws '${join(__dirname, 'typescript/non-static.tsx')}'`
+    )
+  }).rejects.toThrowError(/defaultMessage.*must be a string literal/i)
+}, 20000)
+
 test('whitespace and newlines should be preserved', async () => {
   process.chdir(__dirname)
   await expect(
