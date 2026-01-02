@@ -111,3 +111,30 @@ test('structurally same literal', function () {
     }
   )
 })
+
+// https://github.com/formatjs/formatjs/issues/4202
+test('GH #4202: multiple plurals with hash placeholders', function () {
+  const input =
+    '{topicCount, plural, one {# topic} other {# topics}} and {noteCount, plural, one {# note} other {# notes}}'
+  const result = printAST(hoistSelectors(parse(input)))
+
+  // When hoisting multiple plurals, the outer plural's # is replaced with
+  // explicit {variable, number} to avoid ambiguity with the inner plural's #
+  // Expected: topicCount's # → {topicCount, number}, noteCount's # → # (innermost)
+  expect(result).toBe(
+    '{topicCount,plural,one{{noteCount,plural,one{{topicCount, number} topic and # note} other{{topicCount, number} topic and # notes}}} other{{noteCount,plural,one{{topicCount, number} topics and # note} other{{topicCount, number} topics and # notes}}}}'
+  )
+})
+
+test('GH #4202: three plurals with hash placeholders', function () {
+  const input =
+    '{a, plural, one {# a} other {# as}}, {b, plural, one {# b} other {# bs}}, and {c, plural, one {# c} other {# cs}}'
+  const result = printAST(hoistSelectors(parse(input)))
+
+  // With 3 plurals, the nesting should be: a (outer) → b (middle) → c (inner)
+  // a's # → {a, number}, b's # → {b, number}, c's # → # (innermost)
+  // The structure creates a cartesian product: a×b×c options
+  expect(result).toBe(
+    '{a,plural,one{{b,plural,one{{c,plural,one{{a, number} a, {b, number} b, and # c} other{{a, number} a, {b, number} b, and # cs}}} other{{c,plural,one{{a, number} a, {b, number} bs, and # c} other{{a, number} a, {b, number} bs, and # cs}}}}} other{{b,plural,one{{c,plural,one{{a, number} as, {b, number} b, and # c} other{{a, number} as, {b, number} b, and # cs}}} other{{c,plural,one{{a, number} as, {b, number} bs, and # c} other{{a, number} as, {b, number} bs, and # cs}}}}}}'
+  )
+})

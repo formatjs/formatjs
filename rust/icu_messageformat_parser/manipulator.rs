@@ -130,6 +130,94 @@ fn is_plural_or_select_element(el: &MessageFormatElement) -> bool {
     )
 }
 
+/// Replaces pound elements with number elements referencing the given variable.
+///
+/// This is needed when nesting plurals - the # in the outer plural should become
+/// an explicit variable reference when nested inside another plural.
+///
+/// GH #4202
+///
+/// # Arguments
+///
+/// * `ast` - The AST to transform
+/// * `variable_name` - The variable name to use in place of #
+///
+/// # Returns
+///
+/// A new AST with pound elements replaced by number elements
+fn replace_pound_with_argument(
+    ast: &[MessageFormatElement],
+    variable_name: &str,
+) -> Vec<MessageFormatElement> {
+    ast.iter()
+        .map(|el| match el {
+            MessageFormatElement::Pound(pound) => {
+                // Replace # with {variableName, number}
+                MessageFormatElement::Number(NumberElement {
+                    value: variable_name.to_string(),
+                    style: None,
+                    location: pound.location.clone(),
+                })
+            }
+            MessageFormatElement::Plural(plural) => {
+                // Recursively process options
+                let options = plural
+                    .options
+                    .iter()
+                    .map(|(key, option)| {
+                        let value = replace_pound_with_argument(&option.value, variable_name);
+                        (
+                            key.clone(),
+                            PluralOrSelectOption {
+                                value,
+                                location: option.location.clone(),
+                            },
+                        )
+                    })
+                    .collect();
+                MessageFormatElement::Plural(PluralElement {
+                    value: plural.value.clone(),
+                    options,
+                    offset: plural.offset,
+                    plural_type: plural.plural_type,
+                    location: plural.location.clone(),
+                })
+            }
+            MessageFormatElement::Select(select) => {
+                // Recursively process options
+                let options = select
+                    .options
+                    .iter()
+                    .map(|(key, option)| {
+                        let value = replace_pound_with_argument(&option.value, variable_name);
+                        (
+                            key.clone(),
+                            PluralOrSelectOption {
+                                value,
+                                location: option.location.clone(),
+                            },
+                        )
+                    })
+                    .collect();
+                MessageFormatElement::Select(SelectElement {
+                    value: select.value.clone(),
+                    options,
+                    location: select.location.clone(),
+                })
+            }
+            MessageFormatElement::Tag(tag) => {
+                let children = replace_pound_with_argument(&tag.children, variable_name);
+                MessageFormatElement::Tag(TagElement {
+                    value: tag.value.clone(),
+                    children,
+                    location: tag.location.clone(),
+                })
+            }
+            _ => el.clone(),
+        })
+        .collect()
+}
+
 /// Recursively searches for a plural or select element in an AST.
 ///
 /// This checks if the AST contains any plural or select elements,
@@ -176,6 +264,12 @@ fn hoist_element(
     el: &MessageFormatElement,
     position: usize,
 ) -> MessageFormatElement {
+    let before = &ast[..position];
+    let after = &ast[position + 1..];
+
+    // GH #4202: Check if there are other plural/select elements after this one
+    let has_subsequent_plural_or_select = after.iter().any(is_plural_or_select_element);
+
     /// Helper to build a new option value by sandwiching the option's content
     /// between the AST slices before and after the hoisted element.
     fn build_option_value(
@@ -200,16 +294,21 @@ fn hoist_element(
         })
     }
 
-    let before = &ast[..position];
-    let after = &ast[position + 1..];
-
     match el {
         MessageFormatElement::Plural(plural) => {
             let options = plural
                 .options
                 .iter()
                 .map(|(key, option)| {
-                    let value = build_option_value(before, &option.value, after);
+                    // GH #4202: If there are subsequent plurals/selects,
+                    // replace # with explicit variable reference to avoid ambiguity
+                    let option_value = if has_subsequent_plural_or_select {
+                        replace_pound_with_argument(&option.value, &plural.value)
+                    } else {
+                        option.value.clone()
+                    };
+
+                    let value = build_option_value(before, &option_value, after);
                     (
                         key.clone(),
                         PluralOrSelectOption {

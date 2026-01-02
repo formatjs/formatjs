@@ -3,6 +3,7 @@ import {
   isDateElement,
   isNumberElement,
   isPluralElement,
+  isPoundElement,
   isSelectElement,
   isTagElement,
   isTimeElement,
@@ -29,6 +30,46 @@ function cloneDeep<T>(obj: T): T {
   return obj
 }
 
+/**
+ * Replace pound elements with number elements referencing the given variable.
+ * This is needed when nesting plurals - the # in the outer plural should become
+ * an explicit variable reference when nested inside another plural.
+ * GH #4202
+ */
+function replacePoundWithArgument(
+  ast: MessageFormatElement[],
+  variableName: string
+): MessageFormatElement[] {
+  return ast.map(el => {
+    if (isPoundElement(el)) {
+      // Replace # with {variableName, number}
+      return {
+        type: TYPE.number,
+        value: variableName,
+        style: null,
+        location: el.location,
+      }
+    }
+    if (isPluralElement(el) || isSelectElement(el)) {
+      // Recursively process options
+      const newOptions: Record<string, PluralOrSelectOption> = {}
+      for (const key of Object.keys(el.options)) {
+        newOptions[key] = {
+          value: replacePoundWithArgument(el.options[key].value, variableName),
+        }
+      }
+      return {...el, options: newOptions}
+    }
+    if (isTagElement(el)) {
+      return {
+        ...el,
+        children: replacePoundWithArgument(el.children, variableName),
+      }
+    }
+    return el
+  })
+}
+
 function hoistPluralOrSelectElement(
   ast: MessageFormatElement[],
   el: PluralElement | SelectElement,
@@ -37,12 +78,27 @@ function hoistPluralOrSelectElement(
   // pull this out of the ast and move it to the top
   const cloned = cloneDeep(el)
   const {options} = cloned
+
+  // GH #4202: Check if there are other plural/select elements after this one
+  const afterElements = ast.slice(positionToInject + 1)
+  const hasSubsequentPluralOrSelect = afterElements.some(
+    isPluralOrSelectElement
+  )
+
   cloned.options = Object.keys(options).reduce(
     (all: Record<string, PluralOrSelectOption>, k) => {
+      let optionValue = options[k].value
+
+      // GH #4202: If there are subsequent plurals/selects and this is a plural,
+      // replace # with explicit variable reference to avoid ambiguity
+      if (hasSubsequentPluralOrSelect && isPluralElement(el)) {
+        optionValue = replacePoundWithArgument(optionValue, el.value)
+      }
+
       const newValue = hoistSelectors([
         ...ast.slice(0, positionToInject),
-        ...options[k].value,
-        ...ast.slice(positionToInject + 1),
+        ...optionValue,
+        ...afterElements,
       ])
       all[k] = {
         value: newValue,
