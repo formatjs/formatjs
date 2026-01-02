@@ -34,7 +34,10 @@ jobs:
             --config=ci \
             --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
             :dist
-          cp -rf $(bazel cquery --output=files dist)/ release/
+          DIST_PATH=$(bazel cquery --config=ci --output=files :dist)
+          echo "Distribution path: $DIST_PATH"
+          ls -la "$DIST_PATH" || echo "Path does not exist"
+          cp -rf "$DIST_PATH" release/
           chmod -R +w release/
 
       - name: Upload Release Artifact
