@@ -555,7 +555,7 @@ function getCompactDisplayPattern(
   numberingSystem: string
 ): string | null {
   const {roundedNumber, sign, magnitude} = numberResult
-  const magnitudeKey = String(10 ** magnitude) as DecimalFormatNum
+  let magnitudeKey = String(10 ** magnitude) as DecimalFormatNum
   const defaultNumberingSystem = data.numbers.nu[0]
 
   let pattern: string
@@ -566,7 +566,20 @@ function getCompactDisplayPattern(
       byNumberingSystem[defaultNumberingSystem]
 
     // NOTE: compact notation ignores currencySign!
-    const compactPluralRules = currencyData.short?.[magnitudeKey]
+    let compactPluralRules = currencyData.short?.[magnitudeKey]
+    // GH #4236: If magnitude exceeds available patterns, use the largest available
+    if (!compactPluralRules) {
+      const thresholds = Object.keys(
+        currencyData.short || {}
+      ) as DecimalFormatNum[]
+      if (
+        thresholds.length > 0 &&
+        magnitudeKey > thresholds[thresholds.length - 1]
+      ) {
+        magnitudeKey = thresholds[thresholds.length - 1]
+        compactPluralRules = currencyData.short?.[magnitudeKey]
+      }
+    }
     if (!compactPluralRules) {
       return null
     }
@@ -577,7 +590,20 @@ function getCompactDisplayPattern(
       byNumberingSystem[numberingSystem] ||
       byNumberingSystem[defaultNumberingSystem]
 
-    const compactPlaralRule = byCompactDisplay[compactDisplay][magnitudeKey]
+    let compactPlaralRule = byCompactDisplay[compactDisplay][magnitudeKey]
+    // GH #4236: If magnitude exceeds available patterns, use the largest available
+    if (!compactPlaralRule) {
+      const thresholds = Object.keys(
+        byCompactDisplay[compactDisplay]
+      ) as DecimalFormatNum[]
+      if (
+        thresholds.length > 0 &&
+        magnitudeKey > thresholds[thresholds.length - 1]
+      ) {
+        magnitudeKey = thresholds[thresholds.length - 1]
+        compactPlaralRule = byCompactDisplay[compactDisplay][magnitudeKey]
+      }
+    }
     if (!compactPlaralRule) {
       return null
     }

@@ -437,3 +437,31 @@ test('#4359 roundingIncrement with fraction digits', () => {
   expect(nf.format(1.222)).toBe('1.20')
   expect(nf.format(1.227)).toBe('1.25')
 })
+
+// https://github.com/formatjs/formatjs/issues/4236
+// Bug fixed: formatting very large numbers (> 1000 trillion) with compact notation
+test('#4236 compact notation with very large numbers (quadrillion scale)', () => {
+  const formatter = new NumberFormat('en', {
+    notation: 'compact',
+    compactDisplay: 'short',
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  })
+
+  // Test cases for various magnitudes
+  expect(formatter.format(1e12)).toBe('1T') // 1 trillion
+  expect(formatter.format(1.5e12)).toBe('1.5T') // 1.5 trillion
+  expect(formatter.format(1e13)).toBe('10T') // 10 trillion
+  expect(formatter.format(1e14)).toBe('100T') // 100 trillion
+
+  // Numbers >= 1000 trillion (1e15) should use the largest available pattern
+  // 1.75682e15 = 1,756,820,000,000,000 (1.757 quadrillion) → 1756.82T
+  expect(formatter.format(1.75682e15)).toBe('1756.82T')
+
+  // 1e15 = 1,000,000,000,000,000 (1 quadrillion) → 1000T
+  expect(formatter.format(1e15)).toBe('1000T')
+
+  // Even larger numbers should continue to use the T suffix
+  expect(formatter.format(1e16)).toBe('10000T') // 10 quadrillion
+  expect(formatter.format(5.5e16)).toBe('55000T') // 55 quadrillion
+})

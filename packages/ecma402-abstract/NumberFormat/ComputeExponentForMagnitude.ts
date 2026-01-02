@@ -50,7 +50,18 @@ export function ComputeExponentForMagnitude(
         return 0
       }
       if (num > thresholds[thresholds.length - 1]) {
-        return thresholds[thresholds.length - 1].length - 1
+        // GH #4236: When number exceeds max threshold, use the exponent
+        // corresponding to the largest available threshold in locale data.
+        // Calculate exponent the same way as for normal thresholds (lines 70-73).
+        const magnitudeKey = thresholds[thresholds.length - 1]
+        const compactPattern = thresholdMap[magnitudeKey].other
+        if (compactPattern === '0') {
+          return 0
+        }
+        return (
+          magnitudeKey.length -
+          thresholdMap[magnitudeKey].other.match(/0+/)![0].length
+        )
       }
       const i = thresholds.indexOf(num)
       if (i === -1) {
