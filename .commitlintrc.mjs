@@ -5,6 +5,8 @@ const {sync: globSync} = fastGlobPkg
 const packages = [
   ...globSync('./packages/*/package.json').map(fn => readJSONSync(fn).name),
   'rules_formatjs',
+  // renovate bot config package
+  'deps',
 ]
 
 export default {
