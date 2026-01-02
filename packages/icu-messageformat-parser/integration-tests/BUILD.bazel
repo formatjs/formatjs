@@ -1,6 +1,7 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_rust//rust:defs.bzl", "rust_test")
 load("//tools:index.bzl", "generate_src_file")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -59,3 +60,15 @@ rust_test(
     ],
     entry_point = "run-parser.ts",
 ) for f in TEST_CASES]
+
+# WASM integration test
+vitest(
+    name = "wasm_integration_test",
+    srcs = ["wasm-integration.test.ts"],
+    fixtures = TEST_CASES + [
+        "//packages/icu-messageformat-parser-wasm:pkg",
+    ],
+    deps = [
+        ":node_modules/@formatjs/icu-messageformat-parser-wasm",
+    ],
+)

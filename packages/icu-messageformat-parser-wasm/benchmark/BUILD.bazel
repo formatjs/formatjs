@@ -1,0 +1,14 @@
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:index.bzl", "ts_binary")
+
+npm_link_all_packages()
+
+ts_binary(
+    name = "benchmark",
+    data = [
+        ":node_modules/@formatjs/icu-messageformat-parser",
+        ":node_modules/@formatjs/icu-messageformat-parser-wasm",
+        "//:node_modules/tinybench",
+    ],
+    entry_point = "benchmark.ts",
+)

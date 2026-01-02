@@ -1,5 +1,22 @@
-load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_shared_library", "rust_test")
+load("@rules_rust_wasm_bindgen//:defs.bzl", "rust_wasm_bindgen")
 load("//tools:index.bzl", "generate_src_file")
+
+exports_files(
+    [
+        "Cargo.toml",
+        "date_time_pattern_generator.rs",
+        "error.rs",
+        "lib.rs",
+        "manipulator.rs",
+        "parser.rs",
+        "printer.rs",
+        "regex_generated.rs",
+        "time_data_generated.rs",
+        "types.rs",
+    ],
+    visibility = ["//visibility:public"],
+)
 
 generate_src_file(
     name = "time-data",
@@ -50,4 +67,29 @@ rust_binary(
         ":icu_messageformat_parser",
         "@crates//:criterion",
     ],
+)
+
+# WASM binary using platform parameter
+rust_shared_library(
+    name = "_wasm_lib",
+    srcs = ["lib_wasm.rs"],
+    crate_name = "formatjs_icu_messageformat_parser",
+    crate_root = "lib_wasm.rs",
+    platform = "@rules_rust//rust/platform:wasm",
+    deps = [
+        ":icu_messageformat_parser",
+        "@crates//:icu",
+        "@crates//:serde",
+        "@crates//:serde-wasm-bindgen",
+        "@crates//:serde_json",
+        "@crates//:wasm-bindgen",
+    ],
+)
+
+# Generate JS glue code with wasm-bindgen
+rust_wasm_bindgen(
+    name = "formatjs_icu_messageformat_parser_wasm",
+    target = "web",
+    visibility = ["//visibility:public"],
+    wasm_file = ":_wasm_lib",
 )

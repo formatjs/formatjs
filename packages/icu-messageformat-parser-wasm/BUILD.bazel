@@ -1,0 +1,57 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile")
+
+npm_link_all_packages()
+
+PACKAGE_NAME = "icu-messageformat-parser-wasm"
+
+# Copy WASM files to the wasm/ directory
+copy_to_directory(
+    name = "wasm_files",
+    srcs = ["//rust/icu_messageformat_parser:formatjs_icu_messageformat_parser_wasm"],
+    out = "wasm",
+    root_paths = ["rust/icu_messageformat_parser/formatjs_icu_messageformat_parser_wasm"],
+)
+
+SRCS = ["index.ts"]
+
+SRC_DEPS = [
+    ":node_modules/@formatjs/ecma402-abstract",
+    ":node_modules/@formatjs/icu-skeleton-parser",
+    "//:node_modules/@types/node",
+]
+
+ts_compile(
+    name = "dist",
+    srcs = [":srcs"],
+    skip_esm = False,
+    deps = SRC_DEPS,
+)
+
+npm_package(
+    name = "pkg",
+    srcs = [
+        "README.md",
+        "package.json",
+        ":dist",
+        ":wasm_files",
+    ],
+    package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility = ["//visibility:public"],
+)
+
+# Generate tsconfig.json with correct extends path
+generate_ide_tsconfig_json()
+
+package_json_test(
+    name = "package_json_test",
+    deps = SRC_DEPS,
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

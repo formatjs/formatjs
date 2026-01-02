@@ -1,11 +1,11 @@
-pub mod time_data_generated;
-pub mod regex_generated;
 pub mod date_time_pattern_generator;
 pub mod error;
-pub mod types;
-pub mod printer;
 pub mod manipulator;
 pub mod parser;
+pub mod printer;
+pub mod regex_generated;
+pub mod time_data_generated;
+pub mod types;
 
 // Re-export time data
 pub use time_data_generated::TIME_DATA;
@@ -36,9 +36,9 @@ pub use error::{ErrorKind, Location, LocationDetails, ParserError};
 
 // Re-export common types
 pub use types::{
-    MessageFormatElement, Type, Skeleton, SkeletonType,
-    LiteralElement, ArgumentElement, NumberElement, DateElement,
-    TimeElement, SelectElement, PluralElement, PoundElement, TagElement,
+    ArgumentElement, DateElement, LiteralElement, MessageFormatElement, NumberElement,
+    PluralElement, PoundElement, SelectElement, Skeleton, SkeletonType, TagElement, TimeElement,
+    Type,
 };
 
 #[cfg(test)]

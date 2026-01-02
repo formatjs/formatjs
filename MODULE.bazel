@@ -5,6 +5,7 @@ module(
 
 ######### Bazel core rules #########
 
+bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "rules_shell", version = "0.6.1")
 
 ######### JS & Node.js rules #########
@@ -93,6 +94,11 @@ crate.from_cargo(
 use_repo(crate, "crates")
 
 bazel_dep(name = "rules_rust_wasm_bindgen", version = "0.68.1")
+
+# Register wasm32 toolchain
+register_toolchains(
+    "@rules_rust//rust/private/dummy_cc_toolchain:dummy_cc_wasm32_toolchain",
+)
 
 ######### Lint rules #########
 

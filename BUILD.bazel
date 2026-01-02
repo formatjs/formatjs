@@ -14,6 +14,8 @@ exports_files(
     [
         "karma.conf.js",
         "karma.conf-ci.js",
+        "Cargo.toml",
+        "Cargo.lock",
     ],
     visibility = ["//:__subpackages__"],
 )
@@ -36,6 +38,7 @@ PACKAGES_TO_DIST = [
     "//packages/eslint-plugin-formatjs",
     "//packages/fast-memoize",
     "//packages/icu-messageformat-parser",
+    "//packages/icu-messageformat-parser-wasm",
     "//packages/icu-skeleton-parser",
     "//packages/intl-datetimeformat",
     "//packages/intl-displaynames",

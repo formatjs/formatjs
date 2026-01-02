@@ -1,0 +1,37 @@
+{
+  "name": "@formatjs/icu-messageformat-parser-wasm",
+  "description": "WASM-powered ICU MessageFormat parser for high performance",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "FormatJS Team",
+  "private": true,
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./wasm": "./wasm/formatjs_icu_messageformat_parser_bg.wasm"
+  },
+  "dependencies": {
+    "@formatjs/ecma402-abstract": "workspace:*",
+    "@formatjs/icu-skeleton-parser": "workspace:*"
+  },
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "keywords": [
+    "i18n",
+    "icu",
+    "internationalization",
+    "intl",
+    "messageformat",
+    "parser",
+    "wasm",
+    "webassembly"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/formatjs/formatjs.git",
+    "directory": "packages/icu-messageformat-parser-wasm"
+  }
+}

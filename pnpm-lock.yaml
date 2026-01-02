@@ -668,6 +668,24 @@ importers:
         specifier: ^2.8.0
         version: 2.8.1
 
+  packages/icu-messageformat-parser-wasm:
+    dependencies:
+      '@formatjs/ecma402-abstract':
+        specifier: workspace:*
+        version: link:../ecma402-abstract
+      '@formatjs/icu-skeleton-parser':
+        specifier: workspace:*
+        version: link:../icu-skeleton-parser
+
+  packages/icu-messageformat-parser-wasm/benchmark:
+    devDependencies:
+      '@formatjs/icu-messageformat-parser':
+        specifier: workspace:*
+        version: link:../../icu-messageformat-parser
+      '@formatjs/icu-messageformat-parser-wasm':
+        specifier: workspace:*
+        version: link:..
+
   packages/icu-messageformat-parser/benchmark:
     devDependencies:
       '@formatjs/icu-messageformat-parser':
@@ -679,6 +697,9 @@ importers:
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:..
+      '@formatjs/icu-messageformat-parser-wasm':
+        specifier: workspace:*
+        version: link:../../icu-messageformat-parser-wasm
 
   packages/icu-skeleton-parser:
     dependencies:
