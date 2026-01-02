@@ -82,34 +82,47 @@ jobs:
       #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to npm
-        working-directory: release
         run: |
           # pnpm doesn't support OIDC Trusted Publishers yet, so we need to:
           # 1. Use pnpm to pack packages in topological order (resolves workspace:*)
           # 2. Use npm to publish with provenance
 
+          # Create packed directory
+          mkdir -p "$GITHUB_WORKSPACE/packed"
+
+          # Change to release directory for pnpm commands
+          cd release
+
           # Pack and publish in topological order using pnpm's --workspace-concurrency=1
           # This ensures dependencies are published before dependents
-          pnpm -r --workspace-concurrency=1 exec sh -c '
-            PACK_DIR="${GITHUB_WORKSPACE}/packed"
-            mkdir -p "$PACK_DIR"
+          pnpm -r --workspace-concurrency=1 exec bash -c '
+            PACK_DIR="$GITHUB_WORKSPACE/packed"
 
-            echo "Packing ${PWD}..."
+            echo "===== Packing $(basename $PWD) ====="
             pnpm pack --pack-destination "$PACK_DIR"
 
             # Find the tarball that was just created (most recent .tgz in pack dir)
             TARBALL=$(ls -t "$PACK_DIR"/*.tgz | head -1)
 
             if [ -f "$TARBALL" ]; then
+              echo "Found tarball: $TARBALL"
+
               # Verify workspace:* was resolved in the tarball
-              echo "Verifying $TARBALL..."
+              echo "Verifying tarball contents..."
               if tar -xzOf "$TARBALL" package/package.json | grep -q "workspace:"; then
                 echo "❌ ERROR: Found unresolved workspace: protocol in $TARBALL"
+                tar -xzOf "$TARBALL" package/package.json | grep "workspace:" || true
                 exit 1
               fi
 
               echo "✅ Verified: no workspace: protocol in tarball"
               echo "Publishing $TARBALL..."
+              # Run npm publish from workspace root where .npmrc exists
+              cd "$GITHUB_WORKSPACE"
               npm publish "$TARBALL" --access public --provenance
+              echo "✅ Published successfully"
+            else
+              echo "❌ ERROR: Tarball not found"
+              exit 1
             fi
           '
