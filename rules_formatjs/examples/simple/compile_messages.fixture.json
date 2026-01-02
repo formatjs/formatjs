@@ -1,0 +1,20 @@
+{
+  "app.button": [
+    {
+      "type": 0,
+      "value": "Click me!"
+    }
+  ],
+  "app.description": [
+    {
+      "type": 0,
+      "value": "This is an example of internationalized React app using FormatJS and Bazel."
+    }
+  ],
+  "app.title": [
+    {
+      "type": 0,
+      "value": "Welcome to FormatJS"
+    }
+  ]
+}

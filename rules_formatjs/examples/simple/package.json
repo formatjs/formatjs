@@ -1,0 +1,11 @@
+{
+  "name": "formatjs-example-simple",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@formatjs/cli": "^6.8.8"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": []
+  }
+}

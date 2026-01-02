@@ -1,0 +1,5 @@
+{
+  "greeting": "こんにちは、{invalid}!",
+  "farewell": "さようなら!",
+  "count": "You have {wrong_var} items."
+}

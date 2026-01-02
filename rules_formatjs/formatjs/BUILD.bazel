@@ -1,0 +1,9 @@
+"""FormatJS build rules"""
+
+exports_files([
+    "defs.bzl",
+    "extract.bzl",
+    "compile.bzl",
+    "aggregate.bzl",
+    "verify.bzl",
+])
