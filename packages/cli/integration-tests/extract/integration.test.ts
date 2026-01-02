@@ -344,3 +344,34 @@ test('GH #4471: Optional chaining with generics in formatMessage', async () => {
     await readJSON(join(ARTIFACT_PATH, 'optionalChaining/actual.json'))
   ).toMatchSnapshot()
 })
+
+// https://github.com/formatjs/formatjs/issues/3537
+test('GH #3537: flatten with id-interpolation-pattern (content-based IDs)', async () => {
+  const result = await exec(
+    `${BIN_PATH} extract --throws --flatten --id-interpolation-pattern '[sha512:contenthash:base64:6]' '${join(
+      __dirname,
+      'flattenWithIdPattern/actual.js'
+    )}'`
+  )
+
+  // Parse the JSON output
+  const extracted = JSON.parse(result.stdout)
+
+  // Verify messages are flattened
+  const messages = Object.values(extracted) as Array<{defaultMessage: string}>
+  const sortedMessages = messages.sort((a, b) =>
+    a.defaultMessage.localeCompare(b.defaultMessage)
+  )
+
+  // Check that both messages are flattened correctly
+  expect(sortedMessages).toEqual([
+    {
+      defaultMessage:
+        '{count,plural,one{I have a dog} other{I have many dogs}}',
+    },
+    {
+      defaultMessage:
+        '{topicCount,plural,one{{noteCount,plural,one{{topicCount, number} topic and # note} other{{topicCount, number} topic and # notes}}} other{{noteCount,plural,one{{topicCount, number} topics and # note} other{{topicCount, number} topics and # notes}}}}',
+    },
+  ])
+}, 20000)

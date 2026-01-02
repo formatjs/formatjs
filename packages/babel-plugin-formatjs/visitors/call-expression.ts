@@ -71,6 +71,7 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
       removeDefaultMessage,
       ast,
       preserveWhitespace,
+      flatten,
     } = opts as Options
     if (wasExtracted(path)) {
       return
@@ -114,7 +115,8 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
         filename || undefined,
         idInterpolationPattern,
         overrideIdFn,
-        preserveWhitespace
+        preserveWhitespace,
+        flatten
       )
       storeMessage(
         descriptor,
