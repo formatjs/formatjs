@@ -26,7 +26,6 @@ npm.npm_translate_lock(
     name = "npm",
     data = [
         "//:patches/@brillout__vite-plugin-server-entry@0.7.16.patch",
-        "//:patches/@commitlint__rules.patch",
         "//:patches/@types__mdx.patch",
         "//:patches/@vue+compiler-sfc.patch",
         "//:patches/make-plural-compiler@5.1.0.patch",

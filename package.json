@@ -27,8 +27,8 @@
     "@bazel/bazelisk": "^1.22.1",
     "@bazel/ibazel": "^0.28.0",
     "@bazel/runfiles": "^6.3.1",
-    "@commitlint/cli": "^20.2.0",
-    "@commitlint/config-angular": "^20.2.0",
+    "@commitlint/cli": "^20.3.0",
+    "@commitlint/config-angular": "^20.3.0",
     "@glimmer/syntax": "^0.95.0",
     "@lerna-lite/cli": "^4.10.2",
     "@lerna-lite/version": "^4.10.2",
@@ -189,7 +189,6 @@
     },
     "patchedDependencies": {
       "@brillout/vite-plugin-server-entry@0.7.16": "patches/@brillout__vite-plugin-server-entry@0.7.16.patch",
-      "@commitlint/rules": "patches/@commitlint__rules.patch",
       "@types/mdx": "patches/@types__mdx.patch",
       "@vue/compiler-sfc": "patches/@vue+compiler-sfc.patch",
       "make-plural-compiler@5.1.0": "patches/make-plural-compiler@5.1.0.patch"
