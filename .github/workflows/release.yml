@@ -72,9 +72,6 @@ jobs:
           name: release-dist
           path: release/
 
-      - name: Copy npmrc to release directory
-        run: cp ~/.npmrc release/.npmrc
-
       - name: Install Release Dependencies
         working-directory: release
         run: pnpm install --frozen-lockfile --ignore-scripts
