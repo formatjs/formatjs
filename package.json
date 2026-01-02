@@ -16,6 +16,9 @@
     "test": "syncpack lint && oxlint --config .oxlintrc.json && bazel test //...",
     "website": "NO_UPDATE_NOTIFIER=1 bazel run //website:serve"
   },
+  "dependencies": {
+    "tailwind-merge": "^3.4.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "@babel/helper-plugin-utils": "^7.26.5",
@@ -127,7 +130,6 @@
     "remark-gfm": "^4.0.0",
     "serialize-javascript": "^7.0.0",
     "syncpack": "^13.0.4",
-    "tailwind-merge": "^2.6.0",
     "tailwindcss": "^4.1.18",
     "test262-harness": "^10.0.0",
     "tinybench": "^6.0.0",
