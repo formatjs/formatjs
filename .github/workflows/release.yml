@@ -83,7 +83,5 @@ jobs:
 
       - name: Publish to npm
         working-directory: release
-        env:
-          NPM_CONFIG_PROVENANCE: true
         run: |
           pnpm -r publish --access public --no-git-checks
