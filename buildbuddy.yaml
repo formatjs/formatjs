@@ -6,9 +6,6 @@ actions:
         branches:
           - 'main'
           - 'gh-readonly-queue/*'
-      pull_request:
-        branches:
-          - '*'
     resource_requests:
       memory: 10GB
       disk: 16GB
