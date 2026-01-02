@@ -1,5 +1,7 @@
 import * as t from '@babel/types'
 import {parse} from '@formatjs/icu-messageformat-parser'
+import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
+import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import {interpolateName} from '@formatjs/ts-transformer'
 
 import {NodePath} from '@babel/core'
@@ -91,10 +93,11 @@ export function evaluateMessageDescriptor(
   filename: string | undefined,
   idInterpolationPattern?: string,
   overrideIdFn?: Options['overrideIdFn'],
-  preserveWhitespace?: Options['preserveWhitespace']
+  preserveWhitespace?: Options['preserveWhitespace'],
+  flatten?: Options['flatten']
 ): MessageDescriptor {
   let id = getMessageDescriptorValue(descriptorPath.id)
-  const defaultMessage = getICUMessageValue(
+  let defaultMessage = getICUMessageValue(
     descriptorPath.defaultMessage,
     {
       isJSXSource,
@@ -102,6 +105,17 @@ export function evaluateMessageDescriptor(
     preserveWhitespace
   )
   const description = getMessageDescriptorValue(descriptorPath.description)
+
+  // GH #3537: Apply flatten transformation before calling overrideIdFn
+  // so that the ID generation sees the same message format as the final output
+  if (flatten && defaultMessage) {
+    try {
+      defaultMessage = printAST(hoistSelectors(parse(defaultMessage)))
+    } catch (e) {
+      // If flatten fails, continue with original message
+      // The error will be caught again during validation
+    }
+  }
 
   if (overrideIdFn) {
     id = overrideIdFn(id, defaultMessage, description, filename)

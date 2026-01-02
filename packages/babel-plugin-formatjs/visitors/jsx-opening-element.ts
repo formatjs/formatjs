@@ -31,6 +31,7 @@ export const visitor: VisitNodeFunction<
     overrideIdFn,
     ast,
     preserveWhitespace,
+    flatten,
   } = opts as Options
 
   const {componentNames, messages} = this
@@ -75,7 +76,8 @@ export const visitor: VisitNodeFunction<
     filename || undefined,
     idInterpolationPattern,
     overrideIdFn,
-    preserveWhitespace
+    preserveWhitespace,
+    flatten
   )
 
   storeMessage(

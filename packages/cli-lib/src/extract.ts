@@ -7,9 +7,6 @@ import {outputFile} from 'fs-extra/esm'
 import {debug, getStdinAsString, warn, writeStdout} from './console_utils.js'
 import * as stringifyNs from 'json-stable-stringify'
 
-import {parse} from '@formatjs/icu-messageformat-parser'
-import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
-import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import {Formatter, resolveBuiltinFormatter} from './formatters/index.js'
 import {parseScript} from './parse_script.js'
 import {readFile} from 'fs/promises'
@@ -196,7 +193,7 @@ export async function extract(
   files: readonly string[],
   extractOpts: ExtractOpts
 ): Promise<string> {
-  const {throws, readFromStdin, flatten, ...opts} = extractOpts
+  const {throws, readFromStdin, ...opts} = extractOpts
   let rawResults: Array<ExtractionResult | undefined> = []
   try {
     if (readFromStdin) {
@@ -270,9 +267,8 @@ ${JSON.stringify(message, undefined, 2)}`
   const results: Record<string, Omit<MessageDescriptor, 'id'>> = {}
   const messages = Array.from(extractedMessages.values())
   for (const {id, ...msg} of messages) {
-    if (flatten && msg.defaultMessage) {
-      msg.defaultMessage = printAST(hoistSelectors(parse(msg.defaultMessage)))
-    }
+    // GH #3537: flatten is now applied during extraction in the babel plugin,
+    // so we don't need to apply it again here. The messages are already flattened.
     results[id] = msg
   }
   if (typeof formatter.serialize === 'function') {

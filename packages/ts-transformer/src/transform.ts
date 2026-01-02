@@ -1,4 +1,6 @@
 import {MessageFormatElement, parse} from '@formatjs/icu-messageformat-parser'
+import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
+import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import * as stringifyNs from 'json-stable-stringify'
 import * as typescript from 'typescript'
 import {debug} from './console_utils.js'
@@ -183,6 +185,10 @@ export interface Opts {
    * Whether to preserve whitespace and newlines.
    */
   preserveWhitespace?: boolean
+  /**
+   * Whether to hoist selectors & flatten sentences
+   */
+  flatten?: boolean
 }
 
 const DEFAULT_OPTS: Omit<Opts, 'program'> = {
@@ -254,7 +260,7 @@ function extractMessageDescriptor(
     | typescript.ObjectLiteralExpression
     | typescript.JsxOpeningElement
     | typescript.JsxSelfClosingElement,
-  {overrideIdFn, extractSourceLocation, preserveWhitespace}: Opts,
+  {overrideIdFn, extractSourceLocation, preserveWhitespace, flatten}: Opts,
   sf: typescript.SourceFile
 ): MessageDescriptor | undefined {
   let properties:
@@ -496,6 +502,16 @@ function extractMessageDescriptor(
 
   if (msg.defaultMessage && !preserveWhitespace) {
     msg.defaultMessage = msg.defaultMessage.trim().replace(/\s+/gm, ' ')
+  }
+  // GH #3537: Apply flatten transformation before calling overrideIdFn
+  // so that the ID generation sees the same message format as the final output
+  if (flatten && msg.defaultMessage) {
+    try {
+      msg.defaultMessage = printAST(hoistSelectors(parse(msg.defaultMessage)))
+    } catch (e) {
+      // If flatten fails, continue with original message
+      // The error will be caught again during validation
+    }
   }
   if (msg.defaultMessage && overrideIdFn) {
     switch (typeof overrideIdFn) {

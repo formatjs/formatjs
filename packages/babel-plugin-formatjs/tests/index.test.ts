@@ -273,3 +273,40 @@ test('$t with no arguments', () => {
     },
   })
 })
+
+// GH #3537: Test flatten with overrideIdFn
+test('GH #3537: flatten with overrideIdFn', function () {
+  const result = transformAndCheck('flattenWithOverrideIdFn', {
+    flatten: true,
+    overrideIdFn: (
+      _id?: string,
+      defaultMessage?: string,
+      _description?: string
+    ) => {
+      // The overrideIdFn should receive the flattened message
+      // Generate ID based on message length to verify the message is flattened
+      return `msg_${defaultMessage?.length || 0}`
+    },
+  })
+
+  // Verify that the messages were extracted
+  expect(result.data.messages).toHaveLength(2)
+
+  // First message should have flattened content
+  // Original: "I have {count, plural, one{a dog} other{many dogs}}"
+  // Flattened: "{count,plural,one{I have a dog} other{I have many dogs}}" (56 chars)
+  expect(result.data.messages[0].defaultMessage).toBe(
+    '{count,plural,one{I have a dog} other{I have many dogs}}'
+  )
+  // ID should be based on flattened message length (56 chars)
+  expect(result.data.messages[0].id).toBe('msg_56')
+
+  // Second message should have flattened content with # replaced by {variable, number}
+  // Original: "{topicCount, plural, one {# topic} other {# topics}} and {noteCount, plural, one {# note} other {# notes}}"
+  // Flattened: "{topicCount,plural,one{{noteCount,plural,one{{topicCount, number} topic and # note} other{{topicCount, number} topic and # notes}}} other{{noteCount,plural,one{{topicCount, number} topics and # note} other{{topicCount, number} topics and # notes}}}}" (249 chars)
+  expect(result.data.messages[1].defaultMessage).toBe(
+    '{topicCount,plural,one{{noteCount,plural,one{{topicCount, number} topic and # note} other{{topicCount, number} topic and # notes}}} other{{noteCount,plural,one{{topicCount, number} topics and # note} other{{topicCount, number} topics and # notes}}}}'
+  )
+  // ID should be based on flattened message length (249 chars)
+  expect(result.data.messages[1].id).toBe('msg_249')
+})

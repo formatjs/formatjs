@@ -43,4 +43,5 @@ export interface Options {
   extractSourceLocation?: boolean
   ast?: boolean
   preserveWhitespace?: boolean
+  flatten?: boolean
 }
