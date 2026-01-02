@@ -62,9 +62,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-          scope: '@formatjs'
 
       - name: Download Release Artifact
         uses: actions/download-artifact@v7
@@ -75,6 +74,19 @@ jobs:
       - name: Install Release Dependencies
         working-directory: release
         run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Debug npm configuration
+        run: |
+          echo "Node version:"
+          node --version
+          echo "npm version:"
+          npm --version
+          echo "npm config list:"
+          npm config list
+          echo "Looking for .npmrc files:"
+          find ~ -name ".npmrc" -type f 2>/dev/null || true
+          ls -la ~/.npmrc 2>/dev/null || echo "No ~/.npmrc"
+          ls -la .npmrc 2>/dev/null || echo "No ./.npmrc"
 
       # - name: Version Packages
       #   run: HUSKY=0 pnpm run prerelease
@@ -117,9 +129,9 @@ jobs:
 
               echo "✅ Verified: no workspace: protocol in tarball"
               echo "Publishing $TARBALL..."
-              # Run npm publish from workspace root where .npmrc exists
-              cd "$GITHUB_WORKSPACE"
-              npm publish "$TARBALL" --access public --provenance
+              # npm publish with OIDC trusted publishing
+              # The --provenance flag triggers OIDC authentication automatically
+              npm publish "$TARBALL" --access public --provenance --registry https://registry.npmjs.org/
               echo "✅ Published successfully"
             else
               echo "❌ ERROR: Tarball not found"
