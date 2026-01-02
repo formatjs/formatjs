@@ -240,10 +240,8 @@ describe('For wrong options NumberFormat correctly throws exception', () => {
       new NumberFormat('en', {roundingIncrement: 3 as any})
 
     expect(createInstance).toThrow(
-      new RangeError(
-        `Invalid rounding increment value: 3.
+      `Invalid rounding increment value: 3.
 Valid values are 1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000.`
-      )
     )
   })
 
@@ -256,9 +254,7 @@ Valid values are 1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 
       })
 
     expect(createInstance).toThrow(
-      new RangeError(
-        'With roundingIncrement > 1, maximumFractionDigits and minimumFractionDigits must be equal.'
-      )
+      'With roundingIncrement > 1, maximumFractionDigits and minimumFractionDigits must be equal.'
     )
   })
 })
@@ -378,10 +374,66 @@ test('#4476', () => {
   expect(formatter.format(1000)).toEqual('1,000')
 })
 
-test.only('#4771', function () {
+test('#4771', function () {
   const nf = new NumberFormat('en', {
     style: 'currency',
     currency: 'USD',
   })
   expect(nf.format('1234567891234567.35')).toEqual('$1,234,567,891,234,567.35')
+})
+
+// https://github.com/formatjs/formatjs/issues/4359
+// roundingIncrement should properly round numbers
+test('#4359 roundingIncrement with roundingMode floor', () => {
+  const nf = new NumberFormat('en-CA', {
+    roundingIncrement: 5,
+    roundingMode: 'floor',
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+  })
+  expect(nf.format(27.07)).toBe('25')
+  expect(nf.format(22)).toBe('20')
+  expect(nf.format(23)).toBe('20')
+  expect(nf.format(27)).toBe('25')
+  expect(nf.format(28)).toBe('25')
+  expect(nf.format(29)).toBe('25')
+  expect(nf.format(30)).toBe('30')
+})
+
+test('#4359 roundingIncrement with roundingMode ceil', () => {
+  const nf = new NumberFormat('en-CA', {
+    roundingIncrement: 5,
+    roundingMode: 'ceil',
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+  })
+  expect(nf.format(27.07)).toBe('30')
+  expect(nf.format(21)).toBe('25')
+  expect(nf.format(25)).toBe('25')
+  expect(nf.format(26)).toBe('30')
+})
+
+test('#4359 roundingIncrement with roundingMode halfExpand', () => {
+  const nf = new NumberFormat('en-CA', {
+    roundingIncrement: 5,
+    roundingMode: 'halfExpand',
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+  })
+  expect(nf.format(27.07)).toBe('25')
+  expect(nf.format(27.5)).toBe('30')
+  expect(nf.format(22.4)).toBe('20')
+  expect(nf.format(22.5)).toBe('25')
+})
+
+test('#4359 roundingIncrement with fraction digits', () => {
+  const nf = new NumberFormat('en-US', {
+    roundingIncrement: 5,
+    roundingMode: 'halfExpand',
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  })
+  expect(nf.format(1.234)).toBe('1.25')
+  expect(nf.format(1.222)).toBe('1.20')
+  expect(nf.format(1.227)).toBe('1.25')
 })
