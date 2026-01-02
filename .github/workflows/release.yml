@@ -84,4 +84,32 @@ jobs:
       - name: Publish to npm
         working-directory: release
         run: |
-          pnpm -r publish --access public --no-git-checks
+          # pnpm doesn't support OIDC Trusted Publishers yet, so we need to:
+          # 1. Use pnpm to pack packages in topological order (resolves workspace:*)
+          # 2. Use npm to publish with provenance
+
+          # Pack and publish in topological order using pnpm's --workspace-concurrency=1
+          # This ensures dependencies are published before dependents
+          pnpm -r --workspace-concurrency=1 exec sh -c '
+            PACK_DIR="${GITHUB_WORKSPACE}/packed"
+            mkdir -p "$PACK_DIR"
+
+            echo "Packing ${PWD}..."
+            pnpm pack --pack-destination "$PACK_DIR"
+
+            # Find the tarball that was just created (most recent .tgz in pack dir)
+            TARBALL=$(ls -t "$PACK_DIR"/*.tgz | head -1)
+
+            if [ -f "$TARBALL" ]; then
+              # Verify workspace:* was resolved in the tarball
+              echo "Verifying $TARBALL..."
+              if tar -xzOf "$TARBALL" package/package.json | grep -q "workspace:"; then
+                echo "❌ ERROR: Found unresolved workspace: protocol in $TARBALL"
+                exit 1
+              fi
+
+              echo "✅ Verified: no workspace: protocol in tarball"
+              echo "Publishing $TARBALL..."
+              npm publish "$TARBALL" --access public --provenance
+            fi
+          '
