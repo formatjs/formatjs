@@ -107,7 +107,10 @@ jobs:
 
           # Pack and publish in topological order using pnpm's --workspace-concurrency=1
           # This ensures dependencies are published before dependents
-          pnpm -r --workspace-concurrency=1 exec bash -c '
+          # Using --no-bail=false to stop on first failure
+          set -e  # Exit immediately if any command fails
+          pnpm -r --workspace-concurrency=1 --no-bail exec bash -c '
+            set -e  # Exit immediately if any command fails
             PACK_DIR="$GITHUB_WORKSPACE/packed"
 
             echo "===== Packing $(basename $PWD) ====="
