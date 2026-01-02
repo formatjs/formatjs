@@ -10,12 +10,12 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
-permissions:
-  contents: read
-
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout Repository
@@ -28,32 +28,6 @@ jobs:
           disk-cache: ${{ github.workflow }}
           repository-cache: true
 
-      - name: Build Distribution
-        run: |
-          bazel build \
-            --config=ci \
-            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
-            :dist
-          DIST_PATH=$(bazel cquery --config=ci --output=files :dist)
-          echo "Distribution path: $DIST_PATH"
-          ls -la "$DIST_PATH" || echo "Path does not exist"
-          cp -rf "$DIST_PATH" release/
-          chmod -R +w release/
-
-      - name: Upload Release Artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: release-dist
-          path: release/
-          retention-days: 1
-
-  release:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      id-token: write
-
-    steps:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -65,79 +39,21 @@ jobs:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Download Release Artifact
-        uses: actions/download-artifact@v7
-        with:
-          name: release-dist
-          path: release/
+      - name: Build Distribution
+        run: |
+          bazel build \
+            --config=ci \
+            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+            :dist
+          DIST_PATH=$(bazel cquery --config=ci --output=files :dist)
+          echo "Distribution path: $DIST_PATH"
+          cp -rf "$DIST_PATH" release/
+          chmod -R +w release/
 
-      - name: Install Release Dependencies
+      - name: Install Dependencies
         working-directory: release
         run: pnpm install --frozen-lockfile --ignore-scripts
 
-      - name: Debug npm configuration
-        run: |
-          echo "Node version:"
-          node --version
-          echo "npm version:"
-          npm --version
-          echo "npm config list:"
-          npm config list
-          echo "Looking for .npmrc files:"
-          find ~ -name ".npmrc" -type f 2>/dev/null || true
-          ls -la ~/.npmrc 2>/dev/null || echo "No ~/.npmrc"
-          ls -la .npmrc 2>/dev/null || echo "No ./.npmrc"
-
-      # - name: Version Packages
-      #   run: HUSKY=0 pnpm run prerelease
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Publish to npm
-        run: |
-          # pnpm doesn't support OIDC Trusted Publishers yet, so we need to:
-          # 1. Use pnpm to pack packages in topological order (resolves workspace:*)
-          # 2. Use npm to publish with provenance
-
-          # Create packed directory
-          mkdir -p "$GITHUB_WORKSPACE/packed"
-
-          # Change to release directory for pnpm commands
-          cd release
-
-          # Pack and publish in topological order using pnpm's --workspace-concurrency=1
-          # This ensures dependencies are published before dependents
-          # Using --no-bail=false to stop on first failure
-          set -e  # Exit immediately if any command fails
-          pnpm -r --workspace-concurrency=1 --no-bail exec bash -c '
-            set -e  # Exit immediately if any command fails
-            PACK_DIR="$GITHUB_WORKSPACE/packed"
-
-            echo "===== Packing $(basename $PWD) ====="
-            pnpm pack --pack-destination "$PACK_DIR"
-
-            # Find the tarball that was just created (most recent .tgz in pack dir)
-            TARBALL=$(ls -t "$PACK_DIR"/*.tgz | head -1)
-
-            if [ -f "$TARBALL" ]; then
-              echo "Found tarball: $TARBALL"
-
-              # Verify workspace:* was resolved in the tarball
-              echo "Verifying tarball contents..."
-              if tar -xzOf "$TARBALL" package/package.json | grep -q "workspace:"; then
-                echo "❌ ERROR: Found unresolved workspace: protocol in $TARBALL"
-                tar -xzOf "$TARBALL" package/package.json | grep "workspace:" || true
-                exit 1
-              fi
-
-              echo "✅ Verified: no workspace: protocol in tarball"
-              echo "Publishing $TARBALL..."
-              # npm publish with OIDC trusted publishing
-              # The --provenance flag triggers OIDC authentication automatically
-              npm publish "$TARBALL" --access public --provenance --registry https://registry.npmjs.org/
-              echo "✅ Published successfully"
-            else
-              echo "❌ ERROR: Tarball not found"
-              exit 1
-            fi
-          '
+        working-directory: release
+        run: pnpm -r publish --access public --no-git-checks
