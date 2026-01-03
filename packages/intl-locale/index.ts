@@ -7,12 +7,12 @@ import {
   invariant,
 } from '@formatjs/ecma402-abstract'
 import {supportedValuesOf} from '@formatjs/intl-enumerator'
+import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
 import {
-  UnicodeExtension,
-  UnicodeLanguageId,
+  type UnicodeExtension,
+  type UnicodeLanguageId,
   emitUnicodeLanguageId,
   emitUnicodeLocaleId,
-  getCanonicalLocales,
   isStructurallyValidLanguageTag,
   isUnicodeLanguageSubtag,
   isUnicodeRegionSubtag,

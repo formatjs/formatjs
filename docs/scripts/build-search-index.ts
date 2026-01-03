@@ -84,9 +84,9 @@ function stripMarkdown(content: string): string {
       // Remove HTML tags
       .replace(/<[^>]+>/g, '')
       // Remove markdown links but keep text
-      .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
       // Remove markdown images
-      .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')
+      .replace(/!\[([^\]]*)\]\([^)]+\)/g, '')
       // Remove markdown headers
       .replace(/#{1,6}\s+/g, '')
       // Remove bold/italic

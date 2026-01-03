@@ -1,5 +1,5 @@
 import {expectType} from 'tsd'
-import {
+import type {
   IntlFormatters,
   MessageDescriptor,
   ResolvedIntlConfig,

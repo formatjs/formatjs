@@ -1,14 +1,14 @@
 import {
   CanonicalizeLocaleList,
-  LDMLPluralRule,
-  NumberFormatDigitInternalSlots,
-  PluralRulesData,
-  PluralRulesLocaleData,
+  type LDMLPluralRule,
+  type NumberFormatDigitInternalSlots,
+  type PluralRulesData,
+  type PluralRulesLocaleData,
   SupportedLocales,
   ToNumber,
 } from '@formatjs/ecma402-abstract'
-import Decimal from 'decimal.js'
-import {OperandsRecord} from './abstract/GetOperands.js'
+import type Decimal from 'decimal.js'
+import {type OperandsRecord} from './abstract/GetOperands.js'
 import {InitializePluralRules} from './abstract/InitializePluralRules.js'
 import {ResolvePlural} from './abstract/ResolvePlural.js'
 import getInternalSlots from './get_internal_slots.js'

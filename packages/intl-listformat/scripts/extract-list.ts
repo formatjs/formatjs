@@ -7,7 +7,10 @@
 import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json' with {type: 'json'}
 import glob from 'fast-glob'
 import {resolve, dirname} from 'path'
-import {ListPatternFieldsData, ListPattern} from '@formatjs/ecma402-abstract'
+import {
+  type ListPatternFieldsData,
+  type ListPattern,
+} from '@formatjs/ecma402-abstract'
 
 export type ListTypes = (typeof ListPatterns)['main']['en']['listPatterns']
 

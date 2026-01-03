@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import {NumberFormat} from './core.js'
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {type NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 /**
  * Number.prototype.toLocaleString ponyfill

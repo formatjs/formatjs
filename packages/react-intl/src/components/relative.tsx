@@ -5,7 +5,7 @@
  */
 import * as React from 'react'
 
-import {FormatRelativeTimeOptions} from '@formatjs/intl'
+import {type FormatRelativeTimeOptions} from '@formatjs/intl'
 import {invariant} from '../utils.js'
 import useIntl from './useIntl.js'
 
@@ -111,7 +111,7 @@ const FormattedRelativeTime: React.FC<Props> = ({
   const [prevValue, setPrevValue] = React.useState<number>(0)
   const [currentValueInSeconds, setCurrentValueInSeconds] =
     React.useState<number>(0)
-  let updateTimer: number
+  const updateTimer = React.useRef<number | undefined>(undefined)
 
   if (unit !== prevUnit || value !== prevValue) {
     setPrevValue(value || 0)
@@ -123,7 +123,7 @@ const FormattedRelativeTime: React.FC<Props> = ({
 
   React.useEffect(() => {
     function clearUpdateTimer() {
-      clearTimeout(updateTimer)
+      clearTimeout(updateTimer.current)
     }
     clearUpdateTimer()
     // If there's no interval and we cannot increment this unit, do nothing
@@ -150,7 +150,7 @@ const FormattedRelativeTime: React.FC<Props> = ({
     )
 
     if (currentValueInSeconds !== nextInterestingValueInSeconds) {
-      updateTimer = setTimeout(
+      updateTimer.current = setTimeout(
         () => setCurrentValueInSeconds(nextInterestingValueInSeconds),
         delayInSeconds * 1e3
       ) as unknown as number

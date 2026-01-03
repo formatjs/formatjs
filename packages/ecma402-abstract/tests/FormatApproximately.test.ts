@@ -1,5 +1,5 @@
 import {FormatApproximately} from '../NumberFormat/FormatApproximately.js'
-import {NumberFormatPart} from '../types/number.js'
+import {type NumberFormatPart} from '../types/number.js'
 import {getInternalSlots} from './utils.js'
 import {describe, expect, it} from 'vitest'
 describe('FormatApproximately', () => {

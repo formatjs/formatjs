@@ -1,5 +1,5 @@
-import {LocaleData} from './core.js'
-import {LDMLPluralRule} from './plural-rules.js'
+import {type LocaleData} from './core.js'
+import {type LDMLPluralRule} from './plural-rules.js'
 
 export interface FieldData {
   '0'?: string

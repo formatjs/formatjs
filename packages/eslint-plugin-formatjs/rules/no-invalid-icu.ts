@@ -1,9 +1,12 @@
 import {parse} from '@formatjs/icu-messageformat-parser'
-import {TSESTree} from '@typescript-eslint/utils'
-import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
+import type {TSESTree} from '@typescript-eslint/utils'
+import {
+  type RuleContext,
+  type RuleModule,
+} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
-import {CoreMessageIds, CORE_MESSAGES} from '../messages.js'
+import {type CoreMessageIds, CORE_MESSAGES} from '../messages.js'
 
 export const name = 'no-invalid-icu'
 

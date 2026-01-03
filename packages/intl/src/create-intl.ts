@@ -1,4 +1,4 @@
-import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+import {type MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import {
   formatDate,
   formatDateTimeRange,
@@ -13,7 +13,12 @@ import {formatMessage} from './message.js'
 import {formatNumber, formatNumberToParts} from './number.js'
 import {formatPlural} from './plural.js'
 import {formatRelativeTime} from './relativeTime.js'
-import {IntlCache, IntlConfig, IntlShape, ResolvedIntlConfig} from './types.js'
+import {
+  type IntlCache,
+  type IntlConfig,
+  type IntlShape,
+  type ResolvedIntlConfig,
+} from './types.js'
 import {createFormatters, DEFAULT_INTL_CONFIG} from './utils.js'
 
 export interface CreateIntlFn<

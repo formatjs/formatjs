@@ -6,11 +6,11 @@
 import * as NumbersData from 'cldr-numbers-full/main/ar/numbers.json' with {type: 'json'}
 import * as numberingSystems from 'cldr-core/supplemental/numberingSystems.json' with {type: 'json'}
 import {
-  RawNumberData,
-  SymbolsData,
-  LDMLPluralRuleMap,
-  DecimalFormatNum,
-  RawCurrencyData,
+  type RawNumberData,
+  type SymbolsData,
+  type LDMLPluralRuleMap,
+  type DecimalFormatNum,
+  type RawCurrencyData,
   invariant,
 } from '@formatjs/ecma402-abstract'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}

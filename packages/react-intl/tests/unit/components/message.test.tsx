@@ -1,6 +1,6 @@
 import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
-import {IntlShape} from '../../..'
+import {type IntlShape} from '../../..'
 import {createIntl} from '../../../src/components/createIntl'
 import FormattedMessage from '../../../src/components/message'
 import IntlProvider from '../../../src/components/provider'

@@ -1,4 +1,4 @@
-import {IntlShape} from '@formatjs/intl'
+import {type IntlShape} from '@formatjs/intl'
 import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {FormattedNumber, FormattedNumberParts} from '../../..'
@@ -155,7 +155,7 @@ describe('<FormattedNumberParts>', function () {
     // So it doesn't spam the console
     vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() =>
-      render(<FormattedNumberParts value={0} children={NOOP} />)
+      render(<FormattedNumberParts value={0}>{NOOP}</FormattedNumberParts>)
     ).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     )

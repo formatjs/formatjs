@@ -1,6 +1,7 @@
 // Type-only circular import
 // eslint-disable-next-line import/no-cycle
-import {PluralRules, PluralRulesInternal} from '.'
+import type {PluralRules} from './index.js'
+import {type PluralRulesInternal} from './index.js'
 
 const internalSlotMap = new WeakMap<PluralRules, PluralRulesInternal>()
 

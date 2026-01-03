@@ -11,7 +11,7 @@ import {
   beforeEach,
   afterEach,
   vi,
-  MockInstance,
+  type MockInstance,
 } from 'vitest'
 import '@testing-library/jest-dom/vitest'
 

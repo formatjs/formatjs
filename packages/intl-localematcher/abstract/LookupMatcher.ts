@@ -1,5 +1,5 @@
 import {BestAvailableLocale} from './BestAvailableLocale.js'
-import {LookupMatcherResult} from './types.js'
+import type {LookupMatcherResult} from './types.js'
 import {UNICODE_EXTENSION_SEQUENCE_REGEX} from './utils.js'
 
 /**

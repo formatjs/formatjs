@@ -1,5 +1,5 @@
-import {UnpackedData, PackedData} from './types.js'
-import {UnpackedZoneData} from '@formatjs/ecma402-abstract'
+import {type UnpackedData, type PackedData} from './types.js'
+import {type UnpackedZoneData} from '@formatjs/ecma402-abstract'
 
 export function pack(data: UnpackedData): PackedData {
   const zoneNames = Object.keys(data.zones)

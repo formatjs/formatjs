@@ -1,13 +1,13 @@
 import {
-  MessageDescriptor,
-  Opts,
+  type MessageDescriptor,
+  type Opts,
   interpolateName,
 } from '@formatjs/ts-transformer'
 import {outputFile} from 'fs-extra/esm'
 import {debug, getStdinAsString, warn, writeStdout} from './console_utils.js'
 import * as stringifyNs from 'json-stable-stringify'
 
-import {Formatter, resolveBuiltinFormatter} from './formatters/index.js'
+import {type Formatter, resolveBuiltinFormatter} from './formatters/index.js'
 import {parseScript} from './parse_script.js'
 import {readFile} from 'fs/promises'
 

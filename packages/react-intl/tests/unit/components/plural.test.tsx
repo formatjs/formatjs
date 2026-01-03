@@ -1,4 +1,4 @@
-import {IntlShape} from '@formatjs/intl'
+import {type IntlShape} from '@formatjs/intl'
 import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
 import {createIntl} from '../../../src/components/createIntl'

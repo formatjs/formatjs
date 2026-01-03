@@ -1,8 +1,8 @@
 import {
   createIntl as _createIntl,
-  IntlConfig,
-  IntlFormatters,
-  IntlShape,
+  type IntlConfig,
+  type IntlFormatters,
+  type IntlShape,
 } from '@formatjs/intl'
 import type {Plugin} from 'vue'
 import {intlKey} from './injection-key.js'

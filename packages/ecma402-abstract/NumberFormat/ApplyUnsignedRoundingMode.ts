@@ -1,5 +1,5 @@
-import {Decimal} from 'decimal.js'
-import {UnsignedRoundingModeType} from '../types/number.js'
+import type {Decimal} from 'decimal.js'
+import {type UnsignedRoundingModeType} from '../types/number.js'
 import {invariant} from '../utils.js'
 
 export function ApplyUnsignedRoundingMode(

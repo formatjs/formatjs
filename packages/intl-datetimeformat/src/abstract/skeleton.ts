@@ -1,9 +1,9 @@
 import {
-  Formats,
-  RangePatternPart,
-  RangePatterns,
+  type Formats,
+  type RangePatternPart,
+  type RangePatterns,
   RangePatternType,
-  TABLE_2,
+  type TABLE_2,
 } from '@formatjs/ecma402-abstract'
 
 /**

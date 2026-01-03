@@ -1,5 +1,5 @@
-import {DateTimeFormat} from '@formatjs/ecma402-abstract'
-import Decimal from 'decimal.js'
+import {type DateTimeFormat} from '@formatjs/ecma402-abstract'
+import type Decimal from 'decimal.js'
 import {PartitionDateTimePattern} from './PartitionDateTimePattern.js'
 
 /**

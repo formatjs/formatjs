@@ -1,5 +1,5 @@
 import {invariant, ToNumber, ZERO} from '@formatjs/ecma402-abstract'
-import Decimal from 'decimal.js'
+import type Decimal from 'decimal.js'
 
 export interface OperandsRecord {
   /**

@@ -2,7 +2,7 @@
 import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {formatList as formatListFn} from '../src/list'
 
-import {IntlConfig, IntlFormatters} from '../src/types'
+import {type IntlConfig, type IntlFormatters} from '../src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env

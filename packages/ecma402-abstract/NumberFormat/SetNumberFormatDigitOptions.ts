@@ -2,9 +2,9 @@ import {DefaultNumberOption} from '../DefaultNumberOption.js'
 import {GetNumberOption} from '../GetNumberOption.js'
 import {GetOption} from '../GetOption.js'
 import {
-  NumberFormatDigitInternalSlots,
-  NumberFormatDigitOptions,
-  NumberFormatNotation,
+  type NumberFormatDigitInternalSlots,
+  type NumberFormatDigitOptions,
+  type NumberFormatNotation,
 } from '../types/number.js'
 import {invariant} from '../utils.js'
 

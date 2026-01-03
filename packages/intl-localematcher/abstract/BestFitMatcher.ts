@@ -1,4 +1,4 @@
-import {LookupMatcherResult} from './types.js'
+import type {LookupMatcherResult} from './types.js'
 import {UNICODE_EXTENSION_SEQUENCE_REGEX, findBestMatch} from './utils.js'
 
 /**

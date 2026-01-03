@@ -1,11 +1,11 @@
-import {FormatXMLElementFn, Options} from 'intl-messageformat'
+import {type FormatXMLElementFn, type Options} from 'intl-messageformat'
 import * as React from 'react'
 import type {MessageDescriptor, PrimitiveType} from 'react-intl'
 import {
   createIntl,
   createIntlCache,
-  IntlCache,
-  IntlShape,
+  type IntlCache,
+  type IntlShape,
   RawIntlProvider,
 } from 'react-intl'
 

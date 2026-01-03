@@ -1,4 +1,4 @@
-import {LocaleData} from './core.js'
+import {type LocaleData} from './core.js'
 
 export type ListPatternLocaleData = LocaleData<ListPatternFieldsData>
 

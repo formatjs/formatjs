@@ -30,6 +30,7 @@ BASE_TSCONFIG = {
         "preserveConstEnums": True,
         "allowSyntheticDefaultImports": False,
         "noFallthroughCasesInSwitch": True,
+        "verbatimModuleSyntax": True,
         "importHelpers": True,
         "isolatedDeclarations": True,
         "jsx": "react-jsx",

@@ -153,7 +153,7 @@ export function SearchBar(): React.ReactNode {
         })
 
       setOptions(mappedResults)
-    } catch (error) {
+    } catch {
       // Lunr throws on invalid queries - just clear results
       setOptions([])
     }
@@ -209,7 +209,6 @@ export function SearchBar(): React.ReactNode {
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
               className="flex h-12 w-full bg-transparent px-4 py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
-              autoFocus
               disabled={isLoading}
             />
             {isLoading && (
@@ -229,10 +228,11 @@ export function SearchBar(): React.ReactNode {
             ) : (
               <div className="p-2">
                 {options.map(option => (
-                  <div
+                  <button
                     key={option.id}
+                    type="button"
                     onClick={() => handleSelect(option)}
-                    className="flex flex-col gap-1 px-3 py-2.5 rounded-md cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
+                    className="flex flex-col gap-1 px-3 py-2.5 rounded-md cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors text-left"
                   >
                     <div className="font-medium text-sm">
                       {option.title}
@@ -250,7 +250,7 @@ export function SearchBar(): React.ReactNode {
                         {highlightMatches(option.snippet, inputValue)}
                       </div>
                     )}
-                  </div>
+                  </button>
                 ))}
               </div>
             )}

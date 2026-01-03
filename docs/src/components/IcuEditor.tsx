@@ -59,10 +59,14 @@ export function IcuEditor({
       </div>
       <form className="flex flex-col gap-4">
         <div>
-          <label className="block text-sm font-semibold mb-2 text-purple-300">
+          <label
+            htmlFor="icu-message-input"
+            className="block text-sm font-semibold mb-2 text-purple-300"
+          >
             ICU Message
           </label>
           <textarea
+            id="icu-message-input"
             className="flex w-full rounded-md border border-purple-500/30 bg-gray-950/50 px-4 py-3 text-base shadow-sm placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:border-purple-500 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm min-h-[80px] text-gray-200 font-mono transition-all"
             value={message}
             onChange={e => setMessage(e.target.value)}
@@ -72,10 +76,14 @@ export function IcuEditor({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-2 text-purple-300">
+          <label
+            htmlFor="values-input"
+            className="block text-sm font-semibold mb-2 text-purple-300"
+          >
             Values as JSON
           </label>
           <Input
+            id="values-input"
             value={values}
             onChange={e => setValues(e.target.value)}
             placeholder="{}"
@@ -84,10 +92,14 @@ export function IcuEditor({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-2 text-purple-300">
+          <label
+            htmlFor="result-input"
+            className="block text-sm font-semibold mb-2 text-purple-300"
+          >
             Result
           </label>
           <Input
+            id="result-input"
             value={error || result}
             readOnly
             className={`border-purple-500/30 bg-purple-900/20 text-gray-200 font-medium ${

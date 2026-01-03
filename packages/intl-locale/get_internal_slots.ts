@@ -1,7 +1,8 @@
 // Type-only circular import
 // eslint-disable-next-line import/no-cycle
 
-import Locale, {IntlLocaleInternal} from '.'
+import type Locale from './index.js'
+import {type IntlLocaleInternal} from './index.js'
 
 const internalSlotMap = new WeakMap<Locale, IntlLocaleInternal>()
 

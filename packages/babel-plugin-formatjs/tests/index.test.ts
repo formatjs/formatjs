@@ -2,7 +2,7 @@ import * as path from 'path'
 
 import {transformFileSync} from '@babel/core'
 import plugin from '../index.js'
-import {Options, ExtractedMessageDescriptor} from '../types.js'
+import {type Options, type ExtractedMessageDescriptor} from '../types.js'
 import {expect, test} from 'vitest'
 function transformAndCheck(fn: string, opts: Options = {}) {
   const filePath = path.join(__dirname, 'fixtures', `${fn}.js`)

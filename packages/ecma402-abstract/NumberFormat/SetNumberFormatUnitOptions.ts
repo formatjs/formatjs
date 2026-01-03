@@ -1,7 +1,10 @@
 import {GetOption} from '../GetOption.js'
 import {IsWellFormedCurrencyCode} from '../IsWellFormedCurrencyCode.js'
 import {IsWellFormedUnitIdentifier} from '../IsWellFormedUnitIdentifier.js'
-import {NumberFormatInternal, NumberFormatOptions} from '../types/number.js'
+import {
+  type NumberFormatInternal,
+  type NumberFormatOptions,
+} from '../types/number.js'
 import {invariant} from '../utils.js'
 
 /**

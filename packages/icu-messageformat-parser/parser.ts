@@ -1,18 +1,18 @@
-import {ErrorKind, ParserError} from './error.js'
+import {ErrorKind, type ParserError} from './error.js'
 import {
-  DateTimeSkeleton,
-  LiteralElement,
-  Location,
-  MessageFormatElement,
-  NumberSkeleton,
-  PluralOrSelectOption,
+  type DateTimeSkeleton,
+  type LiteralElement,
+  type Location,
+  type MessageFormatElement,
+  type NumberSkeleton,
+  type PluralOrSelectOption,
   SKELETON_TYPE,
-  TagElement,
+  type TagElement,
   TYPE,
 } from './types.js'
 import {SPACE_SEPARATOR_REGEX} from './regex.generated.js'
 import {
-  NumberSkeletonToken,
+  type NumberSkeletonToken,
   parseNumberSkeleton,
   parseNumberSkeletonFromString,
   parseDateTimeSkeleton,

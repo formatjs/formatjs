@@ -2,11 +2,17 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["import", "typescript", "react", "jsx-a11y"],
   "categories": {
-    "correctness": "off"
+    "correctness": "error"
   },
   "env": {
     "builtin": true,
     "es2026": true,
     "browser": true
+  },
+   "rules": {
+    "typescript/consistent-type-imports": ["error", {
+      "fixStyle": "separate-type-imports",
+      "prefer": "type-imports"
+    }]
   }
 }

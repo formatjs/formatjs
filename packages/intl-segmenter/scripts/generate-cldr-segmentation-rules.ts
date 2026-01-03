@@ -5,7 +5,7 @@ import rewritePattern from 'regexpu-core'
 
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
-import minimist, {ParsedArgs} from 'minimist'
+import minimist, {type ParsedArgs} from 'minimist'
 import {readFileSync} from 'node:fs'
 
 const SEGMENTATION_LOCALES = [

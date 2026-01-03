@@ -1,6 +1,6 @@
 import {
-  DateTimeFormatLocaleInternalData,
-  Formats,
+  type DateTimeFormatLocaleInternalData,
+  type Formats,
   invariant,
 } from '@formatjs/ecma402-abstract'
 

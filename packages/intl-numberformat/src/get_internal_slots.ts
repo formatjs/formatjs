@@ -1,6 +1,6 @@
 // Type-only circular import
 
-import {NumberFormatInternal} from '@formatjs/ecma402-abstract'
+import {type NumberFormatInternal} from '@formatjs/ecma402-abstract'
 
 const internalSlotMap = new WeakMap<Intl.NumberFormat, NumberFormatInternal>()
 

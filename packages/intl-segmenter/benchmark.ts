@@ -4,7 +4,7 @@ import {Bench} from 'tinybench'
 // const Segmenter = Intl.Segmenter
 import {Segmenter} from './src/segmenter.js'
 
-import {SegmentIterator} from './src/segmenter.js'
+import type {SegmentIterator} from './src/segmenter.js'
 const locale = 'en'
 let inputString = `
 

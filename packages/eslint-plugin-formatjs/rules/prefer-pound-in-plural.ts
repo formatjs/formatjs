@@ -1,15 +1,18 @@
 import {
-  MessageFormatElement,
+  type MessageFormatElement,
   parse,
-  PluralElement,
+  type PluralElement,
   TYPE,
 } from '@formatjs/icu-messageformat-parser'
-import {TSESTree} from '@typescript-eslint/utils'
-import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
+import type {TSESTree} from '@typescript-eslint/utils'
+import {
+  type RuleContext,
+  type RuleModule,
+} from '@typescript-eslint/utils/ts-eslint'
 import MagicString from 'magic-string'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings, patchMessage} from '../util.js'
-import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
+import {CORE_MESSAGES, type CoreMessageIds} from '../messages.js'
 
 type MessageIds = 'preferPoundInPlurals' | CoreMessageIds
 

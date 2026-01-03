@@ -1,8 +1,8 @@
-import {NodePath} from '@babel/core'
+import {type NodePath} from '@babel/core'
 import {
-  JSXExpressionContainer,
-  SourceLocation,
-  StringLiteral,
+  type JSXExpressionContainer,
+  type SourceLocation,
+  type StringLiteral,
 } from '@babel/types'
 
 export interface MessageDescriptor {

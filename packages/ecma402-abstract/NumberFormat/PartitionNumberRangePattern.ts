@@ -1,5 +1,8 @@
-import {Decimal} from 'decimal.js'
-import {NumberFormatInternal, NumberFormatPart} from '../types/number.js'
+import type {Decimal} from 'decimal.js'
+import {
+  type NumberFormatInternal,
+  type NumberFormatPart,
+} from '../types/number.js'
 import {invariant} from '../utils.js'
 import {CollapseNumberRange} from './CollapseNumberRange.js'
 import {FormatApproximately} from './FormatApproximately.js'

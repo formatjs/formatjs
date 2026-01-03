@@ -1,7 +1,7 @@
 import {Decimal} from 'decimal.js'
 import {
-  RawNumberFormatResult,
-  UnsignedRoundingModeType,
+  type RawNumberFormatResult,
+  type UnsignedRoundingModeType,
 } from '../types/number.js'
 import {repeat} from '../utils.js'
 import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode.js'

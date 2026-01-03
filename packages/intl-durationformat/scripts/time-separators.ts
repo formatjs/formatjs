@@ -2,7 +2,7 @@ import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 import minimist from 'minimist'
 
-import arData from 'cldr-numbers-full/main/ar/numbers.json'
+import type arData from 'cldr-numbers-full/main/ar/numbers.json'
 import {getAllLocales} from './utils.js'
 
 type RawData = typeof arData

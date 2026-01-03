@@ -1,12 +1,12 @@
 import {
   FormatNumericToString,
   invariant,
-  LDMLPluralRule,
-  PluralRulesInternal,
+  type LDMLPluralRule,
+  type PluralRulesInternal,
   Type,
 } from '@formatjs/ecma402-abstract'
-import Decimal from 'decimal.js'
-import {GetOperands, OperandsRecord} from './GetOperands.js'
+import type Decimal from 'decimal.js'
+import {GetOperands, type OperandsRecord} from './GetOperands.js'
 
 /**
  * http://ecma-international.org/ecma-402/7.0/index.html#sec-resolveplural

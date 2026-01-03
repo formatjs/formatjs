@@ -1,12 +1,12 @@
 import {
   CanonicalizeLocaleList,
   CanonicalizeTimeZoneName,
-  DateTimeFormat,
-  DateTimeFormatLocaleInternalData,
-  Formats,
+  type DateTimeFormat,
+  type DateTimeFormatLocaleInternalData,
+  type Formats,
   GetNumberOption,
   GetOption,
-  IntlDateTimeFormatInternal,
+  type IntlDateTimeFormatInternal,
   IsValidTimeZoneName,
   invariant,
 } from '@formatjs/ecma402-abstract'

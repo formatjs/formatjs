@@ -1,11 +1,11 @@
 import {
-  FormatDateOptions,
-  FormatDisplayNameOptions,
-  FormatListOptions,
-  FormatNumberOptions,
+  type FormatDateOptions,
+  type FormatDisplayNameOptions,
+  type FormatListOptions,
+  type FormatNumberOptions,
 } from '@formatjs/intl'
 import * as React from 'react'
-import {IntlShape} from '../types.js'
+import {type IntlShape} from '../types.js'
 import useIntl from './useIntl.js'
 
 enum DisplayName {

@@ -1,25 +1,25 @@
 import {Decimal} from 'decimal.js'
 import {S_UNICODE_REGEX} from '../regex.generated.js'
 import {
-  DecimalFormatNum,
-  LDMLPluralRuleMap,
-  NumberFormatLocaleInternalData,
-  NumberFormatOptionsCompactDisplay,
-  NumberFormatOptionsCurrencyDisplay,
-  NumberFormatOptionsCurrencySign,
-  NumberFormatOptionsNotation,
-  NumberFormatOptionsStyle,
-  NumberFormatOptionsUnitDisplay,
-  NumberFormatPart,
-  RawNumberFormatResult,
-  RoundingModeType,
-  SymbolsData,
-  UnitData,
-  UnsignedRoundingModeType,
-  UseGroupingType,
+  type DecimalFormatNum,
+  type LDMLPluralRuleMap,
+  type NumberFormatLocaleInternalData,
+  type NumberFormatOptionsCompactDisplay,
+  type NumberFormatOptionsCurrencyDisplay,
+  type NumberFormatOptionsCurrencySign,
+  type NumberFormatOptionsNotation,
+  type NumberFormatOptionsStyle,
+  type NumberFormatOptionsUnitDisplay,
+  type NumberFormatPart,
+  type RawNumberFormatResult,
+  type RoundingModeType,
+  type SymbolsData,
+  type UnitData,
+  type UnsignedRoundingModeType,
+  type UseGroupingType,
 } from '../types/number.js'
 import {getPowerOf10} from './decimal-cache.js'
-import {LDMLPluralRule} from '../types/plural-rules.js'
+import {type LDMLPluralRule} from '../types/plural-rules.js'
 import {digitMapping} from './digit-mapping.generated.js'
 import {GetUnsignedRoundingMode} from './GetUnsignedRoundingMode.js'
 import {ToRawFixed} from './ToRawFixed.js'

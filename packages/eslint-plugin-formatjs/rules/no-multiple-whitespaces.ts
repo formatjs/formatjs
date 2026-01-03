@@ -1,14 +1,17 @@
 import {
-  LiteralElement,
-  MessageFormatElement,
+  type LiteralElement,
+  type MessageFormatElement,
   parse,
   TYPE,
 } from '@formatjs/icu-messageformat-parser'
-import {TSESTree} from '@typescript-eslint/utils'
-import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
+import type {TSESTree} from '@typescript-eslint/utils'
+import {
+  type RuleContext,
+  type RuleModule,
+} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings, patchMessage} from '../util.js'
-import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
+import {CORE_MESSAGES, type CoreMessageIds} from '../messages.js'
 
 type MessageIds = 'noMultipleWhitespaces' | CoreMessageIds
 

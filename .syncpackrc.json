@@ -1,5 +1,10 @@
 {
-  "dependencyTypes": ["dev", "engines", "peer", "prod"],
+  "dependencyTypes": [
+    "dev",
+    "engines",
+    "peer",
+    "prod"
+  ],
   "sortFirst": [
     "name",
     "description",
@@ -41,36 +46,56 @@
   "semverGroups": [
     {
       "range": "exact",
-      "dependencies": ["typescript"]
+      "dependencies": [
+        "typescript"
+      ]
     }
   ],
   "versionGroups": [
     {
       "label": "Use workspace protocol when developing local packages",
-      "dependencies": ["$LOCAL"],
+      "dependencies": [
+        "$LOCAL"
+      ],
       "pinVersion": "workspace:*"
     },
     {
       "label": "React packages",
-      "dependencies": ["react", "react-dom"],
+      "dependencies": [
+        "react",
+        "react-dom"
+      ],
       "pinVersion": "16 || 17 || 18 || 19"
     },
     {
       "label": "Typescript",
-      "dependencies": ["typescript"],
-      "packages": ["!formatjs-repo"],
+      "dependencies": [
+        "typescript"
+      ],
+      "packages": [
+        "!formatjs-repo"
+      ],
       "pinVersion": "^5.6.0"
     },
     {
       "label": "ESLint",
-      "dependencies": ["eslint", "@types/eslint"],
-      "packages": ["eslint-plugin-formatjs"],
+      "dependencies": [
+        "eslint",
+        "@types/eslint"
+      ],
+      "packages": [
+        "eslint-plugin-formatjs"
+      ],
       "pinVersion": "9"
     },
     {
       "label": "Typescript root",
-      "dependencies": ["typescript"],
-      "packages": ["formatjs-repo"],
+      "dependencies": [
+        "typescript"
+      ],
+      "packages": [
+        "formatjs-repo"
+      ],
       "pinVersion": "5.8.2"
     }
   ]

@@ -1,6 +1,6 @@
-import {Decimal} from 'decimal.js'
-import {LocaleData} from './core.js'
-import {LDMLPluralRule} from './plural-rules.js'
+import type {Decimal} from 'decimal.js'
+import {type LocaleData} from './core.js'
+import {type LDMLPluralRule} from './plural-rules.js'
 
 export type NumberFormatNotation =
   | 'standard'

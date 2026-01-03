@@ -4,7 +4,7 @@ import stringify from 'json-stable-stringify'
 import minimist from 'minimist'
 import {promisify} from 'util'
 import {pack} from '../src/packer'
-import {UnpackedData, ZoneData} from '../src/types'
+import {type UnpackedData, type ZoneData} from '../src/types'
 
 const readFile = promisify(_readFile)
 const SPACE_REGEX = /[\s\t]+/

@@ -1,7 +1,7 @@
 import {SetNumberFormatDigitOptions} from '../NumberFormat/SetNumberFormatDigitOptions.js'
 import {
-  NumberFormatDigitInternalSlots,
-  NumberFormatDigitOptions,
+  type NumberFormatDigitInternalSlots,
+  type NumberFormatDigitOptions,
 } from '../types/number.js'
 import {describe, expect, it, beforeEach} from 'vitest'
 describe('SetNumberFormatDigitOptions', () => {

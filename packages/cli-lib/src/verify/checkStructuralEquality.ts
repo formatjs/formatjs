@@ -1,6 +1,6 @@
 import {
   isStructurallySame,
-  MessageFormatElement,
+  type MessageFormatElement,
   parse,
 } from '@formatjs/icu-messageformat-parser'
 import {debug, writeStderr} from '../console_utils.js'

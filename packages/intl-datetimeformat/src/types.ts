@@ -1,7 +1,7 @@
 import {
-  LocaleData,
-  DateTimeFormatLocaleInternalData,
-  IntervalFormatsData,
+  type LocaleData,
+  type DateTimeFormatLocaleInternalData,
+  type IntervalFormatsData,
 } from '@formatjs/ecma402-abstract'
 
 export interface PackedData {

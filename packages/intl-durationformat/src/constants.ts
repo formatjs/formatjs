@@ -1,4 +1,4 @@
-import {DurationRecord} from './types.js'
+import {type DurationRecord} from './types.js'
 
 export const TABLE_1: Array<keyof DurationRecord> = [
   'years',

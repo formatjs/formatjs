@@ -5,14 +5,14 @@
  */
 
 import {
-  CreateIntlFn,
-  FormatMessageFn,
+  type CreateIntlFn,
+  type FormatMessageFn,
   createIntl as coreCreateIntl,
   formatMessage as coreFormatMessage,
 } from '@formatjs/intl'
 import {
-  FormatXMLElementFn,
-  PrimitiveType,
+  type FormatXMLElementFn,
+  type PrimitiveType,
   isFormatXMLElementFn,
 } from 'intl-messageformat'
 import * as React from 'react'

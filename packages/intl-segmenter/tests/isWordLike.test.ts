@@ -289,7 +289,7 @@ describe('isWordLike property', () => {
     expect(notWordLikeCount).toBeGreaterThan(0)
 
     // Specifically, punctuation and spaces should NOT be word-like
-    const punctAndSpaces = segments.filter(s => /^[\s,!.\-]+$/.test(s!.segment))
+    const punctAndSpaces = segments.filter(s => /^[\s,!.-]+$/.test(s!.segment))
     punctAndSpaces.forEach(seg => {
       expect(seg!.isWordLike).toBe(false)
     })

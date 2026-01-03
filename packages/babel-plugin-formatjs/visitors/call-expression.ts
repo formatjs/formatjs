@@ -1,7 +1,7 @@
-import {NodePath, PluginPass} from '@babel/core'
+import {type NodePath, type PluginPass} from '@babel/core'
 import * as t from '@babel/types'
-import {Options, State} from '../types.js'
-import {VisitNodeFunction} from '@babel/traverse'
+import {type Options, type State} from '../types.js'
+import {type VisitNodeFunction} from '@babel/traverse'
 import {
   createMessageDescriptor,
   evaluateMessageDescriptor,

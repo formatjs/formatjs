@@ -8,7 +8,7 @@ import type {HourCyclesKey} from './hour-cycles.generated.js'
 import type {CalendarsKey} from './calendars.generated.js'
 import type {WeekDataKey, WeekInfoInternal} from './week-data.generated.js'
 
-export {WeekInfoInternal}
+export {type WeekInfoInternal}
 
 export function getCalendarPreferenceDataForRegion(region?: string): string[] {
   const _region = region ? region.toUpperCase() : null

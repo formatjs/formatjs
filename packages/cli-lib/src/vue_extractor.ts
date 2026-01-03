@@ -1,6 +1,6 @@
 import {
   NodeTypes,
-  TextNode,
+  type TextNode,
   type CompoundExpressionNode,
   type DirectiveNode,
   type ElementNode,

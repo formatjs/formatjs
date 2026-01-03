@@ -7,10 +7,10 @@ import {
   isSelectElement,
   isTagElement,
   isTimeElement,
-  MessageFormatElement,
-  PluralElement,
-  PluralOrSelectOption,
-  SelectElement,
+  type MessageFormatElement,
+  type PluralElement,
+  type PluralOrSelectOption,
+  type SelectElement,
   TYPE,
 } from './types.js'
 

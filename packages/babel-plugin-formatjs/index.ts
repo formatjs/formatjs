@@ -1,7 +1,11 @@
-import {PluginObj, PluginPass} from '@babel/core'
+import {type PluginObj, type PluginPass} from '@babel/core'
 import {declare} from '@babel/helper-plugin-utils'
 import babelPluginSyntaxJsxNs from '@babel/plugin-syntax-jsx'
-import {ExtractedMessageDescriptor, Options, State} from './types.js'
+import {
+  type ExtractedMessageDescriptor,
+  type Options,
+  type State,
+} from './types.js'
 import {visitor as CallExpression} from './visitors/call-expression.js'
 import {visitor as JSXOpeningElement} from './visitors/jsx-opening-element.js'
 

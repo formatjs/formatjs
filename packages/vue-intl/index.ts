@@ -1,26 +1,26 @@
 import {
-  IntlFormatters as CoreIntlFormatters,
-  MessageDescriptor,
+  type IntlFormatters as CoreIntlFormatters,
+  type MessageDescriptor,
 } from '@formatjs/intl'
 export * from './plugin.js'
 export * from './provider.js'
 export {intlKey} from './injection-key.js'
 export {
-  IntlShape,
-  IntlConfig,
-  ResolvedIntlConfig,
+  type IntlShape,
+  type IntlConfig,
+  type ResolvedIntlConfig,
   createIntlCache,
-  MessageDescriptor,
-  IntlCache,
-  Formatters,
-  FormatDisplayNameOptions,
-  FormatListOptions,
-  FormatPluralOptions,
-  FormatRelativeTimeOptions,
-  FormatNumberOptions,
-  FormatDateOptions,
-  CustomFormatConfig,
-  CustomFormats,
+  type MessageDescriptor,
+  type IntlCache,
+  type Formatters,
+  type FormatDisplayNameOptions,
+  type FormatListOptions,
+  type FormatPluralOptions,
+  type FormatRelativeTimeOptions,
+  type FormatNumberOptions,
+  type FormatDateOptions,
+  type CustomFormatConfig,
+  type CustomFormats,
   UnsupportedFormatterError,
   InvalidConfigError,
   MissingDataError,
@@ -29,7 +29,7 @@ export {
   IntlErrorCode,
   IntlError,
 } from '@formatjs/intl'
-import {VNode} from 'vue'
+import {type VNode} from 'vue'
 
 export type IntlFormatters = CoreIntlFormatters<VNode>
 

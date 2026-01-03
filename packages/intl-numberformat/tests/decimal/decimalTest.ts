@@ -1,5 +1,5 @@
 import {describe, it, beforeAll, expect} from 'vitest'
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {type NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import {NumberFormat} from '../../src/core'
 

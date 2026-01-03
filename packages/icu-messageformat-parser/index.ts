@@ -1,5 +1,5 @@
 import {ErrorKind} from './error.js'
-import {Parser, ParserOptions} from './parser.js'
+import {Parser, type ParserOptions} from './parser.js'
 import {
   isDateElement,
   isDateTimeSkeleton,
@@ -9,7 +9,7 @@ import {
   isSelectElement,
   isTagElement,
   isTimeElement,
-  MessageFormatElement,
+  type MessageFormatElement,
 } from './types.js'
 
 function pruneLocation(els: MessageFormatElement[]): void {

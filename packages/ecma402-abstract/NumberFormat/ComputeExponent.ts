@@ -1,5 +1,5 @@
 import {Decimal} from 'decimal.js'
-import {NumberFormatInternal} from '../types/number.js'
+import {type NumberFormatInternal} from '../types/number.js'
 import {ComputeExponentForMagnitude} from './ComputeExponentForMagnitude.js'
 import {FormatNumericToString} from './FormatNumericToString.js'
 import {getPowerOf10} from './decimal-cache.js'

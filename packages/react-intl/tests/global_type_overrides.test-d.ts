@@ -1,11 +1,11 @@
 import {expectType} from 'tsd'
-import {
+import type {
   FormattedDate,
   FormattedDateParts,
   FormattedTime,
   FormattedTimeParts,
 } from '../'
-import {ComponentProps} from 'react'
+import type {ComponentProps} from 'react'
 
 declare global {
   namespace FormatjsIntl {

@@ -1,8 +1,11 @@
-import {MessageFormatElement, parse} from '@formatjs/icu-messageformat-parser'
+import {
+  type MessageFormatElement,
+  parse,
+} from '@formatjs/icu-messageformat-parser'
 import {outputFile, readJSON} from 'fs-extra/esm'
 import * as stringifyNs from 'json-stable-stringify'
 import {debug, warn, writeStdout} from './console_utils.js'
-import {Formatter, resolveBuiltinFormatter} from './formatters/index.js'
+import {type Formatter, resolveBuiltinFormatter} from './formatters/index.js'
 import {
   generateENXA,
   generateENXB,

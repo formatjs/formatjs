@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {Chip, Avatar} from '@material-ui/core'
+import type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import {
   parse,
   isLiteralElement,
@@ -7,7 +8,6 @@ import {
   isDateElement,
   isTimeElement,
   isTagElement,
-  MessageFormatElement,
   isArgumentElement,
   isPoundElement,
 } from '@formatjs/icu-messageformat-parser'

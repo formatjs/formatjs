@@ -1,5 +1,5 @@
 import {CanonicalizeUnicodeLocaleId} from './CanonicalizeUnicodeLocaleId.js'
-import {Keyword} from './types.js'
+import type {Keyword} from './types.js'
 import {invariant} from './utils.js'
 
 export function InsertUnicodeExtensionAndCanonicalize(

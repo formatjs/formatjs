@@ -1,17 +1,20 @@
 import {
-  CustomFormats,
-  Formatters,
-  MessageDescriptor,
-  OnErrorFn,
+  type CustomFormats,
+  type Formatters,
+  type MessageDescriptor,
+  type OnErrorFn,
 } from './types.js'
 
-import {MessageFormatElement, TYPE} from '@formatjs/icu-messageformat-parser'
 import {
-  FormatXMLElementFn,
+  type MessageFormatElement,
+  TYPE,
+} from '@formatjs/icu-messageformat-parser'
+import {
+  type FormatXMLElementFn,
   IntlMessageFormat,
-  Formatters as IntlMessageFormatFormatters,
-  Options,
-  PrimitiveType,
+  type Formatters as IntlMessageFormatFormatters,
+  type Options,
+  type PrimitiveType,
 } from 'intl-messageformat'
 import {MessageFormatError, MissingTranslationError} from './error.js'
 import {invariant} from './utils.js'

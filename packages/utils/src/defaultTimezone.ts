@@ -1,4 +1,4 @@
-import {Cache, memoize, strategies} from '@formatjs/fast-memoize'
+import {type Cache, memoize, strategies} from '@formatjs/fast-memoize'
 
 const cache: Record<string, Intl.DateTimeFormat> = {}
 

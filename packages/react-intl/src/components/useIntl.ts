@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {IntlShape} from '../types.js'
+import {type IntlShape} from '../types.js'
 import {invariantIntlContext} from '../utils.js'
 import {Context} from './injectIntl.js'
 

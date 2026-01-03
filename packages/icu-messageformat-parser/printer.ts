@@ -1,8 +1,8 @@
-import {NumberSkeletonToken} from '@formatjs/icu-skeleton-parser'
+import {type NumberSkeletonToken} from '@formatjs/icu-skeleton-parser'
 import {
-  ArgumentElement,
-  DateElement,
-  DateTimeSkeleton,
+  type ArgumentElement,
+  type DateElement,
+  type DateTimeSkeleton,
   isArgumentElement,
   isDateElement,
   isLiteralElement,
@@ -12,15 +12,15 @@ import {
   isSelectElement,
   isTagElement,
   isTimeElement,
-  LiteralElement,
-  MessageFormatElement,
-  NumberElement,
-  PluralElement,
-  SelectElement,
-  Skeleton,
+  type LiteralElement,
+  type MessageFormatElement,
+  type NumberElement,
+  type PluralElement,
+  type SelectElement,
+  type Skeleton,
   SKELETON_TYPE,
-  TagElement,
-  TimeElement,
+  type TagElement,
+  type TimeElement,
   TYPE,
 } from './types.js'
 

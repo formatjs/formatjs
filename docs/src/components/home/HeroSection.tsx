@@ -2,7 +2,7 @@ import * as React from 'react'
 import {
   defineMessage,
   IntlProvider,
-  MessageDescriptor,
+  type MessageDescriptor,
   useIntl,
 } from 'react-intl'
 import {Button} from '../ui/button'
@@ -125,7 +125,7 @@ export default function HeroSection(): React.ReactNode {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                <div className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                   <svg
                     className="w-4 h-4 text-purple-600"
                     fill="none"
@@ -140,7 +140,7 @@ export default function HeroSection(): React.ReactNode {
                     />
                   </svg>
                   Output
-                </label>
+                </div>
                 <IntlProvider
                   locale={selectedLocale}
                   messages={
@@ -162,10 +162,14 @@ export default function HeroSection(): React.ReactNode {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="num-photos-input"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   # Photos
                 </label>
                 <Input
+                  id="num-photos-input"
                   type="number"
                   value={numPhotos}
                   onChange={e => setNumPhotos(Number(e.target.value))}
@@ -173,10 +177,14 @@ export default function HeroSection(): React.ReactNode {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="locale-select"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Locale
                 </label>
                 <select
+                  id="locale-select"
                   value={selectedLocale}
                   onChange={e => setSelectedLocale(e.target.value)}
                   className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 disabled:cursor-not-allowed disabled:opacity-50"

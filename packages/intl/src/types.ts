@@ -1,22 +1,21 @@
-import {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+import {type MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {type NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import type {FormatError, IntlMessageFormat} from 'intl-messageformat'
 import {
-  FormatError,
-  Formats,
-  FormatXMLElementFn,
-  IntlMessageFormat,
-  Options as IntlMessageFormatOptions,
-  PrimitiveType,
+  type Formats,
+  type FormatXMLElementFn,
+  type Options as IntlMessageFormatOptions,
+  type PrimitiveType,
 } from 'intl-messageformat'
-import {
+import type {
   InvalidConfigError,
   MessageFormatError,
   MissingDataError,
   MissingTranslationError,
   UnsupportedFormatterError,
 } from './error.js'
-import {DEFAULT_INTL_CONFIG} from './utils.js'
+import type {DEFAULT_INTL_CONFIG} from './utils.js'
 
 export interface Part<T = string> {
   type: 'element' | 'literal'

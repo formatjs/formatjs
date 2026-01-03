@@ -1,23 +1,29 @@
-import {DisplayNamesData} from '@formatjs/ecma402-abstract'
+import {type DisplayNamesData} from '@formatjs/ecma402-abstract'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import glob from 'fast-glob'
 import {dirname, resolve} from 'path'
+import type * as LanguagesJSON from 'cldr-localenames-full/main/en/languages.json' with {type: 'json'}
+import type * as TerritoriesJSON from 'cldr-localenames-full/main/en/territories.json' with {type: 'json'}
+import type * as ScriptsJSON from 'cldr-localenames-full/main/en/scripts.json' with {type: 'json'}
+import type * as LocaleDisplayNamesJSON from 'cldr-localenames-full/main/en/localeDisplayNames.json' with {type: 'json'}
+import type * as CurrenciesJSON from 'cldr-numbers-full/main/en/currencies.json' with {type: 'json'}
+import type * as DateFieldsJSON from 'cldr-dates-full/main/en/dateFields.json' with {type: 'json'}
 
 // CLDR JSON types
 type LanguageRawData =
-  (typeof import('cldr-localenames-full/main/en/languages.json'))['main']['en']['localeDisplayNames']['languages']
+  (typeof LanguagesJSON)['main']['en']['localeDisplayNames']['languages']
 type RegionRawData =
-  (typeof import('cldr-localenames-full/main/en/territories.json'))['main']['en']['localeDisplayNames']['territories']
+  (typeof TerritoriesJSON)['main']['en']['localeDisplayNames']['territories']
 type ScriptRawData =
-  (typeof import('cldr-localenames-full/main/en/scripts.json'))['main']['en']['localeDisplayNames']['scripts']
+  (typeof ScriptsJSON)['main']['en']['localeDisplayNames']['scripts']
 type LocalePatternRawData =
-  (typeof import('cldr-localenames-full/main/en/localeDisplayNames.json'))['main']['en']['localeDisplayNames']['localeDisplayPattern']['localePattern']
+  (typeof LocaleDisplayNamesJSON)['main']['en']['localeDisplayNames']['localeDisplayPattern']['localePattern']
 type CurrencyRawData =
-  (typeof import('cldr-numbers-full/main/en/currencies.json'))['main']['en']['numbers']['currencies']
+  (typeof CurrenciesJSON)['main']['en']['numbers']['currencies']
 type CalendarRawData =
-  (typeof import('cldr-localenames-full/main/en/localeDisplayNames.json'))['main']['en']['localeDisplayNames']['types']['calendar']
+  (typeof LocaleDisplayNamesJSON)['main']['en']['localeDisplayNames']['types']['calendar']
 type DateTimeFieldRawData =
-  (typeof import('cldr-dates-full/main/en/dateFields.json'))['main']['en']['dates']['fields']
+  (typeof DateFieldsJSON)['main']['en']['dates']['fields']
 // -------------------------------------------------------------------------------------------------
 
 export async function getAllLocales(): Promise<string[]> {

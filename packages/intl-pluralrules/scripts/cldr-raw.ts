@@ -1,7 +1,7 @@
 import {join} from 'path'
 import {outputFileSync} from 'fs-extra/esm'
 import serialize from 'serialize-javascript'
-import {PluralRulesLocaleData} from '@formatjs/ecma402-abstract'
+import {type PluralRulesLocaleData} from '@formatjs/ecma402-abstract'
 import plurals from 'cldr-core/supplemental/plurals.json'
 import minimist from 'minimist'
 
