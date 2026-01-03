@@ -125,7 +125,7 @@ describe('React 19 Key Warning Issue #5135', () => {
           defaultMessage="Click {button} or {link}"
           values={{
             button: <button>here</button>,
-            link: <a href="#">there</a>,
+            link: <a href="https://example.com">there</a>,
           }}
         />
       </IntlProvider>

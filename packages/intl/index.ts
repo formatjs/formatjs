@@ -1,4 +1,4 @@
-import {MessageDescriptor} from './src/types.js'
+import {type MessageDescriptor} from './src/types.js'
 export * from './src/types.js'
 
 export function defineMessages<

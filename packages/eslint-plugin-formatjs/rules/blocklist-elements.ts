@@ -1,5 +1,5 @@
 import {
-  MessageFormatElement,
+  type MessageFormatElement,
   isArgumentElement,
   isDateElement,
   isLiteralElement,
@@ -10,11 +10,12 @@ import {
   isTimeElement,
   parse,
 } from '@formatjs/icu-messageformat-parser'
-import {ESLintUtils, TSESTree} from '@typescript-eslint/utils'
-import {RuleContext} from '@typescript-eslint/utils/ts-eslint'
+import type {TSESTree} from '@typescript-eslint/utils'
+import {ESLintUtils} from '@typescript-eslint/utils'
+import {type RuleContext} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
-import {CoreMessageIds, CORE_MESSAGES} from '../messages.js'
+import {type CoreMessageIds, CORE_MESSAGES} from '../messages.js'
 
 type MessageIds = 'blocklist' | CoreMessageIds
 

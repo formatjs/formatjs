@@ -5,8 +5,8 @@ import {
   createMemoizedPluralRules,
   GetOption,
   invariant,
-  LocaleFieldsData,
-  RelativeTimeFormatInternal,
+  type LocaleFieldsData,
+  type RelativeTimeFormatInternal,
 } from '@formatjs/ecma402-abstract'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 

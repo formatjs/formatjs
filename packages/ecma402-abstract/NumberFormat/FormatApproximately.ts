@@ -1,4 +1,7 @@
-import {NumberFormatInternal, NumberFormatPart} from '../types/number.js'
+import {
+  type NumberFormatInternal,
+  type NumberFormatPart,
+} from '../types/number.js'
 
 /**
  * https://tc39.es/ecma402/#sec-formatapproximately

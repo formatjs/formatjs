@@ -1,5 +1,5 @@
 import type {Linter} from 'eslint'
-import {ESLint} from 'eslint'
+import type {ESLint} from 'eslint'
 import {
   name as blocklistElementRuleName,
   rule as blocklistElements,

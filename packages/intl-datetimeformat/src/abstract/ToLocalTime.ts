@@ -4,13 +4,13 @@ import {
   MinFromTime,
   MonthFromTime,
   SecFromTime,
-  UnpackedZoneData,
+  type UnpackedZoneData,
   WeekDay,
   YearFromTime,
   invariant,
   msFromTime,
 } from '@formatjs/ecma402-abstract'
-import Decimal from 'decimal.js'
+import type Decimal from 'decimal.js'
 
 // Cached regex patterns for performance
 const OFFSET_TIMEZONE_PREFIX_REGEX = /^[+-]/

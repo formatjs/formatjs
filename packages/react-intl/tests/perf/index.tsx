@@ -8,7 +8,10 @@ const {
   FormattedMessage,
   // FormattedRelativeTime,
 } = require('../../dist/react-intl')
-import {parse, MessageFormatElement} from '@formatjs/icu-messageformat-parser'
+import {
+  parse,
+  type MessageFormatElement,
+} from '@formatjs/icu-messageformat-parser'
 
 async function run() {
   const bench = new Bench({time: 1000})

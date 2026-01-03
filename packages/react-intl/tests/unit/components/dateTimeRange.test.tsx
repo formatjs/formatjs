@@ -1,5 +1,5 @@
 import {cleanup, render} from '@testing-library/react'
-import {FormattedDateTimeRange, IntlShape} from '../../..'
+import {FormattedDateTimeRange, type IntlShape} from '../../..'
 import {createIntl} from '../../../src/components/createIntl'
 import {mountFormattedComponentWithProvider} from '../testUtils'
 import {describe, expect, it, beforeEach, vi} from 'vitest'

@@ -1,14 +1,14 @@
 import {
-  DateTimeFormat,
-  DateTimeFormatLocaleInternalData,
-  IntlDateTimeFormatInternal,
-  IntlDateTimeFormatPart,
+  type DateTimeFormat,
+  type DateTimeFormatLocaleInternalData,
+  type IntlDateTimeFormatInternal,
+  type IntlDateTimeFormatPart,
   TimeClip,
   createMemoizedNumberFormat,
 } from '@formatjs/ecma402-abstract'
 
 import Decimal from 'decimal.js'
-import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime.js'
+import {ToLocalTime, type ToLocalTimeImplDetails} from './ToLocalTime.js'
 import {DATE_TIME_PROPS} from './utils.js'
 
 function pad(n: number): string {

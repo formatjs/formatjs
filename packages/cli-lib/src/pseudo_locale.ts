@@ -1,12 +1,12 @@
 import {
   parse,
-  MessageFormatElement,
+  type MessageFormatElement,
   TYPE,
   isLiteralElement,
   isPluralElement,
   isSelectElement,
   isTagElement,
-  LiteralElement,
+  type LiteralElement,
 } from '@formatjs/icu-messageformat-parser'
 
 function forEachLiteralElement(

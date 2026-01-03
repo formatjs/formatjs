@@ -1,6 +1,6 @@
 import {
   invariant,
-  RelativeTimeFormatSingularUnit,
+  type RelativeTimeFormatSingularUnit,
   Type,
 } from '@formatjs/ecma402-abstract'
 

@@ -11,7 +11,7 @@ import type {
 } from 'intl-messageformat'
 import * as React from 'react'
 
-import {MessageDescriptor} from '@formatjs/intl'
+import {type MessageDescriptor} from '@formatjs/intl'
 import {shallowEqual} from '../utils.js'
 import useIntl from './useIntl.js'
 

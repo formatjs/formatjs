@@ -1,8 +1,8 @@
-import {Decimal} from 'decimal.js'
+import type {Decimal} from 'decimal.js'
 import {NEGATIVE_ZERO, ZERO} from '../constants.js'
 import {
-  NumberFormatDigitInternalSlots,
-  RawNumberFormatResult,
+  type NumberFormatDigitInternalSlots,
+  type RawNumberFormatResult,
 } from '../types/number.js'
 import {invariant, repeat} from '../utils.js'
 import {GetUnsignedRoundingMode} from './GetUnsignedRoundingMode.js'

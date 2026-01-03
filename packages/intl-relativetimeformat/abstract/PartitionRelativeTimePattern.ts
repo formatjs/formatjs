@@ -1,9 +1,9 @@
 import {
-  FieldData,
+  type FieldData,
   invariant,
-  LDMLPluralRule,
-  RelativeTimeField,
-  RelativeTimeFormatInternal,
+  type LDMLPluralRule,
+  type RelativeTimeField,
+  type RelativeTimeFormatInternal,
   SameValue,
   ToString,
   Type,

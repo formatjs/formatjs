@@ -5,9 +5,9 @@ import {
   FormatNumericRangeToParts,
   FormatNumericToParts,
   InitializeNumberFormat,
-  NumberFormatOptions,
+  type NumberFormatOptions,
   OrdinaryHasInstance,
-  RawNumberLocaleData,
+  type RawNumberLocaleData,
   SupportedLocales,
   ToIntlMathematicalValue,
   createMemoizedPluralRules,
@@ -17,11 +17,11 @@ import {
 import {currencyDigitsData} from './currency-digits.generated.js'
 import {numberingSystemNames} from './numbering-systems.generated.js'
 // eslint-disable-next-line import/no-cycle
-import Decimal from 'decimal.js'
+import type Decimal from 'decimal.js'
 import getInternalSlots from './get_internal_slots.js'
 import {
-  NumberFormatConstructor,
-  NumberFormat as NumberFormatType,
+  type NumberFormatConstructor,
+  type NumberFormat as NumberFormatType,
 } from './types.js'
 
 // Merge declaration with the constructor defined below.

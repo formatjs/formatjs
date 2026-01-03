@@ -1,6 +1,6 @@
 import * as hoistNonReactStaticsNs from 'hoist-non-react-statics'
 import * as React from 'react'
-import {IntlShape} from '../types.js'
+import {type IntlShape} from '../types.js'
 import {invariantIntlContext} from '../utils.js'
 
 const hoistNonReactStatics =

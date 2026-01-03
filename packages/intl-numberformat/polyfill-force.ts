@@ -1,6 +1,9 @@
 import {NumberFormat} from './src/core.js'
 import {toLocaleString as _toLocaleString} from './src/to_locale_string.js'
-import {defineProperty, NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {
+  defineProperty,
+  type NumberFormatOptions,
+} from '@formatjs/ecma402-abstract'
 
 defineProperty(Intl, 'NumberFormat', {value: NumberFormat})
 defineProperty(Number.prototype, 'toLocaleString', {

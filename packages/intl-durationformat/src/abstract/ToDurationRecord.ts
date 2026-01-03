@@ -1,4 +1,4 @@
-import {DurationInput, DurationRecord} from '../types.js'
+import {type DurationInput, type DurationRecord} from '../types.js'
 import {IsValidDurationRecord} from './IsValidDurationRecord.js'
 import {ToIntegerIfIntegral} from './ToIntegerIfIntegral.js'
 

@@ -1,11 +1,14 @@
-import {MessageFormatElement, parse} from '@formatjs/icu-messageformat-parser'
+import {
+  type MessageFormatElement,
+  parse,
+} from '@formatjs/icu-messageformat-parser'
 import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
 import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import * as stringifyNs from 'json-stable-stringify'
 import * as typescript from 'typescript'
 import {debug} from './console_utils.js'
 import {interpolateName} from './interpolate-name.js'
-import {MessageDescriptor} from './types.js'
+import {type MessageDescriptor} from './types.js'
 
 const stringify = (stringifyNs as any).default || stringifyNs
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void
@@ -508,7 +511,7 @@ function extractMessageDescriptor(
   if (flatten && msg.defaultMessage) {
     try {
       msg.defaultMessage = printAST(hoistSelectors(parse(msg.defaultMessage)))
-    } catch (e) {
+    } catch {
       // If flatten fails, continue with original message
       // The error will be caught again during validation
     }

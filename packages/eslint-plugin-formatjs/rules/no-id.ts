@@ -1,8 +1,8 @@
-import {TSESTree} from '@typescript-eslint/utils'
+import type {TSESTree} from '@typescript-eslint/utils'
+import type {SourceCode} from '@typescript-eslint/utils/ts-eslint'
 import {
-  RuleContext,
-  RuleModule,
-  SourceCode,
+  type RuleContext,
+  type RuleModule,
 } from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'

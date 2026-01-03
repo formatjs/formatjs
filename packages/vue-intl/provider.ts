@@ -1,5 +1,11 @@
-import {IntlShape} from '@formatjs/intl'
-import {inject, provide, RendererElement, RendererNode, VNode} from 'vue'
+import {type IntlShape} from '@formatjs/intl'
+import {
+  inject,
+  provide,
+  type RendererElement,
+  type RendererNode,
+  type VNode,
+} from 'vue'
 import {intlKey} from './injection-key.js'
 
 export function provideIntl(intl: IntlShape<VNode>): void {

@@ -3,15 +3,18 @@ import {
   isPluralElement,
   isSelectElement,
   isTagElement,
-  MessageFormatElement,
+  type MessageFormatElement,
   parse,
 } from '@formatjs/icu-messageformat-parser'
-import {TSESTree} from '@typescript-eslint/utils'
-import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
+import type {TSESTree} from '@typescript-eslint/utils'
+import {
+  type RuleContext,
+  type RuleModule,
+} from '@typescript-eslint/utils/ts-eslint'
 import MagicString from 'magic-string'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, patchMessage} from '../util.js'
-import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
+import {CORE_MESSAGES, type CoreMessageIds} from '../messages.js'
 
 export const name = 'no-missing-icu-plural-one-placeholders'
 

@@ -1,6 +1,6 @@
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {type NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {
-  ExtendedNumberFormatOptions,
+  type ExtendedNumberFormatOptions,
   isArgumentElement,
   isDateElement,
   isDateTimeSkeleton,
@@ -12,7 +12,7 @@ import {
   isSelectElement,
   isTagElement,
   isTimeElement,
-  MessageFormatElement,
+  type MessageFormatElement,
 } from '@formatjs/icu-messageformat-parser'
 import {
   ErrorCode,

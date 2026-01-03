@@ -1,4 +1,9 @@
-import {CustomFormats, Formatters, IntlFormatters, OnErrorFn} from './types.js'
+import {
+  type CustomFormats,
+  type Formatters,
+  type IntlFormatters,
+  type OnErrorFn,
+} from './types.js'
 
 import {IntlFormatError} from './error.js'
 import {filterProps, getNamedFormat} from './utils.js'

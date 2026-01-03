@@ -1,5 +1,8 @@
 import {GetUnsignedRoundingMode} from '../NumberFormat/GetUnsignedRoundingMode.js'
-import {RoundingModeType, UnsignedRoundingModeType} from '../types/number.js'
+import {
+  type RoundingModeType,
+  type UnsignedRoundingModeType,
+} from '../types/number.js'
 import {describe, expect, it} from 'vitest'
 describe('GetUnsignedRoundingMod', () => {
   const negativeMapping: Record<RoundingModeType, UnsignedRoundingModeType> = {

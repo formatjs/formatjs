@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {IntlCache, createIntlCache} from '@formatjs/intl'
+import {type IntlCache, createIntlCache} from '@formatjs/intl'
 import * as React from 'react'
 import type {IntlConfig, IntlShape} from '../types.js'
 import {
   DEFAULT_INTL_CONFIG,
-  DefaultIntlConfig,
+  type DefaultIntlConfig,
   invariantIntlContext,
   shallowEqual,
 } from '../utils.js'

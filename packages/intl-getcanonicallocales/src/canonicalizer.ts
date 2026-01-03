@@ -12,7 +12,12 @@ import {
   parseUnicodeLanguageId,
   SEPARATOR,
 } from './parser.js'
-import {Extension, KV, UnicodeLanguageId, UnicodeLocaleId} from './types.js'
+import {
+  type Extension,
+  type KV,
+  type UnicodeLanguageId,
+  type UnicodeLocaleId,
+} from './types.js'
 
 function canonicalizeAttrs(strs: string[]): string[] {
   return Object.keys(

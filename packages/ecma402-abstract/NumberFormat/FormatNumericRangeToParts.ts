@@ -1,5 +1,8 @@
-import {Decimal} from 'decimal.js'
-import {NumberFormatInternal, NumberRangeToParts} from '../types/number.js'
+import type {Decimal} from 'decimal.js'
+import {
+  type NumberFormatInternal,
+  type NumberRangeToParts,
+} from '../types/number.js'
 import {PartitionNumberRangePattern} from './PartitionNumberRangePattern.js'
 
 /**

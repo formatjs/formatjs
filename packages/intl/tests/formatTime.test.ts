@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {formatTime as formatTimeFn} from '../src/dateTime'
-import {Formatters, IntlConfig, IntlFormatters} from '../src/types'
+import {
+  type Formatters,
+  type IntlConfig,
+  type IntlFormatters,
+} from '../src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env

@@ -1,6 +1,6 @@
 import type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
-import {TSESTree} from '@typescript-eslint/utils'
-import {RuleContext} from '@typescript-eslint/utils/ts-eslint'
+import type {TSESTree} from '@typescript-eslint/utils'
+import {type RuleContext} from '@typescript-eslint/utils/ts-eslint'
 
 export interface MessageDescriptor {
   id?: string

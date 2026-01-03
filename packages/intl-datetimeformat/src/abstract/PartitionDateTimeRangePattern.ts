@@ -1,18 +1,18 @@
 import {
-  IntlDateTimeFormatPart,
-  IntlDateTimeFormatPartType,
+  type IntlDateTimeFormatPart,
+  type IntlDateTimeFormatPartType,
   PartitionPattern,
   RangePatternType,
   SameValue,
-  TABLE_2,
+  type TABLE_2,
   TimeClip,
 } from '@formatjs/ecma402-abstract'
-import Decimal from 'decimal.js'
+import type Decimal from 'decimal.js'
 import {
   FormatDateTimePattern,
-  FormatDateTimePatternImplDetails,
+  type FormatDateTimePatternImplDetails,
 } from './FormatDateTimePattern.js'
-import {ToLocalTime, ToLocalTimeImplDetails} from './ToLocalTime.js'
+import {ToLocalTime, type ToLocalTimeImplDetails} from './ToLocalTime.js'
 
 const TABLE_2_FIELDS: Array<TABLE_2> = [
   'era',

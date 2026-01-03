@@ -1,4 +1,4 @@
-import {Formats, TABLE_6, invariant} from '@formatjs/ecma402-abstract'
+import {type Formats, type TABLE_6, invariant} from '@formatjs/ecma402-abstract'
 import {processDateTimePattern} from './skeleton.js'
 import {
   DATE_TIME_PROPS,

@@ -1,15 +1,15 @@
-import * as t from '@babel/types'
+import type * as t from '@babel/types'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
 import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import {interpolateName} from '@formatjs/ts-transformer'
 
-import {NodePath} from '@babel/core'
+import {type NodePath} from '@babel/core'
 import {
-  ExtractedMessageDescriptor,
-  MessageDescriptor,
-  MessageDescriptorPath,
-  Options,
+  type ExtractedMessageDescriptor,
+  type MessageDescriptor,
+  type MessageDescriptorPath,
+  type Options,
 } from './types.js'
 
 const DESCRIPTOR_PROPS = new Set<keyof MessageDescriptorPath>([
@@ -111,7 +111,7 @@ export function evaluateMessageDescriptor(
   if (flatten && defaultMessage) {
     try {
       defaultMessage = printAST(hoistSelectors(parse(defaultMessage)))
-    } catch (e) {
+    } catch {
       // If flatten fails, continue with original message
       // The error will be caught again during validation
     }

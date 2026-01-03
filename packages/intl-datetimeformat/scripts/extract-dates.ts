@@ -10,13 +10,16 @@ import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json' with {typ
 import {sync as globSync} from 'fast-glob'
 import {resolve, dirname} from 'path'
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
-import {RawDateTimeLocaleInternalData, TimeZoneNameData} from '../src/types'
+import {
+  type RawDateTimeLocaleInternalData,
+  type TimeZoneNameData,
+} from '../src/types'
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
 import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json' with {type: 'json'}
 import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json' with {type: 'json'}
 import * as metaZones from 'cldr-core/supplemental/metaZones.json' with {type: 'json'}
 import IntlLocale from '@formatjs/intl-locale'
-import {Formats} from '@formatjs/ecma402-abstract'
+import {type Formats} from '@formatjs/ecma402-abstract'
 import {parseDateTimeSkeleton} from '../src/abstract/skeleton'
 import {isEqual} from 'lodash-es'
 const {timeData} = rawTimeData.supplemental

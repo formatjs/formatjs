@@ -1,5 +1,5 @@
 import {SetNumberFormatDigitOptions} from '../NumberFormat/SetNumberFormatDigitOptions.js'
-import {NumberFormatInternal} from '../types/number.js'
+import {type NumberFormatInternal} from '../types/number.js'
 
 const internalSlotMap = new WeakMap<Intl.NumberFormat, NumberFormatInternal>()
 

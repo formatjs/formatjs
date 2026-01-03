@@ -2,8 +2,8 @@ import {
   CanonicalizeLocaleList,
   CoerceOptionsToObject,
   GetOption,
-  PluralRulesData,
-  PluralRulesInternal,
+  type PluralRulesData,
+  type PluralRulesInternal,
   SetNumberFormatDigitOptions,
 } from '@formatjs/ecma402-abstract'
 import {ResolveLocale} from '@formatjs/intl-localematcher'

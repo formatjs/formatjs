@@ -1,4 +1,4 @@
-import minimist, {ParsedArgs} from 'minimist'
+import minimist, {type ParsedArgs} from 'minimist'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 

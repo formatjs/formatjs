@@ -49,7 +49,7 @@ export default function HomeFooter(): React.ReactNode {
                 <ExternalLink className="h-4 w-4" />
               </a>
               <a
-                href="#"
+                href="https://join.slack.com/t/formatjs/shared_invite/enQtNjYwMzE4NjM1MDQzLTA5NDE1Y2Y1ZWNiZWI1YTU5MGUxY2M0YjA4NWNhMmU3YTRjZmQ3MTE3NzJmOTAxMWRmYWE1ZTdkMmYzNzA5Y2M"
                 className="text-gray-400 no-underline flex items-center gap-2 hover:text-white hover:underline"
               >
                 Slack

@@ -1,4 +1,4 @@
-import {CompileFn, FormatFn} from './default.js'
+import {type CompileFn, type FormatFn} from './default.js'
 
 export type StructuredJson = Record<
   string,

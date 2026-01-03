@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import {FormatPluralOptions} from '@formatjs/intl'
+import {type FormatPluralOptions} from '@formatjs/intl'
 import useIntl from './useIntl.js'
 
 interface Props extends FormatPluralOptions {

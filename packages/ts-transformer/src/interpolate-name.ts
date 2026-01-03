@@ -1,4 +1,4 @@
-import {BinaryToTextEncoding, createHash} from 'crypto'
+import {type BinaryToTextEncoding, createHash} from 'crypto'
 import * as path from 'path'
 export interface LoaderContext {
   resourceQuery?: string

@@ -3,7 +3,7 @@ import {CanonicalizeUValue} from './CanonicalizeUValue.js'
 import {InsertUnicodeExtensionAndCanonicalize} from './InsertUnicodeExtensionAndCanonicalize.js'
 import {LookupMatcher} from './LookupMatcher.js'
 import {UnicodeExtensionComponents} from './UnicodeExtensionComponents.js'
-import {Keyword, LookupMatcherResult} from './types.js'
+import type {Keyword, LookupMatcherResult} from './types.js'
 import {invariant} from './utils.js'
 
 export interface ResolveLocaleResult {

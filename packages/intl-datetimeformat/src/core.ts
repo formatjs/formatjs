@@ -1,15 +1,15 @@
 import {
   CanonicalizeLocaleList,
   CanonicalizeTimeZoneName,
-  DateTimeFormatLocaleInternalData,
-  DateTimeFormat as IDateTimeFormat,
-  IntlDateTimeFormatInternal,
+  type DateTimeFormatLocaleInternalData,
+  type DateTimeFormat as IDateTimeFormat,
+  type IntlDateTimeFormatInternal,
   IsValidTimeZoneName,
   OrdinaryHasInstance,
   SupportedLocales,
-  TABLE_6,
+  type TABLE_6,
   ToNumber,
-  UnpackedZoneData,
+  type UnpackedZoneData,
   defineProperty,
   invariant,
 } from '@formatjs/ecma402-abstract'
@@ -24,7 +24,7 @@ import {DATE_TIME_PROPS} from './abstract/utils.js'
 import links from './data/links.generated.js'
 import getInternalSlots from './get_internal_slots.js'
 import {unpack} from './packer.js'
-import {PackedData, RawDateTimeLocaleData} from './types.js'
+import {type PackedData, type RawDateTimeLocaleData} from './types.js'
 
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {

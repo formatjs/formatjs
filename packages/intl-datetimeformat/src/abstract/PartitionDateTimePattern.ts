@@ -1,17 +1,17 @@
 import {
-  DateTimeFormat,
-  IntlDateTimeFormatPart,
-  IntlDateTimeFormatPartType,
+  type DateTimeFormat,
+  type IntlDateTimeFormatPart,
+  type IntlDateTimeFormatPartType,
   invariant,
   PartitionPattern,
   TimeClip,
 } from '@formatjs/ecma402-abstract'
-import Decimal from 'decimal.js'
+import type Decimal from 'decimal.js'
 import {
   FormatDateTimePattern,
-  FormatDateTimePatternImplDetails,
+  type FormatDateTimePatternImplDetails,
 } from './FormatDateTimePattern.js'
-import {ToLocalTimeImplDetails} from './ToLocalTime.js'
+import {type ToLocalTimeImplDetails} from './ToLocalTime.js'
 
 /**
  * https://tc39.es/ecma402/#sec-partitiondatetimepattern

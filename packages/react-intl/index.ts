@@ -3,12 +3,12 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {type NumberFormatOptions} from '@formatjs/ecma402-abstract'
 import {
-  CustomFormatConfig,
-  FormatDateOptions,
-  FormatTimeOptions,
-  MessageDescriptor,
+  type CustomFormatConfig,
+  type FormatDateOptions,
+  type FormatTimeOptions,
+  type MessageDescriptor,
 } from '@formatjs/intl'
 import * as React from 'react'
 import {
@@ -20,30 +20,30 @@ import FormattedDateTimeRange from './src/components/dateTimeRange.js'
 import injectIntl, {
   Context as IntlContext,
   Provider as RawIntlProvider,
-  WithIntlProps,
-  WrappedComponentProps,
+  type WithIntlProps,
+  type WrappedComponentProps,
 } from './src/components/injectIntl.js'
 import FormattedMessage from './src/components/message.js'
 import FormattedPlural from './src/components/plural.js'
 import IntlProvider from './src/components/provider.js'
 import FormattedRelativeTime from './src/components/relative.js'
 import useIntl from './src/components/useIntl.js'
-import {IntlShape} from './src/types.js'
+import {type IntlShape} from './src/types.js'
 export {
   createIntlCache,
-  CustomFormatConfig,
-  CustomFormats,
-  FormatDateOptions,
-  FormatDisplayNameOptions,
-  FormatListOptions,
-  FormatNumberOptions,
-  FormatPluralOptions,
-  FormatRelativeTimeOptions,
-  Formatters,
-  IntlCache,
-  IntlFormatters,
+  type CustomFormatConfig,
+  type CustomFormats,
+  type FormatDateOptions,
+  type FormatDisplayNameOptions,
+  type FormatListOptions,
+  type FormatNumberOptions,
+  type FormatPluralOptions,
+  type FormatRelativeTimeOptions,
+  type Formatters,
+  type IntlCache,
+  type IntlFormatters,
   InvalidConfigError,
-  MessageDescriptor,
+  type MessageDescriptor,
   MessageFormatError,
   MissingDataError,
   MissingTranslationError,
@@ -51,7 +51,11 @@ export {
   IntlErrorCode as ReactIntlErrorCode,
   UnsupportedFormatterError,
 } from '@formatjs/intl'
-export {IntlConfig, IntlShape, ResolvedIntlConfig} from './src/types.js'
+export {
+  type IntlConfig,
+  type IntlShape,
+  type ResolvedIntlConfig,
+} from './src/types.js'
 export {
   createIntl,
   FormattedDateTimeRange,
@@ -63,8 +67,8 @@ export {
   IntlProvider,
   RawIntlProvider,
   useIntl,
-  WithIntlProps,
-  WrappedComponentProps,
+  type WithIntlProps,
+  type WrappedComponentProps,
 }
 
 export function defineMessages<

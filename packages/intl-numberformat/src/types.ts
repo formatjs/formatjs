@@ -1,12 +1,12 @@
 import {
-  NumberFormatLocaleInternalData,
-  NumberFormatOptions,
-  NumberFormatPart,
-  NumberRangeToParts,
-  RawNumberLocaleData,
-  ResolvedNumberFormatOptions,
+  type NumberFormatLocaleInternalData,
+  type NumberFormatOptions,
+  type NumberFormatPart,
+  type NumberRangeToParts,
+  type RawNumberLocaleData,
+  type ResolvedNumberFormatOptions,
 } from '@formatjs/ecma402-abstract'
-import Decimal from 'decimal.js'
+import type Decimal from 'decimal.js'
 
 // Public --------------------------------------------------------------------------------------------------------------
 

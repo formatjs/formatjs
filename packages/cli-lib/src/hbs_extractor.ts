@@ -1,4 +1,4 @@
-import {Opts} from '@formatjs/ts-transformer'
+import {type Opts} from '@formatjs/ts-transformer'
 import type {AST} from '@glimmer/syntax'
 import {transform} from 'ember-template-recast'
 

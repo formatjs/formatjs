@@ -2,7 +2,7 @@
 import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {formatPlural as formatPluralFn} from '../src/plural'
 
-import {IntlFormatters, IntlConfig} from '../src/types'
+import {type IntlFormatters, type IntlConfig} from '../src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env

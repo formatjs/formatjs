@@ -1,13 +1,16 @@
 import {
-  MessageFormatElement,
+  type MessageFormatElement,
   TYPE,
   parse,
 } from '@formatjs/icu-messageformat-parser'
-import {TSESTree} from '@typescript-eslint/utils'
-import {RuleContext, RuleModule} from '@typescript-eslint/utils/ts-eslint'
+import type {TSESTree} from '@typescript-eslint/utils'
+import {
+  type RuleContext,
+  type RuleModule,
+} from '@typescript-eslint/utils/ts-eslint'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
-import {CORE_MESSAGES, CoreMessageIds} from '../messages.js'
+import {CORE_MESSAGES, type CoreMessageIds} from '../messages.js'
 
 type MessageIds = 'missingValue' | 'unusedValue' | CoreMessageIds
 type Options = [{ignoreList: string[]}?]

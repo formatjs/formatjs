@@ -1,5 +1,8 @@
 import {Decimal} from 'decimal.js'
-import {DecimalFormatNum, NumberFormatInternal} from '../types/number.js'
+import {
+  type DecimalFormatNum,
+  type NumberFormatInternal,
+} from '../types/number.js'
 import {invariant} from '../utils.js'
 import {getPowerOf10} from './decimal-cache.js'
 Decimal.set({

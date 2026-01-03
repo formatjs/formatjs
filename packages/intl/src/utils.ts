@@ -1,14 +1,14 @@
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
-import {Cache, memoize, strategies} from '@formatjs/fast-memoize'
+import {type NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {type Cache, memoize, strategies} from '@formatjs/fast-memoize'
 import {IntlMessageFormat} from 'intl-messageformat'
 import {UnsupportedFormatterError} from './error.js'
 import {
-  CustomFormats,
-  Formatters,
-  IntlCache,
-  OnErrorFn,
-  OnWarnFn,
-  ResolvedIntlConfig,
+  type CustomFormats,
+  type Formatters,
+  type IntlCache,
+  type OnErrorFn,
+  type OnWarnFn,
+  type ResolvedIntlConfig,
 } from './types.js'
 
 export function invariant(

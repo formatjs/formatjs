@@ -1,5 +1,5 @@
 import {
-  NumberFormatOptions,
+  type NumberFormatOptions,
   createMemoizedListFormat,
   createMemoizedNumberFormat,
   invariant,
@@ -7,7 +7,7 @@ import {
 import {TABLE_2} from '../constants.js'
 import {DurationFormat} from '../core.js'
 import {getInternalSlots} from '../get_internal_slots.js'
-import {DurationFormatPart, DurationRecord} from '../types.js'
+import {type DurationFormatPart, type DurationRecord} from '../types.js'
 
 export function PartitionDurationFormatPattern(
   df: DurationFormat,

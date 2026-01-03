@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {defineMessages, injectIntl, IntlShape, useIntl} from '../../'
+import {defineMessages, injectIntl, type IntlShape, useIntl} from '../../'
 import {describe, it} from 'vitest'
 describe('types', () => {
   // https://github.com/formatjs/formatjs/issues/3856

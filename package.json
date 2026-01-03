@@ -6,7 +6,6 @@
   "private": true,
   "scripts": {
     "build": "bazel build //...",
-    "deploy": "NO_UPDATE_NOTIFIER=1 DEPLOYMENT_BRANCH=main USE_SSH=true bazel run //website:deploy",
     "examples": "bazel run //packages/react-intl/examples",
     "format": "lefthook run pre-commit --all-files",
     "karma:ci": "bazel test :karma-ci",
@@ -14,7 +13,7 @@
     "prepare": "lefthook install && syncpack fix-mismatches && syncpack format",
     "prerelease": "LEFTHOOK=0 lerna version --yes --no-private",
     "test": "syncpack lint && oxlint --config .oxlintrc.json && bazel test //...",
-    "website": "NO_UPDATE_NOTIFIER=1 bazel run //website:serve"
+    "website": "bazel run //docs:serve"
   },
   "dependencies": {
     "tailwind-merge": "^3.4.0"

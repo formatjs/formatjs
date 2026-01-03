@@ -1,7 +1,7 @@
 import {
   CanonicalizeLocaleList,
-  DisplayNamesData,
-  DisplayNamesLocaleData,
+  type DisplayNamesData,
+  type DisplayNamesLocaleData,
   GetOption,
   GetOptionsObject,
   IsWellFormedCurrencyCode,

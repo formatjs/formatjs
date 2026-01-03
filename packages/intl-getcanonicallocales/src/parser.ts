@@ -1,11 +1,11 @@
 import {
-  UnicodeLocaleId,
-  UnicodeLanguageId,
-  UnicodeExtension,
-  TransformedExtension,
-  PuExtension,
-  OtherExtension,
-  KV,
+  type UnicodeLocaleId,
+  type UnicodeLanguageId,
+  type UnicodeExtension,
+  type TransformedExtension,
+  type PuExtension,
+  type OtherExtension,
+  type KV,
 } from './types.js'
 
 const ALPHANUM_1_8 = /^[a-z0-9]{1,8}$/i

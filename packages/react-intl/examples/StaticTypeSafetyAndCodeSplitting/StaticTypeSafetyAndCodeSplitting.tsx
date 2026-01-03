@@ -2,7 +2,7 @@ import * as React from 'react'
 import {
   useFormatMessage,
   IntlProvider,
-  LocaleMessages,
+  type LocaleMessages,
   importMessages,
 } from './intlHelpers'
 

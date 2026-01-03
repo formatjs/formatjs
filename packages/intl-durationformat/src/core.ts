@@ -25,7 +25,7 @@ import type {
   IntlDurationFormatInternal,
   ResolvedDurationFormatOptions,
 } from './types.js'
-import {DurationFormatOptions} from './types.js'
+import {type DurationFormatOptions} from './types.js'
 
 // Keys that should be included in resolvedOptions() output
 // These represent all the configurable options for duration formatting

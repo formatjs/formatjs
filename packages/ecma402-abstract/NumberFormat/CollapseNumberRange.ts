@@ -1,7 +1,7 @@
 import {
-  NumberFormatInternal,
-  NumberFormatPart,
-  NumberFormatPartTypes,
+  type NumberFormatInternal,
+  type NumberFormatPart,
+  type NumberFormatPartTypes,
 } from '../types/number.js'
 
 const PART_TYPES_TO_COLLAPSE = new Set<NumberFormatPartTypes>([

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {IntlProvider, useIntl, injectIntl, IntlShape} from 'react-intl'
+import {IntlProvider, useIntl, injectIntl, type IntlShape} from 'react-intl'
 
 const Comp: React.FC<{}> = _ => {
   const {formatDate} = useIntl()

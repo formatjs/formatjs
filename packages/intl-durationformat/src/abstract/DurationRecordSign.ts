@@ -1,5 +1,5 @@
 import {TABLE_1} from '../constants.js'
-import {DurationRecord} from '../types.js'
+import {type DurationRecord} from '../types.js'
 
 export function DurationRecordSign(record: DurationRecord): -1 | 0 | 1 {
   for (const key of TABLE_1) {

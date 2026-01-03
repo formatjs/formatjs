@@ -1,4 +1,4 @@
-import {FormatDateTimeRangeOptions} from '@formatjs/intl'
+import {type FormatDateTimeRangeOptions} from '@formatjs/intl'
 import * as React from 'react'
 import useIntl from './useIntl.js'
 

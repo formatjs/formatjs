@@ -1,5 +1,5 @@
 import {cleanup, render} from '@testing-library/react'
-import {FormattedDate, FormattedDateParts, IntlShape} from '../../..'
+import {FormattedDate, FormattedDateParts, type IntlShape} from '../../..'
 import {createIntl} from '../../../src/components/createIntl'
 import {mountFormattedComponentWithProvider} from '../testUtils'
 import {describe, expect, it, beforeEach, vi} from 'vitest'
@@ -148,7 +148,9 @@ describe('<FormattedDateParts>', () => {
     // So it doesn't spam the console
     vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() =>
-      render(<FormattedDateParts children={children} value={Date.now()} />)
+      render(
+        <FormattedDateParts value={Date.now()}>{children}</FormattedDateParts>
+      )
     ).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     )

@@ -1,7 +1,7 @@
 import {
   CanonicalizeLocaleList,
-  LocaleFieldsData,
-  RelativeTimeLocaleData,
+  type LocaleFieldsData,
+  type RelativeTimeLocaleData,
   SupportedLocales,
   ToString,
 } from '@formatjs/ecma402-abstract'

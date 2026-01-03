@@ -1,4 +1,4 @@
-import {Formatters, IntlFormatters, OnErrorFn} from './types.js'
+import {type Formatters, type IntlFormatters, type OnErrorFn} from './types.js'
 import {filterProps} from './utils.js'
 
 import {ErrorCode, FormatError} from 'intl-messageformat'

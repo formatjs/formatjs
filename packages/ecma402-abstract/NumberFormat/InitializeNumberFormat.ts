@@ -4,10 +4,10 @@ import {CoerceOptionsToObject} from '../CoerceOptionsToObject.js'
 import {GetOption} from '../GetOption.js'
 import {GetStringOrBooleanOption} from '../GetStringOrBooleanOption.js'
 import {
-  NumberFormatInternal,
-  NumberFormatLocaleInternalData,
-  NumberFormatOptions,
-  UseGroupingType,
+  type NumberFormatInternal,
+  type NumberFormatLocaleInternalData,
+  type NumberFormatOptions,
+  type UseGroupingType,
 } from '../types/number.js'
 import {invariant} from '../utils.js'
 import {CurrencyDigits} from './CurrencyDigits.js'

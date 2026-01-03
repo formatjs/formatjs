@@ -1,4 +1,4 @@
-import {Opts, transformWithTs} from '@formatjs/ts-transformer'
+import {type Opts, transformWithTs} from '@formatjs/ts-transformer'
 import * as ts from 'typescript'
 import {debug} from './console_utils.js'
 /**

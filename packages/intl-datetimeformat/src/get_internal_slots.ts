@@ -2,8 +2,8 @@
 // eslint-disable-next-line import/no-cycle
 
 import {
-  DateTimeFormat,
-  IntlDateTimeFormatInternal,
+  type DateTimeFormat,
+  type IntlDateTimeFormatInternal,
 } from '@formatjs/ecma402-abstract'
 
 const internalSlotMap = new WeakMap<
