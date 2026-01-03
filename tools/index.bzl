@@ -4,6 +4,8 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG")
 
 def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
@@ -18,13 +20,28 @@ def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
     """
     deps = deps + ["//:node_modules/tslib"]
 
+    # Type check only with tsgo (fast, parallel)
+    ts_project(
+        name = "%s-esm-esnext-typecheck" % name,
+        srcs = srcs,
+        declaration = True,
+        tsconfig = ESNEXT_TSCONFIG,
+        resolve_json_module = True,
+        deps = deps,
+        transpiler = tsgo_bin.tsgo,
+        no_emit = True,
+    )
+
+    # Transpile with oxc-transform (fast JS and .d.ts generation)
     ts_project(
         name = "%s-esm-esnext" % name,
         srcs = srcs,
         declaration = True,
         tsconfig = ESNEXT_TSCONFIG,
         resolve_json_module = True,
-        deps = deps,
+        deps = deps + ["//:node_modules/oxc-transform"],
+        transpiler = oxc_transpiler,
+        declaration_transpiler = oxc_transpiler,
     )
 
     js_library(
@@ -34,41 +51,45 @@ def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
         visibility = visibility,
     )
 
-def ts_compile(name, srcs, deps = [], skip_esm = True, skip_esm_esnext = True, visibility = None):
+def ts_compile(name, srcs, deps = [], visibility = None):
     """Compile TS with prefilled args.
 
     Args:
         name: target name
         srcs: src files
         deps: deps
-        skip_esm: skip building ESM bundle
-        skip_esm_esnext: skip building the ESM ESNext bundle
         visibility: visibility
     """
     deps = deps + ["//:node_modules/tslib"]
-    if not skip_esm:
-        ts_project(
-            name = "%s-esm" % name,
-            srcs = srcs,
-            declaration = True,
-            tsconfig = BASE_TSCONFIG,
-            resolve_json_module = True,
-            deps = deps,
-        )
-    if not skip_esm_esnext:
-        ts_project(
-            name = "%s-esm-esnext" % name,
-            srcs = srcs,
-            declaration = True,
-            out_dir = "lib_esnext",
-            tsconfig = ESNEXT_TSCONFIG,
-            resolve_json_module = True,
-            deps = deps,
-        )
+
+    # Always build ESM bundle
+    # Type check only with tsgo (fast, parallel)
+    ts_project(
+        name = "%s-esm-typecheck" % name,
+        srcs = srcs,
+        declaration = True,
+        tsconfig = BASE_TSCONFIG,
+        resolve_json_module = True,
+        deps = deps,
+        transpiler = tsgo_bin.tsgo,
+        no_emit = True,
+    )
+
+    # Transpile with oxc-transform (fast JS and .d.ts generation)
+    ts_project(
+        name = "%s-esm" % name,
+        srcs = srcs,
+        declaration = True,
+        tsconfig = BASE_TSCONFIG,
+        resolve_json_module = True,
+        deps = deps + ["//:node_modules/oxc-transform"],
+        transpiler = oxc_transpiler,
+        declaration_transpiler = oxc_transpiler,
+    )
 
     js_library(
         name = name,
-        srcs = ([":%s-esm" % name] if not skip_esm else []) + ["package.json"],
+        srcs = [":%s-esm" % name, "package.json"],
         visibility = visibility,
     )
 
@@ -78,6 +99,7 @@ def ts_binary(name, data = [], node_options = [], **kwargs):
     Args:
         name: target name
         data: data files or dependencies
+        node_options: additional Node.js options
         **kwargs: additional arguments passed to js_binary
     """
     js_binary(

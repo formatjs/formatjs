@@ -1,0 +1,12 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+
+js_binary(
+    name = "transpile",
+    data = [
+        "package.json",
+        "//:node_modules/fs-extra",
+        "//:node_modules/oxc-transform",
+    ],
+    entry_point = "index.mjs",
+    visibility = ["//visibility:public"],
+)

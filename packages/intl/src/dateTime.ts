@@ -83,7 +83,8 @@ export function formatDate(
     onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
-  ...[value, options = {}]: Parameters<IntlFormatters['formatDate']>
+  value: Parameters<IntlFormatters['formatDate']>[0],
+  options: Parameters<IntlFormatters['formatDate']>[1] = {}
 ): string {
   const date = typeof value === 'string' ? new Date(value || 0) : value
   try {
@@ -105,7 +106,8 @@ export function formatTime(
     onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
-  ...[value, options = {}]: Parameters<IntlFormatters['formatTime']>
+  value: Parameters<IntlFormatters['formatTime']>[0],
+  options: Parameters<IntlFormatters['formatTime']>[1] = {}
 ): string {
   const date = typeof value === 'string' ? new Date(value || 0) : value
 
@@ -128,7 +130,9 @@ export function formatDateTimeRange(
     onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
-  ...[from, to, options = {}]: Parameters<IntlFormatters['formatDateTimeRange']>
+  from: Parameters<IntlFormatters['formatDateTimeRange']>[0],
+  to: Parameters<IntlFormatters['formatDateTimeRange']>[1],
+  options: Parameters<IntlFormatters['formatDateTimeRange']>[2] = {}
 ): string {
   const fromDate = typeof from === 'string' ? new Date(from || 0) : from
   const toDate = typeof to === 'string' ? new Date(to || 0) : to
@@ -157,7 +161,8 @@ export function formatDateToParts(
     onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
-  ...[value, options = {}]: Parameters<IntlFormatters['formatDate']>
+  value: Parameters<IntlFormatters['formatDate']>[0],
+  options: Parameters<IntlFormatters['formatDate']>[1] = {}
 ): Intl.DateTimeFormatPart[] {
   const date = typeof value === 'string' ? new Date(value || 0) : value
   try {
@@ -184,7 +189,8 @@ export function formatTimeToParts(
     onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
-  ...[value, options = {}]: Parameters<IntlFormatters['formatTimeToParts']>
+  value: Parameters<IntlFormatters['formatTimeToParts']>[0],
+  options: Parameters<IntlFormatters['formatTimeToParts']>[1] = {}
 ): Intl.DateTimeFormatPart[] {
   const date = typeof value === 'string' ? new Date(value || 0) : value
 

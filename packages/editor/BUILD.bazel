@@ -35,7 +35,6 @@
 # ts_compile(
 #     name = "dist",
 #     srcs = [":srcs"],
-#     skip_esm = False,
 #     deps = SRC_DEPS,
 # )
 
