@@ -57,7 +57,6 @@ TEST_DEPS = SRC_DEPS + [
 ts_compile(
     name = "dist",
     srcs = SRCS,
-    skip_esm = False,
     deps = SRC_DEPS,
 )
 

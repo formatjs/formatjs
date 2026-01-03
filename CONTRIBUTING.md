@@ -38,6 +38,78 @@ You can build & test with `pnpm`. At the moment version >= 9 is not supported:
 pnpm i && pnpm t
 ```
 
+### Build System Architecture
+
+This repository uses a highly optimized TypeScript build pipeline with Bazel:
+
+#### Fast Parallel Type Checking with tsgo
+
+Type checking is performed using [tsgo](https://github.com/microsoft/TypeScript/tree/main/packages/ts-native-preview) from `@typescript/native-preview`, a native TypeScript type checker that's significantly faster than `tsc`:
+
+- Type checking runs in parallel with code generation
+- Uses `no_emit = True` to skip generating files (only validates types)
+- Configured via the `transpiler` attribute in `ts_project` targets
+
+#### Fast Transpilation with oxc-transform
+
+Code generation uses [oxc-transform](https://oxc.rs/docs/guide/usage/transform.html), a Rust-based transpiler:
+
+- **439x faster** than tsc for JavaScript transpilation
+- **20-40x faster** than tsc for TypeScript declaration generation
+- Handles both TypeScript → JavaScript and `.d.ts` file generation
+- Respects `verbatimModuleSyntax` for proper type-only import handling
+- Uses isolated declarations for fast `.d.ts` generation
+- **Note**: Source code must avoid rest parameters with default values (e.g., `...[value, options = {}]`) as oxc's isolated declarations incorrectly preserves these in `.d.ts` files, causing tsc errors
+
+#### How It Works
+
+For every TypeScript compilation target, two separate Bazel targets are created:
+
+1. **Type Check Target** (`<name>-typecheck`):
+   - Uses tsgo with `no_emit = True`
+   - Runs in parallel with transpilation
+   - Fast type validation without generating files
+
+2. **Transpile Target** (`<name>`):
+   - Uses oxc-transform for both `.js` and `.d.ts` file generation
+   - Declaration files use isolated declarations for speed
+   - Preserves directory structure
+
+This separation allows both operations to run in parallel, dramatically improving build times.
+
+#### Type Safety Requirements
+
+The repository uses `verbatimModuleSyntax: true` in `tsconfig.json`. This means:
+
+- **Type-only imports must use `import type`**:
+  ```typescript
+  // ✅ Correct
+  import type { MyType } from './types.js'
+
+  // ❌ Wrong - will cause build errors
+  import { MyType } from './types.js'
+  ```
+
+- **Type-only exports must use `export type`**:
+  ```typescript
+  // ✅ Correct
+  export type { MyType } from './types.js'
+
+  // ❌ Wrong - will cause runtime errors
+  export { MyType } from './types.js'
+  ```
+
+This ensures compatibility with fast transpilers that operate in isolated mode without full type information.
+
+#### Implementation Files
+
+The transpiler infrastructure is located in:
+
+- [`tools/index.bzl`](tools/index.bzl) - Main compilation macros (`ts_compile`, `ts_compile_node`)
+- [`tools/vitest.bzl`](tools/vitest.bzl) - Test compilation with tsgo
+- [`tools/oxc_transpiler.bzl`](tools/oxc_transpiler.bzl) - Custom Bazel rule for oxc-transform
+- [`tools/oxc-transpiler/`](tools/oxc-transpiler/) - Node.js wrapper for oxc-transform CLI
+
 ### Releases
 
 Releases are automated via GitHub Actions. To publish a new release:

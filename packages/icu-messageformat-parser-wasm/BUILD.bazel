@@ -30,7 +30,6 @@ ts_compile(
         ":srcs",
         ":wasm_files",
     ],
-    skip_esm = False,
     deps = SRC_DEPS,
 )
 

@@ -1,0 +1,8 @@
+{
+  "name": "oxc-transpiler-wrapper",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "oxc-transpiler": "./index.mjs"
+  }
+}

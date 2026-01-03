@@ -1,9 +1,8 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:http-server/package_json.bzl", http_server_bin = "bin")
-load("@npm//:vike/package_json.bzl", vike_bin = "bin")
 load("@npm//:vite/package_json.bzl", vite_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_binary", "ts_run_binary")
 load("//tools:tsconfig.bzl", "DOCS_TSCONFIG")
@@ -28,6 +27,7 @@ ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
     tsconfig = DOCS_TSCONFIG,
     deps = [
         ":node_modules/intl-messageformat",
