@@ -34,6 +34,14 @@ pre-commit:
       glob: '**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}'
       run: pnpm oxlint --config .oxlintrc.json --fix {staged_files}
       stage_fixed: true
+    bazel-lock-regen:
+      glob:
+        - "pnpm-lock.yaml"
+        - "package.json"
+        - "pnpm-workspace.yaml"
+        - "*.bazel"
+      run: bazel mod deps
+      stage_fixed: true
 
 commit-msg:
   commands:
