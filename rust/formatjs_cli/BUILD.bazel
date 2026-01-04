@@ -80,3 +80,16 @@ alias(
     actual = ":formatjs_cli",
     visibility = ["//visibility:public"],
 )
+
+# Release targets - these build for the current platform and copy to release directory
+# Use --platforms flag to build for different platforms:
+#   macOS: bazel build --platforms=//rust/formatjs_cli/platforms:darwin_arm64 //rust/formatjs_cli:release_binary
+#   Linux: bazel build --platforms=//rust/formatjs_cli/platforms:linux_x86_64 //rust/formatjs_cli:release_binary
+
+genrule(
+    name = "release_binary",
+    srcs = [":formatjs_cli"],
+    outs = ["formatjs_cli_release"],
+    cmd = "cp $< $@ && chmod +x $@",
+    visibility = ["//visibility:public"],
+)
