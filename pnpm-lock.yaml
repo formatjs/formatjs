@@ -439,6 +439,8 @@ importers:
         specifier: ^3.5.0
         version: 3.9.0(react@19.0.0)
 
+  benchmarks/cli-comparison: {}
+
   docs:
     devDependencies:
       intl-messageformat:
