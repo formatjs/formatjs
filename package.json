@@ -60,7 +60,7 @@
     "@types/lodash-es": "^4.17.12",
     "@types/lunr": "^2.3.7",
     "@types/minimist": "^1.2.5",
-    "@types/node": "^22.0.0",
+    "@types/node": "^24.0.0",
     "@types/react": "19",
     "@types/react-dom": "19",
     "@types/regenerate": "^1.4.3",
