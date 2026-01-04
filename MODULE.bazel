@@ -87,6 +87,10 @@ bazel_dep(name = "rules_rust", version = "0.68.1")
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2024",
+    extra_target_triples = [
+        "wasm32-unknown-unknown",
+        "x86_64-unknown-linux-gnu",
+    ],
     versions = [
         "1.90.0",
     ],

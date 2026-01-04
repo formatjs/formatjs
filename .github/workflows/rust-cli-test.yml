@@ -1,0 +1,137 @@
+name: Rust CLI Build & Test
+
+on:
+  pull_request:
+    paths:
+      - 'rust/**'
+      - 'MODULE.bazel'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - '.github/workflows/rust-cli-test.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'rust/**'
+      - 'MODULE.bazel'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - '.github/workflows/rust-cli-test.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test-macos:
+    name: Build & Test (macOS)
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.16.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-macos
+          repository-cache: true
+
+      - name: Build Rust CLI
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            echo "Building with BuildBuddy CI config"
+            bazel build \
+              --config=ci \
+              --compilation_mode=opt \
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+              //rust/formatjs_cli
+          else
+            echo "Building without BuildBuddy (no API key)"
+            bazel build --compilation_mode=opt //rust/formatjs_cli
+          fi
+
+      - name: Run Unit Tests
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            bazel test \
+              --config=ci \
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+              //rust/formatjs_cli:formatjs_cli_test
+          else
+            bazel test //rust/formatjs_cli:formatjs_cli_test
+          fi
+
+      - name: Run Integration Tests
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            bazel test \
+              --config=ci \
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+              //packages/cli/integration-tests/extract:integration_test
+          else
+            bazel test //packages/cli/integration-tests/extract:integration_test
+          fi
+
+      - name: Smoke Test Binary
+        run: |
+          ./bazel-bin/rust/formatjs_cli/formatjs_cli --version
+          ./bazel-bin/rust/formatjs_cli/formatjs_cli --help
+
+  build-and-test-linux:
+    name: Build & Test (Linux)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.16.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-linux
+          repository-cache: true
+
+      - name: Build Rust CLI
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            echo "Building with BuildBuddy CI config"
+            bazel build \
+              --config=ci \
+              --compilation_mode=opt \
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+              //rust/formatjs_cli
+          else
+            echo "Building without BuildBuddy (no API key)"
+            bazel build --compilation_mode=opt //rust/formatjs_cli
+          fi
+
+      - name: Run Unit Tests
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            bazel test \
+              --config=ci \
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+              //rust/formatjs_cli:formatjs_cli_test
+          else
+            bazel test //rust/formatjs_cli:formatjs_cli_test
+          fi
+
+      - name: Run Integration Tests
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            bazel test \
+              --config=ci \
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+              //packages/cli/integration-tests/extract:integration_test
+          else
+            bazel test //packages/cli/integration-tests/extract:integration_test
+          fi
+
+      - name: Smoke Test Binary
+        run: |
+          ./bazel-bin/rust/formatjs_cli/formatjs_cli --version
+          ./bazel-bin/rust/formatjs_cli/formatjs_cli --help

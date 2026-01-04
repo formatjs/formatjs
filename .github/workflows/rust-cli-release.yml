@@ -1,0 +1,182 @@
+name: Rust CLI Release
+
+on:
+  push:
+    tags:
+      - 'formatjs_cli_v*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-macos:
+    name: Build macOS ARM64
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.16.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-macos
+          repository-cache: true
+
+      - name: Build macOS ARM64 Binary
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            bazel build \
+              --config=ci \
+              --compilation_mode=opt \
+              --platforms=//rust/formatjs_cli/platforms:darwin_arm64 \
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+              //rust/formatjs_cli:release_binary
+          else
+            bazel build \
+              --compilation_mode=opt \
+              --platforms=//rust/formatjs_cli/platforms:darwin_arm64 \
+              //rust/formatjs_cli:release_binary
+          fi
+
+          # Copy binary to artifacts directory
+          mkdir -p artifacts
+          cp bazel-bin/rust/formatjs_cli/formatjs_cli_release artifacts/formatjs_cli-darwin-arm64
+          chmod +x artifacts/formatjs_cli-darwin-arm64
+
+      - name: Smoke Test
+        run: |
+          ./artifacts/formatjs_cli-darwin-arm64 --version
+          ./artifacts/formatjs_cli-darwin-arm64 --help
+
+      - name: Upload macOS Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: formatjs_cli-darwin-arm64
+          path: artifacts/formatjs_cli-darwin-arm64
+          retention-days: 7
+
+  build-linux:
+    name: Build Linux x86_64
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.16.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-linux
+          repository-cache: true
+
+      - name: Build Linux x86_64 Binary
+        run: |
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            bazel build \
+              --config=ci \
+              --compilation_mode=opt \
+              --platforms=//rust/formatjs_cli/platforms:linux_x86_64 \
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+              //rust/formatjs_cli:release_binary
+          else
+            bazel build \
+              --compilation_mode=opt \
+              --platforms=//rust/formatjs_cli/platforms:linux_x86_64 \
+              //rust/formatjs_cli:release_binary
+          fi
+
+          # Copy binary to artifacts directory
+          mkdir -p artifacts
+          cp bazel-bin/rust/formatjs_cli/formatjs_cli_release artifacts/formatjs_cli-linux-x64
+          chmod +x artifacts/formatjs_cli-linux-x64
+
+      - name: Smoke Test
+        run: |
+          ./artifacts/formatjs_cli-linux-x64 --version
+          ./artifacts/formatjs_cli-linux-x64 --help
+
+      - name: Upload Linux Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: formatjs_cli-linux-x64
+          path: artifacts/formatjs_cli-linux-x64
+          retention-days: 7
+
+  combine-and-release:
+    name: Combine Artifacts and Create Release
+    needs: [build-macos, build-linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Download macOS Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: formatjs_cli-darwin-arm64
+          path: release/
+
+      - name: Download Linux Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: formatjs_cli-linux-x64
+          path: release/
+
+      - name: Generate Checksums
+        run: |
+          cd release
+          shasum -a 256 formatjs_cli-* > checksums.txt
+          cat checksums.txt
+
+      - name: List Release Artifacts
+        run: |
+          ls -lh release/
+          echo "---"
+          echo "Checksums:"
+          cat release/checksums.txt
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/formatjs_cli_v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/formatjs_cli-darwin-arm64
+            release/formatjs_cli-linux-x64
+            release/checksums.txt
+          body: |
+            ## FormatJS Rust CLI Release
+
+            ### Binaries
+            - **macOS Apple Silicon**: `formatjs_cli-darwin-arm64`
+            - **Linux x86_64**: `formatjs_cli-linux-x64`
+
+            ### Installation
+
+            ```bash
+            # macOS (Apple Silicon)
+            curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-darwin-arm64
+            chmod +x formatjs_cli-darwin-arm64
+            sudo mv formatjs_cli-darwin-arm64 /usr/local/bin/formatjs
+
+            # Linux
+            curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-linux-x64
+            chmod +x formatjs_cli-linux-x64
+            sudo mv formatjs_cli-linux-x64 /usr/local/bin/formatjs
+            ```
+
+            ### Verification
+
+            Verify the checksums:
+            ```bash
+            curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/checksums.txt
+            shasum -a 256 -c checksums.txt
+            ```
+          draft: false
+          prerelease: false
