@@ -1,9 +1,11 @@
 import fastGlobPkg from 'fast-glob'
 import {readJSONSync} from 'fs-extra/esm'
+import {dirname} from 'node:path'
 const {sync: globSync} = fastGlobPkg
 
 const packages = [
   ...globSync('./packages/*/package.json').map(fn => readJSONSync(fn).name),
+  ...globSync('./rust/*/BUILD.bazel').map(fn => dirname(fn).split('rust/')[1]),
   'rules_formatjs',
   // renovate bot config package
   'deps',

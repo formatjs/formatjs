@@ -1,0 +1,71 @@
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_test")
+
+exports_files(
+    [
+        "Cargo.toml",
+        "src/main.rs",
+        "src/extract.rs",
+        "src/compile.rs",
+        "src/compile_folder.rs",
+        "src/verify.rs",
+        "src/formatters/mod.rs",
+        "src/formatters/default.rs",
+        "src/formatters/simple.rs",
+        "src/formatters/transifex.rs",
+        "src/formatters/smartling.rs",
+        "src/formatters/lokalise.rs",
+        "src/formatters/crowdin.rs",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# Common dependencies for all targets
+COMMON_DEPS = [
+    "//rust/icu_messageformat_parser",
+    "//rust/icu_skeleton_parser",
+    "@crates//:anyhow",
+    "@crates//:clap",
+    "@crates//:glob",
+    "@crates//:serde",
+    "@crates//:serde_json",
+]
+
+TEST_DEPS = COMMON_DEPS + [
+    "@crates//:tempfile",
+]
+
+# Base rust binary (builds for host platform)
+rust_binary(
+    name = "formatjs_cli",
+    srcs = [
+        "src/compile.rs",
+        "src/compile_folder.rs",
+        "src/extract.rs",
+        "src/formatters/crowdin.rs",
+        "src/formatters/default.rs",
+        "src/formatters/lokalise.rs",
+        "src/formatters/mod.rs",
+        "src/formatters/simple.rs",
+        "src/formatters/smartling.rs",
+        "src/formatters/transifex.rs",
+        "src/main.rs",
+        "src/verify.rs",
+    ],
+    crate_name = "formatjs",
+    edition = "2021",
+    visibility = ["//visibility:public"],
+    deps = COMMON_DEPS,
+)
+
+rust_test(
+    name = "formatjs_cli_test",
+    crate = ":formatjs_cli",
+    deps = TEST_DEPS,
+)
+
+# Alias for convenience (defaults to host platform)
+alias(
+    name = "formatjs",
+    actual = ":formatjs_cli",
+    visibility = ["//visibility:public"],
+)
