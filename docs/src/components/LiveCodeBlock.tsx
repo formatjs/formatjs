@@ -19,6 +19,8 @@ const scope = {
   useMemo: React.useMemo,
   useCallback: React.useCallback,
   Fragment: React.Fragment,
+  defineMessages: ReactIntl.defineMessages,
+
   // ReactIntl exports
   FormattedMessage: ReactIntl.FormattedMessage,
   FormattedDate: ReactIntl.FormattedDate,
@@ -133,7 +135,7 @@ export function LiveCodeBlock({
     const isJSX = code.startsWith('<')
 
     // Wrap non-JSX code in a fragment to render the result
-    return isJSX ? code : `<>{${code}}</>`
+    return isJSX ? code : `<>{function(){${code}}()}</>`
   }, [])
 
   return (
