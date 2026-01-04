@@ -84,21 +84,15 @@ pub fn compile_folder(
         // Get the relative path from source folder
         let relative_path = json_file
             .strip_prefix(folder)
-            .with_context(|| {
-                format!(
-                    "Failed to get relative path for {}",
-                    json_file.display()
-                )
-            })?;
+            .with_context(|| format!("Failed to get relative path for {}", json_file.display()))?;
 
         // Construct output path
         let out_file = out_folder.join(relative_path);
 
         // Ensure output directory exists
         if let Some(parent) = out_file.parent() {
-            std::fs::create_dir_all(parent).with_context(|| {
-                format!("Failed to create directory: {}", parent.display())
-            })?;
+            std::fs::create_dir_all(parent)
+                .with_context(|| format!("Failed to create directory: {}", parent.display()))?;
         }
 
         // Compile this single file
@@ -293,10 +287,7 @@ mod tests {
         let result = compile_folder(&nonexistent, &out_dir.path().to_path_buf(), None, false);
 
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .to_string()
-            .contains("does not exist"));
+        assert!(result.unwrap_err().to_string().contains("does not exist"));
     }
 
     #[test]

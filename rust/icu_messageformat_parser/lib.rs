@@ -21,8 +21,8 @@ pub use printer::{print_ast, print_date_time_skeleton};
 
 // Re-export manipulator functions and types
 pub use manipulator::{
-    hoist_selectors, is_structurally_same, ManipulatorError, StructuralComparisonError,
-    StructuralComparisonResult,
+    ManipulatorError, StructuralComparisonError, StructuralComparisonResult, hoist_selectors,
+    is_structurally_same,
 };
 
 // Re-export parser types and functions

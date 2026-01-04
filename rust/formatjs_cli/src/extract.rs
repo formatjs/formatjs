@@ -7,7 +7,7 @@ use std::fs;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 
-use crate::extractor::{determine_source_type, extract_messages_from_source, MessageDescriptor};
+use crate::extractor::{MessageDescriptor, determine_source_type, extract_messages_from_source};
 use crate::formatters::Formatter;
 use serde_json::Value;
 
@@ -115,8 +115,12 @@ pub fn extract(
     if let Some(out_f) = out_file {
         // Create parent directories if they don't exist
         if let Some(parent) = out_f.parent() {
-            fs::create_dir_all(parent)
-                .with_context(|| format!("Failed to create parent directories for {}", out_f.display()))?;
+            fs::create_dir_all(parent).with_context(|| {
+                format!(
+                    "Failed to create parent directories for {}",
+                    out_f.display()
+                )
+            })?;
         }
         fs::write(out_f, output)
             .with_context(|| format!("Failed to write output to {}", out_f.display()))?;
@@ -159,8 +163,8 @@ fn resolve_files_from_globs(globs: &[PathBuf], ignore: &[String]) -> Result<Vec<
             .to_str()
             .context("Invalid UTF-8 in glob pattern")?;
 
-        let entries = glob::glob(glob_str)
-            .with_context(|| format!("Invalid glob pattern: {}", glob_str))?;
+        let entries =
+            glob::glob(glob_str).with_context(|| format!("Invalid glob pattern: {}", glob_str))?;
 
         for entry in entries {
             let path = entry.context("Failed to read glob entry")?;
@@ -442,13 +446,7 @@ import { FormattedMessage } from 'react-intl';
 
     #[test]
     fn test_generate_id_hex() {
-        let id = generate_id(
-            "[sha512:contenthash:hex:10]",
-            Some("Test"),
-            &None,
-            None,
-        )
-        .unwrap();
+        let id = generate_id("[sha512:contenthash:hex:10]", Some("Test"), &None, None).unwrap();
         assert_eq!(id.len(), 10);
         // Should be hex characters
         assert!(id.chars().all(|c| c.is_ascii_hexdigit()));

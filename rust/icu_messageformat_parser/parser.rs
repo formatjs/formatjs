@@ -3,12 +3,12 @@
 //! This module provides a recursive descent parser for ICU MessageFormat syntax,
 //! converting message strings into an Abstract Syntax Tree (AST).
 
+use crate::date_time_pattern_generator::get_best_pattern;
 use crate::error::{ErrorKind, Location, LocationDetails, ParserError};
 use crate::regex_generated::SPACE_SEPARATOR_REGEX;
 use crate::types::*;
-use crate::date_time_pattern_generator::get_best_pattern;
-use icu::locale::Locale;
 use formatjs_icu_skeleton_parser::{parse_date_time_skeleton, parse_number_skeleton};
+use icu::locale::Locale;
 use once_cell::sync::Lazy;
 use regex::Regex;
 use std::collections::{HashMap, HashSet};
@@ -100,13 +100,25 @@ impl ArgType {
 
 /// Regex for trimming leading space separators.
 static SPACE_SEPARATOR_START_REGEX: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!("^{}*", SPACE_SEPARATOR_REGEX.as_str().trim_start_matches('^').trim_end_matches('$'));
+    let pattern = format!(
+        "^{}*",
+        SPACE_SEPARATOR_REGEX
+            .as_str()
+            .trim_start_matches('^')
+            .trim_end_matches('$')
+    );
     Regex::new(&pattern).expect("Failed to compile SPACE_SEPARATOR_START_REGEX")
 });
 
 /// Regex for trimming trailing space separators.
 static SPACE_SEPARATOR_END_REGEX: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!("{}*$", SPACE_SEPARATOR_REGEX.as_str().trim_start_matches('^').trim_end_matches('$'));
+    let pattern = format!(
+        "{}*$",
+        SPACE_SEPARATOR_REGEX
+            .as_str()
+            .trim_start_matches('^')
+            .trim_end_matches('$')
+    );
     Regex::new(&pattern).expect("Failed to compile SPACE_SEPARATOR_END_REGEX")
 });
 
@@ -148,10 +160,10 @@ fn match_identifier_at_index(s: &str, byte_index: usize) -> (&str, usize) {
             is_id_char
         })
         .last()
-        .map(|(idx, ch)| idx + ch.len_utf8())  // Get byte AFTER the last character
-        .unwrap_or(0);  // Empty identifier
+        .map(|(idx, ch)| idx + ch.len_utf8()) // Get byte AFTER the last character
+        .unwrap_or(0); // Empty identifier
 
-    (&substring[..end_byte], char_count)  // Return both slice and count!
+    (&substring[..end_byte], char_count) // Return both slice and count!
 }
 
 /// Checks if a codepoint is an ASCII letter (upper or lowercase).
@@ -219,7 +231,7 @@ fn is_pattern_syntax(c: char) -> bool {
         '[' | ']' | '(' | ')' | '*' | '+' | ',' | '-' | '.' | '/' => true,
         ':' | ';' | '=' | '?' | '@' | '\\' | '^' | '`' | '~' => true,
         '!' | '"' | '$' | '%' | '&' => true,
-        _ if c <= '\u{007F}' => false,  // Other ASCII is not pattern syntax
+        _ if c <= '\u{007F}' => false, // Other ASCII is not pattern syntax
         _ => {
             // Slow path: full Unicode Pattern_Syntax check
             // Only hit for non-ASCII characters
@@ -375,7 +387,9 @@ impl Parser {
 
         // Get the character at this byte offset
         let remaining = &self.message[byte_offset..];
-        let ch = remaining.chars().next()
+        let ch = remaining
+            .chars()
+            .next()
             .expect("Offset is at invalid UTF-8 boundary");
 
         ch as u32
@@ -428,15 +442,16 @@ impl Parser {
         let ch = std::char::from_u32(code).unwrap();
         let char_byte_len = ch.len_utf8();
 
-        if code == 10 {  // '\n'
+        if code == 10 {
+            // '\n'
             self.position.line += 1;
             self.position.column = 1;
             self.position.offset += 1;
             self.position.byte_offset += char_byte_len;
         } else {
             self.position.column += 1;
-            self.position.offset += 1;  // Always increment by 1 character
-            self.position.byte_offset += char_byte_len;  // Increment by actual UTF-8 byte length
+            self.position.offset += 1; // Always increment by 1 character
+            self.position.byte_offset += char_byte_len; // Increment by actual UTF-8 byte length
         }
     }
 
@@ -584,7 +599,8 @@ impl Parser {
     ///
     /// Returns the unquoted content, or None if no quote sequence is found.
     fn try_parse_quote(&mut self, parent_arg_type: ArgType) -> Option<String> {
-        if self.is_eof() || self.char() != 39 {  // '\''
+        if self.is_eof() || self.char() != 39 {
+            // '\''
             return None;
         }
 
@@ -592,16 +608,18 @@ impl Parser {
         let next_char = self.peek()?;
 
         match next_char {
-            39 => {  // Double apostrophe '' -> single apostrophe
-                self.bump();  // First '
-                self.bump();  // Second '
+            39 => {
+                // Double apostrophe '' -> single apostrophe
+                self.bump(); // First '
+                self.bump(); // Second '
                 // OPTIMIZATION: Use static string constant instead of allocating
                 return Some(APOSTROPHE.to_string());
             }
-            123 | 60 | 62 | 125 => {  // '{', '<', '>', '}'
+            123 | 60 | 62 | 125 => { // '{', '<', '>', '}'
                 // These need escaping
             }
-            35 => {  // '#'
+            35 => {
+                // '#'
                 // Only needs escaping in plural/selectordinal
                 if parent_arg_type == ArgType::Plural || parent_arg_type == ArgType::SelectOrdinal {
                     // Continue to escape
@@ -613,19 +631,20 @@ impl Parser {
         }
 
         // We have a valid escape sequence
-        self.bump();  // Consume the opening apostrophe
+        self.bump(); // Consume the opening apostrophe
 
-        let mut code_points = vec![self.char()];  // The escaped character
+        let mut code_points = vec![self.char()]; // The escaped character
         self.bump();
 
         // Read characters until optional closing apostrophe
         while !self.is_eof() {
             let ch = self.char();
-            if ch == 39 {  // '\''
+            if ch == 39 {
+                // '\''
                 if self.peek() == Some(39) {
                     // Double apostrophe inside quoted text
                     code_points.push(39);
-                    self.bump();  // Skip one of the apostrophes
+                    self.bump(); // Skip one of the apostrophes
                 } else {
                     // Closing apostrophe
                     self.bump();
@@ -641,7 +660,7 @@ impl Parser {
             code_points
                 .into_iter()
                 .map(|cp| std::char::from_u32(cp).unwrap())
-                .collect()
+                .collect(),
         )
     }
 
@@ -667,7 +686,8 @@ impl Parser {
         if ch == 60  // '<'
             || ch == 123  // '{'
             || (ch == 35 && (parent_arg_type == ArgType::Plural || parent_arg_type == ArgType::SelectOrdinal))  // '#' in plural
-            || (ch == 125 && nesting_level > 0)  // '}' when nested
+            || (ch == 125 && nesting_level > 0)
+        // '}' when nested
         {
             false
         } else {
@@ -732,7 +752,7 @@ impl Parser {
         // FIX: Use byte_offset for string slicing
         let start_byte_offset = self.byte_offset();
 
-        self.bump();  // First character (already validated as alpha)
+        self.bump(); // First character (already validated as alpha)
 
         while !self.is_eof() && is_potential_element_name_char(self.char()) {
             self.bump();
@@ -760,7 +780,7 @@ impl Parser {
         parent_arg_type: ArgType,
     ) -> Result<MessageFormatElement> {
         let start_position = self.clone_position();
-        self.bump();  // '<'
+        self.bump(); // '<'
 
         let tag_name = self.parse_tag_name();
         self.bump_space();
@@ -852,7 +872,8 @@ impl Parser {
     ///
     /// Returns an error if the closing brace is not found.
     fn try_parse_argument_close(&mut self, opening_brace_position: Position) -> Result<()> {
-        if self.is_eof() || self.char() != 125 {  // '}'
+        if self.is_eof() || self.char() != 125 {
+            // '}'
             let location = if self.capture_location {
                 create_location(opening_brace_position, self.clone_position())
             } else {
@@ -860,7 +881,7 @@ impl Parser {
             };
             return self.error(ErrorKind::ExpectArgumentClosingBrace, location);
         }
-        self.bump();  // '}'
+        self.bump(); // '}'
         Ok(())
     }
 
@@ -886,7 +907,8 @@ impl Parser {
 
         while !self.is_eof() {
             let ch = self.char();
-            if ch >= 48 && ch <= 57 {  // '0'..'9'
+            if ch >= 48 && ch <= 57 {
+                // '0'..'9'
                 has_digits = true;
                 decimal = decimal * 10 + (ch - 48) as i64;
                 self.bump();
@@ -927,7 +949,8 @@ impl Parser {
             let ch = self.char();
 
             match ch {
-                39 => {  // Apostrophe - handle quoted text
+                39 => {
+                    // Apostrophe - handle quoted text
                     self.bump();
                     let apostrophe_position = self.clone_position();
 
@@ -939,13 +962,15 @@ impl Parser {
                         };
                         return self.error(ErrorKind::UnclosedQuoteInArgumentStyle, location);
                     }
-                    self.bump();  // Closing apostrophe
+                    self.bump(); // Closing apostrophe
                 }
-                123 => {  // '{'
+                123 => {
+                    // '{'
                     nested_braces += 1;
                     self.bump();
                 }
-                125 => {  // '}'
+                125 => {
+                    // '}'
                     if nested_braces > 0 {
                         nested_braces -= 1;
                         self.bump();
@@ -988,14 +1013,17 @@ impl Parser {
         while !self.is_eof() {
             let ch = self.char();
 
-            if ch == 123 {  // '{'
+            if ch == 123 {
+                // '{'
                 let element = self.parse_argument(nesting_level, expecting_close_tag)?;
                 elements.push(element);
-            } else if ch == 125 && nesting_level > 0 {  // '}'
+            } else if ch == 125 && nesting_level > 0 {
+                // '}'
                 break;
             } else if ch == 35
                 && (parent_arg_type == ArgType::Plural || parent_arg_type == ArgType::SelectOrdinal)
-            {  // '#' in plural context
+            {
+                // '#' in plural context
                 let position = self.clone_position();
                 self.bump();
                 let location = if self.capture_location {
@@ -1004,7 +1032,8 @@ impl Parser {
                     None
                 };
                 elements.push(MessageFormatElement::Pound(PoundElement { location }));
-            } else if ch == 60 && !self.ignore_tag && self.peek() == Some(47) {  // '</'
+            } else if ch == 60 && !self.ignore_tag && self.peek() == Some(47) {
+                // '</'
                 if expecting_close_tag {
                     break;
                 } else {
@@ -1015,7 +1044,8 @@ impl Parser {
                     };
                     return self.error(ErrorKind::UnmatchedClosingTag, location);
                 }
-            } else if ch == 60 && !self.ignore_tag && self.peek().map_or(false, is_alpha) {  // '<' tag
+            } else if ch == 60 && !self.ignore_tag && self.peek().map_or(false, is_alpha) {
+                // '<' tag
                 let element = self.parse_tag(nesting_level, parent_arg_type)?;
                 elements.push(element);
             } else {
@@ -1037,7 +1067,7 @@ impl Parser {
         expecting_close_tag: bool,
     ) -> Result<MessageFormatElement> {
         let opening_brace_position = self.clone_position();
-        self.bump();  // '{'
+        self.bump(); // '{'
         self.bump_space();
 
         if self.is_eof() {
@@ -1049,7 +1079,8 @@ impl Parser {
             return self.error(ErrorKind::ExpectArgumentClosingBrace, location);
         }
 
-        if self.char() == 125 {  // '}'
+        if self.char() == 125 {
+            // '}'
             self.bump();
             let location = if self.capture_location {
                 create_location(opening_brace_position, self.clone_position())
@@ -1083,7 +1114,8 @@ impl Parser {
         }
 
         match self.char() {
-            125 => {  // '}' - Simple argument
+            125 => {
+                // '}' - Simple argument
                 self.bump();
                 let location = if self.capture_location {
                     create_location(opening_brace_position, self.clone_position())
@@ -1097,7 +1129,8 @@ impl Parser {
                 };
                 Ok(MessageFormatElement::Argument(arg))
             }
-            44 => {  // ',' - Argument with type/style
+            44 => {
+                // ',' - Argument with type/style
                 self.bump();
                 self.bump_space();
 
@@ -1150,19 +1183,17 @@ impl Parser {
                 None
             };
 
-            let loc = location.unwrap_or_else(|| {
-                Location {
-                    start: LocationDetails {
-                        offset: type_start_position.offset,
-                        line: type_start_position.line,
-                        column: type_start_position.column,
-                    },
-                    end: LocationDetails {
-                        offset: type_end_position.offset,
-                        line: type_end_position.line,
-                        column: type_end_position.column,
-                    },
-                }
+            let loc = location.unwrap_or_else(|| Location {
+                start: LocationDetails {
+                    offset: type_start_position.offset,
+                    line: type_start_position.line,
+                    column: type_start_position.column,
+                },
+                end: LocationDetails {
+                    offset: type_end_position.offset,
+                    line: type_end_position.line,
+                    column: type_end_position.column,
+                },
             });
 
             ParserError {
@@ -1227,16 +1258,23 @@ impl Parser {
                             let tokens = NumberSkeletonToken::parse_from_string(&skeleton)
                                 .map_err(|_| {
                                     // Use the error() method to properly format the error with the original message
-                                    self.error::<()>(ErrorKind::InvalidNumberSkeleton, style_location.clone()).unwrap_err()
+                                    self.error::<()>(
+                                        ErrorKind::InvalidNumberSkeleton,
+                                        style_location.clone(),
+                                    )
+                                    .unwrap_err()
                                 })?;
 
                             // Parse tokens into options only if shouldParseSkeletons is enabled
                             let parsed_options = if self.should_parse_skeletons {
-                                parse_number_skeleton(&tokens)
-                                    .map_err(|_| {
-                                        // Use the error() method to properly format the error with the original message
-                                        self.error::<()>(ErrorKind::InvalidNumberSkeleton, style_location.clone()).unwrap_err()
-                                    })?
+                                parse_number_skeleton(&tokens).map_err(|_| {
+                                    // Use the error() method to properly format the error with the original message
+                                    self.error::<()>(
+                                        ErrorKind::InvalidNumberSkeleton,
+                                        style_location.clone(),
+                                    )
+                                    .unwrap_err()
+                                })?
                             } else {
                                 // If not parsing skeletons, use empty options object
                                 NumberFormatOptions::default()
@@ -1268,8 +1306,7 @@ impl Parser {
                             // FIX: Parse date/time skeleton when shouldParseSkeletons is enabled
                             let parsed_options = if self.should_parse_skeletons {
                                 // Parse the skeleton pattern into DateTimeFormatOptions
-                                parse_date_time_skeleton(&date_time_pattern)
-                                    .unwrap_or_default()
+                                parse_date_time_skeleton(&date_time_pattern).unwrap_or_default()
                             } else {
                                 DateTimeFormatOptions::default()
                             };
@@ -1306,22 +1343,18 @@ impl Parser {
                         })),
                         ArgType::Date => Ok(MessageFormatElement::Date(DateElement {
                             value,
-                            style: Some(DateTimeSkeletonOrStyle::String(
-                                match style {
-                                    NumberSkeletonOrStyle::String(s) => s,
-                                    _ => unreachable!(),
-                                },
-                            )),
+                            style: Some(DateTimeSkeletonOrStyle::String(match style {
+                                NumberSkeletonOrStyle::String(s) => s,
+                                _ => unreachable!(),
+                            })),
                             location,
                         })),
                         ArgType::Time => Ok(MessageFormatElement::Time(TimeElement {
                             value,
-                            style: Some(DateTimeSkeletonOrStyle::String(
-                                match style {
-                                    NumberSkeletonOrStyle::String(s) => s,
-                                    _ => unreachable!(),
-                                },
-                            )),
+                            style: Some(DateTimeSkeletonOrStyle::String(match style {
+                                NumberSkeletonOrStyle::String(s) => s,
+                                _ => unreachable!(),
+                            })),
                             location,
                         })),
                         _ => unreachable!(),
@@ -1419,10 +1452,10 @@ impl Parser {
                     }))
                 } else {
                     // For plural/selectordinal, keys are ValidPluralRule
-                    let options: HashMap<ValidPluralRule, PluralOrSelectOption> =
-                        options_vec.into_iter()
-                            .map(|(key, val)| (ValidPluralRule::from_str(&key), val))
-                            .collect();
+                    let options: HashMap<ValidPluralRule, PluralOrSelectOption> = options_vec
+                        .into_iter()
+                        .map(|(key, val)| (ValidPluralRule::from_str(&key), val))
+                        .collect();
 
                     Ok(MessageFormatElement::Plural(PluralElement {
                         value,
@@ -1526,7 +1559,8 @@ impl Parser {
                 );
             }
 
-            let fragment = self.parse_message(nesting_level + 1, parent_arg_type, expect_close_tag)?;
+            let fragment =
+                self.parse_message(nesting_level + 1, parent_arg_type, expect_close_tag)?;
             self.try_parse_argument_close(opening_brace_position)?;
 
             let option_location = if self.capture_location {

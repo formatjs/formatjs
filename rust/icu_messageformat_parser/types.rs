@@ -4,8 +4,7 @@ use std::collections::HashMap;
 
 // Re-export types from icu-skeleton-parser
 pub use formatjs_icu_skeleton_parser::{
-    DateTimeFormatOptions, ExtendedNumberFormatOptions as NumberFormatOptions,
-    NumberSkeletonToken,
+    DateTimeFormatOptions, ExtendedNumberFormatOptions as NumberFormatOptions, NumberSkeletonToken,
 };
 
 /// Element type enum
@@ -344,8 +343,11 @@ impl Serialize for MessageFormatElement {
             }
             Self::Plural(el) => {
                 // Convert HashMap<ValidPluralRule, ...> to HashMap<String, ...> for JSON serialization
-                let options_map: std::collections::HashMap<String, &PluralOrSelectOption> =
-                    el.options.iter().map(|(k, v)| (k.as_str().to_string(), v)).collect();
+                let options_map: std::collections::HashMap<String, &PluralOrSelectOption> = el
+                    .options
+                    .iter()
+                    .map(|(k, v)| (k.as_str().to_string(), v))
+                    .collect();
 
                 let mut map = serializer.serialize_map(Some(6))?;
                 map.serialize_entry("type", &Type::Plural)?;

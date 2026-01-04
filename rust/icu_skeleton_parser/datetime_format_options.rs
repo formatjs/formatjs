@@ -305,14 +305,10 @@ mod tests {
 
     #[test]
     fn test_hour_cycle_values() {
-        let h11 = DateTimeFormatOptions::new()
-            .with_hour_cycle(DateTimeFormatHourCycle::H11);
-        let h12 = DateTimeFormatOptions::new()
-            .with_hour_cycle(DateTimeFormatHourCycle::H12);
-        let h23 = DateTimeFormatOptions::new()
-            .with_hour_cycle(DateTimeFormatHourCycle::H23);
-        let h24 = DateTimeFormatOptions::new()
-            .with_hour_cycle(DateTimeFormatHourCycle::H24);
+        let h11 = DateTimeFormatOptions::new().with_hour_cycle(DateTimeFormatHourCycle::H11);
+        let h12 = DateTimeFormatOptions::new().with_hour_cycle(DateTimeFormatHourCycle::H12);
+        let h23 = DateTimeFormatOptions::new().with_hour_cycle(DateTimeFormatHourCycle::H23);
+        let h24 = DateTimeFormatOptions::new().with_hour_cycle(DateTimeFormatHourCycle::H24);
 
         assert_eq!(h11.hour_cycle(), Some(&DateTimeFormatHourCycle::H11));
         assert_eq!(h12.hour_cycle(), Some(&DateTimeFormatHourCycle::H12));
@@ -337,8 +333,8 @@ mod tests {
 
     #[test]
     fn test_time_zone_name() {
-        let options = DateTimeFormatOptions::new()
-            .with_time_zone_name(DateTimeFormatTimeZoneName::Long);
+        let options =
+            DateTimeFormatOptions::new().with_time_zone_name(DateTimeFormatTimeZoneName::Long);
 
         assert_eq!(
             options.time_zone_name(),
@@ -351,8 +347,7 @@ mod tests {
 
     #[test]
     fn test_era_values() {
-        let options = DateTimeFormatOptions::new()
-            .with_era(DateTimeFormatEra::Short);
+        let options = DateTimeFormatOptions::new().with_era(DateTimeFormatEra::Short);
 
         assert_eq!(options.era(), Some(&DateTimeFormatEra::Short));
     }
@@ -376,8 +371,7 @@ mod tests {
 
     #[test]
     fn test_skip_serializing_none_fields() {
-        let options = DateTimeFormatOptions::new()
-            .with_year(DateTimeFormatYear::Numeric);
+        let options = DateTimeFormatOptions::new().with_year(DateTimeFormatYear::Numeric);
 
         let json = serde_json::to_string(&options).unwrap();
 

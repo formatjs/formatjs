@@ -339,7 +339,10 @@ fn check_structural_equality(locales: &HashMap<String, Value>, source_locale: &s
                         errors.push((key.clone(), format_error_message(&detail)));
                     }
                     Ok((false, None)) => {
-                        errors.push((key.clone(), "Messages are structurally different".to_string()));
+                        errors.push((
+                            key.clone(),
+                            "Messages are structurally different".to_string(),
+                        ));
                     }
                     Err(e) => {
                         // Extract parse error code from error message
@@ -360,7 +363,10 @@ fn check_structural_equality(locales: &HashMap<String, Value>, source_locale: &s
         if !errors.is_empty() {
             all_passed = false;
             eprintln!("---------------------------------");
-            eprintln!("These translation keys for locale {} are structurally different from {}:", locale, source_locale);
+            eprintln!(
+                "These translation keys for locale {} are structurally different from {}:",
+                locale, source_locale
+            );
             // Sort errors by key (numeric if possible, otherwise lexicographic)
             errors.sort_by(|a, b| {
                 // Try to parse as numbers first
@@ -435,15 +441,18 @@ fn format_error_message(msg: &str) -> String {
                     let a_single = a.len() == 1;
                     let b_single = b.len() == 1;
                     match (a_single, b_single) {
-                        (true, false) => std::cmp::Ordering::Greater,  // a is single, move to end
-                        (false, true) => std::cmp::Ordering::Less,     // b is single, move to end
-                        _ => a.cmp(b),  // both single or both not, sort normally
+                        (true, false) => std::cmp::Ordering::Greater, // a is single, move to end
+                        (false, true) => std::cmp::Ordering::Less,    // b is single, move to end
+                        _ => a.cmp(b), // both single or both not, sort normally
                     }
                 });
                 vars2.sort();
 
-                return format!("Different number of variables: [{}] vs [{}]",
-                    vars1.join(", "), vars2.join(", "));
+                return format!(
+                    "Different number of variables: [{}] vs [{}]",
+                    vars1.join(", "),
+                    vars2.join(", ")
+                );
             }
         }
     }
@@ -454,7 +463,7 @@ fn format_error_message(msg: &str) -> String {
 /// Compare the structure of two ICU MessageFormat messages
 /// Returns Ok((true, None)) if structures match, Ok((false, Some(detail))) if they don't, Err if parsing fails
 fn compare_message_structure(source: &str, target: &str) -> Result<(bool, Option<String>)> {
-    use formatjs_icu_messageformat_parser::{is_structurally_same, Parser, ParserOptions};
+    use formatjs_icu_messageformat_parser::{Parser, ParserOptions, is_structurally_same};
 
     // Parse source message
     let parser_options = ParserOptions::default();
@@ -475,7 +484,6 @@ fn compare_message_structure(source: &str, target: &str) -> Result<(bool, Option
         Err(e) => Ok((false, Some(e.to_string()))),
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -560,7 +568,10 @@ mod tests {
         let flattened = flatten(&value, "");
         assert_eq!(flattened.len(), 2);
         assert_eq!(flattened.get("string"), Some(&"value".to_string()));
-        assert_eq!(flattened.get("nested.valid"), Some(&"nested_value".to_string()));
+        assert_eq!(
+            flattened.get("nested.valid"),
+            Some(&"nested_value".to_string())
+        );
         assert!(!flattened.contains_key("number"));
         assert!(!flattened.contains_key("array"));
         assert!(!flattened.contains_key("nested.invalid"));

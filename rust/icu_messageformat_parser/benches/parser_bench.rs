@@ -1,4 +1,4 @@
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, criterion_group, criterion_main};
 use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
 use std::hint::black_box;
 

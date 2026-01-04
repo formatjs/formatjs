@@ -120,17 +120,33 @@ impl std::fmt::Display for ErrorKind {
             ErrorKind::InvalidDateTimeSkeleton => write!(f, "INVALID_DATE_TIME_SKELETON"),
             ErrorKind::ExpectNumberSkeleton => write!(f, "EXPECT_NUMBER_SKELETON"),
             ErrorKind::ExpectDateTimeSkeleton => write!(f, "EXPECT_DATE_TIME_SKELETON"),
-            ErrorKind::UnclosedQuoteInArgumentStyle => write!(f, "UNCLOSED_QUOTE_IN_ARGUMENT_STYLE"),
+            ErrorKind::UnclosedQuoteInArgumentStyle => {
+                write!(f, "UNCLOSED_QUOTE_IN_ARGUMENT_STYLE")
+            }
             ErrorKind::ExpectSelectArgumentOptions => write!(f, "EXPECT_SELECT_ARGUMENT_OPTIONS"),
-            ErrorKind::ExpectPluralArgumentOffsetValue => write!(f, "EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE"),
-            ErrorKind::InvalidPluralArgumentOffsetValue => write!(f, "INVALID_PLURAL_ARGUMENT_OFFSET_VALUE"),
+            ErrorKind::ExpectPluralArgumentOffsetValue => {
+                write!(f, "EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE")
+            }
+            ErrorKind::InvalidPluralArgumentOffsetValue => {
+                write!(f, "INVALID_PLURAL_ARGUMENT_OFFSET_VALUE")
+            }
             ErrorKind::ExpectSelectArgumentSelector => write!(f, "EXPECT_SELECT_ARGUMENT_SELECTOR"),
             ErrorKind::ExpectPluralArgumentSelector => write!(f, "EXPECT_PLURAL_ARGUMENT_SELECTOR"),
-            ErrorKind::ExpectSelectArgumentSelectorFragment => write!(f, "EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT"),
-            ErrorKind::ExpectPluralArgumentSelectorFragment => write!(f, "EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT"),
-            ErrorKind::InvalidPluralArgumentSelector => write!(f, "INVALID_PLURAL_ARGUMENT_SELECTOR"),
-            ErrorKind::DuplicatePluralArgumentSelector => write!(f, "DUPLICATE_PLURAL_ARGUMENT_SELECTOR"),
-            ErrorKind::DuplicateSelectArgumentSelector => write!(f, "DUPLICATE_SELECT_ARGUMENT_SELECTOR"),
+            ErrorKind::ExpectSelectArgumentSelectorFragment => {
+                write!(f, "EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT")
+            }
+            ErrorKind::ExpectPluralArgumentSelectorFragment => {
+                write!(f, "EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT")
+            }
+            ErrorKind::InvalidPluralArgumentSelector => {
+                write!(f, "INVALID_PLURAL_ARGUMENT_SELECTOR")
+            }
+            ErrorKind::DuplicatePluralArgumentSelector => {
+                write!(f, "DUPLICATE_PLURAL_ARGUMENT_SELECTOR")
+            }
+            ErrorKind::DuplicateSelectArgumentSelector => {
+                write!(f, "DUPLICATE_SELECT_ARGUMENT_SELECTOR")
+            }
             ErrorKind::MissingOtherClause => write!(f, "MISSING_OTHER_CLAUSE"),
             ErrorKind::InvalidTag => write!(f, "INVALID_TAG"),
             ErrorKind::InvalidTagName => write!(f, "INVALID_TAG_NAME"),

@@ -365,7 +365,9 @@ fn hoist_selectors_impl(
         }
 
         // Check if there's a plural/select nested inside a tag
-        if matches!(el, MessageFormatElement::Tag(_)) && find_plural_or_select_element(std::slice::from_ref(el)) {
+        if matches!(el, MessageFormatElement::Tag(_))
+            && find_plural_or_select_element(std::slice::from_ref(el))
+        {
             return Err(ManipulatorError::PluralOrSelectInTag);
         }
     }

@@ -24,6 +24,6 @@ jobs:
       - name: Run Tests
         run: |
           bazel test \
-            --config=ci \
+            --config=ci-darwin \
             --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
             //...

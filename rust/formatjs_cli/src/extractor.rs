@@ -1,8 +1,8 @@
 use anyhow::{Context, Result};
 use formatjs_icu_messageformat_parser::{
-    hoist_selectors, print_ast, Parser as IcuParser, ParserOptions,
+    Parser as IcuParser, ParserOptions, hoist_selectors, print_ast,
 };
-use oxc::ast_visit::{walk, Visit};
+use oxc::ast_visit::{Visit, walk};
 use oxc_allocator::Allocator;
 use oxc_ast::ast::*;
 use oxc_parser::{Parser, ParserReturn};
@@ -54,7 +54,6 @@ pub fn extract_messages_from_source(
     // Visit the AST to extract messages
     let mut visitor = MessageExtractor::new(
         file_path,
-        source_text,
         extract_source_location,
         component_names,
         function_names,
@@ -130,7 +129,6 @@ pub fn determine_source_type(path: &Path) -> Result<SourceType> {
 /// AST visitor to extract message descriptors
 struct MessageExtractor<'a> {
     file_path: &'a Path,
-    source_text: &'a str,
     extract_source_location: bool,
     component_names: &'a [String],
     function_names: &'a [String],
@@ -143,7 +141,6 @@ struct MessageExtractor<'a> {
 impl<'a> MessageExtractor<'a> {
     fn new(
         file_path: &'a Path,
-        source_text: &'a str,
         extract_source_location: bool,
         component_names: &'a [String],
         function_names: &'a [String],
@@ -153,7 +150,6 @@ impl<'a> MessageExtractor<'a> {
     ) -> Self {
         Self {
             file_path,
-            source_text,
             extract_source_location,
             component_names,
             function_names,
@@ -259,7 +255,10 @@ impl<'a> MessageExtractor<'a> {
     }
 
     /// Extract function name from ChainElement (used in optional chaining)
-    fn extract_function_name_from_chain<'b>(&self, chain_elem: &'b ChainElement) -> Option<&'b str> {
+    fn extract_function_name_from_chain<'b>(
+        &self,
+        chain_elem: &'b ChainElement,
+    ) -> Option<&'b str> {
         match chain_elem {
             ChainElement::CallExpression(_) => None,
             ChainElement::StaticMemberExpression(member) => {
@@ -384,7 +383,9 @@ impl<'a> MessageExtractor<'a> {
                                             descriptor.id = self.extract_string_literal(expr);
                                             // Validate id is static if throws is enabled
                                             if self.throws && descriptor.id.is_none() {
-                                                panic!("defaultMessage must be a string literal to be extracted.");
+                                                panic!(
+                                                    "defaultMessage must be a string literal to be extracted."
+                                                );
                                             }
                                         }
                                         "defaultMessage" => {
@@ -392,12 +393,13 @@ impl<'a> MessageExtractor<'a> {
                                                 self.extract_string_literal(expr);
                                             // Validate defaultMessage is static if throws is enabled
                                             if self.throws && descriptor.default_message.is_none() {
-                                                panic!("defaultMessage must be a string literal to be extracted.");
+                                                panic!(
+                                                    "defaultMessage must be a string literal to be extracted."
+                                                );
                                             }
                                         }
                                         "description" => {
-                                            descriptor.description =
-                                                self.extract_description(expr);
+                                            descriptor.description = self.extract_description(expr);
                                         }
                                         _ => {}
                                     }
@@ -659,9 +661,7 @@ mod tests {
         "#;
 
         let file_path = PathBuf::from("test.tsx");
-        let source_type = SourceType::default()
-            .with_typescript(true)
-            .with_jsx(true);
+        let source_type = SourceType::default().with_typescript(true).with_jsx(true);
         let component_names = vec!["FormattedMessage".to_string()];
         let function_names = vec!["formatMessage".to_string()];
 
@@ -779,9 +779,7 @@ mod tests {
         "#;
 
         let file_path = PathBuf::from("/path/to/test.tsx");
-        let source_type = SourceType::default()
-            .with_typescript(true)
-            .with_jsx(true);
+        let source_type = SourceType::default().with_typescript(true).with_jsx(true);
         let component_names = vec!["FormattedMessage".to_string()];
         let function_names = vec![];
 
@@ -815,9 +813,7 @@ mod tests {
         "#;
 
         let file_path = PathBuf::from("test.tsx");
-        let source_type = SourceType::default()
-            .with_typescript(true)
-            .with_jsx(true);
+        let source_type = SourceType::default().with_typescript(true).with_jsx(true);
         let component_names = vec!["FormattedMessage".to_string()];
         let function_names = vec![];
 
@@ -838,7 +834,10 @@ mod tests {
         assert_eq!(messages.len(), 1);
         match &messages[0].description {
             Some(Value::Object(map)) => {
-                assert_eq!(map.get("context"), Some(&Value::String("button".to_string())));
+                assert_eq!(
+                    map.get("context"),
+                    Some(&Value::String("button".to_string()))
+                );
                 assert_eq!(
                     map.get("importance"),
                     Some(&Value::String("high".to_string()))
@@ -855,9 +854,7 @@ mod tests {
         "#;
 
         let file_path = PathBuf::from("test.tsx");
-        let source_type = SourceType::default()
-            .with_typescript(true)
-            .with_jsx(true);
+        let source_type = SourceType::default().with_typescript(true).with_jsx(true);
         let component_names = vec!["FormattedMessage".to_string()];
         let function_names = vec![];
 
@@ -906,9 +903,7 @@ mod tests {
         "#;
 
         let file_path = PathBuf::from("test.tsx");
-        let source_type = SourceType::default()
-            .with_typescript(true)
-            .with_jsx(true);
+        let source_type = SourceType::default().with_typescript(true).with_jsx(true);
         let component_names = vec!["CustomMessage".to_string()];
         let function_names = vec![];
 
@@ -974,9 +969,7 @@ mod tests {
         "#;
 
         let file_path = PathBuf::from("test.tsx");
-        let source_type = SourceType::default()
-            .with_typescript(true)
-            .with_jsx(true);
+        let source_type = SourceType::default().with_typescript(true).with_jsx(true);
         let component_names = vec!["FormattedMessage".to_string()];
         let function_names = vec![];
 
@@ -1045,7 +1038,9 @@ mod tests {
         assert!(messages.len() >= 7);
 
         // Check first message
-        let header = messages.iter().find(|m| m.id == Some("foo.bar.baz".to_string()));
+        let header = messages
+            .iter()
+            .find(|m| m.id == Some("foo.bar.baz".to_string()));
         assert!(header.is_some());
         let header = header.unwrap();
         assert_eq!(header.default_message, Some("Hello World!".to_string()));
@@ -1224,13 +1219,17 @@ mod tests {
         assert_eq!(messages.len(), 3);
 
         // Check the FormattedMessage
-        let fm = messages.iter().find(|m| m.id == Some("foo.bar.baz".to_string()));
+        let fm = messages
+            .iter()
+            .find(|m| m.id == Some("foo.bar.baz".to_string()));
         assert!(fm.is_some());
 
         // Check the defineMessage calls
         let dm1 = messages.iter().find(|m| m.id == Some("header".to_string()));
         assert!(dm1.is_some());
-        let dm2 = messages.iter().find(|m| m.id == Some("header2".to_string()));
+        let dm2 = messages
+            .iter()
+            .find(|m| m.id == Some("header2".to_string()));
         assert!(dm2.is_some());
     }
 
@@ -1264,12 +1263,17 @@ mod tests {
         assert!(messages.len() >= 7);
 
         // Find the message with trailing whitespace
-        let ws_msg = messages.iter().find(|m| m.id == Some("trailing.ws".to_string()));
+        let ws_msg = messages
+            .iter()
+            .find(|m| m.id == Some("trailing.ws".to_string()));
         assert!(ws_msg.is_some());
         let ws_msg = ws_msg.unwrap();
 
         // Should preserve whitespace
-        assert_eq!(ws_msg.default_message, Some("   Some whitespace   ".to_string()));
+        assert_eq!(
+            ws_msg.default_message,
+            Some("   Some whitespace   ".to_string())
+        );
     }
 
     #[test]
@@ -1298,7 +1302,9 @@ mod tests {
             MessageDescriptor {
                 id: None,
                 default_message: Some("With generics".to_string()),
-                description: Some(Value::String("Test formatMessage with generic type".to_string())),
+                description: Some(Value::String(
+                    "Test formatMessage with generic type".to_string(),
+                )),
                 file: None,
                 start: None,
                 end: None,
@@ -1306,7 +1312,9 @@ mod tests {
             MessageDescriptor {
                 id: None,
                 default_message: Some("With optional chaining".to_string()),
-                description: Some(Value::String("Test formatMessage with optional chaining".to_string())),
+                description: Some(Value::String(
+                    "Test formatMessage with optional chaining".to_string(),
+                )),
                 file: None,
                 start: None,
                 end: None,
@@ -1314,7 +1322,9 @@ mod tests {
             MessageDescriptor {
                 id: None,
                 default_message: Some("With both generics and optional chaining".to_string()),
-                description: Some(Value::String("Test formatMessage with both generic type and optional chaining".to_string())),
+                description: Some(Value::String(
+                    "Test formatMessage with both generic type and optional chaining".to_string(),
+                )),
                 file: None,
                 start: None,
                 end: None,
@@ -1337,13 +1347,17 @@ mod tests {
         let component_names = vec![];
         let function_names = vec!["formatMessage".to_string()];
 
-        let messages = extract_from_fixture("noImport.tsx", &component_names, &function_names, None)
-            .expect("Failed to extract from noImport.tsx");
+        let messages =
+            extract_from_fixture("noImport.tsx", &component_names, &function_names, None)
+                .expect("Failed to extract from noImport.tsx");
 
         // Expected messages match the TypeScript transformer test expectations
         // These include props.intl.formatMessage, this.props.intl.formatMessage patterns
         let mut obj_desc_1 = serde_json::Map::new();
-        obj_desc_1.insert("obj1".to_string(), Value::Number(serde_json::Number::from_f64(1.0).unwrap()));
+        obj_desc_1.insert(
+            "obj1".to_string(),
+            Value::Number(serde_json::Number::from_f64(1.0).unwrap()),
+        );
         obj_desc_1.insert("obj2".to_string(), Value::String("123".to_string()));
 
         let mut obj_desc_2 = serde_json::Map::new();
@@ -1406,8 +1420,8 @@ mod tests {
     #[test]
     fn test_fixture_extract_source_location() {
         let fixture_path = fixtures_dir().join("extractSourceLocation.tsx");
-        let source_text = fs::read_to_string(&fixture_path)
-            .expect("Failed to read extractSourceLocation.tsx");
+        let source_text =
+            fs::read_to_string(&fixture_path).expect("Failed to read extractSourceLocation.tsx");
 
         let source_type = determine_source_type(&fixture_path).unwrap();
         let component_names = vec!["FormattedMessage".to_string()];

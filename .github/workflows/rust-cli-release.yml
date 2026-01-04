@@ -4,15 +4,37 @@ on:
   push:
     tags:
       - 'formatjs_cli_v*'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (build only, no release)'
+        type: boolean
+        required: false
+        default: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  build-macos:
-    name: Build macOS ARM64
-    runs-on: macos-latest
+  build:
+    name: Build ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macOS ARM64
+            runner: macos-latest
+            bazel_platform: //rust/formatjs_cli/platforms:darwin_arm64
+            artifact_name: formatjs_cli-darwin-arm64
+            config: ci-darwin
+          - platform: Linux x86_64
+            runner: ubuntu-latest
+            bazel_platform: //rust/formatjs_cli/platforms:linux_x86_64
+            artifact_name: formatjs_cli-linux-x64
+            config: ci
 
     steps:
       - name: Checkout Repository
@@ -22,112 +44,67 @@ jobs:
         uses: bazel-contrib/setup-bazel@0.16.0
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}-macos
+          disk-cache: ${{ github.workflow }}-${{ matrix.platform }}
           repository-cache: true
 
-      - name: Build macOS ARM64 Binary
+      - name: Build Binary
         run: |
           if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
             bazel build \
-              --config=ci \
+              --config=${{ matrix.config }} \
               --compilation_mode=opt \
-              --platforms=//rust/formatjs_cli/platforms:darwin_arm64 \
+              --platforms=${{ matrix.bazel_platform }} \
+              --remote_download_outputs=all \
               --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
               //rust/formatjs_cli:release_binary
           else
             bazel build \
               --compilation_mode=opt \
-              --platforms=//rust/formatjs_cli/platforms:darwin_arm64 \
+              --platforms=${{ matrix.bazel_platform }} \
               //rust/formatjs_cli:release_binary
           fi
 
           # Copy binary to artifacts directory
           mkdir -p artifacts
-          cp bazel-bin/rust/formatjs_cli/formatjs_cli_release artifacts/formatjs_cli-darwin-arm64
-          chmod +x artifacts/formatjs_cli-darwin-arm64
+          cp bazel-bin/rust/formatjs_cli/formatjs_cli_release artifacts/${{ matrix.artifact_name }}
+          chmod +x artifacts/${{ matrix.artifact_name }}
 
       - name: Smoke Test
         run: |
-          ./artifacts/formatjs_cli-darwin-arm64 --version
-          ./artifacts/formatjs_cli-darwin-arm64 --help
+          ./artifacts/${{ matrix.artifact_name }} --version
+          ./artifacts/${{ matrix.artifact_name }} --help
 
-      - name: Upload macOS Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: formatjs_cli-darwin-arm64
-          path: artifacts/formatjs_cli-darwin-arm64
+          name: ${{ matrix.artifact_name }}
+          path: artifacts/${{ matrix.artifact_name }}
           retention-days: 7
 
-  build-linux:
-    name: Build Linux x86_64
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
-
-      - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.16.0
-        with:
-          bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}-linux
-          repository-cache: true
-
-      - name: Build Linux x86_64 Binary
-        run: |
-          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
-            bazel build \
-              --config=ci \
-              --compilation_mode=opt \
-              --platforms=//rust/formatjs_cli/platforms:linux_x86_64 \
-              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
-              //rust/formatjs_cli:release_binary
-          else
-            bazel build \
-              --compilation_mode=opt \
-              --platforms=//rust/formatjs_cli/platforms:linux_x86_64 \
-              //rust/formatjs_cli:release_binary
-          fi
-
-          # Copy binary to artifacts directory
-          mkdir -p artifacts
-          cp bazel-bin/rust/formatjs_cli/formatjs_cli_release artifacts/formatjs_cli-linux-x64
-          chmod +x artifacts/formatjs_cli-linux-x64
-
-      - name: Smoke Test
-        run: |
-          ./artifacts/formatjs_cli-linux-x64 --version
-          ./artifacts/formatjs_cli-linux-x64 --help
-
-      - name: Upload Linux Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: formatjs_cli-linux-x64
-          path: artifacts/formatjs_cli-linux-x64
-          retention-days: 7
-
-  combine-and-release:
-    name: Combine Artifacts and Create Release
-    needs: [build-macos, build-linux]
+  release:
+    name: Create Release
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    if: ${{ !inputs.dry_run }}
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
 
-      - name: Download macOS Artifact
+      - name: Download All Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: formatjs_cli-darwin-arm64
           path: release/
 
-      - name: Download Linux Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: formatjs_cli-linux-x64
-          path: release/
+      - name: Organize Artifacts
+        run: |
+          # Move binaries from subdirectories to release root
+          mv release/formatjs_cli-darwin-arm64/formatjs_cli-darwin-arm64 release/
+          mv release/formatjs_cli-linux-x64/formatjs_cli-linux-x64 release/
+          # Remove empty directories
+          rmdir release/formatjs_cli-darwin-arm64 release/formatjs_cli-linux-x64
 
       - name: Generate Checksums
         run: |
