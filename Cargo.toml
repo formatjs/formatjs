@@ -2,6 +2,7 @@
 members = [
   "rust/icu_skeleton_parser",
   "rust/icu_messageformat_parser",
+  "rust/formatjs_cli",
   "packages/icu-messageformat-parser/integration-tests",
 ]
 
