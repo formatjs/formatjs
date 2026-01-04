@@ -1646,8 +1646,7 @@ mod tests {
     #[test]
     fn test_integration_sign_accounting_except_zero_long() {
         // "sign-accounting-except-zero"
-        let tokens =
-            NumberSkeletonToken::parse_from_string("sign-accounting-except-zero").unwrap();
+        let tokens = NumberSkeletonToken::parse_from_string("sign-accounting-except-zero").unwrap();
         let result = parse_number_skeleton(&tokens).unwrap();
         assert_eq!(
             result.currency_sign(),

@@ -1,9 +1,9 @@
-mod default;
-mod simple;
-mod transifex;
-mod smartling;
-mod lokalise;
 mod crowdin;
+mod default;
+mod lokalise;
+mod simple;
+mod smartling;
+mod transifex;
 
 use anyhow::Result;
 use serde_json::Value;
@@ -37,11 +37,7 @@ impl Formatter {
     /// # Returns
     ///
     /// HashMap mapping message IDs to message strings
-    pub fn apply(
-        &self,
-        json: &Value,
-        file_path: &str,
-    ) -> Result<HashMap<String, String>> {
+    pub fn apply(&self, json: &Value, file_path: &str) -> Result<HashMap<String, String>> {
         match self {
             Formatter::Default => default::apply(json, file_path),
             Formatter::Simple => simple::apply(json, file_path),

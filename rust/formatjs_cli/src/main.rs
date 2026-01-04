@@ -105,7 +105,11 @@ enum Commands {
 
         /// Pattern to automatically generate IDs for messages without explicit IDs.
         /// Uses webpack loader-utils interpolateName format.
-        #[arg(long, value_name = "PATTERN", default_value = "[sha512:contenthash:base64:6]")]
+        #[arg(
+            long,
+            value_name = "PATTERN",
+            default_value = "[sha512:contenthash:base64:6]"
+        )]
         id_interpolation_pattern: String,
 
         /// Whether to extract metadata about message location in source file

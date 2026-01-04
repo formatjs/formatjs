@@ -326,9 +326,11 @@ mod tests {
     fn test_parse_weekday_e_short_error() {
         let result = parse_date_time_skeleton("e");
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .contains("`e..eee` (weekday) patterns are not supported"));
+        assert!(
+            result
+                .unwrap_err()
+                .contains("`e..eee` (weekday) patterns are not supported")
+        );
     }
 
     #[test]

@@ -10,6 +10,12 @@ skip_output:
 pre-commit:
   parallel: false
   commands:
+    format-rust:
+      glob: "**/*.rs"
+      exclude:
+        - "*_generated.rs"
+      run: bazel run @rules_rust//:rustfmt -- {staged_files}
+      stage_fixed: true
     format-package-json:
       glob: "**/package.json"
       run: pnpm syncpack fix-mismatches && pnpm syncpack format

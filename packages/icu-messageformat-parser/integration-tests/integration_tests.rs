@@ -12,7 +12,7 @@
 //! <expected output JSON>
 //! ```
 
-use formatjs_icu_messageformat_parser::{Parser, ParserOptions, Locale};
+use formatjs_icu_messageformat_parser::{Locale, Parser, ParserOptions};
 use pretty_assertions::assert_eq;
 use runfiles::{Runfiles, rlocation};
 use serde_json::Value;
@@ -35,8 +35,13 @@ fn read_test_case(path: &Path) -> (String, Value, Value) {
     let message = sections[0].to_string();
     let options_json: Value = serde_json::from_str(sections[1])
         .unwrap_or_else(|e| panic!("Failed to parse options JSON in {}: {}", path.display(), e));
-    let expected_output: Value = serde_json::from_str(sections[2])
-        .unwrap_or_else(|e| panic!("Failed to parse expected output JSON in {}: {}", path.display(), e));
+    let expected_output: Value = serde_json::from_str(sections[2]).unwrap_or_else(|e| {
+        panic!(
+            "Failed to parse expected output JSON in {}: {}",
+            path.display(),
+            e
+        )
+    });
 
     (message, options_json, expected_output)
 }
@@ -49,10 +54,14 @@ fn json_to_parser_options(options_json: &Value) -> ParserOptions {
         if let Some(ignore_tag) = obj.get("ignoreTag").and_then(|v| v.as_bool()) {
             options.ignore_tag = ignore_tag;
         }
-        if let Some(requires_other_clause) = obj.get("requiresOtherClause").and_then(|v| v.as_bool()) {
+        if let Some(requires_other_clause) =
+            obj.get("requiresOtherClause").and_then(|v| v.as_bool())
+        {
             options.requires_other_clause = requires_other_clause;
         }
-        if let Some(should_parse_skeletons) = obj.get("shouldParseSkeletons").and_then(|v| v.as_bool()) {
+        if let Some(should_parse_skeletons) =
+            obj.get("shouldParseSkeletons").and_then(|v| v.as_bool())
+        {
             options.should_parse_skeletons = should_parse_skeletons;
         }
         if let Some(capture_location) = obj.get("captureLocation").and_then(|v| v.as_bool()) {
@@ -64,7 +73,10 @@ fn json_to_parser_options(options_json: &Value) -> ParserOptions {
     }
 
     // Default to capturing location for integration tests (to match TypeScript behavior)
-    if options_json.as_object().map_or(true, |obj| !obj.contains_key("captureLocation")) {
+    if options_json
+        .as_object()
+        .map_or(true, |obj| !obj.contains_key("captureLocation"))
+    {
         options.capture_location = true;
     }
 
@@ -110,13 +122,16 @@ fn run_integration_test(test_file_name: &str) {
                 .unwrap_or_else(|e| panic!("Failed to serialize Rust AST to JSON: {}", e));
 
             // Get expected AST from the "val" field
-            let expected_ast = expected_output.get("val")
-                .unwrap_or_else(|| panic!("Test case {} missing 'val' field in expected output", test_file_name));
+            let expected_ast = expected_output.get("val").unwrap_or_else(|| {
+                panic!(
+                    "Test case {} missing 'val' field in expected output",
+                    test_file_name
+                )
+            });
 
             // Compare the AST structures using pretty_assertions
             assert_eq!(
-                rust_ast_json,
-                *expected_ast,
+                rust_ast_json, *expected_ast,
                 "Test case {} AST mismatch",
                 test_file_name
             );
@@ -142,11 +157,11 @@ fn run_integration_test(test_file_name: &str) {
                 if !expected_err_obj.is_null() {
                     // Compare error kind if present
                     if let Some(expected_kind) = expected_err_obj.get("kind") {
-                        let rust_kind = rust_err_json.get("kind")
+                        let rust_kind = rust_err_json
+                            .get("kind")
                             .expect("Rust error should have 'kind' field");
                         assert_eq!(
-                            rust_kind,
-                            expected_kind,
+                            rust_kind, expected_kind,
                             "Test case {} error kind mismatch",
                             test_file_name
                         );
@@ -154,11 +169,11 @@ fn run_integration_test(test_file_name: &str) {
 
                     // Compare error message if present
                     if let Some(expected_message) = expected_err_obj.get("message") {
-                        let rust_message = rust_err_json.get("message")
+                        let rust_message = rust_err_json
+                            .get("message")
                             .expect("Rust error should have 'message' field");
                         assert_eq!(
-                            rust_message,
-                            expected_message,
+                            rust_message, expected_message,
                             "Test case {} error message mismatch",
                             test_file_name
                         );
@@ -166,11 +181,11 @@ fn run_integration_test(test_file_name: &str) {
 
                     // Compare error location if present
                     if let Some(expected_location) = expected_err_obj.get("location") {
-                        let rust_location = rust_err_json.get("location")
+                        let rust_location = rust_err_json
+                            .get("location")
                             .expect("Rust error should have 'location' field");
                         assert_eq!(
-                            rust_location,
-                            expected_location,
+                            rust_location, expected_location,
                             "Test case {} error location mismatch",
                             test_file_name
                         );
@@ -231,10 +246,12 @@ fn integration_test() {
     }
 
     // Print summary
-    eprintln!("\n{} tests run: {} passed, {} failed",
-             passed_tests + failed_tests.len(),
-             passed_tests,
-             failed_tests.len());
+    eprintln!(
+        "\n{} tests run: {} passed, {} failed",
+        passed_tests + failed_tests.len(),
+        passed_tests,
+        failed_tests.len()
+    );
 
     // If any tests failed, report them and panic
     if !failed_tests.is_empty() {

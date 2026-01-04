@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use glob::glob;
-use serde_json::{json, Map, Value};
+use serde_json::{Map, Value, json};
 use std::collections::HashMap;
 use std::path::PathBuf;
 
@@ -182,7 +182,9 @@ pub fn compile(
                 if skip_errors {
                     eprintln!(
                         "[@formatjs/cli] [WARN] Error validating message \"{}\" with ID \"{}\" in file {}",
-                        message, id, source_file.display()
+                        message,
+                        id,
+                        source_file.display()
                     );
                 } else {
                     // Match TypeScript error format: "SyntaxError: ERROR_KIND"
@@ -193,14 +195,10 @@ pub fn compile(
     }
 
     if error_count > 0 {
-        eprintln!(
-            "\nSkipped {} message(s) with parsing errors",
-            error_count
-        );
+        eprintln!("\nSkipped {} message(s) with parsing errors", error_count);
     }
 
     // Step 4: Serialize and write output
-    let message_count = compiled_messages.len();
     let output_json = Value::Object(compiled_messages);
     let output = serde_json::to_string_pretty(&output_json)
         .context("Failed to serialize compiled messages to JSON")?;
@@ -208,8 +206,12 @@ pub fn compile(
     if let Some(out_path) = out_file {
         // Create parent directories if they don't exist
         if let Some(parent) = out_path.parent() {
-            std::fs::create_dir_all(parent)
-                .with_context(|| format!("Failed to create parent directories for {}", out_path.display()))?;
+            std::fs::create_dir_all(parent).with_context(|| {
+                format!(
+                    "Failed to create parent directories for {}",
+                    out_path.display()
+                )
+            })?;
         }
         // Write to file with trailing newline
         std::fs::write(out_path, format!("{}\n", output))
@@ -424,8 +426,16 @@ mod tests {
         let output_file = dir.path().join("compiled.json");
 
         // Write input files with message descriptor format
-        fs::write(&input_file1, json!({"greeting": {"defaultMessage": "Hello!"}}).to_string()).unwrap();
-        fs::write(&input_file2, json!({"farewell": {"defaultMessage": "Goodbye!"}}).to_string()).unwrap();
+        fs::write(
+            &input_file1,
+            json!({"greeting": {"defaultMessage": "Hello!"}}).to_string(),
+        )
+        .unwrap();
+        fs::write(
+            &input_file2,
+            json!({"farewell": {"defaultMessage": "Goodbye!"}}).to_string(),
+        )
+        .unwrap();
 
         // Compile
         compile(
@@ -618,9 +628,11 @@ mod tests {
         );
 
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .to_string()
-            .contains("requires --ast flag"));
+        assert!(
+            result
+                .unwrap_err()
+                .to_string()
+                .contains("requires --ast flag")
+        );
     }
 }

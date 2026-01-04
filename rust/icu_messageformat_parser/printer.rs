@@ -90,12 +90,7 @@ fn do_print_ast(ast: &[MessageFormatElement], is_in_plural: bool) -> String {
 ///
 /// A string like `<b>text</b>`
 fn print_tag_element(el: &TagElement) -> String {
-    format!(
-        "<{}>{}</{}>",
-        el.value,
-        print_ast(&el.children),
-        el.value
-    )
+    format!("<{}>{}</{}>", el.value, print_ast(&el.children), el.value)
 }
 
 /// Escapes curly braces in a message string.

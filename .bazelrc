@@ -79,6 +79,13 @@ build:remote --remote_cache=grpcs://formatjs.buildbuddy.io
 build:remote --remote_executor=grpcs://formatjs.buildbuddy.io
 build:remote --remote_timeout=10m
 
+# BuildBuddy config for macOS CI - remote cache only, no remote execution
+build:ci-darwin --build_metadata=ROLE=CI
+build:ci-darwin --build_metadata=VISIBILITY=PUBLIC
+build:ci-darwin --bes_backend=grpcs://formatjs.buildbuddy.io
+build:ci-darwin --bes_results_url=https://formatjs.buildbuddy.io/invocation/
+build:ci-darwin --remote_cache=grpcs://formatjs.buildbuddy.io
+
 # honor the setting of `skipLibCheck` in the tsconfig.json file
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 fetch --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig

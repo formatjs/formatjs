@@ -312,7 +312,10 @@ impl ExtendedNumberFormatOptions {
     }
 
     /// Set the compact_display property
-    pub fn with_compact_display(mut self, compact_display: NumberFormatOptionsCompactDisplay) -> Self {
+    pub fn with_compact_display(
+        mut self,
+        compact_display: NumberFormatOptionsCompactDisplay,
+    ) -> Self {
         self.base.compact_display = Some(compact_display);
         self
     }
@@ -330,7 +333,10 @@ impl ExtendedNumberFormatOptions {
     }
 
     /// Set the currency_display property
-    pub fn with_currency_display(mut self, currency_display: NumberFormatOptionsCurrencyDisplay) -> Self {
+    pub fn with_currency_display(
+        mut self,
+        currency_display: NumberFormatOptionsCurrencyDisplay,
+    ) -> Self {
         self.base.currency_display = Some(currency_display);
         self
     }
@@ -396,7 +402,10 @@ impl ExtendedNumberFormatOptions {
     }
 
     /// Set the trailing_zero_display property
-    pub fn with_trailing_zero_display(mut self, trailing_zero_display: TrailingZeroDisplay) -> Self {
+    pub fn with_trailing_zero_display(
+        mut self,
+        trailing_zero_display: TrailingZeroDisplay,
+    ) -> Self {
         self.base.trailing_zero_display = Some(trailing_zero_display);
         self
     }
@@ -529,8 +538,7 @@ mod tests {
 
     #[test]
     fn test_use_grouping_bool_conversion() {
-        let options = ExtendedNumberFormatOptions::new()
-            .with_use_grouping(true);
+        let options = ExtendedNumberFormatOptions::new().with_use_grouping(true);
 
         assert_eq!(options.use_grouping(), Some(&UseGroupingType::Bool(true)));
 
@@ -543,12 +551,18 @@ mod tests {
         // Test with string value
         let json = r#"{"useGrouping":"min2"}"#;
         let options: ExtendedNumberFormatOptions = serde_json::from_str(json).unwrap();
-        assert_eq!(options.use_grouping(), Some(&UseGroupingType::String(UseGroupingString::Min2)));
+        assert_eq!(
+            options.use_grouping(),
+            Some(&UseGroupingType::String(UseGroupingString::Min2))
+        );
 
         // Test with boolean value
         let json_bool = r#"{"useGrouping":false}"#;
         let options_bool: ExtendedNumberFormatOptions = serde_json::from_str(json_bool).unwrap();
-        assert_eq!(options_bool.use_grouping(), Some(&UseGroupingType::Bool(false)));
+        assert_eq!(
+            options_bool.use_grouping(),
+            Some(&UseGroupingType::Bool(false))
+        );
     }
 
     #[test]
@@ -567,13 +581,34 @@ mod tests {
 
         assert_eq!(options.style(), Some(&NumberFormatOptionsStyle::Currency));
         assert_eq!(options.notation(), Some(&NumberFormatNotation::Compact));
-        assert_eq!(options.compact_display(), Some(&NumberFormatOptionsCompactDisplay::Long));
-        assert_eq!(options.currency_display(), Some(&NumberFormatOptionsCurrencyDisplay::NarrowSymbol));
-        assert_eq!(options.currency_sign(), Some(&NumberFormatOptionsCurrencySign::Accounting));
-        assert_eq!(options.sign_display(), Some(&NumberFormatOptionsSignDisplay::Always));
-        assert_eq!(options.unit_display(), Some(&NumberFormatOptionsUnitDisplay::Short));
+        assert_eq!(
+            options.compact_display(),
+            Some(&NumberFormatOptionsCompactDisplay::Long)
+        );
+        assert_eq!(
+            options.currency_display(),
+            Some(&NumberFormatOptionsCurrencyDisplay::NarrowSymbol)
+        );
+        assert_eq!(
+            options.currency_sign(),
+            Some(&NumberFormatOptionsCurrencySign::Accounting)
+        );
+        assert_eq!(
+            options.sign_display(),
+            Some(&NumberFormatOptionsSignDisplay::Always)
+        );
+        assert_eq!(
+            options.unit_display(),
+            Some(&NumberFormatOptionsUnitDisplay::Short)
+        );
         assert_eq!(options.rounding_mode(), Some(&RoundingModeType::HalfEven));
-        assert_eq!(options.rounding_priority(), Some(&RoundingPriorityType::MorePrecision));
-        assert_eq!(options.trailing_zero_display(), Some(&TrailingZeroDisplay::StripIfInteger));
+        assert_eq!(
+            options.rounding_priority(),
+            Some(&RoundingPriorityType::MorePrecision)
+        );
+        assert_eq!(
+            options.trailing_zero_display(),
+            Some(&TrailingZeroDisplay::StripIfInteger)
+        );
     }
 }
