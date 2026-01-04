@@ -190,7 +190,6 @@
       }
     },
     "patchedDependencies": {
-      "@brillout/vite-plugin-server-entry@0.7.16": "patches/@brillout__vite-plugin-server-entry@0.7.16.patch",
       "@types/mdx": "patches/@types__mdx.patch",
       "@vue/compiler-sfc": "patches/@vue+compiler-sfc.patch",
       "make-plural-compiler@5.1.0": "patches/make-plural-compiler@5.1.0.patch"
@@ -198,7 +197,7 @@
   },
   "repository": "formatjs/formatjs",
   "resolutions": {
-    "@brillout/vite-plugin-server-entry": ">=0.7.16",
+    "@brillout/vite-plugin-server-entry": ">=0.7.17",
     "@glimmer/interfaces": "0.94.6",
     "@glimmer/syntax": "^0.95.0",
     "@vue/compiler-core": "3.5.26",
