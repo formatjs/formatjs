@@ -1,0 +1,11 @@
+#################################
+# Configuration for 'git archive'
+# See https://git-scm.com/docs/git-archive#ATTRIBUTES
+
+# Don't include examples in the distribution artifact, to reduce size.
+# You may want to add additional exclusions for folders or files that users don't need.
+examples export-ignore
+
+# Occasionally there's a need to "stamp" the release version into a file
+# See https://blog.aspect.build/releasing-bazel-rulesets-rust for details if you need this.
+# mylang/version.bzl export-subst

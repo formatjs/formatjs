@@ -1,0 +1,21 @@
+# This helps the tag.yaml action to automatically create new releases
+#
+# tag.yaml requires all commits to follow the conventional commit pattern so that it can
+# automatically derive the next release version based on the commit history
+
+name: Verify PR title/description
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+permissions:
+  pull-requests: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

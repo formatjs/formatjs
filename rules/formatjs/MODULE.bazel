@@ -1,0 +1,48 @@
+"Bazel dependencies"
+
+module(
+    name = "com_myorg_rules_mylang",
+
+    # NOTE:
+    # version = "",
+    #
+    # Always leave version unset or set to "" (the default). The default value
+    # can prevent issues when the module is used via non-registry overrides
+    # (e.g. https://github.com/bazel-contrib/rules_go/issues/4380).
+    #
+    # The publish.yaml GitHub Action sets the version in the registry to the
+    # release version by patching this MODULE.bazel file in the pull request to
+    # the BCR.
+    #
+    # For more info, see this Slack thread:
+    # https://bazelbuild.slack.com/archives/CA31HN1T3/p1750406404452179
+
+    # NOTE:
+    # compatibility_level = 0,
+    #
+    # Bumping compatibility_level too frequently is discouraged because it's
+    # very disruptive: as soon as a module is requested at two different
+    # compatibility levels in the dependency tree, users will see an error.
+    #
+    # As such, the compatibility_level (1) should be bumped *only* when the
+    # breaking change affects most use cases and isn't easy to migrate and/or
+    # work-around, and (2) *in the same commit* that introduces an incompatible
+    # (breaking) change.
+)
+
+bazel_dep(name = "bazel_skylib", version = "1.8.2")
+bazel_dep(name = "package_metadata", version = "0.0.6")
+bazel_dep(name = "platforms", version = "1.0.0")
+
+bazel_dep(name = "gazelle", version = "0.47.0", dev_dependency = True, repo_name = "bazel_gazelle")
+bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.8.2", dev_dependency = True)
+bazel_dep(name = "bazel_lib", version = "3.0.0", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "8.2.1", dev_dependency = True)
+
+bazel_dep(name = "bazelrc-preset.bzl", version = "1.6.0")
+
+mylang = use_extension("//mylang:extensions.bzl", "mylang")
+mylang.toolchain(mylang_version = "1.14.2")
+use_repo(mylang, "mylang_toolchains")
+
+register_toolchains("@mylang_toolchains//:all")

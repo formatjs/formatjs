@@ -1,0 +1,39 @@
+########################
+# Import bazelrc presets
+import %workspace%/tools/preset.bazelrc
+
+# Don’t want to push a rules author to update their deps if not needed.
+# https://bazel.build/reference/command-line-reference#flag--check_direct_dependencies
+# https://bazelbuild.slack.com/archives/C014RARENH0/p1691158021917459?thread_ts=1691156601.420349&cid=C014RARENH0
+common --config=ruleset
+
+# Bazel settings that apply to this repository.
+# Take care to document any settings that you expect users to apply.
+# Settings that apply only to CI are in .github/workflows/ci.bazelrc
+
+# Required until this is the default; expected in Bazel 7
+common --enable_bzlmod
+
+# Ensure that the MODULE.bazel.lock file is complete and committed.
+# This is an important security measure: it ensures that developers on the
+# same rule set download dependencies at the same versions with the same bits.
+# This setting does not affect modules that depend on this module.
+#
+# When updating dependencies, use --lockfile_mode=refresh, for example:
+#     bazel mod tidy --lockfile_mode=refresh
+#
+# When testing different versions of Bazel, use --lockfile_mode=update or
+# --lockfile_mode=off. The lock file format changes over time, and different
+# versions of Bazel may expect different syntax. Bazel also implicitly requires
+# some modules, and different versions have different dependencies, which
+# also affects the contents of the lock file.
+common --lockfile_mode=error
+
+# Load any settings specific to the current user.
+# .bazelrc.user should appear in .gitignore so that settings are not shared with team members
+# This needs to be last statement in this
+# config, as the user configuration should be able to overwrite flags from this file.
+# See https://docs.bazel.build/versions/master/best-practices.html#bazelrc
+# (Note that we use .bazelrc.user so the file appears next to .bazelrc in directory listing,
+# rather than user.bazelrc as suggested in the Bazel docs)
+try-import %workspace%/.bazelrc.user

@@ -1,0 +1,7 @@
+"""File declaring metadata applying to all packages and targets in the Bazel module."""
+
+repo(
+    default_package_metadata = [
+        "//:package_metadata",
+    ],
+)

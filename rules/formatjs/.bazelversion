@@ -1,0 +1,7 @@
+7.5.0
+# The first line of this file is used by Bazelisk and Bazel to be sure
+# the right version of Bazel is used to build and test this repo.
+# This also defines which version is used on CI.
+#
+# Note that you should also run integration_tests against other Bazel
+# versions you support.

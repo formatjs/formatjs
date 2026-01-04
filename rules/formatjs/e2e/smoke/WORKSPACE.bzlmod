@@ -1,0 +1,2 @@
+# When --enable_bzlmod is set, this file replaces WORKSPACE.bazel.
+# Dependencies then come from MODULE.bazel instead.

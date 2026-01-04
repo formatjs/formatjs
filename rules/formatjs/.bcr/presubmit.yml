@@ -1,0 +1,12 @@
+bcr_test_module:
+  module_path: "e2e/smoke"
+  matrix:
+    platform: ["debian10", "macos", "ubuntu2004", "windows"]
+    bazel: ["8.x", "7.x", "6.x"]
+  tasks:
+    run_tests:
+      name: "Run test module"
+      platform: ${{ platform }}
+      bazel: ${{ bazel }}
+      test_targets:
+        - "//..."
