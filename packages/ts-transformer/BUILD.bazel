@@ -11,6 +11,15 @@ exports_files([
     "package.json",
 ])
 
+# Export test fixtures for use by other packages (e.g., Rust CLI tests)
+filegroup(
+    name = "test_fixtures",
+    srcs = glob([
+        "tests/fixtures/*",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
 PACKAGE_NAME = "ts-transformer"
 
 npm_package(

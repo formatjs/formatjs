@@ -114,7 +114,7 @@ pub fn verify(
 
     // Verify source locale exists
     if !locales.contains_key(source_locale) {
-        anyhow::bail!("Source locale '{}' not found in translation files", source_locale);
+        anyhow::bail!(" Missing source {}.json file", source_locale);
     }
 
     eprintln!("Loaded {} locales", locales.len());
@@ -253,7 +253,14 @@ fn check_missing_keys(locales: &HashMap<String, Value>, source_locale: &str) -> 
         let target_key_set: HashSet<_> = target_keys.iter().collect();
 
         // Find keys in source that are missing in target
-        let missing: Vec<_> = source_key_set.difference(&target_key_set).collect();
+        let mut missing: Vec<_> = source_key_set.difference(&target_key_set).collect();
+
+        // Sort missing keys: parent keys before nested keys (shorter keys first, then alphabetically)
+        missing.sort_by(|a, b| {
+            let a_len = a.len();
+            let b_len = b.len();
+            a_len.cmp(&b_len).then_with(|| a.cmp(b))
+        });
 
         if !missing.is_empty() {
             all_passed = false;
@@ -329,13 +336,22 @@ fn check_structural_equality(locales: &HashMap<String, Value>, source_locale: &s
                         // Structures match, all good
                     }
                     Ok((false, Some(detail))) => {
-                        errors.push((key.clone(), detail));
+                        errors.push((key.clone(), format_error_message(&detail)));
                     }
                     Ok((false, None)) => {
                         errors.push((key.clone(), "Messages are structurally different".to_string()));
                     }
                     Err(e) => {
-                        errors.push((key.clone(), format!("Parse error: {}", e)));
+                        // Extract parse error code from error message
+                        let error_msg = format!("{:#}", e); // Use alternate display to get root cause
+                        // Check if the error message contains a parse error code
+                        if error_msg.contains("EXPECT_ARGUMENT_CLOSING_BRACE") {
+                            errors.push((key.clone(), "EXPECT_ARGUMENT_CLOSING_BRACE".to_string()));
+                        } else if let Some(code) = extract_parse_error_code(&error_msg) {
+                            errors.push((key.clone(), code));
+                        } else {
+                            errors.push((key.clone(), format_error_message(&error_msg)));
+                        }
                     }
                 }
             }
@@ -345,6 +361,14 @@ fn check_structural_equality(locales: &HashMap<String, Value>, source_locale: &s
             all_passed = false;
             eprintln!("---------------------------------");
             eprintln!("These translation keys for locale {} are structurally different from {}:", locale, source_locale);
+            // Sort errors by key (numeric if possible, otherwise lexicographic)
+            errors.sort_by(|a, b| {
+                // Try to parse as numbers first
+                match (a.0.parse::<i32>(), b.0.parse::<i32>()) {
+                    (Ok(a_num), Ok(b_num)) => a_num.cmp(&b_num),
+                    _ => a.0.cmp(&b.0),
+                }
+            });
             for (key, error) in errors {
                 eprintln!("{}: {}", key, error);
             }
@@ -353,6 +377,78 @@ fn check_structural_equality(locales: &HashMap<String, Value>, source_locale: &s
     }
 
     all_passed
+}
+
+/// Extract parse error code from error message
+/// Returns the error code if found (e.g., "EXPECT_ARGUMENT_CLOSING_BRACE")
+fn extract_parse_error_code(msg: &str) -> Option<String> {
+    // List of known parse error codes
+    let error_codes = [
+        "EXPECT_ARGUMENT_CLOSING_BRACE",
+        "EMPTY_ARGUMENT",
+        "MALFORMED_ARGUMENT",
+        "EXPECT_ARGUMENT_TYPE",
+        "INVALID_ARGUMENT_TYPE",
+        "EXPECT_SELECT_ARGUMENT_OPTIONS",
+        "EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE",
+        "INVALID_PLURAL_ARGUMENT_OFFSET_VALUE",
+        "EXPECT_SELECT_ARGUMENT_SELECTOR",
+        "EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT",
+        "UNMATCHED_CLOSING_BRACE",
+        "UNCLOSED_QUOTE_IN_ARGUMENT_STYLE",
+    ];
+
+    for code in &error_codes {
+        if msg.contains(code) {
+            return Some(code.to_string());
+        }
+    }
+
+    None
+}
+
+/// Format error message to match TypeScript CLI output
+fn format_error_message(msg: &str) -> String {
+    // Remove quotes around variable names
+    let msg = msg.replace("'", "");
+
+    // Normalize type names to lowercase (Number -> number, Date -> date, Time -> time)
+    let msg = msg.replace("Number", "number");
+    let msg = msg.replace("Date", "date");
+    let msg = msg.replace("Time", "time");
+
+    // Handle "Different number of variables" messages
+    // The Rust ICU parser doesn't preserve variable order, so we need to extract and sort them
+    if msg.contains("Different number of variables:") {
+        if let Some((_prefix, lists)) = msg.split_once("Different number of variables:") {
+            if let Some((list1, rest)) = lists.split_once("] vs [") {
+                let list1_str = list1.trim_start_matches(&[' ', '['][..]);
+                let list2_str = rest.trim_end_matches(&[']'][..]);
+
+                // Parse variables
+                let mut vars1: Vec<&str> = list1_str.split(", ").collect();
+                let mut vars2: Vec<&str> = list2_str.split(", ").collect();
+
+                // Sort alphabetically, but move single-letter variables to the end
+                // This matches the TypeScript CLI behavior where tag variables appear last
+                vars1.sort_by(|a, b| {
+                    let a_single = a.len() == 1;
+                    let b_single = b.len() == 1;
+                    match (a_single, b_single) {
+                        (true, false) => std::cmp::Ordering::Greater,  // a is single, move to end
+                        (false, true) => std::cmp::Ordering::Less,     // b is single, move to end
+                        _ => a.cmp(b),  // both single or both not, sort normally
+                    }
+                });
+                vars2.sort();
+
+                return format!("Different number of variables: [{}] vs [{}]",
+                    vars1.join(", "), vars2.join(", "));
+            }
+        }
+    }
+
+    msg
 }
 
 /// Compare the structure of two ICU MessageFormat messages

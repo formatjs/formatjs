@@ -6,6 +6,7 @@ use std::path::PathBuf;
 pub mod compile;
 pub mod compile_folder;
 pub mod extract;
+pub mod extractor;
 pub mod formatters;
 pub mod verify;
 
@@ -88,10 +89,10 @@ enum Commands {
         #[arg(value_name = "FILES")]
         files: Vec<PathBuf>,
 
-        /// Path to a formatter file that controls the shape of JSON output.
-        /// The formatter must export a `format` function.
-        #[arg(long, value_name = "PATH")]
-        format: Option<PathBuf>,
+        /// Formatter to use for output format.
+        /// Available: default, simple, transifex, smartling, lokalise, crowdin
+        #[arg(long, value_name = "FORMATTER")]
+        format: Option<FormatterType>,
 
         /// File containing list of files to extract from (one per line).
         /// Used when you have a large number of files and bash chokes.
@@ -245,7 +246,7 @@ fn main() -> Result<()> {
         } => {
             extract::extract(
                 files,
-                format.as_ref(),
+                format.map(|f| f.into()),
                 in_file.as_ref(),
                 out_file.as_ref(),
                 id_interpolation_pattern,

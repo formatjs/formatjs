@@ -10,6 +10,7 @@ def vitest(
         name,
         srcs = [],
         deps = [],
+        data = [],
         size = "small",
         flaky = False,
         tags = [],
@@ -27,6 +28,7 @@ def vitest(
         name (str): The name of the target.
         srcs (list): A list of source files for the target.
         deps (list): A list of dependencies for the target.
+        data (list, optional): Additional data dependencies (e.g., binaries) for the target. Defaults to an empty list.
         size (str, optional): The size of the test. Defaults to "small".
         flaky (bool, optional): Whether the test is flaky. Defaults to False.
         tags (list, optional): A list of tags for the target. Defaults to an empty list.
@@ -35,6 +37,7 @@ def vitest(
         fixtures (list, optional): A list of fixture files for the target. Defaults to an empty list.
         dom (bool, optional): Whether to run the test in a DOM environment. Defaults to False.
         test_timeout (str, optional): Custom timeout for the test in milliseconds. Defaults to None.
+        config (Label, optional): Custom vitest config file. Defaults to None.
         **kwargs: Additional keyword arguments.
     """
 
@@ -73,7 +76,7 @@ def vitest(
 
     vitest_bin.vitest_test(
         name = name,
-        data = srcs + deps + snapshots + fixtures + ([config] if config else []),
+        data = srcs + deps + data + snapshots + fixtures + ([config] if config else []),
         size = size,
         flaky = flaky,
         tags = tags,
@@ -99,11 +102,13 @@ def vitest(
 
         # Use a unique name for the snapshot target to avoid conflicts when multiple tests share the same snapshot directory
         snapshot_target_name = name + "_" + snapshot_dir.replace("/", "_")
+
+        # Note: data dependencies (like Rust binaries) are not available in snapshot update mode
+        # due to js_run_binary limitations. Tests should conditionally skip tests that require
+        # data dependencies when they can't be resolved.
         vitest_bin.vitest(
             name = snapshot_target_name,
-            srcs = srcs_no_snapshots +
-                   fixtures +
-                   deps,
+            srcs = srcs_no_snapshots + fixtures + deps,
             out_dirs = [snapshot_dir],
             args = [
                 "run",

@@ -1,13 +1,53 @@
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
+
+# Copy Rust CLI binary to integration tests directory so js_run_binary can find it
+copy_file(
+    name = "rust_cli_copy",
+    src = "//rust/formatjs_cli",
+    out = "formatjs_cli",
+    visibility = ["//visibility:private"],
+)
 
 GLIMMER_HBS_DEPS = [
     "//:node_modules/@glimmer/syntax",
     "//:node_modules/content-tag",
     "//:node_modules/ember-template-recast",
 ]
+
+# Export fixtures for use by Rust CLI integration tests
+filegroup(
+    name = "compile_fixtures",
+    srcs = glob(["compile/**/*"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "extract_fixtures",
+    srcs = glob(
+        ["extract/**/*"],
+        exclude = [
+            "extract/**/*.test.ts",
+            "extract/__snapshots__/*",
+        ],
+    ),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "verify_fixtures",
+    srcs = glob(
+        ["verify/**/*"],
+        exclude = [
+            "verify/*.test.ts",
+            "verify/__snapshots__/*",
+        ],
+    ),
+    visibility = ["//visibility:public"],
+)
 
 vitest(
     name = "compile_folder_integration_test",
@@ -33,10 +73,15 @@ vitest(
         ["extract/**/*.test.ts"],
     ) + [
         "formatter.js",
+        "rust-binary-utils.ts",
         ":node_modules/@formatjs/cli",
+        ":rust_cli_copy",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/fast-glob",
         "//:node_modules/fs-extra",
+    ],
+    data = [
+        "//rust/formatjs_cli",
     ],
     fixtures = glob(
         ["extract/**/*"],
@@ -46,6 +91,7 @@ vitest(
         ],
     ),
     flaky = True,
+    deps = ["//:node_modules/@bazel/runfiles"],
 )
 
 vitest(
@@ -88,17 +134,29 @@ vitest(
     name = "compile_integration_test",
     srcs = [
         "formatter.js",
+        "rust-binary-utils.ts",
         ":node_modules/@formatjs/cli",
+        ":rust_cli_copy",
     ] + glob(
         ["compile/**/*"],
     ),
+    data = [
+        "//rust/formatjs_cli",
+    ],
+    deps = ["//:node_modules/@bazel/runfiles"],
 )
 
 vitest(
     name = "verify_integration_test",
-    srcs = glob(
+    srcs = [
+        "rust-binary-utils.ts",
+        ":rust_cli_copy",
+    ] + glob(
         ["verify/*.test.ts"],
     ),
+    data = [
+        "//rust/formatjs_cli",
+    ],
     fixtures = glob(
         ["verify/**/*"],
         exclude = [
@@ -108,5 +166,6 @@ vitest(
     ),
     deps = [
         ":node_modules/@formatjs/cli",
+        "//:node_modules/@bazel/runfiles",
     ],
 )

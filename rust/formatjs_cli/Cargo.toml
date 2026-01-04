@@ -1,7 +1,7 @@
 [package]
 name = "formatjs_cli"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "Command-line interface for FormatJS - A Rust-based CLI for internationalization"
 license = "MIT"
@@ -11,7 +11,7 @@ documentation = "https://docs.rs/formatjs_cli"
 keywords = ["icu", "i18n", "internationalization", "cli", "intl"]
 categories = ["internationalization", "command-line-utilities", "localization"]
 readme = "README.md"
-rust-version = "1.70"
+rust-version = "1.90"
 
 [[bin]]
 name = "formatjs"
@@ -25,6 +25,14 @@ serde_json = "1.0"
 glob = "0.3"
 formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "0.1.0" }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.0" }
+oxc = { version = "0.106", features = ["ast_visit"] }
+oxc_allocator = "0.106"
+oxc_ast = "0.106"
+oxc_parser = "0.106"
+oxc_span = "0.106"
+sha2 = "0.10"
+base64 = "0.22"
+hex = "0.4"
 
 [dev-dependencies]
 tempfile = "3.0"

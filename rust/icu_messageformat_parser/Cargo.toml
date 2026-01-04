@@ -1,7 +1,7 @@
 [package]
 name = "formatjs_icu_messageformat_parser"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ICU MessageFormat parser implementation in Rust"
 license = "MIT"
@@ -11,7 +11,7 @@ documentation = "https://docs.rs/formatjs_icu_messageformat_parser"
 keywords = ["icu", "i18n", "internationalization", "messageformat", "intl"]
 categories = ["internationalization", "parser-implementations", "localization"]
 readme = "../../packages/icu-messageformat-parser/README.md"
-rust-version = "1.70"
+rust-version = "1.90"
 
 [dependencies]
 icu = "2.1"

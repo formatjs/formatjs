@@ -83,8 +83,8 @@ pub fn compile(
         eprintln!("Warning: Pseudo-locale transformations not yet implemented");
     }
 
-    // Default to "simple" formatter if none provided
-    let formatter = format.unwrap_or(Formatter::Simple);
+    // Default to "default" formatter if none provided (matches TypeScript CLI)
+    let formatter = format.unwrap_or(Formatter::Default);
 
     // Step 1: Expand glob patterns to actual file paths
     let mut expanded_files = Vec::new();
@@ -114,7 +114,8 @@ pub fn compile(
     }
 
     // Step 2: Load and aggregate all messages from files
-    let mut messages: HashMap<String, String> = HashMap::new();
+    // Store both message and source file for better error reporting
+    let mut messages: HashMap<String, (String, PathBuf)> = HashMap::new();
 
     for file in &expanded_files {
         let content = std::fs::read_to_string(file)
@@ -130,18 +131,17 @@ pub fn compile(
         // Merge messages, checking for conflicts
         for (key, message_str) in file_messages {
             // Check for conflicts - same ID with different message
-            if let Some(existing) = messages.get(&key) {
+            if let Some((existing, existing_file)) = messages.get(&key) {
                 if existing != &message_str {
                     anyhow::bail!(
-                        "Conflict: message ID '{}' has different values in different files:\n  From previous file: \"{}\"\n  From {}: \"{}\"",
+                        "Conflicting ID \"{}\" with different translation found in these 2 files:\n  {}\n  {}",
                         key,
-                        existing,
-                        file.display(),
-                        message_str
+                        existing_file.display(),
+                        file.display()
                     );
                 }
             }
-            messages.insert(key, message_str);
+            messages.insert(key, (message_str, file.clone()));
         }
     }
 
@@ -160,7 +160,7 @@ pub fn compile(
         ..Default::default()
     };
 
-    for (id, message) in &messages {
+    for (id, (message, source_file)) in &messages {
         let parser = Parser::new(message.as_str(), parser_options.clone());
         match parser.parse() {
             Ok(msg_ast) => {
@@ -180,15 +180,13 @@ pub fn compile(
             Err(e) => {
                 error_count += 1;
                 if skip_errors {
-                    eprintln!("Warning: Failed to parse message '{}': {}", id, e);
-                    eprintln!("  Message: \"{}\"", message);
+                    eprintln!(
+                        "[@formatjs/cli] [WARN] Error validating message \"{}\" with ID \"{}\" in file {}",
+                        message, id, source_file.display()
+                    );
                 } else {
-                    return Err(e).with_context(|| {
-                        format!(
-                            "Failed to parse message '{}': \"{}\"\nUse --skip-errors to continue compilation despite errors",
-                            id, message
-                        )
-                    });
+                    // Match TypeScript error format: "SyntaxError: ERROR_KIND"
+                    anyhow::bail!("SyntaxError: {}", e);
                 }
             }
         }
@@ -208,14 +206,15 @@ pub fn compile(
         .context("Failed to serialize compiled messages to JSON")?;
 
     if let Some(out_path) = out_file {
+        // Create parent directories if they don't exist
+        if let Some(parent) = out_path.parent() {
+            std::fs::create_dir_all(parent)
+                .with_context(|| format!("Failed to create parent directories for {}", out_path.display()))?;
+        }
         // Write to file with trailing newline
         std::fs::write(out_path, format!("{}\n", output))
             .with_context(|| format!("Failed to write output to {}", out_path.display()))?;
-        eprintln!(
-            "✓ Successfully compiled {} message(s) to {}",
-            message_count,
-            out_path.display()
-        );
+        // Silently succeed (matches TypeScript CLI behavior)
     } else {
         // Print to stdout (no trailing newline for piping)
         println!("{}", output);
@@ -229,8 +228,7 @@ mod tests {
     use super::*;
     use serde_json::json;
     use std::fs;
-    use std::io::Write;
-    use tempfile::{tempdir, NamedTempFile};
+    use tempfile::tempdir;
 
     #[test]
     fn test_compile_simple_messages() {
@@ -238,7 +236,7 @@ mod tests {
         let input_file = dir.path().join("messages.json");
         let output_file = dir.path().join("compiled.json");
 
-        // Write input file
+        // Write input file with simple string format (for Simple formatter)
         fs::write(
             &input_file,
             json!({
@@ -249,10 +247,10 @@ mod tests {
         )
         .unwrap();
 
-        // Compile
+        // Compile with Simple formatter explicitly (accepts simple strings)
         compile(
             &[input_file],
-            None, // defaults to Simple formatter
+            Some(Formatter::Simple),
             Some(&output_file),
             false, // not AST
             false, // don't skip errors
@@ -313,11 +311,13 @@ mod tests {
         let input_file = dir.path().join("messages.json");
         let output_file = dir.path().join("compiled.json");
 
-        // Write input file
+        // Write input file with message descriptor format
         fs::write(
             &input_file,
             json!({
-                "greeting": "Hello {name}!"
+                "greeting": {
+                    "defaultMessage": "Hello {name}!"
+                }
             })
             .to_string(),
         )
@@ -353,7 +353,9 @@ mod tests {
         fs::write(
             &input_file,
             json!({
-                "invalid": "Hello {name"  // Missing closing brace
+                "invalid": {
+                    "defaultMessage": "Hello {name"  // Missing closing brace
+                }
             })
             .to_string(),
         )
@@ -383,8 +385,12 @@ mod tests {
         fs::write(
             &input_file,
             json!({
-                "valid": "Hello {name}!",
-                "invalid": "Hello {name"  // Missing closing brace
+                "valid": {
+                    "defaultMessage": "Hello {name}!"
+                },
+                "invalid": {
+                    "defaultMessage": "Hello {name"  // Missing closing brace
+                }
             })
             .to_string(),
         )
@@ -417,9 +423,9 @@ mod tests {
         let input_file2 = dir.path().join("messages2.json");
         let output_file = dir.path().join("compiled.json");
 
-        // Write input files
-        fs::write(&input_file1, json!({"greeting": "Hello!"}).to_string()).unwrap();
-        fs::write(&input_file2, json!({"farewell": "Goodbye!"}).to_string()).unwrap();
+        // Write input files with message descriptor format
+        fs::write(&input_file1, json!({"greeting": {"defaultMessage": "Hello!"}}).to_string()).unwrap();
+        fs::write(&input_file2, json!({"farewell": {"defaultMessage": "Goodbye!"}}).to_string()).unwrap();
 
         // Compile
         compile(
@@ -448,15 +454,15 @@ mod tests {
         let input_file2 = dir.path().join("messages2.json");
         let output_file = dir.path().join("compiled.json");
 
-        // Write input files with conflicting message IDs
+        // Write input files with conflicting message IDs (different defaultMessage values)
         fs::write(
             &input_file1,
-            json!({"greeting": "Hello!"}).to_string(),
+            json!({"greeting": {"defaultMessage": "Hello!"}}).to_string(),
         )
         .unwrap();
         fs::write(
             &input_file2,
-            json!({"greeting": "Bonjour!"}).to_string(),
+            json!({"greeting": {"defaultMessage": "Bonjour!"}}).to_string(),
         )
         .unwrap();
 
@@ -479,15 +485,15 @@ mod tests {
     fn test_compile_with_glob_pattern() {
         let dir = tempdir().unwrap();
 
-        // Create multiple JSON files
+        // Create multiple JSON files with message descriptor format
         fs::write(
             dir.path().join("en.json"),
-            json!({"greeting": "Hello!"}).to_string(),
+            json!({"greeting": {"defaultMessage": "Hello!"}}).to_string(),
         )
         .unwrap();
         fs::write(
             dir.path().join("fr.json"),
-            json!({"farewell": "Au revoir!"}).to_string(),
+            json!({"farewell": {"defaultMessage": "Au revoir!"}}).to_string(),
         )
         .unwrap();
 
@@ -524,7 +530,9 @@ mod tests {
         fs::write(
             &input_file,
             json!({
-                "items": "{count, plural, one {# item} other {# items}}"
+                "items": {
+                    "defaultMessage": "{count, plural, one {# item} other {# items}}"
+                }
             })
             .to_string(),
         )
