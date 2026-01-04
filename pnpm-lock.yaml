@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@brillout/vite-plugin-server-entry': '>=0.7.16'
+  '@brillout/vite-plugin-server-entry': '>=0.7.17'
   '@glimmer/interfaces': 0.94.6
   '@glimmer/syntax': ^0.95.0
   '@vue/compiler-core': 3.5.26
@@ -22,9 +22,6 @@ overrides:
 packageExtensionsChecksum: sha256-rMdzKtpp3EwdMIL0y0DAqB8sU9O6+q8LT222xA4eNcg=
 
 patchedDependencies:
-  '@brillout/vite-plugin-server-entry@0.7.16':
-    hash: 53cc7df645e6ddd25a4394dde38e462ea28900c46d2eb1f4e3e29a725efde80d
-    path: patches/@brillout__vite-plugin-server-entry@0.7.16.patch
   '@types/mdx':
     hash: b756d39279264f32f80885062fc3b65e334db17a9aa2c8cd9ce7f88ed3065a0b
     path: patches/@types__mdx.patch
@@ -1764,8 +1761,8 @@ packages:
   '@brillout/require-shim@0.1.2':
     resolution: {integrity: sha512-3I4LRHnVZXoSAsEoni5mosq9l6eiJED58d9V954W4CIZ88AUfYBanWGBGbJG3NztaRTpFHEA6wB3Hn93BmmJdg==}
 
-  '@brillout/vite-plugin-server-entry@0.7.16':
-    resolution: {integrity: sha512-gP3R5W7HInGZnIjpmCcfGtCV6NH7TQ+IkCDuSv3i6QZmHe04yD4hcK+rRUsHyzDphDP2wLW45CB4UQbkN4u4Ww==}
+  '@brillout/vite-plugin-server-entry@0.7.17':
+    resolution: {integrity: sha512-MfvSytYl51J2B+RrHvRXMdRNc1U2lHG/K9Gw05/jdPY2iYU2YQKdEzsPswfEWnt3fd1TrXF27h/fx5DIRn19jw==}
 
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -10442,7 +10439,7 @@ snapshots:
 
   '@brillout/require-shim@0.1.2': {}
 
-  '@brillout/vite-plugin-server-entry@0.7.16(patch_hash=53cc7df645e6ddd25a4394dde38e462ea28900c46d2eb1f4e3e29a725efde80d)':
+  '@brillout/vite-plugin-server-entry@0.7.17':
     dependencies:
       '@brillout/import': 0.2.6
       '@brillout/picocolors': 1.0.30
@@ -18999,7 +18996,7 @@ snapshots:
       '@brillout/json-serializer': 0.5.21
       '@brillout/picocolors': 1.0.30
       '@brillout/require-shim': 0.1.2
-      '@brillout/vite-plugin-server-entry': 0.7.16(patch_hash=53cc7df645e6ddd25a4394dde38e462ea28900c46d2eb1f4e3e29a725efde80d)
+      '@brillout/vite-plugin-server-entry': 0.7.17
       cac: 6.7.14
       es-module-lexer: 1.7.0
       esbuild: 0.27.1
