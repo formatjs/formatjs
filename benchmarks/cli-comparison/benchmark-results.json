@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-01-04T16:53:38.221Z",
+  "testFiles": {
+    "count": 1000,
+    "messages": 9656,
+    "pattern": "/Users/longho/src/formatjs/bazel-bin/benchmarks/cli-comparison/test-files/**/*.tsx"
+  },
+  "typescript": {
+    "mean": 601.6272822222221,
+    "marginOfError": 31.94,
+    "opsPerSec": 1.6621586645909978,
+    "messagesPerSec": 16049.804065290675,
+    "samples": 9,
+    "rme": 5.30959347502743
+  },
+  "rust": {
+    "mean": 131.77019302631572,
+    "marginOfError": 2.82,
+    "opsPerSec": 7.588969683001761,
+    "messagesPerSec": 73279.091259065,
+    "samples": 38,
+    "rme": 2.143856692003947
+  },
+  "comparison": {
+    "speedup": 4.565731205251187,
+    "percentFaster": 356.6
+  }
+}

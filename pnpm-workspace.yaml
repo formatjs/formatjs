@@ -6,4 +6,5 @@ packages:
   - 'packages/*/benchmark'
   - 'website'
   - 'docs'
+  - 'benchmarks/*'
   - '!packages/editor'

@@ -1,0 +1,7 @@
+{
+  "name": "@formatjs/cli-benchmark",
+  "description": "Benchmark comparing Rust CLI vs TypeScript CLI performance",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module"
+}
