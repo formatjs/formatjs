@@ -135,7 +135,14 @@ export function LiveCodeBlock({
     const isJSX = code.startsWith('<')
 
     // Wrap non-JSX code in a fragment to render the result
-    return isJSX ? code : `<>{function(){${code}}()}</>`
+    if (isJSX) {
+      return code
+    }
+    // Last line is always the return value
+    const lines = code.split('\n')
+    const lastLine = lines.pop()
+    return `<>{function(){${lines.join('\n')}
+return ${lastLine}}()}</>`
   }, [])
 
   return (
