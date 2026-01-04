@@ -52,7 +52,7 @@ jobs:
           ./artifacts/formatjs_cli-darwin-arm64 --help
 
       - name: Upload macOS Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: formatjs_cli-darwin-arm64
           path: artifacts/formatjs_cli-darwin-arm64
@@ -100,7 +100,7 @@ jobs:
           ./artifacts/formatjs_cli-linux-x64 --help
 
       - name: Upload Linux Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: formatjs_cli-linux-x64
           path: artifacts/formatjs_cli-linux-x64
@@ -118,13 +118,13 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download macOS Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: formatjs_cli-darwin-arm64
           path: release/
 
       - name: Download Linux Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: formatjs_cli-linux-x64
           path: release/
