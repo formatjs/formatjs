@@ -822,6 +822,40 @@ This bans messages that do not require translation.
 
 Messages like `{test}` is not actionable by translators. The code should just directly reference `test`.
 
+#### Options
+
+```js
+
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/no-useless-message': [
+        'error',
+        {
+          allowWithDescription: true,
+        },
+      ],
+    },
+  },
+]
+```
+
+Setting `allowWithDescription: true` allows useless messages when a `description` is provided. This provides an escape hatch for cases where the original language fits the replacement word exactly but the message ID still needs to exist so other locales can provide their own translations.
+
+```tsx
+// PASSES with allowWithDescription: true
+<FormattedMessage
+  defaultMessage="{count}"
+  description="Simple format in English, but other locales need full sentences"
+/>
+
+// FAILS even with allowWithDescription: true (no description)
+<FormattedMessage defaultMessage="{count}" />
+```
+
 ### `prefer-formatted-message`
 
 Use `<FormattedMessage>` instead of the imperative `intl.formatMessage(...)` if applicable.
