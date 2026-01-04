@@ -1,6 +1,1309 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST 1`] = `
+exports[`'Rust' CLI > AST 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "a1d12": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "a dog"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d13": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a dog"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d14": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a "
+                },
+                {
+                  "children": [
+                    {
+                      "location": null,
+                      "type": 0,
+                      "value": "dog"
+                    }
+                  ],
+                  "location": null,
+                  "type": 8,
+                  "value": "i"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1dd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "my name is "
+    },
+    {
+      "location": null,
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "ashd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "a message"
+    }
+  ]
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > basic case: empty json 1`] = `
+{
+  "stderr": "Warning: No messages found in translation files
+",
+  "stdout": "{}
+",
+}
+`;
+
+exports[`'Rust' CLI > basic case: help 1`] = `
+{
+  "stderr": "",
+  "stdout": "Compile extracted translation files into react-intl consumable JSON. Verifies that messages are valid ICU and not malformed
+
+Usage: formatjs_cli compile [OPTIONS] [TRANSLATION_FILES]...
+
+Arguments:
+  [TRANSLATION_FILES]...
+          Glob patterns for translation files (e.g., foo/**/en.json)
+
+Options:
+      --format <FORMATTER>
+          Formatter to use for converting input files to Record<string, string>. Available: default, simple, transifex, smartling, lokalise, crowdin
+
+          Possible values:
+          - default:   Default formatter: extracts defaultMessage from MessageDescriptor objects
+          - simple:    Simple formatter: pass-through for Record<string, string>
+          - transifex: Transifex formatter: extracts string field
+          - smartling: Smartling formatter: extracts message field
+          - lokalise:  Lokalise formatter: extracts translation field
+          - crowdin:   Crowdin formatter: extracts message field
+
+      --out-file <PATH>
+          Output file path. If not provided, prints to stdout
+
+      --ast
+          Whether to compile to AST instead of strings
+
+      --skip-errors
+          Continue compiling after errors. Keys with errors are excluded from output
+
+      --pseudo-locale <LOCALE>
+          Generate pseudo-locale files. Requires --ast
+          
+          [possible values: xx-LS, xx-AC, xx-HA, en-XA, en-XB]
+
+      --ignore-tag
+          Treat HTML/XML tags as string literals instead of parsing them as tag tokens
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+",
+}
+`;
+
+exports[`'Rust' CLI > compile glob 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "1": "a message",
+  "2": "my name is {name}",
+  "3": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > en-XA json 1`] = `
+{
+  "stderr": "Warning: Pseudo-locale transformations not yet implemented
+",
+  "stdout": "{
+  "a1d12": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "a dog"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d13": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a dog"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d14": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a "
+                },
+                {
+                  "children": [
+                    {
+                      "location": null,
+                      "type": 0,
+                      "value": "dog"
+                    }
+                  ],
+                  "location": null,
+                  "type": 8,
+                  "value": "i"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1dd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "my name is "
+    },
+    {
+      "location": null,
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "ashd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "a message"
+    }
+  ]
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > en-XB json 1`] = `
+{
+  "stderr": "Warning: Pseudo-locale transformations not yet implemented
+",
+  "stdout": "{
+  "a1d12": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "a dog"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d13": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a dog"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d14": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a "
+                },
+                {
+                  "children": [
+                    {
+                      "location": null,
+                      "type": 0,
+                      "value": "dog"
+                    }
+                  ],
+                  "location": null,
+                  "type": 8,
+                  "value": "i"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1dd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "my name is "
+    },
+    {
+      "location": null,
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "ashd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "a message"
+    }
+  ]
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > normal json 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1d13": "I have {count, plural, one{<b>a dog</b>} other{many dogs}}",
+  "a1d14": "I have {count, plural, one{<b>a <i>dog</i></b>} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > normal json with crowdin 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > normal json with lokalise 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > normal json with simple 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > normal json with smartling 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > normal json with transifex 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message"
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > out-file --ast 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > out-file --ast 2`] = `
+{
+  "a1d12": [
+    {
+      "type": 0,
+      "value": "I have ",
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "a dog",
+            },
+          ],
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "many dogs",
+            },
+          ],
+        },
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count",
+    },
+  ],
+  "a1d13": [
+    {
+      "type": 0,
+      "value": "I have ",
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "children": [
+                {
+                  "type": 0,
+                  "value": "a dog",
+                },
+              ],
+              "type": 8,
+              "value": "b",
+            },
+          ],
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "many dogs",
+            },
+          ],
+        },
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count",
+    },
+  ],
+  "a1d14": [
+    {
+      "type": 0,
+      "value": "I have ",
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "children": [
+                {
+                  "type": 0,
+                  "value": "a ",
+                },
+                {
+                  "children": [
+                    {
+                      "type": 0,
+                      "value": "dog",
+                    },
+                  ],
+                  "type": 8,
+                  "value": "i",
+                },
+              ],
+              "type": 8,
+              "value": "b",
+            },
+          ],
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "many dogs",
+            },
+          ],
+        },
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count",
+    },
+  ],
+  "a1dd2": [
+    {
+      "type": 0,
+      "value": "my name is ",
+    },
+    {
+      "type": 1,
+      "value": "name",
+    },
+  ],
+  "ashd2": [
+    {
+      "type": 0,
+      "value": "a message",
+    },
+  ],
+}
+`;
+
+exports[`'Rust' CLI > out-file --ignore-tag 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > out-file --ignore-tag 2`] = `
+{
+  "brmsg": "a message with a non-explicit <br> self-closing tag",
+  "linkmsg": "a message containing <a href="https://formatjs.github.io/">a link</a>",
+}
+`;
+
+exports[`'Rust' CLI > out-file 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > out-file 2`] = `
+{
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1d13": "I have {count, plural, one{<b>a dog</b>} other{many dogs}}",
+  "a1d14": "I have {count, plural, one{<b>a <i>dog</i></b>} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message",
+}
+`;
+
+exports[`'Rust' CLI > skipped malformed ICU message json 1`] = `
+"{
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "ashd2": "a message"
+}
+"
+`;
+
+exports[`'Rust' CLI > xx-AC json 1`] = `
+{
+  "stderr": "Warning: Pseudo-locale transformations not yet implemented
+",
+  "stdout": "{
+  "a1d12": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "a dog"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d13": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a dog"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d14": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a "
+                },
+                {
+                  "children": [
+                    {
+                      "location": null,
+                      "type": 0,
+                      "value": "dog"
+                    }
+                  ],
+                  "location": null,
+                  "type": 8,
+                  "value": "i"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1dd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "my name is "
+    },
+    {
+      "location": null,
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "ashd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "a message"
+    }
+  ]
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > xx-HA json 1`] = `
+{
+  "stderr": "Warning: Pseudo-locale transformations not yet implemented
+",
+  "stdout": "{
+  "a1d12": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "a dog"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d13": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a dog"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d14": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a "
+                },
+                {
+                  "children": [
+                    {
+                      "location": null,
+                      "type": 0,
+                      "value": "dog"
+                    }
+                  ],
+                  "location": null,
+                  "type": 8,
+                  "value": "i"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1dd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "my name is "
+    },
+    {
+      "location": null,
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "ashd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "a message"
+    }
+  ]
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > xx-LS json 1`] = `
+{
+  "stderr": "Warning: Pseudo-locale transformations not yet implemented
+",
+  "stdout": "{
+  "a1d12": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "a dog"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d13": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a dog"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1d14": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "I have "
+    },
+    {
+      "location": null,
+      "offset": 0,
+      "options": {
+        "one": {
+          "location": null,
+          "value": [
+            {
+              "children": [
+                {
+                  "location": null,
+                  "type": 0,
+                  "value": "a "
+                },
+                {
+                  "children": [
+                    {
+                      "location": null,
+                      "type": 0,
+                      "value": "dog"
+                    }
+                  ],
+                  "location": null,
+                  "type": 8,
+                  "value": "i"
+                }
+              ],
+              "location": null,
+              "type": 8,
+              "value": "b"
+            }
+          ]
+        },
+        "other": {
+          "location": null,
+          "value": [
+            {
+              "location": null,
+              "type": 0,
+              "value": "many dogs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "a1dd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "my name is "
+    },
+    {
+      "location": null,
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "ashd2": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "a message"
+    }
+  ]
+}
+",
+}
+`;
+
+exports[`'TypeScript' CLI > AST 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -137,7 +1440,7 @@ exports[`AST 1`] = `
 }
 `;
 
-exports[`basic case: empty json 1`] = `
+exports[`'TypeScript' CLI > basic case: empty json 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -146,7 +1449,7 @@ exports[`basic case: empty json 1`] = `
 }
 `;
 
-exports[`basic case: help 1`] = `
+exports[`'TypeScript' CLI > basic case: help 1`] = `
 {
   "stderr": "",
   "stdout": "Usage: formatjs compile [options] [translation_files...]
@@ -185,7 +1488,7 @@ Options:
 }
 `;
 
-exports[`compile glob 1`] = `
+exports[`'TypeScript' CLI > compile glob 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -200,7 +1503,7 @@ exports[`compile glob 1`] = `
 }
 `;
 
-exports[`en-XA json 1`] = `
+exports[`'TypeScript' CLI > en-XA json 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -377,7 +1680,7 @@ exports[`en-XA json 1`] = `
 }
 `;
 
-exports[`en-XB json 1`] = `
+exports[`'TypeScript' CLI > en-XB json 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -554,7 +1857,7 @@ exports[`en-XB json 1`] = `
 }
 `;
 
-exports[`normal json 1`] = `
+exports[`'TypeScript' CLI > normal json 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -568,7 +1871,7 @@ exports[`normal json 1`] = `
 }
 `;
 
-exports[`normal json with crowdin 1`] = `
+exports[`'TypeScript' CLI > normal json with crowdin 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -580,7 +1883,7 @@ exports[`normal json with crowdin 1`] = `
 }
 `;
 
-exports[`normal json with formatter 1`] = `
+exports[`'TypeScript' CLI > normal json with formatter 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -592,7 +1895,7 @@ exports[`normal json with formatter 1`] = `
 }
 `;
 
-exports[`normal json with lokalise 1`] = `
+exports[`'TypeScript' CLI > normal json with lokalise 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -604,7 +1907,7 @@ exports[`normal json with lokalise 1`] = `
 }
 `;
 
-exports[`normal json with simple 1`] = `
+exports[`'TypeScript' CLI > normal json with simple 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -616,7 +1919,7 @@ exports[`normal json with simple 1`] = `
 }
 `;
 
-exports[`normal json with smartling 1`] = `
+exports[`'TypeScript' CLI > normal json with smartling 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -628,7 +1931,7 @@ exports[`normal json with smartling 1`] = `
 }
 `;
 
-exports[`normal json with transifex 1`] = `
+exports[`'TypeScript' CLI > normal json with transifex 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -640,14 +1943,14 @@ exports[`normal json with transifex 1`] = `
 }
 `;
 
-exports[`out-file --ast 1`] = `
+exports[`'TypeScript' CLI > out-file --ast 1`] = `
 {
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`out-file --ast 2`] = `
+exports[`'TypeScript' CLI > out-file --ast 2`] = `
 {
   "a1d12": [
     {
@@ -780,28 +2083,28 @@ exports[`out-file --ast 2`] = `
 }
 `;
 
-exports[`out-file --ignore-tag 1`] = `
+exports[`'TypeScript' CLI > out-file --ignore-tag 1`] = `
 {
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`out-file --ignore-tag 2`] = `
+exports[`'TypeScript' CLI > out-file --ignore-tag 2`] = `
 {
   "brmsg": "a message with a non-explicit <br> self-closing tag",
   "linkmsg": "a message containing <a href="https://formatjs.github.io/">a link</a>",
 }
 `;
 
-exports[`out-file 1`] = `
+exports[`'TypeScript' CLI > out-file 1`] = `
 {
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`out-file 2`] = `
+exports[`'TypeScript' CLI > out-file 2`] = `
 {
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
   "a1d13": "I have {count, plural, one{<b>a dog</b>} other{many dogs}}",
@@ -811,7 +2114,7 @@ exports[`out-file 2`] = `
 }
 `;
 
-exports[`skipped malformed ICU message json 1`] = `
+exports[`'TypeScript' CLI > skipped malformed ICU message json 1`] = `
 "{
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
   "ashd2": "a message"
@@ -819,7 +2122,7 @@ exports[`skipped malformed ICU message json 1`] = `
 "
 `;
 
-exports[`xx-AC json 1`] = `
+exports[`'TypeScript' CLI > xx-AC json 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -956,7 +2259,7 @@ exports[`xx-AC json 1`] = `
 }
 `;
 
-exports[`xx-HA json 1`] = `
+exports[`'TypeScript' CLI > xx-HA json 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -1093,7 +2396,7 @@ exports[`xx-HA json 1`] = `
 }
 `;
 
-exports[`xx-LS json 1`] = `
+exports[`'TypeScript' CLI > xx-LS json 1`] = `
 {
   "stderr": "",
   "stdout": "{

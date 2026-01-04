@@ -5,6 +5,7 @@ exports_files(
         "Cargo.toml",
         "src/main.rs",
         "src/extract.rs",
+        "src/extractor.rs",
         "src/compile.rs",
         "src/compile_folder.rs",
         "src/verify.rs",
@@ -24,10 +25,18 @@ COMMON_DEPS = [
     "//rust/icu_messageformat_parser",
     "//rust/icu_skeleton_parser",
     "@crates//:anyhow",
+    "@crates//:base64",
     "@crates//:clap",
     "@crates//:glob",
+    "@crates//:hex",
+    "@crates//:oxc",
+    "@crates//:oxc_allocator",
+    "@crates//:oxc_ast",
+    "@crates//:oxc_parser",
+    "@crates//:oxc_span",
     "@crates//:serde",
     "@crates//:serde_json",
+    "@crates//:sha2",
 ]
 
 TEST_DEPS = COMMON_DEPS + [
@@ -41,6 +50,7 @@ rust_binary(
         "src/compile.rs",
         "src/compile_folder.rs",
         "src/extract.rs",
+        "src/extractor.rs",
         "src/formatters/crowdin.rs",
         "src/formatters/default.rs",
         "src/formatters/lokalise.rs",
@@ -52,7 +62,7 @@ rust_binary(
         "src/verify.rs",
     ],
     crate_name = "formatjs",
-    edition = "2021",
+    edition = "2024",
     visibility = ["//visibility:public"],
     deps = COMMON_DEPS,
 )
@@ -60,6 +70,7 @@ rust_binary(
 rust_test(
     name = "formatjs_cli_test",
     crate = ":formatjs_cli",
+    data = ["//packages/ts-transformer:test_fixtures"],
     deps = TEST_DEPS,
 )
 

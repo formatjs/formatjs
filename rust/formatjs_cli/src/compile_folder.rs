@@ -147,15 +147,15 @@ mod tests {
         let src_dir = tempdir().unwrap();
         let out_dir = tempdir().unwrap();
 
-        // Create input files
+        // Create input files with message descriptor format
         fs::write(
             src_dir.path().join("en.json"),
-            json!({"greeting": "Hello!"}).to_string(),
+            json!({"greeting": {"defaultMessage": "Hello!"}}).to_string(),
         )
         .unwrap();
         fs::write(
             src_dir.path().join("fr.json"),
-            json!({"greeting": "Bonjour!"}).to_string(),
+            json!({"greeting": {"defaultMessage": "Bonjour!"}}).to_string(),
         )
         .unwrap();
 
@@ -192,15 +192,15 @@ mod tests {
         fs::create_dir(src_dir.path().join("locales/en")).unwrap();
         fs::create_dir(src_dir.path().join("locales/fr")).unwrap();
 
-        // Create input files in nested structure
+        // Create input files in nested structure with message descriptor format
         fs::write(
             src_dir.path().join("locales/en/messages.json"),
-            json!({"greeting": "Hello!"}).to_string(),
+            json!({"greeting": {"defaultMessage": "Hello!"}}).to_string(),
         )
         .unwrap();
         fs::write(
             src_dir.path().join("locales/fr/messages.json"),
-            json!({"greeting": "Bonjour!"}).to_string(),
+            json!({"greeting": {"defaultMessage": "Bonjour!"}}).to_string(),
         )
         .unwrap();
 
@@ -262,10 +262,10 @@ mod tests {
         let src_dir = tempdir().unwrap();
         let out_dir = tempdir().unwrap();
 
-        // Create input file
+        // Create input file with message descriptor format
         fs::write(
             src_dir.path().join("messages.json"),
-            json!({"greeting": "Hello {name}!"}).to_string(),
+            json!({"greeting": {"defaultMessage": "Hello {name}!"}}).to_string(),
         )
         .unwrap();
 
@@ -339,15 +339,15 @@ mod tests {
         let src_dir = tempdir().unwrap();
         let out_dir = tempdir().unwrap();
 
-        // Create one valid and one invalid file
+        // Create one valid and one invalid file with message descriptor format
         fs::write(
             src_dir.path().join("valid.json"),
-            json!({"greeting": "Hello!"}).to_string(),
+            json!({"greeting": {"defaultMessage": "Hello!"}}).to_string(),
         )
         .unwrap();
         fs::write(
             src_dir.path().join("invalid.json"),
-            json!({"greeting": "Hello {name"}).to_string(), // Invalid ICU
+            json!({"greeting": {"defaultMessage": "Hello {name"}}).to_string(), // Invalid ICU
         )
         .unwrap();
 

@@ -1,6 +1,1005 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`[glob] basic case: defineMessages -> stdout 1`] = `
+exports[`'Rust' CLI > [glob] basic case: defineMessages -> stdout 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "ignore": {
+    "id": "ignore",
+    "defaultMessage": "ignore",
+    "description": null
+  },
+  "foo.bar.biff": {
+    "id": "foo.bar.biff",
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message"
+  },
+  "trailing.ws": {
+    "id": "trailing.ws",
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace"
+  },
+  "escaped.apostrophe": {
+    "id": "escaped.apostrophe",
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe"
+  },
+  "OvR0NS": {
+    "id": "OvR0NS",
+    "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
+    "description": null
+  },
+  "UGQ02Z": {
+    "id": "UGQ02Z",
+    "defaultMessage": "No ID",
+    "description": "no ID"
+  },
+  "app.home.kittens": {
+    "id": "app.home.kittens",
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens"
+  },
+  "foo.bar.baz": {
+    "id": "foo.bar.baz",
+    "defaultMessage": "Hello World!",
+    "description": "The default message"
+  },
+  "inline-msg": {
+    "id": "inline-msg",
+    "defaultMessage": "inline message",
+    "description": "inline description"
+  }
+}",
+}
+`;
+
+exports[`'Rust' CLI > GH #4471: Optional chaining with generics in formatMessage 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > GH #4471: Optional chaining with generics in formatMessage 2`] = `
+{
+  "2kcCNv": {
+    "defaultMessage": "With optional chaining",
+    "description": "formatMessage with optional chaining operator",
+    "id": "2kcCNv",
+  },
+  "9GuEGu": {
+    "defaultMessage": "With both generics and optional chaining",
+    "description": "formatMessage with both generic type parameter and optional chaining",
+    "id": "9GuEGu",
+  },
+  "ayd8PB": {
+    "defaultMessage": "With generics",
+    "description": "formatMessage with generic type parameter",
+    "id": "ayd8PB",
+  },
+  "nenrA_": {
+    "defaultMessage": "Nested optional chaining",
+    "description": "formatMessage with nested optional chaining",
+    "id": "nenrA_",
+  },
+  "qn6UQr": {
+    "defaultMessage": "Normal call",
+    "description": null,
+    "id": "qn6UQr",
+  },
+}
+`;
+
+exports[`'Rust' CLI > GH #5069: Tagged template expressions with substitutions in non-message props 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > GH #5069: Tagged template expressions with substitutions in non-message props 2`] = `
+{
+  "message.with.css.tagname": {
+    "defaultMessage": "This message uses emotion css",
+    "description": null,
+    "id": "message.with.css.tagname",
+  },
+  "message.with.dedent": {
+    "defaultMessage": "Message with dedent",
+    "description": "Description with dedent",
+    "id": "message.with.dedent",
+  },
+  "message.with.styled.in.values": {
+    "defaultMessage": "Hello {component}",
+    "description": null,
+    "id": "message.with.styled.in.values",
+  },
+  "message.with.styled.tagname": {
+    "defaultMessage": "This message uses styled-components as tagName",
+    "description": null,
+    "id": "message.with.styled.tagname",
+  },
+}
+`;
+
+exports[`'Rust' CLI > TypeScript 4.7 syntax 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > TypeScript 4.7 syntax 2`] = `{}`;
+
+exports[`'Rust' CLI > basic case: defineMessages -> out-file 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > basic case: defineMessages -> out-file 2`] = `
+{
+  "OvR0NS": {
+    "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
+    "description": null,
+    "id": "OvR0NS",
+  },
+  "UGQ02Z": {
+    "defaultMessage": "No ID",
+    "description": "no ID",
+    "id": "UGQ02Z",
+  },
+  "app.home.kittens": {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens",
+    "id": "app.home.kittens",
+  },
+  "escaped.apostrophe": {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+    "id": "escaped.apostrophe",
+  },
+  "foo.bar.baz": {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+    "id": "foo.bar.baz",
+  },
+  "foo.bar.biff": {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message",
+    "id": "foo.bar.biff",
+  },
+  "inline-msg": {
+    "defaultMessage": "inline message",
+    "description": "inline description",
+    "id": "inline-msg",
+  },
+  "trailing.ws": {
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace",
+    "id": "trailing.ws",
+  },
+}
+`;
+
+exports[`'Rust' CLI > basic case: defineMessages -> out-file with  --additional-function-names 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > basic case: defineMessages -> out-file with  --additional-function-names 2`] = `
+{
+  "KjCcqa": {
+    "defaultMessage": "additional function names t",
+    "description": "The default message",
+    "id": "KjCcqa",
+  },
+  "OvR0NS": {
+    "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
+    "description": null,
+    "id": "OvR0NS",
+  },
+  "UGQ02Z": {
+    "defaultMessage": "No ID",
+    "description": "no ID",
+    "id": "UGQ02Z",
+  },
+  "app.home.kittens": {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens",
+    "id": "app.home.kittens",
+  },
+  "escaped.apostrophe": {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+    "id": "escaped.apostrophe",
+  },
+  "foo.bar.baz": {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+    "id": "foo.bar.baz",
+  },
+  "foo.bar.biff": {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message",
+    "id": "foo.bar.biff",
+  },
+  "inline-msg": {
+    "defaultMessage": "inline message",
+    "description": "inline description",
+    "id": "inline-msg",
+  },
+  "trailing.ws": {
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace",
+    "id": "trailing.ws",
+  },
+}
+`;
+
+exports[`'Rust' CLI > basic case: defineMessages -> out-file with location 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > basic case: defineMessages -> out-file with location 2`] = `
+{
+  "OvR0NS": {
+    "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
+    "description": null,
+    "file": "defineMessages/actual.jsx",
+    "id": "OvR0NS",
+    "start": 113,
+  },
+  "UGQ02Z": {
+    "defaultMessage": "No ID",
+    "description": "no ID",
+    "file": "defineMessages/actual.jsx",
+    "id": "UGQ02Z",
+    "start": 113,
+  },
+  "app.home.kittens": {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens",
+    "file": "defineMessages/actual.jsx",
+    "id": "app.home.kittens",
+    "start": 113,
+  },
+  "escaped.apostrophe": {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+    "file": "defineMessages/actual.jsx",
+    "id": "escaped.apostrophe",
+    "start": 113,
+  },
+  "foo.bar.baz": {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+    "file": "defineMessages/actual.jsx",
+    "id": "foo.bar.baz",
+    "start": 113,
+  },
+  "foo.bar.biff": {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message",
+    "file": "defineMessages/actual.jsx",
+    "id": "foo.bar.biff",
+    "start": 113,
+  },
+  "inline-msg": {
+    "defaultMessage": "inline message",
+    "description": "inline description",
+    "end": 1635,
+    "file": "defineMessages/actual.jsx",
+    "id": "inline-msg",
+    "start": 1488,
+  },
+  "trailing.ws": {
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace",
+    "file": "defineMessages/actual.jsx",
+    "id": "trailing.ws",
+    "start": 113,
+  },
+}
+`;
+
+exports[`'Rust' CLI > basic case: defineMessages -> stdout 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "foo.bar.baz": {
+    "id": "foo.bar.baz",
+    "defaultMessage": "Hello World!",
+    "description": "The default message"
+  },
+  "trailing.ws": {
+    "id": "trailing.ws",
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace"
+  },
+  "foo.bar.biff": {
+    "id": "foo.bar.biff",
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message"
+  },
+  "app.home.kittens": {
+    "id": "app.home.kittens",
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens"
+  },
+  "OvR0NS": {
+    "id": "OvR0NS",
+    "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
+    "description": null
+  },
+  "inline-msg": {
+    "id": "inline-msg",
+    "defaultMessage": "inline message",
+    "description": "inline description"
+  },
+  "UGQ02Z": {
+    "id": "UGQ02Z",
+    "defaultMessage": "No ID",
+    "description": "no ID"
+  },
+  "escaped.apostrophe": {
+    "id": "escaped.apostrophe",
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe"
+  }
+}",
+}
+`;
+
+exports[`'Rust' CLI > basic case: help 1`] = `
+{
+  "stderr": "",
+  "stdout": "Extract string messages from React components that use react-intl. Extracts messages from TypeScript, JavaScript, Vue, and Handlebars files
+
+Usage: formatjs_cli extract [OPTIONS] [FILES]...
+
+Arguments:
+  [FILES]...
+          File glob patterns to extract from (e.g., src/**/*.tsx)
+
+Options:
+      --format <FORMATTER>
+          Formatter to use for output format. Available: default, simple, transifex, smartling, lokalise, crowdin
+
+          Possible values:
+          - default:   Default formatter: extracts defaultMessage from MessageDescriptor objects
+          - simple:    Simple formatter: pass-through for Record<string, string>
+          - transifex: Transifex formatter: extracts string field
+          - smartling: Smartling formatter: extracts message field
+          - lokalise:  Lokalise formatter: extracts translation field
+          - crowdin:   Crowdin formatter: extracts message field
+
+      --in-file <PATH>
+          File containing list of files to extract from (one per line). Used when you have a large number of files and bash chokes
+
+      --out-file <PATH>
+          Target file path for aggregated .json output of all translations
+
+      --id-interpolation-pattern <PATTERN>
+          Pattern to automatically generate IDs for messages without explicit IDs. Uses webpack loader-utils interpolateName format
+          
+          [default: [sha512:contenthash:base64:6]]
+
+      --extract-source-location
+          Whether to extract metadata about message location in source file
+
+      --additional-component-names <NAMES>
+          Additional component names to extract from (comma-separated, e.g., FormattedFooBarMessage)
+
+      --additional-function-names <NAMES>
+          Additional function names to extract messages from (comma-separated, e.g., $t,formatMessage)
+
+      --ignore <PATTERNS>
+          List of glob patterns to exclude from extraction
+
+      --throws
+          Whether to throw an exception when failing to process any file in the batch
+
+      --pragma <PRAGMA>
+          Parse custom pragma for file metadata (e.g., @intl-meta)
+
+      --preserve-whitespace
+          Whether to preserve whitespace and newlines
+
+      --flatten
+          Whether to hoist selectors and flatten sentences
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+",
+}
+`;
+
+exports[`'Rust' CLI > basic case: inFile 1`] = `
+{
+  "stderr": "Error in defineMessages/actual.js: Failed to read file defineMessages/actual.js
+Error in inFile/file1.tsx inFile/file2.tsx: Failed to read file inFile/file1.tsx inFile/file2.tsx
+",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > basic case: inFile 2`] = `{}`;
+
+exports[`'Rust' CLI > duplicated descriptor ids shows warning 1`] = `
+{
+  "foo": {
+    "defaultMessage": "Bar",
+    "description": null,
+    "id": "foo",
+  },
+}
+`;
+
+exports[`'Rust' CLI > flatten defineMessages -> stdout 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "trailing.ws": {
+    "id": "trailing.ws",
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace"
+  },
+  "inline-msg": {
+    "id": "inline-msg",
+    "defaultMessage": "inline message",
+    "description": "inline description"
+  },
+  "escaped.apostrophe": {
+    "id": "escaped.apostrophe",
+    "defaultMessage": "A quoted value ''{value}''",
+    "description": "Escaped apostrophe"
+  },
+  "app.home.kittens": {
+    "id": "app.home.kittens",
+    "defaultMessage": "{count,plural,one{# kitten} other{# kittens} =0{😭}}",
+    "description": "Counts kittens"
+  },
+  "foo.bar.biff": {
+    "id": "foo.bar.biff",
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message"
+  },
+  "UGQ02Z": {
+    "id": "UGQ02Z",
+    "defaultMessage": "No ID",
+    "description": "no ID"
+  },
+  "vG2DC3": {
+    "id": "vG2DC3",
+    "defaultMessage": "{count,plural,one{I have a dog} other{I have many dogs}}",
+    "description": null
+  },
+  "foo.bar.baz": {
+    "id": "foo.bar.baz",
+    "defaultMessage": "Hello World!",
+    "description": "The default message"
+  }
+}",
+}
+`;
+
+exports[`'Rust' CLI > ignore -> stdout JS 1`] = `
+{
+  "OvR0NS": {
+    "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
+    "description": null,
+    "id": "OvR0NS",
+  },
+  "UGQ02Z": {
+    "defaultMessage": "No ID",
+    "description": "no ID",
+    "id": "UGQ02Z",
+  },
+  "app.home.kittens": {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens",
+    "id": "app.home.kittens",
+  },
+  "escaped.apostrophe": {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+    "id": "escaped.apostrophe",
+  },
+  "foo.bar.baz": {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+    "id": "foo.bar.baz",
+  },
+  "foo.bar.biff": {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message",
+    "id": "foo.bar.biff",
+  },
+  "inline-msg": {
+    "defaultMessage": "inline message",
+    "description": "inline description",
+    "id": "inline-msg",
+  },
+  "trailing.ws": {
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace",
+    "id": "trailing.ws",
+  },
+}
+`;
+
+exports[`'Rust' CLI > ignore -> stdout TS 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "foo.bar.baz": {
+    "id": "foo.bar.baz",
+    "defaultMessage": "Hello World!",
+    "description": "The default message"
+  },
+  "eCy8Eo": {
+    "id": "eCy8Eo",
+    "defaultMessage": "No Desc",
+    "description": null
+  },
+  "inline.linebreak": {
+    "id": "inline.linebreak",
+    "defaultMessage": "formatted message\\n\\t\\t\\t\\t\\t\\twith linebreak",
+    "description": "foo\\n\\t\\t\\t\\t\\t\\tbar"
+  },
+  "trailing.ws": {
+    "id": "trailing.ws",
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace"
+  },
+  "app.home.kittens": {
+    "id": "app.home.kittens",
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens"
+  },
+  "UGQ02Z": {
+    "id": "UGQ02Z",
+    "defaultMessage": "No ID",
+    "description": "no ID"
+  },
+  "inline": {
+    "id": "inline",
+    "defaultMessage": "formatted message",
+    "description": "foo"
+  },
+  "newline": {
+    "id": "newline",
+    "defaultMessage": "this is     a message",
+    "description": "this is     a     description"
+  },
+  "templateLinebreak": {
+    "id": "templateLinebreak",
+    "defaultMessage": "this is\\n    a message",
+    "description": "this is\\n    a\\n    description"
+  },
+  "linebreak": {
+    "id": "linebreak",
+    "defaultMessage": "this is\\na message",
+    "description": "this is\\na\\ndescription"
+  },
+  "escaped.apostrophe": {
+    "id": "escaped.apostrophe",
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe"
+  },
+  "foo.bar.biff": {
+    "id": "foo.bar.biff",
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message"
+  }
+}",
+}
+`;
+
+exports[`'Rust' CLI > import meta 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > import meta 2`] = `{}`;
+
+exports[`'Rust' CLI > non duplicated descriptors does not throw 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > non duplicated descriptors does not throw 2`] = `
+{
+  "foo": {
+    "defaultMessage": "Foo",
+    "description": {
+      "maxCharacterCount": 2,
+      "text": "Bar",
+    },
+    "id": "foo",
+  },
+}
+`;
+
+exports[`'Rust' CLI > pragma 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "trailing.ws": {
+    "id": "trailing.ws",
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace"
+  },
+  "foo.bar.biff": {
+    "id": "foo.bar.biff",
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message"
+  },
+  "UGQ02Z": {
+    "id": "UGQ02Z",
+    "defaultMessage": "No ID",
+    "description": "no ID"
+  },
+  "eCy8Eo": {
+    "id": "eCy8Eo",
+    "defaultMessage": "No Desc",
+    "description": null
+  },
+  "escaped.apostrophe": {
+    "id": "escaped.apostrophe",
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe"
+  },
+  "app.home.kittens": {
+    "id": "app.home.kittens",
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens"
+  },
+  "foo.bar.baz": {
+    "id": "foo.bar.baz",
+    "defaultMessage": "Hello World!",
+    "description": "The default message"
+  },
+  "inline": {
+    "id": "inline",
+    "defaultMessage": "formatted message",
+    "description": "foo"
+  }
+}",
+}
+`;
+
+exports[`'Rust' CLI > typescript -> stdout 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "app.home.kittens": {
+    "id": "app.home.kittens",
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens"
+  },
+  "UGQ02Z": {
+    "id": "UGQ02Z",
+    "defaultMessage": "No ID",
+    "description": "no ID"
+  },
+  "escaped.apostrophe": {
+    "id": "escaped.apostrophe",
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe"
+  },
+  "inline": {
+    "id": "inline",
+    "defaultMessage": "formatted message",
+    "description": "foo"
+  },
+  "inline.linebreak": {
+    "id": "inline.linebreak",
+    "defaultMessage": "formatted message\\n\\t\\t\\t\\t\\t\\twith linebreak",
+    "description": "foo\\n\\t\\t\\t\\t\\t\\tbar"
+  },
+  "linebreak": {
+    "id": "linebreak",
+    "defaultMessage": "this is\\na message",
+    "description": "this is\\na\\ndescription"
+  },
+  "templateLinebreak": {
+    "id": "templateLinebreak",
+    "defaultMessage": "this is\\n    a message",
+    "description": "this is\\n    a\\n    description"
+  },
+  "newline": {
+    "id": "newline",
+    "defaultMessage": "this is     a message",
+    "description": "this is     a     description"
+  },
+  "eCy8Eo": {
+    "id": "eCy8Eo",
+    "defaultMessage": "No Desc",
+    "description": null
+  },
+  "trailing.ws": {
+    "id": "trailing.ws",
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace"
+  },
+  "foo.bar.baz": {
+    "id": "foo.bar.baz",
+    "defaultMessage": "Hello World!",
+    "description": "The default message"
+  },
+  "foo.bar.biff": {
+    "id": "foo.bar.biff",
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message"
+  }
+}",
+}
+`;
+
+exports[`'Rust' CLI > typescript -> stdout with --additional-function-names 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "foo.bar.baz": {
+    "id": "foo.bar.baz",
+    "defaultMessage": "Hello World!",
+    "description": "The default message"
+  },
+  "KjCcqa": {
+    "id": "KjCcqa",
+    "defaultMessage": "additional function names t",
+    "description": "The default message"
+  },
+  "newline": {
+    "id": "newline",
+    "defaultMessage": "this is     a message",
+    "description": "this is     a     description"
+  },
+  "escaped.apostrophe": {
+    "id": "escaped.apostrophe",
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe"
+  },
+  "linebreak": {
+    "id": "linebreak",
+    "defaultMessage": "this is\\na message",
+    "description": "this is\\na\\ndescription"
+  },
+  "foo.bar.biff": {
+    "id": "foo.bar.biff",
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message"
+  },
+  "app.home.kittens": {
+    "id": "app.home.kittens",
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens"
+  },
+  "eCy8Eo": {
+    "id": "eCy8Eo",
+    "defaultMessage": "No Desc",
+    "description": null
+  },
+  "inline": {
+    "id": "inline",
+    "defaultMessage": "formatted message",
+    "description": "foo"
+  },
+  "templateLinebreak": {
+    "id": "templateLinebreak",
+    "defaultMessage": "this is\\n    a message",
+    "description": "this is\\n    a\\n    description"
+  },
+  "UGQ02Z": {
+    "id": "UGQ02Z",
+    "defaultMessage": "No ID",
+    "description": "no ID"
+  },
+  "trailing.ws": {
+    "id": "trailing.ws",
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace"
+  },
+  "inline.linebreak": {
+    "id": "inline.linebreak",
+    "defaultMessage": "formatted message\\n\\t\\t\\t\\t\\t\\twith linebreak",
+    "description": "foo\\n\\t\\t\\t\\t\\t\\tbar"
+  }
+}",
+}
+`;
+
+exports[`'Rust' CLI > typescript -> stdout with crowdin 1`] = `
+{
+  "stderr": "Warning: Message 'UGQ02Z' in extracted messages is missing 'message' field, skipping
+Warning: Message 'app.home.kittens' in extracted messages is missing 'message' field, skipping
+Warning: Message 'eCy8Eo' in extracted messages is missing 'message' field, skipping
+Warning: Message 'escaped.apostrophe' in extracted messages is missing 'message' field, skipping
+Warning: Message 'foo.bar.baz' in extracted messages is missing 'message' field, skipping
+Warning: Message 'foo.bar.biff' in extracted messages is missing 'message' field, skipping
+Warning: Message 'inline' in extracted messages is missing 'message' field, skipping
+Warning: Message 'inline.linebreak' in extracted messages is missing 'message' field, skipping
+Warning: Message 'linebreak' in extracted messages is missing 'message' field, skipping
+Warning: Message 'newline' in extracted messages is missing 'message' field, skipping
+Warning: Message 'templateLinebreak' in extracted messages is missing 'message' field, skipping
+Warning: Message 'trailing.ws' in extracted messages is missing 'message' field, skipping
+",
+  "stdout": "{}",
+}
+`;
+
+exports[`'Rust' CLI > typescript -> stdout with lokalise 1`] = `
+{
+  "stderr": "Warning: Message 'UGQ02Z' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'app.home.kittens' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'eCy8Eo' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'escaped.apostrophe' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'foo.bar.baz' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'foo.bar.biff' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'inline' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'inline.linebreak' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'linebreak' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'newline' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'templateLinebreak' in extracted messages is missing 'translation' field, skipping
+Warning: Message 'trailing.ws' in extracted messages is missing 'translation' field, skipping
+",
+  "stdout": "{}",
+}
+`;
+
+exports[`'Rust' CLI > typescript -> stdout with simple 1`] = `
+{
+  "stderr": "Warning: Message 'UGQ02Z' in extracted messages is not a string, skipping
+Warning: Message 'app.home.kittens' in extracted messages is not a string, skipping
+Warning: Message 'eCy8Eo' in extracted messages is not a string, skipping
+Warning: Message 'escaped.apostrophe' in extracted messages is not a string, skipping
+Warning: Message 'foo.bar.baz' in extracted messages is not a string, skipping
+Warning: Message 'foo.bar.biff' in extracted messages is not a string, skipping
+Warning: Message 'inline' in extracted messages is not a string, skipping
+Warning: Message 'inline.linebreak' in extracted messages is not a string, skipping
+Warning: Message 'linebreak' in extracted messages is not a string, skipping
+Warning: Message 'newline' in extracted messages is not a string, skipping
+Warning: Message 'templateLinebreak' in extracted messages is not a string, skipping
+Warning: Message 'trailing.ws' in extracted messages is not a string, skipping
+",
+  "stdout": "{}",
+}
+`;
+
+exports[`'Rust' CLI > typescript -> stdout with smartling 1`] = `
+{
+  "stderr": "Warning: Message 'UGQ02Z' in extracted messages is missing 'message' field, skipping
+Warning: Message 'app.home.kittens' in extracted messages is missing 'message' field, skipping
+Warning: Message 'eCy8Eo' in extracted messages is missing 'message' field, skipping
+Warning: Message 'escaped.apostrophe' in extracted messages is missing 'message' field, skipping
+Warning: Message 'foo.bar.baz' in extracted messages is missing 'message' field, skipping
+Warning: Message 'foo.bar.biff' in extracted messages is missing 'message' field, skipping
+Warning: Message 'inline' in extracted messages is missing 'message' field, skipping
+Warning: Message 'inline.linebreak' in extracted messages is missing 'message' field, skipping
+Warning: Message 'linebreak' in extracted messages is missing 'message' field, skipping
+Warning: Message 'newline' in extracted messages is missing 'message' field, skipping
+Warning: Message 'templateLinebreak' in extracted messages is missing 'message' field, skipping
+Warning: Message 'trailing.ws' in extracted messages is missing 'message' field, skipping
+",
+  "stdout": "{}",
+}
+`;
+
+exports[`'Rust' CLI > typescript -> stdout with transifex 1`] = `
+{
+  "stderr": "Warning: Message 'UGQ02Z' in extracted messages is missing 'string' field, skipping
+Warning: Message 'app.home.kittens' in extracted messages is missing 'string' field, skipping
+Warning: Message 'eCy8Eo' in extracted messages is missing 'string' field, skipping
+Warning: Message 'escaped.apostrophe' in extracted messages is missing 'string' field, skipping
+Warning: Message 'foo.bar.baz' in extracted messages is missing 'string' field, skipping
+Warning: Message 'foo.bar.biff' in extracted messages is missing 'string' field, skipping
+Warning: Message 'inline' in extracted messages is missing 'string' field, skipping
+Warning: Message 'inline.linebreak' in extracted messages is missing 'string' field, skipping
+Warning: Message 'linebreak' in extracted messages is missing 'string' field, skipping
+Warning: Message 'newline' in extracted messages is missing 'string' field, skipping
+Warning: Message 'templateLinebreak' in extracted messages is missing 'string' field, skipping
+Warning: Message 'trailing.ws' in extracted messages is missing 'string' field, skipping
+",
+  "stdout": "{}",
+}
+`;
+
+exports[`'Rust' CLI > whitespace and newlines should be preserved 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'Rust' CLI > whitespace and newlines should be preserved 2`] = `
+{
+  "UGQ02Z": {
+    "defaultMessage": "No ID",
+    "description": "no ID",
+    "id": "UGQ02Z",
+  },
+  "app.home.kittens": {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens",
+    "id": "app.home.kittens",
+  },
+  "eCy8Eo": {
+    "defaultMessage": "No Desc",
+    "description": null,
+    "id": "eCy8Eo",
+  },
+  "escaped.apostrophe": {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+    "id": "escaped.apostrophe",
+  },
+  "foo.bar.baz": {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+    "id": "foo.bar.baz",
+  },
+  "foo.bar.biff": {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message",
+    "id": "foo.bar.biff",
+  },
+  "inline": {
+    "defaultMessage": "formatted message",
+    "description": "foo",
+    "id": "inline",
+  },
+  "inline.linebreak": {
+    "defaultMessage": "formatted message
+						with linebreak",
+    "description": "foo
+						bar",
+    "id": "inline.linebreak",
+  },
+  "linebreak": {
+    "defaultMessage": "this is
+a message",
+    "description": "this is
+a
+description",
+    "id": "linebreak",
+  },
+  "newline": {
+    "defaultMessage": "this is     a message",
+    "description": "this is     a     description",
+    "id": "newline",
+  },
+  "templateLinebreak": {
+    "defaultMessage": "this is
+    a message",
+    "description": "this is
+    a
+    description",
+    "id": "templateLinebreak",
+  },
+  "trailing.ws": {
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace",
+    "id": "trailing.ws",
+  },
+}
+`;
+
+exports[`'TypeScript' CLI > [glob] basic case: defineMessages -> stdout 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -43,23 +1042,79 @@ exports[`[glob] basic case: defineMessages -> stdout 1`] = `
 }
 `;
 
-exports[`TypeScript 4.7 syntax 1`] = `
+exports[`'TypeScript' CLI > GH #4471: Optional chaining with generics in formatMessage 1`] = `
 {
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`TypeScript 4.7 syntax 2`] = `{}`;
+exports[`'TypeScript' CLI > GH #4471: Optional chaining with generics in formatMessage 2`] = `
+{
+  "Og+dnM": {
+    "defaultMessage": "Nested optional chaining",
+    "description": "formatMessage with nested optional chaining",
+  },
+  "Wqiya3": {
+    "defaultMessage": "With both generics and optional chaining",
+    "description": "formatMessage with both generic type parameter and optional chaining",
+  },
+  "qn6UQr": {
+    "defaultMessage": "Normal call",
+  },
+  "tUGyKn": {
+    "defaultMessage": "With optional chaining",
+    "description": "formatMessage with optional chaining operator",
+  },
+  "v3S28r": {
+    "defaultMessage": "With generics",
+    "description": "formatMessage with generic type parameter",
+  },
+}
+`;
 
-exports[`basic case: defineMessages -> out-file 1`] = `
+exports[`'TypeScript' CLI > GH #5069: Tagged template expressions with substitutions in non-message props 1`] = `
 {
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`basic case: defineMessages -> out-file 2`] = `
+exports[`'TypeScript' CLI > GH #5069: Tagged template expressions with substitutions in non-message props 2`] = `
+{
+  "message.with.css.tagname": {
+    "defaultMessage": "This message uses emotion css",
+  },
+  "message.with.dedent": {
+    "defaultMessage": "Message with dedent",
+    "description": "Description with dedent",
+  },
+  "message.with.styled.in.values": {
+    "defaultMessage": "Hello {component}",
+  },
+  "message.with.styled.tagname": {
+    "defaultMessage": "This message uses styled-components as tagName",
+  },
+}
+`;
+
+exports[`'TypeScript' CLI > TypeScript 4.7 syntax 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'TypeScript' CLI > TypeScript 4.7 syntax 2`] = `{}`;
+
+exports[`'TypeScript' CLI > basic case: defineMessages -> out-file 1`] = `
+{
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`'TypeScript' CLI > basic case: defineMessages -> out-file 2`] = `
 {
   "286VP8": {
     "defaultMessage": "No ID",
@@ -95,14 +1150,14 @@ exports[`basic case: defineMessages -> out-file 2`] = `
 }
 `;
 
-exports[`basic case: defineMessages -> out-file with  --additional-function-names 1`] = `
+exports[`'TypeScript' CLI > basic case: defineMessages -> out-file with  --additional-function-names 1`] = `
 {
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`basic case: defineMessages -> out-file with  --additional-function-names 2`] = `
+exports[`'TypeScript' CLI > basic case: defineMessages -> out-file with  --additional-function-names 2`] = `
 {
   "286VP8": {
     "defaultMessage": "No ID",
@@ -142,21 +1197,21 @@ exports[`basic case: defineMessages -> out-file with  --additional-function-name
 }
 `;
 
-exports[`basic case: defineMessages -> out-file with location 1`] = `
+exports[`'TypeScript' CLI > basic case: defineMessages -> out-file with location 1`] = `
 {
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`basic case: defineMessages -> out-file with location 2`] = `
+exports[`'TypeScript' CLI > basic case: defineMessages -> out-file with location 2`] = `
 {
   "286VP8": {
     "col": 18,
     "defaultMessage": "No ID",
     "description": "no ID",
     "end": 935,
-    "file": "defineMessages/actual.js",
+    "file": "defineMessages/actual.jsx",
     "line": 34,
     "start": 874,
   },
@@ -164,7 +1219,7 @@ exports[`basic case: defineMessages -> out-file with location 2`] = `
     "col": 10,
     "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
     "end": 1028,
-    "file": "defineMessages/actual.js",
+    "file": "defineMessages/actual.jsx",
     "line": 38,
     "start": 947,
   },
@@ -173,7 +1228,7 @@ exports[`basic case: defineMessages -> out-file with location 2`] = `
     "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
     "description": "Counts kittens",
     "end": 520,
-    "file": "defineMessages/actual.js",
+    "file": "defineMessages/actual.jsx",
     "line": 15,
     "start": 370,
   },
@@ -182,7 +1237,7 @@ exports[`basic case: defineMessages -> out-file with location 2`] = `
     "defaultMessage": "A quoted value ''{value}'",
     "description": "Escaped apostrophe",
     "end": 784,
-    "file": "defineMessages/actual.js",
+    "file": "defineMessages/actual.jsx",
     "line": 25,
     "start": 660,
   },
@@ -191,7 +1246,7 @@ exports[`basic case: defineMessages -> out-file with location 2`] = `
     "defaultMessage": "Hello World!",
     "description": "The default message",
     "end": 244,
-    "file": "defineMessages/actual.js",
+    "file": "defineMessages/actual.jsx",
     "line": 5,
     "start": 139,
   },
@@ -200,7 +1255,7 @@ exports[`basic case: defineMessages -> out-file with location 2`] = `
     "defaultMessage": "Hello Nurse!",
     "description": "Another message",
     "end": 358,
-    "file": "defineMessages/actual.js",
+    "file": "defineMessages/actual.jsx",
     "line": 10,
     "start": 256,
   },
@@ -209,7 +1264,7 @@ exports[`basic case: defineMessages -> out-file with location 2`] = `
     "defaultMessage": "inline message",
     "description": "inline description",
     "end": 1633,
-    "file": "defineMessages/actual.js",
+    "file": "defineMessages/actual.jsx",
     "line": 60,
     "start": 1486,
   },
@@ -218,14 +1273,14 @@ exports[`basic case: defineMessages -> out-file with location 2`] = `
     "defaultMessage": "Some whitespace",
     "description": "Whitespace",
     "end": 648,
-    "file": "defineMessages/actual.js",
+    "file": "defineMessages/actual.jsx",
     "line": 20,
     "start": 543,
   },
 }
 `;
 
-exports[`basic case: defineMessages -> stdout 1`] = `
+exports[`'TypeScript' CLI > basic case: defineMessages -> stdout 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -265,7 +1320,7 @@ exports[`basic case: defineMessages -> stdout 1`] = `
 }
 `;
 
-exports[`basic case: help 1`] = `
+exports[`'TypeScript' CLI > basic case: help 1`] = `
 {
   "stderr": "",
   "stdout": "Usage: formatjs extract [options] [files...]
@@ -322,56 +1377,17 @@ Options:
 }
 `;
 
-exports[`basic case: inFile 1`] = `
+exports[`'TypeScript' CLI > basic case: inFile 1`] = `
 {
-  "stderr": "",
+  "stderr": "[@formatjs/cli] [WARN] Error: ENOENT: no such file or directory, open '/private/var/tmp/_bazel_longho/007106f2e07f9f00091c2ea99f6860c3/sandbox/darwin-sandbox/1987/execroot/_main/bazel-out/darwin_arm64-fastbuild/bin/packages/cli/integration-tests/extract/defineMessages/actual.js'
+",
   "stdout": "",
 }
 `;
 
-exports[`basic case: inFile 2`] = `
-{
-  "286VP8": {
-    "defaultMessage": "No ID",
-    "description": "no ID",
-  },
-  "OvR0NS": {
-    "defaultMessage": "I have {count, plural, one{a dog} other{many dogs}}",
-  },
-  "app.home.kittens": {
-    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
-    "description": "Counts kittens",
-  },
-  "bar": {
-    "defaultMessage": "Bar",
-  },
-  "escaped.apostrophe": {
-    "defaultMessage": "A quoted value ''{value}'",
-    "description": "Escaped apostrophe",
-  },
-  "foo": {
-    "defaultMessage": "Foo",
-  },
-  "foo.bar.baz": {
-    "defaultMessage": "Hello World!",
-    "description": "The default message",
-  },
-  "foo.bar.biff": {
-    "defaultMessage": "Hello Nurse!",
-    "description": "Another message",
-  },
-  "inline-msg": {
-    "defaultMessage": "inline message",
-    "description": "inline description",
-  },
-  "trailing.ws": {
-    "defaultMessage": "Some whitespace",
-    "description": "Whitespace",
-  },
-}
-`;
+exports[`'TypeScript' CLI > basic case: inFile 2`] = `{}`;
 
-exports[`duplicated descriptor ids shows warning 1`] = `
+exports[`'TypeScript' CLI > duplicated descriptor ids shows warning 1`] = `
 {
   "foo": {
     "defaultMessage": "Bar",
@@ -379,16 +1395,13 @@ exports[`duplicated descriptor ids shows warning 1`] = `
 }
 `;
 
-exports[`flatten defineMessages -> stdout 1`] = `
+exports[`'TypeScript' CLI > flatten defineMessages -> stdout 1`] = `
 {
   "stderr": "",
   "stdout": "{
   "286VP8": {
     "defaultMessage": "No ID",
     "description": "no ID"
-  },
-  "OvR0NS": {
-    "defaultMessage": "{count,plural,one{I have a dog} other{I have many dogs}}"
   },
   "app.home.kittens": {
     "defaultMessage": "{count,plural,=0{😭} one{# kitten} other{# kittens}}",
@@ -413,13 +1426,16 @@ exports[`flatten defineMessages -> stdout 1`] = `
   "trailing.ws": {
     "defaultMessage": "Some whitespace",
     "description": "Whitespace"
+  },
+  "vG2DC3": {
+    "defaultMessage": "{count,plural,one{I have a dog} other{I have many dogs}}"
   }
 }
 ",
 }
 `;
 
-exports[`ignore -> stdout JS 1`] = `
+exports[`'TypeScript' CLI > ignore -> stdout JS 1`] = `
 {
   "286VP8": {
     "defaultMessage": "No ID",
@@ -458,7 +1474,7 @@ exports[`ignore -> stdout JS 1`] = `
 }
 `;
 
-exports[`ignore -> stdout TS 1`] = `
+exports[`'TypeScript' CLI > ignore -> stdout TS 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -514,14 +1530,14 @@ exports[`ignore -> stdout TS 1`] = `
 }
 `;
 
-exports[`import meta 1`] = `
+exports[`'TypeScript' CLI > import meta 1`] = `
 {
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`import meta 2`] = `
+exports[`'TypeScript' CLI > import meta 2`] = `
 {
   "greeting": {
     "defaultMessage": "Hello, {name}!",
@@ -529,14 +1545,14 @@ exports[`import meta 2`] = `
 }
 `;
 
-exports[`non duplicated descriptors does not throw 1`] = `
+exports[`'TypeScript' CLI > non duplicated descriptors does not throw 1`] = `
 {
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`non duplicated descriptors does not throw 2`] = `
+exports[`'TypeScript' CLI > non duplicated descriptors does not throw 2`] = `
 {
   "foo": {
     "defaultMessage": "Foo",
@@ -548,7 +1564,7 @@ exports[`non duplicated descriptors does not throw 2`] = `
 }
 `;
 
-exports[`pragma 1`] = `
+exports[`'TypeScript' CLI > pragma 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -620,7 +1636,7 @@ exports[`pragma 1`] = `
 }
 `;
 
-exports[`typescript -> stdout 1`] = `
+exports[`'TypeScript' CLI > typescript -> stdout 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -676,7 +1692,7 @@ exports[`typescript -> stdout 1`] = `
 }
 `;
 
-exports[`typescript -> stdout with --additional-function-names 1`] = `
+exports[`'TypeScript' CLI > typescript -> stdout with --additional-function-names 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -736,7 +1752,7 @@ exports[`typescript -> stdout with --additional-function-names 1`] = `
 }
 `;
 
-exports[`typescript -> stdout with crowdin 1`] = `
+exports[`'TypeScript' CLI > typescript -> stdout with crowdin 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -792,7 +1808,7 @@ exports[`typescript -> stdout with crowdin 1`] = `
 }
 `;
 
-exports[`typescript -> stdout with formatter 1`] = `
+exports[`'TypeScript' CLI > typescript -> stdout with formatter 1`] = `
 {
   "stderr": "",
   "stdout": "foo.bar.baz=Hello World!
@@ -811,7 +1827,7 @@ inline.linebreak=formatted message with linebreak
 }
 `;
 
-exports[`typescript -> stdout with lokalise 1`] = `
+exports[`'TypeScript' CLI > typescript -> stdout with lokalise 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -867,7 +1883,7 @@ exports[`typescript -> stdout with lokalise 1`] = `
 }
 `;
 
-exports[`typescript -> stdout with simple 1`] = `
+exports[`'TypeScript' CLI > typescript -> stdout with simple 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -888,7 +1904,7 @@ exports[`typescript -> stdout with simple 1`] = `
 }
 `;
 
-exports[`typescript -> stdout with smartling 1`] = `
+exports[`'TypeScript' CLI > typescript -> stdout with smartling 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -955,7 +1971,7 @@ exports[`typescript -> stdout with smartling 1`] = `
 }
 `;
 
-exports[`typescript -> stdout with transifex 1`] = `
+exports[`'TypeScript' CLI > typescript -> stdout with transifex 1`] = `
 {
   "stderr": "",
   "stdout": "{
@@ -1011,14 +2027,14 @@ exports[`typescript -> stdout with transifex 1`] = `
 }
 `;
 
-exports[`whitespace and newlines should be preserved 1`] = `
+exports[`'TypeScript' CLI > whitespace and newlines should be preserved 1`] = `
 {
   "stderr": "",
   "stdout": "",
 }
 `;
 
-exports[`whitespace and newlines should be preserved 2`] = `
+exports[`'TypeScript' CLI > whitespace and newlines should be preserved 2`] = `
 {
   "286VP8": {
     "defaultMessage": "No ID",
