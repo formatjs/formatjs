@@ -1,6 +1,0 @@
-"""Root BUILD file for rules_formatjs"""
-
-exports_files([
-    "formatjs.bzl",
-    "MODULE.bazel",
-])
