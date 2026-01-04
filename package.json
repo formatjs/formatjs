@@ -13,7 +13,7 @@
     "prepare": "lefthook install",
     "prerelease": "LEFTHOOK=0 lerna version --yes --no-private",
     "test": "syncpack lint && oxlint --config .oxlintrc.json && bazel test //...",
-    "website": "bazel run //docs:serve"
+    "website": "ibazel run //docs:serve"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",

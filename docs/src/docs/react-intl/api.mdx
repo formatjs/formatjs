@@ -515,7 +515,7 @@ This function will return a formatted message string. It expects a `MessageDescr
 
 If a translated message with the `id` has been passed to the `<IntlProvider>` via its `messages` prop it will be formatted, otherwise it will fallback to formatting `defaultMessage`. See: [Message Formatting Fallbacks](#message-formatting-fallbacks) for more details.
 
-<LiveCodeBlock code={`() => {
+<LiveCodeBlock code={`
   const messages = defineMessages({
     greeting: {
       id: 'app.greeting',
@@ -525,12 +525,12 @@ If a translated message with the `id` has been passed to the `<IntlProvider>` vi
   })
 
 return <div>{intl.formatMessage(messages.greeting, {name: 'Eric'})}</div>
-}
+
 `} />
 
 with `ReactElement`
 
-<LiveCodeBlock code={`() => {
+<LiveCodeBlock code={`
   const messages = defineMessages({
     greeting: {
       id: 'app.greeting',
@@ -540,12 +540,12 @@ with `ReactElement`
   })
 
 return <div>{intl.formatMessage(messages.greeting, {name: <b>Eric</b>})}</div>
-}
+
 `} />
 
 with rich text formatting
 
-<LiveCodeBlock code={`() => {
+<LiveCodeBlock code={`
   const messages = defineMessages({
     greeting: {
       id: 'app.greeting',
@@ -558,7 +558,7 @@ return <div>{intl.formatMessage(messages.greeting, {
 name: 'Eric',
 bold: str => <b>{str}</b>,
 })}</div>
-}
+
 `} />
 
 The message we defined using [`defineMessages`](#definemessages) to support extraction via `babel-plugin-formatjs`, but it doesn't have to be if you're not using the Babel plugin.
