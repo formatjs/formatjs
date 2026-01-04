@@ -1,0 +1,73 @@
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@npm//:@formatjs/cli/package_json.bzl", formatjs_bin = "bin")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_compile", "formatjs_extract", "formatjs_verify_test")
+
+npm_link_all_packages(name = "node_modules")
+
+# Create formatjs CLI binary target
+formatjs_bin.formatjs_binary(
+    name = "formatjs_cli",
+    visibility = ["//visibility:public"],
+)
+
+# Extract messages from source files
+formatjs_extract(
+    name = "extract_messages",
+    srcs = ["src/App.tsx"],
+    out = "messages/en.json",
+    formatjs_cli = ":formatjs_cli",
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+)
+
+# Compile messages for production
+formatjs_compile(
+    name = "compile_messages",
+    src = ":extract_messages",
+    out = "messages/en-compiled.json",
+    ast = True,
+    formatjs_cli = ":formatjs_cli",
+)
+
+# Snapshot test for extraction
+write_source_files(
+    name = "test_extract",
+    files = {
+        "extract_messages.fixture.json": ":extract_messages",
+    },
+)
+
+# Update extraction snapshot
+write_source_files(
+    name = "update_extract_fixture",
+    files = {
+        "extract_messages.fixture.json": ":extract_messages",
+    },
+)
+
+# Snapshot test for compilation
+write_source_files(
+    name = "test_compile",
+    files = {
+        "compile_messages.fixture.json": ":compile_messages",
+    },
+)
+
+# Update compilation snapshot
+write_source_files(
+    name = "update_compile_fixture",
+    files = {
+        "compile_messages.fixture.json": ":compile_messages",
+    },
+)
+
+# Verify French translation is valid and complete
+formatjs_verify_test(
+    name = "verify_french_translation",
+    formatjs_cli = ":formatjs_cli",
+    source_locale = "en",
+    translations = [
+        ":extract_messages",  # en.json (source)
+        "messages/fr.json",  # fr.json (translation)
+    ],
+)

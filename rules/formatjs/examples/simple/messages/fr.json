@@ -1,0 +1,5 @@
+{
+  "app.title": "Bienvenue à FormatJS",
+  "app.description": "Ceci est un exemple d'application React internationalisée utilisant FormatJS et Bazel.",
+  "app.button": "Cliquez-moi!"
+}

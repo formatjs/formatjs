@@ -1,7 +1,7 @@
-"Bazel dependencies"
+"""rules_formatjs - Bazel rules for FormatJS internationalization"""
 
 module(
-    name = "com_myorg_rules_mylang",
+    name = "rules_formatjs",
 
     # NOTE:
     # version = "",
@@ -34,6 +34,9 @@ bazel_dep(name = "bazel_skylib", version = "1.8.2")
 bazel_dep(name = "package_metadata", version = "0.0.6")
 bazel_dep(name = "platforms", version = "1.0.0")
 
+# jq for JSON manipulation in aggregation aspect
+bazel_dep(name = "jq.bzl", version = "0.4.0")
+
 bazel_dep(name = "gazelle", version = "0.47.0", dev_dependency = True, repo_name = "bazel_gazelle")
 bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.8.2", dev_dependency = True)
 bazel_dep(name = "bazel_lib", version = "3.0.0", dev_dependency = True)
@@ -41,8 +44,9 @@ bazel_dep(name = "buildifier_prebuilt", version = "8.2.1", dev_dependency = True
 
 bazel_dep(name = "bazelrc-preset.bzl", version = "1.6.0")
 
-mylang = use_extension("//mylang:extensions.bzl", "mylang")
-mylang.toolchain(mylang_version = "1.14.2")
-use_repo(mylang, "mylang_toolchains")
+# FormatJS CLI toolchain
+formatjs_cli = use_extension("//formatjs_cli:extensions.bzl", "formatjs_cli")
+formatjs_cli.toolchain(version = "0.1.0")
+use_repo(formatjs_cli, "formatjs_cli_toolchains")
 
-register_toolchains("@mylang_toolchains//:all")
+register_toolchains("@formatjs_cli_toolchains//:all")
