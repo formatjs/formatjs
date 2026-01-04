@@ -223,12 +223,13 @@ function formatDate(
 
 This function will return a formatted date string. It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
 
-<LiveCodeBlock code={`intl.formatDate(Date.now(), {
+```tsx live
+intl.formatDate(Date.now(), {
   year: 'numeric',
   month: 'numeric',
   day: 'numeric',
 })
-`} />
+```
 
 ## formatTime
 
@@ -250,8 +251,9 @@ This function will return a formatted date string, but it differs from [`formatD
 
 It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
 
-<LiveCodeBlock code={`intl.formatTime(Date.now())
-`} />
+```tsx live
+intl.formatTime(Date.now())
+```
 
 ## formatDateTimeRange
 
@@ -271,8 +273,9 @@ This function will return a formatted date/time range string. Both `from` & `to`
 
 It expects 2 values (a `from` Date & a `to` Date) and accepts `options` that conform to `DateTimeFormatOptions`.
 
-<LiveCodeBlock code={`intl.formatDateTimeRange(new Date('2020-1-1'), new Date('2020-1-15'))
-`} />
+```tsx live
+intl.formatDateTimeRange(new Date('2020-1-1'), new Date('2020-1-15'))
+```
 
 ## formatRelativeTime
 
@@ -307,11 +310,13 @@ function formatRelativeTime(
 
 This function will return a formatted relative time string (e.g., "1 hour ago"). It expects a `value` which is a number, a `unit` and `options` that conform to `Intl.RelativeTimeFormatOptions`.
 
-<LiveCodeBlock code={`intl.formatRelativeTime(0)
-`} />
+```tsx live
+intl.formatRelativeTime(0)
+```
 
-<LiveCodeBlock code={`intl.formatRelativeTime(-24, 'hour', {style: 'narrow'})
-`} />
+```tsx live
+intl.formatRelativeTime(-24, 'hour', {style: 'narrow'})
+```
 
 ## formatNumber
 
@@ -326,8 +331,9 @@ function formatNumber(
 
 This function will return a formatted number string. It expects a `value` which can be parsed as a number, and accepts `options` that conform to `NumberFormatOptions`.
 
-<LiveCodeBlock code={`intl.formatNumber(1000, {style: 'currency', currency: 'USD'})
-`} />
+```tsx live
+intl.formatNumber(1000, {style: 'currency', currency: 'USD'})
+```
 
 **Formatting Number using `unit`**
 
@@ -335,19 +341,21 @@ Currently this is part of ES2020 [NumberFormat](https://tc39.es/ecma402/#numberf
 We've provided a polyfill [here](../polyfills/intl-numberformat) and `react-intl` types allow users to pass
 in a [sanctioned unit](../polyfills/intl-numberformat#SupportedUnits):
 
-<LiveCodeBlock code={`intl.formatNumber(1000, {
+```tsx live
+intl.formatNumber(1000, {
   style: 'unit',
   unit: 'kilobyte',
   unitDisplay: 'narrow',
 })
-`} />
+```
 
-<LiveCodeBlock code={`intl.formatNumber(1000, {
+```tsx live
+intl.formatNumber(1000, {
   unit: 'fahrenheit',
   unitDisplay: 'long',
   style: 'unit',
 })
-`} />
+```
 
 ## formatPlural
 
@@ -366,14 +374,17 @@ This function will return a plural category string: `"zero"`, `"one"`, `"two"`, 
 
 This is a low-level utility whose output could be provided to a `switch` statement to select a particular string to display.
 
-<LiveCodeBlock code={`intl.formatPlural(1)
-`} />
+```tsx live
+intl.formatPlural(1)
+```
 
-<LiveCodeBlock code={`intl.formatPlural(3, {style: 'ordinal'})
-`} />
+```tsx live
+intl.formatPlural(3, {style: 'ordinal'})
+```
 
-<LiveCodeBlock code={`intl.formatPlural(4, {style: 'ordinal'})
-`} />
+```tsx live
+intl.formatPlural(4, {style: 'ordinal'})
+```
 
 <Admonition type="danger" title="multiple language support">
 This function should only be used in apps that only need to support one language. If your app supports multiple languages use [`formatMessage`](#formatmessage) instead.
@@ -399,11 +410,13 @@ function formatList(
 
 This function allows you to join list of things together in an i18n-safe way. For example, when the locale is `en`:
 
-<LiveCodeBlock code={`intl.formatList(['Me', 'myself', 'I'], {type: 'conjunction'})
-`} />
+```tsx live
+intl.formatList(['Me', 'myself', 'I'], {type: 'conjunction'})
+```
 
-<LiveCodeBlock code={`intl.formatList(['5 hours', '3 minutes'], {type: 'unit'})
-`} />
+```tsx live
+intl.formatList(['5 hours', '3 minutes'], {type: 'unit'})
+```
 
 ## formatDisplayName
 
@@ -426,17 +439,21 @@ function formatDisplayName(
 
 Usage examples:
 
-<LiveCodeBlock code={`intl.formatDisplayName('zh-Hans-SG', {type: 'language'})
-`} />
+```tsx live
+intl.formatDisplayName('zh-Hans-SG', {type: 'language'})
+```
 
-<LiveCodeBlock code={`intl.formatDisplayName('Deva', {type: 'script'})
-`} />
+```tsx live
+intl.formatDisplayName('Deva', {type: 'script'})
+```
 
-<LiveCodeBlock code={`intl.formatDisplayName('CNY', {type: 'currency'})
-`} />
+```tsx live
+intl.formatDisplayName('CNY', {type: 'currency'})
+```
 
-<LiveCodeBlock code={`intl.formatDisplayName('UN', {type: 'region'})
-`} />
+```tsx live
+intl.formatDisplayName('UN', {type: 'region'})
+```
 
 ## formatMessage
 
@@ -515,51 +532,45 @@ This function will return a formatted message string. It expects a `MessageDescr
 
 If a translated message with the `id` has been passed to the `<IntlProvider>` via its `messages` prop it will be formatted, otherwise it will fallback to formatting `defaultMessage`. See: [Message Formatting Fallbacks](#message-formatting-fallbacks) for more details.
 
-<LiveCodeBlock code={`
-  const messages = defineMessages({
-    greeting: {
-      id: 'app.greeting',
-      defaultMessage: 'Hello, {name}!',
-      description: 'Greeting to welcome the user to the app',
-    },
-  })
+```tsx live
+const messages = defineMessages({
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello, {name}!',
+    description: 'Greeting to welcome the user to the app',
+  },
+})
 
-return <div>{intl.formatMessage(messages.greeting, {name: 'Eric'})}</div>
-
-`} />
+intl.formatMessage(messages.greeting, {name: 'Eric'})
+```
 
 with `ReactElement`
 
-<LiveCodeBlock code={`
-  const messages = defineMessages({
-    greeting: {
-      id: 'app.greeting',
-      defaultMessage: 'Hello, {name}!',
-      description: 'Greeting to welcome the user to the app',
-    },
-  })
+```tsx live
+const messages = defineMessages({
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello, {name}!',
+    description: 'Greeting to welcome the user to the app',
+  },
+})
 
-return <div>{intl.formatMessage(messages.greeting, {name: <b>Eric</b>})}</div>
-
-`} />
+intl.formatMessage(messages.greeting, {name: <b>Eric</b>})
+```
 
 with rich text formatting
 
-<LiveCodeBlock code={`
-  const messages = defineMessages({
-    greeting: {
-      id: 'app.greeting',
-      defaultMessage: 'Hello, <bold>{name}</bold>!',
-      description: 'Greeting to welcome the user to the app',
-    },
-  })
+```tsx live
+const messages = defineMessages({
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello, <bold>{name}</bold>!',
+    description: 'Greeting to welcome the user to the app',
+  },
+})
 
-return <div>{intl.formatMessage(messages.greeting, {
-name: 'Eric',
-bold: str => <b>{str}</b>,
-})}</div>
-
-`} />
+intl.formatMessage(messages.greeting, { name: 'Eric', bold: str => <b>{str}</b>,})
+```
 
 The message we defined using [`defineMessages`](#definemessages) to support extraction via `babel-plugin-formatjs`, but it doesn't have to be if you're not using the Babel plugin.
 
