@@ -1,0 +1,2 @@
+# This file marks the directory as a separate Bazel repository.
+# The parent repository will not traverse into this directory.

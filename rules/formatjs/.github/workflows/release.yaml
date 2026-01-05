@@ -22,7 +22,7 @@ jobs:
   release:
     uses: bazel-contrib/.github/.github/workflows/release_ruleset.yaml@v7.2.2
     with:
-      release_files: rules_mylang-*.tar.gz
+      release_files: rules_formatjs-*.tar.gz
       prerelease: false
       tag_name: ${{ inputs.tag_name || github.ref_name }}
   publish:

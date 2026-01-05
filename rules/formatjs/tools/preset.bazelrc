@@ -15,10 +15,6 @@ common:ci --announce_rc
 common --nobuild_runfile_links
 # Docs: https://registry.build/flag/bazel?filter=build_runfile_links
 
-# See https://github.com/bazelbuild/bazel/issues/20577
-coverage --build_runfile_links
-# Docs: https://registry.build/flag/bazel?filter=build_runfile_links
-
 # Always run tests even if they have cached results.
 # This ensures tests are executed fresh each time, useful for debugging and ensuring test reliability.
 common:debug --nocache_test_results
@@ -58,22 +54,6 @@ common --noexperimental_check_external_repository_files
 # to generate a full coverage report.
 common --experimental_fetch_all_coverage_outputs
 # Docs: https://registry.build/flag/bazel?filter=experimental_fetch_all_coverage_outputs
-
-# This flag was added in Bazel 6.2.0 with a default of zero:
-# https://github.com/bazelbuild/bazel/commit/24b45890c431de98d586fdfe5777031612049135
-# For Bazel 8.0.0rc1 the default was changed to 5:
-# https://github.com/bazelbuild/bazel/commit/739e37de66f4913bec1a55b2f2a162e7db6f2d0f
-# Back-port the updated flag default value to older Bazel versions.
-common --experimental_remote_cache_eviction_retries=5
-# Docs: https://registry.build/flag/bazel?filter=experimental_remote_cache_eviction_retries
-
-# This flag was added in Bazel 5.0.0 with a default of zero:
-# https://github.com/bazelbuild/bazel/commit/a1137ec1338d9549fd34a9a74502ffa58c286a8e
-# For Bazel 8.0.0 the default was changed to 5:
-# https://github.com/bazelbuild/bazel/commit/9335cf989ee6a678ca10bc4da72214634cef0a57
-# Back-port the updated flag default value to older Bazel versions.
-common --experimental_repository_downloader_retries=5
-# Docs: https://registry.build/flag/bazel?filter=experimental_repository_downloader_retries
 
 # Set this flag to enable re-tries of failed tests on CI.
 # When any test target fails, try one or more times. This applies regardless of whether the "flaky"
@@ -116,11 +96,10 @@ startup --host_jvm_args="-DBAZEL_TRACK_SOURCE_DIRECTORIES=1"
 common --incompatible_default_to_explicit_init_py
 # Docs: https://registry.build/flag/bazel?filter=incompatible_default_to_explicit_init_py
 
-# Disallow empty glob patterns.
-# The glob() function tends to be error-prone, because any typo in a path will silently return an empty list.
-# This flag was added in Bazel 0.27 and flipped in Bazel 8: https://github.com/bazelbuild/bazel/issues/8195
-common --incompatible_disallow_empty_glob
-# Docs: https://registry.build/flag/bazel?filter=incompatible_disallow_empty_glob
+# Fail if Starlark files are not UTF-8 encoded.
+# Introduced in Bazel 8.1, see https://github.com/bazelbuild/bazel/pull/24944
+common --incompatible_enforce_starlark_utf8="error"
+# Docs: https://registry.build/flag/bazel?filter=incompatible_enforce_starlark_utf8
 
 # Accept multiple --modify_execution_info flags, rather than the last flag overwriting earlier ones.
 common --incompatible_modify_execution_info_additive
@@ -132,12 +111,6 @@ common --incompatible_modify_execution_info_additive
 # See https://github.com/bazelbuild/bazel/issues/2574 for more details.
 common --incompatible_strict_action_env
 # Docs: https://registry.build/flag/bazel?filter=incompatible_strict_action_env
-
-# Performance improvement: avoid laying out a second copy of the runfiles tree.
-# See https://github.com/bazelbuild/bazel/issues/23574.
-# This flag was flipped for Bazel 8.
-common --nolegacy_external_runfiles
-# Docs: https://registry.build/flag/bazel?filter=legacy_external_runfiles
 
 # On CI, don't download remote outputs to the local machine.
 # Most CI pipelines don't need to access the files and they can remain at rest on the remote cache.

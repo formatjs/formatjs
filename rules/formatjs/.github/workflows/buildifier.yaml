@@ -13,5 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - uses: bazel-contrib/setup-bazel@0.16.0
+        with:
+          bazelisk-cache: true
       - name: buildifier
         run: bazel run --enable_bzlmod //.github/workflows:buildifier.check
