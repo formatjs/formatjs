@@ -6,7 +6,6 @@ const {sync: globSync} = fastGlobPkg
 const packages = [
   ...globSync('./packages/*/package.json').map(fn => readJSONSync(fn).name),
   ...globSync('./rust/*/BUILD.bazel').map(fn => dirname(fn).split('rust/')[1]),
-  'rules_formatjs',
   // renovate bot config package
   'deps',
 ]

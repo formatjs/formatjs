@@ -1,6 +1,0 @@
-{
-  "greeting": "Ciao, {name}!",
-  "farewell": "Arrivederci!",
-  "count": "Hai {count, plural, =0 {nessun articolo} one {# articolo} other {# articoli}}.",
-  "extra_key": "This should not be here"
-}
