@@ -100,11 +100,19 @@ jobs:
 
       - name: Organize Artifacts
         run: |
+          # List downloaded artifacts structure for debugging
+          ls -R release/
+
           # Move binaries from subdirectories to release root
-          mv release/formatjs_cli-darwin-arm64/formatjs_cli-darwin-arm64 release/
-          mv release/formatjs_cli-linux-x64/formatjs_cli-linux-x64 release/
+          mv release/formatjs_cli-darwin-arm64/formatjs_cli-darwin-arm64 release/formatjs_cli-darwin-arm64.bin
+          mv release/formatjs_cli-linux-x64/formatjs_cli-linux-x64 release/formatjs_cli-linux-x64.bin
+
           # Remove empty directories
           rmdir release/formatjs_cli-darwin-arm64 release/formatjs_cli-linux-x64
+
+          # Rename binaries to final names
+          mv release/formatjs_cli-darwin-arm64.bin release/formatjs_cli-darwin-arm64
+          mv release/formatjs_cli-linux-x64.bin release/formatjs_cli-linux-x64
 
       - name: Generate Checksums
         run: |
