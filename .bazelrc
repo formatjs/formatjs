@@ -35,6 +35,7 @@ build --experimental_profile_include_target_label
 build --experimental_profile_include_primary_output 
 common --bes_upload_mode=fully_async
 common --noincompatible_no_implicit_watch_label
+common --lockfile_mode=error
 
 # Bazel will create symlinks from the workspace directory to output artifacts.
 # Build results will be placed in a directory called "dist/bin"
