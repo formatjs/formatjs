@@ -17,5 +17,22 @@ export default {
     // Sweet Jesus why is disabling a rule syntax so verbose??
     'scope-enum': [2, 'always', packages],
     'header-max-length': [0, 'never', Infinity],
+    'type-enum': [
+      2,
+      'always',
+      [
+        'build',
+        'chore',
+        'ci',
+        'docs',
+        'feat',
+        'fix',
+        'perf',
+        'refactor',
+        'revert',
+        'style',
+        'test',
+      ],
+    ],
   },
 }
