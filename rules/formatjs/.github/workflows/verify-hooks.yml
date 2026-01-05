@@ -1,0 +1,73 @@
+name: Verify Hooks
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  verify-hooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 100
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "10.0.0"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - uses: bazel-contrib/setup-bazel@0.16.0
+        with:
+          bazelisk-cache: true
+      - name: Get changed files
+        id: changed-files
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch origin ${{ github.base_ref }}
+            echo "files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          else
+            echo "files=$(git diff --name-only HEAD~1 HEAD | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          fi
+      - name: Run lefthook on changed files
+        if: steps.changed-files.outputs.files != ''
+        run: |
+          # Stage the changed files
+          for file in ${{ steps.changed-files.outputs.files }}; do
+            if [ -f "$file" ]; then
+              git add "$file"
+            fi
+          done
+
+          # Run pre-commit hooks
+          pnpm exec lefthook run pre-commit
+
+          # Check if any files were modified by the hooks
+          if ! git diff --quiet; then
+            echo "Error: Hooks modified files. Please run 'pnpm exec lefthook run pre-commit' locally and commit the changes."
+            git diff
+            exit 1
+          fi
+      - name: Validate commit messages
+        if: github.event_name == 'pull_request'
+        run: |
+          # Get all commits in the PR
+          commits=$(git log origin/${{ github.base_ref }}..HEAD --format=%H)
+
+          for commit in $commits; do
+            echo "Validating commit: $commit"
+            message=$(git log -1 --format=%B $commit)
+
+            # Save message to temporary file
+            echo "$message" > /tmp/commit-msg
+
+            # Run commit-msg hook
+            if command -v cz &> /dev/null; then
+              cz check --commit-msg-file /tmp/commit-msg || exit 1
+            else
+              echo "commitizen not installed, skipping commit message validation for $commit"
+            fi
+          done

@@ -12,6 +12,10 @@ FormatjsExtractInfo = provider(
 def _formatjs_extract_impl(ctx):
     """Implementation of the formatjs_extract rule."""
 
+    # Get FormatJS CLI from toolchain
+    toolchain = ctx.toolchains["@rules_formatjs//formatjs_cli:toolchain_type"]
+    formatjs_cli_info = toolchain.formatjs_cli_info
+
     # Determine output file
     if ctx.attr.out:
         out_file = ctx.actions.declare_file(ctx.attr.out)
@@ -23,7 +27,6 @@ def _formatjs_extract_impl(ctx):
     args.add("extract")
     args.add_all(ctx.files.srcs)
     args.add("--out-file", out_file)
-    args.add("--format", "simple")
 
     if ctx.attr.id_interpolation_pattern:
         args.add("--id-interpolation-pattern", ctx.attr.id_interpolation_pattern)
@@ -39,7 +42,7 @@ def _formatjs_extract_impl(ctx):
 
     # Run formatjs extract
     ctx.actions.run(
-        executable = ctx.executable.formatjs_cli,
+        executable = formatjs_cli_info.cli,
         arguments = [args],
         inputs = depset(ctx.files.srcs),
         outputs = [out_file],
@@ -59,9 +62,9 @@ def _formatjs_extract_impl(ctx):
         ),
     ]
 
-_formatjs_extract_rule = rule(
+formatjs_extract = rule(
     implementation = _formatjs_extract_impl,
-    doc = """Extract messages from source files using @formatjs/cli.
+    doc = """Extract messages from source files using FormatJS CLI.
 
     This rule extracts internationalized messages from TypeScript, JavaScript, JSX, and TSX files.
     It produces a JSON file containing all extracted messages with their IDs, default messages,
@@ -110,23 +113,6 @@ _formatjs_extract_rule = rule(
             doc = "Dependencies that this extraction depends on (for aspect propagation)",
             providers = [[FormatjsExtractInfo], [DefaultInfo]],
         ),
-        "formatjs_cli": attr.label(
-            mandatory = True,
-            executable = True,
-            cfg = "exec",
-            doc = "The formatjs CLI tool (typically @npm//@formatjs/cli/bin:formatjs)",
-        ),
     },
+    toolchains = ["@rules_formatjs//formatjs_cli:toolchain_type"],
 )
-
-def formatjs_extract(formatjs_cli = "@npm//@formatjs/cli/bin:formatjs", **kwargs):
-    """Macro wrapper for _formatjs_extract_rule that sets formatjs_cli from caller's context.
-
-    Args:
-        formatjs_cli: Label for the formatjs CLI tool. Defaults to @npm//@formatjs/cli/bin:formatjs
-        **kwargs: All other arguments are passed to the underlying rule
-    """
-    _formatjs_extract_rule(
-        formatjs_cli = formatjs_cli,
-        **kwargs
-    )

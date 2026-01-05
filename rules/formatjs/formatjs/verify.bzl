@@ -1,4 +1,4 @@
-"""Rules for verifying message translations using @formatjs/cli"""
+"""Rules for verifying message translations using FormatJS CLI"""
 
 def formatjs_verify_test(
         name,
@@ -8,7 +8,6 @@ def formatjs_verify_test(
         check_extra_keys = True,
         check_structural_equality = True,
         expected_exit_code = 0,
-        formatjs_cli = "@npm//@formatjs/cli/bin:formatjs",
         **kwargs):
     """Verify that translation files are valid and complete.
 
@@ -28,7 +27,6 @@ def formatjs_verify_test(
         check_extra_keys: Whether to check for extra keys in target locale (default: True)
         check_structural_equality: Whether to check structural equality of messages (default: True)
         expected_exit_code: Expected exit code from the verify command (default: 0 for success, 1 for expected failures)
-        formatjs_cli: Label for the formatjs CLI tool. Defaults to @npm//@formatjs/cli/bin:formatjs
         **kwargs: Additional arguments passed to the underlying test rule
     """
 
@@ -86,7 +84,7 @@ fi
 
     # Set up env vars for the test
     env_vars = {
-        "FORMATJS_CLI": "$(rootpath %s)" % formatjs_cli,
+        "FORMATJS_CLI": "$(rootpath @rules_formatjs//formatjs_cli:cli)",
     }
     for i, t in enumerate(translations):
         env_vars["TRANS_FILE_%d" % i] = "$(rootpath %s)" % t
@@ -94,7 +92,7 @@ fi
     native.sh_test(
         name = name,
         srcs = [script_name],
-        data = translations + [formatjs_cli],
+        data = translations + ["@rules_formatjs//formatjs_cli:cli"],
         env = env_vars,
         **kwargs
     )

@@ -1,5 +1,0 @@
-# Examples and e2e tests have their own MODULE.bazel files and are tested separately in CI
-# The REPO.bazel files mark them as separate repos, but we also need .bazelignore
-# to prevent //... from traversing into them
-examples
-e2e

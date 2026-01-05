@@ -1,0 +1,16 @@
+# Toolchain type for FormatJS CLI
+toolchain_type(
+    name = "toolchain_type",
+    visibility = ["//visibility:public"],
+)
+
+# Alias that resolves to the correct toolchain CLI based on platform
+# This is used by verify.bzl which can't use toolchains directly
+alias(
+    name = "cli",
+    actual = select({
+        "@platforms//os:macos": "@formatjs_cli_toolchains_darwin_arm64//:cli",
+        "@platforms//os:linux": "@formatjs_cli_toolchains_linux_x64//:cli",
+    }),
+    visibility = ["//visibility:public"],
+)

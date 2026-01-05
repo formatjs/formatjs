@@ -1,0 +1,13 @@
+{
+  "name": "rules_formatjs",
+  "private": true,
+  "description": "Bazel rules for FormatJS",
+  "scripts": {
+    "prepare": "lefthook install"
+  },
+  "devDependencies": {
+    "@evilmartians/lefthook": "^1.10.8",
+    "oxfmt": "^0.22.0"
+  },
+  "packageManager": "pnpm@10.0.0"
+}

@@ -1,5 +1,17 @@
 {
-  "app.button": "Click me!",
-  "app.description": "This is an example of internationalized React app using FormatJS and Bazel.",
-  "app.title": "Welcome to FormatJS"
+  "app.description": {
+    "id": "app.description",
+    "defaultMessage": "This is an example of internationalized React app using FormatJS and Bazel.",
+    "description": "Application description"
+  },
+  "app.button": {
+    "id": "app.button",
+    "defaultMessage": "Click me!",
+    "description": "Button text"
+  },
+  "app.title": {
+    "id": "app.title",
+    "defaultMessage": "Welcome to FormatJS",
+    "description": "Main application title"
+  }
 }

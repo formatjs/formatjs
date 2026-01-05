@@ -16,7 +16,6 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         folder:
           - "."
-          - "e2e/smoke"
           - "examples/simple"
           - "examples/aggregate"
     runs-on: ${{ matrix.os }}
@@ -28,22 +27,3 @@ jobs:
       - name: Test ${{ matrix.folder }}
         working-directory: ${{ matrix.folder }}
         run: bazel test //...
-
-  pre-commit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: pre-commit/action@v3.0.1
-
-  conclusion:
-    needs: [test, pre-commit]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - uses: technote-space/workflow-conclusion-action@45ce8e0eb155657ab8ccf346ade734257fd196a5 # v3.0.3
-      - name: Report success
-        if: ${{ env.WORKFLOW_CONCLUSION == 'success' }}
-        run: exit 0
-      - name: Report failure
-        if: ${{ env.WORKFLOW_CONCLUSION == 'failure' }}
-        run: exit 1

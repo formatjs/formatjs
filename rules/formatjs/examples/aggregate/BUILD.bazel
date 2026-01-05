@@ -1,10 +1,2 @@
-load("@npm//:@formatjs/cli/package_json.bzl", formatjs_bin = "bin")
-load("@npm//:defs.bzl", "npm_link_all_packages")
-
-npm_link_all_packages(name = "node_modules")
-
-# Create formatjs CLI binary target for use across all modules
-formatjs_bin.formatjs_binary(
-    name = "formatjs_cli",
-    visibility = ["//visibility:public"],
-)
+# This example uses the native FormatJS CLI toolchain
+# No npm setup needed - the toolchain is configured in rules_formatjs

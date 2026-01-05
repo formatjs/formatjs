@@ -1,32 +1,19 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@npm//:@formatjs/cli/package_json.bzl", formatjs_bin = "bin")
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_formatjs//formatjs:defs.bzl", "formatjs_compile", "formatjs_extract", "formatjs_verify_test")
 
-npm_link_all_packages(name = "node_modules")
-
-# Create formatjs CLI binary target
-formatjs_bin.formatjs_binary(
-    name = "formatjs_cli",
-    visibility = ["//visibility:public"],
-)
-
-# Extract messages from source files
+# Extract messages from source files using native toolchain
 formatjs_extract(
     name = "extract_messages",
     srcs = ["src/App.tsx"],
     out = "messages/en.json",
-    formatjs_cli = ":formatjs_cli",
-    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
 )
 
-# Compile messages for production
+# Compile messages for production using native toolchain
 formatjs_compile(
     name = "compile_messages",
     src = ":extract_messages",
     out = "messages/en-compiled.json",
     ast = True,
-    formatjs_cli = ":formatjs_cli",
 )
 
 # Snapshot test for extraction
@@ -61,10 +48,9 @@ write_source_files(
     },
 )
 
-# Verify French translation is valid and complete
+# Verify French translation is valid and complete using native toolchain
 formatjs_verify_test(
     name = "verify_french_translation",
-    formatjs_cli = ":formatjs_cli",
     source_locale = "en",
     translations = [
         ":extract_messages",  # en.json (source)

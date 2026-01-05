@@ -5,7 +5,6 @@ load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract")
 formatjs_extract(
     name = "messages",
     srcs = ["Messages.tsx"],
-    formatjs_cli = "//:formatjs_cli",
     id_interpolation_pattern = "[sha512:contenthash:base64:6]",
     visibility = ["//visibility:public"],
 )

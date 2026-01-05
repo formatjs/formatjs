@@ -1,4 +1,3 @@
-load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@package_metadata//licenses/rules:license.bzl", "license")
 load("@package_metadata//purl:purl.bzl", "purl")
 load("@package_metadata//rules:package_metadata.bzl", "package_metadata")
@@ -16,15 +15,4 @@ license(
     name = "license",
     kind = "@package_metadata//licenses/spdx:Apache-2.0",
     text = "LICENSE",
-)
-
-# gazelle:map_kind bzl_library bzl_library @bazel_lib//:bzl_library.bzl
-gazelle_binary(
-    name = "gazelle_bin",
-    languages = ["@bazel_skylib_gazelle_plugin//bzl"],
-)
-
-gazelle(
-    name = "gazelle",
-    gazelle = "gazelle_bin",
 )

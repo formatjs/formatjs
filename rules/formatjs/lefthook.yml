@@ -1,0 +1,50 @@
+# See CONTRIBUTING.md for instructions.
+# Lefthook configuration for git hooks
+# https://github.com/evilmartians/lefthook
+
+pre-commit:
+  parallel: true
+  commands:
+    # Format code with oxfmt
+    oxfmt:
+      glob: "*.{js,ts,jsx,tsx,json,yaml,yml,md}"
+      run: pnpm exec oxfmt {staged_files}
+      stage_fixed: true
+
+    buildifier-format:
+      glob: "*.{bzl,bazel,BUILD,WORKSPACE,MODULE.bazel}"
+      run: bazel run @bazel_skylib//tools:buildifier -- --mode=fix {staged_files}
+      stage_fixed: true
+
+    # Check for typos
+    typos:
+      run: |
+        if command -v typos &> /dev/null; then
+          typos
+        else
+          echo "typos not installed, skipping"
+        fi
+
+# Note: The following pre-commit hooks are not available in lefthook or were removed:
+# - check-hooks-apply (meta hook, lefthook-specific)
+# - check-useless-excludes (meta hook, lefthook-specific)
+# - check-executables-have-shebangs (replaced by manual checks)
+# - check-shebang-scripts-are-executable (replaced by manual checks)
+# - check-toml (can be added if needed with custom command)
+# - check-yaml (can be added if needed with custom command)
+# - destroyed-symlinks (not commonly available)
+# - detect-private-key (security check, consider using git-secrets or similar)
+# - end-of-file-fixer (handled by oxfmt)
+# - trailing-whitespace (handled by oxfmt)
+# - commitizen (commit message validation, would need separate setup)
+
+commit-msg:
+  commands:
+    # Commit message validation with commitizen
+    commitizen:
+      run: |
+        if command -v cz &> /dev/null; then
+          cz check --commit-msg-file {1}
+        else
+          echo "commitizen not installed, skipping commit message validation"
+        fi

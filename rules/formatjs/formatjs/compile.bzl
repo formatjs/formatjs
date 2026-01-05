@@ -1,44 +1,72 @@
-"""Rules for compiling messages using @formatjs/cli"""
+"""Rules for compiling messages using FormatJS CLI"""
 
-def formatjs_compile(
-        name,
-        src,
-        out = None,
-        ast = False,
-        format = "simple",
-        formatjs_cli = "@npm//@formatjs/cli/bin:formatjs",
-        **kwargs):
-    """Compile extracted messages into optimized formats.
+def _formatjs_compile_impl(ctx):
+    """Implementation of formatjs_compile rule."""
+    # Get FormatJS CLI from toolchain
+    toolchain = ctx.toolchains["@rules_formatjs//formatjs_cli:toolchain_type"]
+    formatjs_cli_info = toolchain.formatjs_cli_info
 
-    Args:
-        name: Name of the target
-        src: Source JSON file with extracted messages
-        out: Output compiled JSON file (defaults to name + ".json")
-        ast: Whether to compile to AST format
-        format: Input format (simple, crowdin, smartling, transifex)
-        formatjs_cli: Label for the formatjs CLI tool. Defaults to @npm//@formatjs/cli/bin:formatjs
-        **kwargs: Additional arguments passed to the underlying rule
-    """
-    if not out:
-        out = name + ".json"
+    out_file = ctx.outputs.out
 
-    args = [
-        "compile",
-        "$(location %s)" % src,
-        "--out-file",
-        "$(location %s)" % out,
-        "--format",
-        format,
-    ]
+    # Build arguments
+    args = ctx.actions.args()
+    args.add("compile")
+    args.add(ctx.file.src)
+    args.add("--out-file", out_file)
+    args.add("--format", ctx.attr.format)
 
-    if ast:
-        args.append("--ast")
+    if ctx.attr.ast:
+        args.add("--ast")
 
-    native.genrule(
-        name = name,
-        srcs = [src],
-        outs = [out],
-        cmd = "BAZEL_BINDIR=. $(location %s) " % formatjs_cli + " ".join(args),
-        tools = [formatjs_cli],
-        **kwargs
+    ctx.actions.run(
+        executable = formatjs_cli_info.cli,
+        arguments = [args],
+        inputs = [ctx.file.src],
+        outputs = [out_file],
+        mnemonic = "FormatjsCompile",
+        progress_message = "Compiling messages for %{label}",
+        env = {
+            "BAZEL_BINDIR": ".",
+        },
     )
+
+    return [DefaultInfo(files = depset([out_file]))]
+
+formatjs_compile = rule(
+    implementation = _formatjs_compile_impl,
+    doc = """Compile extracted messages into optimized formats.
+
+    This rule compiles FormatJS message files into optimized runtime formats,
+    optionally as AST for faster parsing at runtime.
+
+    Example:
+        ```starlark
+        formatjs_compile(
+            name = "messages_compiled",
+            src = "messages.json",
+            ast = True,
+        )
+        ```
+    """,
+    attrs = {
+        "src": attr.label(
+            allow_single_file = [".json"],
+            mandatory = True,
+            doc = "Source JSON file with extracted messages",
+        ),
+        "out": attr.output(
+            mandatory = True,
+            doc = "Output compiled JSON file",
+        ),
+        "ast": attr.bool(
+            default = False,
+            doc = "Whether to compile to AST format for faster runtime parsing",
+        ),
+        "format": attr.string(
+            default = "simple",
+            values = ["simple", "crowdin", "smartling", "transifex"],
+            doc = "Input format of the source file",
+        ),
+    },
+    toolchains = ["@rules_formatjs//formatjs_cli:toolchain_type"],
+)

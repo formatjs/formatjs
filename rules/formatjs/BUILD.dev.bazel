@@ -1,0 +1,14 @@
+"""Development-only build targets (gazelle, etc)"""
+
+load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_binary")
+
+# gazelle:map_kind bzl_library bzl_library @bazel_lib//:bzl_library.bzl
+gazelle_binary(
+    name = "gazelle_bin",
+    languages = ["@bazel_skylib_gazelle_plugin//bzl"],
+)
+
+gazelle(
+    name = "gazelle",
+    gazelle = "gazelle_bin",
+)

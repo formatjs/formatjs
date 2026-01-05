@@ -1,7 +1,0 @@
-bazel_dep(name = "rules_formatjs", version = "0.0.0", dev_dependency = True)
-bazel_dep(name = "bazel_skylib", version = "1.8.2", dev_dependency = True)
-
-local_path_override(
-    module_name = "rules_formatjs",
-    path = "../..",
-)

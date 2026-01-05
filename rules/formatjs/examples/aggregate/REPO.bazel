@@ -1,2 +1,8 @@
-# This file marks the directory as a separate Bazel repository.
-# The parent repository will not traverse into this directory.
+"""Aggregate example workspace"""
+
+ignore_directories([
+    "bazel-bin",
+    "bazel-out",
+    "bazel-aggregate",
+    "bazel-testlogs",
+])
