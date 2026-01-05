@@ -2,21 +2,9 @@ name: Rust CLI Build & Test
 
 on:
   pull_request:
-    paths:
-      - 'rust/**'
-      - 'MODULE.bazel'
-      - 'Cargo.toml'
-      - 'Cargo.lock'
-      - '.github/workflows/rust-cli-test.yml'
   push:
     branches:
       - main
-    paths:
-      - 'rust/**'
-      - 'MODULE.bazel'
-      - 'Cargo.toml'
-      - 'Cargo.lock'
-      - '.github/workflows/rust-cli-test.yml'
   workflow_dispatch:
 
 concurrency:
