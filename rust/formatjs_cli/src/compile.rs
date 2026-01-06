@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use glob::glob;
 use serde_json::{Map, Value, json};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::path::PathBuf;
 
 use crate::formatters::Formatter;
@@ -115,7 +115,7 @@ pub fn compile(
 
     // Step 2: Load and aggregate all messages from files
     // Store both message and source file for better error reporting
-    let mut messages: HashMap<String, (String, PathBuf)> = HashMap::new();
+    let mut messages: BTreeMap<String, (String, PathBuf)> = BTreeMap::new();
 
     for file in &expanded_files {
         let content = std::fs::read_to_string(file)
@@ -129,6 +129,7 @@ pub fn compile(
         let file_messages = formatter.apply(&json, file_path_str)?;
 
         // Merge messages, checking for conflicts
+        // Convert to BTreeMap for sorted iteration
         for (key, message_str) in file_messages {
             // Check for conflicts - same ID with different message
             if let Some((existing, existing_file)) = messages.get(&key) {
@@ -634,5 +635,166 @@ mod tests {
                 .to_string()
                 .contains("requires --ast flag")
         );
+    }
+
+    #[test]
+    fn test_compile_sorted_keys() {
+        let dir = tempdir().unwrap();
+        let input_file = dir.path().join("messages.json");
+        let output_file = dir.path().join("compiled.json");
+
+        // Write input file with messages in unsorted order
+        fs::write(
+            &input_file,
+            json!({
+                "zebra": {
+                    "defaultMessage": "Zebra message"
+                },
+                "apple": {
+                    "defaultMessage": "Apple message"
+                },
+                "mango": {
+                    "defaultMessage": "Mango message"
+                },
+                "banana": {
+                    "defaultMessage": "Banana message"
+                }
+            })
+            .to_string(),
+        )
+        .unwrap();
+
+        // Compile
+        compile(
+            &[input_file],
+            None,
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        // Verify output has sorted keys
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Get the keys and verify they are sorted
+        let keys: Vec<&str> = output_json
+            .as_object()
+            .unwrap()
+            .keys()
+            .map(|s| s.as_str())
+            .collect();
+        let mut sorted_keys = keys.clone();
+        sorted_keys.sort();
+
+        // Keys should be in alphabetical order
+        assert_eq!(keys, sorted_keys, "Keys should be sorted alphabetically");
+        assert_eq!(keys, vec!["apple", "banana", "mango", "zebra"]);
+    }
+
+    #[test]
+    fn test_compile_sorted_keys_multiple_files() {
+        let dir = tempdir().unwrap();
+        let input_file1 = dir.path().join("messages1.json");
+        let input_file2 = dir.path().join("messages2.json");
+        let output_file = dir.path().join("compiled.json");
+
+        // Write input files with messages that would be unsorted when merged
+        fs::write(
+            &input_file1,
+            json!({
+                "zebra": {"defaultMessage": "Zebra!"},
+                "delta": {"defaultMessage": "Delta!"}
+            })
+            .to_string(),
+        )
+        .unwrap();
+        fs::write(
+            &input_file2,
+            json!({
+                "alpha": {"defaultMessage": "Alpha!"},
+                "charlie": {"defaultMessage": "Charlie!"}
+            })
+            .to_string(),
+        )
+        .unwrap();
+
+        // Compile
+        compile(
+            &[input_file1, input_file2],
+            None,
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        // Verify output contains sorted keys from both files
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Get the keys and verify they are sorted
+        let keys: Vec<&str> = output_json
+            .as_object()
+            .unwrap()
+            .keys()
+            .map(|s| s.as_str())
+            .collect();
+
+        assert_eq!(keys, vec!["alpha", "charlie", "delta", "zebra"]);
+    }
+
+    #[test]
+    fn test_compile_sorted_keys_with_ast() {
+        let dir = tempdir().unwrap();
+        let input_file = dir.path().join("messages.json");
+        let output_file = dir.path().join("compiled.json");
+
+        // Write input file with messages in unsorted order
+        fs::write(
+            &input_file,
+            json!({
+                "zulu": {
+                    "defaultMessage": "Zulu {name}!"
+                },
+                "bravo": {
+                    "defaultMessage": "Bravo {count}!"
+                }
+            })
+            .to_string(),
+        )
+        .unwrap();
+
+        // Compile to AST
+        compile(
+            &[input_file],
+            None,
+            Some(&output_file),
+            true, // AST output
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        // Verify output has sorted keys
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Get the keys and verify they are sorted
+        let keys: Vec<&str> = output_json
+            .as_object()
+            .unwrap()
+            .keys()
+            .map(|s| s.as_str())
+            .collect();
+
+        // Keys should be in alphabetical order even with AST output
+        assert_eq!(keys, vec!["bravo", "zulu"]);
     }
 }
