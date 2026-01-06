@@ -9,16 +9,17 @@ importers:
   .:
     devDependencies:
       '@evilmartians/lefthook':
-        specifier: ^1.10.8
-        version: 1.13.6
+        specifier: ^2.0.0
+        version: 2.0.13
       oxfmt:
         specifier: ^0.22.0
         version: 0.22.0
 
 packages:
 
-  '@evilmartians/lefthook@1.13.6':
-    resolution: {integrity: sha512-79vplrUBWL4Fkt59YkEBdSpqBVhNrY8t5+jEp+wX5QbsmbQLcSULqwS7FmbNRyECa2LWMrUWpe6ENIfNwB4jiw==}
+  '@evilmartians/lefthook@2.0.13':
+    resolution: {integrity: sha512-Kpsd8NNQw4PrxP41OqwvM0oAP8y70Fslir7uU9fUBdl6JcGGpKlFNlFj87/5OJO95VHxKm8rFvg5mbkv4cCTFw==}
+    cpu: [x64, arm64, ia32]
     os: [darwin, linux, win32]
     hasBin: true
 
@@ -73,7 +74,7 @@ packages:
 
 snapshots:
 
-  '@evilmartians/lefthook@1.13.6': {}
+  '@evilmartians/lefthook@2.0.13': {}
 
   '@oxfmt/darwin-arm64@0.22.0':
     optional: true

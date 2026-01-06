@@ -6,7 +6,7 @@
     "prepare": "lefthook install"
   },
   "devDependencies": {
-    "@evilmartians/lefthook": "^1.10.8",
+    "@evilmartians/lefthook": "^2.0.0",
     "oxfmt": "^0.22.0"
   },
   "packageManager": "pnpm@10.27.0"
