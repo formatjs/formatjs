@@ -8,7 +8,6 @@ use std::path::{Path, PathBuf};
 use crate::extractor::{MessageDescriptor, determine_source_type, extract_messages_from_source};
 use crate::formatters::Formatter;
 use crate::id_generator::generate_id;
-use serde_json::Value;
 
 /// Extract string messages from React components that use react-intl
 #[allow(clippy::too_many_arguments)]
@@ -423,7 +422,12 @@ const messages = defineMessages({
         assert!(json.is_object());
 
         // Get the keys and verify they are sorted
-        let keys: Vec<&str> = json.as_object().unwrap().keys().map(|s| s.as_str()).collect();
+        let keys: Vec<&str> = json
+            .as_object()
+            .unwrap()
+            .keys()
+            .map(|s| s.as_str())
+            .collect();
         let mut sorted_keys = keys.clone();
         sorted_keys.sort();
 
@@ -485,12 +489,20 @@ const messages = defineMessages({
         let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
 
         // Get the keys and verify they are sorted
-        let keys: Vec<&str> = json.as_object().unwrap().keys().map(|s| s.as_str()).collect();
+        let keys: Vec<&str> = json
+            .as_object()
+            .unwrap()
+            .keys()
+            .map(|s| s.as_str())
+            .collect();
         let mut sorted_keys = keys.clone();
         sorted_keys.sort();
 
         // Keys should be in alphabetical order
-        assert_eq!(keys, sorted_keys, "Keys should be sorted alphabetically with formatter");
+        assert_eq!(
+            keys, sorted_keys,
+            "Keys should be sorted alphabetically with formatter"
+        );
         assert_eq!(keys, vec!["alpha", "charlie", "zulu"]);
     }
 
@@ -547,10 +559,7 @@ const greeting = defineMessage({
         );
 
         // Verify message content
-        assert_eq!(
-            message["defaultMessage"].as_str().unwrap(),
-            "Hello World"
-        );
+        assert_eq!(message["defaultMessage"].as_str().unwrap(), "Hello World");
     }
 
     #[test]
@@ -670,10 +679,7 @@ const messages = defineMessages({
         assert_eq!(json.as_object().unwrap().len(), 2);
 
         // One should have the explicit ID
-        assert!(json
-            .as_object()
-            .unwrap()
-            .contains_key("explicit.id"));
+        assert!(json.as_object().unwrap().contains_key("explicit.id"));
 
         // The other should have a generated ID (6 characters)
         let generated_id = json
@@ -761,10 +767,7 @@ const msg = defineMessage({
         let id2 = json2.as_object().unwrap().keys().next().unwrap();
 
         // IDs should be different because description affects the hash
-        assert_ne!(
-            id1, id2,
-            "Description should affect the generated ID"
-        );
+        assert_ne!(id1, id2, "Description should affect the generated ID");
     }
 
     #[test]
