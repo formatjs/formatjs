@@ -20,7 +20,7 @@ jobs:
           - "examples/aggregate"
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: bazel-contrib/setup-bazel@0.16.0
         with:
           bazelisk-cache: true
