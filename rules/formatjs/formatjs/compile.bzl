@@ -7,6 +7,9 @@ reduced bundle size in production applications.
 
 Compiled messages are optimized for runtime performance and can be used directly
 with react-intl or other FormatJS libraries.
+
+For more information about the FormatJS CLI and its compilation features, see:
+https://formatjs.github.io/docs/tooling/cli
 """
 
 def _formatjs_compile_impl(ctx):
@@ -111,6 +114,7 @@ formatjs_compile = rule(
 
     - `formatjs_extract`: Extract messages from source files
     - `formatjs_verify_test`: Verify translations before compilation
+    - FormatJS CLI documentation: https://formatjs.github.io/docs/tooling/cli
     """,
     attrs = {
         "src": attr.label(

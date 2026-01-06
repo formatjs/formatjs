@@ -33,6 +33,9 @@ Aggregation can be used via:
 This module depends on:
 - `jq.bzl` toolchain for JSON merging and sorting operations
 - `FormatjsExtractInfo` provider from extract.bzl for message collection
+
+For more information about FormatJS message aggregation workflows, see:
+https://formatjs.github.io/docs/tooling/cli
 """
 
 load(":extract.bzl", "FormatjsExtractInfo")
@@ -435,5 +438,6 @@ formatjs_aggregate = rule(
     - `formatjs_aggregate_aspect`: Lower-level aspect for advanced use cases
     - `formatjs_verify_test`: Verify translations against aggregated messages
     - `formatjs_compile`: Compile aggregated messages for production
+    - FormatJS CLI documentation: https://formatjs.github.io/docs/tooling/cli
     """,
 )

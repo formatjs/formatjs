@@ -42,7 +42,7 @@ This directory contains comprehensive tests for the `formatjs_verify_test` rule.
    - Tests: en.json, es.json, fr.json
    - Expected: ✅ Pass
 
-### Negative Tests (use `expected_exit_code=1`)
+### Negative Tests (using `expected_exit_code=1`)
 
 These tests verify error detection by expecting the formatjs verify command to fail:
 
@@ -106,7 +106,6 @@ formatjs_verify_test(
         "incomplete.json",  # Missing some keys
     ],
     expected_exit_code = 1,  # We expect this to fail
-    formatjs_cli = "//:formatjs_cli",
 )
 ```
 

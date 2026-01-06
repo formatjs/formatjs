@@ -12,6 +12,9 @@ The FormatJS CLI supports various message formats including:
 
 Message IDs can be automatically generated using content-based hashing patterns,
 ensuring consistent IDs across your codebase.
+
+For more information about the FormatJS CLI and its extraction features, see:
+https://formatjs.github.io/docs/tooling/cli
 """
 
 FormatjsExtractInfo = provider(
@@ -150,6 +153,7 @@ formatjs_extract = rule(
     - `formatjs_compile`: Compile messages for runtime use
     - `formatjs_aggregate`: Merge messages from multiple extraction targets
     - `formatjs_verify_test`: Verify translation files against extracted messages
+    - FormatJS CLI documentation: https://formatjs.github.io/docs/tooling/cli
     """,
     attrs = {
         "srcs": attr.label_list(

@@ -16,7 +16,7 @@ formatjs_verify_test(
 # Test 2: Missing keys should fail (negative test)
 formatjs_verify_test(
     name = "test_missing_keys_fails",
-    expected_exit_code = 1,  # Expect failure
+    expected_exit_code = 1,
     source_locale = "en",
     translations = [
         "en.json",
@@ -27,7 +27,7 @@ formatjs_verify_test(
 # Test 3: Extra keys should fail (negative test)
 formatjs_verify_test(
     name = "test_extra_keys_fails",
-    expected_exit_code = 1,  # Expect failure
+    expected_exit_code = 1,
     source_locale = "en",
     translations = [
         "en.json",
@@ -38,7 +38,7 @@ formatjs_verify_test(
 # Test 4: Invalid format should fail (negative test)
 formatjs_verify_test(
     name = "test_invalid_format_fails",
-    expected_exit_code = 1,  # Expect failure
+    expected_exit_code = 1,
     source_locale = "en",
     translations = [
         "en.json",
@@ -59,7 +59,7 @@ formatjs_verify_test(
     ],
 )
 
-# Test 6: Only check extra keys (expected to fail)
+# Test 6: Only check extra keys (passes - not checking for missing keys)
 formatjs_verify_test(
     name = "test_only_extra_keys",
     check_extra_keys = True,
@@ -68,7 +68,7 @@ formatjs_verify_test(
     source_locale = "en",
     translations = [
         "en.json",
-        "de_missing_keys.json",  # Missing keys but we're only checking for extra keys
+        "de_missing_keys.json",  # Missing keys but we're only checking for extra keys - should pass
     ],
 )
 

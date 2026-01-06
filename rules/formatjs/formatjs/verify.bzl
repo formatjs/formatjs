@@ -1,28 +1,159 @@
 """Rules for verifying translation file completeness and correctness.
 
-This module provides the `formatjs_verify_test` macro for creating test targets that
+This module provides the `formatjs_verify_test` rule for creating test targets that
 verify translation files against source messages. The verification ensures translation
 files are complete, don't have extra keys, and maintain structural compatibility with
 the source messages.
 
 Verification tests are essential in i18n workflows to catch translation errors early
 in the development process, preventing runtime errors and ensuring translation quality.
+
+For more information about the FormatJS CLI and its verification features, see:
+https://formatjs.github.io/docs/tooling/cli
 """
 
-load("@rules_shell//shell:sh_test.bzl", "sh_test")
+def _formatjs_verify_test_impl(ctx):
+    """Implementation of the formatjs_verify_test rule."""
 
-def formatjs_verify_test(
-        name,
-        translations,
-        source_locale = None,
-        check_missing_keys = True,
-        check_extra_keys = True,
-        check_structural_equality = True,
-        expected_exit_code = 0,
-        **kwargs):
-    """Create a test that verifies translation files are valid and complete.
+    # Get the FormatJS CLI toolchain
+    toolchain = ctx.toolchains["@rules_formatjs//formatjs_cli:toolchain_type"]
+    formatjs_cli = toolchain.formatjs_cli_info.cli
 
-    This macro creates a test target that uses the FormatJS CLI to verify translation
+    # Create a wrapper script
+    script = ctx.actions.declare_file(ctx.label.name + ".sh")
+
+    # Build command args
+    cmd_args = ["verify"]
+    if ctx.attr.source_locale:
+        cmd_args.extend(["--source-locale", ctx.attr.source_locale])
+    if ctx.attr.check_missing_keys:
+        cmd_args.append("--missing-keys")
+    if ctx.attr.check_extra_keys:
+        cmd_args.append("--extra-keys")
+    if ctx.attr.check_structural_equality:
+        cmd_args.append("--structural-equality")
+
+    for trans_file in ctx.files.translations:
+        cmd_args.append(trans_file.short_path)
+
+    cli_path = formatjs_cli.short_path
+
+    # Create script that runs the verify command
+    expected_code = ctx.attr.expected_exit_code
+    if expected_code == 0:
+        # Normal case: fail if CLI fails
+        script_content = """#!/bin/bash
+set -euo pipefail
+exec "{cli}" {args}
+""".format(
+            cli = cli_path,
+            args = " ".join(['"%s"' % arg for arg in cmd_args]),
+        )
+    else:
+        # Negative test: expect CLI to fail with specific exit code
+        script_content = """#!/bin/bash
+set -uo pipefail
+"{cli}" {args}
+actual_exit=$?
+if [ $actual_exit -eq {expected} ]; then
+    exit 0
+else
+    echo "Expected exit code {expected} but got $actual_exit" >&2
+    exit 1
+fi
+""".format(
+            cli = cli_path,
+            args = " ".join(['"%s"' % arg for arg in cmd_args]),
+            expected = expected_code,
+        )
+
+    ctx.actions.write(
+        output = script,
+        content = script_content,
+        is_executable = True,
+    )
+
+    # Create runfiles with the CLI and translation files
+    runfiles = ctx.runfiles(
+        files = ctx.files.translations + [formatjs_cli],
+    )
+
+    return [
+        DefaultInfo(
+            executable = script,
+            runfiles = runfiles,
+        ),
+        testing.ExecutionInfo({
+            "requires-network": "0",
+        }),
+    ]
+
+formatjs_verify_test = rule(
+    implementation = _formatjs_verify_test_impl,
+    attrs = {
+        "translations": attr.label_list(
+            allow_files = [".json"],
+            mandatory = True,
+            doc = """List of translation JSON files to verify.
+
+            Must include the source locale file (typically first in the list).
+            Can reference `formatjs_extract` targets directly using label syntax (`:messages`).
+
+            Example:
+            ```starlark
+            translations = [
+                "messages/en.json",  # source locale
+                "messages/fr.json",
+                "messages/es.json",
+            ]
+            ```
+            """,
+        ),
+        "source_locale": attr.string(
+            doc = """Source locale identifier (e.g., 'en', 'en-US').
+
+            If not provided, the first file in `translations` is used as the source.
+            This parameter helps identify which file is the source when translations
+            are not in alphabetical order.
+            """,
+        ),
+        "check_missing_keys": attr.bool(
+            default = True,
+            doc = """Whether to fail if translation files are missing message IDs that exist in the source.
+
+            Disable for partial translations. Default: True.
+            """,
+        ),
+        "check_extra_keys": attr.bool(
+            default = True,
+            doc = """Whether to fail if translation files contain message IDs not in the source.
+
+            Useful for detecting stale translations. Default: True.
+            """,
+        ),
+        "check_structural_equality": attr.bool(
+            default = True,
+            doc = """Whether to fail if message format structures don't match between source and translations.
+
+            For example, if source has `{count, plural, ...}` but translation has plain text.
+            Default: True.
+            """,
+        ),
+        "expected_exit_code": attr.int(
+            default = 0,
+            doc = """Expected exit code from the verify command.
+
+            Set to 1 for negative tests that expect verification to fail.
+            Useful for testing that incomplete translations are properly detected.
+            Default: 0 (expect success).
+            """,
+        ),
+    },
+    test = True,
+    toolchains = ["@rules_formatjs//formatjs_cli:toolchain_type"],
+    doc = """Test rule that verifies translation files are valid and complete.
+
+    This rule creates a test target that uses the FormatJS CLI to verify translation
     files against a source locale. It can detect missing translations, extra keys, and
     structural mismatches in ICU MessageFormat strings.
 
@@ -40,7 +171,7 @@ def formatjs_verify_test(
       MessageFormat syntax is compatible between source and translations. For example,
       if source uses `{count, plural, ...}`, translation must too.
 
-    ## Usage Patterns
+    ## Usage Examples
 
     ### Basic verification of translations:
     ```starlark
@@ -90,7 +221,6 @@ def formatjs_verify_test(
             "test_data/incomplete-fr.json",
         ],
         expected_exit_code = 1,  # Expect failure
-        tags = ["manual"],  # Don't run in default test suite
     )
     ```
 
@@ -114,113 +244,14 @@ def formatjs_verify_test(
 
     ## Test Output
 
-    On success:
-    ```
-    ✓ Translation verification passed
-    ```
-
-    On failure (missing keys):
-    ```
-    Error: Missing keys in fr.json: app.title, app.subtitle
-    ```
+    The FormatJS CLI provides detailed error messages about any verification failures,
+    including which keys are missing or extra, and what structural differences exist.
 
     ## See Also
 
     - `formatjs_extract`: Extract source messages for verification
     - `formatjs_compile`: Compile verified translations for production use
-
-    Args:
-        name: Name of the test target. The test can be run with `bazel test //path/to:name`.
-
-        translations: List of translation JSON files to verify. Must include the source
-            locale file (typically first in the list). Can reference `formatjs_extract`
-            targets directly using label syntax (`:messages`).
-
-        source_locale: Source locale identifier (e.g., "en", "en-US"). If not provided,
-            the first file in `translations` is used as the source. This parameter helps
-            identify which file is the source when translations are not in alphabetical order.
-
-        check_missing_keys: Whether to fail if translation files are missing message IDs
-            that exist in the source (default: True). Disable for partial translations.
-
-        check_extra_keys: Whether to fail if translation files contain message IDs not
-            in the source (default: True). Useful for detecting stale translations.
-
-        check_structural_equality: Whether to fail if message format structures don't
-            match between source and translations (default: True). For example, if source
-            has `{count, plural, ...}` but translation has plain text.
-
-        expected_exit_code: Expected exit code from the verify command (default: 0).
-            Set to 1 for negative tests that expect verification to fail. Useful for
-            testing that incomplete translations are properly detected.
-
-        **kwargs: Additional arguments passed to the underlying `sh_test` rule, such as
-            `size`, `timeout`, `tags`, or `visibility`.
-    """
-
-    # Build verify command arguments
-    verify_flags = []
-    if source_locale:
-        verify_flags.append("--source-locale")
-        verify_flags.append(source_locale)
-    if check_missing_keys:
-        verify_flags.append("--missing-keys")
-    if check_extra_keys:
-        verify_flags.append("--extra-keys")
-    if check_structural_equality:
-        verify_flags.append("--structural-equality")
-
-    flags_str = " ".join(verify_flags)
-
-    # Create the test script content with all translation files as arguments
-    file_args = " ".join(["$$TRANS_FILE_%d" % i for i in range(len(translations))])
-
-    # Handle expected exit codes
-    if expected_exit_code == 0:
-        # Normal case: expect success
-        script_content = """#!/bin/bash
-set -euo pipefail
-export BAZEL_BINDIR=.
-$$FORMATJS_CLI verify {flags} {args}
-echo "✓ Translation verification passed"
-""".format(flags = flags_str, args = file_args)
-    else:
-        # Negative test case: expect failure with specific exit code
-        script_content = """#!/bin/bash
-set -uo pipefail
-export BAZEL_BINDIR=.
-set +e
-$$FORMATJS_CLI verify {flags} {args}
-ACTUAL_EXIT_CODE=$$?
-set -e
-
-if [ $$ACTUAL_EXIT_CODE -eq {expected_code} ]; then
-    echo "✓ Translation verification failed as expected (exit code {expected_code})"
-    exit 0
-else
-    echo "✗ Expected exit code {expected_code}, but got $$ACTUAL_EXIT_CODE"
-    exit 1
-fi
-""".format(flags = flags_str, args = file_args, expected_code = expected_exit_code)
-
-    script_name = name + "_test.sh"
-    native.genrule(
-        name = name + "_script",
-        outs = [script_name],
-        cmd = "cat > $@ << 'EOF'\n%s\nEOF\nchmod +x $@" % script_content,
-    )
-
-    # Set up env vars for the test
-    env_vars = {
-        "FORMATJS_CLI": "$(rootpath @rules_formatjs//formatjs_cli:cli)",
-    }
-    for i, t in enumerate(translations):
-        env_vars["TRANS_FILE_%d" % i] = "$(rootpath %s)" % t
-
-    sh_test(
-        name = name,
-        srcs = [script_name],
-        data = translations + ["@rules_formatjs//formatjs_cli:cli"],
-        env = env_vars,
-        **kwargs
-    )
+    - `formatjs_aggregate`: Aggregate messages from multiple sources
+    - FormatJS CLI documentation: https://formatjs.github.io/docs/tooling/cli
+    """,
+)
