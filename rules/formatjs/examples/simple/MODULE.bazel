@@ -11,5 +11,5 @@ local_path_override(
     path = "../..",
 )
 
-# --SNIP-- (Below here is the generated documentation)
+# Test utilities (not required by rules_formatjs users)
 bazel_dep(name = "aspect_bazel_lib", version = "2.22.2")

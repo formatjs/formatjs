@@ -9,7 +9,7 @@ toolchain_type(
 alias(
     name = "cli",
     actual = select({
-        "@platforms//os:macos": "@formatjs_cli_toolchains_darwin_arm64//:cli",
+        "@platforms//os:osx": "@formatjs_cli_toolchains_darwin_arm64//:cli",
         "@platforms//os:linux": "@formatjs_cli_toolchains_linux_x64//:cli",
     }),
     visibility = ["//visibility:public"],

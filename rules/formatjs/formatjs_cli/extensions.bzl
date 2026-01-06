@@ -16,27 +16,35 @@ The current default version is defined by `DEFAULT_VERSION`.
 
 ## Usage
 
-In your `MODULE.bazel` file:
+For most users, simply adding `rules_formatjs` as a dependency is sufficient:
 
 ```starlark
-# Use default version (recommended)
-formatjs_cli = use_extension("@rules_formatjs//formatjs_cli:extensions.bzl", "formatjs_cli")
-formatjs_cli.toolchain()
-use_repo(formatjs_cli, "formatjs_cli_toolchains_darwin_arm64", "formatjs_cli_toolchains_linux_x64")
-
-# Register the toolchains (required)
-register_toolchains(
-    "@formatjs_cli_toolchains_darwin_arm64//:toolchain",
-    "@formatjs_cli_toolchains_linux_x64//:toolchain",
-)
-
-# Or specify a specific version
-formatjs_cli.toolchain(version = "0.1.2")
+bazel_dep(name = "rules_formatjs", version = "1.0.0")
 ```
 
-**Note**: You must explicitly call `register_toolchains()` to make the FormatJS CLI
-toolchains available for toolchain resolution. The extension creates the toolchain
-repositories but does not automatically register them.
+The toolchains are automatically registered and Bazel will select the appropriate
+one for your platform.
+
+### Advanced: Custom Version Selection
+
+If you need to use a specific FormatJS CLI version different from the default,
+you can configure it with the extension:
+
+```starlark
+formatjs_cli = use_extension("@rules_formatjs//formatjs_cli:extensions.bzl", "formatjs_cli")
+formatjs_cli.toolchain(version = "0.1.1")
+use_repo(
+    formatjs_cli,
+    "formatjs_cli_toolchains",
+    "formatjs_cli_toolchains_darwin_arm64",
+    "formatjs_cli_toolchains_linux_x64",
+)
+register_toolchains("@formatjs_cli_toolchains//:all")
+```
+
+**Note**: This advanced configuration is only needed if you want to override the
+default FormatJS CLI version. In most cases, using the default version provided
+by `rules_formatjs` is recommended.
 """
 
 load(":repositories.bzl", "DEFAULT_VERSION", "formatjs_cli_register_toolchains")
@@ -56,6 +64,7 @@ def _formatjs_cli_toolchain_impl(module_ctx):
 
     return module_ctx.extension_metadata(
         root_module_direct_deps = [
+            "formatjs_cli_toolchains",
             "formatjs_cli_toolchains_darwin_arm64",
             "formatjs_cli_toolchains_linux_x64",
         ],
@@ -103,26 +112,33 @@ formatjs_cli = module_extension(
     - **Multi-Platform**: Automatic platform detection (macOS arm64, Linux x64)
     - **SHA256 Verification**: All binaries are verified with checksums
     - **No Node.js**: Native binaries for maximum performance
+    - **Automatic Registration**: Toolchains are automatically registered when you
+      add `rules_formatjs` as a dependency
 
-    ## Default Behavior
+    ## Basic Usage
 
-    When you add `rules_formatjs` to your MODULE.bazel, you need to configure the extension
-    and register the toolchains. The extension defaults to the latest CLI version.
+    Most users don't need to interact with this extension directly. Simply add
+    `rules_formatjs` as a dependency and the toolchains will be automatically
+    configured:
 
-    ## Custom Version
+    ```starlark
+    bazel_dep(name = "rules_formatjs", version = "1.0.0")
+    ```
 
-    To use a specific CLI version:
+    ## Advanced: Custom Version Selection
+
+    If you need to override the default FormatJS CLI version, use this extension:
 
     ```starlark
     formatjs_cli = use_extension("@rules_formatjs//formatjs_cli:extensions.bzl", "formatjs_cli")
-    formatjs_cli.toolchain(version = "0.1.1")  # Use specific version
-    use_repo(formatjs_cli, "formatjs_cli_toolchains_darwin_arm64", "formatjs_cli_toolchains_linux_x64")
-
-    # Must explicitly register toolchains
-    register_toolchains(
-        "@formatjs_cli_toolchains_darwin_arm64//:toolchain",
-        "@formatjs_cli_toolchains_linux_x64//:toolchain",
+    formatjs_cli.toolchain(version = "0.1.1")
+    use_repo(
+        formatjs_cli,
+        "formatjs_cli_toolchains",
+        "formatjs_cli_toolchains_darwin_arm64",
+        "formatjs_cli_toolchains_linux_x64",
     )
+    register_toolchains("@formatjs_cli_toolchains//:all")
     ```
 
     ## Version History
@@ -133,7 +149,7 @@ formatjs_cli = module_extension(
 
     ## Platform Support
 
-    The extension automatically selects the correct binary for your platform:
+    Bazel's toolchain resolution automatically selects the correct binary for your platform:
     - **macOS Apple Silicon** (M1/M2/M3): darwin-arm64 binary
     - **Linux x86_64**: linux-x64 binary
 

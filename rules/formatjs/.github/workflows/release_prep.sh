@@ -33,7 +33,5 @@ cat << EOF
 bazel_dep(name = "rules_formatjs", version = "${TAG:1}")
 \`\`\`
 
+That's it! The toolchains are automatically registered.
 EOF
-
-awk 'f;/--SNIP--/{f=1}' examples/simple/MODULE.bazel
-echo "\`\`\`"

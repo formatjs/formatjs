@@ -36,5 +36,9 @@ jobs:
     uses: ./.github/workflows/publish.yaml
     with:
       tag_name: ${{ inputs.tag_name || github.ref_name }}
+    permissions:
+      attestations: write
+      contents: write
+      id-token: write
     secrets:
       publish_token: ${{ secrets.publish_token || secrets.BCR_PUBLISH_TOKEN }}
