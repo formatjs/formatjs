@@ -96,11 +96,6 @@ startup --host_jvm_args="-DBAZEL_TRACK_SOURCE_DIRECTORIES=1"
 common --incompatible_default_to_explicit_init_py
 # Docs: https://registry.build/flag/bazel?filter=incompatible_default_to_explicit_init_py
 
-# Fail if Starlark files are not UTF-8 encoded.
-# Introduced in Bazel 8.1, see https://github.com/bazelbuild/bazel/pull/24944
-common --incompatible_enforce_starlark_utf8="error"
-# Docs: https://registry.build/flag/bazel?filter=incompatible_enforce_starlark_utf8
-
 # Accept multiple --modify_execution_info flags, rather than the last flag overwriting earlier ones.
 common --incompatible_modify_execution_info_additive
 # Docs: https://registry.build/flag/bazel?filter=incompatible_modify_execution_info_additive
@@ -111,6 +106,11 @@ common --incompatible_modify_execution_info_additive
 # See https://github.com/bazelbuild/bazel/issues/2574 for more details.
 common --incompatible_strict_action_env
 # Docs: https://registry.build/flag/bazel?filter=incompatible_strict_action_env
+
+# Fail the build if the MODULE.bazel.lock file is out of date.
+# Using this mode in ci prevents the lockfile from being out of date.
+common:ci --lockfile_mode="error"
+# Docs: https://registry.build/flag/bazel?filter=lockfile_mode
 
 # On CI, don't download remote outputs to the local machine.
 # Most CI pipelines don't need to access the files and they can remain at rest on the remote cache.

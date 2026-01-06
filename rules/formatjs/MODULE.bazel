@@ -37,12 +37,15 @@ bazel_dep(name = "platforms", version = "1.0.0")
 # jq for JSON manipulation in aggregation aspect
 bazel_dep(name = "jq.bzl", version = "0.4.0")
 
+# rules_shell for sh_test in verify rule
+bazel_dep(name = "rules_shell", version = "0.6.1")
+
 bazel_dep(name = "gazelle", version = "0.47.0", dev_dependency = True, repo_name = "bazel_gazelle")
 bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.8.2", dev_dependency = True)
 bazel_dep(name = "bazel_lib", version = "3.0.0", dev_dependency = True)
 bazel_dep(name = "buildifier_prebuilt", version = "8.2.1", dev_dependency = True)
 
-bazel_dep(name = "bazelrc-preset.bzl", version = "1.6.0")
+bazel_dep(name = "bazelrc-preset.bzl", version = "1.8.0")
 
 # FormatJS CLI toolchain
 formatjs_cli = use_extension("//formatjs_cli:extensions.bzl", "formatjs_cli")

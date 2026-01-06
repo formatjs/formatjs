@@ -23,6 +23,8 @@ In your `MODULE.bazel` file:
 formatjs_cli = use_extension("@rules_formatjs//formatjs_cli:extensions.bzl", "formatjs_cli")
 formatjs_cli.toolchain()
 use_repo(formatjs_cli, "formatjs_cli_toolchains_darwin_arm64", "formatjs_cli_toolchains_linux_x64")
+
+# Register the toolchains (required)
 register_toolchains(
     "@formatjs_cli_toolchains_darwin_arm64//:toolchain",
     "@formatjs_cli_toolchains_linux_x64//:toolchain",
@@ -32,9 +34,9 @@ register_toolchains(
 formatjs_cli.toolchain(version = "0.1.2")
 ```
 
-Note: The toolchain extension is automatically configured when you add
-`bazel_dep(name = "rules_formatjs", ...)` to your MODULE.bazel. You only
-need to customize it if you want a specific version.
+**Note**: You must explicitly call `register_toolchains()` to make the FormatJS CLI
+toolchains available for toolchain resolution. The extension creates the toolchain
+repositories but does not automatically register them.
 """
 
 load(":repositories.bzl", "DEFAULT_VERSION", "formatjs_cli_register_toolchains")
@@ -104,8 +106,8 @@ formatjs_cli = module_extension(
 
     ## Default Behavior
 
-    When you add `rules_formatjs` to your MODULE.bazel, the extension is automatically
-    configured with the default CLI version. No additional configuration is needed.
+    When you add `rules_formatjs` to your MODULE.bazel, you need to configure the extension
+    and register the toolchains. The extension defaults to the latest CLI version.
 
     ## Custom Version
 
@@ -115,6 +117,8 @@ formatjs_cli = module_extension(
     formatjs_cli = use_extension("@rules_formatjs//formatjs_cli:extensions.bzl", "formatjs_cli")
     formatjs_cli.toolchain(version = "0.1.1")  # Use specific version
     use_repo(formatjs_cli, "formatjs_cli_toolchains_darwin_arm64", "formatjs_cli_toolchains_linux_x64")
+
+    # Must explicitly register toolchains
     register_toolchains(
         "@formatjs_cli_toolchains_darwin_arm64//:toolchain",
         "@formatjs_cli_toolchains_linux_x64//:toolchain",
