@@ -1,55 +1,62 @@
-use anyhow::{Context, Result};
-use serde_json::Value;
-use std::collections::HashMap;
+use serde_json::{json, Value};
+use std::collections::BTreeMap;
 
-/// Transifex formatter: extracts string field from structured format
+use crate::extractor::MessageDescriptor;
+
+/// Transifex formatter: converts MessageDescriptor to {string, developer_comment} format
 ///
-/// Input format:
+/// Format (extraction): Converts MessageDescriptor to Transifex format with string and developer_comment fields
+/// Compile (translation): Extracts string field from Transifex format
+///
+/// Format output:
 /// ```json
 /// {
 ///   "greeting": {
 ///     "string": "Hello {name}!",
-///     "developer_comment": "Greeting message",
-///     "context": "homepage",
-///     "character_limit": "100"
+///     "developer_comment": "Greeting message"
 ///   }
 /// }
 /// ```
-///
-/// Output: `{"greeting": "Hello {name}!"}`
-pub fn apply(json: &Value, file_path: &str) -> Result<HashMap<String, String>> {
-    let mut results = HashMap::new();
+pub fn format(messages: &BTreeMap<String, MessageDescriptor>) -> Value {
+    let mut results = serde_json::Map::new();
 
-    let map = json
-        .as_object()
-        .with_context(|| format!("Expected JSON object in file {}", file_path))?;
+    for (id, msg) in messages {
+        let mut entry = serde_json::Map::new();
 
-    for (id, value) in map {
-        if let Some(obj) = value.as_object() {
-            if let Some(string_field) = obj.get("string") {
-                if let Some(msg_str) = string_field.as_str() {
-                    results.insert(id.clone(), msg_str.to_string());
-                } else {
-                    eprintln!(
-                        "Warning: 'string' field for '{}' in {} is not a string, skipping",
-                        id, file_path
-                    );
+        if let Some(default_message) = &msg.default_message {
+            entry.insert("string".to_string(), json!(default_message));
+        }
+
+        if let Some(description) = &msg.description {
+            let description_str = match description {
+                Value::String(s) => s.clone(),
+                other => serde_json::to_string(other).unwrap_or_default(),
+            };
+            entry.insert("developer_comment".to_string(), json!(description_str));
+        }
+
+        results.insert(id.clone(), Value::Object(entry));
+    }
+
+    Value::Object(results)
+}
+
+pub fn compile(messages: &Value) -> BTreeMap<String, String> {
+    let mut results = BTreeMap::new();
+
+    if let Some(map) = messages.as_object() {
+        for (id, value) in map {
+            if let Some(obj) = value.as_object() {
+                if let Some(string_field) = obj.get("string") {
+                    if let Some(msg_str) = string_field.as_str() {
+                        results.insert(id.clone(), msg_str.to_string());
+                    }
                 }
-            } else {
-                eprintln!(
-                    "Warning: Message '{}' in {} is missing 'string' field, skipping",
-                    id, file_path
-                );
             }
-        } else {
-            eprintln!(
-                "Warning: Message '{}' in {} is not an object, skipping",
-                id, file_path
-            );
         }
     }
 
-    Ok(results)
+    results
 }
 
 #[cfg(test)]
@@ -70,7 +77,7 @@ mod tests {
             }
         });
 
-        let result = apply(&input, "test.json").unwrap();
+        let result = compile(&input);
         assert_eq!(result.len(), 2);
         assert_eq!(result.get("greeting").unwrap(), "Hello {name}!");
         assert_eq!(result.get("farewell").unwrap(), "Goodbye!");
@@ -84,7 +91,7 @@ mod tests {
             }
         });
 
-        let result = apply(&input, "test.json").unwrap();
+        let result = compile(&input);
         assert_eq!(result.len(), 0);
     }
 
@@ -99,7 +106,7 @@ mod tests {
             }
         });
 
-        let result = apply(&input, "test.json").unwrap();
+        let result = compile(&input);
         assert_eq!(
             result.get("msg").unwrap(),
             "{count, plural, one {# item} other {# items}}"

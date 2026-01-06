@@ -7,7 +7,9 @@ mod transifex;
 
 use anyhow::Result;
 use serde_json::Value;
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
+
+use crate::extractor::MessageDescriptor;
 
 /// Built-in formatters for converting various translation file formats to Record<string, string>
 #[derive(Debug, Clone, Copy)]
@@ -27,25 +29,70 @@ pub enum Formatter {
 }
 
 impl Formatter {
-    /// Apply this formatter to convert JSON input to Record<string, string>
+    /// Format MessageDescriptor objects using this formatter (for extraction)
+    ///
+    /// Converts MessageDescriptor objects to the vendor-specific format,
+    /// then immediately converts back to simple key-value pairs.
     ///
     /// # Arguments
     ///
-    /// * `json` - The parsed JSON value from the translation file
-    /// * `file_path` - Path to the file (for error messages)
+    /// * `messages` - BTreeMap of message IDs to MessageDescriptor objects
+    /// * `_file_path` - Path to the file (for error messages, currently unused)
     ///
     /// # Returns
     ///
     /// HashMap mapping message IDs to message strings
-    pub fn apply(&self, json: &Value, file_path: &str) -> Result<HashMap<String, String>> {
-        match self {
-            Formatter::Default => default::apply(json, file_path),
-            Formatter::Simple => simple::apply(json, file_path),
-            Formatter::Transifex => transifex::apply(json, file_path),
-            Formatter::Smartling => smartling::apply(json, file_path),
-            Formatter::Lokalise => lokalise::apply(json, file_path),
-            Formatter::Crowdin => crowdin::apply(json, file_path),
-        }
+    pub fn format(
+        &self,
+        messages: &BTreeMap<String, MessageDescriptor>,
+        _file_path: &str,
+    ) -> Result<HashMap<String, String>> {
+        // Convert MessageDescriptor to vendor format
+        let vendor_json = match self {
+            Formatter::Default => default::format(messages),
+            Formatter::Simple => simple::format(messages),
+            Formatter::Transifex => transifex::format(messages),
+            Formatter::Smartling => smartling::format(messages),
+            Formatter::Lokalise => lokalise::format(messages),
+            Formatter::Crowdin => crowdin::format(messages),
+        };
+
+        // Then compile vendor format back to Record<string, string>
+        let btree_result = match self {
+            Formatter::Default => default::compile(&vendor_json),
+            Formatter::Simple => simple::compile(&vendor_json),
+            Formatter::Transifex => transifex::compile(&vendor_json),
+            Formatter::Smartling => smartling::compile(&vendor_json),
+            Formatter::Lokalise => lokalise::compile(&vendor_json),
+            Formatter::Crowdin => crowdin::compile(&vendor_json),
+        };
+
+        // Convert BTreeMap to HashMap
+        Ok(btree_result.into_iter().collect())
+    }
+
+    /// Apply this formatter to convert vendor JSON to Record<string, string> (for compilation)
+    ///
+    /// # Arguments
+    ///
+    /// * `json` - The parsed JSON value from the translation file
+    /// * `_file_path` - Path to the file (for error messages)
+    ///
+    /// # Returns
+    ///
+    /// HashMap mapping message IDs to message strings
+    pub fn apply(&self, json: &Value, _file_path: &str) -> Result<HashMap<String, String>> {
+        let btree_result = match self {
+            Formatter::Default => default::compile(json),
+            Formatter::Simple => simple::compile(json),
+            Formatter::Transifex => transifex::compile(json),
+            Formatter::Smartling => smartling::compile(json),
+            Formatter::Lokalise => lokalise::compile(json),
+            Formatter::Crowdin => crowdin::compile(json),
+        };
+
+        // Convert BTreeMap to HashMap
+        Ok(btree_result.into_iter().collect())
     }
 
     /// Parse a formatter name from a string
