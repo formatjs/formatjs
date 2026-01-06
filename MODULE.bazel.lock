@@ -1942,11 +1942,11 @@
         "bzlTransitiveDigest": "WtIoVC11ie4SZ/RJIy/93jgE8KMXiwLBVrk6qhzuTCI=",
         "usagesDigest": "+2oxp30n7U2iCRyiQVVvn9Dm9XZaeUlnwnAuV9gqyVs=",
         "recordedFileInputs": {
-          "@@//Cargo.lock": "fa68cd1918701abb7add793210f329109128821e24ee3774c62fe11e642f6ba1",
+          "@@//Cargo.lock": "33c5f9b237c31cb5629cdcd7bd8f60c660646b46864e68f42fce900e1caad6d0",
           "@@//Cargo.toml": "a667f60e754b689a8f96477f37216d25bae19c2fd606ecf827222447dd691cae",
           "@@//MODULE.bazel": "056f89f9c35545957b5b7ed035f78b257df275755d3298f747055946b5a5d360",
           "@@//packages/icu-messageformat-parser/integration-tests/Cargo.toml": "c15f4f2503b87826277cf06f759b6350feb16061dd823c41946b9aa2ea1af176",
-          "@@//rust/formatjs_cli/Cargo.toml": "24069fcf335d80dccaf30da017362b045dd4c749245655bcc0878dfa2af8fdc4",
+          "@@//rust/formatjs_cli/Cargo.toml": "6beef6ab9dca101d05bc9ed2d089e667f0fb07c92e7df781024aeedfc0a449be",
           "@@//rust/icu_messageformat_parser/Cargo.toml": "4da478b23193b331c6604f38997f6b7b0bd0fa99697dd365dd39c79055ed6ccc",
           "@@//rust/icu_skeleton_parser/Cargo.toml": "eac4ca44b47b0fde5ae7f4afcdb6e7d4951eac75eb44db7349b2ba912a9840da",
           "@@rules_rust++rust_host_tools+rust_host_tools//rust_host_tools": "ENOENT"

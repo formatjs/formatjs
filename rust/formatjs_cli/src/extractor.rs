@@ -112,19 +112,13 @@ pub fn determine_source_type(path: &Path) -> Result<SourceType> {
         .and_then(|e| e.to_str())
         .context("File has no extension")?;
 
-    let mut source_type = match ext {
-        "ts" | "tsx" | "mts" | "cts" => SourceType::default().with_typescript(true),
-        "js" | "jsx" | "mjs" | "cjs" => SourceType::default(),
+    let source_type: SourceType = match ext {
+        "tsx" => SourceType::default().with_jsx(true).with_typescript(true),
+        "jsx" => SourceType::default().with_jsx(true),
+        "ts" | "mts" | "cts" => SourceType::default().with_typescript(true),
+        "js" | "mjs" | "cjs" => SourceType::default(),
         _ => anyhow::bail!("Unsupported file extension: {}", ext),
     };
-
-    // Enable JSX for all JavaScript/TypeScript files (matches TypeScript CLI behavior)
-    // JSX is commonly used in .js files in React projects
-    source_type = source_type.with_jsx(true);
-
-    if ext == "mts" || ext == "mjs" {
-        source_type = source_type.with_module(true);
-    }
 
     Ok(source_type)
 }
@@ -1529,6 +1523,52 @@ mod tests {
         assert_eq!(messages.len(), 1);
         assert_eq!(messages[0].id, Some("spacing".to_string()));
         // \xa0 is a non-breaking space (U+00A0)
-        assert_eq!(messages[0].default_message, Some("foo\u{00a0}bar baz".to_string()));
+        assert_eq!(
+            messages[0].default_message,
+            Some("foo\u{00a0}bar baz".to_string())
+        );
+    }
+
+    #[test]
+    fn test_typescript_type_guard_no_crash() {
+        // Test that TypeScript type guards don't crash the parser
+        let source = r#"
+            import { defineMessages } from 'react-intl';
+
+            const nonEmpty = <T>(a: T | void | undefined): a is T => !!a;
+
+            defineMessages({
+                test: {
+                    id: 'test',
+                    defaultMessage: 'Hello world',
+                    description: 'Test message'
+                }
+            });
+        "#;
+
+        let file_path = PathBuf::from("test.ts");
+        let source_type = SourceType::default().with_typescript(true);
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec!["defineMessages".to_string()];
+
+        // Should not crash and should extract the message
+        let result = extract_messages_from_source(
+            source,
+            &file_path,
+            source_type,
+            false,
+            &component_names,
+            &function_names,
+            HashMap::new(),
+            false,
+            false,
+            false,
+        );
+
+        assert!(result.is_ok(), "Should not crash on TypeScript type guard");
+        let messages = result.unwrap();
+        assert_eq!(messages.len(), 1);
+        assert_eq!(messages[0].id, Some("test".to_string()));
+        assert_eq!(messages[0].default_message, Some("Hello world".to_string()));
     }
 }
