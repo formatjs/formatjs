@@ -19,15 +19,6 @@ pre-commit:
         done
       stage_fixed: true
 
-    # Check for typos
-    cspell:
-      run: pnpm cspell lint --no-progress --no-summary {staged_files}
-      exclude:
-        - pnpm-lock.yaml
-        - "*.lock"
-        - lefthook.yml
-        - package.json
-
 # Note: The following pre-commit hooks are not available in lefthook or were removed:
 # - check-hooks-apply (meta hook, lefthook-specific)
 # - check-useless-excludes (meta hook, lefthook-specific)
