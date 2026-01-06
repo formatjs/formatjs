@@ -6,51 +6,6 @@ merging them into a single JSON file.
 
 load(":extract.bzl", "FormatjsExtractInfo")
 
-def _merge_messages_impl(ctx):
-    """Merge multiple message JSON files into one using jq."""
-
-    # Collect all message files to merge
-    message_files = ctx.attr.message_files
-
-    if not message_files:
-        fail("No message files provided to merge")
-
-    # Create output file
-    out = ctx.actions.declare_file(ctx.attr.name + ".json")
-
-    # Build jq command to merge all JSON files
-    # Strategy: Use jq to merge objects, with later files overwriting earlier ones
-    jq_filter = "reduce inputs as $item (.; . * $item)"
-
-    args = ctx.actions.args()
-    args.add("-s")  # slurp mode - read all inputs into array
-    args.add(jq_filter)
-    args.add_all(message_files)
-
-    jq_toolchain = ctx.toolchains["@jq.bzl//jq/toolchain:type"]
-
-    ctx.actions.run(
-        executable = jq_toolchain.jqinfo.bin,
-        arguments = [args],
-        inputs = depset(message_files),
-        outputs = [out],
-        mnemonic = "MergeMessages",
-        progress_message = "Merging %d message files" % len(message_files),
-    )
-
-    return [DefaultInfo(files = depset([out]))]
-
-_merge_messages = rule(
-    implementation = _merge_messages_impl,
-    attrs = {
-        "message_files": attr.label_list(
-            allow_files = [".json"],
-            doc = "List of message JSON files to merge",
-        ),
-    },
-    toolchains = ["@jq.bzl//jq/toolchain:type"],
-)
-
 FormatjsAggregateInfo = provider(
     doc = "Aggregated messages from a target and its dependencies",
     fields = {
@@ -91,20 +46,23 @@ def _formatjs_aggregate_aspect_impl(target, ctx):
             ctx.label.name + "_aggregated_messages.json",
         )
 
-        # Build jq command to merge all JSON files
-        # Use jq to recursively merge all objects
-        args = ctx.actions.args()
-        args.add("-s")  # slurp mode
-        args.add("reduce .[] as $item ({}; . * $item)")  # merge strategy
-        args.add_all(messages)
-
+        # Build jq command to merge all JSON files with sorted top-level keys only
         jq_toolchain = ctx.toolchains["@jq.bzl//jq/toolchain:type"]
 
-        ctx.actions.run(
-            executable = jq_toolchain.jqinfo.bin,
+        args = ctx.actions.args()
+        args.add("-s")  # slurp mode
+        args.add("reduce .[] as $item ({}; . * $item) | to_entries | sort_by(.key) | from_entries")
+        args.add_all(messages)
+
+        ctx.actions.run_shell(
+            command = '"{jq}" "$@" > "{output}"'.format(
+                jq = jq_toolchain.jqinfo.bin.path,
+                output = merged_file.path,
+            ),
             arguments = [args],
             inputs = depset(messages),
             outputs = [merged_file],
+            tools = [jq_toolchain.jqinfo.bin],
             mnemonic = "AggregateMessages",
             progress_message = "Aggregating %d message files for %s" % (len(messages), ctx.label),
         )
@@ -176,19 +134,21 @@ def _formatjs_aggregate_impl(ctx):
     # Create the final aggregated output file
     output = ctx.actions.declare_file(ctx.attr.name + ".json")
 
-    # Use jq to merge all messages
+    # Use jq to merge all messages and sort keys
     jq_toolchain = ctx.toolchains["@jq.bzl//jq/toolchain:type"]
 
-    # Build command to merge JSON files using jq
-    input_files = " ".join([f.path for f in all_messages])
-    command = "{jq} -s 'reduce .[] as $item ({{}}; . * $item)' {inputs} > {output}".format(
-        jq = jq_toolchain.jqinfo.bin.path,
-        inputs = input_files,
-        output = output.path,
-    )
+    # Build jq command with sorted top-level keys only
+    args = ctx.actions.args()
+    args.add("-s")  # slurp mode
+    args.add("reduce .[] as $item ({}; . * $item) | to_entries | sort_by(.key) | from_entries")
+    args.add_all(all_messages)
 
     ctx.actions.run_shell(
-        command = command,
+        command = '"{jq}" "$@" > "{output}"'.format(
+            jq = jq_toolchain.jqinfo.bin.path,
+            output = output.path,
+        ),
+        arguments = [args],
         inputs = depset(all_messages),
         outputs = [output],
         tools = [jq_toolchain.jqinfo.bin],

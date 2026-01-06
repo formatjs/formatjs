@@ -1,4 +1,24 @@
 {
+  "common.cancel": {
+    "id": "common.cancel",
+    "defaultMessage": "Cancel",
+    "description": "Common cancel button"
+  },
+  "common.save": {
+    "id": "common.save",
+    "defaultMessage": "Save",
+    "description": "Common save button"
+  },
+  "module1.description": {
+    "id": "module1.description",
+    "defaultMessage": "This is the first module",
+    "description": "Description for module 1"
+  },
+  "module1.title": {
+    "id": "module1.title",
+    "defaultMessage": "Module 1 Title",
+    "description": "Title for module 1"
+  },
   "module2.description": {
     "id": "module2.description",
     "defaultMessage": "This is the second module",
@@ -9,11 +29,6 @@
     "defaultMessage": "Module 2 Title",
     "description": "Title for module 2"
   },
-  "common.save": {
-    "id": "common.save",
-    "defaultMessage": "Save",
-    "description": "Common save button"
-  },
   "module3.description": {
     "id": "module3.description",
     "defaultMessage": "This is the third module",
@@ -23,20 +38,5 @@
     "id": "module3.title",
     "defaultMessage": "Module 3 Title",
     "description": "Title for module 3"
-  },
-  "common.cancel": {
-    "id": "common.cancel",
-    "defaultMessage": "Cancel",
-    "description": "Common cancel button"
-  },
-  "module1.title": {
-    "id": "module1.title",
-    "defaultMessage": "Module 1 Title",
-    "description": "Title for module 1"
-  },
-  "module1.description": {
-    "id": "module1.description",
-    "defaultMessage": "This is the first module",
-    "description": "Description for module 1"
   }
 }

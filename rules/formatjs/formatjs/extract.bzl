@@ -40,7 +40,7 @@ def _formatjs_extract_impl(ctx):
     for function in ctx.attr.additional_function_names:
         args.add("--additional-function-names", function)
 
-    # Run formatjs extract
+    # Run formatjs extract (v0.1.1+ sorts keys by default)
     ctx.actions.run(
         executable = formatjs_cli_info.cli,
         arguments = [args],

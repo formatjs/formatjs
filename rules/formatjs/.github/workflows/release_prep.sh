@@ -35,5 +35,5 @@ bazel_dep(name = "rules_formatjs", version = "${TAG:1}")
 
 EOF
 
-awk 'f;/--SNIP--/{f=1}' e2e/smoke/WORKSPACE.bazel
+awk 'f;/--SNIP--/{f=1}' examples/simple/MODULE.bazel
 echo "\`\`\`"

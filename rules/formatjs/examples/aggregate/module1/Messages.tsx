@@ -1,4 +1,4 @@
-import {FormattedMessage} from 'react-intl'
+import { FormattedMessage } from "react-intl";
 
 export function Module1Messages() {
   return (
@@ -14,5 +14,5 @@ export function Module1Messages() {
         description="Description for module 1"
       />
     </>
-  )
+  );
 }

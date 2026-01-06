@@ -24,6 +24,20 @@ jobs:
       - uses: bazel-contrib/setup-bazel@0.16.0
         with:
           bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
       - name: Test ${{ matrix.folder }}
         working-directory: ${{ matrix.folder }}
         run: bazel test //...
+
+      - name: Upload test logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs-${{ matrix.os }}-${{ hashFiles(matrix.folder) }}
+          path: |
+            ${{ matrix.folder }}/bazel-testlogs/**/test.log
+            ${{ matrix.folder }}/bazel-testlogs/**/test.xml
+          if-no-files-found: warn
+          retention-days: 7

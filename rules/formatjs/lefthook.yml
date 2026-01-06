@@ -13,7 +13,10 @@ pre-commit:
 
     buildifier-format:
       glob: "*.{bzl,bazel,BUILD,WORKSPACE,MODULE.bazel}"
-      run: bazel run @bazel_skylib//tools:buildifier -- --mode=fix {staged_files}
+      run: |
+        for file in {staged_files}; do
+          bazel run @buildifier_prebuilt//:buildifier -- --mode=fix "$PWD/$file"
+        done
       stage_fixed: true
 
     # Check for typos

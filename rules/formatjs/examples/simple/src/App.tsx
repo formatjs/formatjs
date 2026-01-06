@@ -1,7 +1,7 @@
-import {FormattedMessage, useIntl} from 'react-intl'
+import { FormattedMessage, useIntl } from "react-intl";
 
 export function App() {
-  const intl = useIntl()
+  const intl = useIntl();
 
   return (
     <div>
@@ -20,18 +20,10 @@ export function App() {
         />
       </p>
       <button
-        onClick={() =>
-          alert(
-            intl.formatMessage({id: 'app.button', defaultMessage: 'Click me!'})
-          )
-        }
+        onClick={() => alert(intl.formatMessage({ id: "app.button", defaultMessage: "Click me!" }))}
       >
-        <FormattedMessage
-          id="app.button"
-          defaultMessage="Click me!"
-          description="Button text"
-        />
+        <FormattedMessage id="app.button" defaultMessage="Click me!" description="Button text" />
       </button>
     </div>
-  )
+  );
 }

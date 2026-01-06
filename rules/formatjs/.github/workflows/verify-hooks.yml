@@ -23,6 +23,9 @@ jobs:
       - uses: bazel-contrib/setup-bazel@0.16.0
         with:
           bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
       - name: Get changed files
         id: changed-files
         run: |

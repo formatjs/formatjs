@@ -46,7 +46,7 @@ bazel_dep(name = "bazelrc-preset.bzl", version = "1.6.0")
 
 # FormatJS CLI toolchain
 formatjs_cli = use_extension("//formatjs_cli:extensions.bzl", "formatjs_cli")
-formatjs_cli.toolchain(version = "0.1.0")
+formatjs_cli.toolchain(version = "0.1.2")
 use_repo(
     formatjs_cli,
     "formatjs_cli_toolchains_darwin_arm64",
