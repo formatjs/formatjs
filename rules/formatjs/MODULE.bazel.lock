@@ -180,7 +180,7 @@
   "moduleExtensions": {
     "//formatjs_cli:extensions.bzl%formatjs_cli": {
       "general": {
-        "bzlTransitiveDigest": "3JxgYEAdBnQzC2obDtoZSsEMJWKXe9Z5GWFB/3+zAho=",
+        "bzlTransitiveDigest": "X2JbKzGh2jRLgy3L+ZgZHvXFrfjsVA47rakuKqpQf7Q=",
         "usagesDigest": "u1UtdtFJl4hTbPzmfFnHgmdme9PYUKQDyGchL3/E37k=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
@@ -198,6 +198,12 @@
               "target_compatible_with": []
             }
           },
+          "formatjs_cli_toolchains_darwin_x86_64": {
+            "repoRuleId": "@@//formatjs_cli:repositories.bzl%_formatjs_cli_placeholder_repo",
+            "attributes": {
+              "platform": "darwin-x86_64"
+            }
+          },
           "formatjs_cli_toolchains_linux_x64": {
             "repoRuleId": "@@//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
             "attributes": {
@@ -208,6 +214,18 @@
                 "@platforms//cpu:x86_64"
               ],
               "target_compatible_with": []
+            }
+          },
+          "formatjs_cli_toolchains_linux_aarch64": {
+            "repoRuleId": "@@//formatjs_cli:repositories.bzl%_formatjs_cli_placeholder_repo",
+            "attributes": {
+              "platform": "linux-aarch64"
+            }
+          },
+          "formatjs_cli_toolchains_windows_x86_64": {
+            "repoRuleId": "@@//formatjs_cli:repositories.bzl%_formatjs_cli_placeholder_repo",
+            "attributes": {
+              "platform": "windows-x86_64"
             }
           },
           "formatjs_cli_toolchains": {
@@ -221,7 +239,10 @@
           "explicitRootModuleDirectDeps": [
             "formatjs_cli_toolchains",
             "formatjs_cli_toolchains_darwin_arm64",
-            "formatjs_cli_toolchains_linux_x64"
+            "formatjs_cli_toolchains_darwin_x86_64",
+            "formatjs_cli_toolchains_linux_x64",
+            "formatjs_cli_toolchains_linux_aarch64",
+            "formatjs_cli_toolchains_windows_x86_64"
           ],
           "explicitRootModuleDirectDevDeps": [],
           "useAllRepos": "NO",

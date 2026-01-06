@@ -11,8 +11,14 @@ The current default version is defined by `DEFAULT_VERSION`.
 
 ## Supported Platforms
 
+Current binaries are available for:
 - macOS Apple Silicon (darwin-arm64)
 - Linux x86_64 (linux-x64)
+
+Toolchain definitions also exist for future support:
+- macOS Intel (darwin-x86_64)
+- Linux aarch64 (linux-aarch64)
+- Windows x86_64 (windows-x86_64)
 
 ## Usage
 
@@ -37,7 +43,10 @@ use_repo(
     formatjs_cli,
     "formatjs_cli_toolchains",
     "formatjs_cli_toolchains_darwin_arm64",
+    "formatjs_cli_toolchains_darwin_x86_64",
     "formatjs_cli_toolchains_linux_x64",
+    "formatjs_cli_toolchains_linux_aarch64",
+    "formatjs_cli_toolchains_windows_x86_64",
 )
 register_toolchains("@formatjs_cli_toolchains//:all")
 ```
@@ -66,7 +75,10 @@ def _formatjs_cli_toolchain_impl(module_ctx):
         root_module_direct_deps = [
             "formatjs_cli_toolchains",
             "formatjs_cli_toolchains_darwin_arm64",
+            "formatjs_cli_toolchains_darwin_x86_64",
             "formatjs_cli_toolchains_linux_x64",
+            "formatjs_cli_toolchains_linux_aarch64",
+            "formatjs_cli_toolchains_windows_x86_64",
         ],
         root_module_direct_dev_deps = [],
     )
@@ -109,7 +121,7 @@ formatjs_cli = module_extension(
     ## Features
 
     - **Version Selection**: Choose specific FormatJS CLI versions
-    - **Multi-Platform**: Automatic platform detection (macOS arm64, Linux x64)
+    - **Multi-Platform**: Automatic platform detection across multiple architectures
     - **SHA256 Verification**: All binaries are verified with checksums
     - **No Node.js**: Native binaries for maximum performance
     - **Automatic Registration**: Toolchains are automatically registered when you
@@ -136,7 +148,10 @@ formatjs_cli = module_extension(
         formatjs_cli,
         "formatjs_cli_toolchains",
         "formatjs_cli_toolchains_darwin_arm64",
+        "formatjs_cli_toolchains_darwin_x86_64",
         "formatjs_cli_toolchains_linux_x64",
+        "formatjs_cli_toolchains_linux_aarch64",
+        "formatjs_cli_toolchains_windows_x86_64",
     )
     register_toolchains("@formatjs_cli_toolchains//:all")
     ```
@@ -149,12 +164,19 @@ formatjs_cli = module_extension(
 
     ## Platform Support
 
-    Bazel's toolchain resolution automatically selects the correct binary for your platform:
+    Bazel's toolchain resolution automatically selects the correct binary for your platform.
+
+    **Binaries currently available for:**
     - **macOS Apple Silicon** (M1/M2/M3): darwin-arm64 binary
     - **Linux x86_64**: linux-x64 binary
 
-    If your platform is not supported, the build will fail with a clear error message
-    listing available platforms.
+    **Toolchain definitions exist for future support:**
+    - **macOS Intel**: darwin-x86_64
+    - **Linux aarch64**: linux-aarch64
+    - **Windows x86_64**: windows-x86_64
+
+    If your platform doesn't have a binary available yet, the build will fail with a clear
+    error message. Contributions for additional platform binaries are welcome!
 
     ## See Also
 

@@ -110,6 +110,35 @@ _formatjs_cli_repo = repository_rule(
     },
 )
 
+def _formatjs_cli_placeholder_repo_impl(rctx):
+    """Implementation for a placeholder repository for platforms without binaries yet."""
+    rctx.file("BUILD.bazel", content = """# Placeholder repository for {platform}
+# Binary not yet available for this platform.
+# The toolchain definition exists in @formatjs_cli_toolchains but will not be selected
+# unless you're building on this platform (which will fail with a clear error).
+
+exports_files(["README.md"])
+""".format(platform = rctx.attr.platform))
+
+    rctx.file("README.md", content = """This is a placeholder repository for the FormatJS CLI on {platform}.
+
+Binaries are not yet available for this platform. If you need support for this platform,
+please file an issue or contribute a PR at:
+https://github.com/formatjs/formatjs
+
+The toolchain infrastructure is ready - only the binary build is needed.
+""".format(platform = rctx.attr.platform))
+
+_formatjs_cli_placeholder_repo = repository_rule(
+    implementation = _formatjs_cli_placeholder_repo_impl,
+    attrs = {
+        "platform": attr.string(
+            mandatory = True,
+            doc = "Target platform (e.g., 'darwin-x86_64', 'windows-x86_64')",
+        ),
+    },
+)
+
 def _formatjs_cli_toolchains_repo_impl(rctx):
     """Implementation for the main toolchains repository that contains toolchain definitions for all platforms."""
 
@@ -126,8 +155,17 @@ def _formatjs_cli_toolchains_repo_impl(rctx):
         ("darwin_arm64", {
             "exec_compatible_with": ["\"@platforms//os:osx\"", "\"@platforms//cpu:arm64\""],
         }),
+        ("darwin_x86_64", {
+            "exec_compatible_with": ["\"@platforms//os:osx\"", "\"@platforms//cpu:x86_64\""],
+        }),
         ("linux_x64", {
             "exec_compatible_with": ["\"@platforms//os:linux\"", "\"@platforms//cpu:x86_64\""],
+        }),
+        ("linux_aarch64", {
+            "exec_compatible_with": ["\"@platforms//os:linux\"", "\"@platforms//cpu:aarch64\""],
+        }),
+        ("windows_x86_64", {
+            "exec_compatible_with": ["\"@platforms//os:windows\"", "\"@platforms//cpu:x86_64\""],
         }),
     ]:
         build_content += """
@@ -184,6 +222,25 @@ def formatjs_cli_register_toolchains(name, version = DEFAULT_VERSION, register =
             target_compatible_with = [],
         )
 
+    # macOS Intel (darwin-x86_64) - placeholder for now
+    repo_name = "{}_darwin_x86_64".format(name)
+    if "darwin-x86_64" in FORMATJS_CLI_VERSIONS[version]:
+        _formatjs_cli_repo(
+            name = repo_name,
+            version = version,
+            platform = "darwin-x86_64",
+            exec_compatible_with = [
+                "@platforms//os:macos",
+                "@platforms//cpu:x86_64",
+            ],
+            target_compatible_with = [],
+        )
+    else:
+        _formatjs_cli_placeholder_repo(
+            name = repo_name,
+            platform = "darwin-x86_64",
+        )
+
     # Linux x86_64
     if "linux-x64" in FORMATJS_CLI_VERSIONS[version]:
         repo_name = "{}_linux_x64".format(name)
@@ -196,6 +253,44 @@ def formatjs_cli_register_toolchains(name, version = DEFAULT_VERSION, register =
                 "@platforms//cpu:x86_64",
             ],
             target_compatible_with = [],
+        )
+
+    # Linux aarch64 - placeholder for now
+    repo_name = "{}_linux_aarch64".format(name)
+    if "linux-aarch64" in FORMATJS_CLI_VERSIONS[version]:
+        _formatjs_cli_repo(
+            name = repo_name,
+            version = version,
+            platform = "linux-aarch64",
+            exec_compatible_with = [
+                "@platforms//os:linux",
+                "@platforms//cpu:aarch64",
+            ],
+            target_compatible_with = [],
+        )
+    else:
+        _formatjs_cli_placeholder_repo(
+            name = repo_name,
+            platform = "linux-aarch64",
+        )
+
+    # Windows x86_64 - placeholder for now
+    repo_name = "{}_windows_x86_64".format(name)
+    if "windows-x86_64" in FORMATJS_CLI_VERSIONS[version]:
+        _formatjs_cli_repo(
+            name = repo_name,
+            version = version,
+            platform = "windows-x86_64",
+            exec_compatible_with = [
+                "@platforms//os:windows",
+                "@platforms//cpu:x86_64",
+            ],
+            target_compatible_with = [],
+        )
+    else:
+        _formatjs_cli_placeholder_repo(
+            name = repo_name,
+            platform = "windows-x86_64",
         )
 
     # Create the main toolchains repository with definitions for all platforms
