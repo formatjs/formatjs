@@ -454,7 +454,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat_parser"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "criterion",
  "formatjs_icu_skeleton_parser",
