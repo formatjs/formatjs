@@ -25,11 +25,11 @@ serde_json = "1.0"
 glob = "0.3"
 formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "0.1.0" }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.0" }
-oxc = { version = "0.106", features = ["ast_visit"] }
-oxc_allocator = "0.106"
-oxc_ast = "0.106"
-oxc_parser = "0.106"
-oxc_span = "0.106"
+oxc = { version = "0.107", features = ["ast_visit"] }
+oxc_allocator = "0.107"
+oxc_ast = "0.107"
+oxc_parser = "0.107"
+oxc_span = "0.107"
 sha2 = "0.10"
 base64 = "0.22"
 hex = "0.4"
