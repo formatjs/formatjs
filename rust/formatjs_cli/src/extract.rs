@@ -1,14 +1,13 @@
 use anyhow::{Context, Result};
-use base64::Engine;
 use glob::Pattern;
-use sha2::{Digest, Sha512};
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::fs;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 
 use crate::extractor::{MessageDescriptor, determine_source_type, extract_messages_from_source};
 use crate::formatters::Formatter;
+use crate::id_generator::generate_id;
 use serde_json::Value;
 
 /// Extract string messages from React components that use react-intl
@@ -36,7 +35,7 @@ pub fn extract(
     };
 
     // Step 2: Extract messages from all files
-    let mut all_messages: HashMap<String, MessageDescriptor> = HashMap::new();
+    let mut all_messages: BTreeMap<String, MessageDescriptor> = BTreeMap::new();
     let mut errors = Vec::new();
     let mut warnings = Vec::new();
 
@@ -104,10 +103,13 @@ pub fn extract(
         // Apply formatter (returns HashMap<String, String>)
         let formatted = formatter.apply(&messages_json, "extracted messages")?;
 
+        // Convert HashMap to BTreeMap for sorted output
+        let sorted_formatted: BTreeMap<String, String> = formatted.into_iter().collect();
+
         // Convert to JSON output
-        serde_json::to_string_pretty(&formatted)?
+        serde_json::to_string_pretty(&sorted_formatted)?
     } else {
-        // Default format: full MessageDescriptor objects
+        // Default format: full MessageDescriptor objects (already sorted via BTreeMap)
         serde_json::to_string_pretty(&all_messages)?
     };
 
@@ -279,74 +281,6 @@ fn extract_pragma(source: &str, pragma: &str) -> HashMap<String, String> {
     meta
 }
 
-/// Generate message ID using interpolation pattern
-fn generate_id(
-    pattern: &str,
-    default_message: Option<&str>,
-    description: &Option<Value>,
-    _file_path: Option<&str>,
-) -> Result<String> {
-    // Parse pattern: [hash:digest:encoding:length]
-    // Default: [sha512:contenthash:base64:6]
-
-    if !pattern.starts_with('[') || !pattern.ends_with(']') {
-        anyhow::bail!("Invalid ID interpolation pattern: {}", pattern);
-    }
-
-    let inner = &pattern[1..pattern.len() - 1];
-    let parts: Vec<&str> = inner.split(':').collect();
-
-    if parts.len() < 4 {
-        anyhow::bail!(
-            "Invalid ID interpolation pattern format: {}. Expected [hash:digest:encoding:length]",
-            pattern
-        );
-    }
-
-    let hash_algo = parts[0];
-    let digest_type = parts[1];
-    let encoding = parts[2];
-    let length: usize = parts[3]
-        .parse()
-        .context("Invalid length in ID interpolation pattern")?;
-
-    // Build content hash input
-    let mut content = String::new();
-    if let Some(msg) = default_message {
-        content.push_str(msg);
-    }
-    if let Some(desc) = description {
-        content.push('#');
-        content.push_str(&desc.to_string());
-    }
-
-    // Generate hash
-    let hash = match (hash_algo, digest_type) {
-        ("sha512", "contenthash") => {
-            let mut hasher = Sha512::new();
-            hasher.update(content.as_bytes());
-            let result = hasher.finalize();
-            match encoding {
-                "base64" => {
-                    let encoded = base64::engine::general_purpose::STANDARD.encode(&result);
-                    // base64 URL-safe: replace + with - and / with _
-                    encoded.replace('+', "-").replace('/', "_")
-                }
-                "hex" => hex::encode(result),
-                _ => anyhow::bail!("Unsupported encoding: {}", encoding),
-            }
-        }
-        _ => anyhow::bail!(
-            "Unsupported hash algorithm or digest type: {}:{}",
-            hash_algo,
-            digest_type
-        ),
-    };
-
-    // Truncate to specified length
-    Ok(hash.chars().take(length).collect())
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -417,48 +351,6 @@ import { FormattedMessage } from 'react-intl';
     }
 
     #[test]
-    fn test_generate_id_sha512_base64() {
-        let id = generate_id(
-            "[sha512:contenthash:base64:6]",
-            Some("Hello World"),
-            &None,
-            None,
-        )
-        .unwrap();
-        assert_eq!(id.len(), 6);
-        // Should be URL-safe base64
-        assert!(!id.contains('+'));
-        assert!(!id.contains('/'));
-    }
-
-    #[test]
-    fn test_generate_id_with_description() {
-        let desc = serde_json::Value::String("A greeting".to_string());
-        let id = generate_id(
-            "[sha512:contenthash:base64:8]",
-            Some("Hello"),
-            &Some(desc),
-            None,
-        )
-        .unwrap();
-        assert_eq!(id.len(), 8);
-    }
-
-    #[test]
-    fn test_generate_id_hex() {
-        let id = generate_id("[sha512:contenthash:hex:10]", Some("Test"), &None, None).unwrap();
-        assert_eq!(id.len(), 10);
-        // Should be hex characters
-        assert!(id.chars().all(|c| c.is_ascii_hexdigit()));
-    }
-
-    #[test]
-    fn test_generate_id_invalid_pattern() {
-        let result = generate_id("invalid", Some("Test"), &None, None);
-        assert!(result.is_err());
-    }
-
-    #[test]
     fn test_should_ignore() {
         let patterns = vec![
             Pattern::new("**/node_modules/**").unwrap(),
@@ -471,5 +363,471 @@ import { FormattedMessage } from 'react-intl';
         ));
         assert!(should_ignore(&PathBuf::from("src/app.test.ts"), &patterns));
         assert!(!should_ignore(&PathBuf::from("src/app.ts"), &patterns));
+    }
+
+    #[test]
+    fn test_extract_sorted_keys() {
+        // Create a temporary test file with multiple messages in unsorted order
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        // Write test file with messages that would naturally be in unsorted order
+        let test_content = r#"
+import { defineMessages } from 'react-intl';
+
+const messages = defineMessages({
+  zebra: {
+    id: 'zebra',
+    defaultMessage: 'Zebra message',
+  },
+  apple: {
+    id: 'apple',
+    defaultMessage: 'Apple message',
+  },
+  mango: {
+    id: 'mango',
+    defaultMessage: 'Mango message',
+  },
+  banana: {
+    id: 'banana',
+    defaultMessage: 'Banana message',
+  },
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        // Extract messages
+        extract(
+            &[test_file],
+            None,
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Read the output file
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+
+        // Parse as JSON to verify structure
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+        assert!(json.is_object());
+
+        // Get the keys and verify they are sorted
+        let keys: Vec<&str> = json.as_object().unwrap().keys().map(|s| s.as_str()).collect();
+        let mut sorted_keys = keys.clone();
+        sorted_keys.sort();
+
+        // Keys should be in alphabetical order: apple, banana, mango, zebra
+        assert_eq!(keys, sorted_keys, "Keys should be sorted alphabetically");
+        assert_eq!(keys, vec!["apple", "banana", "mango", "zebra"]);
+    }
+
+    #[test]
+    fn test_extract_sorted_keys_with_default_formatter() {
+        // Create a temporary test file
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        // Write test file with messages in unsorted order
+        let test_content = r#"
+import { defineMessages } from 'react-intl';
+
+const messages = defineMessages({
+  zulu: {
+    id: 'zulu',
+    defaultMessage: 'Zulu message',
+  },
+  alpha: {
+    id: 'alpha',
+    defaultMessage: 'Alpha message',
+  },
+  charlie: {
+    id: 'charlie',
+    defaultMessage: 'Charlie message',
+  },
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        // Extract messages with Default formatter (extracts defaultMessage field)
+        extract(
+            &[test_file],
+            Some(Formatter::Default),
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Read the output file
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+
+        // Parse as JSON to verify structure
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Get the keys and verify they are sorted
+        let keys: Vec<&str> = json.as_object().unwrap().keys().map(|s| s.as_str()).collect();
+        let mut sorted_keys = keys.clone();
+        sorted_keys.sort();
+
+        // Keys should be in alphabetical order
+        assert_eq!(keys, sorted_keys, "Keys should be sorted alphabetically with formatter");
+        assert_eq!(keys, vec!["alpha", "charlie", "zulu"]);
+    }
+
+    #[test]
+    fn test_extract_with_custom_id_interpolation_pattern() {
+        // Test extraction with custom ID pattern for messages without explicit IDs
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        // Write test file with messages that don't have explicit IDs
+        let test_content = r#"
+import { defineMessage } from 'react-intl';
+
+const greeting = defineMessage({
+  defaultMessage: 'Hello World',
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        // Extract with custom pattern: shorter ID with hex encoding
+        extract(
+            &[test_file],
+            None,
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:hex:8]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Read and verify output
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Should have one message with generated ID
+        assert_eq!(json.as_object().unwrap().len(), 1);
+
+        // Get the generated ID
+        let (id, message) = json.as_object().unwrap().iter().next().unwrap();
+
+        // Verify ID is 8 characters of hex
+        assert_eq!(id.len(), 8, "Generated ID should be 8 characters");
+        assert!(
+            id.chars().all(|c| c.is_ascii_hexdigit()),
+            "Generated ID should be hexadecimal"
+        );
+
+        // Verify message content
+        assert_eq!(
+            message["defaultMessage"].as_str().unwrap(),
+            "Hello World"
+        );
+    }
+
+    #[test]
+    fn test_extract_with_different_id_patterns() {
+        // Test that different patterns produce different IDs for the same message
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+
+        let test_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  defaultMessage: 'Test Message',
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        // Test with base64 pattern
+        let output_file1 = temp_dir.path().join("output1.json");
+        extract(
+            &[test_file.clone()],
+            None,
+            None,
+            Some(&output_file1),
+            "[sha512:contenthash:base64:10]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Test with hex pattern
+        let output_file2 = temp_dir.path().join("output2.json");
+        extract(
+            &[test_file],
+            None,
+            None,
+            Some(&output_file2),
+            "[sha512:contenthash:hex:10]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Read both outputs
+        let json1: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(&output_file1).unwrap()).unwrap();
+        let json2: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(&output_file2).unwrap()).unwrap();
+
+        // Get the generated IDs
+        let id1 = json1.as_object().unwrap().keys().next().unwrap();
+        let id2 = json2.as_object().unwrap().keys().next().unwrap();
+
+        // IDs should be different due to different encoding
+        assert_ne!(id1, id2, "Different patterns should produce different IDs");
+
+        // Both should be 10 characters
+        assert_eq!(id1.len(), 10);
+        assert_eq!(id2.len(), 10);
+    }
+
+    #[test]
+    fn test_extract_messages_without_id_use_pattern() {
+        // Test that messages without explicit IDs get auto-generated IDs
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        let test_content = r#"
+import { defineMessages } from 'react-intl';
+
+const messages = defineMessages({
+  withId: {
+    id: 'explicit.id',
+    defaultMessage: 'Message with explicit ID',
+  },
+  withoutId: {
+    defaultMessage: 'Message without ID',
+  },
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        extract(
+            &[test_file],
+            None,
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Should have two messages
+        assert_eq!(json.as_object().unwrap().len(), 2);
+
+        // One should have the explicit ID
+        assert!(json
+            .as_object()
+            .unwrap()
+            .contains_key("explicit.id"));
+
+        // The other should have a generated ID (6 characters)
+        let generated_id = json
+            .as_object()
+            .unwrap()
+            .keys()
+            .find(|k| *k != "explicit.id")
+            .unwrap();
+        assert_eq!(generated_id.len(), 6);
+    }
+
+    #[test]
+    fn test_extract_with_description_affects_generated_id() {
+        // Test that description affects the generated ID
+        let temp_dir = tempfile::tempdir().unwrap();
+
+        // File 1: Message with description
+        let test_file1 = temp_dir.path().join("test1.tsx");
+        let test_content1 = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  defaultMessage: 'Hello',
+  description: 'A greeting',
+});
+"#;
+        std::fs::write(&test_file1, test_content1).unwrap();
+
+        // File 2: Same message without description
+        let test_file2 = temp_dir.path().join("test2.tsx");
+        let test_content2 = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  defaultMessage: 'Hello',
+});
+"#;
+        std::fs::write(&test_file2, test_content2).unwrap();
+
+        // Extract both
+        let output_file1 = temp_dir.path().join("output1.json");
+        extract(
+            &[test_file1],
+            None,
+            None,
+            Some(&output_file1),
+            "[sha512:contenthash:base64:10]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        let output_file2 = temp_dir.path().join("output2.json");
+        extract(
+            &[test_file2],
+            None,
+            None,
+            Some(&output_file2),
+            "[sha512:contenthash:base64:10]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Read outputs
+        let json1: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(&output_file1).unwrap()).unwrap();
+        let json2: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(&output_file2).unwrap()).unwrap();
+
+        // Get the generated IDs
+        let id1 = json1.as_object().unwrap().keys().next().unwrap();
+        let id2 = json2.as_object().unwrap().keys().next().unwrap();
+
+        // IDs should be different because description affects the hash
+        assert_ne!(
+            id1, id2,
+            "Description should affect the generated ID"
+        );
+    }
+
+    #[test]
+    fn test_extract_deterministic_id_generation() {
+        // Test that extracting the same file twice produces the same IDs
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+
+        let test_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  defaultMessage: 'Consistent Message',
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        // Extract first time
+        let output_file1 = temp_dir.path().join("output1.json");
+        extract(
+            &[test_file.clone()],
+            None,
+            None,
+            Some(&output_file1),
+            "[sha512:contenthash:base64:10]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Extract second time
+        let output_file2 = temp_dir.path().join("output2.json");
+        extract(
+            &[test_file],
+            None,
+            None,
+            Some(&output_file2),
+            "[sha512:contenthash:base64:10]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Read both outputs
+        let content1 = std::fs::read_to_string(&output_file1).unwrap();
+        let content2 = std::fs::read_to_string(&output_file2).unwrap();
+
+        // Outputs should be identical
+        assert_eq!(
+            content1, content2,
+            "Extracting the same file twice should produce identical output"
+        );
     }
 }
