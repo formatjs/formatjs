@@ -14,21 +14,6 @@ common --config=ruleset
 # Required until this is the default; expected in Bazel 7
 common --enable_bzlmod
 
-# Ensure that the MODULE.bazel.lock file is complete and committed.
-# This is an important security measure: it ensures that developers on the
-# same rule set download dependencies at the same versions with the same bits.
-# This setting does not affect modules that depend on this module.
-#
-# When updating dependencies, use --lockfile_mode=refresh, for example:
-#     bazel mod tidy --lockfile_mode=refresh
-#
-# When testing different versions of Bazel, use --lockfile_mode=update or
-# --lockfile_mode=off. The lock file format changes over time, and different
-# versions of Bazel may expect different syntax. Bazel also implicitly requires
-# some modules, and different versions have different dependencies, which
-# also affects the contents of the lock file.
-common --lockfile_mode=error
-
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
 # This needs to be last statement in this

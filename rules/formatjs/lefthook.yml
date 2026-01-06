@@ -5,6 +5,12 @@
 pre-commit:
   parallel: true
   commands:
+    bazel-lockfile:
+      glob:
+        - "*.bazel"
+        - "MODULE.bazel.lock"
+      run: bazel mod deps
+
     # Format code with oxfmt
     oxfmt:
       glob: "*.{js,ts,jsx,tsx,json,yaml,yml,md}"

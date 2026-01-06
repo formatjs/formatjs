@@ -107,11 +107,6 @@ common --incompatible_modify_execution_info_additive
 common --incompatible_strict_action_env
 # Docs: https://registry.build/flag/bazel?filter=incompatible_strict_action_env
 
-# Fail the build if the MODULE.bazel.lock file is out of date.
-# Using this mode in ci prevents the lockfile from being out of date.
-common:ci --lockfile_mode="error"
-# Docs: https://registry.build/flag/bazel?filter=lockfile_mode
-
 # On CI, don't download remote outputs to the local machine.
 # Most CI pipelines don't need to access the files and they can remain at rest on the remote cache.
 # Significant time can be spent on needless downloads, which is especially noticeable on fully-cached builds.
