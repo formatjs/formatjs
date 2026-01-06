@@ -1,8 +1,18 @@
 """Repository rules for FormatJS CLI toolchains."""
 
-DEFAULT_VERSION = "0.1.5"
+DEFAULT_VERSION = "0.1.6"
 
 FORMATJS_CLI_VERSIONS = {
+    "0.1.6": {
+        "darwin-arm64": {
+            "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.6/formatjs_cli-darwin-arm64",
+            "sha256": "01d5508a497054a6122e05f3a952eea777a7840a5c598d3573c76c6713a25e8c",
+        },
+        "linux-x64": {
+            "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.6/formatjs_cli-linux-x64",
+            "sha256": "9d0a11fe022f9280a5c4b92c2e170ef71e0ee8467f0476817f204c5d987268ec",
+        },
+    },
     "0.1.5": {
         "darwin-arm64": {
             "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.5/formatjs_cli-darwin-arm64",
