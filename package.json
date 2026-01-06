@@ -111,7 +111,7 @@
     "make-plural-compiler": "^5.1.0",
     "minimist": "^1.2.8",
     "oxc-transform": "^0.107.0",
-    "oxfmt": "^0.22.0",
+    "oxfmt": "^0.23.0",
     "oxlint": "^1.32.0",
     "postcss": "^8.5.6",
     "prismjs": "^1.29.0",
