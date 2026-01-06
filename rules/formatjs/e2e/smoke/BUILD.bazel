@@ -1,0 +1,8 @@
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract")
+
+# Extract messages from source files
+formatjs_extract(
+    name = "extract",
+    srcs = ["src/Hello.tsx"],
+    out = "messages.json",
+)
