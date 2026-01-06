@@ -10,6 +10,12 @@ on:
     secrets:
       publish_token:
         required: true
+  # Can be triggered from the tag.yaml workflow
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        required: true
+        type: string
   # Or, developers can manually push a tag from their clone
   push:
     tags:
