@@ -163,11 +163,15 @@ impl<'a> MessageExtractor<'a> {
         }
     }
 
-    fn extract_string_literal(&self, expr: &Expression) -> Option<String> {
+    fn extract_string_literal(
+        &self,
+        expr: &Expression,
+        preserve_whitespace: Option<bool>,
+    ) -> Option<String> {
         match expr {
             Expression::StringLiteral(lit) => {
                 let value = lit.value.to_string();
-                if self.preserve_whitespace {
+                if preserve_whitespace.unwrap_or(self.preserve_whitespace) {
                     Some(value)
                 } else {
                     Some(value.trim().to_string())
@@ -177,7 +181,7 @@ impl<'a> MessageExtractor<'a> {
                 if tpl.quasis.len() == 1 && tpl.expressions.is_empty() =>
             {
                 let value = tpl.quasis[0].value.cooked.as_ref()?.to_string();
-                if self.preserve_whitespace {
+                if preserve_whitespace.unwrap_or(self.preserve_whitespace) {
                     Some(value)
                 } else {
                     Some(value.trim().to_string())
@@ -185,8 +189,8 @@ impl<'a> MessageExtractor<'a> {
             }
             // Handle string concatenation (e.g., 'Hello' + ' ' + 'World')
             Expression::BinaryExpression(bin) if bin.operator == BinaryOperator::Addition => {
-                let left = self.extract_string_literal(&bin.left)?;
-                let right = self.extract_string_literal(&bin.right)?;
+                let left = self.extract_string_literal(&bin.left, Some(true))?;
+                let right = self.extract_string_literal(&bin.right, Some(true))?;
                 Some(format!("{}{}", left, right))
             }
             _ => None,
@@ -194,7 +198,7 @@ impl<'a> MessageExtractor<'a> {
     }
 
     fn extract_description(&self, expr: &Expression) -> Option<Value> {
-        if let Some(string_val) = self.extract_string_literal(expr) {
+        if let Some(string_val) = self.extract_string_literal(expr, None) {
             return Some(Value::String(string_val));
         }
 
@@ -205,7 +209,7 @@ impl<'a> MessageExtractor<'a> {
                 if let ObjectPropertyKind::ObjectProperty(p) = prop {
                     if let PropertyKey::StaticIdentifier(key) = &p.key {
                         // Try to extract string value
-                        if let Some(val) = self.extract_string_literal(&p.value) {
+                        if let Some(val) = self.extract_string_literal(&p.value, None) {
                             map.insert(key.name.to_string(), Value::String(val));
                         }
                         // Try to extract numeric value
@@ -383,7 +387,7 @@ impl<'a> MessageExtractor<'a> {
                                 if let Some(expr) = container.expression.as_expression() {
                                     match attr_name {
                                         "id" => {
-                                            descriptor.id = self.extract_string_literal(expr);
+                                            descriptor.id = self.extract_string_literal(expr, None);
                                             // Validate id is static if throws is enabled
                                             if self.throws && descriptor.id.is_none() {
                                                 panic!(
@@ -393,7 +397,7 @@ impl<'a> MessageExtractor<'a> {
                                         }
                                         "defaultMessage" => {
                                             descriptor.default_message =
-                                                self.extract_string_literal(expr);
+                                                self.extract_string_literal(expr, None);
                                             // Validate defaultMessage is static if throws is enabled
                                             if self.throws && descriptor.default_message.is_none() {
                                                 panic!(
@@ -501,14 +505,15 @@ impl<'a> MessageExtractor<'a> {
                 if let PropertyKey::StaticIdentifier(key) = &p.key {
                     match key.name.as_str() {
                         "id" => {
-                            descriptor.id = self.extract_string_literal(&p.value);
+                            descriptor.id = self.extract_string_literal(&p.value, None);
                             // Validate id is static if throws is enabled
                             if self.throws && descriptor.id.is_none() {
                                 panic!("defaultMessage must be a string literal to be extracted.");
                             }
                         }
                         "defaultMessage" => {
-                            descriptor.default_message = self.extract_string_literal(&p.value);
+                            descriptor.default_message =
+                                self.extract_string_literal(&p.value, None);
                             // Validate defaultMessage is static if throws is enabled
                             if self.throws && descriptor.default_message.is_none() {
                                 panic!("defaultMessage must be a string literal to be extracted.");
@@ -1450,5 +1455,80 @@ mod tests {
         assert!(messages[0].file.is_some());
         assert!(messages[0].start.is_some());
         assert!(messages[0].end.is_some());
+    }
+
+    #[test]
+    fn test_string_concatenation() {
+        let source = r#"
+            import { defineMessages } from 'react-intl';
+            defineMessages({
+                greeting: {
+                    id: 'greeting',
+                    defaultMessage: 'foo ' + 'bar',
+                    description: 'Test string concatenation'
+                }
+            });
+        "#;
+
+        let file_path = PathBuf::from("test.js");
+        let source_type = SourceType::default();
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec!["defineMessages".to_string()];
+
+        let messages = extract_messages_from_source(
+            source,
+            &file_path,
+            source_type,
+            false,
+            &component_names,
+            &function_names,
+            HashMap::new(),
+            false,
+            false,
+            false,
+        )
+        .unwrap();
+
+        assert_eq!(messages.len(), 1);
+        assert_eq!(messages[0].id, Some("greeting".to_string()));
+        assert_eq!(messages[0].default_message, Some("foo bar".to_string()));
+    }
+
+    #[test]
+    fn test_non_breaking_space_in_message() {
+        let source = r#"
+            import { defineMessages } from 'react-intl';
+            defineMessages({
+                spacing: {
+                    id: 'spacing',
+                    defaultMessage: 'foo\xa0bar baz',
+                    description: 'Test non-breaking space'
+                }
+            });
+        "#;
+
+        let file_path = PathBuf::from("test.js");
+        let source_type = SourceType::default();
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec!["defineMessages".to_string()];
+
+        let messages = extract_messages_from_source(
+            source,
+            &file_path,
+            source_type,
+            false,
+            &component_names,
+            &function_names,
+            HashMap::new(),
+            false,
+            false,
+            false,
+        )
+        .unwrap();
+
+        assert_eq!(messages.len(), 1);
+        assert_eq!(messages[0].id, Some("spacing".to_string()));
+        // \xa0 is a non-breaking space (U+00A0)
+        assert_eq!(messages[0].default_message, Some("foo\u{00a0}bar baz".to_string()));
     }
 }

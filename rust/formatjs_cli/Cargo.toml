@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_cli"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "Command-line interface for FormatJS - A Rust-based CLI for internationalization"
