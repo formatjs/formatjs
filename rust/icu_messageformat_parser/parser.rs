@@ -531,15 +531,16 @@ impl Parser {
             return None;
         }
 
-        let offset = self.offset();
+        // FIX: Use byte_offset for string slicing, not character offset
+        let byte_offset = self.byte_offset();
         let ch = self.char();
         let char_len = std::char::from_u32(ch).unwrap().len_utf8();
-        let next_offset = offset + char_len;
+        let next_byte_offset = byte_offset + char_len;
 
-        if next_offset >= self.message.len() {
+        if next_byte_offset >= self.message.len() {
             None
         } else {
-            let remaining = &self.message[next_offset..];
+            let remaining = &self.message[next_byte_offset..];
             remaining.chars().next().map(|c| c as u32)
         }
     }
@@ -1687,5 +1688,42 @@ mod tests {
         let parser = Parser::new("ab", ParserOptions::default());
         assert_eq!(parser.peek(), Some(b'b' as u32));
         assert_eq!(parser.offset(), 0); // peek doesn't advance
+    }
+
+    #[test]
+    fn test_parser_hindi_text_with_tags() {
+        // Test parsing Hindi text with HTML tags: "ही किंमत <span>जास्त</span>"
+        let parser = Parser::new("ही किंमत <span>जास्त</span>", ParserOptions::default());
+        let result = parser.parse();
+
+        assert!(result.is_ok(), "Failed to parse Hindi text with tags: {:?}", result.err());
+
+        let elements = result.unwrap();
+        assert_eq!(elements.len(), 2, "Expected 2 elements (literal + tag)");
+
+        // First element should be literal text "ही किंमत "
+        match &elements[0] {
+            MessageFormatElement::Literal(lit) => {
+                assert_eq!(lit.value, "ही किंमत ", "First element should be Hindi text");
+            }
+            _ => panic!("First element should be a literal"),
+        }
+
+        // Second element should be a tag with Hindi text inside
+        match &elements[1] {
+            MessageFormatElement::Tag(tag) => {
+                assert_eq!(tag.value, "span", "Tag name should be 'span'");
+                assert_eq!(tag.children.len(), 1, "Tag should have 1 child");
+
+                // Check the child is the Hindi literal "जास्त"
+                match &tag.children[0] {
+                    MessageFormatElement::Literal(lit) => {
+                        assert_eq!(lit.value, "जास्त", "Tag content should be Hindi text");
+                    }
+                    _ => panic!("Tag child should be a literal"),
+                }
+            }
+            _ => panic!("Second element should be a tag"),
+        }
     }
 }
