@@ -4,7 +4,7 @@ module(
     name = "rules_formatjs",
 
     # NOTE:
-    # version = "",
+    version = "",
     #
     # Always leave version unset or set to "" (the default). The default value
     # can prevent issues when the module is used via non-registry overrides
