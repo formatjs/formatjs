@@ -66,7 +66,7 @@
     "@typescript-eslint/parser": "^8.27.0",
     "@typescript-eslint/rule-tester": "^8.27.0",
     "@typescript-eslint/utils": "^8.27.0",
-    "@typescript/native-preview": "7.0.0-dev.20260102.1",
+    "@typescript/native-preview": "7.0.0-dev.20260105.1",
     "@unicode/unicode-13.0.0": "^1.6.0",
     "@vitejs/plugin-react-oxc": "^0.4.3",
     "@vue/compiler-core": "^3.5.12",
