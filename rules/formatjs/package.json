@@ -9,7 +9,7 @@
     "@commitlint/cli": "^20.3.0",
     "@commitlint/config-angular": "^20.3.0",
     "@evilmartians/lefthook": "^2.0.0",
-    "oxfmt": "^0.22.0"
+    "oxfmt": "^0.23.0"
   },
   "packageManager": "pnpm@10.27.0"
 }
