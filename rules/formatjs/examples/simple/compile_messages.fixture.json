@@ -1,21 +1,18 @@
 {
   "app.button": [
     {
-      "location": null,
       "type": 0,
       "value": "Click me!"
     }
   ],
   "app.description": [
     {
-      "location": null,
       "type": 0,
       "value": "This is an example of internationalized React app using FormatJS and Bazel."
     }
   ],
   "app.title": [
     {
-      "location": null,
       "type": 0,
       "value": "Welcome to FormatJS"
     }

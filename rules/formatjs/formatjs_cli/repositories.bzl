@@ -1,18 +1,26 @@
 """Repository rules for FormatJS CLI toolchains."""
 
-DEFAULT_VERSION = "0.1.2"
+DEFAULT_VERSION = "0.1.4"
 
 FORMATJS_CLI_VERSIONS = {
-    # NOTE: 0.1.3 infrastructure is prepared but not yet released
-    # To use 0.1.3 when available, download the binaries and update the SHA256 checksums below
+    "0.1.4": {
+        "darwin-arm64": {
+            "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.4/formatjs_cli-darwin-arm64",
+            "sha256": "dfa300380ab8a482a0103dda5995f5ea595987cac848dd9255a33092e93e14ee",
+        },
+        "linux-x64": {
+            "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.4/formatjs_cli-linux-x64",
+            "sha256": "9db56fd9e4118cd5e4408ea9d75cd93cc2d3152b6814ab238ea5fbfc6ba6742f",
+        },
+    },
     "0.1.3": {
         "darwin-arm64": {
             "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.3/formatjs_cli-darwin-arm64",
-            "sha256": "0000000000000000000000000000000000000000000000000000000000000000",  # TODO: Update when released
+            "sha256": "ea99b1444ae9b331d51dad2806f7c870d352a6d9e71de7176da6b3b6c973873c",
         },
         "linux-x64": {
             "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.3/formatjs_cli-linux-x64",
-            "sha256": "0000000000000000000000000000000000000000000000000000000000000000",  # TODO: Update when released
+            "sha256": "4ee7d9d06c933ef16292ca6d4af32de820756e47dd00f28cc821184cb94cd9be",
         },
     },
     "0.1.2": {
