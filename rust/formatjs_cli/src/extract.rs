@@ -213,6 +213,7 @@ fn build_function_names(additional: &[String]) -> Vec<String> {
         "defineMessages".to_string(),
         "defineMessage".to_string(),
         "formatMessage".to_string(),
+        "$t".to_string(),
     ];
     names.extend_from_slice(additional);
     names
@@ -322,13 +323,14 @@ mod tests {
 
     #[test]
     fn test_build_function_names() {
-        let additional = vec!["$t".to_string()];
+        let additional = vec!["$formatMessage".to_string()];
         let names = build_function_names(&additional);
-        assert_eq!(names.len(), 4);
+        assert_eq!(names.len(), 5);
         assert!(names.contains(&"defineMessages".to_string()));
         assert!(names.contains(&"defineMessage".to_string()));
         assert!(names.contains(&"formatMessage".to_string()));
         assert!(names.contains(&"$t".to_string()));
+        assert!(names.contains(&"$formatMessage".to_string()));
     }
 
     #[test]

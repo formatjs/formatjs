@@ -4,11 +4,13 @@ import {useIntl} from 'react-intl'
 // GH #4471: Test optional chaining with formatMessage
 export function OptionalChainingComponent() {
   const intl = useIntl()
-
+  const {formatMessage, $t} = intl
   return (
     <div>
       {/* Normal call - baseline */}
       <p>{intl.formatMessage({defaultMessage: 'Normal call'})}</p>
+      <p>{formatMessage({defaultMessage: 'Normal call'})}</p>
+      <p>{$t({defaultMessage: 'Normal call'})}</p>
 
       {/* With generics */}
       <p>
