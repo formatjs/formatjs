@@ -10,7 +10,7 @@ FORMATJS_CLI_VERSIONS dictionary. This is useful for:
 module(name = "custom_version_example")
 
 bazel_dep(name = "rules_formatjs", version = "")
-bazel_dep(name = "rules_shell", version = "0.3.0")
+bazel_dep(name = "rules_shell", version = "0.6.1")
 
 # Use local override since we're developing rules_formatjs
 local_path_override(
