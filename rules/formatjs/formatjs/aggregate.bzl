@@ -5,15 +5,34 @@ and their dependencies into a single, consolidated JSON file. This is useful for
 large monorepo projects where messages are extracted from multiple packages or
 modules and need to be combined for translation or compilation.
 
-The aggregation process:
+## Platform Support
+
+These rules work across all platforms supported by the jq.bzl toolchain:
+- macOS (Apple Silicon and Intel)
+- Linux (x86_64 and aarch64)
+- Windows (x86_64)
+
+Bazel automatically selects the appropriate jq binary for your platform through
+the toolchain resolution system. No platform-specific configuration is needed.
+
+## Aggregation Process
+
 1. Traverses the dependency graph collecting all extracted message files
 2. Merges messages using jq with object multiplication semantics
 3. Sorts keys alphabetically for deterministic output
 4. Handles duplicate message IDs (later values override earlier ones)
 
+## Usage Patterns
+
 Aggregation can be used via:
 - `formatjs_aggregate` rule: Declarative approach for common use cases
 - `formatjs_aggregate_aspect`: Aspect-based approach for advanced scenarios
+
+## Dependencies
+
+This module depends on:
+- `jq.bzl` toolchain for JSON merging and sorting operations
+- `FormatjsExtractInfo` provider from extract.bzl for message collection
 """
 
 load(":extract.bzl", "FormatjsExtractInfo")
@@ -105,6 +124,15 @@ formatjs_aggregate_aspect = aspect(
     a target and all its transitive dependencies. It automatically traverses the
     dependency graph, collecting messages from any target that provides `FormatjsExtractInfo`.
 
+    ## Platform Support
+
+    Works across all platforms through Bazel's toolchain resolution:
+    - macOS (Apple Silicon and Intel)
+    - Linux (x86_64 and aarch64)
+    - Windows (x86_64)
+
+    The jq.bzl toolchain automatically provides the correct binary for your platform.
+
     ## How It Works
 
     The aspect:
@@ -120,6 +148,7 @@ formatjs_aggregate_aspect = aspect(
     - Later values override earlier ones for duplicate message IDs
     - All unique message IDs are preserved
     - Sorted alphabetically by key in the final output
+    - Ensures deterministic output across all platforms
 
     ## Usage Patterns
 
@@ -133,14 +162,22 @@ formatjs_aggregate_aspect = aspect(
     ### Get individual message files (not merged):
     ```bash
     bazel build //app:main \\
-            --aspects=@rules_formatjs//formatjs:aggregate.bzl%formatjs_aggregate_aspect \\
-            --output_groups=all_messages
+        --aspects=@rules_formatjs//formatjs:aggregate.bzl%formatjs_aggregate_aspect \\
+        --output_groups=all_messages
+    ```
 
-    Output:
-        - aggregated_messages: Single merged JSON file with all messages
-        - all_messages: All individual message JSON files (not merged)
+    ## Output Groups
 
-    The aggregated file will be named: <target_name>_aggregated_messages.json
+    - `aggregated_messages`: Single merged JSON file with all messages
+    - `all_messages`: All individual message JSON files (not merged)
+
+    The aggregated file will be named: `<target_name>_aggregated_messages.json`
+
+    ## Cross-Platform Considerations
+
+    - JSON output is identical across all platforms (UTF-8, sorted keys)
+    - jq binary is automatically selected for your build platform
+    - No platform-specific configuration needed in BUILD files
     """,
 )
 
@@ -167,7 +204,7 @@ def _formatjs_aggregate_impl(ctx):
         fail("No messages found in dependencies. Make sure deps contain formatjs_extract targets.")
 
     # Create the final aggregated output file
-    output = ctx.actions.declare_file(ctx.attr.name + ".json")
+    output = ctx.outputs.out or ctx.actions.declare_file(ctx.attr.name + ".json")
 
     # Use jq to merge all messages and sort keys
     jq_toolchain = ctx.toolchains["@jq.bzl//jq/toolchain:type"]
@@ -202,6 +239,9 @@ def _formatjs_aggregate_impl(ctx):
 formatjs_aggregate = rule(
     implementation = _formatjs_aggregate_impl,
     attrs = {
+        "out": attr.output(
+            doc = "Output file for the aggregated messages (JSON format). Defaults to <name>.json",
+        ),
         "deps": attr.label_list(
             doc = """Dependencies to aggregate messages from.
 
@@ -229,6 +269,16 @@ formatjs_aggregate = rule(
     targets across your codebase. It's ideal for monorepos where messages are extracted
     from different packages or modules and need to be combined for translation workflows.
 
+    ## Platform Support
+
+    Works seamlessly across all platforms through Bazel's toolchain resolution:
+    - macOS (Apple Silicon and Intel)
+    - Linux (x86_64 and aarch64)
+    - Windows (x86_64)
+
+    The jq.bzl toolchain automatically provides the correct binary for your build platform.
+    No platform-specific configuration is required in BUILD files.
+
     ## Features
 
     - **Automatic Traversal**: Automatically applies aspect to collect messages from dependencies
@@ -236,6 +286,7 @@ formatjs_aggregate = rule(
     - **Merge & Sort**: Merges all messages and sorts keys alphabetically
     - **Duplicate Handling**: Later values override earlier ones for duplicate message IDs
     - **Simple API**: Just list your extraction targets as deps
+    - **Cross-Platform**: Identical output across all platforms (UTF-8, sorted keys)
 
     ## How It Works
 
@@ -364,6 +415,19 @@ formatjs_aggregate = rule(
         ast = True,
     )
     ```
+
+    ## Cross-Platform Builds
+
+    The aggregation process produces identical output across all platforms:
+    - JSON is UTF-8 encoded with consistent line endings
+    - Keys are sorted alphabetically for deterministic output
+    - Checksums match across macOS, Linux, and Windows builds
+    - Remote caching works seamlessly across heterogeneous build fleets
+
+    This ensures that:
+    - CI builds are reproducible regardless of runner platform
+    - Developers on different OS can share build artifacts
+    - Remote execution works with mixed execution platforms
 
     ## See Also
 

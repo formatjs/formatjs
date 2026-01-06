@@ -14,13 +14,16 @@ formatjs_aggregate(
     ],
 )
 
-# Snapshot test - verifies that aggregated messages match the expected fixture
-# Run `bazel run //app:update_all_messages_fixture` to update the snapshot
-write_source_files(
-    name = "update_all_messages_fixture",
-    files = {
-        "all_messages.fixture.json": ":all_messages",
-    },
+# Aggregate messages from module2 and module3
+# Module3 depends on module1, so module1's messages should be included transitively
+# This demonstrates that the aspect properly traverses the dependency graph
+formatjs_aggregate(
+    name = "transitive_messages",
+    out = "transitive_messages.json",
+    deps = [
+        "//module2:messages",
+        "//module3:messages",
+    ],
 )
 
 # Test target - verifies the snapshot hasn't changed
@@ -28,5 +31,6 @@ write_source_files(
     name = "aggregation_test",
     files = {
         "all_messages.fixture.json": ":all_messages",
+        "transitive_messages.fixture.json": ":transitive_messages.json",
     },
 )
