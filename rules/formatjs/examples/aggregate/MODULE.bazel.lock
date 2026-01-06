@@ -166,7 +166,7 @@
   "moduleExtensions": {
     "@@rules_formatjs+//formatjs_cli:extensions.bzl%formatjs_cli": {
       "general": {
-        "bzlTransitiveDigest": "X2JbKzGh2jRLgy3L+ZgZHvXFrfjsVA47rakuKqpQf7Q=",
+        "bzlTransitiveDigest": "kRe2vKASeAfMDI0ydEzaZysVQpniuuTIgodPjN1asIw=",
         "usagesDigest": "Pg9AoNWkiafZg2vRg1cun1wJ8tGnd7cbpomQkKx+I6s=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},

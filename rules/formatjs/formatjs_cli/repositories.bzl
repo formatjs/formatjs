@@ -23,16 +23,6 @@ FORMATJS_CLI_VERSIONS = {
             "sha256": "7bfbce944b780c0b12ec4d8362ae5e0e9ab8b745573f8a367228b14f64c7175b",
         },
     },
-    "0.1.0": {
-        "darwin-arm64": {
-            "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.0/formatjs_cli-darwin-arm64",
-            "sha256": "9b2c736b48cc65e763cf19ac7c190e527f9a8d4aa0798185e602f58becb99feb",
-        },
-        "linux-x64": {
-            "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.0/formatjs_cli-linux-x64",
-            "sha256": "884b9a41b9f6be649ea72277ebf22af0146043466d2ab94b28a57f95ffb7da1a",
-        },
-    },
 }
 
 def _formatjs_cli_repo_impl(rctx):
@@ -40,25 +30,37 @@ def _formatjs_cli_repo_impl(rctx):
     platform = rctx.attr.platform
     version = rctx.attr.version
 
-    if version not in FORMATJS_CLI_VERSIONS:
-        fail("Unsupported FormatJS CLI version: {}. Available versions: {}".format(
-            version,
-            FORMATJS_CLI_VERSIONS.keys(),
-        ))
+    # Allow custom URL and SHA256 to be provided
+    custom_url = rctx.attr.url
+    custom_sha256 = rctx.attr.sha256
 
-    if platform not in FORMATJS_CLI_VERSIONS[version]:
-        fail("Unsupported platform: {} for version {}. Available platforms: {}".format(
-            platform,
-            version,
-            FORMATJS_CLI_VERSIONS[version].keys(),
-        ))
+    if custom_url and custom_sha256:
+        # Use custom URL and SHA256 if provided
+        url = custom_url
+        sha256 = custom_sha256
+    else:
+        # Use built-in versions
+        if version not in FORMATJS_CLI_VERSIONS:
+            fail("Unsupported FormatJS CLI version: {}. Available versions: {}".format(
+                version,
+                FORMATJS_CLI_VERSIONS.keys(),
+            ))
 
-    info = FORMATJS_CLI_VERSIONS[version][platform]
+        if platform not in FORMATJS_CLI_VERSIONS[version]:
+            fail("Unsupported platform: {} for version {}. Available platforms: {}".format(
+                platform,
+                version,
+                FORMATJS_CLI_VERSIONS[version].keys(),
+            ))
+
+        info = FORMATJS_CLI_VERSIONS[version][platform]
+        url = info["url"]
+        sha256 = info["sha256"]
 
     rctx.download(
-        url = info["url"],
+        url = url,
         output = "formatjs_cli",
-        sha256 = info["sha256"],
+        sha256 = sha256,
         executable = True,
     )
 
@@ -100,6 +102,20 @@ _formatjs_cli_repo = repository_rule(
         "platform": attr.string(
             mandatory = True,
             doc = "Target platform (e.g., 'darwin-arm64', 'linux-x64')",
+        ),
+        "url": attr.string(
+            doc = """Custom URL to download the FormatJS CLI binary from.
+
+            If provided along with sha256, this overrides the built-in version URLs.
+            Useful for testing unreleased versions or using custom builds.
+            """,
+        ),
+        "sha256": attr.string(
+            doc = """SHA256 checksum of the custom binary.
+
+            Required if url is provided. This ensures the downloaded binary
+            matches the expected checksum for security and reproducibility.
+            """,
         ),
         "exec_compatible_with": attr.string_list(
             doc = "Execution platform constraints",
@@ -302,3 +318,7 @@ def formatjs_cli_register_toolchains(name, version = DEFAULT_VERSION, register =
     # Register toolchains
     if register:
         native.register_toolchains("@{}//...".format(name))
+
+# Export public versions of repository rules for use in module extensions
+formatjs_cli_repo = _formatjs_cli_repo
+formatjs_cli_toolchains_repo = _formatjs_cli_toolchains_repo

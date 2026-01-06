@@ -1,0 +1,54 @@
+"""Example demonstrating custom FormatJS CLI version configuration.
+
+This example shows how to use a custom version (0.1.0) that is not in the built-in
+FORMATJS_CLI_VERSIONS dictionary. This is useful for:
+- Testing unreleased versions
+- Using custom builds
+- Supporting platforms not yet officially supported
+"""
+
+module(name = "custom_version_example")
+
+bazel_dep(name = "rules_formatjs", version = "")
+bazel_dep(name = "rules_shell", version = "0.3.0")
+
+# Use local override since we're developing rules_formatjs
+local_path_override(
+    module_name = "rules_formatjs",
+    path = "../..",
+)
+
+# Configure custom FormatJS CLI version 0.1.0
+# This version was removed from the built-in versions but we can still use it
+formatjs_cli = use_extension("@rules_formatjs//formatjs_cli:extensions.bzl", "formatjs_cli")
+
+# Single toolchain call with custom binaries (similar to rules_nodejs pattern)
+formatjs_cli.toolchain(
+    name = "formatjs_v0_1_0",
+    formatjs_repositories = {
+        "0.1.0.darwin-arm64": [
+            "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.0/formatjs_cli-darwin-arm64",
+            "9b2c736b48cc65e763cf19ac7c190e527f9a8d4aa0798185e602f58becb99feb",
+        ],
+        "0.1.0.linux-x64": [
+            "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.0/formatjs_cli-linux-x64",
+            "884b9a41b9f6be649ea72277ebf22af0146043466d2ab94b28a57f95ffb7da1a",
+        ],
+    },
+)
+
+# Repository names are: {name}_{platform} and {name}_toolchains
+# Examples: formatjs_v0_1_0_darwin_arm64, formatjs_v0_1_0_linux_x64, formatjs_v0_1_0_toolchains
+use_repo(
+    formatjs_cli,
+    "formatjs_v0_1_0_darwin_arm64",
+    "formatjs_v0_1_0_linux_x64",
+    "formatjs_v0_1_0_toolchains",
+)
+
+# Register the custom version toolchains (0.1.0)
+# Note: Standard toolchains (0.1.2) are already registered by rules_formatjs root MODULE.bazel
+# Bazel will select the appropriate one based on platform constraints and registration order
+register_toolchains(
+    "@formatjs_v0_1_0_toolchains//:all",
+)

@@ -1,0 +1,67 @@
+"""Example BUILD file demonstrating extraction with custom FormatJS CLI version."""
+
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
+# Simple TypeScript/React file with FormatJS messages
+genrule(
+    name = "generate_source",
+    outs = ["App.tsx"],
+    cmd = """cat > $@ << 'EOF'
+import { FormattedMessage, defineMessages } from 'react-intl';
+
+const messages = defineMessages({
+  welcome: {
+    id: 'app.welcome',
+    defaultMessage: 'Welcome to the custom version example!',
+    description: 'Welcome message on homepage',
+  },
+  goodbye: {
+    id: 'app.goodbye',
+    defaultMessage: 'Goodbye!',
+    description: 'Farewell message',
+  },
+});
+
+export function App() {
+  return (
+    <div>
+      <h1><FormattedMessage {...messages.welcome} /></h1>
+      <p><FormattedMessage {...messages.goodbye} /></p>
+      <FormattedMessage
+        id="app.inline"
+        defaultMessage="This is an inline message"
+        description="Inline message example"
+      />
+    </div>
+  );
+}
+EOF
+""",
+)
+
+# Extract messages using the custom FormatJS CLI version (0.1.0)
+# This demonstrates that custom platform configurations work correctly
+formatjs_extract(
+    name = "messages",
+    srcs = [":App.tsx"],
+    out = "messages.json",
+)
+
+# Test that we can read the extracted messages
+sh_test(
+    name = "test_extraction",
+    srcs = ["test_extraction.sh"],
+    data = [":messages"],
+)
+
+# Test that verifies we're using the custom CLI version (0.1.0)
+# This test accesses the CLI binaries directly to check their version
+sh_test(
+    name = "test_cli_version",
+    srcs = ["test_cli_version.sh"],
+    data = [
+        "@formatjs_v0_1_0_darwin_arm64//:cli",
+        "@formatjs_v0_1_0_linux_x64//:cli",
+    ],
+)
