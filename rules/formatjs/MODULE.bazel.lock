@@ -179,7 +179,7 @@
   "moduleExtensions": {
     "//formatjs_cli:extensions.bzl%formatjs_cli": {
       "general": {
-        "bzlTransitiveDigest": "JeeBlOjr+qcJbc2M4HJroe5hP0nt3GxAHWkvN8uj/D8=",
+        "bzlTransitiveDigest": "ayOGnS3c4Nm7hGVhEFqUafDsNx+0VeP27O09+r7lYZ8=",
         "usagesDigest": "u1UtdtFJl4hTbPzmfFnHgmdme9PYUKQDyGchL3/E37k=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},

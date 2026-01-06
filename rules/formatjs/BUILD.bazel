@@ -13,6 +13,6 @@ package_metadata(
 
 license(
     name = "license",
-    kind = "@package_metadata//licenses/spdx:Apache-2.0",
+    kind = "@package_metadata//licenses/spdx:MIT",
     text = "LICENSE",
 )

@@ -1,4 +1,15 @@
-"""Rules for verifying message translations using FormatJS CLI"""
+"""Rules for verifying translation file completeness and correctness.
+
+This module provides the `formatjs_verify_test` macro for creating test targets that
+verify translation files against source messages. The verification ensures translation
+files are complete, don't have extra keys, and maintain structural compatibility with
+the source messages.
+
+Verification tests are essential in i18n workflows to catch translation errors early
+in the development process, preventing runtime errors and ensuring translation quality.
+"""
+
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 def formatjs_verify_test(
         name,
@@ -9,25 +20,142 @@ def formatjs_verify_test(
         check_structural_equality = True,
         expected_exit_code = 0,
         **kwargs):
-    """Verify that translation files are valid and complete.
+    """Create a test that verifies translation files are valid and complete.
 
-    This test rule uses the formatjs CLI's verify command to check that:
-    - All message IDs in the source locale exist in translation files (if check_missing_keys=True)
-    - Translation files don't contain extra message IDs (if check_extra_keys=True)
-    - Message formats are structurally valid (if check_structural_equality=True)
+    This macro creates a test target that uses the FormatJS CLI to verify translation
+    files against a source locale. It can detect missing translations, extra keys, and
+    structural mismatches in ICU MessageFormat strings.
 
-    The translations list must include the source locale file. The source locale is identified
-    either by the source_locale parameter (e.g., "en") or defaults to the first file in the list.
+    ## Verification Checks
+
+    The test performs the following checks (each can be enabled/disabled):
+
+    - **Missing Keys** (`check_missing_keys`): Ensures all message IDs in the source
+      locale exist in translation files. Missing keys indicate incomplete translations.
+
+    - **Extra Keys** (`check_extra_keys`): Detects message IDs in translation files
+      that don't exist in the source. Extra keys may indicate outdated translations.
+
+    - **Structural Equality** (`check_structural_equality`): Validates that ICU
+      MessageFormat syntax is compatible between source and translations. For example,
+      if source uses `{count, plural, ...}`, translation must too.
+
+    ## Usage Patterns
+
+    ### Basic verification of translations:
+    ```starlark
+    formatjs_verify_test(
+        name = "verify_translations",
+        translations = [
+            "messages/en.json",  # source locale (first file)
+            "messages/fr.json",
+            "messages/es.json",
+        ],
+    )
+    ```
+
+    ### Specify source locale explicitly:
+    ```starlark
+    formatjs_verify_test(
+        name = "verify_translations",
+        translations = [
+            "messages/en.json",
+            "messages/fr.json",
+            "messages/de.json",
+        ],
+        source_locale = "en",
+    )
+    ```
+
+    ### Only check for missing keys:
+    ```starlark
+    formatjs_verify_test(
+        name = "check_complete",
+        translations = [
+            ":messages",  # extracted source messages
+            "translations/fr.json",
+        ],
+        check_missing_keys = True,
+        check_extra_keys = False,
+        check_structural_equality = False,
+    )
+    ```
+
+    ### Negative test - expect validation to fail:
+    ```starlark
+    formatjs_verify_test(
+        name = "test_incomplete_translations_fail",
+        translations = [
+            "test_data/en.json",
+            "test_data/incomplete-fr.json",
+        ],
+        expected_exit_code = 1,  # Expect failure
+        tags = ["manual"],  # Don't run in default test suite
+    )
+    ```
+
+    ## Integration with Extraction
+
+    Use with `formatjs_extract` to verify translations against extracted messages:
+    ```starlark
+    formatjs_extract(
+        name = "source_messages",
+        srcs = glob(["src/**/*.tsx"]),
+    )
+
+    formatjs_verify_test(
+        name = "verify_fr",
+        translations = [
+            ":source_messages",
+            "translations/fr.json",
+        ],
+    )
+    ```
+
+    ## Test Output
+
+    On success:
+    ```
+    ✓ Translation verification passed
+    ```
+
+    On failure (missing keys):
+    ```
+    Error: Missing keys in fr.json: app.title, app.subtitle
+    ```
+
+    ## See Also
+
+    - `formatjs_extract`: Extract source messages for verification
+    - `formatjs_compile`: Compile verified translations for production use
 
     Args:
-        name: Name of the test target
-        translations: List of translation JSON files to verify (must include source locale)
-        source_locale: Source locale identifier (e.g., "en"). If not provided, uses the first file.
-        check_missing_keys: Whether to check for missing keys in target locale (default: True)
-        check_extra_keys: Whether to check for extra keys in target locale (default: True)
-        check_structural_equality: Whether to check structural equality of messages (default: True)
-        expected_exit_code: Expected exit code from the verify command (default: 0 for success, 1 for expected failures)
-        **kwargs: Additional arguments passed to the underlying test rule
+        name: Name of the test target. The test can be run with `bazel test //path/to:name`.
+
+        translations: List of translation JSON files to verify. Must include the source
+            locale file (typically first in the list). Can reference `formatjs_extract`
+            targets directly using label syntax (`:messages`).
+
+        source_locale: Source locale identifier (e.g., "en", "en-US"). If not provided,
+            the first file in `translations` is used as the source. This parameter helps
+            identify which file is the source when translations are not in alphabetical order.
+
+        check_missing_keys: Whether to fail if translation files are missing message IDs
+            that exist in the source (default: True). Disable for partial translations.
+
+        check_extra_keys: Whether to fail if translation files contain message IDs not
+            in the source (default: True). Useful for detecting stale translations.
+
+        check_structural_equality: Whether to fail if message format structures don't
+            match between source and translations (default: True). For example, if source
+            has `{count, plural, ...}` but translation has plain text.
+
+        expected_exit_code: Expected exit code from the verify command (default: 0).
+            Set to 1 for negative tests that expect verification to fail. Useful for
+            testing that incomplete translations are properly detected.
+
+        **kwargs: Additional arguments passed to the underlying `sh_test` rule, such as
+            `size`, `timeout`, `tags`, or `visibility`.
     """
 
     # Build verify command arguments
@@ -89,7 +217,7 @@ fi
     for i, t in enumerate(translations):
         env_vars["TRANS_FILE_%d" % i] = "$(rootpath %s)" % t
 
-    native.sh_test(
+    sh_test(
         name = name,
         srcs = [script_name],
         data = translations + ["@rules_formatjs//formatjs_cli:cli"],
