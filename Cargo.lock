@@ -448,7 +448,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat_parser"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "criterion",
  "formatjs_icu_skeleton_parser",
@@ -472,7 +472,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_skeleton_parser"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "once_cell",
  "regex",
