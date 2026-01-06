@@ -644,7 +644,7 @@
         "bzlTransitiveDigest": "u2i6cw9UufcXbPuESBB66WdqYKm1KTFsDORyv0HawHo=",
         "usagesDigest": "tsxRjH5DN8xUnGoUELCp/xuIp04EwwlFAtYpnGb6Y+4=",
         "recordedFileInputs": {
-          "@@//package.json": "8fa3053a40dbd7e9c8ac0ff48ce9b9184f1dacadcd9e0085490586b113752901"
+          "@@//package.json": "3646505ce6977e431df91d5a88dc36a32bcb1e86e23efdb9d2afb7f5535ebb54"
         },
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -1942,11 +1942,11 @@
         "bzlTransitiveDigest": "WtIoVC11ie4SZ/RJIy/93jgE8KMXiwLBVrk6qhzuTCI=",
         "usagesDigest": "+2oxp30n7U2iCRyiQVVvn9Dm9XZaeUlnwnAuV9gqyVs=",
         "recordedFileInputs": {
-          "@@//Cargo.lock": "0b2de0184c8bd89a543f7275f1c14aef32dfdd587fc7bda25af5015468d1cecf",
+          "@@//Cargo.lock": "73825394f561e6ec6344e2125caa26b1b51971ccb1b57103f92caaa93e1eb307",
           "@@//Cargo.toml": "54ff38b0981299b3dc7f10c22a8504c8437c27edea7747f5f59a22d0a5b6b4b7",
           "@@//MODULE.bazel": "056f89f9c35545957b5b7ed035f78b257df275755d3298f747055946b5a5d360",
           "@@//packages/icu-messageformat-parser/integration-tests/Cargo.toml": "c15f4f2503b87826277cf06f759b6350feb16061dd823c41946b9aa2ea1af176",
-          "@@//rust/formatjs_cli/Cargo.toml": "b091a682250cf1996f155cc56b814831123fc95fba138f7a2f491df75c5c4f43",
+          "@@//rust/formatjs_cli/Cargo.toml": "91229da593057e0bb743e9bd8a1e37c00ddf5474585f637ba404ba323434e360",
           "@@//rust/icu_messageformat_parser/Cargo.toml": "6b67e9213dd58c024c2b4eb435822a88f58111d3a983027221743e981241f156",
           "@@//rust/icu_skeleton_parser/Cargo.toml": "b5056aa39250f0e19f54075eea8d24ff048f9f31e6c7378be86a4fb85401329a",
           "@@rules_rust++rust_host_tools+rust_host_tools//rust_host_tools": "ENOENT"
