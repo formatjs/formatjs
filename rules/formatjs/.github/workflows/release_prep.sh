@@ -13,19 +13,7 @@ ARCHIVE="rules_formatjs-$TAG.tar.gz"
 
 # NB: configuration for 'git archive' is in /.gitattributes
 # Create the main archive
-git archive --format=tar --prefix=${PREFIX}/ ${TAG} > "${ARCHIVE%.gz}"
-
-# Add e2e/smoke test to the archive (examples are excluded by .gitattributes but we want smoke test included)
-# Create a temporary directory with the smoke test in the right structure
-TMPDIR=$(mktemp -d)
-mkdir -p "${TMPDIR}/${PREFIX}/e2e"
-# Copy smoke test but exclude bazel output directories and lock files
-rsync -a --exclude='bazel-*' --exclude='MODULE.bazel.lock' e2e/smoke/ "${TMPDIR}/${PREFIX}/e2e/smoke/"
-tar -rf "${ARCHIVE%.gz}" -C "${TMPDIR}" .
-rm -rf "${TMPDIR}"
-
-# Compress the archive
-gzip "${ARCHIVE%.gz}"
+git archive --format=tar --prefix=${PREFIX}/ ${TAG} | gzip > "${ARCHIVE}"
 
 SHA=$(shasum -a 256 $ARCHIVE | awk '{print $1}')
 
@@ -48,15 +36,4 @@ bazel_dep(name = "rules_formatjs", version = "${TAG:1}")
 \`\`\`
 
 That's it! The toolchains are automatically registered.
-
-## Testing the Installation
-
-A smoke test is included in the release at \`e2e/smoke/\`. To verify the rules work in your environment:
-
-\`\`\`bash
-cd e2e/smoke
-bazel build //:extract
-\`\`\`
-
-This will extract messages from a simple React component and verify that the FormatJS CLI toolchain is working correctly.
 EOF

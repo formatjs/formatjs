@@ -1,2 +1,0 @@
-# Minimal bazelrc for smoke test
-common --enable_bzlmod
