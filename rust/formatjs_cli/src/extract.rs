@@ -123,7 +123,7 @@ pub fn extract(
                 )
             })?;
         }
-        fs::write(out_f, output)
+        fs::write(out_f, output + "\n")
             .with_context(|| format!("Failed to write output to {}", out_f.display()))?;
     } else {
         io::stdout()
@@ -414,26 +414,30 @@ const messages = defineMessages({
         )
         .unwrap();
 
-        // Read the output file
+        // Read the output file and verify exact content
         let output_content = std::fs::read_to_string(&output_file).unwrap();
 
-        // Parse as JSON to verify structure
-        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
-        assert!(json.is_object());
-
-        // Get the keys and verify they are sorted
-        let keys: Vec<&str> = json
-            .as_object()
-            .unwrap()
-            .keys()
-            .map(|s| s.as_str())
-            .collect();
-        let mut sorted_keys = keys.clone();
-        sorted_keys.sort();
-
-        // Keys should be in alphabetical order: apple, banana, mango, zebra
-        assert_eq!(keys, sorted_keys, "Keys should be sorted alphabetically");
-        assert_eq!(keys, vec!["apple", "banana", "mango", "zebra"]);
+        // Verify the entire output matches expected sorted JSON with newline
+        let expected = r#"{
+  "apple": {
+    "id": "apple",
+    "defaultMessage": "Apple message"
+  },
+  "banana": {
+    "id": "banana",
+    "defaultMessage": "Banana message"
+  },
+  "mango": {
+    "id": "mango",
+    "defaultMessage": "Mango message"
+  },
+  "zebra": {
+    "id": "zebra",
+    "defaultMessage": "Zebra message"
+  }
+}
+"#;
+        assert_eq!(output_content, expected, "Output should be sorted with trailing newline");
     }
 
     #[test]
@@ -482,28 +486,20 @@ const messages = defineMessages({
         )
         .unwrap();
 
-        // Read the output file
+        // Read the output file and verify exact content
         let output_content = std::fs::read_to_string(&output_file).unwrap();
 
-        // Parse as JSON to verify structure
-        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
-
-        // Get the keys and verify they are sorted
-        let keys: Vec<&str> = json
-            .as_object()
-            .unwrap()
-            .keys()
-            .map(|s| s.as_str())
-            .collect();
-        let mut sorted_keys = keys.clone();
-        sorted_keys.sort();
-
-        // Keys should be in alphabetical order
+        // Verify the entire output matches expected sorted JSON with newline
+        let expected = r#"{
+  "alpha": "Alpha message",
+  "charlie": "Charlie message",
+  "zulu": "Zulu message"
+}
+"#;
         assert_eq!(
-            keys, sorted_keys,
-            "Keys should be sorted alphabetically with formatter"
+            output_content, expected,
+            "Output should be sorted with trailing newline when using formatter"
         );
-        assert_eq!(keys, vec!["alpha", "charlie", "zulu"]);
     }
 
     #[test]

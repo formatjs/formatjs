@@ -16,8 +16,11 @@ use std::path::Path;
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct MessageDescriptor {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub default_message: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<Value>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file: Option<String>,
