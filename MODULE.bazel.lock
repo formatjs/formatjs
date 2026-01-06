@@ -1943,7 +1943,7 @@
         "usagesDigest": "+2oxp30n7U2iCRyiQVVvn9Dm9XZaeUlnwnAuV9gqyVs=",
         "recordedFileInputs": {
           "@@//Cargo.lock": "a3babf9796e26b2d4a69729c888e4b9a2034d90034bf2932504ed6629b701790",
-          "@@//Cargo.toml": "54ff38b0981299b3dc7f10c22a8504c8437c27edea7747f5f59a22d0a5b6b4b7",
+          "@@//Cargo.toml": "a667f60e754b689a8f96477f37216d25bae19c2fd606ecf827222447dd691cae",
           "@@//MODULE.bazel": "056f89f9c35545957b5b7ed035f78b257df275755d3298f747055946b5a5d360",
           "@@//packages/icu-messageformat-parser/integration-tests/Cargo.toml": "c15f4f2503b87826277cf06f759b6350feb16061dd823c41946b9aa2ea1af176",
           "@@//rust/formatjs_cli/Cargo.toml": "0d35c6c890c47bc7e6b598b167041e206d3fa54ca70697d716b082db7f52810c",

@@ -5,6 +5,7 @@ members = [
   "rust/formatjs_cli",
   "packages/icu-messageformat-parser/integration-tests",
 ]
+resolver = "3"
 
 [workspace.dependencies]
 pretty_assertions = "1.4"
