@@ -1,0 +1,102 @@
+load("@bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@rules_formatjs//formatjs:compile.bzl", "formatjs_compile")
+load("@rules_formatjs//formatjs:extract.bzl", "formatjs_extract")
+
+# Test basic extraction with default settings
+formatjs_extract(
+    name = "messages_default",
+    srcs = ["test.tsx"],
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+)
+
+# Test extraction with whitespace preservation
+formatjs_extract(
+    name = "messages_preserve_whitespace",
+    srcs = ["test.tsx"],
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+    preserve_whitespace = True,
+)
+
+# Test extraction with throws disabled (throws is enabled by default)
+formatjs_extract(
+    name = "messages_no_throws",
+    srcs = ["test.tsx"],
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+    throws = False,
+)
+
+# Test extraction from another file for merge testing
+formatjs_extract(
+    name = "messages_merge",
+    srcs = ["test_merge.tsx"],
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+)
+
+# Test extraction with empty file list - should succeed with empty output
+formatjs_extract(
+    name = "messages_empty_list",
+    srcs = [],
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+)
+
+# Test extraction with file that has no messages - should succeed with empty output
+formatjs_extract(
+    name = "messages_no_messages",
+    srcs = ["test_empty.tsx"],
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+)
+
+# Note: Testing with invalid file extensions is not possible because Bazel's
+# allow_files restriction on srcs prevents non-JS/TS files at analysis time.
+# This is actually good - it provides early validation before the CLI runs.
+
+# Test compilation with ast parameter
+formatjs_compile(
+    name = "compiled_ast",
+    srcs = [":messages_default"],
+    out = "compiled_ast.json",
+    ast = True,
+)
+
+# Test compilation with pseudo_locale (requires ast)
+formatjs_compile(
+    name = "compiled_pseudo",
+    srcs = [":messages_default"],
+    out = "compiled_pseudo.json",
+    ast = True,
+    pseudo_locale = "en-XA",
+)
+
+# Test compilation with multiple source files (should merge messages)
+formatjs_compile(
+    name = "compiled_multiple",
+    srcs = [
+        ":messages_default",
+        ":messages_merge",
+    ],
+    out = "compiled_multiple.json",
+    ast = True,
+)
+
+# Write source files tests - compare outputs against fixtures
+write_source_files(
+    name = "update_fixtures",
+    files = {
+        "fixtures/messages_default.json": ":messages_default",
+        "fixtures/messages_merge.json": ":messages_merge",
+        "fixtures/compiled_ast.json": ":compiled_ast",
+        "fixtures/compiled_multiple.json": ":compiled_multiple",
+    },
+)
+
+# Test that outputs match fixtures
+write_source_files(
+    name = "test_fixtures",
+    diff_test = True,
+    files = {
+        "fixtures/messages_default.json": ":messages_default",
+        "fixtures/messages_merge.json": ":messages_merge",
+        "fixtures/compiled_ast.json": ":compiled_ast",
+        "fixtures/compiled_multiple.json": ":compiled_multiple",
+    },
+)

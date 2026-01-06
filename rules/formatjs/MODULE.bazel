@@ -31,7 +31,6 @@ module(
 )
 
 # Core dependencies required by rules_formatjs
-bazel_dep(name = "bazel_skylib", version = "1.8.2")
 bazel_dep(name = "jq.bzl", version = "0.4.0")  # JSON manipulation in aggregation aspect
 bazel_dep(name = "package_metadata", version = "0.0.6")  # Package metadata for BCR
 bazel_dep(name = "platforms", version = "1.0.0")
@@ -39,9 +38,9 @@ bazel_dep(name = "platforms", version = "1.0.0")
 # Development dependencies
 bazel_dep(name = "bazel_lib", version = "3.0.0", dev_dependency = True)
 bazel_dep(name = "bazelrc-preset.bzl", version = "1.8.0", dev_dependency = True)
-bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.8.2", dev_dependency = True)
 bazel_dep(name = "buildifier_prebuilt", version = "8.2.1", dev_dependency = True)
 bazel_dep(name = "gazelle", version = "0.47.0", dev_dependency = True, repo_name = "bazel_gazelle")
+bazel_dep(name = "rules_shell", version = "0.3.0", dev_dependency = True)
 
 # FormatJS CLI toolchain
 formatjs_cli = use_extension("//formatjs_cli:extensions.bzl", "formatjs_cli")

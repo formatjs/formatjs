@@ -1,0 +1,16 @@
+{
+  "test.message": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "This is a test message"
+    }
+  ],
+  "test.whitespace": [
+    {
+      "location": null,
+      "type": 0,
+      "value": "This    has     multiple     spaces"
+    }
+  ]
+}

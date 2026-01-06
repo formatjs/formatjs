@@ -1,0 +1,12 @@
+{
+  "merge.first": {
+    "id": "merge.first",
+    "defaultMessage": "First message from merge test",
+    "description": "First test message"
+  },
+  "merge.second": {
+    "id": "merge.second",
+    "defaultMessage": "Second message from merge test",
+    "description": "Second test message"
+  }
+}

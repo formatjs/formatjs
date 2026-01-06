@@ -9,9 +9,10 @@ formatjs_extract(
 )
 
 # Compile messages for production using native toolchain
+# Can reference the output file directly since it uses attr.output
 formatjs_compile(
     name = "compile_messages",
-    src = ":extract_messages",
+    srcs = [":messages/en.json"],
     out = "messages/en-compiled.json",
     ast = True,
 )

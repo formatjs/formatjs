@@ -24,17 +24,28 @@ def _formatjs_compile_impl(ctx):
     # Build arguments
     args = ctx.actions.args()
     args.add("compile")
-    args.add(ctx.file.src)
+    args.add_all(ctx.files.srcs)
     args.add("--out-file", out_file)
-    args.add("--format", ctx.attr.format)
+
+    if ctx.attr.format:
+        args.add("--format", ctx.attr.format)
 
     if ctx.attr.ast:
         args.add("--ast")
 
+    if ctx.attr.skip_errors:
+        args.add("--skip-errors")
+
+    if ctx.attr.pseudo_locale:
+        args.add("--pseudo-locale", ctx.attr.pseudo_locale)
+
+    if ctx.attr.ignore_tag:
+        args.add("--ignore-tag")
+
     ctx.actions.run(
         executable = formatjs_cli_info.cli,
         arguments = [args],
-        inputs = [ctx.file.src],
+        inputs = ctx.files.srcs,
         outputs = [out_file],
         mnemonic = "FormatjsCompile",
         progress_message = "Compiling messages for %{label}",
@@ -73,7 +84,7 @@ formatjs_compile = rule(
     ```starlark
     formatjs_compile(
         name = "messages_compiled",
-        src = ":messages",  # from formatjs_extract
+        srcs = [":messages"],  # from formatjs_extract
         out = "messages.json",
     )
     ```
@@ -82,8 +93,21 @@ formatjs_compile = rule(
     ```starlark
     formatjs_compile(
         name = "messages_prod",
-        src = "translations/en.json",
+        srcs = ["translations/en.json"],
         out = "compiled-en.json",
+        ast = True,
+    )
+    ```
+
+    ### Compile multiple translation files:
+    ```starlark
+    formatjs_compile(
+        name = "messages_merged",
+        srcs = [
+            ":base_messages",
+            "translations/overrides.json",
+        ],
+        out = "compiled-messages.json",
         ast = True,
     )
     ```
@@ -92,7 +116,7 @@ formatjs_compile = rule(
     ```starlark
     formatjs_compile(
         name = "fr_messages",
-        src = "translations/fr.json",
+        srcs = ["translations/fr.json"],
         out = "compiled-fr.json",
         format = "crowdin",
         ast = True,
@@ -117,17 +141,18 @@ formatjs_compile = rule(
     - FormatJS CLI documentation: https://formatjs.github.io/docs/tooling/cli
     """,
     attrs = {
-        "src": attr.label(
-            allow_single_file = [".json"],
+        "srcs": attr.label_list(
+            allow_files = [".json"],
             mandatory = True,
-            doc = """Source JSON file with extracted messages.
+            doc = """Source JSON files with extracted messages.
 
-            This can be:
-            - Output from `formatjs_extract` rule
-            - Translation file from translators
+            Can include:
+            - Multiple outputs from `formatjs_extract` rules
+            - Multiple translation files from translators
             - Aggregated messages from `formatjs_aggregate`
 
-            The file should contain messages in FormatJS JSON format.
+            When multiple files are provided, they will be merged during compilation.
+            The files should contain messages in FormatJS JSON format.
             """,
         ),
         "out": attr.output(
@@ -153,17 +178,48 @@ formatjs_compile = rule(
             """,
         ),
         "format": attr.string(
-            default = "simple",
-            values = ["simple", "crowdin", "smartling", "transifex"],
             doc = """Input format of the source file.
 
             Supported formats:
-            - `simple`: Standard FormatJS JSON format (default)
+            - `default`: Default formatter: extracts defaultMessage from MessageDescriptor objects
+            - `simple`: Simple formatter: pass-through for Record<string, string>
             - `crowdin`: Crowdin translation platform format
             - `smartling`: Smartling translation platform format
             - `transifex`: Transifex translation platform format
+            - `lokalise`: Lokalise translation platform format
 
             Use the appropriate format based on your translation management system.
+            If not specified, uses the default formatter.
+            """,
+        ),
+        "skip_errors": attr.bool(
+            default = False,
+            doc = """Continue compiling after errors.
+
+            When enabled, keys with errors are excluded from output but compilation continues.
+            When disabled (default), compilation fails on the first error.
+            Useful for partially migrating or dealing with incomplete translations.
+            """,
+        ),
+        "pseudo_locale": attr.string(
+            doc = """Generate pseudo-locale files for testing.
+
+            Requires `ast = True`. Available pseudo-locales:
+            - `xx-LS`: Longer strings (tests UI expansion)
+            - `xx-AC`: Accented characters (tests character encoding)
+            - `xx-HA`: Right-to-left text (tests RTL layout)
+            - `en-XA`: Accented English
+            - `en-XB`: Bracketed English
+
+            Pseudo-locales help identify i18n issues without actual translations.
+            """,
+        ),
+        "ignore_tag": attr.bool(
+            default = False,
+            doc = """Treat HTML/XML tags as string literals instead of parsing them as tag tokens.
+
+            When enabled, tags like `<b>` are treated as plain text rather than formatting tags.
+            Useful for messages that need to preserve literal tag syntax.
             """,
         ),
     },

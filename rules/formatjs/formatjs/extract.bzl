@@ -38,8 +38,8 @@ def _formatjs_extract_impl(ctx):
     formatjs_cli_info = toolchain.formatjs_cli_info
 
     # Determine output file
-    if ctx.attr.out:
-        out_file = ctx.actions.declare_file(ctx.attr.out)
+    if ctx.outputs.out:
+        out_file = ctx.outputs.out
     else:
         out_file = ctx.actions.declare_file(ctx.label.name + ".json")
 
@@ -49,17 +49,35 @@ def _formatjs_extract_impl(ctx):
     args.add_all(ctx.files.srcs)
     args.add("--out-file", out_file)
 
+    if ctx.attr.format:
+        args.add("--format", ctx.attr.format)
+
     if ctx.attr.id_interpolation_pattern:
         args.add("--id-interpolation-pattern", ctx.attr.id_interpolation_pattern)
 
-    if ctx.attr.extract_from_format_message_call:
-        args.add("--extract-from-format-message-call")
+    if ctx.attr.extract_source_location:
+        args.add("--extract-source-location")
 
     for component in ctx.attr.additional_component_names:
         args.add("--additional-component-names", component)
 
     for function in ctx.attr.additional_function_names:
         args.add("--additional-function-names", function)
+
+    for pattern in ctx.attr.ignore:
+        args.add("--ignore", pattern)
+
+    if ctx.attr.throws:
+        args.add("--throws")
+
+    if ctx.attr.pragma:
+        args.add("--pragma", ctx.attr.pragma)
+
+    if ctx.attr.preserve_whitespace:
+        args.add("--preserve-whitespace")
+
+    if ctx.attr.flatten:
+        args.add("--flatten")
 
     # Run formatjs extract (v0.1.1+ sorts keys by default)
     ctx.actions.run(
@@ -75,11 +93,18 @@ def _formatjs_extract_impl(ctx):
     )
 
     return [
-        DefaultInfo(files = depset([out_file])),
+        DefaultInfo(
+            files = depset([out_file]),
+            # Make the output file available for direct reference
+            runfiles = ctx.runfiles(files = [out_file]),
+        ),
         FormatjsExtractInfo(
             messages = out_file,
             srcs = depset(ctx.files.srcs),
             id_interpolation_pattern = ctx.attr.id_interpolation_pattern,
+        ),
+        OutputGroupInfo(
+            json = depset([out_file]),
         ),
     ]
 
@@ -168,11 +193,28 @@ formatjs_extract = rule(
             """,
             mandatory = True,
         ),
-        "out": attr.string(
+        "out": attr.output(
             doc = """Output file name (optional).
 
             If not specified, defaults to `<target_name>.json`.
             Example: `out = "extracted-messages.json"`
+
+            When specified, the output file can be referenced directly by its path
+            (e.g., `:messages/en.json` if out = "messages/en.json").
+            """,
+        ),
+        "format": attr.string(
+            doc = """Formatter to use for output format.
+
+            Available formatters:
+            - `default` - Default formatter: extracts defaultMessage from MessageDescriptor objects
+            - `simple` - Simple formatter: pass-through for Record<string, string>
+            - `transifex` - Transifex formatter: extracts string field
+            - `smartling` - Smartling formatter: extracts message field
+            - `lokalise` - Lokalise formatter: extracts translation field
+            - `crowdin` - Crowdin formatter: extracts message field
+
+            If not specified, uses the default formatter.
             """,
         ),
         "id_interpolation_pattern": attr.string(
@@ -184,23 +226,15 @@ formatjs_extract = rule(
             - `[contenthash:5]` - 5-char hash (default algorithm)
 
             If not specified, messages must provide explicit `id` attributes.
+            Default: `[sha512:contenthash:base64:6]`
             """,
         ),
-        "extract_from_format_message_call": attr.bool(
+        "extract_source_location": attr.bool(
             default = False,
-            doc = """Extract messages from `intl.formatMessage()` function calls.
+            doc = """Whether to extract metadata about message location in source file.
 
-            When enabled, the extractor will process imperative formatMessage calls
-            in addition to declarative `<FormattedMessage>` components.
-
-            Example code that will be extracted:
-            ```javascript
-            const msg = intl.formatMessage({
-              id: "greeting",
-              defaultMessage: "Hello {name}",
-              description: "Greeting message"
-            });
-            ```
+            When enabled, the output will include file paths and line numbers for each message.
+            This is useful for debugging and tracking message origins.
             """,
         ),
         "additional_component_names": attr.string_list(
@@ -222,6 +256,42 @@ formatjs_extract = rule(
             Example: `additional_function_names = ["t", "$t", "i18n"]`
 
             The functions should accept FormatJS-compatible message descriptors.
+            """,
+        ),
+        "ignore": attr.string_list(
+            default = [],
+            doc = """List of glob patterns to exclude from extraction.
+
+            Files matching these patterns will not be processed.
+            Example: `ignore = ["**/*.test.tsx", "**/__mocks__/**"]`
+            """,
+        ),
+        "throws": attr.bool(
+            default = True,
+            doc = """Whether to throw an exception when failing to process any file.
+
+            When enabled (default), the extraction will fail if any source file cannot be processed.
+            When disabled, problematic files are skipped with warnings.
+            """,
+        ),
+        "pragma": attr.string(
+            doc = """Parse custom pragma for file metadata.
+
+            Example: `pragma = "@intl-meta"` to parse custom metadata comments.
+            """,
+        ),
+        "preserve_whitespace": attr.bool(
+            default = False,
+            doc = """Whether to preserve whitespace and newlines in extracted messages.
+
+            By default, whitespace is normalized. Enable this to preserve exact formatting.
+            """,
+        ),
+        "flatten": attr.bool(
+            default = False,
+            doc = """Whether to hoist selectors and flatten sentences.
+
+            This flattens complex message structures for simpler translation workflows.
             """,
         ),
         "deps": attr.label_list(
