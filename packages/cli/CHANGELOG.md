@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.9.0...@formatjs/cli@6.10.0) (2026-01-06)
+
+### Features
+
+* **formatjs_cli:** add support for extract ([#5817](https://github.com/formatjs/formatjs/issues/5817)) ([7f50a73](https://github.com/formatjs/formatjs/commit/7f50a7391f36dba047accf9255b2cd619addeb0b)) - by @longlho
+
 # [6.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.8.8...@formatjs/cli@6.9.0) (2026-01-02)
 
 ### Bug Fixes

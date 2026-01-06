@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/ecma376",
   "description": "generate ecma376 numFmt in different locales & currencies",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "license": "ISC",
   "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",

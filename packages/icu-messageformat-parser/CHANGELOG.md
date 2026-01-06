@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.2.1...@formatjs/icu-messageformat-parser@3.3.0) (2026-01-06)
+
+### Features
+
+* **@formatjs/icu-messageformat-parser-wasm:** add some experimental stuff ([3406ad7](https://github.com/formatjs/formatjs/commit/3406ad7bf43bed4de647abd320d06df2f90573bc)) - by @longlho
+* **formatjs_cli:** add support for extract ([#5817](https://github.com/formatjs/formatjs/issues/5817)) ([7f50a73](https://github.com/formatjs/formatjs/commit/7f50a7391f36dba047accf9255b2cd619addeb0b)) - by @longlho
+
 ## [3.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.2.0...@formatjs/icu-messageformat-parser@3.2.1) (2026-01-02)
 
 ### Bug Fixes

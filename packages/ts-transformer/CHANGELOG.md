@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.1.0...@formatjs/ts-transformer@4.2.0) (2026-01-06)
+
+### Features
+
+* **formatjs_cli:** add support for extract ([#5817](https://github.com/formatjs/formatjs/issues/5817)) ([7f50a73](https://github.com/formatjs/formatjs/commit/7f50a7391f36dba047accf9255b2cd619addeb0b)) - by @longlho
+
 # [4.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.0.7...@formatjs/ts-transformer@4.1.0) (2026-01-02)
 
 ### Bug Fixes

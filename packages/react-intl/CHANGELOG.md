@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.11](github.com/formatjs/formatjs/compare/react-intl@8.0.10...react-intl@8.0.11) (2026-01-06)
+
+**Note:** Version bump only for package react-intl
+
 ## [8.0.10](github.com/formatjs/formatjs/compare/react-intl@8.0.9...react-intl@8.0.10) (2026-01-02)
 
 **Note:** Version bump only for package react-intl
