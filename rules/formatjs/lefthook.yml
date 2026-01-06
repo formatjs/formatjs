@@ -8,7 +8,7 @@ pre-commit:
     # Format code with oxfmt
     oxfmt:
       glob: "*.{js,ts,jsx,tsx,json,yaml,yml,md}"
-      run: pnpm exec oxfmt {staged_files}
+      run: pnpm oxfmt {staged_files}
       stage_fixed: true
 
     buildifier-format:
@@ -20,13 +20,13 @@ pre-commit:
       stage_fixed: true
 
     # Check for typos
-    typos:
-      run: |
-        if command -v typos &> /dev/null; then
-          typos
-        else
-          echo "typos not installed, skipping"
-        fi
+    cspell:
+      run: pnpm cspell lint --no-progress --no-summary {staged_files}
+      exclude:
+        - pnpm-lock.yaml
+        - "*.lock"
+        - lefthook.yml
+        - package.json
 
 # Note: The following pre-commit hooks are not available in lefthook or were removed:
 # - check-hooks-apply (meta hook, lefthook-specific)
@@ -43,11 +43,6 @@ pre-commit:
 
 commit-msg:
   commands:
-    # Commit message validation with commitizen
-    commitizen:
-      run: |
-        if command -v cz &> /dev/null; then
-          cz check --commit-msg-file {1}
-        else
-          echo "commitizen not installed, skipping commit message validation"
-        fi
+    # Commit message validation with commitlint
+    commitlint:
+      run: pnpm commitlint --edit {1}
