@@ -42,6 +42,85 @@ Add the following command to your `package.json` `scripts`:
 }
 ```
 
+## Native CLI (Rust)
+
+<Admonition type="tip" title="4x Faster Performance">
+We provide a high-performance native Rust CLI that's **4-17x faster** than the Node.js version with zero dependencies. Perfect for CI/CD pipelines and large codebases.
+
+**Download:** [GitHub Releases](https://github.com/formatjs/formatjs/releases/tag/formatjs_cli_v0.1.6)
+
+</Admonition>
+
+<Admonition type="caution">
+The native CLI currently only supports **JavaScript/TypeScript with JSX/TSX**. Vue and Glimmer are not supported due to lack of Rust parsers for these frameworks. If you need Vue or Glimmer support, use the Node.js CLI above.
+</Admonition>
+
+### Installation
+
+Download pre-built binaries for your platform:
+
+<Tabs
+groupId="platform"
+defaultValue="macos"
+values={[
+{label: 'macOS (Apple Silicon)', value: 'macos'},
+{label: 'Linux x64', value: 'linux'},
+]}>
+<TabItem value="macos">
+
+```sh
+# Download and install
+curl -L https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.6/formatjs-darwin-arm64 -o formatjs
+chmod +x formatjs
+sudo mv formatjs /usr/local/bin/
+
+# Verify
+formatjs --version
+```
+
+</TabItem>
+<TabItem value="linux">
+
+```sh
+# Download and install
+curl -L https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.6/formatjs-linux-x86_64 -o formatjs
+chmod +x formatjs
+sudo mv formatjs /usr/local/bin/
+
+# Verify
+formatjs --version
+```
+
+</TabItem>
+</Tabs>
+
+### Benefits
+
+- **🚀 4-17x Faster**: Dramatically faster extraction and compilation
+- **📦 Zero Dependencies**: Single binary, no Node.js or npm required
+- **💾 Low Memory**: Minimal memory footprint
+- **⚡ Instant Startup**: No Node.js initialization overhead
+- **🔧 CI/CD Friendly**: Perfect for build pipelines and automation
+
+### Usage
+
+The native CLI is a drop-in replacement with identical command-line interface:
+
+```sh
+# Extract messages
+formatjs extract "src/**/*.{ts,tsx}" --out-file messages.json
+
+# Compile translations
+formatjs compile "lang/*.json" --out-file compiled.json --ast
+
+# Verify translations
+formatjs verify "lang/*.json" --source-locale en --missing-keys
+```
+
+All the same options and formatters work with the native CLI. See the sections below for detailed documentation.
+
+---
+
 We've built this [CLI](https://www.npmjs.com/package/@formatjs/cli) that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
