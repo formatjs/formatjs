@@ -11,7 +11,8 @@ use formatjs_icu_skeleton_parser::{parse_date_time_skeleton, parse_number_skelet
 use icu::locale::Locale;
 use once_cell::sync::Lazy;
 use regex::Regex;
-use std::collections::{HashMap, HashSet};
+use indexmap::IndexMap;
+use std::collections::HashSet;
 
 /// Position in the source message string.
 ///
@@ -1442,7 +1443,7 @@ impl Parser {
 
                 if arg_type == ArgType::Select {
                     // For select, keys are strings
-                    let options: HashMap<String, PluralOrSelectOption> =
+                    let options: IndexMap<String, PluralOrSelectOption> =
                         options_vec.into_iter().collect();
 
                     Ok(MessageFormatElement::Select(SelectElement {
@@ -1452,7 +1453,7 @@ impl Parser {
                     }))
                 } else {
                     // For plural/selectordinal, keys are ValidPluralRule
-                    let options: HashMap<ValidPluralRule, PluralOrSelectOption> = options_vec
+                    let options: IndexMap<ValidPluralRule, PluralOrSelectOption> = options_vec
                         .into_iter()
                         .map(|(key, val)| (ValidPluralRule::from_str(&key), val))
                         .collect();

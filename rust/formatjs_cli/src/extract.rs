@@ -96,11 +96,8 @@ pub fn extract(
 
     // Step 3: Apply formatter if specified
     let output = if let Some(formatter) = format {
-        // Convert messages to JSON for formatter
-        let messages_json = serde_json::to_value(&all_messages)?;
-
         // Apply formatter (returns HashMap<String, String>)
-        let formatted = formatter.apply(&messages_json, "extracted messages")?;
+        let formatted = formatter.format(&all_messages, "extracted messages")?;
 
         // Convert HashMap to BTreeMap for sorted output
         let sorted_formatted: BTreeMap<String, String> = formatted.into_iter().collect();
@@ -437,7 +434,10 @@ const messages = defineMessages({
   }
 }
 "#;
-        assert_eq!(output_content, expected, "Output should be sorted with trailing newline");
+        assert_eq!(
+            output_content, expected,
+            "Output should be sorted with trailing newline"
+        );
     }
 
     #[test]

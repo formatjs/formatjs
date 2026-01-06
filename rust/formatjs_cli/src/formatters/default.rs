@@ -1,8 +1,12 @@
-use anyhow::{Context, Result};
 use serde_json::Value;
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
-/// Default formatter: extracts defaultMessage from MessageDescriptor objects
+use crate::extractor::MessageDescriptor;
+
+/// Default formatter: pass-through for MessageDescriptor objects
+///
+/// Format (extraction): Pass-through - returns MessageDescriptor objects as-is
+/// Compile (translation): Extracts defaultMessage field from MessageDescriptor objects
 ///
 /// Input format:
 /// ```json
@@ -15,39 +19,28 @@ use std::collections::HashMap;
 /// ```
 ///
 /// Output: `{"greeting": "Hello {name}!"}`
-pub fn apply(json: &Value, file_path: &str) -> Result<HashMap<String, String>> {
-    let mut results = HashMap::new();
+pub fn format(messages: &BTreeMap<String, MessageDescriptor>) -> Value {
+    // Serialize MessageDescriptor objects to JSON
+    serde_json::to_value(messages).unwrap_or(Value::Null)
+}
 
-    let map = json
-        .as_object()
-        .with_context(|| format!("Expected JSON object in file {}", file_path))?;
+pub fn compile(messages: &Value) -> BTreeMap<String, String> {
+    // In the default formatter, compilation is a no-op
+    let mut results = BTreeMap::new();
 
-    for (id, value) in map {
-        if let Some(obj) = value.as_object() {
-            if let Some(default_msg) = obj.get("defaultMessage") {
-                if let Some(msg_str) = default_msg.as_str() {
-                    results.insert(id.clone(), msg_str.to_string());
-                } else {
-                    eprintln!(
-                        "Warning: defaultMessage for '{}' in {} is not a string, skipping",
-                        id, file_path
-                    );
+    if let Some(r) = messages.as_object() {
+        for (id, value) in r {
+            if let Some(value) = value.as_object() {
+                if let Some(default_message) = value.get("defaultMessage") {
+                    if let Some(msg_str) = default_message.as_str() {
+                        results.insert(id.clone(), msg_str.to_string());
+                    }
                 }
-            } else {
-                eprintln!(
-                    "Warning: Message '{}' in {} is missing 'defaultMessage' field, skipping",
-                    id, file_path
-                );
             }
-        } else {
-            eprintln!(
-                "Warning: Message '{}' in {} is not an object, skipping",
-                id, file_path
-            );
         }
     }
 
-    Ok(results)
+    results
 }
 
 #[cfg(test)]
@@ -68,7 +61,7 @@ mod tests {
             }
         });
 
-        let result = apply(&input, "test.json").unwrap();
+        let result = compile(&input);
         assert_eq!(result.len(), 2);
         assert_eq!(result.get("greeting").unwrap(), "Hello {name}!");
         assert_eq!(result.get("farewell").unwrap(), "Goodbye!");
@@ -82,7 +75,7 @@ mod tests {
             }
         });
 
-        let result = apply(&input, "test.json").unwrap();
+        let result = compile(&input);
         assert_eq!(result.len(), 0);
     }
 
@@ -92,7 +85,7 @@ mod tests {
             "greeting": "Hello!"
         });
 
-        let result = apply(&input, "test.json").unwrap();
+        let result = compile(&input);
         assert_eq!(result.len(), 0);
     }
 
@@ -104,7 +97,7 @@ mod tests {
             }
         });
 
-        let result = apply(&input, "test.json").unwrap();
+        let result = compile(&input);
         assert_eq!(
             result.get("msg").unwrap(),
             "{count, plural, one {# item} other {# items}}"

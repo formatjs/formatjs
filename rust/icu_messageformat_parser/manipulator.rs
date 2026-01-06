@@ -575,11 +575,12 @@ pub fn is_structurally_same(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use indexmap::IndexMap;
 
     #[test]
     fn test_hoist_simple_plural() {
         // "I have {count, plural, one{a dog} other{many dogs}}"
-        let mut plural_options = HashMap::new();
+        let mut plural_options = IndexMap::new();
         plural_options.insert(
             ValidPluralRule::One,
             PluralOrSelectOption {
@@ -714,7 +715,7 @@ mod tests {
     #[test]
     #[should_panic(expected = "Cannot hoist plural/select within a tag element")]
     fn test_hoist_panics_on_plural_in_tag() {
-        let mut plural_options = HashMap::new();
+        let mut plural_options = IndexMap::new();
         plural_options.insert(
             ValidPluralRule::Other,
             PluralOrSelectOption {

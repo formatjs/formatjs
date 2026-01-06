@@ -490,9 +490,9 @@ mod tests {
 
     #[test]
     fn test_print_select() {
-        use std::collections::HashMap;
+        use indexmap::IndexMap;
 
-        let mut options = HashMap::new();
+        let mut options = IndexMap::new();
         options.insert(
             "male".to_string(),
             PluralOrSelectOption {
@@ -536,9 +536,9 @@ mod tests {
 
     #[test]
     fn test_print_plural() {
-        use std::collections::HashMap;
+        use indexmap::IndexMap;
 
-        let mut options = HashMap::new();
+        let mut options = IndexMap::new();
         options.insert(
             ValidPluralRule::One,
             PluralOrSelectOption {
@@ -575,10 +575,10 @@ mod tests {
 
     #[test]
     fn test_print_plural_ldml_order() {
-        use std::collections::HashMap;
+        use indexmap::IndexMap;
 
         // Test that plural rules are printed in LDML order
-        let mut options = HashMap::new();
+        let mut options = IndexMap::new();
         options.insert(
             ValidPluralRule::Other,
             PluralOrSelectOption {
@@ -675,10 +675,10 @@ mod tests {
 
     #[test]
     fn test_print_nested_plural_in_select() {
-        use std::collections::HashMap;
+        use indexmap::IndexMap;
 
         // Create a plural element
-        let mut plural_options = HashMap::new();
+        let mut plural_options = IndexMap::new();
         plural_options.insert(
             ValidPluralRule::One,
             PluralOrSelectOption {
@@ -707,7 +707,7 @@ mod tests {
         };
 
         // Create a select element with nested plural
-        let mut select_options = HashMap::new();
+        let mut select_options = IndexMap::new();
         select_options.insert(
             "download".to_string(),
             PluralOrSelectOption {
@@ -776,9 +776,9 @@ mod tests {
 
     #[test]
     fn test_print_complex_plural_with_nested_elements() {
-        use std::collections::HashMap;
+        use indexmap::IndexMap;
 
-        let mut options = HashMap::new();
+        let mut options = IndexMap::new();
         options.insert(
             ValidPluralRule::Zero,
             PluralOrSelectOption {
@@ -840,9 +840,9 @@ mod tests {
 
     #[test]
     fn test_print_selectordinal() {
-        use std::collections::HashMap;
+        use indexmap::IndexMap;
 
-        let mut options = HashMap::new();
+        let mut options = IndexMap::new();
         options.insert(
             ValidPluralRule::One,
             PluralOrSelectOption {
@@ -900,9 +900,9 @@ mod tests {
 
     #[test]
     fn test_print_plural_with_offset() {
-        use std::collections::HashMap;
+        use indexmap::IndexMap;
 
-        let mut options = HashMap::new();
+        let mut options = IndexMap::new();
         options.insert(
             ValidPluralRule::Exact("=0".to_string()),
             PluralOrSelectOption {

@@ -6,153 +6,128 @@ exports[`'Rust' CLI > AST 1`] = `
   "stdout": "{
   "a1d12": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "a dog"
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d13": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a dog"
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d14": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a "
                 },
                 {
+                  "type": 8,
+                  "value": "i",
                   "children": [
                     {
-                      "location": null,
                       "type": 0,
                       "value": "dog"
                     }
-                  ],
-                  "location": null,
-                  "type": 8,
-                  "value": "i"
+                  ]
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1dd2": [
     {
-      "location": null,
       "type": 0,
       "value": "my name is "
     },
     {
-      "location": null,
       "type": 1,
       "value": "name"
     }
   ],
   "ashd2": [
     {
-      "location": null,
       "type": 0,
       "value": "a message"
     }
@@ -242,153 +217,128 @@ exports[`'Rust' CLI > en-XA json 1`] = `
   "stdout": "{
   "a1d12": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "a dog"
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d13": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a dog"
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d14": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a "
                 },
                 {
+                  "type": 8,
+                  "value": "i",
                   "children": [
                     {
-                      "location": null,
                       "type": 0,
                       "value": "dog"
                     }
-                  ],
-                  "location": null,
-                  "type": 8,
-                  "value": "i"
+                  ]
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1dd2": [
     {
-      "location": null,
       "type": 0,
       "value": "my name is "
     },
     {
-      "location": null,
       "type": 1,
       "value": "name"
     }
   ],
   "ashd2": [
     {
-      "location": null,
       "type": 0,
       "value": "a message"
     }
@@ -405,153 +355,128 @@ exports[`'Rust' CLI > en-XB json 1`] = `
   "stdout": "{
   "a1d12": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "a dog"
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d13": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a dog"
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d14": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a "
                 },
                 {
+                  "type": 8,
+                  "value": "i",
                   "children": [
                     {
-                      "location": null,
                       "type": 0,
                       "value": "dog"
                     }
-                  ],
-                  "location": null,
-                  "type": 8,
-                  "value": "i"
+                  ]
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1dd2": [
     {
-      "location": null,
       "type": 0,
       "value": "my name is "
     },
     {
-      "location": null,
       "type": 1,
       "value": "name"
     }
   ],
   "ashd2": [
     {
-      "location": null,
       "type": 0,
       "value": "a message"
     }
@@ -821,153 +746,128 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
   "stdout": "{
   "a1d12": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "a dog"
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d13": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a dog"
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d14": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a "
                 },
                 {
+                  "type": 8,
+                  "value": "i",
                   "children": [
                     {
-                      "location": null,
                       "type": 0,
                       "value": "dog"
                     }
-                  ],
-                  "location": null,
-                  "type": 8,
-                  "value": "i"
+                  ]
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1dd2": [
     {
-      "location": null,
       "type": 0,
       "value": "my name is "
     },
     {
-      "location": null,
       "type": 1,
       "value": "name"
     }
   ],
   "ashd2": [
     {
-      "location": null,
       "type": 0,
       "value": "a message"
     }
@@ -984,153 +884,128 @@ exports[`'Rust' CLI > xx-HA json 1`] = `
   "stdout": "{
   "a1d12": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "a dog"
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d13": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a dog"
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d14": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a "
                 },
                 {
+                  "type": 8,
+                  "value": "i",
                   "children": [
                     {
-                      "location": null,
                       "type": 0,
                       "value": "dog"
                     }
-                  ],
-                  "location": null,
-                  "type": 8,
-                  "value": "i"
+                  ]
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1dd2": [
     {
-      "location": null,
       "type": 0,
       "value": "my name is "
     },
     {
-      "location": null,
       "type": 1,
       "value": "name"
     }
   ],
   "ashd2": [
     {
-      "location": null,
       "type": 0,
       "value": "a message"
     }
@@ -1147,153 +1022,128 @@ exports[`'Rust' CLI > xx-LS json 1`] = `
   "stdout": "{
   "a1d12": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "a dog"
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d13": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a dog"
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1d14": [
     {
-      "location": null,
       "type": 0,
       "value": "I have "
     },
     {
-      "location": null,
-      "offset": 0,
+      "type": 6,
+      "value": "count",
       "options": {
         "one": {
-          "location": null,
           "value": [
             {
+              "type": 8,
+              "value": "b",
               "children": [
                 {
-                  "location": null,
                   "type": 0,
                   "value": "a "
                 },
                 {
+                  "type": 8,
+                  "value": "i",
                   "children": [
                     {
-                      "location": null,
                       "type": 0,
                       "value": "dog"
                     }
-                  ],
-                  "location": null,
-                  "type": 8,
-                  "value": "i"
+                  ]
                 }
-              ],
-              "location": null,
-              "type": 8,
-              "value": "b"
+              ]
             }
           ]
         },
         "other": {
-          "location": null,
           "value": [
             {
-              "location": null,
               "type": 0,
               "value": "many dogs"
             }
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "a1dd2": [
     {
-      "location": null,
       "type": 0,
       "value": "my name is "
     },
     {
-      "location": null,
       "type": 1,
       "value": "name"
     }
   ],
   "ashd2": [
     {
-      "location": null,
       "type": 0,
       "value": "a message"
     }

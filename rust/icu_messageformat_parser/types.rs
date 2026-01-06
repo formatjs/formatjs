@@ -1,6 +1,6 @@
 use crate::error::Location;
+use indexmap::IndexMap;
 use serde::Serialize;
-use std::collections::HashMap;
 
 // Re-export types from icu-skeleton-parser
 pub use formatjs_icu_skeleton_parser::{
@@ -109,6 +109,7 @@ pub enum PluralType {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct BaseElement {
     pub value: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 }
 
@@ -116,6 +117,7 @@ pub struct BaseElement {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct LiteralElement {
     pub value: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 }
 
@@ -123,6 +125,7 @@ pub struct LiteralElement {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct ArgumentElement {
     pub value: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 }
 
@@ -131,6 +134,7 @@ pub struct ArgumentElement {
 pub struct TagElement {
     pub value: String,
     pub children: Vec<MessageFormatElement>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 }
 
@@ -138,7 +142,9 @@ pub struct TagElement {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct SimpleFormatElement<S> {
     pub value: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub style: Option<S>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 }
 
@@ -193,6 +199,7 @@ impl Serialize for DateTimeSkeletonOrStyle {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct PluralOrSelectOption {
     pub value: Vec<MessageFormatElement>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 }
 
@@ -200,7 +207,8 @@ pub struct PluralOrSelectOption {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct SelectElement {
     pub value: String,
-    pub options: HashMap<String, PluralOrSelectOption>,
+    pub options: IndexMap<String, PluralOrSelectOption>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 }
 
@@ -208,15 +216,17 @@ pub struct SelectElement {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct PluralElement {
     pub value: String,
-    pub options: HashMap<ValidPluralRule, PluralOrSelectOption>,
+    pub options: IndexMap<ValidPluralRule, PluralOrSelectOption>,
     pub offset: i32,
     pub plural_type: PluralType,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 }
 
 /// Pound element (#)
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct PoundElement {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 }
 
@@ -296,80 +306,108 @@ impl Serialize for MessageFormatElement {
 
         match self {
             Self::Literal(el) => {
-                let mut map = serializer.serialize_map(Some(3))?;
+                let field_count = 2 + if el.location.is_some() { 1 } else { 0 };
+                let mut map = serializer.serialize_map(Some(field_count))?;
                 map.serialize_entry("type", &Type::Literal)?;
                 map.serialize_entry("value", &el.value)?;
-                map.serialize_entry("location", &el.location)?;
+                if el.location.is_some() {
+                    map.serialize_entry("location", &el.location)?;
+                }
                 map.end()
             }
             Self::Argument(el) => {
-                let mut map = serializer.serialize_map(Some(3))?;
+                let field_count = 2 + if el.location.is_some() { 1 } else { 0 };
+                let mut map = serializer.serialize_map(Some(field_count))?;
                 map.serialize_entry("type", &Type::Argument)?;
                 map.serialize_entry("value", &el.value)?;
-                map.serialize_entry("location", &el.location)?;
+                if el.location.is_some() {
+                    map.serialize_entry("location", &el.location)?;
+                }
                 map.end()
             }
             Self::Number(el) => {
-                let mut map = serializer.serialize_map(Some(4))?;
+                let field_count = 3 + if el.location.is_some() { 1 } else { 0 };
+                let mut map = serializer.serialize_map(Some(field_count))?;
                 map.serialize_entry("type", &Type::Number)?;
                 map.serialize_entry("value", &el.value)?;
                 map.serialize_entry("style", &el.style)?;
-                map.serialize_entry("location", &el.location)?;
+                if el.location.is_some() {
+                    map.serialize_entry("location", &el.location)?;
+                }
                 map.end()
             }
             Self::Date(el) => {
-                let mut map = serializer.serialize_map(Some(4))?;
+                let field_count = 3 + if el.location.is_some() { 1 } else { 0 };
+                let mut map = serializer.serialize_map(Some(field_count))?;
                 map.serialize_entry("type", &Type::Date)?;
                 map.serialize_entry("value", &el.value)?;
                 map.serialize_entry("style", &el.style)?;
-                map.serialize_entry("location", &el.location)?;
+                if el.location.is_some() {
+                    map.serialize_entry("location", &el.location)?;
+                }
                 map.end()
             }
             Self::Time(el) => {
-                let mut map = serializer.serialize_map(Some(4))?;
+                let field_count = 3 + if el.location.is_some() { 1 } else { 0 };
+                let mut map = serializer.serialize_map(Some(field_count))?;
                 map.serialize_entry("type", &Type::Time)?;
                 map.serialize_entry("value", &el.value)?;
                 map.serialize_entry("style", &el.style)?;
-                map.serialize_entry("location", &el.location)?;
+                if el.location.is_some() {
+                    map.serialize_entry("location", &el.location)?;
+                }
                 map.end()
             }
             Self::Select(el) => {
-                let mut map = serializer.serialize_map(Some(4))?;
+                let field_count = 3 + if el.location.is_some() { 1 } else { 0 };
+                let mut map = serializer.serialize_map(Some(field_count))?;
                 map.serialize_entry("type", &Type::Select)?;
                 map.serialize_entry("value", &el.value)?;
                 map.serialize_entry("options", &el.options)?;
-                map.serialize_entry("location", &el.location)?;
+                if el.location.is_some() {
+                    map.serialize_entry("location", &el.location)?;
+                }
                 map.end()
             }
             Self::Plural(el) => {
-                // Convert HashMap<ValidPluralRule, ...> to HashMap<String, ...> for JSON serialization
-                let options_map: std::collections::HashMap<String, &PluralOrSelectOption> = el
+                // Convert IndexMap<ValidPluralRule, ...> to IndexMap<String, ...> for JSON serialization
+                // Preserving insertion order for LDML ordering (zero, one, two, few, many, other)
+                let options_map: IndexMap<String, &PluralOrSelectOption> = el
                     .options
                     .iter()
                     .map(|(k, v)| (k.as_str().to_string(), v))
                     .collect();
 
-                let mut map = serializer.serialize_map(Some(6))?;
+                let field_count = 5 + if el.location.is_some() { 1 } else { 0 };
+                let mut map = serializer.serialize_map(Some(field_count))?;
                 map.serialize_entry("type", &Type::Plural)?;
                 map.serialize_entry("value", &el.value)?;
                 map.serialize_entry("options", &options_map)?;
                 map.serialize_entry("offset", &el.offset)?;
                 map.serialize_entry("pluralType", &el.plural_type)?;
-                map.serialize_entry("location", &el.location)?;
+                if el.location.is_some() {
+                    map.serialize_entry("location", &el.location)?;
+                }
                 map.end()
             }
             Self::Pound(el) => {
-                let mut map = serializer.serialize_map(Some(2))?;
+                let field_count = 1 + if el.location.is_some() { 1 } else { 0 };
+                let mut map = serializer.serialize_map(Some(field_count))?;
                 map.serialize_entry("type", &Type::Pound)?;
-                map.serialize_entry("location", &el.location)?;
+                if el.location.is_some() {
+                    map.serialize_entry("location", &el.location)?;
+                }
                 map.end()
             }
             Self::Tag(el) => {
-                let mut map = serializer.serialize_map(Some(4))?;
+                let field_count = 3 + if el.location.is_some() { 1 } else { 0 };
+                let mut map = serializer.serialize_map(Some(field_count))?;
                 map.serialize_entry("type", &Type::Tag)?;
                 map.serialize_entry("value", &el.value)?;
                 map.serialize_entry("children", &el.children)?;
-                map.serialize_entry("location", &el.location)?;
+                if el.location.is_some() {
+                    map.serialize_entry("location", &el.location)?;
+                }
                 map.end()
             }
         }
@@ -392,10 +430,13 @@ impl Serialize for NumberSkeleton {
         S: serde::Serializer,
     {
         use serde::ser::SerializeMap;
-        let mut map = serializer.serialize_map(Some(4))?;
+        let field_count = 3 + if self.location.is_some() { 1 } else { 0 };
+        let mut map = serializer.serialize_map(Some(field_count))?;
         map.serialize_entry("type", &SkeletonType::Number)?;
         map.serialize_entry("tokens", &self.tokens)?;
-        map.serialize_entry("location", &self.location)?;
+        if self.location.is_some() {
+            map.serialize_entry("location", &self.location)?;
+        }
         map.serialize_entry("parsedOptions", &self.parsed_options)?;
         map.end()
     }
@@ -418,10 +459,13 @@ impl Serialize for DateTimeSkeleton {
         S: serde::Serializer,
     {
         use serde::ser::SerializeMap;
-        let mut map = serializer.serialize_map(Some(4))?;
+        let field_count = 3 + if self.location.is_some() { 1 } else { 0 };
+        let mut map = serializer.serialize_map(Some(field_count))?;
         map.serialize_entry("type", &SkeletonType::DateTime)?;
         map.serialize_entry("pattern", &self.pattern)?;
-        map.serialize_entry("location", &self.location)?;
+        if self.location.is_some() {
+            map.serialize_entry("location", &self.location)?;
+        }
         map.serialize_entry("parsedOptions", &self.parsed_options)?;
         map.end()
     }

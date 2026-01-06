@@ -1,10 +1,14 @@
-use anyhow::{Context, Result};
-use serde_json::Value;
-use std::collections::HashMap;
+use serde_json::{json, Value};
+use std::collections::BTreeMap;
 
-/// Smartling formatter: extracts message field and skips smartling metadata
+use crate::extractor::MessageDescriptor;
+
+/// Smartling formatter: converts MessageDescriptor to Smartling format with metadata
 ///
-/// Input format:
+/// Format (extraction): Converts MessageDescriptor to Smartling format with smartling metadata and {message, description} entries
+/// Compile (translation): Extracts message field, skipping the smartling metadata key
+///
+/// Format output:
 /// ```json
 /// {
 ///   "smartling": {
@@ -22,46 +26,64 @@ use std::collections::HashMap;
 ///   }
 /// }
 /// ```
-///
-/// Output: `{"greeting": "Hello {name}!"}` (skips "smartling" key)
-pub fn apply(json: &Value, file_path: &str) -> Result<HashMap<String, String>> {
-    let mut results = HashMap::new();
+pub fn format(messages: &BTreeMap<String, MessageDescriptor>) -> Value {
+    let mut results = serde_json::Map::new();
 
-    let map = json
-        .as_object()
-        .with_context(|| format!("Expected JSON object in file {}", file_path))?;
+    // Add smartling metadata first
+    let smartling_metadata = json!({
+        "translate_paths": [{
+            "path": "*/message",
+            "key": "{*}/message",
+            "instruction": "*/description"
+        }],
+        "variants_enabled": true,
+        "string_format": "icu"
+    });
+    results.insert("smartling".to_string(), smartling_metadata);
 
-    for (id, value) in map {
-        // Skip the smartling metadata key
-        if id == "smartling" {
-            continue;
+    // Add message entries
+    for (id, msg) in messages {
+        let mut entry = serde_json::Map::new();
+
+        if let Some(default_message) = &msg.default_message {
+            entry.insert("message".to_string(), json!(default_message));
         }
 
-        if let Some(obj) = value.as_object() {
-            if let Some(message_field) = obj.get("message") {
-                if let Some(msg_str) = message_field.as_str() {
-                    results.insert(id.clone(), msg_str.to_string());
-                } else {
-                    eprintln!(
-                        "Warning: 'message' field for '{}' in {} is not a string, skipping",
-                        id, file_path
-                    );
-                }
-            } else {
-                eprintln!(
-                    "Warning: Message '{}' in {} is missing 'message' field, skipping",
-                    id, file_path
-                );
+        if let Some(description) = &msg.description {
+            let description_str = match description {
+                Value::String(s) => s.clone(),
+                other => serde_json::to_string(other).unwrap_or_default(),
+            };
+            entry.insert("description".to_string(), json!(description_str));
+        }
+
+        results.insert(id.clone(), Value::Object(entry));
+    }
+
+    Value::Object(results)
+}
+
+pub fn compile(messages: &Value) -> BTreeMap<String, String> {
+    let mut results = BTreeMap::new();
+
+    if let Some(map) = messages.as_object() {
+        for (id, value) in map {
+            // Skip the smartling metadata key
+            if id == "smartling" {
+                continue;
             }
-        } else {
-            eprintln!(
-                "Warning: Message '{}' in {} is not an object, skipping",
-                id, file_path
-            );
+
+            if let Some(obj) = value.as_object() {
+                if let Some(message_field) = obj.get("message") {
+                    if let Some(msg_str) = message_field.as_str() {
+                        results.insert(id.clone(), msg_str.to_string());
+                    }
+                }
+            }
         }
     }
 
-    Ok(results)
+    results
 }
 
 #[cfg(test)]
@@ -90,7 +112,7 @@ mod tests {
             }
         });
 
-        let result = apply(&input, "test.json").unwrap();
+        let result = compile(&input);
         assert_eq!(result.len(), 2);
         assert_eq!(result.get("greeting").unwrap(), "Hello {name}!");
         assert_eq!(result.get("farewell").unwrap(), "Goodbye!");
@@ -108,7 +130,7 @@ mod tests {
             }
         });
 
-        let result = apply(&input, "test.json").unwrap();
+        let result = compile(&input);
         assert_eq!(result.len(), 1);
         assert_eq!(result.get("msg").unwrap(), "Test message");
         assert!(result.get("smartling").is_none());
@@ -122,7 +144,7 @@ mod tests {
             }
         });
 
-        let result = apply(&input, "test.json").unwrap();
+        let result = compile(&input);
         assert_eq!(result.len(), 0);
     }
 }
