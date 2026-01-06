@@ -432,7 +432,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_cli"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "anyhow",
  "base64",
@@ -454,7 +454,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat_parser"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "criterion",
  "formatjs_icu_skeleton_parser",
