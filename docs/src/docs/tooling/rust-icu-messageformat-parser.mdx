@@ -1,0 +1,203 @@
+---
+title: ICU MessageFormat Parser (Rust)
+---
+
+## Overview
+
+A high-performance Rust implementation of the ICU MessageFormat parser, providing native parsing capabilities for Rust applications.
+
+## Features
+
+- **🚀 High Performance**: Native Rust implementation optimized for speed
+- **🌐 Full ICU MessageFormat Support**: Complete syntax support including plurals, selects, and formatting
+- **🔒 Type Safe**: Strongly-typed AST with comprehensive error handling
+- **🎯 Zero-Copy Parsing**: Efficient parsing with minimal allocations where possible
+- **🧪 Well Tested**: Comprehensive test suite ensuring correctness
+
+## Installation
+
+Add to your `Cargo.toml`:
+
+```toml
+[dependencies]
+formatjs_icu_messageformat_parser = "0.2.4"
+```
+
+## Usage
+
+```rust
+use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
+
+fn main() {
+    let message = "Hello {name}! You have {count, plural, one{# message} other{# messages}}.";
+    let options = ParserOptions::default();
+    let parser = Parser::new(message, options);
+
+    match parser.parse() {
+        Ok(ast) => {
+            println!("Parsed AST: {:?}", ast);
+        }
+        Err(e) => {
+            eprintln!("Parse error: {}", e);
+        }
+    }
+}
+```
+
+## API Reference
+
+### `Parser::new(message: &str, options: ParserOptions) -> Parser`
+
+Creates a new parser instance.
+
+**Parameters:**
+
+- `message`: The ICU MessageFormat string to parse
+- `options`: Parser configuration options
+
+### `Parser::parse(&self) -> Result<Vec<MessageFormatElement>, ParserError>`
+
+Parses the message and returns an AST.
+
+**Returns:**
+
+- `Ok(Vec<MessageFormatElement>)`: Parsed AST on success
+- `Err(ParserError)`: Detailed error information on failure
+
+### `ParserOptions`
+
+Configuration options for the parser:
+
+```rust
+pub struct ParserOptions {
+    pub ignore_tag: bool,           // Treat HTML-like tags as literals
+    pub should_parse_skeletons: bool, // Parse number/date skeletons
+    pub capture_location: bool,      // Include location info in AST
+}
+```
+
+### AST Types
+
+The parser produces a strongly-typed AST with the following element types:
+
+- `LiteralElement`: Plain text
+- `ArgumentElement`: Simple variable reference `{name}`
+- `NumberElement`: Number formatting `{price, number, ::currency/USD}`
+- `DateElement`: Date formatting `{today, date, short}`
+- `TimeElement`: Time formatting `{now, time, short}`
+- `PluralElement`: Plural rules `{count, plural, one{#} other{#}}`
+- `SelectElement`: Select choices `{gender, select, male{he} female{she}}`
+- `TagElement`: HTML-like tags `<b>text</b>`
+- `PoundElement`: Pound symbol `#` (placeholder in plural rules)
+
+## Utility Functions
+
+### AST Manipulation
+
+```rust
+use formatjs_icu_messageformat_parser::{hoist_selectors, is_structurally_same};
+
+// Hoist nested selectors to top level
+let hoisted_ast = hoist_selectors(ast);
+
+// Compare two ASTs for structural equivalence
+let are_same = is_structurally_same(
+    &source_ast,
+    &target_ast,
+    "message.id".to_string()
+);
+```
+
+### AST Printing
+
+```rust
+use formatjs_icu_messageformat_parser::print_ast;
+
+// Convert AST back to ICU MessageFormat string
+let message = print_ast(&ast);
+println!("{}", message);
+```
+
+## Examples
+
+### Parsing Plurals
+
+```rust
+use formatjs_icu_messageformat_parser::{Parser, ParserOptions, MessageFormatElement};
+
+let message = "I have {count, plural, one{# dog} other{# dogs}}.";
+let parser = Parser::new(message, ParserOptions::default());
+let ast = parser.parse().unwrap();
+
+// Process plural element
+if let MessageFormatElement::Plural(plural) = &ast[1] {
+    println!("Variable: {}", plural.value);
+    println!("Options: {:?}", plural.options.keys());
+}
+```
+
+### Parsing with Skeletons
+
+```rust
+use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
+
+let message = "Price: {price, number, ::currency/USD}";
+let options = ParserOptions {
+    should_parse_skeletons: true,
+    ..Default::default()
+};
+let parser = Parser::new(message, options);
+let ast = parser.parse().unwrap();
+```
+
+### Error Handling
+
+```rust
+use formatjs_icu_messageformat_parser::{Parser, ParserOptions, ErrorKind};
+
+let invalid_message = "{unclosed";
+let parser = Parser::new(invalid_message, ParserOptions::default());
+
+match parser.parse() {
+    Ok(_) => println!("Parsed successfully"),
+    Err(e) => {
+        println!("Error: {}", e);
+        println!("Location: {:?}", e.location);
+        match e.kind {
+            ErrorKind::Expect(expected) => {
+                println!("Expected: {}", expected);
+            }
+            _ => {}
+        }
+    }
+}
+```
+
+## Performance
+
+The Rust parser provides significant performance improvements over JavaScript implementations:
+
+- **Parsing Speed**: 10-20x faster than JS implementations
+- **Memory Usage**: Lower memory footprint due to efficient allocation
+
+## Building from Source
+
+```bash
+# Run tests
+cargo test --package formatjs_icu_messageformat_parser
+
+# Run benchmarks
+cargo bench --package formatjs_icu_messageformat_parser
+```
+
+## Documentation
+
+- [Rust API Docs](https://docs.rs/formatjs_icu_messageformat_parser)
+- [Source Code](https://github.com/formatjs/formatjs/tree/main/rust/icu_messageformat_parser)
+- [ICU MessageFormat Syntax](https://unicode-org.github.io/icu/userguide/format_parse/messages/)
+
+## Related Packages
+
+- [`formatjs_cli`](./rust-cli.mdx) - Native Rust CLI for message extraction
+- [`formatjs_icu_skeleton_parser`](./rust-icu-skeleton-parser.mdx) - Number and date skeleton parser
+- [`@formatjs/icu-messageformat-parser`](https://www.npmjs.com/package/@formatjs/icu-messageformat-parser) - JavaScript implementation
