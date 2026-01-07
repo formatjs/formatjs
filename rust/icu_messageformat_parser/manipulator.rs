@@ -65,11 +65,15 @@ pub enum StructuralComparisonError {
         a_vars: Vec<String>,
         /// Variables in the second AST
         b_vars: Vec<String>,
+        /// Optional context (e.g., message ID or source/target locales)
+        context: Option<String>,
     },
     /// A variable is missing in one of the ASTs
     MissingVariable {
         /// The name of the missing variable
         variable: String,
+        /// Optional context (e.g., message ID or source/target locales)
+        context: Option<String>,
     },
     /// A variable has different types in the two ASTs
     TypeMismatch {
@@ -79,33 +83,58 @@ pub enum StructuralComparisonError {
         type_a: Type,
         /// Type in the second AST
         type_b: Type,
+        /// Optional context (e.g., message ID or source/target locales)
+        context: Option<String>,
     },
 }
 
 impl fmt::Display for StructuralComparisonError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            StructuralComparisonError::DifferentVariableCount { a_vars, b_vars } => {
-                write!(
-                    f,
-                    "Different number of variables: [{}] vs [{}]",
-                    a_vars.join(", "),
-                    b_vars.join(", ")
-                )
+            StructuralComparisonError::DifferentVariableCount { a_vars, b_vars, context } => {
+                if let Some(ctx) = context {
+                    write!(
+                        f,
+                        "[{}] Different number of variables: [{}] vs [{}]",
+                        ctx,
+                        a_vars.join(", "),
+                        b_vars.join(", ")
+                    )
+                } else {
+                    write!(
+                        f,
+                        "Different number of variables: [{}] vs [{}]",
+                        a_vars.join(", "),
+                        b_vars.join(", ")
+                    )
+                }
             }
-            StructuralComparisonError::MissingVariable { variable } => {
-                write!(f, "Missing variable '{}' in message", variable)
+            StructuralComparisonError::MissingVariable { variable, context } => {
+                if let Some(ctx) = context {
+                    write!(f, "[{}] Missing variable '{}' in message", ctx, variable)
+                } else {
+                    write!(f, "Missing variable '{}' in message", variable)
+                }
             }
             StructuralComparisonError::TypeMismatch {
                 variable,
                 type_a,
                 type_b,
+                context,
             } => {
-                write!(
-                    f,
-                    "Variable '{}' has conflicting types: {:?} vs {:?}",
-                    variable, type_a, type_b
-                )
+                if let Some(ctx) = context {
+                    write!(
+                        f,
+                        "[{}] Variable '{}' has conflicting types: {:?} vs {:?}",
+                        ctx, variable, type_a, type_b
+                    )
+                } else {
+                    write!(
+                        f,
+                        "Variable '{}' has conflicting types: {:?} vs {:?}",
+                        variable, type_a, type_b
+                    )
+                }
             }
         }
     }
@@ -525,14 +554,33 @@ fn collect_variables(
 ///
 /// * `a` - The first AST to compare
 /// * `b` - The second AST to compare
+/// * `context` - Context string (e.g., message ID or "en vs es") to include in error messages
 ///
 /// # Returns
 ///
 /// `Ok(())` if the ASTs are structurally the same.
-/// `Err(StructuralComparisonError)` if they differ, with details about the difference.
+/// `Err(StructuralComparisonError)` if they differ, with details including context.
+///
+/// # Example
+///
+/// ```
+/// use formatjs_icu_messageformat_parser::{Parser, ParserOptions, is_structurally_same};
+///
+/// let source = "Hello {name}!";
+/// let target = "Hola {name}!";
+///
+/// let parser_options = ParserOptions::default();
+/// let source_ast = Parser::new(source, parser_options.clone()).parse().unwrap();
+/// let target_ast = Parser::new(target, parser_options).parse().unwrap();
+///
+/// // Check with message ID context for better error messages
+/// let result = is_structurally_same(&source_ast, &target_ast, "app.greeting".to_string());
+/// assert!(result.is_ok());
+/// ```
 pub fn is_structurally_same(
     a: &[MessageFormatElement],
     b: &[MessageFormatElement],
+    context: String,
 ) -> StructuralComparisonResult {
     let mut a_vars = HashMap::new();
     let mut b_vars = HashMap::new();
@@ -547,6 +595,7 @@ pub fn is_structurally_same(
         return Err(StructuralComparisonError::DifferentVariableCount {
             a_vars: a_vars.keys().cloned().collect(),
             b_vars: b_vars.keys().cloned().collect(),
+            context: Some(context),
         });
     }
 
@@ -556,6 +605,7 @@ pub fn is_structurally_same(
             None => {
                 return Err(StructuralComparisonError::MissingVariable {
                     variable: key.clone(),
+                    context: Some(context.clone()),
                 });
             }
             Some(&b_type) if b_type != a_type => {
@@ -563,6 +613,7 @@ pub fn is_structurally_same(
                     variable: key.clone(),
                     type_a: a_type,
                     type_b: b_type,
+                    context: Some(context.clone()),
                 });
             }
             _ => {}
@@ -667,8 +718,29 @@ mod tests {
             MessageFormatElement::Argument(ArgumentElement::new("name".to_string())),
         ];
 
-        let result = is_structurally_same(&ast_a, &ast_b);
+        let result = is_structurally_same(&ast_a, &ast_b, "test".to_string());
         assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_is_structurally_same_includes_message_id() {
+        // Test that context (message ID) is included in error messages
+        let ast_a = vec![
+            MessageFormatElement::Argument(ArgumentElement::new("name".to_string())),
+            MessageFormatElement::Argument(ArgumentElement::new("count".to_string())),
+        ];
+
+        let ast_b = vec![MessageFormatElement::Argument(ArgumentElement::new(
+            "name".to_string(),
+        ))];
+
+        let result = is_structurally_same(&ast_a, &ast_b, "app.welcome.message".to_string());
+        assert!(result.is_err());
+
+        let error_msg = result.unwrap_err().to_string();
+        // Error message should include the message ID context
+        assert!(error_msg.contains("[app.welcome.message]"), "Error message should include context: {}", error_msg);
+        assert!(error_msg.contains("Different number of variables"));
     }
 
     #[test]
@@ -682,11 +754,11 @@ mod tests {
             "name".to_string(),
         ))];
 
-        let result = is_structurally_same(&ast_a, &ast_b);
+        let result = is_structurally_same(&ast_a, &ast_b, "test".to_string());
         assert!(result.is_err());
         assert!(matches!(
             result.unwrap_err(),
-            StructuralComparisonError::DifferentVariableCount { .. }
+            StructuralComparisonError::DifferentVariableCount { context: Some(_), .. }
         ));
     }
 
@@ -704,11 +776,11 @@ mod tests {
             location: None,
         })];
 
-        let result = is_structurally_same(&ast_a, &ast_b);
+        let result = is_structurally_same(&ast_a, &ast_b, "test".to_string());
         assert!(result.is_err());
         assert!(matches!(
             result.unwrap_err(),
-            StructuralComparisonError::TypeMismatch { .. }
+            StructuralComparisonError::TypeMismatch { context: Some(_), .. }
         ));
     }
 

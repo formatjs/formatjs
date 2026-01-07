@@ -330,8 +330,8 @@ fn check_structural_equality(locales: &HashMap<String, Value>, source_locale: &s
         for (key, source_msg) in &source_messages {
             // Skip if key doesn't exist in target (that's covered by missing keys check)
             if let Some(target_msg) = target_messages.get(key) {
-                // Parse both messages and compare structure
-                match compare_message_structure(source_msg, target_msg) {
+                // Parse both messages and compare structure with message ID as context
+                match compare_message_structure(source_msg, target_msg, Some(key)) {
                     Ok((true, _)) => {
                         // Structures match, all good
                     }
@@ -462,7 +462,7 @@ fn format_error_message(msg: &str) -> String {
 
 /// Compare the structure of two ICU MessageFormat messages
 /// Returns Ok((true, None)) if structures match, Ok((false, Some(detail))) if they don't, Err if parsing fails
-fn compare_message_structure(source: &str, target: &str) -> Result<(bool, Option<String>)> {
+fn compare_message_structure(source: &str, target: &str, message_id: Option<&str>) -> Result<(bool, Option<String>)> {
     use formatjs_icu_messageformat_parser::{Parser, ParserOptions, is_structurally_same};
 
     // Parse source message
@@ -478,8 +478,9 @@ fn compare_message_structure(source: &str, target: &str) -> Result<(bool, Option
         .parse()
         .with_context(|| format!("Failed to parse target message: {}", target))?;
 
-    // Compare AST structures
-    match is_structurally_same(&source_ast, &target_ast) {
+    // Compare AST structures with message ID as context
+    let context = message_id.unwrap_or("unknown");
+    match is_structurally_same(&source_ast, &target_ast, context.to_string()) {
         Ok(()) => Ok((true, None)),
         Err(e) => Ok((false, Some(e.to_string()))),
     }
@@ -719,7 +720,7 @@ mod tests {
     fn test_compare_message_structure_identical() {
         let source = "Hello {name}!";
         let target = "Hola {name}!";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, true);
         assert_eq!(result.1, None);
     }
@@ -728,7 +729,7 @@ mod tests {
     fn test_compare_message_structure_same_structure_different_text() {
         let source = "You have {count} items";
         let target = "Tienes {count} artículos";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, true);
     }
 
@@ -736,7 +737,7 @@ mod tests {
     fn test_compare_message_structure_plural() {
         let source = "You have {count, plural, one {# item} other {# items}}";
         let target = "Tienes {count, plural, one {# artículo} other {# artículos}}";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, true);
     }
 
@@ -744,7 +745,7 @@ mod tests {
     fn test_compare_message_structure_missing_variable() {
         let source = "Hello {name}!";
         let target = "Hello!";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, false);
         assert!(result.1.is_some());
         assert!(result.1.unwrap().contains("name"));
@@ -754,7 +755,7 @@ mod tests {
     fn test_compare_message_structure_different_variable_name() {
         let source = "Hello {name}!";
         let target = "Hello {username}!";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, false);
         assert!(result.1.is_some());
     }
@@ -763,7 +764,7 @@ mod tests {
     fn test_compare_message_structure_type_mismatch() {
         let source = "{count, plural, one {# item} other {# items}}";
         let target = "{count} items";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, false);
         assert!(result.1.is_some());
         let error_msg = result.1.unwrap();
@@ -775,7 +776,7 @@ mod tests {
     fn test_compare_message_structure_date_format() {
         let source = "Today is {date, date, short}";
         let target = "Hoy es {date, date, short}";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, true);
     }
 
@@ -783,7 +784,7 @@ mod tests {
     fn test_compare_message_structure_date_type_mismatch() {
         let source = "Today is {date, date, short}";
         let target = "Today is {date}";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, false);
         assert!(result.1.is_some());
     }
@@ -792,7 +793,7 @@ mod tests {
     fn test_compare_message_structure_number_format() {
         let source = "Price: {price, number, ::currency/USD}";
         let target = "Precio: {price, number, ::currency/USD}";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, true);
     }
 
@@ -800,7 +801,7 @@ mod tests {
     fn test_compare_message_structure_select() {
         let source = "{gender, select, male {He} female {She} other {They}}";
         let target = "{gender, select, male {Él} female {Ella} other {Ellos}}";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, true);
     }
 
@@ -808,7 +809,7 @@ mod tests {
     fn test_compare_message_structure_multiple_variables() {
         let source = "Hello {firstName} {lastName}! You have {count} messages.";
         let target = "Hola {firstName} {lastName}! Tienes {count} mensajes.";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, true);
     }
 
@@ -816,7 +817,7 @@ mod tests {
     fn test_compare_message_structure_multiple_variables_missing_one() {
         let source = "Hello {firstName} {lastName}! You have {count} messages.";
         let target = "Hola {firstName}! Tienes {count} mensajes.";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, false);
         assert!(result.1.is_some());
     }
@@ -826,7 +827,7 @@ mod tests {
         // Use # instead of {count} inside plural branches
         let source = "{count, plural, one {You have # {itemType, select, photo {photo} video {video} other {item}}} other {You have # {itemType, select, photo {photos} video {videos} other {items}}}}";
         let target = "{count, plural, one {Tienes # {itemType, select, photo {foto} video {video} other {artículo}}} other {Tienes # {itemType, select, photo {fotos} video {videos} other {artículos}}}}";
-        let result = compare_message_structure(source, target).unwrap();
+        let result = compare_message_structure(source, target, None).unwrap();
         assert_eq!(result.0, true);
     }
 
@@ -834,7 +835,7 @@ mod tests {
     fn test_compare_message_structure_invalid_source() {
         let source = "Hello {name";
         let target = "Hola {name}";
-        let result = compare_message_structure(source, target);
+        let result = compare_message_structure(source, target, None);
         assert!(result.is_err());
     }
 
@@ -842,7 +843,7 @@ mod tests {
     fn test_compare_message_structure_invalid_target() {
         let source = "Hello {name}";
         let target = "Hola {name";
-        let result = compare_message_structure(source, target);
+        let result = compare_message_structure(source, target, None);
         assert!(result.is_err());
     }
 
