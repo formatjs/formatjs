@@ -155,6 +155,14 @@
     "title": "Linter",
     "description": "This eslint plugin allows you to enforce certain rules in your ICU message."
   },
+  "tooling/rust-icu-messageformat-parser": {
+    "title": "Rust Icu Messageformat Parser",
+    "description": "---"
+  },
+  "tooling/rust-icu-skeleton-parser": {
+    "title": "Rust Icu Skeleton Parser",
+    "description": "---"
+  },
   "tooling/swc-plugin": {
     "title": "Swc Plugin",
     "description": "This has been migrated over to the swc repo itself. You can find the plugin here."

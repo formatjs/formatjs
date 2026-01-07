@@ -1,0 +1,332 @@
+---
+title: ICU Skeleton Parser (Rust)
+---
+
+## Overview
+
+A high-performance Rust implementation of the ICU number and date/time skeleton parser. This library parses compact skeleton syntax used in ICU MessageFormat for specifying number and date formatting options.
+
+## Features
+
+- **📊 Number Skeleton Parsing**: Parse ICU number skeletons like `::currency/USD compact-short`
+- **📅 Date/Time Skeleton Parsing**: Parse date/time skeletons like `yMMMd`
+- **🚀 High Performance**: Native Rust implementation optimized for speed
+- **🔒 Type Safe**: Strongly-typed options with comprehensive validation
+- **🎯 Zero Dependencies**: Minimal dependency footprint
+- **🧪 Well Tested**: Comprehensive test suite ensuring correctness
+
+## Installation
+
+Add to your `Cargo.toml`:
+
+```toml
+[dependencies]
+formatjs_icu_skeleton_parser = "0.1.1"
+```
+
+## Usage
+
+### Number Skeleton Parsing
+
+```rust
+use formatjs_icu_skeleton_parser::parse_number_skeleton;
+
+// Parse a number skeleton
+let skeleton = "::currency/USD compact-short";
+let options = parse_number_skeleton(skeleton).unwrap();
+
+println!("Style: {:?}", options.style);
+println!("Notation: {:?}", options.notation);
+```
+
+### Date/Time Skeleton Parsing
+
+```rust
+use formatjs_icu_skeleton_parser::parse_date_time_skeleton;
+
+// Parse a date/time skeleton
+let skeleton = "yMMMd";
+let options = parse_date_time_skeleton(skeleton).unwrap();
+
+println!("Year: {:?}", options.year);
+println!("Month: {:?}", options.month);
+println!("Day: {:?}", options.day);
+```
+
+## Number Skeleton Syntax
+
+### Basic Examples
+
+```rust
+use formatjs_icu_skeleton_parser::parse_number_skeleton;
+
+// Currency
+let usd = parse_number_skeleton("::currency/USD").unwrap();
+
+// Compact notation
+let compact = parse_number_skeleton("::compact-short").unwrap();
+
+// Scientific notation
+let scientific = parse_number_skeleton("::scientific").unwrap();
+
+// Engineering notation
+let engineering = parse_number_skeleton("::engineering").unwrap();
+
+// Percent
+let percent = parse_number_skeleton("::percent").unwrap();
+
+// Unit
+let unit = parse_number_skeleton("::unit/length-meter").unwrap();
+```
+
+### Advanced Options
+
+```rust
+// Precision and rounding
+let precise = parse_number_skeleton("::precision-integer .00").unwrap();
+
+// Sign display
+let signed = parse_number_skeleton("::sign-always").unwrap();
+
+// Grouping
+let grouped = parse_number_skeleton("::group-off").unwrap();
+
+// Multiple options
+let complex = parse_number_skeleton(
+    "::currency/USD compact-short sign-always"
+).unwrap();
+```
+
+### Supported Number Skeleton Tokens
+
+- **Style**: `currency`, `percent`, `unit`
+- **Notation**: `compact-short`, `compact-long`, `scientific`, `engineering`
+- **Precision**: `precision-integer`, `precision-increment`, `.##`, `.00`
+- **Rounding**: `rounding-mode-half-up`, `rounding-mode-ceiling`
+- **Sign**: `sign-always`, `sign-never`, `sign-except-zero`, `sign-accounting`
+- **Grouping**: `group-off`, `group-min2`, `group-on-aligned`
+- **Currency Display**: `currency-display-symbol`, `currency-display-code`, `currency-display-name`
+- **Unit Display**: `unit-width-short`, `unit-width-narrow`, `unit-width-full-name`
+
+## Date/Time Skeleton Syntax
+
+### Basic Examples
+
+```rust
+use formatjs_icu_skeleton_parser::parse_date_time_skeleton;
+
+// Date only
+let date = parse_date_time_skeleton("yMMMd").unwrap();
+// year: numeric, month: short, day: numeric
+
+// Time only
+let time = parse_date_time_skeleton("Hms").unwrap();
+// hour: numeric (24h), minute: numeric, second: numeric
+
+// Date and time
+let datetime = parse_date_time_skeleton("yMMMdjms").unwrap();
+```
+
+### Skeleton Pattern Characters
+
+#### Year
+
+- `y` - Numeric year
+- `yy` - 2-digit year
+- `yyyy` - Full year
+
+#### Month
+
+- `M` - Numeric month
+- `MM` - 2-digit month
+- `MMM` - Short month name (Jan, Feb)
+- `MMMM` - Long month name (January, February)
+- `MMMMM` - Narrow month name (J, F)
+
+#### Day
+
+- `d` - Numeric day
+- `dd` - 2-digit day
+
+#### Weekday
+
+- `E` - Short weekday name (Mon, Tue)
+- `EEEE` - Long weekday name (Monday, Tuesday)
+- `EEEEE` - Narrow weekday name (M, T)
+
+#### Hour
+
+- `h` - 12-hour format
+- `H` - 24-hour format
+- `K` - 12-hour format (0-11)
+- `k` - 24-hour format (1-24)
+
+#### Minute
+
+- `m` - Numeric minute
+- `mm` - 2-digit minute
+
+#### Second
+
+- `s` - Numeric second
+- `ss` - 2-digit second
+
+#### Time Zone
+
+- `z` - Short time zone name
+- `zzzz` - Long time zone name
+- `Z` - ISO 8601 time zone
+- `v` - Generic time zone name
+- `V` - Time zone ID
+
+## API Reference
+
+### Number Parsing
+
+#### `parse_number_skeleton(skeleton: &str) -> Result<ExtendedNumberFormatOptions>`
+
+Parses a number skeleton string and returns formatting options.
+
+**Returns:**
+
+- `Ok(ExtendedNumberFormatOptions)`: Parsed options on success
+- `Err(String)`: Error message on failure
+
+#### `ExtendedNumberFormatOptions`
+
+```rust
+pub struct ExtendedNumberFormatOptions {
+    pub style: Option<NumberFormatOptionsStyle>,
+    pub currency: Option<String>,
+    pub currency_display: Option<NumberFormatOptionsCurrencyDisplay>,
+    pub currency_sign: Option<NumberFormatOptionsCurrencySign>,
+    pub unit: Option<String>,
+    pub unit_display: Option<NumberFormatOptionsUnitDisplay>,
+    pub notation: Option<NumberFormatNotation>,
+    pub compact_display: Option<NumberFormatOptionsCompactDisplay>,
+    pub use_grouping: Option<UseGroupingType>,
+    pub sign_display: Option<NumberFormatOptionsSignDisplay>,
+    pub minimum_integer_digits: Option<u32>,
+    pub minimum_fraction_digits: Option<u32>,
+    pub maximum_fraction_digits: Option<u32>,
+    pub minimum_significant_digits: Option<u32>,
+    pub maximum_significant_digits: Option<u32>,
+    pub rounding_priority: Option<RoundingPriorityType>,
+    pub rounding_increment: Option<u32>,
+    pub rounding_mode: Option<RoundingModeType>,
+    pub trailing_zero_display: Option<TrailingZeroDisplay>,
+}
+```
+
+### Date/Time Parsing
+
+#### `parse_date_time_skeleton(skeleton: &str) -> Result<DateTimeFormatOptions>`
+
+Parses a date/time skeleton string and returns formatting options.
+
+**Returns:**
+
+- `Ok(DateTimeFormatOptions)`: Parsed options on success
+- `Err(String)`: Error message on failure
+
+#### `DateTimeFormatOptions`
+
+```rust
+pub struct DateTimeFormatOptions {
+    pub weekday: Option<DateTimeFormatWeekday>,
+    pub era: Option<DateTimeFormatEra>,
+    pub year: Option<DateTimeFormatYear>,
+    pub month: Option<DateTimeFormatMonth>,
+    pub day: Option<DateTimeFormatDay>,
+    pub hour: Option<DateTimeFormatHour>,
+    pub minute: Option<DateTimeFormatMinute>,
+    pub second: Option<DateTimeFormatSecond>,
+    pub hour_cycle: Option<DateTimeFormatHourCycle>,
+    pub time_zone_name: Option<DateTimeFormatTimeZoneName>,
+}
+```
+
+## Examples
+
+### Currency Formatting
+
+```rust
+use formatjs_icu_skeleton_parser::parse_number_skeleton;
+
+// USD with compact notation
+let options = parse_number_skeleton("::currency/USD compact-short").unwrap();
+assert_eq!(options.currency, Some("USD".to_string()));
+assert_eq!(options.notation, Some(NumberFormatNotation::Compact));
+
+// Euro with narrow symbol
+let options = parse_number_skeleton("::currency/EUR currency-display-narrow").unwrap();
+```
+
+### Percentage with Precision
+
+```rust
+let options = parse_number_skeleton("::percent .00").unwrap();
+assert_eq!(options.style, Some(NumberFormatOptionsStyle::Percent));
+assert_eq!(options.minimum_fraction_digits, Some(2));
+assert_eq!(options.maximum_fraction_digits, Some(2));
+```
+
+### Localized Date Formats
+
+```rust
+use formatjs_icu_skeleton_parser::parse_date_time_skeleton;
+
+// Short date: 1/1/2024
+let short_date = parse_date_time_skeleton("yMd").unwrap();
+
+// Medium date: Jan 1, 2024
+let medium_date = parse_date_time_skeleton("yMMMd").unwrap();
+
+// Long date: January 1, 2024
+let long_date = parse_date_time_skeleton("yMMMMd").unwrap();
+
+// Full date with weekday: Monday, January 1, 2024
+let full_date = parse_date_time_skeleton("EEEEyMMMMd").unwrap();
+```
+
+### Time Formats
+
+```rust
+// 12-hour with AM/PM: 1:30 PM
+let time_12h = parse_date_time_skeleton("hms").unwrap();
+
+// 24-hour: 13:30
+let time_24h = parse_date_time_skeleton("Hms").unwrap();
+
+// With seconds: 1:30:45 PM
+let time_with_seconds = parse_date_time_skeleton("hmss").unwrap();
+```
+
+## Integration with Message Parser
+
+The skeleton parser is used internally by the ICU MessageFormat parser:
+
+```rust
+use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
+
+// The skeleton is parsed automatically
+let message = "Price: {price, number, ::currency/USD}";
+let parser = Parser::new(message, ParserOptions {
+    should_parse_skeletons: true,
+    ..Default::default()
+});
+let ast = parser.parse().unwrap();
+```
+
+## Documentation
+
+- [Rust API Docs](https://docs.rs/formatjs_icu_skeleton_parser)
+- [Source Code](https://github.com/formatjs/formatjs/tree/main/rust/icu_skeleton_parser)
+- [ICU Number Skeletons](https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html)
+- [ICU Date/Time Patterns](https://unicode-org.github.io/icu/userguide/format_parse/datetime/)
+
+## Related Packages
+
+- [`formatjs_icu_messageformat_parser`](./rust-icu-messageformat-parser.mdx) - ICU MessageFormat parser
+- [`formatjs_cli`](./rust-cli.mdx) - Native Rust CLI for message extraction
+- [`@formatjs/icu-skeleton-parser`](https://www.npmjs.com/package/@formatjs/icu-skeleton-parser) - JavaScript implementation

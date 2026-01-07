@@ -82,6 +82,10 @@ export function getNavigationTree(): NavSection[] {
           path: 'polyfills/intl-relativetimeformat',
         },
         {title: 'Intl.Segmenter', path: 'polyfills/intl-segmenter'},
+        {
+          title: 'Intl.supportedValuesOf',
+          path: 'polyfills/intl-supportedvaluesof',
+        },
       ],
     },
     {
@@ -93,6 +97,14 @@ export function getNavigationTree(): NavSection[] {
         {title: 'TypeScript Transformer', path: 'tooling/ts-transformer'},
         {title: 'SWC Plugin', path: 'tooling/swc-plugin'},
         {title: 'ESLint Plugin', path: 'tooling/linter'},
+        {
+          title: 'Rust: ICU MessageFormat Parser',
+          path: 'tooling/rust-icu-messageformat-parser',
+        },
+        {
+          title: 'Rust: ICU Skeleton Parser',
+          path: 'tooling/rust-icu-skeleton-parser',
+        },
       ],
     },
     {
@@ -105,6 +117,7 @@ export function getNavigationTree(): NavSection[] {
         },
         {title: 'Runtime Requirements', path: 'guides/runtime-requirements'},
         {title: 'Advanced Usage', path: 'guides/advanced-usage'},
+        {title: 'Bundler Plugins', path: 'guides/bundler-plugins'},
         {title: 'Distribute Libraries', path: 'guides/distribute-libraries'},
         {title: 'Development', path: 'guides/develop'},
       ],
@@ -113,6 +126,7 @@ export function getNavigationTree(): NavSection[] {
       title: 'Other APIs',
       order: 7,
       items: [
+        {title: '@formatjs/intl', path: 'intl'},
         {title: 'Vue Intl', path: 'vue-intl'},
         {title: 'Intl MessageFormat', path: 'intl-messageformat'},
         {title: 'ICU MessageFormat Parser', path: 'icu-messageformat-parser'},
