@@ -6,7 +6,6 @@
 //! - **Structural comparison**: Checking if two ASTs have the same variable structure
 
 use crate::types::*;
-use std::collections::HashMap;
 use std::fmt;
 
 /// Error type for AST manipulation operations.
@@ -72,17 +71,8 @@ pub enum StructuralComparisonError {
     MissingVariable {
         /// The name of the missing variable
         variable: String,
-        /// Optional context (e.g., message ID or source/target locales)
-        context: Option<String>,
-    },
-    /// A variable has different types in the two ASTs
-    TypeMismatch {
-        /// The name of the variable
-        variable: String,
-        /// Type in the first AST
-        type_a: Type,
-        /// Type in the second AST
-        type_b: Type,
+        /// The type of the missing variable
+        var_type: Type,
         /// Optional context (e.g., message ID or source/target locales)
         context: Option<String>,
     },
@@ -91,7 +81,11 @@ pub enum StructuralComparisonError {
 impl fmt::Display for StructuralComparisonError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            StructuralComparisonError::DifferentVariableCount { a_vars, b_vars, context } => {
+            StructuralComparisonError::DifferentVariableCount {
+                a_vars,
+                b_vars,
+                context,
+            } => {
                 if let Some(ctx) = context {
                     write!(
                         f,
@@ -109,30 +103,22 @@ impl fmt::Display for StructuralComparisonError {
                     )
                 }
             }
-            StructuralComparisonError::MissingVariable { variable, context } => {
-                if let Some(ctx) = context {
-                    write!(f, "[{}] Missing variable '{}' in message", ctx, variable)
-                } else {
-                    write!(f, "Missing variable '{}' in message", variable)
-                }
-            }
-            StructuralComparisonError::TypeMismatch {
+            StructuralComparisonError::MissingVariable {
                 variable,
-                type_a,
-                type_b,
+                var_type,
                 context,
             } => {
                 if let Some(ctx) = context {
                     write!(
                         f,
-                        "[{}] Variable '{}' has conflicting types: {:?} vs {:?}",
-                        ctx, variable, type_a, type_b
+                        "[{}] Missing variable '{}' of type {:?} in message",
+                        ctx, variable, var_type
                     )
                 } else {
                     write!(
                         f,
-                        "Variable '{}' has conflicting types: {:?} vs {:?}",
-                        variable, type_a, type_b
+                        "Missing variable '{}' of type {:?} in message",
+                        variable, var_type
                     )
                 }
             }
@@ -435,32 +421,6 @@ pub fn hoist_selectors(ast: Vec<MessageFormatElement>) -> Vec<MessageFormatEleme
     hoist_selectors_impl(ast).unwrap_or_else(|e| panic!("{}", e))
 }
 
-/// Inserts a variable into the map, checking for type conflicts.
-///
-/// # Returns
-///
-/// `Ok(())` if the variable was inserted successfully or already exists with the same type.
-/// `Err(ManipulatorError)` if the variable exists with a different type.
-fn insert_variable(
-    vars: &mut HashMap<String, Type>,
-    name: String,
-    var_type: Type,
-) -> Result<(), ManipulatorError> {
-    match vars.get(&name) {
-        Some(&existing_type) if existing_type != var_type => {
-            Err(ManipulatorError::ConflictingVariableType {
-                variable: name,
-                expected: existing_type,
-                found: var_type,
-            })
-        }
-        _ => {
-            vars.insert(name, var_type);
-            Ok(())
-        }
-    }
-}
-
 /// Collects all variables and their types from an AST.
 ///
 /// This recursively walks the AST and builds a map of variable names to their types.
@@ -489,38 +449,38 @@ fn insert_variable(
 /// This maintains compatibility with the TypeScript implementation.
 fn collect_variables(
     ast: &[MessageFormatElement],
-    vars: &mut HashMap<String, Type>,
+    vars: &mut Vec<(String, Type)>,
 ) -> Result<(), ManipulatorError> {
     for el in ast {
         match el {
             MessageFormatElement::Argument(arg) => {
-                insert_variable(vars, arg.value.clone(), Type::Argument)?;
+                vars.push((arg.value.clone(), Type::Argument));
             }
             MessageFormatElement::Number(num) => {
-                insert_variable(vars, num.value.clone(), Type::Number)?;
+                vars.push((num.value.clone(), Type::Number));
             }
             MessageFormatElement::Date(date) => {
-                insert_variable(vars, date.value.clone(), Type::Date)?;
+                vars.push((date.value.clone(), Type::Date));
             }
             MessageFormatElement::Time(time) => {
-                insert_variable(vars, time.value.clone(), Type::Time)?;
+                vars.push((time.value.clone(), Type::Time));
             }
             MessageFormatElement::Plural(plural) => {
-                insert_variable(vars, plural.value.clone(), Type::Plural)?;
+                vars.push((plural.value.clone(), Type::Plural));
                 // Recursively collect from each plural option
                 for option in plural.options.values() {
                     collect_variables(&option.value, vars)?;
                 }
             }
             MessageFormatElement::Select(select) => {
-                insert_variable(vars, select.value.clone(), Type::Select)?;
+                vars.push((select.value.clone(), Type::Select));
                 // Recursively collect from each select option
                 for option in select.options.values() {
                     collect_variables(&option.value, vars)?;
                 }
             }
             MessageFormatElement::Tag(tag) => {
-                insert_variable(vars, tag.value.clone(), Type::Tag)?;
+                vars.push((tag.value.clone(), Type::Tag));
                 // Recursively collect from tag children
                 collect_variables(&tag.children, vars)?;
             }
@@ -582,8 +542,8 @@ pub fn is_structurally_same(
     b: &[MessageFormatElement],
     context: String,
 ) -> StructuralComparisonResult {
-    let mut a_vars = HashMap::new();
-    let mut b_vars = HashMap::new();
+    let mut a_vars = Vec::new();
+    let mut b_vars = Vec::new();
 
     // Panic on conflicting variable types within a single message
     // (maintains compatibility with TypeScript implementation)
@@ -593,30 +553,24 @@ pub fn is_structurally_same(
     // Check if they have the same number of variables
     if a_vars.len() != b_vars.len() {
         return Err(StructuralComparisonError::DifferentVariableCount {
-            a_vars: a_vars.keys().cloned().collect(),
-            b_vars: b_vars.keys().cloned().collect(),
+            a_vars: a_vars.iter().map(|f| f.0.clone()).collect(),
+            b_vars: b_vars.iter().map(|f| f.0.clone()).collect(),
             context: Some(context),
         });
     }
 
     // Check if all variables match with the same types
-    for (key, &a_type) in &a_vars {
-        match b_vars.get(key) {
-            None => {
-                return Err(StructuralComparisonError::MissingVariable {
-                    variable: key.clone(),
-                    context: Some(context.clone()),
-                });
-            }
-            Some(&b_type) if b_type != a_type => {
-                return Err(StructuralComparisonError::TypeMismatch {
-                    variable: key.clone(),
-                    type_a: a_type,
-                    type_b: b_type,
-                    context: Some(context.clone()),
-                });
-            }
-            _ => {}
+    for (key, a_type) in &a_vars {
+        if b_vars
+            .iter()
+            .find(|b| &b.0 == key && &b.1 == a_type)
+            .is_none()
+        {
+            return Err(StructuralComparisonError::MissingVariable {
+                variable: key.clone(),
+                var_type: a_type.clone(),
+                context: Some(context.clone()),
+            });
         }
     }
 
@@ -697,13 +651,18 @@ mod tests {
             }),
         ];
 
-        let mut vars = HashMap::new();
+        let mut vars = Vec::new();
         collect_variables(&ast, &mut vars).unwrap();
 
         assert_eq!(vars.len(), 3);
-        assert_eq!(vars.get("name"), Some(&Type::Argument));
-        assert_eq!(vars.get("count"), Some(&Type::Number));
-        assert_eq!(vars.get("today"), Some(&Type::Date));
+        assert_eq!(
+            vars,
+            Vec::from([
+                ("name".to_string(), Type::Argument),
+                ("count".to_string(), Type::Number),
+                ("today".to_string(), Type::Date),
+            ])
+        );
     }
 
     #[test]
@@ -739,7 +698,11 @@ mod tests {
 
         let error_msg = result.unwrap_err().to_string();
         // Error message should include the message ID context
-        assert!(error_msg.contains("[app.welcome.message]"), "Error message should include context: {}", error_msg);
+        assert!(
+            error_msg.contains("[app.welcome.message]"),
+            "Error message should include context: {}",
+            error_msg
+        );
         assert!(error_msg.contains("Different number of variables"));
     }
 
@@ -758,7 +721,10 @@ mod tests {
         assert!(result.is_err());
         assert!(matches!(
             result.unwrap_err(),
-            StructuralComparisonError::DifferentVariableCount { context: Some(_), .. }
+            StructuralComparisonError::DifferentVariableCount {
+                context: Some(_),
+                ..
+            }
         ));
     }
 
@@ -778,10 +744,19 @@ mod tests {
 
         let result = is_structurally_same(&ast_a, &ast_b, "test".to_string());
         assert!(result.is_err());
-        assert!(matches!(
-            result.unwrap_err(),
-            StructuralComparisonError::TypeMismatch { context: Some(_), .. }
-        ));
+        let err = result.unwrap_err();
+        // Type mismatch is now reported as MissingVariable (variable exists but with wrong type)
+        assert!(
+            matches!(
+                err,
+                StructuralComparisonError::MissingVariable {
+                    context: Some(_),
+                    ..
+                }
+            ),
+            "Expected MissingVariable error for type mismatch, got: {:?}",
+            err
+        );
     }
 
     #[test]
@@ -811,5 +786,31 @@ mod tests {
         })];
 
         hoist_selectors(ast);
+    }
+
+    #[test]
+    fn test_is_structurally_same_with_plural_translations() {
+        use crate::parser::{Parser, ParserOptions};
+
+        // English: "I have {count} {count, plural, one{dog} other{dogs}}"
+        let english = "I have {count} {count, plural, one{dog} other{dogs}}";
+        // Spanish: "Tengo {count} {count, plural, one{perro} other{perros}}"
+        let spanish = "Tengo {count} {count, plural, one{perro} other{perros}}";
+
+        let parser_options = ParserOptions::default();
+        let english_ast = Parser::new(english, parser_options.clone())
+            .parse()
+            .expect("Failed to parse English message");
+        let spanish_ast = Parser::new(spanish, parser_options)
+            .parse()
+            .expect("Failed to parse Spanish message");
+
+        // These should be structurally the same (same variable, same plural cases)
+        let result = is_structurally_same(&english_ast, &spanish_ast, "test.dogs".to_string());
+        assert!(
+            result.is_ok(),
+            "Expected messages to be structurally the same, but got error: {:?}",
+            result.err()
+        );
     }
 }

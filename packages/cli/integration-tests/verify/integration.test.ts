@@ -10,9 +10,9 @@ const TS_BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
 const RUST_BIN_PATH = resolveRustBinaryPath(__dirname)
 
 describe.each([
-  {name: 'TypeScript', binPath: TS_BIN_PATH},
-  {name: 'Rust', binPath: RUST_BIN_PATH},
-])('$name CLI', ({binPath}) => {
+  {name: 'TypeScript', binPath: TS_BIN_PATH, isRust: false},
+  {name: 'Rust', binPath: RUST_BIN_PATH, isRust: true},
+])('$name CLI', ({binPath, isRust}) => {
   test('missing keys pass', async () => {
     await expect(
       exec(
@@ -56,17 +56,22 @@ describe.each([
   }, 20000)
 
   test('structural equality fail', async () => {
-    await expect(
-      exec(
-        `${binPath} verify --source-locale en-US --structural-equality '${join(__dirname, 'structural-equality', 'fixtures2', '*.json')}'`
-      )
-    ).rejects.toThrow(
-      `These translation keys for locale fr-FR are structurally different from en-US:
+    let errMessage = isRust
+      ? `These translation keys for locale fr-FR are structurally different from en-US:
+3: [3] Missing variable var of type number in message
+4: [4] Missing variable var4 of type time in message
+6: Different number of variables: [var, var2, var3, var4, var5, b] vs [var, var2, var3, var4, var5]
+7: EXPECT_ARGUMENT_CLOSING_BRACE`
+      : `These translation keys for locale fr-FR are structurally different from en-US:
 3: Variable var has conflicting types: number vs date
 4: Missing variable var4 in message
 6: Different number of variables: [var, var2, var3, var4, var5, b] vs [var, var2, var3, var4, var5]
 7: EXPECT_ARGUMENT_CLOSING_BRACE`
-    )
+    await expect(
+      exec(
+        `${binPath} verify --source-locale en-US --structural-equality '${join(__dirname, 'structural-equality', 'fixtures2', '*.json')}'`
+      )
+    ).rejects.toThrow(errMessage)
   }, 20000)
 
   test('extra keys pass', async () => {
