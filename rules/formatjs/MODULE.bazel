@@ -44,7 +44,7 @@ bazel_dep(name = "rules_shell", version = "0.3.0", dev_dependency = True)
 
 # FormatJS CLI toolchain
 formatjs_cli = use_extension("//formatjs_cli:extensions.bzl", "formatjs_cli")
-formatjs_cli.toolchain(version = "0.1.6")
+formatjs_cli.toolchain(version = "0.1.8")
 use_repo(
     formatjs_cli,
     "formatjs_cli_toolchains",
