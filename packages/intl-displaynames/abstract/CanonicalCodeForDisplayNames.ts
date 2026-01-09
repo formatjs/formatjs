@@ -4,7 +4,7 @@ import {
   IsWellFormedCurrencyCode,
 } from '@formatjs/ecma402-abstract'
 
-import {IsValidDateTimeFieldCode} from './IsValidDateTimeFieldCode'
+import {IsValidDateTimeFieldCode} from './IsValidDateTimeFieldCode.js'
 
 const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})$/i
 const ALPHA_4 = /^[a-z]{4}$/i
