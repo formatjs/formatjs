@@ -1,13 +1,24 @@
-name: Test on Linux
+name: Test
 
 on:
   pull_request:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   test:
-    if: github.actor != 'renovate[bot]'
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            bazel-config: ci
+          - os: macos-latest
+            bazel-config: ci-darwin
 
     steps:
       - name: Checkout Repository
@@ -23,8 +34,8 @@ jobs:
       - name: Run Tests
         run: |
           if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
-            echo "Running with BuildBuddy CI config"
-            bazel test --config=ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //...
+            echo "Running with BuildBuddy ${{ matrix.bazel-config }} config"
+            bazel test --config=${{ matrix.bazel-config }} --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //...
           else
             echo "Running without BuildBuddy (no API key)"
             bazel test //...
