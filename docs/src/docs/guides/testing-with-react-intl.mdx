@@ -33,7 +33,6 @@ The following examples will assume `mocha`, `expect`, and `expect-jsx` test fram
 #### ShortDate (Basic)
 
 ```tsx
-
 const ShortDate = props => (
   <FormattedDate
     value={props.date}
@@ -49,7 +48,6 @@ export default ShortDate
 Testing the `<ShortDate>` example component is no different than testing any other basic component in your app using React's shallow rendering:
 
 ```tsx
-
 expect.extend(expectJSX)
 
 describe('<ShortDate>', function () {
@@ -179,7 +177,6 @@ export {render}
 Create a file with the above helper in e.g. `test-utils.tsx` and import the methods you need in your tests.
 
 ```tsx
-
 const Greeting = ({name}: {name: string}) => (
   <div data-testid="greeting">
     <FormattedMessage
@@ -207,7 +204,6 @@ Snapshot testing is a new feature of Jest that automatically generates text snap
 #### Helper function
 
 ```tsx
-
 const createComponentWithIntl = (children, props = {locale: 'en'}) => {
   return renderer.create(<IntlProvider {...props}>{children}</IntlProvider>)
 }
@@ -218,7 +214,6 @@ export default createComponentWithIntl
 #### Usage
 
 ```tsx
-
 test('app main should be rendered', () => {
   const component = createComponentWithIntl(<AppMain />)
 
@@ -257,7 +252,6 @@ npm install -D vitest @testing-library/react @testing-library/jest-dom happy-dom
 Add a `vitest.config.ts` file to your project:
 
 ```typescript
-
 export default defineConfig({
   plugins: [react()],
   test: {
@@ -341,7 +335,6 @@ describe('PriceDisplay', () => {
 Vitest also supports snapshot testing similar to Jest:
 
 ```tsx
-
 const DateDisplay = ({date}: {date: Date}) => (
   <FormattedDate value={date} year="numeric" month="long" day="numeric" />
 )

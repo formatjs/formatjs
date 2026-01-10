@@ -74,7 +74,9 @@ my-lib
 This provides consistency and minimize processing cost of different manifest files but also is less flexible.
 
 <Admonition type="info">
-We've seen `convention` approach working better in large engineering org due to enforcement of convention & structure while `manifest` approach working in a more open environment.
+  We've seen `convention` approach working better in large engineering org due
+  to enforcement of convention & structure while `manifest` approach working in
+  a more open environment.
 </Admonition>
 
 ## Passing down `intl` object
@@ -130,7 +132,6 @@ function MyFeature(props: Props) {
 <TabItem value="vue">
 
 ```ts
-
 const MyFeature = {
   setup() {
     const intl = useIntl()
@@ -150,7 +151,6 @@ const MyFeature = {
 or passing down via `provideIntl`
 
 ```ts
-
 const Ancestor = {
   setup() {
     provideIntl(

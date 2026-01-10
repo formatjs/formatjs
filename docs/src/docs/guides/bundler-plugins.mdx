@@ -36,7 +36,6 @@ pnpm add -D babel-plugin-formatjs
 Let's take this simple example:
 
 ```tsx
-
 <FormattedMessage
   description="A message"
   defaultMessage="My name is {name}"
@@ -67,7 +66,6 @@ During runtime this will throw an `Error` saying `ID is required`. In order to i
 This will produce the following JS
 
 ```js
-
 React.createElement(FormattedMessage, {
   id: '179jda',
   defaultMessage: 'My name is {name}',
@@ -78,7 +76,8 @@ React.createElement(FormattedMessage, {
 ```
 
 <Admonition type="info" title="description">
-Our plugin also removes `description` because it's only for translator, not end-user.
+  Our plugin also removes `description` because it's only for translator, not
+  end-user.
 </Admonition>
 
 ## Using @formatjs/ts-transformer
@@ -119,7 +118,6 @@ If you're using TypeScript, in order to enable custom AST transformer you should
 Let's take this simple example:
 
 ```tsx
-
 <FormattedMessage
   description="A message"
   defaultMessage="My name is {name}"
@@ -164,7 +162,6 @@ module.exports = {
 This will produce the following JS
 
 ```js
-
 React.createElement(FormattedMessage, {
   id: '179jda',
   defaultMessage: 'My name is {name}',
@@ -175,7 +172,8 @@ React.createElement(FormattedMessage, {
 ```
 
 <Admonition type="info" title="description">
-Our transformer also removes `description` because it's only for translator, not end-user.
+  Our transformer also removes `description` because it's only for translator,
+  not end-user.
 </Admonition>
 
 ## Vite

@@ -260,8 +260,8 @@ The repository includes two production-ready GitHub Actions workflows:
 **Jobs**:
 
 ```yaml
-build-and-test-macos:  # Build and test on macOS runner
-build-and-test-linux:  # Build and test on Linux runner
+build-and-test-macos: # Build and test on macOS runner
+build-and-test-linux: # Build and test on Linux runner
 ```
 
 **Features**:
@@ -282,9 +282,9 @@ build-and-test-linux:  # Build and test on Linux runner
 **Jobs**:
 
 ```yaml
-build-macos:           # Build macOS binary
-build-linux:           # Build Linux binary
-combine-and-release:   # Combine, checksum, and create release
+build-macos: # Build macOS binary
+build-linux: # Build Linux binary
+combine-and-release: # Combine, checksum, and create release
 ```
 
 **Features**:

@@ -28,7 +28,6 @@ When `forwardRef` is set to true, you can now simply pretend the HOC wasn't ther
 Intl v2:
 
 ```tsx
-
 class MyComponent extends React.Component {
   doSomething = () => console.log(this.state || null)
 
@@ -60,7 +59,6 @@ class Parent extends React.Component {
 Intl v3:
 
 ```tsx
-
 class MyComponent extends React.Component {
   doSomething = () => console.log(this.state || null)
 
@@ -144,7 +142,9 @@ All types should be available from top level `index` file without importing from
 If we're missing any interface top level support, please let us know and/or submitting a PR is greatly appreciated :)
 
 <Admonition type="info">
-You might need to make a few changes to your code if you were relying on the now deprecated **@types/react-intl** package. The most common example is `InjectedIntlProps` which must be replaced with `WrappedComponentProps`.
+  You might need to make a few changes to your code if you were relying on the
+  now deprecated **@types/react-intl** package. The most common example is
+  `InjectedIntlProps` which must be replaced with `WrappedComponentProps`.
 </Admonition>
 
 ## FormattedRelativeTime

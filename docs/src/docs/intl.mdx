@@ -38,7 +38,7 @@ pnpm add @formatjs/intl
 The core of `@formatjs/intl` is the `intl` object (of type [`IntlShape`](#intlshape)), which is the instance to store a cache of all `Intl.*` APIs, configurations, compiled messages and such. The lifecycle of the `intl` object is typically tied to the `locale` & the list of `messages` that it contains, which means when you switch `locale`, this object should be recreated.
 
 <Admonition type="tip">
-The `intl` object should be reused as much as possible for performance.
+  The `intl` object should be reused as much as possible for performance.
 </Admonition>
 
 ## createIntl
@@ -46,7 +46,6 @@ The `intl` object should be reused as much as possible for performance.
 This allows you to create an `IntlShape` object that contains all `format*` methods. For example:
 
 ```tsx
-
 // This is optional but highly recommended
 // since it prevents memory leak
 const cache = createIntlCache()
@@ -209,7 +208,10 @@ intl.formatTime(Date.now()) // "4:03 PM"
 ## formatRelativeTime
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](./polyfills/intl-relativetimeformat) if you plan to support them.
+  This requires
+  [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat)
+  which has limited browser support. Please use our
+  [polyfill](./polyfills/intl-relativetimeformat) if you plan to support them.
 </Admonition>
 
 ```tsx
@@ -316,13 +318,18 @@ intl.formatPlural(4, {style: 'ordinal'})
 ```
 
 <Admonition type="danger" title="multiple language support">
-This function should only be used in apps that only need to support one language. If your app supports multiple languages use [`formatMessage`](#formatmessage) instead.
+  This function should only be used in apps that only need to support one
+  language. If your app supports multiple languages use
+  [`formatMessage`](#formatmessage) instead.
 </Admonition>
 
 ## formatList
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](./polyfills/intl-listformat) if you plan to support them.
+  This requires
+  [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat)
+  which has limited browser support. Please use our
+  [polyfill](./polyfills/intl-listformat) if you plan to support them.
 </Admonition>
 
 ```ts
@@ -350,7 +357,10 @@ intl.formatList(['5 hours', '3 minutes'], {type: 'unit'})
 ## formatDisplayName
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](./polyfills/intl-displaynames) if you plan to support them.
+  This requires
+  [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames)
+  which has limited browser support. Please use our
+  [polyfill](./polyfills/intl-displaynames) if you plan to support them.
 </Admonition>
 
 ```ts
@@ -428,7 +438,8 @@ type MessageDescriptor = {
 ```
 
 <Admonition type="info" title="Extracting Message Descriptor">
-You can extract inline-declared messages from source files using [our CLI](./getting-started/message-extraction).
+  You can extract inline-declared messages from source files using [our
+  CLI](./getting-started/message-extraction).
 </Admonition>
 
 ### Message Formatting Fallbacks
@@ -514,7 +525,8 @@ function () {
 The message we defined using [`defineMessages`](#definemessages) to support extraction via `babel-plugin-formatjs`, but it doesn't have to be if you're not using the Babel plugin.
 
 <Admonition type="info" title="simple message">
-Messages can be simple strings _without_ placeholders, and that's the most common type of message.
+  Messages can be simple strings _without_ placeholders, and that's the most
+  common type of message.
 </Admonition>
 
 ## defineMessages/defineMessage
@@ -536,7 +548,6 @@ function defineMessage(messageDescriptor: MessageDescriptor): MessageDescriptor
 These functions are exported by the `@formatjs/intl` package and are simply a _hook_ for our CLI & babel/TS plugin to use when compiling default messages defined in JavaScript source files. This function simply returns the Message Descriptor map object that's passed-in.
 
 ```ts
-
 const messages = defineMessages({
   greeting: {
     id: 'app.home.greeting',

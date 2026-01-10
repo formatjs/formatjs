@@ -76,11 +76,11 @@ When compiled to WASM, the parser exports two functions:
 Parse ICU MessageFormat with default options.
 
 ```javascript
-import init, { parse } from './formatjs_icu_messageformat_parser.js';
+import init, {parse} from './formatjs_icu_messageformat_parser.js'
 
-await init();
-const ast = parse('Hello {name}!');
-console.log(ast);
+await init()
+const ast = parse('Hello {name}!')
+console.log(ast)
 ```
 
 ### `parse_ignore_tag(input: string): MessageFormatElement[]`
@@ -88,11 +88,11 @@ console.log(ast);
 Parse with `ignore_tag` option enabled (treats HTML-like tags as literals).
 
 ```javascript
-import init, { parse_ignore_tag } from './formatjs_icu_messageformat_parser.js';
+import init, {parse_ignore_tag} from './formatjs_icu_messageformat_parser.js'
 
-await init();
-const ast = parse_ignore_tag('<b>Bold {name}</b>');
-console.log(ast);
+await init()
+const ast = parse_ignore_tag('<b>Bold {name}</b>')
+console.log(ast)
 ```
 
 Both functions return the parsed AST as a JavaScript object or throw an error on parse failure.
@@ -102,10 +102,10 @@ Both functions return the parsed AST as a JavaScript object or throw an error on
 The WASM binary is used by the `@formatjs/icu-messageformat-parser-wasm` npm package, which provides a convenient JavaScript wrapper:
 
 ```javascript
-import { parse, parseIgnoreTag } from '@formatjs/icu-messageformat-parser-wasm';
+import {parse, parseIgnoreTag} from '@formatjs/icu-messageformat-parser-wasm'
 
 // Automatically initializes WASM on first call
-const ast = await parse('Hello {name}!');
+const ast = await parse('Hello {name}!')
 ```
 
 ## Implementation Notes

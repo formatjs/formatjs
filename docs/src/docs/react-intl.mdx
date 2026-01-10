@@ -108,7 +108,9 @@ Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provid
 - [`FormattedMessage`](react-intl/components#formattedmessage)
 
 <Admonition type="danger" title="react">
-When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: **`React`**, and put the above named exports on the global variable: **`ReactIntl`**.
+  When using the UMD version of React Intl _without_ a module system, it will
+  expect `react` to exist on the global variable: **`React`**, and put the above
+  named exports on the global variable: **`ReactIntl`**.
 </Admonition>
 
 ## Creating an I18n Context
@@ -339,7 +341,6 @@ Our [Advanced Usage](guides/advanced-usage) has further guides for production se
 We've built [@formatjs/cli](tooling/cli) that helps you extract messages from a list of files. It uses [babel-plugin-formatjs](tooling/babel-plugin) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
-
 defineMessages({
   foo: {
     id: 'foo',

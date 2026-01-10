@@ -12,7 +12,8 @@ This package aims to provide a way for you to manage and format your JavaScript 
 This implementation is based on the [Strawman proposal](http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting), but there are a few places this implementation diverges.
 
 <Admonition type="info" title="Future Changes">
-This `IntlMessageFormat` API may change to stay in sync with ECMA-402, but this package will follow [semver](http://semver.org/).
+  This `IntlMessageFormat` API may change to stay in sync with ECMA-402, but
+  this package will follow [semver](http://semver.org/).
 </Admonition>
 
 ### How It Works
@@ -142,7 +143,8 @@ new IntlMessageFormat('My name is {name}.', 'en-US').format({name: 'Eric'})
 ```
 
 <Admonition type="danger" title="placeholders">
-A value **must** be supplied for every argument in the message pattern the instance was constructed with.
+  A value **must** be supplied for every argument in the message pattern the
+  instance was constructed with.
 </Admonition>
 
 #### Rich Text support

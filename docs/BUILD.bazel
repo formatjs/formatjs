@@ -43,19 +43,18 @@ ts_project(
         "//:node_modules/@radix-ui/react-separator",
         "//:node_modules/@radix-ui/react-slot",
         "//:node_modules/@radix-ui/react-tabs",
-        "//:node_modules/@types/lunr",
         "//:node_modules/@types/react",
         "//:node_modules/@types/react-dom",
         "//:node_modules/class-variance-authority",
         "//:node_modules/clsx",
         "//:node_modules/fast-glob",
         "//:node_modules/lucide-react",
-        "//:node_modules/lunr",
         "//:node_modules/react",
         "//:node_modules/react-dom",
         "//:node_modules/react-live",
         "//:node_modules/tailwind-merge",
         "//:node_modules/tslib",
+        "//:node_modules/typesense",
         "//:node_modules/vike",
         "//:node_modules/vike-react",
         "//:node_modules/vite",
@@ -65,30 +64,41 @@ ts_project(
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json()
 
-# Build search index tool
+# Build Typesense index tool
 ts_binary(
-    name = "build_search_index_tool",
+    name = "build_typesense_index_tool",
     data = [
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
         "//:node_modules/fast-glob",
         "//:node_modules/gray-matter",
-        "//:node_modules/lunr",
         "//:node_modules/minimist",
     ],
-    entry_point = "scripts/build-search-index.ts",
+    entry_point = "scripts/build-typesense-index.ts",
 )
 
-# Build search index from MDX docs
+# Upload Typesense index tool
+ts_binary(
+    name = "upload_typesense_index_tool",
+    data = [
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+        "//:node_modules/typesense",
+    ],
+    entry_point = "scripts/upload-typesense-index.ts",
+)
+
+# Build Typesense index from MDX docs
 ts_run_binary(
-    name = "search_index",
+    name = "typesense_index",
     srcs = glob(["src/docs/**/*.mdx"]),
-    outs = ["src/search-index.generated.json"],
+    outs = ["typesense-index.jsonl"],
     args = [
         "--out",
-        "$(rootpath src/search-index.generated.json)",
+        "$(rootpath typesense-index.jsonl)",
     ],
-    tool = ":build_search_index_tool",
+    tool = ":build_typesense_index_tool",
 )
 
 # Extract metadata tool
@@ -136,7 +146,6 @@ vite_bin.vite(
         ":index_html",
         ":node_modules/intl-messageformat",
         ":node_modules/react-intl",
-        ":search_index",
         "//:node_modules/@mdx-js/react",
         "//:node_modules/@mdx-js/rollup",
         "//:node_modules/@radix-ui/react-accordion",
@@ -156,7 +165,6 @@ vite_bin.vite(
         "//:node_modules/fast-glob",
         "//:node_modules/gray-matter",
         "//:node_modules/lucide-react",
-        "//:node_modules/lunr",
         "//:node_modules/prismjs",
         "//:node_modules/react",
         "//:node_modules/react-dom",
@@ -170,6 +178,7 @@ vite_bin.vite(
         "//:node_modules/tailwind-merge",
         "//:node_modules/tailwindcss",
         "//:node_modules/typescript",
+        "//:node_modules/typesense",
         "//:node_modules/vike",
         "//:node_modules/vike-react",
         "//:node_modules/vite",
@@ -197,7 +206,6 @@ vite_bin.vite_binary(
         ":index_html",
         ":node_modules/intl-messageformat",
         ":node_modules/react-intl",
-        ":search_index",
         "//:node_modules/@mdx-js/react",
         "//:node_modules/@mdx-js/rollup",
         "//:node_modules/@radix-ui/react-accordion",
@@ -217,7 +225,6 @@ vite_bin.vite_binary(
         "//:node_modules/fast-glob",
         "//:node_modules/gray-matter",
         "//:node_modules/lucide-react",
-        "//:node_modules/lunr",
         "//:node_modules/prismjs",
         "//:node_modules/react",
         "//:node_modules/react-dom",
@@ -231,6 +238,7 @@ vite_bin.vite_binary(
         "//:node_modules/tailwind-merge",
         "//:node_modules/tailwindcss",
         "//:node_modules/typescript",
+        "//:node_modules/typesense",
         "//:node_modules/vike",
         "//:node_modules/vike-react",
         "//:node_modules/vite",

@@ -15,3 +15,9 @@ target
 
 # Generated files
 docs/src/search-index.generated.json
+docs/typesense-index.jsonl
+
+# Environment files
+docs/.env
+.env
+.env.local

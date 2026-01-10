@@ -45,7 +45,7 @@
   },
   "guides/runtime-requirements": {
     "title": "Runtime Requirements",
-    "description": "We support IE11 & 2 most recent versions of Edge, Chrome, Firefox & Safari. If you need older browser support, take a look at polyfill-library that also..."
+    "description": "We support IE11 & **2 most recent versions of Edge, Chrome, Firefox &"
   },
   "guides/testing-with-react-intl": {
     "title": "Testing With React Intl",
