@@ -52,7 +52,9 @@ We provide a high-performance native Rust CLI that's **4-17x faster** than the N
 </Admonition>
 
 <Admonition type="caution">
-The native CLI currently only supports **JavaScript/TypeScript with JSX/TSX**. Vue and Glimmer are not supported due to lack of Rust parsers for these frameworks. If you need Vue or Glimmer support, use the Node.js CLI above.
+  The native CLI currently only supports **JavaScript/TypeScript with JSX/TSX**.
+  Vue and Glimmer are not supported due to lack of Rust parsers for these
+  frameworks. If you need Vue or Glimmer support, use the Node.js CLI above.
 </Admonition>
 
 ### Installation
@@ -124,7 +126,6 @@ All the same options and formatters work with the native CLI. See the sections b
 We've built this [CLI](https://www.npmjs.com/package/@formatjs/cli) that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
-
 defineMessages({
   foo: {
     id: 'foo',
@@ -203,7 +204,9 @@ yarn extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
 </Tabs>
 
 <Admonition type="caution">
-You should always quote (`"` or `'`) your glob pattern (like `"src/**/*"`) to avoid auto shell expansion of those glob, which varies depending on your shell (`zsh` vs `fish` vs `bash`).
+  You should always quote (`"` or `'`) your glob pattern (like `"src/**/*"`) to
+  avoid auto shell expansion of those glob, which varies depending on your shell
+  (`zsh` vs `fish` vs `bash`).
 </Admonition>
 
 ### `--format [path]`
@@ -394,9 +397,7 @@ Given the English message `my name is {name}`
 | `en-XA` | `[ḿẏ ƞȧȧḿḗḗ īş {name}]`                      |
 | `en-XB` | `‮ɯʎ uɐɯǝ ıs {name}‬`                        |
 
-<Admonition type="caution">
-Requires `--ast`
-</Admonition>
+<Admonition type="caution">Requires `--ast`</Admonition>
 
 ## Extraction and compilation with a single script
 
@@ -553,7 +554,9 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 | [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)                | `transifex` |
 
 <Admonition type="caution">
-The `format`s of `extract` & `compile` have to be the same, which means if you `extract --format smartling`, you have to `compile --format smartling` as well & vice versa.
+  The `format`s of `extract` & `compile` have to be the same, which means if you
+  `extract --format smartling`, you have to `compile --format smartling` as well
+  & vice versa.
 </Admonition>
 
 ## Custom Formatters
@@ -561,7 +564,6 @@ The `format`s of `extract` & `compile` have to be the same, which means if you `
 You can provide your own formatter by using our interfaces:
 
 ```tsx
-
 interface VendorJson {}
 
 // [Optional] Format @formatjs/cli structure to vendor's structure
@@ -612,7 +614,6 @@ pnpm add -D @formatjs/cli-lib
 ### Extraction
 
 ```tsx
-
 const resultAsString: Promise<string> = extract(files, {
   idInterpolationPattern: '[sha512:contenthash:base64:6]',
 })
@@ -621,7 +622,6 @@ const resultAsString: Promise<string> = extract(files, {
 ### Compilation
 
 ```tsx
-
 const resultAsString: Promise<string> = compile(files, {
   ast: true,
 })
@@ -630,7 +630,6 @@ const resultAsString: Promise<string> = compile(files, {
 ### Custom Formatter
 
 ```tsx
-
 export const format: FormatFn = msgs => msgs
 
 // Sort key reverse alphabetically

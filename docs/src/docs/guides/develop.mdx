@@ -79,5 +79,7 @@ When some native Intl APIs don't support certain locales, or missing `locale-dat
 This gets triggered whenever we try to look up a translated message in `messages` for a given `id` and it's not there and there is no fallback `defaultMessage` for the given `id`.
 
 <Admonition type="caution" title="verbosity">
-This error will be triggered very often since it happens for every message that does not have a translation. Therefore if you do log it remotely there should be throttling in place.
+  This error will be triggered very often since it happens for every message
+  that does not have a translation. Therefore if you do log it remotely there
+  should be throttling in place.
 </Admonition>

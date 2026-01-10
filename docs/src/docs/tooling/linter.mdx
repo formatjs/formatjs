@@ -36,7 +36,6 @@ pnpm add -D eslint-plugin-formatjs
 Then in your eslint config:
 
 ```js
-
 export default [
   // other configs...
   {
@@ -55,7 +54,6 @@ export default [
 Currently this uses `intl.formatMessage`, `defineMessage`, `defineMessages`, `<FormattedMessage>` from `react-intl` as hooks to verify the message. Therefore, in your code use 1 of the following mechanisms:
 
 ```tsx
-
 const messages = defineMessages({
   foo: {
     defaultMessage: 'foo',
@@ -121,7 +119,6 @@ quality standards.
 ### Example
 
 ```js
-
 export default [
   formatjs.configs.recommended,
   // Other configs...
@@ -164,7 +161,6 @@ enum Element {
 #### Example
 
 ```js
-
 export default [
   {
     plugins: {
@@ -186,7 +182,6 @@ This enforces `description` in the message descriptor.
 - Description provides helpful context for translators
 
 ```tsx
-
 const messages = defineMessages({
   // WORKS
   foo: {
@@ -203,7 +198,6 @@ const messages = defineMessages({
 #### Options
 
 ```js
-
 export default [
   {
     plugins: {
@@ -227,7 +221,6 @@ This enforces `defaultMessage` in the message descriptor.
 - Can be useful in case we want to extract messages for translations from source code. This way can make sure people won't forget about defaultMessage
 
 ```tsx
-
 const messages = defineMessages({
   // WORKS
   foo: {
@@ -244,7 +237,6 @@ const messages = defineMessages({
 #### Options
 
 ```js
-
 export default [
   {
     plugins: {
@@ -311,7 +303,6 @@ intl.formatMessage({
 #### Options
 
 ```js
-
 export default [
   {
     plugins: {
@@ -356,7 +347,6 @@ enum LDML {
 #### Example
 
 ```js
-
 export default [
   {
     plugins: {
@@ -385,7 +375,6 @@ This make sure placeholders are not camel-case.
 - This is to prevent case-sensitivity issue in certain translation vendors.
 
 ```tsx
-
 const messages = defineMessages({
   // WORKS
   foo: {
@@ -411,7 +400,6 @@ Messages that look like `{thing, plural, one {1 thing} other {# things}}` will n
 This prevents usage of emojis (or above a certain Unicode version) in message
 
 ```js
-
 export default [
   {
     plugins: {
@@ -440,7 +428,6 @@ export default [
 - Cross-platform encoding for emojis are faulty.
 
 ```tsx
-
 const messages = defineMessages({
   // WORKS
   foo: {
@@ -507,7 +494,6 @@ attributes that you can customize.
 #### Example
 
 ```js
-
 export default [
   {
     plugins: {
@@ -606,7 +592,6 @@ This linter reports text literals or string expressions, including string concat
 #### Example
 
 ```js
-
 export default [
   {
     plugins: {
@@ -635,7 +620,6 @@ This prevents usage of multiple consecutive whitespaces in message.
 - Prevents `\` linebreaks in JS string which results in awkward whitespaces.
 
 ```tsx
-
 const messages = defineMessages({
   // WORKS
   foo: {
@@ -689,7 +673,6 @@ This prevents specifying offset in plural rules in your message.
 - Offset has complicated logic implication so some translation vendors don't allow it.
 
 ```tsx
-
 const messages = defineMessages({
   // PASS
   foo: {
@@ -733,7 +716,6 @@ const messages = defineMessages({
 #### Options
 
 ```js
-
 export default [
   {
     plugins: {
@@ -796,7 +778,6 @@ Default complexity limit is 20 (using [Smartling as a reference](https://help.sm
 #### Options
 
 ```js
-
 export default [
   {
     plugins: {

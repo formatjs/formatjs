@@ -72,7 +72,10 @@ yarn extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file lang/en.json --id-in
 </Tabs>
 
 <Admonition type="caution" title="ID Interpolation Pattern">
-Make sure this pattern matches `idInterpolationPattern` when you use `babel-plugin-formatjs` or `@formatjs/ts-transformer` in [Bundling with formatjs](https://formatjs.github.io/docs/guides/bundler-plugins) or you'll get a `MISSING_TRANSLATION` error.
+  Make sure this pattern matches `idInterpolationPattern` when you use
+  `babel-plugin-formatjs` or `@formatjs/ts-transformer` in [Bundling with
+  formatjs](https://formatjs.github.io/docs/guides/bundler-plugins) or you'll
+  get a `MISSING_TRANSLATION` error.
 </Admonition>
 
 Given a file that has the following messages:
@@ -88,7 +91,6 @@ values={[
 <TabItem value="react">
 
 ```tsx
-
 class PasswordChangeWithIntl extends React.Component {
   render() {
     const {intl} = this.props
@@ -231,7 +233,9 @@ running the above command will create a file called `lang/en.json`:
 ```
 
 <Admonition type="info" title="Message ID">
-During extraction, we'll preserve explicit declared IDs and insert a hash as an ID for messages without. We recommend against explicit IDs since it can cause collision.
+  During extraction, we'll preserve explicit declared IDs and insert a hash as
+  an ID for messages without. We recommend against explicit IDs since it can
+  cause collision.
 </Admonition>
 
 ## Automatic ID Generation

@@ -35,10 +35,13 @@ console.log(ast)
 // ]
 
 // Parse with options
-const ast2 = await parse('You have {count, plural, one {# item} other {# items}}', {
-  captureLocation: false,
-  shouldParseSkeletons: true
-})
+const ast2 = await parse(
+  'You have {count, plural, one {# item} other {# items}}',
+  {
+    captureLocation: false,
+    shouldParseSkeletons: true,
+  }
+)
 ```
 
 ## API
@@ -64,9 +67,12 @@ Parses an ICU MessageFormat string and returns an AST (Abstract Syntax Tree) rep
 **Example:**
 
 ```typescript
-const ast = await parse('You have {count, plural, one {# item} other {# items}}', {
-  captureLocation: false
-})
+const ast = await parse(
+  'You have {count, plural, one {# item} other {# items}}',
+  {
+    captureLocation: false,
+  }
+)
 ```
 
 ## Types

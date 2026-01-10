@@ -63,9 +63,15 @@ intl.formatMessage(message, {name: 'John'}) // My name is John
 ```
 
 <Admonition type="caution">
-We rely on AST to extract messages from the codebase, so make sure you call `intl.formatMessage()`, use our builtin React components, use our Vue methods or configure `--additionalFunctionNames`/`--additionalComponentNames` in our [CLI](../tooling/cli) properly.
+  We rely on AST to extract messages from the codebase, so make sure you call
+  `intl.formatMessage()`, use our builtin React components, use our Vue methods
+  or configure `--additionalFunctionNames`/`--additionalComponentNames` in our
+  [CLI](../tooling/cli) properly.
 </Admonition>
 
 <Admonition type="caution">
-You can declare a message without immediately formatting it with `defineMessage` and our extractor would still be able to extract it. However, our [enforce-placeholders](../tooling/linter#enforce-placeholders) linter rule won't be able to analyze it.
+  You can declare a message without immediately formatting it with
+  `defineMessage` and our extractor would still be able to extract it. However,
+  our [enforce-placeholders](../tooling/linter#enforce-placeholders) linter rule
+  won't be able to analyze it.
 </Admonition>

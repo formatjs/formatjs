@@ -1,0 +1,64 @@
+name: Update Typesense Search Index
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/src/docs/**/*.mdx'
+      - 'docs/scripts/build-typesense-index.ts'
+      - 'docs/scripts/upload-typesense-index.ts'
+      - '.github/workflows/typesense-index.yml'
+  workflow_dispatch:
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - uses: bazel-contrib/setup-bazel@0.16.0
+        with:
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Store build cache per workflow.
+          disk-cache: ${{ github.workflow }}
+          # Share repository cache between workflows.
+          repository-cache: true
+
+      # Build the Typesense index
+      - name: Build Typesense Index
+        id: build_index
+        run: |
+          bazel build \
+            --config=ci \
+            --remote_download_outputs=all \
+            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+            //docs:typesense_index
+          INDEX_PATH=$(readlink -f bazel-bin)/docs/typesense-index.jsonl
+          echo "INDEX_PATH=$INDEX_PATH" >> $GITHUB_OUTPUT
+
+      # Verify index file exists
+      - name: Verify Index File
+        run: |
+          INDEX_PATH="${{ steps.build_index.outputs.INDEX_PATH }}"
+          if [ ! -f "$INDEX_PATH" ]; then
+            echo "Error: Index file does not exist: $INDEX_PATH"
+            exit 1
+          fi
+          echo "Index file created successfully"
+          echo "File size: $(du -h "$INDEX_PATH" | cut -f1)"
+          echo "Number of documents: $(wc -l < "$INDEX_PATH")"
+
+      # Upload to Typesense
+      - name: Upload to Typesense
+        run: |
+          bazel run //docs:upload_typesense_index_tool -- \
+            --file="${{ steps.build_index.outputs.INDEX_PATH }}"
+        env:
+          TYPESENSE_ADMIN_API_KEY: ${{ secrets.TYPESENSE_ADMIN_API_KEY }}
+          TYPESENSE_HOST: 6e4uts1pzdy7wm3fp-1.a1.typesense.net
+          TYPESENSE_PROTOCOL: https
+          TYPESENSE_PORT: 443

@@ -149,7 +149,8 @@ The `output` is itself a message, so it can be a literal string or also have mor
 The `other` match case is special and is used if nothing else matches. (This is similar to the `default` case of the switch found in some programming languages.) Note that `other` is treated as a reserved keyword in the match pattern, not as a variable lookup, so it will always act as the fallback case even if your input data contains a field named `other`.
 
 <Admonition type="danger">
-`other` is required as per `icu4j` implementation. We will throw an error if `select` is used without `other`.
+  `other` is required as per `icu4j` implementation. We will throw an error if
+  `select` is used without `other`.
 </Admonition>
 
 <IcuEditor
@@ -186,12 +187,15 @@ The match is a literal value and is matched to one of these plural categories. N
 - `=value`: This is used to match a specific value regardless of the plural categories of the current locale.
 
 <Admonition type="info">
-Don't use `=1` in place of `one`. `one` doesn't always mean `1` but rather means `singular`, which can match to more than number `1` in certain locales.
-Some locales considered all numbers ends with `1` (like 1, 11, 111) to be `singular`.
+  Don't use `=1` in place of `one`. `one` doesn't always mean `1` but rather
+  means `singular`, which can match to more than number `1` in certain locales.
+  Some locales considered all numbers ends with `1` (like 1, 11, 111) to be
+  `singular`.
 </Admonition>
 
 <Admonition type="danger">
-`other` is required as per `icu4j` implementation. We will throw an error if `plural` is used without `other`.
+  `other` is required as per `icu4j` implementation. We will throw an error if
+  `plural` is used without `other`.
 </Admonition>
 
 <IcuEditor
@@ -237,7 +241,8 @@ The match is a literal value and is matched to one of these plural categories. N
 - `=value`: This is used to match a specific value regardless of the plural categories of the current locale.
 
 <Admonition type="danger">
-`other` is required as per `icu4j` implementation. We will throw an error if `selectordinal` is used without `other`.
+  `other` is required as per `icu4j` implementation. We will throw an error if
+  `selectordinal` is used without `other`.
 </Admonition>
 
 In the `output` of the match, the `#` special token can be used as a placeholder for the numeric value and will be formatted as if it were `{key, number}`.
@@ -264,7 +269,11 @@ with <link>{pct, number, ::percent} discount</link>`}
 />
 
 <Admonition type="info" title="Custom Behavior">
-It is expected that the system using embedded rich text formatting will have methods to handle these placeholders external to this library. The tags will be part of the generated output and can either be **post-processed** by your own tooling or use the [defaultRichTextElements](/docs/intl/#defaultRichTextElements) configuration.
+  It is expected that the system using embedded rich text formatting will have
+  methods to handle these placeholders external to this library. The tags will
+  be part of the generated output and can either be **post-processed** by your
+  own tooling or use the
+  [defaultRichTextElements](/docs/intl/#defaultRichTextElements) configuration.
 </Admonition>
 
 ## Quoting / Escaping

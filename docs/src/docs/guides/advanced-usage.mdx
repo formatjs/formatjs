@@ -8,10 +8,12 @@ You can also pre-compile all messages into `AST` using [`@formatjs/cli`](../tool
 2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.
 
 <Admonition type="caution" title="Caching">
-Since this approach uses `AST` as the data source, changes to `@formatjs/icu-messageformat-parser`'s `AST` will require cache invalidation.
+  Since this approach uses `AST` as the data source, changes to
+  `@formatjs/icu-messageformat-parser`'s `AST` will require cache invalidation.
 </Admonition>
 <Admonition type="caution" title="Asset Size">
-`AST` is also slightly larger in size than regular `string` messages but can be efficiently compressed.
+  `AST` is also slightly larger in size than regular `string` messages but can
+  be efficiently compressed.
 </Admonition>
 
 ## `react-intl` without parser (40% smaller)
@@ -35,7 +37,6 @@ module.exports = {
 ### rollup.config.js
 
 ```js
-
 module.exports = {
   //...
   plugins: [

@@ -38,7 +38,6 @@ pnpm add vue-intl
 Initialize `VueIntl` plugin with the same `IntlConfig` documented in [@formatjs/intl](./intl#IntlShape).
 
 ```tsx
-
 const app = createApp(App)
 app.use(
   createIntl({
@@ -64,7 +63,6 @@ Note: `intlKey` needs to be imported from `vue-intl`.
 We also support Vue's [Composition API](https://composition-api.vuejs.org/) with `provideIntl` & `useIntl`.
 
 ```ts
-
 const Ancestor = {
   setup() {
     provideIntl(

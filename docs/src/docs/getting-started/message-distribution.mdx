@@ -63,7 +63,8 @@ yarn compile lang/fr.json --ast --out-file compiled-lang/fr.json
 </Tabs>
 
 <Admonition type="info" title="Parsing messages into AST">
-We recommending compiling your messages into AST as it allows us to skip parsing them during runtime. This makes your app more performant.
+  We recommending compiling your messages into AST as it allows us to skip
+  parsing them during runtime. This makes your app more performant.
 </Admonition>
 
 ## Translation Management System (TMS) Integration
@@ -136,7 +137,6 @@ values={[
 <TabItem value="node">
 
 ```tsx
-
 function loadLocaleData(locale: string): Promise<Record<string, string>> {
   switch (locale) {
     case 'fr':
@@ -161,7 +161,6 @@ async function bootstrapApplication(locale) {
 <TabItem value="react">
 
 ```tsx
-
 function loadLocaleData(locale: string) {
   switch (locale) {
     case 'fr':
@@ -193,7 +192,6 @@ async function bootstrapApplication(locale, mainDiv) {
 <TabItem value="vue">
 
 ```tsx
-
 function loadLocaleData(locale: string) {
   switch (locale) {
     case 'fr':

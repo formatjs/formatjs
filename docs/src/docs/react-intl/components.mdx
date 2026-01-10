@@ -160,7 +160,10 @@ By default `<FormattedDate>` will render the formatted date into a `<React.Fragm
 ## FormattedDateParts
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.DateTimeFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-datetimeformat) if you plan to support IE11.
+  This requires
+  [Intl.DateTimeFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts)
+  which is not available in IE11. Please use our
+  [polyfill](../polyfills/intl-datetimeformat) if you plan to support IE11.
 </Admonition>
 
 This component provides more customization to `FormattedDate` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts)
@@ -226,7 +229,10 @@ By default `<FormattedTime>` will render the formatted time into a `React.Fragme
 ## FormattedTimeParts
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.DateTimeFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-datetimeformat) if you plan to support IE11.
+  This requires
+  [Intl.DateTimeFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts)
+  which is not available in IE11. Please use our
+  [polyfill](../polyfills/intl-datetimeformat) if you plan to support IE11.
 </Admonition>
 
 This component provides more customization to `FormattedTime` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts)
@@ -257,7 +263,10 @@ props: Intl.DateTimeFormatOptions &
 ## FormattedDateTimeRange
 
 <Admonition type="caution" title="browser support">
-This requires stage-3 API [Intl.RelativeTimeFormat.prototype.formatRange](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange) which has limited browser support. Please use our [polyfill](../polyfills/intl-datetimeformat) if you plan to support them.
+  This requires stage-3 API
+  [Intl.RelativeTimeFormat.prototype.formatRange](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange)
+  which has limited browser support. Please use our
+  [polyfill](../polyfills/intl-datetimeformat) if you plan to support them.
 </Admonition>
 
 This component uses the [`formatDateTimeRange`](api#formatdatetimerange) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above
@@ -287,7 +296,10 @@ By default `<FormattedDateTimeRange>` will render the formatted time into a `Rea
 ## FormattedRelativeTime
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-relativetimeformat) if you plan to support them.
+  This requires
+  [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat)
+  which has limited browser support. Please use our
+  [polyfill](../polyfills/intl-relativetimeformat) if you plan to support them.
 </Admonition>
 
 This component uses the [`formatRelativeTime`](api#formatrelativetime) API and has `props` that correspond to the following relative formatting options:
@@ -321,7 +333,10 @@ By default `<FormattedRelativeTime>` will render the formatted relative time int
 ```
 
 <Admonition type="info" title="maximum interval">
-You can adjust the maximum interval that the component will re-render by setting the `updateIntervalInSeconds`. A falsy value will turn off auto-updating. The updating is smart and will schedule the next update for the next _interesting moment_.
+  You can adjust the maximum interval that the component will re-render by
+  setting the `updateIntervalInSeconds`. A falsy value will turn off
+  auto-updating. The updating is smart and will schedule the next update for the
+  next _interesting moment_.
 </Admonition>
 
 An _interesting moment_ is defined as the next non-fractional `value` for that `unit`. For example:
@@ -333,7 +348,10 @@ An _interesting moment_ is defined as the next non-fractional `value` for that `
 This will initially renders `59 seconds ago`, after 1 second, will render `1 minute ago`, and will not re-render until a full minute goes by, it'll render `2 minutes ago`. It will not try to render `1.2 minutes ago`.
 
 <Admonition type="caution" title="limitation">
-`updateIntervalInSeconds` cannot be enabled for `unit` longer than `hour` (so not for `day`, `week`, `quarter`, `year`). This is primarily because it doesn't make sense to schedule a timeout in `day`s, and the number of `ms` in a day is larger than the max timeout that `setTimeout` accepts.
+  `updateIntervalInSeconds` cannot be enabled for `unit` longer than `hour` (so
+  not for `day`, `week`, `quarter`, `year`). This is primarily because it
+  doesn't make sense to schedule a timeout in `day`s, and the number of `ms` in
+  a day is larger than the max timeout that `setTimeout` accepts.
 </Admonition>
 
 ## FormattedNumber
@@ -392,7 +410,10 @@ in a [sanctioned unit](../polyfills/intl-numberformat#SupportedUnits). For examp
 ## FormattedNumberParts
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.NumberFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-numberformat) if you plan to support IE11.
+  This requires
+  [Intl.NumberFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/formatToParts)
+  which is not available in IE11. Please use our
+  [polyfill](../polyfills/intl-numberformat) if you plan to support IE11.
 </Admonition>
 
 This component provides more customization to `FormattedNumber` by allowing children function to have access to underlying parts of the formatted number. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat/formatToParts).
@@ -455,7 +476,10 @@ By default `<FormattedPlural>` will select a [plural category](http://www.unicod
 ## FormattedList
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat) if you plan to support them.
+  This requires
+  [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat)
+  which has limited browser support. Please use our
+  [polyfill](../polyfills/intl-listformat) if you plan to support them.
 </Admonition>
 
 This component uses [`formatList`](api#formatlist) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
@@ -484,7 +508,10 @@ When the locale is `en`:
 ## FormattedListParts
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat) if you plan to support them.
+  This requires
+  [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat)
+  which has limited browser support. Please use our
+  [polyfill](../polyfills/intl-listformat) if you plan to support them.
 </Admonition>
 
 This component uses [`formatListToParts`](api#formatlisttoparts) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
@@ -519,7 +546,10 @@ When the locale is `en`:
 ## FormattedDisplayName
 
 <Admonition type="caution" title="browser support">
-This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames) if you plan to support them.
+  This requires
+  [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames)
+  which has limited browser support. Please use our
+  [polyfill](../polyfills/intl-displaynames) if you plan to support them.
 </Admonition>
 
 This component uses [`formatDisplayName`](api#formatdisplayname) and [`Intl.DisplayNames`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames)
@@ -600,7 +630,10 @@ type MessageDescriptor = {
 ```
 
 <Admonition type="info" title="compile message descriptors">
-The [babel-plugin-formatjs](../tooling/babel-plugin) and [@formatjs/ts-transformer](../tooling/ts-transformer) packages can be used to compile Message Descriptors defined in JavaScript source files into AST for performance.
+  The [babel-plugin-formatjs](../tooling/babel-plugin) and
+  [@formatjs/ts-transformer](../tooling/ts-transformer) packages can be used to
+  compile Message Descriptors defined in JavaScript source files into AST for
+  performance.
 </Admonition>
 
 ### Message Formatting Fallbacks
@@ -637,7 +670,9 @@ By default `<FormattedMessage>` will render the formatted string into a `<React.
 ```
 
 <Admonition type="info" title="simple message">
-Messages can be simple strings _without_ placeholders, and that's the most common type of message. This case is highly-optimized, but still has the benefits of the [fallback procedure](#message-formatting-fallbacks).
+  Messages can be simple strings _without_ placeholders, and that's the most
+  common type of message. This case is highly-optimized, but still has the
+  benefits of the [fallback procedure](#message-formatting-fallbacks).
 </Admonition>
 
 ### Rich Text Formatting
