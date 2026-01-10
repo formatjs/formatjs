@@ -55,7 +55,7 @@ jobs:
       # Upload to Typesense
       - name: Upload to Typesense
         run: |
-          bazel run //docs:upload_typesense_index_tool -- \
+          bazel run --action_env=TYPESENSE_ADMIN_API_KEY //docs:upload_typesense_index_tool -- \
             --file="${{ steps.build_index.outputs.INDEX_PATH }}"
         env:
           TYPESENSE_ADMIN_API_KEY: ${{ secrets.TYPESENSE_ADMIN_API_KEY }}
