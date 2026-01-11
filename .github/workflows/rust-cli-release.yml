@@ -75,7 +75,7 @@ jobs:
           ./artifacts/${{ matrix.artifact_name }} --help
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.artifact_name }}
           path: artifacts/${{ matrix.artifact_name }}
@@ -94,7 +94,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download All Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: release/
 
