@@ -13,10 +13,10 @@
     "@formatjs/intl-numberformat": "workspace:*",
     "@formatjs/intl-pluralrules": "workspace:*",
     "@types/hoist-non-react-statics": "^3.3.1",
-    "@types/react": "19",
+    "@types/react": "^19.2.8",
     "hoist-non-react-statics": "^3.3.2",
     "intl-messageformat": "workspace:*",
     "react-intl": "workspace:*",
-    "tslib": "^2.8.0"
+    "tslib": "^2.8.1"
   }
 }

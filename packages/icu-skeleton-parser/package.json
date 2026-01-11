@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
-    "tslib": "^2.8.0"
+    "tslib": "^2.8.1"
   },
   "repository": {
     "type": "git",

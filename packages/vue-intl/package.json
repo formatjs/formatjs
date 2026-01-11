@@ -10,13 +10,13 @@
     ".": "./index.js"
   },
   "dependencies": {
-    "@babel/types": "^7.26.10",
+    "@babel/types": "^7.28.5",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/intl": "workspace:*",
-    "tslib": "^2.8.0"
+    "tslib": "^2.8.1"
   },
   "peerDependencies": {
-    "vue": "^3.5.12"
+    "vue": "3.5.26"
   },
   "homepage": "https://formatjs.github.io/docs/vue-intl",
   "keywords": [

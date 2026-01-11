@@ -10,10 +10,10 @@
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
     "@types/picomatch": "^4.0.0",
-    "@typescript-eslint/utils": "^8.27.0",
+    "@typescript-eslint/utils": "^8.52.0",
     "magic-string": "^0.30.0",
     "picomatch": "2 || 3 || 4",
-    "tslib": "^2.8.0",
+    "tslib": "^2.8.1",
     "unicode-emoji-utils": "^1.2.0"
   },
   "peerDependencies": {

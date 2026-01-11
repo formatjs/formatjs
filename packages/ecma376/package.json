@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "tslib": "^2.8.0"
+    "tslib": "^2.8.1"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "homepage": "https://github.com/formatjs/formatjs#readme",

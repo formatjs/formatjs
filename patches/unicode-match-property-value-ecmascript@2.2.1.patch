@@ -1,0 +1,40 @@
+diff --git a/index.js b/index.js
+--- a/index.js
++++ b/index.js
+@@ -3,10 +3,36 @@
+ const propertyToValueAliases = require('./data/mappings.js');
+ 
+ const matchPropertyValue = function(property, value) {
++	// Patch: Allow binary properties that aren't in the mappings
++	// Extended_Pictographic is a valid binary Unicode property from emoji-data.txt
++	const ALLOWED_BINARY_PROPERTIES = ['Extended_Pictographic'];
++	if (ALLOWED_BINARY_PROPERTIES.includes(property)) {
++		// For binary properties, True/Yes/Y map to the property name
++		if (['True', 'Yes', 'Y', true].includes(value)) {
++			return property;
++		}
++		return value;
++	}
++
++	// Patch: Allow Indic_Conjunct_Break property values
++	// These are defined in DerivedCoreProperties.txt for Myanmar, Khmer, Balinese, Indic scripts
++	// This property doesn't have standard ECMA-402 mappings, so handle it before checking aliasToValue
++	if (property === 'Indic_Conjunct_Break' && ['Consonant', 'Linker', 'Extend'].includes(value)) {
++		return value;
++	}
++
+ 	const aliasToValue = propertyToValueAliases.get(property);
+ 	if (!aliasToValue) {
+ 		throw new Error(`Unknown property \`${ property }\`.`);
+ 	}
++
++	// Patch: Allow "Other" value for break properties
++	// "Other" is a valid value representing all unassigned codepoints
++	const BREAK_PROPERTIES = ['Grapheme_Cluster_Break', 'Word_Break', 'Sentence_Break', 'Line_Break'];
++	if (BREAK_PROPERTIES.includes(property) && value === 'Other') {
++		return 'Other';
++	}
++
+ 	const canonicalValue = aliasToValue.get(value);
+ 	if (canonicalValue) {
+ 		return canonicalValue;

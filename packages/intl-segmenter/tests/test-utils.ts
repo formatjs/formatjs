@@ -58,28 +58,34 @@ function testDataFromLine(line: string) {
     ...commentDefinition[i],
   }))
 
+  // Filter out EOT and NULL entries (NULL is U+0000, used as test marker in Unicode 17+)
+  const filteredTestDetails = testDetails.filter(
+    ({characterName}) =>
+      characterName !== 'EOT' && !characterName.startsWith('<NULL>')
+  )
+
   const testInput = String.fromCodePoint(
-    ...testDetails
-      //ignore eot entries
-      .filter(({characterName}) => characterName !== 'EOT')
-      .map(({codePoint}) => codePoint as number)
+    ...filteredTestDetails.map(({codePoint}) => codePoint as number)
   )
 
   let segmentNr = 0
-  const expected = Object.values(testDetails).reduce((result, testPart) => {
-    if (!result.length) {
-      result[0] = String.fromCodePoint(testPart.codePoint as number)
-    } else if (testPart.codePoint) {
-      if (testPart.breaks) {
-        segmentNr++
-        result[segmentNr] = String.fromCodePoint(testPart.codePoint)
-      } else {
-        result[segmentNr] += String.fromCodePoint(testPart.codePoint)
+  const expected = Object.values(filteredTestDetails).reduce(
+    (result, testPart) => {
+      if (!result.length) {
+        result[0] = String.fromCodePoint(testPart.codePoint as number)
+      } else if (testPart.codePoint) {
+        if (testPart.breaks) {
+          segmentNr++
+          result[segmentNr] = String.fromCodePoint(testPart.codePoint)
+        } else {
+          result[segmentNr] += String.fromCodePoint(testPart.codePoint)
+        }
       }
-    }
 
-    return result
-  }, [] as string[])
+      return result
+    },
+    [] as string[]
+  )
 
   return {testDetails, testInput, expected, comment: trimmedComment}
 }
