@@ -156,7 +156,7 @@
       "version": ">= 18.x"
     }
   },
-  "packageManager": "pnpm@10.26.2",
+  "packageManager": "pnpm@10.28.0",
   "pnpm": {
     "onlyBuiltDependencies": [],
     "packageExtensions": {
