@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.16.0
+        uses: bazel-contrib/setup-bazel@0.18.0
         with:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
