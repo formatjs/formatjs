@@ -13,8 +13,8 @@
   "dependencies": {
     "@formatjs/fast-memoize": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*",
-    "decimal.js": "^10.4.3",
-    "tslib": "^2.8.0"
+    "decimal.js": "^10.6.0",
+    "tslib": "^2.8.1"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",

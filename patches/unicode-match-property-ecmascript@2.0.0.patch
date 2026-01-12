@@ -1,0 +1,19 @@
+diff --git a/index.js b/index.js
+index 65205934584d76e7a8e37445fe9f04c0a56b054f..4befe8b964ad3ccd8159e83f273c3dac175ca1b8 100755
+--- a/index.js
++++ b/index.js
+@@ -4,6 +4,14 @@ const canonicalProperties = require('unicode-canonical-property-names-ecmascript
+ const propertyAliases = require('unicode-property-aliases-ecmascript');
+ 
+ const matchProperty = function(property) {
++	// Patch: Allow properties not in standard ECMAScript but valid in Unicode
++	// Indic_Conjunct_Break is defined in DerivedCoreProperties.txt
++	// Extended_Pictographic is defined in emoji-data.txt
++	const ADDITIONAL_PROPERTIES = ['Indic_Conjunct_Break', 'Extended_Pictographic'];
++	if (ADDITIONAL_PROPERTIES.includes(property)) {
++		return property;
++	}
++
+ 	if (canonicalProperties.has(property)) {
+ 		return property;
+ 	}

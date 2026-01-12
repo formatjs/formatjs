@@ -12,10 +12,10 @@
   },
   "peerDependencies": {
     "@glimmer/syntax": "^0.95.0",
-    "@vue/compiler-core": "^3.5.12",
-    "content-tag": "4",
+    "@vue/compiler-core": "3.5.26",
+    "content-tag": "^4.1.0",
     "ember-template-recast": "^6.1.5",
-    "vue": "^3.5.12"
+    "vue": "3.5.26"
   },
   "bin": {
     "formatjs": "bin/formatjs"

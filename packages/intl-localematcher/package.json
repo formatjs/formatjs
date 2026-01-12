@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@formatjs/fast-memoize": "workspace:*",
-    "tslib": "^2.8.0"
+    "tslib": "^2.8.1"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "homepage": "https://github.com/formatjs/formatjs#readme",

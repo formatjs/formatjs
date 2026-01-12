@@ -644,7 +644,7 @@
         "bzlTransitiveDigest": "u2i6cw9UufcXbPuESBB66WdqYKm1KTFsDORyv0HawHo=",
         "usagesDigest": "tsxRjH5DN8xUnGoUELCp/xuIp04EwwlFAtYpnGb6Y+4=",
         "recordedFileInputs": {
-          "@@//package.json": "1e6b44c89daa1d327bd13d51bfc60ccb2bd28070b6f56e446772c1746c9b0b35"
+          "@@//package.json": "85b8dcf64ea096a55cedb05bd01ea636327bf469f4f008188f6f2363922b39f3"
         },
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -1944,7 +1944,7 @@
         "recordedFileInputs": {
           "@@//Cargo.lock": "064c60f06a7f912e72189be4262d71cb79142e56a9bcfb95e3f9cdbb791b6bc6",
           "@@//Cargo.toml": "a667f60e754b689a8f96477f37216d25bae19c2fd606ecf827222447dd691cae",
-          "@@//MODULE.bazel": "056f89f9c35545957b5b7ed035f78b257df275755d3298f747055946b5a5d360",
+          "@@//MODULE.bazel": "758895b37f7730683676db5ec9d302fd342ab2ad4f237468fa3a1097e6fe15d9",
           "@@//packages/icu-messageformat-parser/integration-tests/Cargo.toml": "c15f4f2503b87826277cf06f759b6350feb16061dd823c41946b9aa2ea1af176",
           "@@//rust/formatjs_cli/Cargo.toml": "057fc3efc3fa36c615c01df551ba89163cedd468734b236aa9cbf469850dab56",
           "@@//rust/icu_messageformat_parser/Cargo.toml": "1c2096e9a8853568596e65ebbb56af73feef324883c36b9fec7fa2ab7a7621ed",

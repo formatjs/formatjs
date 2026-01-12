@@ -136,11 +136,13 @@ esbuild(
 
 UNICODE_FILES = [
     "@DerivedCombiningClass//file",
+    "@DerivedCoreProperties//file",
     "@DerivedEastAsianWidth//file",
     "@GraphemeBreakProperty//file",
     "@IndicSyllabicCategory//file",
     "@SentenceBreakProperty//file",
     "@WordBreakProperty//file",
+    "@emoji-data//file",
 ]
 
 [

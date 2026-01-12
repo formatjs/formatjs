@@ -29,6 +29,8 @@ npm.npm_translate_lock(
         "//:patches/@types__mdx.patch",
         "//:patches/@vue+compiler-sfc.patch",
         "//:patches/make-plural-compiler@5.1.0.patch",
+        "//:patches/unicode-match-property-ecmascript@2.0.0.patch",
+        "//:patches/unicode-match-property-value-ecmascript@2.2.1.patch",
     ],
     npmrc = "//:.npmrc",
     patch_args = {"*": ["-p1"]},
@@ -145,54 +147,66 @@ http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_
 
 http_file(
     name = "DerivedCombiningClass",
-    sha256 = "52064d588c98c623b2373905e6a449eb520f900113954bcd212e94ef0810b471",
-    url = "https://www.unicode.org/Public/16.0.0/ucd/extracted/DerivedCombiningClass.txt",
+    sha256 = "191463abfbd202703c6fd6776a92a23ac44ec65e0476a7f95aa91ca492cef29b",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedCombiningClass.txt",
 )
 
 http_file(
     name = "DerivedEastAsianWidth",
-    sha256 = "372e34de237e5a644ce8379a0d02b91a1f584f04d4fb240ea6ccc87c5767f926",
-    url = "https://www.unicode.org/Public/16.0.0/ucd/extracted/DerivedEastAsianWidth.txt",
+    sha256 = "0b5523a2217cb318d20b329a05d31eec5af5686ba09d263b85bb75a28989a3a8",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedEastAsianWidth.txt",
 )
 
 http_file(
     name = "GraphemeBreakProperty",
-    sha256 = "c29360bd6f7132811d701d29069541e827eb44bfc4c8fbde8c370d6982689dc1",
-    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/GraphemeBreakProperty.txt",
+    sha256 = "d6b51d1d2ae5c33b451b7ed994b48f1f4dc62b2272a5831e7fd418514a6bae89",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/auxiliary/GraphemeBreakProperty.txt",
 )
 
 http_file(
     name = "GraphemeBreakTest",
-    sha256 = "ee2b9354d270ac061b29f09662cafea06341d77e704b8cc6bd72aaeeda363cb5",
-    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/GraphemeBreakTest.txt",
+    sha256 = "e2d134d2c52919bace503ebb6a551c1855fe1a1faec18478c78fff254a1793ec",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/auxiliary/GraphemeBreakTest.txt",
 )
 
 http_file(
     name = "IndicSyllabicCategory",
-    sha256 = "615f1b92ba7ec76e18c5b5c05d2e1836e4b98bc791eb9e27946c7621fc047ae7",
-    url = "https://www.unicode.org/Public/16.0.0/ucd/IndicSyllabicCategory.txt",
+    sha256 = "3fc122f4cf58b0c19268d5f810263b04ab4e1e67743386ec0e0ada9c76aec5be",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/IndicSyllabicCategory.txt",
 )
 
 http_file(
     name = "SentenceBreakProperty",
-    sha256 = "20aab5eca3842c7a27cc6756d74488a4a5f744c8dca2948ec1128f26a60d1f79",
-    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/SentenceBreakProperty.txt",
+    sha256 = "871c0c985ad95125e25b302414065a10839d068970bceb383ecec138f22a0a18",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/auxiliary/SentenceBreakProperty.txt",
 )
 
 http_file(
     name = "SentenceBreakTest",
-    sha256 = "0aef84034ee1789eb71021454fac384e83080b05922272d63cf297f4bf08150e",
-    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/SentenceBreakTest.txt",
+    sha256 = "12cb47d028ded0c1cb8a28558f95479cbcd24559c46977015c82f3b50a1cc6e4",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/auxiliary/SentenceBreakTest.txt",
 )
 
 http_file(
     name = "WordBreakProperty",
-    sha256 = "476464e71a4b7b779b8ba7c5671f4338fea77da8e6b6b05fb82b3fdd14603779",
-    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/WordBreakProperty.txt",
+    sha256 = "72274cac1e6b919507db35655c3e175aa27274668a1ece95c28d2069f2ad9852",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/auxiliary/WordBreakProperty.txt",
 )
 
 http_file(
     name = "WordBreakTest",
-    sha256 = "ad985d5721f3fa6b45495663dfe44180f2f68976100dee0ea7451ef1a8f838e8",
-    url = "https://www.unicode.org/Public/16.0.0/ucd/auxiliary/WordBreakTest.txt",
+    sha256 = "1de23a75f37904abc7d206239ee8d34f8fdf0fb4ab32a7174dfbabbde25419b2",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/auxiliary/WordBreakTest.txt",
+)
+
+http_file(
+    name = "emoji-data",
+    sha256 = "2cb2bb9455cda83e8481541ecf5b6dfda66a3bb89efa3fa7c5297eccf607b72b",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/emoji/emoji-data.txt",
+)
+
+http_file(
+    name = "DerivedCoreProperties",
+    sha256 = "24c7fed1195c482faaefd5c1e7eb821c5ee1fb6de07ecdbaa64b56a99da22c08",
+    url = "https://www.unicode.org/Public/17.0.0/ucd/DerivedCoreProperties.txt",
 )
