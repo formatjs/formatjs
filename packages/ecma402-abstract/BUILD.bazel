@@ -69,7 +69,7 @@ generate_src_file(
     src = "regex.generated.ts",
     data = [
         "//:node_modules/@types/regenerate",
-        "//:node_modules/@unicode/unicode-13.0.0",
+        "//:node_modules/@unicode/unicode-17.0.0",
         "//:node_modules/regenerate",
     ],
     entry_point = "scripts/regex-gen.ts",

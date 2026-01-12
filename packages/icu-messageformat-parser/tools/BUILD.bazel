@@ -4,7 +4,7 @@ ts_binary(
     name = "regex_gen",
     data = [
         "global.ts",
-        "//:node_modules/@unicode/unicode-13.0.0",
+        "//:node_modules/@unicode/unicode-17.0.0",
         "//:node_modules/regenerate",
     ],
     entry_point = "regex-gen.ts",

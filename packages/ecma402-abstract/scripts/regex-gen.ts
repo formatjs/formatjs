@@ -4,7 +4,7 @@ import regenerate from 'regenerate'
 
 function main(args: minimist.ParsedArgs) {
   const symbolSeparator = regenerate().add(
-    require('@unicode/unicode-13.0.0/General_Category/Symbol/code-points.js')
+    require('@unicode/unicode-17.0.0/General_Category/Symbol/code-points.js')
   )
   outputFileSync(
     args.out,
