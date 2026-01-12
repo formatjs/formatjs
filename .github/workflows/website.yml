@@ -14,7 +14,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v6
 
-      - uses: bazel-contrib/setup-bazel@0.16.0
+      - uses: bazel-contrib/setup-bazel@0.18.0
         with:
           # Avoid downloading Bazel every time.
           bazelisk-cache: true
