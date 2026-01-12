@@ -1,12 +1,34 @@
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile_node")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile_node")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
 PACKAGE_NAME = "eslint-plugin-formatjs"
+
+# Copy emoji-data.txt from external repository
+copy_file(
+    name = "emoji-data-txt",
+    src = "@emoji-data//file",
+    out = "emoji-data.txt",
+)
+
+# Generate emoji version data from Unicode emoji-data.txt
+generate_src_file(
+    name = "emoji-data-generated",
+    src = "emoji-data.generated.ts",
+    args = [
+        "--emojiDataPath",
+        "$(rootpath :emoji-data-txt)",
+    ],
+    data = [
+        ":emoji-data-txt",
+    ],
+    entry_point = "scripts/generate-emoji-data.ts",
+)
 
 npm_package(
     name = "pkg",
@@ -25,6 +47,8 @@ SRCS = glob(["rules/*.ts"]) + [
     "util.ts",
     "messages.ts",
     "context-compat.ts",
+    "emoji-utils.ts",
+    "emoji-data.generated.ts",
     "package.json",
 ]
 
@@ -34,7 +58,6 @@ SRC_DEPS = [
     ":node_modules/@types/picomatch",
     ":node_modules/magic-string",
     ":node_modules/picomatch",
-    ":node_modules/unicode-emoji-utils",
     "//:node_modules/@types/eslint",
     "//:node_modules/@types/node",
     "//:node_modules/@typescript-eslint/utils",

@@ -37,6 +37,33 @@ ruleTester.run(name, rule, {
   })`,
       options: [{versionAbove: '15.0'}],
     },
+    {
+      // Emoji with skin tone modifier
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: 'a 👋🏻',
+      description: 'asd'
+  })`,
+      options: [{versionAbove: '12.0'}],
+    },
+    {
+      // ZWJ sequence - family
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: 'a 👨‍👩‍👧‍👦',
+      description: 'asd'
+  })`,
+      options: [{versionAbove: '12.0'}],
+    },
+    {
+      // Flag sequence
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: 'a 🇺🇸',
+      description: 'asd'
+  })`,
+      options: [{versionAbove: '12.0'}],
+    },
   ],
   invalid: [
     {
@@ -105,6 +132,48 @@ ruleTester.run(name, rule, {
       errors: [
         {
           messageId: 'notAllowedAboveVersion',
+        },
+      ],
+    },
+    {
+      // Emoji with skin tone modifier should be detected
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: 'a 👋🏻',
+      description: 'asd'
+  })`,
+      options: [],
+      errors: [
+        {
+          messageId: 'notAllowed',
+        },
+      ],
+    },
+    {
+      // ZWJ sequence should be detected
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: 'a 👨‍👩‍👧‍👦',
+      description: 'asd'
+  })`,
+      options: [],
+      errors: [
+        {
+          messageId: 'notAllowed',
+        },
+      ],
+    },
+    {
+      // Flag sequence should be detected
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: 'a 🇺🇸',
+      description: 'asd'
+  })`,
+      options: [],
+      errors: [
+        {
+          messageId: 'notAllowed',
         },
       ],
     },
