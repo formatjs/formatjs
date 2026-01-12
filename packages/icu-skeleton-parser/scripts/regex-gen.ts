@@ -5,7 +5,7 @@ import './global'
 
 function main(args: minimist.ParsedArgs) {
   const set = regenerate().add(
-    require('@unicode/unicode-13.0.0/Binary_Property/Pattern_White_Space/code-points.js')
+    require('@unicode/unicode-17.0.0/Binary_Property/Pattern_White_Space/code-points.js')
   )
   outputFileSync(
     args.out,

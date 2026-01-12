@@ -35,10 +35,10 @@ pub static WHITE_SPACE_REGEX: Lazy<Regex> = Lazy::new(|| {
 
 function main(args: minimist.ParsedArgs) {
   const spaceSeparator = regenerate().add(
-    require('@unicode/unicode-13.0.0/General_Category/Space_Separator/code-points.js')
+    require('@unicode/unicode-17.0.0/General_Category/Space_Separator/code-points.js')
   )
   const ws = regenerate().add(
-    require('@unicode/unicode-13.0.0/Binary_Property/Pattern_White_Space/code-points.js')
+    require('@unicode/unicode-17.0.0/Binary_Property/Pattern_White_Space/code-points.js')
   )
 
   const outFile = typeof args.out === 'string' ? args.out : args.out?.[0]
