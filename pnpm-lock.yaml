@@ -144,9 +144,6 @@ importers:
       '@types/babel__traverse':
         specifier: ^7.28.0
         version: 7.28.0
-      '@types/eslint':
-        specifier: ^9.6.1
-        version: 9.6.1
       '@types/eslint-scope':
         specifier: ^8.3.2
         version: 8.3.2
@@ -618,9 +615,6 @@ importers:
       '@formatjs/ts-transformer':
         specifier: workspace:*
         version: link:../ts-transformer
-      '@types/eslint':
-        specifier: '9'
-        version: 9.6.1
       '@types/picomatch':
         specifier: ^4.0.0
         version: 4.0.2

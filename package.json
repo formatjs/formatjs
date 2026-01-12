@@ -50,7 +50,6 @@
     "@types/babel__core": "^7.20.5",
     "@types/babel__helper-plugin-utils": "^7.10.3",
     "@types/babel__traverse": "^7.28.0",
-    "@types/eslint": "^9.6.1",
     "@types/eslint-scope": "^8.3.2",
     "@types/estree": "^1.0.8",
     "@types/fs-extra": "^11.0.4",

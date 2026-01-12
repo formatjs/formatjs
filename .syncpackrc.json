@@ -80,8 +80,7 @@
     {
       "label": "ESLint",
       "dependencies": [
-        "eslint",
-        "@types/eslint"
+        "eslint"
       ],
       "packages": [
         "eslint-plugin-formatjs"
