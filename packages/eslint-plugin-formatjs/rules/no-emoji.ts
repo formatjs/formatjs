@@ -6,11 +6,10 @@ import {
 import {
   extractEmojis,
   filterEmojis,
-  getAllEmojis,
   hasEmoji,
   isValidEmojiVersion,
   type EmojiVersion,
-} from 'unicode-emoji-utils'
+} from '../emoji-utils.js'
 import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
 
@@ -26,18 +25,14 @@ function checkNode(
 ) {
   const msgs = extractMessages(node, getSettings(context))
 
-  let allowedEmojis: string[] = []
   let versionAbove: EmojiVersion | undefined
   const [emojiConfig] = context.options
 
   if (
     emojiConfig?.versionAbove &&
-    isValidEmojiVersion(emojiConfig.versionAbove) &&
-    !versionAbove &&
-    allowedEmojis.length === 0
+    isValidEmojiVersion(emojiConfig.versionAbove)
   ) {
     versionAbove = emojiConfig.versionAbove as EmojiVersion
-    allowedEmojis = getAllEmojis(filterEmojis(versionAbove))
   }
 
   for (const [
@@ -51,8 +46,10 @@ function checkNode(
     }
     if (hasEmoji(defaultMessage)) {
       if (versionAbove) {
+        const filter = filterEmojis(versionAbove)
         for (const emoji of extractEmojis(defaultMessage)) {
-          if (!allowedEmojis.includes(emoji)) {
+          // Check if the emoji's version is allowed (filterEmojis returns true for allowed emojis)
+          if (!filter(emoji)) {
             context.report({
               node: messageNode,
               messageId: 'notAllowedAboveVersion',
@@ -83,11 +80,11 @@ const versionAboveEnums: EmojiVersion[] = [
   '5.0',
   '11.0',
   '12.0',
-  '12.1',
   '13.0',
-  '13.1',
   '14.0',
   '15.0',
+  '16.0',
+  '17.0',
 ]
 
 export const rule: RuleModule<MessageIds, Options> = {
