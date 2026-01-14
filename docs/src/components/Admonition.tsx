@@ -27,15 +27,12 @@ const typeToIcon = {
 } as const
 
 const typeToClassName = {
-  note: 'border-blue-500 bg-blue-50 text-blue-900 dark:bg-blue-950 dark:text-blue-100',
-  tip: 'border-green-500 bg-green-50 text-green-900 dark:bg-green-950 dark:text-green-100',
-  info: 'border-blue-500 bg-blue-50 text-blue-900 dark:bg-blue-950 dark:text-blue-100',
-  caution:
-    'border-yellow-500 bg-yellow-50 text-yellow-900 dark:bg-yellow-950 dark:text-yellow-100',
-  warning:
-    'border-orange-500 bg-orange-50 text-orange-900 dark:bg-orange-950 dark:text-orange-100',
-  danger:
-    'border-red-500 bg-red-50 text-red-900 dark:bg-red-950 dark:text-red-100',
+  note: 'border-blue-500 bg-blue-950 text-blue-100',
+  tip: 'border-green-500 bg-green-950 text-green-100',
+  info: 'border-blue-500 bg-blue-950 text-blue-100',
+  caution: 'border-yellow-500 bg-yellow-950 text-yellow-100',
+  warning: 'border-orange-500 bg-orange-950 text-orange-100',
+  danger: 'border-red-500 bg-red-950 text-red-100',
 } as const
 
 export default function Admonition({
