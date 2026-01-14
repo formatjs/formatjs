@@ -58,7 +58,6 @@ SRC_DEPS = [
     ":node_modules/@types/picomatch",
     ":node_modules/magic-string",
     ":node_modules/picomatch",
-    "//:node_modules/@types/eslint",
     "//:node_modules/@types/node",
     "//:node_modules/@typescript-eslint/utils",
     "//:node_modules/eslint",
