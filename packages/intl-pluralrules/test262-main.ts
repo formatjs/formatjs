@@ -10,7 +10,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -36,7 +36,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -63,7 +63,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -86,7 +86,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -115,7 +115,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other', 'two', 'zero'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -168,7 +168,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other', 'two', 'zero'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -193,7 +193,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['few', 'many', 'one', 'other', 'two'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -221,7 +221,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -239,7 +239,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -261,7 +261,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['few', 'many', 'one', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -322,7 +322,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -344,7 +344,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['few', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -397,7 +397,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -415,7 +415,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -433,7 +433,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -459,7 +459,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -477,7 +477,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -489,7 +489,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['few', 'many', 'one', 'other', 'two'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -517,7 +517,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -529,7 +529,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -568,7 +568,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -586,7 +586,7 @@ if (
     {
       data: {
         categories: {cardinal: ['few', 'one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -635,7 +635,7 @@ if (
           cardinal: ['many', 'one', 'other'],
           ordinal: ['few', 'one', 'other', 'two'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -643,7 +643,7 @@ if (
           const n = Math.abs(parseFloat(numStr))
           const i = Math.floor(Math.abs(parseFloat(integerPart)))
           const v = decimalPart.length
-          const e = 0
+          const e = exponent
           if (isOrdinal) {
             if (n === 4) return 'few'
             if (n === 1 || n === 3) return 'one'
@@ -673,7 +673,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -691,7 +691,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -716,7 +716,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -734,7 +734,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -752,7 +752,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -773,7 +773,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -816,7 +816,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other', 'two', 'zero'],
           ordinal: ['few', 'many', 'one', 'other', 'two', 'zero'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -868,7 +868,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -898,7 +898,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -925,7 +925,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -947,7 +947,7 @@ if (
           cardinal: ['few', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -973,7 +973,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -991,7 +991,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -1000,7 +1000,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1018,7 +1018,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1047,7 +1047,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['few', 'one', 'other', 'two'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1078,7 +1078,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1096,7 +1096,7 @@ if (
     {
       data: {
         categories: {cardinal: ['many', 'one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1104,7 +1104,7 @@ if (
           const n = Math.abs(parseFloat(numStr))
           const i = Math.floor(Math.abs(parseFloat(integerPart)))
           const v = decimalPart.length
-          const e = 0
+          const e = exponent
           if (isOrdinal) {
           } else {
             if (
@@ -1131,7 +1131,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1158,7 +1158,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1184,7 +1184,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1212,7 +1212,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1230,7 +1230,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1257,7 +1257,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1293,7 +1293,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1314,7 +1314,7 @@ if (
           cardinal: ['many', 'one', 'other'],
           ordinal: ['one', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1322,7 +1322,7 @@ if (
           const n = Math.abs(parseFloat(numStr))
           const i = Math.floor(Math.abs(parseFloat(integerPart)))
           const v = decimalPart.length
-          const e = 0
+          const e = exponent
           if (isOrdinal) {
             if (n === 1) return 'one'
           } else {
@@ -1346,7 +1346,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1364,7 +1364,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1386,7 +1386,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other', 'two'],
           ordinal: ['one', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1433,7 +1433,7 @@ if (
           cardinal: ['few', 'one', 'other', 'two'],
           ordinal: ['few', 'one', 'other', 'two'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1456,7 +1456,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1483,7 +1483,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1512,7 +1512,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['few', 'many', 'one', 'other', 'two'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1539,7 +1539,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1560,7 +1560,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1590,7 +1590,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1608,7 +1608,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1626,7 +1626,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1660,7 +1660,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['few', 'many', 'one', 'other', 'two'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1687,7 +1687,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -1696,7 +1696,7 @@ if (
     {
       data: {
         categories: {cardinal: ['few', 'one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1745,7 +1745,7 @@ if (
           cardinal: ['few', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1771,7 +1771,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1798,7 +1798,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1822,7 +1822,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1849,7 +1849,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
         pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
@@ -1859,7 +1859,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -1868,7 +1868,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -1877,7 +1877,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1904,7 +1904,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1940,7 +1940,7 @@ if (
           cardinal: ['many', 'one', 'other'],
           ordinal: ['many', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1948,7 +1948,7 @@ if (
           const n = Math.abs(parseFloat(numStr))
           const i = Math.floor(Math.abs(parseFloat(integerPart)))
           const v = decimalPart.length
-          const e = 0
+          const e = exponent
           if (isOrdinal) {
             if (n === 11 || n === 8 || n === 80 || n === 800) return 'many'
           } else {
@@ -1976,7 +1976,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -1995,7 +1995,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
         pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
@@ -2005,7 +2005,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -2014,7 +2014,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2032,7 +2032,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2050,7 +2050,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -2059,7 +2059,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -2071,7 +2071,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['many', 'one', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2107,7 +2107,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2125,7 +2125,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2143,7 +2143,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2161,7 +2161,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -2170,7 +2170,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -2179,7 +2179,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['many', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2207,7 +2207,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2225,7 +2225,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2243,7 +2243,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
         pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
@@ -2253,7 +2253,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2276,7 +2276,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
         pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
@@ -2286,7 +2286,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2304,7 +2304,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2322,7 +2322,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'zero'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2341,7 +2341,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2362,7 +2362,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other', 'two', 'zero'],
           ordinal: ['many', 'one', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2422,7 +2422,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2448,7 +2448,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'zero'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2468,7 +2468,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2486,7 +2486,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2504,7 +2504,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['many', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2539,7 +2539,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -2548,7 +2548,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2566,7 +2566,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['one', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2588,7 +2588,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2632,7 +2632,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'zero'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2677,7 +2677,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2695,7 +2695,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2713,7 +2713,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2734,7 +2734,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['many', 'one', 'other', 'two'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2775,7 +2775,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2801,7 +2801,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2830,7 +2830,7 @@ if (
           cardinal: ['few', 'one', 'other'],
           ordinal: ['one', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2860,7 +2860,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['few', 'one', 'other', 'two'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2885,7 +2885,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['one', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2907,7 +2907,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2928,7 +2928,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
         pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
@@ -2938,7 +2938,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2956,7 +2956,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -2975,7 +2975,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3001,7 +3001,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3019,7 +3019,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3046,7 +3046,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3073,7 +3073,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3091,7 +3091,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3109,7 +3109,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3135,7 +3135,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -3144,7 +3144,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3162,7 +3162,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3180,7 +3180,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3198,7 +3198,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3216,7 +3216,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3237,7 +3237,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['few', 'many', 'one', 'other', 'two'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3268,7 +3268,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3286,7 +3286,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -3295,7 +3295,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3322,7 +3322,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3340,7 +3340,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3370,7 +3370,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3421,7 +3421,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'zero'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3452,7 +3452,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3474,14 +3474,14 @@ if (
     {
       data: {
         categories: {cardinal: ['many', 'one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
           const decimalPart = parts[1] || ''
           const i = Math.floor(Math.abs(parseFloat(integerPart)))
           const v = decimalPart.length
-          const e = 0
+          const e = exponent
           if (isOrdinal) {
           } else {
             if (
@@ -3500,14 +3500,14 @@ if (
     {
       data: {
         categories: {cardinal: ['many', 'one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
           const decimalPart = parts[1] || ''
           const i = Math.floor(Math.abs(parseFloat(integerPart)))
           const v = decimalPart.length
-          const e = 0
+          const e = exponent
           if (isOrdinal) {
           } else {
             if (
@@ -3530,7 +3530,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3551,7 +3551,7 @@ if (
           cardinal: ['few', 'one', 'other'],
           ordinal: ['one', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3590,7 +3590,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3611,7 +3611,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3664,7 +3664,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3682,7 +3682,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -3691,7 +3691,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3709,7 +3709,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3728,7 +3728,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['many', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3760,7 +3760,7 @@ if (
           cardinal: ['many', 'one', 'other'],
           ordinal: ['many', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3768,7 +3768,7 @@ if (
           const n = Math.abs(parseFloat(numStr))
           const i = Math.floor(Math.abs(parseFloat(integerPart)))
           const v = decimalPart.length
-          const e = 0
+          const e = exponent
           if (isOrdinal) {
             if (
               n === 11 ||
@@ -3802,7 +3802,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3829,7 +3829,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3847,7 +3847,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3866,7 +3866,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3884,7 +3884,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -3893,7 +3893,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -3902,7 +3902,7 @@ if (
     {
       data: {
         categories: {cardinal: ['few', 'one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3934,7 +3934,7 @@ if (
     {
       data: {
         categories: {cardinal: ['few', 'one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3954,7 +3954,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -3987,7 +3987,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4030,7 +4030,7 @@ if (
           cardinal: ['few', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4073,7 +4073,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4092,7 +4092,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4111,7 +4111,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4130,7 +4130,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4149,7 +4149,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4168,7 +4168,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4186,7 +4186,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4207,7 +4207,7 @@ if (
           cardinal: ['one', 'other'],
           ordinal: ['many', 'one', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4235,7 +4235,7 @@ if (
     {
       data: {
         categories: {cardinal: ['few', 'one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4281,7 +4281,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4299,7 +4299,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4317,7 +4317,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4335,7 +4335,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -4344,7 +4344,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4378,7 +4378,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4405,7 +4405,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4423,7 +4423,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4449,7 +4449,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4475,7 +4475,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4493,7 +4493,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
         pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
@@ -4503,7 +4503,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4521,7 +4521,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4539,7 +4539,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['few', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4566,7 +4566,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4593,7 +4593,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4611,7 +4611,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -4620,7 +4620,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -4629,7 +4629,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4655,7 +4655,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4673,7 +4673,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4691,7 +4691,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4720,7 +4720,7 @@ if (
           cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['few', 'other'],
         },
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4775,7 +4775,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -4784,7 +4784,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4811,7 +4811,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4837,7 +4837,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4855,7 +4855,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['one', 'other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4874,7 +4874,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4892,7 +4892,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4910,7 +4910,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4928,7 +4928,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4946,7 +4946,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -4955,7 +4955,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4973,7 +4973,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -4991,7 +4991,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]
@@ -5010,7 +5010,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
       },
@@ -5019,7 +5019,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
         pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
@@ -5029,7 +5029,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           return 'other'
         },
         pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
@@ -5039,7 +5039,7 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function anonymous(num, isOrdinal) {
+        fn: function (num, isOrdinal, exponent = 0) {
           const numStr = String(num)
           const parts = numStr.split('.')
           const integerPart = parts[0]

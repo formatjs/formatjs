@@ -48,6 +48,7 @@ export function InitializePluralRules(
     getDefaultLocale
   )
   internalSlots.locale = r.locale
+  // ECMA-402 Spec: type option ('cardinal' or 'ordinal')
   internalSlots.type = GetOption(
     opts,
     'type',
@@ -55,6 +56,40 @@ export function InitializePluralRules(
     ['cardinal', 'ordinal'],
     'cardinal'
   )
+
+  // Extension: notation options for compact notation support
+  // Not in ECMA-402 spec, but mirrors Intl.NumberFormat notation option
+  // Enables proper plural selection for compact numbers (e.g., "1.2M")
+  const notation = GetOption(
+    opts,
+    'notation',
+    'string',
+    ['standard', 'compact'],
+    'standard'
+  )
+  internalSlots.notation = notation
+
+  if (notation === 'compact') {
+    // Extension: compactDisplay option (mirrors Intl.NumberFormat)
+    internalSlots.compactDisplay = GetOption(
+      opts,
+      'compactDisplay',
+      'string',
+      ['short', 'long'],
+      'short'
+    )
+    // Implementation: Load NumberFormat locale data if available (soft dependency)
+    // This is needed to calculate compact exponents using ComputeExponentForMagnitude
+    if (
+      typeof Intl !== 'undefined' &&
+      Intl.NumberFormat &&
+      (Intl.NumberFormat as any).localeData
+    ) {
+      internalSlots.dataLocaleData = (Intl.NumberFormat as any).localeData[
+        r.locale
+      ]
+    }
+  }
 
   SetNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard')
 

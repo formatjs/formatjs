@@ -1,10 +1,7 @@
 import {join} from 'path'
 import {outputFileSync} from 'fs-extra/esm'
 import serialize from 'serialize-javascript'
-import {
-  type PluralRulesLocaleData,
-  type LDMLPluralRule,
-} from '@formatjs/ecma402-abstract'
+import {type LDMLPluralRule} from '@formatjs/ecma402-abstract'
 import plurals from 'cldr-core/supplemental/plurals.json'
 import ordinals from 'cldr-core/supplemental/ordinals.json'
 import pluralRanges from 'cldr-core/supplemental/pluralRanges.json'
@@ -42,12 +39,40 @@ function parsePluralRanges(locale: string) {
   return Object.keys(cardinal).length > 0 ? {cardinal, ordinal} : undefined
 }
 
-function generateLocaleData(locale: string): PluralRulesLocaleData | undefined {
+/**
+ * Internal data structure for generated locale data.
+ * This is an implementation detail - not part of ECMA-402 or CLDR specs.
+ */
+interface LocaleData {
+  data: {
+    // CLDR spec: Available plural categories for this locale
+    categories: {cardinal: string[]; ordinal: string[]}
+    // Implementation: Compiled plural rule function
+    // Takes (number string, isOrdinal, exponent) and returns plural category
+    fn: Function
+    // CLDR spec (LDML-43): Plural ranges for range formatting
+    pluralRanges?: {
+      cardinal: Record<string, LDMLPluralRule>
+      ordinal: Record<string, LDMLPluralRule>
+    }
+  }
+  locale: string
+}
+
+function generateLocaleData(locale: string): LocaleData | undefined {
   const cardinalRules = cardinalsData[locale]
   const ordinalRules = ordinalsData[locale]
 
+  // Implementation: Compile CLDR plural rules to optimized JavaScript function
   const compiler = new PluralRulesCompiler(locale, cardinalRules, ordinalRules)
-  const fn = compiler.compile()
+  const fnCode = compiler.compile() // Returns JavaScript function code string
+
+  // Implementation: Convert function code string to actual function using eval
+  // This allows serialize-javascript to properly serialize it later
+  // eslint-disable-next-line no-eval
+  const fn = eval(`(${fnCode})`)
+
+  // CLDR spec (LDML-43): Parse plural ranges if available
   const pluralRanges = parsePluralRanges(locale)
 
   return {
@@ -81,14 +106,14 @@ function main(args: Args) {
     .sort()
 
   if (outDir) {
-    locales.forEach(
-      locale =>
-        +console.log(join(outDir, `${locale}.js`)) ||
-        outputFileSync(
-          join(outDir, `${locale}.js`),
-          serialize(generateLocaleData(locale))
-        )
-    )
+    locales.forEach(locale => {
+      console.log(join(outDir, `${locale}.js`))
+      const data = generateLocaleData(locale)
+      if (data) {
+        // Use serialize-javascript to properly serialize the function
+        outputFileSync(join(outDir, `${locale}.js`), serialize(data))
+      }
+    })
   } else if (out) {
     outputFileSync(
       out,

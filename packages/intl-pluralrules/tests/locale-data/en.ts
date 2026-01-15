@@ -1,10 +1,8 @@
 /* @generated */
 // prettier-ignore
 // @ts-nocheck
-type LocaleData = {data: {categories: {cardinal: string[]; ordinal: string[];}; fn: (n: number | string, ord?: boolean | undefined) => zero | one | two | few | many | other;}; locale: string;};
-const data:LocaleData =  {"data":{"categories":{"cardinal":["one","other"],"ordinal":["few","one","other","two"]},"fn":function anonymous(num,isOrdinal
-) {
-
+type LocaleData = {data: {categories: {cardinal: string[]; ordinal: string[];}; fn: (n: number | string, ord?: boolean | undefined, exponent?: number) => zero | one | two | few | many | other;}; locale: string;};
+const data:LocaleData =  {"data":{"categories":{"cardinal":["one","other"],"ordinal":["few","one","other","two"]},"fn":function(num, isOrdinal, exponent = 0) {
     const numStr = String(num);
     const parts = numStr.split(".");
     const integerPart = parts[0];
@@ -25,6 +23,5 @@ const data:LocaleData =  {"data":{"categories":{"cardinal":["one","other"],"ordi
             return "one";
     }
     return "other";
-
 },"pluralRanges":{"cardinal":{"one_other":"other","other_one":"other","other_other":"other"},"ordinal":{}}},"locale":"en"}
 export default data
