@@ -6,7 +6,7 @@ import {
   createDataProperty,
   invariant,
 } from '@formatjs/ecma402-abstract'
-import {supportedValuesOf} from '@formatjs/intl-enumerator'
+import {supportedValuesOf} from '@formatjs/intl-supportedvaluesof'
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
 import {
   type UnicodeExtension,
@@ -348,9 +348,8 @@ function collationsOfLocale(loc: Locale): Array<string> {
   const locInternalSlots = getInternalSlots(loc)
 
   const restricted = locInternalSlots.collation
-  const locale = locInternalSlots.locale
 
-  const supportedCollations = supportedValuesOf('collation', locale).filter(
+  const supportedCollations = supportedValuesOf('collation').filter(
     (co: string) => co !== 'standard' && co !== 'search'
   )
   supportedCollations.sort()

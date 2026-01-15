@@ -9,7 +9,7 @@ load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
-PACKAGE_NAME = "intl-enumerator"
+PACKAGE_NAME = "intl-supportedvaluesof"
 
 npm_package(
     name = "pkg",
@@ -32,6 +32,7 @@ SRCS = glob([
 
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
+    ":node_modules/@formatjs/fast-memoize",
 ]
 
 TESTS = glob([

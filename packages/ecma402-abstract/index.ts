@@ -52,7 +52,6 @@ export * from './types/number.js'
 export * from './types/plural-rules.js'
 export * from './types/relative-time.js'
 export {
-  createMemoizedDateTimeFormat,
   createMemoizedListFormat,
   createMemoizedLocale,
   createMemoizedNumberFormat,

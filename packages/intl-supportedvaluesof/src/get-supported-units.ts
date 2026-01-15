@@ -2,18 +2,29 @@ import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract'
 import type {Unit} from './units.generated.js'
 import {units} from './units.generated.js'
 
-function isSupported(unit: Unit, locale: string = 'en'): boolean {
+/**
+ * Implementation: Tests if a unit is supported by attempting to create
+ * a NumberFormat with that unit and verifying it was accepted.
+ *
+ * CLDR Data: Candidate values come from CLDR unit types
+ */
+function isSupportedUnit(unit: Unit): boolean {
   try {
-    const formatter = createMemoizedNumberFormat(locale, {style: 'unit', unit})
+    // Always use 'en' for testing
+    const formatter = createMemoizedNumberFormat('en', {style: 'unit', unit})
     return formatter.resolvedOptions().unit === unit
   } catch {}
 
   return false
 }
 
-export function getSupportedUnits(
-  locale?: string
-): (
+/**
+ * ECMA-402 Spec: Returns supported unit identifiers
+ * ECMA-402 Spec: Results must be sorted lexicographically
+ *
+ * Implementation: Filters CLDR list against actual runtime support
+ */
+export function getSupportedUnits(): (
   | 'degree'
   | 'acre'
   | 'hectare'
@@ -58,5 +69,5 @@ export function getSupportedUnits(
   | 'liter'
   | 'milliliter'
 )[] {
-  return units.filter(unit => isSupported(unit, locale))
+  return units.filter(isSupportedUnit).sort()
 }
