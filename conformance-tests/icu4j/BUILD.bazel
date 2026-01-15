@@ -1,0 +1,13 @@
+load("@rules_java//java:defs.bzl", "java_binary", "java_import")
+
+java_import(
+    name = "icu4j",
+    jars = ["@icu4j_jar//file"],
+)
+
+java_binary(
+    name = "icu_conformance_test",
+    srcs = ["ICUConformanceTest.java"],
+    main_class = "ICUConformanceTest",
+    deps = [":icu4j"],
+)
