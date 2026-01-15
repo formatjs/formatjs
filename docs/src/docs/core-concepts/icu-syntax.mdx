@@ -259,21 +259,75 @@ In the `output` of the match, the `#` special token can be used as a placeholder
 
 ## Rich Text Formatting
 
-We also support embedded rich text formatting in our message using tags. This allows developers to embed as much text as possible so sentences don't have to be broken up into chunks
+We also support embedded rich text formatting in our message using tags. This allows developers to embed as much text as possible so sentences don't have to be broken up into chunks.
+
 **NOTE: This is not XML/HTML tag**
 
-<IcuEditor
-  defaultMessage={`Our price is <boldThis>{price, number, ::currency/USD precision-integer}</boldThis>
-with <link>{pct, number, ::percent} discount</link>`}
-  defaultValues='{"price": 2, "pct": 0.2}'
-/>
+### Message Format
+
+```
+Our price is <boldThis>{price, number, ::currency/USD precision-integer}</boldThis>
+with <link>{pct, number, ::percent} discount</link>
+```
+
+### JavaScript Usage
+
+You need to provide handler functions for each tag to specify how they should be rendered:
+
+```javascript
+import IntlMessageFormat from 'intl-messageformat'
+
+const message = new IntlMessageFormat(
+  `Our price is <boldThis>{price, number, ::currency/USD precision-integer}</boldThis> with <link>{pct, number, ::percent} discount</link>`,
+  'en'
+)
+
+const output = message.format({
+  price: 2,
+  pct: 0.2,
+  // Handler functions for rich text tags
+  boldThis: chunks => `<b>${chunks.join('')}</b>`,
+  link: chunks => `<a href="https://example.com">${chunks.join('')}</a>`,
+})
+
+console.log(output)
+// "<b>$2</b> with <a href="https://example.com">20% discount</a>"
+```
+
+### React Example
+
+In React applications, you can return React elements from the handler functions:
+
+```tsx
+import {FormattedMessage} from 'react-intl'
+
+function PriceDisplay() {
+  return (
+    <FormattedMessage
+      id="price.message"
+      defaultMessage="Our price is <boldThis>{price, number, ::currency/USD precision-integer}</boldThis> with <link>{pct, number, ::percent} discount</link>"
+      values={{
+        price: 2,
+        pct: 0.2,
+        boldThis: chunks => <b>{chunks}</b>,
+        link: chunks => <a href="https://example.com">{chunks}</a>,
+      }}
+    />
+  )
+}
+
+// Renders: Our price is <b>$2</b> with <a href="https://example.com">20% discount</a>
+```
 
 <Admonition type="info" title="Custom Behavior">
-  It is expected that the system using embedded rich text formatting will have
-  methods to handle these placeholders external to this library. The tags will
-  be part of the generated output and can either be **post-processed** by your
-  own tooling or use the
-  [defaultRichTextElements](/docs/intl/#defaultRichTextElements) configuration.
+  Rich text formatting requires handler functions to process the tags. The tag
+  names (like `boldThis` and `link`) are arbitrary - you define them in your
+  message and provide corresponding handler functions in the `values` object.
+
+You can also configure default handlers globally using the
+[defaultRichTextElements](/docs/intl/#defaultRichTextElements) configuration
+in `IntlProvider`, so you don't have to pass them for every message.
+
 </Admonition>
 
 ## Quoting / Escaping
