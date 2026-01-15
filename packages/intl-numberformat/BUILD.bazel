@@ -17,7 +17,7 @@ exports_files(
     ],
     visibility = [
         "//packages/intl-durationformat:__pkg__",
-        "//packages/intl-enumerator:__pkg__",
+        "//packages/intl-supportedvaluesof:__pkg__",
     ],
 )
 
@@ -991,20 +991,20 @@ package_json_test(
 copy_to_bin(
     name = "extract-numbers-scripts",
     srcs = ["scripts/extract-numbers.ts"],
-    visibility = ["//packages/intl-enumerator:__subpackages__"],
+    visibility = ["//packages/intl-supportedvaluesof:__subpackages__"],
 )
 
 copy_to_bin(
     name = "utils-scripts",
     srcs = ["scripts/extract-numbers.ts"],
-    visibility = ["//packages/intl-enumerator:__subpackages__"],
+    visibility = ["//packages/intl-supportedvaluesof:__subpackages__"],
 )
 
 copy_to_bin(
     name = "numbering-systems-scripts",
     srcs = ["scripts/numbering-systems.ts"],
     visibility = [
-        "//packages/intl-enumerator:__subpackages__",
+        "//packages/intl-supportedvaluesof:__subpackages__",
     ],
 )
 

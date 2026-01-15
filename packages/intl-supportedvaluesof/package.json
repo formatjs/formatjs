@@ -1,6 +1,6 @@
 {
-  "name": "@formatjs/intl-enumerator",
-  "description": "Intl.Enumerator polyfill",
+  "name": "@formatjs/intl-supportedvaluesof",
+  "description": "Intl.supportedValuesOf polyfill",
   "version": "2.1.2",
   "license": "MIT",
   "author": "Michele Riva <ciao@micheleriva.it>",
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
+    "@formatjs/fast-memoize": "workspace:*",
     "tslib": "^2.8.1"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
@@ -25,6 +26,7 @@
     "i18n",
     "intl",
     "react-intl",
+    "supportedvaluesof",
     "tc39"
   ],
   "repository": "formatjs/formatjs.git"

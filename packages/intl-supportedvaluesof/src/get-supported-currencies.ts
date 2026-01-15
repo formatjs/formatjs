@@ -2,12 +2,16 @@ import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract'
 import type {Currency} from './currencies.generated.js'
 import {currencies} from './currencies.generated.js'
 
-function isSupportedCurrency(
-  currency: Currency,
-  locale: string = 'en'
-): boolean {
+/**
+ * Implementation: Tests if a currency is supported by attempting to create
+ * a NumberFormat with that currency and verifying it was accepted.
+ *
+ * CLDR Data: Candidate values come from CLDR currency codes (ISO 4217)
+ */
+function isSupportedCurrency(currency: Currency): boolean {
   try {
-    const numberFormat = createMemoizedNumberFormat(locale, {
+    // Always use 'en' for testing
+    const numberFormat = createMemoizedNumberFormat('en', {
       style: 'currency',
       currencyDisplay: 'name',
       currency,
@@ -26,13 +30,19 @@ function isSupportedCurrency(
   return false
 }
 
-export function getSupportedCurrencies(locale?: string): Currency[] {
+/**
+ * ECMA-402 Spec: Returns supported currency identifiers
+ * ECMA-402 Spec: Results must be sorted lexicographically
+ *
+ * Implementation: Filters CLDR list against actual runtime support
+ */
+export function getSupportedCurrencies(): Currency[] {
   const ATOZ = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   const supportedCurrencies: Currency[] = []
 
   for (const currency of currencies) {
     if (currency.length === 3) {
-      if (isSupportedCurrency(currency, locale)) {
+      if (isSupportedCurrency(currency)) {
         supportedCurrencies.push(currency)
       }
     } else if (currency.length === 5 && currency[3] === '~') {
@@ -41,12 +51,12 @@ export function getSupportedCurrencies(locale?: string): Currency[] {
 
       for (let i = start; i <= end; i++) {
         const currentCurrency = (currency.substring(0, 2) + ATOZ[i]) as Currency
-        if (isSupportedCurrency(currentCurrency, locale)) {
+        if (isSupportedCurrency(currentCurrency)) {
           supportedCurrencies.push(currentCurrency)
         }
       }
     }
   }
 
-  return supportedCurrencies
+  return supportedCurrencies.sort()
 }

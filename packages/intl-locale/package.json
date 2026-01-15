@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
-    "@formatjs/intl-enumerator": "workspace:*",
     "@formatjs/intl-getcanonicallocales": "workspace:*",
+    "@formatjs/intl-supportedvaluesof": "workspace:*",
     "tslib": "^2.8.1"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",

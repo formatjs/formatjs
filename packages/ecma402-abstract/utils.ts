@@ -152,16 +152,6 @@ export const createMemoizedNumberFormat: (
   }
 )
 
-export const createMemoizedDateTimeFormat: (
-  ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
-) => Intl.DateTimeFormat = memoize(
-  (...args: ConstructorParameters<typeof Intl.DateTimeFormat>) =>
-    new Intl.DateTimeFormat(...args),
-  {
-    strategy: strategies.variadic,
-  }
-)
-
 export const createMemoizedPluralRules: (
   ...args: ConstructorParameters<typeof Intl.PluralRules>
 ) => Intl.PluralRules = memoize(

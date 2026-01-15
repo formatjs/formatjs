@@ -1,7 +1,7 @@
 A spec-compliant polyfill/ponyfill for `Intl.supportedValuesOf`.
 
-[![npm Version](https://img.shields.io/npm/v/@formatjs/intl-enumerator.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-enumerator)
-![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-enumerator)
+[![npm Version](https://img.shields.io/npm/v/@formatjs/intl-supportedvaluesof.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-supportedvaluesof)
+![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-supportedvaluesof)
 
 ## Installation
 
@@ -16,21 +16,21 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm i @formatjs/intl-enumerator
+npm i @formatjs/intl-supportedvaluesof
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
 ```sh
-yarn add @formatjs/intl-enumerator
+yarn add @formatjs/intl-supportedvaluesof
 ```
 
 </TabItem>
 <TabItem value="pnpm">
 
 ```sh
-pnpm add @formatjs/intl-enumerator
+pnpm add @formatjs/intl-supportedvaluesof
 ```
 
 </TabItem>
@@ -47,7 +47,7 @@ pnpm add @formatjs/intl-enumerator
 ### Simple
 
 ```tsx
-import '@formatjs/intl-enumerator/polyfill.js'
+import '@formatjs/intl-supportedvaluesof/polyfill.js'
 ```
 
 ### Dynamic import + capability detection
@@ -56,10 +56,10 @@ import '@formatjs/intl-enumerator/polyfill.js'
 async function polyfill() {
   // This platform already supports Intl.supportedValuesOf
   if (shouldPolyfill()) {
-    await import('@formatjs/intl-enumerator/polyfill.js')
+    await import('@formatjs/intl-supportedvaluesof/polyfill.js')
   }
   // Alternatively, force the polyfill regardless of support
-  await import('@formatjs/intl-enumerator/polyfill-force.js')
+  await import('@formatjs/intl-supportedvaluesof/polyfill-force.js')
 }
 ```
 
