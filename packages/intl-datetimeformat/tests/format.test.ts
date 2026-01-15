@@ -5,12 +5,13 @@ import {
   toLocaleString,
   toLocaleTimeString,
 } from '../src/to_locale_string'
+import * as bs from './locale-data/bs.json' with {type: 'json'}
 import * as en from './locale-data/en.json' with {type: 'json'}
 import * as ko from './locale-data/ko.json' with {type: 'json'}
 import * as ru from './locale-data/ru.json' with {type: 'json'}
 import {describe, expect, it} from 'vitest'
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, ko, ru)
+DateTimeFormat.__addLocaleData(bs, en, ko, ru)
 DateTimeFormat.__addTZData(allData)
 
 const tests: Array<{
@@ -382,5 +383,27 @@ describe('stand-alone month forms (issue #5134)', function () {
     expect(fmt.format(january)).toBe('15 января')
     expect(fmt.format(february)).toBe('15 февраля')
     expect(fmt.format(march)).toBe('15 марта')
+  })
+})
+
+// Test for issue #4270: Bosnian month formatting
+describe('Bosnian month formatting (issue #4270)', function () {
+  it('should format with full datetime options including long month', function () {
+    const date = new Date(Date.UTC(2024, 10, 15, 14, 30, 45)) // November 15, 2024, 14:30:45 UTC
+    const fmt = new DateTimeFormat('bs-BA', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZone: 'UTC',
+    })
+
+    const result = fmt.format(date)
+
+    // Should produce correct format with "novembar" for November (not "M11")
+    expect(result).toBe('petak, 15. novembar 2024., 14:30:45')
   })
 })

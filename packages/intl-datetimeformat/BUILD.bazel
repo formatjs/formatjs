@@ -17,6 +17,7 @@ PACKAGE_NAME = "intl-datetimeformat"
 
 TEST_LOCALES = [
     "ar",
+    "bs",
     "de",
     "en",
     "en-GB",
