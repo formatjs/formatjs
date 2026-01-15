@@ -10,6 +10,26 @@ function hasIntlGetCanonicalLocalesBug(): boolean {
 }
 
 /**
+ * Check if Intl.Locale is missing the variants property.
+ * This property was added to ECMA-402 via PR #960.
+ * https://github.com/tc39/ecma402/pull/960
+ * https://github.com/tc39/ecma402/issues/900
+ */
+function hasVariantsProperty(): boolean {
+  try {
+    const locale = new (Intl as any).Locale('en-US-posix')
+    // Check if variants property exists
+    const descriptor = Object.getOwnPropertyDescriptor(
+      Object.getPrototypeOf(locale),
+      'variants'
+    )
+    return descriptor !== undefined && typeof descriptor.get === 'function'
+  } catch {
+    return false
+  }
+}
+
+/**
  * Check if Intl.Locale is missing critical methods from the Intl Locale Info proposal.
  * Firefox has an incomplete implementation that lacks getWeekInfo() and other methods.
  * https://github.com/formatjs/formatjs/issues/5112
@@ -45,6 +65,7 @@ export function shouldPolyfill(): boolean {
   return (
     !('Locale' in Intl) ||
     hasIntlGetCanonicalLocalesBug() ||
-    hasIncompleteLocaleInfo()
+    hasIncompleteLocaleInfo() ||
+    !hasVariantsProperty()
   )
 }

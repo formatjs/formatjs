@@ -5,6 +5,12 @@ import {parseUnicodeLocaleId} from './src/parser.js'
 /**
  * Check if value is an Intl.Locale object by checking for [[InitializedLocale]] internal slot
  * We detect this by checking if it's an Intl.Locale instance
+ *
+ * Per ECMA-402 #sec-canonicalizelocalelist step 7.c:
+ * "If Type(kValue) is Object and kValue has an [[InitializedLocale]] internal slot, then
+ *  Let tag be kValue.[[Locale]]"
+ *
+ * https://tc39.es/ecma402/#sec-canonicalizelocalelist
  */
 function isLocaleObject(value: any): value is Intl.Locale {
   return (
@@ -36,11 +42,14 @@ function CanonicalizeLocaleList(
   const seen: string[] = []
 
   // Step 3-4: Handle string or Locale object by wrapping in array
+  // Per spec: "If Type(locales) is String or Type(locales) is Object and locales has an
+  // [[InitializedLocale]] internal slot, then Let O be CreateArrayFromList(« locales »)"
   if (typeof locales === 'string' || isLocaleObject(locales)) {
     locales = [locales as string | Intl.Locale]
   }
 
   // Step 5-6: Convert to object and get length for array-like objects
+  // Per spec: "Let O be ? ToObject(locales)" and "Let len be ? ToLength(? Get(O, "length"))"
   const O = Object(locales)
   const len = typeof O.length === 'number' ? O.length : 0
 

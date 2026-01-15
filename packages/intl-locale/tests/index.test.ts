@@ -106,6 +106,49 @@ describe('intl-locale', () => {
   it('has static polyfilled property', function () {
     expect(Locale.polyfilled).toBe(true)
   })
+
+  describe('variants property', () => {
+    it('should return undefined for locale without variants', function () {
+      expect(new Locale('en-US').variants).toBe(undefined)
+    })
+
+    it('should return variant string for locale with single variant', function () {
+      expect(new Locale('ca-valencia').variants).toBe('valencia')
+    })
+
+    it('should return hyphen-joined variants for locale with multiple variants', function () {
+      // Note: variants are sorted alphabetically during canonicalization
+      const locale = new Locale('de-DE-1996-1901')
+      expect(locale.variants).toBe('1901-1996')
+    })
+
+    it('should return undefined for locale with only language', function () {
+      expect(new Locale('en').variants).toBe(undefined)
+    })
+
+    it('should return variant for locale with script', function () {
+      expect(new Locale('en-Latn-fonipa').variants).toBe('fonipa')
+    })
+
+    it('should handle fonipa variant', function () {
+      expect(new Locale('en-fonipa').variants).toBe('fonipa')
+    })
+
+    it('should preserve multiple variants in correct order after canonicalization', function () {
+      const locale = new Locale('de-DE-1901-1996')
+      expect(locale.variants).toBe('1901-1996')
+    })
+
+    it('should return variant for locale with extensions', function () {
+      const locale = new Locale('ca-valencia-u-ca-gregory')
+      expect(locale.variants).toBe('valencia')
+    })
+
+    it('should handle numeric variant 1606nict', function () {
+      const locale = new Locale('fr-1606nict')
+      expect(locale.variants).toBe('1606nict')
+    })
+  })
 })
 
 test('getWeekInfo', function () {
