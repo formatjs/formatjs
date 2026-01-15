@@ -18,6 +18,16 @@ function hasMissingICUBug() {
 
 /**
  * https://bugs.chromium.org/p/chromium/issues/detail?id=1176979
+ * https://github.com/formatjs/formatjs/issues/5889
+ *
+ * Tests if the implementation properly canonicalizes script codes per ECMA-402 spec.
+ * The spec requires CanonicalCodeForDisplayNames to convert lowercase 'arab' to title-case 'Arab'
+ * before lookup. This test uses lowercase input to verify canonicalization happens.
+ *
+ * - Correct implementations: canonicalize 'arab' → 'Arab', look up → return 'Arabic'
+ * - Buggy implementations (old Node.js): don't canonicalize, look up 'arab' literally → return 'arab'
+ *
+ * See ECMA-402 section 12.5.1: CanonicalCodeForDisplayNames
  */
 function hasScriptBug() {
   const DisplayNames = (Intl as any).DisplayNames

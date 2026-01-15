@@ -118,6 +118,10 @@ register_toolchains(
 
 bazel_dep(name = "aspect_rules_lint", version = "1.10.2")
 
+######### Java rules #########
+
+bazel_dep(name = "rules_java", version = "9.3.0")
+
 ########## BuildBuddy toolchain rules #########
 
 bazel_dep(name = "toolchains_buildbuddy", version = "0.0.4")
@@ -209,4 +213,13 @@ http_file(
     name = "DerivedCoreProperties",
     sha256 = "24c7fed1195c482faaefd5c1e7eb821c5ee1fb6de07ecdbaa64b56a99da22c08",
     url = "https://www.unicode.org/Public/17.0.0/ucd/DerivedCoreProperties.txt",
+)
+
+######### ICU4J for conformance testing #########
+
+http_file(
+    name = "icu4j_jar",
+    downloaded_file_path = "icu4j-78.1.jar",
+    sha256 = "bbb70d3be23110d7295823eee0c2e896ac3b619b3c0f26168f65eb972df51d2a",
+    url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
