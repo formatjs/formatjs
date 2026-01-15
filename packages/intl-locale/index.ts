@@ -667,6 +667,24 @@ export class Locale {
     return parseUnicodeLanguageId(locale).region
   }
 
+  /**
+   * Returns the variant subtags of the locale, or undefined if none exist.
+   * Multiple variants are joined with hyphens in alphabetical order.
+   *
+   * Added in ECMA-402 via PR #960 to align with other subtag accessors.
+   * @see https://tc39.es/ecma402/#sec-Intl.Locale.prototype.variants
+   * @see https://github.com/tc39/ecma402/pull/960
+   * @see https://github.com/tc39/ecma402/issues/900
+   */
+  public get variants(): string | undefined {
+    const locale = getInternalSlots(this).locale
+    const variants = parseUnicodeLanguageId(locale).variants
+    if (!variants || variants.length === 0) {
+      return undefined
+    }
+    return variants.join('-')
+  }
+
   public get firstDayOfWeek(): string | undefined {
     const internalSlots = getInternalSlots(this)
     if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
