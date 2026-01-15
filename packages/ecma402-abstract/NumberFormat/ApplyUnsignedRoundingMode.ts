@@ -8,7 +8,11 @@ export function ApplyUnsignedRoundingMode(
   r2: Decimal,
   unsignedRoundingMode: UnsignedRoundingModeType
 ): Decimal {
-  if (x.eq(r1)) return r1
+  // If x equals r1 or if r1 equals r2 (already at rounding boundary), return r1
+  if (x.eq(r1) || r1.eq(r2)) return r1
+  // If x equals r2, return r2
+  if (x.eq(r2)) return r2
+
   invariant(
     r1.lessThan(x) && x.lessThan(r2),
     `x should be between r1 and r2 but x=${x}, r1=${r1}, r2=${r2}`

@@ -21,11 +21,12 @@ export function ToNumber(arg: any): Decimal {
   if (typeof arg === 'number') {
     return new Decimal(arg)
   }
-  invariant(
-    typeof arg !== 'bigint' && typeof arg !== 'symbol',
-    'BigInt and Symbol are not supported',
-    TypeError
-  )
+  // Support bigint values by converting to string first
+  // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.select
+  if (typeof arg === 'bigint') {
+    return new Decimal(arg.toString())
+  }
+  invariant(typeof arg !== 'symbol', 'Symbol is not supported', TypeError)
   if (arg === undefined) {
     return new Decimal(NaN)
   }

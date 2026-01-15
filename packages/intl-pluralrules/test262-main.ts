@@ -10,9 +10,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'af',
@@ -20,9 +28,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 0 || n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n >= 0 && n <= 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ak',
@@ -30,9 +46,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n >= 0 && n <= 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+          } else {
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'am',
@@ -40,9 +65,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'an',
@@ -50,25 +83,24 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['zero', 'one', 'two', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other', 'two', 'zero'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n,
-            n100 = t0 && s[0].slice(-2)
-          if (ord) return 'other'
-          return n == 0
-            ? 'zero'
-            : n == 1
-              ? 'one'
-              : n == 2
-                ? 'two'
-                : n100 >= 3 && n100 <= 10
-                  ? 'few'
-                  : n100 >= 11 && n100 <= 99
-                    ? 'many'
-                    : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n % 100 >= 3 && n % 100 <= 10) return 'few'
+            if (n % 100 >= 11 && n % 100 <= 99) return 'many'
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+            if (n === 0) return 'zero'
+          }
+          return 'other'
         },
       },
       locale: 'ar',
@@ -76,25 +108,24 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['zero', 'one', 'two', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other', 'two', 'zero'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n,
-            n100 = t0 && s[0].slice(-2)
-          if (ord) return 'other'
-          return n == 0
-            ? 'zero'
-            : n == 1
-              ? 'one'
-              : n == 2
-                ? 'two'
-                : n100 >= 3 && n100 <= 10
-                  ? 'few'
-                  : n100 >= 11 && n100 <= 99
-                    ? 'many'
-                    : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n % 100 >= 3 && n % 100 <= 10) return 'few'
+            if (n % 100 >= 11 && n % 100 <= 99) return 'many'
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+            if (n === 0) return 'zero'
+          }
+          return 'other'
         },
       },
       locale: 'ars',
@@ -103,20 +134,25 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'two', 'few', 'many', 'other'],
+          ordinal: ['few', 'many', 'one', 'other', 'two'],
         },
-        fn: function (n, ord) {
-          if (ord)
-            return n == 1 || n == 5 || n == 7 || n == 8 || n == 9 || n == 10
-              ? 'one'
-              : n == 2 || n == 3
-                ? 'two'
-                : n == 4
-                  ? 'few'
-                  : n == 6
-                    ? 'many'
-                    : 'other'
-          return n >= 0 && n <= 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+            if (n === 4) return 'few'
+            if (n === 6) return 'many'
+            if (n === 1 || n === 5 || n === 7 || n === 8 || n === 9 || n === 10)
+              return 'one'
+            if (n === 2 || n === 3) return 'two'
+          } else {
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'as',
@@ -124,9 +160,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'asa',
@@ -134,11 +178,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ast',
@@ -147,41 +198,54 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'few', 'many', 'other'],
+          ordinal: ['few', 'many', 'one', 'other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            i10 = i.slice(-1),
-            i100 = i.slice(-2),
-            i1000 = i.slice(-3)
-          if (ord)
-            return i10 == 1 ||
-              i10 == 2 ||
-              i10 == 5 ||
-              i10 == 7 ||
-              i10 == 8 ||
-              i100 == 20 ||
-              i100 == 50 ||
-              i100 == 70 ||
-              i100 == 80
-              ? 'one'
-              : i10 == 3 ||
-                  i10 == 4 ||
-                  i1000 == 100 ||
-                  i1000 == 200 ||
-                  i1000 == 300 ||
-                  i1000 == 400 ||
-                  i1000 == 500 ||
-                  i1000 == 600 ||
-                  i1000 == 700 ||
-                  i1000 == 800 ||
-                  i1000 == 900
-                ? 'few'
-                : i == 0 || i10 == 6 || i100 == 40 || i100 == 60 || i100 == 90
-                  ? 'many'
-                  : 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+            if (
+              i % 10 === 3 ||
+              i % 10 === 4 ||
+              i % 1000 === 100 ||
+              i % 1000 === 200 ||
+              i % 1000 === 300 ||
+              i % 1000 === 400 ||
+              i % 1000 === 500 ||
+              i % 1000 === 600 ||
+              i % 1000 === 700 ||
+              i % 1000 === 800 ||
+              i % 1000 === 900
+            )
+              return 'few'
+            if (
+              i === 0 ||
+              i % 10 === 6 ||
+              i % 100 === 40 ||
+              i % 100 === 60 ||
+              i % 100 === 90
+            )
+              return 'many'
+            if (
+              i % 10 === 1 ||
+              i % 10 === 2 ||
+              i % 10 === 5 ||
+              i % 10 === 7 ||
+              i % 10 === 8 ||
+              i % 100 === 20 ||
+              i % 100 === 50 ||
+              i % 100 === 70 ||
+              i % 100 === 80
+            )
+              return 'one'
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'az',
@@ -189,8 +253,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function (n, ord) {
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'bal',
@@ -198,27 +272,34 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['few', 'other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1),
-            n100 = t0 && s[0].slice(-2)
-          if (ord)
-            return (n10 == 2 || n10 == 3) && n100 != 12 && n100 != 13
-              ? 'few'
-              : 'other'
-          return n10 == 1 && n100 != 11
-            ? 'one'
-            : n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14)
-              ? 'few'
-              : (t0 && n10 == 0) ||
-                  (n10 >= 5 && n10 <= 9) ||
-                  (n100 >= 11 && n100 <= 14)
-                ? 'many'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (
+              (n % 10 === 2 || n % 10 === 3) &&
+              n % 100 !== 12 &&
+              n % 100 !== 13
+            )
+              return 'few'
+          } else {
+            if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14))
+              return 'few'
+            if (
+              n % 10 === 0 ||
+              (n % 10 >= 5 && n % 10 <= 9) ||
+              (n % 100 >= 11 && n % 100 <= 14)
+            )
+              return 'many'
+            if (n % 10 === 1 && n % 100 !== 11) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'be',
@@ -226,9 +307,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'bem',
@@ -236,9 +325,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'bez',
@@ -246,9 +343,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'bg',
@@ -256,9 +361,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 0 || n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n >= 0 && n <= 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'bho',
@@ -266,7 +379,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -276,20 +389,25 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'two', 'few', 'many', 'other'],
+          ordinal: ['few', 'many', 'one', 'other', 'two'],
         },
-        fn: function (n, ord) {
-          if (ord)
-            return n == 1 || n == 5 || n == 7 || n == 8 || n == 9 || n == 10
-              ? 'one'
-              : n == 2 || n == 3
-                ? 'two'
-                : n == 4
-                  ? 'few'
-                  : n == 6
-                    ? 'many'
-                    : 'other'
-          return n >= 0 && n <= 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+            if (n === 4) return 'few'
+            if (n === 6) return 'many'
+            if (n === 1 || n === 5 || n === 7 || n === 8 || n === 9 || n === 10)
+              return 'one'
+            if (n === 2 || n === 3) return 'two'
+          } else {
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'bn',
@@ -297,7 +415,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -306,28 +424,41 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'two', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1),
-            n100 = t0 && s[0].slice(-2),
-            n1000000 = t0 && s[0].slice(-6)
-          if (ord) return 'other'
-          return n10 == 1 && n100 != 11 && n100 != 71 && n100 != 91
-            ? 'one'
-            : n10 == 2 && n100 != 12 && n100 != 72 && n100 != 92
-              ? 'two'
-              : (n10 == 3 || n10 == 4 || n10 == 9) &&
-                  (n100 < 10 || n100 > 19) &&
-                  (n100 < 70 || n100 > 79) &&
-                  (n100 < 90 || n100 > 99)
-                ? 'few'
-                : n != 0 && t0 && n1000000 == 0
-                  ? 'many'
-                  : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (
+              ((n % 10 >= 3 && n % 10 <= 4) || n % 10 === 9) &&
+              (n % 100 < 10 || n % 100 > 19) &&
+              (n % 100 < 70 || n % 100 > 79) &&
+              (n % 100 < 90 || n % 100 > 99)
+            )
+              return 'few'
+            if (n !== 0 && n % 1000000 === 0) return 'many'
+            if (
+              n % 10 === 1 &&
+              n % 100 !== 11 &&
+              n % 100 !== 71 &&
+              n % 100 !== 91
+            )
+              return 'one'
+            if (
+              n % 10 === 2 &&
+              n % 100 !== 12 &&
+              n % 100 !== 72 &&
+              n % 100 !== 92
+            )
+              return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'br',
@@ -335,32 +466,49 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'brx',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'few', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || '',
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            i100 = i.slice(-2),
-            f10 = f.slice(-1),
-            f100 = f.slice(-2)
-          if (ord) return 'other'
-          return (v0 && i10 == 1 && i100 != 11) || (f10 == 1 && f100 != 11)
-            ? 'one'
-            : (v0 && i10 >= 2 && i10 <= 4 && (i100 < 12 || i100 > 14)) ||
-                (f10 >= 2 && f10 <= 4 && (f100 < 12 || f100 > 14))
-              ? 'few'
-              : 'other'
+        categories: {cardinal: ['few', 'one', 'other'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (v === 0 &&
+                i % 10 >= 2 &&
+                i % 10 <= 4 &&
+                (i % 100 < 12 || i % 100 > 14)) ||
+              (f % 10 >= 2 && f % 10 <= 4 && (f % 100 < 12 || f % 100 > 14))
+            )
+              return 'few'
+            if (
+              (v === 0 && i % 10 === 1 && i % 100 !== 11) ||
+              (f % 10 === 1 && f % 100 !== 11)
+            )
+              return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'bs',
@@ -368,31 +516,32 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'many', 'other'],
-          ordinal: ['one', 'two', 'few', 'other'],
+          cardinal: ['many', 'one', 'other'],
+          ordinal: ['few', 'one', 'other', 'two'],
         },
-        fn: function (n, ord) {
-          var _n = String(n),
-            se = _n.split(/[ce]/),
-            e = se[1] || 0,
-            c = e,
-            s = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            i1000000 = i.slice(-6)
-          if (ord)
-            return n == 1 || n == 3
-              ? 'one'
-              : n == 2
-                ? 'two'
-                : n == 4
-                  ? 'few'
-                  : 'other'
-          return n == 1 && v0
-            ? 'one'
-            : (e == 0 && i != 0 && i1000000 == 0 && v0) || e < 0 || e > 5
-              ? 'many'
-              : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const e = 0
+          if (isOrdinal) {
+            if (n === 4) return 'few'
+            if (n === 1 || n === 3) return 'one'
+            if (n === 2) return 'two'
+          } else {
+            if (
+              (e === 0 && i !== 0 && i % 1000000 === 0 && v === 0) ||
+              e < 0 ||
+              e > 5
+            )
+              return 'many'
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ca',
@@ -400,9 +549,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ce',
@@ -410,19 +567,24 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || '',
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            f10 = f.slice(-1)
-          if (ord) return 'other'
-          return (v0 && (i == 1 || i == 2 || i == 3)) ||
-            (v0 && i10 != 4 && i10 != 6 && i10 != 9) ||
-            (!v0 && f10 != 4 && f10 != 6 && f10 != 9)
-            ? 'one'
-            : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (v === 0 && (i === 1 || i === 2 || i === 3)) ||
+              (v === 0 && i % 10 !== 4 && i % 10 !== 6 && i % 10 !== 9) ||
+              (v !== 0 && f % 10 !== 4 && f % 10 !== 6 && f % 10 !== 9)
+            )
+              return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ceb',
@@ -430,9 +592,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'cgg',
@@ -440,9 +610,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'chr',
@@ -450,9 +628,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ckb',
@@ -460,21 +646,23 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0
-            ? 'one'
-            : i >= 2 && i <= 4 && v0
-              ? 'few'
-              : !v0
-                ? 'many'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i >= 2 && i <= 4 && v === 0) return 'few'
+            if (v !== 0) return 'many'
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'cs',
@@ -482,33 +670,29 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['zero', 'one', 'two', 'few', 'many', 'other'],
-          ordinal: ['zero', 'one', 'two', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other', 'two', 'zero'],
+          ordinal: ['few', 'many', 'one', 'other', 'two', 'zero'],
         },
-        fn: function (n, ord) {
-          if (ord)
-            return n == 0 || n == 7 || n == 8 || n == 9
-              ? 'zero'
-              : n == 1
-                ? 'one'
-                : n == 2
-                  ? 'two'
-                  : n == 3 || n == 4
-                    ? 'few'
-                    : n == 5 || n == 6
-                      ? 'many'
-                      : 'other'
-          return n == 0
-            ? 'zero'
-            : n == 1
-              ? 'one'
-              : n == 2
-                ? 'two'
-                : n == 3
-                  ? 'few'
-                  : n == 6
-                    ? 'many'
-                    : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 3 || n === 4) return 'few'
+            if (n === 5 || n === 6) return 'many'
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+            if (n === 0 || n === 7 || n === 8 || n === 9) return 'zero'
+          } else {
+            if (n === 3) return 'few'
+            if (n === 6) return 'many'
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+            if (n === 0) return 'zero'
+          }
+          return 'other'
         },
       },
       locale: 'cy',
@@ -516,12 +700,20 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            t0 = Number(s[0]) == n
-          if (ord) return 'other'
-          return n == 1 || (!t0 && (i == 0 || i == 1)) ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const w = decimalPart.replace(/0+$/, '').length
+          const t = w > 0 ? parseInt(decimalPart.replace(/0+$/, ''), 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (n === 1 || (t !== 0 && (i === 0 || i === 1))) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'da',
@@ -529,11 +721,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'de',
@@ -541,9 +740,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n >= 0 && n <= 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+          } else {
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'doi',
@@ -551,24 +759,28 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'two', 'few', 'other'],
+          cardinal: ['few', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || '',
-            v0 = !s[1],
-            i100 = i.slice(-2),
-            f100 = f.slice(-2)
-          if (ord) return 'other'
-          return (v0 && i100 == 1) || f100 == 1
-            ? 'one'
-            : (v0 && i100 == 2) || f100 == 2
-              ? 'two'
-              : (v0 && (i100 == 3 || i100 == 4)) || f100 == 3 || f100 == 4
-                ? 'few'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (v === 0 && i % 100 >= 3 && i % 100 <= 4) ||
+              (f % 100 >= 3 && f % 100 <= 4)
+            )
+              return 'few'
+            if ((v === 0 && i % 100 === 1) || f % 100 === 1) return 'one'
+            if ((v === 0 && i % 100 === 2) || f % 100 === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'dsb',
@@ -576,9 +788,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'dv',
@@ -586,7 +806,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -595,9 +815,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ee',
@@ -605,9 +833,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'el',
@@ -616,23 +852,24 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'two', 'few', 'other'],
+          ordinal: ['few', 'one', 'other', 'two'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1],
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1),
-            n100 = t0 && s[0].slice(-2)
-          if (ord)
-            return n10 == 1 && n100 != 11
-              ? 'one'
-              : n10 == 2 && n100 != 12
-                ? 'two'
-                : n10 == 3 && n100 != 13
-                  ? 'few'
-                  : 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+            if (n % 10 === 3 && n % 100 !== 13) return 'few'
+            if (n % 10 === 1 && n % 100 !== 11) return 'one'
+            if (n % 10 === 2 && n % 100 !== 12) return 'two'
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'en',
@@ -640,31 +877,44 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'eo',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'many', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var _n = String(n),
-            se = _n.split(/[ce]/),
-            e = se[1] || 0,
-            c = e,
-            s = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            i1000000 = i.slice(-6)
-          if (ord) return 'other'
-          return n == 1
-            ? 'one'
-            : (e == 0 && i != 0 && i1000000 == 0 && v0) || e < 0 || e > 5
-              ? 'many'
-              : 'other'
+        categories: {cardinal: ['many', 'one', 'other'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const e = 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (e === 0 && i !== 0 && i % 1000000 === 0 && v === 0) ||
+              e < 0 ||
+              e > 5
+            )
+              return 'many'
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'es',
@@ -672,11 +922,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'et',
@@ -684,9 +941,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'eu',
@@ -694,9 +959,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n >= 0 && n <= 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+          } else {
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'fa',
@@ -704,9 +978,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n >= 0 && n < 2 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+          } else {
+            if (i === 0 || i === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ff',
@@ -714,11 +996,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'fi',
@@ -726,19 +1015,26 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || '',
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            f10 = f.slice(-1)
-          if (ord) return n == 1 ? 'one' : 'other'
-          return (v0 && (i == 1 || i == 2 || i == 3)) ||
-            (v0 && i10 != 4 && i10 != 6 && i10 != 9) ||
-            (!v0 && f10 != 4 && f10 != 6 && f10 != 9)
-            ? 'one'
-            : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+            if (
+              (v === 0 && (i === 1 || i === 2 || i === 3)) ||
+              (v === 0 && i % 10 !== 4 && i % 10 !== 6 && i % 10 !== 9) ||
+              (v !== 0 && f % 10 !== 4 && f % 10 !== 6 && f % 10 !== 9)
+            )
+              return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'fil',
@@ -746,9 +1042,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'fo',
@@ -756,24 +1060,30 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'many', 'other'],
+          cardinal: ['many', 'one', 'other'],
           ordinal: ['one', 'other'],
         },
-        fn: function (n, ord) {
-          var _n = String(n),
-            se = _n.split(/[ce]/),
-            e = se[1] || 0,
-            c = e,
-            s = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            i1000000 = i.slice(-6)
-          if (ord) return n == 1 ? 'one' : 'other'
-          return n >= 0 && n < 2
-            ? 'one'
-            : (e == 0 && i != 0 && i1000000 == 0 && v0) || e < 0 || e > 5
-              ? 'many'
-              : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const e = 0
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+            if (
+              (e === 0 && i !== 0 && i % 1000000 === 0 && v === 0) ||
+              e < 0 ||
+              e > 5
+            )
+              return 'many'
+            if (i === 0 || i === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'fr',
@@ -781,9 +1091,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'fur',
@@ -791,11 +1109,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'fy',
@@ -803,22 +1128,24 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'two', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other', 'two'],
           ordinal: ['one', 'other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n
-          if (ord) return n == 1 ? 'one' : 'other'
-          return n == 1
-            ? 'one'
-            : n == 2
-              ? 'two'
-              : t0 && n >= 3 && n <= 6
-                ? 'few'
-                : t0 && n >= 7 && n <= 10
-                  ? 'many'
-                  : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+            if (n >= 3 && n <= 6) return 'few'
+            if (n >= 7 && n <= 10) return 'many'
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'ga',
@@ -826,27 +1153,25 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'two', 'few', 'other'],
-          ordinal: ['one', 'two', 'few', 'other'],
+          cardinal: ['few', 'one', 'other', 'two'],
+          ordinal: ['few', 'one', 'other', 'two'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n
-          if (ord)
-            return n == 1 || n == 11
-              ? 'one'
-              : n == 2 || n == 12
-                ? 'two'
-                : n == 3 || n == 13
-                  ? 'few'
-                  : 'other'
-          return n == 1 || n == 11
-            ? 'one'
-            : n == 2 || n == 12
-              ? 'two'
-              : (t0 && n >= 3 && n <= 10) || (t0 && n >= 13 && n <= 19)
-                ? 'few'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 3 || n === 13) return 'few'
+            if (n === 1 || n === 11) return 'one'
+            if (n === 2 || n === 12) return 'two'
+          } else {
+            if ((n >= 3 && n <= 10) || (n >= 13 && n <= 19)) return 'few'
+            if (n === 1 || n === 11) return 'one'
+            if (n === 2 || n === 12) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'gd',
@@ -854,11 +1179,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'gl',
@@ -866,9 +1198,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'gsw',
@@ -877,20 +1217,24 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'two', 'few', 'many', 'other'],
+          ordinal: ['few', 'many', 'one', 'other', 'two'],
         },
-        fn: function (n, ord) {
-          if (ord)
-            return n == 1
-              ? 'one'
-              : n == 2 || n == 3
-                ? 'two'
-                : n == 4
-                  ? 'few'
-                  : n == 6
-                    ? 'many'
-                    : 'other'
-          return n >= 0 && n <= 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+            if (n === 4) return 'few'
+            if (n === 6) return 'many'
+            if (n === 1) return 'one'
+            if (n === 2 || n === 3) return 'two'
+          } else {
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'gu',
@@ -898,9 +1242,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 0 || n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n >= 0 && n <= 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'guw',
@@ -908,30 +1260,32 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'two', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            i100 = i.slice(-2)
-          if (ord) return 'other'
-          return v0 && i10 == 1
-            ? 'one'
-            : v0 && i10 == 2
-              ? 'two'
-              : v0 &&
-                  (i100 == 0 ||
-                    i100 == 20 ||
-                    i100 == 40 ||
-                    i100 == 60 ||
-                    i100 == 80)
-                ? 'few'
-                : !v0
-                  ? 'many'
-                  : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (
+              v === 0 &&
+              (i % 100 === 0 ||
+                i % 100 === 20 ||
+                i % 100 === 40 ||
+                i % 100 === 60 ||
+                i % 100 === 80)
+            )
+              return 'few'
+            if (v !== 0) return 'many'
+            if (v === 0 && i % 10 === 1) return 'one'
+            if (v === 0 && i % 10 === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'gv',
@@ -939,9 +1293,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ha',
@@ -949,26 +1311,37 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'haw',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'two', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            v0 = !s[1]
-          if (ord) return 'other'
-          return (i == 1 && v0) || (i == 0 && !v0)
-            ? 'one'
-            : i == 2 && v0
-              ? 'two'
-              : 'other'
+        categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if ((i === 1 && v === 0) || (i === 0 && v !== 0)) return 'one'
+            if (i === 2 && v === 0) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'he',
@@ -977,20 +1350,24 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'two', 'few', 'many', 'other'],
+          ordinal: ['few', 'many', 'one', 'other', 'two'],
         },
-        fn: function (n, ord) {
-          if (ord)
-            return n == 1
-              ? 'one'
-              : n == 2 || n == 3
-                ? 'two'
-                : n == 4
-                  ? 'few'
-                  : n == 6
-                    ? 'many'
-                    : 'other'
-          return n >= 0 && n <= 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+            if (n === 4) return 'few'
+            if (n === 6) return 'many'
+            if (n === 1) return 'one'
+            if (n === 2 || n === 3) return 'two'
+          } else {
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'hi',
@@ -998,7 +1375,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1006,23 +1383,32 @@ if (
     },
     {
       data: {
-        categories: {cardinal: ['one', 'few', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || '',
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            i100 = i.slice(-2),
-            f10 = f.slice(-1),
-            f100 = f.slice(-2)
-          if (ord) return 'other'
-          return (v0 && i10 == 1 && i100 != 11) || (f10 == 1 && f100 != 11)
-            ? 'one'
-            : (v0 && i10 >= 2 && i10 <= 4 && (i100 < 12 || i100 > 14)) ||
-                (f10 >= 2 && f10 <= 4 && (f100 < 12 || f100 > 14))
-              ? 'few'
-              : 'other'
+        categories: {cardinal: ['few', 'one', 'other'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (v === 0 &&
+                i % 10 >= 2 &&
+                i % 10 <= 4 &&
+                (i % 100 < 12 || i % 100 > 14)) ||
+              (f % 10 >= 2 && f % 10 <= 4 && (f % 100 < 12 || f % 100 > 14))
+            )
+              return 'few'
+            if (
+              (v === 0 && i % 10 === 1 && i % 100 !== 11) ||
+              (f % 10 === 1 && f % 100 !== 11)
+            )
+              return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'hr',
@@ -1030,24 +1416,28 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'two', 'few', 'other'],
+          cardinal: ['few', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || '',
-            v0 = !s[1],
-            i100 = i.slice(-2),
-            f100 = f.slice(-2)
-          if (ord) return 'other'
-          return (v0 && i100 == 1) || f100 == 1
-            ? 'one'
-            : (v0 && i100 == 2) || f100 == 2
-              ? 'two'
-              : (v0 && (i100 == 3 || i100 == 4)) || f100 == 3 || f100 == 4
-                ? 'few'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (v === 0 && i % 100 >= 3 && i % 100 <= 4) ||
+              (f % 100 >= 3 && f % 100 <= 4)
+            )
+              return 'few'
+            if ((v === 0 && i % 100 === 1) || f % 100 === 1) return 'one'
+            if ((v === 0 && i % 100 === 2) || f % 100 === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'hsb',
@@ -1055,9 +1445,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function (n, ord) {
-          if (ord) return n == 1 || n == 5 ? 'one' : 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 1 || n === 5) return 'one'
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'hu',
@@ -1065,9 +1464,19 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function (n, ord) {
-          if (ord) return n == 1 ? 'one' : 'other'
-          return n >= 0 && n < 2 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+            if (i === 0 || i === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'hy',
@@ -1075,11 +1484,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ia',
@@ -1087,7 +1503,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1096,7 +1512,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1105,7 +1521,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1114,11 +1530,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'io',
@@ -1126,18 +1549,23 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            t = (s[1] || '').replace(/0+$/, ''),
-            t0 = Number(s[0]) == n,
-            i10 = i.slice(-1),
-            i100 = i.slice(-2)
-          if (ord) return 'other'
-          return (t0 && i10 == 1 && i100 != 11) ||
-            (t % 10 == 1 && t % 100 != 11)
-            ? 'one'
-            : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const w = decimalPart.replace(/0+$/, '').length
+          const t = w > 0 ? parseInt(decimalPart.replace(/0+$/, ''), 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (t === 0 && i % 10 === 1 && i % 100 !== 11) ||
+              (t % 10 === 1 && t % 100 !== 11)
+            )
+              return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'is',
@@ -1145,35 +1573,49 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'many', 'other'],
+          cardinal: ['many', 'one', 'other'],
           ordinal: ['many', 'other'],
         },
-        fn: function (n, ord) {
-          var _n = String(n),
-            se = _n.split(/[ce]/),
-            e = se[1] || 0,
-            c = e,
-            s = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            i1000000 = i.slice(-6)
-          if (ord)
-            return n == 11 || n == 8 || n == 80 || n == 800 ? 'many' : 'other'
-          return n == 1 && v0
-            ? 'one'
-            : (e == 0 && i != 0 && i1000000 == 0 && v0) || e < 0 || e > 5
-              ? 'many'
-              : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const e = 0
+          if (isOrdinal) {
+            if (n === 11 || n === 8 || n === 80 || n === 800) return 'many'
+          } else {
+            if (
+              (e === 0 && i !== 0 && i % 1000000 === 0 && v === 0) ||
+              e < 0 ||
+              e > 5
+            )
+              return 'many'
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'it',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'two', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : n == 2 ? 'two' : 'other'
+        categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'iu',
@@ -1181,7 +1623,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1190,7 +1632,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1199,9 +1641,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'jgo',
@@ -1209,9 +1659,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'jmc',
@@ -1219,7 +1677,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1228,7 +1686,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1238,23 +1696,29 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'many', 'other'],
+          ordinal: ['many', 'one', 'other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            i100 = i.slice(-2)
-          if (ord)
-            return i == 1
-              ? 'one'
-              : i == 0 ||
-                  (i100 >= 2 && i100 <= 20) ||
-                  i100 == 40 ||
-                  i100 == 60 ||
-                  i100 == 80
-                ? 'many'
-                : 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+            if (
+              i === 0 ||
+              (i % 100 >= 2 && i % 100 <= 20) ||
+              i % 100 === 40 ||
+              i % 100 === 60 ||
+              i % 100 === 80
+            )
+              return 'many'
+            if (i === 1) return 'one'
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ka',
@@ -1262,9 +1726,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n >= 0 && n < 2 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+          } else {
+            if (i === 0 || i === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'kab',
@@ -1272,9 +1744,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'kaj',
@@ -1282,9 +1762,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'kcg',
@@ -1292,7 +1780,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1301,7 +1789,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1310,15 +1798,19 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['many', 'other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1)
-          if (ord)
-            return n10 == 6 || n10 == 9 || (t0 && n10 == 0 && n != 0)
-              ? 'many'
-              : 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n % 10 === 6 || n % 10 === 9 || (n % 10 === 0 && n !== 0))
+              return 'many'
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'kk',
@@ -1326,9 +1818,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'kkj',
@@ -1336,9 +1836,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'kl',
@@ -1346,7 +1854,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1355,9 +1863,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n >= 0 && n <= 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+          } else {
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'kn',
@@ -1365,7 +1882,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1374,9 +1891,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ks',
@@ -1384,19 +1909,36 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ksb',
     },
     {
       data: {
-        categories: {cardinal: ['zero', 'one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 0 ? 'zero' : n == 1 ? 'one' : 'other'
+        categories: {cardinal: ['one', 'other', 'zero'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+            if (n === 0) return 'zero'
+          }
+          return 'other'
         },
       },
       locale: 'ksh',
@@ -1404,9 +1946,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ku',
@@ -1414,58 +1964,62 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['zero', 'one', 'two', 'few', 'many', 'other'],
-          ordinal: ['one', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other', 'two', 'zero'],
+          ordinal: ['many', 'one', 'other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n,
-            n100 = t0 && s[0].slice(-2),
-            n1000 = t0 && s[0].slice(-3),
-            n100000 = t0 && s[0].slice(-5),
-            n1000000 = t0 && s[0].slice(-6)
-          if (ord)
-            return (t0 && n >= 1 && n <= 4) ||
-              (n100 >= 1 && n100 <= 4) ||
-              (n100 >= 21 && n100 <= 24) ||
-              (n100 >= 41 && n100 <= 44) ||
-              (n100 >= 61 && n100 <= 64) ||
-              (n100 >= 81 && n100 <= 84)
-              ? 'one'
-              : n == 5 || n100 == 5
-                ? 'many'
-                : 'other'
-          return n == 0
-            ? 'zero'
-            : n == 1
-              ? 'one'
-              : n100 == 2 ||
-                  n100 == 22 ||
-                  n100 == 42 ||
-                  n100 == 62 ||
-                  n100 == 82 ||
-                  (t0 &&
-                    n1000 == 0 &&
-                    ((n100000 >= 1000 && n100000 <= 20000) ||
-                      n100000 == 40000 ||
-                      n100000 == 60000 ||
-                      n100000 == 80000)) ||
-                  (n != 0 && n1000000 == 100000)
-                ? 'two'
-                : n100 == 3 ||
-                    n100 == 23 ||
-                    n100 == 43 ||
-                    n100 == 63 ||
-                    n100 == 83
-                  ? 'few'
-                  : n != 1 &&
-                      (n100 == 1 ||
-                        n100 == 21 ||
-                        n100 == 41 ||
-                        n100 == 61 ||
-                        n100 == 81)
-                    ? 'many'
-                    : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 5 || n % 100 === 5) return 'many'
+            if (
+              (n >= 1 && n <= 4) ||
+              (n % 100 >= 1 && n % 100 <= 4) ||
+              (n % 100 >= 21 && n % 100 <= 24) ||
+              (n % 100 >= 41 && n % 100 <= 44) ||
+              (n % 100 >= 61 && n % 100 <= 64) ||
+              (n % 100 >= 81 && n % 100 <= 84)
+            )
+              return 'one'
+          } else {
+            if (
+              n % 100 === 3 ||
+              n % 100 === 23 ||
+              n % 100 === 43 ||
+              n % 100 === 63 ||
+              n % 100 === 83
+            )
+              return 'few'
+            if (
+              n !== 1 &&
+              (n % 100 === 1 ||
+                n % 100 === 21 ||
+                n % 100 === 41 ||
+                n % 100 === 61 ||
+                n % 100 === 81)
+            )
+              return 'many'
+            if (n === 1) return 'one'
+            if (
+              n % 100 === 2 ||
+              n % 100 === 22 ||
+              n % 100 === 42 ||
+              n % 100 === 62 ||
+              n % 100 === 82 ||
+              (n % 1000 === 0 &&
+                ((n % 100000 >= 1000 && n % 100000 <= 20000) ||
+                  n % 100000 === 40000 ||
+                  n % 100000 === 60000 ||
+                  n % 100000 === 80000)) ||
+              (n !== 0 && n % 1000000 === 100000)
+            )
+              return 'two'
+            if (n === 0) return 'zero'
+          }
+          return 'other'
         },
       },
       locale: 'kw',
@@ -1473,25 +2027,37 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ky',
     },
     {
       data: {
-        categories: {cardinal: ['zero', 'one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0]
-          if (ord) return 'other'
-          return n == 0
-            ? 'zero'
-            : (i == 0 || i == 1) && n != 0
-              ? 'one'
-              : 'other'
+        categories: {cardinal: ['one', 'other', 'zero'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+          } else {
+            if ((i === 0 || i === 1) && n !== 0) return 'one'
+            if (n === 0) return 'zero'
+          }
+          return 'other'
         },
       },
       locale: 'lag',
@@ -1499,9 +2065,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'lb',
@@ -1509,9 +2083,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'lg',
@@ -1519,18 +2101,26 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['many', 'other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1],
-            t0 = Number(s[0]) == n
-          if (ord)
-            return n == 11 ||
-              n == 8 ||
-              (t0 && n >= 80 && n <= 89) ||
-              (t0 && n >= 800 && n <= 899)
-              ? 'many'
-              : 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+            if (
+              n === 11 ||
+              n === 8 ||
+              (n >= 80 && n <= 89) ||
+              (n >= 800 && n <= 899)
+            )
+              return 'many'
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'lij',
@@ -1538,7 +2128,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1547,9 +2137,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 0 || n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n >= 0 && n <= 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ln',
@@ -1557,8 +2155,16 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['one', 'other']},
-        fn: function (n, ord) {
-          if (ord) return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+          }
           return 'other'
         },
       },
@@ -1567,49 +2173,56 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            f = s[1] || '',
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1),
-            n100 = t0 && s[0].slice(-2)
-          if (ord) return 'other'
-          return n10 == 1 && (n100 < 11 || n100 > 19)
-            ? 'one'
-            : n10 >= 2 && n10 <= 9 && (n100 < 11 || n100 > 19)
-              ? 'few'
-              : f != 0
-                ? 'many'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19))
+              return 'few'
+            if (f !== 0) return 'many'
+            if (n % 10 === 1 && (n % 100 < 11 || n % 100 > 19)) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'lt',
     },
     {
       data: {
-        categories: {cardinal: ['zero', 'one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            f = s[1] || '',
-            v = f.length,
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1),
-            n100 = t0 && s[0].slice(-2),
-            f100 = f.slice(-2),
-            f10 = f.slice(-1)
-          if (ord) return 'other'
-          return (t0 && n10 == 0) ||
-            (n100 >= 11 && n100 <= 19) ||
-            (v == 2 && f100 >= 11 && f100 <= 19)
-            ? 'zero'
-            : (n10 == 1 && n100 != 11) ||
-                (v == 2 && f10 == 1 && f100 != 11) ||
-                (v != 2 && f10 == 1)
-              ? 'one'
-              : 'other'
+        categories: {cardinal: ['one', 'other', 'zero'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (n % 10 === 1 && n % 100 !== 11) ||
+              (v === 2 && f % 10 === 1 && f % 100 !== 11) ||
+              (v !== 2 && f % 10 === 1)
+            )
+              return 'one'
+            if (
+              n % 10 === 0 ||
+              (n % 100 >= 11 && n % 100 <= 19) ||
+              (v === 2 && f % 100 >= 11 && f % 100 <= 19)
+            )
+              return 'zero'
+          }
+          return 'other'
         },
       },
       locale: 'lv',
@@ -1617,9 +2230,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'mas',
@@ -1627,9 +2248,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 0 || n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n >= 0 && n <= 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'mg',
@@ -1637,9 +2266,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'mgo',
@@ -1648,28 +2285,33 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'two', 'many', 'other'],
+          ordinal: ['many', 'one', 'other', 'two'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || '',
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            i100 = i.slice(-2),
-            f10 = f.slice(-1),
-            f100 = f.slice(-2)
-          if (ord)
-            return i10 == 1 && i100 != 11
-              ? 'one'
-              : i10 == 2 && i100 != 12
-                ? 'two'
-                : (i10 == 7 || i10 == 8) && i100 != 17 && i100 != 18
-                  ? 'many'
-                  : 'other'
-          return (v0 && i10 == 1 && i100 != 11) || (f10 == 1 && f100 != 11)
-            ? 'one'
-            : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+            if (
+              (i % 10 === 7 || i % 10 === 8) &&
+              i % 100 !== 17 &&
+              i % 100 !== 18
+            )
+              return 'many'
+            if (i % 10 === 1 && i % 100 !== 11) return 'one'
+            if (i % 10 === 2 && i % 100 !== 12) return 'two'
+          } else {
+            if (
+              (v === 0 && i % 10 === 1 && i % 100 !== 11) ||
+              (f % 10 === 1 && f % 100 !== 11)
+            )
+              return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'mk',
@@ -1677,9 +2319,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ml',
@@ -1687,9 +2337,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'mn',
@@ -1697,20 +2355,29 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'few', 'other'],
+          cardinal: ['few', 'one', 'other'],
           ordinal: ['one', 'other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1],
-            t0 = Number(s[0]) == n,
-            n100 = t0 && s[0].slice(-2)
-          if (ord) return n == 1 ? 'one' : 'other'
-          return n == 1 && v0
-            ? 'one'
-            : !v0 || n == 0 || (n != 1 && n100 >= 1 && n100 <= 19)
-              ? 'few'
-              : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+            if (
+              v !== 0 ||
+              n === 0 ||
+              (n !== 1 && n % 100 >= 1 && n % 100 <= 19)
+            )
+              return 'few'
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'mo',
@@ -1719,18 +2386,22 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'two', 'few', 'other'],
+          ordinal: ['few', 'one', 'other', 'two'],
         },
-        fn: function (n, ord) {
-          if (ord)
-            return n == 1
-              ? 'one'
-              : n == 2 || n == 3
-                ? 'two'
-                : n == 4
-                  ? 'few'
-                  : 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 4) return 'few'
+            if (n === 1) return 'one'
+            if (n === 2 || n === 3) return 'two'
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'mr',
@@ -1738,8 +2409,16 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['one', 'other']},
-        fn: function (n, ord) {
-          if (ord) return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+          }
           return 'other'
         },
       },
@@ -1748,23 +2427,23 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'two', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n,
-            n100 = t0 && s[0].slice(-2)
-          if (ord) return 'other'
-          return n == 1
-            ? 'one'
-            : n == 2
-              ? 'two'
-              : n == 0 || (n100 >= 3 && n100 <= 10)
-                ? 'few'
-                : n100 >= 11 && n100 <= 19
-                  ? 'many'
-                  : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 0 || (n % 100 >= 3 && n % 100 <= 10)) return 'few'
+            if (n % 100 >= 11 && n % 100 <= 19) return 'many'
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'mt',
@@ -1772,7 +2451,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1781,19 +2460,36 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'nah',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'two', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : n == 2 ? 'two' : 'other'
+        categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'naq',
@@ -1801,9 +2497,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'nb',
@@ -1811,9 +2515,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'nd',
@@ -1821,11 +2533,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n
-          if (ord) return t0 && n >= 1 && n <= 4 ? 'one' : 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n >= 1 && n <= 4) return 'one'
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ne',
@@ -1833,11 +2552,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'nl',
@@ -1845,9 +2571,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'nn',
@@ -1855,9 +2589,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'nnh',
@@ -1865,9 +2607,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'no',
@@ -1875,7 +2625,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1884,9 +2634,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'nr',
@@ -1894,9 +2652,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 0 || n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n >= 0 && n <= 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'nso',
@@ -1904,9 +2670,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ny',
@@ -1914,9 +2688,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'nyn',
@@ -1924,9 +2706,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'om',
@@ -1935,22 +2725,23 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'two', 'few', 'many', 'other'],
+          ordinal: ['few', 'many', 'one', 'other', 'two'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n
-          if (ord)
-            return n == 1 || n == 5 || (t0 && n >= 7 && n <= 9)
-              ? 'one'
-              : n == 2 || n == 3
-                ? 'two'
-                : n == 4
-                  ? 'few'
-                  : n == 6
-                    ? 'many'
-                    : 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 4) return 'few'
+            if (n === 6) return 'many'
+            if (n === 1 || n === 5 || (n >= 7 && n <= 9)) return 'one'
+            if (n === 2 || n === 3) return 'two'
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'or',
@@ -1958,9 +2749,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'os',
@@ -1968,7 +2767,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -1977,9 +2776,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 0 || n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n >= 0 && n <= 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'pa',
@@ -1987,9 +2794,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'pap',
@@ -1997,9 +2812,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n >= 0 && n <= 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+          } else {
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'pcm',
@@ -2007,51 +2831,65 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            i100 = i.slice(-2)
-          if (ord) return 'other'
-          return n == 1 && v0
-            ? 'one'
-            : v0 && i10 >= 2 && i10 <= 4 && (i100 < 12 || i100 > 14)
-              ? 'few'
-              : (v0 && i != 1 && (i10 == 0 || i10 == 1)) ||
-                  (v0 && i10 >= 5 && i10 <= 9) ||
-                  (v0 && i100 >= 12 && i100 <= 14)
-                ? 'many'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (
+              v === 0 &&
+              i % 10 >= 2 &&
+              i % 10 <= 4 &&
+              (i % 100 < 12 || i % 100 > 14)
+            )
+              return 'few'
+            if (
+              (v === 0 && i !== 1 && i % 10 >= 0 && i % 10 <= 1) ||
+              (v === 0 && i % 10 >= 5 && i % 10 <= 9) ||
+              (v === 0 && i % 100 >= 12 && i % 100 <= 14)
+            )
+              return 'many'
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'pl',
     },
     {
       data: {
-        categories: {cardinal: ['zero', 'one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            f = s[1] || '',
-            v = f.length,
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1),
-            n100 = t0 && s[0].slice(-2),
-            f100 = f.slice(-2),
-            f10 = f.slice(-1)
-          if (ord) return 'other'
-          return (t0 && n10 == 0) ||
-            (n100 >= 11 && n100 <= 19) ||
-            (v == 2 && f100 >= 11 && f100 <= 19)
-            ? 'zero'
-            : (n10 == 1 && n100 != 11) ||
-                (v == 2 && f10 == 1 && f100 != 11) ||
-                (v != 2 && f10 == 1)
-              ? 'one'
-              : 'other'
+        categories: {cardinal: ['one', 'other', 'zero'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (n % 10 === 1 && n % 100 !== 11) ||
+              (v === 2 && f % 10 === 1 && f % 100 !== 11) ||
+              (v !== 2 && f % 10 === 1)
+            )
+              return 'one'
+            if (
+              n % 10 === 0 ||
+              (n % 100 >= 11 && n % 100 <= 19) ||
+              (v === 2 && f % 100 >= 11 && f % 100 <= 19)
+            )
+              return 'zero'
+          }
+          return 'other'
         },
       },
       locale: 'prg',
@@ -2059,53 +2897,69 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ps',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'many', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var _n = String(n),
-            se = _n.split(/[ce]/),
-            e = se[1] || 0,
-            c = e,
-            s = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            i1000000 = i.slice(-6)
-          if (ord) return 'other'
-          return n == 1 && v0
-            ? 'one'
-            : (e == 0 && i != 0 && i1000000 == 0 && v0) || e < 0 || e > 5
-              ? 'many'
-              : 'other'
+        categories: {cardinal: ['many', 'one', 'other'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const e = 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (e === 0 && i !== 0 && i % 1000000 === 0 && v === 0) ||
+              e < 0 ||
+              e > 5
+            )
+              return 'many'
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'pt-PT',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'many', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var _n = String(n),
-            se = _n.split(/[ce]/),
-            e = se[1] || 0,
-            c = e,
-            s = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            i1000000 = i.slice(-6)
-          if (ord) return 'other'
-          return i == 0 || i == 1
-            ? 'one'
-            : (e == 0 && i != 0 && i1000000 == 0 && v0) || e < 0 || e > 5
-              ? 'many'
-              : 'other'
+        categories: {cardinal: ['many', 'one', 'other'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const e = 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (e === 0 && i !== 0 && i % 1000000 === 0 && v === 0) ||
+              e < 0 ||
+              e > 5
+            )
+              return 'many'
+            if (i >= 0 && i <= 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'pt',
@@ -2113,9 +2967,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'rm',
@@ -2123,20 +2985,29 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'few', 'other'],
+          cardinal: ['few', 'one', 'other'],
           ordinal: ['one', 'other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1],
-            t0 = Number(s[0]) == n,
-            n100 = t0 && s[0].slice(-2)
-          if (ord) return n == 1 ? 'one' : 'other'
-          return n == 1 && v0
-            ? 'one'
-            : !v0 || n == 0 || (n != 1 && n100 >= 1 && n100 <= 19)
-              ? 'few'
-              : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+            if (
+              v !== 0 ||
+              n === 0 ||
+              (n !== 1 && n % 100 >= 1 && n % 100 <= 19)
+            )
+              return 'few'
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ro',
@@ -2144,9 +3015,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'rof',
@@ -2154,25 +3033,34 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            i100 = i.slice(-2)
-          if (ord) return 'other'
-          return v0 && i10 == 1 && i100 != 11
-            ? 'one'
-            : v0 && i10 >= 2 && i10 <= 4 && (i100 < 12 || i100 > 14)
-              ? 'few'
-              : (v0 && i10 == 0) ||
-                  (v0 && i10 >= 5 && i10 <= 9) ||
-                  (v0 && i100 >= 11 && i100 <= 14)
-                ? 'many'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (
+              v === 0 &&
+              i % 10 >= 2 &&
+              i % 10 <= 4 &&
+              (i % 100 < 12 || i % 100 > 14)
+            )
+              return 'few'
+            if (
+              (v === 0 && i % 10 === 0) ||
+              (v === 0 && i % 10 >= 5 && i % 10 <= 9) ||
+              (v === 0 && i % 100 >= 11 && i % 100 <= 14)
+            )
+              return 'many'
+            if (v === 0 && i % 10 === 1 && i % 100 !== 11) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ru',
@@ -2180,9 +3068,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'rwk',
@@ -2190,7 +3086,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2199,19 +3095,36 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'saq',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'two', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : n == 2 ? 'two' : 'other'
+        categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'sat',
@@ -2219,12 +3132,20 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['many', 'other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord)
-            return n == 11 || n == 8 || n == 80 || n == 800 ? 'many' : 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+            if (n === 11 || n === 8 || n === 80 || n === 800) return 'many'
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'sc',
@@ -2232,31 +3153,36 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'many', 'other'],
+          cardinal: ['many', 'one', 'other'],
           ordinal: ['many', 'other'],
         },
-        fn: function (n, ord) {
-          var _n = String(n),
-            se = _n.split(/[ce]/),
-            e = se[1] || 0,
-            c = e,
-            s = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            t0 = Number(s[0]) == n,
-            i1000000 = i.slice(-6)
-          if (ord)
-            return n == 11 ||
-              n == 8 ||
-              (t0 && n >= 80 && n <= 89) ||
-              (t0 && n >= 800 && n <= 899)
-              ? 'many'
-              : 'other'
-          return n == 1 && v0
-            ? 'one'
-            : (e == 0 && i != 0 && i1000000 == 0 && v0) || e < 0 || e > 5
-              ? 'many'
-              : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const e = 0
+          if (isOrdinal) {
+            if (
+              n === 11 ||
+              n === 8 ||
+              (n >= 80 && n <= 89) ||
+              (n >= 800 && n <= 899)
+            )
+              return 'many'
+          } else {
+            if (
+              (e === 0 && i !== 0 && i % 1000000 === 0 && v === 0) ||
+              e < 0 ||
+              e > 5
+            )
+              return 'many'
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'scn',
@@ -2264,9 +3190,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'sd',
@@ -2274,19 +3208,36 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'sdh',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'two', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : n == 2 ? 'two' : 'other'
+        categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'se',
@@ -2294,9 +3245,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'seh',
@@ -2304,7 +3263,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2313,7 +3272,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2321,39 +3280,52 @@ if (
     },
     {
       data: {
-        categories: {cardinal: ['one', 'few', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || '',
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            i100 = i.slice(-2),
-            f10 = f.slice(-1),
-            f100 = f.slice(-2)
-          if (ord) return 'other'
-          return (v0 && i10 == 1 && i100 != 11) || (f10 == 1 && f100 != 11)
-            ? 'one'
-            : (v0 && i10 >= 2 && i10 <= 4 && (i100 < 12 || i100 > 14)) ||
-                (f10 >= 2 && f10 <= 4 && (f100 < 12 || f100 > 14))
-              ? 'few'
-              : 'other'
+        categories: {cardinal: ['few', 'one', 'other'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (v === 0 &&
+                i % 10 >= 2 &&
+                i % 10 <= 4 &&
+                (i % 100 < 12 || i % 100 > 14)) ||
+              (f % 10 >= 2 && f % 10 <= 4 && (f % 100 < 12 || f % 100 > 14))
+            )
+              return 'few'
+            if (
+              (v === 0 && i % 10 === 1 && i % 100 !== 11) ||
+              (f % 10 === 1 && f % 100 !== 11)
+            )
+              return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'sh',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'few', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n
-          if (ord) return 'other'
-          return n >= 0 && n <= 1
-            ? 'one'
-            : t0 && n >= 2 && n <= 10
-              ? 'few'
-              : 'other'
+        categories: {cardinal: ['few', 'one', 'other'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+          } else {
+            if (n >= 2 && n <= 10) return 'few'
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'shi',
@@ -2361,12 +3333,20 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || ''
-          if (ord) return 'other'
-          return n == 0 || n == 1 || (i == 0 && f == 1) ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (n === 0 || n === 1 || (i === 0 && f === 1)) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'si',
@@ -2374,21 +3354,23 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0
-            ? 'one'
-            : i >= 2 && i <= 4 && v0
-              ? 'few'
-              : !v0
-                ? 'many'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i >= 2 && i <= 4 && v === 0) return 'few'
+            if (v !== 0) return 'many'
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'sk',
@@ -2396,72 +3378,119 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'two', 'few', 'other'],
+          cardinal: ['few', 'one', 'other', 'two'],
           ordinal: ['other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            i100 = i.slice(-2)
-          if (ord) return 'other'
-          return v0 && i100 == 1
-            ? 'one'
-            : v0 && i100 == 2
-              ? 'two'
-              : (v0 && (i100 == 3 || i100 == 4)) || !v0
-                ? 'few'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if ((v === 0 && i % 100 >= 3 && i % 100 <= 4) || v !== 0)
+              return 'few'
+            if (v === 0 && i % 100 === 1) return 'one'
+            if (v === 0 && i % 100 === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'sl',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'two', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : n == 2 ? 'two' : 'other'
+        categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'sma',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'two', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : n == 2 ? 'two' : 'other'
+        categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'smi',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'two', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : n == 2 ? 'two' : 'other'
+        categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'smj',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'two', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : n == 2 ? 'two' : 'other'
+        categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'smn',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'two', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : n == 2 ? 'two' : 'other'
+        categories: {cardinal: ['one', 'other', 'two'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+            if (n === 2) return 'two'
+          }
+          return 'other'
         },
       },
       locale: 'sms',
@@ -2469,9 +3498,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'sn',
@@ -2479,9 +3516,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'so',
@@ -2490,39 +3535,53 @@ if (
       data: {
         categories: {
           cardinal: ['one', 'other'],
-          ordinal: ['one', 'many', 'other'],
+          ordinal: ['many', 'one', 'other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1),
-            n100 = t0 && s[0].slice(-2)
-          if (ord)
-            return n == 1 ? 'one' : n10 == 4 && n100 != 14 ? 'many' : 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n % 10 === 4 && n % 100 !== 14) return 'many'
+            if (n === 1) return 'one'
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'sq',
     },
     {
       data: {
-        categories: {cardinal: ['one', 'few', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || '',
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            i100 = i.slice(-2),
-            f10 = f.slice(-1),
-            f100 = f.slice(-2)
-          if (ord) return 'other'
-          return (v0 && i10 == 1 && i100 != 11) || (f10 == 1 && f100 != 11)
-            ? 'one'
-            : (v0 && i10 >= 2 && i10 <= 4 && (i100 < 12 || i100 > 14)) ||
-                (f10 >= 2 && f10 <= 4 && (f100 < 12 || f100 > 14))
-              ? 'few'
-              : 'other'
+        categories: {cardinal: ['few', 'one', 'other'], ordinal: ['other']},
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+          } else {
+            if (
+              (v === 0 &&
+                i % 10 >= 2 &&
+                i % 10 <= 4 &&
+                (i % 100 < 12 || i % 100 > 14)) ||
+              (f % 10 >= 2 && f % 10 <= 4 && (f % 100 < 12 || f % 100 > 14))
+            )
+              return 'few'
+            if (
+              (v === 0 && i % 10 === 1 && i % 100 !== 11) ||
+              (f % 10 === 1 && f % 100 !== 11)
+            )
+              return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'sr',
@@ -2530,9 +3589,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ss',
@@ -2540,9 +3607,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ssy',
@@ -2550,9 +3625,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'st',
@@ -2560,7 +3643,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2569,17 +3652,25 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1],
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1),
-            n100 = t0 && s[0].slice(-2)
-          if (ord)
-            return (n10 == 1 || n10 == 2) && n100 != 11 && n100 != 12
-              ? 'one'
-              : 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+            if (
+              (n % 10 === 1 || n % 10 === 2) &&
+              n % 100 !== 11 &&
+              n % 100 !== 12
+            )
+              return 'one'
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'sv',
@@ -2587,11 +3678,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'sw',
@@ -2599,9 +3697,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'syr',
@@ -2609,9 +3715,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ta',
@@ -2619,9 +3733,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'te',
@@ -2629,9 +3751,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'teo',
@@ -2639,7 +3769,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2648,9 +3778,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 0 || n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n >= 0 && n <= 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ti',
@@ -2658,9 +3796,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'tig',
@@ -2668,12 +3814,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['few', 'other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1)
-          if (ord) return n10 == 6 || n10 == 9 || n == 10 ? 'few' : 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n % 10 === 6 || n % 10 === 9 || n === 10) return 'few'
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'tk',
@@ -2681,19 +3833,26 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['one', 'other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            f = s[1] || '',
-            v0 = !s[1],
-            i10 = i.slice(-1),
-            f10 = f.slice(-1)
-          if (ord) return n == 1 ? 'one' : 'other'
-          return (v0 && (i == 1 || i == 2 || i == 3)) ||
-            (v0 && i10 != 4 && i10 != 6 && i10 != 9) ||
-            (!v0 && f10 != 4 && f10 != 6 && f10 != 9)
-            ? 'one'
-            : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          const f = v > 0 ? parseInt(decimalPart, 10) : 0
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+            if (
+              (v === 0 && (i === 1 || i === 2 || i === 3)) ||
+              (v === 0 && i % 10 !== 4 && i % 10 !== 6 && i % 10 !== 9) ||
+              (v !== 0 && f % 10 !== 4 && f % 10 !== 6 && f % 10 !== 9)
+            )
+              return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'tl',
@@ -2701,9 +3860,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'tn',
@@ -2711,7 +3878,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2720,7 +3887,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2729,9 +3896,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'tr',
@@ -2739,9 +3914,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ts',
@@ -2749,13 +3932,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            t0 = Number(s[0]) == n
-          if (ord) return 'other'
-          return n == 0 || n == 1 || (t0 && n >= 11 && n <= 99)
-            ? 'one'
-            : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if ((n >= 0 && n <= 1) || (n >= 11 && n <= 99)) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'tzm',
@@ -2763,9 +3950,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ug',
@@ -2773,28 +3968,36 @@ if (
     {
       data: {
         categories: {
-          cardinal: ['one', 'few', 'many', 'other'],
+          cardinal: ['few', 'many', 'one', 'other'],
           ordinal: ['few', 'other'],
         },
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            i = s[0],
-            v0 = !s[1],
-            t0 = Number(s[0]) == n,
-            n10 = t0 && s[0].slice(-1),
-            n100 = t0 && s[0].slice(-2),
-            i10 = i.slice(-1),
-            i100 = i.slice(-2)
-          if (ord) return n10 == 3 && n100 != 13 ? 'few' : 'other'
-          return v0 && i10 == 1 && i100 != 11
-            ? 'one'
-            : v0 && i10 >= 2 && i10 <= 4 && (i100 < 12 || i100 > 14)
-              ? 'few'
-              : (v0 && i10 == 0) ||
-                  (v0 && i10 >= 5 && i10 <= 9) ||
-                  (v0 && i100 >= 11 && i100 <= 14)
-                ? 'many'
-                : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+            if (n % 10 === 3 && n % 100 !== 13) return 'few'
+          } else {
+            if (
+              v === 0 &&
+              i % 10 >= 2 &&
+              i % 10 <= 4 &&
+              (i % 100 < 12 || i % 100 > 14)
+            )
+              return 'few'
+            if (
+              (v === 0 && i % 10 === 0) ||
+              (v === 0 && i % 10 >= 5 && i % 10 <= 9) ||
+              (v === 0 && i % 100 >= 11 && i % 100 <= 14)
+            )
+              return 'many'
+            if (v === 0 && i % 10 === 1 && i % 100 !== 11) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'uk',
@@ -2802,7 +4005,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2811,11 +4014,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'ur',
@@ -2823,9 +4033,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'uz',
@@ -2833,9 +4051,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 've',
@@ -2843,8 +4069,16 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['one', 'other']},
-        fn: function (n, ord) {
-          if (ord) return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+            if (n === 1) return 'one'
+          } else {
+          }
           return 'other'
         },
       },
@@ -2853,9 +4087,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'vo',
@@ -2863,9 +4105,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'vun',
@@ -2873,9 +4123,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 0 || n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n >= 0 && n <= 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'wa',
@@ -2883,9 +4141,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'wae',
@@ -2893,7 +4159,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2902,9 +4168,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'xh',
@@ -2912,9 +4186,17 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n == 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          if (isOrdinal) {
+          } else {
+            if (n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'xog',
@@ -2922,11 +4204,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          var s = String(n).split('.'),
-            v0 = !s[1]
-          if (ord) return 'other'
-          return n == 1 && v0 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          const v = decimalPart.length
+          if (isOrdinal) {
+          } else {
+            if (i === 1 && v === 0) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'yi',
@@ -2934,7 +4223,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2943,7 +4232,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2952,7 +4241,7 @@ if (
     {
       data: {
         categories: {cardinal: ['other'], ordinal: ['other']},
-        fn: function (n, ord) {
+        fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
       },
@@ -2961,9 +4250,18 @@ if (
     {
       data: {
         categories: {cardinal: ['one', 'other'], ordinal: ['other']},
-        fn: function (n, ord) {
-          if (ord) return 'other'
-          return n >= 0 && n <= 1 ? 'one' : 'other'
+        fn: function anonymous(num, isOrdinal) {
+          const numStr = String(num)
+          const parts = numStr.split('.')
+          const integerPart = parts[0]
+          const decimalPart = parts[1] || ''
+          const n = Math.abs(parseFloat(numStr))
+          const i = Math.floor(Math.abs(parseFloat(integerPart)))
+          if (isOrdinal) {
+          } else {
+            if (i === 0 || n === 1) return 'one'
+          }
+          return 'other'
         },
       },
       locale: 'zu',

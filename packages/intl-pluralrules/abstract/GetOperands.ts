@@ -8,8 +8,9 @@ export interface OperandsRecord {
   Number: Decimal
   /**
    * Number of digits of `number`
+   * Can be a string for very large numbers that exceed Number.MAX_SAFE_INTEGER
    */
-  IntegerDigits: number
+  IntegerDigits: number | string
   /**
    * Number of visible fraction digits in [[Number]], with trailing zeroes.
    */
@@ -67,7 +68,12 @@ export function GetOperands(s: string): OperandsRecord {
   }
   return {
     Number: n,
-    IntegerDigits: i.toNumber(),
+    // Keep as string if too large for JavaScript number to preserve precision
+    IntegerDigits:
+      i.lessThanOrEqualTo(Number.MAX_SAFE_INTEGER) &&
+      i.greaterThanOrEqualTo(-Number.MAX_SAFE_INTEGER)
+        ? i.toNumber()
+        : i.toString(),
     NumberOfFractionDigits: v,
     NumberOfFractionDigitsWithoutTrailing: w,
     FractionDigits: f.toNumber(),

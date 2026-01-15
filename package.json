@@ -105,7 +105,6 @@
     "lefthook": "^2.0.13",
     "lodash-es": "^4.17.22",
     "lucide-react": "^0.468.0",
-    "make-plural-compiler": "^5.1.0",
     "minimist": "^1.2.8",
     "oxc-transform": "^0.108.0",
     "oxfmt": "^0.24.0",
@@ -188,7 +187,6 @@
     "patchedDependencies": {
       "@types/mdx": "patches/@types__mdx.patch",
       "@vue/compiler-sfc": "patches/@vue+compiler-sfc.patch",
-      "make-plural-compiler@5.1.0": "patches/make-plural-compiler@5.1.0.patch",
       "unicode-match-property-value-ecmascript@2.2.1": "patches/unicode-match-property-value-ecmascript@2.2.1.patch",
       "unicode-match-property-ecmascript@2.0.0": "patches/unicode-match-property-ecmascript@2.0.0.patch"
     }

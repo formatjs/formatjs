@@ -28,7 +28,6 @@ npm.npm_translate_lock(
     data = [
         "//:patches/@types__mdx.patch",
         "//:patches/@vue+compiler-sfc.patch",
-        "//:patches/make-plural-compiler@5.1.0.patch",
         "//:patches/unicode-match-property-ecmascript@2.0.0.patch",
         "//:patches/unicode-match-property-value-ecmascript@2.2.1.patch",
     ],
