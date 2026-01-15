@@ -25,5 +25,5 @@ const data:LocaleData =  {"data":{"categories":{"cardinal":["many","one","other"
     }
     return "other";
 
-}},"locale":"fr"}
+},"pluralRanges":{"cardinal":{"one_one":"one","one_other":"other","other_other":"other"},"ordinal":{}}},"locale":"fr"}
 export default data

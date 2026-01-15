@@ -7,5 +7,5 @@ const data:LocaleData =  {"data":{"categories":{"cardinal":["other"],"ordinal":[
 
     return "other";
 
-}},"locale":"zh"}
+},"pluralRanges":{"cardinal":{"other_other":"other"},"ordinal":{}}},"locale":"zh"}
 export default data

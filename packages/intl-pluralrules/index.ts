@@ -11,7 +11,17 @@ import type Decimal from 'decimal.js'
 import {type OperandsRecord} from './abstract/GetOperands.js'
 import {InitializePluralRules} from './abstract/InitializePluralRules.js'
 import {ResolvePlural} from './abstract/ResolvePlural.js'
+import {ResolvePluralRange} from './abstract/ResolvePluralRange.js'
 import getInternalSlots from './get_internal_slots.js'
+
+// Augment Intl.PluralRules with selectRange method
+declare global {
+  namespace Intl {
+    interface PluralRules {
+      selectRange(start: number | bigint, end: number | bigint): LDMLPluralRule
+    }
+  }
+}
 
 function validateInstance(instance: any, method: string) {
   if (!(instance instanceof PluralRules)) {
@@ -51,7 +61,54 @@ function PluralRuleSelect(
   )
 }
 
-export class PluralRules implements Intl.PluralRules {
+/**
+ * PluralRuleSelectRange ( locale, type, notation, compactDisplay, start, end )
+ *
+ * Implementation-defined abstract operation that determines the plural category for a range
+ * by consulting CLDR plural range data. Each locale defines how different combinations of
+ * start and end plural categories map to a range plural category.
+ *
+ * Examples from CLDR:
+ * - English: "one" + "other" → "other" (e.g., "1-2 items")
+ * - French: "one" + "one" → "one" (e.g., "0-1 vue")
+ * - Arabic: "few" + "many" → "many" (e.g., complex range rules)
+ *
+ * The spec allows this to be implementation-defined, and we use CLDR supplemental data
+ * from pluralRanges.json which provides explicit mappings for each locale.
+ *
+ * @param locale - BCP 47 locale identifier
+ * @param type - "cardinal" or "ordinal"
+ * @param xp - Start plural category
+ * @param yp - End plural category
+ * @returns The plural category for the range
+ */
+function PluralRuleSelectRange(
+  locale: string,
+  type: 'cardinal' | 'ordinal',
+  xp: LDMLPluralRule,
+  yp: LDMLPluralRule
+): LDMLPluralRule {
+  const localeData = PluralRules.localeData[locale]
+  if (!localeData || !localeData.pluralRanges) {
+    // Fallback: If no range data is available, return the end category.
+    // This is a reasonable default as the end value often determines the plural form.
+    return yp
+  }
+
+  // Construct lookup key: "start_end" (e.g., "one_other", "few_many")
+  const key = `${xp}_${yp}` as const
+
+  // Select the appropriate range data based on type (cardinal vs ordinal)
+  const rangeData =
+    type === 'ordinal'
+      ? localeData.pluralRanges.ordinal
+      : localeData.pluralRanges.cardinal
+
+  // Look up the result, falling back to end category if not found
+  return rangeData?.[key] ?? yp
+}
+
+export class PluralRules {
   constructor(locales?: string | string[], options?: Intl.PluralRulesOptions) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
@@ -102,6 +159,69 @@ export class PluralRules implements Intl.PluralRules {
     // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.select
     const n = ToIntlMathematicalValue(val)
     return ResolvePlural(this, n, {getInternalSlots, PluralRuleSelect})
+  }
+  /**
+   * Intl.PluralRules.prototype.selectRange ( start, end )
+   *
+   * Returns a string indicating which plural rule applies to a range of numbers.
+   * This is useful for formatting ranges like "1-2 items" vs "2-3 items" where
+   * different languages have different plural rules for ranges.
+   *
+   * Specification: https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.selectrange
+   *
+   * @param start - The start value of the range (number or bigint)
+   * @param end - The end value of the range (number or bigint)
+   * @returns The plural category for the range (zero, one, two, few, many, or other)
+   *
+   * @example
+   * const pr = new Intl.PluralRules('en');
+   * pr.selectRange(1, 2); // "other" (English: "1-2 items")
+   * pr.selectRange(1, 1); // "one" (same value: "1 item")
+   *
+   * @example
+   * const prFr = new Intl.PluralRules('fr');
+   * prFr.selectRange(0, 1); // "one" (French: "0-1 vue")
+   * prFr.selectRange(1, 2); // "other" (French: "1-2 vues")
+   *
+   * @example
+   * // BigInt support (spec-compliant, but Chrome has a bug as of early 2025)
+   * pr.selectRange(BigInt(1), BigInt(2)); // "other"
+   *
+   * @throws {TypeError} If start or end is undefined
+   * @throws {RangeError} If start or end is not a finite number (Infinity, NaN)
+   *
+   * @note Chrome's native implementation (as of early 2025) has a bug where it throws
+   * "Cannot convert a BigInt value to a number" when using BigInt arguments. This is
+   * a browser bug - the spec requires BigInt support. This polyfill handles BigInt correctly.
+   */
+  public selectRange(
+    start: number | bigint,
+    end: number | bigint
+  ): LDMLPluralRule {
+    validateInstance(this, 'selectRange')
+    // Spec: https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.selectrange
+
+    // 1. Let pr be the this value.
+    // 2. Perform ? RequireInternalSlot(pr, [[InitializedPluralRules]]).
+    // (Validation is done by validateInstance above)
+
+    // 3. If start is undefined or end is undefined, throw a TypeError exception.
+    if (start === undefined || end === undefined) {
+      throw new TypeError('selectRange requires both start and end arguments')
+    }
+
+    // 4. Let x be ? ToIntlMathematicalValue(start).
+    const x = ToIntlMathematicalValue(start)
+
+    // 5. Let y be ? ToIntlMathematicalValue(end).
+    const y = ToIntlMathematicalValue(end)
+
+    // 6. Return ? ResolvePluralRange(pr, x, y).
+    return ResolvePluralRange(this, x, y, {
+      getInternalSlots,
+      PluralRuleSelect,
+      PluralRuleSelectRange,
+    })
   }
   toString() {
     return '[object Intl.PluralRules]'

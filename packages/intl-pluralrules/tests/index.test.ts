@@ -152,6 +152,73 @@ describe('PluralRules', function () {
     })
   })
 
+  describe('selectRange', function () {
+    it('should return plural category for range', function () {
+      const pr = new PluralRules('en')
+      // English: 1-2 → "other" (ranges default to end category or lookup table)
+      expect(pr.selectRange(1, 2)).toBe('other')
+      expect(pr.selectRange(0, 1)).toBe('other')
+      expect(pr.selectRange(2, 5)).toBe('other')
+    })
+
+    it('should return same category when start equals end', function () {
+      const pr = new PluralRules('en')
+      // When formatted strings are equal, return that category
+      expect(pr.selectRange(1, 1)).toBe('one')
+      expect(pr.selectRange(2, 2)).toBe('other')
+      expect(pr.selectRange(0, 0)).toBe('other')
+    })
+
+    it('should handle French plural ranges', function () {
+      const pr = new PluralRules('fr')
+      // French: "one" to "one" → "one"
+      expect(pr.selectRange(0, 0)).toBe('one')
+      expect(pr.selectRange(1, 1)).toBe('one')
+      // French: "one" to "other" → "other"
+      expect(pr.selectRange(0, 2)).toBe('other')
+      expect(pr.selectRange(1, 2)).toBe('other')
+      // French: "other" to "other" → "other"
+      expect(pr.selectRange(2, 3)).toBe('other')
+    })
+
+    it('should throw TypeError for undefined arguments', function () {
+      const pr = new PluralRules('en')
+      expect(() => pr.selectRange(undefined as any, 5)).toThrow(TypeError)
+      expect(() => pr.selectRange(1, undefined as any)).toThrow(TypeError)
+      expect(() => pr.selectRange(undefined as any, undefined as any)).toThrow(
+        TypeError
+      )
+    })
+
+    it('should throw RangeError for non-finite values', function () {
+      const pr = new PluralRules('en')
+      expect(() => pr.selectRange(Infinity, 5)).toThrow(RangeError)
+      expect(() => pr.selectRange(1, Infinity)).toThrow(RangeError)
+      expect(() => pr.selectRange(NaN, 5)).toThrow(RangeError)
+      expect(() => pr.selectRange(1, NaN)).toThrow(RangeError)
+    })
+
+    it('should handle bigint values', function () {
+      // Note: Chrome's native implementation (as of early 2025) has a bug where it doesn't
+      // properly handle BigInt for selectRange, throwing "Cannot convert a BigInt value to a number".
+      // This is a Chrome bug - the ECMA-402 spec requires BigInt support via ToIntlMathematicalValue.
+      // Our polyfill correctly handles BigInt as specified.
+      const pr = new PluralRules('en')
+      expect(pr.selectRange(BigInt(1), BigInt(2))).toBe('other')
+      expect(pr.selectRange(BigInt(0), BigInt(1))).toBe('other')
+      expect(pr.selectRange(BigInt(1), BigInt(1))).toBe('one')
+    })
+
+    it('should handle ordinal ranges', function () {
+      const pr = new PluralRules('en', {type: 'ordinal'})
+      // English ordinals: 1st, 2nd, 3rd, etc.
+      expect(pr.selectRange(1, 2)).toBeDefined()
+      expect(pr.selectRange(1, 1)).toBe('one')
+      expect(pr.selectRange(2, 2)).toBe('two')
+      expect(pr.selectRange(3, 3)).toBe('few')
+    })
+  })
+
   describe.skip('compact notation with c/e operand (future feature)', function () {
     // Tests for compact decimal notation plural rules
     // Based on: https://docs.google.com/document/d/1Wx9Drhpl9p2ZqVZMGQ7KUF4pUfPtuJupv8oQ_Gf6sEE
