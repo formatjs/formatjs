@@ -45,28 +45,28 @@ function getDocTypeBadge(docType: string): {bg: string; text: string} {
   switch (docType) {
     case 'guide':
       return {
-        bg: 'bg-blue-100 dark:bg-blue-900/30',
-        text: 'text-blue-700 dark:text-blue-300',
+        bg: 'bg-blue-900/30',
+        text: 'text-blue-300',
       }
     case 'api':
       return {
-        bg: 'bg-purple-100 dark:bg-purple-900/30',
-        text: 'text-purple-700 dark:text-purple-300',
+        bg: 'bg-purple-900/30',
+        text: 'text-purple-300',
       }
     case 'reference':
       return {
-        bg: 'bg-green-100 dark:bg-green-900/30',
-        text: 'text-green-700 dark:text-green-300',
+        bg: 'bg-green-900/30',
+        text: 'text-green-300',
       }
     case 'example':
       return {
-        bg: 'bg-orange-100 dark:bg-orange-900/30',
-        text: 'text-orange-700 dark:text-orange-300',
+        bg: 'bg-orange-900/30',
+        text: 'text-orange-300',
       }
     default:
       return {
-        bg: 'bg-gray-100 dark:bg-gray-900/30',
-        text: 'text-gray-700 dark:text-gray-300',
+        bg: 'bg-gray-900/30',
+        text: 'text-gray-300',
       }
   }
 }
