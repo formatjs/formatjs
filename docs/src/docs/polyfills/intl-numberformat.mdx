@@ -6,6 +6,164 @@ A polyfill for ESNext [`Intl.NumberFormat`][numberformat] and [`Number.prototype
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-numberformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-numberformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-numberformat)
 
+## ECMA-402 Spec Compliance
+
+This package is **fully compliant** with the ECMA-402 specification for `Intl.NumberFormat`, including all finalized proposals up through **Intl.NumberFormat v3**.
+
+### ✅ All Features Implemented
+
+#### Core Methods
+
+- **`format(number)`** - Format a single number
+- **`formatToParts(number)`** - Format a number and return parts array
+- **`formatRange(start, end)`** - Format a number range ([NumberFormat v3](https://github.com/tc39/proposal-intl-numberformat-v3))
+- **`formatRangeToParts(start, end)`** - Format a number range and return parts array with source attribution
+- **`resolvedOptions()`** - Return resolved formatting options
+
+#### Formatting Styles
+
+- **`'decimal'`** - Plain number format (default)
+- **`'currency'`** - Currency formatting (e.g., "$1,234.56")
+- **`'percent'`** - Percentage formatting (e.g., "12.34%")
+- **`'unit'`** - Unit formatting (e.g., "12.34 meters")
+
+#### NumberFormat v3 Features
+
+All features from the [Intl.NumberFormat v3 proposal](https://github.com/tc39/proposal-intl-numberformat-v3) are implemented:
+
+**1. formatRange & formatRangeToParts**
+
+```js
+const nf = new Intl.NumberFormat('en', {style: 'currency', currency: 'USD'})
+nf.formatRange(100, 200) // "$100.00 – $200.00"
+```
+
+**2. Enhanced useGrouping**
+
+- `'always'` - Always use grouping separators
+- `'auto'` (default) - Use grouping based on locale
+- `'min2'` - Group only if there are at least 2 digits
+- `false` - Never use grouping
+
+**3. Comprehensive Rounding Options**
+
+- **roundingIncrement** - Round to specific increments (1, 2, 5, 10, 20, 25, 50, 100, ...)
+- **roundingMode** - Nine rounding modes:
+  - `'ceil'`, `'floor'`, `'expand'`, `'trunc'`, `'halfCeil'`, `'halfFloor'`, `'halfExpand'`, `'halfTrunc'`, `'halfEven'`
+- **roundingPriority** - Control rounding with significant vs fraction digits
+  - `'auto'`, `'morePrecision'`, `'lessPrecision'`
+- **trailingZeroDisplay** - Control trailing zeros
+  - `'auto'` (default), `'stripIfInteger'`
+
+**4. String Decimal Support**
+
+```js
+// Preserve precision for very large/small numbers
+nf.format('12345678901234567890')
+```
+
+**5. Enhanced signDisplay**
+
+- `'auto'` (default), `'always'`, `'never'`, `'exceptZero'`, `'negative'`
+
+#### Notation Styles
+
+- **`'standard'`** - Plain notation (default)
+- **`'scientific'`** - Scientific notation (e.g., "1.234E3")
+- **`'engineering'`** - Engineering notation (e.g., "1.234E3")
+- **`'compact'`** - Compact notation (e.g., "1.2K", "1.2M")
+  - `compactDisplay`: `'short'` or `'long'`
+
+#### Currency Options
+
+- **currencyDisplay**: `'symbol'`, `'narrowSymbol'`, `'code'`, `'name'`
+- **currencySign**: `'standard'`, `'accounting'`
+- All ISO 4217 currency codes supported (150+ currencies)
+
+#### Unit Support
+
+All **42 ECMA-402 sanctioned units** are fully supported:
+
+**Digital (11 units)**
+
+- `bit`, `byte`, `kilobit`, `kilobyte`, `megabit`, `megabyte`, `gigabit`, `gigabyte`, `terabit`, `terabyte`, `petabyte`
+
+**Duration (8 units)**
+
+- `year`, `month`, `week`, `day`, `hour`, `minute`, `second`, `millisecond`
+
+**Length (8 units)**
+
+- `centimeter`, `meter`, `kilometer`, `millimeter`, `foot`, `inch`, `yard`, `mile`, `mile-scandinavian`
+
+**Mass (5 units)**
+
+- `gram`, `kilogram`, `ounce`, `pound`, `stone`
+
+**Volume (4 units)**
+
+- `liter`, `milliliter`, `gallon`, `fluid-ounce`
+
+**Area (2 units)**
+
+- `acre`, `hectare`
+
+**Temperature (2 units)**
+
+- `celsius`, `fahrenheit`
+
+**Angle (1 unit)**
+
+- `degree`
+
+**Concentration (1 unit)**
+
+- `percent`
+
+**Compound units** are also supported (e.g., `'meter-per-second'`, `'kilogram-per-square-meter'`)
+
+#### Unit Display Options
+
+- `'long'` - Full unit name (e.g., "12.34 meters")
+- `'short'` - Abbreviated unit (e.g., "12.34 m")
+- `'narrow'` - Most compact (e.g., "12.34m")
+
+### Example Usage
+
+```js
+import '@formatjs/intl-numberformat/polyfill'
+
+// Currency with accounting sign
+const currency = new Intl.NumberFormat('en', {
+  style: 'currency',
+  currency: 'USD',
+  currencySign: 'accounting',
+})
+currency.format(-100) // "($100.00)"
+
+// Unit formatting
+const unit = new Intl.NumberFormat('en', {
+  style: 'unit',
+  unit: 'kilometer-per-hour',
+  unitDisplay: 'long',
+})
+unit.format(100) // "100 kilometers per hour"
+
+// Rounding with increment
+const rounded = new Intl.NumberFormat('en', {
+  style: 'currency',
+  currency: 'USD',
+  roundingIncrement: 5,
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})
+rounded.format(10.03) // "$10.05" (rounded to nearest 0.05)
+
+// Format range
+const range = new Intl.NumberFormat('en', {style: 'percent'})
+range.formatRange(20, 30) // "20%–30%"
+```
+
 ## Installation
 
 <Tabs

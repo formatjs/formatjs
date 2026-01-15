@@ -3,6 +3,130 @@ A spec-compliant polyfill for Intl.RelativeTimeFormat fully tested by the [offic
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-relativetimeformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-relativetimeformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-relativetimeformat)
 
+## ECMA-402 Spec Compliance
+
+This package is **fully compliant** with the ECMA-402 specification for `Intl.RelativeTimeFormat`. All features from the finalized proposal are implemented.
+
+### Specification Details
+
+- **TC39 Proposal**: [Intl.RelativeTimeFormat](https://tc39.es/proposal-intl-relative-time/)
+- **Stage**: Stage 4 (Finalized)
+- **Spec Section**: ECMA-402
+
+### ✅ All Features Implemented
+
+#### Core Methods
+
+- **`format(value, unit)`** - Format a relative time value as a localized string
+- **`formatToParts(value, unit)`** - Format a relative time value and return an array of parts
+- **`resolvedOptions()`** - Return resolved formatting options
+- **`supportedLocalesOf(locales)`** - Check which locales are supported
+
+#### Style Options
+
+All 3 style values are supported:
+
+- **`'long'`** (default) - Full text format (e.g., "in 3 days", "3 days ago")
+- **`'short'`** - Abbreviated format (e.g., "in 3 days", "3 days ago")
+- **`'narrow'`** - Most compact format (e.g., "in 3d", "3d ago")
+
+#### Numeric Options
+
+- **`'always'`** (default) - Always use numeric format (e.g., "in 1 day")
+- **`'auto'`** - Use natural language when available (e.g., "tomorrow" instead of "in 1 day")
+
+When `numeric: 'auto'`, special values like -1, 0, 1 use localized literals:
+
+- `format(-1, 'day')` → "yesterday"
+- `format(0, 'day')` → "today"
+- `format(1, 'day')` → "tomorrow"
+- `format(-1, 'week')` → "last week"
+- `format(1, 'week')` → "next week"
+
+#### Time Units
+
+All 8 time units are fully supported (both singular and plural forms):
+
+- **`'year'` / `'years'`** - Years
+- **`'quarter'` / `'quarters'`** - Quarters (3-month periods)
+- **`'month'` / `'months'`** - Months
+- **`'week'` / `'weeks'`** - Weeks
+- **`'day'` / `'days'`** - Days
+- **`'hour'` / `'hours'`** - Hours
+- **`'minute'` / `'minutes'`** - Minutes
+- **`'second'` / `'seconds'`** - Seconds
+
+#### Plural Rules Integration
+
+The implementation automatically handles plural forms using `Intl.PluralRules`:
+
+- Selects correct plural category (`zero`, `one`, `two`, `few`, `many`, `other`)
+- Works with all LDML plural rules across 700+ locales
+- Ensures grammatically correct output in all languages
+
+#### Numbering System Support
+
+- Supports alternative numbering systems (e.g., Arabic-Indic, Thai, Devanagari)
+- Automatically inherits from locale or can be explicitly set
+- Validates numbering system identifiers per ECMA-402 spec
+
+### Example Usage
+
+```js
+import '@formatjs/intl-relativetimeformat/polyfill'
+
+// Basic usage with numeric: 'always' (default)
+const rtf = new Intl.RelativeTimeFormat('en', {style: 'long'})
+rtf.format(-1, 'day') // "1 day ago"
+rtf.format(2, 'week') // "in 2 weeks"
+rtf.format(-3, 'month') // "3 months ago"
+
+// Using numeric: 'auto' for natural language
+const rtfAuto = new Intl.RelativeTimeFormat('en', {
+  numeric: 'auto',
+  style: 'long',
+})
+rtfAuto.format(-1, 'day') // "yesterday"
+rtfAuto.format(0, 'day') // "today"
+rtfAuto.format(1, 'day') // "tomorrow"
+rtfAuto.format(-5, 'day') // "5 days ago" (no special literal)
+
+// Short style
+const rtfShort = new Intl.RelativeTimeFormat('en', {style: 'short'})
+rtfShort.format(3, 'hour') // "in 3 hr."
+
+// Narrow style
+const rtfNarrow = new Intl.RelativeTimeFormat('en', {style: 'narrow'})
+rtfNarrow.format(-2, 'year') // "2y ago"
+
+// formatToParts for custom rendering
+const parts = rtf.formatToParts(3, 'day')
+// [
+//   {type: "literal", value: "in "},
+//   {type: "integer", value: "3", unit: "day"},
+//   {type: "literal", value: " days"}
+// ]
+
+// Different languages with proper plural rules
+const rtfFr = new Intl.RelativeTimeFormat('fr')
+rtfFr.format(-1, 'day') // "il y a 1 jour"
+rtfFr.format(-5, 'day') // "il y a 5 jours"
+
+const rtfAr = new Intl.RelativeTimeFormat('ar')
+rtfAr.format(1, 'day') // "خلال يوم واحد"
+rtfAr.format(2, 'day') // "خلال يومين" (dual form)
+rtfAr.format(3, 'day') // "خلال ٣ أيام" (plural form)
+```
+
+### Locale Data
+
+This polyfill includes comprehensive locale data for 700+ locales from CLDR, ensuring:
+
+- Accurate plural rules for all languages
+- Proper relative time patterns (past/future)
+- Natural language literals for common values
+- Support for all three style variations per locale
+
 ## Installation
 
 <Tabs

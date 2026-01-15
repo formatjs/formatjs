@@ -5,7 +5,7 @@ While you can declare your messages using only `id`s, we highly recommend declar
 3. Text styling is also dependent on the message itself. Things like truncation, capitalization... certainly affect the messages themselves.
 4. Better integrations with toolchains. Most toolchains cannot verify cross-file references to validate syntax/usage.
 
-At a high level, formatjs messages use [ICU Syntax](../core-concepts/icu-syntax.mdx) with a couple of enhancements common in other message format such as [Fluent](https://github.com/projectfluent/fluent.js/). This section focuses on the actual supported ways of calling `formatjs` APIs so messages can be extracted.
+At a high level, formatjs messages use [ICU Syntax](/docs/core-concepts/icu-syntax) with a couple of enhancements common in other message format such as [Fluent](https://github.com/projectfluent/fluent.js/). This section focuses on the actual supported ways of calling `formatjs` APIs so messages can be extracted.
 
 ## Using imperative API `intl.formatMessage`
 
@@ -66,12 +66,12 @@ intl.formatMessage(message, {name: 'John'}) // My name is John
   We rely on AST to extract messages from the codebase, so make sure you call
   `intl.formatMessage()`, use our builtin React components, use our Vue methods
   or configure `--additionalFunctionNames`/`--additionalComponentNames` in our
-  [CLI](../tooling/cli) properly.
+  [CLI](/docs/tooling/cli) properly.
 </Admonition>
 
 <Admonition type="caution">
   You can declare a message without immediately formatting it with
   `defineMessage` and our extractor would still be able to extract it. However,
-  our [enforce-placeholders](../tooling/linter#enforce-placeholders) linter rule
-  won't be able to analyze it.
+  our [enforce-placeholders](/docs/tooling/linter#enforce-placeholders) linter
+  rule won't be able to analyze it.
 </Admonition>

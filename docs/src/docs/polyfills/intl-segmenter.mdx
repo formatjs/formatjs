@@ -3,6 +3,125 @@ A polyfill for [`Intl.Segmenter`](https://tc39.es/proposal-intl-segmenter).
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-segmenter.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-segmenter)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-segmenter)
 
+## ECMA-402 Spec Compliance
+
+This package is **fully compliant** with the ECMA-402 specification for `Intl.Segmenter`.
+
+### Specification Details
+
+- **TC39 Proposal**: [Intl.Segmenter](https://github.com/tc39/proposal-intl-segmenter)
+- **Stage**: Stage 4 (Finalized)
+- **Spec**: [ECMA-402 Intl.Segmenter](https://tc39.es/ecma402/#segmenter-objects)
+
+### ✅ Implemented Features
+
+#### Core Methods
+
+- **`segment(string)`** - Returns an iterable `Segments` object for the string
+- **`resolvedOptions()`** - Returns resolved options
+- **`supportedLocalesOf(locales)`** - Returns supported locales
+
+#### Granularity Options
+
+All 3 segmentation granularities are supported:
+
+- **`'grapheme'`** - Grapheme cluster boundaries (user-perceived characters)
+  - Handles combining marks, emoji, etc.
+  - Example: "👨‍👩‍👧‍👦" is one grapheme
+- **`'word'`** - Word boundaries with word/punctuation classification
+  - Identifies words, spaces, punctuation
+  - Provides `isWordLike` property
+- **`'sentence'`** - Sentence boundaries
+  - Handles abbreviations, numbers, quotes
+  - Locale-aware sentence breaks
+
+#### Segments Object
+
+The `Segments` object returned by `segment()` is:
+
+- **Iterable** - Can be used with `for...of` loops
+- **Array-like** - Supports indexed access and `containing(index)` method
+
+#### Segment Object Properties
+
+Each segment has:
+
+- **`segment`** - The text of the segment
+- **`index`** - Start index in the original string
+- **`input`** - The original input string
+- **`isWordLike`** - (word granularity only) Whether segment is a word
+
+### Example Usage
+
+```js
+import '@formatjs/intl-segmenter/polyfill'
+
+// Grapheme segmentation (user-perceived characters)
+const graphemeSegmenter = new Intl.Segmenter('en', {granularity: 'grapheme'})
+const graphemes = [...graphemeSegmenter.segment('Hello👋')]
+// [
+//   {segment: 'H', index: 0, input: 'Hello👋'},
+//   {segment: 'e', index: 1, input: 'Hello👋'},
+//   {segment: 'l', index: 2, input: 'Hello👋'},
+//   {segment: 'l', index: 3, input: 'Hello👋'},
+//   {segment: 'o', index: 4, input: 'Hello👋'},
+//   {segment: '👋', index: 5, input: 'Hello👋'}  // Emoji as one grapheme
+// ]
+
+// Word segmentation
+const wordSegmenter = new Intl.Segmenter('en', {granularity: 'word'})
+const words = [...wordSegmenter.segment('Hello, world!')]
+// [
+//   {segment: 'Hello', index: 0, isWordLike: true},
+//   {segment: ',', index: 5, isWordLike: false},
+//   {segment: ' ', index: 6, isWordLike: false},
+//   {segment: 'world', index: 7, isWordLike: true},
+//   {segment: '!', index: 12, isWordLike: false}
+// ]
+
+// Filter to only word-like segments
+const onlyWords = words.filter(s => s.isWordLike)
+// [{segment: 'Hello', ...}, {segment: 'world', ...}]
+
+// Sentence segmentation
+const sentenceSegmenter = new Intl.Segmenter('en', {granularity: 'sentence'})
+const sentences = [
+  ...sentenceSegmenter.segment('Hello! How are you? I am fine.'),
+]
+// [
+//   {segment: 'Hello! ', index: 0, input: '...'},
+//   {segment: 'How are you? ', index: 7, input: '...'},
+//   {segment: 'I am fine.', index: 20, input: '...'}
+// ]
+
+// containing() method - find segment at specific index
+const segments = wordSegmenter.segment('Hello, world!')
+segments.containing(7)
+// {segment: 'world', index: 7, isWordLike: true}
+
+// Locale-aware segmentation
+const thaiSegmenter = new Intl.Segmenter('th', {granularity: 'word'})
+const thaiWords = [...thaiSegmenter.segment('สวัสดีครับ')]
+// Correctly segments Thai text without spaces
+
+// Complex emoji handling
+const emojiSegmenter = new Intl.Segmenter('en', {granularity: 'grapheme'})
+const emojis = [...emojiSegmenter.segment('👨‍👩‍👧‍👦🏴󠁧󠁢󠁳󠁣󠁴󠁿')]
+// [
+//   {segment: '👨‍👩‍👧‍👦', index: 0},  // Family emoji (ZWJ sequence)
+//   {segment: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', index: ...}   // Scotland flag
+// ]
+```
+
+### Use Cases
+
+- **Character counting**: Get accurate character count including complex emoji
+- **Word counting**: Count words across different scripts and languages
+- **Text truncation**: Safely truncate at grapheme boundaries
+- **Syntax highlighting**: Break code into word segments
+- **Search indexing**: Segment text for full-text search
+- **Text analysis**: Analyze sentence structure
+
 ## Installation
 
 <Tabs

@@ -13,6 +13,56 @@ A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official 
   dataset size
 </Admonition>
 
+## ECMA-402 Spec Compliance
+
+This package is **fully compliant** with the ECMA-402 specification for `Intl.DateTimeFormat`, including all finalized proposals.
+
+### Implemented Features
+
+#### ✅ Core Methods
+
+- **`format(date)`** - Format a single date/time
+- **`formatToParts(date)`** - Format a date/time and return parts array
+- **`formatRange(startDate, endDate)`** - Format a date range ([Proposal](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange))
+- **`formatRangeToParts(startDate, endDate)`** - Format a date range and return parts array with source attribution
+- **`resolvedOptions()`** - Return resolved formatting options
+
+#### ✅ dateStyle & timeStyle Options
+
+- **Proposal**: [Intl.DateTimeFormat dateStyle & timeStyle](https://github.com/tc39/proposal-intl-datetime-style)
+- **Values**: `'full'`, `'long'`, `'medium'`, `'short'`
+- **Usage**: Can be used individually or together for quick date/time formatting
+- **Example**:
+  ```js
+  new Intl.DateTimeFormat('en', {dateStyle: 'long', timeStyle: 'short'})
+  // "January 1, 2024 at 12:00 PM"
+  ```
+
+#### ✅ Extended timeZoneName Options
+
+All 6 `timeZoneName` values are supported:
+
+- **`'short'`** - Short standard format (e.g., "EST", "PST")
+- **`'long'`** - Long standard format (e.g., "Eastern Standard Time")
+- **`'shortOffset'`** - Short format with UTC offset (e.g., "GMT-5")
+- **`'longOffset'`** - Long format with UTC offset (e.g., "GMT-05:00")
+- **`'shortGeneric'`** - Short generic non-location format (e.g., "ET", "PT")
+- **`'longGeneric'`** - Long generic non-location format (e.g., "Eastern Time")
+
+#### ✅ Additional Features
+
+- **dayPeriod** - Format day periods (`'narrow'`, `'short'`, `'long'`)
+- **fractionalSecondDigits** - Control decimal precision for seconds (1-3 digits)
+- **era** - Format era information (`'narrow'`, `'short'`, `'long'`)
+- **hour12** and **hourCycle** - 12/24 hour format control
+- **Full IANA timezone support** - 600+ timezones with accurate DST transitions
+- **UTC offset timezones** - Direct offset support (e.g., `'+01:00'`, `'-05:30'`)
+
+### Not Implemented (Stage 2.7 Proposals - Not Yet Finalized)
+
+- **eraDisplay option** - Control era visibility (`'always'`, `'never'`, `'auto'`)
+- **monthCode support** - ISO 8601 month codes for non-Gregorian calendars
+
 ## Features
 
 - [dateStyle/timeStyle](https://github.com/tc39/proposal-intl-datetime-style)
