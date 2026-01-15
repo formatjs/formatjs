@@ -46,7 +46,7 @@ export const currencyDigitsData: Record<string, number> = {
   OMR: 3,
   PKR: 0,
   PYG: 0,
-  RSD: 0,
+  RSD: 2,
   RWF: 0,
   SEK: 2,
   SLE: 2,
