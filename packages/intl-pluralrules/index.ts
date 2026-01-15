@@ -5,7 +5,7 @@ import {
   type PluralRulesData,
   type PluralRulesLocaleData,
   SupportedLocales,
-  ToNumber,
+  ToIntlMathematicalValue,
 } from '@formatjs/ecma402-abstract'
 import type Decimal from 'decimal.js'
 import {type OperandsRecord} from './abstract/GetOperands.js'
@@ -42,10 +42,11 @@ function PluralRuleSelect(
   _n: Decimal,
   {IntegerDigits, NumberOfFractionDigits, FractionDigits}: OperandsRecord
 ): LDMLPluralRule {
+  // Always pass a string to the compiled function to preserve precision for huge numbers
   return PluralRules.localeData[locale].fn(
     NumberOfFractionDigits
       ? `${IntegerDigits}.${FractionDigits}`
-      : IntegerDigits,
+      : String(IntegerDigits),
     type === 'ordinal'
   )
 }
@@ -95,9 +96,11 @@ export class PluralRules implements Intl.PluralRules {
     ]
     return opts
   }
-  public select(val: number): LDMLPluralRule {
+  public select(val: number | bigint): LDMLPluralRule {
     validateInstance(this, 'select')
-    const n = ToNumber(val)
+    // Use ToIntlMathematicalValue which handles bigint per ECMA-402
+    // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.select
+    const n = ToIntlMathematicalValue(val)
     return ResolvePlural(this, n, {getInternalSlots, PluralRuleSelect})
   }
   toString() {

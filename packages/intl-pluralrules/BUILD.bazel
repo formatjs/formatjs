@@ -291,14 +291,15 @@ CLDR_RAW_FILES = ["cldr-raw/%s.js" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
+        "scripts/plural-rules-compiler.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/serialize-javascript",
         "//:node_modules/cldr-core",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
-        "//:node_modules/make-plural-compiler",
         "//:node_modules/minimist",
         "//:node_modules/serialize-javascript",
+        "//:node_modules/typescript",
     ],
     outs = CLDR_RAW_FILES,
     args = [

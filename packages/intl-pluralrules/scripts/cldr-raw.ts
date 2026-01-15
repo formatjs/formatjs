@@ -3,20 +3,21 @@ import {outputFileSync} from 'fs-extra/esm'
 import serialize from 'serialize-javascript'
 import {type PluralRulesLocaleData} from '@formatjs/ecma402-abstract'
 import plurals from 'cldr-core/supplemental/plurals.json'
+import ordinals from 'cldr-core/supplemental/ordinals.json'
 import minimist from 'minimist'
+import {PluralRulesCompiler} from './plural-rules-compiler.js'
 
-const Compiler = require('make-plural-compiler')
-Compiler.load(
-  require('cldr-core/supplemental/plurals.json'),
-  require('cldr-core/supplemental/ordinals.json')
-)
+const cardinalsData = plurals.supplemental['plurals-type-cardinal']
+const ordinalsData = ordinals.supplemental['plurals-type-ordinal']
 
-const languages = Object.keys(plurals.supplemental['plurals-type-cardinal'])
+const languages = Object.keys(cardinalsData)
 
 function generateLocaleData(locale: string): PluralRulesLocaleData | undefined {
-  let compiler, fn
-  compiler = new Compiler(locale, {cardinals: true, ordinals: true})
-  fn = compiler.compile()
+  const cardinalRules = cardinalsData[locale]
+  const ordinalRules = ordinalsData[locale]
+
+  const compiler = new PluralRulesCompiler(locale, cardinalRules, ordinalRules)
+  const fn = compiler.compile()
 
   return {
     data: {

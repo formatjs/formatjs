@@ -28,9 +28,6 @@ patchedDependencies:
   '@vue/compiler-sfc':
     hash: cde05f2d5487992f2dfddabb7074295296cce821e45a93415fcd888e38d7d70d
     path: patches/@vue+compiler-sfc.patch
-  make-plural-compiler@5.1.0:
-    hash: e9b632db742391aa17c732f3dccdf4a434eddc06a3d7a2fe46df799248e83936
-    path: patches/make-plural-compiler@5.1.0.patch
   unicode-match-property-ecmascript@2.0.0:
     hash: eeab7906cd33963f15843106ed5415de9a8fef9ac46cc589ec84c257e9f0385e
     path: patches/unicode-match-property-ecmascript@2.0.0.patch
@@ -309,9 +306,6 @@ importers:
       lucide-react:
         specifier: ^0.468.0
         version: 0.468.0(react@19.2.3)
-      make-plural-compiler:
-        specifier: ^5.1.0
-        version: 5.1.0(patch_hash=e9b632db742391aa17c732f3dccdf4a434eddc06a3d7a2fe46df799248e83936)
       minimist:
         specifier: ^1.2.8
         version: 1.2.8
@@ -6986,9 +6980,6 @@ packages:
   make-fetch-happen@15.0.3:
     resolution: {integrity: sha512-iyyEpDty1mwW3dGlYXAJqC/azFn5PPvgKVwXayOGBSmKLxhKZ9fg4qIan2ePpp1vJIwfFiO34LAPZgq9SZW9Aw==}
     engines: {node: ^20.17.0 || >=22.9.0}
-
-  make-plural-compiler@5.1.0:
-    resolution: {integrity: sha512-xOaWUIcU9K9ptuz1rjFKeLTvktddv7H/kCr4LpQYaO2TLkDjgSUj8soh4PX3CFVLziajY4wxepiZqVPyvXBrnA==}
 
   makeerror@1.0.12:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
@@ -16427,8 +16418,6 @@ snapshots:
       ssri: 13.0.0
     transitivePeerDependencies:
       - supports-color
-
-  make-plural-compiler@5.1.0(patch_hash=e9b632db742391aa17c732f3dccdf4a434eddc06a3d7a2fe46df799248e83936): {}
 
   makeerror@1.0.12:
     dependencies:
