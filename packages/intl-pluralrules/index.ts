@@ -14,11 +14,26 @@ import {ResolvePlural} from './abstract/ResolvePlural.js'
 import {ResolvePluralRange} from './abstract/ResolvePluralRange.js'
 import getInternalSlots from './get_internal_slots.js'
 
-// Augment Intl.PluralRules with selectRange method
+/**
+ * Type augmentation for Intl.PluralRules
+ *
+ * ECMA-402 Spec: selectRange method (Intl.PluralRules.prototype.selectRange)
+ * https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.selectrange
+ *
+ * Extension: notation and compactDisplay options (not in ECMA-402 spec)
+ * Mirrors Intl.NumberFormat notation option for proper plural selection with compact numbers
+ */
 declare global {
   namespace Intl {
     interface PluralRules {
+      // ECMA-402 Spec: selectRange method
       selectRange(start: number | bigint, end: number | bigint): LDMLPluralRule
+    }
+    interface PluralRulesOptions {
+      // Extension: notation option (mirrors Intl.NumberFormat)
+      notation?: 'standard' | 'compact'
+      // Extension: compactDisplay option (mirrors Intl.NumberFormat)
+      compactDisplay?: 'short' | 'long'
     }
   }
 }
@@ -37,6 +52,9 @@ export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   initializedPluralRules: boolean
   locale: string
   type: 'cardinal' | 'ordinal'
+  notation: 'standard' | 'compact'
+  compactDisplay?: 'short' | 'long'
+  dataLocaleData?: any // NumberFormatLocaleInternalData
 }
 
 /**
@@ -50,14 +68,20 @@ function PluralRuleSelect(
   locale: string,
   type: 'cardinal' | 'ordinal',
   _n: Decimal,
-  {IntegerDigits, NumberOfFractionDigits, FractionDigits}: OperandsRecord
+  {
+    IntegerDigits,
+    NumberOfFractionDigits,
+    FractionDigits,
+    CompactExponent,
+  }: OperandsRecord
 ): LDMLPluralRule {
   // Always pass a string to the compiled function to preserve precision for huge numbers
   return PluralRules.localeData[locale].fn(
     NumberOfFractionDigits
       ? `${IntegerDigits}.${FractionDigits}`
       : String(IntegerDigits),
-    type === 'ordinal'
+    type === 'ordinal',
+    CompactExponent
   )
 }
 

@@ -1,11 +1,12 @@
 import {
+  ComputeExponentForMagnitude,
   FormatNumericToString,
   invariant,
   type LDMLPluralRule,
   type PluralRulesInternal,
   Type,
 } from '@formatjs/ecma402-abstract'
-import type Decimal from 'decimal.js'
+import Decimal from 'decimal.js'
 import {GetOperands, type OperandsRecord} from './GetOperands.js'
 
 /**
@@ -63,16 +64,39 @@ export function ResolvePluralInternal(
     return {formattedString: String(n), pluralCategory: 'other'}
   }
 
-  const {locale, type} = internalSlots
+  const {locale, type, notation} = internalSlots
 
-  // Format the number according to digit options (minimumFractionDigits, etc.)
+  // ECMA-402 Spec: Format the number according to digit options
   const res = FormatNumericToString(internalSlots, n)
   const s = res.formattedString
 
-  // Extract CLDR operands (n, i, v, w, f, t, c, e) from the formatted string
-  const operands = GetOperands(s)
+  // Extension: Calculate compact exponent if using compact notation
+  // This enables CLDR c/e operands for proper plural selection with compact numbers
+  let exponent = 0
+  if (notation === 'compact' && !n.isZero()) {
+    // Implementation: Only calculate exponent if NumberFormat locale data is available (soft dependency)
+    if (internalSlots.dataLocaleData?.numbers) {
+      try {
+        // Calculate magnitude (floor of log10 of absolute value)
+        const magnitudeNum = Math.floor(Math.log10(Math.abs(n.toNumber())))
+        const magnitude = new Decimal(magnitudeNum)
+        // Use ComputeExponentForMagnitude from ecma402-abstract
+        // This determines which compact notation pattern to use (K, M, B, etc.)
+        // Cast to any since it expects NumberFormatInternal
+        exponent = ComputeExponentForMagnitude(internalSlots as any, magnitude)
+      } catch {
+        // Gracefully fall back to 0 if exponent calculation fails
+        exponent = 0
+      }
+    }
+    // Otherwise, exponent remains 0 (standard behavior without NumberFormat data)
+  }
 
-  // Select the appropriate plural category using the locale's plural rules
+  // ECMA-402 Spec: Extract CLDR operands from the formatted string
+  // Extension: Pass exponent for c/e operands
+  const operands = GetOperands(s, exponent)
+
+  // ECMA-402 Spec: Select the appropriate plural category using the locale's plural rules
   const pluralCategory = PluralRuleSelect(locale, type, n, operands)
 
   return {formattedString: s, pluralCategory}

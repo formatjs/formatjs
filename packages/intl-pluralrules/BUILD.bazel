@@ -347,7 +347,7 @@ ts_run_binary(
 /* @generated */\n\
 // prettier-ignore\n\
 // @ts-nocheck\n\
-type LocaleData = {data: {categories: {cardinal: string[]; ordinal: string[];}; fn: (n: number | string, ord?: boolean | undefined) => \"zero\" | \"one\" | \"two\" | \"few\" | \"many\" | \"other\";}; locale: string;};\n\
+type LocaleData = {data: {categories: {cardinal: string[]; ordinal: string[];}; fn: (n: number | string, ord?: boolean | undefined, exponent?: number) => \"zero\" | \"one\" | \"two\" | \"few\" | \"many\" | \"other\";}; locale: string;};\n\
 const data:LocaleData = \" \"$$(cat $<)\" > $@
     """,
 ) for locale in TEST_LOCALES]

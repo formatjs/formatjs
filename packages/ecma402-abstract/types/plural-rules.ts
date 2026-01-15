@@ -12,7 +12,7 @@ export interface PluralRulesData {
     cardinal: string[]
     ordinal: string[]
   }
-  fn: (val: number | string, ord?: boolean) => LDMLPluralRule
+  fn: (val: number | string, ord?: boolean, exponent?: number) => LDMLPluralRule
   pluralRanges?: PluralRangesData
 }
 
@@ -22,4 +22,7 @@ export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   initializedPluralRules: boolean
   locale: string
   type: 'cardinal' | 'ordinal'
+  notation: 'standard' | 'compact'
+  compactDisplay?: 'short' | 'long'
+  dataLocaleData?: any // NumberFormatLocaleInternalData from number.ts
 }

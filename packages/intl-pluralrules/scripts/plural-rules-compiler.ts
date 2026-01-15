@@ -1,40 +1,39 @@
 /**
  * CLDR Plural Rules Compiler
  *
- * Parses and compiles CLDR plural rules into JavaScript functions.
+ * Implementation: Compiles CLDR plural rules into optimized JavaScript functions.
  * Replaces the make-plural-compiler dependency.
  *
- * Based on Unicode CLDR plural rules specification:
+ * CLDR Spec: Unicode CLDR plural rules specification
  * https://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
+ *
+ * Operand symbols (CLDR spec):
+ * - n, i, v, w, f, t: Standard operands
+ * - c, e: Compact exponent operands (extension for compact notation)
+ *
+ * Implementation details:
+ * - Uses TypeScript AST to generate optimized JavaScript code
+ * - Only generates code for operands actually used in rules
+ * - Supports exponent parameter (defaults to 0) for c/e operands
  */
 
 import ts from 'typescript'
 
+/**
+ * CLDR data structure from cldr-core package
+ */
 export interface PluralRuleData {
   'plurals-type-cardinal': Record<string, Record<string, string>>
   'plurals-type-ordinal': Record<string, Record<string, string>>
 }
 
+/**
+ * CLDR Spec: Plural categories
+ */
 export type PluralCategory = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other'
 
-export interface CompiledPluralRules {
-  /**
-   * Compiled function that takes a number string and returns the plural category
-   * @param num - Number as string (e.g., "1", "1.5", "100")
-   * @param isOrdinal - Whether to use ordinal rules
-   */
-  fn: (num: string, isOrdinal: boolean) => PluralCategory
-  /**
-   * Available plural categories for this locale
-   */
-  categories: {
-    cardinal: PluralCategory[]
-    ordinal: PluralCategory[]
-  }
-}
-
 /**
- * Parses a CLDR operand (n, i, v, etc.) with optional modulo into a TypeScript expression
+ * Implementation: Parses a CLDR operand (n, i, v, etc.) with optional modulo into a TypeScript expression
  */
 function parseOperand(operandStr: string, modulo?: string): ts.Expression {
   const operand = ts.factory.createIdentifier(operandStr.trim())
@@ -303,19 +302,30 @@ export class PluralRulesCompiler {
   }
 
   /**
-   * Gets operands with their dependencies in the correct order
+   * Implementation: Gets operands with their dependencies in the correct order
+   * Ensures dependencies are calculated before their dependents
    */
   private getOperandsInOrder(used: Set<string>): Array<[string, string]> {
-    // Define all operands with dependencies
+    // CLDR Spec: Operand definitions
+    // https://unicode.org/reports/tr35/tr35-numbers.html#Operands
+    // Format: [symbol, JavaScript expression, dependencies]
     const allOperands: Array<[string, string, string[]]> = [
+      // CLDR spec: n = absolute value of the source number
       ['n', 'Math.abs(parseFloat(numStr))', []],
+      // CLDR spec: i = integer digits of n
       ['i', 'Math.floor(Math.abs(parseFloat(integerPart)))', []],
+      // CLDR spec: v = number of visible fraction digits in n, with trailing zeros
       ['v', 'decimalPart.length', []],
+      // CLDR spec: w = number of visible fraction digits in n, without trailing zeros
       ['w', 'decimalPart.replace(/0+$/, "").length', []],
+      // CLDR spec: f = visible fractional digits in n, with trailing zeros
       ['f', 'v > 0 ? parseInt(decimalPart, 10) : 0', ['v']],
+      // CLDR spec: t = visible fractional digits in n, without trailing zeros
       ['t', 'w > 0 ? parseInt(decimalPart.replace(/0+$/, ""), 10) : 0', ['w']],
-      ['c', '0', []],
-      ['e', '0', []],
+      // CLDR spec: c = compact decimal exponent (extension for compact notation)
+      ['c', 'exponent', []],
+      // CLDR spec: e = compact decimal exponent (synonym for c)
+      ['e', 'exponent', []],
     ]
 
     const needed = new Set(used)
@@ -336,13 +346,22 @@ export class PluralRulesCompiler {
   }
 
   /**
-   * Compiles the rules into a JavaScript function using TypeScript AST
+   * Implementation: Compiles CLDR plural rules into a JavaScript function string
+   *
+   * Uses TypeScript AST to generate optimized code that:
+   * 1. Parses the number string (if operands are needed)
+   * 2. Calculates only the operands used in the rules
+   * 3. Evaluates conditions and returns the appropriate plural category
+   *
+   * Generated function signature: function(num, isOrdinal, exponent = 0)
+   *
+   * @returns JavaScript function code as a string
    */
-  compile(): (num: string, isOrdinal: boolean) => PluralCategory {
+  compile(): string {
     const statements: ts.Statement[] = []
 
-    // CLDR operands: https://unicode.org/reports/tr35/tr35-numbers.html#Operands
-    // Only generate operands that are actually used in the rules
+    // Implementation: Only generate code for operands actually used in the rules
+    // This reduces generated code size and improves performance
     const usedOperands = this.detectUsedOperands()
     const operands = this.getOperandsInOrder(usedOperands)
 
@@ -500,19 +519,27 @@ export class PluralRulesCompiler {
           undefined,
           undefined
         ),
+        ts.factory.createParameterDeclaration(
+          undefined,
+          undefined,
+          'exponent',
+          undefined,
+          undefined,
+          ts.factory.createNumericLiteral(0)
+        ),
       ],
       undefined,
       ts.factory.createBlock(statements, true)
     )
 
-    // Print to source code
+    // Print to JavaScript source code
     const printer = ts.createPrinter({newLine: ts.NewLineKind.LineFeed})
     const sourceFile = ts.createSourceFile(
-      'temp.ts',
+      'temp.js',
       '',
-      ts.ScriptTarget.Latest,
+      ts.ScriptTarget.ES2015,
       false,
-      ts.ScriptKind.TS
+      ts.ScriptKind.JS
     )
     let code = printer.printNode(ts.EmitHint.Unspecified, func, sourceFile)
 
@@ -526,20 +553,11 @@ export class PluralRulesCompiler {
       code = code.replace(placeholder, expr)
     }
 
-    // Extract function body (remove function declaration wrapper)
-    const bodyMatch = code.match(/\{([\s\S]+)\}/)
-    if (!bodyMatch) {
-      throw new Error('Failed to extract function body')
-    }
+    // Convert function declaration to function expression for serialization
+    // Change "function pluralRule(...) { ... }" to "function(...) { ... }"
+    code = code.replace(/^function\s+pluralRule/, 'function')
 
-    const functionBody = bodyMatch[1]
-
-    // Create and return the function
-    // eslint-disable-next-line no-new-func
-    return new Function('num', 'isOrdinal', functionBody) as (
-      num: string,
-      isOrdinal: boolean
-    ) => PluralCategory
+    return code
   }
 
   /**
@@ -584,8 +602,20 @@ export class PluralRulesCompiler {
 export function loadPluralRules(
   cardinalsData: PluralRuleData['plurals-type-cardinal'],
   ordinalsData: PluralRuleData['plurals-type-ordinal']
-): Map<string, CompiledPluralRules> {
-  const compiled = new Map<string, CompiledPluralRules>()
+): Map<
+  string,
+  {
+    fn: string
+    categories: {cardinal: PluralCategory[]; ordinal: PluralCategory[]}
+  }
+> {
+  const compiled = new Map<
+    string,
+    {
+      fn: string
+      categories: {cardinal: PluralCategory[]; ordinal: PluralCategory[]}
+    }
+  >()
 
   // Get all unique locales
   const locales = new Set([

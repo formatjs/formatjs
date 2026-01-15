@@ -1,39 +1,65 @@
 import {invariant, ToNumber, ZERO} from '@formatjs/ecma402-abstract'
 import type Decimal from 'decimal.js'
 
+/**
+ * CLDR Spec: Operands as defined in https://unicode.org/reports/tr35/tr35-numbers.html#Operands
+ * ECMA-402 Spec: GetOperands abstract operation (https://tc39.es/ecma402/#sec-getoperands)
+ *
+ * Maps CLDR operand symbols to JavaScript property names:
+ * - n → Number (absolute value)
+ * - i → IntegerDigits
+ * - v → NumberOfFractionDigits
+ * - w → NumberOfFractionDigitsWithoutTrailing
+ * - f → FractionDigits
+ * - t → FractionDigitsWithoutTrailing
+ * - c, e → CompactExponent (extension for compact notation)
+ */
 export interface OperandsRecord {
   /**
-   * Absolute value of the source number (integer and decimals)
+   * CLDR operand: n (absolute value of the source number)
    */
   Number: Decimal
   /**
-   * Number of digits of `number`
-   * Can be a string for very large numbers that exceed Number.MAX_SAFE_INTEGER
+   * CLDR operand: i (integer digits of n)
+   * Implementation: String for very large numbers exceeding Number.MAX_SAFE_INTEGER
    */
   IntegerDigits: number | string
   /**
-   * Number of visible fraction digits in [[Number]], with trailing zeroes.
+   * CLDR operand: v (number of visible fraction digits in n, with trailing zeros)
    */
   NumberOfFractionDigits: number
   /**
-   * Number of visible fraction digits in [[Number]], without trailing zeroes.
+   * CLDR operand: w (number of visible fraction digits in n, without trailing zeros)
    */
   NumberOfFractionDigitsWithoutTrailing: number
   /**
-   * Number of visible fractional digits in [[Number]], with trailing zeroes.
+   * CLDR operand: f (visible fractional digits in n, with trailing zeros)
    */
   FractionDigits: number
   /**
-   * Number of visible fractional digits in [[Number]], without trailing zeroes.
+   * CLDR operand: t (visible fractional digits in n, without trailing zeros)
    */
   FractionDigitsWithoutTrailing: number
+  /**
+   * CLDR operands: c and e (synonyms for compact decimal exponent)
+   *
+   * Extension: Not in base ECMA-402 spec, but defined in CLDR for compact notation.
+   * Example: "1.2M" has exponent 6 (since M = 10^6)
+   * Used by 9 locales: ca, es, fr, it, lld, pt, pt-PT, scn, vec
+   */
+  CompactExponent: number
 }
 
 /**
- * http://ecma-international.org/ecma-402/7.0/index.html#sec-getoperands
- * @param s
+ * ECMA-402 Spec: GetOperands abstract operation
+ * https://tc39.es/ecma402/#sec-getoperands
+ *
+ * Implementation: Extended to support compact exponent (c/e operands)
+ *
+ * @param s Formatted number string
+ * @param exponent Compact decimal exponent (c/e operand), defaults to 0
  */
-export function GetOperands(s: string): OperandsRecord {
+export function GetOperands(s: string, exponent: number = 0): OperandsRecord {
   invariant(
     typeof s === 'string',
     `GetOperands should have been called with a string`
@@ -78,5 +104,6 @@ export function GetOperands(s: string): OperandsRecord {
     NumberOfFractionDigitsWithoutTrailing: w,
     FractionDigits: f.toNumber(),
     FractionDigitsWithoutTrailing: t.toNumber(),
+    CompactExponent: exponent,
   }
 }
