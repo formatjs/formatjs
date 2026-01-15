@@ -1,3 +1,7 @@
+import com.ibm.icu.text.PluralRules;
+import com.ibm.icu.number.FormattedNumberRange;
+import com.ibm.icu.number.NumberRangeFormatter;
+import com.ibm.icu.number.LocalizedNumberRangeFormatter;
 import com.ibm.icu.util.ULocale;
 import java.util.*;
 
@@ -20,6 +24,7 @@ public class ICUConformanceTest {
         testVariantHandling();
         testLowercaseScriptCodes();
         testDisplayNames();
+        testPluralRulesSelectRange();
 
         System.out.println("\n==========================================================");
         System.out.println("All tests completed successfully!");
@@ -223,5 +228,142 @@ public class ICUConformanceTest {
         }
 
         System.out.println("  ✓ All DisplayNames tests passed\n");
+    }
+
+    /**
+     * Test 6: PluralRules selectRange
+     * Validates ICU4J behavior for selectRange, especially with identical start/end values
+     *
+     * This addresses the question: does selectRange(1,1) return "one" or "other"?
+     * - ECMA-402 spec step 4: if formatted strings are equal, return start category
+     * - Chrome returns "other" (possible bug)
+     * - Our polyfill returns "one" (following spec)
+     * - Need to verify with ICU4J (reference implementation)
+     */
+    private static void testPluralRulesSelectRange() {
+        System.out.println("TEST 6: PluralRules selectRange");
+        System.out.println("----------------------------------------------------------");
+
+        // Test English cardinal plural rules
+        ULocale english = ULocale.ENGLISH;
+        PluralRules enPluralRules = PluralRules.forLocale(english);
+
+        System.out.println("\n  English cardinal plural rules:");
+        System.out.println("    select(1): " + enPluralRules.select(1.0));
+        System.out.println("    select(2): " + enPluralRules.select(2.0));
+        System.out.println();
+
+        // Test selectRange with FormattedNumberRange
+        LocalizedNumberRangeFormatter rangeFormatter = NumberRangeFormatter.withLocale(english);
+
+        System.out.println("  Testing selectRange with identical values:");
+
+        // Test case 1: Identical values (1, 1)
+        try {
+            FormattedNumberRange range_1_1 = rangeFormatter.formatRange(1, 1);
+            String result_1_1 = enPluralRules.select(range_1_1);
+            System.out.println("    selectRange(1, 1): \"" + result_1_1 + "\"");
+            System.out.println("    formatted: \"" + range_1_1 + "\"");
+            System.out.println("    identity: " + range_1_1.getIdentityResult());
+        } catch (Exception e) {
+            System.out.println("    ERROR: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        // Test case 2: Identical values (2, 2)
+        try {
+            FormattedNumberRange range_2_2 = rangeFormatter.formatRange(2, 2);
+            String result_2_2 = enPluralRules.select(range_2_2);
+            System.out.println("    selectRange(2, 2): \"" + result_2_2 + "\"");
+            System.out.println("    formatted: \"" + range_2_2 + "\"");
+            System.out.println("    identity: " + range_2_2.getIdentityResult());
+        } catch (Exception e) {
+            System.out.println("    ERROR: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        // Test case 3: Identical values (0, 0)
+        try {
+            FormattedNumberRange range_0_0 = rangeFormatter.formatRange(0, 0);
+            String result_0_0 = enPluralRules.select(range_0_0);
+            System.out.println("    selectRange(0, 0): \"" + result_0_0 + "\"");
+            System.out.println("    formatted: \"" + range_0_0 + "\"");
+            System.out.println("    identity: " + range_0_0.getIdentityResult());
+        } catch (Exception e) {
+            System.out.println("    ERROR: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println();
+
+        // Test case 4: Different values (1, 2)
+        System.out.println("  Testing selectRange with different values:");
+        try {
+            FormattedNumberRange range_1_2 = rangeFormatter.formatRange(1, 2);
+            String result_1_2 = enPluralRules.select(range_1_2);
+            System.out.println("    selectRange(1, 2): \"" + result_1_2 + "\"");
+            System.out.println("    formatted: \"" + range_1_2 + "\"");
+            System.out.println("    identity: " + range_1_2.getIdentityResult());
+        } catch (Exception e) {
+            System.out.println("    ERROR: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        // Test case 5: Different values (0, 1)
+        try {
+            FormattedNumberRange range_0_1 = rangeFormatter.formatRange(0, 1);
+            String result_0_1 = enPluralRules.select(range_0_1);
+            System.out.println("    selectRange(0, 1): \"" + result_0_1 + "\"");
+            System.out.println("    formatted: \"" + range_0_1 + "\"");
+            System.out.println("    identity: " + range_0_1.getIdentityResult());
+        } catch (Exception e) {
+            System.out.println("    ERROR: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println();
+
+        // Test French for comparison
+        System.out.println("  Testing French plural rules:");
+        ULocale french = ULocale.FRENCH;
+        PluralRules frPluralRules = PluralRules.forLocale(french);
+        LocalizedNumberRangeFormatter frRangeFormatter = NumberRangeFormatter.withLocale(french);
+
+        System.out.println("    select(0): " + frPluralRules.select(0.0));
+        System.out.println("    select(1): " + frPluralRules.select(1.0));
+        System.out.println("    select(2): " + frPluralRules.select(2.0));
+        System.out.println();
+
+        try {
+            FormattedNumberRange range_0_0 = frRangeFormatter.formatRange(0, 0);
+            String result_0_0 = frPluralRules.select(range_0_0);
+            System.out.println("    selectRange(0, 0): \"" + result_0_0 + "\"");
+            System.out.println("    formatted: \"" + range_0_0 + "\"");
+            System.out.println("    identity: " + range_0_0.getIdentityResult());
+        } catch (Exception e) {
+            System.out.println("    ERROR: " + e.getMessage());
+        }
+
+        try {
+            FormattedNumberRange range_1_1 = frRangeFormatter.formatRange(1, 1);
+            String result_1_1 = frPluralRules.select(range_1_1);
+            System.out.println("    selectRange(1, 1): \"" + result_1_1 + "\"");
+            System.out.println("    formatted: \"" + range_1_1 + "\"");
+            System.out.println("    identity: " + range_1_1.getIdentityResult());
+        } catch (Exception e) {
+            System.out.println("    ERROR: " + e.getMessage());
+        }
+
+        try {
+            FormattedNumberRange range_0_1 = frRangeFormatter.formatRange(0, 1);
+            String result_0_1 = frPluralRules.select(range_0_1);
+            System.out.println("    selectRange(0, 1): \"" + result_0_1 + "\"");
+            System.out.println("    formatted: \"" + range_0_1 + "\"");
+            System.out.println("    identity: " + range_0_1.getIdentityResult());
+        } catch (Exception e) {
+            System.out.println("    ERROR: " + e.getMessage());
+        }
+
+        System.out.println("\n  ✓ PluralRules selectRange tests completed\n");
     }
 }

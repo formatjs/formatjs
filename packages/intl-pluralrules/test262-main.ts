@@ -22,6 +22,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'af',
     },
@@ -39,6 +47,15 @@ if (
             if (n >= 0 && n <= 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'other',
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'ak',
@@ -59,6 +76,10 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
+        },
       },
       locale: 'am',
     },
@@ -76,6 +97,14 @@ if (
             if (n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'an',
@@ -101,6 +130,34 @@ if (
             if (n === 0) return 'zero'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_many: 'many',
+            few_other: 'other',
+            many_few: 'few',
+            many_many: 'many',
+            many_other: 'other',
+            one_few: 'few',
+            one_many: 'many',
+            one_other: 'other',
+            one_two: 'other',
+            other_few: 'few',
+            other_many: 'many',
+            other_one: 'other',
+            other_other: 'other',
+            other_two: 'other',
+            two_few: 'few',
+            two_many: 'many',
+            two_other: 'other',
+            zero_few: 'few',
+            zero_many: 'many',
+            zero_one: 'zero',
+            zero_other: 'other',
+            zero_two: 'zero',
+          },
+          ordinal: {},
         },
       },
       locale: 'ar',
@@ -153,6 +210,10 @@ if (
             if (i === 0 || n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
         },
       },
       locale: 'as',
@@ -247,6 +308,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'az',
     },
@@ -300,6 +369,27 @@ if (
             if (n % 10 === 1 && n % 100 !== 11) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_many: 'many',
+            few_one: 'one',
+            few_other: 'other',
+            many_few: 'few',
+            many_many: 'many',
+            many_one: 'one',
+            many_other: 'other',
+            one_few: 'few',
+            one_many: 'many',
+            one_one: 'one',
+            one_other: 'other',
+            other_few: 'few',
+            other_many: 'many',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'be',
@@ -355,6 +445,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'bg',
     },
@@ -408,6 +506,10 @@ if (
             if (i === 0 || n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
         },
       },
       locale: 'bn',
@@ -510,6 +612,20 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_one: 'one',
+            few_other: 'other',
+            one_few: 'few',
+            one_one: 'one',
+            one_other: 'other',
+            other_few: 'few',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'bs',
     },
@@ -542,6 +658,14 @@ if (
             if (i === 1 && v === 0) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'ca',
@@ -664,6 +788,25 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_many: 'many',
+            few_other: 'other',
+            many_few: 'few',
+            many_many: 'many',
+            many_one: 'one',
+            many_other: 'other',
+            one_few: 'few',
+            one_many: 'many',
+            one_other: 'other',
+            other_few: 'few',
+            other_many: 'many',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'cs',
     },
@@ -694,6 +837,31 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            few_many: 'many',
+            few_other: 'other',
+            many_other: 'other',
+            one_few: 'few',
+            one_many: 'many',
+            one_other: 'other',
+            one_two: 'two',
+            other_few: 'few',
+            other_many: 'many',
+            other_one: 'one',
+            other_other: 'other',
+            other_two: 'two',
+            two_few: 'few',
+            two_many: 'many',
+            two_other: 'other',
+            zero_few: 'few',
+            zero_many: 'many',
+            zero_one: 'one',
+            zero_other: 'other',
+            zero_two: 'two',
+          },
+          ordinal: {},
+        },
       },
       locale: 'cy',
     },
@@ -715,6 +883,15 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'one',
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'da',
     },
@@ -733,6 +910,14 @@ if (
             if (i === 1 && v === 0) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'de',
@@ -845,6 +1030,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'el',
     },
@@ -870,6 +1063,14 @@ if (
             if (i === 1 && v === 0) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'en',
@@ -916,6 +1117,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'es',
     },
@@ -935,6 +1144,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'et',
     },
@@ -952,6 +1169,14 @@ if (
             if (n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'eu',
@@ -971,6 +1196,15 @@ if (
             if (i === 0 || n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'other',
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'fa',
@@ -1009,6 +1243,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'fi',
     },
@@ -1035,6 +1277,15 @@ if (
               return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'one',
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'fil',
@@ -1084,6 +1335,10 @@ if (
             if (i === 0 || i === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
         },
       },
       locale: 'fr',
@@ -1147,6 +1402,28 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_many: 'many',
+            few_other: 'other',
+            many_many: 'many',
+            many_other: 'other',
+            one_few: 'few',
+            one_many: 'many',
+            one_other: 'other',
+            one_two: 'two',
+            other_few: 'few',
+            other_many: 'many',
+            other_one: 'one',
+            other_other: 'other',
+            other_two: 'two',
+            two_few: 'few',
+            two_many: 'many',
+            two_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'ga',
     },
@@ -1192,6 +1469,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'gl',
     },
@@ -1209,6 +1494,14 @@ if (
             if (n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'gsw',
@@ -1235,6 +1528,10 @@ if (
             if (i === 0 || n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
         },
       },
       locale: 'gu',
@@ -1343,6 +1640,17 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            one_two: 'other',
+            other_one: 'other',
+            other_other: 'other',
+            other_two: 'other',
+            two_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'he',
     },
@@ -1368,6 +1676,10 @@ if (
             if (i === 0 || n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
         },
       },
       locale: 'hi',
@@ -1409,6 +1721,20 @@ if (
               return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_one: 'one',
+            few_other: 'other',
+            one_few: 'few',
+            one_one: 'one',
+            one_other: 'other',
+            other_few: 'few',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'hr',
@@ -1458,6 +1784,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'hu',
     },
@@ -1478,6 +1812,10 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
+        },
       },
       locale: 'hy',
     },
@@ -1497,6 +1835,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'ia',
     },
@@ -1506,6 +1852,7 @@ if (
         fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'id',
     },
@@ -1543,6 +1890,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'io',
     },
@@ -1566,6 +1921,15 @@ if (
               return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'one',
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'is',
@@ -1598,6 +1962,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'it',
     },
@@ -1626,6 +1998,7 @@ if (
         fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'ja',
     },
@@ -1720,6 +2093,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'one',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'ka',
     },
@@ -1812,6 +2193,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'kk',
     },
@@ -1857,6 +2246,7 @@ if (
         fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'km',
     },
@@ -1876,6 +2266,10 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
+        },
       },
       locale: 'kn',
     },
@@ -1885,6 +2279,7 @@ if (
         fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'ko',
     },
@@ -2039,6 +2434,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'ky',
     },
@@ -2122,6 +2525,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'lij',
     },
@@ -2167,6 +2578,7 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'lo',
     },
@@ -2192,6 +2604,27 @@ if (
             if (n % 10 === 1 && (n % 100 < 11 || n % 100 > 19)) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_many: 'many',
+            few_one: 'one',
+            few_other: 'other',
+            many_few: 'few',
+            many_many: 'many',
+            many_one: 'one',
+            many_other: 'other',
+            one_few: 'few',
+            one_many: 'many',
+            one_one: 'one',
+            one_other: 'other',
+            other_few: 'few',
+            other_many: 'many',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'lt',
@@ -2223,6 +2656,20 @@ if (
               return 'zero'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'one',
+            one_other: 'other',
+            one_zero: 'other',
+            other_one: 'one',
+            other_other: 'other',
+            other_zero: 'other',
+            zero_one: 'one',
+            zero_other: 'other',
+            zero_zero: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'lv',
@@ -2313,6 +2760,15 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'other',
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'mk',
     },
@@ -2331,6 +2787,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'ml',
     },
@@ -2348,6 +2812,14 @@ if (
             if (n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'mn',
@@ -2403,6 +2875,10 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
+        },
       },
       locale: 'mr',
     },
@@ -2421,6 +2897,7 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'ms',
     },
@@ -2454,6 +2931,7 @@ if (
         fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'my',
     },
@@ -2509,6 +2987,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'nb',
     },
@@ -2546,6 +3032,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'ne',
     },
@@ -2564,6 +3058,14 @@ if (
             if (i === 1 && v === 0) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'nl',
@@ -2618,6 +3120,14 @@ if (
             if (n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'no',
@@ -2743,6 +3253,15 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'other',
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'or',
     },
@@ -2788,6 +3307,15 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'one',
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'pa',
     },
@@ -2825,6 +3353,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'pcm',
     },
@@ -2859,6 +3395,25 @@ if (
             if (i === 1 && v === 0) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_many: 'many',
+            few_other: 'other',
+            many_few: 'few',
+            many_many: 'many',
+            many_one: 'one',
+            many_other: 'other',
+            one_few: 'few',
+            one_many: 'many',
+            one_other: 'other',
+            other_few: 'few',
+            other_many: 'many',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'pl',
@@ -2908,6 +3463,10 @@ if (
             if (n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
         },
       },
       locale: 'ps',
@@ -2961,6 +3520,10 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
+        },
       },
       locale: 'pt',
     },
@@ -3008,6 +3571,18 @@ if (
             if (i === 1 && v === 0) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_one: 'few',
+            few_other: 'other',
+            one_few: 'few',
+            one_other: 'other',
+            other_few: 'few',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'ro',
@@ -3061,6 +3636,27 @@ if (
             if (v === 0 && i % 10 === 1 && i % 100 !== 11) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_many: 'many',
+            few_one: 'one',
+            few_other: 'other',
+            many_few: 'few',
+            many_many: 'many',
+            many_one: 'one',
+            many_other: 'other',
+            one_few: 'few',
+            one_many: 'many',
+            one_one: 'one',
+            one_other: 'other',
+            other_few: 'few',
+            other_many: 'many',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'ru',
@@ -3147,6 +3743,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'sc',
     },
@@ -3184,6 +3788,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'scn',
     },
@@ -3201,6 +3813,15 @@ if (
             if (n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'other',
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'sd',
@@ -3348,6 +3969,15 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_one: 'one',
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'si',
     },
@@ -3371,6 +4001,25 @@ if (
             if (i === 1 && v === 0) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_many: 'many',
+            few_other: 'other',
+            many_few: 'few',
+            many_many: 'many',
+            many_one: 'one',
+            many_other: 'other',
+            one_few: 'few',
+            one_many: 'many',
+            one_other: 'other',
+            other_few: 'few',
+            other_many: 'many',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'sk',
@@ -3396,6 +4045,27 @@ if (
             if (v === 0 && i % 100 === 2) return 'two'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_one: 'few',
+            few_other: 'other',
+            few_two: 'two',
+            one_few: 'few',
+            one_one: 'few',
+            one_other: 'other',
+            one_two: 'two',
+            other_few: 'few',
+            other_one: 'few',
+            other_other: 'other',
+            other_two: 'two',
+            two_few: 'few',
+            two_one: 'few',
+            two_other: 'other',
+            two_two: 'two',
+          },
+          ordinal: {},
         },
       },
       locale: 'sl',
@@ -3551,6 +4221,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'sq',
     },
@@ -3582,6 +4260,20 @@ if (
               return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_one: 'one',
+            few_other: 'other',
+            one_few: 'few',
+            one_one: 'one',
+            one_other: 'other',
+            other_few: 'few',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'sr',
@@ -3672,6 +4364,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'sv',
     },
@@ -3690,6 +4390,14 @@ if (
             if (i === 1 && v === 0) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'sw',
@@ -3727,6 +4435,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'ta',
     },
@@ -3744,6 +4460,14 @@ if (
             if (n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'te',
@@ -3772,6 +4496,7 @@ if (
         fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'th',
     },
@@ -3826,6 +4551,14 @@ if (
             if (n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'tk',
@@ -3908,6 +4641,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'tr',
     },
@@ -3962,6 +4703,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'ug',
     },
@@ -3999,6 +4748,27 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            few_few: 'few',
+            few_many: 'many',
+            few_one: 'one',
+            few_other: 'other',
+            many_few: 'few',
+            many_many: 'many',
+            many_one: 'one',
+            many_other: 'other',
+            one_few: 'few',
+            one_many: 'many',
+            one_one: 'one',
+            one_other: 'other',
+            other_few: 'few',
+            other_many: 'many',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'uk',
     },
@@ -4027,6 +4797,14 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'other',
+            other_other: 'other',
+          },
+          ordinal: {},
+        },
       },
       locale: 'ur',
     },
@@ -4044,6 +4822,14 @@ if (
             if (n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {
+            one_other: 'other',
+            other_one: 'one',
+            other_other: 'other',
+          },
+          ordinal: {},
         },
       },
       locale: 'uz',
@@ -4081,6 +4867,7 @@ if (
           }
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'vi',
     },
@@ -4235,6 +5022,7 @@ if (
         fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'yue',
     },
@@ -4244,6 +5032,7 @@ if (
         fn: function anonymous(num, isOrdinal) {
           return 'other'
         },
+        pluralRanges: {cardinal: {other_other: 'other'}, ordinal: {}},
       },
       locale: 'zh',
     },
@@ -4262,6 +5051,10 @@ if (
             if (i === 0 || n === 1) return 'one'
           }
           return 'other'
+        },
+        pluralRanges: {
+          cardinal: {one_one: 'one', one_other: 'other', other_other: 'other'},
+          ordinal: {},
         },
       },
       locale: 'zu',
