@@ -193,7 +193,6 @@
   },
   "repository": "formatjs/formatjs",
   "resolutions": {
-    "@brillout/vite-plugin-server-entry": ">=0.7.17",
     "@glimmer/interfaces": "0.94.6",
     "@glimmer/syntax": "^0.95.0",
     "@vue/compiler-core": "3.5.26",
