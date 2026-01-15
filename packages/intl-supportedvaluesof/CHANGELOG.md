@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.2.0 (2026-01-15)
+
+### Features
+
+* **@formatjs/intl-supportedvaluesof:** update to latest spec ([#5918](https://github.com/formatjs/formatjs/issues/5918)) ([f6ed7eb](https://github.com/formatjs/formatjs/commit/f6ed7eb6cf075e893488960acb8320e1cb99ea05)) - by @longlho
+
 ## [2.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@2.1.1...@formatjs/intl-supportedvaluesof@2.1.2) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/intl-supportedvaluesof

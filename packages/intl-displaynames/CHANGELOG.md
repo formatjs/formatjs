@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@7.1.2...@formatjs/intl-displaynames@7.2.0) (2026-01-15)
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix ESM import ([67ca0bc](https://github.com/formatjs/formatjs/commit/67ca0bcec65acd6ae2dc915a9d416852c516b4db)) - by @longlho
+
+### Features
+
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commit/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
+
 ## [7.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@7.1.1...@formatjs/intl-displaynames@7.1.2) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

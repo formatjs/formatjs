@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.1.0](github.com/formatjs/formatjs/compare/intl-messageformat@11.0.9...intl-messageformat@11.1.0) (2026-01-15)
+
+### Features
+
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](/github.com/formatjs/formatjs/issues/5862)) ([effeb9c](github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](github.com/formatjs/formatjs/issues/29) - by @longlho
+
 ## [11.0.9](github.com/formatjs/formatjs/compare/intl-messageformat@11.0.8...intl-messageformat@11.0.9) (2026-01-06)
 
 **Note:** Version bump only for package intl-messageformat

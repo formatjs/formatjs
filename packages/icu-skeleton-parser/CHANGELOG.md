@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@2.0.8...@formatjs/icu-skeleton-parser@2.1.0) (2026-01-15)
+
+### Features
+
+* **@formatjs/ecma402-abstract:** upgrade Unicode from 13.0.0 to 17.0.0 ([#5866](https://github.com/formatjs/formatjs/issues/5866)) ([00343fe](https://github.com/formatjs/formatjs/commit/00343fe97e34f8f494d8b9a8b99bca50af6b48b2)) - by @longlho
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commit/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
+
 ## [2.0.8](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@2.0.7...@formatjs/icu-skeleton-parser@2.0.8) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/icu-skeleton-parser

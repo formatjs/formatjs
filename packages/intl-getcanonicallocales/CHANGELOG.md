@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@3.1.2...@formatjs/intl-getcanonicallocales@3.2.0) (2026-01-15)
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** update to latest spec, handle arraylike objs ([#5903](https://github.com/formatjs/formatjs/issues/5903)) ([1de20a0](https://github.com/formatjs/formatjs/commit/1de20a0600a2273805f425f4312052b3b1e5ae4d)) - by @longlho
+* **@formatjs/intl-locale:** support variants per latest spec ([#5904](https://github.com/formatjs/formatjs/issues/5904)) ([931c3dc](https://github.com/formatjs/formatjs/commit/931c3dc98484887ef7b1dafbd9ba2780e155f6e5)), closes [#960](https://github.com/formatjs/formatjs/issues/960) - by @longlho
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commit/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
+
 ## [3.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@3.1.1...@formatjs/intl-getcanonicallocales@3.1.2) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

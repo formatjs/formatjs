@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.1.2...@formatjs/intl-datetimeformat@7.2.0) (2026-01-15)
+
+### Features
+
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commit/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
+* upgrade CLDR to 48.1.0 ([#5899](https://github.com/formatjs/formatjs/issues/5899)) ([3ffe1bd](https://github.com/formatjs/formatjs/commit/3ffe1bd77bbf1c7c7ea2a53afa210be06b036397)) - by @longlho
+
 ## [7.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.1.1...@formatjs/intl-datetimeformat@7.1.2) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

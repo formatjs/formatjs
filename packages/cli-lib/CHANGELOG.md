@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.1.1...@formatjs/cli-lib@8.2.0) (2026-01-15)
+
+### Features
+
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commit/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
+
 ## [8.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.1.0...@formatjs/cli-lib@8.1.1) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/cli-lib

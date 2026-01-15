@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.1.2...@formatjs/intl-locale@5.2.0) (2026-01-15)
+
+### Features
+
+* **@formatjs/intl-locale:** support variants per latest spec ([#5904](https://github.com/formatjs/formatjs/issues/5904)) ([931c3dc](https://github.com/formatjs/formatjs/commit/931c3dc98484887ef7b1dafbd9ba2780e155f6e5)), closes [#960](https://github.com/formatjs/formatjs/issues/960) - by @longlho
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commit/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
+* **@formatjs/intl-supportedvaluesof:** update to latest spec ([#5918](https://github.com/formatjs/formatjs/issues/5918)) ([f6ed7eb](https://github.com/formatjs/formatjs/commit/f6ed7eb6cf075e893488960acb8320e1cb99ea05)) - by @longlho
+
 ## [5.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.1.1...@formatjs/intl-locale@5.1.2) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/intl-locale

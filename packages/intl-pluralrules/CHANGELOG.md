@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@6.1.2...@formatjs/intl-pluralrules@6.2.0) (2026-01-15)
+
+### Features
+
+* **@formatjs/intl-pluralrules:** replace make-plural-compiler with native implementation and add BigInt support ([#5910](https://github.com/formatjs/formatjs/issues/5910)) ([bed7271](https://github.com/formatjs/formatjs/commit/bed7271893174309c320bb308c6c62756873977e)) - by @longlho
+* **@formatjs/intl-pluralrules:** support notation/compactDisplay (c/e operands) ([#5914](https://github.com/formatjs/formatjs/issues/5914)) ([c13e633](https://github.com/formatjs/formatjs/commit/c13e6331c09725e80993c8a44913d04be6ebae24)) - by @longlho
+* **@formatjs/intl-pluralrules:** support selectRange ([#5913](https://github.com/formatjs/formatjs/issues/5913)) ([3240e62](https://github.com/formatjs/formatjs/commit/3240e629c639d4c91a5c0db0b209bcacda93a505)) - by @longlho
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commit/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
+
 ## [6.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@6.1.1...@formatjs/intl-pluralrules@6.1.2) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

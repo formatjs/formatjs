@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.2.0](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.1.2...@formatjs/intl-listformat@8.2.0) (2026-01-15)
+
+### Features
+
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](/github.com/formatjs/formatjs/issues/5862)) ([effeb9c](github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](github.com/formatjs/formatjs/issues/29) - by @longlho
+
 ## [8.1.2](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.1.1...@formatjs/intl-listformat@8.1.2) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

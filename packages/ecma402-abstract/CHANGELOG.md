@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.8...@formatjs/ecma402-abstract@3.1.0) (2026-01-15)
+
+### Features
+
+* **@formatjs/ecma402-abstract:** upgrade Unicode from 13.0.0 to 17.0.0 ([#5866](/github.com/formatjs/formatjs/issues/5866)) ([00343fe](github.com/formatjs/formatjs/commits/00343fe97e34f8f494d8b9a8b99bca50af6b48b2)) - by @longlho
+* **@formatjs/intl-pluralrules:** replace make-plural-compiler with native implementation and add BigInt support ([#5910](/github.com/formatjs/formatjs/issues/5910)) ([bed7271](github.com/formatjs/formatjs/commits/bed7271893174309c320bb308c6c62756873977e)) - by @longlho
+* **@formatjs/intl-pluralrules:** support notation/compactDisplay (c/e operands) ([#5914](/github.com/formatjs/formatjs/issues/5914)) ([c13e633](github.com/formatjs/formatjs/commits/c13e6331c09725e80993c8a44913d04be6ebae24)) - by @longlho
+* **@formatjs/intl-pluralrules:** support selectRange ([#5913](/github.com/formatjs/formatjs/issues/5913)) ([3240e62](github.com/formatjs/formatjs/commits/3240e629c639d4c91a5c0db0b209bcacda93a505)) - by @longlho
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](/github.com/formatjs/formatjs/issues/5862)) ([effeb9c](github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](github.com/formatjs/formatjs/issues/29) - by @longlho
+* **@formatjs/intl-supportedvaluesof:** update to latest spec ([#5918](/github.com/formatjs/formatjs/issues/5918)) ([f6ed7eb](github.com/formatjs/formatjs/commits/f6ed7eb6cf075e893488960acb8320e1cb99ea05)) - by @longlho
+
 ## [3.0.8](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.7...@formatjs/ecma402-abstract@3.0.8) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.0.10...eslint-plugin-formatjs@6.1.0) (2026-01-15)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** remove obsolete @types/eslint ([#5884](https://github.com/formatjs/formatjs/issues/5884)) ([0e7b93b](https://github.com/formatjs/formatjs/commit/0e7b93b62dc332ec7a6e316674b9bbf39189c0b7)) - by @andersk
+
+### Features
+
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commit/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
+* **eslint-plugin-formatjs:** replace unicode-emoji-utils with native implementation ([#5865](https://github.com/formatjs/formatjs/issues/5865)) ([7ebcf95](https://github.com/formatjs/formatjs/commit/7ebcf9538830002c3859f5d1bdc94f035e725d9a)) - by @longlho
+
 ## [6.0.10](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.0.9...eslint-plugin-formatjs@6.0.10) (2026-01-06)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

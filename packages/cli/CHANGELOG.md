@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.10.0...@formatjs/cli@6.11.0) (2026-01-15)
+
+### Bug Fixes
+
+* **formatjs_cli:** add $t to built in fn names ([f8f87a9](https://github.com/formatjs/formatjs/commit/f8f87a9887c1548c9348b5860dd82fdb56d0f817)) - by @longlho
+* **icu_messageformat_parser,formatjs_cli:** fix serialization and element ordering ([#5848](https://github.com/formatjs/formatjs/issues/5848)) ([acb1526](https://github.com/formatjs/formatjs/commit/acb15260c9e01129d9a3d57d51b5ec0802007235)) - by @longlho
+* **icu_messageformat_parser:** fix is_structurally_same to handle variables with the same name ([1401d4d](https://github.com/formatjs/formatjs/commit/1401d4db60892b2e5b41efa87e853812cb7b0b71)) - by @longlho
+
+### Features
+
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commit/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
+
 # [6.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.9.0...@formatjs/cli@6.10.0) (2026-01-06)
 
 ### Features
