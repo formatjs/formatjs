@@ -221,7 +221,7 @@ importers:
         version: 2.5.1
       cldr-bcp47:
         specifier: ^48.0.0
-        version: 48.0.0
+        version: 48.1.0
       cldr-core:
         specifier: ^48.0.0
         version: 48.0.0
@@ -4675,8 +4675,8 @@ packages:
   classnames@2.5.1:
     resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
-  cldr-bcp47@48.0.0:
-    resolution: {integrity: sha512-ewDPHbTYk2aEo+vceB93bCYI9rZqRqRCd202AcaM8bG48PYFNB5IFxnRRnhtgtxZezxj2v21w0TMxRtGvpCQBA==}
+  cldr-bcp47@48.1.0:
+    resolution: {integrity: sha512-5GF0weVNrLmqkZvZ18VwNW4Js/RUF2nt9Iz6ex/90BODZ/PPkBNYjF+dMIMMmHDipYXDoHlE02urCkFRt3nkYg==}
 
   cldr-core@48.0.0:
     resolution: {integrity: sha512-iQnK68eOjEsHEOwCvi2CI7xbjcVlCdaSNTQrkwCgEMnyZUbHCgF0GPw2CXi0D2IGz+9Pj80cmcWzRFcF6zdrYQ==}
@@ -13636,7 +13636,7 @@ snapshots:
 
   classnames@2.5.1: {}
 
-  cldr-bcp47@48.0.0: {}
+  cldr-bcp47@48.1.0: {}
 
   cldr-core@48.0.0: {}
 
