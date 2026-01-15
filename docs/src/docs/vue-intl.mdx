@@ -35,7 +35,7 @@ pnpm add vue-intl
 
 ## Usage
 
-Initialize `VueIntl` plugin with the same `IntlConfig` documented in [@formatjs/intl](./intl#IntlShape).
+Initialize `VueIntl` plugin with the same `IntlConfig` documented in [@formatjs/intl](/docs/intl#IntlShape).
 
 ```tsx
 const app = createApp(App)
@@ -54,7 +54,7 @@ From there you can use our APIs in 2 ways:
 
 ### inject
 
-By specifying `inject: {intl: intlKey}`, you can use the full `IntlFormatters` API documented in [@formatjs/intl](./intl#IntlShape).
+By specifying `inject: {intl: intlKey}`, you can use the full `IntlFormatters` API documented in [@formatjs/intl](/docs/intl#IntlShape).
 
 Note: `intlKey` needs to be imported from `vue-intl`.
 
@@ -116,16 +116,16 @@ We currently support:
 - `$formatDisplayName`
 - `$formatList`
 
-See [@formatjs/intl](./intl) for the full list of API signatures.
+See [@formatjs/intl](/docs/intl) for the full list of API signatures.
 
 ## Tooling
 
 `formatjs` toolchain fully supports `vue`:
 
-- [eslint-plugin-formatjs](./tooling/linter): This fully supports `.vue` and JS/TS.
-- [@formatjs/cli](./tooling/cli): We now support extracting messages from `.vue` SFC files.
-- [babel-plugin-formatjs](./tooling/babel-plugin): Compile messages during bundling for `babel`.
-- [@formatjs/ts-transformer](./tooling/ts-transformer): Compile messages during bundling for `TypeScript`.
+- [eslint-plugin-formatjs](/docs/tooling/linter): This fully supports `.vue` and JS/TS.
+- [@formatjs/cli](/docs/tooling/cli): We now support extracting messages from `.vue` SFC files.
+- [babel-plugin-formatjs](/docs/tooling/babel-plugin): Compile messages during bundling for `babel`.
+- [@formatjs/ts-transformer](/docs/tooling/ts-transformer): Compile messages during bundling for `TypeScript`.
 
 ## Caveats
 

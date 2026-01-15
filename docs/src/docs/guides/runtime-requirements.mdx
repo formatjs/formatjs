@@ -11,11 +11,11 @@ React Intl relies on these `Intl` APIs:
 
 - [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat): Available on IE11+
 - [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat): Available on IE11+
-- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](polyfills/intl-pluralrules).
-- (Optional) [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): Required if you use [`formatRelativeTime`](react-intl/api#formatrelativetime)
-  or [`FormattedRelativeTime`](react-intl/components#formattedrelativetime). This can be polyfilled using [this package](polyfills/intl-relativetimeformat).
-- (Optional) [Intl.DisplayNames](https://tc39.es/proposal-intl-displaynames/): Required if you use [`formatDisplayName`](react-intl/api#formatdisplayname)
-  or [`FormattedDisplayName`](react-intl/components#formatteddisplayname). This can be polyfilled using [this package](polyfills/intl-displaynames).
+- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](/docs/polyfills/intl-pluralrules).
+- (Optional) [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): Required if you use [`formatRelativeTime`](/docs/react-intl/api#formatrelativetime)
+  or [`FormattedRelativeTime`](/docs/react-intl/components#formattedrelativetime). This can be polyfilled using [this package](/docs/polyfills/intl-relativetimeformat).
+- (Optional) [Intl.DisplayNames](https://tc39.es/proposal-intl-displaynames/): Required if you use [`formatDisplayName`](/docs/react-intl/api#formatdisplayname)
+  or [`FormattedDisplayName`](/docs/react-intl/components#formatteddisplayname). This can be polyfilled using [this package](/docs/polyfills/intl-displaynames).
 
 We officially support IE11 along with 2 most recent versions of Edge, Chrome & Firefox.
 
@@ -32,10 +32,10 @@ If you're using `react-intl` in React Native, make sure your runtime has built-i
 
 ### React Native on iOS
 
-If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions in [polyfills](../polyfills) to polyfill the following APIs (in this order):
+If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions in [polyfills](/docs/polyfills) to polyfill the following APIs (in this order):
 
-1. [Intl.getCanonicalLocales](../polyfills/intl-getcanonicallocales)
-1. [Intl.Locale](../polyfills/intl-locale)
-1. [Intl.PluralRules](../polyfills/intl-pluralrules)
-1. [Intl.NumberFormat](../polyfills/intl-numberformat)
-1. [Intl.DateTimeFormat](../polyfills/intl-datetimeformat)
+1. [Intl.getCanonicalLocales](/docs/polyfills/intl-getcanonicallocales)
+1. [Intl.Locale](/docs/polyfills/intl-locale)
+1. [Intl.PluralRules](/docs/polyfills/intl-pluralrules)
+1. [Intl.NumberFormat](/docs/polyfills/intl-numberformat)
+1. [Intl.DateTimeFormat](/docs/polyfills/intl-datetimeformat)

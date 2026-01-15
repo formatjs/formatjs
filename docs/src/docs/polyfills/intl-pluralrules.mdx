@@ -3,6 +3,50 @@ A spec-compliant polyfill for [`Intl.PluralRules`](https://developer.mozilla.org
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-pluralrules.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-pluralrules)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-pluralrules)
 
+## ECMA-402 Spec Compliance
+
+This package is **fully compliant** with the ECMA-402 specification for `Intl.PluralRules` and is **test262-compliant**.
+
+### ✅ Implemented Features
+
+#### Core Methods
+
+- **`select(number)`** - Returns the plural category for a number (`'zero'`, `'one'`, `'two'`, `'few'`, `'many'`, `'other'`)
+- **`selectRange(start, end)`** - Returns the plural category for a number range
+- **`resolvedOptions()`** - Returns resolved options
+- **`supportedLocalesOf(locales)`** - Returns supported locales
+
+#### Rule Types
+
+- **`'cardinal'`** (default) - For cardinal numbers (e.g., "1 item", "2 items")
+- **`'ordinal'`** - For ordinal numbers (e.g., "1st", "2nd", "3rd")
+
+#### Locale Data
+
+- Supports 700+ locales with accurate LDML plural rules
+- Includes all 6 plural categories per LDML specification
+- Handles complex plural rules (e.g., Arabic has 6 forms, Chinese has 1)
+
+### Example Usage
+
+```js
+import '@formatjs/intl-pluralrules/polyfill'
+
+const pr = new Intl.PluralRules('en')
+pr.select(0) // "other"
+pr.select(1) // "one"
+pr.select(2) // "other"
+
+const prOrdinal = new Intl.PluralRules('en', {type: 'ordinal'})
+prOrdinal.select(1) // "one"   (1st)
+prOrdinal.select(2) // "two"   (2nd)
+prOrdinal.select(3) // "few"   (3rd)
+prOrdinal.select(4) // "other" (4th)
+
+// selectRange for ranges
+pr.selectRange(1, 5) // "other" (1-5 items)
+```
+
 ## Installation
 
 <Tabs

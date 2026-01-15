@@ -3,6 +3,114 @@ A polyfill for [`Intl.DisplayNames`](https://tc39.es/proposal-intl-displaynames)
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-displaynames.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-displaynames)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-displaynames)
 
+## ECMA-402 Spec Compliance
+
+This package is **fully compliant** with the ECMA-402 specification for `Intl.DisplayNames`.
+
+### Specification Details
+
+- **TC39 Proposal**: [Intl.DisplayNames](https://github.com/tc39/proposal-intl-displaynames)
+- **Stage**: Stage 4 (Finalized)
+
+### ✅ Implemented Features
+
+#### Core Methods
+
+- **`of(code)`** - Returns the localized display name for a code
+- **`resolvedOptions()`** - Returns resolved formatting options
+- **`supportedLocalesOf(locales)`** - Returns supported locales
+
+#### Display Name Types
+
+All 6 code types are supported:
+
+- **`'language'`** - Language display names (e.g., "en" → "English")
+- **`'region'`** - Region/country display names (e.g., "US" → "United States")
+- **`'script'`** - Script display names (e.g., "Latn" → "Latin")
+- **`'currency'`** - Currency display names (e.g., "USD" → "US Dollar")
+- **`'calendar'`** - Calendar display names (e.g., "gregory" → "Gregorian Calendar")
+- **`'dateTimeField'`** - Date/time field names (e.g., "hour" → "Hour")
+
+#### Display Styles
+
+- **`'long'`** (default) - Full display name (e.g., "United States")
+- **`'short'`** - Abbreviated display name (e.g., "US")
+- **`'narrow'`** - Most compact form (e.g., "U")
+
+#### Language Display Options
+
+For `type: 'language'`, the `languageDisplay` option controls dialect formatting:
+
+- **`'dialect'`** (default) - Show dialect (e.g., "Canadian French")
+- **`'standard'`** - Show standard form (e.g., "French")
+
+### Example Usage
+
+```js
+import '@formatjs/intl-displaynames/polyfill'
+
+// Language names
+const languageNames = new Intl.DisplayNames(['en'], {type: 'language'})
+languageNames.of('en') // "English"
+languageNames.of('fr') // "French"
+languageNames.of('zh') // "Chinese"
+
+// Region names
+const regionNames = new Intl.DisplayNames(['en'], {type: 'region'})
+regionNames.of('US') // "United States"
+regionNames.of('GB') // "United Kingdom"
+regionNames.of('JP') // "Japan"
+
+// Currency names
+const currencyNames = new Intl.DisplayNames(['en'], {type: 'currency'})
+currencyNames.of('USD') // "US Dollar"
+currencyNames.of('EUR') // "Euro"
+currencyNames.of('JPY') // "Japanese Yen"
+
+// Script names
+const scriptNames = new Intl.DisplayNames(['en'], {type: 'script'})
+scriptNames.of('Latn') // "Latin"
+scriptNames.of('Arab') // "Arabic"
+scriptNames.of('Hans') // "Simplified Chinese"
+
+// Calendar names
+const calendarNames = new Intl.DisplayNames(['en'], {type: 'calendar'})
+calendarNames.of('gregory') // "Gregorian Calendar"
+calendarNames.of('islamic') // "Islamic Calendar"
+
+// Date/time field names
+const fieldNames = new Intl.DisplayNames(['en'], {type: 'dateTimeField'})
+fieldNames.of('hour') // "hour"
+fieldNames.of('minute') // "minute"
+fieldNames.of('day') // "day"
+
+// Different styles
+const shortRegions = new Intl.DisplayNames(['en'], {
+  type: 'region',
+  style: 'short',
+})
+shortRegions.of('US') // "US"
+
+const narrowRegions = new Intl.DisplayNames(['en'], {
+  type: 'region',
+  style: 'narrow',
+})
+narrowRegions.of('US') // "🇺🇸" (or similar compact form)
+
+// Language display options
+const dialectNames = new Intl.DisplayNames(['en'], {
+  type: 'language',
+  languageDisplay: 'dialect',
+})
+dialectNames.of('en-CA') // "Canadian English"
+
+const standardNames = new Intl.DisplayNames(['en'], {
+  type: 'language',
+  languageDisplay: 'standard',
+})
+standardNames.of('en-CA') // "English"
+```
+
 ## Installation
 
 <Tabs

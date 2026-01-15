@@ -3,6 +3,74 @@ A spec-compliant polyfill/ponyfill for Intl.Locale tested by the [official ECMAS
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-locale.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-locale)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-locale)
 
+## ECMA-402 Spec Compliance
+
+This package is **fully compliant** with the ECMA-402 specification for `Intl.Locale` and is **test262-compliant**.
+
+### ✅ Implemented Features
+
+#### Core Properties
+
+- **`baseName`** - Base locale without extensions (e.g., "en-US")
+- **`language`** - Language subtag (e.g., "en")
+- **`script`** - Script subtag (e.g., "Latn")
+- **`region`** - Region subtag (e.g., "US")
+- **`calendar`** - Calendar identifier (e.g., "gregory")
+- **`collation`** - Collation identifier (e.g., "emoji")
+- **`hourCycle`** - Hour cycle (e.g., "h12", "h23")
+- **`numberingSystem`** - Numbering system (e.g., "latn")
+- **`numeric`** - Numeric collation flag
+- **`caseFirst`** - Case-first collation option
+
+#### Core Methods
+
+- **`maximize()`** - Add likely subtags (e.g., "en" → "en-Latn-US")
+- **`minimize()`** - Remove likely subtags (e.g., "en-Latn-US" → "en")
+- **`toString()`** - Returns the complete locale string
+- **`getCalendars()`** - Returns supported calendars for the locale
+- **`getCollations()`** - Returns supported collations for the locale
+- **`getHourCycles()`** - Returns supported hour cycles for the locale
+- **`getNumberingSystems()`** - Returns supported numbering systems for the locale
+- **`getTimeZones()`** - Returns supported time zones for the locale region
+- **`getTextInfo()`** - Returns text directionality information
+- **`getWeekInfo()`** - Returns week-related information
+
+### Example Usage
+
+```js
+import '@formatjs/intl-locale/polyfill'
+
+// Create locale
+const locale = new Intl.Locale('en-US')
+locale.language // "en"
+locale.region // "US"
+locale.baseName // "en-US"
+
+// With Unicode extensions
+const localeWithExt = new Intl.Locale('en-US-u-ca-buddhist-nu-thai')
+localeWithExt.calendar // "buddhist"
+localeWithExt.numberingSystem // "thai"
+
+// Maximize/minimize
+const minimal = new Intl.Locale('en')
+const maximized = minimal.maximize()
+maximized.toString() // "en-Latn-US"
+
+const full = new Intl.Locale('en-Latn-US')
+const minimized = full.minimize()
+minimized.toString() // "en"
+
+// Get locale capabilities
+locale.getCalendars() // ["gregory"]
+locale.getNumberingSystems() // ["latn"]
+locale.getHourCycles() // ["h12"]
+locale.getTimeZones() // ["America/Adak", "America/Anchorage", ...]
+
+// Text and week info
+locale.getTextInfo() // {direction: "ltr"}
+locale.getWeekInfo() // {firstDay: 7, weekend: [6, 7], minimalDays: 1}
+```
+
 ## Installation
 
 <Tabs

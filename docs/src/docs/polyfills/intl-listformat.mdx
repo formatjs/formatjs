@@ -3,6 +3,70 @@ A spec-compliant polyfill for Intl.ListFormat fully tested by the [official ECMA
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-listformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-listformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-listformat)
 
+## ECMA-402 Spec Compliance
+
+This package is **fully compliant** with the ECMA-402 specification for `Intl.ListFormat` and is **test262-compliant**.
+
+### ✅ Implemented Features
+
+#### Core Methods
+
+- **`format(list)`** - Format a list of strings as a localized string
+- **`formatToParts(list)`** - Format a list and return an array of parts
+- **`resolvedOptions()`** - Returns resolved formatting options
+- **`supportedLocalesOf(locales)`** - Returns supported locales
+
+#### List Types
+
+- **`'conjunction'`** (default) - "and" lists (e.g., "A, B, and C")
+- **`'disjunction'`** - "or" lists (e.g., "A, B, or C")
+- **`'unit'`** - Unit lists (e.g., "5 pounds, 12 ounces")
+
+#### List Styles
+
+- **`'long'`** (default) - Full format (e.g., "A, B, and C")
+- **`'short'`** - Abbreviated format (e.g., "A, B, & C")
+- **`'narrow'`** - Most compact format (e.g., "A, B, C")
+
+### Example Usage
+
+```js
+import '@formatjs/intl-listformat/polyfill'
+
+// Conjunction (and)
+const conjunctionFormatter = new Intl.ListFormat('en', {
+  style: 'long',
+  type: 'conjunction',
+})
+conjunctionFormatter.format(['Apple', 'Banana', 'Orange'])
+// "Apple, Banana, and Orange"
+
+// Disjunction (or)
+const disjunctionFormatter = new Intl.ListFormat('en', {
+  type: 'disjunction',
+})
+disjunctionFormatter.format(['Red', 'Green', 'Blue'])
+// "Red, Green, or Blue"
+
+// Unit lists
+const unitFormatter = new Intl.ListFormat('en', {
+  style: 'short',
+  type: 'unit',
+})
+unitFormatter.format(['5 lb', '12 oz'])
+// "5 lb, 12 oz"
+
+// formatToParts
+const parts = conjunctionFormatter.formatToParts(['A', 'B', 'C'])
+// [
+//   {type: "element", value: "A"},
+//   {type: "literal", value: ", "},
+//   {type: "element", value: "B"},
+//   {type: "literal", value: ", and "},
+//   {type: "element", value: "C"}
+// ]
+```
+
 ## Installation
 
 <Tabs
