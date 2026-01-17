@@ -9,8 +9,8 @@ ts_binary(
     ],
     entry_point = "regex-gen.ts",
     visibility = [
+        "//crates/icu_messageformat_parser:__pkg__",
         "//packages/icu-messageformat-parser:__subpackages__",
-        "//rust/icu_messageformat_parser:__pkg__",
     ],
 )
 
@@ -22,7 +22,7 @@ ts_binary(
     ],
     entry_point = "time-data-gen.ts",
     visibility = [
+        "//crates/icu_messageformat_parser:__pkg__",
         "//packages/icu-messageformat-parser:__subpackages__",
-        "//rust/icu_messageformat_parser:__pkg__",
     ],
 )

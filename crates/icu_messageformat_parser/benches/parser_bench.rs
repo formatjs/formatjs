@@ -1,3 +1,9 @@
+//! Benchmark for the FormatJS ICU MessageFormat parser.
+//!
+//! Run with: `bazel run -c opt //crates/icu_messageformat_parser:parser_bench`
+//!
+//! For comparison with other parsers, see comparison_bench.rs
+
 use criterion::{Criterion, criterion_group, criterion_main};
 use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
 use std::hint::black_box;

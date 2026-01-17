@@ -27,12 +27,12 @@ jobs:
         include:
           - platform: macOS ARM64
             runner: macos-latest
-            bazel_platform: //rust/formatjs_cli/platforms:darwin_arm64
+            bazel_platform: //crates/formatjs_cli/platforms:darwin_arm64
             artifact_name: formatjs_cli-darwin-arm64
             config: ci-darwin
           - platform: Linux x86_64
             runner: ubuntu-latest
-            bazel_platform: //rust/formatjs_cli/platforms:linux_x86_64
+            bazel_platform: //crates/formatjs_cli/platforms:linux_x86_64
             artifact_name: formatjs_cli-linux-x64
             config: ci
 
@@ -56,17 +56,17 @@ jobs:
               --platforms=${{ matrix.bazel_platform }} \
               --remote_download_outputs=all \
               --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
-              //rust/formatjs_cli:release_binary
+              //crates/formatjs_cli:release_binary
           else
             bazel build \
               --compilation_mode=opt \
               --platforms=${{ matrix.bazel_platform }} \
-              //rust/formatjs_cli:release_binary
+              //crates/formatjs_cli:release_binary
           fi
 
           # Copy binary to artifacts directory
           mkdir -p artifacts
-          cp bazel-bin/rust/formatjs_cli/formatjs_cli_release artifacts/${{ matrix.artifact_name }}
+          cp bazel-bin/crates/formatjs_cli/formatjs_cli_release artifacts/${{ matrix.artifact_name }}
           chmod +x artifacts/${{ matrix.artifact_name }}
 
       - name: Smoke Test

@@ -20,7 +20,7 @@ echo "  - Building TypeScript CLI..."
 bazel build //packages/cli:bin
 
 echo "  - Building Rust CLI (optimized)..."
-bazel build //rust/formatjs_cli --compilation_mode=opt
+bazel build //crates/formatjs_cli --compilation_mode=opt
 
 # Step 2: Generate test files
 echo ""

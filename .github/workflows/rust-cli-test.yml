@@ -47,15 +47,15 @@ jobs:
               --compilation_mode=opt \
               --remote_download_outputs=all \
               --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
-              //rust/formatjs_cli
+              //crates/formatjs_cli
           else
             echo "Building without BuildBuddy (no API key)"
-            bazel build --compilation_mode=opt //rust/formatjs_cli
+            bazel build --compilation_mode=opt //crates/formatjs_cli
           fi
 
       - name: Smoke Test Binary
         run: |
-          BINARY_PATH=bazel-bin/rust/formatjs_cli/formatjs_cli
+          BINARY_PATH=bazel-bin/crates/formatjs_cli/formatjs_cli
           echo "Testing binary at: $BINARY_PATH"
           $BINARY_PATH --version
           $BINARY_PATH --help

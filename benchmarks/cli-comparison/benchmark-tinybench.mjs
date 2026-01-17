@@ -24,13 +24,13 @@ try {
     '_main/benchmarks/cli-comparison/test-files'
   )
   TS_CLI = runfiles.resolve('_main/packages/cli/bin/formatjs')
-  RUST_CLI = runfiles.resolve('_main/rust/formatjs_cli/formatjs_cli')
+  RUST_CLI = runfiles.resolve('_main/crates/formatjs_cli/formatjs_cli')
 } catch {
   // Fall back to bazel-bin for manual execution
   const BAZEL_BIN = path.join(__dirname, '../../bazel-bin')
   TEST_FILES_DIR = path.join(BAZEL_BIN, 'benchmarks/cli-comparison/test-files')
   TS_CLI = path.join(BAZEL_BIN, 'packages/cli/bin/formatjs')
-  RUST_CLI = path.join(BAZEL_BIN, 'rust/formatjs_cli/formatjs_cli')
+  RUST_CLI = path.join(BAZEL_BIN, 'crates/formatjs_cli/formatjs_cli')
 }
 
 const OUTPUT_DIR = path.join(__dirname, 'benchmark-output')
@@ -45,7 +45,7 @@ if (!fs.existsSync(TS_CLI)) {
 // Check if Rust CLI is built
 if (!fs.existsSync(RUST_CLI)) {
   console.error('❌ Error: Rust CLI not found. Please build it first:')
-  console.error('  bazel build //rust/formatjs_cli --compilation_mode=opt')
+  console.error('  bazel build //crates/formatjs_cli --compilation_mode=opt')
   process.exit(1)
 }
 

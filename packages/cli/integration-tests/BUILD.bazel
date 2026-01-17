@@ -7,7 +7,7 @@ npm_link_all_packages()
 # Copy Rust CLI binary to integration tests directory so js_run_binary can find it
 copy_file(
     name = "rust_cli_copy",
-    src = "//rust/formatjs_cli",
+    src = "//crates/formatjs_cli",
     out = "formatjs_cli",
     visibility = ["//visibility:private"],
 )
@@ -81,7 +81,7 @@ vitest(
         "//:node_modules/fs-extra",
     ],
     data = [
-        "//rust/formatjs_cli",
+        "//crates/formatjs_cli",
     ],
     fixtures = glob(
         ["extract/**/*"],
@@ -141,7 +141,7 @@ vitest(
         ["compile/**/*"],
     ),
     data = [
-        "//rust/formatjs_cli",
+        "//crates/formatjs_cli",
     ],
     deps = ["//:node_modules/@bazel/runfiles"],
 )
@@ -155,7 +155,7 @@ vitest(
         ["verify/*.test.ts"],
     ),
     data = [
-        "//rust/formatjs_cli",
+        "//crates/formatjs_cli",
     ],
     fixtures = glob(
         ["verify/**/*"],

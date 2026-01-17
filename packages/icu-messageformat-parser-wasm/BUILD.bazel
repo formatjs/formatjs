@@ -11,9 +11,9 @@ PACKAGE_NAME = "icu-messageformat-parser-wasm"
 # Copy WASM files to the wasm/ directory
 copy_to_directory(
     name = "wasm_files",
-    srcs = ["//rust/icu_messageformat_parser:formatjs_icu_messageformat_parser_wasm"],
+    srcs = ["//crates/icu_messageformat_parser:formatjs_icu_messageformat_parser_wasm"],
     out = "wasm",
-    root_paths = ["rust/icu_messageformat_parser/formatjs_icu_messageformat_parser_wasm"],
+    root_paths = ["crates/icu_messageformat_parser/formatjs_icu_messageformat_parser_wasm"],
 )
 
 SRCS = ["index.ts"]

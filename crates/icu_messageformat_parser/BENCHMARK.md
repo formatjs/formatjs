@@ -8,11 +8,11 @@ This document contains benchmark results for the Rust implementation of the ICU 
 
 ```bash
 # Build and run with optimizations (recommended)
-bazel run -c opt //rust/icu_messageformat_parser:parser_bench -- --bench
+bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench
 
 # Alternative: Build first, then run
-bazel build -c opt //rust/icu_messageformat_parser:parser_bench
-./bazel-bin/rust/icu_messageformat_parser/parser_bench --bench
+bazel build -c opt //crates/icu_messageformat_parser:parser_bench
+./bazel-bin/crates/icu_messageformat_parser/parser_bench --bench
 ```
 
 The benchmark uses [Criterion.rs](https://github.com/bheisler/criterion.rs) for statistical analysis of performance.

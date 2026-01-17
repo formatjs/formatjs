@@ -50,7 +50,7 @@ git push origin formatjs_cli_v0.1.0
 ### Option 2: Using Cargo
 
 ```bash
-cd rust/formatjs_cli
+cd crates/formatjs_cli
 ./release.sh
 ```
 
@@ -109,17 +109,17 @@ cross build --release --target x86_64-unknown-linux-gnu
 
 ```bash
 # Build for current platform
-bazel build --compilation_mode=opt //rust/formatjs_cli:release_binary
+bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary
 
 # Build for specific platform (requires being on that platform)
 # macOS ARM64:
-bazel build --compilation_mode=opt --platforms=//rust/formatjs_cli/platforms:darwin_arm64 //rust/formatjs_cli:release_binary
+bazel build --compilation_mode=opt --platforms=//crates/formatjs_cli/platforms:darwin_arm64 //crates/formatjs_cli:release_binary
 
 # Linux x86_64:
-bazel build --compilation_mode=opt --platforms=//rust/formatjs_cli/platforms:linux_x86_64 //rust/formatjs_cli:release_binary
+bazel build --compilation_mode=opt --platforms=//crates/formatjs_cli/platforms:linux_x86_64 //crates/formatjs_cli:release_binary
 ```
 
-Binary will be in `bazel-bin/rust/formatjs_cli/formatjs_cli_release`.
+Binary will be in `bazel-bin/crates/formatjs_cli/formatjs_cli_release`.
 
 **Note**: Bazel builds each platform natively (no cross-compilation). Use GitHub Actions to build both platforms.
 

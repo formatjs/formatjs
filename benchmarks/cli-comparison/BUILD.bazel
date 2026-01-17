@@ -23,8 +23,8 @@ js_binary(
         ":generate",  # Test files as data dependency
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/tinybench",
+        "//crates/formatjs_cli",
         "//packages/cli:bin",
-        "//rust/formatjs_cli",
     ],
     entry_point = "benchmark-tinybench.mjs",
     tags = ["manual"],

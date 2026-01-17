@@ -25,8 +25,8 @@ mkdir -p "$OUTPUT_DIR"
 
 # Build for Darwin ARM64
 echo -e "${BLUE}Building for Darwin ARM64...${NC}"
-if bazel build --platforms=//rust/formatjs_cli/platforms:darwin_arm64 //rust/formatjs_cli:formatjs_cli 2>&1 | tee /tmp/build_darwin.log; then
-    BINARY_PATH=$(bazel cquery --output=files --platforms=//rust/formatjs_cli/platforms:darwin_arm64 //rust/formatjs_cli:formatjs_cli 2>/dev/null)
+if bazel build --platforms=//crates/formatjs_cli/platforms:darwin_arm64 //crates/formatjs_cli:formatjs_cli 2>&1 | tee /tmp/build_darwin.log; then
+    BINARY_PATH=$(bazel cquery --output=files --platforms=//crates/formatjs_cli/platforms:darwin_arm64 //crates/formatjs_cli:formatjs_cli 2>/dev/null)
     if [ -f "$BINARY_PATH" ]; then
         cp "$BINARY_PATH" "$OUTPUT_DIR/formatjs-darwin-arm64"
         chmod +x "$OUTPUT_DIR/formatjs-darwin-arm64"
@@ -44,8 +44,8 @@ echo ""
 # Build for Linux x64
 echo -e "${BLUE}Building for Linux x64...${NC}"
 echo -e "${YELLOW}Note: Cross-compilation to Linux may require additional toolchain setup${NC}"
-if bazel build --platforms=//rust/formatjs_cli/platforms:linux_x86_64 //rust/formatjs_cli:formatjs_cli 2>&1 | tee /tmp/build_linux.log; then
-    BINARY_PATH=$(bazel cquery --output=files --platforms=//rust/formatjs_cli/platforms:linux_x86_64 //rust/formatjs_cli:formatjs_cli 2>/dev/null)
+if bazel build --platforms=//crates/formatjs_cli/platforms:linux_x86_64 //crates/formatjs_cli:formatjs_cli 2>&1 | tee /tmp/build_linux.log; then
+    BINARY_PATH=$(bazel cquery --output=files --platforms=//crates/formatjs_cli/platforms:linux_x86_64 //crates/formatjs_cli:formatjs_cli 2>/dev/null)
     if [ -f "$BINARY_PATH" ]; then
         cp "$BINARY_PATH" "$OUTPUT_DIR/formatjs-linux-x86_64"
         chmod +x "$OUTPUT_DIR/formatjs-linux-x86_64"

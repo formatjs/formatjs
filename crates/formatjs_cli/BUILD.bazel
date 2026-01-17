@@ -23,8 +23,8 @@ exports_files(
 
 # Common dependencies for all targets
 COMMON_DEPS = [
-    "//rust/icu_messageformat_parser",
-    "//rust/icu_skeleton_parser",
+    "//crates/icu_messageformat_parser",
+    "//crates/icu_skeleton_parser",
     "@crates//:anyhow",
     "@crates//:base64",
     "@crates//:clap",
@@ -85,8 +85,8 @@ alias(
 
 # Release targets - these build for the current platform and copy to release directory
 # Use --platforms flag to build for different platforms:
-#   macOS: bazel build --platforms=//rust/formatjs_cli/platforms:darwin_arm64 //rust/formatjs_cli:release_binary
-#   Linux: bazel build --platforms=//rust/formatjs_cli/platforms:linux_x86_64 //rust/formatjs_cli:release_binary
+#   macOS: bazel build --platforms=//crates/formatjs_cli/platforms:darwin_arm64 //crates/formatjs_cli:release_binary
+#   Linux: bazel build --platforms=//crates/formatjs_cli/platforms:linux_x86_64 //crates/formatjs_cli:release_binary
 
 genrule(
     name = "release_binary",

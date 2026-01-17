@@ -5,12 +5,9 @@
 
 use crate::date_time_pattern_generator::get_best_pattern;
 use crate::error::{ErrorKind, Location, LocationDetails, ParserError};
-use crate::regex_generated::SPACE_SEPARATOR_REGEX;
 use crate::types::*;
 use formatjs_icu_skeleton_parser::{parse_date_time_skeleton, parse_number_skeleton};
 use icu::locale::Locale;
-use once_cell::sync::Lazy;
-use regex::Regex;
 use indexmap::IndexMap;
 use std::collections::HashSet;
 
@@ -98,30 +95,6 @@ impl ArgType {
         }
     }
 }
-
-/// Regex for trimming leading space separators.
-static SPACE_SEPARATOR_START_REGEX: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!(
-        "^{}*",
-        SPACE_SEPARATOR_REGEX
-            .as_str()
-            .trim_start_matches('^')
-            .trim_end_matches('$')
-    );
-    Regex::new(&pattern).expect("Failed to compile SPACE_SEPARATOR_START_REGEX")
-});
-
-/// Regex for trimming trailing space separators.
-static SPACE_SEPARATOR_END_REGEX: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!(
-        "{}*$",
-        SPACE_SEPARATOR_REGEX
-            .as_str()
-            .trim_start_matches('^')
-            .trim_end_matches('$')
-    );
-    Regex::new(&pattern).expect("Failed to compile SPACE_SEPARATOR_END_REGEX")
-});
 
 /// Static string constants for common single-character literals.
 /// OPTIMIZATION: Avoids allocating new Strings for commonly-used single characters.
@@ -257,13 +230,19 @@ fn is_identifier_char(c: char) -> bool {
 }
 
 /// Trims leading space separators from a string.
+///
+/// OPTIMIZED: Uses character iteration instead of regex for better performance.
 fn trim_start(s: &str) -> String {
-    SPACE_SEPARATOR_START_REGEX.replace(s, "").to_string()
+    s.trim_start_matches(|c: char| is_white_space(c as u32))
+        .to_string()
 }
 
 /// Trims trailing space separators from a string.
+///
+/// OPTIMIZED: Uses character iteration instead of regex for better performance.
 fn trim_end(s: &str) -> String {
-    SPACE_SEPARATOR_END_REGEX.replace(s, "").to_string()
+    s.trim_end_matches(|c: char| is_white_space(c as u32))
+        .to_string()
 }
 
 /// Creates a Location from start and end positions.
@@ -280,6 +259,20 @@ fn create_location(start: Position, end: Position) -> Option<Location> {
             column: end.column,
         },
     })
+}
+
+/// Cold panic helper - marks panic paths as unlikely to improve branch prediction.
+#[cold]
+#[inline(never)]
+fn cold_panic(msg: &str) -> ! {
+    panic!("{}", msg)
+}
+
+/// Cold panic helper with formatting.
+#[cold]
+#[inline(never)]
+fn cold_panic_fmt(args: std::fmt::Arguments) -> ! {
+    panic!("{}", args)
 }
 
 /// ICU MessageFormat parser.
@@ -347,7 +340,7 @@ impl Parser {
     /// Panics if the parser has already been used (offset is not 0).
     pub fn parse(mut self) -> Result<Vec<MessageFormatElement>> {
         if self.offset() != 0 {
-            panic!("parser can only be used once");
+            cold_panic("parser can only be used once");
         }
         self.parse_message(0, ArgType::None, false)
     }
@@ -355,19 +348,25 @@ impl Parser {
     // ===== Position Management Methods =====
 
     /// Returns the current byte offset in the message.
-    #[inline]
+    ///
+    /// Hot path function - always inline.
+    #[inline(always)]
     fn byte_offset(&self) -> usize {
         self.position.byte_offset
     }
 
     /// Returns the current character offset in the message.
-    #[inline]
+    ///
+    /// Hot path function - always inline.
+    #[inline(always)]
     fn offset(&self) -> usize {
         self.position.offset
     }
 
     /// Checks if we've reached the end of the message.
-    #[inline]
+    ///
+    /// Inlined and optimized for hot path - most calls return false.
+    #[inline(always)]
     fn is_eof(&self) -> bool {
         // FIX: Check byte_offset against byte length, not character offset
         self.byte_offset() >= self.message.len()
@@ -378,12 +377,15 @@ impl Parser {
     /// # Panics
     ///
     /// Panics if at EOF or at an invalid UTF-8 boundary.
+    ///
+    /// Hot path function - always inline for performance.
+    #[inline(always)]
     fn char(&self) -> u32 {
         // FIX: Use byte_offset for string indexing, not character offset
         // Character offset counts Unicode code points, byte_offset is the actual position in the UTF-8 string
         let byte_offset = self.position.byte_offset;
         if byte_offset >= self.message.len() {
-            panic!("out of bound");
+            cold_panic("out of bound");
         }
 
         // Get the character at this byte offset
@@ -391,7 +393,7 @@ impl Parser {
         let ch = remaining
             .chars()
             .next()
-            .expect("Offset is at invalid UTF-8 boundary");
+            .unwrap_or_else(|| cold_panic("Offset is at invalid UTF-8 boundary"));
 
         ch as u32
     }
@@ -403,6 +405,10 @@ impl Parser {
     }
 
     /// Creates an error Result with the given error kind and location.
+    ///
+    /// Marked as cold since error paths should be rare in valid messages.
+    #[cold]
+    #[inline(never)]
     fn error<T>(&self, kind: ErrorKind, location: Option<Location>) -> Result<T> {
         // If location is not provided, create a default location at current position
         let loc = location.unwrap_or_else(|| {
@@ -431,6 +437,9 @@ impl Parser {
     /// Advances the parser by one Unicode codepoint.
     ///
     /// Updates line and column tracking appropriately.
+    ///
+    /// Hot path function - inlined for performance.
+    #[inline]
     fn bump(&mut self) {
         if self.is_eof() {
             return;
@@ -492,11 +501,11 @@ impl Parser {
     /// Panics if target_offset is less than current offset or at an invalid UTF-8 boundary.
     fn bump_to(&mut self, target_offset: usize) {
         if self.offset() > target_offset {
-            panic!(
+            cold_panic_fmt(format_args!(
                 "targetOffset {} must be greater than or equal to the current offset {}",
                 target_offset,
                 self.offset()
-            );
+            ));
         }
 
         let target_offset = target_offset.min(self.message.len());
@@ -509,10 +518,10 @@ impl Parser {
         }
 
         if self.offset() != target_offset && target_offset < self.message.len() {
-            panic!(
+            cold_panic_fmt(format_args!(
                 "targetOffset {} is at invalid UTF-8 boundary",
                 target_offset
-            );
+            ));
         }
     }
 
@@ -1010,7 +1019,17 @@ impl Parser {
         parent_arg_type: ArgType,
         expecting_close_tag: bool,
     ) -> Result<Vec<MessageFormatElement>> {
-        let mut elements = Vec::new();
+        // OPTIMIZATION: Pre-allocate Vec capacity to reduce reallocations.
+        // Heuristic: Estimate ~1 element per 20 characters, bounded between 4-16 for top level.
+        // Nested messages (inside plural/select) tend to be smaller.
+        let estimated_capacity = if nesting_level == 0 {
+            let remaining_len = self.message.len() - self.byte_offset();
+            ((remaining_len / 20) + 1).clamp(4, 16)
+        } else {
+            // Nested contexts: be conservative
+            4
+        };
+        let mut elements = Vec::with_capacity(estimated_capacity);
 
         while !self.is_eof() {
             let ch = self.char();
@@ -1499,7 +1518,8 @@ impl Parser {
         mut selector_location: Option<Location>,
     ) -> Result<Vec<(String, PluralOrSelectOption)>> {
         let mut has_other_clause = false;
-        let mut options = Vec::new();
+        // OPTIMIZATION: Pre-allocate for typical plural/select with 2-5 options
+        let mut options = Vec::with_capacity(4);
         let mut parsed_selectors = HashSet::new();
 
         loop {
