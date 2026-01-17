@@ -83,3 +83,23 @@ This gets triggered whenever we try to look up a translated message in `messages
   that does not have a translation. Therefore if you do log it remotely there
   should be throttling in place.
 </Admonition>
+
+### `MISSING_OTHER_CLAUSE`
+
+This error occurs during message compilation when a `plural` or `select` argument is missing the required `other` clause. According to the ICU MessageFormat specification, plural and select arguments must always include an `other` option as a fallback.
+
+For example, this message would trigger the error:
+
+```tsx
+intl.formatMessage({
+  defaultMessage: '{count, plural, one {# item} few {# items}}',
+})
+```
+
+To fix it, add the `other` clause:
+
+```tsx
+intl.formatMessage({
+  defaultMessage: '{count, plural, one {# item} few {# items} other {# items}}',
+})
+```
