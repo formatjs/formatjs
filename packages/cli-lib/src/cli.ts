@@ -232,6 +232,18 @@ This is especially useful to convert from a TMS-specific format back to react-in
       '--ast',
       `Whether to compile to AST. See https://formatjs.github.io/docs/guides/advanced-usage#pre-parsing-messages for more information`
     )
+    .option(
+      '--skip-errors',
+      `Whether to continue compiling messages after encountering an error. Any keys with errors will not be included in the output file.`
+    )
+    .option(
+      '--pseudo-locale <pseudoLocale>',
+      `Whether to generate pseudo-locale files. See https://formatjs.github.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. "--ast" is required for this to work.`
+    )
+    .option(
+      '--ignore-tag',
+      `Whether the parser to treat HTML/XML tags as string literal instead of parsing them as tag token. When this is false we only allow simple tags without any attributes.`
+    )
     .action(async (folder: string, outFolder: string, opts?: Opts) => {
       debug('Folder:', folder)
       debug('Options:', opts)

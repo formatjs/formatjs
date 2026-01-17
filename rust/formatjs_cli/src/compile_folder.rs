@@ -2,6 +2,7 @@ use anyhow::{Context, Result};
 use glob::glob;
 use std::path::PathBuf;
 
+use crate::compile;
 use crate::formatters::Formatter;
 
 /// Batch compile all extracted translation JSON files in a folder.
@@ -16,6 +17,9 @@ use crate::formatters::Formatter;
 /// * `out_folder` - Output directory for compiled files
 /// * `format` - Optional formatter (same signature as compile command)
 /// * `ast` - Whether to compile to AST representation
+/// * `skip_errors` - Continue compiling after errors, excluding keys with errors from output
+/// * `pseudo_locale` - Optional pseudo-locale generation
+/// * `ignore_tag` - Treat HTML/XML tags as string literals
 ///
 /// # Example
 ///
@@ -27,6 +31,9 @@ use crate::formatters::Formatter;
 ///     &PathBuf::from("dist/lang/"),
 ///     None,
 ///     true,
+///     false,
+///     None,
+///     false,
 /// ).unwrap();
 /// ```
 pub fn compile_folder(
@@ -34,6 +41,9 @@ pub fn compile_folder(
     out_folder: &PathBuf,
     format: Option<Formatter>,
     ast: bool,
+    skip_errors: bool,
+    pseudo_locale: Option<compile::PseudoLocale>,
+    ignore_tag: bool,
 ) -> Result<()> {
     use crate::compile::compile;
 
@@ -102,9 +112,9 @@ pub fn compile_folder(
             format,
             Some(&out_file),
             ast,
-            false, // skip_errors: false for folder compilation
-            None,  // pseudo_locale: None
-            false, // ignore_tag: false
+            skip_errors,
+            pseudo_locale,
+            ignore_tag,
         ) {
             Ok(_) => {
                 success_count += 1;
@@ -159,6 +169,9 @@ mod tests {
             &out_dir.path().to_path_buf(),
             None,
             false,
+            false,
+            None,
+            false,
         )
         .unwrap();
 
@@ -204,6 +217,9 @@ mod tests {
             &out_dir.path().to_path_buf(),
             None,
             false,
+            false,
+            None,
+            false,
         )
         .unwrap();
 
@@ -242,6 +258,9 @@ mod tests {
             &out_dir.path().to_path_buf(),
             Some(Formatter::Default),
             false,
+            false,
+            None,
+            false,
         )
         .unwrap();
 
@@ -269,6 +288,9 @@ mod tests {
             &out_dir.path().to_path_buf(),
             None,
             true, // AST output
+            false,
+            None,
+            false,
         )
         .unwrap();
 
@@ -284,7 +306,15 @@ mod tests {
         let nonexistent = PathBuf::from("/nonexistent/path");
 
         // Should fail when source folder doesn't exist
-        let result = compile_folder(&nonexistent, &out_dir.path().to_path_buf(), None, false);
+        let result = compile_folder(
+            &nonexistent,
+            &out_dir.path().to_path_buf(),
+            None,
+            false,
+            false,
+            None,
+            false,
+        );
 
         assert!(result.is_err());
         assert!(result.unwrap_err().to_string().contains("does not exist"));
@@ -300,7 +330,15 @@ mod tests {
         fs::write(&file, "content").unwrap();
 
         // Should fail when source is not a directory
-        let result = compile_folder(&file, &out_dir.path().to_path_buf(), None, false);
+        let result = compile_folder(
+            &file,
+            &out_dir.path().to_path_buf(),
+            None,
+            false,
+            false,
+            None,
+            false,
+        );
 
         assert!(result.is_err());
         assert!(result.unwrap_err().to_string().contains("not a directory"));
@@ -318,6 +356,9 @@ mod tests {
         let result = compile_folder(
             &src_dir.path().to_path_buf(),
             &out_dir.path().to_path_buf(),
+            None,
+            false,
+            false,
             None,
             false,
         );
@@ -348,6 +389,9 @@ mod tests {
             &out_dir.path().to_path_buf(),
             None,
             false,
+            false,
+            None,
+            false,
         );
 
         assert!(result.is_err());
@@ -373,6 +417,9 @@ mod tests {
             &out_dir.path().to_path_buf(),
             None,
             false,
+            false,
+            None,
+            false,
         )
         .unwrap();
 
@@ -396,7 +443,16 @@ mod tests {
         .unwrap();
 
         // Compile folder (should create nested output directory)
-        compile_folder(&src_dir.path().to_path_buf(), &out_dir, None, false).unwrap();
+        compile_folder(
+            &src_dir.path().to_path_buf(),
+            &out_dir,
+            None,
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
 
         // Verify output directory was created
         assert!(out_dir.exists());

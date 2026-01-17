@@ -199,6 +199,18 @@ enum Commands {
         /// Whether to compile to AST
         #[arg(long)]
         ast: bool,
+
+        /// Continue compiling after errors. Keys with errors are excluded from output.
+        #[arg(long)]
+        skip_errors: bool,
+
+        /// Generate pseudo-locale files. Requires --ast.
+        #[arg(long, value_name = "LOCALE")]
+        pseudo_locale: Option<PseudoLocale>,
+
+        /// Treat HTML/XML tags as string literals instead of parsing them as tag tokens
+        #[arg(long)]
+        ignore_tag: bool,
     },
 
     /// Run a series of checks on translation files to validate correctness and consistency
@@ -289,8 +301,19 @@ fn main() -> Result<()> {
             out_folder,
             format,
             ast,
+            skip_errors,
+            pseudo_locale,
+            ignore_tag,
         } => {
-            compile_folder::compile_folder(folder, out_folder, format.map(|f| f.into()), *ast)?;
+            compile_folder::compile_folder(
+                folder,
+                out_folder,
+                format.map(|f| f.into()),
+                *ast,
+                *skip_errors,
+                pseudo_locale.map(|p| p.into()),
+                *ignore_tag,
+            )?;
         }
         Commands::Verify {
             translation_files,
