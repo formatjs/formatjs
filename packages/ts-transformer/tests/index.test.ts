@@ -714,6 +714,14 @@ describe('emit asserts for', function () {
       compile(join(FIXTURES_DIR, 'nonStaticMessages.tsx'), {})
     ).rejects.toThrow(/\[FormatJS\] `defaultMessage` must be a string literal/)
   })
+
+  it('GH #4161 - flatten error should include file and line information', async function () {
+    await expect(
+      compile(join(FIXTURES_DIR, 'flattenError.tsx'), {flatten: true})
+    ).rejects.toThrow(
+      /\[formatjs\] Cannot flatten message in file.*flattenError\.tsx.*at line \d+, column \d+.*with id "test\.message".*Cannot hoist plural\/select within a tag element/
+    )
+  })
 })
 
 async function compile(filePath: string, options?: Partial<Opts>) {

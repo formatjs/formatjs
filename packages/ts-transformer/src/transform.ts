@@ -511,9 +511,11 @@ function extractMessageDescriptor(
   if (flatten && msg.defaultMessage) {
     try {
       msg.defaultMessage = printAST(hoistSelectors(parse(msg.defaultMessage)))
-    } catch {
-      // If flatten fails, continue with original message
-      // The error will be caught again during validation
+    } catch (e: any) {
+      const {line, character} = sf.getLineAndCharacterOfPosition(node.pos)
+      throw new Error(
+        `[formatjs] Cannot flatten message in file "${sf.fileName}" at line ${line + 1}, column ${character + 1}${msg.id ? ` with id "${msg.id}"` : ''}: ${e.message}\nMessage: ${msg.defaultMessage}`
+      )
     }
   }
   if (msg.defaultMessage && overrideIdFn) {

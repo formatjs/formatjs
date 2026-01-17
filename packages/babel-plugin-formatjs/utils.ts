@@ -111,9 +111,14 @@ export function evaluateMessageDescriptor(
   if (flatten && defaultMessage) {
     try {
       defaultMessage = printAST(hoistSelectors(parse(defaultMessage)))
-    } catch {
-      // If flatten fails, continue with original message
-      // The error will be caught again during validation
+    } catch (e: any) {
+      const loc = descriptorPath.defaultMessage?.node.loc
+      const locationStr = loc
+        ? ` at line ${loc.start.line}, column ${loc.start.column + 1}`
+        : ''
+      throw new Error(
+        `[formatjs] Cannot flatten message in file "${filename}"${locationStr}${id ? ` with id "${id}"` : ''}: ${e.message}\nMessage: ${defaultMessage}`
+      )
     }
   }
 

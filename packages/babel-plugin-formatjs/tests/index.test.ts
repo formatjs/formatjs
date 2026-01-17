@@ -200,6 +200,16 @@ test('Properly throws parse errors', () => {
   ).toThrow('SyntaxError: MALFORMED_ARGUMENT')
 })
 
+test('GH #4161 - flatten error should include file and line information', () => {
+  expect(() =>
+    transform(path.join(__dirname, 'fixtures', 'flattenError.js'), {
+      flatten: true,
+    })
+  ).toThrow(
+    /\[formatjs\] Cannot flatten message in file.*flattenError\.js.*at line \d+, column \d+.*with id "test\.message".*Cannot hoist plural\/select within a tag element/
+  )
+})
+
 test('skipExtractionFormattedMessage', function () {
   transformAndCheck('skipExtractionFormattedMessage')
 })

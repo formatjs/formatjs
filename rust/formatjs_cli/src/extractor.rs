@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use formatjs_icu_messageformat_parser::{
-    Parser as IcuParser, ParserOptions, hoist_selectors, print_ast,
+    Parser as IcuParser, ParserOptions, print_ast, try_hoist_selectors,
 };
 use oxc::ast_visit::{Visit, walk};
 use oxc_allocator::Allocator;
@@ -28,6 +28,24 @@ pub struct MessageDescriptor {
     pub start: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub end: Option<u32>,
+}
+
+/// Convert byte offset to (line, column) - both 1-indexed
+fn get_line_col(source: &str, offset: usize) -> (usize, usize) {
+    let mut line = 1;
+    let mut col = 1;
+    for (i, ch) in source.chars().enumerate() {
+        if i >= offset {
+            break;
+        }
+        if ch == '\n' {
+            line += 1;
+            col = 1;
+        } else {
+            col += 1;
+        }
+    }
+    (line, col)
 }
 
 /// Extract messages from a single source file
@@ -86,18 +104,43 @@ pub fn extract_messages_from_source(
                     match parser.parse() {
                         Ok(ast) => {
                             // Apply selector hoisting
-                            let hoisted_ast = hoist_selectors(ast);
-                            // Print back to string
-                            msg.default_message = Some(print_ast(&hoisted_ast));
+                            match try_hoist_selectors(ast) {
+                                Ok(hoisted_ast) => {
+                                    // Print back to string
+                                    msg.default_message = Some(print_ast(&hoisted_ast));
+                                }
+                                Err(e) => {
+                                    // Get line and column from start position if available
+                                    let location_str = if let Some(start) = msg.start {
+                                        let line_col = get_line_col(source_text, start as usize);
+                                        format!(" at line {}, column {}", line_col.0, line_col.1)
+                                    } else {
+                                        String::new()
+                                    };
+                                    let id_str = msg
+                                        .id
+                                        .as_ref()
+                                        .map(|id| format!(" with id \"{}\"", id))
+                                        .unwrap_or_default();
+                                    anyhow::bail!(
+                                        "[formatjs] Cannot flatten message in file \"{}\"{}{}: {}\nMessage: {}",
+                                        file_path.display(),
+                                        location_str,
+                                        id_str,
+                                        e,
+                                        default_message
+                                    );
+                                }
+                            }
                         }
                         Err(_) => {
                             // If parsing fails, keep the original message
                         }
                     }
                 }
-                msg
+                Ok(msg)
             })
-            .collect()
+            .collect::<Result<Vec<_>>>()?
     } else {
         visitor.messages
     };
@@ -1570,5 +1613,52 @@ mod tests {
         assert_eq!(messages.len(), 1);
         assert_eq!(messages[0].id, Some("test".to_string()));
         assert_eq!(messages[0].default_message, Some("Hello world".to_string()));
+    }
+
+    #[test]
+    fn test_flatten_error_includes_location_info() {
+        // GH #4161 - Test that flatten errors include file path, line, and column
+        let source = r#"
+import { FormattedMessage } from 'react-intl';
+export default function Test() {
+  return (
+    <FormattedMessage
+      id="test.message"
+      defaultMessage="Hello <b>{count, plural, one {# item} other {# items}}</b>"
+    />
+  );
+}
+"#;
+
+        let file_path = PathBuf::from("test.tsx");
+        let source_type = SourceType::default().with_typescript(true).with_jsx(true);
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec!["formatMessage".to_string()];
+
+        // Should fail with detailed error message including file, line, column, and id
+        let result = extract_messages_from_source(
+            source,
+            &file_path,
+            source_type,
+            true, // extract_source_location = true
+            &component_names,
+            &function_names,
+            HashMap::new(),
+            false,
+            true, // flatten = true
+            false,
+        );
+
+        assert!(result.is_err(), "Should fail when trying to flatten plural within tag");
+        let error = result.unwrap_err().to_string();
+
+        // Verify error message contains all expected information
+        assert!(error.contains("[formatjs]"), "Error should include [formatjs] prefix");
+        assert!(error.contains("test.tsx"), "Error should include file name");
+        assert!(error.contains("line"), "Error should include line number");
+        assert!(error.contains("column"), "Error should include column number");
+        assert!(error.contains("test.message"), "Error should include message ID");
+        assert!(error.contains("Cannot hoist plural/select within a tag element"), "Error should include original error message");
+        assert!(error.contains("<b>{count"), "Error should include problematic message");
     }
 }

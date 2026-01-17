@@ -22,7 +22,7 @@ pub use printer::{print_ast, print_date_time_skeleton};
 // Re-export manipulator functions and types
 pub use manipulator::{
     ManipulatorError, StructuralComparisonError, StructuralComparisonResult, hoist_selectors,
-    is_structurally_same,
+    is_structurally_same, try_hoist_selectors,
 };
 
 // Re-export parser types and functions

@@ -421,6 +421,27 @@ pub fn hoist_selectors(ast: Vec<MessageFormatElement>) -> Vec<MessageFormatEleme
     hoist_selectors_impl(ast).unwrap_or_else(|e| panic!("{}", e))
 }
 
+/// Tries to hoist all plural and select elements to the beginning of the AST.
+///
+/// This is the same as `hoist_selectors` but returns a Result instead of panicking.
+///
+/// # Arguments
+///
+/// * `ast` - The AST to transform
+///
+/// # Returns
+///
+/// A Result containing the new AST with selectors hoisted, or an error if hoisting fails.
+///
+/// # Errors
+///
+/// Returns an error if a plural/select element is found within a tag element.
+pub fn try_hoist_selectors(
+    ast: Vec<MessageFormatElement>,
+) -> Result<Vec<MessageFormatElement>, ManipulatorError> {
+    hoist_selectors_impl(ast)
+}
+
 /// Collects all variables and their types from an AST.
 ///
 /// This recursively walks the AST and builds a map of variable names to their types.
