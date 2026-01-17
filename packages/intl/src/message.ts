@@ -145,15 +145,6 @@ to autofix this issue`
     return message[0].value
   }
 
-  // IMPORTANT: Hot path straight lookup for performance
-  if (
-    !values &&
-    message &&
-    typeof message === 'string' &&
-    !defaultRichTextElements
-  ) {
-    return message.replace(/'\{(.*?)\}'/gi, `{$1}`)
-  }
   values = {
     ...defaultRichTextElements,
     ...values,

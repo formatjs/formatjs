@@ -24,6 +24,7 @@ describe('format API', () => {
         with_arg: 'Hello, {name}!',
         with_named_format: 'It is {now, date, year_only}',
         with_html: 'Hello, <b>{name}</b>!',
+        escaped_curly: "Start editing to see some magic '{{happen}}!",
 
         missing: undefined as any,
         empty: '',
@@ -113,18 +114,10 @@ describe('format API', () => {
       // @ts-ignore
       formatMessage = baseFormatMessage.bind(null, config, state)
     })
-    it('should hot path message without values', function () {
-      ;(state.getMessageFormat as any).mockClear()
-      expect(formatMessage({id: 'no_args'})).toBe('Hello, World!')
-      expect(state.getMessageFormat).not.toHaveBeenCalled()
-      expect(formatMessage({id: 'with_arg'}, {name: 'foo'})).toBe('Hello, foo!')
-      expect(state.getMessageFormat).toHaveBeenCalled()
-    })
-    it('should hot path message without values', function () {
-      ;(state.getMessageFormat as any).mockClear()
-      const err = vi.spyOn(console, 'error')
-      expect(formatMessage({id: 'no_args'})).toBe('Hello, World!')
-      expect(err).not.toHaveBeenCalled()
+    it('should format messages with escaped curly braces correctly', function () {
+      expect(formatMessage({id: 'escaped_curly'})).toBe(
+        'Start editing to see some magic {{happen}}!'
+      )
     })
     it('should not crash of messages does not have Object.prototype', function () {
       const messages = Object.create(null)
