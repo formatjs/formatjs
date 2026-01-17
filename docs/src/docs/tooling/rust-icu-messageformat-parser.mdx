@@ -8,7 +8,7 @@ A high-performance Rust implementation of the ICU MessageFormat parser, providin
 
 ## Features
 
-- **🚀 High Performance**: Native Rust implementation optimized for speed
+- **🚀 High Performance**: 2.6-3.7x faster than JavaScript parser (optimized build)
 - **🌐 Full ICU MessageFormat Support**: Complete syntax support including plurals, selects, and formatting
 - **🔒 Type Safe**: Strongly-typed AST with comprehensive error handling
 - **🎯 Zero-Copy Parsing**: Efficient parsing with minimal allocations where possible
@@ -175,25 +175,43 @@ match parser.parse() {
 
 ## Performance
 
-The Rust parser provides significant performance improvements over JavaScript implementations:
+The Rust parser (optimized build) provides significant performance improvements over JavaScript implementations:
 
-- **Parsing Speed**: 10-20x faster than JS implementations
+### Benchmark Results
+
+Run with: `bazel run -c opt //crates/icu_messageformat_parser:comparison_bench`
+
+| Message Type | Rust Parser | JavaScript | Speedup          | SWC Parser | vs SWC       |
+| ------------ | ----------- | ---------- | ---------------- | ---------- | ------------ |
+| complex_msg  | 9.22 µs     | 23.85 µs   | **2.59x faster** | 10.3 µs    | 1.11x faster |
+| normal_msg   | 1.14 µs     | 3.27 µs    | **2.87x faster** | 1.25 µs    | 1.10x faster |
+| simple_msg   | 163 ns      | 600 ns     | **3.68x faster** | 184 ns     | 1.13x faster |
+| string_msg   | 118 ns      | 320 ns     | **2.71x faster** | 126 ns     | 1.07x faster |
+
+### Key Performance Characteristics
+
+- **Parsing Speed**: 2.6-3.7x faster than JavaScript parser
 - **Memory Usage**: Lower memory footprint due to efficient allocation
+- **Optimizations**: Branch prediction hints, pre-allocated vectors, zero-copy parsing
+- **Note**: Always use `-c opt` for release builds to enable optimizations
 
 ## Building from Source
 
 ```bash
 # Run tests
-cargo test --package formatjs_icu_messageformat_parser
+bazel test //crates/icu_messageformat_parser:icu_messageformat_parser_test
 
-# Run benchmarks
-cargo bench --package formatjs_icu_messageformat_parser
+# Run benchmarks (always use -c opt for accurate results)
+bazel run -c opt //crates/icu_messageformat_parser:parser_bench
+
+# Run comparison benchmark vs other parsers
+bazel run -c opt //crates/icu_messageformat_parser:comparison_bench
 ```
 
 ## Documentation
 
 - [Rust API Docs](https://docs.rs/formatjs_icu_messageformat_parser)
-- [Source Code](https://github.com/formatjs/formatjs/tree/main/rust/icu_messageformat_parser)
+- [Source Code](https://github.com/formatjs/formatjs/tree/main/crates/icu_messageformat_parser)
 - [ICU MessageFormat Syntax](https://unicode-org.github.io/icu/userguide/format_parse/messages/)
 
 ## Related Packages

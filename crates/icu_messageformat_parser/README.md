@@ -5,10 +5,27 @@ A Rust implementation of the ICU MessageFormat parser, optimized for performance
 ## Features
 
 - Full ICU MessageFormat syntax support
-- High-performance parsing
+- High-performance parsing - **2.6-3.7x faster than JavaScript parser**
 - WebAssembly-ready with wasm-bindgen
 - Zero-copy parsing where possible
 - Comprehensive error handling
+
+## Performance
+
+The Rust parser (optimized build) significantly outperforms both the JavaScript parser and other Rust implementations:
+
+```bash
+$ bazel run -c opt //crates/icu_messageformat_parser:comparison_bench
+```
+
+| Message Type | Rust Parser | JavaScript | Speedup vs JS    | SWC Parser | vs SWC       |
+| ------------ | ----------- | ---------- | ---------------- | ---------- | ------------ |
+| complex_msg  | 9.22 µs     | 23.85 µs   | **2.59x faster** | 10.3 µs    | 1.11x faster |
+| normal_msg   | 1.14 µs     | 3.27 µs    | **2.87x faster** | 1.25 µs    | 1.10x faster |
+| simple_msg   | 163 ns      | 600 ns     | **3.68x faster** | 184 ns     | 1.13x faster |
+| string_msg   | 118 ns      | 320 ns     | **2.71x faster** | 126 ns     | 1.07x faster |
+
+**Note:** Always use `-c opt` for benchmarking to enable release optimizations.
 
 ## Project Structure
 
@@ -26,13 +43,13 @@ A Rust implementation of the ICU MessageFormat parser, optimized for performance
 
 ```bash
 # Run tests
-bazel test //rust/icu_messageformat_parser:icu_messageformat_parser_test
+bazel test //crates/icu_messageformat_parser:icu_messageformat_parser_test
 
 # Build library
-bazel build //rust/icu_messageformat_parser:icu_messageformat_parser
+bazel build //crates/icu_messageformat_parser:icu_messageformat_parser
 
 # Run benchmarks
-bazel run //rust/icu_messageformat_parser:parser_bench
+bazel run //crates/icu_messageformat_parser:parser_bench
 ```
 
 ### WebAssembly
@@ -42,7 +59,7 @@ The parser can be compiled to WebAssembly using Bazel's platform transition appr
 #### Build with Bazel
 
 ```bash
-bazel build //rust/icu_messageformat_parser:formatjs_icu_messageformat_parser_wasm
+bazel build //crates/icu_messageformat_parser:formatjs_icu_messageformat_parser_wasm
 ```
 
 This uses `rust_shared_library` with `platform = "@rules_rust//rust/platform:wasm"` to cross-compile to wasm32.
@@ -158,25 +175,25 @@ WASM-only dependencies (behind `wasm` feature):
 
 ```bash
 # Regenerate time data
-bazel run //rust/icu_messageformat_parser:time-data
+bazel run //crates/icu_messageformat_parser:time-data
 
 # Regenerate regex patterns
-bazel run //rust/icu_messageformat_parser:regex
+bazel run //crates/icu_messageformat_parser:regex
 ```
 
 ### Testing
 
 ```bash
 # Run Rust tests
-bazel test //rust/icu_messageformat_parser:icu_messageformat_parser_test
+bazel test //crates/icu_messageformat_parser:icu_messageformat_parser_test
 
 # Run benchmarks
-bazel run //rust/icu_messageformat_parser:parser_bench
+bazel run //crates/icu_messageformat_parser:parser_bench
 ```
 
 ## References
 
 - [ICU MessageFormat Syntax](https://unicode-org.github.io/icu/userguide/format_parse/messages/)
 - [wasm-bindgen Guide](https://rustwasm.github.io/wasm-bindgen/)
-- [rules_rust WASM Documentation](https://bazelbuild.github.io/rules_rust/)
+- [rules_rust WASM Documentation](https://bazelbuild.github.io/rules_crates/)
 - [Bazel Platform Transitions](https://bazel.build/extending/config#user-defined-transitions)

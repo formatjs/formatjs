@@ -64,7 +64,7 @@ bazel build //benchmarks/cli-comparison:generate
 
 # 2. Build both CLIs
 bazel build //packages/cli:bin
-bazel build //rust/formatjs_cli --compilation_mode=opt
+bazel build //crates/formatjs_cli --compilation_mode=opt
 
 # 3. Run the benchmark
 cd benchmarks/cli-comparison
@@ -168,7 +168,7 @@ Results are saved to `benchmark-results.json` with detailed statistics.
 ### "Rust CLI not found"
 
 ```bash
-bazel build //rust/formatjs_cli --compilation_mode=opt
+bazel build //crates/formatjs_cli --compilation_mode=opt
 ```
 
 ### "TypeScript CLI not found"

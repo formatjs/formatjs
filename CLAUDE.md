@@ -51,7 +51,11 @@ bazel run //packages/intl-localematcher/benchmark:profile_cpu
 ### 6. Performance Benchmarks
 
 - Benchmarks are in `packages/*/benchmark/` directories
-- Use `tinybench` for benchmarking
+- Use `tinybench` for JavaScript/TypeScript benchmarks
+- Rust benchmarks are in `crates/*/benches/` directories using Criterion
+- **CRITICAL**: Always use `-c opt` for Rust benchmarks to enable release optimizations
+  - Example: `bazel run -c opt //crates/icu_messageformat_parser:comparison_bench`
+  - Without `-c opt`, benchmarks run in debug mode and are ~10x slower
 - Always verify performance after optimizations
 
 ## Repository Context
@@ -104,7 +108,13 @@ These packages provide polyfills for Intl APIs that may not be available in all 
 
 #### Parsers
 
-- **`@formatjs/icu-messageformat-parser`** - ICU MessageFormat parser
+- **`@formatjs/icu-messageformat-parser`** - ICU MessageFormat parser (JavaScript/TypeScript)
+  - High-performance hand-written parser
+  - Used at runtime for message parsing
+- **`crates/icu_messageformat_parser`** - Rust implementation of ICU MessageFormat parser
+  - **2.6-3.7x faster than JavaScript** parser (with optimized build)
+  - Used for WASM compilation and native tooling
+  - Run benchmarks: `bazel run -c opt //crates/icu_messageformat_parser:comparison_bench`
 - **`@formatjs/icu-skeleton-parser`** - Number/date skeleton parser
 
 ### Architecture & Key Concepts

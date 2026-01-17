@@ -46,7 +46,7 @@ rust_library(
     crate_name = "formatjs_icu_messageformat_parser",
     visibility = ["//visibility:public"],
     deps = [
-        "//rust/icu_skeleton_parser",
+        "//crates/icu_skeleton_parser",
         "@crates//:icu",
         "@crates//:indexmap",
         "@crates//:once_cell",
@@ -67,6 +67,17 @@ rust_binary(
     deps = [
         ":icu_messageformat_parser",
         "@crates//:criterion",
+    ],
+)
+
+rust_binary(
+    name = "comparison_bench",
+    srcs = ["benches/comparison_bench.rs"],
+    crate_name = "comparison_bench",
+    deps = [
+        ":icu_messageformat_parser",
+        "@crates//:criterion",
+        "@crates//:swc_icu_messageformat_parser",
     ],
 )
 

@@ -201,7 +201,7 @@ fn run_integration_test(test_file_name: &str) {
 #[test]
 fn integration_test() {
     // Use Bazel runfiles library to locate the test list file
-    // See: https://github.com/bazelbuild/rules_rust/blob/main/rust/runfiles/runfiles.rs
+    // See: https://github.com/bazelbuild/rules_crates/blob/main/crates/runfiles/runfiles.rs
     let runfiles = Runfiles::create().expect("Failed to create runfiles");
 
     let test_list_path = rlocation!(

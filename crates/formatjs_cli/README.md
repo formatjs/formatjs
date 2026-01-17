@@ -95,13 +95,13 @@ Download pre-built native binaries from the [GitHub Releases](https://github.com
 Build the CLI using Bazel for host platform:
 
 ```bash
-bazel build //rust/formatjs_cli:formatjs
+bazel build //crates/formatjs_cli:formatjs
 ```
 
 Run directly with Bazel:
 
 ```bash
-bazel run //rust/formatjs_cli:formatjs -- --help
+bazel run //crates/formatjs_cli:formatjs -- --help
 ```
 
 ### Multi-Platform Build (Darwin ARM64 + Linux x64)
@@ -109,7 +109,7 @@ bazel run //rust/formatjs_cli:formatjs -- --help
 Build for both Darwin ARM64 and Linux x64:
 
 ```bash
-cd rust/formatjs_cli
+cd crates/formatjs_cli
 ./build-multiplatform.sh
 ```
 
@@ -122,10 +122,10 @@ You can also build for specific platforms using Bazel directly:
 
 ```bash
 # Build for Darwin ARM64 (macOS Apple Silicon)
-bazel build --platforms=//rust/formatjs_cli/platforms:darwin_arm64 //rust/formatjs_cli:formatjs_cli
+bazel build --platforms=//crates/formatjs_cli/platforms:darwin_arm64 //crates/formatjs_cli:formatjs_cli
 
 # Build for Linux x64
-bazel build --platforms=//rust/formatjs_cli/platforms:linux_x86_64 //rust/formatjs_cli:formatjs_cli
+bazel build --platforms=//crates/formatjs_cli/platforms:linux_x86_64 //crates/formatjs_cli:formatjs_cli
 ```
 
 ### Using Cargo
@@ -133,7 +133,7 @@ bazel build --platforms=//rust/formatjs_cli/platforms:linux_x86_64 //rust/format
 Build and install using Cargo (host platform only):
 
 ```bash
-cd rust/formatjs_cli
+cd crates/formatjs_cli
 cargo build --release
 cargo install --path .
 ```
@@ -258,7 +258,7 @@ formatjs verify "lang/*.json" \
 Using Bazel:
 
 ```bash
-bazel test //rust/formatjs_cli:formatjs_cli_test
+bazel test //crates/formatjs_cli:formatjs_cli_test
 ```
 
 Using Cargo:
@@ -270,7 +270,7 @@ cargo test
 ### Project Structure
 
 ```
-rust/formatjs_cli/
+crates/formatjs_cli/
 ├── Cargo.toml          # Cargo package manifest
 ├── BUILD.bazel         # Bazel build configuration
 ├── README.md           # This file

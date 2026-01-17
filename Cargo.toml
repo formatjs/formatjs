@@ -1,8 +1,8 @@
 [workspace]
 members = [
-  "rust/icu_skeleton_parser",
-  "rust/icu_messageformat_parser",
-  "rust/formatjs_cli",
+  "crates/icu_skeleton_parser",
+  "crates/icu_messageformat_parser",
+  "crates/formatjs_cli",
   "packages/icu-messageformat-parser/integration-tests",
 ]
 resolver = "3"

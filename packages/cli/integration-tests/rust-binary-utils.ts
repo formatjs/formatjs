@@ -22,7 +22,7 @@ export function resolveRustBinaryPath(dirname: string): string | undefined {
   // 2. Use runfiles (for normal test mode)
   try {
     const runfiles = new Runfiles()
-    return runfiles.resolveWorkspaceRelative('rust/formatjs_cli/formatjs_cli')
+    return runfiles.resolveWorkspaceRelative('crates/formatjs_cli/formatjs_cli')
   } catch {
     console.warn('Rust CLI not available, Rust tests will be skipped')
     return undefined
