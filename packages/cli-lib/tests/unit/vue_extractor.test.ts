@@ -2,14 +2,14 @@ import {test, expect} from 'vitest'
 import {type MessageDescriptor} from '@formatjs/ts-transformer'
 import {parseScript} from '../../src/parse_script'
 import {parseFile} from '../../src/vue_extractor'
-import {readFile} from 'fs-extra/esm'
 import {join} from 'path'
+import {readFileSync} from 'fs'
 
 test('vue_extractor', async function () {
   let messages: MessageDescriptor[] = []
   const fixturePath = join(__dirname, './fixtures/comp.vue')
   parseFile(
-    await readFile(fixturePath, 'utf8'),
+    readFileSync(fixturePath, 'utf8'),
     fixturePath,
     parseScript({
       additionalFunctionNames: ['$formatMessage'],
@@ -26,7 +26,7 @@ test('vue_extractor for bind attr', async function () {
   let messages: MessageDescriptor[] = []
   const fixturePath = join(__dirname, './fixtures/bind.vue')
   parseFile(
-    await readFile(fixturePath, 'utf8'),
+    readFileSync(fixturePath, 'utf8'),
     fixturePath,
     parseScript({
       additionalFunctionNames: ['$formatMessage'],

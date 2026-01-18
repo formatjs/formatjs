@@ -1,6 +1,5 @@
 import {type Opts} from '@formatjs/ts-transformer'
-import type {AST} from '@glimmer/syntax'
-import {transform} from 'ember-template-recast'
+import {preprocess, traverse, type AST, type ASTv1} from '@glimmer/syntax'
 
 function extractText(
   node: AST.MustacheStatement | AST.SubExpression,
@@ -46,18 +45,13 @@ export function parseFile(
   fileName: string,
   options: any
 ): void {
-  let visitor = function () {
-    return {
-      MustacheStatement(node: AST.MustacheStatement) {
-        extractText(node, fileName, options)
-      },
-      SubExpression(node: AST.SubExpression) {
-        extractText(node, fileName, options)
-      },
-    }
-  }
-
-  // SAFETY: ember-template-recast's types are out of date,
-  // but it does not affect runtime
-  transform(source, visitor as any)
+  const ast = preprocess(source)
+  traverse(ast, {
+    MustacheStatement(node: ASTv1.MustacheStatement) {
+      extractText(node, fileName, options)
+    },
+    SubExpression(node: ASTv1.SubExpression) {
+      extractText(node, fileName, options)
+    },
+  })
 }

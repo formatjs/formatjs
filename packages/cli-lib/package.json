@@ -28,7 +28,6 @@
     "@glimmer/syntax": "^0.84.3 || ^0.95.0",
     "@vue/compiler-core": "3.5.26",
     "content-tag": "^4.1.0",
-    "ember-template-recast": "^6.1.5",
     "vue": "3.5.26"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
@@ -68,9 +67,6 @@
       "optional": true
     },
     "@glimmer/validator": {
-      "optional": true
-    },
-    "ember-template-recast": {
       "optional": true
     },
     "content-tag": {
