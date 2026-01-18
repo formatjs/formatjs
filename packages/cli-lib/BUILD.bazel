@@ -38,7 +38,6 @@ VUE_DEPS = [
 GLIMMER_HBS_DEPS = [
     "//:node_modules/@glimmer/syntax",
     "//:node_modules/content-tag",
-    "//:node_modules/ember-template-recast",
 ]
 
 SRC_DEPS = [
@@ -67,17 +66,9 @@ vitest(
     name = "unit_test",
     srcs = [":srcs"] + glob(
         ["tests/unit/**/*.test.ts"],
-        # TODO: Re-enable these tests after fixing ES module compatibility
-        # with @glimmer/syntax and ember-template-recast
-        exclude = [
-            "tests/unit/gts_extractor.test.ts",
-            "tests/unit/hbs_extractor.test.ts",
-            "tests/unit/vue_extractor.test.ts",
-        ],
     ),
     fixtures = glob(
-        ["tests/unit/**/*"],
-        exclude = ["tests/unit/**/*.test.ts"],
+        ["tests/unit/fixtures/**/*"],
     ),
     deps = SRC_DEPS,
 )
@@ -105,7 +96,6 @@ esbuild(
         "@glimmer/validator",
         "@vue/compiler-core",
         "content-tag",
-        "ember-template-recast",
         "source-map-support",
     ],
     platform = "node",

@@ -15,7 +15,6 @@ copy_file(
 GLIMMER_HBS_DEPS = [
     "//:node_modules/@glimmer/syntax",
     "//:node_modules/content-tag",
-    "//:node_modules/ember-template-recast",
 ]
 
 # Export fixtures for use by Rust CLI integration tests

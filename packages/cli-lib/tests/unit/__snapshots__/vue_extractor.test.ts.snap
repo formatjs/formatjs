@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`vue_extractor 1`] = `
+[
+  {
+    "defaultMessage": "in template",
+    "description": "in template desc",
+    "id": "f6d14",
+  },
+  {
+    "defaultMessage": "in script",
+    "description": "in script desc",
+    "id": "1ebd4",
+  },
+]
+`;
+
+exports[`vue_extractor for bind attr 1`] = `
+[
+  {
+    "defaultMessage": "Delete",
+    "description": "delete button text",
+    "id": "0705a",
+  },
+  {
+    "defaultMessage": "Send the item to the trash.",
+    "description": "delete button title",
+    "id": "5b09c",
+  },
+  {
+    "defaultMessage": "The item has been deleted.",
+    "description": "delete result message",
+    "id": "8fba7",
+  },
+]
+`;

@@ -85,7 +85,6 @@
     "content-tag": "^4.1.0",
     "conventional-changelog-angular": "^8.1.0",
     "decimal.js": "^10.6.0",
-    "ember-template-recast": "^6.1.5",
     "eslint": "9.39.2",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.3",
