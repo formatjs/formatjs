@@ -11,7 +11,7 @@
     "@formatjs/cli-lib": "workspace:*"
   },
   "peerDependencies": {
-    "@glimmer/syntax": "^0.95.0",
+    "@glimmer/syntax": "^0.84.3",
     "@vue/compiler-core": "3.5.26",
     "content-tag": "^4.1.0",
     "ember-template-recast": "^6.1.5",

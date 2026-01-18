@@ -401,20 +401,6 @@ test262_harness_bin.test262_harness_test(
     ],
 )
 
-# bundle_karma_tests(
-#     name = "bundled-karma-tests",
-#     srcs = [":srcs"],
-#     data = TEST_LOCALE_DATA,
-#     esbuild_deps = [
-#         ":node_modules/@formatjs/intl-getcanonicallocales",
-#         ":node_modules/@formatjs/intl-locale",
-#     ],
-#     tests = TESTS,
-#     deps = SRC_DEPS + [
-#         "//:node_modules/@types/node",
-#     ],
-# )
-
 write_source_files(
     name = "generated-test-files",
     files = {
