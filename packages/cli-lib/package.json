@@ -25,7 +25,7 @@
     "typescript": "^5.6.0"
   },
   "peerDependencies": {
-    "@glimmer/syntax": "^0.84.3",
+    "@glimmer/syntax": "^0.84.3 || ^0.95.0",
     "@vue/compiler-core": "3.5.26",
     "content-tag": "^4.1.0",
     "ember-template-recast": "^6.1.5",
