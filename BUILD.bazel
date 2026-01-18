@@ -3,7 +3,6 @@ load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@npm//:karma/package_json.bzl", karma_bin = "bin")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
@@ -12,8 +11,6 @@ npm_link_all_packages()
 
 exports_files(
     [
-        "karma.conf.js",
-        "karma.conf-ci.js",
         "Cargo.toml",
         "Cargo.lock",
     ],
@@ -83,62 +80,6 @@ copy_to_directory(
         "packages/%s/pkg" % p,
         "packages/%s" % p,
     ) for p in PACKAGE_DIRNAMES]},
-)
-
-# We run this centrally so it doesn't spawn
-# multiple browser sessions which overwhelms SauceLabs
-KARMA_TESTS = [
-    # TODO: fix this
-    "//packages/icu-messageformat-parser:bundled-karma-tests",
-    "//packages/intl-displaynames:bundled-karma-tests",
-    "//packages/intl-getcanonicallocales:bundled-karma-tests",
-    "//packages/intl-listformat:bundled-karma-tests",
-    "//packages/intl-pluralrules:bundled-karma-tests",
-    "//packages/intl-relativetimeformat:bundled-karma-tests",
-]
-
-karma_bin.karma_test(
-    name = "karma",
-    args = [
-        "start",
-        "$(rootpath //:karma.conf.js)",
-        "--no-single-run",
-    ],
-    # configuration_env_vars = [
-    #     "SAUCE_USERNAME",
-    #     "SAUCE_ACCESS_KEY",
-    # ],
-    data = [
-        "//:karma.conf.js",
-        "//:node_modules/karma-chrome-launcher",
-        "//:node_modules/karma-jasmine",
-        "//:node_modules/karma-jasmine-matchers",
-        "//:node_modules/karma-sauce-launcher",
-    ] + KARMA_TESTS,
-    tags = ["manual"],
-)
-
-karma_bin.karma_test(
-    name = "karma-ci",
-    args = [
-        "start",
-        "$(rootpath //:karma.conf.js)",
-        "--browsers",
-        "sl_edge,sl_chrome,sl_firefox,sl_ie_11,sl_safari",
-    ],
-    # configuration_env_vars = [
-    #     "SAUCE_USERNAME",
-    #     "SAUCE_ACCESS_KEY",
-    #     "GITHUB_RUN_ID",
-    # ],
-    data = [
-        "//:karma.conf.js",
-        "//:node_modules/karma-chrome-launcher",
-        "//:node_modules/karma-jasmine",
-        "//:node_modules/karma-jasmine-matchers",
-        "//:node_modules/karma-sauce-launcher",
-    ] + KARMA_TESTS,
-    tags = ["manual"],
 )
 
 multirun(

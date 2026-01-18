@@ -39,9 +39,7 @@ TESTS = glob([
     "tests/*.test.ts",
 ])
 
-TEST_DEPS = SRC_DEPS + [
-    "//:node_modules/jasmine-expect",
-]
+TEST_DEPS = SRC_DEPS
 
 ts_compile(
     name = "dist",
