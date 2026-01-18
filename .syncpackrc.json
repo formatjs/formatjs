@@ -68,6 +68,16 @@
       "pinVersion": "16 || 17 || 18 || 19"
     },
     {
+      "label": "Glimmer",
+      "dependencies": [
+        "@glimmer/syntax"
+      ],
+      "packages": [
+        "!formatjs-repo"
+      ],
+      "pinVersion": "^0.84.3 || ^0.95.0"
+    },
+    {
       "label": "Typescript",
       "dependencies": [
         "typescript"
