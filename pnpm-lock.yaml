@@ -268,7 +268,7 @@ importers:
         version: 4.0.3
       happy-dom:
         specifier: ^20.1.0
-        version: 20.3.0
+        version: 20.3.1
       http-server:
         specifier: ^14.1.1
         version: 14.1.1
@@ -412,7 +412,7 @@ importers:
         version: 2.4.0(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       vitest:
         specifier: ^3.2.4
-        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.7)(happy-dom@20.3.0)(jiti@2.6.1)(jsdom@20.0.3)(lightningcss@1.30.2)(msw@2.12.7(@types/node@22.19.7)(typescript@5.8.3))(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.7)(happy-dom@20.3.1)(jiti@2.6.1)(jsdom@20.0.3)(lightningcss@1.30.2)(msw@2.12.7(@types/node@22.19.7)(typescript@5.8.3))(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       vue:
         specifier: 3.5.26
         version: 3.5.26(typescript@5.8.3)
@@ -5865,8 +5865,8 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@20.3.0:
-    resolution: {integrity: sha512-5qJbkqcvR8j/a4av5IWqqIWmEGf9dt6OhGMS6qxCgjSOBGzGa5XLoqg40OyD8XNzQ+g1g2zsXi10kjfpzYH55Q==}
+  happy-dom@20.3.1:
+    resolution: {integrity: sha512-tLvsizNno05Hij0PoB0QN/S8xf0YU2AGvO11/JlJDw5McA/gzyn0Ni1RwbTI1/zteUbOekJH0t6q8HFvjbxsGg==}
     engines: {node: '>=20.0.0'}
 
   hard-rejection@2.1.0:
@@ -14934,7 +14934,7 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@20.3.0:
+  happy-dom@20.3.1:
     dependencies:
       '@types/node': 20.19.30
       '@types/whatwg-mimetype': 3.0.2
@@ -19099,7 +19099,7 @@ snapshots:
       tsx: 4.21.0
       yaml: 2.8.2
 
-  vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.7)(happy-dom@20.3.0)(jiti@2.6.1)(jsdom@20.0.3)(lightningcss@1.30.2)(msw@2.12.7(@types/node@22.19.7)(typescript@5.8.3))(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2):
+  vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.7)(happy-dom@20.3.1)(jiti@2.6.1)(jsdom@20.0.3)(lightningcss@1.30.2)(msw@2.12.7(@types/node@22.19.7)(typescript@5.8.3))(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/expect': 3.2.4
@@ -19127,7 +19127,7 @@ snapshots:
     optionalDependencies:
       '@types/debug': 4.1.12
       '@types/node': 22.19.7
-      happy-dom: 20.3.0
+      happy-dom: 20.3.1
       jsdom: 20.0.3
     transitivePeerDependencies:
       - jiti
