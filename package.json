@@ -202,7 +202,7 @@
     "react": "19",
     "react-dom": "19",
     "source-map-js": "1.2.1",
-    "terser": "5.44.1",
+    "terser": "5.46.0",
     "typescript": "5.8.3",
     "vue": "3.5.26"
   }
