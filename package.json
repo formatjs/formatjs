@@ -72,7 +72,6 @@
     "babel-loader": "^10.0.0",
     "chalk": "^4.1.2",
     "class-variance-authority": "^0.7.1",
-    "classnames": "^2.5.1",
     "cldr-bcp47": "48.1.0",
     "cldr-core": "48.1.0",
     "cldr-dates-full": "48.1.0",
@@ -100,7 +99,6 @@
     "oxc-transform": "^0.108.0",
     "oxfmt": "^0.24.0",
     "oxlint": "^1.38.0",
-    "postcss": "^8.5.6",
     "prismjs": "^1.30.0",
     "react": "16 || 17 || 18 || 19",
     "react-dom": "16 || 17 || 18 || 19",
@@ -126,7 +124,6 @@
     "typescript": "5.8.2",
     "typesense": "2.1.0",
     "unidiff": "^1.0.4",
-    "unist-util-visit": "^5.0.0",
     "vike": "^0.4.251",
     "vike-react": "^0.6.18",
     "vite": "npm:rolldown-vite@7.3.1",
@@ -135,8 +132,7 @@
     "vue-class-component": "8.0.0-rc.1",
     "vue-eslint-parser": "^10.2.0",
     "vue-loader": "^17.4.2",
-    "webpack": "^5.104.1",
-    "wouter": "^3.9.0"
+    "webpack": "^5.104.1"
   },
   "devEngines": {
     "runtime": {
@@ -148,11 +144,6 @@
   "pnpm": {
     "onlyBuiltDependencies": [],
     "packageExtensions": {
-      "postcss": {
-        "dependencies": {
-          "source-map-js": "*"
-        }
-      },
       "@vue/compiler-core": {
         "dependencies": {
           "@babel/types": "*"
