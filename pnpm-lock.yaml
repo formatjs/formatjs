@@ -61,7 +61,7 @@ importers:
         version: 7.28.6
       '@bazel/bazelisk':
         specifier: ^1.26.0
-        version: 1.26.0
+        version: 1.28.0
       '@bazel/ibazel':
         specifier: ^0.28.0
         version: 0.28.0
@@ -1731,8 +1731,8 @@ packages:
     resolution: {integrity: sha512-0ZrskXVEHSWIqZM/sQZ4EV3jZJXRkio/WCxaqKZP1g//CEWEPSfeZFcms4XeKBCHU0ZKnIkdJeU/kF+eRp5lBg==}
     engines: {node: '>=6.9.0'}
 
-  '@bazel/bazelisk@1.26.0':
-    resolution: {integrity: sha512-bTNcHdGyEQ9r7SczEYUa0gkEQhJo1ld2BjXI8fWBvsUeoHi03QpUs2HZgDbjjrpQFQqG2ZbO7ihZvH8MjhUTHw==}
+  '@bazel/bazelisk@1.28.0':
+    resolution: {integrity: sha512-TuS0DzLV6Hu6zwuQsrZUeqfrs3vKF3hLGJfgTWy6fXTqoYv72SxgmJ6seep1/yzTHKcGMglO4S+KuIXGlmnGyw==}
     hasBin: true
 
   '@bazel/ibazel@0.28.0':
@@ -10409,7 +10409,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@bazel/bazelisk@1.26.0': {}
+  '@bazel/bazelisk@1.28.0': {}
 
   '@bazel/ibazel@0.28.0': {}
 
