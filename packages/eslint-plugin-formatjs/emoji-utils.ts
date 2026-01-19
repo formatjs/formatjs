@@ -7,6 +7,7 @@ import {
   EMOJI_RANGES,
   type EmojiVersion,
 } from './emoji-data.generated.js'
+import * as emojiPresentationRegex from '@unicode/unicode-17.0.0/Binary_Property/Emoji_Presentation/regex.js'
 
 export type {EmojiVersion} from './emoji-data.generated.js'
 
@@ -17,13 +18,35 @@ export type {EmojiVersion} from './emoji-data.generated.js'
 const graphemeSegmenter = new Intl.Segmenter('en', {granularity: 'grapheme'})
 
 /**
+ * Regex for detecting emoji using Unicode 17.0.0 Emoji_Presentation data
+ * Generated from @unicode/unicode-17.0.0/Binary_Property/Emoji_Presentation
+ * This avoids false positives from #, *, digits, and text symbols like ©
+ */
+const emojiRegex =
+  (emojiPresentationRegex as unknown as {default: RegExp}).default ??
+  emojiPresentationRegex
+
+/**
+ * Regex for detecting variation selector (U+FE0F) which indicates emoji presentation
+ */
+const variationSelectorRegex = /\uFE0F/
+
+/**
  * Check if a string contains any emoji
- * Uses Unicode \p{Emoji} property which covers all emoji
+ * Uses Unicode 17.0.0 Emoji_Presentation data and variation selector (U+FE0F)
+ * to properly detect emoji while avoiding false positives from characters like
+ * #, *, digits 0-9, and text symbols like © which have \p{Emoji} but are not visual emoji
  */
 export function hasEmoji(text: string): boolean {
-  // Use \p{Emoji} to match emoji characters
-  // This includes all emoji, both text and emoji presentation
-  return /\p{Emoji}/u.test(text)
+  // Check for Emoji_Presentation characters OR variation selector U+FE0F
+  // This properly detects emoji including:
+  // - Standard emoji (😀, 🤑, etc.) - matched by Emoji_Presentation
+  // - Emoji with modifiers (👋🏻) - matched by Emoji_Presentation
+  // - ZWJ sequences (👨‍👩‍👧‍👦) - matched by Emoji_Presentation
+  // - Flag sequences (🇺🇸) - matched by Emoji_Presentation
+  // - Variation selector emoji (❤️, ☀️) - matched by U+FE0F
+  // While avoiding false positives from #, *, digits, and © ™ ®
+  return emojiRegex.test(text) || variationSelectorRegex.test(text)
 }
 
 /**
@@ -43,7 +66,9 @@ export function extractEmojis(text: string): string[] {
 
   for (const {segment} of segments) {
     // Check if this grapheme cluster contains emoji
-    if (/\p{Emoji}/u.test(segment)) {
+    // Use Emoji_Presentation OR variation selector U+FE0F
+    // to avoid false positives from #, *, digits, ©, etc.
+    if (emojiRegex.test(segment) || variationSelectorRegex.test(segment)) {
       emojis.push(segment)
     }
   }
