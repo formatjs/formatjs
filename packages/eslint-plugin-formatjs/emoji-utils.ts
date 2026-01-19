@@ -8,6 +8,7 @@ import {
   type EmojiVersion,
 } from './emoji-data.generated.js'
 import * as emojiPresentationRegex from '@unicode/unicode-17.0.0/Binary_Property/Emoji_Presentation/regex.js'
+import * as emojiPropertyRegex from '@unicode/unicode-17.0.0/Binary_Property/Emoji/regex.js'
 
 export type {EmojiVersion} from './emoji-data.generated.js'
 
@@ -22,14 +23,17 @@ const graphemeSegmenter = new Intl.Segmenter('en', {granularity: 'grapheme'})
  * Generated from @unicode/unicode-17.0.0/Binary_Property/Emoji_Presentation
  * This avoids false positives from #, *, digits, and text symbols like ©
  */
-const emojiRegex =
+const emojiPresentationRegexCompiled =
   (emojiPresentationRegex as unknown as {default: RegExp}).default ??
   emojiPresentationRegex
 
 /**
- * Regex for detecting variation selector (U+FE0F) which indicates emoji presentation
+ * Regex for detecting emoji-capable characters using Unicode 17.0.0 Emoji property
+ * This includes characters that can have emoji presentation (like ❤, ☀)
  */
-const variationSelectorRegex = /\uFE0F/
+const emojiPropertyRegexCompiled =
+  (emojiPropertyRegex as unknown as {default: RegExp}).default ??
+  emojiPropertyRegex
 
 /**
  * Check if a string contains any emoji
@@ -38,15 +42,28 @@ const variationSelectorRegex = /\uFE0F/
  * #, *, digits 0-9, and text symbols like © which have \p{Emoji} but are not visual emoji
  */
 export function hasEmoji(text: string): boolean {
-  // Check for Emoji_Presentation characters OR variation selector U+FE0F
-  // This properly detects emoji including:
-  // - Standard emoji (😀, 🤑, etc.) - matched by Emoji_Presentation
-  // - Emoji with modifiers (👋🏻) - matched by Emoji_Presentation
-  // - ZWJ sequences (👨‍👩‍👧‍👦) - matched by Emoji_Presentation
-  // - Flag sequences (🇺🇸) - matched by Emoji_Presentation
-  // - Variation selector emoji (❤️, ☀️) - matched by U+FE0F
-  // While avoiding false positives from #, *, digits, and © ™ ®
-  return emojiRegex.test(text) || variationSelectorRegex.test(text)
+  // First check for Emoji_Presentation characters (always displayed as emoji)
+  if (emojiPresentationRegexCompiled.test(text)) {
+    return true
+  }
+
+  // Check for variation selector (U+FE0F) which indicates emoji presentation
+  // But only if it follows an emoji-capable character to avoid false positives
+  // like "Hello\uFE0F" or "A\uFE0F"
+  if (text.includes('\uFE0F')) {
+    const segments = graphemeSegmenter.segment(text)
+    for (const {segment} of segments) {
+      if (segment.includes('\uFE0F')) {
+        // Has VS, check if the character before it has the Emoji property
+        const beforeVS = segment.replace(/\uFE0F/g, '')
+        if (emojiPropertyRegexCompiled.test(beforeVS)) {
+          return true
+        }
+      }
+    }
+  }
+
+  return false
 }
 
 /**
@@ -66,10 +83,19 @@ export function extractEmojis(text: string): string[] {
 
   for (const {segment} of segments) {
     // Check if this grapheme cluster contains emoji
-    // Use Emoji_Presentation OR variation selector U+FE0F
-    // to avoid false positives from #, *, digits, ©, etc.
-    if (emojiRegex.test(segment) || variationSelectorRegex.test(segment)) {
+    // First check for Emoji_Presentation (always displayed as emoji)
+    if (emojiPresentationRegexCompiled.test(segment)) {
       emojis.push(segment)
+      continue
+    }
+
+    // Check for variation selector (U+FE0F) which indicates emoji presentation
+    // But only if it follows an emoji-capable character to avoid false positives
+    if (segment.includes('\uFE0F')) {
+      const beforeVS = segment.replace(/\uFE0F/g, '')
+      if (emojiPropertyRegexCompiled.test(beforeVS)) {
+        emojis.push(segment)
+      }
     }
   }
 

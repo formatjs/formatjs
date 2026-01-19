@@ -42,6 +42,12 @@ describe('emoji-utils', () => {
       expect(hasEmoji('I ❤️ this')).toBe(true)
     })
 
+    it('should NOT detect regular text with variation selector as false positive', () => {
+      expect(hasEmoji('Hello\uFE0F')).toBe(false) // Regular text + VS
+      expect(hasEmoji('A\uFE0F')).toBe(false) // Letter + VS
+      expect(hasEmoji('Text\uFE0Fmore')).toBe(false) // Text + VS + text
+    })
+
     it('should detect emoji with skin tone modifiers', () => {
       expect(hasEmoji('👋🏻')).toBe(true) // Waving hand: light skin tone
       expect(hasEmoji('👋🏿')).toBe(true) // Waving hand: dark skin tone
