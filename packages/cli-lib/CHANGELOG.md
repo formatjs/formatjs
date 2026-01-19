@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.2.0...@formatjs/cli-lib@8.2.1) (2026-01-19)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** add missing options to compile-folder command, fix [#4200](https://github.com/formatjs/formatjs/issues/4200) ([97ad11d](https://github.com/formatjs/formatjs/commit/97ad11df5d34ce6029f7a1d5d3c65fc9dd695215)) - by @longlho
+* **@formatjs/cli-lib:** remove ember-template-recast dep ([#5952](https://github.com/formatjs/formatjs/issues/5952)) ([d5dce1a](https://github.com/formatjs/formatjs/commit/d5dce1aabb3589e3fc240d25947cd46a7c6141d6)) - by @longlho
+
 # [8.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.1.1...@formatjs/cli-lib@8.2.0) (2026-01-15)
 
 ### Features

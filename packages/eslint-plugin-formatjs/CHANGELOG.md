@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.1.0...eslint-plugin-formatjs@6.1.1) (2026-01-19)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** fix emoji false positives, fix [#5957](https://github.com/formatjs/formatjs/issues/5957) ([#5960](https://github.com/formatjs/formatjs/issues/5960)) ([141a110](https://github.com/formatjs/formatjs/commit/141a110bb4bdb275b84eeace08a1d0f147afdcea)) - by @longlho
+
 # [6.1.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.0.10...eslint-plugin-formatjs@6.1.0) (2026-01-15)
 
 ### Bug Fixes

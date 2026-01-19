@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.0...@formatjs/intl@4.1.1) (2026-01-19)
+
+### Bug Fixes
+
+* **@formatjs/intl:** remove hot path optimization to fix escaped character handling, fix [#4973](/github.com/formatjs/formatjs/issues/4973) ([309f579](github.com/formatjs/formatjs/commits/309f5792a1871488a4287fafdc0467f65bc9530c)) - by @longlho
+
 # [4.1.0](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.9...@formatjs/intl@4.1.0) (2026-01-15)
 
 ### Features

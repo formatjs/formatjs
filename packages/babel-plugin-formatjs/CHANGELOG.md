@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.2.1](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@11.2.0...babel-plugin-formatjs@11.2.1) (2026-01-19)
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** add file and line info to flatten errors, fix [#4161](https://github.com/formatjs/formatjs/issues/4161) ([5d9e982](https://github.com/formatjs/formatjs/commit/5d9e982d84667040978e35bb6429a0359b5545df)) - by @longlho
+
 # [11.2.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@11.1.1...babel-plugin-formatjs@11.2.0) (2026-01-15)
 
 ### Features

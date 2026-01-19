@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/intl-pluralrules",
   "description": "Polyfill for Intl.PluralRules",
-  "version": "6.2.0",
+  "version": "6.2.1",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",

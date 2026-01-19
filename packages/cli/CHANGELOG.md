@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.11.0...@formatjs/cli@6.12.0) (2026-01-19)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** remove ember-template-recast dep ([#5952](https://github.com/formatjs/formatjs/issues/5952)) ([d5dce1a](https://github.com/formatjs/formatjs/commit/d5dce1aabb3589e3fc240d25947cd46a7c6141d6)) - by @longlho
+
+### Features
+
+* **icu_messageformat_parser:** more optimizations ([#5938](https://github.com/formatjs/formatjs/issues/5938)) ([22a4060](https://github.com/formatjs/formatjs/commit/22a406047682669d5b3d066c73cd6faf827720bf)), closes [#4973](https://github.com/formatjs/formatjs/issues/4973) [#4161](https://github.com/formatjs/formatjs/issues/4161) [#4973](https://github.com/formatjs/formatjs/issues/4973) [packages/intl/src/message.ts#L140-L146](https://github.com/packages/intl/src/message.ts/issues/L140-L146) [packages/intl/tests/formatMessage.test.ts#L116-L120](https://github.com/packages/intl/tests/formatMessage.test.ts/issues/L116-L120) [#4161](https://github.com/formatjs/formatjs/issues/4161) [packages/ts-transformer/src/transform.ts#L511-L518](https://github.com/packages/ts-transformer/src/transform.ts/issues/L511-L518) [packages/babel-plugin-formatjs/utils.ts#L111-L117](https://github.com/packages/babel-plugin-formatjs/utils.ts/issues/L111-L117) [crates/formatjs_cli/src/extractor.rs#L34-L120](https://github.com/crates/formatjs_cli/src/extractor.rs/issues/L34-L120) [crates/icu_messageformat_parser/manipulator.rs#L420-L442](https://github.com/crates/icu_messageformat_parser/manipulator.rs/issues/L420-L442) - by @longlho
+
 # [6.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.10.0...@formatjs/cli@6.11.0) (2026-01-15)
 
 ### Bug Fixes
