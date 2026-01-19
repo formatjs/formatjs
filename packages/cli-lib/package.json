@@ -26,9 +26,9 @@
   },
   "peerDependencies": {
     "@glimmer/syntax": "^0.84.3 || ^0.95.0",
-    "@vue/compiler-core": "3.5.26",
+    "@vue/compiler-core": "3.5.27",
     "content-tag": "^4.1.0",
-    "vue": "3.5.26"
+    "vue": "3.5.27"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "homepage": "https://github.com/formatjs/formatjs",
