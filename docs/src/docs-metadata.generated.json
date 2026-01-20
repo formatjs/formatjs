@@ -151,6 +151,10 @@
     "title": "Babel Plugin",
     "description": "Process string messages for translation from modules that use react-intl, specifically:"
   },
+  "tooling/bazel": {
+    "title": "Bazel",
+    "description": "Bazel rules for FormatJS - Internationalize your web apps with Bazel build integration."
+  },
   "tooling/cli": {
     "title": "Cli",
     "description": "groupId=\"npm\""

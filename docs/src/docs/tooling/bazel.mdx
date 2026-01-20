@@ -1,0 +1,572 @@
+Bazel rules for [FormatJS](https://formatjs.io/) - Internationalize your web apps with Bazel build integration.
+
+## Features
+
+- Extract messages from source files (TypeScript, JavaScript, JSX, TSX)
+- Compile messages for optimized runtime performance
+- Verify translations for completeness
+- Aggregate messages across multiple modules
+- Native Rust CLI toolchain for fast builds
+- Type-safe message extraction and compilation
+- Custom Bazel aspects for advanced analysis
+
+## Installation
+
+Add `rules_formatjs` to your `MODULE.bazel`:
+
+```starlark
+bazel_dep(name = "rules_formatjs", version = "0.1.0")
+```
+
+Or use a specific commit from GitHub:
+
+```starlark
+git_override(
+    module_name = "rules_formatjs",
+    remote = "https://github.com/formatjs/rules_formatjs.git",
+    commit = "<commit-sha>",
+)
+```
+
+## Usage
+
+### Extract Messages
+
+Extract internationalized messages from your source code:
+
+```starlark
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract")
+
+formatjs_extract(
+    name = "messages_extracted",
+    srcs = glob(["src/**/*.tsx", "src/**/*.ts"]),
+    out = "en.json",
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+)
+```
+
+### Compile Messages
+
+Compile extracted messages for optimized runtime:
+
+```starlark
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_compile")
+
+formatjs_compile(
+    name = "messages_compiled",
+    src = ":messages_extracted",
+    out = "en-compiled.json",
+    ast = True,  # Compile to AST for better performance
+)
+```
+
+### Verify Translations
+
+Verify that translations are complete and correctly formatted:
+
+```starlark
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_verify")
+
+formatjs_verify(
+    name = "verify_translations",
+    reference = ":messages_extracted",  # Base language
+    translations = [
+        "translations/es.json",
+        "translations/fr.json",
+    ],
+)
+```
+
+### Aggregate Messages
+
+Aggregate messages from multiple modules into a single file:
+
+```starlark
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract", "formatjs_aggregate")
+
+# Extract from multiple modules
+formatjs_extract(name = "module1_msgs", srcs = ["module1/**/*.tsx"])
+formatjs_extract(name = "module2_msgs", srcs = ["module2/**/*.tsx"])
+formatjs_extract(name = "module3_msgs", srcs = ["module3/**/*.tsx"])
+
+# Create aggregation target
+formatjs_aggregate(
+    name = "all_messages",
+    deps = [":module1_msgs", ":module2_msgs", ":module3_msgs"],
+)
+```
+
+Then build with the aspect:
+
+```bash
+bazel build //:all_messages \
+  --aspects=@rules_formatjs//formatjs:aggregate.bzl%formatjs_aggregate_aspect \
+  --output_groups=aggregated_messages
+```
+
+### Complete Example
+
+```starlark
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract", "formatjs_compile", "formatjs_verify")
+
+# Extract messages from source files
+formatjs_extract(
+    name = "extract_en",
+    srcs = glob([
+        "src/**/*.ts",
+        "src/**/*.tsx",
+    ]),
+    out = "lang/en.json",
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+    extract_from_format_message_call = True,
+)
+
+# Compile for production
+formatjs_compile(
+    name = "compile_en",
+    src = ":extract_en",
+    out = "lang/en-compiled.json",
+    ast = True,
+)
+
+# Compile translations
+formatjs_compile(
+    name = "compile_es",
+    src = "translations/es.json",
+    out = "lang/es-compiled.json",
+    ast = True,
+)
+
+# Verify translations are complete
+formatjs_verify(
+    name = "verify_es",
+    reference = ":extract_en",
+    translations = ["translations/es.json"],
+)
+```
+
+## API Reference
+
+### formatjs_extract
+
+Extract messages from source files. This is a **custom Bazel rule** (not a macro), which means you can attach aspects to it for advanced build graph analysis.
+
+**Attributes:**
+
+| Attribute                          | Type          | Required | Description                                                                                                  |
+| ---------------------------------- | ------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| `name`                             | `string`      | Yes      | Target name                                                                                                  |
+| `srcs`                             | `label_list`  | Yes      | List of source files to extract from                                                                         |
+| `out`                              | `string`      | No       | Output JSON file (defaults to `name + ".json"`)                                                              |
+| `id_interpolation_pattern`         | `string`      | No       | Pattern for message ID generation (e.g., `"[sha512:contenthash:base64:6]"`)                                  |
+| `extract_from_format_message_call` | `bool`        | No       | Extract from `formatMessage()` calls                                                                         |
+| `additional_component_names`       | `string_list` | No       | Additional component names to extract from (see [Wrapper Components Guide](/docs/guides/wrapper-components)) |
+| `additional_function_names`        | `string_list` | No       | Additional function names to extract from (see [Wrapper Components Guide](/docs/guides/wrapper-components))  |
+| `ignore`                           | `string_list` | No       | List of glob patterns to ignore                                                                              |
+
+**Providers:**
+
+- `DefaultInfo`: Contains the extracted messages JSON file
+- `FormatjsExtractInfo`: Custom provider with:
+  - `messages`: File containing extracted messages
+  - `srcs`: Depset of source files
+  - `id_interpolation_pattern`: Pattern used for ID generation
+
+**Example with wrapper components:**
+
+```starlark
+formatjs_extract(
+    name = "extract_with_custom_components",
+    srcs = glob(["src/**/*.tsx"]),
+    out = "messages.json",
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+    additional_component_names = ["CustomButton", "TranslatableText"],
+    additional_function_names = ["t", "$formatMessage"],
+)
+```
+
+### formatjs_compile
+
+Compile extracted messages for optimized runtime.
+
+**Attributes:**
+
+| Attribute | Type     | Required | Description                                                        |
+| --------- | -------- | -------- | ------------------------------------------------------------------ |
+| `name`    | `string` | Yes      | Target name                                                        |
+| `src`     | `label`  | Yes      | Source JSON file with extracted messages                           |
+| `out`     | `string` | No       | Output compiled JSON file (defaults to `name + ".json"`)           |
+| `ast`     | `bool`   | No       | Compile to AST format for better runtime performance (recommended) |
+| `format`  | `string` | No       | Input format: `simple`, `crowdin`, `smartling`, or `transifex`     |
+
+**Example:**
+
+```starlark
+formatjs_compile(
+    name = "compile_messages",
+    src = ":extract_en",
+    out = "en-compiled.json",
+    ast = True,
+    format = "simple",
+)
+```
+
+### formatjs_verify
+
+Verify that translations are complete and correctly formatted.
+
+**Attributes:**
+
+| Attribute      | Type         | Required | Description                                           |
+| -------------- | ------------ | -------- | ----------------------------------------------------- |
+| `name`         | `string`     | Yes      | Target name                                           |
+| `reference`    | `label`      | Yes      | Reference messages file (typically the base language) |
+| `translations` | `label_list` | Yes      | List of translation files to verify                   |
+
+**Example:**
+
+```starlark
+formatjs_verify(
+    name = "verify_translations",
+    reference = ":extract_en",
+    translations = [
+        "translations/es.json",
+        "translations/fr.json",
+        "translations/de.json",
+    ],
+)
+```
+
+### formatjs_aggregate
+
+Create an aggregation target for collecting messages from multiple modules.
+
+**Attributes:**
+
+| Attribute | Type         | Required | Description                                     |
+| --------- | ------------ | -------- | ----------------------------------------------- |
+| `name`    | `string`     | Yes      | Target name                                     |
+| `deps`    | `label_list` | Yes      | List of `formatjs_extract` targets to aggregate |
+
+**Example:**
+
+```starlark
+formatjs_aggregate(
+    name = "all_messages",
+    deps = [
+        ":module1_msgs",
+        ":module2_msgs",
+        ":module3_msgs",
+    ],
+)
+```
+
+Build with the aggregation aspect:
+
+```bash
+bazel build //:all_messages \
+  --aspects=@rules_formatjs//formatjs:aggregate.bzl%formatjs_aggregate_aspect \
+  --output_groups=aggregated_messages
+```
+
+Output: `bazel-bin/all_messages_aggregated_messages.json` containing all merged messages.
+
+**Merge Strategy**: Uses `jq` to merge JSON objects. Later files overwrite earlier ones for duplicate keys.
+
+## Integration with React
+
+Use compiled messages with `react-intl`:
+
+```tsx
+import {createIntl, createIntlCache, RawIntlProvider} from 'react-intl'
+import messages from './lang/en-compiled.json'
+
+const cache = createIntlCache()
+const intl = createIntl(
+  {
+    locale: 'en',
+    messages,
+  },
+  cache
+)
+
+function App() {
+  return <RawIntlProvider value={intl}>{/* Your app */}</RawIntlProvider>
+}
+```
+
+## Advanced: Using Aspects
+
+Since `formatjs_extract` is a custom rule, you can attach Bazel aspects to it for advanced analysis and transformations. This is useful for:
+
+- Collecting statistics about extracted messages
+- Validating message format and completeness
+- Aggregating messages across multiple targets
+- Custom reporting and analysis
+
+### Message Aggregation Aspect
+
+The `formatjs_aggregate_aspect` collects and merges extracted messages from a target and all its dependencies into a single JSON file using `jq`.
+
+**Example:**
+
+```starlark
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract", "formatjs_aggregate")
+
+# Extract from multiple modules
+formatjs_extract(name = "module1_msgs", srcs = ["module1/**/*.tsx"])
+formatjs_extract(name = "module2_msgs", srcs = ["module2/**/*.tsx"])
+formatjs_extract(name = "module3_msgs", srcs = ["module3/**/*.tsx"])
+
+# Create aggregation target
+formatjs_aggregate(
+    name = "all_messages",
+    deps = [":module1_msgs", ":module2_msgs", ":module3_msgs"],
+)
+```
+
+Then build with the aspect:
+
+```bash
+bazel build //:all_messages \
+  --aspects=@rules_formatjs//formatjs:aggregate.bzl%formatjs_aggregate_aspect \
+  --output_groups=aggregated_messages
+```
+
+### Built-in Example Aspects
+
+The library includes demonstration aspects in `formatjs/aspects.bzl`:
+
+#### Message Statistics
+
+Collect statistics about extracted messages:
+
+```bash
+bazel build //path/to:target \
+  --aspects=@rules_formatjs//formatjs:aspects.bzl%message_stats_aspect \
+  --output_groups=message_stats
+```
+
+#### Message Validation
+
+Validate message format and structure:
+
+```bash
+bazel build //path/to:target \
+  --aspects=@rules_formatjs//formatjs:aspects.bzl%message_validator_aspect \
+  --output_groups=message_validation
+```
+
+#### Message Collection
+
+Collect messages across all dependencies:
+
+```bash
+bazel build //path/to:target \
+  --aspects=@rules_formatjs//formatjs:aspects.bzl%message_collector_aspect \
+  --output_groups=all_messages
+```
+
+### Creating Custom Aspects
+
+You can create custom aspects to analyze and transform extracted messages:
+
+```starlark
+load("@rules_formatjs//formatjs:defs.bzl", "FormatjsExtractInfo")
+
+def _my_aspect_impl(target, ctx):
+    if FormatjsExtractInfo not in target:
+        return []
+
+    info = target[FormatjsExtractInfo]
+
+    # Access extracted message file
+    messages_file = info.messages
+
+    # Access source files
+    src_files = info.srcs.to_list()
+
+    # Perform custom analysis...
+    # For example:
+    # - Count messages by type
+    # - Validate message IDs
+    # - Check for missing translations
+    # - Generate reports
+
+    return [OutputGroupInfo(...)]
+
+my_aspect = aspect(
+    implementation = _my_aspect_impl,
+    doc = "My custom aspect for formatjs_extract",
+)
+```
+
+## Toolchain
+
+rules_formatjs uses a native Rust CLI toolchain that is automatically downloaded for your platform. The toolchain supports:
+
+- macOS (Apple Silicon and Intel)
+- Linux (x86_64)
+
+The toolchain is registered automatically when you add the MODULE.bazel dependency. Binaries are fetched from GitHub releases and cached by Bazel.
+
+### Performance Benefits
+
+The native Rust CLI is significantly faster than the Node.js-based tools:
+
+- **4-17x faster** message extraction
+- **Zero dependencies** - no Node.js or npm required
+- **Minimal memory footprint**
+- **Instant startup** - no JavaScript runtime initialization
+- **Perfect for CI/CD** - fast builds in continuous integration
+
+## Common Workflows
+
+### Development Workflow
+
+1. Extract messages from source files
+2. Compile for development (with AST for better performance)
+3. Verify translations are complete
+
+```starlark
+# BUILD.bazel
+formatjs_extract(
+    name = "extract_dev",
+    srcs = glob(["src/**/*.tsx"]),
+    out = "messages.json",
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+)
+
+formatjs_compile(
+    name = "compile_dev",
+    src = ":extract_dev",
+    ast = True,
+)
+
+formatjs_verify(
+    name = "verify_dev",
+    reference = ":extract_dev",
+    translations = glob(["translations/*.json"]),
+)
+```
+
+### Production Workflow
+
+1. Extract from all modules
+2. Aggregate across the entire application
+3. Compile with AST optimization
+4. Verify all translations
+
+```starlark
+# Multiple module extraction
+formatjs_extract(name = "auth_msgs", srcs = glob(["auth/**/*.tsx"]))
+formatjs_extract(name = "dashboard_msgs", srcs = glob(["dashboard/**/*.tsx"]))
+formatjs_extract(name = "settings_msgs", srcs = glob(["settings/**/*.tsx"]))
+
+# Aggregate all messages
+formatjs_aggregate(
+    name = "all_app_messages",
+    deps = [":auth_msgs", ":dashboard_msgs", ":settings_msgs"],
+)
+
+# Compile with AST
+formatjs_compile(
+    name = "compile_prod",
+    src = ":all_app_messages",
+    out = "app-messages.json",
+    ast = True,
+)
+
+# Verify all translations
+formatjs_verify(
+    name = "verify_all",
+    reference = ":all_app_messages",
+    translations = glob(["translations/*.json"]),
+)
+```
+
+Build the aggregated messages:
+
+```bash
+bazel build //:all_app_messages \
+  --aspects=@rules_formatjs//formatjs:aggregate.bzl%formatjs_aggregate_aspect \
+  --output_groups=aggregated_messages
+```
+
+### CI/CD Integration
+
+Add verification to your CI pipeline:
+
+```bash
+# Extract and verify in one command
+bazel test //...
+
+# Or run specific verification targets
+bazel test //:verify_all //:verify_es //:verify_fr
+```
+
+## Examples
+
+Complete working examples are available in the [rules_formatjs repository](https://github.com/formatjs/rules_formatjs):
+
+- [examples/simple](https://github.com/formatjs/rules_formatjs/tree/main/examples/simple) - Basic message extraction, compilation, and verification
+- [examples/aggregate](https://github.com/formatjs/rules_formatjs/tree/main/examples/aggregate) - Aggregating messages from multiple modules
+
+## Comparison with Other Tools
+
+| Feature                  | Bazel Rules | CLI         | Babel Plugin | TS Transformer |
+| ------------------------ | ----------- | ----------- | ------------ | -------------- |
+| Build System Integration | ✅ Native   | ❌ External | ❌ External  | ❌ External    |
+| Incremental Builds       | ✅ Yes      | ❌ No       | ⚠️ Partial   | ⚠️ Partial     |
+| Caching                  | ✅ Yes      | ❌ No       | ⚠️ Limited   | ⚠️ Limited     |
+| Message Aggregation      | ✅ Native   | ⚠️ Manual   | ❌ No        | ❌ No          |
+| Translation Verification | ✅ Native   | ✅ Yes      | ❌ No        | ❌ No          |
+| AST Compilation          | ✅ Yes      | ✅ Yes      | ✅ Yes       | ✅ Yes         |
+| Performance              | ✅ Rust     | ✅ Rust     | ⚠️ Node.js   | ⚠️ Node.js     |
+| Multi-module Support     | ✅ Aspects  | ⚠️ Manual   | ❌ No        | ❌ No          |
+| Custom Analysis          | ✅ Aspects  | ❌ No       | ⚠️ Limited   | ⚠️ Limited     |
+
+## Troubleshooting
+
+### Messages not being extracted
+
+1. Verify your `srcs` glob pattern matches your files
+2. Check that you're using standard prop names (see [Wrapper Components Guide](/docs/guides/wrapper-components))
+3. Ensure `extract_from_format_message_call` is enabled if using `formatMessage()`
+4. Add custom components/functions using `additional_component_names` and `additional_function_names`
+
+### Build errors
+
+1. Check that `rules_formatjs` is properly installed in MODULE.bazel
+2. Verify the toolchain is registered (should happen automatically)
+3. Check Bazel version compatibility (requires Bazel 6.0+)
+
+### Aggregation not working
+
+1. Ensure you're using the correct aspect: `@rules_formatjs//formatjs:aggregate.bzl%formatjs_aggregate_aspect`
+2. Verify all deps are `formatjs_extract` targets
+3. Check that `jq` is available on your system
+4. Use `--output_groups=aggregated_messages` flag
+
+### Slow builds
+
+1. Enable remote caching in your `.bazelrc`
+2. Use `formatjs_aggregate` with aspects instead of manual merging
+3. Ensure the Rust toolchain is being used (check Bazel logs)
+4. Consider splitting large source sets into multiple extract targets
+
+## Resources
+
+- [FormatJS Documentation](https://formatjs.io/)
+- [FormatJS CLI](/docs/tooling/cli)
+- [React Intl](/docs/react-intl)
+- [Wrapper Components Guide](/docs/guides/wrapper-components)
+- [Bazel](https://bazel.build/)
+- [rules_formatjs GitHub Repository](https://github.com/formatjs/rules_formatjs)
+
+## See Also
+
+- [CLI Documentation](/docs/tooling/cli) - Command-line tools
+- [Babel Plugin Documentation](/docs/tooling/babel-plugin) - Babel integration
+- [TypeScript Transformer Documentation](/docs/tooling/ts-transformer) - TypeScript integration
+- [Message Extraction Guide](/docs/getting-started/message-extraction) - General extraction concepts
