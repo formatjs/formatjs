@@ -128,7 +128,7 @@ importers:
         version: 7.28.0
       '@types/eslint-scope':
         specifier: ^8.3.2
-        version: 8.3.2
+        version: 8.4.0
       '@types/estree':
         specifier: ^1.0.8
         version: 1.0.8
@@ -3427,8 +3427,8 @@ packages:
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
 
-  '@types/eslint-scope@8.3.2':
-    resolution: {integrity: sha512-ygPtnKRQjbXB6LKQ+m6SLyZDMgFeQFVNCkjUK/HivS58Ce6JBjxpVzHbE1+RS6pC5fP4FQg4qh8lvVSm2oxYZw==}
+  '@types/eslint-scope@8.4.0':
+    resolution: {integrity: sha512-RhVLLrJB96ufa3O58HBsOd4IVVaYN7gBIn7K9fxHQBB++AJYOWNQcevpHDIVVw6YD0Ycup/XodUlZ3ZntVrqhA==}
 
   '@types/eslint@7.29.0':
     resolution: {integrity: sha512-VNcvioYDH8/FxaeTKkM4/TiTwt6pBV9E3OfGmvaw8tPl0rrHCJ4Ll15HRT+pMiFAf/MLQvAzC+6RzUMEL9Ceng==}
@@ -10621,7 +10621,7 @@ snapshots:
       '@types/eslint': 9.6.1
       '@types/estree': 1.0.8
 
-  '@types/eslint-scope@8.3.2':
+  '@types/eslint-scope@8.4.0':
     dependencies:
       '@types/eslint': 9.6.1
       '@types/esrecurse': 4.3.1
