@@ -93,6 +93,7 @@ export function getNavigationTree(): NavSection[] {
       order: 5,
       items: [
         {title: 'CLI', path: 'tooling/cli'},
+        {title: 'Bazel', path: 'tooling/bazel'},
         {title: 'Babel Plugin', path: 'tooling/babel-plugin'},
         {title: 'TypeScript Transformer', path: 'tooling/ts-transformer'},
         {title: 'SWC Plugin', path: 'tooling/swc-plugin'},
