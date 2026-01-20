@@ -86,7 +86,6 @@ vitest(
     name = "unit_test",
     srcs = TESTS_BASE_SRCS + TEST_FILES,
     deps = SRC_DEPS + [
-        "//:node_modules/@types/eslint-scope",
         "//:node_modules/@typescript-eslint/parser",
         "//:node_modules/@typescript-eslint/rule-tester",
         "//:node_modules/vue-eslint-parser",
