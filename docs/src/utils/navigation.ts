@@ -117,6 +117,10 @@ export function getNavigationTree(): NavSection[] {
         },
         {title: 'Runtime Requirements', path: 'guides/runtime-requirements'},
         {title: 'Advanced Usage', path: 'guides/advanced-usage'},
+        {
+          title: 'Wrapper Components with Auto ID',
+          path: 'guides/wrapper-components',
+        },
         {title: 'Bundler Plugins', path: 'guides/bundler-plugins'},
         {title: 'Distribute Libraries', path: 'guides/distribute-libraries'},
         {title: 'Development', path: 'guides/develop'},

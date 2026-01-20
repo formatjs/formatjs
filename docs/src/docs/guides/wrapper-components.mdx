@@ -1,0 +1,569 @@
+# Creating Wrapper Components with Auto ID Generation
+
+A common pattern in large applications is to create wrapper components that encapsulate `react-intl` functionality with custom styling, validation, or business logic. This guide shows you how to create these components while still supporting automatic message extraction and ID generation.
+
+## The Challenge
+
+When you create wrapper components that accept text as props, the babel plugin and other extraction tools won't automatically detect them as translation candidates. For example:
+
+```tsx
+// ❌ This won't be extracted by default
+<CustomButton text="Click me" />
+
+// ✅ This will be extracted
+<FormattedMessage defaultMessage="Click me" />
+```
+
+The solution is to configure your extraction tool to recognize your custom component names.
+
+## Critical Requirement
+
+<Admonition type="danger">
+**Your wrapper components MUST use the exact same prop names as `FormattedMessage`:**
+
+- `id` - The message ID (optional, auto-generated if not provided)
+- `defaultMessage` - The default message text
+- `description` - Context for translators
+- `values` - Variables to interpolate into the message
+
+The extraction tools look for these specific prop names. Using different names (like `message`, `text`, or `content`) will not work.
+
+</Admonition>
+
+## Solution: Using `additionalComponentNames`
+
+All FormatJS extraction tools support `additionalComponentNames` and `additionalFunctionNames` options to recognize custom components and functions.
+
+### Step 1: Create Your Wrapper Component
+
+Create a wrapper component that internally uses `react-intl` and accepts the same props as `FormattedMessage`:
+
+```tsx
+// components/CustomButton.tsx
+import {useIntl} from 'react-intl'
+
+interface CustomButtonProps {
+  id?: string
+  defaultMessage?: string
+  description?: string | object
+  values?: Record<string, any>
+  onClick?: () => void
+  variant?: 'primary' | 'secondary'
+}
+
+export function CustomButton({
+  id,
+  defaultMessage,
+  description,
+  values,
+  onClick,
+  variant = 'primary',
+}: CustomButtonProps) {
+  const intl = useIntl()
+  const text = intl.formatMessage({id, defaultMessage, description}, values)
+
+  return (
+    <button className={`btn btn-${variant}`} onClick={onClick}>
+      {text}
+    </button>
+  )
+}
+```
+
+### Step 2: Use Your Component with Message Descriptor Props
+
+When using your component, pass the message descriptor props directly:
+
+```tsx
+// ✅ Correct: Pass message descriptor props directly
+<CustomButton
+  defaultMessage="Click me"
+  description="Button to submit the form"
+  onClick={handleSubmit}
+/>
+
+// ✅ With explicit ID
+<CustomButton
+  id="submit.button"
+  defaultMessage="Submit"
+  description="Submit button text"
+  onClick={handleSubmit}
+/>
+
+// ✅ With variables
+<CustomButton
+  defaultMessage="Hello, {name}!"
+  description="Greeting with user name"
+  values={{name: 'World'}}
+  onClick={handleSubmit}
+/>
+```
+
+### Step 3: Configure Your Extraction Tool
+
+Configure your extraction tool to recognize `CustomButton` as a component that contains translatable messages.
+
+See the tool-specific configuration below:
+
+- [Babel Plugin Configuration](#babel-plugin-configuration)
+- [TypeScript Transformer Configuration](#typescript-transformer-configuration)
+- [CLI Configuration](#cli-configuration)
+
+## Pattern: Component with Inline Message Descriptor
+
+For simpler cases where you want to pass the message directly as a prop, you can create a component that accepts message descriptor props:
+
+```tsx
+// components/TranslatableButton.tsx
+import {FormattedMessage} from 'react-intl'
+
+interface TranslatableButtonProps {
+  id?: string
+  defaultMessage: string
+  description?: string
+  values?: Record<string, any>
+  onClick?: () => void
+}
+
+export function TranslatableButton({
+  id,
+  defaultMessage,
+  description,
+  values,
+  onClick,
+}: TranslatableButtonProps) {
+  return (
+    <button className="btn" onClick={onClick}>
+      <FormattedMessage
+        id={id}
+        defaultMessage={defaultMessage}
+        description={description}
+        values={values}
+      />
+    </button>
+  )
+}
+```
+
+Usage:
+
+```tsx
+// ✅ This will be extracted when you configure additionalComponentNames
+<TranslatableButton
+  defaultMessage="Click me"
+  description="Submit button"
+  onClick={handleSubmit}
+/>
+```
+
+Configuration:
+
+```json
+{
+  "plugins": [
+    [
+      "formatjs",
+      {
+        "idInterpolationPattern": "[sha512:contenthash:base64:6]",
+        "additionalComponentNames": ["TranslatableButton"]
+      }
+    ]
+  ]
+}
+```
+
+## Pattern: Function Wrapper for formatMessage
+
+You can also create function wrappers for `formatMessage`. Note that the wrapper must accept the same signature as `intl.formatMessage`:
+
+```tsx
+// utils/i18n.ts
+import {useIntl, type MessageDescriptor} from 'react-intl'
+
+export function useTranslation() {
+  const intl = useIntl()
+
+  // Create a shorter alias - must match formatMessage signature
+  const t = (descriptor: MessageDescriptor, values?: Record<string, any>) =>
+    intl.formatMessage(descriptor, values)
+
+  return {t}
+}
+```
+
+Usage:
+
+```tsx
+function MyComponent() {
+  const {t} = useTranslation()
+
+  return (
+    <div>
+      {t(
+        {
+          defaultMessage: 'Hello, {name}!',
+          description: 'Greeting message',
+        },
+        {name: 'World'}
+      )}
+    </div>
+  )
+}
+```
+
+To extract messages from the `t` function:
+
+```json
+{
+  "plugins": [
+    [
+      "formatjs",
+      {
+        "idInterpolationPattern": "[sha512:contenthash:base64:6]",
+        "additionalFunctionNames": ["t"]
+      }
+    ]
+  ]
+}
+```
+
+## Babel Plugin Configuration
+
+For [babel-plugin-formatjs](/docs/tooling/babel-plugin), add the `additionalComponentNames` option to your babel configuration:
+
+**babel.config.json:**
+
+```json
+{
+  "plugins": [
+    [
+      "formatjs",
+      {
+        "idInterpolationPattern": "[sha512:contenthash:base64:6]",
+        "additionalComponentNames": ["CustomButton", "TranslatableButton"],
+        "additionalFunctionNames": ["t", "$formatMessage"]
+      }
+    ]
+  ]
+}
+```
+
+## TypeScript Transformer Configuration
+
+For [@formatjs/ts-transformer](/docs/tooling/ts-transformer), configure it in your build tool:
+
+**webpack with ts-loader:**
+
+```tsx
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              getCustomTransformers() {
+                return {
+                  before: [
+                    transform({
+                      overrideIdFn: '[sha512:contenthash:base64:6]',
+                      additionalComponentNames: [
+                        'CustomButton',
+                        'TranslatableButton',
+                      ],
+                      additionalFunctionNames: ['t', '$formatMessage'],
+                    }),
+                  ],
+                }
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+```
+
+**ts-patch in tsconfig.json:**
+
+```json
+{
+  "compilerOptions": {
+    "plugins": [
+      {
+        "transform": "@formatjs/ts-transformer",
+        "import": "transform",
+        "type": "config",
+        "overrideIdFn": "[sha512:contenthash:base64:6]",
+        "additionalComponentNames": ["CustomButton", "TranslatableButton"],
+        "additionalFunctionNames": ["t", "$formatMessage"]
+      }
+    ]
+  }
+}
+```
+
+## CLI Configuration
+
+For [@formatjs/cli](/docs/tooling/cli), use command-line flags:
+
+```bash
+formatjs extract "src/**/*.{ts,tsx}" \
+  --out-file messages.json \
+  --id-interpolation-pattern '[sha512:contenthash:base64:6]' \
+  --additional-component-names CustomButton,TranslatableButton \
+  --additional-function-names t,$formatMessage
+```
+
+Or create a configuration file and reference it in your package.json scripts:
+
+**package.json:**
+
+```json
+{
+  "scripts": {
+    "extract": "formatjs extract 'src/**/*.{ts,tsx}' --out-file messages.json --additional-component-names CustomButton,TranslatableButton --additional-function-names t,$formatMessage"
+  }
+}
+```
+
+## Important Considerations
+
+### Type Safety
+
+The `additionalComponentNames` and `additionalFunctionNames` options are less safe than the default extraction because they don't verify imports. This means:
+
+```tsx
+// ⚠️ This will be extracted even if CustomButton is not from react-intl
+import {CustomButton} from 'some-other-library'
+;<CustomButton defaultMessage="Hello" />
+```
+
+To maintain type safety:
+
+1. Use TypeScript to enforce correct prop types
+2. Establish naming conventions (e.g., all translatable components start with `Translatable`)
+3. Document your wrapper components clearly
+
+### Message Descriptor Structure
+
+<Admonition type="warning" title="Required Prop Names">
+  Your wrapper components **must** accept props that match the
+  `MessageDescriptor` interface. The extraction tools look for these exact prop
+  names - they will not work with custom prop names.
+</Admonition>
+
+```tsx
+interface MessageDescriptor {
+  id?: string
+  defaultMessage?: string
+  description?: string | object
+}
+```
+
+**Example of what works vs. what doesn't:**
+
+```tsx
+// ✅ CORRECT - Uses standard prop names
+<CustomButton defaultMessage="Click me" description="Button text" />
+
+// ❌ WRONG - Custom prop names won't be extracted
+<CustomButton message="Click me" tooltip="Button text" />
+<CustomButton text="Click me" />
+<CustomButton label={{defaultMessage: "Click me"}} />
+```
+
+### Auto ID Generation
+
+When using `idInterpolationPattern` or `overrideIdFn`, IDs will be automatically generated based on the `defaultMessage` content. This works seamlessly with custom components that use the same prop names as `FormattedMessage`:
+
+```tsx
+// Without explicit ID - auto-generates ID from content hash
+<CustomButton defaultMessage="Click me" description="Submit button" />
+// Generates ID like: "2Hd9f0" (hash of "Click me")
+
+// With explicit ID - ID is preserved
+<CustomButton id="submit.button" defaultMessage="Click me" description="Submit button" />
+// Uses ID: "submit.button"
+```
+
+## Complete Example
+
+Here's a complete example showing a design system with wrapper components:
+
+```tsx
+// components/design-system/Button.tsx
+import {useIntl} from 'react-intl'
+
+interface ButtonProps {
+  id?: string
+  defaultMessage?: string
+  description?: string | object
+  values?: Record<string, any>
+  variant?: 'primary' | 'secondary' | 'danger'
+  size?: 'small' | 'medium' | 'large'
+  onClick?: () => void
+  disabled?: boolean
+}
+
+export function Button({
+  id,
+  defaultMessage,
+  description,
+  values,
+  variant = 'primary',
+  size = 'medium',
+  onClick,
+  disabled,
+}: ButtonProps) {
+  const intl = useIntl()
+  const text = intl.formatMessage({id, defaultMessage, description}, values)
+
+  return (
+    <button
+      className={`btn btn-${variant} btn-${size}`}
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={text}
+    >
+      {text}
+    </button>
+  )
+}
+
+// components/design-system/Alert.tsx
+import {FormattedMessage} from 'react-intl'
+
+interface AlertProps {
+  titleId?: string
+  titleDefaultMessage?: string
+  titleDescription?: string | object
+  messageId?: string
+  messageDefaultMessage?: string
+  messageDescription?: string | object
+  type?: 'info' | 'warning' | 'error' | 'success'
+}
+
+export function Alert({
+  titleId,
+  titleDefaultMessage,
+  titleDescription,
+  messageId,
+  messageDefaultMessage,
+  messageDescription,
+  type = 'info',
+}: AlertProps) {
+  return (
+    <div className={`alert alert-${type}`}>
+      <h4>
+        <FormattedMessage
+          id={titleId}
+          defaultMessage={titleDefaultMessage}
+          description={titleDescription}
+        />
+      </h4>
+      <p>
+        <FormattedMessage
+          id={messageId}
+          defaultMessage={messageDefaultMessage}
+          description={messageDescription}
+        />
+      </p>
+    </div>
+  )
+}
+
+// App.tsx
+import {Button, Alert} from './components/design-system'
+
+export function MyForm() {
+  const [showSuccess, setShowSuccess] = useState(false)
+
+  return (
+    <div>
+      {showSuccess && (
+        <Alert
+          titleDefaultMessage="Success!"
+          titleDescription="Success alert title"
+          messageDefaultMessage="Your changes have been saved."
+          messageDescription="Success alert message"
+          type="success"
+        />
+      )}
+
+      <Button
+        defaultMessage="Save changes"
+        description="Button to save form data"
+        variant="primary"
+        onClick={() => setShowSuccess(true)}
+      />
+
+      <Button
+        defaultMessage="Cancel"
+        description="Button to cancel the operation"
+        variant="secondary"
+        onClick={() => {}}
+      />
+    </div>
+  )
+}
+```
+
+**babel.config.json:**
+
+```json
+{
+  "plugins": [
+    [
+      "formatjs",
+      {
+        "idInterpolationPattern": "[sha512:contenthash:base64:6]",
+        "additionalComponentNames": ["Button", "Alert"],
+        "ast": true
+      }
+    ]
+  ]
+}
+```
+
+With this configuration:
+
+- All `Button` and `Alert` components will have their messages extracted
+- IDs will be auto-generated based on `defaultMessage`
+- Messages will be pre-compiled to AST for better runtime performance
+- Type safety is maintained through TypeScript
+
+## Troubleshooting
+
+### Messages not being extracted
+
+1. Verify your component is listed in `additionalComponentNames`
+2. Check that prop names match `MessageDescriptor` interface (`defaultMessage`, `id`, `description`)
+3. Ensure the component is used with JSX syntax (not dynamically created)
+4. Run extraction with `--throws` flag to see detailed errors
+
+### IDs not being generated
+
+1. Verify `idInterpolationPattern` or `overrideIdFn` is configured
+2. Check that you're not providing an empty `id` prop (use `undefined` or omit it)
+3. Ensure `defaultMessage` is provided (required for ID generation)
+
+### Type errors
+
+1. Import `MessageDescriptor` type from `react-intl`
+2. Ensure your component props extend or match `MessageDescriptor`
+3. Use TypeScript strict mode to catch mismatches early
+
+## Related Issues
+
+- [#5972 - Creating wrapper components with dynamic IDs](https://github.com/formatjs/formatjs/issues/5972)
+
+## See Also
+
+- [Babel Plugin Documentation](/docs/tooling/babel-plugin)
+- [TypeScript Transformer Documentation](/docs/tooling/ts-transformer)
+- [CLI Documentation](/docs/tooling/cli)
+- [Message Extraction Guide](/docs/getting-started/message-extraction)

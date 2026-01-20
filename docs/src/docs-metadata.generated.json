@@ -51,6 +51,10 @@
     "title": "Testing With React Intl",
     "description": "React Intl uses the built-in Intl APIs in JavaScript. Make sure your environment satisfy the requirements listed in Intl APIs requirements"
   },
+  "guides/wrapper-components": {
+    "title": "Wrapper Components",
+    "description": "A common pattern in large applications is to create wrapper components that encapsulate react-intl functionality with custom styling, validation, or bus..."
+  },
   "icu-messageformat-parser": {
     "title": "Icu Messageformat Parser",
     "description": "Parses ICU Message strings into an AST via JavaScript."

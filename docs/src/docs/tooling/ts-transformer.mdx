@@ -164,11 +164,119 @@ Whether the metadata about the location of the message in the source file should
 
 ### **`additionalComponentNames`**
 
-Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
+Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`.
+
+This option is useful for creating wrapper components that have react-intl functionality built in. For example, if you have a custom button component that internally uses `formatMessage`:
+
+```tsx
+// Your wrapper component - must accept same props as FormattedMessage
+function CustomButton({id, defaultMessage, description, values, onClick}) {
+  const intl = useIntl()
+  return (
+    <button onClick={onClick}>
+      {intl.formatMessage({id, defaultMessage, description}, values)}
+    </button>
+  )
+}
+
+// Usage - this will be extracted when CustomButton is in additionalComponentNames
+;<CustomButton
+  defaultMessage="Click me"
+  description="Button text"
+  onClick={handleClick}
+/>
+```
+
+**Configuration with ts-loader:**
+
+```tsx
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              getCustomTransformers() {
+                return {
+                  before: [
+                    transform({
+                      overrideIdFn: '[sha512:contenthash:base64:6]',
+                      additionalComponentNames: ['CustomButton'],
+                    }),
+                  ],
+                }
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+```
+
+**NOTE**: By default we check for the fact that `FormattedMessage` is imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe - any component with the specified name will be processed regardless of where it's imported from.
+
+For a complete guide on creating wrapper components with auto ID generation, see the [Wrapper Components Guide](/docs/guides/wrapper-components).
 
 ### **`additionalFunctionNames`**
 
-Additional function names to extract messages from, e.g: `['$formatMessage']`. Use this if you prefer to alias `formatMessage` to something shorter like `$t`.
+Additional function names to extract messages from, e.g: `['$formatMessage']`.
+
+This option is useful when you want to create custom function wrappers around `formatMessage`, or use shorter aliases. For example:
+
+```tsx
+// Custom translation hook - wrapper must match formatMessage signature
+function useTranslation() {
+  const intl = useIntl()
+  const t = (descriptor, values) => intl.formatMessage(descriptor, values)
+  return {t}
+}
+
+// Usage - this will be extracted when 't' is in additionalFunctionNames
+function MyComponent() {
+  const {t} = useTranslation()
+  return (
+    <div>{t({defaultMessage: 'Hello world', description: 'Greeting'})}</div>
+  )
+}
+```
+
+**Configuration with ts-loader:**
+
+```tsx
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              getCustomTransformers() {
+                return {
+                  before: [
+                    transform({
+                      overrideIdFn: '[sha512:contenthash:base64:6]',
+                      additionalFunctionNames: ['t', '$formatMessage'],
+                    }),
+                  ],
+                }
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+```
+
+For a complete guide on creating function wrappers with auto ID generation, see the [Wrapper Components Guide](/docs/guides/wrapper-components).
 
 ### **`pragma`**
 
