@@ -797,4 +797,262 @@ mod tests {
         // Keys should be in alphabetical order even with AST output
         assert_eq!(keys, vec!["bravo", "zulu"]);
     }
+
+    #[test]
+    fn test_compile_with_crowdin_formatter() {
+        let dir = tempdir().unwrap();
+        let input_file = dir.path().join("messages.json");
+        let output_file = dir.path().join("compiled.json");
+
+        // Write input file in Crowdin format: { id: { message, description } }
+        fs::write(
+            &input_file,
+            json!({
+                "greeting": {
+                    "message": "Hello {name}!",
+                    "description": "Greeting message shown to users"
+                },
+                "farewell": {
+                    "message": "Goodbye {name}!",
+                    "description": "Farewell message"
+                }
+            })
+            .to_string(),
+        )
+        .unwrap();
+
+        // Compile with Crowdin formatter
+        compile(
+            &[input_file],
+            Some(Formatter::Crowdin),
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        // Verify output extracts message field correctly
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        assert_eq!(output_json["greeting"], "Hello {name}!");
+        assert_eq!(output_json["farewell"], "Goodbye {name}!");
+    }
+
+    #[test]
+    fn test_compile_with_crowdin_formatter_icu_plural() {
+        let dir = tempdir().unwrap();
+        let input_file = dir.path().join("messages.json");
+        let output_file = dir.path().join("compiled.json");
+
+        // Write input file in Crowdin format with ICU plural message
+        fs::write(
+            &input_file,
+            json!({
+                "items_count": {
+                    "message": "{count, plural, one {# item} other {# items}}",
+                    "description": "Shows the number of items"
+                }
+            })
+            .to_string(),
+        )
+        .unwrap();
+
+        // Compile with Crowdin formatter
+        compile(
+            &[input_file],
+            Some(Formatter::Crowdin),
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        // Verify output
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        assert_eq!(
+            output_json["items_count"],
+            "{count, plural, one {# item} other {# items}}"
+        );
+    }
+
+    #[test]
+    fn test_compile_with_crowdin_formatter_skips_smartling_key() {
+        let dir = tempdir().unwrap();
+        let input_file = dir.path().join("messages.json");
+        let output_file = dir.path().join("compiled.json");
+
+        // Write input file in Crowdin format with smartling metadata key
+        // (Crowdin format should skip the "smartling" key for compatibility)
+        fs::write(
+            &input_file,
+            json!({
+                "smartling": {
+                    "message": "This should be skipped",
+                    "description": "Smartling metadata"
+                },
+                "greeting": {
+                    "message": "Hello!",
+                    "description": "Greeting"
+                }
+            })
+            .to_string(),
+        )
+        .unwrap();
+
+        // Compile with Crowdin formatter
+        compile(
+            &[input_file],
+            Some(Formatter::Crowdin),
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        // Verify output skips smartling key
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        assert!(output_json.get("smartling").is_none());
+        assert_eq!(output_json["greeting"], "Hello!");
+    }
+
+    #[test]
+    fn test_compile_with_crowdin_formatter_to_ast() {
+        let dir = tempdir().unwrap();
+        let input_file = dir.path().join("messages.json");
+        let output_file = dir.path().join("compiled.json");
+
+        // Write input file in Crowdin format
+        fs::write(
+            &input_file,
+            json!({
+                "greeting": {
+                    "message": "Hello {name}!",
+                    "description": "Greeting message"
+                }
+            })
+            .to_string(),
+        )
+        .unwrap();
+
+        // Compile with Crowdin formatter to AST
+        compile(
+            &[input_file],
+            Some(Formatter::Crowdin),
+            Some(&output_file),
+            true, // AST output
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        // Verify output is AST
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // AST should be an array
+        assert!(output_json["greeting"].is_array());
+        // Should contain the literal "Hello " and argument "name"
+        let ast = output_json["greeting"].as_array().unwrap();
+        assert!(!ast.is_empty());
+    }
+
+    #[test]
+    fn test_compile_with_crowdin_formatter_missing_message_field() {
+        let dir = tempdir().unwrap();
+        let input_file = dir.path().join("messages.json");
+        let output_file = dir.path().join("compiled.json");
+
+        // Write input file in Crowdin format but missing "message" field
+        fs::write(
+            &input_file,
+            json!({
+                "greeting": {
+                    "description": "This entry has no message field"
+                }
+            })
+            .to_string(),
+        )
+        .unwrap();
+
+        // Compile with Crowdin formatter - should succeed but skip entries without message
+        compile(
+            &[input_file],
+            Some(Formatter::Crowdin),
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        // Verify output is empty (no messages extracted)
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        assert!(output_json.as_object().unwrap().is_empty());
+    }
+
+    #[test]
+    fn test_compile_with_crowdin_formatter_multiple_files() {
+        let dir = tempdir().unwrap();
+        let input_file1 = dir.path().join("messages1.json");
+        let input_file2 = dir.path().join("messages2.json");
+        let output_file = dir.path().join("compiled.json");
+
+        // Write input files in Crowdin format
+        fs::write(
+            &input_file1,
+            json!({
+                "greeting": {
+                    "message": "Hello!",
+                    "description": "Greeting"
+                }
+            })
+            .to_string(),
+        )
+        .unwrap();
+        fs::write(
+            &input_file2,
+            json!({
+                "farewell": {
+                    "message": "Goodbye!",
+                    "description": "Farewell"
+                }
+            })
+            .to_string(),
+        )
+        .unwrap();
+
+        // Compile with Crowdin formatter
+        compile(
+            &[input_file1, input_file2],
+            Some(Formatter::Crowdin),
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        // Verify output contains both messages
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        assert_eq!(output_json["greeting"], "Hello!");
+        assert_eq!(output_json["farewell"], "Goodbye!");
+    }
 }
