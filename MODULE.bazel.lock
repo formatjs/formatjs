@@ -1966,10 +1966,10 @@
         "bzlTransitiveDigest": "z2M3+XLYXYfqQcsjpzig9AXjoCtdl+ltikYxXCQ6Y9Q=",
         "usagesDigest": "+2oxp30n7U2iCRyiQVVvn9Dm9XZaeUlnwnAuV9gqyVs=",
         "recordedFileInputs": {
-          "@@//Cargo.lock": "1663e7f41a190ec0c638541c6871c0e11ccabf0e7b67bd2f5eaf8a9efe6008f0",
+          "@@//Cargo.lock": "d56cc18f5f84fb4e07c77824ea085da3b67f0e3207d639a793ed8006362402f3",
           "@@//Cargo.toml": "4e0e0629ddbf521db0ad31e9ad8cd8805f29b141f7edaaa560af34e5f325f882",
           "@@//MODULE.bazel": "69e68bc92ee5fb9b6cfab9c606886646298b57cd37e78763d6b8ef22b4d77d40",
-          "@@//crates/formatjs_cli/Cargo.toml": "2cd686b093406c017b6b0472f664e819dea4b3037c3ef34ba7fbaa6bb37f76ff",
+          "@@//crates/formatjs_cli/Cargo.toml": "75422a60b533c2a75402de5c97721377b656fb4dae2eb877a01afb3dbcb0e61a",
           "@@//crates/icu_messageformat_parser/Cargo.toml": "9a3bc46e71f0aeffb992d30028167369ba852816f7b1416c70d78ca511d6967f",
           "@@//crates/icu_skeleton_parser/Cargo.toml": "eac4ca44b47b0fde5ae7f4afcdb6e7d4951eac75eb44db7349b2ba912a9840da",
           "@@//packages/icu-messageformat-parser/integration-tests/Cargo.toml": "4068f7ef5d7095eb8ef3bd392e3200e3e4f60a13fea2e462a3c24b0fbfe2516c",
