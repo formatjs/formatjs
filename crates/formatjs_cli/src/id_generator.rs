@@ -8,6 +8,42 @@ use base64::Engine;
 use serde_json::Value;
 use sha2::{Digest, Sha512};
 
+/// Base62 character set: 0-9, A-Z, a-z
+const BASE62_CHARS: &[u8] = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+/// Encode bytes to base62 string
+fn encode_base62(bytes: &[u8]) -> String {
+    if bytes.is_empty() {
+        return String::new();
+    }
+
+    // Convert bytes to a big integer representation, then encode
+    let mut result = Vec::new();
+    let mut num = bytes.to_vec();
+
+    while !num.iter().all(|&b| b == 0) {
+        let mut remainder = 0u32;
+        for byte in &mut num {
+            let value = (remainder << 8) | (*byte as u32);
+            *byte = (value / 62) as u8;
+            remainder = value % 62;
+        }
+        result.push(BASE62_CHARS[remainder as usize]);
+    }
+
+    // Add leading zeros for leading zero bytes in input
+    for &byte in bytes {
+        if byte == 0 {
+            result.push(BASE62_CHARS[0]);
+        } else {
+            break;
+        }
+    }
+
+    result.reverse();
+    String::from_utf8(result).unwrap_or_default()
+}
+
 /// Generate message ID using interpolation pattern.
 ///
 /// Supports patterns in the format: `[hash:digest:encoding:length]`
@@ -15,11 +51,13 @@ use sha2::{Digest, Sha512};
 /// # Supported formats:
 /// - **Hash algorithms**: `sha512`
 /// - **Digest types**: `contenthash`
-/// - **Encodings**: `base64` (URL-safe), `hex`
+/// - **Encodings**: `base64`, `base64url` (URL-safe), `base62`, `hex`
 /// - **Length**: Any positive integer
 ///
 /// # Examples:
-/// - `[sha512:contenthash:base64:6]` - 6-character base64 ID
+/// - `[sha512:contenthash:base64:6]` - 6-character base64 ID (standard, may contain +/)
+/// - `[sha512:contenthash:base64url:6]` - 6-character URL-safe base64 ID (uses -_ instead of +/)
+/// - `[sha512:contenthash:base62:6]` - 6-character base62 ID (alphanumeric only)
 /// - `[sha512:contenthash:hex:10]` - 10-character hex ID
 ///
 /// # Arguments:
@@ -75,10 +113,14 @@ pub fn generate_id(
             let result = hasher.finalize();
             match encoding {
                 "base64" => {
-                    let encoded = base64::engine::general_purpose::STANDARD.encode(&result);
-                    // base64 URL-safe: replace + with - and / with _
-                    encoded.replace('+', "-").replace('/', "_")
+                    // Standard base64 (matches Node's crypto.digest('base64'))
+                    base64::engine::general_purpose::STANDARD.encode(&result)
                 }
+                "base64url" => {
+                    // URL-safe base64 without padding (matches Node's crypto.digest('base64url'))
+                    base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(&result)
+                }
+                "base62" => encode_base62(&result),
                 "hex" => hex::encode(result),
                 _ => anyhow::bail!("Unsupported encoding: {}", encoding),
             }
@@ -107,10 +149,20 @@ mod tests {
             None,
         )
         .unwrap();
-        assert_eq!(id.len(), 6);
-        // Should be URL-safe base64
-        assert!(!id.contains('+'));
-        assert!(!id.contains('/'));
+        // Standard base64 (may contain + and /)
+        assert_eq!(id, "LHT9F+");
+    }
+
+    #[test]
+    fn test_generate_id_sha512_base64url() {
+        let id = generate_id(
+            "[sha512:contenthash:base64url:6]",
+            Some("Hello World"),
+            &None,
+            None,
+        )
+        .unwrap();
+        assert_eq!(id, "LHT9F-");
     }
 
     #[test]
@@ -123,15 +175,13 @@ mod tests {
             None,
         )
         .unwrap();
-        assert_eq!(id.len(), 8);
+        assert_eq!(id, "7wEb9s8U");
     }
 
     #[test]
     fn test_generate_id_hex() {
         let id = generate_id("[sha512:contenthash:hex:10]", Some("Test"), &None, None).unwrap();
-        assert_eq!(id.len(), 10);
-        // Should be hex characters
-        assert!(id.chars().all(|c| c.is_ascii_hexdigit()));
+        assert_eq!(id, "c6ee9e33cf");
     }
 
     #[test]
@@ -167,6 +217,8 @@ mod tests {
             None,
         )
         .unwrap();
+        assert_eq!(id1, "LHT9F+2v2A");
+        assert_eq!(id2, "LHT9F+2v2A");
         assert_eq!(id1, id2, "Same input should produce same ID");
     }
 
@@ -187,6 +239,8 @@ mod tests {
             None,
         )
         .unwrap();
+        assert_eq!(id1, "ePueQ5h1ce");
+        assert_eq!(id2, "fTO7rwuRCr");
         assert_ne!(id1, id2, "Different messages should produce different IDs");
     }
 
@@ -207,6 +261,8 @@ mod tests {
             None,
         )
         .unwrap();
+        assert_eq!(id1, "NhX4DJ0pPt");
+        assert_eq!(id2, "779BTuay3q");
         assert_ne!(
             id1, id2,
             "Adding description should change the generated ID"
@@ -215,25 +271,71 @@ mod tests {
 
     #[test]
     fn test_generate_id_hex_vs_base64() {
-        // Same message with different encodings should produce different output
         let id_hex = generate_id("[sha512:contenthash:hex:10]", Some("Test"), &None, None).unwrap();
         let id_base64 =
             generate_id("[sha512:contenthash:base64:10]", Some("Test"), &None, None).unwrap();
 
-        assert_ne!(id_hex, id_base64, "Different encodings should produce different output");
+        assert_eq!(id_hex, "c6ee9e33cf");
+        assert_eq!(id_base64, "xu6eM89cZx");
+    }
 
-        // Verify character sets
-        assert!(
-            id_hex.chars().all(|c| c.is_ascii_hexdigit()),
-            "Hex should only contain hex digits"
-        );
-        // Base64 can contain alphanumeric, -, _
-        assert!(
-            id_base64
-                .chars()
-                .all(|c| c.is_alphanumeric() || c == '-' || c == '_'),
-            "Base64 should be URL-safe"
-        );
+    #[test]
+    fn test_generate_id_base64_vs_base64url() {
+        let id_base64 =
+            generate_id("[sha512:contenthash:base64:10]", Some("Hello World"), &None, None).unwrap();
+        let id_base64url =
+            generate_id("[sha512:contenthash:base64url:10]", Some("Hello World"), &None, None).unwrap();
+
+        assert_eq!(id_base64, "LHT9F+2v2A");
+        assert_eq!(id_base64url, "LHT9F-2v2A");
+    }
+
+    #[test]
+    fn test_generate_id_base62() {
+        let id =
+            generate_id("[sha512:contenthash:base62:10]", Some("Test message"), &None, None).unwrap();
+        assert_eq!(id, "Gm8I0LBX6B");
+    }
+
+    #[test]
+    fn test_generate_id_base62_deterministic() {
+        let id1 = generate_id(
+            "[sha512:contenthash:base62:10]",
+            Some("Hello World"),
+            &None,
+            None,
+        )
+        .unwrap();
+        let id2 = generate_id(
+            "[sha512:contenthash:base62:10]",
+            Some("Hello World"),
+            &None,
+            None,
+        )
+        .unwrap();
+        assert_eq!(id1, "AJxnki7plR");
+        assert_eq!(id2, "AJxnki7plR");
+    }
+
+    #[test]
+    fn test_generate_id_base62_different_from_base64() {
+        let id_base62 =
+            generate_id("[sha512:contenthash:base62:10]", Some("Test"), &None, None).unwrap();
+        let id_base64 =
+            generate_id("[sha512:contenthash:base64:10]", Some("Test"), &None, None).unwrap();
+
+        assert_eq!(id_base62, "kBedeOfsNe");
+        assert_eq!(id_base64, "xu6eM89cZx");
+    }
+
+    #[test]
+    fn test_generate_id_base62_various_lengths() {
+        // Test that truncation works correctly for various lengths
+        for length in [4, 6, 8, 10, 16, 32] {
+            let pattern = format!("[sha512:contenthash:base62:{}]", length);
+            let id = generate_id(&pattern, Some("Test message for base62"), &None, None).unwrap();
+            assert_eq!(id.len(), length);
+        }
     }
 
     #[test]
