@@ -638,6 +638,178 @@ const msg = defineMessage({
     }
 
     #[test]
+    fn test_extract_with_base62_interpolation_pattern() {
+        // Test extraction with base62 ID pattern for messages without explicit IDs
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        // Write test file with messages that don't have explicit IDs
+        let test_content = r#"
+import { defineMessages } from 'react-intl';
+
+const messages = defineMessages({
+  greeting: {
+    defaultMessage: 'Hello World!',
+    description: 'Greeting message',
+  },
+  farewell: {
+    defaultMessage: 'Goodbye!',
+    description: 'Farewell message',
+  },
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        // Extract with base62 pattern
+        extract(
+            &[test_file],
+            None,
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base62:8]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Read and verify output
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Should have two messages with generated IDs
+        assert_eq!(json.as_object().unwrap().len(), 2);
+
+        // Verify all generated IDs are base62 (alphanumeric only)
+        for (id, _) in json.as_object().unwrap() {
+            assert_eq!(id.len(), 8, "Generated ID should be 8 characters");
+            assert!(
+                id.chars().all(|c| c.is_ascii_alphanumeric()),
+                "Base62 ID should only contain alphanumeric characters, got: {}",
+                id
+            );
+            // Should not contain base64 special characters
+            assert!(!id.contains('+'), "Base62 should not contain +");
+            assert!(!id.contains('/'), "Base62 should not contain /");
+            assert!(!id.contains('-'), "Base62 should not contain -");
+            assert!(!id.contains('_'), "Base62 should not contain _");
+            assert!(!id.contains('='), "Base62 should not contain =");
+        }
+    }
+
+    #[test]
+    fn test_extract_base62_vs_base64_vs_hex() {
+        // Test that all three encodings produce different IDs for the same message
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+
+        let test_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  defaultMessage: 'Test message for encoding comparison',
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        // Extract with base62
+        let output_base62 = temp_dir.path().join("output_base62.json");
+        extract(
+            &[test_file.clone()],
+            None,
+            None,
+            Some(&output_base62),
+            "[sha512:contenthash:base62:10]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Extract with base64
+        let output_base64 = temp_dir.path().join("output_base64.json");
+        extract(
+            &[test_file.clone()],
+            None,
+            None,
+            Some(&output_base64),
+            "[sha512:contenthash:base64:10]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Extract with hex
+        let output_hex = temp_dir.path().join("output_hex.json");
+        extract(
+            &[test_file],
+            None,
+            None,
+            Some(&output_hex),
+            "[sha512:contenthash:hex:10]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Read all outputs
+        let json_base62: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(&output_base62).unwrap()).unwrap();
+        let json_base64: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(&output_base64).unwrap()).unwrap();
+        let json_hex: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(&output_hex).unwrap()).unwrap();
+
+        // Get the generated IDs
+        let id_base62 = json_base62.as_object().unwrap().keys().next().unwrap();
+        let id_base64 = json_base64.as_object().unwrap().keys().next().unwrap();
+        let id_hex = json_hex.as_object().unwrap().keys().next().unwrap();
+
+        // All IDs should be different
+        assert_ne!(id_base62, id_base64, "Base62 and base64 should produce different IDs");
+        assert_ne!(id_base62, id_hex, "Base62 and hex should produce different IDs");
+        assert_ne!(id_base64, id_hex, "Base64 and hex should produce different IDs");
+
+        // All should be 10 characters
+        assert_eq!(id_base62.len(), 10);
+        assert_eq!(id_base64.len(), 10);
+        assert_eq!(id_hex.len(), 10);
+
+        // Verify character sets
+        assert!(
+            id_base62.chars().all(|c| c.is_ascii_alphanumeric()),
+            "Base62 should only contain alphanumeric characters"
+        );
+        assert!(
+            id_hex.chars().all(|c| c.is_ascii_hexdigit()),
+            "Hex should only contain hex digits"
+        );
+    }
+
+    #[test]
     fn test_extract_messages_without_id_use_pattern() {
         // Test that messages without explicit IDs get auto-generated IDs
         let temp_dir = tempfile::tempdir().unwrap();
