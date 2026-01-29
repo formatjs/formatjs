@@ -32,6 +32,14 @@ formatjs_extract(
     id_interpolation_pattern = "[sha512:contenthash:base64:6]",
 )
 
+# Test extraction with crowdin format
+formatjs_extract(
+    name = "messages_crowdin",
+    srcs = ["test.tsx"],
+    format = "crowdin",
+    id_interpolation_pattern = "[sha512:contenthash:base64:6]",
+)
+
 # Test extraction with empty file list - should succeed with empty output
 formatjs_extract(
     name = "messages_empty_list",
@@ -84,6 +92,7 @@ write_source_files(
     files = {
         "fixtures/messages_default.json": ":messages_default",
         "fixtures/messages_merge.json": ":messages_merge",
+        "fixtures/messages_crowdin.json": ":messages_crowdin",
         "fixtures/compiled_ast.json": ":compiled_ast",
         "fixtures/compiled_multiple.json": ":compiled_multiple",
     },
@@ -96,6 +105,7 @@ write_source_files(
     files = {
         "fixtures/messages_default.json": ":messages_default",
         "fixtures/messages_merge.json": ":messages_merge",
+        "fixtures/messages_crowdin.json": ":messages_crowdin",
         "fixtures/compiled_ast.json": ":compiled_ast",
         "fixtures/compiled_multiple.json": ":compiled_multiple",
     },

@@ -1,0 +1,10 @@
+{
+  "test.message": {
+    "message": "This is a test message",
+    "description": "A simple test message"
+  },
+  "test.whitespace": {
+    "message": "This    has     multiple     spaces",
+    "description": "Testing whitespace preservation"
+  }
+}
