@@ -96,14 +96,12 @@ pub fn extract(
 
     // Step 3: Apply formatter if specified
     let output = if let Some(formatter) = format {
-        // Apply formatter (returns HashMap<String, String>)
-        let formatted = formatter.format(&all_messages, "extracted messages")?;
-
-        // Convert HashMap to BTreeMap for sorted output
-        let sorted_formatted: BTreeMap<String, String> = formatted.into_iter().collect();
+        // Apply formatter to convert MessageDescriptor to vendor-specific format
+        // This outputs the vendor format directly (e.g., for crowdin: {id: {message, description}})
+        let vendor_json = formatter.format_to_vendor_json(&all_messages);
 
         // Convert to JSON output
-        serde_json::to_string_pretty(&sorted_formatted)?
+        serde_json::to_string_pretty(&vendor_json)?
     } else {
         // Default format: full MessageDescriptor objects (already sorted via BTreeMap)
         serde_json::to_string_pretty(&all_messages)?
@@ -470,7 +468,7 @@ const messages = defineMessages({
 "#;
         std::fs::write(&test_file, test_content).unwrap();
 
-        // Extract messages with Default formatter (extracts defaultMessage field)
+        // Extract messages with Default formatter (outputs vendor format with id + defaultMessage)
         extract(
             &[test_file],
             Some(Formatter::Default),
@@ -488,20 +486,28 @@ const messages = defineMessages({
         )
         .unwrap();
 
-        // Read the output file and verify exact content
+        // Read the output file and parse as JSON
         let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
 
-        // Verify the entire output matches expected sorted JSON with newline
-        let expected = r#"{
-  "alpha": "Alpha message",
-  "charlie": "Charlie message",
-  "zulu": "Zulu message"
-}
-"#;
-        assert_eq!(
-            output_content, expected,
-            "Output should be sorted with trailing newline when using formatter"
-        );
+        // Verify we have 3 sorted keys
+        let keys: Vec<&str> = json
+            .as_object()
+            .unwrap()
+            .keys()
+            .map(|s| s.as_str())
+            .collect();
+        assert_eq!(keys, vec!["alpha", "charlie", "zulu"], "Keys should be sorted");
+
+        // Verify the Default formatter outputs the vendor format (MessageDescriptor structure)
+        let alpha = json.get("alpha").unwrap().as_object().unwrap();
+        assert_eq!(alpha.get("defaultMessage").unwrap(), "Alpha message");
+
+        let charlie = json.get("charlie").unwrap().as_object().unwrap();
+        assert_eq!(charlie.get("defaultMessage").unwrap(), "Charlie message");
+
+        let zulu = json.get("zulu").unwrap().as_object().unwrap();
+        assert_eq!(zulu.get("defaultMessage").unwrap(), "Zulu message");
     }
 
     #[test]
@@ -766,6 +772,387 @@ const msg = defineMessage({
 
         // IDs should be different because description affects the hash
         assert_ne!(id1, id2, "Description should affect the generated ID");
+    }
+
+    // ==================== Crowdin Format Integration Tests ====================
+
+    #[test]
+    fn test_extract_with_crowdin_format() {
+        // Test that extraction with crowdin format outputs the correct vendor format
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        // Write test file with messages that have both id, defaultMessage, and description
+        let test_content = r#"
+import { defineMessages } from 'react-intl';
+
+const messages = defineMessages({
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello {name}!',
+    description: 'Greeting message shown to users',
+  },
+  farewell: {
+    id: 'app.farewell',
+    defaultMessage: 'Goodbye!',
+    description: 'Farewell message',
+  },
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        // Extract with Crowdin format
+        extract(
+            &[test_file],
+            Some(Formatter::Crowdin),
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        // Read and verify output format
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Should have two entries
+        assert_eq!(json.as_object().unwrap().len(), 2);
+
+        // Verify greeting message has correct Crowdin format
+        let greeting = json.get("app.greeting").unwrap();
+        assert!(greeting.is_object(), "Crowdin format should have object entries");
+        let greeting_obj = greeting.as_object().unwrap();
+        assert_eq!(greeting_obj.get("message").unwrap(), "Hello {name}!");
+        assert_eq!(
+            greeting_obj.get("description").unwrap(),
+            "Greeting message shown to users"
+        );
+
+        // Verify farewell message has correct Crowdin format
+        let farewell = json.get("app.farewell").unwrap();
+        let farewell_obj = farewell.as_object().unwrap();
+        assert_eq!(farewell_obj.get("message").unwrap(), "Goodbye!");
+        assert_eq!(farewell_obj.get("description").unwrap(), "Farewell message");
+    }
+
+    #[test]
+    fn test_extract_with_crowdin_format_icu_plural() {
+        // Test that extraction with crowdin format preserves ICU plural syntax
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        let test_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'items.count',
+  defaultMessage: '{count, plural, one {# item} other {# items}}',
+  description: 'Shows the number of items in cart',
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        extract(
+            &[test_file],
+            Some(Formatter::Crowdin),
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        let items = json.get("items.count").unwrap().as_object().unwrap();
+        assert_eq!(
+            items.get("message").unwrap(),
+            "{count, plural, one {# item} other {# items}}"
+        );
+        assert_eq!(
+            items.get("description").unwrap(),
+            "Shows the number of items in cart"
+        );
+    }
+
+    #[test]
+    fn test_extract_with_crowdin_format_without_description() {
+        // Test that extraction with crowdin format handles messages without description
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        let test_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'simple.message',
+  defaultMessage: 'Simple message without description',
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        extract(
+            &[test_file],
+            Some(Formatter::Crowdin),
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        let msg = json.get("simple.message").unwrap().as_object().unwrap();
+        assert_eq!(
+            msg.get("message").unwrap(),
+            "Simple message without description"
+        );
+        // Description should not be present when not provided
+        assert!(msg.get("description").is_none());
+    }
+
+    #[test]
+    fn test_extract_with_crowdin_format_icu_select() {
+        // Test that extraction with crowdin format preserves ICU select syntax
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        let test_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'gender.greeting',
+  defaultMessage: '{gender, select, male {Mr.} female {Ms.} other {Dear}} {name}',
+  description: 'Gender-aware greeting prefix',
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        extract(
+            &[test_file],
+            Some(Formatter::Crowdin),
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        let msg = json.get("gender.greeting").unwrap().as_object().unwrap();
+        assert_eq!(
+            msg.get("message").unwrap(),
+            "{gender, select, male {Mr.} female {Ms.} other {Dear}} {name}"
+        );
+    }
+
+    #[test]
+    fn test_extract_with_crowdin_format_multiple_files() {
+        // Test extraction with crowdin format from multiple source files
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file1 = temp_dir.path().join("component1.tsx");
+        let test_file2 = temp_dir.path().join("component2.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        std::fs::write(
+            &test_file1,
+            r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'component1.title',
+  defaultMessage: 'Component 1 Title',
+  description: 'Title for component 1',
+});
+"#,
+        )
+        .unwrap();
+
+        std::fs::write(
+            &test_file2,
+            r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'component2.title',
+  defaultMessage: 'Component 2 Title',
+  description: 'Title for component 2',
+});
+"#,
+        )
+        .unwrap();
+
+        extract(
+            &[test_file1, test_file2],
+            Some(Formatter::Crowdin),
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Should have both messages
+        assert_eq!(json.as_object().unwrap().len(), 2);
+
+        let comp1 = json.get("component1.title").unwrap().as_object().unwrap();
+        assert_eq!(comp1.get("message").unwrap(), "Component 1 Title");
+
+        let comp2 = json.get("component2.title").unwrap().as_object().unwrap();
+        assert_eq!(comp2.get("message").unwrap(), "Component 2 Title");
+    }
+
+    #[test]
+    fn test_extract_crowdin_format_json_structure() {
+        // Test that the JSON structure exactly matches Crowdin's expected format
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        let test_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'test.message',
+  defaultMessage: 'Test content',
+  description: 'Test description',
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        extract(
+            &[test_file],
+            Some(Formatter::Crowdin),
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // The output should match Crowdin's expected format exactly:
+        // {
+        //   "test.message": {
+        //     "message": "Test content",
+        //     "description": "Test description"
+        //   }
+        // }
+        let expected = serde_json::json!({
+            "test.message": {
+                "message": "Test content",
+                "description": "Test description"
+            }
+        });
+
+        assert_eq!(json, expected, "Output should match Crowdin's expected format");
+    }
+
+    #[test]
+    fn test_extract_crowdin_format_with_formatted_message_component() {
+        // Test extraction from FormattedMessage JSX component with crowdin format
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        let test_content = r#"
+import { FormattedMessage } from 'react-intl';
+
+function MyComponent() {
+  return (
+    <FormattedMessage
+      id="jsx.message"
+      defaultMessage="Hello from JSX!"
+      description="Message from FormattedMessage component"
+    />
+  );
+}
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        extract(
+            &[test_file],
+            Some(Formatter::Crowdin),
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        let msg = json.get("jsx.message").unwrap().as_object().unwrap();
+        assert_eq!(msg.get("message").unwrap(), "Hello from JSX!");
+        assert_eq!(
+            msg.get("description").unwrap(),
+            "Message from FormattedMessage component"
+        );
     }
 
     #[test]

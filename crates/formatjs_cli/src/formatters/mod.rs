@@ -29,6 +29,29 @@ pub enum Formatter {
 }
 
 impl Formatter {
+    /// Format MessageDescriptor objects to vendor-specific JSON format (for extraction)
+    ///
+    /// Converts MessageDescriptor objects to the vendor-specific format that can be
+    /// uploaded to the translation service.
+    ///
+    /// # Arguments
+    ///
+    /// * `messages` - BTreeMap of message IDs to MessageDescriptor objects
+    ///
+    /// # Returns
+    ///
+    /// serde_json::Value in the vendor-specific format
+    pub fn format_to_vendor_json(&self, messages: &BTreeMap<String, MessageDescriptor>) -> Value {
+        match self {
+            Formatter::Default => default::format(messages),
+            Formatter::Simple => simple::format(messages),
+            Formatter::Transifex => transifex::format(messages),
+            Formatter::Smartling => smartling::format(messages),
+            Formatter::Lokalise => lokalise::format(messages),
+            Formatter::Crowdin => crowdin::format(messages),
+        }
+    }
+
     /// Format MessageDescriptor objects using this formatter (for extraction)
     ///
     /// Converts MessageDescriptor objects to the vendor-specific format,
@@ -48,14 +71,7 @@ impl Formatter {
         _file_path: &str,
     ) -> Result<HashMap<String, String>> {
         // Convert MessageDescriptor to vendor format
-        let vendor_json = match self {
-            Formatter::Default => default::format(messages),
-            Formatter::Simple => simple::format(messages),
-            Formatter::Transifex => transifex::format(messages),
-            Formatter::Smartling => smartling::format(messages),
-            Formatter::Lokalise => lokalise::format(messages),
-            Formatter::Crowdin => crowdin::format(messages),
-        };
+        let vendor_json = self.format_to_vendor_json(messages);
 
         // Then compile vendor format back to Record<string, string>
         let btree_result = match self {
