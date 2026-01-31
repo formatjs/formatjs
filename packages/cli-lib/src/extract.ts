@@ -205,13 +205,32 @@ export async function extract(
       const stdinSource = await getStdinAsString()
       rawResults = [await processFile(stdinSource, 'dummy', opts)]
     } else {
-      rawResults = await Promise.all(
-        files.map(async fn => {
-          debug('Extracting file:', fn)
-          const source = await readFile(fn, 'utf8')
-          return processFile(source, fn, opts)
+      // Use Promise.allSettled when throws is false to collect partial results
+      if (throws === false) {
+        const settledResults = await Promise.allSettled(
+          files.map(async fn => {
+            debug('Extracting file:', fn)
+            const source = await readFile(fn, 'utf8')
+            return processFile(source, fn, opts)
+          })
+        )
+        rawResults = settledResults.map(result => {
+          if (result.status === 'fulfilled') {
+            return result.value
+          } else {
+            warn(String(result.reason))
+            return undefined
+          }
         })
-      )
+      } else {
+        rawResults = await Promise.all(
+          files.map(async fn => {
+            debug('Extracting file:', fn)
+            const source = await readFile(fn, 'utf8')
+            return processFile(source, fn, opts)
+          })
+        )
+      }
     }
   } catch (e) {
     if (throws) {

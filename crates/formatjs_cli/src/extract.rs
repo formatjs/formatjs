@@ -1390,4 +1390,139 @@ const msg = defineMessage({
             "Extracting the same file twice should produce identical output"
         );
     }
+
+    #[test]
+    fn test_extract_with_throws_false_collects_partial_results() {
+        // Test that when throws:false, extraction collects partial results from valid files
+        // even when some files have errors
+        let temp_dir = tempfile::tempdir().unwrap();
+        let output_file = temp_dir.path().join("output.json");
+
+        // Create a valid file
+        let valid_file = temp_dir.path().join("valid.tsx");
+        let valid_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'valid.message',
+  defaultMessage: 'This is a valid message',
+});
+"#;
+        std::fs::write(&valid_file, valid_content).unwrap();
+
+        // Create an invalid file (malformed JavaScript)
+        let invalid_file = temp_dir.path().join("invalid.tsx");
+        let invalid_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'invalid.message
+  defaultMessage: 'This is missing closing quote and brace
+"#;
+        std::fs::write(&invalid_file, invalid_content).unwrap();
+
+        // Create another valid file
+        let valid_file2 = temp_dir.path().join("valid2.tsx");
+        let valid_content2 = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'valid.message2',
+  defaultMessage: 'This is another valid message',
+});
+"#;
+        std::fs::write(&valid_file2, valid_content2).unwrap();
+
+        // Extract with throws:false - should succeed and collect partial results
+        let result = extract(
+            &[valid_file, invalid_file, valid_file2],
+            None,
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false, // throws:false
+            None,
+            false,
+            false,
+        );
+
+        // Should succeed despite one file failing
+        assert!(result.is_ok(), "Extract should succeed with throws:false");
+
+        // Read and verify output contains messages from valid files
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Should have 2 messages from the valid files
+        assert_eq!(json.as_object().unwrap().len(), 2);
+        assert!(json.get("valid.message").is_some());
+        assert!(json.get("valid.message2").is_some());
+
+        // Verify message content
+        assert_eq!(
+            json["valid.message"]["defaultMessage"],
+            "This is a valid message"
+        );
+        assert_eq!(
+            json["valid.message2"]["defaultMessage"],
+            "This is another valid message"
+        );
+    }
+
+    #[test]
+    fn test_extract_with_throws_true_fails_on_error() {
+        // Test that when throws:true, extraction fails completely if any file has errors
+        let temp_dir = tempfile::tempdir().unwrap();
+        let output_file = temp_dir.path().join("output.json");
+
+        // Create a valid file
+        let valid_file = temp_dir.path().join("valid.tsx");
+        let valid_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'valid.message',
+  defaultMessage: 'This is a valid message',
+});
+"#;
+        std::fs::write(&valid_file, valid_content).unwrap();
+
+        // Create an invalid file
+        let invalid_file = temp_dir.path().join("invalid.tsx");
+        let invalid_content = r#"
+import { defineMessage } from 'react-intl';
+
+const msg = defineMessage({
+  id: 'invalid.message
+  defaultMessage: 'This is missing closing quote
+"#;
+        std::fs::write(&invalid_file, invalid_content).unwrap();
+
+        // Extract with throws:true - should fail
+        let result = extract(
+            &[valid_file, invalid_file],
+            None,
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            true, // throws:true
+            None,
+            false,
+            false,
+        );
+
+        // Should fail because of the invalid file
+        assert!(
+            result.is_err(),
+            "Extract should fail with throws:true when any file has errors"
+        );
+    }
 }
