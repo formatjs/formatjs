@@ -53,6 +53,11 @@ export interface FormatDateTimePatternImplDetails {
   ): IntlDateTimeFormatInternal
   localeData: Record<string, DateTimeFormatLocaleInternalData>
   getDefaultTimeZone(): string
+  // GH #4535: Track if we're formatting a range where dates differ
+  // Used to avoid converting hour 0 to 24 in h24 format when it's midnight on a different date
+  rangeFormatOptions?: {
+    isDifferentDate?: boolean
+  }
 }
 
 /**
@@ -69,6 +74,7 @@ export function FormatDateTimePattern(
     localeData,
     getDefaultTimeZone,
     tzData,
+    rangeFormatOptions,
   }: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
   x = TimeClip(x)
@@ -193,8 +199,21 @@ export function FormatDateTimePattern(
           v = 12
         }
       }
+      // GH #4535: In h24 format, midnight is typically shown as 24:00 (end of day).
+      // However, in date ranges where dates differ (e.g., "May 3, 22:00 – May 4, 00:00"),
+      // showing "May 4, 24:00" is semantically incorrect because 24:00 of May 4 would
+      // actually be May 5, 00:00. In this case, keep midnight as 00:00 for clarity.
+      //
+      // LDML Spec (UTS #35): "Tuesday 24:00 = Wednesday 00:00" - they represent the same
+      // instant. The 'k' symbol (1-24) means 24:00 represents the END of day, not the start.
+      // See: https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+      //
+      // Note: ICU4J's SimpleDateFormat always converts 0→24 for 'k' pattern without this
+      // range-aware check. Our fix is more semantically correct for date range formatting.
+      // See: https://github.com/unicode-org/icu/blob/main/icu4j/main/core/src/main/java/com/ibm/icu/text/SimpleDateFormat.java
       if (p === 'hour' && hourCycle === 'h24') {
-        if (v === 0) {
+        if (v === 0 && !rangeFormatOptions?.isDifferentDate) {
+          // Only convert 0 to 24 when NOT in a range with different dates
           v = 24
         }
       }

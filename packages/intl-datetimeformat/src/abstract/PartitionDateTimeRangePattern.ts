@@ -66,6 +66,9 @@ export function PartitionDateTimeRangePattern(
   let dateFieldsPracticallyEqual = true
   let patternContainsLargerDateField = false
 
+  // Track the first field that differs between the two dates
+  let firstDifferingField: TABLE_2 | undefined
+
   for (const fieldName of TABLE_2_FIELDS) {
     if (dateFieldsPracticallyEqual && !patternContainsLargerDateField) {
       let rp = fieldName in rangePatterns ? rangePatterns[fieldName] : undefined
@@ -78,6 +81,7 @@ export function PartitionDateTimeRangePattern(
           let v2 = tm2.hour
           if ((v1 > 11 && v2 < 11) || (v1 < 11 && v2 > 11)) {
             dateFieldsPracticallyEqual = false
+            firstDifferingField = fieldName
           }
         } else if (fieldName === 'dayPeriod') {
           // TODO
@@ -94,12 +98,14 @@ export function PartitionDateTimeRangePattern(
           )
           if (!SameValue(v1, v2)) {
             dateFieldsPracticallyEqual = false
+            firstDifferingField = fieldName
           }
         } else {
           let v1 = tm1[fieldName]
           let v2 = tm2[fieldName]
           if (!SameValue(v1, v2)) {
             dateFieldsPracticallyEqual = false
+            firstDifferingField = fieldName
           }
         }
       }
@@ -117,6 +123,28 @@ export function PartitionDateTimeRangePattern(
     }
     return result
   }
+  // GH #4535: ICU4J-style AM_PM → HOUR fallback.
+  // When AM_PM differs but no AM_PM pattern exists, try the HOUR pattern.
+  // This handles cases where CLDR provides 'H' (24-hour) patterns but not 'h' (12-hour),
+  // or the skeleton uses hour12:true but CLDR only has 24-hour interval patterns.
+  //
+  // ICU4J DateIntervalFormat.java genIntervalPattern() method (~line 1825):
+  //   // for 24 hour system, interval patterns in resource file
+  //   // might not include pattern when am_pm differ,
+  //   // which should be the same as hour differ.
+  //   if (field == Calendar.AM_PM) {
+  //       pattern = fInfo.getIntervalPattern(bestSkeleton, Calendar.HOUR);
+  //   }
+  // See: https://github.com/unicode-org/icu/blob/main/icu4j/main/core/src/main/java/com/ibm/icu/text/DateIntervalFormat.java#L2018
+  // LDML Spec: https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
+  if (rangePattern === undefined && firstDifferingField === 'ampm') {
+    rangePattern = 'hour' in rangePatterns ? rangePatterns['hour'] : undefined
+  }
+
+  // GH #4535: Check if dates (year/month/day) differ for h24 midnight handling
+  const datesDiffer =
+    tm1.year !== tm2.year || tm1.month !== tm2.month || tm1.day !== tm2.day
+
   let result: IntlDateTimeFormatPart[] = []
   if (rangePattern === undefined) {
     rangePattern = rangePatterns.default
@@ -186,7 +214,10 @@ export function PartitionDateTimeRangePattern(
       z = y
     }
     const patternParts = PartitionPattern<IntlDateTimeFormatPartType>(pattern)
-    let partResult = FormatDateTimePattern(dtf, patternParts, z, implDetails)
+    let partResult = FormatDateTimePattern(dtf, patternParts, z, {
+      ...implDetails,
+      rangeFormatOptions: {isDifferentDate: datesDiffer},
+    })
     for (const r of partResult) {
       r.source = source
     }

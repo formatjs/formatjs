@@ -449,3 +449,78 @@ test('GH issue #4535 - same day range should not duplicate date', function () {
   const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
   expect(occurrences).toBe(1)
 })
+
+test('GH issue #4535 - same day range with hour12:true should not duplicate date', function () {
+  // Bug report: date/day duplication always occurs when hour12 is set to true
+  const dtf = new DateTimeFormat('en-GB', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  })
+
+  // Same day, different times (14:00-16:00, both PM)
+  const result = dtf.formatRange(
+    new Date('2024-09-22T14:00:00'),
+    new Date('2024-09-22T16:00:00')
+  )
+
+  // Date should only appear once, with AM/PM markers
+  // Expected format: "Sun, 22 Sept 2024, 2:00 PM – 4:00 PM" or similar
+  // The date "Sun, 22 Sept 2024" should only appear once
+  const dateString = 'Sun, 22 Sept 2024'
+  const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
+  expect(occurrences).toBe(1)
+})
+
+test('GH issue #4535 - longer same day range should not duplicate date', function () {
+  // Bug report: longer time range (07:00-16:00) shows duplication
+  const dtf = new DateTimeFormat('en-GB', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  })
+
+  const result = dtf.formatRange(
+    new Date('2026-02-18T07:00:00'),
+    new Date('2026-02-18T16:00:00')
+  )
+
+  // Date should only appear once
+  const dateString = 'Wed, 18 Feb 2026'
+  const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
+  expect(occurrences).toBe(1)
+})
+
+test('GH issue #4535 - midnight should be 00:00 not 24:00 on next day', function () {
+  // Bug report: range crossing midnight shows "24:00" for midnight on the next day
+  // Output: "Sun, May 3, 2026, 22:00 – Mon, May 4, 2026, 24:00"
+  // Expected: "Sun, May 3, 2026, 22:00 – Mon, May 4, 2026, 00:00"
+  const dtf = new DateTimeFormat('en-GB', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  })
+
+  const result = dtf.formatRange(
+    new Date('2026-05-03T22:00:00'),
+    new Date('2026-05-04T00:00:00')
+  )
+
+  // Should show 00:00, not 24:00
+  expect(result).not.toContain('24:00')
+  expect(result).toContain('00:00')
+  // en-GB formats as "4 May" not "May 4"
+  expect(result).toContain('4 May')
+})

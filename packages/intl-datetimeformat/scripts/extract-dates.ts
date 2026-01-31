@@ -354,7 +354,33 @@ async function loadDatesFields(
       // interval patterns. This produces output like "Sun, 22 Sept 2024, 14:00 – 16:00"
       // instead of "Sun, 22 Sept 2024, 14:00 – Sun, 22 Sept 2024, 16:00"
       const combinedIntervalFormats = intervalFormats[skeleton]
-      const timeIntervalFormats = intervalFormats[timeSkeleton]
+      let timeIntervalFormats = intervalFormats[timeSkeleton]
+
+      // GH #4535: If interval formats for the time skeleton don't exist, try the 24-hour variant.
+      // This handles cases where CLDR provides formats for 'Hm' but not 'hm', or vice versa.
+      //
+      // Similar to ICU4J's normalizeHourMetacharacters() which converts between hour cycles.
+      // See: https://github.com/unicode-org/icu/blob/main/icu4j/main/core/src/main/java/com/ibm/icu/text/DateIntervalFormat.java
+      //
+      // LDML Spec (UTS #35): "If no exact match exists, check the fallback locale chain,
+      // allowing adjustments to field widths and variant field types."
+      // See: https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
+      if (!timeIntervalFormats || typeof timeIntervalFormats !== 'object') {
+        // Convert between 12-hour (h/K) and 24-hour (H/k) hour symbols
+        const alt24HourSkeleton = timeSkeleton
+          .replace(/h/g, 'H')
+          .replace(/K/g, 'k')
+        const alt12HourSkeleton = timeSkeleton
+          .replace(/H/g, 'h')
+          .replace(/k/g, 'K')
+
+        if (alt24HourSkeleton !== timeSkeleton) {
+          timeIntervalFormats = intervalFormats[alt24HourSkeleton]
+        } else if (alt12HourSkeleton !== timeSkeleton) {
+          timeIntervalFormats = intervalFormats[alt12HourSkeleton]
+        }
+      }
+
       if (
         !combinedIntervalFormats &&
         timeIntervalFormats &&
