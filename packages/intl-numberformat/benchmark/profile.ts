@@ -1,6 +1,6 @@
 import {NumberFormat} from '@formatjs/intl-numberformat'
 // @ts-ignore
-import * as en from './en.json' with {type: 'json'}
+import en from './en.json' with {type: 'json'}
 // @ts-ignore
 NumberFormat.__addLocaleData(en)
 

@@ -5,12 +5,15 @@
  */
 'use strict'
 
-import * as DateFields from 'cldr-dates-full/main/en/dateFields.json' with {type: 'json'}
-import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json' with {type: 'json'}
+import DateFields from 'cldr-dates-full/main/en/dateFields.json' with {type: 'json'}
+import NumberFields from 'cldr-numbers-full/main/en/numbers.json' with {type: 'json'}
 import glob from 'fast-glob'
 import {resolve, dirname} from 'path'
+import {createRequire} from 'node:module'
+
+const require = createRequire(import.meta.url)
 import {type FieldData, type LocaleFieldsData} from '@formatjs/ecma402-abstract'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
+import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 
 // The set of CLDR date field names that are used in FormatJS.
 const FIELD_NAMES = [
@@ -60,14 +63,18 @@ export async function getAllLocales(): Promise<string[]> {
 }
 
 async function loadRelativeFields(locale: string): Promise<LocaleFieldsData> {
-  const [dateFileds, numbers] = await Promise.all([
-    import(`cldr-dates-full/main/${locale}/dateFields.json`) as Promise<
-      typeof DateFields
+  const [dateFiledsImport, numbersImport] = await Promise.all([
+    import(`cldr-dates-full/main/${locale}/dateFields.json`, {
+      with: {type: 'json'},
+    }) as Promise<{default: typeof DateFields}>,
+    import(`cldr-numbers-full/main/${locale}/numbers.json`, {
+      with: {type: 'json'},
+    }).catch(_ => undefined) as Promise<
+      {default: typeof NumberFields} | undefined
     >,
-    import(`cldr-numbers-full/main/${locale}/numbers.json`).catch(
-      _ => undefined
-    ) as Promise<typeof NumberFields | undefined>,
   ])
+  const dateFileds = dateFiledsImport.default
+  const numbers = numbersImport?.default
   const fields = dateFileds.main[locale as 'en'].dates.fields
   const nu = numbers?.main[locale as 'en'].numbers.defaultNumberingSystem
 

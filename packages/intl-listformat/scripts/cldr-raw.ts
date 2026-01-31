@@ -1,4 +1,4 @@
-import {extractLists, getAllLocales} from './extract-list.js'
+import {extractLists, getAllLocales} from './extract-list.ts'
 import {join} from 'path'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
@@ -23,6 +23,6 @@ async function main(args: minimist.ParsedArgs) {
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   ;(async () => main(minimist(process.argv)))()
 }

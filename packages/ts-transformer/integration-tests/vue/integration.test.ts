@@ -10,7 +10,7 @@ test('tranpilation', async function () {
       {
         entry: require.resolve('./fixtures/main.ts'),
         output: {
-          path: __dirname,
+          path: import.meta.dirname,
           filename: 'out.js',
         },
         module: {
@@ -63,7 +63,7 @@ test('tranpilation', async function () {
           throw new Error('err compiling')
         }
         const outFile = join(
-          statsJson.outputPath || __dirname,
+          statsJson.outputPath || import.meta.dirname,
           statsJson.assets?.[0].name || 'out.js'
         )
         const outFileContent = readFileSync(outFile, 'utf-8')

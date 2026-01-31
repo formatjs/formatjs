@@ -27,6 +27,7 @@
     "noUnusedParameters": true,
     "preserveConstEnums": true,
     "resolveJsonModule": true,
+    "rewriteRelativeImportExtensions": true,
     "strict": true,
     "target": "es5",
     "verbatimModuleSyntax": true

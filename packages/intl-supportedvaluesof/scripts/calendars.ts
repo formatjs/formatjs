@@ -1,6 +1,7 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra/esm'
-import {keyword} from 'cldr-bcp47/bcp47/calendar.json'
+import calendarData from 'cldr-bcp47/bcp47/calendar.json' with {type: 'json'}
+const {keyword} = calendarData
 function main(args: minimist.ParsedArgs) {
   const {out} = args
   const calendars = Object.keys(keyword.u.ca).filter(k => !k.startsWith('_'))
@@ -16,6 +17,6 @@ export type Calendar = typeof calendars[number]
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist(process.argv))
 }

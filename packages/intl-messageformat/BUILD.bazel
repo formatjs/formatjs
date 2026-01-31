@@ -86,12 +86,10 @@ js_binary(
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/tinybench",
-        "//:node_modules/tsx",
     ],
     entry_point = "tests/benchmark.ts",
     node_options = [
-        "--import",
-        "tsx",
+        "--experimental-transform-types",
     ],
     tags = ["manual"],
 )

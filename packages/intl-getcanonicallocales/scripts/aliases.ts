@@ -1,5 +1,5 @@
 import {outputFileSync} from 'fs-extra/esm'
-import * as aliases from 'cldr-core/supplemental/aliases.json' with {type: 'json'}
+import aliases from 'cldr-core/supplemental/aliases.json' with {type: 'json'}
 import minimist from 'minimist'
 import stringify from 'json-stable-stringify'
 
@@ -62,6 +62,6 @@ export const variantAlias: Record<string, string> = ${stringify(
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist(process.argv))
 }

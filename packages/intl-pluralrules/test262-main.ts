@@ -1,7 +1,7 @@
 /* @generated */
 // prettier-ignore
 // @ts-nocheck
-import './polyfill-force'
+import './polyfill-force.ts'
 if (
   Intl.PluralRules &&
   typeof Intl.PluralRules.__addLocaleData === 'function'

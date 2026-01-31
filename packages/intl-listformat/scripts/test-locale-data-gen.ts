@@ -1,6 +1,7 @@
 import {join, basename} from 'path'
 import {copyFileSync} from 'fs-extra/esm'
-import {sync as globSync} from 'fast-glob'
+import glob from 'fast-glob'
+const globSync = glob.sync
 import minimist from 'minimist'
 
 function main(args: minimist.ParsedArgs) {
@@ -13,6 +14,6 @@ function main(args: minimist.ParsedArgs) {
   copyFileSync(join(cldrFolder, `${locales[0]}.json`), out)
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist(process.argv))
 }

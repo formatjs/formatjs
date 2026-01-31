@@ -8,7 +8,7 @@ const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
 
 test('vue', async () => {
   const {stdout} = await exec(
-    `${BIN_PATH} extract '${join(__dirname, '*.vue')}'`
+    `${BIN_PATH} extract '${join(import.meta.dirname, '*.vue')}'`
   )
 
   expect(JSON.parse(stdout)).toEqual({

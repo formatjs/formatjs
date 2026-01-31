@@ -1,4 +1,5 @@
-import {supplemental} from 'cldr-core/supplemental/currencyData.json'
+import currencyData from 'cldr-core/supplemental/currencyData.json' with {type: 'json'}
+const {supplemental} = currencyData
 import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 
@@ -30,6 +31,6 @@ function main(args: Args) {
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

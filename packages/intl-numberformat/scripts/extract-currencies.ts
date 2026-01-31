@@ -4,16 +4,20 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict'
-import * as CurrenciesData from 'cldr-numbers-full/main/en/currencies.json' with {type: 'json'}
-import * as supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json' with {type: 'json'}
-import {sync as globSync} from 'fast-glob'
+import CurrenciesData from 'cldr-numbers-full/main/en/currencies.json' with {type: 'json'}
+import supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json' with {type: 'json'}
+import glob from 'fast-glob'
+const globSync = glob.sync
 import {resolve, dirname} from 'path'
+import {createRequire} from 'node:module'
+
+const require = createRequire(import.meta.url)
 import {
   type CurrencyData,
   type LDMLPluralRuleMap,
 } from '@formatjs/ecma402-abstract'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.js'
+import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
+import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.ts'
 
 export type Currencies =
   (typeof CurrenciesData)['main']['en']['numbers']['currencies']
@@ -48,10 +52,10 @@ async function loadCurrencies(
   locale: string
 ): Promise<Record<string, CurrencyData>> {
   const currencies = (
-    (await import(
-      `cldr-numbers-full/main/${locale}/currencies.json`
-    )) as typeof CurrenciesData
-  ).main[locale as 'en'].numbers.currencies
+    (await import(`cldr-numbers-full/main/${locale}/currencies.json`, {
+      with: {type: 'json'},
+    })) as {default: typeof CurrenciesData}
+  ).default.main[locale as 'en'].numbers.currencies
   return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
     (all: Record<string, CurrencyData>, isoCode) => {
       const d = currencies[isoCode] as Currencies['USD']

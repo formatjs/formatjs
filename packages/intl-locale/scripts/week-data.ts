@@ -1,11 +1,11 @@
 import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 
-import * as rawTerritoryInfo from 'cldr-core/supplemental/territoryInfo.json' with {type: 'json'}
-import * as rawWeekData from 'cldr-core/supplemental/weekData.json' with {type: 'json'}
+import rawTerritoryInfo from 'cldr-core/supplemental/territoryInfo.json' with {type: 'json'}
+import rawWeekData from 'cldr-core/supplemental/weekData.json' with {type: 'json'}
 
 import stringify from 'json-stable-stringify'
-import type {Args} from './common-types.js'
+import type {Args} from './common-types.ts'
 
 type WeekInfoInternal = {
   firstDay: number
@@ -97,6 +97,6 @@ export type WeekInfoInternal = typeof weekData[WeekDataKey]`
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

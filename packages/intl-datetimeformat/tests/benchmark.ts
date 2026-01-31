@@ -1,5 +1,5 @@
 import {Bench} from 'tinybench'
-import * as en from './locale-data/en.json' with {type: 'json'}
+import en from './locale-data/en.json' with {type: 'json'}
 import allData from '../src/data/all-tz.generated'
 import {DateTimeFormat} from '../src/core'
 DateTimeFormat.__addTZData(allData)

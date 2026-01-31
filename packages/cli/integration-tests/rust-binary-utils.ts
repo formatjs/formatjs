@@ -8,7 +8,7 @@ import {Runfiles} from '@bazel/runfiles'
  * 1. Snapshot update mode: Binary is copied to integration-tests directory via copy_file rule
  * 2. Normal test mode: Binary is available via Bazel runfiles
  *
- * @param dirname - The __dirname of the test file
+ * @param dirname - The import.meta.dirname of the test file
  * @returns The path to the Rust binary, or undefined if not found
  */
 export function resolveRustBinaryPath(dirname: string): string | undefined {

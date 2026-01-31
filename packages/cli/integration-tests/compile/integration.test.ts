@@ -7,9 +7,9 @@ import {resolveRustBinaryPath} from '../rust-binary-utils'
 const exec = promisify(nodeExec)
 
 const TS_BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
-const RUST_BIN_PATH = resolveRustBinaryPath(__dirname)
+const RUST_BIN_PATH = resolveRustBinaryPath(import.meta.dirname)
 
-const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts')
+const ARTIFACT_PATH = resolve(import.meta.dirname, 'test_artifacts')
 
 describe.each([
   {name: 'TypeScript', binPath: TS_BIN_PATH, isRust: false},
@@ -21,13 +21,13 @@ describe.each([
 
   test('basic case: empty json', async () => {
     await expect(
-      exec(`${binPath} compile ${join(__dirname, 'lang/empty.json')}`)
+      exec(`${binPath} compile ${join(import.meta.dirname, 'lang/empty.json')}`)
     ).resolves.toMatchSnapshot()
   }, 20000)
 
   test('normal json', async () => {
     await expect(
-      exec(`${binPath} compile ${join(__dirname, 'lang/en.json')}`)
+      exec(`${binPath} compile ${join(import.meta.dirname, 'lang/en.json')}`)
     ).resolves.toMatchSnapshot()
   }, 20000)
 
@@ -35,7 +35,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile --ast --pseudo-locale xx-LS ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en.json'
         )}`
       )
@@ -46,7 +46,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile --ast --pseudo-locale xx-HA ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en.json'
         )}`
       )
@@ -57,7 +57,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile --ast --pseudo-locale xx-AC ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en.json'
         )}`
       )
@@ -68,7 +68,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile --ast --pseudo-locale en-XA ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en.json'
         )}`
       )
@@ -79,7 +79,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile --ast --pseudo-locale en-XB ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en.json'
         )}`
       )
@@ -92,9 +92,9 @@ describe.each([
       await expect(
         exec(
           `${binPath} compile ${join(
-            __dirname,
+            import.meta.dirname,
             'lang/en-format.json'
-          )} --format ${join(__dirname, '../formatter.js')}`
+          )} --format ${join(import.meta.dirname, '../formatter.js')}`
         )
       ).resolves.toMatchSnapshot()
     },
@@ -105,7 +105,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en-transifex.json'
         )} --format transifex`
       )
@@ -116,7 +116,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en-smartling.json'
         )} --format smartling`
       )
@@ -127,7 +127,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en-simple.json'
         )} --format simple`
       )
@@ -138,7 +138,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en-lokalise.json'
         )} --format lokalise`
       )
@@ -149,7 +149,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en-crowdin.json'
         )} --format crowdin`
       )
@@ -159,7 +159,7 @@ describe.each([
   test('malformed ICU message json', async () => {
     await expect(
       exec(
-        `${binPath} compile ${join(__dirname, 'lang/malformed-messages.json')}`
+        `${binPath} compile ${join(import.meta.dirname, 'lang/malformed-messages.json')}`
       )
     ).rejects.toThrowError('SyntaxError: EXPECT_ARGUMENT_CLOSING_BRACE')
   }, 20000)
@@ -167,7 +167,7 @@ describe.each([
   test('skipped malformed ICU message json', async () => {
     const result = await exec(
       `${binPath} compile  --skip-errors ${join(
-        __dirname,
+        import.meta.dirname,
         'lang/malformed-messages.json'
       )}`
     )
@@ -179,7 +179,9 @@ describe.each([
 
   test('AST', async () => {
     await expect(
-      exec(`${binPath} compile --ast ${join(__dirname, 'lang/en.json')}`)
+      exec(
+        `${binPath} compile --ast ${join(import.meta.dirname, 'lang/en.json')}`
+      )
     ).resolves.toMatchSnapshot()
   }, 20000)
 
@@ -188,7 +190,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en.json'
         )} --out-file ${outFilePath}`
       )
@@ -201,7 +203,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile --ast ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/en.json'
         )} --out-file ${outFilePath}`
       )
@@ -214,7 +216,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} compile --ignore-tag ${join(
-          __dirname,
+          import.meta.dirname,
           'lang/html-messages.json'
         )} --out-file ${outFilePath}`
       )
@@ -224,13 +226,15 @@ describe.each([
 
   test('compile glob', async () => {
     await expect(
-      exec(`${binPath} compile "${join(__dirname, 'glob/*.json')}"`)
+      exec(`${binPath} compile "${join(import.meta.dirname, 'glob/*.json')}"`)
     ).resolves.toMatchSnapshot()
   })
 
   test('compile glob with conflict', async () => {
     await expect(
-      exec(`${binPath} compile "${join(__dirname, 'glob-conflict/*.json')}"`)
+      exec(
+        `${binPath} compile "${join(import.meta.dirname, 'glob-conflict/*.json')}"`
+      )
     ).rejects.toThrowError(
       'Conflicting ID "a1d12" with different translation found in these 2 files'
     )

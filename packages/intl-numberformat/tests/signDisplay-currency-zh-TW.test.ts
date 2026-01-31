@@ -3,8 +3,8 @@ import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/zh'
-import * as zh from './locale-data/zh.json' with {type: 'json'}
-import * as zhHant from './locale-data/zh-Hant.json' with {type: 'json'}
+import zh from './locale-data/zh.json' with {type: 'json'}
+import zhHant from './locale-data/zh-Hant.json' with {type: 'json'}
 import {NumberFormat} from '../src/core'
 NumberFormat.__addLocaleData(zh as any, zhHant as any)
 const tests = [

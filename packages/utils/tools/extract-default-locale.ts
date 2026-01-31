@@ -1,4 +1,5 @@
-import {supplemental} from 'cldr-core/supplemental/likelySubtags.json'
+import likelySubtagsData from 'cldr-core/supplemental/likelySubtags.json' with {type: 'json'}
+const {supplemental} = likelySubtagsData
 import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 
@@ -25,6 +26,6 @@ function main(args: Args) {
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

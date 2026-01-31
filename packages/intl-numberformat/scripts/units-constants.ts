@@ -15,6 +15,6 @@ function main(args: minimist.ParsedArgs) {
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist(process.argv))
 }

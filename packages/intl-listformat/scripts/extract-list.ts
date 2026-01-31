@@ -4,9 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict'
-import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json' with {type: 'json'}
+import ListPatterns from 'cldr-misc-full/main/en/listPatterns.json' with {type: 'json'}
 import glob from 'fast-glob'
 import {resolve, dirname} from 'path'
+import {createRequire} from 'node:module'
+
+const require = createRequire(import.meta.url)
 import {
   type ListPatternFieldsData,
   type ListPattern,
@@ -46,10 +49,10 @@ async function loadListPatterns(
   locale: string
 ): Promise<ListPatternFieldsData> {
   const patterns = (
-    (await import(
-      `cldr-misc-full/main/${locale}/listPatterns.json`
-    )) as typeof ListPatterns
-  ).main[locale as 'en'].listPatterns
+    (await import(`cldr-misc-full/main/${locale}/listPatterns.json`, {
+      with: {type: 'json'},
+    })) as {default: typeof ListPatterns}
+  ).default.main[locale as 'en'].listPatterns
   return {
     conjunction: {
       long: serializeToPatternData(patterns['listPattern-type-standard']),

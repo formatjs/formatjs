@@ -2,9 +2,9 @@ import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 
-import {getAllLocales} from './utils.js'
+import {getAllLocales} from './utils.ts'
 
-import type {Args} from './common-types.js'
+import type {Args} from './common-types.ts'
 
 type CldrNumbersNumbers = {
   defaultNumberingSystem: string
@@ -37,10 +37,13 @@ async function main(args: Args) {
 
   const locales = await getAllLocales()
   for (const locale of locales) {
-    const numbersData = await import(
-      `cldr-numbers-full/main/${locale}/numbers.json`
+    const numbersDataImport = (await import(
+      `cldr-numbers-full/main/${locale}/numbers.json`,
+      {with: {type: 'json'}}
+    )) as {default: {main: {[key: string]: {numbers: CldrNumbersNumbers}}}}
+    result[locale] = getNumberingSystems(
+      numbersDataImport.default.main[locale].numbers
     )
-    result[locale] = getNumberingSystems(numbersData.main[locale].numbers)
   }
 
   outputFileSync(
@@ -52,6 +55,6 @@ export type NumberingSystemsKey = keyof typeof numberingSystems`
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

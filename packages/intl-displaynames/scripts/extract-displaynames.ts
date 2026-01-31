@@ -1,13 +1,16 @@
 import {type DisplayNamesData} from '@formatjs/ecma402-abstract'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
+import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import glob from 'fast-glob'
 import {dirname, resolve} from 'path'
+import {createRequire} from 'node:module'
 import type * as LanguagesJSON from 'cldr-localenames-full/main/en/languages.json' with {type: 'json'}
 import type * as TerritoriesJSON from 'cldr-localenames-full/main/en/territories.json' with {type: 'json'}
 import type * as ScriptsJSON from 'cldr-localenames-full/main/en/scripts.json' with {type: 'json'}
 import type * as LocaleDisplayNamesJSON from 'cldr-localenames-full/main/en/localeDisplayNames.json' with {type: 'json'}
 import type * as CurrenciesJSON from 'cldr-numbers-full/main/en/currencies.json' with {type: 'json'}
 import type * as DateFieldsJSON from 'cldr-dates-full/main/en/dateFields.json' with {type: 'json'}
+
+const require = createRequire(import.meta.url)
 
 // CLDR JSON types
 type LanguageRawData =
@@ -206,20 +209,38 @@ async function loadDisplayNames(
 ): Promise<DisplayNamesData | undefined> {
   try {
     const [
-      languages,
-      territories,
-      scripts,
-      localeDisplayNames,
-      currencies,
-      dateFields,
+      languagesImport,
+      territoriesImport,
+      scriptsImport,
+      localeDisplayNamesImport,
+      currenciesImport,
+      dateFieldsImport,
     ] = await Promise.all([
-      import(`cldr-localenames-full/main/${locale}/languages.json`),
-      import(`cldr-localenames-full/main/${locale}/territories.json`),
-      import(`cldr-localenames-full/main/${locale}/scripts.json`),
-      import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`),
-      import(`cldr-numbers-full/main/${locale}/currencies.json`),
-      import(`cldr-dates-full/main/${locale}/dateFields.json`),
+      import(`cldr-localenames-full/main/${locale}/languages.json`, {
+        with: {type: 'json'},
+      }) as Promise<{default: typeof LanguagesJSON}>,
+      import(`cldr-localenames-full/main/${locale}/territories.json`, {
+        with: {type: 'json'},
+      }) as Promise<{default: typeof TerritoriesJSON}>,
+      import(`cldr-localenames-full/main/${locale}/scripts.json`, {
+        with: {type: 'json'},
+      }) as Promise<{default: typeof ScriptsJSON}>,
+      import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`, {
+        with: {type: 'json'},
+      }) as Promise<{default: typeof LocaleDisplayNamesJSON}>,
+      import(`cldr-numbers-full/main/${locale}/currencies.json`, {
+        with: {type: 'json'},
+      }) as Promise<{default: typeof CurrenciesJSON}>,
+      import(`cldr-dates-full/main/${locale}/dateFields.json`, {
+        with: {type: 'json'},
+      }) as Promise<{default: typeof DateFieldsJSON}>,
     ])
+    const languages = languagesImport.default
+    const territories = territoriesImport.default
+    const scripts = scriptsImport.default
+    const localeDisplayNames = localeDisplayNamesImport.default
+    const currencies = currenciesImport.default
+    const dateFields = dateFieldsImport.default
     const langData: LanguageRawData =
       languages.main[locale].localeDisplayNames.languages
     const regionData: RegionRawData =

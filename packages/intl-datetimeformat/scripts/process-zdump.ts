@@ -3,8 +3,8 @@ import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 import minimist from 'minimist'
 import {promisify} from 'util'
-import {pack} from '../src/packer'
-import {type UnpackedData, type ZoneData} from '../src/types'
+import {pack} from '../src/packer.ts'
+import {type UnpackedData, type ZoneData} from '../src/types.ts'
 
 const readFile = promisify(_readFile)
 const SPACE_REGEX = /[\s\t]+/
@@ -425,6 +425,6 @@ export default data`
   }
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist(process.argv))
 }

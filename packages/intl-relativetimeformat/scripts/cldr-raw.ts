@@ -1,4 +1,4 @@
-import {extractRelativeFields, getAllLocales} from './extract-relative.js'
+import {extractRelativeFields, getAllLocales} from './extract-relative.ts'
 import {join} from 'path'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'

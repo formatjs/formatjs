@@ -7,7 +7,7 @@ import {readFileSync} from 'fs'
 
 test('vue_extractor', async function () {
   let messages: MessageDescriptor[] = []
-  const fixturePath = join(__dirname, './fixtures/comp.vue')
+  const fixturePath = join(import.meta.dirname, './fixtures/comp.vue')
   parseFile(
     readFileSync(fixturePath, 'utf8'),
     fixturePath,
@@ -24,7 +24,7 @@ test('vue_extractor', async function () {
 
 test('vue_extractor for bind attr', async function () {
   let messages: MessageDescriptor[] = []
-  const fixturePath = join(__dirname, './fixtures/bind.vue')
+  const fixturePath = join(import.meta.dirname, './fixtures/bind.vue')
   parseFile(
     readFileSync(fixturePath, 'utf8'),
     fixturePath,

@@ -1,9 +1,9 @@
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 import minimist from 'minimist'
-import {getAllLocales} from './utils.js'
+import {getAllLocales} from './utils.ts'
 
-import type {Args} from './common-types.js'
+import type {Args} from './common-types.ts'
 
 type CharacterOrder = 'left-to-right' | 'right-to-left'
 
@@ -35,8 +35,11 @@ async function main(args: Args) {
 
   const locales = await getAllLocales()
   for (const locale of locales) {
-    const layoutData = await import(`cldr-misc-full/main/${locale}/layout.json`)
-    const characterOrder = getCharacterOrder(layoutData, locale)
+    const layoutDataImport = (await import(
+      `cldr-misc-full/main/${locale}/layout.json`,
+      {with: {type: 'json'}}
+    )) as {default: CldrMiscLayout}
+    const characterOrder = getCharacterOrder(layoutDataImport.default, locale)
     if (characterOrder) {
       characterOrders[locale] = characterOrder
     }
@@ -66,6 +69,6 @@ export type CharacterOrder = '${possibleValues.join("' | '")}'
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

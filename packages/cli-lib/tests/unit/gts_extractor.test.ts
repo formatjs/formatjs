@@ -7,7 +7,7 @@ import {parseFile} from '../../src/gts_extractor'
 describe('gts_extractor', () => {
   test('gts files', async function () {
     let messages: MessageDescriptor[] = []
-    const fixturePath = join(__dirname, './fixtures/comp.gts')
+    const fixturePath = join(import.meta.dirname, './fixtures/comp.gts')
     parseFile(await readFile(fixturePath, 'utf8'), fixturePath, {
       onMsgExtracted(_: any, msgs: any) {
         messages = messages.concat(msgs)
@@ -36,7 +36,7 @@ describe('gts_extractor', () => {
 
   test('gjs files', async function () {
     let messages: MessageDescriptor[] = []
-    const fixturePath = join(__dirname, './fixtures/comp.gjs')
+    const fixturePath = join(import.meta.dirname, './fixtures/comp.gjs')
     parseFile(await readFile(fixturePath, 'utf8'), fixturePath, {
       onMsgExtracted(_: any, msgs: any) {
         messages = messages.concat(msgs)

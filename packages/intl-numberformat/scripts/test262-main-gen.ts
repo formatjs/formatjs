@@ -17,13 +17,13 @@ function main(args: Args) {
     out,
     `// @generated
 // @ts-nocheck
-import './polyfill-force';
+import './polyfill-force.ts';
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(${allData.join(',\n')})
 }`
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

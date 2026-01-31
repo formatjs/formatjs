@@ -1,6 +1,6 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra/esm'
-import {extractNumberingSystemNames} from './extract-numbers.js'
+import {extractNumberingSystemNames} from './extract-numbers.ts'
 function main(args: minimist.ParsedArgs) {
   const {out} = args
 
@@ -13,6 +13,6 @@ function main(args: minimist.ParsedArgs) {
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist(process.argv))
 }

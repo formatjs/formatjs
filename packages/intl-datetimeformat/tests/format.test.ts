@@ -5,10 +5,10 @@ import {
   toLocaleString,
   toLocaleTimeString,
 } from '../src/to_locale_string'
-import * as bs from './locale-data/bs.json' with {type: 'json'}
-import * as en from './locale-data/en.json' with {type: 'json'}
-import * as ko from './locale-data/ko.json' with {type: 'json'}
-import * as ru from './locale-data/ru.json' with {type: 'json'}
+import bs from './locale-data/bs.json' with {type: 'json'}
+import en from './locale-data/en.json' with {type: 'json'}
+import ko from './locale-data/ko.json' with {type: 'json'}
+import ru from './locale-data/ru.json' with {type: 'json'}
 import {describe, expect, it} from 'vitest'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(bs, en, ko, ru)

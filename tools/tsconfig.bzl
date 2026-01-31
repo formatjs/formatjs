@@ -33,6 +33,7 @@ BASE_TSCONFIG = {
         "verbatimModuleSyntax": True,
         "importHelpers": True,
         "isolatedDeclarations": True,
+        "rewriteRelativeImportExtensions": True,
         "jsx": "react-jsx",
     },
     "exclude": [

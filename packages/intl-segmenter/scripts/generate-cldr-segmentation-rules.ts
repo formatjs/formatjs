@@ -132,9 +132,11 @@ const getGranularity = (
 const cldrSegmentationRules = async () => {
   const rules: Record<string, SegmentationsJson> = {}
   for (const locale of SEGMENTATION_LOCALES) {
-    rules[locale] = await import(
-      `cldr-segments-full/segments/${locale}/suppressions.json`
-    )
+    const imported = (await import(
+      `cldr-segments-full/segments/${locale}/suppressions.json`,
+      {with: {type: 'json'}}
+    )) as {default: SegmentationsJson}
+    rules[locale] = imported.default
   }
 
   return rules as {

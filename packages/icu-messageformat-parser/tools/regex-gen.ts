@@ -1,7 +1,10 @@
 import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import regenerate from 'regenerate'
-import './global'
+import {createRequire} from 'node:module'
+import './global.ts'
+
+const require = createRequire(import.meta.url)
 
 function generateTypeScript(
   spaceSeparator: regenerate,
@@ -54,6 +57,6 @@ function main(args: minimist.ParsedArgs) {
   outputFileSync(outFile, content)
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist(process.argv))
 }

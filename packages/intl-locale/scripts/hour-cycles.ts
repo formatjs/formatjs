@@ -1,9 +1,9 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
-import * as rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
+import rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
 
-import type {Args} from './common-types.js'
+import type {Args} from './common-types.ts'
 
 const {timeData} = rawTimeData.supplemental
 
@@ -44,6 +44,6 @@ export type HourCyclesKey = keyof typeof hourCycles`
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }
