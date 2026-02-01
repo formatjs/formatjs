@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.2.0...@formatjs/intl-datetimeformat@7.2.1) (2026-02-01)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix formatRange date duplication and h24 midnight issues ([#6001](https://github.com/formatjs/formatjs/issues/6001)) ([c92c30b](https://github.com/formatjs/formatjs/commit/c92c30b4deca16110e21dc8aad2607d943d960a6)), closes [#4535](https://github.com/formatjs/formatjs/issues/4535) - by @longlho
+
 # [7.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.1.2...@formatjs/intl-datetimeformat@7.2.0) (2026-01-15)
 
 ### Features

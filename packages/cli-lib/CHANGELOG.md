@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.2.1...@formatjs/cli-lib@8.2.2) (2026-02-01)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** respect throws:false flag in extract() function ([#6002](https://github.com/formatjs/formatjs/issues/6002)) ([968b211](https://github.com/formatjs/formatjs/commit/968b211768715367b5f857a2deaf3c0efb38fdb1)), closes [#5994](https://github.com/formatjs/formatjs/issues/5994) - by @longlho
+
 ## [8.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.2.0...@formatjs/cli-lib@8.2.1) (2026-01-19)
 
 ### Bug Fixes
