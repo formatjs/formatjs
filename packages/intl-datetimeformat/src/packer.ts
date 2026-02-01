@@ -1,4 +1,4 @@
-import {type UnpackedData, type PackedData} from './types.js'
+import {type UnpackedData, type PackedData} from './types.ts'
 import {type UnpackedZoneData} from '@formatjs/ecma402-abstract'
 
 export function pack(data: UnpackedData): PackedData {

@@ -1,4 +1,4 @@
 import '@formatjs/intl-pluralrules/locale-data/ms.js'
 import {test} from './percentTest'
-import * as localeData from '../locale-data/ms.json' with {type: 'json'}
+import localeData from '../locale-data/ms.json' with {type: 'json'}
 test('ms', localeData)

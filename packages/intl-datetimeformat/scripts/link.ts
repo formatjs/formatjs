@@ -21,6 +21,6 @@ export default ${stringify(linkMap, {space: 2})}`
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist(process.argv))
 }

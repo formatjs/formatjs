@@ -1,5 +1,6 @@
 import {program} from 'commander'
-import {sync as globSync} from 'fast-glob'
+import * as glob from 'fast-glob'
+const globSync = glob.sync
 import loudRejection from 'loud-rejection'
 import compile, {type CompileCLIOpts, type Opts} from './compile.js'
 import compileFolder from './compile_folder.js'

@@ -1,6 +1,6 @@
 // @generated
 // @ts-nocheck
-import './polyfill-force'
+import './polyfill-force.ts'
 if (
   Intl.NumberFormat &&
   typeof Intl.NumberFormat.__addLocaleData === 'function'

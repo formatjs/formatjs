@@ -72,11 +72,25 @@ for (let i = 0; i < args.length; i += 2) {
       process.exit(1)
     }
 
+    // Rewrite relative .ts/.tsx imports to .js (equivalent to rewriteRelativeImportExtensions)
+    // This transforms: import './types.ts' -> import './types.js'
+    // Only affects relative imports (starting with ./ or ../)
+    let outputCode = result.code.replace(
+      /((?:import|export)\s+(?:(?:[\w{}\s*,]+)\s+from\s+)?["'])(\.\.?\/[^"']+)(\.ts)(x?)(["'])/g,
+      '$1$2.js$5'
+    )
+
+    // Also handle dynamic imports: import('./types.ts') -> import('./types.js')
+    outputCode = outputCode.replace(
+      /(import\s*\(\s*["'])(\.\.?\/[^"']+)(\.ts)(x?)(["']\s*\))/g,
+      '$1$2.js$5'
+    )
+
     // Resolve output path the same way as input
     const resolvedOutputPath = pathToExecroot + outputFile
 
     // Write JS output to the specified output file (creates directories automatically)
-    outputFileSync(resolvedOutputPath, result.code, 'utf-8')
+    outputFileSync(resolvedOutputPath, outputCode, 'utf-8')
 
     // Write .d.ts file if declaration was generated
     if (result.declaration) {

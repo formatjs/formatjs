@@ -26,13 +26,13 @@ function main(args: Args) {
 
   const content = `import "@formatjs/intl-pluralrules/locale-data/${pluralLocale}.js"
 import { test } from "./${type}Test"
-import * as localeData from "../locale-data/${locale}.json" with {type: 'json'}
+import localeData from "../locale-data/${locale}.json" with {type: 'json'}
 test("${locale}", localeData);
 `
 
   outputFileSync(out, content)
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

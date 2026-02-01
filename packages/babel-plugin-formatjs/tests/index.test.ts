@@ -5,7 +5,7 @@ import plugin from '../index.js'
 import {type Options, type ExtractedMessageDescriptor} from '../types.js'
 import {expect, test} from 'vitest'
 function transformAndCheck(fn: string, opts: Options = {}) {
-  const filePath = path.join(__dirname, 'fixtures', `${fn}.js`)
+  const filePath = path.join(import.meta.dirname, 'fixtures', `${fn}.js`)
   const messages: ExtractedMessageDescriptor[] = []
   const meta = {}
   const {code} = transform(filePath, {
@@ -107,7 +107,7 @@ test('idInterpolationPattern default', function () {
 })
 
 test('GH #2663', function () {
-  const filePath = path.join(__dirname, 'fixtures', `2663.js`)
+  const filePath = path.join(import.meta.dirname, 'fixtures', `2663.js`)
   const messages: ExtractedMessageDescriptor[] = []
   const meta = {}
 
@@ -175,7 +175,11 @@ test('preserveWhitespace', function () {
 })
 
 test('extractSourceLocation', function () {
-  const filePath = path.join(__dirname, 'fixtures', 'extractSourceLocation.js')
+  const filePath = path.join(
+    import.meta.dirname,
+    'fixtures',
+    'extractSourceLocation.js'
+  )
   const messages: ExtractedMessageDescriptor[] = []
   const meta = {}
 
@@ -196,13 +200,13 @@ test('extractSourceLocation', function () {
 
 test('Properly throws parse errors', () => {
   expect(() =>
-    transform(path.join(__dirname, 'fixtures', 'icuSyntax.js'))
+    transform(path.join(import.meta.dirname, 'fixtures', 'icuSyntax.js'))
   ).toThrow('SyntaxError: MALFORMED_ARGUMENT')
 })
 
 test('GH #4161 - flatten error should include file and line information', () => {
   expect(() =>
-    transform(path.join(__dirname, 'fixtures', 'flattenError.js'), {
+    transform(path.join(import.meta.dirname, 'fixtures', 'flattenError.js'), {
       flatten: true,
     })
   ).toThrow(

@@ -1,5 +1,6 @@
 import {exec as nodeExec} from 'child_process'
-import {sync as globSync} from 'fast-glob'
+import glob from 'fast-glob'
+const globSync = glob.sync
 import {mkdtempSync} from 'fs'
 import {readJSON} from 'fs-extra/esm'
 import {basename, join} from 'path'
@@ -14,10 +15,10 @@ test('basic case: help', async () => {
 })
 
 test('basic case', async () => {
-  const inputFiles = globSync(`${__dirname}/lang/*.json`)
+  const inputFiles = globSync(`${import.meta.dirname}/lang/*.json`)
   const outFolder = mkdtempSync('formatjs-cli')
   await exec(
-    `${BIN_PATH} compile-folder ${join(__dirname, 'lang')} ${outFolder}`
+    `${BIN_PATH} compile-folder ${join(import.meta.dirname, 'lang')} ${outFolder}`
   )
 
   const outputFiles = globSync(`${outFolder}/*.json`)

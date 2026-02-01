@@ -8,7 +8,7 @@ const BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
 
 test('gjs', async () => {
   const {stdout} = await exec(
-    `${BIN_PATH} extract '${join(__dirname, '*.gjs')}'`
+    `${BIN_PATH} extract '${join(import.meta.dirname, '*.gjs')}'`
   )
 
   expect(JSON.parse(stdout)).toEqual({
@@ -39,7 +39,7 @@ test('gjs', async () => {
 
 test('gts', async () => {
   const {stdout} = await exec(
-    `${BIN_PATH} extract '${join(__dirname, '*.gts')}'`
+    `${BIN_PATH} extract '${join(import.meta.dirname, '*.gts')}'`
   )
 
   expect(JSON.parse(stdout)).toEqual({
@@ -70,7 +70,7 @@ test('gts', async () => {
 
 test('hbs', async () => {
   const {stdout} = await exec(
-    `${BIN_PATH} extract '${join(__dirname, '*.hbs')}'`
+    `${BIN_PATH} extract '${join(import.meta.dirname, '*.hbs')}'`
   )
 
   expect(JSON.parse(stdout)).toEqual({

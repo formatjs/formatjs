@@ -1,4 +1,4 @@
-import {extractDatesFields, getAllLocales} from './extract-dates.js'
+import {extractDatesFields, getAllLocales} from './extract-dates.ts'
 import {join} from 'path'
 import {outputJSONSync} from 'fs-extra/esm'
 
@@ -19,6 +19,6 @@ async function main(args: minimist.ParsedArgs) {
     )
   )
 }
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   ;(async () => main(minimist(process.argv)))()
 }

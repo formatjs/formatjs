@@ -1,5 +1,8 @@
 import glob from 'fast-glob'
 import {resolve, dirname} from 'path'
+import {createRequire} from 'node:module'
+
+const require = createRequire(import.meta.url)
 
 export async function getAllLocales(): Promise<string[]> {
   const fns = await glob('*/localeDisplayNames.json', {

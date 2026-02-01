@@ -7,7 +7,7 @@ import {describe, it, expect} from 'vitest'
 
 const readFile = promisify(readFileAsync)
 
-const FIXTURES_DIR = join(__dirname, 'fixtures')
+const FIXTURES_DIR = join(import.meta.dirname, 'fixtures')
 
 describe('emit asserts for', function () {
   it('additionalComponentNames', async function () {

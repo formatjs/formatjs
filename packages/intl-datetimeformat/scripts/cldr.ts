@@ -25,6 +25,6 @@ if (Intl.DateTimeFormat && typeof Intl.DateTimeFormat.__addLocaleData === 'funct
     outputFileSync(join(outDir, locale + '.d.ts'), 'export {}')
   })
 }
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

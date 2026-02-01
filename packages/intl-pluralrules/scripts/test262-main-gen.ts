@@ -17,13 +17,13 @@ function main(args: Args) {
     `/* @generated */
 // prettier-ignore
 // @ts-nocheck
-import './polyfill-force'
+import './polyfill-force.ts'
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
   Intl.PluralRules.__addLocaleData(${allData.join(',\n')})
 }
 `
   )
 }
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

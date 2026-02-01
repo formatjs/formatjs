@@ -22,6 +22,6 @@ function main(args: Args) {
   outputFileSync(out, content)
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv.slice(2)))
 }

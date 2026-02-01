@@ -1,9 +1,9 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
-import * as rawTimezones from 'cldr-bcp47/bcp47/timezone.json' with {type: 'json'}
+import rawTimezones from 'cldr-bcp47/bcp47/timezone.json' with {type: 'json'}
 
-import type {Args} from './common-types.js'
+import type {Args} from './common-types.ts'
 
 type Tz = typeof rawTimezones.keyword.u.tz & {
   _alias: never
@@ -83,6 +83,6 @@ export type TimezonesTerritory = keyof typeof timezones`
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

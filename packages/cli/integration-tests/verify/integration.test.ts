@@ -7,7 +7,7 @@ import {resolveRustBinaryPath} from '../rust-binary-utils'
 const exec = promisify(nodeExec)
 
 const TS_BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
-const RUST_BIN_PATH = resolveRustBinaryPath(__dirname)
+const RUST_BIN_PATH = resolveRustBinaryPath(import.meta.dirname)
 
 describe.each([
   {name: 'TypeScript', binPath: TS_BIN_PATH, isRust: false},
@@ -16,7 +16,7 @@ describe.each([
   test('missing keys pass', async () => {
     await expect(
       exec(
-        `${binPath} verify --source-locale en-US --ignore '${join(__dirname, 'missing-keys', 'fixtures1', 'es.json')}' --missing-keys '${join(__dirname, 'missing-keys', 'fixtures1', '*.json')}'`
+        `${binPath} verify --source-locale en-US --ignore '${join(import.meta.dirname, 'missing-keys', 'fixtures1', 'es.json')}' --missing-keys '${join(import.meta.dirname, 'missing-keys', 'fixtures1', '*.json')}'`
       )
     ).resolves.toBeTruthy()
   }, 20000)
@@ -24,7 +24,7 @@ describe.each([
   test('missing keys fail', async () => {
     await expect(
       exec(
-        `${binPath} verify --source-locale en-US --missing-keys '${join(__dirname, 'missing-keys', 'fixtures2', '*.json')}'`
+        `${binPath} verify --source-locale en-US --missing-keys '${join(import.meta.dirname, 'missing-keys', 'fixtures2', '*.json')}'`
       )
     ).rejects.toThrow(/Missing translation keys for locale fr-FR:\nfoo/)
   }, 20000)
@@ -32,7 +32,7 @@ describe.each([
   test('missing keys fail missing source', async () => {
     await expect(
       exec(
-        `${binPath} verify --source-locale en-US --missing-keys '${join(__dirname, 'missing-keys', 'fixtures3', '*.json')}'`
+        `${binPath} verify --source-locale en-US --missing-keys '${join(import.meta.dirname, 'missing-keys', 'fixtures3', '*.json')}'`
       )
     ).rejects.toThrow(/ Missing source en-US.json file/)
   }, 20000)
@@ -40,7 +40,7 @@ describe.each([
   test('missing keys fail nested key', async () => {
     await expect(
       exec(
-        `${binPath} verify --source-locale en-US --missing-keys '${join(__dirname, 'missing-keys', 'fixtures4', '*.json')}'`
+        `${binPath} verify --source-locale en-US --missing-keys '${join(import.meta.dirname, 'missing-keys', 'fixtures4', '*.json')}'`
       )
     ).rejects.toThrow(
       /Missing translation keys for locale fr-FR:\nbaz\nbaz.qux/
@@ -50,7 +50,7 @@ describe.each([
   test('structural equality pass', async () => {
     await expect(
       exec(
-        `${binPath} verify --source-locale en-US --structural-equality '${join(__dirname, 'structural-equality', 'fixtures1', '*.json')}'`
+        `${binPath} verify --source-locale en-US --structural-equality '${join(import.meta.dirname, 'structural-equality', 'fixtures1', '*.json')}'`
       )
     ).resolves.toBeTruthy()
   }, 20000)
@@ -69,7 +69,7 @@ describe.each([
 7: EXPECT_ARGUMENT_CLOSING_BRACE`
     await expect(
       exec(
-        `${binPath} verify --source-locale en-US --structural-equality '${join(__dirname, 'structural-equality', 'fixtures2', '*.json')}'`
+        `${binPath} verify --source-locale en-US --structural-equality '${join(import.meta.dirname, 'structural-equality', 'fixtures2', '*.json')}'`
       )
     ).rejects.toThrow(errMessage)
   }, 20000)
@@ -77,7 +77,7 @@ describe.each([
   test('extra keys pass', async () => {
     await expect(
       exec(
-        `${binPath} verify --source-locale en-US --extra-keys '${join(__dirname, 'extra-keys', 'fixtures1', '*.json')}'`
+        `${binPath} verify --source-locale en-US --extra-keys '${join(import.meta.dirname, 'extra-keys', 'fixtures1', '*.json')}'`
       )
     ).resolves.toBeTruthy()
   }, 20000)
@@ -85,7 +85,7 @@ describe.each([
   test('extra keys fail', async () => {
     await expect(
       exec(
-        `${binPath} verify --source-locale en-US --extra-keys '${join(__dirname, 'extra-keys', 'fixtures2', '*.json')}'`
+        `${binPath} verify --source-locale en-US --extra-keys '${join(import.meta.dirname, 'extra-keys', 'fixtures2', '*.json')}'`
       )
     ).rejects.toThrow(/Extra translation keys for locale fr-FR:\nboo/)
   }, 20000)

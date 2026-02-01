@@ -14,7 +14,7 @@ const CJS_CONFIG: ts.CompilerOptions = {
   noUnusedParameters: true,
   stripInternal: true,
   declaration: true,
-  baseUrl: __dirname,
+  baseUrl: import.meta.dirname,
   target: ts.ScriptTarget.ES2015,
 }
 

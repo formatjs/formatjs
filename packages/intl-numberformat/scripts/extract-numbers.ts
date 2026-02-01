@@ -3,8 +3,8 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import * as NumbersData from 'cldr-numbers-full/main/ar/numbers.json' with {type: 'json'}
-import * as numberingSystems from 'cldr-core/supplemental/numberingSystems.json' with {type: 'json'}
+import NumbersData from 'cldr-numbers-full/main/ar/numbers.json' with {type: 'json'}
+import numberingSystems from 'cldr-core/supplemental/numberingSystems.json' with {type: 'json'}
 import {
   type RawNumberData,
   type SymbolsData,
@@ -13,8 +13,8 @@ import {
   type RawCurrencyData,
   invariant,
 } from '@formatjs/ecma402-abstract'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.js'
+import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
+import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.ts'
 
 export type Numbers = (typeof NumbersData)['main']['ar']['numbers']
 
@@ -132,10 +132,10 @@ async function loadNumbers(locale: string): Promise<RawNumberData> {
   try {
     return extractNumbers(
       (
-        (await import(
-          `cldr-numbers-full/main/${locale}/numbers.json`
-        )) as typeof NumbersData
-      ).main[locale as 'ar'].numbers
+        (await import(`cldr-numbers-full/main/${locale}/numbers.json`, {
+          with: {type: 'json'},
+        })) as {default: typeof NumbersData}
+      ).default.main[locale as 'ar'].numbers
     )
   } catch (e) {
     console.error('Issue processing numbers data for ' + locale)

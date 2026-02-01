@@ -1,9 +1,9 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra/esm'
 
-import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json' with {type: 'json'}
+import rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json' with {type: 'json'}
 
-import type {Args} from './common-types.js'
+import type {Args} from './common-types.ts'
 import stringify from 'json-stable-stringify'
 
 const {calendarPreferenceData} = rawCalendarPreferenceData.supplemental
@@ -22,6 +22,6 @@ export type CalendarsKey = keyof typeof calendars`
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

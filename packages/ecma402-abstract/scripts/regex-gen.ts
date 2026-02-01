@@ -1,6 +1,9 @@
 import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import regenerate from 'regenerate'
+import {createRequire} from 'node:module'
+
+const require = createRequire(import.meta.url)
 
 function main(args: minimist.ParsedArgs) {
   const symbolSeparator = regenerate().add(
@@ -14,6 +17,6 @@ export const S_UNICODE_REGEX: RegExp = /${symbolSeparator.toString()}/
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist(process.argv))
 }

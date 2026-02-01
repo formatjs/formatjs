@@ -51,7 +51,7 @@ test('dummy', async function () {
           throw new Error('err compiling')
         }
         const outFile = join(
-          statsJson.outputPath || __dirname,
+          statsJson.outputPath || import.meta.dirname,
           statsJson.assets?.[0].name || 'out.js'
         )
         expect(readFileSync(outFile, 'utf-8')).toContain(

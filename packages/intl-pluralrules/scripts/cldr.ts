@@ -25,6 +25,6 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
     outputFileSync(join(outDir, locale + '.d.ts'), 'export {}')
   })
 }
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

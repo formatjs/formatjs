@@ -2,6 +2,9 @@ import {readJSONSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import {isEqual} from 'lodash-es'
 import stringify from 'json-stable-stringify'
+import {createRequire} from 'node:module'
+
+const require = createRequire(import.meta.url)
 const unidiff = require('unidiff')
 
 interface Args {
@@ -66,6 +69,6 @@ function main(args: Args) {
   process.exit(1)
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv.slice(2)))
 }

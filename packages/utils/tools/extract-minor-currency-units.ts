@@ -40,6 +40,6 @@ function main({input, out}: Args) {
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

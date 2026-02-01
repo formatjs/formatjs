@@ -8,12 +8,12 @@ import {resolveRustBinaryPath} from '../rust-binary-utils'
 const exec = promisify(nodeExec)
 
 const TS_BIN_PATH = require.resolve('@formatjs/cli/bin/formatjs')
-const RUST_BIN_PATH = resolveRustBinaryPath(__dirname)
+const RUST_BIN_PATH = resolveRustBinaryPath(import.meta.dirname)
 
-const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts')
+const ARTIFACT_PATH = resolve(import.meta.dirname, 'test_artifacts')
 
 beforeEach(async () => {
-  await mkdirp(join(__dirname, 'test_artifacts'))
+  await mkdirp(join(import.meta.dirname, 'test_artifacts'))
   await remove(ARTIFACT_PATH)
 })
 
@@ -29,7 +29,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract --throws ${join(
-          __dirname,
+          import.meta.dirname,
           'defineMessages/actual.jsx'
         )}`
       )
@@ -40,7 +40,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract --flatten --throws ${join(
-          __dirname,
+          import.meta.dirname,
           'defineMessages/actual.jsx'
         )}`
       )
@@ -49,12 +49,14 @@ describe.each([
 
   test('[glob] basic case: defineMessages -> stdout', async () => {
     await expect(
-      exec(`${binPath} extract ${join(__dirname, 'defineMessages/*.jsx')}`)
+      exec(
+        `${binPath} extract ${join(import.meta.dirname, 'defineMessages/*.jsx')}`
+      )
     ).resolves.toMatchSnapshot()
   }, 20000)
 
   test('basic case: defineMessages -> out-file', async () => {
-    process.chdir(__dirname)
+    process.chdir(import.meta.dirname)
     await expect(
       exec(
         `${binPath} extract defineMessages/actual.jsx --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
@@ -67,7 +69,7 @@ describe.each([
   }, 20000)
 
   test('basic case: inFile', async () => {
-    process.chdir(__dirname)
+    process.chdir(import.meta.dirname)
     await expect(
       exec(
         `${binPath} extract --in-file inFile.txt --out-file ${ARTIFACT_PATH}/infile-actual.json`
@@ -80,7 +82,7 @@ describe.each([
   })
 
   test('basic case: defineMessages -> out-file with  --additional-function-names', async () => {
-    process.chdir(__dirname)
+    process.chdir(import.meta.dirname)
     await expect(
       exec(
         `${binPath} extract defineMessages/actual.jsx --additional-function-names t --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
@@ -93,7 +95,7 @@ describe.each([
   }, 20000)
 
   test('basic case: defineMessages -> out-file with location', async () => {
-    process.chdir(__dirname)
+    process.chdir(import.meta.dirname)
     await expect(
       exec(
         `${binPath} extract defineMessages/actual.jsx --extract-source-location --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
@@ -107,14 +109,16 @@ describe.each([
 
   test('typescript -> stdout', async () => {
     await expect(
-      exec(`${binPath} extract ${join(__dirname, 'typescript/actual.tsx')}`)
+      exec(
+        `${binPath} extract ${join(import.meta.dirname, 'typescript/actual.tsx')}`
+      )
     ).resolves.toMatchSnapshot()
   }, 20000)
 
   test('typescript -> stdout with --additional-function-names', async () => {
     await expect(
       exec(
-        `${binPath} extract --additional-function-names t ${join(__dirname, 'typescript/actual.tsx')}`
+        `${binPath} extract --additional-function-names t ${join(import.meta.dirname, 'typescript/actual.tsx')}`
       )
     ).resolves.toMatchSnapshot()
   }, 20000)
@@ -123,7 +127,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract --pragma intl ${join(
-          __dirname,
+          import.meta.dirname,
           'typescript/pragma.tsx'
         )}`
       )
@@ -136,9 +140,9 @@ describe.each([
       await expect(
         exec(
           `${binPath} extract ${join(
-            __dirname,
+            import.meta.dirname,
             'typescript/actual.tsx'
-          )} --format ${join(__dirname, '../formatter.js')}`
+          )} --format ${join(import.meta.dirname, '../formatter.js')}`
         )
       ).resolves.toMatchSnapshot()
     },
@@ -149,7 +153,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract ${join(
-          __dirname,
+          import.meta.dirname,
           'typescript/actual.tsx'
         )} --format transifex`
       )
@@ -160,7 +164,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract ${join(
-          __dirname,
+          import.meta.dirname,
           'typescript/actual.tsx'
         )} --format simple`
       )
@@ -171,7 +175,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract ${join(
-          __dirname,
+          import.meta.dirname,
           'typescript/actual.tsx'
         )} --format lokalise`
       )
@@ -182,7 +186,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract ${join(
-          __dirname,
+          import.meta.dirname,
           'typescript/actual.tsx'
         )} --format crowdin`
       )
@@ -193,7 +197,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract ${join(
-          __dirname,
+          import.meta.dirname,
           'typescript/actual.tsx'
         )} --format smartling`
       )
@@ -206,7 +210,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract --throws ${join(
-          __dirname,
+          import.meta.dirname,
           'typescript/actual.tsx'
         )} ${ignore}`
       )
@@ -215,7 +219,7 @@ describe.each([
 
   test('ignore -> stdout JS', async () => {
     const jsResult = await exec(
-      `${binPath} extract '${join(__dirname, 'defineMessages/*.jsx')}' ${ignore}`
+      `${binPath} extract '${join(import.meta.dirname, 'defineMessages/*.jsx')}' ${ignore}`
     )
     expect(JSON.parse(jsResult.stdout)).toMatchSnapshot()
     expect(jsResult.stderr).toBe('')
@@ -223,7 +227,7 @@ describe.each([
 
   test('duplicated descriptor ids shows warning', async () => {
     const {stderr, stdout} = await exec(
-      `${binPath} extract '${join(__dirname, 'duplicated/*.tsx')}'`
+      `${binPath} extract '${join(import.meta.dirname, 'duplicated/*.tsx')}'`
     )
     expect(JSON.parse(stdout)).toMatchSnapshot()
     expect(stderr).toContain('Duplicate message id: "foo"')
@@ -232,7 +236,7 @@ describe.each([
   test('duplicated descriptor ids throws', async () => {
     await expect(async () => {
       await exec(
-        `${binPath} extract --throws '${join(__dirname, 'duplicated/*.tsx')}'`
+        `${binPath} extract --throws '${join(import.meta.dirname, 'duplicated/*.tsx')}'`
       )
     }).rejects.toThrowError('Duplicate message id: "foo"')
   }, 20000)
@@ -241,7 +245,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract --throws '${join(
-          __dirname,
+          import.meta.dirname,
           'nonDuplicated/*.tsx'
         )}' --out-file ${ARTIFACT_PATH}/nonDuplicated/actual.json`
       )
@@ -255,7 +259,7 @@ describe.each([
   test('invalid syntax should throw', async () => {
     await expect(async () => {
       await exec(
-        `${binPath} extract --throws '${join(__dirname, 'typescript/err.tsx')}'`
+        `${binPath} extract --throws '${join(import.meta.dirname, 'typescript/err.tsx')}'`
       )
     }).rejects.toThrowError(isRust ? /Parse error/i : /TS1005/)
   }, 20000)
@@ -264,17 +268,17 @@ describe.each([
   test('#4235: non-static defaultMessage should throw with --throws', async () => {
     await expect(async () => {
       await exec(
-        `${binPath} extract --throws '${join(__dirname, 'typescript/non-static.tsx')}'`
+        `${binPath} extract --throws '${join(import.meta.dirname, 'typescript/non-static.tsx')}'`
       )
     }).rejects.toThrowError(/defaultMessage.*must be a string literal/i)
   }, 20000)
 
   test('whitespace and newlines should be preserved', async () => {
-    process.chdir(__dirname)
+    process.chdir(import.meta.dirname)
     await expect(
       exec(
         `${binPath} extract '${join(
-          __dirname,
+          import.meta.dirname,
           'typescript/actual.tsx'
         )}' --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
       )
@@ -290,7 +294,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract --throws '${join(
-          __dirname,
+          import.meta.dirname,
           'typescript/ts47.tsx'
         )}' --out-file ${ARTIFACT_PATH}/typescript/ts47.json`
       )
@@ -306,7 +310,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract --throws '${join(
-          __dirname,
+          import.meta.dirname,
           'typescript/importMeta.mts'
         )}' --out-file ${ARTIFACT_PATH}/typescript/importMeta.json`
       )
@@ -322,7 +326,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract --throws '${join(
-          __dirname,
+          import.meta.dirname,
           'taggedTemplates/actual.tsx'
         )}' --out-file ${ARTIFACT_PATH}/taggedTemplates/actual.json`
       )
@@ -338,7 +342,7 @@ describe.each([
     await expect(
       exec(
         `${binPath} extract --throws '${join(
-          __dirname,
+          import.meta.dirname,
           'optionalChaining/actual.tsx'
         )}' --out-file ${ARTIFACT_PATH}/optionalChaining/actual.json`
       )
@@ -353,7 +357,7 @@ describe.each([
   test('GH #3537: flatten with id-interpolation-pattern (content-based IDs)', async () => {
     const result = await exec(
       `${binPath} extract --throws --flatten --id-interpolation-pattern '[sha512:contenthash:base64:6]' '${join(
-        __dirname,
+        import.meta.dirname,
         'flattenWithIdPattern/actual.js'
       )}'`
     )

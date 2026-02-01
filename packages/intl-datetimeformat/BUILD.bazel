@@ -909,12 +909,10 @@ js_binary(
     data = [":srcs"] + SRC_DEPS + [
         "tests/locale-data/en.json",
         "//:node_modules/tinybench",
-        "//:node_modules/tsx",
     ],
     entry_point = "tests/benchmark.ts",
     node_options = [
-        "--import",
-        "tsx",
+        "--experimental-transform-types",
     ],
     tags = ["manual"],
 )

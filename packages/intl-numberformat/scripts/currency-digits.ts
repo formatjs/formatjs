@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import {extractCurrencyDigits} from './extract-currencies.js'
+import {extractCurrencyDigits} from './extract-currencies.ts'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 function main(args: minimist.ParsedArgs) {
@@ -14,6 +14,6 @@ function main(args: minimist.ParsedArgs) {
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist(process.argv))
 }

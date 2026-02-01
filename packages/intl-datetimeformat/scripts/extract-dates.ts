@@ -5,22 +5,26 @@
  */
 'use strict'
 
-import * as DateFields from 'cldr-dates-full/main/en/ca-gregorian.json' with {type: 'json'}
-import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json' with {type: 'json'}
-import {sync as globSync} from 'fast-glob'
+import DateFields from 'cldr-dates-full/main/en/ca-gregorian.json' with {type: 'json'}
+import NumberFields from 'cldr-numbers-full/main/en/numbers.json' with {type: 'json'}
+import glob from 'fast-glob'
+const globSync = glob.sync
 import {resolve, dirname} from 'path'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
+import {createRequire} from 'node:module'
+
+const require = createRequire(import.meta.url)
+import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import {
   type RawDateTimeLocaleInternalData,
   type TimeZoneNameData,
-} from '../src/types'
-import * as rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
-import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json' with {type: 'json'}
-import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json' with {type: 'json'}
-import * as metaZones from 'cldr-core/supplemental/metaZones.json' with {type: 'json'}
+} from '../src/types.ts'
+import rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
+import rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json' with {type: 'json'}
+import TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json' with {type: 'json'}
+import metaZones from 'cldr-core/supplemental/metaZones.json' with {type: 'json'}
 import IntlLocale from '@formatjs/intl-locale'
 import {type Formats} from '@formatjs/ecma402-abstract'
-import {parseDateTimeSkeleton} from '../src/abstract/skeleton'
+import {parseDateTimeSkeleton} from '../src/abstract/skeleton.ts'
 import {isEqual} from 'lodash-es'
 const {timeData} = rawTimeData.supplemental
 const processedTimeData = Object.keys(timeData).reduce(
@@ -163,19 +167,25 @@ const tzToMetaZoneMap = extractTimezoneToMetazoneMap()
 async function loadDatesFields(
   locale: string
 ): Promise<RawDateTimeLocaleInternalData> {
-  const [caGregorian, tzn, numbers] = await Promise.all([
-    import(`cldr-dates-full/main/${locale}/ca-gregorian.json`),
-    import(`cldr-dates-full/main/${locale}/timeZoneNames.json`),
-    import(`cldr-numbers-full/main/${locale}/numbers.json`).catch(
-      _ => undefined
-    ),
+  const [caGregorianImport, tznImport, numbersImport] = await Promise.all([
+    import(`cldr-dates-full/main/${locale}/ca-gregorian.json`, {
+      with: {type: 'json'},
+    }) as Promise<{default: typeof DateFields}>,
+    import(`cldr-dates-full/main/${locale}/timeZoneNames.json`, {
+      with: {type: 'json'},
+    }) as Promise<{default: typeof TimeZoneNames}>,
+    import(`cldr-numbers-full/main/${locale}/numbers.json`, {
+      with: {type: 'json'},
+    }).catch(_ => undefined) as Promise<
+      {default: typeof NumberFields} | undefined
+    >,
   ])
-  const gregorian = (caGregorian as typeof DateFields).main[locale as 'en']
-    .dates.calendars.gregorian
-  const timeZoneNames = (tzn as typeof TimeZoneNames).main[locale as 'en'].dates
-    .timeZoneNames
-  const nu = (numbers as typeof NumberFields | undefined)?.main[locale as 'en']
-    .numbers.defaultNumberingSystem
+  const gregorian =
+    caGregorianImport.default.main[locale as 'en'].dates.calendars.gregorian
+  const timeZoneNames =
+    tznImport.default.main[locale as 'en'].dates.timeZoneNames
+  const nu =
+    numbersImport?.default.main[locale as 'en'].numbers.defaultNumberingSystem
 
   let hc: string[] = []
   let region: string | undefined

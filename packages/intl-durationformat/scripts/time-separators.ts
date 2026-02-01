@@ -2,8 +2,8 @@ import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 import minimist from 'minimist'
 
-import type arData from 'cldr-numbers-full/main/ar/numbers.json'
-import {getAllLocales} from './utils.js'
+import type arData from 'cldr-numbers-full/main/ar/numbers.json' with {type: 'json'}
+import {getAllLocales} from './utils.ts'
 
 type RawData = typeof arData
 
@@ -30,9 +30,11 @@ async function main(args: Args) {
 
   const locales = await getAllLocales()
   for (const locale of locales) {
-    const rawData: RawData = await import(
-      `cldr-numbers-full/main/${locale}/numbers.json`
-    )
+    const rawDataImport = (await import(
+      `cldr-numbers-full/main/${locale}/numbers.json`,
+      {with: {type: 'json'}}
+    )) as {default: RawData}
+    const rawData = rawDataImport.default
     const numbersData = rawData.main[locale as 'ar'].numbers
     const numberingSystems = [
       numbersData.defaultNumberingSystem,
@@ -69,6 +71,6 @@ export const TIME_SEPARATORS = ${stringify(result, {space: 2})} as const
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

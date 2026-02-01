@@ -6,7 +6,7 @@ import {parseFile} from '../../src/hbs_extractor'
 
 test('hbs_extractor', async function () {
   let messages: MessageDescriptor[] = []
-  const fixturePath = join(__dirname, './fixtures/comp.hbs')
+  const fixturePath = join(import.meta.dirname, './fixtures/comp.hbs')
   parseFile(await readFile(fixturePath, 'utf8'), fixturePath, {
     onMsgExtracted(_: any, msgs: any) {
       messages = messages.concat(msgs)

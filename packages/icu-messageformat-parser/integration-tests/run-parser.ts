@@ -8,7 +8,7 @@ interface Args extends minimist.ParsedArgs {
 }
 
 function run({input, out}: Args) {
-  console.log(__dirname)
+  console.log(import.meta.dirname)
   const sections = readFileSync(input, 'utf-8').split('\n---\n')
   const message = sections[0]
   const snapshotOptions = JSON.parse(sections[1])
@@ -33,6 +33,6 @@ function run({input, out}: Args) {
   )
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   run(minimist<Args>(process.argv.slice(2)))
 }

@@ -2,11 +2,11 @@ import {join} from 'path'
 import {outputFileSync} from 'fs-extra/esm'
 import serialize from 'serialize-javascript'
 import {type LDMLPluralRule} from '@formatjs/ecma402-abstract'
-import plurals from 'cldr-core/supplemental/plurals.json'
-import ordinals from 'cldr-core/supplemental/ordinals.json'
-import pluralRanges from 'cldr-core/supplemental/pluralRanges.json'
+import plurals from 'cldr-core/supplemental/plurals.json' with {type: 'json'}
+import ordinals from 'cldr-core/supplemental/ordinals.json' with {type: 'json'}
+import pluralRanges from 'cldr-core/supplemental/pluralRanges.json' with {type: 'json'}
 import minimist from 'minimist'
-import {PluralRulesCompiler} from './plural-rules-compiler.js'
+import {PluralRulesCompiler} from './plural-rules-compiler.ts'
 
 const cardinalsData = plurals.supplemental['plurals-type-cardinal']
 const ordinalsData = ordinals.supplemental['plurals-type-ordinal']
@@ -123,6 +123,6 @@ export const supportedLocales: string[] = ${JSON.stringify(locales)}
     )
   }
 }
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

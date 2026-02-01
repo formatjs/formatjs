@@ -1,10 +1,10 @@
-import {generateDataForLocales as extractCurrencies} from './extract-currencies.js'
-import {generateDataForLocales as extractUnits} from './extract-units.js'
-import {generateDataForLocales as extractNumbers} from './extract-numbers.js'
+import {generateDataForLocales as extractCurrencies} from './extract-currencies.ts'
+import {generateDataForLocales as extractUnits} from './extract-units.ts'
+import {generateDataForLocales as extractNumbers} from './extract-numbers.ts'
 import {join} from 'path'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
+import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import minimist from 'minimist'
 
 async function main(args: minimist.ParsedArgs) {
@@ -44,6 +44,6 @@ async function main(args: minimist.ParsedArgs) {
   }
 }
 
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   ;(async () => main(minimist(process.argv)))()
 }

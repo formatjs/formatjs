@@ -12,9 +12,9 @@ import {
   IsWellFormedUnitIdentifier,
   type UnitData,
 } from '@formatjs/ecma402-abstract'
-import * as UnitsData from 'cldr-units-full/main/en/units.json' with {type: 'json'}
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.js'
+import UnitsData from 'cldr-units-full/main/en/units.json' with {type: 'json'}
+import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
+import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.ts'
 
 export type Units = (typeof UnitsData)['main']['en']['units']
 
@@ -31,10 +31,10 @@ function extractUnitPattern(d: Units['long']['volume-gallon']) {
 
 async function loadUnits(locale: string): Promise<UnitDataTable> {
   const units = (
-    (await import(
-      `cldr-units-full/main/${locale}/units.json`
-    )) as typeof UnitsData
-  ).main[locale as 'en'].units
+    (await import(`cldr-units-full/main/${locale}/units.json`, {
+      with: {type: 'json'},
+    })) as {default: typeof UnitsData}
+  ).default.main[locale as 'en'].units
 
   invariant(
     !!(

@@ -1,4 +1,4 @@
-import rawData from 'cldr-core/supplemental/territoryContainment.json'
+import rawData from 'cldr-core/supplemental/territoryContainment.json' with {type: 'json'}
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 import minimist from 'minimist'
@@ -66,6 +66,6 @@ export const regions: Record<string, string[]> = ${stringify(data, {
     })}`
   )
 }
-if (require.main === module) {
+if (import.meta.filename === process.argv[1]) {
   main(minimist<Args>(process.argv))
 }

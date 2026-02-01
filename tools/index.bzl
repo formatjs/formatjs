@@ -104,12 +104,9 @@ def ts_binary(name, data = [], node_options = [], **kwargs):
     """
     js_binary(
         name = name,
-        data = data + [
-            "//:node_modules/tsx",
-        ],
+        data = data,
         node_options = node_options + [
-            "--import",
-            "tsx",
+            "--experimental-transform-types",
         ],
         **kwargs
     )
