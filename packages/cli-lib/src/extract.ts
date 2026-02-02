@@ -96,7 +96,7 @@ function calculateLineColFromOffset(
 async function processFile(
   source: string,
   fn: string,
-  {idInterpolationPattern, ...opts}: Opts & {idInterpolationPattern?: string}
+  {idInterpolationPattern, ...opts}: Opts & {idInterpolationPattern?: string, throws?: boolean}
 ) {
   let messages: ExtractedMessageDescriptor[] = []
   let meta: Record<string, string> | undefined
@@ -157,23 +157,33 @@ async function processFile(
 
   debug('Processing opts for %s: %s', fn, opts)
 
-  const scriptParseFn = parseScript(opts, fn)
-  if (fn.endsWith('.vue')) {
-    debug('Processing %s using vue extractor', fn)
-    const {parseFile} = await import('./vue_extractor.js')
-    parseFile(source, fn, scriptParseFn)
-  } else if (fn.endsWith('.hbs')) {
-    debug('Processing %s using hbs extractor', fn)
-    const {parseFile} = await import('./hbs_extractor.js')
-    parseFile(source, fn, opts)
-  } else if (fn.endsWith('.gts') || fn.endsWith('.gjs')) {
-    debug('Processing %s as gts/gjs file', fn)
-    const {parseFile} = await import('./gts_extractor.js')
-    parseFile(source, fn, opts)
-  } else {
-    debug('Processing %s using typescript extractor', fn)
-    scriptParseFn(source)
+  try {
+    const scriptParseFn = parseScript(opts, fn)
+    if (fn.endsWith('.vue')) {
+      debug('Processing %s using vue extractor', fn)
+      const {parseFile} = await import('./vue_extractor.js')
+      parseFile(source, fn, scriptParseFn)
+    } else if (fn.endsWith('.hbs')) {
+      debug('Processing %s using hbs extractor', fn)
+      const {parseFile} = await import('./hbs_extractor.js')
+      parseFile(source, fn, opts)
+    } else if (fn.endsWith('.gts') || fn.endsWith('.gjs')) {
+      debug('Processing %s as gts/gjs file', fn)
+      const {parseFile} = await import('./gts_extractor.js')
+      parseFile(source, fn, opts)
+    } else {
+      debug('Processing %s using typescript extractor', fn)
+      scriptParseFn(source)
+    }
+  } catch (e) {
+    if (opts.throws === false) {
+      warn(`Error processing file ${fn}: ${String(e)}`)
+      // Return partial results collected so far
+    } else {
+      throw e
+    }
   }
+
   debug('Done extracting %s messages: %s', fn, messages)
   if (meta) {
     debug('Extracted meta:', meta)
@@ -203,7 +213,7 @@ export async function extract(
         warn('Reading source file from TTY.')
       }
       const stdinSource = await getStdinAsString()
-      rawResults = [await processFile(stdinSource, 'dummy', opts)]
+      rawResults = [await processFile(stdinSource, 'dummy', {...opts, throws})]
     } else {
       // Use Promise.allSettled when throws is false to collect partial results
       if (throws === false) {
@@ -211,7 +221,7 @@ export async function extract(
           files.map(async fn => {
             debug('Extracting file:', fn)
             const source = await readFile(fn, 'utf8')
-            return processFile(source, fn, opts)
+            return processFile(source, fn, {...opts, throws})
           })
         )
         rawResults = settledResults.map(result => {
@@ -227,7 +237,7 @@ export async function extract(
           files.map(async fn => {
             debug('Extracting file:', fn)
             const source = await readFile(fn, 'utf8')
-            return processFile(source, fn, opts)
+            return processFile(source, fn, {...opts, throws})
           })
         )
       }

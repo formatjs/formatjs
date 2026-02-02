@@ -6,7 +6,7 @@ import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
 import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import * as stringifyNs from 'json-stable-stringify'
 import * as typescript from 'typescript'
-import {debug} from './console_utils.js'
+import {debug, warn} from './console_utils.js'
 import {interpolateName} from './interpolate-name.js'
 import {type MessageDescriptor} from './types.js'
 
@@ -192,6 +192,12 @@ export interface Opts {
    * Whether to hoist selectors & flatten sentences
    */
   flatten?: boolean
+  /**
+   * Whether to throw an error when encountering extraction issues.
+   * If `false`, errors will be logged but extraction will continue.
+   * Defaults to `true`.
+   */
+  throws?: boolean
 }
 
 const DEFAULT_OPTS: Omit<Opts, 'program'> = {
@@ -263,7 +269,7 @@ function extractMessageDescriptor(
     | typescript.ObjectLiteralExpression
     | typescript.JsxOpeningElement
     | typescript.JsxSelfClosingElement,
-  {overrideIdFn, extractSourceLocation, preserveWhitespace, flatten}: Opts,
+  {overrideIdFn, extractSourceLocation, preserveWhitespace, flatten, throws}: Opts,
   sf: typescript.SourceFile
 ): MessageDescriptor | undefined {
   let properties:
@@ -278,6 +284,15 @@ function extractMessageDescriptor(
   const msg: MessageDescriptor = {id: ''}
   if (!properties) {
     return
+  }
+
+  // Helper to handle errors based on throws flag
+  const handleError = (errorMessage: string): boolean => {
+    if (throws === false) {
+      warn(errorMessage)
+      return false // Continue processing
+    }
+    throw new Error(errorMessage)
   }
 
   properties.forEach(prop => {
@@ -333,7 +348,8 @@ function extractMessageDescriptor(
 
         const {template} = initializer
         if (!ts.isNoSubstitutionTemplateLiteral(template)) {
-          throw new Error('Tagged template expression must be no substitution')
+          handleError('Tagged template expression must be no substitution')
+          return
         }
 
         switch (name.text) {
@@ -403,9 +419,8 @@ function extractMessageDescriptor(
             expression: {template},
           } = initializer
           if (!ts.isNoSubstitutionTemplateLiteral(template)) {
-            throw new Error(
-              'Tagged template expression must be no substitution'
-            )
+            handleError('Tagged template expression must be no substitution')
+            return
           }
           switch (name.text) {
             case 'id':
@@ -440,9 +455,10 @@ function extractMessageDescriptor(
             name.text !== 'description'
           ) {
             // Non-static expression for defaultMessage or id
-            throw new Error(
+            handleError(
               `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`
             )
+            return
           }
         }
         // Non-static JSX expression for defaultMessage or id
@@ -450,9 +466,10 @@ function extractMessageDescriptor(
           MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
           name.text !== 'description'
         ) {
-          throw new Error(
+          handleError(
             `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`
           )
+          return
         }
       }
       // {defaultMessage: 'asd' + bar'}
@@ -475,9 +492,10 @@ function extractMessageDescriptor(
           name.text !== 'description'
         ) {
           // Non-static expression for defaultMessage or id
-          throw new Error(
+          handleError(
             `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`
           )
+          return
         }
       }
       // description: {custom: 1}
@@ -492,9 +510,10 @@ function extractMessageDescriptor(
         MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
         name.text !== 'description'
       ) {
-        throw new Error(
+        handleError(
           `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`
         )
+        return
       }
     }
   })
@@ -513,9 +532,9 @@ function extractMessageDescriptor(
       msg.defaultMessage = printAST(hoistSelectors(parse(msg.defaultMessage)))
     } catch (e: any) {
       const {line, character} = sf.getLineAndCharacterOfPosition(node.pos)
-      throw new Error(
-        `[formatjs] Cannot flatten message in file "${sf.fileName}" at line ${line + 1}, column ${character + 1}${msg.id ? ` with id "${msg.id}"` : ''}: ${e.message}\nMessage: ${msg.defaultMessage}`
-      )
+      const errorMsg = `[formatjs] Cannot flatten message in file "${sf.fileName}" at line ${line + 1}, column ${character + 1}${msg.id ? ` with id "${msg.id}"` : ''}: ${e.message}\nMessage: ${msg.defaultMessage}`
+      handleError(errorMsg)
+      return
     }
   }
   if (msg.defaultMessage && overrideIdFn) {
