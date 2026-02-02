@@ -423,21 +423,18 @@ const messages = defineMessages({
         let output_content = std::fs::read_to_string(&output_file).unwrap();
 
         // Verify the entire output matches expected sorted JSON with newline
+        // The 'id' field should NOT be included in the output (matches TypeScript CLI behavior)
         let expected = r#"{
   "apple": {
-    "id": "apple",
     "defaultMessage": "Apple message"
   },
   "banana": {
-    "id": "banana",
     "defaultMessage": "Banana message"
   },
   "mango": {
-    "id": "mango",
     "defaultMessage": "Mango message"
   },
   "zebra": {
-    "id": "zebra",
     "defaultMessage": "Zebra message"
   }
 }

@@ -180,7 +180,9 @@ mod tests {
             None,
         )
         .unwrap();
-        assert_eq!(id, "7wEb9s8U");
+        // Hash of "Hello#A greeting" (without JSON quotes around description)
+        // This matches TypeScript CLI behavior
+        assert_eq!(id, "tYLiH0T9");
     }
 
     #[test]
@@ -267,7 +269,9 @@ mod tests {
         )
         .unwrap();
         assert_eq!(id1, "NhX4DJ0pPt");
-        assert_eq!(id2, "779BTuay3q");
+        // Hash of "Hello#Description" (without JSON quotes around description)
+        // This matches TypeScript CLI behavior
+        assert_eq!(id2, "WgDsrbylG9");
         assert_ne!(
             id1, id2,
             "Adding description should change the generated ID"
