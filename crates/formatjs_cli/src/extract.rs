@@ -103,8 +103,16 @@ pub fn extract(
         // Convert to JSON output
         serde_json::to_string_pretty(&vendor_json)?
     } else {
-        // Default format: full MessageDescriptor objects (already sorted via BTreeMap)
-        serde_json::to_string_pretty(&all_messages)?
+        // Default format: MessageDescriptor objects without the 'id' field (matches TypeScript CLI)
+        // TypeScript CLI does: for (const {id, ...msg} of messages) { results[id] = msg }
+        let mut output_map = serde_json::Map::new();
+        for (id, mut msg) in all_messages {
+            // Remove the 'id' field from the message descriptor before serialization
+            msg.id = None;
+            let msg_json = serde_json::to_value(msg)?;
+            output_map.insert(id, msg_json);
+        }
+        serde_json::to_string_pretty(&output_map)?
     };
 
     // Step 4: Write output
@@ -415,21 +423,18 @@ const messages = defineMessages({
         let output_content = std::fs::read_to_string(&output_file).unwrap();
 
         // Verify the entire output matches expected sorted JSON with newline
+        // The 'id' field should NOT be included in the output (matches TypeScript CLI behavior)
         let expected = r#"{
   "apple": {
-    "id": "apple",
     "defaultMessage": "Apple message"
   },
   "banana": {
-    "id": "banana",
     "defaultMessage": "Banana message"
   },
   "mango": {
-    "id": "mango",
     "defaultMessage": "Mango message"
   },
   "zebra": {
-    "id": "zebra",
     "defaultMessage": "Zebra message"
   }
 }

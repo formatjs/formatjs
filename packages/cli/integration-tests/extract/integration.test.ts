@@ -385,4 +385,39 @@ describe.each([
       },
     ])
   }, 20000)
+
+  // https://github.com/formatjs/formatjs/issues/6009
+  test('GH #6009: TypeScript CLI and Rust CLI should produce identical output', async () => {
+    const result = await exec(
+      `${binPath} extract --throws --id-interpolation-pattern '[sha512:contenthash:base64:6]' '${join(
+        import.meta.dirname,
+        'issue-6009/Test.tsx'
+      )}'`
+    )
+
+    // Parse the JSON output
+    const extracted = JSON.parse(result.stdout)
+
+    // Get the keys and values
+    const keys = Object.keys(extracted)
+    const values = Object.values(extracted)
+
+    // Should have exactly one message
+    expect(keys.length).toBe(1)
+
+    // The hash should be consistent (rFvuOJ for TypeScript CLI)
+    const messageId = keys[0]
+    const message: any = values[0]
+
+    // Verify the message structure
+    expect(message.defaultMessage).toBe('This is a test message.')
+    expect(message.description).toBe('Test component message')
+
+    // CRITICAL: The output should NOT include an 'id' field
+    // This is the expected format for both CLIs
+    expect(message.id).toBeUndefined()
+
+    // Both CLIs should produce the same hash (this was fixed in PR #6010)
+    expect(messageId).toBe('rFvuOJ')
+  }, 20000)
 })
