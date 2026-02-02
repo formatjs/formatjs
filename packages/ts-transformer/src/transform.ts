@@ -192,6 +192,16 @@ export interface Opts {
    * Whether to hoist selectors & flatten sentences
    */
   flatten?: boolean
+  /**
+   * Whether to throw on errors extracting messages.
+   * When false, invalid messages are skipped with a warning.
+   * Defaults to true.
+   */
+  throws?: boolean
+  /**
+   * Callback for reporting errors when throws is false.
+   */
+  onMsgError?: (filePath: string, error: Error) => void
 }
 
 const DEFAULT_OPTS: Omit<Opts, 'program'> = {
@@ -263,9 +273,29 @@ function extractMessageDescriptor(
     | typescript.ObjectLiteralExpression
     | typescript.JsxOpeningElement
     | typescript.JsxSelfClosingElement,
-  {overrideIdFn, extractSourceLocation, preserveWhitespace, flatten}: Opts,
+  {
+    overrideIdFn,
+    extractSourceLocation,
+    preserveWhitespace,
+    flatten,
+    throws = true,
+    onMsgError,
+  }: Opts,
   sf: typescript.SourceFile
 ): MessageDescriptor | undefined {
+  let extractionError: Error | null = null
+
+  // Helper to handle errors based on throws option
+  function handleError(errorMsg: string): void {
+    const error = new Error(errorMsg)
+    if (throws) {
+      throw error
+    }
+    extractionError = error
+    if (onMsgError) {
+      onMsgError(sf.fileName, error)
+    }
+  }
   let properties:
     | typescript.NodeArray<typescript.ObjectLiteralElement>
     | typescript.NodeArray<typescript.JsxAttributeLike>
@@ -333,7 +363,10 @@ function extractMessageDescriptor(
 
         const {template} = initializer
         if (!ts.isNoSubstitutionTemplateLiteral(template)) {
-          throw new Error('Tagged template expression must be no substitution')
+          handleError(
+            '[FormatJS] Tagged template expression must be no substitution'
+          )
+          return
         }
 
         switch (name.text) {
@@ -403,9 +436,10 @@ function extractMessageDescriptor(
             expression: {template},
           } = initializer
           if (!ts.isNoSubstitutionTemplateLiteral(template)) {
-            throw new Error(
-              'Tagged template expression must be no substitution'
+            handleError(
+              '[FormatJS] Tagged template expression must be no substitution'
             )
+            return
           }
           switch (name.text) {
             case 'id':
@@ -440,9 +474,10 @@ function extractMessageDescriptor(
             name.text !== 'description'
           ) {
             // Non-static expression for defaultMessage or id
-            throw new Error(
+            handleError(
               `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`
             )
+            return
           }
         }
         // Non-static JSX expression for defaultMessage or id
@@ -450,9 +485,10 @@ function extractMessageDescriptor(
           MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
           name.text !== 'description'
         ) {
-          throw new Error(
+          handleError(
             `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`
           )
+          return
         }
       }
       // {defaultMessage: 'asd' + bar'}
@@ -475,9 +511,10 @@ function extractMessageDescriptor(
           name.text !== 'description'
         ) {
           // Non-static expression for defaultMessage or id
-          throw new Error(
+          handleError(
             `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`
           )
+          return
         }
       }
       // description: {custom: 1}
@@ -492,12 +529,17 @@ function extractMessageDescriptor(
         MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
         name.text !== 'description'
       ) {
-        throw new Error(
+        handleError(
           `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`
         )
+        return
       }
     }
   })
+  // If we had an extraction error (and throws is false), skip this message
+  if (extractionError) {
+    return
+  }
   // We extracted nothing
   if (!msg.defaultMessage && !msg.id) {
     return

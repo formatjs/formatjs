@@ -58,6 +58,49 @@ bazel run //packages/intl-localematcher/benchmark:profile_cpu
   - Without `-c opt`, benchmarks run in debug mode and are ~10x slower
 - Always verify performance after optimizations
 
+### 7. Commit Message Format
+
+All commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+
+```
+<type>(<scope>): <subject>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+**Types:**
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation only changes
+- `style`: Changes that don't affect the code's meaning (white-space, formatting, etc)
+- `refactor`: Code change that neither fixes a bug nor adds a feature
+- `perf`: Performance improvement
+- `test`: Adding missing tests or correcting existing tests
+- `build`: Changes that affect the build system or external dependencies
+- `ci`: Changes to CI configuration files and scripts
+- `chore`: Other changes that don't modify src or test files
+
+**Scope:** The scope should be the full package name from package.json (e.g., `@formatjs/cli`, `@formatjs/cli-lib`, `@formatjs/ts-transformer`, `@formatjs/intl-localematcher`)
+
+**Examples:**
+```bash
+feat(@formatjs/cli): add support for custom extractors
+fix(@formatjs/cli-lib): respect throws flag in extract() function
+test(@formatjs/cli): add integration tests for throws flag
+docs(@formatjs/cli): update README with new options
+perf(@formatjs/intl-localematcher): optimize lookup algorithm
+```
+
+**Breaking Changes:**
+If a commit introduces a breaking change, add `BREAKING CHANGE:` in the footer or append `!` after the type/scope:
+```bash
+feat(@formatjs/cli)!: remove deprecated --legacy flag
+
+BREAKING CHANGE: The --legacy flag has been removed. Use --new-flag instead.
+```
+
 ## Repository Context
 
 ### Overview

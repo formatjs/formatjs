@@ -194,6 +194,16 @@ export async function extract(
   extractOpts: ExtractOpts
 ): Promise<string> {
   const {throws, readFromStdin, ...opts} = extractOpts
+  // When throws is not explicitly true, we want to collect partial results
+  const shouldThrow = throws === true
+  // Pass throws option to transformer for per-message error handling
+  const optsWithThrows = {
+    ...opts,
+    throws: shouldThrow,
+    onMsgError: !shouldThrow
+      ? (_: string, e: Error) => warn(e.message)
+      : undefined,
+  }
   let rawResults: Array<ExtractionResult | undefined> = []
   try {
     if (readFromStdin) {
@@ -203,15 +213,15 @@ export async function extract(
         warn('Reading source file from TTY.')
       }
       const stdinSource = await getStdinAsString()
-      rawResults = [await processFile(stdinSource, 'dummy', opts)]
+      rawResults = [await processFile(stdinSource, 'dummy', optsWithThrows)]
     } else {
-      // Use Promise.allSettled when throws is false to collect partial results
-      if (throws === false) {
+      // Use Promise.allSettled when throws is not explicitly true to collect partial results
+      if (!shouldThrow) {
         const settledResults = await Promise.allSettled(
           files.map(async fn => {
             debug('Extracting file:', fn)
             const source = await readFile(fn, 'utf8')
-            return processFile(source, fn, opts)
+            return processFile(source, fn, optsWithThrows)
           })
         )
         rawResults = settledResults.map(result => {
@@ -227,13 +237,13 @@ export async function extract(
           files.map(async fn => {
             debug('Extracting file:', fn)
             const source = await readFile(fn, 'utf8')
-            return processFile(source, fn, opts)
+            return processFile(source, fn, optsWithThrows)
           })
         )
       }
     }
   } catch (e) {
-    if (throws) {
+    if (shouldThrow) {
       throw e
     } else {
       warn(String(e))

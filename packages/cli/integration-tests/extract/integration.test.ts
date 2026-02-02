@@ -70,11 +70,16 @@ describe.each([
 
   test('basic case: inFile', async () => {
     process.chdir(import.meta.dirname)
-    await expect(
-      exec(
-        `${binPath} extract --in-file inFile.txt --out-file ${ARTIFACT_PATH}/infile-actual.json`
-      )
-    ).resolves.toMatchSnapshot()
+    const result = await exec(
+      `${binPath} extract --in-file inFile.txt --out-file ${ARTIFACT_PATH}/infile-actual.json`
+    )
+    // TypeScript CLI shows ENOENT, Rust CLI shows its own error format
+    if (isRust) {
+      expect(result.stderr).toContain('Failed to read file')
+    } else {
+      expect(result.stderr).toMatch(/ENOENT.*defineMessages\/actual\.js/)
+    }
+    expect(result.stdout).toBe('')
 
     expect(
       await readJSON(join(ARTIFACT_PATH, 'infile-actual.json'))
@@ -419,5 +424,61 @@ describe.each([
 
     // Both CLIs should produce the same hash (this was fixed in PR #6010)
     expect(messageId).toBe('rFvuOJ')
+  }, 20000)
+
+  // https://github.com/formatjs/formatjs/issues/5994
+  // Note: Rust CLI generates hashes for dynamic IDs and extracts all messages
+  // TypeScript CLI skips invalid messages and emits warnings to stderr
+  test('GH #5994: throws:false allows partial extraction with dynamic IDs', async () => {
+    const result = await exec(
+      `${binPath} extract '${join(
+        import.meta.dirname,
+        'throwsFlag/mixed-valid-invalid.tsx'
+      )}' --id-interpolation-pattern '[sha512:contenthash:base64:6]'`
+    )
+
+    const extracted = JSON.parse(result.stdout)
+    expect(extracted).toMatchSnapshot()
+
+    // TypeScript CLI skips invalid messages and warns; Rust CLI extracts all
+    if (isRust) {
+      expect(result.stderr).toBe('')
+    } else {
+      expect(result.stderr).toMatch(/id.*must be a string literal/i)
+    }
+  }, 20000)
+
+  test.skipIf(isRust)(
+    'GH #5994: throws:true fails completely with dynamic IDs',
+    async () => {
+      await expect(async () => {
+        await exec(
+          `${binPath} extract --throws '${join(
+            import.meta.dirname,
+            'throwsFlag/mixed-valid-invalid.tsx'
+          )}' --id-interpolation-pattern '[sha512:contenthash:base64:6]'`
+        )
+      }).rejects.toThrowError(/id/)
+    },
+    20000
+  )
+
+  test('GH #5994: throws:false with multiple files collects all valid messages', async () => {
+    const result = await exec(
+      `${binPath} extract '${join(
+        import.meta.dirname,
+        'throwsFlag/*.tsx'
+      )}' --id-interpolation-pattern '[sha512:contenthash:base64:6]'`
+    )
+
+    const extracted = JSON.parse(result.stdout)
+    expect(extracted).toMatchSnapshot()
+
+    // TypeScript CLI skips invalid messages and warns; Rust CLI extracts all
+    if (isRust) {
+      expect(result.stderr).toBe('')
+    } else {
+      expect(result.stderr).toMatch(/id.*must be a string literal/i)
+    }
   }, 20000)
 })
