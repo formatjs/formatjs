@@ -417,15 +417,7 @@ describe.each([
     // This is the expected format for both CLIs
     expect(message.id).toBeUndefined()
 
-    // Store the hash for comparison (both CLIs should produce the same hash)
-    // TypeScript CLI produces: rFvuOJ
-    // Rust CLI currently produces: 8qN7+5 (BUG - different hash algorithm behavior)
-    if (!isRust) {
-      // TypeScript CLI reference
-      expect(messageId).toBe('rFvuOJ')
-    } else {
-      // Rust CLI should match TypeScript CLI output
-      expect(messageId).toBe('rFvuOJ')
-    }
+    // Both CLIs should produce the same hash (this was fixed in PR #6010)
+    expect(messageId).toBe('rFvuOJ')
   }, 20000)
 })
