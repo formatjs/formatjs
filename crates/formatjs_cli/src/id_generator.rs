@@ -102,7 +102,12 @@ pub fn generate_id(
     }
     if let Some(desc) = description {
         content.push('#');
-        content.push_str(&desc.to_string());
+        // Extract string value for string types to match TypeScript CLI behavior
+        // TypeScript uses: typeof description === 'string' ? description : stringify(description)
+        match desc {
+            Value::String(s) => content.push_str(s),
+            _ => content.push_str(&desc.to_string()),
+        }
     }
 
     // Generate hash
@@ -376,5 +381,25 @@ mod tests {
         // Missing brackets
         let result = generate_id("sha512:contenthash:base64:10", Some("Test"), &None, None);
         assert!(result.is_err());
+    }
+
+    // https://github.com/formatjs/formatjs/issues/6009
+    #[test]
+    fn test_generate_id_matches_typescript_cli() {
+        // This test verifies that the Rust CLI produces the same hash as the TypeScript CLI
+        // for the exact test case from issue #6009
+        let desc = serde_json::Value::String("Test component message".to_string());
+        let id = generate_id(
+            "[sha512:contenthash:base64:6]",
+            Some("This is a test message."),
+            &Some(desc),
+            None,
+        )
+        .unwrap();
+
+        // TypeScript CLI produces "rFvuOJ" for this input
+        // Previously, Rust CLI incorrectly produced "8qN7+5" because it was
+        // including JSON quotes around the description string
+        assert_eq!(id, "rFvuOJ", "Hash should match TypeScript CLI output");
     }
 }
