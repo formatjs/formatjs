@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.3.2...@formatjs/ts-transformer@4.3.3) (2026-02-03)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** respect throws flag in extract() function ([#6011](https://github.com/formatjs/formatjs/issues/6011)) ([41cbafc](https://github.com/formatjs/formatjs/commit/41cbafc0b382329794be61fbc5c60d480beb7f50)), closes [#5994](https://github.com/formatjs/formatjs/issues/5994) - by @longlho
+
 ## [4.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.3.1...@formatjs/ts-transformer@4.3.2) (2026-02-01)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

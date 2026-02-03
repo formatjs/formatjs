@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.3](github.com/formatjs/formatjs/compare/react-intl@8.1.2...react-intl@8.1.3) (2026-02-03)
+
+### Bug Fixes
+
+* **react-intl:** update react/react-dom dep versions to 19 ([#6015](/github.com/formatjs/formatjs/issues/6015)) ([70e7ad3](github.com/formatjs/formatjs/commits/70e7ad3a3d81a071411a1a7f30fced08b2797c80)), closes [#6014](github.com/formatjs/formatjs/issues/6014) - by @longlho
+
 ## [8.1.2](github.com/formatjs/formatjs/compare/react-intl@8.1.1...react-intl@8.1.2) (2026-02-01)
 
 **Note:** Version bump only for package react-intl

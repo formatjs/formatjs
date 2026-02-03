@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.12.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.12.1...@formatjs/cli@6.12.2) (2026-02-03)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** respect throws flag in extract() function ([#6011](https://github.com/formatjs/formatjs/issues/6011)) ([41cbafc](https://github.com/formatjs/formatjs/commit/41cbafc0b382329794be61fbc5c60d480beb7f50)), closes [#5994](https://github.com/formatjs/formatjs/issues/5994) - by @longlho
+* **formatjs_cli:** match TypeScript CLI extract output format ([#6010](https://github.com/formatjs/formatjs/issues/6010)) ([4cd8956](https://github.com/formatjs/formatjs/commit/4cd89568377be5af642d515be4c437d10536a100)), closes [#6009](https://github.com/formatjs/formatjs/issues/6009) - by @longlho
+* **react-intl:** update react/react-dom dep versions to 19 ([#6015](https://github.com/formatjs/formatjs/issues/6015)) ([70e7ad3](https://github.com/formatjs/formatjs/commit/70e7ad3a3d81a071411a1a7f30fced08b2797c80)), closes [#6014](https://github.com/formatjs/formatjs/issues/6014) - by @longlho
+
 ## [6.12.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.12.0...@formatjs/cli@6.12.1) (2026-02-01)
 
 **Note:** Version bump only for package @formatjs/cli
