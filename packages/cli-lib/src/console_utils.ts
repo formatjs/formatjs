@@ -1,11 +1,8 @@
-import * as chalkNs from 'chalk'
 import {
   clearLine as nativeClearLine,
   cursorTo as nativeCursorTo,
 } from 'readline'
-import {format, promisify} from 'util'
-
-const chalk = (chalkNs as any).default ?? chalkNs
+import {format, promisify, styleText} from 'node:util'
 
 const CLEAR_WHOLE_LINE = 0
 
@@ -19,7 +16,7 @@ export const writeStdout: (arg1: string | Uint8Array) => Promise<void> =
 export async function clearLine(
   terminal: (typeof process)['stderr']
 ): Promise<void> {
-  if (!chalk.supportsColor) {
+  if (!terminal.hasColors?.()) {
     if (terminal.isTTY) {
       // terminal
       if (terminal.columns > 0) {
@@ -34,14 +31,17 @@ export async function clearLine(
   }
 }
 
-const LEVEL_COLORS = {
-  debug: chalk.green,
-  warn: chalk.yellow,
-  error: chalk.red,
+type LogLevel = 'debug' | 'warn' | 'error'
+
+const LEVEL_COLORS: Record<LogLevel, 'green' | 'yellow' | 'red'> = {
+  debug: 'green',
+  warn: 'yellow',
+  error: 'red',
 }
 
-function label(level: keyof typeof LEVEL_COLORS, message: string) {
-  return `[@formatjs/cli] [${LEVEL_COLORS[level](
+function label(level: LogLevel, message: string) {
+  return `[@formatjs/cli] [${styleText(
+    LEVEL_COLORS[level],
     level.toUpperCase()
   )}] ${message}`
 }

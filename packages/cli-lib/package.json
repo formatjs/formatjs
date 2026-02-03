@@ -6,7 +6,7 @@
   "author": "Linjie Ding <linjie@airtable.com>",
   "type": "module",
   "engines": {
-    "node": ">= 16"
+    "node": ">= 20.12.0"
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
@@ -15,7 +15,6 @@
     "@types/estree": "^1.0.8",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.19.5",
-    "chalk": "^4.1.2",
     "commander": "^14.0.0",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.3",

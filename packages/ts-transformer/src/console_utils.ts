@@ -1,16 +1,16 @@
-import * as chalkNs from 'chalk'
-import {format} from 'util'
+import {format, styleText} from 'node:util'
 
-const chalk = (chalkNs as any).default ?? chalkNs
+type LogLevel = 'debug' | 'warn' | 'error'
 
-const LEVEL_COLORS = {
-  debug: chalk.green,
-  warn: chalk.yellow,
-  error: chalk.red,
+const LEVEL_COLORS: Record<LogLevel, 'green' | 'yellow' | 'red'> = {
+  debug: 'green',
+  warn: 'yellow',
+  error: 'red',
 }
 
-function label(level: keyof typeof LEVEL_COLORS, message: string) {
-  return `[@formatjs/ts-transformer] [${LEVEL_COLORS[level](
+function label(level: LogLevel, message: string) {
+  return `[@formatjs/ts-transformer] [${styleText(
+    LEVEL_COLORS[level],
     level.toUpperCase()
   )}] ${message}`
 }
