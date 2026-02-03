@@ -1,3 +1,5 @@
+import Admonition from "../../components/Admonition.tsx";
+
 A spec-compliant polyfill for Intl.DurationFormat
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-durationformat.svg?style=flat-square)](https://www.npmjs.com/package/@formatjs/intl-durationformat)
@@ -71,10 +73,44 @@ When set to `'auto'`, zero values are omitted. When set to `'always'`, zero valu
 
 ### Example Usage
 
+#### Global import
 ```js
 import '@formatjs/intl-durationformat/polyfill.js'
 
 const formatter = new Intl.DurationFormat('en', {
+  style: 'long',
+  hours: 'numeric',
+  minutes: 'numeric',
+  seconds: 'numeric',
+})
+
+formatter.format({hours: 3, minutes: 25, seconds: 7})
+// "3 hours, 25 minutes, 7 seconds"
+
+// Digital format
+const digital = new Intl.DurationFormat('en', {style: 'digital'})
+digital.format({hours: 1, minutes: 30, seconds: 45})
+// "1:30:45"
+
+// formatToParts
+const parts = formatter.formatToParts({hours: 2, minutes: 30})
+// [
+//   {type: "integer", value: "2", unit: "hour"},
+//   {type: "literal", value: " hours, "},
+//   {type: "integer", value: "30", unit: "minute"},
+//   {type: "literal", value: " minutes"}
+// ]
+```
+
+<Admonition type="info">
+Global import does not provide type declarations, therefore in Typescript codebases it's recommended to use ES Modules import instead. If you want to use global imports, you can include type declarations files (.d.ts files) manually in your project.
+</Admonition>
+
+#### ES Modules
+```js
+import {DurationFormat} from '@formatjs/intl-durationformat'
+
+const formatter = new DurationFormat('en', {
   style: 'long',
   hours: 'numeric',
   minutes: 'numeric',
