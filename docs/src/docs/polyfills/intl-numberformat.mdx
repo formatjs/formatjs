@@ -130,6 +130,8 @@ All **42 ECMA-402 sanctioned units** are fully supported:
 
 ### Example Usage
 
+#### Global import
+
 ```js
 import '@formatjs/intl-numberformat/polyfill.js'
 
@@ -162,6 +164,28 @@ rounded.format(10.03) // "$10.05" (rounded to nearest 0.05)
 // Format range
 const range = new Intl.NumberFormat('en', {style: 'percent'})
 range.formatRange(20, 30) // "20%–30%"
+```
+
+<Admonition type="info">
+    The global import does not include TypeScript type declarations.
+    For TypeScript projects, we recommend using ES module imports instead.
+
+    If you choose to use the global import, in order to prevent type errors, you must manually include the corresponding type declaration files (.d.ts) in your project.
+
+</Admonition>
+
+#### ES Modules
+
+```js
+import {NumberFormat} from '@formatjs/intl-numberformat'
+
+// Currency with accounting sign
+const currency = new NumberFormat('en', {
+  style: 'currency',
+  currency: 'USD',
+  currencySign: 'accounting',
+})
+currency.format(-100) // "($100.00)"
 ```
 
 ## Installation

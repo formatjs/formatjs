@@ -33,10 +33,30 @@ This package is **fully compliant** with the ECMA-402 specification for `Intl.Da
 - **Values**: `'full'`, `'long'`, `'medium'`, `'short'`
 - **Usage**: Can be used individually or together for quick date/time formatting
 - **Example**:
-  ```js
-  new Intl.DateTimeFormat('en', {dateStyle: 'long', timeStyle: 'short'})
-  // "January 1, 2024 at 12:00 PM"
-  ```
+
+#### Global import
+
+```js
+new Intl.DateTimeFormat('en', {dateStyle: 'long', timeStyle: 'short'})
+// "January 1, 2024 at 12:00 PM"
+```
+
+<Admonition type="info">
+    The global import does not include TypeScript type declarations.
+    For TypeScript projects, we recommend using ES module imports instead.
+
+    If you choose to use the global import, in order to prevent type errors, you must manually include the corresponding type declaration files (.d.ts) in your project.
+
+</Admonition>
+
+#### ES Modules
+
+```js
+import {DateTimeFormat} from '@formatjs/intl-datetimeformat'
+
+new DateTimeFormat('en', {dateStyle: 'long', timeStyle: 'short'})
+// "January 1, 2024 at 12:00 PM"
+```
 
 #### ✅ Extended timeZoneName Options
 

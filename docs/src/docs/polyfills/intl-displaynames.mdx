@@ -46,6 +46,8 @@ For `type: 'language'`, the `languageDisplay` option controls dialect formatting
 
 ### Example Usage
 
+#### Global import
+
 ```js
 import '@formatjs/intl-displaynames/polyfill.js'
 
@@ -109,6 +111,24 @@ const standardNames = new Intl.DisplayNames(['en'], {
   languageDisplay: 'standard',
 })
 standardNames.of('en-CA') // "English"
+```
+
+<Admonition type="info">
+    The global import does not include TypeScript type declarations.
+    For TypeScript projects, we recommend using ES module imports instead.
+
+    If you choose to use the global import, in order to prevent type errors, you must manually include the corresponding type declaration files (.d.ts) in your project.
+
+</Admonition>
+
+#### ES Modules
+
+```js
+import {DisplayNames} from '@formatjs/intl-displaynames'
+
+// Language names
+const languageNames = new DisplayNames(['en'], {type: 'language'})
+languageNames.of('en') // "English"
 ```
 
 ## Installation
