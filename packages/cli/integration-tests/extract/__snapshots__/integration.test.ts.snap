@@ -1472,7 +1472,6 @@ Options:
 }
 `;
 
-
 exports[`'TypeScript' CLI > basic case: inFile 1`] = `
 {
   "bar": {

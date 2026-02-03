@@ -1,10 +1,10 @@
-import { FormattedMessage } from "react-intl";
+import {FormattedMessage} from 'react-intl'
 
 export function Test() {
-    return (
-        <FormattedMessage
-            defaultMessage="This is a test message."
-            description="Test component message"
-        />
-    );
+  return (
+    <FormattedMessage
+      defaultMessage="This is a test message."
+      description="Test component message"
+    />
+  )
 }

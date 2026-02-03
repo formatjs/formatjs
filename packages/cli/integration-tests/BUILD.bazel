@@ -85,7 +85,11 @@ vitest(
         ["extract/**/*"],
         exclude = [
             "extract/**/*.test.ts",
+            "extract/__snapshots__/*",
         ],
+    ),
+    snapshots = glob(
+        ["extract/__snapshots__/*"],
     ),
     deps = ["//:node_modules/@bazel/runfiles"],
 )

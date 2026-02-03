@@ -142,10 +142,10 @@ importers:
         specifier: ^22.19.5
         version: 22.19.7
       '@types/react':
-        specifier: ^19.2.8
+        specifier: '19'
         version: 19.2.8
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: '19'
         version: 19.2.3(@types/react@19.2.8)
       '@types/regenerate':
         specifier: ^1.4.3
@@ -280,10 +280,10 @@ importers:
         specifier: ^1.30.0
         version: 1.30.0
       react:
-        specifier: 16 || 17 || 18 || 19
+        specifier: '19'
         version: 19.2.3
       react-dom:
-        specifier: 16 || 17 || 18 || 19
+        specifier: '19'
         version: 19.2.3(react@19.2.3)
       react-live:
         specifier: ^4.1.8
@@ -904,7 +904,7 @@ importers:
         specifier: ^3.3.1
         version: 3.3.7(@types/react@19.2.8)
       '@types/react':
-        specifier: ^19.2.8
+        specifier: '19'
         version: 19.2.8
       hoist-non-react-statics:
         specifier: ^3.3.2
@@ -913,7 +913,7 @@ importers:
         specifier: workspace:*
         version: link:../intl-messageformat
       react:
-        specifier: 16 || 17 || 18 || 19
+        specifier: '19'
         version: 19.2.3
       tslib:
         specifier: ^2.8.1
@@ -958,7 +958,7 @@ importers:
         specifier: ^3.3.1
         version: 3.3.7(@types/react@19.2.8)
       '@types/react':
-        specifier: ^19.2.8
+        specifier: '19'
         version: 19.2.8
       hoist-non-react-statics:
         specifier: ^3.3.2

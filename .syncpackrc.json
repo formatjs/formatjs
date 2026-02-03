@@ -63,9 +63,11 @@
       "label": "React packages",
       "dependencies": [
         "react",
-        "react-dom"
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
       ],
-      "pinVersion": "16 || 17 || 18 || 19"
+      "pinVersion": "19"
     },
     {
       "label": "Glimmer",
