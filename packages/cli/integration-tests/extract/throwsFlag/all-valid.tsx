@@ -5,10 +5,7 @@ import {FormattedMessage} from 'react-intl'
 export function AllValidMessages() {
   return (
     <div>
-      <FormattedMessage
-        id="all-valid-1"
-        defaultMessage="First valid message"
-      />
+      <FormattedMessage id="all-valid-1" defaultMessage="First valid message" />
       <FormattedMessage
         id="all-valid-2"
         defaultMessage="Second valid message"
