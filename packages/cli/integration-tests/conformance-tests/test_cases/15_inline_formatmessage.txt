@@ -1,0 +1,27 @@
+import React from 'react';
+import {FormattedMessage} from 'react-intl';
+
+function MyComponent() {
+  return (
+    <div>
+      <FormattedMessage
+        id="inline.message"
+        defaultMessage="This is an inline message"
+        description="Inline message example"
+      />
+    </div>
+  );
+}
+---
+{
+  "command": "extract",
+  "args": ["--throws"],
+  "fileType": "jsx"
+}
+---
+{
+  "inline.message": {
+    "defaultMessage": "This is an inline message",
+    "description": "Inline message example"
+  }
+}

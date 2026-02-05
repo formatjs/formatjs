@@ -1,0 +1,22 @@
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello World!',
+    description: 'Greeting message'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws", "--format", "lokalise"],
+  "fileType": "jsx"
+}
+---
+{
+  "app.greeting": {
+    "notes": "Greeting message",
+    "translation": "Hello World!"
+  }
+}

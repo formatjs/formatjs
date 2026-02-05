@@ -1,0 +1,28 @@
+import {defineMessages} from 'react-intl';
+
+interface Message {
+  id: string;
+  defaultMessage: string;
+  description?: string;
+}
+
+const messages = defineMessages({
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello TypeScript!',
+    description: 'TypeScript greeting'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws"],
+  "fileType": "tsx"
+}
+---
+{
+  "app.greeting": {
+    "defaultMessage": "Hello TypeScript!",
+    "description": "TypeScript greeting"
+  }
+}

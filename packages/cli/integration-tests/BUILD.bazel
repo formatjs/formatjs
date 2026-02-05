@@ -65,34 +65,36 @@ vitest(
     ],
 )
 
-vitest(
-    name = "extract_integration_test",
-    srcs = glob(
-        ["extract/**/*.test.ts"],
-    ) + [
-        "formatter.js",
-        "rust-binary-utils.ts",
-        ":node_modules/@formatjs/cli",
-        ":rust_cli_copy",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/fast-glob",
-        "//:node_modules/fs-extra",
-    ],
-    data = [
-        "//crates/formatjs_cli",
-    ],
-    fixtures = glob(
-        ["extract/**/*"],
-        exclude = [
-            "extract/**/*.test.ts",
-            "extract/__snapshots__/*",
-        ],
-    ),
-    snapshots = glob(
-        ["extract/__snapshots__/*"],
-    ),
-    deps = ["//:node_modules/@bazel/runfiles"],
-)
+# Disabled: Replaced by conformance_test which covers all scenarios
+# and directly compares Rust vs TypeScript CLI outputs
+# vitest(
+#     name = "extract_integration_test",
+#     srcs = glob(
+#         ["extract/**/*.test.ts"],
+#     ) + [
+#         "formatter.js",
+#         "rust-binary-utils.ts",
+#         ":node_modules/@formatjs/cli",
+#         ":rust_cli_copy",
+#         "//:node_modules/@types/fs-extra",
+#         "//:node_modules/fast-glob",
+#         "//:node_modules/fs-extra",
+#     ],
+#     data = [
+#         "//crates/formatjs_cli",
+#     ],
+#     fixtures = glob(
+#         ["extract/**/*"],
+#         exclude = [
+#             "extract/**/*.test.ts",
+#             "extract/__snapshots__/*",
+#         ],
+#     ),
+#     snapshots = glob(
+#         ["extract/__snapshots__/*"],
+#     ),
+#     deps = ["//:node_modules/@bazel/runfiles"],
+# )
 
 vitest(
     name = "extract_vue_integration_test",
@@ -165,5 +167,27 @@ vitest(
     deps = [
         ":node_modules/@formatjs/cli",
         "//:node_modules/@bazel/runfiles",
+    ],
+)
+
+vitest(
+    name = "conformance_test",
+    srcs = [
+        "rust-binary-utils.ts",
+        ":node_modules/@formatjs/cli",
+        ":rust_cli_copy",
+    ] + glob(
+        ["conformance-tests/*.test.ts"],
+    ),
+    data = [
+        "//crates/formatjs_cli",
+    ],
+    fixtures = glob(
+        ["conformance-tests/test_cases/*.txt"],
+    ),
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/fs-extra",
     ],
 )

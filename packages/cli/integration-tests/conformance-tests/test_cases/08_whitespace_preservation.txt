@@ -1,0 +1,29 @@
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  whitespace: {
+    id: 'app.whitespace',
+    defaultMessage: '   Leading and trailing   ',
+    description: 'Whitespace test'
+  },
+  newlines: {
+    id: 'app.newlines',
+    defaultMessage: 'Line 1\nLine 2\nLine 3'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws"],
+  "fileType": "jsx"
+}
+---
+{
+  "app.newlines": {
+    "defaultMessage": "Line 1 Line 2 Line 3"
+  },
+  "app.whitespace": {
+    "defaultMessage": "Leading and trailing",
+    "description": "Whitespace test"
+  }
+}

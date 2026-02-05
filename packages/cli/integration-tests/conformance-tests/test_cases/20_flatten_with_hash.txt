@@ -1,0 +1,19 @@
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  complex: {
+    defaultMessage: '{count, plural, one{I have a dog} other{I have many dogs}}'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws", "--flatten", "--id-interpolation-pattern", "[sha512:contenthash:base64:6]"],
+  "fileType": "jsx"
+}
+---
+{
+  "vG2DC3": {
+    "defaultMessage": "{count,plural,one{I have a dog} other{I have many dogs}}"
+  }
+}

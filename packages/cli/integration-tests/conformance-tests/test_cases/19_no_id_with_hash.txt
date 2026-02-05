@@ -1,0 +1,27 @@
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  message1: {
+    defaultMessage: 'No ID message 1'
+  },
+  message2: {
+    defaultMessage: 'No ID message 2',
+    description: 'With description'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws", "--id-interpolation-pattern", "[sha512:contenthash:base64:6]"],
+  "fileType": "jsx"
+}
+---
+{
+  "XAszvl": {
+    "defaultMessage": "No ID message 1"
+  },
+  "jE/xyL": {
+    "defaultMessage": "No ID message 2",
+    "description": "With description"
+  }
+}

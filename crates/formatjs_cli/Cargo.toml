@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_cli"
-version = "0.1.13"
+version = "0.1.14"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "Command-line interface for FormatJS - A Rust-based CLI for internationalization"
@@ -33,6 +33,7 @@ oxc_span = "0.110"
 sha2 = "0.10"
 base64 = "0.22"
 hex = "0.4"
+regex = "1.12"
 
 [dev-dependencies]
 tempfile = "3.0"

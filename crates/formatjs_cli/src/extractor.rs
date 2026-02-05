@@ -2,15 +2,23 @@ use anyhow::{Context, Result};
 use formatjs_icu_messageformat_parser::{
     Parser as IcuParser, ParserOptions, print_ast, try_hoist_selectors,
 };
+use once_cell::sync::Lazy;
 use oxc::ast_visit::{Visit, walk};
 use oxc_allocator::Allocator;
 use oxc_ast::ast::*;
 use oxc_parser::{Parser, ParserReturn};
 use oxc_span::SourceType;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
 use std::path::Path;
+
+// Hoist regex for whitespace normalization to avoid recompilation
+// Matches TypeScript behavior: /\s+/gm
+// Only matches space, tab, newline, carriage return, form feed
+// Does NOT match non-breaking space (U+00A0) or other Unicode whitespace
+static WHITESPACE_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"[ \t\n\r\f]+").unwrap());
 
 /// Message descriptor extracted from source code
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -28,6 +36,14 @@ pub struct MessageDescriptor {
     pub start: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub end: Option<u32>,
+}
+
+/// Normalize whitespace in a string by:
+/// - Replacing all whitespace sequences (newlines, tabs, multiple spaces) with single spaces
+/// - Trimming leading and trailing whitespace
+/// Matches TypeScript behavior: msg.defaultMessage.trim().replace(/\s+/gm, ' ')
+fn normalize_whitespace(s: &str) -> String {
+    WHITESPACE_RE.replace_all(s.trim(), " ").to_string()
 }
 
 /// Convert byte offset to (line, column) - both 1-indexed
@@ -211,7 +227,7 @@ impl<'a> MessageExtractor<'a> {
                 if preserve_whitespace.unwrap_or(self.preserve_whitespace) {
                     Some(value)
                 } else {
-                    Some(value.trim().to_string())
+                    Some(normalize_whitespace(&value))
                 }
             }
             Expression::TemplateLiteral(tpl)
@@ -221,7 +237,7 @@ impl<'a> MessageExtractor<'a> {
                 if preserve_whitespace.unwrap_or(self.preserve_whitespace) {
                     Some(value)
                 } else {
-                    Some(value.trim().to_string())
+                    Some(normalize_whitespace(&value))
                 }
             }
             // Handle string concatenation (e.g., 'Hello' + ' ' + 'World')
@@ -235,7 +251,8 @@ impl<'a> MessageExtractor<'a> {
     }
 
     fn extract_description(&self, expr: &Expression) -> Option<Value> {
-        if let Some(string_val) = self.extract_string_literal(expr, None) {
+        // Always preserve whitespace in descriptions (do not normalize)
+        if let Some(string_val) = self.extract_string_literal(expr, Some(true)) {
             return Some(Value::String(string_val));
         }
 
@@ -245,8 +262,8 @@ impl<'a> MessageExtractor<'a> {
             for prop in &obj.properties {
                 if let ObjectPropertyKind::ObjectProperty(p) = prop {
                     if let PropertyKey::StaticIdentifier(key) = &p.key {
-                        // Try to extract string value
-                        if let Some(val) = self.extract_string_literal(&p.value, None) {
+                        // Try to extract string value (preserve whitespace in description objects too)
+                        if let Some(val) = self.extract_string_literal(&p.value, Some(true)) {
                             map.insert(key.name.to_string(), Value::String(val));
                         }
                         // Try to extract numeric value
@@ -404,16 +421,19 @@ impl<'a> MessageExtractor<'a> {
                         match value {
                             JSXAttributeValue::StringLiteral(lit) => {
                                 let val = lit.value.to_string();
-                                // Apply whitespace trimming based on preserve_whitespace flag
-                                let val = if self.preserve_whitespace {
-                                    val
-                                } else {
-                                    val.trim().to_string()
-                                };
                                 match attr_name {
                                     "id" => descriptor.id = Some(val),
-                                    "defaultMessage" => descriptor.default_message = Some(val),
+                                    "defaultMessage" => {
+                                        // Apply whitespace normalization to defaultMessage only
+                                        let normalized_val = if self.preserve_whitespace {
+                                            val
+                                        } else {
+                                            normalize_whitespace(&val)
+                                        };
+                                        descriptor.default_message = Some(normalized_val);
+                                    }
                                     "description" => {
+                                        // Description is NOT normalized
                                         descriptor.description = Some(Value::String(val))
                                     }
                                     _ => {}

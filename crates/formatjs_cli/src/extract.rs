@@ -42,6 +42,7 @@ pub fn extract(
     let function_names = build_function_names(additional_function_names);
 
     for file_path in &file_list {
+        // To match TypeScript CLI behavior, we hash the message AFTER flattening
         match extract_from_file(
             file_path,
             extract_source_location,
@@ -53,11 +54,12 @@ pub fn extract(
             throws,
         ) {
             Ok(messages) => {
-                for mut msg in messages {
+                for mut msg in messages.into_iter() {
                     // Generate ID if not present
                     let id = if let Some(id) = msg.id.clone() {
                         id
                     } else {
+                        // Hash the (possibly flattened) message
                         generate_id(
                             id_interpolation_pattern,
                             msg.default_message.as_deref(),

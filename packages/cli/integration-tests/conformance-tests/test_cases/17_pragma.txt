@@ -1,0 +1,23 @@
+/** @intl */
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  greeting: {
+    id: 'pragma.greeting',
+    defaultMessage: 'Hello with pragma!',
+    description: 'Pragma test'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws", "--pragma", "intl"],
+  "fileType": "tsx"
+}
+---
+{
+  "pragma.greeting": {
+    "defaultMessage": "Hello with pragma!",
+    "description": "Pragma test"
+  }
+}
