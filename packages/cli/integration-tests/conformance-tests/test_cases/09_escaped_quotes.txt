@@ -1,0 +1,31 @@
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  escaped: {
+    id: 'app.escaped',
+    defaultMessage: "A quoted value ''{value}'",
+    description: 'Escaped apostrophe'
+  },
+  complex: {
+    id: 'app.complex',
+    defaultMessage: "It''s a ''{type}'' day",
+    description: 'Multiple escaped quotes'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws"],
+  "fileType": "jsx"
+}
+---
+{
+  "app.escaped": {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe"
+  },
+  "app.complex": {
+    "defaultMessage": "It''s a ''{type}'' day",
+    "description": "Multiple escaped quotes"
+  }
+}

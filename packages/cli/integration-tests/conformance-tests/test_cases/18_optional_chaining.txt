@@ -1,0 +1,22 @@
+import React from 'react';
+
+function MyComponent({intl}) {
+  const message = intl?.formatMessage({
+    id: 'optional.chaining',
+    defaultMessage: 'With optional chaining'
+  });
+
+  return <div>{message}</div>;
+}
+---
+{
+  "command": "extract",
+  "args": ["--throws"],
+  "fileType": "tsx"
+}
+---
+{
+  "optional.chaining": {
+    "defaultMessage": "With optional chaining"
+  }
+}

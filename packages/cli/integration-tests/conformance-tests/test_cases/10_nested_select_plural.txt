@@ -1,0 +1,20 @@
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  party: {
+    id: 'app.party',
+    defaultMessage: '{gender, select, female {{count, plural, one {{host} invites {guest} to her party} other {{host} invites {guest} and # others to her party}}} male {{count, plural, one {{host} invites {guest} to his party} other {{host} invites {guest} and # others to his party}}} other {{count, plural, one {{host} invites {guest} to their party} other {{host} invites {guest} and # others to their party}}}}'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws"],
+  "fileType": "jsx"
+}
+---
+{
+  "app.party": {
+    "defaultMessage": "{gender, select, female {{count, plural, one {{host} invites {guest} to her party} other {{host} invites {guest} and # others to her party}}} male {{count, plural, one {{host} invites {guest} to his party} other {{host} invites {guest} and # others to his party}}} other {{count, plural, one {{host} invites {guest} to their party} other {{host} invites {guest} and # others to their party}}}}"
+  }
+}

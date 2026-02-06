@@ -1,0 +1,29 @@
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  kittens: {
+    id: 'app.kittens',
+    defaultMessage: '{count, plural, =0 {no kittens} one {# kitten} other {# kittens}}',
+    description: 'Kitten counter'
+  },
+  dogs: {
+    id: 'app.dogs',
+    defaultMessage: '{count, plural, one {a dog} other {many dogs}}'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws"],
+  "fileType": "jsx"
+}
+---
+{
+  "app.kittens": {
+    "defaultMessage": "{count, plural, =0 {no kittens} one {# kitten} other {# kittens}}",
+    "description": "Kitten counter"
+  },
+  "app.dogs": {
+    "defaultMessage": "{count, plural, one {a dog} other {many dogs}}"
+  }
+}

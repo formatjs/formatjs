@@ -1,0 +1,21 @@
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  noIdMessage: {
+    defaultMessage: 'This is a test message.',
+    description: 'Test message'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws", "--id-interpolation-pattern", "[sha512:contenthash:base64:6]"],
+  "fileType": "jsx"
+}
+---
+{
+  "e1LRYf": {
+    "defaultMessage": "This is a test message.",
+    "description": "Test message"
+  }
+}

@@ -1,0 +1,33 @@
+import React from 'react';
+
+function MyComponent() {
+  return (
+    <div>
+      {t({
+        id: 'custom.function',
+        defaultMessage: 'Using custom function',
+        description: 'Custom function message'
+      })}
+      {intl.formatMessage({
+        id: 'standard.function',
+        defaultMessage: 'Using standard function'
+      })}
+    </div>
+  );
+}
+---
+{
+  "command": "extract",
+  "args": ["--throws", "--additional-function-names", "t"],
+  "fileType": "jsx"
+}
+---
+{
+  "custom.function": {
+    "defaultMessage": "Using custom function",
+    "description": "Custom function message"
+  },
+  "standard.function": {
+    "defaultMessage": "Using standard function"
+  }
+}
