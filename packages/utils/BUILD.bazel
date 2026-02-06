@@ -10,6 +10,9 @@ npm_link_all_packages()
 
 exports_files([
     "package.json",
+    # This comes from https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml
+    # We check this in bc they don't version this file
+    "data/list-one.xml",
 ])
 
 PACKAGE_NAME = "utils"
@@ -79,7 +82,7 @@ generate_src_file(
 
 copy_file(
     name = "iso-4217",
-    src = "//data:list-one.xml",
+    src = "data/list-one.xml",
     out = "iso4217.xml",
 )
 
