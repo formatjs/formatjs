@@ -92,7 +92,7 @@
     "json-stable-stringify": "^1.3.0",
     "lefthook": "^2.0.13",
     "lodash-es": "^4.17.22",
-    "lucide-react": "^0.468.0",
+    "lucide-react": "^0.563.0",
     "minimist": "^1.2.8",
     "oxc-transform": "^0.110.0",
     "oxfmt": "^0.26.0",
