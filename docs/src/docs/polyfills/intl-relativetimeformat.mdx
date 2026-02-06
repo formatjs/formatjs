@@ -72,6 +72,8 @@ The implementation automatically handles plural forms using `Intl.PluralRules`:
 
 ### Example Usage
 
+#### Global import
+
 ```js
 import '@formatjs/intl-relativetimeformat/polyfill.js'
 
@@ -116,6 +118,24 @@ const rtfAr = new Intl.RelativeTimeFormat('ar')
 rtfAr.format(1, 'day') // "خلال يوم واحد"
 rtfAr.format(2, 'day') // "خلال يومين" (dual form)
 rtfAr.format(3, 'day') // "خلال ٣ أيام" (plural form)
+```
+
+<Admonition type="info">
+    The global import does not include TypeScript type declarations.
+    For TypeScript projects, we recommend using ES module imports instead.
+
+    If you choose to use the global import, in order to prevent type errors, you must manually include the corresponding type declaration files (.d.ts) in your project.
+
+</Admonition>
+
+#### ES Modules
+
+```js
+import {RelativeTimeFormat} from '@formatjs/intl-relativetimeformat'
+
+// Basic usage with numeric: 'always' (default)
+const rtf = new RelativeTimeFormat('en', {style: 'long'})
+rtf.format(-1, 'day') // "1 day ago"
 ```
 
 ### Locale Data

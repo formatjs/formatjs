@@ -30,6 +30,8 @@ This package is **fully compliant** with the ECMA-402 specification for `Intl.Li
 
 ### Example Usage
 
+#### Global import
+
 ```js
 import '@formatjs/intl-listformat/polyfill.js'
 
@@ -65,6 +67,28 @@ const parts = conjunctionFormatter.formatToParts(['A', 'B', 'C'])
 //   {type: "literal", value: ", and "},
 //   {type: "element", value: "C"}
 // ]
+```
+
+<Admonition type="info">
+    The global import does not include TypeScript type declarations.
+    For TypeScript projects, we recommend using ES module imports instead.
+
+    If you choose to use the global import, in order to prevent type errors, you must manually include the corresponding type declaration files (.d.ts) in your project.
+
+</Admonition>
+
+#### ES Modules
+
+```js
+import {ListFormat} from '@formatjs/intl-listformat'
+
+// Conjunction (and)
+const conjunctionFormatter = new ListFormat('en', {
+  style: 'long',
+  type: 'conjunction',
+})
+conjunctionFormatter.format(['Apple', 'Banana', 'Orange'])
+// "Apple, Banana, and Orange"
 ```
 
 ## Installation

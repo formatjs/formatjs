@@ -29,6 +29,8 @@ This package is **fully compliant** with the ECMA-402 specification for `Intl.Pl
 
 ### Example Usage
 
+#### Global import
+
 ```js
 import '@formatjs/intl-pluralrules/polyfill.js'
 
@@ -45,6 +47,23 @@ prOrdinal.select(4) // "other" (4th)
 
 // selectRange for ranges
 pr.selectRange(1, 5) // "other" (1-5 items)
+```
+
+<Admonition type="info">
+    The global import does not include TypeScript type declarations.
+    For TypeScript projects, we recommend using ES module imports instead.
+
+    If you choose to use the global import, in order to prevent type errors, you must manually include the corresponding type declaration files (.d.ts) in your project.
+
+</Admonition>
+
+#### ES Modules
+
+```js
+import {PluralRules} from '@formatjs/intl-pluralrules'
+
+const pr = new PluralRules('en')
+pr.select(0) // "other"
 ```
 
 ## Installation

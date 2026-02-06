@@ -71,6 +71,8 @@ When set to `'auto'`, zero values are omitted. When set to `'always'`, zero valu
 
 ### Example Usage
 
+#### Global import
+
 ```js
 import '@formatjs/intl-durationformat/polyfill.js'
 
@@ -97,6 +99,30 @@ const parts = formatter.formatToParts({hours: 2, minutes: 30})
 //   {type: "integer", value: "30", unit: "minute"},
 //   {type: "literal", value: " minutes"}
 // ]
+```
+
+<Admonition type="info">
+    The global import does not include TypeScript type declarations.
+    For TypeScript projects, we recommend using ES module imports instead.
+
+    If you choose to use the global import, in order to prevent type errors, you must manually include the corresponding type declaration files (.d.ts) in your project.
+
+</Admonition>
+
+#### ES Modules
+
+```js
+import {DurationFormat} from '@formatjs/intl-durationformat'
+
+const formatter = new DurationFormat('en', {
+  style: 'long',
+  hours: 'numeric',
+  minutes: 'numeric',
+  seconds: 'numeric',
+})
+
+formatter.format({hours: 3, minutes: 25, seconds: 7})
+// "3 hours, 25 minutes, 7 seconds"
 ```
 
 ## Installation

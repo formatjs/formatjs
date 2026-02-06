@@ -53,6 +53,8 @@ Each segment has:
 
 ### Example Usage
 
+#### Global import
+
 ```js
 import '@formatjs/intl-segmenter/polyfill.js'
 
@@ -111,6 +113,24 @@ const emojis = [...emojiSegmenter.segment('👨‍👩‍👧‍👦🏴󠁧󠁢
 //   {segment: '👨‍👩‍👧‍👦', index: 0},  // Family emoji (ZWJ sequence)
 //   {segment: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', index: ...}   // Scotland flag
 // ]
+```
+
+<Admonition type="info">
+    The global import does not include TypeScript type declarations.
+    For TypeScript projects, we recommend using ES module imports instead.
+
+    If you choose to use the global import, in order to prevent type errors, you must manually include the corresponding type declaration files (.d.ts) in your project.
+
+</Admonition>
+
+#### ES Modules
+
+```js
+import {Segmenter} from '@formatjs/intl-segmenter'
+
+// Grapheme segmentation (user-perceived characters)
+const graphemeSegmenter = new Segmenter('en', {granularity: 'grapheme'})
+const graphemes = [...graphemeSegmenter.segment('Hello👋')]
 ```
 
 ### Use Cases

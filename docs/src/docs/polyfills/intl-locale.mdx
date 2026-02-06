@@ -37,6 +37,8 @@ This package is **fully compliant** with the ECMA-402 specification for `Intl.Lo
 
 ### Example Usage
 
+#### Global import
+
 ```js
 import '@formatjs/intl-locale/polyfill.js'
 
@@ -69,6 +71,24 @@ locale.getTimeZones() // ["America/Adak", "America/Anchorage", ...]
 // Text and week info
 locale.getTextInfo() // {direction: "ltr"}
 locale.getWeekInfo() // {firstDay: 7, weekend: [6, 7], minimalDays: 1}
+```
+
+<Admonition type="info">
+    The global import does not include TypeScript type declarations.
+    For TypeScript projects, we recommend using ES module imports instead.
+
+    If you choose to use the global import, in order to prevent type errors, you must manually include the corresponding type declaration files (.d.ts) in your project.
+
+</Admonition>
+
+#### ES Modules
+
+```js
+import {Locale} from '@formatjs/intl-locale'
+
+// Create locale
+const locale = new Locale('en-US')
+locale.language // "en"
 ```
 
 ## Installation
