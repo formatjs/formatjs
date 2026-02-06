@@ -201,6 +201,16 @@ async function loadDatesFields(
       processedTimeData[`${locale}-001`] ||
       processedTimeData['001']
     ).map(resolveDateTimeSymbolTable)
+
+    // Ensure all locales support at least h23 and h12 for user flexibility
+    // Even if CLDR only lists one preferred format, users should be able to
+    // explicitly request either 12-hour or 24-hour format via the hourCycle option
+    if (!hc.includes('h23') && !hc.includes('h24')) {
+      hc.push('h23')
+    }
+    if (!hc.includes('h12') && !hc.includes('h11')) {
+      hc.push('h12')
+    }
   } catch (e) {
     console.error(`Issue extracting hourCycle for ${locale}`)
     throw e

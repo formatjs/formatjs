@@ -726,4 +726,35 @@ describe('Intl.DateTimeFormat', function () {
     // 12:00 UTC = 09:00 in Coyhaique (-03:00)
     expect(result).toBe('04/01/2025, 09:00')
   })
+
+  it('should allow explicit hourCycle override regardless of locale preference, GH #6020', function () {
+    // Test that users can explicitly request h12 (12-hour) or h23 (24-hour)
+    // even if the locale prefers a different format
+    const testDate = new Date('2025-01-15T13:30:00Z')
+
+    // Test explicit h23 (24-hour format)
+    const fmt24 = new DateTimeFormat('en', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hourCycle: 'h23',
+      timeZone: 'UTC',
+    })
+    const resolved24 = fmt24.resolvedOptions()
+    expect(resolved24.hourCycle).toBe('h23')
+    expect(resolved24.hour12).toBe(false)
+    expect(fmt24.format(testDate)).toBe('13:30')
+
+    // Test explicit h12 (12-hour format)
+    const fmt12 = new DateTimeFormat('en', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hourCycle: 'h12',
+      timeZone: 'UTC',
+    })
+    const resolved12 = fmt12.resolvedOptions()
+    expect(resolved12.hourCycle).toBe('h12')
+    expect(resolved12.hour12).toBe(true)
+    expect(fmt12.format(testDate)).toContain('1:30')
+    expect(fmt12.format(testDate)).toContain('PM')
+  })
 })
