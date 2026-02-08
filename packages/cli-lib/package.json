@@ -14,7 +14,7 @@
     "@formatjs/ts-transformer": "workspace:*",
     "@types/estree": "^1.0.8",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^22.19.5",
+    "@types/node": "^24.0.0",
     "commander": "^14.0.0",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.3",
