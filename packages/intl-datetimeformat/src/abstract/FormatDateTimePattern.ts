@@ -199,21 +199,27 @@ export function FormatDateTimePattern(
           v = 12
         }
       }
-      // GH #4535: In h24 format, midnight is typically shown as 24:00 (end of day).
-      // However, in date ranges where dates differ (e.g., "May 3, 22:00 – May 4, 00:00"),
-      // showing "May 4, 24:00" is semantically incorrect because 24:00 of May 4 would
-      // actually be May 5, 00:00. In this case, keep midnight as 00:00 for clarity.
+      // GH #4535: In h24 format, midnight handling depends on context.
       //
-      // LDML Spec (UTS #35): "Tuesday 24:00 = Wednesday 00:00" - they represent the same
-      // instant. The 'k' symbol (1-24) means 24:00 represents the END of day, not the start.
+      // LDML Spec (UTS #35): The 'k' symbol (1-24) means 24:00 represents the END of day.
+      // "Tuesday 24:00 = Wednesday 00:00" - they represent the same instant.
       // See: https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
       //
-      // Note: ICU4J's SimpleDateFormat always converts 0→24 for 'k' pattern without this
-      // range-aware check. Our fix is more semantically correct for date range formatting.
+      // However, in date ranges, showing 24:00 can be semantically confusing:
+      // - Different dates (May 3, 22:00 – May 4, 00:00): Show "00:00" on May 4
+      //   because "May 4, 24:00" would actually mean May 5, 00:00
+      // - Same date ranges (May 3, 00:00 – 00:45): Show "00:00" for clarity
+      //   because the times are at the START of the day, not the end
+      //
+      // Only convert 0→24 in non-range single-date formatting where 24:00
+      // conventionally means "end of day" (e.g., business closing time).
+      //
+      // Note: ICU4J's SimpleDateFormat always converts 0→24 for 'k' pattern.
+      // Our approach is more contextually appropriate for range formatting.
       // See: https://github.com/unicode-org/icu/blob/main/icu4j/main/core/src/main/java/com/ibm/icu/text/SimpleDateFormat.java
       if (p === 'hour' && hourCycle === 'h24') {
-        if (v === 0 && !rangeFormatOptions?.isDifferentDate) {
-          // Only convert 0 to 24 when NOT in a range with different dates
+        if (v === 0 && !rangeFormatOptions) {
+          // Only convert 0 to 24 when NOT formatting a range (rangeFormatOptions is undefined)
           v = 24
         }
       }
