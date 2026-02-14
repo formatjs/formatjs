@@ -375,7 +375,11 @@ async function loadDatesFields(
       // LDML Spec (UTS #35): "If no exact match exists, check the fallback locale chain,
       // allowing adjustments to field widths and variant field types."
       // See: https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
-      if (!timeIntervalFormats || typeof timeIntervalFormats !== 'object') {
+      if (
+        !timeIntervalFormats ||
+        typeof timeIntervalFormats !== 'object' ||
+        Object.keys(timeIntervalFormats).length === 0
+      ) {
         // Convert between 12-hour (h/K) and 24-hour (H/k) hour symbols
         const alt24HourSkeleton = timeSkeleton
           .replace(/h/g, 'H')

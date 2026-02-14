@@ -450,7 +450,7 @@ test('GH issue #4535 - same day range should not duplicate date', function () {
   expect(occurrences).toBe(1)
 })
 
-test('GH issue #4535 - same day range with hour12:true should not duplicate date', function () {
+test('GH issue #4535 - same day range with hour12:true should not duplicate date (same period)', function () {
   // Bug report: date/day duplication always occurs when hour12 is set to true
   const dtf = new DateTimeFormat('en-GB', {
     weekday: 'short',
@@ -474,6 +474,33 @@ test('GH issue #4535 - same day range with hour12:true should not duplicate date
   const dateString = 'Sun, 22 Sept 2024'
   const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
   expect(occurrences).toBe(1)
+})
+
+test('GH issue #4535 - same day range with hour12:true crossing AM/PM should not duplicate date', function () {
+  // Bug report: longer time range crossing AM/PM boundary shows duplication
+  const dtf = new DateTimeFormat('en-GB', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  })
+
+  // Same day, crossing AM/PM (07:00 AM - 16:00 PM / 4:00 PM)
+  const result = dtf.formatRange(
+    new Date('2026-02-18T07:00:00'),
+    new Date('2026-02-18T16:00:00')
+  )
+
+  // Date should only appear once
+  const dateString = 'Wed, 18 Feb 2026'
+  const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
+  expect(occurrences).toBe(1)
+  // Should have AM and PM markers
+  expect(result).toContain('am')
+  expect(result).toContain('pm')
 })
 
 test('GH issue #4535 - longer same day range should not duplicate date', function () {
@@ -523,4 +550,33 @@ test('GH issue #4535 - midnight should be 00:00 not 24:00 on next day', function
   expect(result).toContain('00:00')
   // en-GB formats as "4 May" not "May 4"
   expect(result).toContain('4 May')
+})
+
+test('GH issue #4535 - same day midnight should show 00:00 not 24:00', function () {
+  // Bug report: same-day range starting at midnight shows "24:00-24:45"
+  // Output: "Sun, 3 May 2026, 24:00-24:45"
+  // Expected: "Sun, 3 May 2026, 00:00–00:45"
+  const dtf = new DateTimeFormat('en-GB', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  })
+
+  const result = dtf.formatRange(
+    new Date('2026-05-03T00:00:00'),
+    new Date('2026-05-03T00:45:00')
+  )
+
+  // Should show 00:00, not 24:00 (times are at START of day, not end)
+  expect(result).not.toContain('24:00')
+  expect(result).toContain('00:00')
+  expect(result).toContain('00:45')
+  // Date should appear only once
+  const dateString = '3 May 2026'
+  const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
+  expect(occurrences).toBe(1)
 })
