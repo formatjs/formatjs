@@ -1,0 +1,150 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@formatjs/vite-plugin integration > JSX: generates ids and removes descriptions 1`] = `
+"import { jsxDEV } from "react/jsx-dev-runtime";
+var _jsxFileName = "<source>";
+function FormattedMessage(_props) {
+	return null;
+}
+function App() {
+	return /* @__PURE__ */ jsxDEV("div", { children: [/* @__PURE__ */ jsxDEV(FormattedMessage, {
+		id: "wdf0o2",
+		defaultMessage: "Welcome to our app"
+	}, void 0, false, {
+		fileName: _jsxFileName,
+		lineNumber: 8,
+		columnNumber: 7
+	}, this), /* @__PURE__ */ jsxDEV(FormattedMessage, {
+		id: "custom.id",
+		defaultMessage: "Custom ID message"
+	}, void 0, false, {
+		fileName: _jsxFileName,
+		lineNumber: 12,
+		columnNumber: 7
+	}, this)] }, void 0, true, {
+		fileName: _jsxFileName,
+		lineNumber: 7,
+		columnNumber: 5
+	}, this);
+}
+export { App };
+"
+`;
+
+exports[`@formatjs/vite-plugin integration > ast option pre-parses defaultMessage 1`] = `
+"function defineMessage(msg$1) {
+	return msg$1;
+}
+const msg = defineMessage({
+	id: "yVWDDe",
+	defaultMessage: [{
+		"type": 0,
+		"value": "You have "
+	}, {
+		"type": 6,
+		"value": "count",
+		"options": {
+			"one": { "value": [{ "type": 7 }, {
+				"type": 0,
+				"value": " item"
+			}] },
+			"other": { "value": [{ "type": 7 }, {
+				"type": 0,
+				"value": " items"
+			}] }
+		},
+		"offset": 0,
+		"pluralType": "cardinal"
+	}]
+});
+export { msg };
+"
+`;
+
+exports[`@formatjs/vite-plugin integration > defineMessage: processes single descriptor 1`] = `
+"function defineMessage(msg$1) {
+	return msg$1;
+}
+const msg = defineMessage({
+	id: "yVWDDe",
+	defaultMessage: "You have {count, plural, one {# item} other {# items}}"
+});
+export { msg };
+"
+`;
+
+exports[`@formatjs/vite-plugin integration > defineMessages: processes multiple descriptors 1`] = `
+"function defineMessages(msgs) {
+	return msgs;
+}
+const messages = defineMessages({
+	greeting: {
+		id: "Thkx7j",
+		defaultMessage: "Hello {name}"
+	},
+	farewell: {
+		id: "Vcy7vG",
+		defaultMessage: "Goodbye {name}"
+	}
+});
+export { messages };
+"
+`;
+
+exports[`@formatjs/vite-plugin integration > formatMessage: generates ids and removes descriptions 1`] = `
+"var intl = { formatMessage(descriptor) {
+	return descriptor.defaultMessage;
+} };
+const greeting = intl.formatMessage({
+	id: "YyDw8T",
+	defaultMessage: "Hello World"
+});
+const farewell = intl.formatMessage({
+	id: "73dImr",
+	defaultMessage: "Goodbye World"
+});
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/vite-plugin integration > idInterpolationPattern option 1`] = `
+"var intl = { formatMessage(descriptor) {
+	return descriptor.defaultMessage;
+} };
+const greeting = intl.formatMessage({
+	id: "6320f0f1",
+	defaultMessage: "Hello World"
+});
+const farewell = intl.formatMessage({
+	id: "ef77489a",
+	defaultMessage: "Goodbye World"
+});
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/vite-plugin integration > overrideIdFn option 1`] = `
+"var intl = { formatMessage(descriptor) {
+	return descriptor.defaultMessage;
+} };
+const greeting = intl.formatMessage({
+	id: "custom_Hello_World",
+	defaultMessage: "Hello World"
+});
+const farewell = intl.formatMessage({
+	id: "custom_Goodbye_World",
+	defaultMessage: "Goodbye World"
+});
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/vite-plugin integration > removeDefaultMessage option 1`] = `
+"var intl = { formatMessage(descriptor) {
+	return descriptor.defaultMessage;
+} };
+const greeting = intl.formatMessage({ id: "YyDw8T" });
+const farewell = intl.formatMessage({ id: "73dImr" });
+export { farewell, greeting };
+"
+`;

@@ -1,0 +1,60 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile_node")
+load("//tools:vitest.bzl", "vitest")
+
+npm_link_all_packages()
+
+PACKAGE_NAME = "@formatjs/vite-plugin"
+
+SRCS = [
+    "index.ts",
+    "transform.ts",
+    "package.json",
+]
+
+SRC_DEPS = [
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/ts-transformer",
+    ":node_modules/magic-string",
+    ":node_modules/oxc-parser",
+    "//:node_modules/@types/node",
+    "//:node_modules/vite",
+]
+
+ts_compile_node(
+    name = "dist",
+    srcs = [":srcs"],
+    deps = SRC_DEPS,
+)
+
+vitest(
+    name = "unit_test",
+    srcs = SRCS + glob(["tests/**/*.ts"]),
+    deps = SRC_DEPS,
+)
+
+npm_package(
+    name = "pkg",
+    srcs = [
+        "LICENSE.md",
+        "README.md",
+        "package.json",
+        ":dist",
+    ],
+    package = PACKAGE_NAME,
+    visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)
+
+generate_ide_tsconfig_json()
+
+package_json_test(
+    name = "package_json_test",
+    deps = SRC_DEPS,
+)

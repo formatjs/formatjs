@@ -179,6 +179,10 @@
     "title": "Ts Transformer",
     "description": "Process string messages for translation from modules that use react-intl, specifically:"
   },
+  "tooling/vite-plugin": {
+    "title": "Vite Plugin",
+    "description": "Process string messages for translation from modules that use react-intl, specifically:"
+  },
   "vue-intl": {
     "title": "Vue Intl",
     "description": "This library contains our plugin for Vue."

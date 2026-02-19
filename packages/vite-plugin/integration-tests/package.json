@@ -1,0 +1,7 @@
+{
+  "name": "integration-tests",
+  "private": true,
+  "dependencies": {
+    "@formatjs/vite-plugin": "workspace:*"
+  }
+}
