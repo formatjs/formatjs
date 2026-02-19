@@ -235,6 +235,64 @@ describe('@formatjs/vite-plugin transform', () => {
     })
   })
 
+  describe('compiled JSX', () => {
+    test('handles _jsx(FormattedMessage, { ... })', () => {
+      const input = `_jsx(FormattedMessage, { defaultMessage: 'Hello World', description: 'greeting' })`
+      const output = t(input)
+      expect(output).toContain('id:')
+      expect(output).not.toContain('description')
+    })
+
+    test('handles jsxDEV(FormattedMessage, { ... })', () => {
+      const input = `jsxDEV(FormattedMessage, { defaultMessage: 'Hello World', description: 'greeting' })`
+      const output = t(input)
+      expect(output).toContain('id:')
+      expect(output).not.toContain('description')
+    })
+
+    test('handles _jsxs(FormattedMessage, { ... })', () => {
+      const input = `_jsxs(FormattedMessage, { defaultMessage: 'Hello World', description: 'greeting' })`
+      const output = t(input)
+      expect(output).toContain('id:')
+      expect(output).not.toContain('description')
+    })
+
+    test('handles React.createElement(FormattedMessage, { ... })', () => {
+      const input = `React.createElement(FormattedMessage, { defaultMessage: 'Hello World', description: 'greeting' })`
+      const output = t(input)
+      expect(output).toContain('id:')
+      expect(output).not.toContain('description')
+    })
+
+    test('preserves existing id in compiled JSX', () => {
+      const input = `_jsx(FormattedMessage, { id: 'my.id', defaultMessage: 'Hello', description: 'greeting' })`
+      const output = t(input)
+      expect(output).toContain('"my.id"')
+      expect(output).not.toContain('description')
+    })
+
+    test('does not process unknown components in compiled JSX', () => {
+      const input = `_jsx(UnknownComponent, { defaultMessage: 'Hello', description: 'greeting' })`
+      const output = t(input)
+      expect(output).toContain('description')
+    })
+
+    test('handles additional component names in compiled JSX', () => {
+      const input = `_jsx(CustomMessage, { defaultMessage: 'Hello', description: 'greeting' })`
+      const output = t(input, {additionalComponentNames: ['CustomMessage']})
+      expect(output).toContain('id:')
+      expect(output).not.toContain('description')
+    })
+
+    test('removeDefaultMessage works with compiled JSX', () => {
+      const input = `_jsx(FormattedMessage, { id: 'test', defaultMessage: 'Hello', description: 'greeting' })`
+      const output = t(input, {removeDefaultMessage: true})
+      expect(output).not.toContain('defaultMessage')
+      expect(output).not.toContain('description')
+      expect(output).toContain('"test"')
+    })
+  })
+
   describe('no-op cases', () => {
     test('returns undefined for files with no descriptors', () => {
       const code = `const x = 1; console.log(x);`
